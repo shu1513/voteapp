@@ -19,7 +19,7 @@ Not a nonprofit. UI copy must say the money supports operating the service — n
 Account deletion is a **hard delete** — `DELETE FROM users` with `ON DELETE CASCADE` on every user-owned table ([authService.ts:1275](backend/src/auth/authService.ts#L1275)), promised by the privacy policy. So:
 - Payment history must NOT reference `users.id` directly: a `NOT NULL` FK would block deletion; a cascade would erase accounting records we are legally required to keep.
 - Solution: a `billing_customers` indirection row. On account deletion its `user_id` is set NULL — payment records survive as de-identified accounting data (amounts, dates, Stripe refs; no name/email — those live only in Stripe, which has its own retention).
-- Deletion flow must **cancel any active subscription first** (Stripe would otherwise keep charging a card for a deleted account), then let `user_id` null out. Deletion must not fail if Stripe is unreachable: cancel is attempted; on failure, log loudly and continue the delete (manual cleanup from the Stripe dashboard; the orphaned subscription is visible there).
+- Deletion flow must **cancel any active subscription first** (Stripe would otherwise keep charging a card for a deleted account), then let `user_id` null out. Cancellation is a **precondition**: if the Stripe cancel call fails, the delete request fails with a retryable error ("couldn't cancel your membership — try again in a few minutes") and no DB rows are touched. This keeps the Terms §14.3 promise ("deleting your account cancels any active membership") true without building a retry queue — the user retries, and cancel is idempotent, so the cancel-succeeded-but-delete-failed half-state is harmless (the retry's re-cancel is a no-op). Users with no live subscription (the vast majority) are unaffected.
 
 ## Data model — migration 250 (next free number at write time)
 
@@ -40,8 +40,17 @@ CREATE TABLE billing_payments (
     currency text NOT NULL DEFAULT 'usd',
     kind text NOT NULL CHECK (kind IN ('one_time', 'monthly')),
     stripe_payment_ref text NOT NULL UNIQUE,  -- payment_intent id (one-time) or invoice id (monthly)
-    refunded_amount_cents integer NOT NULL DEFAULT 0 CHECK (refunded_amount_cents >= 0),
+    -- Always populated, for both kinds: refund events identify a
+    -- charge/payment_intent, never an invoice, so this is the join key for
+    -- refunds. One-time: same value as stripe_payment_ref. Monthly: resolved
+    -- at insert time from the invoice's payment (one Stripe retrieve if the
+    -- invoice.paid payload doesn't carry it — newer API versions dropped
+    -- invoice.payment_intent).
+    stripe_payment_intent_id text NOT NULL UNIQUE,
+    refunded_amount_cents integer NOT NULL DEFAULT 0
+        CHECK (refunded_amount_cents >= 0),
     refunded_at timestamptz,
+    CHECK (refunded_amount_cents <= amount_cents),
     paid_at timestamptz NOT NULL,
     created_at timestamptz NOT NULL DEFAULT now()
 );
@@ -96,14 +105,13 @@ First three: `requireVerifiedAuthenticatedUser` + JSON-parser path list. Webhook
    - `checkout.session.completed` (`mode: subscription`) → **fetch the subscription from Stripe and upsert `billing_subscriptions` from that current state** (no ledger row here — first month's row comes from `invoice.paid`; writing it in both places double-counts).
    - `customer.subscription.created` / `.updated` / `.deleted` → same treatment: the event is a poke, the fetched subscription object is the truth. This makes out-of-order delivery harmless — every handler writes current reality, not the event's snapshot.
    - `invoice.paid` (subscription invoices, amount > 0) → ledger row only (`monthly`, ref = invoice id). Never flips membership status — status recovery arrives via its own `subscription.updated` event.
-   - `invoice.payment_failed` → nothing (status change arrives via `subscription.updated`; log it).
-   - `refund.created` (and `charge.refunded` as belt-and-suspenders) → set `refunded_amount_cents`/`refunded_at` on the ledger row matching the payment ref. Partial refunds accumulate. Disputes: log + handle manually in the dashboard (out of code scope; volume will be ~0).
+   - `charge.refunded` (the **only** refund event we subscribe to) → find the ledger row by the charge's `payment_intent` and **set** `refunded_amount_cents = charge.amount_refunded` — Stripe's cumulative figure, an absolute assignment, never an increment. That one choice makes the handler idempotent under retries, correct for partial refunds, and self-correcting when a pending refund later fails (a `refund.created` handler would count refunds that never succeed, and listening to two refund events would double-apply). `refunded_at` = first time the value goes above zero. Not subscribed: `refund.created`/`refund.updated`/`refund.failed` (all folded into the charge's cumulative number) and `invoice.payment_failed` (status arrives via `subscription.updated`). Disputes: log + handle manually in the dashboard (volume will be ~0).
    - Duplicate-subscription guard: on subscription upsert, if the billing customer already has a **different** live subscription id, cancel the newly arrived one via API and log — closes the concurrent-checkout race without reservation machinery.
    - Unknown event types / unmatched refs → 200 + log.
 
 ### Account-deletion integration
 
-In `authService` deleteAccount, before `DELETE FROM users`: look up the user's billing customer; if a live subscription exists, cancel it at Stripe (immediate, not period-end). Stripe failure → log loudly, proceed with delete anyway. `billing_customers.user_id` nulls via FK.
+In `authService` deleteAccount, before `DELETE FROM users`: look up the user's billing customer; if a live subscription exists, cancel it at Stripe (immediate, not period-end). Stripe failure → the delete request fails with a retryable error and nothing is deleted (see the deletion-constraint section: cancellation is a precondition, cancel is idempotent, so retrying is always safe). On success, `billing_customers.user_id` nulls via FK.
 
 ### Config
 
@@ -114,8 +122,8 @@ In `authService` deleteAccount, before `DELETE FROM users`: look up the user's b
 ### Backend tests
 
 - Checkout validation (mins, cap, kind, non-integer); 409 while live subscription.
-- Webhook: bad signature → 400; DB error → 5xx; each event type; duplicate delivery no-ops; out-of-order subscription events converge (fetch-current makes this trivial); subscription-mode completion writes no ledger row; refund updates net totals; duplicate-subscription guard cancels the newcomer.
-- Deletion: active member delete cancels subscription and nulls `user_id`; Stripe outage doesn't block delete.
+- Webhook: bad signature → 400; DB error → 5xx; each event type; duplicate delivery no-ops; out-of-order subscription events converge (fetch-current makes this trivial); subscription-mode completion writes no ledger row; `charge.refunded` re-delivery and partial refunds land on the same cumulative value; duplicate-subscription guard cancels the newcomer.
+- Deletion: active member delete cancels subscription and nulls `user_id`; Stripe failure → delete request fails, no rows deleted; retry after successful cancel completes the delete.
 - GET totals = net of refunds.
 
 ## Frontend
@@ -137,7 +145,7 @@ Mobile: out of scope v1. (Apple's external-purchase rules now vary by region —
 1. **PR 0 — legal**: privacy policy (name Stripe as a third party in Section 3; amend Section 4: de-identified payment records are retained for accounting/legal compliance after account deletion) + terms of use (payments/subscription/refund/cancellation section). Small doc-only PR, merges first — the retention promise must change before any payment exists.
 2. **PR 1 — backend**: migration 250, `stripe` dep, service, 4 endpoints, deletion integration, rate-limiter exemption, wiring, tests. Inert without env keys.
 3. **PR 2 — frontend**: settings section + tests.
-4. **Rollout** (no PR): Stripe live account — confirm account classification for voluntary support payments with Stripe ([their tips/donations requirements](https://support.stripe.com/questions/requirements-for-accepting-tips-or-donations)); create Product; restricted API key; webhook endpoint (5 event types, **pin its API version to the SDK's pinned version**); configure portal explicitly (payment-method update + invoice history + period-end cancel ON; email/name edits + plan switching OFF); enable Stripe email receipts for recurring charges (doubles as the recurring-payment reminder California's auto-renewal law expects; portal link in settings = the required easy cancellation); enable Stripe's failed-webhook email alerts; set 3 env vars in Render (manual sync approve); apply migration 250 (prod script-file pattern); test-mode E2E first, then live $5 → verify ledger row → refund it → verify net total drops to $0 → cancel → delete a test account while subscribed.
+4. **Rollout** (no PR): Stripe live account — confirm account classification for voluntary support payments with Stripe ([their tips/donations requirements](https://support.stripe.com/questions/requirements-for-accepting-tips-or-donations)); create Product; restricted API key; webhook endpoint subscribed to exactly these six events — `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid`, `charge.refunded` — and **pin its API version to the SDK's pinned version**; configure portal explicitly (payment-method update + invoice history + period-end cancel ON; email/name edits + plan switching OFF); enable Stripe email receipts for recurring charges (doubles as the recurring-payment reminder California's auto-renewal law expects; portal link in settings = the required easy cancellation); enable Stripe's failed-webhook email alerts; set 3 env vars in Render (manual sync approve); apply migration 250 (prod script-file pattern); test-mode E2E first, then live $5 → verify ledger row → refund it → verify net total drops to $0 → cancel → delete a test account while subscribed.
 
 ## Explicitly out of scope (v1)
 

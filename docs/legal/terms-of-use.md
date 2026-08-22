@@ -12,9 +12,12 @@ a substance change, so the bundle version bumps: disclaimer.md, backend
 CURRENT_TERMS_VERSION, and api-client TERMS_VERSION all move to 1.2 together,
 which makes signed-in users re-accept once (TermsRenewalGate) and the
 anonymous search gate re-ask once. Mobile builds bundle TERMS_VERSION at
-compile time, so the backend constant must not deploy to prod before a mobile
-build carrying 1.2 is available — stale builds would fail registration and
-search. This version must be LIVE before STRIPE_SECRET_KEY is ever set in
+compile time and the backend requires EXACT equality, so if a mobile build
+were publicly distributed there would be no compatible deploy order in either
+direction (old app fails against new backend AND new app fails against old
+backend) — the backend would need to temporarily accept both 1.1 and 1.2 for
+the rollout window. No mobile build is publicly distributed today, so a plain
+deploy is fine; web users mid-session on a stale bundle self-heal on refresh. This version must be LIVE before STRIPE_SECRET_KEY is ever set in
 production. Cancellation copy matches the plan: portal cancel is
 end-of-period; account deletion cancels immediately.
 -->

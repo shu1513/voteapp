@@ -103,7 +103,7 @@ const PINNED_DOCUMENTS = [
     // TERMS_VERSION, disclaimer.md) and signed-in users re-accept once.
     // Required BEFORE STRIPE_SECRET_KEY in prod.
     version: "1.2",
-    sha256: "31a4ffdf8542cfce569685e6af5365fdc0298fc09d947343cb1f07767fd7d299",
+    sha256: "acf5f95a7a85ea0e2fc46972b94b799e28e32f9ce4a1477bad7474e1eac3ab16",
   },
   {
     filename: "privacy-policy.md",
@@ -118,7 +118,7 @@ const PINNED_DOCUMENTS = [
     // account deletion in Section 4). Ships with the Terms 1.2 bump.
     // Required BEFORE STRIPE_SECRET_KEY in prod.
     version: "1.3",
-    sha256: "7e645e7d9a1b0d17e4c7a54f17399f38a9c2ff8501f8f29d2f76d690fdf69e45",
+    sha256: "0ec127823a40361a0a6c96ee66cc93058d82e62a96b86ce2ad3ad2ca186b5a13",
   },
   {
     filename: "disclaimer.md",
