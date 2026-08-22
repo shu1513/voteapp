@@ -531,6 +531,100 @@ describe("createAuthService verifyEmailChange", () => {
     expect(client.query).toHaveBeenCalledWith("COMMIT");
   });
 
+  // Stripe keeps prefilling Checkout and sending receipts to the customer
+  // object's stored email, so a verified change pushes the new address there
+  // — best-effort, after the commit.
+  it("syncs the membership customer email after a successful change", async () => {
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: "token-id",
+            user_id: USER_ID,
+            token_hash: "a".repeat(64),
+            purpose: "email_change",
+            new_email: "new@example.com",
+            expires_at: new Date(),
+            consumed_at: new Date(),
+            created_at: new Date(),
+          },
+        ],
+      }) // consume token
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // UPDATE users
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+    const syncMembershipCustomerEmail = vi.fn().mockResolvedValue(undefined);
+
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: createRedisMock() as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+      syncMembershipCustomerEmail,
+    });
+
+    await service.verifyEmailChange({ token: "raw-token" });
+    expect(syncMembershipCustomerEmail).toHaveBeenCalledWith(USER_ID);
+  });
+
+  it("never fails the committed email change over a Stripe sync failure, and skips the sync on failure", async () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const client = createDbClientMock();
+      client.query
+        .mockResolvedValueOnce({ rows: [] }) // BEGIN
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              id: "token-id",
+              user_id: USER_ID,
+              token_hash: "a".repeat(64),
+              purpose: "email_change",
+              new_email: "new@example.com",
+              expires_at: new Date(),
+              consumed_at: new Date(),
+              created_at: new Date(),
+            },
+          ],
+        }) // consume token
+        .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // UPDATE users
+        .mockResolvedValueOnce({ rows: [] }); // COMMIT
+      const syncMembershipCustomerEmail = vi.fn().mockRejectedValue(new Error("stripe down"));
+
+      const service = createAuthService({
+        db: createDbMock(client) as never,
+        redis: createRedisMock() as never,
+        mailer: createMailerMock(),
+        publicBaseUrl: "https://example.com",
+        syncMembershipCustomerEmail,
+      });
+
+      // The change itself committed; the sync failure only warns.
+      await expect(service.verifyEmailChange({ token: "raw-token" })).resolves.toBeUndefined();
+
+      // A failed (invalid-token) change never calls the sync.
+      const failClient = createDbClientMock();
+      failClient.query
+        .mockResolvedValueOnce({ rows: [] }) // BEGIN
+        .mockResolvedValueOnce({ rows: [] }); // consume: nothing
+      const failSync = vi.fn();
+      const failService = createAuthService({
+        db: createDbMock(failClient) as never,
+        redis: createRedisMock() as never,
+        mailer: createMailerMock(),
+        publicBaseUrl: "https://example.com",
+        syncMembershipCustomerEmail: failSync,
+      });
+      await expect(failService.verifyEmailChange({ token: "bogus" })).rejects.toThrow(
+        "Email change token is invalid or expired"
+      );
+      expect(failSync).not.toHaveBeenCalled();
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
   it("rejects invalid tokens and hides a lost unique race behind the same message", async () => {
     const client = createDbClientMock();
     client.query

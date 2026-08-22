@@ -487,8 +487,10 @@ async function main(): Promise<void> {
     const manageMembershipUrl = `${membershipPublicBaseUrl}/me/settings`;
     const membershipTermsUrl = `${membershipPublicBaseUrl}/terms`;
     // The §17602 membership-started acknowledgment rides the same mailer
-    // config as auth email. No mailer = feature still works, sends stay
-    // pending (acknowledgment_sent_at NULL retries on later webhook pokes).
+    // config as auth email, and it is a LEGAL requirement of taking the
+    // first subscription — so a Stripe-on/mailer-off process fails at boot
+    // like any other partial membership config, instead of quietly starting
+    // billing it can't acknowledge.
     const sendMembershipStartedEmail =
       authMailerKind === "console"
         ? createConsoleMembershipStartedSender({ manageMembershipUrl, termsUrl: membershipTermsUrl })
@@ -502,8 +504,8 @@ async function main(): Promise<void> {
             })
           : null;
     if (!sendMembershipStartedEmail) {
-      console.warn(
-        "Stripe is configured but the mailer is not; membership acknowledgment emails stay unsent until AUTH_FROM_EMAIL + a region (or AUTH_MAILER=console) are set"
+      throw new Error(
+        "STRIPE_SECRET_KEY is set but no mailer is configured; the membership acknowledgment email requires AUTH_FROM_EMAIL + AUTH_SES_REGION/AWS_REGION (or AUTH_MAILER=console for local development)"
       );
     }
     membershipServiceOrNull = createMembershipService({
@@ -539,6 +541,7 @@ async function main(): Promise<void> {
             ? {
                 cancelMembershipForAccountDeletion: (userId: string) =>
                   membershipService.cancelSubscriptionsForAccountDeletion(userId),
+                syncMembershipCustomerEmail: (userId: string) => membershipService.syncCustomerEmail(userId),
               }
             : {}),
         })

@@ -44,7 +44,9 @@ function stripeSubscription(overrides: Record<string, unknown> = {}) {
     cancel_at_period_end: false,
     canceled_at: null,
     start_date: 1_755_000_000,
-    items: { data: [{ price: { unit_amount: 700 }, current_period_end: 1_757_600_000 }] },
+    items: {
+      data: [{ price: { unit_amount: 700, product: "prod_test" }, current_period_end: 1_757_600_000 }],
+    },
     ...overrides,
   };
 }
@@ -52,7 +54,7 @@ function stripeSubscription(overrides: Record<string, unknown> = {}) {
 function createStripeMock(overrides: Record<string, unknown> = {}): MembershipStripeClient & {
   checkout: { sessions: { create: ReturnType<typeof vi.fn> } };
   billingPortal: { sessions: { create: ReturnType<typeof vi.fn> } };
-  customers: { create: ReturnType<typeof vi.fn> };
+  customers: { create: ReturnType<typeof vi.fn>; update: ReturnType<typeof vi.fn> };
   subscriptions: { retrieve: ReturnType<typeof vi.fn>; cancel: ReturnType<typeof vi.fn> };
   invoicePayments: { list: ReturnType<typeof vi.fn> };
   webhooks: { constructEvent: ReturnType<typeof vi.fn> };
@@ -62,7 +64,10 @@ function createStripeMock(overrides: Record<string, unknown> = {}): MembershipSt
       sessions: { create: vi.fn(async () => ({ id: "cs_1", url: "https://checkout.stripe.test/cs_1" })) },
     },
     billingPortal: { sessions: { create: vi.fn(async () => ({ url: "https://portal.stripe.test/ps_1" })) } },
-    customers: { create: vi.fn(async () => ({ id: "cus_new" })) },
+    customers: {
+      create: vi.fn(async () => ({ id: "cus_new" })),
+      update: vi.fn(async () => ({ id: STRIPE_CUSTOMER_ID })),
+    },
     subscriptions: {
       retrieve: vi.fn(async () => stripeSubscription()),
       cancel: vi.fn(async () => stripeSubscription({ status: "canceled", canceled_at: 1_755_900_000 })),
@@ -451,7 +456,7 @@ describe("membership webhook: subscription sync (poke pattern)", () => {
     );
   });
 
-  it("records a completion WITHOUT consent, but with no consent pointer, and logs the anomaly", async () => {
+  it("fails closed on a completion WITHOUT consent: cancels the subscription and records it canceled", async () => {
     const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     try {
       const db = createRoutedDb(subscriptionUpsertRoutes());
@@ -463,14 +468,43 @@ describe("membership webhook: subscription sync (poke pattern)", () => {
           consent: null,
         })
       );
+      // The post-cancel poke fetches the canceled state.
+      stripe.subscriptions.retrieve.mockResolvedValue(
+        stripeSubscription({ status: "canceled", canceled_at: 1_755_900_000 })
+      );
       const service = createService({ db, stripe });
 
       expect(await service.handleWebhookEvent(WEBHOOK_INPUT)).toBe("ok");
+
+      // §17602 fails closed: no consent evidence, no continued billing.
+      expect(stripe.subscriptions.cancel).toHaveBeenCalledWith("sub_1");
       const upsert = db.query.mock.calls.find((call) =>
         String(call[0]).includes("INSERT INTO public.billing_subscriptions")
       );
       expect(upsert?.[1]?.[2]).toBeNull();
+      expect(upsert?.[1]?.[4]).toBe("canceled");
       expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining("WITHOUT terms-of-service consent"));
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
+  it("ignores a subscription on a different Stripe product (no record, no guard cancels)", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const db = createRoutedDb([]);
+      const stripe = stripeDelivering(webhookEvent("customer.subscription.updated", stripeSubscription()));
+      stripe.subscriptions.retrieve.mockResolvedValue(
+        stripeSubscription({
+          items: { data: [{ price: { unit_amount: 700, product: "prod_other" }, current_period_end: 1_757_600_000 }] },
+        })
+      );
+      const service = createService({ db, stripe });
+
+      expect(await service.handleWebhookEvent(WEBHOOK_INPUT)).toBe("ok");
+      expect(db.query).not.toHaveBeenCalled();
+      expect(stripe.subscriptions.cancel).not.toHaveBeenCalled();
+      expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining("not the membership product"));
     } finally {
       errorSpy.mockRestore();
     }
@@ -677,6 +711,29 @@ describe("membership webhook: charge.refunded", () => {
     } finally {
       warnSpy.mockRestore();
     }
+  });
+});
+
+describe("membership syncCustomerEmail", () => {
+  it("pushes the current account email onto the Stripe customer", async () => {
+    const db = createRoutedDb([
+      ["SELECT email", () => ({ rows: [{ email: "new@example.com" }] })],
+      ["FROM public.billing_customers", () => ({ rows: [customerRow()] })],
+    ]);
+    const stripe = createStripeMock();
+    const service = createService({ db, stripe });
+
+    await service.syncCustomerEmail(USER_ID);
+    expect(stripe.customers.update).toHaveBeenCalledWith(STRIPE_CUSTOMER_ID, { email: "new@example.com" });
+  });
+
+  it("no-ops for a user without a billing customer", async () => {
+    const db = createRoutedDb([["FROM public.billing_customers", () => ({ rows: [] })]]);
+    const stripe = createStripeMock();
+    const service = createService({ db, stripe });
+
+    await service.syncCustomerEmail(USER_ID);
+    expect(stripe.customers.update).not.toHaveBeenCalled();
   });
 });
 

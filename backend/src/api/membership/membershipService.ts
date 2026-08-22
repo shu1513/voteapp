@@ -63,6 +63,7 @@ export type MembershipStripeClient = {
   };
   customers: {
     create(params: Stripe.CustomerCreateParams): Promise<Stripe.Customer>;
+    update(id: string, params: Stripe.CustomerUpdateParams): Promise<Stripe.Customer>;
   };
   subscriptions: {
     retrieve(id: string): Promise<Stripe.Subscription>;
@@ -117,6 +118,11 @@ export type MembershipService = {
   /** null = the user has no billing customer yet (404). */
   createPortalSession(userId: string): Promise<{ url: string } | null>;
   handleWebhookEvent(input: { rawBody: Buffer; signatureHeader: string | null }): Promise<"ok" | "bad_signature">;
+  /** Pushes the user's current account email onto their Stripe customer, so
+   * Checkout prefills and Stripe receipts follow an email change. Called
+   * best-effort from the verified email-change flow; no-op without a billing
+   * customer. */
+  syncCustomerEmail(userId: string): Promise<void>;
   /** Account-deletion precondition: cancels any nonterminal subscription at
    * Stripe (immediately, not period-end). Throws a retryable
    * subscription_cancel_failed when Stripe is unreachable — the caller must
@@ -266,6 +272,17 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
    * throw (→ 5xx → Stripe retries) except permanent mismatches, which log. */
   async function syncSubscription(subscriptionId: string, checkoutSessionId: string | null): Promise<void> {
     let subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    // Ownership check before anything mutates: only subscriptions on OUR
+    // membership Product are recorded or auto-canceled. The account is
+    // single-product today, but this keeps the guards below provably scoped
+    // if a dashboard experiment or second product ever appears.
+    const subscriptionProductId = idOf(subscription.items?.data?.[0]?.price?.product ?? null);
+    if (subscriptionProductId !== options.membershipProductId) {
+      console.error(
+        `[membership] subscription ${subscriptionId} is for product ${subscriptionProductId ?? "<none>"}, not the membership product; ignoring`
+      );
+      return;
+    }
     const stripeCustomerId = idOf(subscription.customer);
     const customer = stripeCustomerId ? await findBillingCustomerByStripeId(stripeCustomerId) : null;
     if (!customer) {
@@ -283,8 +300,10 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
       // hard-deleted. Cancel at Stripe immediately — nobody owns this
       // membership any more.
       if (customer.user_id === null) {
-        console.warn(
-          `[membership] subscription ${subscriptionId} arrived for deleted-account billing customer ${customer.id}; canceling`
+        // error, not warn: if a charge already landed it needs a MANUAL
+        // refund from the dashboard (it stays visible in the ledger).
+        console.error(
+          `[membership] subscription ${subscriptionId} arrived for deleted-account billing customer ${customer.id}; canceling — refund any first charge manually`
         );
         subscription = await cancelSubscriptionSafely(subscriptionId);
       } else {
@@ -294,8 +313,10 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
         // dashboard (it stays visible in the ledger).
         const otherLiveId = await findLiveSubscriptionId(customer.id, subscriptionId);
         if (otherLiveId) {
-          console.warn(
-            `[membership] billing customer ${customer.id} already has live subscription ${otherLiveId}; canceling newly arrived ${subscriptionId}`
+          // error, not warn: the newcomer's already-charged first month needs
+          // a MANUAL refund from the dashboard (visible in the ledger).
+          console.error(
+            `[membership] billing customer ${customer.id} already has live subscription ${otherLiveId}; canceling newly arrived ${subscriptionId} — refund its first charge manually`
           );
           subscription = await cancelSubscriptionSafely(subscriptionId);
         }
@@ -440,17 +461,23 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
       // CA BPC §17602: the session carried a required renewal-terms consent
       // checkbox; its id is our retained pointer to Stripe's consent record.
       // A completion without consent should be impossible (Stripe enforces
-      // `required`), so treat it as an anomaly: record the subscription —
-      // the charge is real — but store no consent pointer, and say so loudly.
+      // `required`), so an absence FAILS CLOSED: continuing to bill monthly
+      // without retained consent evidence is exactly what §17602 forbids.
+      // Cancel the subscription (idempotent; a throw → 5xx → Stripe retries)
+      // and record its canceled state; the already-charged first month is
+      // refunded manually from the dashboard, like the guard cancels.
       const consented = session.consent?.terms_of_service === "accepted";
       if (!consented) {
         console.error(
-          `[membership] checkout session ${session.id} completed WITHOUT terms-of-service consent; recording subscription without a consent pointer`
+          `[membership] checkout session ${session.id} completed WITHOUT terms-of-service consent; canceling subscription ${subscriptionId} — refund its first charge manually`
         );
+        await cancelSubscriptionSafely(subscriptionId);
+        await syncSubscription(subscriptionId, null);
+        return;
       }
       // No ledger row here: the first month's row comes from invoice.paid;
       // writing it in both places would double-count.
-      await syncSubscription(subscriptionId, consented ? session.id : null);
+      await syncSubscription(subscriptionId, session.id);
     }
   }
 
@@ -748,6 +775,20 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
           console.log(`[membership] ignoring webhook event type ${event.type}`);
       }
       return "ok";
+    },
+
+    async syncCustomerEmail(userId) {
+      const customer = await findBillingCustomerByUserId(userId);
+      if (!customer) {
+        return;
+      }
+      const email = await lookupActiveUserEmail(userId);
+      if (!email) {
+        return;
+      }
+      // Stripe locks an existing customer's email in Checkout and sends its
+      // receipts there, so the customer object must track the account email.
+      await stripe.customers.update(customer.stripe_customer_id, { email });
     },
 
     async cancelSubscriptionsForAccountDeletion(userId) {

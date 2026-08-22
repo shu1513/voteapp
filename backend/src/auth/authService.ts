@@ -37,6 +37,11 @@ export type AuthServiceOptions = {
    * delete request with nothing deleted; cancel is idempotent, so the user
    * simply retries. */
   cancelMembershipForAccountDeletion?: (userId: string) => Promise<void>;
+  /** Present only when Stripe is configured: pushes the account's new email
+   * onto the Stripe customer after a verified email change (Stripe otherwise
+   * keeps prefilling Checkout and sending receipts to the old address).
+   * Best-effort — a Stripe failure never fails the email change. */
+  syncMembershipCustomerEmail?: (userId: string) => Promise<void>;
 };
 
 export type AuthRegisterInput = {
@@ -1200,6 +1205,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         throw new TypeError("token must be a non-empty string");
       }
 
+      let changedUserId: string | null = null;
       const client = await options.db.connect();
       try {
         await client.query("BEGIN");
@@ -1229,6 +1235,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         }
 
         await client.query("COMMIT");
+        changedUserId = consumed.userId;
       } catch (error) {
         await rollbackQuietly(client);
         // Another account claimed the address between request and confirm.
@@ -1238,6 +1245,22 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         throw error;
       } finally {
         client.release();
+      }
+
+      // Best-effort: Stripe keeps prefilling Checkout with, and sending
+      // receipts to, the customer object's stored email — track the change.
+      // A Stripe failure must not fail an email change that already
+      // committed; checkout/portal keep working and the operator can fix the
+      // address in the dashboard.
+      if (options.syncMembershipCustomerEmail && changedUserId) {
+        try {
+          await options.syncMembershipCustomerEmail(changedUserId);
+        } catch (error) {
+          console.warn(
+            "membership customer email sync failed after email change (Stripe keeps the old address until fixed):",
+            error instanceof Error ? error.message : String(error)
+          );
+        }
       }
     },
 
