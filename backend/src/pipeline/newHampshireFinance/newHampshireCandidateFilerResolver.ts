@@ -194,6 +194,7 @@ function canonicalOfficeName(value: string): NewHampshireCanonicalOfficeName | n
     case "COUNTY COMMISSIONER":
       return "County Commissioner";
     case "COUNTY ATTORNEY":
+    case "DISTRICT ATTORNEY":
       return "County Attorney";
     case "COUNTY TREASURER":
       return "County Treasurer";

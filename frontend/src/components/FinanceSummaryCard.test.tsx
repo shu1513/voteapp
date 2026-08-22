@@ -23,15 +23,20 @@ describe("hasFinanceContent", () => {
     expect(hasFinanceContent(summary)).toBe(true);
   });
 
-  it("no longer counts employers or direct-donor industries — the card doesn't render them", () => {
+  it("does not count employer rows because the card does not render them", () => {
     const summary = emptyFinanceSummary();
     summary.direct_campaign.top_employers = [
       { category_name: "NYC DOE", amount: 1, contributor_count: 1, source_url: null },
     ];
+    expect(hasFinanceContent(summary)).toBe(false);
+  });
+
+  it("counts direct industries when occupations are unavailable", () => {
+    const summary = emptyFinanceSummary();
     summary.direct_campaign.top_industries = [
       { category_name: "technology", amount: 1, contributor_count: 1, source_url: null },
     ];
-    expect(hasFinanceContent(summary)).toBe(false);
+    expect(hasFinanceContent(summary)).toBe(true);
   });
 });
 
@@ -52,7 +57,7 @@ describe("FinanceSummaryCard", () => {
     expect(screen.getByText("$120,000")).toBeInTheDocument();
     expect(screen.getByText("Top disclosed occupations of direct donors")).toBeInTheDocument();
     expect(screen.getByText("Retired")).toBeInTheDocument();
-    // Employers and direct-donor industries are deliberately not rendered.
+    // Employers stay hidden; direct industries do not duplicate occupations.
     expect(screen.queryByText("Top disclosed employers of direct donors")).not.toBeInTheDocument();
     expect(screen.queryByText("Industries represented among direct contributions")).not.toBeInTheDocument();
     expect(screen.queryByText("Oil, gas, and energy")).not.toBeInTheDocument();
@@ -96,6 +101,23 @@ describe("FinanceSummaryCard", () => {
       "href",
       "https://www.fec.gov/data/candidate/H0AK00001/"
     );
+  });
+
+  it("renders direct industries as the fallback when occupations are unavailable", () => {
+    const summary = emptyFinanceSummary();
+    summary.source = "NEW_HAMPSHIRE_CFS";
+    summary.direct_campaign.direct_coverage_note =
+      "Industries are derived from disclosed contributor employers.";
+    summary.direct_campaign.top_industries = [
+      { category_name: "healthcare", amount: 75.5, contributor_count: 2, source_url: null },
+    ];
+
+    render(<FinanceSummaryCard summary={summary} />);
+
+    expect(screen.queryByText("Top disclosed occupations of direct donors")).not.toBeInTheDocument();
+    expect(screen.getByText("Industries represented among direct contributions")).toBeInTheDocument();
+    expect(screen.getByText("Healthcare")).toBeInTheDocument();
+    expect(screen.getByText(summary.direct_campaign.direct_coverage_note)).toBeInTheDocument();
   });
 
   it("renders Missouri occupations, coverage notes, and source provenance", () => {

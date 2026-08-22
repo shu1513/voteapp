@@ -11,8 +11,8 @@ const FINANCE_SOURCE_HOME_URLS: Partial<Record<FinanceSummary["source"], string>
 /**
  * Whether a summary has anything worth rendering. null money values mean
  * "not reported" and hide; an explicit 0 is a real disclosed amount and
- * counts as content. Employers and direct-donor industries are no longer
- * rendered by the cards, so they no longer count as content on their own.
+ * counts as content. Employers are not rendered. Direct industries render
+ * only as a fallback when a source has no usable occupation breakdown.
  */
 export function hasFinanceContent(summary: FinanceSummary | null | undefined): summary is FinanceSummary {
   if (!summary) {
@@ -27,6 +27,7 @@ export function hasFinanceContent(summary: FinanceSummary | null | undefined): s
     direct.public_funds_received != null ||
     (direct.loans_received ?? 0) > 0 ||
     direct.top_occupations.length > 0 ||
+    direct.top_industries.length > 0 ||
     (direct.contribution_size_buckets?.length ?? 0) > 0 ||
     hasOutsideFinanceContent(summary) ||
     hasMemberCommunications(summary)
@@ -89,7 +90,11 @@ export function shouldShowDirectCoverageNote(summary: FinanceSummary): boolean {
   if (!direct.direct_coverage_note) {
     return false;
   }
-  if (direct.top_occupations.length > 0 || (direct.contribution_size_buckets?.length ?? 0) > 0) {
+  if (
+    direct.top_occupations.length > 0 ||
+    direct.top_industries.length > 0 ||
+    (direct.contribution_size_buckets?.length ?? 0) > 0
+  ) {
     return true;
   }
   return (

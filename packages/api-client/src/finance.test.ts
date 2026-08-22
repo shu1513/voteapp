@@ -63,6 +63,14 @@ describe("NYC finance shared fields", () => {
     // …but their rows still serve as a provenance-link fallback.
     expect(firstFinanceSourceUrl(summary)).toBe("https://www.nyccfb.info/");
   });
+
+  it("counts direct industries when they are the source's only usable donor classification", () => {
+    const summary = emptySummary();
+    summary.direct_campaign.top_industries = [
+      { category_name: "healthcare", amount: 100, contributor_count: 2, source_url: null },
+    ];
+    expect(hasFinanceContent(summary)).toBe(true);
+  });
 });
 
 describe("finance source provenance and coverage notes", () => {
@@ -92,6 +100,12 @@ describe("finance source provenance and coverage notes", () => {
     expect(shouldShowDirectCoverageNote(breakdownOnly)).toBe(false);
     breakdownOnly.direct_campaign.top_occupations = [
       { category_name: "Teacher", amount: 10, contributor_count: 1, source_url: null },
+    ];
+    expect(shouldShowDirectCoverageNote(breakdownOnly)).toBe(true);
+
+    breakdownOnly.direct_campaign.top_occupations = [];
+    breakdownOnly.direct_campaign.top_industries = [
+      { category_name: "education", amount: 10, contributor_count: 1, source_url: null },
     ];
     expect(shouldShowDirectCoverageNote(breakdownOnly)).toBe(true);
   });

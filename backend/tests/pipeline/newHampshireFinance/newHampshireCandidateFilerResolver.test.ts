@@ -339,6 +339,7 @@ describe("newHampshireCandidateFilerResolver", () => {
   });
 
   it.each([
+    ["District Attorney", "County Attorney"],
     ["County Recorder", "Register of Deeds"],
     ["Clerk of Court", "Register of Probate"],
   ])(
