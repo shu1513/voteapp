@@ -161,11 +161,14 @@ export function planCandidateRecord(input: {
     (record) =>
       !sameKey.includes(record) &&
       !sameRollCall.includes(record) &&
+      // A row citing any roll call is a different, known vote (this roll
+      // call's spellings are already in sameRollCall) — even when its text
+      // names this measure, as an amendment or procedural vote on the same
+      // bill does. Only uncited rows may be this vote told off a press
+      // release.
+      !citesAnyRollCall(record.source_url) &&
       ((input.measure !== null && descriptionMentionsMeasure(record.description, input.measure)) ||
-        // A vote claim citing another roll call is a different, known vote;
-        // one citing no roll call at all may be this one, told off a press
-        // release.
-        (looksLikeVoteClaim(record.description) && !citesAnyRollCall(record.source_url)))
+        looksLikeVoteClaim(record.description))
   );
   const relatedRecordIds = related.map((record) => record.id);
 

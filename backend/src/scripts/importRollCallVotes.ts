@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { Pool, type PoolClient } from "pg";
@@ -451,8 +451,14 @@ async function main(): Promise<void> {
     notified: rows.reduce((sum, row) => sum + row.notified, 0),
     rolls: rows,
   };
+  // Once the dir has been imported, import-dry-run-report.json is the
+  // reviewed pre-import plan (committed as evidence); a dry run after that
+  // is a check, so it lands in a rerun file instead of eating the plan.
+  const dryRunReportFile = existsSync(resolve(evidenceDir, "import-report.json"))
+    ? "import-dry-run-rerun-report.json"
+    : "import-dry-run-report.json";
   writeFileSync(
-    resolve(evidenceDir, dryRun ? "import-dry-run-report.json" : "import-report.json"),
+    resolve(evidenceDir, dryRun ? dryRunReportFile : "import-report.json"),
     `${JSON.stringify(report, null, 2)}\n`
   );
   console.log(
