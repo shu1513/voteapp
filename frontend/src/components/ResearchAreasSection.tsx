@@ -94,11 +94,10 @@ export function ResearchAreasSection() {
     <Section title="My most important issues">
       {/* Choose-then-drag, matching the actual interaction: grid cards
           select on click; only the ranked rows above the grid drag. */}
-      <p className="mt-1 text-sm text-ink-soft">
-        Choose the issues that matter most to you — as many as you like — then drag them into
-        priority order; the top of the list counts most. For each one, say whether you support or
-        oppose it, and draw a line in the sand where anything that goes against your position is
-        an automatic no.
+      <p className="mt-1 text-sm text-ink">
+        Choose the issues that matter most to you and drag them into priority order. Choose
+        &ldquo;Must&rdquo; if you will absolutely not accept a candidate or ballot measure that
+        takes the opposite stance from yours.
       </p>
       <ResearchAreaPicker areas={catalog.data.research_areas} ranked={ranked} disabled={saving} onChange={save} />
       {update.isError ? (

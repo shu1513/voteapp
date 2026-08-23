@@ -22,7 +22,7 @@ import { newRankedResearchArea, type RankedResearchArea } from "../lib/rankedRes
 // Controlled ranked-selection editor for research areas, shared by the
 // post-signup welcome step and the settings section. The parent owns the
 // ordered list and persistence; every edit (add, remove, reorder, direction,
-// line-in-the-sand) comes back as one complete next list through onChange,
+// must) comes back as one complete next list through onChange,
 // so the parent can save per-edit (settings) or batch into a single save
 // (welcome). List position is the rank: first = rank 1. No cap on length.
 
@@ -34,7 +34,7 @@ export type ResearchAreaOption = {
 };
 
 // An ethics record is a strike whatever the user "supports", so this area
-// has no direction control and its line-in-the-sand reads as "skip anyone
+// has no direction control and its must reads as "skip anyone
 // with an ethics record" (mirrors candidateRecordResearchAreaPolicy: stance
 // is forbidden on this area, its tags only mark that a record exists).
 const INTEGRITY_ETHICS_SLUG = "integrity_and_ethics";
@@ -201,7 +201,7 @@ function SortableAreaRow({
   // records that SUPPORT the goal, so "who opposes this" would read backwards.
   const vetoLabel = isEthics
     ? "Skip candidates with any integrity or ethics record"
-    : "Line in the sand: never pick a candidate or measure that goes against my position on this";
+    : "Must: never pick a candidate or measure that goes against my position on this";
   return (
     <li
       ref={setNodeRef}
@@ -235,7 +235,11 @@ function SortableAreaRow({
                 aria-pressed={row.direction === direction}
                 onClick={() => onChange({ direction })}
                 className={`px-2 py-0.5 text-xs first:rounded-l-md last:rounded-r-md disabled:opacity-50 ${
-                  row.direction === direction ? "bg-ink text-white" : "text-ink-soft hover:bg-surface"
+                  row.direction === direction
+                    ? direction === "support"
+                      ? "bg-green-700 text-white"
+                      : "bg-red-700 text-white"
+                    : "text-ink-soft hover:bg-surface"
                 }`}
               >
                 {direction === "support" ? "Support" : "Oppose"}
@@ -256,7 +260,7 @@ function SortableAreaRow({
               : "border-line text-ink-soft hover:border-rausch-dark"
           }`}
         >
-          {isEthics ? "Skip if ethics record" : "Line in the sand"}
+          {isEthics ? "Skip if ethics record" : "Must"}
         </button>
         <button
           type="button"
