@@ -167,6 +167,19 @@ export async function runRenameCandidate(
     // rollback). Taken before the row lock, mirroring the resolver's
     // ordering. When the display name is the person's "First Last" this also
     // serializes against concurrent pipeline identity resolution.
+    //
+    // Known residual race, documented rather than chased (same policy as the
+    // merge wrapper's winners guard): the resolver keys its lock by the
+    // payload's "first last", so a concurrent profile write whose
+    // display_name differs from that string — and equals this rename's new
+    // name, in a shared election — takes a different key and does not
+    // serialize here. No lock taken on this side can cover it: the colliding
+    // payload's first/last are arbitrary and unknowable from the rename. The
+    // identical gap already exists between two concurrent profile writes
+    // with no rename involved, so closing it for real means display-name
+    // lock keys inside the resolver, not more locks here. The failure is
+    // loud and recoverable, not silent: the identity matcher throws its
+    // duplicate-name ambiguity error and the repair is a merge or re-rename.
     await client.query(
       `SELECT pg_advisory_xact_lock(hashtextextended('candidate_identity:' || $1, 0))`,
       [normalizeCandidateName(newDisplayName)]
