@@ -1,18 +1,17 @@
 {
-  "runId": "rollcall-fetch-senate-119-1-20260823T183745Z",
+  "runId": "rollcall-fetch-senate-119-1-20260823T213219Z",
   "importerVersion": "rollcall-fetch-v1",
   "chamber": "senate",
   "congress": 119,
   "session": 1,
   "dryRun": false,
-  "startedAt": "2026-08-23T18:37:45.888Z",
-  "finishedAt": "2026-08-23T18:37:49.043Z",
-  "evidenceDir": "/Users/shu/voteApp/.claude/worktrees/caveman-ultra-58491f/backend/evidence/rollcall/pilot-119-1",
+  "startedAt": "2026-08-23T21:32:19.418Z",
+  "finishedAt": "2026-08-23T21:32:22.481Z",
+  "evidenceDir": "backend/evidence/rollcall/pilot-119-1",
   "requestedRolls": 8,
   "floorVotes": 8,
   "counts": {
-    "inserted": 7,
-    "unchanged": 1
+    "unchanged": 8
   },
   "rows": [
     {
@@ -21,7 +20,7 @@
       "session": 1,
       "roll": 7,
       "machineUrl": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1191/vote_119_1_00007.xml",
-      "outcome": "inserted",
+      "outcome": "unchanged",
       "evidenceFile": "senate-119-1-roll00007.xml",
       "voteDate": "2025-01-20",
       "measureId": "S. 5",
@@ -42,7 +41,7 @@
       "session": 1,
       "roll": 127,
       "machineUrl": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1191/vote_119_1_00127.xml",
-      "outcome": "inserted",
+      "outcome": "unchanged",
       "evidenceFile": "senate-119-1-roll00127.xml",
       "voteDate": "2025-03-14",
       "measureId": "S. 331",
@@ -63,7 +62,7 @@
       "session": 1,
       "roll": 133,
       "machineUrl": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1191/vote_119_1_00133.xml",
-      "outcome": "inserted",
+      "outcome": "unchanged",
       "evidenceFile": "senate-119-1-roll00133.xml",
       "voteDate": "2025-03-14",
       "measureId": "H.R. 1968",
@@ -84,7 +83,7 @@
       "session": 1,
       "roll": 281,
       "machineUrl": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1191/vote_119_1_00281.xml",
-      "outcome": "inserted",
+      "outcome": "unchanged",
       "evidenceFile": "senate-119-1-roll00281.xml",
       "voteDate": "2025-05-22",
       "measureId": "H.J.Res. 89",
@@ -105,7 +104,7 @@
       "session": 1,
       "roll": 318,
       "machineUrl": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1191/vote_119_1_00318.xml",
-      "outcome": "inserted",
+      "outcome": "unchanged",
       "evidenceFile": "senate-119-1-roll00318.xml",
       "voteDate": "2025-06-17",
       "measureId": "S. 1582",
@@ -126,7 +125,7 @@
       "session": 1,
       "roll": 372,
       "machineUrl": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1191/vote_119_1_00372.xml",
-      "outcome": "inserted",
+      "outcome": "unchanged",
       "evidenceFile": "senate-119-1-roll00372.xml",
       "voteDate": "2025-07-01",
       "measureId": "H.R. 1",
@@ -147,7 +146,7 @@
       "session": 1,
       "roll": 411,
       "machineUrl": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1191/vote_119_1_00411.xml",
-      "outcome": "inserted",
+      "outcome": "unchanged",
       "evidenceFile": "senate-119-1-roll00411.xml",
       "voteDate": "2025-07-17",
       "measureId": "H.R. 4",
@@ -183,5 +182,6 @@
       "judgmentCleared": false,
       "error": null
     }
-  ]
+  ],
+  "note": "Re-fetched 2026-08-23 to restore the ledger: the original House insert-time report was overwritten by the Senate fetch (fixed by naming reports per run). All 20 XMLs verified byte-identical to the pilot evidence; every roll call unchanged."
 }
