@@ -638,6 +638,38 @@ export type EmailPreferences = {
   email_issue_updates: boolean;
 };
 
+// GET /api/me/membership. `enabled: false` = Stripe not configured on this
+// deployment; the frontend hides the whole support section. Mirrors the
+// backend's MembershipStatusResult (backend/src/api/membership).
+export type MembershipKind = "one_time" | "monthly";
+
+export type MembershipPayment = {
+  amount_cents: number;
+  refunded_amount_cents: number;
+  kind: MembershipKind;
+  currency: string;
+  paid_at: string;
+};
+
+export type MembershipStatus =
+  | { enabled: false }
+  | {
+      enabled: true;
+      /** The one nonterminal subscription, or null when not a member. */
+      membership: {
+        /** Raw Stripe subscription status, verbatim. */
+        stripe_status: string;
+        monthly_amount_cents: number;
+        cancel_at_period_end: boolean;
+        current_period_end: string | null;
+        started_at: string;
+      } | null;
+      /** Net of refunds, across both payment kinds. */
+      total_net_cents: number;
+      /** Latest 50, newest first. */
+      payments: MembershipPayment[];
+    };
+
 export type ResearchAreaCatalog = {
   research_areas: { id: string; slug: string; name: string; description: string | null }[];
 };
