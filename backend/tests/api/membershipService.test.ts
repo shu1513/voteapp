@@ -445,6 +445,24 @@ describe("membership webhook: subscription sync (poke pattern)", () => {
     expect(String(upsert?.[0])).toContain("COALESCE");
   });
 
+  it("records a portal period-end cancel that arrives as cancel_at with cancel_at_period_end false", async () => {
+    // Current API versions express "cancel at end of billing period" as a
+    // scheduled cancel_at timestamp; the legacy boolean stays false.
+    const db = createRoutedDb(subscriptionUpsertRoutes());
+    const stripe = stripeDelivering(webhookEvent("customer.subscription.updated", stripeSubscription()));
+    stripe.subscriptions.retrieve.mockResolvedValue(
+      stripeSubscription({ cancel_at_period_end: false, cancel_at: 1_757_600_000 })
+    );
+    const service = createService({ db, stripe });
+
+    expect(await service.handleWebhookEvent(WEBHOOK_INPUT)).toBe("ok");
+
+    const upsert = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.billing_subscriptions")
+    );
+    expect(upsert?.[1]?.[5]).toBe(true);
+  });
+
   it("stores the checkout session id as the consent pointer on subscription-mode completion", async () => {
     const db = createRoutedDb(subscriptionUpsertRoutes());
     const stripe = stripeDelivering(

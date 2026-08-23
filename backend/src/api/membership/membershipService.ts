@@ -346,6 +346,11 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
     // API versions 2025-03-31+ carry the billing period on the item, not the
     // subscription.
     const currentPeriodEnd = item?.current_period_end ? epochToDate(item.current_period_end) : null;
+    // A period-end cancel from the customer portal arrives on current API
+    // versions as a scheduled `cancel_at` (= the period end) with
+    // `cancel_at_period_end` still false; older clients set the boolean.
+    // Either means "ends at the period boundary, don't renew".
+    const cancelAtPeriodEnd = subscription.cancel_at_period_end === true || subscription.cancel_at != null;
 
     const upserted = await db.query<{ acknowledgment_sent_at: Date | null }>(
       `
@@ -376,7 +381,7 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
         checkoutSessionId,
         monthlyAmountCents,
         subscription.status,
-        subscription.cancel_at_period_end ?? false,
+        cancelAtPeriodEnd,
         currentPeriodEnd,
         epochToDate(subscription.start_date),
         subscription.canceled_at ? epochToDate(subscription.canceled_at) : null,
