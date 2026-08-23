@@ -56,8 +56,10 @@ before writing.
   `name-id` = bioguide id. Plain curl, no key, no block, validator-reachable.
 - Backup / richer metadata: Congress.gov API `/v3/house-vote/{congress}/{session}`
   and `/…/{roll}/members` (bioguideID, voteCast, voteParty, voteState,
-  legislationType/Number, voteQuestion, amendment fields). Beta label removed
-  April 2026; live list counts show votes back to the 115th Congress (2017) — probe, don't assume.
+  legislationType/Number, voteQuestion, amendment fields). ChangeLog says the
+  beta label was dropped (the endpoint doc page is stale and still says beta
+  / 118th–119th only); live list counts returned votes for the 115th–117th —
+  probe coverage per Congress before any historical expansion.
   No date filter — iterate congress/session/roll. `format=json` must be passed
   (default is XML). 5,000 req/hour per key; keys already in main `backend/.env`
   (`CONGRESS_GOV_API_KEY_1/2`). `congress.gov` blocks the record validator, so
@@ -85,7 +87,8 @@ before writing.
   with `type, start, end, state, district, party`. CC0. Actively maintained
   (commits 2026-08-19).
 - This gives: bioguide ↔ LIS id ↔ FEC id. Our `candidates.fec_ids` is the hook
-  for an exact match; fall back to name + state + district.
+  for an exact match. Name + state + district is never an auto-attach path;
+  it only feeds the manual-resolution report (see Design §2).
 
 ### Bill meaning (what the vote was about)
 
@@ -192,8 +195,10 @@ Senate, OR; everywhere else = surname matching (`Bell, C.` / `Bell, K.`).
   `votesmart_id`) as the identity layer; VA `VOTE.CSV` + WA `GetRollCalls`
   as ground truth to validate the classifier; official state bill pages as
   the `source_url` where the skill already proved them validator-reachable
-  (`capitol.texas.gov`, `leginfo.legislature.ca.gov`, `michiganvotes.org`, …)
-  else the `legiscan.com/<ST>/rollcall/...` page. BillTrack50 ($5k/yr, only
+  (`capitol.texas.gov`, `leginfo.legislature.ca.gov`, …; for Michigan the
+  skill cites `michiganvotes.org` — a Mackinac Center project, NOT official —
+  only because `legislature.mi.gov` fails the validator's TLS check), else
+  the `legiscan.com/<ST>/rollcall/...` page. BillTrack50 ($5k/yr, only
   vendor with published price + documented vote endpoints, 24h cache rule)
   is the fallback if we'd rather not maintain ingestion.
 
@@ -237,9 +242,13 @@ import every roll call. Regex builds a queue; it never decides truth.
      Conference Report`, `On Overriding the Veto`. Default-exclude: cloture,
      motions to table/proceed, nominations (`PN…`), S.Res.
    - States (LegiScan `desc` / Open States `motion_text`): per-state regex
-     for third reading / final passage / concurrence / override; `total` vs
-     chamber size is a queue SIGNAL for committee-vs-floor (LegiScan has no
-     committee flag), not a verdict.
+     for third reading / final passage / concurrence / override.
+   - Committee votes are rejected BEFORE the queue via `is_floor_vote` on
+     `legislative_votes`, derived per source: House/Senate XML are floor-only
+     by construction; OH actions carry `cmte_name`; VA `VOTE.CSV` and WA
+     `GetRollCalls` mark committee rows; LegiScan has no flag, so there
+     `is_floor_vote` comes from the `desc` regex plus `total` vs chamber
+     size, and anything unresolved stays `null` = excluded, not queued.
    - Exceptions (an impeachment H.Res, a war-powers H.Con.Res, a named
      nomination) enter only by explicit hand add, never by regex.
 3. Drop trivia from the queue: post-office namings, commemoratives,
@@ -273,35 +282,60 @@ import every roll call. Regex builds a queue; it never decides truth.
 
 ### 3. Generate + dedupe + write
 
-- Description per roll call, two variants (no name in the text):
-  `Voted for/against <bill id>, the <short title>, which <one-line effect>.
-  It passed/failed the House/Senate <yeas>-<nays>.` Past tense, ≤ 2
-  sentences, no modals (quality gate rejects `future_promise`). Say "passed
-  the House", never "became law", unless the bill was enacted. Omnibus votes
-  get only the dominant slug(s), not every provision. `Not Voting` /
-  `Present` rows are skipped.
+- Description per roll call, two variants (no name in the text). The opener
+  follows the question class, not a generic "voted for": `Voted to pass
+  <bill id>, the <short title>, which <one-line effect>…` / `Voted against
+  passing…`; `Voted to concur in the Senate amendment to…`; `Voted to adopt
+  the conference report on…`; `Voted to override the veto of…`; suspension
+  votes read as passage. Tally closes the record: `It passed/failed the
+  House/Senate <yeas>-<nays>.` Past tense, ≤ 2 sentences, no modals (quality
+  gate rejects `future_promise`). Say "passed the House", never "became law",
+  unless the bill was enacted. Omnibus votes get only the dominant slug(s),
+  not every provision. `Not Voting` / `Present` rows are skipped.
 - `source_url` = Clerk XML / Senate XML / state roll-call page; `event_date` =
-  vote date.
+  vote date. One URL per record is the existing contract, and the roll-call
+  page proves the decisive claim (how the member voted). The "which
+  <effect>" clause is therefore kept to the bill's official title / CRS
+  summary gist — nothing a reader could not confirm from the bill itself —
+  and the bill page URL lives on `legislative_votes.bill_url` for audit,
+  exactly as the 448 existing hand-written roll-call records already do.
 - Dedupe key = candidate + event_date + normalized bill id (`H.R. 3746`,
   `HR3746`, `H.Res. 863`, `S. 5`, `SB 5`) + question class, scanning live
-  records on that date (URL compared with `.htm`↔`.xml` folded). One match →
-  duplicate. Several roll calls on the same bill and date matching one old
-  row → ambiguous → report, no write.
+  records on that date (URL compared with `.htm`↔`.xml` folded). Exactly one
+  old row ↔ exactly one new roll call → duplicate. Anything else (several
+  roll calls on the same bill and date matching one old row, OR one roll
+  call matching several old rows on that candidate) → ambiguous → report, no
+  write.
 - Duplicates are REWRITTEN IN PLACE, not retired + reinserted. Migration 202
   defines retirement as "the claim was wrong"; migration 209 exists precisely
   for in-place rekeys that keep the row id, tags, and notification history
-  (`user_candidate_follow_notification_events` FKs onto the record). So: update
-  `description` / `source_url` on the existing row, replace its area tags with
-  the roll-call labels, record `recordIdentityTransition(reason =
-  'rollcall_normalization')` in the same transaction. Same end result the
-  user wants (uniform wording + labels), no audit break. Pilot dry-run lists
-  every match first; `--skip-existing` flag keeps old rows untouched.
+  (`user_candidate_follow_notification_events` FKs onto the record). The
+  importer OWNS this update — it cannot go through `upsertCandidateRecords`,
+  whose `findSimilarExistingRecord` requires an identical normalized URL
+  (only trailing slashes stripped), so a `.htm`→`.xml` rewrite would insert a
+  second row; and its transition reason is hardcoded `research_refresh`. So:
+  `UPDATE … WHERE id = <matched record id>` setting `description`,
+  `source_url`, `record_identity_key`, `origin`, `origin_run_id`; replace its
+  area tags; `recordIdentityTransition(reason = 'rollcall_normalization')` —
+  all in one transaction. Same end result the user wants (uniform wording +
+  labels), no audit break. Pilot dry-run lists every match first;
+  `--skip-existing` flag keeps old rows untouched.
+- Notifications: `writeManualCandidateRecords.ts` calls
+  `createCandidateRecordUpdateNotificationEvents` for every inserted record,
+  and nothing downstream filters on `event_date`, so a 117th-Congress
+  backfill would email followers about years-old votes. The importer
+  notifies only for inserts whose vote date is within the last 30 days
+  (new roll calls); backfill inserts and in-place rewrites never create
+  notification events.
 - Writer: a small dedicated importer (`src/scripts/importRollCallVotes.ts`),
   reusing the validator, label checks, `upsertCandidateRecords`, and the
   transaction pattern from `writeManualCandidateRecords.ts` — which is
   one-candidate-one-election per invocation and stamps manual provenance, so
   it cannot be the bulk path unchanged. New provenance value
-  `origin = 'rollcall_import'` (migration widening the CHECK in 197);
+  `origin = 'rollcall_import'` (migration widening the CHECK in 197, plus the
+  `CandidateRecordOrigin` TS union) and transition reason
+  `'rollcall_normalization'` (added to `RecordIdentityTransitionReason` in
+  `candidateRecordStore.ts`);
   `origin_run_id = rollcall:<jurisdiction>:<chamber>:<session>:<roll>:<ts>`.
   Fan-out is atomic and idempotent per roll call; re-running an approved
   roll call writes nothing new.
@@ -312,15 +346,20 @@ import every roll call. Regex builds a queue; it never decides truth.
 legislative_votes
   jurisdiction, chamber, session (congress+session or state session)
   roll_number, vote_date, measure_id, exact_question, voted_text_version
+  is_floor_vote (null = unknown = excluded)
   result, yeas, nays
-  display_url, machine_url, source_sha256, fetched_at
+  display_url, machine_url, bill_url, source_sha256, fetched_at
   yea_description, nay_description, labels_json
   review_status (pending|approved|rejected), reviewed_at
   importer_version
   UNIQUE (jurisdiction, chamber, session, roll_number)
 ```
-Member rows are not stored; keep the fetched XML on disk under the run dir
-plus a run report (resolutions, skips, ambiguities, failures).
+Member rows are not stored. The fetched XML and the run report (resolutions,
+skips, ambiguities, failures) go under `backend/evidence/rollcall/<run-id>/`
+and are committed, like the other research campaigns' evidence ledgers. The
+importer runs from a developer machine against the local DB (prod gets rows
+via `research:promote`), so Render's lack of a persistent disk is not in
+play; git is the durable store.
 
 ### 5. Phases
 
@@ -346,8 +385,9 @@ importer with different evidence (see "Governors" above for sources).
 
 ## Decisions (2026-08-22)
 
-- Bills judged by AI (guarded run), one call per bill, human look at the
-  template before fan-out.
+- One AI judgment per ROLL CALL (guarded run); the bill dossier (title,
+  summary, policy area) is fetched once per bill and cached. Human look at
+  each roll call's two sentences + labels before fan-out.
 - Duplicates of the 448 hand-written roll-call rows: replace — done as an
   in-place rewrite (row id kept, transition logged), not retire + reinsert.
 - Review unit = roll call; federal matching = exact FEC id only; state pilot
