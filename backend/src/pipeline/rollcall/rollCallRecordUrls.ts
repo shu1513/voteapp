@@ -33,6 +33,47 @@ export function rollCallUrlKey(url: string): RollCallUrlKey | null {
   return null;
 }
 
+// The Clerk's member-vote search page: it names the roll only by number
+// (`RollCallNum=102`), with no year or congress.
+const HOUSE_MEMBER_VOTES = /^https?:\/\/clerk\.house\.gov\/Votes\/MemberVotes\?[^#]*\bRollCallNum=(\d+)\b/i;
+
+/**
+ * True when the URL cites the given roll call. On top of rollCallUrlKey's
+ * exact shapes, this folds the Clerk's MemberVotes search page — which
+ * carries only the roll number, so the comparison is exact ONLY among rows
+ * already on the vote's own date (House roll numbers restart each year);
+ * the fan-out's duplicate scan is date-scoped, its only caller.
+ */
+export function citesSameRollCall(url: string, rollCallKey: string): boolean {
+  const key = rollCallUrlKey(url);
+  if (key) {
+    return key.key === rollCallKey;
+  }
+  const memberVotes = HOUSE_MEMBER_VOTES.exec(url.trim());
+  if (!memberVotes) {
+    return false;
+  }
+  const houseKey = /^house:\d{4}:(\d+)$/.exec(rollCallKey);
+  return houseKey !== null && Number(memberVotes[1]) === Number(houseKey[1]);
+}
+
+/** True when the URL is any roll-call citation this module can recognize. */
+export function citesAnyRollCall(url: string): boolean {
+  return rollCallUrlKey(url) !== null || HOUSE_MEMBER_VOTES.test(url.trim());
+}
+
+/**
+ * True when the text reads like a claim about voting. Same-day rows that
+ * make one without citing any recognizable roll call may be this vote
+ * described off a press release; the pilot's misses ("voting for final
+ * passage of the Laken Riley Act", "voted in favor of the 2025 budget
+ * reconciliation bill") name neither a bill id nor the feed's title, so
+ * words are the only signal left. Report-only.
+ */
+export function looksLikeVoteClaim(description: string): boolean {
+  return /\bvot(?:e|ed|es|ing)\b/i.test(description);
+}
+
 // A measure as a description spells it: `H.R. 29`, `H. R. 29`, `HR 29`,
 // `H.Res. 863`, `H. Con. Res. 86`, `S. 5`, `S.J.Res. 3`. The lookbehind
 // keeps `U.S. 5` from reading as `S. 5`.

@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { descriptionMentionsMeasure, rollCallUrlKey } from "../../../src/pipeline/rollcall/rollCallRecordUrls.js";
+import {
+  citesAnyRollCall,
+  citesSameRollCall,
+  descriptionMentionsMeasure,
+  looksLikeVoteClaim,
+  rollCallUrlKey,
+} from "../../../src/pipeline/rollcall/rollCallRecordUrls.js";
 
 describe("rollCallUrlKey", () => {
   it("folds the Clerk XML file and the Clerk vote page to one House key", () => {
@@ -64,5 +70,56 @@ describe("descriptionMentionsMeasure", () => {
     expect(descriptionMentionsMeasure("Voted for S. 29.", hr29)).toBe(false);
     expect(descriptionMentionsMeasure("Voted for U.S. 5 funding.", { type: "s", number: "5" })).toBe(false);
     expect(descriptionMentionsMeasure("Voted for the Laken Riley Act.", hr29)).toBe(false);
+  });
+});
+
+describe("citesSameRollCall", () => {
+  it("accepts every rollCallUrlKey shape plus the Clerk's MemberVotes page by roll number", () => {
+    expect(citesSameRollCall("https://clerk.house.gov/evs/2025/roll102.xml", "house:2025:102")).toBe(true);
+    expect(citesSameRollCall("https://clerk.house.gov/Votes/2025102", "house:2025:102")).toBe(true);
+    expect(
+      citesSameRollCall("https://clerk.house.gov/Votes/MemberVotes?BillNum=H.R.22&RollCallNum=102&Session=1st", "house:2025:102")
+    ).toBe(true);
+    expect(citesSameRollCall("https://clerk.house.gov/Votes/MemberVotes?RollCallNum=102", "house:2025:102")).toBe(true);
+  });
+
+  it("rejects a different roll, a Senate key, and non-roll-call URLs", () => {
+    expect(
+      citesSameRollCall("https://clerk.house.gov/Votes/MemberVotes?BillNum=H.R.22&RollCallNum=103&Session=1st", "house:2025:102")
+    ).toBe(false);
+    expect(citesSameRollCall("https://clerk.house.gov/Votes/MemberVotes?RollCallNum=102", "senate:119-1:102")).toBe(false);
+    expect(citesSameRollCall("https://clerk.house.gov/evs/2025/roll103.xml", "house:2025:102")).toBe(false);
+    expect(citesSameRollCall("https://hinson.house.gov/media/press-releases/x", "house:2025:102")).toBe(false);
+  });
+});
+
+describe("citesAnyRollCall", () => {
+  it("recognizes roll-call citations and nothing else", () => {
+    expect(citesAnyRollCall("https://clerk.house.gov/evs/2025/roll102.xml")).toBe(true);
+    expect(citesAnyRollCall("https://www.senate.gov/legislative/LIS/roll_call_votes/vote1191/vote_119_1_00618.htm")).toBe(true);
+    expect(citesAnyRollCall("https://clerk.house.gov/Votes/MemberVotes?BillNum=H.R.22&RollCallNum=102&Session=1st")).toBe(true);
+    expect(citesAnyRollCall("https://barrymoore.house.gov/media/press-releases/x")).toBe(false);
+    expect(citesAnyRollCall("https://www.rollcall.com/2025/01/20/some-story")).toBe(false);
+  });
+});
+
+describe("looksLikeVoteClaim", () => {
+  it("hits the pilot's missed phrasings and stays quiet on non-vote rows", () => {
+    for (const text of [
+      "Voted for House passage of the One Big Beautiful Bill Act.",
+      "Joined 11 other Senate Democrats voting for final passage of the Laken Riley Act.",
+      "voted in favor of the 2025 budget reconciliation bill.",
+      "One of two Republicans whose vote sank the measure.",
+    ]) {
+      expect(looksLikeVoteClaim(text), text).toBe(true);
+    }
+    for (const text of [
+      "Introduced the bipartisan ARMS Act to expedite delivery of defense equipment.",
+      "Was appointed chair of the Subcommittee on Water Resources.",
+      "Devoted his first term to veterans' issues as an advocate for rural voters.",
+      "Signed the discharge petition with 218 signatures.",
+    ]) {
+      expect(looksLikeVoteClaim(text), text).toBe(false);
+    }
   });
 });

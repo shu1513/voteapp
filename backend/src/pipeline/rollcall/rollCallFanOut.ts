@@ -8,7 +8,7 @@ import {
 } from "../candidates/candidateRecordAreaTagging.js";
 import { recordIdentityTransition } from "../candidates/candidateRecordStore.js";
 import type { FederalMeasure } from "./federalMeasures.js";
-import { descriptionMentionsMeasure, rollCallUrlKey } from "./rollCallRecordUrls.js";
+import { citesAnyRollCall, citesSameRollCall, descriptionMentionsMeasure, looksLikeVoteClaim } from "./rollCallRecordUrls.js";
 
 // The fan-out step of the roll-call import
 // (docs/plans/roll-call-vote-import.md §3): one approved legislative_votes
@@ -124,8 +124,8 @@ export type CandidateRecordPlan =
   | { action: "rewrite"; recordId: string; oldIdentityKey: string; oldSourceUrl: string; oldDescription: string }
   // Same as rewrite, but the run asked to leave old rows alone.
   | { action: "skip_existing"; recordId: string }
-  // A retired row carries this claim or cites this roll call: a human
-  // withdrew the attribution, so nothing is written.
+  // A retired row carries this claim or cites this roll call, and no live
+  // row does: a human withdrew the attribution, so nothing is written.
   | { action: "retired"; recordId: string }
   // More than one live row is this vote (two hand-written rows, or a
   // previous run's row plus a later hand-written one); a human must merge.
@@ -133,15 +133,17 @@ export type CandidateRecordPlan =
 
 export type CandidateRecordDecision = {
   plan: CandidateRecordPlan;
-  // Live same-day rows that name the measure without citing the roll call;
-  // listed for a human, never touched (see descriptionMentionsMeasure).
+  // Live same-day rows that may be this vote without citing the roll call:
+  // they name the measure, or make a vote claim from a non-roll-call source
+  // (a press release, a news story). Listed for a human, never touched.
   relatedRecordIds: string[];
 };
 
 /**
  * Decides what the fan-out does for one candidate given their records on
  * the vote date. Duplicate = a row whose URL is this roll call (any
- * spelling); exactly one live duplicate is rewritten, anything else stops.
+ * spelling, including the Clerk's MemberVotes page); exactly one live
+ * duplicate is rewritten, anything else stops.
  */
 export function planCandidateRecord(input: {
   existing: readonly ExistingCandidateRecord[];
@@ -150,23 +152,35 @@ export function planCandidateRecord(input: {
   measure: FederalMeasure | null;
   skipExisting: boolean;
 }): CandidateRecordDecision {
-  const sameKey = input.existing.filter((record) => record.record_identity_key === input.identityKey);
-  const sameRollCall = input.existing.filter(
-    (record) => record.record_identity_key !== input.identityKey && rollCallUrlKey(record.source_url)?.key === input.rollCallKey
+  const live = input.existing.filter((record) => record.retired_at === null);
+  const sameKey = live.filter((record) => record.record_identity_key === input.identityKey);
+  const sameRollCall = live.filter(
+    (record) => record.record_identity_key !== input.identityKey && citesSameRollCall(record.source_url, input.rollCallKey)
   );
-  const related = input.existing.filter(
+  const related = live.filter(
     (record) =>
       !sameKey.includes(record) &&
       !sameRollCall.includes(record) &&
-      record.retired_at === null &&
-      input.measure !== null &&
-      descriptionMentionsMeasure(record.description, input.measure)
+      ((input.measure !== null && descriptionMentionsMeasure(record.description, input.measure)) ||
+        // A vote claim citing another roll call is a different, known vote;
+        // one citing no roll call at all may be this one, told off a press
+        // release.
+        (looksLikeVoteClaim(record.description) && !citesAnyRollCall(record.source_url)))
   );
   const relatedRecordIds = related.map((record) => record.id);
 
-  const retired = [...sameKey, ...sameRollCall].find((record) => record.retired_at !== null);
-  if (retired) {
-    return { plan: { action: "retired", recordId: retired.id }, relatedRecordIds };
+  // A retired row for this vote blocks the fan-out only when no live row
+  // carries it: retirement withdrew the claim. Beside a live row it is just
+  // history (a retired duplicate copy), and the live row stays writable.
+  if (sameKey.length + sameRollCall.length === 0) {
+    const retired = input.existing.find(
+      (record) =>
+        record.retired_at !== null &&
+        (record.record_identity_key === input.identityKey || citesSameRollCall(record.source_url, input.rollCallKey))
+    );
+    if (retired) {
+      return { plan: { action: "retired", recordId: retired.id }, relatedRecordIds };
+    }
   }
   // A previous run's row plus a hand-written row for the same vote (or two
   // hand-written rows) is a merge for a human, not a rewrite.

@@ -120,18 +120,32 @@ describe("planCandidateRecord", () => {
       oldDescription: xml.description,
     });
     expect(plan([record({ id: "page" })]).plan.action).toBe("rewrite");
+    // The Clerk's MemberVotes search page names the roll only by number.
+    expect(
+      plan([record({ id: "mv", source_url: "https://clerk.house.gov/Votes/MemberVotes?BillNum=H.R.1&RollCallNum=145&Session=1st" })])
+        .plan.action
+    ).toBe("rewrite");
     expect(plan([record({ id: "page" })], true).plan).toEqual({ action: "skip_existing", recordId: "page" });
   });
 
-  it("never resurrects a retired claim or attribution", () => {
+  it("never resurrects a retired claim, but a retired copy beside a live row is only history", () => {
     expect(plan([record({ id: "r1", record_identity_key: NEW_KEY, retired_at: "2026-01-01T00:00:00Z" })]).plan).toEqual({
       action: "retired",
       recordId: "r1",
     });
+    // Live row for the vote + a retired old copy: the claim is not
+    // withdrawn, so the live row is still written (and stays writable when
+    // the judgment changes later).
     expect(plan([record({ id: "live" }), record({ id: "r2", retired_at: "2026-01-01T00:00:00Z" })]).plan).toEqual({
-      action: "retired",
-      recordId: "r2",
+      action: "rewrite",
+      recordId: "live",
+      oldIdentityKey: "v3_live",
+      oldSourceUrl: "https://clerk.house.gov/Votes/2025145",
+      oldDescription: record({ id: "live" }).description,
     });
+    expect(
+      plan([record({ id: "done", record_identity_key: NEW_KEY }), record({ id: "r3", retired_at: "2026-01-01T00:00:00Z" })]).plan
+    ).toEqual({ action: "unchanged", recordId: "done" });
   });
 
   it("stops on more than one live row for the vote, including an imported row beside a later hand-written one", () => {
@@ -142,25 +156,40 @@ describe("planCandidateRecord", () => {
     });
   });
 
-  it("lists same-day rows that name the measure without citing the roll call, and only those", () => {
+  it("lists same-day rows that name the measure or make an uncited vote claim, and only those", () => {
     const press = record({
       id: "press",
       source_url: "https://hinson.house.gov/media/press-releases/x",
       description: "Voted for H.R. 1, the One Big Beautiful Bill Act.",
     });
-    const unrelated = record({
-      id: "rule",
-      source_url: "https://clerk.house.gov/Votes/2025144",
-      description: "Voted for H.Res. 420, the rule.",
+    // No bill id, no roll-call URL — the pilot's missed press-release rows.
+    const paraphrase = record({
+      id: "paraphrase",
+      source_url: "https://fulcher.house.gov/media/press-releases/y",
+      description: "Voted in favor of the 2025 budget reconciliation bill enacting the President's agenda.",
+    });
+    // A vote claim citing ANOTHER roll call is a different, known vote —
+    // this is what keeps same-day imported roll calls from cross-flagging
+    // each other's records.
+    const otherRoll = record({
+      id: "other-roll",
+      source_url: "https://clerk.house.gov/evs/2025/roll143.xml",
+      description: "Voted to pass S.J. Res. 31, disapproving an EPA rule. It passed the House 216-212.",
+    });
+    const nonVote = record({
+      id: "chair",
+      source_url: "https://collins.house.gov/media/press-releases/z",
+      description: "Was appointed chair of the Subcommittee on Water Resources.",
     });
     const retiredPress = { ...press, id: "retired-press", retired_at: "2026-01-01T00:00:00Z" };
-    const decision = plan([press, unrelated, retiredPress]);
-    expect(decision).toEqual({ plan: { action: "insert" }, relatedRecordIds: ["press"] });
-    // No measure (quorum call) → nothing can be related.
+    const decision = plan([press, paraphrase, otherRoll, nonVote, retiredPress]);
+    expect(decision).toEqual({ plan: { action: "insert" }, relatedRecordIds: ["press", "paraphrase"] });
+    // No measure (quorum call): the bill-id rule is off, the vote-claim
+    // rule still works.
     expect(
-      planCandidateRecord({ existing: [press], identityKey: NEW_KEY, rollCallKey: KEY, measure: null, skipExisting: false })
+      planCandidateRecord({ existing: [press, paraphrase], identityKey: NEW_KEY, rollCallKey: KEY, measure: null, skipExisting: false })
         .relatedRecordIds
-    ).toEqual([]);
+    ).toEqual(["press", "paraphrase"]);
   });
 });
 

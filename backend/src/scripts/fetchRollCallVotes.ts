@@ -317,7 +317,11 @@ async function main(): Promise<void> {
     counts,
     rows,
   };
-  writeFileSync(resolve(evidenceDir, "report.json"), `${JSON.stringify(report, null, 2)}\n`);
+  // Named by run id: fetches land per chamber (and top-ups later) in ONE
+  // campaign evidence dir, and a fixed name made each fetch eat the
+  // previous fetch's ledger entry (the pilot's House report was lost this
+  // way).
+  writeFileSync(resolve(evidenceDir, `${runId}-report.json`), `${JSON.stringify(report, null, 2)}\n`);
   console.log(JSON.stringify({ ...report, rows: undefined }, null, 2));
   if (rows.some((row) => FAILURE_OUTCOMES.has(row.outcome))) {
     process.exitCode = 1;
