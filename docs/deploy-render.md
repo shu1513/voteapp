@@ -123,8 +123,9 @@ ten skips, and `--report-file` captures the complete list.
 
 `npm run research:promote` copies researched rows from the local database to
 another database, inserting what is missing and updating what changed. It never
-deletes, never touches user/account tables, and is safe to re-run — a second
-consecutive run writes nothing.
+deletes records or labels, never touches user/account tables, and is safe to
+re-run — a second consecutive run writes nothing. The one bounded exception is
+opt-in tag reconciliation, described below.
 
 **Scope and ownership — read this before the first run.** It compares *every*
 row of the three tables below, not only manually researched ones, and for any
@@ -171,6 +172,29 @@ cd backend
 export PROMOTION_TARGET_DATABASE_URL='postgres://…'
 npm run research:promote:dedupe          # dry run: reports planned deletions
 npm run research:promote:dedupe:apply -- --confirm-target <host>:<port>/<database>
+```
+
+**Stale tags (`--reconcile-tags`).** Every local writer that replaces a
+record's tag set — the manual records writer, `manual:records:untag`, the
+roll-call importer — deletes locally, and the upsert-only promotion leaves the
+removed tag on the target, where the candidate page keeps rendering a stance
+chip that research withdrew (production carried ~2,507 such target-only tags on
+2026-08-23). `--reconcile-tags` removes them, within a deliberately narrow
+boundary: only tags of a target record whose local counterpart is known by
+**exact identity** — the same `record_identity_key`, or a record this run is
+rekeying through the transition ledger — and only the `(record, slug)` pairs the
+local record no longer has. A record with no local counterpart is never touched
+(that is `dedupe`'s job), and neither is one matched only by the similarity
+heuristic. Without the flag nothing changes; the dry run just notes how many
+target-only tags would qualify. With it, the dry run prints one line per
+affected record (`remove [...]; keep [...]`) and the report file carries the
+same list under `tagReconciliation`; apply deletes them in the same transaction
+as the upserts, and aborts if any planned removal no longer matches a row.
+
+```bash
+cd backend
+npm run research:promote -- --reconcile-tags --report-file /tmp/promotion.json   # dry run: per-record list
+npm run research:promote:apply -- --confirm-target <host>:<port>/<database> --reconcile-tags
 ```
 
 It deletes a target row only when the local database no longer holds its key,

@@ -16,8 +16,16 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
 
 // Promotes manually researched rows from the local database to another
 // database (production), inserting what is missing and updating what changed.
-// Never deletes, never touches user/account tables, and is safe to re-run: a
-// second consecutive run must be a pure no-op.
+// Never touches user/account tables, and is safe to re-run: a second
+// consecutive run must be a pure no-op.
+//
+// It never deletes records or labels. The ONE bounded exception is opt-in tag
+// reconciliation (--reconcile-tags): for a target record whose local
+// counterpart is known by EXACT identity — the same record_identity_key, or
+// reached through the identity-transition ledger — area tags the local record
+// no longer carries are removed from the target record. Records with no local
+// counterpart, and records matched only by the similarity heuristic, are never
+// touched. See planTagReconciliation for why that boundary is where it is.
 //
 // This is deliberately NOT built on the manual research writers. Those are
 // correct for research ingestion and wrong for promotion:
@@ -25,7 +33,8 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
 //     (0.86); promotion identity must be the database's declared natural key.
 //   - writeManualCandidateRecords creates follow-notification events; promoted
 //     rows are a backfill and must never notify anyone.
-//   - the same writer deletes stale tags; promotion never deletes.
+//   - the same writer deletes stale tags by record id on every write;
+//     promotion only does so by natural key, on request, for exact matches.
 
 /** Connection details safe to print — a DSN carries a password, so never log one. */
 export type EndpointFingerprint = {
@@ -170,7 +179,11 @@ export type RowPlan<T> = {
   inserts: T[];
   updates: T[];
   unchangedCount: number;
-  /** Rows present on the target and absent from source. Reported, never deleted. */
+  /**
+   * Rows present on the target and absent from source. Reported, never
+   * deleted — except area tags of an exactly-matched record under
+   * --reconcile-tags (see planTagReconciliation).
+   */
   targetOnlyCount: number;
   /**
    * The target-only rows themselves, not just their count: record promotion
@@ -668,6 +681,180 @@ export function rekeyWireRows(rekeys: readonly RecordRekey[]): Record<string, un
   }));
 }
 
+// ---------------------------------------------------------------------------
+// Tag reconciliation
+//
+// Every local writer that replaces a record's tag set — the manual records
+// writer's stale-tag delete, manual:records:untag, the roll-call importer's
+// per-side sync — deletes locally, and the upsert-only promotion then leaves
+// the removed tag on the target forever: the candidate page keeps rendering a
+// stance chip that local research withdrew (production carried ~2,507 such
+// target-only tags on 2026-08-23). Nothing in production writes these tables,
+// so a target-only tag on a record that local still holds is stale by
+// construction, not a production-side correction.
+//
+// The boundary is exact identity, and deliberately no wider. A target tag is
+// reconcilable only when its record's local counterpart is certain: the same
+// (candidate, record_identity_key) exists locally, or the record is being
+// rekeyed in this run through the transition ledger (the ledger is exact
+// provenance, so the tag is re-addressed to the new key and judged there).
+// A record matched only by the similarity heuristic is skipped: the heuristic
+// is good enough to avoid inserting a duplicate, but not good enough to
+// justify deleting data on its say-so. A target-only record is skipped too —
+// it is either a stale duplicate (research:promote:dedupe's job, which removes
+// its tags by cascade) or something local never held, and promotion must not
+// guess which.
+// ---------------------------------------------------------------------------
+
+export type TagRemoval = {
+  candidate_id: string;
+  /**
+   * The key the target record holds when the DELETE runs: its current key, or
+   * — for a record rekeyed in the same transaction — the rekey's NEW key.
+   * Rekeys are written first, so the delete always addresses the final key.
+   */
+  record_identity_key: string;
+  research_area_slug: string;
+};
+
+export type TagReconciliationRecord = {
+  candidate_id: string;
+  /** The key the target record held when the plan was computed. */
+  target_record_identity_key: string;
+  /** The local record's key; equals the target key unless matched via the ledger. */
+  local_record_identity_key: string;
+  matched_via: "same_key" | "transition";
+  /** Slugs the target holds and the local record no longer does — to be removed. */
+  remove: string[];
+  /** Slugs the local record still carries, for the operator's context. */
+  keep: string[];
+};
+
+export type TagReconciliationPlan = {
+  /** One entry per affected record, ordered by candidate then key. */
+  records: TagReconciliationRecord[];
+  /** The flat wire rows for RECONCILE_TAGS_DELETE_SQL, one per removed tag. */
+  removals: TagRemoval[];
+  /** Target-only tags left alone, by reason. */
+  skipped: {
+    /** The target record has no local counterpart at all. */
+    noLocalRecord: number;
+    /** The target record is matched only by the similarity heuristic. */
+    similarityRekeyOnly: number;
+    /**
+     * The record is being rekeyed and the local record still carries this tag
+     * under its new key: the tag survives the rekey and is a planned upsert,
+     * not a removal. Counted so the numbers add up, never acted on.
+     */
+    carriedByRekey: number;
+  };
+};
+
+export function planTagReconciliation(input: {
+  targetOnlyTags: readonly TagRow[];
+  sourceTags: readonly TagRow[];
+  sourceRecords: readonly RecordRow[];
+  rekeys: readonly RecordRekey[];
+}): TagReconciliationPlan {
+  const sourceRecordKeys = new Set(input.sourceRecords.map(recordKey));
+  const sourceTagKeys = new Set(input.sourceTags.map(tagKey));
+  const sourceSlugsByRecord = new Map<string, string[]>();
+  for (const tag of input.sourceTags) {
+    const key = recordKey(tag);
+    sourceSlugsByRecord.set(key, [...(sourceSlugsByRecord.get(key) ?? []), tag.research_area_slug]);
+  }
+  const newKeyByTransitionedOldKey = new Map<string, string>();
+  const similarityOldKeys = new Set<string>();
+  for (const rekey of input.rekeys) {
+    const oldKey = [rekey.sourceRow.candidate_id, rekey.oldKey].join(KEY_SEPARATOR);
+    if (rekey.via === "transition") {
+      newKeyByTransitionedOldKey.set(oldKey, rekey.sourceRow.record_identity_key);
+    } else {
+      similarityOldKeys.add(oldKey);
+    }
+  }
+
+  const skipped = { noLocalRecord: 0, similarityRekeyOnly: 0, carriedByRekey: 0 };
+  const byRecord = new Map<string, TagReconciliationRecord>();
+  for (const tag of input.targetOnlyTags) {
+    const targetRecordKey = recordKey(tag);
+    let localKey: string;
+    let via: TagReconciliationRecord["matched_via"];
+    if (sourceRecordKeys.has(targetRecordKey)) {
+      localKey = tag.record_identity_key;
+      via = "same_key";
+    } else {
+      const transitioned = newKeyByTransitionedOldKey.get(targetRecordKey);
+      if (transitioned !== undefined) {
+        localKey = transitioned;
+        via = "transition";
+      } else if (similarityOldKeys.has(targetRecordKey)) {
+        skipped.similarityRekeyOnly += 1;
+        continue;
+      } else {
+        skipped.noLocalRecord += 1;
+        continue;
+      }
+    }
+
+    const localRecordKey = [tag.candidate_id, localKey].join(KEY_SEPARATOR);
+    if (sourceTagKeys.has([localRecordKey, tag.research_area_slug].join(KEY_SEPARATOR))) {
+      // Only reachable via a rekey: under the same key the tag would not have
+      // been target-only in the first place.
+      skipped.carriedByRekey += 1;
+      continue;
+    }
+
+    const entry = byRecord.get(targetRecordKey) ?? {
+      candidate_id: tag.candidate_id,
+      target_record_identity_key: tag.record_identity_key,
+      local_record_identity_key: localKey,
+      matched_via: via,
+      remove: [],
+      keep: [...(sourceSlugsByRecord.get(localRecordKey) ?? [])].sort(),
+    };
+    entry.remove.push(tag.research_area_slug);
+    byRecord.set(targetRecordKey, entry);
+  }
+
+  const records = [...byRecord.values()]
+    .map((entry) => ({ ...entry, remove: [...entry.remove].sort() }))
+    .sort(
+      (a, b) =>
+        a.candidate_id.localeCompare(b.candidate_id) ||
+        a.target_record_identity_key.localeCompare(b.target_record_identity_key)
+    );
+  const removals: TagRemoval[] = records.flatMap((entry) =>
+    entry.remove.map((slug) => ({
+      candidate_id: entry.candidate_id,
+      record_identity_key: entry.local_record_identity_key,
+      research_area_slug: slug,
+    }))
+  );
+  return { records, removals, skipped };
+}
+
+/**
+ * The only statement in this file that removes anything, and it removes only
+ * area tags. Parents are resolved on the target by natural key at write time
+ * — the same two joins UPSERT_TAGS_SQL uses, for the same reason: a record id
+ * never crosses the wire. A wire row whose record or slug does not resolve
+ * deletes nothing, which the apply path treats as drift and refuses to commit.
+ */
+export const RECONCILE_TAGS_DELETE_SQL = `
+  DELETE FROM public.candidate_record_area_tags AS t
+  USING
+    jsonb_to_recordset($1::jsonb) AS s(
+      candidate_id uuid, record_identity_key text, research_area_slug text),
+    public.candidate_records AS r,
+    public.research_areas AS a
+  WHERE r.candidate_id = s.candidate_id
+    AND r.record_identity_key = s.record_identity_key
+    AND a.slug = s.research_area_slug
+    AND t.candidate_record_id = r.id
+    AND t.research_area_id = a.id
+`;
+
 export function sameLabel(a: LabelRow, b: LabelRow): boolean {
   return (
     sameScalar(a.committee_name, b.committee_name) &&
@@ -686,9 +873,10 @@ export async function loadProjection<T>(client: PromotionClient, sql: string): P
 // Upserts
 //
 // Every statement below is an INSERT with a conditional ON CONFLICT DO UPDATE.
-// There is deliberately no DELETE, TRUNCATE or DDL anywhere in this file — a
-// test asserts that, because "never deletes" is the property that makes this
-// tool safe to point at production.
+// There is no TRUNCATE or DDL anywhere in this file, and the only DELETE is
+// RECONCILE_TAGS_DELETE_SQL above — opt-in, tags only, exact matches only. A
+// test asserts exactly that, because "never deletes beyond that one bounded
+// case" is the property that makes this tool safe to point at production.
 //
 // The DO UPDATE ... WHERE clause is load-bearing, not defensive noise: both
 // record tables have an updated_at trigger, so an unconditional update would
@@ -1050,6 +1238,13 @@ function usage(): string {
     "  npm run research:promote                       # dry run, writes nothing",
     "  npm run research:promote:apply -- --confirm-target <host>:<port>/<database>",
     "",
+    "Flags:",
+    "  --reconcile-tags   also remove area tags the local record no longer has,",
+    "                     for target records matched by exact identity only",
+    "                     (same key or the transition ledger). Dry run prints",
+    "                     one line per affected record; apply deletes them.",
+    "  --report-file <p>  write the JSON report to a file",
+    "",
     "Endpoints:",
     "  source  DATABASE_URL                     (must be local; read-only)",
     "  target  PROMOTION_TARGET_DATABASE_URL    (env only — never a flag, so a",
@@ -1088,8 +1283,20 @@ export type PromotionReport = {
       rekeys?: number;
       written?: number;
       rekeysWritten?: number;
+      /** candidate_record_area_tags only, apply + --reconcile-tags: tags deleted. */
+      removed?: number;
     }
   >;
+  tagReconciliation: {
+    /** Whether --reconcile-tags was passed; the plan is computed regardless. */
+    enabled: boolean;
+    /** Tags that would be (or were) removed, and the records they sit on. */
+    plannedRemovals: number;
+    recordsAffected: number;
+    skipped: TagReconciliationPlan["skipped"];
+    /** Per-record detail; only filled in when enabled, to keep the default report small. */
+    records?: TagReconciliationRecord[];
+  };
 };
 
 async function main(): Promise<void> {
@@ -1098,10 +1305,12 @@ async function main(): Promise<void> {
     { name: "--apply", value: "none" },
     { name: "--confirm-target", value: "space" },
     { name: "--report-file", value: "space" },
+    { name: "--reconcile-tags", value: "none" },
   ]);
 
   loadProjectEnv();
   const apply = argv.includes("--apply");
+  const reconcileTags = argv.includes("--reconcile-tags");
   const endpoints = assertPromotionEndpoints({
     sourceUrl: process.env.DATABASE_URL ?? "",
     targetUrl: process.env.PROMOTION_TARGET_DATABASE_URL ?? "",
@@ -1113,6 +1322,7 @@ async function main(): Promise<void> {
   console.log(`source: ${describeEndpoint(endpoints.source)}`);
   console.log(`target: ${describeEndpoint(endpoints.target)}`);
   console.log(`mode:   ${apply ? "APPLY (writes)" : "dry run (writes nothing)"}`);
+  console.log(`tags:   ${reconcileTags ? "reconcile (remove stale tags of exactly-matched records)" : "upsert only"}`);
 
   const sourcePool = new Pool({ connectionString: process.env.DATABASE_URL });
   // Bounded timeouts on the target: the apply path holds one transaction across
@@ -1194,6 +1404,14 @@ async function main(): Promise<void> {
     const pendingRecords = [...rekeyPlan.inserts, ...recordPlan.updates];
     const preflightRecords = [...pendingRecords, ...rekeyPlan.rekeys.map((rekey) => rekey.sourceRow)];
     const pendingTags = [...tagPlan.inserts, ...tagPlan.updates];
+    // Computed on every run so the dry run can say how many target-only tags
+    // are reconcilable; acted on only under --reconcile-tags.
+    const tagReconciliation = planTagReconciliation({
+      targetOnlyTags: tagPlan.targetOnlyRows,
+      sourceTags,
+      sourceRecords,
+      rekeys: rekeyPlan.rekeys,
+    });
     // A stored key that disagrees with its own content means the source row
     // was edited outside the writer; promoting it would carry a stale key.
     const keyMismatches = findIdentityKeyMismatches(preflightRecords, (input) =>
@@ -1270,7 +1488,39 @@ async function main(): Promise<void> {
           targetOnly: labelPlan.targetOnlyCount,
         },
       },
+      tagReconciliation: {
+        enabled: reconcileTags,
+        plannedRemovals: tagReconciliation.removals.length,
+        recordsAffected: tagReconciliation.records.length,
+        skipped: tagReconciliation.skipped,
+        ...(reconcileTags ? { records: tagReconciliation.records } : {}),
+      },
     };
+
+    if (reconcileTags) {
+      console.log(
+        `\ntag reconciliation: ${tagReconciliation.removals.length} tag(s) on ` +
+          `${tagReconciliation.records.length} exactly-matched record(s) ${apply ? "will be" : "would be"} removed; ` +
+          `skipped ${tagReconciliation.skipped.noLocalRecord} with no local record, ` +
+          `${tagReconciliation.skipped.similarityRekeyOnly} matched only by similarity, ` +
+          `${tagReconciliation.skipped.carriedByRekey} carried through a rekey.`
+      );
+      for (const entry of tagReconciliation.records) {
+        const how =
+          entry.matched_via === "same_key"
+            ? "same key"
+            : `ledger: was ${entry.target_record_identity_key}`;
+        console.log(
+          `  candidate ${entry.candidate_id} record ${entry.local_record_identity_key} (${how}): ` +
+            `remove [${entry.remove.join(", ")}]; keep [${entry.keep.join(", ")}]`
+        );
+      }
+    } else if (tagReconciliation.removals.length > 0) {
+      console.log(
+        `\nnote: ${tagReconciliation.removals.length} target-only tag(s) sit on exactly-matched records ` +
+          "and would be removed under --reconcile-tags (not enabled; nothing is deleted)."
+      );
+    }
 
     if (apply) {
       const client: PoolClient = await targetPool.connect();
@@ -1307,6 +1557,23 @@ async function main(): Promise<void> {
         }
 
         report.tables.candidate_record_area_tags!.written = await upsertBatched(wrapped, UPSERT_TAGS_SQL, pendingTags);
+
+        // After the rekeys (so every removal addresses the record's final
+        // key) and after the tag upsert (so a run reads as "write, then
+        // reconcile"). The two never overlap: a removal is a (record, slug)
+        // the local side lacks, an upsert is one it has. Every planned
+        // removal must hit exactly one row — the natural keys resolve to at
+        // most one tag, so a shortfall means the target changed under us.
+        if (reconcileTags) {
+          const removed = await upsertBatched(wrapped, RECONCILE_TAGS_DELETE_SQL, tagReconciliation.removals);
+          if (removed !== tagReconciliation.removals.length) {
+            throw new Error(
+              `Refusing to commit: planned ${tagReconciliation.removals.length} tag removal(s) but the ` +
+                `target matched ${removed}. The target changed since the plan was computed; re-run.`
+            );
+          }
+          report.tables.candidate_record_area_tags!.removed = removed;
+        }
         report.tables.finance_committee_labels!.written = await upsertBatched(
           wrapped,
           UPSERT_LABELS_SQL,
@@ -1342,7 +1609,8 @@ async function main(): Promise<void> {
       // it, and it cannot drift out of step with assertConfirmedTarget.
       console.log(
         "\nDry run only — nothing was written. Re-run with:\n" +
-          `  npm run research:promote:apply -- --confirm-target ${confirmationTokenFor(endpoints.target)}`
+          `  npm run research:promote:apply -- --confirm-target ${confirmationTokenFor(endpoints.target)}` +
+          (reconcileTags ? " --reconcile-tags" : "")
       );
     }
   } finally {
