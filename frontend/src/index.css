@@ -36,13 +36,14 @@
      my issues"). Amazon "Buy Now" orange, paired with the "Add to cart"
      yellow above: the manual pick is the cart, the auto-pick is the
      one-click checkout. Not red (reads Republican) or blue (reads Democrat).
-     Near-black ink on it: 10.6:1, 9.3:1 on the darker hover shade. The fill
-     is only ~1.9:1 against a white page, so the darker border token draws
-     the button's boundary. */
+     Near-black ink on it: 9.5:1, 7.8:1 on the darker hover shade. The fill
+     is only ~2:1 against a white page, so the border token (Amazon's dark
+     price orange, 4.5:1 on white — clears the 3:1 non-text floor) draws the
+     button's boundary. */
   --color-autopick: #ffa41c;
   --color-autopick-dark: #fa8900;
   --color-autopick-ink: #0f1111;
-  --color-autopick-border: #ff8f00;
+  --color-autopick-border: #c45500;
   /* Guest conversion nudge ("Enter your address to see if this race is on
      your ballot"). Light green tint so the callout pops against white cards
      without competing with pick yellow, autopick teal, or party colors.
