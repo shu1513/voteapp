@@ -179,7 +179,7 @@ function summarize(result: AutoPickElectionResult, seatsToFill: number | null): 
         ? `Couldn't pick one — narrowed to ${shortlist}: nothing known against them, but nothing for them either.`
         : "No pick: every candidate with a record here works against your issues.";
     case "all_vetoed":
-      return "No pick: every candidate crossed one of your lines in the sand.";
+      return "No pick: every candidate goes against one of your musts.";
     case "too_few_issues":
       return `Rank at least ${MIN_AUTO_PICK_ISSUES} issues first, so the pick reflects what matters to you.`;
     case "election_closed":
