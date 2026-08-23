@@ -159,6 +159,9 @@ export async function upsertCandidateRecordAreaTags(
       throw new Error(`Cannot upsert candidate_record_area_tag: missing research area id for slug '${slug}'`);
     }
 
+    // Same-stance re-imports are a no-op (same guard as research:promote):
+    // an unconditional update would move updated_at on every re-run and make
+    // an idempotent pass look like a change.
     await client.query(
       `
         INSERT INTO public.candidate_record_area_tags (
@@ -171,6 +174,7 @@ export async function upsertCandidateRecordAreaTags(
         DO UPDATE SET
           stance = EXCLUDED.stance,
           updated_at = now()
+        WHERE public.candidate_record_area_tags.stance IS DISTINCT FROM EXCLUDED.stance
       `,
       [label.candidateRecordId, researchAreaId, label.stance ?? null]
     );

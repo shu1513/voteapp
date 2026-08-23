@@ -392,6 +392,14 @@ importer with different evidence (see "Governors" above for sources).
   in-place rewrite (row id kept, transition logged), not retire + reinsert.
 - Review unit = roll call; federal matching = exact FEC id only; state pilot
   = Ohio; governors = separate future importer (2026-08-22 review).
+- Duplicate scan (PR 4, 2026-08-23): an old row is a duplicate only when its
+  `source_url` IS this roll call (Clerk XML, Clerk vote page, Senate
+  .htm/.xml — `rollCallUrlKey` folds them). The "bill id + question class"
+  key was dropped: a free-text description has no reliable question class,
+  so a same-day recommit vote on the same bill would have been rewritten
+  into a passage record. Same-day rows that name the measure without citing
+  the roll call (press-release citations) are listed in the report as
+  `relatedRecordIds` for a human and never written.
 
 ## Open questions
 

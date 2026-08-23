@@ -189,6 +189,8 @@ describe("upsertCandidateRecordAreaTags", () => {
     expect(result).toEqual({ processed: 3 });
     expect(query).toHaveBeenCalledTimes(3);
     expect(query.mock.calls[0]?.[0]).toContain("INSERT INTO public.candidate_record_area_tags");
+    // A same-stance re-import must not touch the row (updated_at stays put).
+    expect(query.mock.calls[0]?.[0]).toMatch(/DO UPDATE SET[\s\S]*WHERE public\.candidate_record_area_tags\.stance IS DISTINCT FROM EXCLUDED\.stance/);
     expect(query.mock.calls[1]?.[1]).toEqual(["rec-2", "ra-general", null]);
     expect(query.mock.calls[2]?.[1]).toEqual(["rec-3", "ra-legal", null]);
   });
