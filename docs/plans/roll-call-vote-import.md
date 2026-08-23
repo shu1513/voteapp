@@ -416,6 +416,15 @@ importer with different evidence (see "Governors" above for sources).
   into a passage record. Same-day rows that name the measure without citing
   the roll call (press-release citations) are listed in the report as
   `relatedRecordIds` for a human and never written.
+- Pilot follow-ups (PR 6, 2026-08-23): the duplicate match also folds the
+  Clerk's MemberVotes search page (roll number is exact within the
+  date-scoped scan); `relatedRecordIds` additionally lists same-day
+  vote-claim rows from non-roll-call sources (the pilot's press-release
+  misses named neither a bill id nor the feed's title — the Clerk prints
+  "One Big Beautiful Act", the Senate title is just "S. 5, As Amended");
+  and a retired row blocks a candidate only when no live row carries the
+  vote, so retiring a redundant duplicate copy does not freeze the live
+  record.
 
 ## Open questions
 
