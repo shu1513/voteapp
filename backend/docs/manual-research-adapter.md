@@ -345,6 +345,16 @@ Manual commands:
 - `npm run manual:candidate-profile:write -- --election-id uuid --file profile.json [--run-id id] [--is-incumbent true|false] [--emit-record-draft] [--emit-finance-sync] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap <gap-id>] [--repair-report-file file] [--dry-run]`
 - `npm run manual:candidate-records:write -- --candidate-id uuid --election-id uuid --records-file records.json --labels-file labels.json [--strict-quality-gate] [--confirmed-gap <gap-id>] [--repair-report-file file] [--dry-run]`
 - `npm run manual:ballot-measure:write -- --election-id uuid --file payload.json [--dry-run]`
+- `npm run manual:candidates:rename -- --candidate-id uuid --display-name "New Name" --source-url https://... --reason text [--first-name text] [--last-name text] [--dry-run]`
+  - Guarded correction of a stored candidate name to the official ballot name (the profile writer fills blanks only and
+    `--replace-profile-fields` deliberately excludes identity fields, so this wrapper is the supported path). It updates
+    `display_name` (plus `first_name`/`last_name` only when those flags are passed), appends the official HTTPS source to
+    `profile_sources`, and writes an audit row to `candidate_rename_audit` (migration 253) in the same transaction. It
+    refuses merged or soft-deleted rows and refuses when another live candidate in any shared election already carries the
+    new name (roster matching treats a same-election `display_name` match as the same person). Records and
+    `candidate_elections` links are left untouched; re-running the same command is idempotent and only converges the
+    stored source. Local-database guard and `--dry-run` behave like the other cleanup wrappers
+    (`manual:candidates:merge`, `manual:candidate-elections:unlink`).
 
 Safety properties:
 
