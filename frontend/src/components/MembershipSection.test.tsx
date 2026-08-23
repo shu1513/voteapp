@@ -197,6 +197,39 @@ describe("MembershipSection", () => {
     expect(screen.getByText(/Thank you for your support!/)).toBeInTheDocument();
   });
 
+  it("keeps the payment forms locked after a successful Checkout until the webhook has landed", async () => {
+    // The status endpoint can still say "not a member" for a moment after
+    // the redirect back; a second click here would be a second charge.
+    stubApiRoutes({ "/api/me/membership": { body: NOT_MEMBER } });
+    renderSection("?membership=success");
+
+    expect(await screen.findByText(/Thank you for your support!/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Support monthly" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Support once" })).toBeDisabled();
+  });
+
+  it("shows an incomplete first payment as pending, not as a supporter", async () => {
+    stubApiRoutes({
+      "/api/me/membership": {
+        body: {
+          ...ACTIVE_MEMBER,
+          total_net_cents: 0,
+          payments: [],
+          membership: { ...ACTIVE_MEMBER.membership, stripe_status: "incomplete" },
+        },
+      },
+    });
+    renderSection();
+
+    expect(await screen.findByText("Monthly membership pending — $5.00/month")).toBeInTheDocument();
+    expect(screen.getByText(/Your first payment hasn't completed yet/)).toBeInTheDocument();
+    expect(screen.queryByText(/Monthly supporter/)).not.toBeInTheDocument();
+    // The backend 409s a second monthly checkout while this row exists, so
+    // the forms stay hidden; the portal is where the open invoice gets paid.
+    expect(screen.queryByRole("button", { name: "Support monthly" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Manage membership" })).toBeEnabled();
+  });
+
   it("notes a canceled Checkout without alarm", async () => {
     stubApiRoutes({ "/api/me/membership": { body: NOT_MEMBER } });
     renderSection("?membership=canceled");

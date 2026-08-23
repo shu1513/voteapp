@@ -164,11 +164,13 @@ export function MembershipSection() {
     }
   }, [searchParams, setSearchParams]);
 
-  // staleTime 0: the return from Checkout is a fresh mount, and that mount's
-  // fetch is the "refetch" after payment — no polling; the webhook may lag.
+  // staleTime 0 (the app default is 60s): the webhook that records a payment
+  // can land after the return from Checkout, so every mount must ask again
+  // rather than reuse a pre-webhook snapshot — no polling, just no caching.
   const status = useQuery({
     queryKey: ["me", "membership"],
     queryFn: () => apiRequest<MembershipStatus>("/api/me/membership"),
+    staleTime: 0,
   });
   const checkout = useMutation({
     mutationFn: (input: { kind: MembershipKind; amountCents: number }) =>
@@ -192,8 +194,13 @@ export function MembershipSection() {
   }
 
   // Both redirects stay "in flight" until the browser leaves the page, so
-  // the buttons stay locked after success too (double-click guard).
-  const busy = checkout.isPending || checkout.isSuccess || portal.isPending || portal.isSuccess;
+  // the buttons stay locked after success too (double-click guard). The
+  // return from a successful Checkout locks them as well: the webhook may
+  // not have recorded the payment yet, and a second monthly checkout in
+  // that gap is a real second charge the backend can only cancel forward
+  // (its first month needs a manual refund).
+  const busy =
+    outcome === "success" || checkout.isPending || checkout.isSuccess || portal.isPending || portal.isSuccess;
 
   return (
     <section className="rounded-xl border border-line bg-white p-4">
@@ -222,13 +229,23 @@ export function MembershipSection() {
           </p>
 
           {status.data.membership ? (
+            // Any nonterminal subscription takes this branch, paid or not:
+            // the backend answers 409 to a monthly checkout while one exists,
+            // so the signup forms would only fail. `incomplete` (first payment
+            // not confirmed yet) gets its own copy instead of "supporter".
             <div className="mt-3 space-y-2 text-sm">
               <p className="font-medium text-ink">
-                Monthly supporter — {formatCents(status.data.membership.monthly_amount_cents)}/month since{" "}
-                {formatDate(status.data.membership.started_at)}
+                {status.data.membership.stripe_status === "incomplete"
+                  ? `Monthly membership pending — ${formatCents(status.data.membership.monthly_amount_cents)}/month`
+                  : `Monthly supporter — ${formatCents(status.data.membership.monthly_amount_cents)}/month since ${formatDate(status.data.membership.started_at)}`}
               </p>
-              {status.data.membership.stripe_status === "past_due" ||
-              status.data.membership.stripe_status === "unpaid" ? (
+              {status.data.membership.stripe_status === "incomplete" ? (
+                <p className="text-ink-soft">
+                  Your first payment hasn&apos;t completed yet. Check back in a moment, or open Manage membership to
+                  finish it.
+                </p>
+              ) : status.data.membership.stripe_status === "past_due" ||
+                status.data.membership.stripe_status === "unpaid" ? (
                 <p className="rounded-lg border border-rausch/40 bg-rausch/5 px-3 py-2 text-rausch-dark">
                   Your last payment didn&apos;t go through. Update your card under Manage membership to keep your
                   membership.
