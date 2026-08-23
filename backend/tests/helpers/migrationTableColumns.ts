@@ -27,7 +27,7 @@ export function migrationTableColumns(tableName: string): Set<string> {
     if (createMatch) {
       const block = sql.slice(createMatch.index, sql.indexOf("\n);", createMatch.index));
       for (const line of block.split("\n").slice(1)) {
-        const column = /^ +([a-z_]+) /.exec(line);
+        const column = /^ +([a-z0-9_]+) /.exec(line);
         if (column) {
           columns.add(column[1]);
         }
