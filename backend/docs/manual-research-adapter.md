@@ -350,8 +350,10 @@ Manual commands:
     `--replace-profile-fields` deliberately excludes identity fields, so this wrapper is the supported path). It updates
     `display_name` (plus `first_name`/`last_name` only when those flags are passed), appends the official HTTPS source to
     `profile_sources`, and writes an audit row to `candidate_rename_audit` (migration 253) in the same transaction. It
-    refuses merged or soft-deleted rows and refuses when another live candidate in any shared election already carries the
-    new name (roster matching treats a same-election `display_name` match as the same person). Records and
+    refuses merged or soft-deleted rows and refuses when another live candidate in any shared election — linked as the
+    candidate or as a running mate, on either side — already carries the new name (profile identity matching treats a
+    same-election `display_name` match as the same person and throws on duplicates). Competing renames serialize on the
+    identity resolver's per-name advisory lock. Records and
     `candidate_elections` links are left untouched; re-running the same command is idempotent and only converges the
     stored source. Local-database guard and `--dry-run` behave like the other cleanup wrappers
     (`manual:candidates:merge`, `manual:candidate-elections:unlink`).

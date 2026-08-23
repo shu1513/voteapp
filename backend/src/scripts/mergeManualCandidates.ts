@@ -200,6 +200,14 @@ const SPECIALLY_HANDLED_TABLES = new Set([
   "public.candidate_record_sweep_confirmations",
   "public.user_candidate_follows",
   "public.user_candidate_follow_notification_events",
+  // Rename-audit rows are history about the row the rename happened to: the
+  // old/new name columns describe THAT candidate row. They deliberately stay
+  // on the merged tombstone — rehoming them would falsify the audit (its
+  // old_* values describe the duplicate, not the survivor), and refusing the
+  // merge over them (the generic both-sides rule) is pointless because the
+  // table has no unique keys to collide. Merges never hard-delete
+  // candidates, so the FK stays valid.
+  "public.candidate_rename_audit",
 ]);
 
 function usage(): string {

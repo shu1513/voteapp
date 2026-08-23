@@ -12,11 +12,15 @@
 // Guard rails, all of which must pass before a single row changes:
 // - the candidate exists, is row-locked, and is neither merged (rename the
 //   survivor instead) nor soft-deleted;
-// - no other live candidate in any election this candidate is linked to
-//   already carries the new display name: rosters treat a same-election
-//   display_name match as the same person (see candidateProfileIdentity), so
-//   a rename creating that collision would make future roster and profile
-//   writes silently mis-match;
+// - no other live candidate in any election this candidate is linked to —
+//   through candidate_id OR running_mate_candidate_id, on either side —
+//   already carries the new display name: profile identity matching walks
+//   both link columns and THROWS on a same-election duplicate name (see
+//   findCandidateLinkedToElectionByDisplayName), so a rename creating that
+//   collision would block every future profile write for the election;
+// - competing renames serialize on the same per-name advisory lock the
+//   profile identity resolver takes, so two concurrent renames to the same
+//   name cannot both pass the collision check before either commits;
 // - an official HTTPS source documenting the ballot name is appended to the
 //   candidate's profile_sources;
 // - an audit row (old/new names, source, reason) is written to
@@ -33,6 +37,7 @@ import { pathToFileURL } from "node:url";
 import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
+import { normalizeCandidateName } from "../utils/candidateIdentity.js";
 import { mergeElectionSource } from "./electionSourceUtils.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
@@ -154,6 +159,19 @@ export async function runRenameCandidate(
 
   await client.query("BEGIN");
   try {
+    // The collision check below is an unlocked read: two concurrent renames
+    // of different candidates in the same election to the same name could
+    // each pass it before the other commits. Serialize on the same per-name
+    // advisory lock findOrCreateCandidateFromProfile takes for its own
+    // read-then-insert race (transaction-scoped; releases on commit or
+    // rollback). Taken before the row lock, mirroring the resolver's
+    // ordering. When the display name is the person's "First Last" this also
+    // serializes against concurrent pipeline identity resolution.
+    await client.query(
+      `SELECT pg_advisory_xact_lock(hashtextextended('candidate_identity:' || $1, 0))`,
+      [normalizeCandidateName(newDisplayName)]
+    );
+
     const candidateResult = await client.query<CandidateRow>(
       `
         SELECT id, display_name, first_name, last_name, deleted_at::text,
@@ -191,10 +209,11 @@ export async function runRenameCandidate(
 
     if (!displayNameChanged && !firstNameChanged && !lastNameChanged) {
       // Idempotent path: nothing to rename, no second audit row. Provenance
-      // still converges — a row renamed without the official source (or a
-      // re-run after a crash between UPDATE and COMMIT never happens, but an
-      // out-of-band repair can) gets the source appended.
-      if (sourceAppended && !dryRun) {
+      // still converges — a row renamed out-of-band without the official
+      // source gets the source appended. The UPDATE runs on dry runs too
+      // (then rolls back), keeping the execute-then-rollback contract the
+      // main path already honors.
+      if (sourceAppended) {
         await client.query(
           `
             UPDATE public.candidates
@@ -204,6 +223,8 @@ export async function runRenameCandidate(
           `,
           [candidateId, JSON.stringify(mergedSources)]
         );
+      }
+      if (sourceAppended && !dryRun) {
         await client.query("COMMIT");
       } else {
         await client.query("ROLLBACK");
@@ -217,10 +238,14 @@ export async function runRenameCandidate(
       };
     }
 
-    // Same-election collision guard: rosters treat a same-election
-    // display_name match as the same person, so another live candidate in
-    // any of this candidate's elections already carrying the new name means
-    // future roster/profile writes would silently attach to the wrong row.
+    // Same-election collision guard: profile identity matching treats a
+    // same-election display_name match as the same person — walking BOTH
+    // candidate_elections columns (candidate_id and
+    // running_mate_candidate_id) — and throws on a duplicate name (see
+    // findCandidateLinkedToElectionByDisplayName), which would block every
+    // future profile write for the election. So the guard covers both
+    // columns on both sides: elections this candidate touches as candidate
+    // or as running mate, and peers linked to those elections either way.
     // Which row should carry the name (or whether this is really a merge) is
     // a research question — refuse. Peers without a display_name are
     // compared on "first last", the same fallback readers render.
@@ -231,9 +256,10 @@ export async function runRenameCandidate(
           FROM public.candidate_elections own_link
           JOIN public.candidate_elections peer_link
             ON peer_link.election_id = own_link.election_id
-           AND peer_link.candidate_id <> own_link.candidate_id
-          JOIN public.candidates peer ON peer.id = peer_link.candidate_id
-          WHERE own_link.candidate_id = $1::uuid
+          JOIN public.candidates peer
+            ON peer.id IN (peer_link.candidate_id, peer_link.running_mate_candidate_id)
+          WHERE (own_link.candidate_id = $1::uuid OR own_link.running_mate_candidate_id = $1::uuid)
+            AND peer.id <> $1::uuid
             AND peer.merged_into_candidate_id IS NULL
             AND peer.deleted_at IS NULL
             AND lower(trim(coalesce(peer.display_name, peer.first_name || ' ' || peer.last_name))) = lower($2)

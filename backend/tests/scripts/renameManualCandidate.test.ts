@@ -165,6 +165,43 @@ describe("runRenameCandidate", () => {
     expect(guard?.values).toEqual([CANDIDATE_ID, "Pro-Life"]);
   });
 
+  it("collision guard covers running-mate links on both sides", async () => {
+    // Profile identity matching walks candidate_id AND
+    // running_mate_candidate_id and throws on a same-election duplicate
+    // name, so the guard must see elections the target rides as a mate and
+    // peers linked only as mates.
+    const { query, calls } = buildClient(happyResponses());
+
+    await runRenameCandidate({ query }, options());
+
+    const guard = calls.find((call) => call.text.includes("FROM public.candidate_elections own_link"));
+    expect(guard?.text).toContain("own_link.running_mate_candidate_id = $1::uuid");
+    expect(guard?.text).toContain(
+      "peer.id IN (peer_link.candidate_id, peer_link.running_mate_candidate_id)"
+    );
+    // The target itself may appear as candidate on one link and mate on
+    // another; self-rows must not read as collisions.
+    expect(guard?.text).toContain("peer.id <> $1::uuid");
+  });
+
+  it("serializes competing renames on the identity resolver's per-name advisory lock", async () => {
+    const { query, calls } = buildClient(happyResponses());
+
+    await runRenameCandidate({ query }, options());
+
+    const lockIndex = calls.findIndex((call) => call.text.includes("pg_advisory_xact_lock"));
+    const rowLockIndex = calls.findIndex((call) =>
+      call.text.includes("FROM public.candidates\n        WHERE id")
+    );
+    expect(lockIndex).toBeGreaterThan(-1);
+    // Advisory lock first, then the row lock — same ordering as
+    // findOrCreateCandidateFromProfile, so the two cannot deadlock.
+    expect(lockIndex).toBeLessThan(rowLockIndex);
+    expect(calls[lockIndex]?.text).toContain("'candidate_identity:' || $1");
+    // Same normalization the resolver uses for its lock key.
+    expect(calls[lockIndex]?.values).toEqual(["pro life"]);
+  });
+
   it("is idempotent: an already-renamed row only converges provenance, without a second audit row", async () => {
     const { query, calls } = buildClient(
       happyResponses({
@@ -186,6 +223,24 @@ describe("runRenameCandidate", () => {
     expect(update?.text).not.toContain("display_name");
     expect(calls.some((call) => call.text.includes("candidate_rename_audit"))).toBe(false);
     expect(calls.at(-1)?.text).toBe("COMMIT");
+  });
+
+  it("dry-run of the source-only convergence executes the update, then rolls back", async () => {
+    const { query, calls } = buildClient(
+      happyResponses({
+        "FROM public.candidates\n        WHERE id": [
+          { rows: [candidateRow({ display_name: "Pro-Life", profile_sources: [] })] },
+        ],
+      })
+    );
+
+    const result = await runRenameCandidate({ query }, options({ dryRun: true }));
+
+    expect(result).toMatchObject({ alreadyRenamed: true, dryRun: true, sourceAppended: true });
+    // Execute-then-rollback, same contract as the main path: the UPDATE runs
+    // so permission/trigger failures surface in dry runs too.
+    expect(calls.some((call) => call.text.includes("profile_sources = $2::jsonb"))).toBe(true);
+    expect(calls.at(-1)?.text).toBe("ROLLBACK");
   });
 
   it("already-renamed with the source already stored touches nothing", async () => {
