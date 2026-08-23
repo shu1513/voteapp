@@ -12,7 +12,11 @@ import type { PoolClient } from "pg";
 // re-stamp them would rotate a poisoned cohort out of its
 // `WHERE origin_run_id = ...` cleanup query. Provenance changes only when
 // the stored content actually changes.
-export type CandidateRecordOrigin = "ai_enricher" | "repair" | "manual";
+//
+// Kept as a runtime list so the migration test can pin the DB CHECK
+// (migrations 197 + 252) to this union.
+export const CANDIDATE_RECORD_ORIGINS = ["ai_enricher", "repair", "manual", "rollcall_import"] as const;
+export type CandidateRecordOrigin = (typeof CANDIDATE_RECORD_ORIGINS)[number];
 
 export type CandidateRecordUpsertInput = {
   candidateId: string;
@@ -103,7 +107,10 @@ export type RecordIdentityTransitionReason =
   | "event_date_repair"
   | "source_url_repair"
   | "research_refresh"
-  | "backfill";
+  | "backfill"
+  // Roll-call importer rewrote a hand-written duplicate of the same vote in
+  // place (uniform wording + labels); see docs/plans/roll-call-vote-import.md.
+  | "rollcall_normalization";
 
 /**
  * Records that an in-place edit moved a row from one identity key to another.
