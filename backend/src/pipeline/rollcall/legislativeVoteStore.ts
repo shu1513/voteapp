@@ -313,3 +313,41 @@ export async function loadLegislativeVote(
     reviewStatus: row.review_status,
   };
 }
+
+/**
+ * Re-reads the row inside the fan-out's transaction, holding a share lock so
+ * a reviewer's "back to pending" cannot commit underneath the write, and
+ * checks that what is about to fan out is still the approved judgment: the
+ * row was loaded seconds earlier, before the sentence validation's network
+ * round trip, and a revoked or re-approved judgment must not replicate.
+ */
+export async function assertLegislativeVoteStillApproved(db: Queryable, vote: LegislativeVoteForImport): Promise<void> {
+  const result = await db.query<{
+    review_status: LegislativeVoteReviewStatus;
+    source_sha256: string;
+    yea_description: string | null;
+    nay_description: string | null;
+    labels_json: unknown;
+  }>(
+    `SELECT review_status, source_sha256, yea_description, nay_description, labels_json
+       FROM legislative_votes
+      WHERE id = $1
+      FOR SHARE`,
+    [vote.id]
+  );
+  const row = result.rows[0];
+  if (!row) {
+    throw new Error(`legislative_votes row ${vote.id} no longer exists`);
+  }
+  if (row.review_status !== "approved") {
+    throw new Error(`legislative_votes row ${vote.id} is ${row.review_status} now; approval was withdrawn during the run`);
+  }
+  if (
+    row.source_sha256 !== vote.sourceSha256 ||
+    row.yea_description !== vote.yeaDescription ||
+    row.nay_description !== vote.nayDescription ||
+    JSON.stringify(row.labels_json) !== JSON.stringify(vote.labelsJson)
+  ) {
+    throw new Error(`legislative_votes row ${vote.id} was re-approved with different content during the run`);
+  }
+}

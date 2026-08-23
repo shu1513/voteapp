@@ -18,7 +18,11 @@ import {
 } from "../pipeline/rollcall/federalMemberResolver.js";
 import { parseFederalMemberVotes } from "../pipeline/rollcall/federalRollCallMembers.js";
 import { parseFederalRollCallXml } from "../pipeline/rollcall/federalRollCallXml.js";
-import { loadLegislativeVote, type LegislativeVoteForImport } from "../pipeline/rollcall/legislativeVoteStore.js";
+import {
+  assertLegislativeVoteStillApproved,
+  loadLegislativeVote,
+  type LegislativeVoteForImport,
+} from "../pipeline/rollcall/legislativeVoteStore.js";
 import type { LegislativeVoteReviewStatus } from "../pipeline/rollcall/legislativeVotes.js";
 import {
   insertRollCallRecord,
@@ -90,6 +94,7 @@ export type RollCallImportCandidateRow = {
   recordId: string | null;
   // The live rows an `ambiguous` candidate already has for this vote.
   ambiguousRecordIds: string[];
+  // At least one follower event was created for an inserted recent vote.
   notified: boolean;
   relatedRecordIds: string[];
 };
@@ -107,6 +112,7 @@ export type RollCallImportReportRow = RollCallEvidenceFile & {
   // Matched members who voted Present / Not Voting: no record.
   notVoting: number;
   actions: Partial<Record<CandidateRecordPlan["action"], number>>;
+  // Follower notification events created (one per eligible follow).
   notified: number;
   candidates: RollCallImportCandidateRow[];
   error: string | null;
@@ -124,7 +130,9 @@ async function validateSideTemplates(
 ): Promise<Record<RollCallVoteSide, { description: string; sourceUrl: string; eventDate: string }>> {
   const sides: RollCallVoteSide[] = ["yea", "nay"];
   const sentences = { yea: (vote.yeaDescription ?? "").trim(), nay: (vote.nayDescription ?? "").trim() };
-  if (sentences.yea === sentences.nay) {
+  // The validator folds case when it de-duplicates rows, so a pair that
+  // differs only in case would come back as one record.
+  if (sentences.yea.toLowerCase() === sentences.nay.toLowerCase()) {
     throw new Error("yea_description and nay_description are the same sentence");
   }
   const validated = await withWallClockTimeout(
@@ -381,6 +389,7 @@ async function main(): Promise<void> {
         const client: PoolClient = await pool.connect();
         try {
           await client.query("BEGIN");
+          await assertLegislativeVoteStillApproved(client, vote);
           for (const item of work) {
             const content = { ...item.template, candidateId: item.voter.candidateId, identityKey: item.identityKey, originRunId };
             let recordId: string | null = null;
@@ -388,9 +397,9 @@ async function main(): Promise<void> {
               recordId = await insertRollCallRecord(client, content);
               item.reportRow.recordId = recordId;
               if (notify) {
-                await createCandidateRecordUpdateNotificationEvents(client, recordId);
-                item.reportRow.notified = true;
-                row.notified += 1;
+                const events = await createCandidateRecordUpdateNotificationEvents(client, recordId);
+                item.reportRow.notified = events.createdCount > 0;
+                row.notified += events.createdCount;
               }
             } else if (item.plan.action === "rewrite") {
               recordId = item.plan.recordId;
