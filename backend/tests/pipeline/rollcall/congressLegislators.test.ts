@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -171,6 +171,8 @@ describe("loadCongressLegislators", () => {
       ["legislators-historical.yaml", false, 1],
     ]);
     expect(readFileSync(join(cacheDir, sha, "legislators-historical.yaml"), "utf8")).toBe(historical);
+    // Written via rename: no temporary file is left behind.
+    expect(readdirSync(join(cacheDir, sha)).sort()).toEqual(["legislators-current.yaml", "legislators-historical.yaml"]);
 
     const second = await loadCongressLegislators({ sha, cacheDir, fetchFn });
     expect(fetchFn).toHaveBeenCalledTimes(2);

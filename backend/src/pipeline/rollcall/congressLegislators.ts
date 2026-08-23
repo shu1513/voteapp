@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse as parseYaml } from "yaml";
 
@@ -225,8 +225,13 @@ export async function loadCongressLegislators(options: LoadCongressLegislatorsOp
       : await fetchText(congressLegislatorsUrl(sha, file), fetchFn, options.timeoutMs ?? DEFAULT_TIMEOUT_MS);
     const parsed = parseLegislatorsYaml(text, file);
     if (!fromCache) {
-      // Cached only once it parsed, so a truncated body is never kept.
-      writeFileSync(path, text);
+      // Cached only once it parsed, and via rename, so neither a bad body
+      // nor a write cut short can become the cache: a YAML list cut at a
+      // line boundary still parses, just with fewer people, and the cache
+      // is keyed by sha so it would never be refreshed.
+      const temporary = `${path}.${process.pid}.tmp`;
+      writeFileSync(temporary, text);
+      renameSync(temporary, path);
     }
     legislators.push(...parsed);
     files.push({
