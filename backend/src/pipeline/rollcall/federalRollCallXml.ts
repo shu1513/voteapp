@@ -262,12 +262,16 @@ export type FederalRollCallFetchOptions = {
 };
 
 const DEFAULT_TIMEOUT_MS = 30_000;
+// The Senate answers an unknown vote number with a 301 to this fixed page
+// (verified live 2026-08-23); any other redirect is unexpected and is
+// surfaced as an error rather than read as "no such vote".
+export const SENATE_VOTE_NOT_AVAILABLE_URL = "https://www.senate.gov/legislative/roll-call-vote-not-available.htm";
 const USER_AGENT = "voteapp-rollcall-import (+https://electionssimplified.com)";
 
 /**
- * One GET. A 404 (House) or a redirect (the Senate answers an unknown vote
- * number with a 301 to an error page) means the roll call does not exist;
- * any other non-200 is an error the caller may retry.
+ * One GET. A 404 (House) or the Senate's not-available redirect means the
+ * roll call does not exist; any other non-200, including an unexpected
+ * redirect, is an error the caller may retry.
  */
 export async function fetchFederalRollCallXml(
   url: string,
@@ -286,8 +290,15 @@ export async function fetchFederalRollCallXml(
       headers: { accept: "text/xml,application/xml;q=0.9,*/*;q=0.8", "user-agent": USER_AGENT },
       signal: controller.signal,
     });
-    if (response.status === 404 || (response.status >= 300 && response.status < 400)) {
+    if (response.status === 404) {
       return { status: "missing" };
+    }
+    if (response.status >= 300 && response.status < 400) {
+      const location = response.headers.get("location") ?? "";
+      if (location === SENATE_VOTE_NOT_AVAILABLE_URL) {
+        return { status: "missing" };
+      }
+      throw new Error(`HTTP ${response.status} for ${url} redirects to ${location || "(no location)"}`);
     }
     if (response.status !== 200) {
       throw new Error(`HTTP ${response.status} for ${url}`);

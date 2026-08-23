@@ -57,6 +57,7 @@ describe("upsertLegislativeVoteSource", () => {
       outcome: "inserted",
       id: "row-new",
       reviewStatus: "pending",
+      judgmentCleared: false,
     });
     const [sql, params] = db.query.mock.calls[1] as [string, unknown[]];
     expect(sql).toMatch(/INSERT INTO legislative_votes/);
@@ -71,6 +72,7 @@ describe("upsertLegislativeVoteSource", () => {
       outcome: "unchanged",
       id: "row-1",
       reviewStatus: "pending",
+      judgmentCleared: false,
     });
     const [sql, params] = db.query.mock.calls[1] as [string, unknown[]];
     expect(sql).toMatch(/SET fetched_at = \$2::timestamptz,\s+importer_version = \$3\s+WHERE id = \$1/);
@@ -78,15 +80,38 @@ describe("upsertLegislativeVoteSource", () => {
     expect(params).toEqual(["row-1", "2026-08-22T12:00:00.000Z", "rollcall-fetch-v1"]);
   });
 
-  it("rewrites the source columns when the feed changed", async () => {
+  it("rewrites the source columns when the feed changed, keeping the judgment", async () => {
     const db = fakeDb([{ ...EXISTING, source_sha256: "b".repeat(64), yeas: 216 }]);
-    await expect(upsertLegislativeVoteSource(db, ROW)).resolves.toMatchObject({ outcome: "updated", id: "row-1" });
+    await expect(upsertLegislativeVoteSource(db, ROW)).resolves.toEqual({
+      outcome: "updated",
+      id: "row-1",
+      reviewStatus: "pending",
+      judgmentCleared: false,
+    });
     const [sql, params] = db.query.mock.calls[1] as [string, unknown[]];
     expect(sql).toMatch(/UPDATE legislative_votes/);
     expect(sql).toMatch(/source_sha256 = \$12/);
-    expect(sql).not.toMatch(/review_status|yea_description|nay_description|labels_json/);
+    expect(sql).not.toMatch(/review_status|yea_description|nay_description|labels_json|reviewed_at/);
     expect(params[0]).toBe("row-1");
     expect(params[11]).toBe(ROW.sourceSha256);
+  });
+
+  it("clears the judgment and returns to pending when the question or measure changed", async () => {
+    for (const existing of [
+      { ...EXISTING, review_status: "rejected", exact_question: "On Motion to Recommit" },
+      { ...EXISTING, review_status: "pending", measure_id: "H R 2" },
+    ]) {
+      const db = fakeDb([existing]);
+      await expect(upsertLegislativeVoteSource(db, ROW)).resolves.toEqual({
+        outcome: "updated",
+        id: "row-1",
+        reviewStatus: "pending",
+        judgmentCleared: true,
+      });
+      const [sql] = db.query.mock.calls[1] as [string];
+      expect(sql).toMatch(/yea_description = NULL,\s+nay_description = NULL,\s+labels_json = NULL/);
+      expect(sql).toMatch(/review_status = 'pending',\s+reviewed_at = NULL/);
+    }
   });
 
   it("treats an is_floor_vote flip alone as a change", async () => {
@@ -100,6 +125,7 @@ describe("upsertLegislativeVoteSource", () => {
       outcome: "approved_conflict",
       id: "row-1",
       reviewStatus: "approved",
+      judgmentCleared: false,
     });
     expect(db.query).toHaveBeenCalledTimes(1);
   });
@@ -112,10 +138,10 @@ describe("upsertLegislativeVoteSource", () => {
 
   it("only names columns the migrations build", async () => {
     const columns = migrationTableColumns("legislative_votes");
-    const db = fakeDb([{ ...EXISTING, source_sha256: "b".repeat(64) }]);
+    const db = fakeDb([{ ...EXISTING, exact_question: "On Passage, as Amended" }]);
     await upsertLegislativeVoteSource(db, ROW);
     for (const [sql] of db.query.mock.calls as [string][]) {
-      for (const match of sql.matchAll(/\b([a-z_]+) = \$\d+/g)) {
+      for (const match of sql.matchAll(/\b([a-z_]+) = (?:\$\d+|NULL|'pending')/g)) {
         expect(columns.has(match[1]!), match[1]).toBe(true);
       }
       const insertColumns = /INSERT INTO legislative_votes \(([\s\S]*?)\) VALUES/.exec(sql)?.[1];

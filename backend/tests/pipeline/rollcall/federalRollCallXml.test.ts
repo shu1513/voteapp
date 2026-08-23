@@ -12,6 +12,7 @@ import {
   parseHouseRollCallXml,
   parseSenateRollCallXml,
   parseSenateVoteDate,
+  SENATE_VOTE_NOT_AVAILABLE_URL,
   senateRollCallUrls,
 } from "../../../src/pipeline/rollcall/federalRollCallXml.js";
 
@@ -151,13 +152,26 @@ describe("fetchFederalRollCallXml", () => {
     expect(fetchFn.mock.calls[0]?.[1]).toMatchObject({ redirect: "manual", method: "GET" });
   });
 
-  it("treats 404 and 3xx as a roll call that does not exist", async () => {
-    for (const status of [404, 301, 302]) {
-      const fetchFn = vi.fn(async () => new Response("", { status }));
-      await expect(fetchFederalRollCallXml("https://example.test/v.xml", { fetchFn })).resolves.toEqual({
-        status: "missing",
-      });
-    }
+  it("treats 404 and the Senate not-available redirect as a roll call that does not exist", async () => {
+    const notFound = vi.fn(async () => new Response("", { status: 404 }));
+    await expect(fetchFederalRollCallXml("https://example.test/v.xml", { fetchFn: notFound })).resolves.toEqual({
+      status: "missing",
+    });
+    const senate = vi.fn(
+      async () => new Response("", { status: 301, headers: { location: SENATE_VOTE_NOT_AVAILABLE_URL } })
+    );
+    await expect(fetchFederalRollCallXml("https://example.test/v.xml", { fetchFn: senate })).resolves.toEqual({
+      status: "missing",
+    });
+  });
+
+  it("surfaces any other redirect instead of reading it as missing", async () => {
+    const fetchFn = vi.fn(
+      async () => new Response("", { status: 301, headers: { location: "https://example.test/elsewhere.xml" } })
+    );
+    await expect(fetchFederalRollCallXml("https://example.test/v.xml", { fetchFn })).rejects.toThrow(
+      /HTTP 301 .* redirects to https:\/\/example\.test\/elsewhere\.xml/
+    );
   });
 
   it("throws on other failures so the caller can retry", async () => {

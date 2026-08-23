@@ -31,6 +31,10 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
 
 export const ROLLCALL_FETCH_IMPORTER_VERSION = "rollcall-fetch-v1";
 const DEFAULT_DELAY_MS = 300;
+// A chamber records well under 1,000 roll calls per session, so one run can
+// always cover a whole session; the cap only stops a typo such as
+// `--rolls 1-1000000` from expanding before the first request.
+export const MAX_ROLLS_PER_RUN = 1000;
 
 export type RollCallFetchReportRow = {
   chamber: LegislativeVoteChamber;
@@ -50,8 +54,17 @@ export type RollCallFetchReportRow = {
   isFloorVote: boolean | null;
   questionClass: RollCallQuestionClass | null;
   classificationReason: string | null;
+  // Set on an `updated` row whose question or measure changed: its stored
+  // judgment was cleared and it is pending again.
+  judgmentCleared: boolean;
   error: string | null;
 };
+
+// Outcomes that mean the run itself did not do what was asked (as opposed
+// to a roll call that does not exist, a vote shape the parser declines, or
+// an approved row that needs a human). The report is still written; the
+// exit code just stops automation from reading such a run as clean.
+const FAILURE_OUTCOMES: ReadonlySet<RollCallFetchReportRow["outcome"]> = new Set(["fetch_error", "session_mismatch"]);
 
 /**
  * `14,18,190-192` → [14, 18, 190, 191, 192]; ascending, de-duplicated.
@@ -69,8 +82,14 @@ export function parseRollList(raw: string): number[] {
     }
     const start = Number(match[1]);
     const end = match[2] === undefined ? start : Number(match[2]);
+    if (!Number.isSafeInteger(start) || !Number.isSafeInteger(end)) {
+      throw new Error(`--rolls entry is out of range: ${token}`);
+    }
     if (start < 1 || end < start) {
       throw new Error(`--rolls range is empty or starts below 1: ${token}`);
+    }
+    if (rolls.size + (end - start + 1) > MAX_ROLLS_PER_RUN) {
+      throw new Error(`--rolls names more than ${MAX_ROLLS_PER_RUN} roll calls; split the run`);
     }
     for (let roll = start; roll <= end; roll += 1) {
       rolls.add(roll);
@@ -184,6 +203,7 @@ async function main(): Promise<void> {
         isFloorVote: null,
         questionClass: null,
         classificationReason: null,
+        judgmentCleared: false,
         error: null,
       };
       rows.push(row);
@@ -267,6 +287,7 @@ async function main(): Promise<void> {
           importerVersion: ROLLCALL_FETCH_IMPORTER_VERSION,
         });
         row.outcome = result.outcome;
+        row.judgmentCleared = result.judgmentCleared;
       } catch (error) {
         row.outcome = "fetch_error";
         row.error = `store: ${errorMessage(error)}`;
@@ -298,6 +319,9 @@ async function main(): Promise<void> {
   };
   writeFileSync(resolve(evidenceDir, "report.json"), `${JSON.stringify(report, null, 2)}\n`);
   console.log(JSON.stringify({ ...report, rows: undefined }, null, 2));
+  if (rows.some((row) => FAILURE_OUTCOMES.has(row.outcome))) {
+    process.exitCode = 1;
+  }
 }
 
 const entrypoint = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;

@@ -47,6 +47,10 @@ export type LegislativeVoteUpsertResult = {
   outcome: LegislativeVoteUpsertOutcome;
   id: string;
   reviewStatus: LegislativeVoteReviewStatus;
+  // True when an update changed what the judgment is ABOUT (the question or
+  // the measure), so the stored sentences/labels were cleared and the row
+  // went back to pending for a fresh AI pass and review.
+  judgmentCleared: boolean;
 };
 
 type ExistingRow = {
@@ -64,6 +68,15 @@ type ExistingRow = {
   bill_url: string | null;
   source_sha256: string;
 };
+
+// The AI sentences and labels are written against the question and the
+// measure. Tallies, result, date, URLs, and the file hash can all change
+// (the Senate republishes with a modify_date; the House corrects totals)
+// without changing what the vote was about, so they never discard a paid
+// judgment or a reviewer's decision.
+function judgmentInputsMatch(existing: ExistingRow, row: LegislativeVoteSourceRow): boolean {
+  return existing.exact_question === row.exactQuestion && existing.measure_id === row.measureId;
+}
 
 function sourceFieldsMatch(existing: ExistingRow, row: LegislativeVoteSourceRow): boolean {
   return (
@@ -146,7 +159,7 @@ export async function upsertLegislativeVoteSource(
       ]
     );
     const created = inserted.rows[0]!;
-    return { outcome: "inserted", id: created.id, reviewStatus: created.review_status };
+    return { outcome: "inserted", id: created.id, reviewStatus: created.review_status, judgmentCleared: false };
   }
 
   if (sourceFieldsMatch(current, row)) {
@@ -157,12 +170,31 @@ export async function upsertLegislativeVoteSource(
         WHERE id = $1`,
       [current.id, row.fetchedAt.toISOString(), row.importerVersion]
     );
-    return { outcome: "unchanged", id: current.id, reviewStatus: current.review_status };
+    return { outcome: "unchanged", id: current.id, reviewStatus: current.review_status, judgmentCleared: false };
   }
 
   if (current.review_status === "approved") {
-    return { outcome: "approved_conflict", id: current.id, reviewStatus: current.review_status };
+    return {
+      outcome: "approved_conflict",
+      id: current.id,
+      reviewStatus: current.review_status,
+      judgmentCleared: false,
+    };
   }
+
+  // A different question or measure makes any stored judgment a judgment
+  // of something else; a reviewer must not be able to approve it. Clearing
+  // the sentences/labels and returning to pending keeps the
+  // approved_fields and reviewed_at CHECKs satisfied.
+  const judgmentCleared = !judgmentInputsMatch(current, row);
+  const judgmentReset = judgmentCleared
+    ? `,
+            yea_description = NULL,
+            nay_description = NULL,
+            labels_json = NULL,
+            review_status = 'pending',
+            reviewed_at = NULL`
+    : "";
 
   await db.query(
     `UPDATE legislative_votes
@@ -178,7 +210,7 @@ export async function upsertLegislativeVoteSource(
             bill_url = $11,
             source_sha256 = $12,
             fetched_at = $13::timestamptz,
-            importer_version = $14
+            importer_version = $14${judgmentReset}
       WHERE id = $1`,
     [
       current.id,
@@ -197,5 +229,10 @@ export async function upsertLegislativeVoteSource(
       row.importerVersion,
     ]
   );
-  return { outcome: "updated", id: current.id, reviewStatus: current.review_status };
+  return {
+    outcome: "updated",
+    id: current.id,
+    reviewStatus: judgmentCleared ? "pending" : current.review_status,
+    judgmentCleared,
+  };
 }
