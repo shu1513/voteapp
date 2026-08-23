@@ -1,0 +1,265 @@
+import { describe, expect, it, vi } from "vitest";
+
+import {
+  insertRollCallRecord,
+  labelsForSide,
+  loadExistingRecordsForDate,
+  memberVoteSide,
+  NOTIFY_WITHIN_DAYS,
+  parseRollCallLabels,
+  planCandidateRecord,
+  rewriteRollCallRecord,
+  shouldNotifyForVoteDate,
+  syncRollCallRecordTags,
+  type ExistingCandidateRecord,
+} from "../../../src/pipeline/rollcall/rollCallFanOut.js";
+import { migrationTableColumns } from "../../helpers/migrationTableColumns.js";
+
+const SLUGS = new Set(["general", "integrity_and_ethics", "immigration", "gun_control"]);
+
+describe("memberVoteSide", () => {
+  it("maps both feeds' spellings and skips non-positions", () => {
+    expect(memberVoteSide("Yea")).toBe("yea");
+    expect(memberVoteSide("Aye")).toBe("yea");
+    expect(memberVoteSide("Nay")).toBe("nay");
+    expect(memberVoteSide("No")).toBe("nay");
+    expect(memberVoteSide("Present")).toBeNull();
+    expect(memberVoteSide("Not Voting")).toBeNull();
+    expect(memberVoteSide(" not  voting ")).toBeNull();
+  });
+
+  it("fails on a value the floor feeds never print", () => {
+    expect(() => memberVoteSide("Guilty")).toThrow(/unknown vote value: Guilty/);
+    expect(() => memberVoteSide("")).toThrow(/unknown vote value/);
+  });
+});
+
+describe("parseRollCallLabels / labelsForSide", () => {
+  it("accepts stance areas with a yea stance and non-stance areas with null, and flips for nay voters", () => {
+    const labels = parseRollCallLabels(
+      [
+        { slug: "immigration", yea: "for" },
+        { slug: "Gun_Control", yea: "against" },
+        { slug: "general" },
+      ],
+      SLUGS
+    );
+    expect(labels).toEqual([
+      { slug: "immigration", yea: "for" },
+      { slug: "gun_control", yea: "against" },
+      { slug: "general", yea: null },
+    ]);
+    expect(labelsForSide(labels, "yea")).toEqual([
+      { researchAreaSlug: "immigration", stance: "for" },
+      { researchAreaSlug: "gun_control", stance: "against" },
+      { researchAreaSlug: "general", stance: null },
+    ]);
+    expect(labelsForSide(labels, "nay")).toEqual([
+      { researchAreaSlug: "immigration", stance: "against" },
+      { researchAreaSlug: "gun_control", stance: "for" },
+      { researchAreaSlug: "general", stance: null },
+    ]);
+  });
+
+  it("rejects bad shapes, unknown slugs, and stance rules broken on either side", () => {
+    expect(() => parseRollCallLabels(null, SLUGS)).toThrow(/not a non-empty array/);
+    expect(() => parseRollCallLabels([], SLUGS)).toThrow(/not a non-empty array/);
+    expect(() => parseRollCallLabels(["immigration"], SLUGS)).toThrow(/\[0\] is not an object/);
+    expect(() => parseRollCallLabels([{ yea: "for" }], SLUGS)).toThrow(/\[0\]\.slug is not a string/);
+    expect(() => parseRollCallLabels([{ slug: "immigration", yea: "yes" }], SLUGS)).toThrow(/\[0\]\.yea must be/);
+    expect(() =>
+      parseRollCallLabels(
+        [
+          { slug: "immigration", yea: "for" },
+          { slug: "immigration", yea: "against" },
+        ],
+        SLUGS
+      )
+    ).toThrow(/names immigration twice/);
+    expect(() => parseRollCallLabels([{ slug: "housing", yea: "for" }], SLUGS)).toThrow(/'housing' is not allowed/);
+    expect(() => parseRollCallLabels([{ slug: "immigration", yea: null }], SLUGS)).toThrow(
+      /invalid for yea voters: .*requires stance/
+    );
+    expect(() => parseRollCallLabels([{ slug: "general", yea: "for" }], SLUGS)).toThrow(/must not include stance/);
+  });
+});
+
+describe("planCandidateRecord", () => {
+  const KEY = "house:2025:145";
+  const NEW_KEY = "v3_new";
+  const HR1 = { type: "hr" as const, number: "1" };
+
+  function record(overrides: Partial<ExistingCandidateRecord> & { id: string }): ExistingCandidateRecord {
+    return {
+      description: "Voted for the One Big Beautiful Bill Act. It passed 215-214.",
+      source_url: "https://clerk.house.gov/Votes/2025145",
+      record_identity_key: `v3_${overrides.id}`,
+      retired_at: null,
+      ...overrides,
+    };
+  }
+
+  function plan(existing: ExistingCandidateRecord[], skipExisting = false) {
+    return planCandidateRecord({ existing, identityKey: NEW_KEY, rollCallKey: KEY, measure: HR1, skipExisting });
+  }
+
+  it("inserts when the candidate has nothing for this roll call", () => {
+    expect(plan([])).toEqual({ plan: { action: "insert" }, relatedRecordIds: [] });
+    const other = record({ id: "a", source_url: "https://clerk.house.gov/Votes/2025144", description: "Voted on the rule." });
+    expect(plan([other]).plan).toEqual({ action: "insert" });
+  });
+
+  it("is unchanged on a re-run and rewrites exactly one live hand-written duplicate, whatever its URL spelling", () => {
+    expect(plan([record({ id: "done", record_identity_key: NEW_KEY })]).plan).toEqual({ action: "unchanged", recordId: "done" });
+    const xml = record({ id: "old", source_url: "https://clerk.house.gov/evs/2025/roll145.xml" });
+    expect(plan([xml]).plan).toEqual({
+      action: "rewrite",
+      recordId: "old",
+      oldIdentityKey: "v3_old",
+      oldSourceUrl: xml.source_url,
+      oldDescription: xml.description,
+    });
+    expect(plan([record({ id: "page" })]).plan.action).toBe("rewrite");
+    expect(plan([record({ id: "page" })], true).plan).toEqual({ action: "skip_existing", recordId: "page" });
+  });
+
+  it("never resurrects a retired claim or attribution", () => {
+    expect(plan([record({ id: "r1", record_identity_key: NEW_KEY, retired_at: "2026-01-01T00:00:00Z" })]).plan).toEqual({
+      action: "retired",
+      recordId: "r1",
+    });
+    expect(plan([record({ id: "live" }), record({ id: "r2", retired_at: "2026-01-01T00:00:00Z" })]).plan).toEqual({
+      action: "retired",
+      recordId: "r2",
+    });
+  });
+
+  it("stops on more than one live row for the vote, including an imported row beside a later hand-written one", () => {
+    expect(plan([record({ id: "a" }), record({ id: "b" })]).plan).toEqual({ action: "ambiguous", recordIds: ["a", "b"] });
+    expect(plan([record({ id: "done", record_identity_key: NEW_KEY }), record({ id: "hand" })]).plan).toEqual({
+      action: "ambiguous",
+      recordIds: ["done", "hand"],
+    });
+  });
+
+  it("lists same-day rows that name the measure without citing the roll call, and only those", () => {
+    const press = record({
+      id: "press",
+      source_url: "https://hinson.house.gov/media/press-releases/x",
+      description: "Voted for H.R. 1, the One Big Beautiful Bill Act.",
+    });
+    const unrelated = record({
+      id: "rule",
+      source_url: "https://clerk.house.gov/Votes/2025144",
+      description: "Voted for H.Res. 420, the rule.",
+    });
+    const retiredPress = { ...press, id: "retired-press", retired_at: "2026-01-01T00:00:00Z" };
+    const decision = plan([press, unrelated, retiredPress]);
+    expect(decision).toEqual({ plan: { action: "insert" }, relatedRecordIds: ["press"] });
+    // No measure (quorum call) → nothing can be related.
+    expect(
+      planCandidateRecord({ existing: [press], identityKey: NEW_KEY, rollCallKey: KEY, measure: null, skipExisting: false })
+        .relatedRecordIds
+    ).toEqual([]);
+  });
+});
+
+describe("shouldNotifyForVoteDate", () => {
+  it("notifies only for votes within the last 30 days", () => {
+    expect(NOTIFY_WITHIN_DAYS).toBe(30);
+    expect(shouldNotifyForVoteDate("2026-08-23", "2026-08-23")).toBe(true);
+    expect(shouldNotifyForVoteDate("2026-07-24", "2026-08-23")).toBe(true);
+    expect(shouldNotifyForVoteDate("2026-07-23", "2026-08-23")).toBe(false);
+    expect(shouldNotifyForVoteDate("2025-05-22", "2026-08-23")).toBe(false);
+  });
+});
+
+describe("database writes", () => {
+  const content = {
+    candidateId: "cand-1",
+    description: "Voted to pass H.R. 1. It passed the House 215-214.",
+    sourceUrl: "https://clerk.house.gov/evs/2025/roll145.xml",
+    eventDate: "2025-05-22",
+    identityKey: "v3_new",
+    originRunId: "rollcall:US:house:119-1:145:2026-08-23T00:00:00.000Z",
+  };
+
+  it("loads every same-day row of the named candidates grouped by candidate, using migration columns only", async () => {
+    const query = vi.fn().mockResolvedValue({
+      rows: [
+        { candidate_id: "c1", id: "r1", description: "d", source_url: "u", record_identity_key: "k1", retired_at: null },
+        { candidate_id: "c1", id: "r2", description: "d", source_url: "u", record_identity_key: "k2", retired_at: "2026-01-01" },
+        { candidate_id: "c2", id: "r3", description: "d", source_url: "u", record_identity_key: "k3", retired_at: null },
+      ],
+    });
+    const loaded = await loadExistingRecordsForDate({ query }, ["c1", "c2", "c3"], "2025-05-22");
+    expect(query.mock.calls[0]?.[1]).toEqual([["c1", "c2", "c3"], "2025-05-22"]);
+    expect([...loaded.keys()]).toEqual(["c1", "c2"]);
+    expect(loaded.get("c1")?.map((record) => record.id)).toEqual(["r1", "r2"]);
+    const columns = migrationTableColumns("candidate_records");
+    const sql = query.mock.calls[0]?.[0] as string;
+    for (const column of ["candidate_id", "id", "description", "source_url", "record_identity_key", "retired_at", "event_date"]) {
+      expect(sql).toContain(column);
+      expect(columns.has(column), column).toBe(true);
+    }
+    expect(await loadExistingRecordsForDate({ query }, [], "2025-05-22")).toEqual(new Map());
+    expect(query).toHaveBeenCalledTimes(1);
+  });
+
+  it("inserts with rollcall_import provenance and refuses a silent conflict", async () => {
+    const query = vi.fn().mockResolvedValueOnce({ rows: [{ id: "new-id" }] }).mockResolvedValueOnce({ rows: [] });
+    expect(await insertRollCallRecord({ query }, content)).toBe("new-id");
+    const [sql, params] = query.mock.calls[0]!;
+    expect(sql).toMatch(/'rollcall_import'/);
+    expect(params).toEqual([content.candidateId, content.description, content.sourceUrl, "2025-05-22", "v3_new", content.originRunId]);
+    await expect(insertRollCallRecord({ query }, content)).rejects.toThrow(/already holds record key v3_new/);
+  });
+
+  it("rewrites in place guarded on the old key, then logs the rollcall_normalization transition", async () => {
+    const query = vi.fn().mockResolvedValueOnce({ rowCount: 1 }).mockResolvedValueOnce({ rowCount: 1 });
+    await rewriteRollCallRecord({ query }, { ...content, recordId: "old-id", oldIdentityKey: "v3_old" });
+    expect(query).toHaveBeenCalledTimes(2);
+    const [updateSql, updateParams] = query.mock.calls[0]!;
+    expect(updateSql).toMatch(/UPDATE public\.candidate_records/);
+    expect(updateSql).toMatch(/origin = 'rollcall_import'/);
+    expect(updateSql).toMatch(/WHERE id = \$1\s+AND record_identity_key = \$2\s+AND retired_at IS NULL/);
+    expect(updateSql).not.toMatch(/event_date/);
+    expect(updateParams).toEqual(["old-id", "v3_old", content.description, content.sourceUrl, "v3_new", content.originRunId]);
+    const [transitionSql, transitionParams] = query.mock.calls[1]!;
+    expect(transitionSql).toMatch(/candidate_record_identity_transitions/);
+    expect(transitionParams).toEqual(["cand-1", "v3_old", "v3_new", "rollcall_normalization"]);
+
+    const stale = vi.fn().mockResolvedValueOnce({ rowCount: 0 });
+    await expect(
+      rewriteRollCallRecord({ query: stale }, { ...content, recordId: "old-id", oldIdentityKey: "v3_old" })
+    ).rejects.toThrow(/changed under the rewrite/);
+    expect(stale).toHaveBeenCalledTimes(1);
+  });
+
+  it("makes the record's tags exactly the side's labels", async () => {
+    const query = vi.fn().mockResolvedValue({ rowCount: 1, rows: [] });
+    const ids = new Map([
+      ["immigration", "ra-imm"],
+      ["general", "ra-gen"],
+    ]);
+    const result = await syncRollCallRecordTags(
+      { query },
+      "rec-1",
+      [
+        { researchAreaSlug: "immigration", stance: "against" },
+        { researchAreaSlug: "general", stance: null },
+      ],
+      ids
+    );
+    expect(result).toEqual({ deleted: 1 });
+    expect(query.mock.calls[0]?.[0]).toMatch(/DELETE FROM public\.candidate_record_area_tags/);
+    expect(query.mock.calls[0]?.[1]).toEqual(["rec-1", ["ra-imm", "ra-gen"]]);
+    expect(query.mock.calls.slice(1).map((call) => call[1])).toEqual([
+      ["rec-1", "ra-imm", "against"],
+      ["rec-1", "ra-gen", null],
+    ]);
+    await expect(syncRollCallRecordTags({ query }, "rec-1", [{ researchAreaSlug: "housing", stance: "for" }], ids)).rejects.toThrow(
+      /no research area id for slug housing/
+    );
+  });
+});
