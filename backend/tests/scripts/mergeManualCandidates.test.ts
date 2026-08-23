@@ -169,6 +169,32 @@ describe("runMergeCandidates", () => {
     expect(calls.at(-1)?.text).toBe("COMMIT");
   });
 
+  it("retains rename-audit rows on the tombstone instead of rehoming or refusing", async () => {
+    // The generic candidates-FK path rehomes when only the duplicate has
+    // rows and refuses when both sides do — both wrong for an audit ledger:
+    // rehoming falsifies history (the old_* columns describe the duplicate)
+    // and the table has no unique keys to justify a refusal. Rows stay on
+    // the merged tombstone, whose candidates row survives every merge.
+    const { query, calls } = buildClient(
+      happyResponses({
+        "'public.candidates'::regclass": [
+          [
+            { table_name: "public.az_candidate_finance_links", column_name: "candidate_id" },
+            { table_name: "public.candidate_rename_audit", column_name: "candidate_id" },
+          ],
+        ],
+      })
+    );
+
+    const result = await run({ query });
+
+    expect(result.otherTables).toEqual([
+      { table: "public.az_candidate_finance_links", column: "candidate_id", rowsRehomed: 2 },
+    ]);
+    expect(calls.some((call) => call.text.includes("public.candidate_rename_audit"))).toBe(false);
+    expect(calls.at(-1)?.text).toBe("COMMIT");
+  });
+
   it("refuses only when immutable manual-finance targets reference links the merge would change", async () => {
     const { query, calls } = buildClient(happyResponses({
       "FROM public.manual_candidate_finance_filing_targets": [[{ n: "1" }]],

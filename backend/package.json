@@ -84,6 +84,7 @@
     "manual:elections:retire-spurious": "tsx src/scripts/retireSpuriousManualElection.ts",
     "manual:elections:missing-generals": "tsx src/scripts/listMissingGeneralElections.ts",
     "manual:candidates:merge": "tsx src/scripts/mergeManualCandidates.ts",
+    "manual:candidates:rename": "tsx src/scripts/renameManualCandidate.ts",
     "manual:candidates:canonicalize-parties": "tsx src/scripts/canonicalizeCandidateParties.ts",
     "manual:election-results:due": "tsx src/scripts/manualElectionResults.ts due",
     "manual:election-results:context": "tsx src/scripts/manualElectionResults.ts context",
