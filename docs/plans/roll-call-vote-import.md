@@ -400,10 +400,14 @@ importer with different evidence (see "Governors" above for sources).
 - Judgment + review (PR 5, 2026-08-23): no AI provider call. The operator
   (Claude session + user) is both judge and reviewer, so the judgment pass is
   a committed `judgments.json` applied by `rollcall:judge`, not a guarded
-  run. An approved row whose judgment changes is moved back to pending,
-  rewritten, and re-approved in one transaction (the only path the freeze
-  trigger allows); the next `rollcall:import` rewrites the fanned-out
-  records in place.
+  run. Each judgment names the measure and vote date it was written about,
+  checked against the row under lock, so a mistyped roll number that lands
+  on another roll call is refused. An approved row whose judgment changes
+  is moved back to pending, rewritten, and re-approved in one transaction
+  (the only path the freeze trigger allows); the next `rollcall:import`
+  rewrites the fanned-out records in place. Approved → pending is refused
+  once records have fanned out (the importer never withdraws records):
+  replace the judgment, or retire the records first.
 - Duplicate scan (PR 4, 2026-08-23): an old row is a duplicate only when its
   `source_url` IS this roll call (Clerk XML, Clerk vote page, Senate
   .htm/.xml — `rollCallUrlKey` folds them). The "bill id + question class"

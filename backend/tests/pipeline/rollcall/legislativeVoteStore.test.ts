@@ -258,6 +258,8 @@ describe("applyLegislativeVoteJudgment", () => {
     chamber: "house" as const,
     session: "119-1",
     rollNumber: 145,
+    measureId: "H.R. 1",
+    voteDate: "2025-05-22",
     yeaDescription: "Voted to pass H.R. 1.",
     nayDescription: "Voted against passing H.R. 1.",
     labels: [{ slug: "immigration", yea: "for" as const }],
@@ -266,6 +268,9 @@ describe("applyLegislativeVoteJudgment", () => {
   const stored = {
     id: "row-1",
     is_floor_vote: true,
+    // The Clerk's spelling; the judgment's `H.R. 1` must still match.
+    measure_id: "H R 1",
+    vote_date: "2025-05-22",
     review_status: "pending",
     yea_description: null,
     nay_description: null,
@@ -322,6 +327,52 @@ describe("applyLegislativeVoteJudgment", () => {
     expect(reworded.query).toHaveBeenCalledTimes(3);
     expect(reworded.query.mock.calls[1]?.[0]).toMatch(/SET review_status = 'pending',\s+reviewed_at = NULL/);
     expect(reworded.query.mock.calls[2]?.[1]?.[4]).toBe("approved");
+  });
+
+  it("refuses a judgment written about a different measure or date than the row holds", async () => {
+    await expect(applyLegislativeVoteJudgment(db(stored), { ...judgment, measureId: "H.R. 2" })).rejects.toThrow(
+      /house 119-1 roll 145 is H R 1 on 2025-05-22, but the judgment says H\.R\. 2 on 2025-05-22/
+    );
+    await expect(applyLegislativeVoteJudgment(db(stored), { ...judgment, voteDate: "2025-07-03" })).rejects.toThrow(
+      /but the judgment says H\.R\. 1 on 2025-07-03/
+    );
+    await expect(applyLegislativeVoteJudgment(db({ ...stored, measure_id: null }), judgment)).rejects.toThrow(
+      /is no measure on 2025-05-22, but the judgment says H\.R\. 1/
+    );
+    await expect(
+      applyLegislativeVoteJudgment(db({ ...stored, measure_id: null, is_floor_vote: false }), {
+        ...judgment,
+        measureId: null,
+        reviewStatus: "pending",
+      })
+    ).resolves.toBe("updated");
+  });
+
+  it("refuses to move an approved row back to pending once records were fanned out", async () => {
+    const approved = {
+      ...stored,
+      review_status: "approved",
+      yea_description: judgment.yeaDescription,
+      nay_description: judgment.nayDescription,
+      labels_json: [{ yea: "for", slug: "immigration" }],
+    };
+    const fannedOut = {
+      query: vi.fn().mockResolvedValueOnce({ rows: [approved] }).mockResolvedValueOnce({ rows: [{ n: "89" }] }),
+    };
+    await expect(applyLegislativeVoteJudgment(fannedOut, { ...judgment, reviewStatus: "pending" })).rejects.toThrow(
+      /already fanned out 89 live candidate records; setting it back to pending would not withdraw them/
+    );
+    expect(fannedOut.query.mock.calls[1]?.[1]).toEqual(["rollcall:US:house:119-1:145:"]);
+
+    const nothingYet = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({ rows: [approved] })
+        .mockResolvedValueOnce({ rows: [{ n: "0" }] })
+        .mockResolvedValue({ rowCount: 1 }),
+    };
+    await expect(applyLegislativeVoteJudgment(nothingYet, { ...judgment, reviewStatus: "pending" })).resolves.toBe("updated");
+    expect(nothingYet.query.mock.calls[2]?.[1]?.[4]).toBe("pending");
   });
 
   it("refuses a missing row and refuses to approve a non-floor vote", async () => {

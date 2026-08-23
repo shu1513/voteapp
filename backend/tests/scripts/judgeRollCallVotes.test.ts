@@ -9,6 +9,8 @@ const ENTRY = {
   congress: 119,
   session: 1,
   roll: 145,
+  measure_id: "H R 1",
+  vote_date: "2025-05-22",
   review_status: "approved",
   yea_description: "Voted to pass H.R. 1. It passed the House 215-214.",
   nay_description: "Voted against passing H.R. 1. It passed the House 215-214.",
@@ -16,6 +18,10 @@ const ENTRY = {
 };
 
 describe("parseJudgmentsFile", () => {
+  it("accepts null for a vote with no measure", () => {
+    expect(parseJudgmentsFile({ judgments: [{ ...ENTRY, measure_id: null, review_status: "pending" }] }, SLUGS)[0]?.measureId).toBeNull();
+  });
+
   it("turns a file entry into the store's judgment shape", () => {
     expect(parseJudgmentsFile({ judgments: [ENTRY] }, SLUGS)).toEqual([
       {
@@ -23,6 +29,8 @@ describe("parseJudgmentsFile", () => {
         chamber: "house",
         session: "119-1",
         rollNumber: 145,
+        measureId: "H R 1",
+        voteDate: "2025-05-22",
         yeaDescription: ENTRY.yea_description,
         nayDescription: ENTRY.nay_description,
         labels: [
@@ -43,6 +51,9 @@ describe("parseJudgmentsFile", () => {
       [{ judgments: [{ ...ENTRY, congress: "119" }] }, /congress must be a positive integer/],
       [{ judgments: [{ ...ENTRY, session: 3 }] }, /session must be 1 or 2/],
       [{ judgments: [{ ...ENTRY, roll: 0 }] }, /roll must be a positive integer/],
+      [{ judgments: [{ ...ENTRY, measure_id: undefined }] }, /measure_id must be a non-empty string, or null/],
+      [{ judgments: [{ ...ENTRY, measure_id: " " }] }, /measure_id must be a non-empty string, or null/],
+      [{ judgments: [{ ...ENTRY, vote_date: "May 22, 2025" }] }, /vote_date must be an ISO date/],
       [{ judgments: [{ ...ENTRY, review_status: "rejected" }] }, /review_status must be one of pending, approved/],
       [{ judgments: [{ ...ENTRY, nay_description: " " }] }, /nay_description must be a non-empty string/],
       [{ judgments: [{ ...ENTRY, nay_description: ENTRY.yea_description.toUpperCase() }] }, /same sentence/],

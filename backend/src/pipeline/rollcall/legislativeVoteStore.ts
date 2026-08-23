@@ -1,5 +1,6 @@
 import type { Pool } from "pg";
 
+import { parseFederalMeasure } from "./federalMeasures.js";
 import type { LegislativeVoteChamber, LegislativeVoteReviewStatus } from "./legislativeVotes.js";
 
 type Queryable = Pick<Pool, "query">;
@@ -357,6 +358,11 @@ export type LegislativeVoteJudgment = {
   chamber: LegislativeVoteChamber;
   session: string;
   rollNumber: number;
+  // What the judgment was written about, so a roll number that is mistyped
+  // onto another existing roll call cannot carry these sentences with it.
+  // measureId compares as a parsed measure (`H R 1` and `H.R. 1` agree).
+  measureId: string | null;
+  voteDate: string;
   yeaDescription: string;
   nayDescription: string;
   // Already shape-checked (see parseRollCallLabels); stored as given.
@@ -385,6 +391,15 @@ function canonicalLabels(value: unknown): string {
   );
 }
 
+function sameMeasure(stored: string | null, expected: string | null): boolean {
+  const a = parseFederalMeasure(stored);
+  const b = parseFederalMeasure(expected);
+  if (a === null || b === null) {
+    return a === b && (stored ?? "").trim().toUpperCase() === (expected ?? "").trim().toUpperCase();
+  }
+  return a.type === b.type && a.number === b.number;
+}
+
 /**
  * Writes one roll call's judgment (the two sentences, the labels, and the
  * review decision) onto its legislative_votes row. Call inside a
@@ -392,6 +407,11 @@ function canonicalLabels(value: unknown): string {
  * different judgment is moved back to pending first, since the freeze
  * trigger (migration 251) lets an approved row change only through pending.
  * The importer then rewrites any records it already fanned out.
+ *
+ * Approved → pending is refused once records have been fanned out: the
+ * importer only skips a pending row, it never withdraws records, so the
+ * operator must either supply a corrected approved judgment (rewritten in
+ * place on the next import) or retire the records first.
  */
 export async function applyLegislativeVoteJudgment(
   db: Queryable,
@@ -400,12 +420,14 @@ export async function applyLegislativeVoteJudgment(
   const current = await db.query<{
     id: string;
     is_floor_vote: boolean | null;
+    measure_id: string | null;
+    vote_date: string;
     review_status: LegislativeVoteReviewStatus;
     yea_description: string | null;
     nay_description: string | null;
     labels_json: unknown;
   }>(
-    `SELECT id, is_floor_vote, review_status, yea_description, nay_description, labels_json
+    `SELECT id, is_floor_vote, measure_id, vote_date::text AS vote_date, review_status, yea_description, nay_description, labels_json
        FROM legislative_votes
       WHERE jurisdiction = $1
         AND chamber = $2
@@ -419,8 +441,30 @@ export async function applyLegislativeVoteJudgment(
   if (!row) {
     throw new Error(`${name} is not in legislative_votes; run rollcall:fetch first`);
   }
+  if (!sameMeasure(row.measure_id, judgment.measureId) || row.vote_date !== judgment.voteDate) {
+    throw new Error(
+      `${name} is ${row.measure_id ?? "no measure"} on ${row.vote_date}, but the judgment says ${judgment.measureId ?? "no measure"} on ${judgment.voteDate}`
+    );
+  }
   if (judgment.reviewStatus === "approved" && row.is_floor_vote !== true) {
     throw new Error(`${name} is not a kept floor vote (is_floor_vote = ${String(row.is_floor_vote)}); it cannot be approved`);
+  }
+  if (row.review_status === "approved" && judgment.reviewStatus === "pending") {
+    const fannedOut = await db.query<{ n: string }>(
+      `SELECT count(*)::text AS n
+         FROM candidate_records
+        WHERE origin = 'rollcall_import'
+          AND starts_with(origin_run_id, $1)
+          AND retired_at IS NULL`,
+      [`rollcall:${judgment.jurisdiction}:${judgment.chamber}:${judgment.session}:${judgment.rollNumber}:`]
+    );
+    const n = Number(fannedOut.rows[0]?.n ?? "0");
+    if (n > 0) {
+      throw new Error(
+        `${name} already fanned out ${n} live candidate records; setting it back to pending would not withdraw them. ` +
+          "Supply a corrected approved judgment (the next rollcall:import rewrites them in place) or retire the records first."
+      );
+    }
   }
   const labelsJson = JSON.stringify(judgment.labels);
   const sameJudgment =

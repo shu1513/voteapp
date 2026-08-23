@@ -31,6 +31,7 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
 //     "judgments": [
 //       {
 //         "chamber": "house", "congress": 119, "session": 1, "roll": 145,
+//         "measure_id": "H R 1", "vote_date": "2025-05-22",
 //         "review_status": "approved",
 //         "yea_description": "Voted to pass H.R. 1, ... It passed the House 215-214.",
 //         "nay_description": "Voted against passing H.R. 1, ... It passed the House 215-214.",
@@ -61,10 +62,12 @@ function readSentence(index: number, value: unknown, field: string): string {
 }
 
 /**
- * Reads and checks the whole file: shape, chamber/session values, both
- * sentences present and different (the records validator folds case when it
- * de-duplicates, so a case-only difference counts as the same sentence),
- * labels by the importer's own rule, and each roll call named once.
+ * Reads and checks the whole file: shape, chamber/session values, the
+ * measure and date the judgment is about (checked against the row at write
+ * time), both sentences present and different (the records validator folds
+ * case when it de-duplicates, so a case-only difference counts as the same
+ * sentence), labels by the importer's own rule, and each roll call named
+ * once.
  */
 export function parseJudgmentsFile(raw: unknown, allowedSlugs: ReadonlySet<string>): LegislativeVoteJudgment[] {
   if (typeof raw !== "object" || raw === null || Array.isArray(raw)) {
@@ -91,6 +94,14 @@ export function parseJudgmentsFile(raw: unknown, allowedSlugs: ReadonlySet<strin
       fail(index, "session must be 1 or 2");
     }
     const roll = readPositiveInteger(index, entry.roll, "roll");
+    const measureId = entry.measure_id;
+    if (measureId !== null && (typeof measureId !== "string" || measureId.trim().length === 0)) {
+      fail(index, "measure_id must be a non-empty string, or null for a vote with no measure");
+    }
+    const voteDate = entry.vote_date;
+    if (typeof voteDate !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(voteDate)) {
+      fail(index, "vote_date must be an ISO date (YYYY-MM-DD)");
+    }
     const reviewStatus = entry.review_status;
     if (typeof reviewStatus !== "string" || !(REVIEW_STATUSES as readonly string[]).includes(reviewStatus)) {
       fail(index, `review_status must be one of ${REVIEW_STATUSES.join(", ")}`);
@@ -116,6 +127,8 @@ export function parseJudgmentsFile(raw: unknown, allowedSlugs: ReadonlySet<strin
       chamber: chamber as LegislativeVoteChamber,
       session: `${congress}-${session}`,
       rollNumber: roll,
+      measureId: measureId === null ? null : measureId.trim(),
+      voteDate,
       yeaDescription,
       nayDescription,
       labels,
