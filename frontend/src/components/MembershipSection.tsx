@@ -240,9 +240,14 @@ export function MembershipSection() {
                   : `Monthly supporter — ${formatCents(status.data.membership.monthly_amount_cents)}/month since ${formatDate(status.data.membership.started_at)}`}
               </p>
               {status.data.membership.stripe_status === "incomplete" ? (
+                // Cards-only Checkout confirms the payment before the session
+                // completes, so `incomplete` here is the seconds-wide gap
+                // between the subscription.created poke and the activation
+                // poke. Refreshing is the whole remedy; nothing here promises
+                // the portal can pay the invoice, because that's unverified.
                 <p className="text-ink-soft">
-                  Your first payment hasn&apos;t completed yet. Check back in a moment, or open Manage membership to
-                  finish it.
+                  Your first payment is still being confirmed. This usually takes a moment — refresh this page to
+                  check again.
                 </p>
               ) : status.data.membership.stripe_status === "past_due" ||
                 status.data.membership.stripe_status === "unpaid" ? (

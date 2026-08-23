@@ -222,7 +222,7 @@ describe("MembershipSection", () => {
     renderSection();
 
     expect(await screen.findByText("Monthly membership pending — $5.00/month")).toBeInTheDocument();
-    expect(screen.getByText(/Your first payment hasn't completed yet/)).toBeInTheDocument();
+    expect(screen.getByText(/Your first payment is still being confirmed/)).toBeInTheDocument();
     expect(screen.queryByText(/Monthly supporter/)).not.toBeInTheDocument();
     // The backend 409s a second monthly checkout while this row exists, so
     // the forms stay hidden; the portal is where the open invoice gets paid.
