@@ -349,7 +349,12 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
     // A period-end cancel from the customer portal arrives on current API
     // versions as a scheduled `cancel_at` (= the period end) with
     // `cancel_at_period_end` still false; older clients set the boolean.
-    // Either means "ends at the period boundary, don't renew".
+    // Either means "will end without renewing". Known tradeoff: a dashboard
+    // operator could schedule cancel_at at some OTHER date, and the settings
+    // page would still caption the end as the period boundary — accepted,
+    // because nothing in the product sets such a date, and the tempting
+    // `cancel_at === current_period_end` refinement fails the other way
+    // (a second of drift shows a canceled member as renewing).
     const cancelAtPeriodEnd = subscription.cancel_at_period_end === true || subscription.cancel_at != null;
 
     const upserted = await db.query<{ acknowledgment_sent_at: Date | null }>(
