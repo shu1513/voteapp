@@ -18,7 +18,7 @@ export function migrationTableColumns(tableName: string): Set<string> {
   const createTablePattern = new RegExp(
     `CREATE TABLE (?:IF NOT EXISTS )?(?:public\\.)?${tableName} \\(`
   );
-  const alterTargetPattern = /ALTER TABLE\s+(?:ONLY\s+)?(?:IF EXISTS\s+)?(?:public\.)?([a-z_]+)/;
+  const alterTargetPattern = /ALTER TABLE\s+(?:ONLY\s+)?(?:IF EXISTS\s+)?(?:public\.)?([a-z0-9_]+)/;
 
   for (const file of files) {
     const sql = readFileSync(new URL(file, MIGRATIONS_DIR), "utf8");
@@ -39,10 +39,10 @@ export function migrationTableColumns(tableName: string): Set<string> {
       if (!target || target[1] !== tableName) {
         continue;
       }
-      for (const added of statement.matchAll(/ADD COLUMN (?:IF NOT EXISTS )?([a-z_]+)/g)) {
+      for (const added of statement.matchAll(/ADD COLUMN (?:IF NOT EXISTS )?([a-z0-9_]+)/g)) {
         columns.add(added[1]);
       }
-      for (const dropped of statement.matchAll(/DROP COLUMN (?:IF EXISTS )?([a-z_]+)/g)) {
+      for (const dropped of statement.matchAll(/DROP COLUMN (?:IF EXISTS )?([a-z0-9_]+)/g)) {
         columns.delete(dropped[1]);
       }
     }

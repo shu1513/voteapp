@@ -18,14 +18,29 @@ const MIGRATION_252_SQL = readFileSync(
   "utf8"
 );
 
+/**
+ * The exact string literals inside a named CHECK (... IN ('a', 'b')) — so the
+ * comparison is two-way: an extra SQL value fails as surely as a missing one,
+ * and a value mentioned only in a comment does not count.
+ */
+function checkConstraintValues(sql: string, constraintName: string): string[] {
+  const start = sql.search(new RegExp(`CONSTRAINT ${constraintName}\\s+CHECK`));
+  expect(start, constraintName).toBeGreaterThanOrEqual(0);
+  const body = sql.slice(start + "CONSTRAINT ".length);
+  const end = Math.min(
+    ...[body.indexOf("CONSTRAINT "), body.indexOf(";")].filter((index) => index >= 0)
+  );
+  return [...body.slice(0, end).matchAll(/'([a-z_]+)'/g)].map((m) => m[1]).sort();
+}
+
 describe("legislative votes migration", () => {
-  it("keeps chamber and review_status CHECKs aligned with the code enums", () => {
-    for (const chamber of LEGISLATIVE_VOTE_CHAMBERS) {
-      expect(MIGRATION_251_SQL).toContain(`'${chamber}'`);
-    }
-    for (const status of LEGISLATIVE_VOTE_REVIEW_STATUSES) {
-      expect(MIGRATION_251_SQL).toContain(`'${status}'`);
-    }
+  it("keeps chamber and review_status CHECKs exactly aligned with the code enums", () => {
+    expect(checkConstraintValues(MIGRATION_251_SQL, "legislative_votes_chamber_check")).toEqual(
+      [...LEGISLATIVE_VOTE_CHAMBERS].sort()
+    );
+    expect(
+      checkConstraintValues(MIGRATION_251_SQL, "legislative_votes_review_status_check")
+    ).toEqual([...LEGISLATIVE_VOTE_REVIEW_STATUSES].sort());
   });
 
   it("builds every column the plan's data model names", () => {
@@ -59,19 +74,19 @@ describe("legislative votes migration", () => {
     }
   });
 
-  it("only lets a judged floor vote be approved", () => {
+  it("only lets a judged floor vote be approved, and freezes it once approved", () => {
     expect(MIGRATION_251_SQL).toContain("legislative_votes_approved_fields_check");
     expect(MIGRATION_251_SQL).toContain("review_status <> 'approved'");
     expect(MIGRATION_251_SQL).toContain("is_floor_vote = true");
+    expect(MIGRATION_251_SQL).toContain("jsonb_array_length(coalesce(labels_json, '[]'::jsonb)) > 0");
+    expect(MIGRATION_251_SQL).toContain("trg_reject_approved_legislative_vote_edit");
   });
 });
 
 describe("candidate_records origin migration", () => {
-  it("keeps the origin CHECK aligned with CandidateRecordOrigin", () => {
-    const checkLine = MIGRATION_252_SQL.split("\n").find((line) => line.includes("origin IN ("));
-    expect(checkLine).toBeDefined();
-    for (const origin of CANDIDATE_RECORD_ORIGINS) {
-      expect(checkLine).toContain(`'${origin}'`);
-    }
+  it("keeps the origin CHECK exactly aligned with CandidateRecordOrigin", () => {
+    expect(checkConstraintValues(MIGRATION_252_SQL, "candidate_records_origin_check")).toEqual(
+      [...CANDIDATE_RECORD_ORIGINS].sort()
+    );
   });
 });

@@ -70,17 +70,22 @@ CREATE TABLE public.legislative_votes (
     CHECK (review_status IN ('pending', 'approved', 'rejected')),
   CONSTRAINT legislative_votes_labels_json_check
     CHECK (labels_json IS NULL OR jsonb_typeof(labels_json) = 'array'),
+  -- reviewed_at means "a human decided": set exactly when the row has left
+  -- pending.
+  CONSTRAINT legislative_votes_reviewed_at_check
+    CHECK ((review_status = 'pending') = (reviewed_at IS NULL)),
   -- A bad template replicates x435, so approval is only possible once the
-  -- row is a floor vote with both sentences and labels in place.
+  -- row is a floor vote with both sentences and at least one label in
+  -- place. Label element shape (slug exists, stance value) is checked in
+  -- code, where the research-area list lives.
   CONSTRAINT legislative_votes_approved_fields_check
     CHECK (
       review_status <> 'approved'
       OR (
         is_floor_vote = true
-        AND yea_description IS NOT NULL
-        AND nay_description IS NOT NULL
-        AND labels_json IS NOT NULL
-        AND reviewed_at IS NOT NULL
+        AND btrim(coalesce(yea_description, '')) <> ''
+        AND btrim(coalesce(nay_description, '')) <> ''
+        AND jsonb_array_length(coalesce(labels_json, '[]'::jsonb)) > 0
       )
     )
 );
@@ -89,5 +94,35 @@ CREATE TRIGGER trg_legislative_votes_set_updated_at
 BEFORE UPDATE ON public.legislative_votes
 FOR EACH ROW
 EXECUTE FUNCTION set_updated_at();
+
+-- Approval covers the row as the reviewer saw it. A re-fetch that finds a
+-- corrected XML, a re-run of the AI pass, or a hand edit must move the row
+-- back to pending (and re-approve) rather than change what an approved row
+-- says; otherwise the fan-out would replicate unreviewed text. Only bookkeeping
+-- columns (fetched_at, importer_version, updated_at) may change while
+-- approved.
+CREATE FUNCTION public.reject_approved_legislative_vote_edit()
+RETURNS trigger
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  IF OLD.review_status = 'approved'
+     AND NEW.review_status = 'approved'
+     AND (to_jsonb(NEW) - 'fetched_at' - 'importer_version' - 'updated_at')
+         IS DISTINCT FROM
+         (to_jsonb(OLD) - 'fetched_at' - 'importer_version' - 'updated_at') THEN
+    RAISE EXCEPTION
+      'legislative_votes row % is approved; set review_status to pending before editing it',
+      OLD.id;
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER trg_reject_approved_legislative_vote_edit
+BEFORE UPDATE ON public.legislative_votes
+FOR EACH ROW
+EXECUTE FUNCTION public.reject_approved_legislative_vote_edit();
 
 COMMIT;
