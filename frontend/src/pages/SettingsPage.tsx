@@ -4,6 +4,7 @@ import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/
 import { apiRequest } from "@voteapp/api-client";
 import type { EmailPreferences } from "@voteapp/api-client";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
+import { MembershipSection } from "../components/MembershipSection";
 import { ResearchAreasSection } from "../components/ResearchAreasSection";
 import { SavedAddressForm } from "../components/SavedAddressForm";
 import { purgeAccountScopedQueries, useLogout, useMe, type Me } from "@voteapp/api-client";
@@ -545,6 +546,9 @@ export function SettingsPage() {
           <HomeAddressSection />
           <ResearchAreasSection />
           <EmailPreferencesSection />
+          {/* Verified-only like the backend's gate; renders nothing when
+              Stripe isn't configured. */}
+          <MembershipSection />
         </>
       ) : (
         <p className="rounded-xl border border-line bg-surface p-4 text-sm text-ink-soft">

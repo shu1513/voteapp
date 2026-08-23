@@ -52,6 +52,7 @@ describe("SettingsPage", () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
       "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
+      "/api/me/membership": { body: { enabled: false } },
       "/api/research-areas": { body: { research_areas: [] } },
       "/api/me/research-area-preferences": { body: { preferences: [] } },
     });
@@ -61,10 +62,39 @@ describe("SettingsPage", () => {
     expect(screen.getByText("My most important issues")).toBeInTheDocument();
   });
 
+  it("hides the support section when Stripe is not configured", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
+      "/api/me/membership": { body: { enabled: false } },
+      "/api/research-areas": { body: { research_areas: [] } },
+      "/api/me/research-area-preferences": { body: { preferences: [] } },
+    });
+    renderSettings();
+
+    expect(await screen.findByRole("heading", { name: "Email notifications" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Support Elections Simplified" })).not.toBeInTheDocument();
+  });
+
+  it("shows the support section to verified users when Stripe is configured", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
+      "/api/me/membership": { body: { enabled: true, membership: null, total_net_cents: 0, payments: [] } },
+      "/api/research-areas": { body: { research_areas: [] } },
+      "/api/me/research-area-preferences": { body: { preferences: [] } },
+    });
+    renderSettings();
+
+    expect(await screen.findByRole("heading", { name: "Support Elections Simplified" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Support monthly" })).toBeInTheDocument();
+  });
+
   it("swaps password-gated sections for the add-a-password hint on Google-only accounts", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_GOOGLE_NO_PASSWORD },
       "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
+      "/api/me/membership": { body: { enabled: false } },
       "/api/research-areas": { body: { research_areas: [] } },
       "/api/me/research-area-preferences": { body: { preferences: [] } },
     });
@@ -84,6 +114,7 @@ describe("SettingsPage", () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
       "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
+      "/api/me/membership": { body: { enabled: false } },
       "/api/research-areas": { body: { research_areas: [] } },
       "/api/me/research-area-preferences": { body: { preferences: [] } },
     });
@@ -100,6 +131,7 @@ describe("SettingsPage", () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
       "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
+      "/api/me/membership": { body: { enabled: false } },
     });
     renderSettings();
 
@@ -122,6 +154,7 @@ describe("SettingsPage", () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
       "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
+      "/api/me/membership": { body: { enabled: false } },
       "/api/research-areas": { body: { research_areas: [] } },
       "/api/me/research-area-preferences": { body: { preferences: [] } },
       "/api/address/autocomplete": { body: { suggestions: [] } },
@@ -143,6 +176,7 @@ describe("SettingsPage", () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
       "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
+      "/api/me/membership": { body: { enabled: false } },
       "/api/research-areas": { body: { research_areas: [] } },
       "/api/me/research-area-preferences": { body: { preferences: [] } },
     });
