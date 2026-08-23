@@ -121,10 +121,11 @@ export function WelcomePage() {
       <h1 className="text-2xl font-bold">
         {me.first_name ? `Welcome, ${me.first_name}!` : "Welcome!"}
       </h1>
-      <p className="mt-2 text-sm text-ink-soft">
-        Pick the issues you care about — as many as you like — and we'll put the elections and
-        candidates that touch them first. Drag to rank them; the top of the list counts most. You can
-        change this any time in Settings.
+      <p className="mt-2 text-sm text-ink">
+        Choose the issues you care about and drag them into priority order — we&rsquo;ll rank
+        elections and candidates by how well they align with your issues. Choose
+        &ldquo;Must&rdquo; if you will absolutely not accept a candidate or ballot measure that
+        takes the opposite stance from yours. You can change this any time in Settings.
       </p>
 
       {catalog.isPending ? <LoadingNotice text="Loading issues…" /> : null}
