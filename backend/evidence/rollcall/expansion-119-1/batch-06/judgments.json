@@ -1,0 +1,191 @@
+{
+  "judgments": [
+    {
+      "chamber": "house",
+      "congress": 119,
+      "session": 1,
+      "roll": 277,
+      "measure_id": "H R 3062",
+      "vote_date": "2025-09-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 3062, the Promoting Cross-border Energy Infrastructure Act, which replaced the presidential permit process for oil, gas, and electric lines crossing an international border with a faster certificate-of-crossing approval. It passed the House 224-203.",
+      "nay_description": "Voted against passing H.R. 3062, the Promoting Cross-border Energy Infrastructure Act, which replaced the presidential permit process for oil, gas, and electric lines crossing an international border with a faster certificate-of-crossing approval. It passed the House 224-203.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 119,
+      "session": 1,
+      "roll": 279,
+      "measure_id": "H R 1047",
+      "vote_date": "2025-09-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 1047, the GRID Power Act, which directed federal energy regulators to move dispatchable power plants, mainly fossil-fuel generation, to the front of the queue for connecting to the electric grid. It passed the House 216-206.",
+      "nay_description": "Voted against passing H.R. 1047, the GRID Power Act, which directed federal energy regulators to move dispatchable power plants, mainly fossil-fuel generation, to the front of the queue for connecting to the electric grid. It passed the House 216-206.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 549,
+      "measure_id": "H.J.Res. 104",
+      "vote_date": "2025-10-08",
+      "review_status": "approved",
+      "yea_description": "Voted to send H.J.Res. 104 to the President, using the Congressional Review Act to repeal the Bureau of Land Management plan for the Miles City field office in eastern Montana and reopen those federal lands to coal leasing. It passed the Senate 52-47.",
+      "nay_description": "Voted against sending H.J.Res. 104 to the President, which used the Congressional Review Act to repeal the Bureau of Land Management plan for the Miles City field office in eastern Montana and reopen those federal lands to coal leasing. It passed the Senate 52-47.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 554,
+      "measure_id": "S.J.Res. 71",
+      "vote_date": "2025-10-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 71, which would have terminated the national energy emergency the President declared in Executive Order 14156 on January 20, 2025. It failed in the Senate 47-51.",
+      "nay_description": "Voted against passing S.J.Res. 71, which would have terminated the national energy emergency the President declared in Executive Order 14156 on January 20, 2025. It failed in the Senate 47-51.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 556,
+      "measure_id": "H.J.Res. 105",
+      "vote_date": "2025-10-08",
+      "review_status": "approved",
+      "yea_description": "Voted to send H.J.Res. 105 to the President, using the Congressional Review Act to repeal the Bureau of Land Management plan for the North Dakota field office that had limited oil and gas development in low-potential areas and narrowed new coal leasing. It passed the Senate 50-45.",
+      "nay_description": "Voted against sending H.J.Res. 105 to the President, which used the Congressional Review Act to repeal the Bureau of Land Management plan for the North Dakota field office that had limited oil and gas development in low-potential areas and narrowed new coal leasing. It passed the Senate 50-45.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 560,
+      "measure_id": "H.J.Res. 106",
+      "vote_date": "2025-10-09",
+      "review_status": "approved",
+      "yea_description": "Voted to send H.J.Res. 106 to the President, using the Congressional Review Act to repeal the Bureau of Land Management plan for Alaska's Central Yukon area and undo its designation of areas of critical environmental concern. It passed the Senate 50-46.",
+      "nay_description": "Voted against sending H.J.Res. 106 to the President, which used the Congressional Review Act to repeal the Bureau of Land Management plan for Alaska's Central Yukon area and undo its designation of areas of critical environmental concern. It passed the Senate 50-46.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 570,
+      "measure_id": "S. 2296",
+      "vote_date": "2025-10-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S. 2296, the National Defense Authorization Act for Fiscal Year 2026, which set defense policy and authorized spending for Department of Defense programs, military construction, and the Energy Department's national security programs. It passed the Senate 77-20.",
+      "nay_description": "Voted against passing S. 2296, the National Defense Authorization Act for Fiscal Year 2026, which set defense policy and authorized spending for Department of Defense programs, military construction, and the Energy Department's national security programs. It passed the Senate 77-20.",
+      "labels": [
+        {
+          "slug": "national_defense",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 594,
+      "measure_id": "S.J.Res. 81",
+      "vote_date": "2025-10-28",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 81, which terminated the national emergency the President declared on July 30, 2025 to impose an added 40 percent tariff on many imports from Brazil. It passed the Senate 52-48.",
+      "nay_description": "Voted against passing S.J.Res. 81, which terminated the national emergency the President declared on July 30, 2025 to impose an added 40 percent tariff on many imports from Brazil. It passed the Senate 52-48.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 598,
+      "measure_id": "S.J.Res. 77",
+      "vote_date": "2025-10-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 77, which terminated the national emergency the President declared on February 1, 2025 to impose an added 25 percent tariff on most imports from Canada and 10 percent on Canadian energy. It passed the Senate 50-46.",
+      "nay_description": "Voted against passing S.J.Res. 77, which terminated the national emergency the President declared on February 1, 2025 to impose an added 25 percent tariff on most imports from Canada and 10 percent on Canadian energy. It passed the Senate 50-46.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 599,
+      "measure_id": "S.J.Res. 80",
+      "vote_date": "2025-10-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 80, which used the Congressional Review Act to repeal the Bureau of Land Management's activity plan for the National Petroleum Reserve in Alaska, reopening parts of the 23-million-acre reserve to oil and gas leasing. It passed the Senate 52-45.",
+      "nay_description": "Voted against passing S.J.Res. 80, which used the Congressional Review Act to repeal the Bureau of Land Management's activity plan for the National Petroleum Reserve in Alaska, reopening parts of the 23-million-acre reserve to oil and gas leasing. It passed the Senate 52-45.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 600,
+      "measure_id": "S.J.Res. 88",
+      "vote_date": "2025-10-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 88, which terminated the national emergency the President declared on April 2, 2025 to impose a 10 percent tariff on most imports and higher duties on specified trading partners. It passed the Senate 51-47.",
+      "nay_description": "Voted against passing S.J.Res. 88, which terminated the national emergency the President declared on April 2, 2025 to impose a 10 percent tariff on most imports and higher duties on specified trading partners. It passed the Senate 51-47.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for"
+        }
+      ]
+    }
+  ]
+}
