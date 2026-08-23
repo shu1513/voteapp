@@ -32,17 +32,18 @@
      dem-blue — party brand colors stay on party content in an elections app.
      8.9:1 on white. */
   --color-navy: #1e3a5f;
-  /* Auto-pick accent ("Auto-pick by my issues" / "Fill my empty picks"). Teal
-     on purpose: red reads Republican, blue reads Democrat, yellow is the
-     manual pick color — teal is the inviting shade with no partisan or in-app
-     meaning. Light teal needs dark text (white would fail contrast): teal-950
-     ink on it is 9.8:1, and 7.8:1 on the darker hover shade. The fill itself
-     is only ~1.5:1 against a white page, so the border token (teal-600,
-     3.5:1 on white) draws the button's boundary. */
-  --color-autopick: #5eead4;
-  --color-autopick-dark: #2dd4bf;
-  --color-autopick-ink: #042f2e;
-  --color-autopick-border: #0d9488;
+  /* Auto-pick accent ("Auto-pick by my issues" / "Auto-fill empty picks by
+     my issues"). Amazon "Buy Now" orange, paired with the "Add to cart"
+     yellow above: the manual pick is the cart, the auto-pick is the
+     one-click checkout. Not red (reads Republican) or blue (reads Democrat).
+     Near-black ink on it: 9.5:1, 7.8:1 on the darker hover shade. The fill
+     is only ~2:1 against a white page, so the border token (Amazon's dark
+     price orange, 4.5:1 on white — clears the 3:1 non-text floor) draws the
+     button's boundary. */
+  --color-autopick: #ffa41c;
+  --color-autopick-dark: #fa8900;
+  --color-autopick-ink: #0f1111;
+  --color-autopick-border: #c45500;
   /* Guest conversion nudge ("Enter your address to see if this race is on
      your ballot"). Light green tint so the callout pops against white cards
      without competing with pick yellow, autopick teal, or party colors.

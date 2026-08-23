@@ -94,8 +94,8 @@ export function CandidatePickButton({
   // too, not only the unpicked ones.
   const sizeClass =
     size === "sm"
-      ? "rounded-lg px-3 py-1 text-xs font-semibold transition disabled:opacity-50"
-      : "rounded-lg px-4 py-2 text-sm font-semibold transition disabled:opacity-50";
+      ? "rounded-full px-3 py-1 text-xs font-semibold transition disabled:opacity-50"
+      : "rounded-full px-4 py-2 text-sm font-semibold transition disabled:opacity-50";
   const base = fullWidth ? `${sizeClass} w-full text-center` : sizeClass;
   const visibleLabel = setChoice.isPending ? "…" : isPicked ? "✓ My pick" : "Make my pick";
 
@@ -292,7 +292,7 @@ export function MeasureChoiceButtons({
   const setChoice = useSetElectionChoice();
   const saving = useElectionChoiceSaving();
   const position = choice?.measure_position ?? null;
-  const sizeClass = "rounded-lg px-4 py-2 text-sm font-semibold transition disabled:opacity-50";
+  const sizeClass = "rounded-full px-4 py-2 text-sm font-semibold transition disabled:opacity-50";
   const base = fullWidth ? `${sizeClass} flex-1 text-center` : sizeClass;
   const undecided = position === null;
 
