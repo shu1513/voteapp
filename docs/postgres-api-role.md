@@ -51,6 +51,15 @@ TO voteapp_api;
 GRANT INSERT ON public.user_terms_acceptances TO voteapp_api;
 GRANT INSERT, UPDATE ON public.user_pick_card_shares TO voteapp_api;
 
+-- Membership billing (migration 250; grants in 254). Never DELETE: rows are
+-- retained after account deletion and the FK's ON DELETE SET NULL runs as
+-- the table owner.
+GRANT INSERT ON public.billing_customers TO voteapp_api;
+GRANT INSERT, UPDATE ON
+  public.billing_subscriptions,
+  public.billing_payments
+TO voteapp_api;
+
 -- PostgreSQL row-locking SELECTs (FOR UPDATE/FOR SHARE/etc.) require UPDATE
 -- privilege. API queries only row-lock tables already listed as writable;
 -- reference/catalog tables such as elections, candidate_elections, and
