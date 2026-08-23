@@ -13,7 +13,7 @@ import {
   type FederalMemberResolutionOutcome,
 } from "../pipeline/rollcall/federalMemberResolver.js";
 import { parseFederalMemberVotes } from "../pipeline/rollcall/federalRollCallMembers.js";
-import { parseFederalRollCallXml } from "../pipeline/rollcall/federalRollCallXml.js";
+import { parseFederalRollCallXml, type ParsedFederalRollCall } from "../pipeline/rollcall/federalRollCallXml.js";
 import type { LegislativeVoteChamber } from "../pipeline/rollcall/legislativeVotes.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 
@@ -125,6 +125,23 @@ export function summarizeUnmatched(resolutions: readonly FederalMemberResolution
   );
 }
 
+/**
+ * Both feeds put the metadata first, so a body cut off after the header —
+ * or part-way through the member list — still parses. Every recorded roll
+ * call lists every member, and the tally can never exceed the rows that
+ * produced it, so either condition means the evidence file is incomplete.
+ */
+export function assertMemberRowsComplete(parsed: Pick<ParsedFederalRollCall, "yeas" | "nays">, members: number): void {
+  if (members === 0) {
+    throw new Error("XML has no member rows; the evidence file is incomplete");
+  }
+  if (parsed.yeas + parsed.nays > members) {
+    throw new Error(
+      `XML tallies ${parsed.yeas + parsed.nays} yea/nay votes but lists only ${members} member rows; the evidence file is incomplete`
+    );
+  }
+}
+
 function readValueFlag(argv: readonly string[], flagName: string): string | null {
   const index = argv.indexOf(flagName);
   if (index >= 0) {
@@ -215,6 +232,7 @@ async function main(): Promise<void> {
       row.question = parsed.question;
       const members = parseFederalMemberVotes(evidence.chamber, xml);
       row.members = members.length;
+      assertMemberRowsComplete(parsed, members.length);
       const resolutions = resolveFederalMembers(members, parsed.voteDate, legislators.index, candidatesByFec);
       allResolutions.push(...resolutions);
       for (const resolution of resolutions) {

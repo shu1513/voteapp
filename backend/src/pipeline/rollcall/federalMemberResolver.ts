@@ -141,8 +141,10 @@ type CandidateFecRow = {
 
 /**
  * Every FEC id on a live candidate, with whether that candidate is on an
- * office election dated `scopeFrom` or later (status not withdrawn/lost).
- * Loaded once per run: the whole table is a few hundred ids.
+ * office election dated `scopeFrom` or later (status not withdrawn/lost),
+ * as the headline candidate or as a running mate — the same membership
+ * rule the candidate-records code uses. Loaded once per run: the whole
+ * table is a few hundred ids.
  */
 export async function loadCandidateFecIndex(db: Queryable, scopeFrom: string): Promise<CandidateFecIndex> {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(scopeFrom)) {
@@ -158,7 +160,7 @@ export async function loadCandidateFecIndex(db: Queryable, scopeFrom: string): P
           SELECT 1
           FROM candidate_elections AS ce
           JOIN elections AS e ON e.id = ce.election_id
-          WHERE ce.candidate_id = c.id
+          WHERE (ce.candidate_id = c.id OR ce.running_mate_candidate_id = c.id)
             AND e.race_type = 'office'
             AND e.election_date >= $1::date
             AND ce.status NOT IN ('withdrawn', 'lost')

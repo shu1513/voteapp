@@ -200,6 +200,8 @@ describe("loadCandidateFecIndex", () => {
     const query = vi.fn().mockResolvedValue({ rows: [] });
     await loadCandidateFecIndex({ query } as never, "2026-11-01");
     const sql = query.mock.calls[0]?.[0] as string;
+    // Same election-membership rule as the candidate-records code.
+    expect(sql).toMatch(/\(ce\.candidate_id = c\.id OR ce\.running_mate_candidate_id = c\.id\)/);
     const tables: Record<string, Set<string>> = {
       c: migrationTableColumns("candidates"),
       ce: migrationTableColumns("candidate_elections"),

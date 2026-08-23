@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it } from "vitest";
 
 import type { FederalMemberResolution } from "../../src/pipeline/rollcall/federalMemberResolver.js";
 import {
+  assertMemberRowsComplete,
   DEFAULT_SCOPE_FROM,
   listRollCallEvidenceFiles,
   summarizeUnmatched,
@@ -39,6 +40,20 @@ describe("listRollCallEvidenceFiles", () => {
       { file: "house-119-1-roll00145.xml", chamber: "house", congress: 119, session: 1, roll: 145 },
       { file: "senate-119-1-roll00618.xml", chamber: "senate", congress: 119, session: 1, roll: 618 },
     ]);
+  });
+});
+
+describe("assertMemberRowsComplete", () => {
+  it("accepts a full member list, including a 0-0 quorum call", () => {
+    expect(() => assertMemberRowsComplete({ yeas: 215, nays: 214 }, 432)).not.toThrow();
+    expect(() => assertMemberRowsComplete({ yeas: 0, nays: 0 }, 435)).not.toThrow();
+  });
+
+  it("fails a file whose header parsed but whose member list is missing or cut short", () => {
+    expect(() => assertMemberRowsComplete({ yeas: 0, nays: 0 }, 0)).toThrow(/no member rows/);
+    expect(() => assertMemberRowsComplete({ yeas: 215, nays: 214 }, 100)).toThrow(
+      /tallies 429 yea\/nay votes but lists only 100 member rows/
+    );
   });
 });
 
