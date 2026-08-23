@@ -88,6 +88,8 @@ export type RollCallImportCandidateRow = {
   side: RollCallVoteSide;
   action: CandidateRecordPlan["action"];
   recordId: string | null;
+  // The live rows an `ambiguous` candidate already has for this vote.
+  ambiguousRecordIds: string[];
   notified: boolean;
   relatedRecordIds: string[];
 };
@@ -361,6 +363,7 @@ async function main(): Promise<void> {
             ...voter,
             action: decision.plan.action,
             recordId: "recordId" in decision.plan ? decision.plan.recordId : null,
+            ambiguousRecordIds: decision.plan.action === "ambiguous" ? decision.plan.recordIds : [],
             notified: false,
             relatedRecordIds: decision.relatedRecordIds,
           };
