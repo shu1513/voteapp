@@ -71,6 +71,7 @@
     "rollcall:fetch": "tsx src/scripts/fetchRollCallVotes.ts",
     "rollcall:resolve": "tsx src/scripts/resolveRollCallMembers.ts",
     "rollcall:import": "tsx src/scripts/importRollCallVotes.ts",
+    "rollcall:judge": "tsx src/scripts/judgeRollCallVotes.ts",
     "manual:records:audit": "tsx src/scripts/auditCandidateRecordsCompleteness.ts",
     "manual:records:repair-source-urls": "tsx src/scripts/repairCandidateRecordSourceUrls.ts",
     "manual:records:repair-event-dates": "tsx src/scripts/repairCandidateRecordEventDates.ts",

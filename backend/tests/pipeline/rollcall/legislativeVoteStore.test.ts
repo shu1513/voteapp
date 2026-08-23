@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  applyLegislativeVoteJudgment,
   assertLegislativeVoteStillApproved,
   loadLegislativeVote,
   upsertLegislativeVoteSource,
@@ -248,5 +249,91 @@ describe("assertLegislativeVoteStillApproved", () => {
     await expect(assertLegislativeVoteStillApproved({ query: refetched }, vote)).rejects.toThrow(/different content/);
     const gone = vi.fn().mockResolvedValue({ rows: [] });
     await expect(assertLegislativeVoteStillApproved({ query: gone }, vote)).rejects.toThrow(/no longer exists/);
+  });
+});
+
+describe("applyLegislativeVoteJudgment", () => {
+  const judgment = {
+    jurisdiction: "US",
+    chamber: "house" as const,
+    session: "119-1",
+    rollNumber: 145,
+    yeaDescription: "Voted to pass H.R. 1.",
+    nayDescription: "Voted against passing H.R. 1.",
+    labels: [{ slug: "immigration", yea: "for" as const }],
+    reviewStatus: "approved" as const,
+  };
+  const stored = {
+    id: "row-1",
+    is_floor_vote: true,
+    review_status: "pending",
+    yea_description: null,
+    nay_description: null,
+    labels_json: null,
+  };
+
+  function db(row: Record<string, unknown> | null) {
+    return { query: vi.fn().mockResolvedValueOnce({ rows: row ? [row] : [] }).mockResolvedValue({ rowCount: 1 }) };
+  }
+
+  it("locks the row, writes the judgment, and stamps reviewed_at only when approving", async () => {
+    const approved = db(stored);
+    await expect(applyLegislativeVoteJudgment(approved, judgment)).resolves.toBe("updated");
+    expect(approved.query).toHaveBeenCalledTimes(2);
+    expect(approved.query.mock.calls[0]?.[0]).toMatch(/FOR UPDATE/);
+    expect(approved.query.mock.calls[0]?.[1]).toEqual(["US", "house", "119-1", 145]);
+    const [sql, params] = approved.query.mock.calls[1]!;
+    expect(sql).toMatch(/reviewed_at = CASE WHEN \$5 = 'approved' THEN now\(\) ELSE NULL END/);
+    expect(params).toEqual([
+      "row-1",
+      judgment.yeaDescription,
+      judgment.nayDescription,
+      JSON.stringify(judgment.labels),
+      "approved",
+    ]);
+
+    const pending = db(stored);
+    await expect(applyLegislativeVoteJudgment(pending, { ...judgment, reviewStatus: "pending" })).resolves.toBe("updated");
+    expect(pending.query.mock.calls[1]?.[1]?.[4]).toBe("pending");
+  });
+
+  it("is a no-op when the row already holds the same judgment and status", async () => {
+    const same = db({
+      ...stored,
+      review_status: "approved",
+      yea_description: judgment.yeaDescription,
+      nay_description: judgment.nayDescription,
+      // jsonb hands keys back in its own order.
+      labels_json: [{ yea: "for", slug: "immigration" }],
+    });
+    await expect(applyLegislativeVoteJudgment(same, judgment)).resolves.toBe("unchanged");
+    expect(same.query).toHaveBeenCalledTimes(1);
+  });
+
+  it("moves an approved row back to pending before writing a different judgment", async () => {
+    const reworded = db({
+      ...stored,
+      review_status: "approved",
+      yea_description: "Voted yes.",
+      nay_description: judgment.nayDescription,
+      labels_json: [{ slug: "immigration", yea: "for" }],
+    });
+    await expect(applyLegislativeVoteJudgment(reworded, judgment)).resolves.toBe("updated");
+    expect(reworded.query).toHaveBeenCalledTimes(3);
+    expect(reworded.query.mock.calls[1]?.[0]).toMatch(/SET review_status = 'pending',\s+reviewed_at = NULL/);
+    expect(reworded.query.mock.calls[2]?.[1]?.[4]).toBe("approved");
+  });
+
+  it("refuses a missing row and refuses to approve a non-floor vote", async () => {
+    await expect(applyLegislativeVoteJudgment(db(null), judgment)).rejects.toThrow(
+      /house 119-1 roll 145 is not in legislative_votes; run rollcall:fetch first/
+    );
+    await expect(applyLegislativeVoteJudgment(db({ ...stored, is_floor_vote: false }), judgment)).rejects.toThrow(
+      /not a kept floor vote \(is_floor_vote = false\); it cannot be approved/
+    );
+    // Storing a pending judgment on an excluded vote is fine.
+    await expect(
+      applyLegislativeVoteJudgment(db({ ...stored, is_floor_vote: null }), { ...judgment, reviewStatus: "pending" })
+    ).resolves.toBe("updated");
   });
 });

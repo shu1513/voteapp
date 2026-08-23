@@ -253,15 +253,20 @@ import every roll call. Regex builds a queue; it never decides truth.
      nomination) enter only by explicit hand add, never by regex.
 3. Drop trivia from the queue: post-office namings, commemoratives,
    suspension bills with no policy area of interest.
-4. AI judgment per roll call (guarded run, inline `AI_API_CALLS_ALLOWED=true`)
-   given the dossier + exact question + voted text version: the yea sentence,
-   the nay sentence, research-area slug(s), and which option = `for` per slug
-   (yea ≠ `for` by default — depends on the slug's goal). Stored on the
-   `legislative_votes` row with `review_status = pending`.
-5. Human look per roll call before fan-out (a bad template replicates ×435):
+4. Judgment per roll call, written by the operator (the Claude session
+   working with the user — no AI provider call; see Decisions 2026-08-23)
+   from the bill page / CRS summary + exact question + voted text version:
+   the yea sentence, the nay sentence, research-area slug(s), and which
+   option = `for` per slug (yea ≠ `for` by default — depends on the slug's
+   goal). Recorded in `judgments.json` under the run's evidence dir and
+   applied with `rollcall:judge`, which stores them on the
+   `legislative_votes` row.
+5. Review per roll call before fan-out (a bad template replicates ×435):
    exact question + version, source excerpt or CRS summary, both sentences,
-   every label/stance, a sample of resolved identities → `approved` /
-   `rejected`.
+   every label/stance, a sample of resolved identities
+   (`rollcall:resolve`). The judgments file carries the decision
+   (`review_status`: `approved` / `pending`); the committed file is the
+   review artifact.
 
 ### 2. Resolve members to candidates
 
@@ -385,13 +390,20 @@ importer with different evidence (see "Governors" above for sources).
 
 ## Decisions (2026-08-22)
 
-- One AI judgment per ROLL CALL (guarded run); the bill dossier (title,
-  summary, policy area) is fetched once per bill and cached. Human look at
-  each roll call's two sentences + labels before fan-out.
+- One judgment per ROLL CALL (originally planned as a guarded AI run;
+  superseded 2026-08-23, see below). Look at each roll call's two sentences
+  + labels before fan-out.
 - Duplicates of the 448 hand-written roll-call rows: replace — done as an
   in-place rewrite (row id kept, transition logged), not retire + reinsert.
 - Review unit = roll call; federal matching = exact FEC id only; state pilot
   = Ohio; governors = separate future importer (2026-08-22 review).
+- Judgment + review (PR 5, 2026-08-23): no AI provider call. The operator
+  (Claude session + user) is both judge and reviewer, so the judgment pass is
+  a committed `judgments.json` applied by `rollcall:judge`, not a guarded
+  run. An approved row whose judgment changes is moved back to pending,
+  rewritten, and re-approved in one transaction (the only path the freeze
+  trigger allows); the next `rollcall:import` rewrites the fanned-out
+  records in place.
 - Duplicate scan (PR 4, 2026-08-23): an old row is a duplicate only when its
   `source_url` IS this roll call (Clerk XML, Clerk vote page, Senate
   .htm/.xml — `rollCallUrlKey` folds them). The "bill id + question class"
