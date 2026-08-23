@@ -7,7 +7,7 @@ type Queryable = Pick<Pool, "query">;
 // The columns the fetcher owns on public.legislative_votes (migration 251).
 // Judgment columns (yea_description, nay_description, labels_json,
 // review_status, reviewed_at) belong to the AI pass and the reviewer and are
-// never touched here.
+// never written here; the importer only reads them (loadLegislativeVote).
 export type LegislativeVoteSourceRow = {
   jurisdiction: string;
   chamber: LegislativeVoteChamber;
@@ -234,5 +234,82 @@ export async function upsertLegislativeVoteSource(
     id: current.id,
     reviewStatus: judgmentCleared ? "pending" : current.review_status,
     judgmentCleared,
+  };
+}
+
+// What the fan-out needs from one reviewed row.
+export type LegislativeVoteForImport = {
+  id: string;
+  voteDate: string;
+  measureId: string | null;
+  exactQuestion: string;
+  isFloorVote: boolean | null;
+  yeas: number;
+  nays: number;
+  machineUrl: string;
+  sourceSha256: string;
+  yeaDescription: string | null;
+  nayDescription: string | null;
+  labelsJson: unknown;
+  reviewStatus: LegislativeVoteReviewStatus;
+};
+
+export async function loadLegislativeVote(
+  db: Queryable,
+  key: { jurisdiction: string; chamber: LegislativeVoteChamber; session: string; rollNumber: number }
+): Promise<LegislativeVoteForImport | null> {
+  const result = await db.query<{
+    id: string;
+    vote_date: string;
+    measure_id: string | null;
+    exact_question: string;
+    is_floor_vote: boolean | null;
+    yeas: number;
+    nays: number;
+    machine_url: string;
+    source_sha256: string;
+    yea_description: string | null;
+    nay_description: string | null;
+    labels_json: unknown;
+    review_status: LegislativeVoteReviewStatus;
+  }>(
+    `SELECT id,
+            vote_date::text AS vote_date,
+            measure_id,
+            exact_question,
+            is_floor_vote,
+            yeas,
+            nays,
+            machine_url,
+            source_sha256,
+            yea_description,
+            nay_description,
+            labels_json,
+            review_status
+       FROM legislative_votes
+      WHERE jurisdiction = $1
+        AND chamber = $2
+        AND session = $3
+        AND roll_number = $4`,
+    [key.jurisdiction, key.chamber, key.session, key.rollNumber]
+  );
+  const row = result.rows[0];
+  if (!row) {
+    return null;
+  }
+  return {
+    id: row.id,
+    voteDate: row.vote_date,
+    measureId: row.measure_id,
+    exactQuestion: row.exact_question,
+    isFloorVote: row.is_floor_vote,
+    yeas: row.yeas,
+    nays: row.nays,
+    machineUrl: row.machine_url,
+    sourceSha256: row.source_sha256,
+    yeaDescription: row.yea_description,
+    nayDescription: row.nay_description,
+    labelsJson: row.labels_json,
+    reviewStatus: row.review_status,
   };
 }

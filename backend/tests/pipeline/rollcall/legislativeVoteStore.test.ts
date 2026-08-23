@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  loadLegislativeVote,
   upsertLegislativeVoteSource,
   type LegislativeVoteSourceRow,
 } from "../../../src/pipeline/rollcall/legislativeVoteStore.js";
@@ -149,5 +150,57 @@ describe("upsertLegislativeVoteSource", () => {
         expect(columns.has(column), column).toBe(true);
       }
     }
+  });
+});
+
+describe("loadLegislativeVote", () => {
+  it("returns the reviewed row the importer needs, or null, naming only migration columns", async () => {
+    const query = vi.fn().mockResolvedValueOnce({
+      rows: [
+        {
+          id: "row-1",
+          vote_date: "2025-05-22",
+          measure_id: "H R 1",
+          exact_question: "On Passage",
+          is_floor_vote: true,
+          yeas: 215,
+          nays: 214,
+          machine_url: ROW.machineUrl,
+          source_sha256: "a".repeat(64),
+          yea_description: "Voted to pass H.R. 1.",
+          nay_description: "Voted against passing H.R. 1.",
+          labels_json: [{ slug: "immigration", yea: "for" }],
+          review_status: "approved",
+        },
+      ],
+    });
+    const key = { jurisdiction: "US", chamber: "house" as const, session: "119-1", rollNumber: 145 };
+    const loaded = await loadLegislativeVote({ query }, key);
+    expect(query.mock.calls[0]?.[1]).toEqual(["US", "house", "119-1", 145]);
+    expect(loaded).toEqual({
+      id: "row-1",
+      voteDate: "2025-05-22",
+      measureId: "H R 1",
+      exactQuestion: "On Passage",
+      isFloorVote: true,
+      yeas: 215,
+      nays: 214,
+      machineUrl: ROW.machineUrl,
+      sourceSha256: "a".repeat(64),
+      yeaDescription: "Voted to pass H.R. 1.",
+      nayDescription: "Voted against passing H.R. 1.",
+      labelsJson: [{ slug: "immigration", yea: "for" }],
+      reviewStatus: "approved",
+    });
+    const columns = migrationTableColumns("legislative_votes");
+    const selected = /SELECT ([\s\S]*?)FROM legislative_votes/.exec(query.mock.calls[0]?.[0] as string)?.[1] ?? "";
+    const names = [...selected.matchAll(/\b([a-z_]+)(?:::text AS [a-z_]+)?,?\s*$/gm)].map((match) => match[1]!);
+    expect(names.length).toBeGreaterThan(10);
+    for (const name of names) {
+      expect(columns.has(name), name).toBe(true);
+    }
+
+    query.mockResolvedValueOnce({ rows: [] });
+    expect(await loadLegislativeVote({ query }, key)).toBeNull();
   });
 });
