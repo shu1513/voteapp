@@ -5,9 +5,10 @@ import type { LegislativeVoteChamber } from "./legislativeVotes.js";
 //   House:  https://clerk.house.gov/evs/<year>/roll<NNN>.xml
 //   Senate: https://www.senate.gov/legislative/LIS/roll_call_votes/
 //             vote<congress><session>/vote_<congress>_<session>_<NNNNN>.xml
-// Only the roll-call metadata is parsed here. Member rows are deliberately
-// not modelled: the fan-out (a later PR) re-reads the evidence copy of the
-// XML, so the only member-level fact kept is a count for the run report.
+// Only the roll-call metadata is parsed here; member rows live in
+// federalRollCallMembers.ts and are read from the evidence copy of the XML
+// at resolve / fan-out time, so the only member-level fact kept on the
+// legislative_votes row is a count for the run report.
 
 export type FederalRollCallUrls = {
   // Human page (legislative_votes.display_url).
@@ -173,6 +174,11 @@ export function parseHouseRollCallXml(xml: string): ParsedFederalRollCall {
   if (!xml.includes("<rollcall-vote>")) {
     throw new Error("House XML has no <rollcall-vote> root");
   }
+  // The metadata sits first, so a body cut short anywhere in the member
+  // list would otherwise parse as a complete roll call with fewer members.
+  if (!/<\/rollcall-vote>\s*$/.test(xml)) {
+    throw new Error("House XML does not end with </rollcall-vote>; the file is incomplete");
+  }
   const metadata = firstTagBlock(xml, "vote-metadata");
   if (!metadata) {
     throw new Error("House XML is missing <vote-metadata>");
@@ -222,6 +228,9 @@ export function parseSenateVoteDate(raw: string): string {
 export function parseSenateRollCallXml(xml: string): ParsedFederalRollCall {
   if (!xml.includes("<roll_call_vote>")) {
     throw new Error("Senate XML has no <roll_call_vote> root");
+  }
+  if (!/<\/roll_call_vote>\s*$/.test(xml)) {
+    throw new Error("Senate XML does not end with </roll_call_vote>; the file is incomplete");
   }
   // Everything before <members> is the vote header; <count> holds the
   // chamber-wide tally.

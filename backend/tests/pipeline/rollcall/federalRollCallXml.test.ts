@@ -62,6 +62,14 @@ describe("XML helpers", () => {
 });
 
 describe("parseHouseRollCallXml", () => {
+  it("rejects a file cut short anywhere after the header", () => {
+    const full = fixture("house-119-1-roll145.xml");
+    const cutInMembers = full.slice(0, full.lastIndexOf("<recorded-vote>"));
+    expect(() => parseHouseRollCallXml(cutInMembers)).toThrow(/does not end with <\/rollcall-vote>; the file is incomplete/);
+    expect(() => parseHouseRollCallXml(full.slice(0, full.indexOf("<vote-data>")))).toThrow(/file is incomplete/);
+    expect(() => parseHouseRollCallXml(`${full}\n\n`)).not.toThrow();
+  });
+
   it("reads a passage vote", () => {
     expect(parseHouseRollCallXml(fixture("house-119-1-roll145.xml"))).toEqual({
       chamber: "house",
@@ -110,6 +118,14 @@ describe("parseHouseRollCallXml", () => {
 });
 
 describe("parseSenateRollCallXml", () => {
+  it("rejects a file cut short anywhere after the header", () => {
+    const full = fixture("senate-119-1-vote00618.xml");
+    expect(() => parseSenateRollCallXml(full.slice(0, full.lastIndexOf("<member>")))).toThrow(
+      /does not end with <\/roll_call_vote>; the file is incomplete/
+    );
+    expect(() => parseSenateRollCallXml(`${full}\n`)).not.toThrow();
+  });
+
   it("reads a passage vote", () => {
     expect(parseSenateRollCallXml(fixture("senate-119-1-vote00618.xml"))).toEqual({
       chamber: "senate",
