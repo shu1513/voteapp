@@ -126,10 +126,11 @@ export function summarizeUnmatched(resolutions: readonly FederalMemberResolution
 }
 
 /**
- * Both feeds put the metadata first, so a body cut off after the header —
- * or part-way through the member list — still parses. Every recorded roll
- * call lists every member, and the tally can never exceed the rows that
- * produced it, so either condition means the evidence file is incomplete.
+ * Belt to the parser's braces: the parser already rejects a file that does
+ * not end with its root tag, which is what every truncation looks like.
+ * This guards the other way a report could silently shrink — a feed shape
+ * the member-row parser does not read — since every recorded roll call
+ * lists every member and the tally can never exceed the rows behind it.
  */
 export function assertMemberRowsComplete(parsed: Pick<ParsedFederalRollCall, "yeas" | "nays">, members: number): void {
   if (members === 0) {
