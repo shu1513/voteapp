@@ -216,7 +216,7 @@ describe("ChatWidget", () => {
   it("starts minimized and expands on click", async () => {
     const user = userEvent.setup();
     renderWidgetAt("/ballot");
-    const bubble = await screen.findByRole("button", { name: "Open Ask AI" });
+    const bubble = await screen.findByRole("button", { name: "Open Ask" });
     await user.click(bubble);
     expect(screen.getByRole("dialog", { name: /ask about elections/i })).toBeInTheDocument();
     expect(screen.getByText(/never opinions or endorsements/i)).toBeInTheDocument();
@@ -226,7 +226,7 @@ describe("ChatWidget", () => {
     stubApiRoutes({ "/api/me": apiError(401, "unauthorized", "Not logged in") });
     const user = userEvent.setup();
     renderRoutes([{ path: "*", element: <ChatWidget /> }], "/ballot");
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     expect(await screen.findByRole("link", { name: "Sign up" })).toHaveAttribute("href", "/register");
     expect(screen.queryByLabelText("Your question")).not.toBeInTheDocument();
   });
@@ -235,7 +235,7 @@ describe("ChatWidget", () => {
     stubApiRoutes({ "/api/me": { body: ME_UNVERIFIED } });
     const user = userEvent.setup();
     renderRoutes([{ path: "*", element: <ChatWidget /> }], "/ballot");
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     expect(await screen.findByText(/verify your email/i)).toBeInTheDocument();
     expect(screen.queryByLabelText("Your question")).not.toBeInTheDocument();
   });
@@ -243,7 +243,7 @@ describe("ChatWidget", () => {
   it("sends the current candidate page as context and renders the answer", async () => {
     const user = userEvent.setup();
     const { fetchMock } = renderWidgetAt("/candidates/44444444-4444-4444-a444-444444444444");
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     await user.type(screen.getByLabelText("Your question"), "Tell me more about this candidate.");
     await user.click(screen.getByRole("button", { name: "Ask" }));
 
@@ -263,7 +263,7 @@ describe("ChatWidget", () => {
   it("keeps the transcript across turns and sends the previous question", async () => {
     const user = userEvent.setup();
     const { fetchMock } = renderWidgetAt("/ballot");
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
 
     const input = screen.getByLabelText("Your question");
     await user.type(input, "Tell me about Jesse Petrea.");
@@ -289,7 +289,7 @@ describe("ChatWidget", () => {
   it("New chat clears the transcript back to the start screen", async () => {
     const user = userEvent.setup();
     renderWidgetAt("/ballot");
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     expect(screen.queryByRole("button", { name: "New chat" })).not.toBeInTheDocument();
     await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
     await user.click(screen.getByRole("button", { name: "Ask" }));
@@ -305,7 +305,7 @@ describe("ChatWidget", () => {
   it("New chat drops the remembered context from the old conversation", async () => {
     const user = userEvent.setup();
     const { fetchMock, router } = renderWidgetAt("/candidates/44444444-4444-4444-a444-444444444444");
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     await user.type(screen.getByLabelText("Your question"), "Tell me more about this candidate.");
     await user.click(screen.getByRole("button", { name: "Ask" }));
     await screen.findByText("Here's what our data has on that.");
@@ -333,7 +333,7 @@ describe("ChatWidget", () => {
   it("collapses and clears the chat when the signed-in account changes", async () => {
     const user = userEvent.setup();
     const { queryClient } = renderWidgetAt("/ballot");
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
     await user.click(screen.getByRole("button", { name: "Ask" }));
     await screen.findByText("Here's what our data has on that.");
@@ -344,7 +344,7 @@ describe("ChatWidget", () => {
     act(() => {
       queryClient.setQueryData(["me"], { ...ME_VERIFIED.user, email: "someone-else@example.com" });
     });
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     expect(screen.queryByText("Here's what our data has on that.")).not.toBeInTheDocument();
     expect(screen.getByText(/never opinions or endorsements/i)).toBeInTheDocument();
   });
@@ -356,7 +356,7 @@ describe("ChatWidget", () => {
       release = resolve;
     });
     const { queryClient } = renderWidgetAt("/ballot", () => held);
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
     await user.click(screen.getByRole("button", { name: "Ask" }));
 
@@ -370,7 +370,7 @@ describe("ChatWidget", () => {
       release({ body: RETRIEVAL_RESPONSE });
       await new Promise((resolve) => setTimeout(resolve, 20));
     });
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     expect(screen.queryByText("Who is Jon Ossoff?")).not.toBeInTheDocument();
     expect(screen.queryByText("Here's what our data has on that.")).not.toBeInTheDocument();
   });
@@ -378,7 +378,7 @@ describe("ChatWidget", () => {
   it("sends a starter chip as a question on click, then hides the chips", async () => {
     const user = userEvent.setup();
     const { fetchMock } = renderWidgetAt("/elections/44444444-4444-4444-a444-444444444444");
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     await user.click(screen.getByRole("button", { name: "What can you do?" }));
 
     expect(await screen.findByText("Here's what our data has on that.")).toBeInTheDocument();
@@ -402,7 +402,7 @@ describe("ChatWidget", () => {
       ai_generated: true,
     };
     renderWidgetAt("/ballot", { body: aiResponse });
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
     await user.click(screen.getByRole("button", { name: "Ask" }));
 
@@ -420,7 +420,7 @@ describe("ChatWidget", () => {
   it("shows no report control or per-answer date on plain retrieval-card answers", async () => {
     const user = userEvent.setup();
     renderWidgetAt("/ballot");
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     // The footer disclosure is undated before any answer arrives.
     expect(screen.getByText(/AI answers from our election data/)).not.toHaveTextContent(/Data current as of/);
     await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
@@ -434,7 +434,7 @@ describe("ChatWidget", () => {
   it("shows the register wall when the server answers 401 mid-session", async () => {
     const user = userEvent.setup();
     renderWidgetAt("/ballot", apiError(401, "unauthorized", "Authentication is required"));
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
     await user.click(screen.getByRole("button", { name: "Ask" }));
     expect(await screen.findByRole("link", { name: "Sign up" })).toBeInTheDocument();
@@ -448,7 +448,7 @@ describe("ChatWidget", () => {
       "/api/chatbot/feedback": { body: { status: "ok" } },
     });
     renderRoutes([{ path: "*", element: <ChatWidget /> }], "/ballot");
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
     await user.click(screen.getByRole("button", { name: "Ask" }));
     await screen.findByText("Here's what our data has on that.");
@@ -470,7 +470,7 @@ describe("ChatWidget", () => {
       "/api/chatbot/feedback": apiError(500, "internal_error", "Internal error"),
     });
     renderRoutes([{ path: "*", element: <ChatWidget /> }], "/ballot");
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
     await user.click(screen.getByRole("button", { name: "Ask" }));
     await screen.findByText("Here's what our data has on that.");
@@ -490,7 +490,7 @@ describe("ChatWidget", () => {
       "/api/chatbot/feedback": apiError(400, "invalid_request", "Invalid feedback token"),
     });
     renderRoutes([{ path: "*", element: <ChatWidget /> }], "/ballot");
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
     await user.click(screen.getByRole("button", { name: "Ask" }));
     await screen.findByText("Here's what our data has on that.");
@@ -505,7 +505,7 @@ describe("ChatWidget", () => {
   it("renders a follow-up chip for the cited profile and sends it with the previous question", async () => {
     const user = userEvent.setup();
     const { fetchMock } = renderWidgetAt("/ballot");
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
     await user.click(screen.getByRole("button", { name: "Ask" }));
     await screen.findByText("Here's what our data has on that.");
@@ -533,7 +533,7 @@ describe("ChatWidget", () => {
       ],
     };
     const { fetchMock } = renderWidgetAt("/ballot", { body: electionCited });
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     await user.type(screen.getByLabelText("Your question"), "Tell me about the Georgia Senate race");
     await user.click(screen.getByRole("button", { name: "Ask" }));
     await screen.findByText("Here's what our data has on that.");
@@ -556,7 +556,7 @@ describe("ChatWidget", () => {
     renderWidgetAt("/ballot", {
       body: { ...RETRIEVAL_RESPONSE, notice: "Daily AI-answer limit reached — showing matching data instead." },
     });
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
     await user.click(screen.getByRole("button", { name: "Ask" }));
     expect(
@@ -567,32 +567,32 @@ describe("ChatWidget", () => {
   it("moves focus into the input on open and back to the launcher on Escape", async () => {
     const user = userEvent.setup();
     renderWidgetAt("/ballot");
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     expect(screen.getByLabelText("Your question")).toHaveFocus();
 
     await user.keyboard("{Escape}");
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Open Ask AI" })).toHaveFocus();
+    expect(screen.getByRole("button", { name: "Open Ask" })).toHaveFocus();
   });
 
   it("moves focus onto the panel itself when the register wall has no input", async () => {
     stubApiRoutes({ "/api/me": apiError(401, "unauthorized", "Not logged in") });
     const user = userEvent.setup();
     renderRoutes([{ path: "*", element: <ChatWidget /> }], "/ballot");
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     // No question input on the wall — the dialog itself takes focus so a
     // keyboard user lands inside it (and Escape keeps working).
     expect(screen.getByRole("dialog", { name: /ask about elections/i })).toHaveFocus();
     await user.keyboard("{Escape}");
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Open Ask AI" })).toHaveFocus();
+    expect(screen.getByRole("button", { name: "Open Ask" })).toHaveFocus();
   });
 
   it("Escape inside the portaled report dialog closes only that dialog and keeps the draft", async () => {
     const user = userEvent.setup();
     const aiResponse: ChatbotAskResponse = { ...RETRIEVAL_RESPONSE, ai_generated: true };
     renderWidgetAt("/ballot", { body: aiResponse });
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
     await user.click(screen.getByRole("button", { name: "Ask" }));
 
@@ -612,7 +612,7 @@ describe("ChatWidget", () => {
   it("announces answers through a polite live region", async () => {
     const user = userEvent.setup();
     renderWidgetAt("/ballot");
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
     await user.click(screen.getByRole("button", { name: "Ask" }));
     const answer = await screen.findByText("Here's what our data has on that.");
@@ -629,7 +629,7 @@ describe("ChatWidget", () => {
   it("shows no thumbs when the answer carries no feedback token", async () => {
     const user = userEvent.setup();
     renderWidgetAt("/ballot");
-    await user.click(await screen.findByRole("button", { name: "Open Ask AI" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
     await user.click(screen.getByRole("button", { name: "Ask" }));
     await screen.findByText("Here's what our data has on that.");

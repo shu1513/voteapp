@@ -404,10 +404,10 @@ function ChatWidgetSession() {
         type="button"
         ref={launcherRef}
         onClick={() => setOpen(true)}
-        aria-label="Open Ask AI"
+        aria-label="Open Ask"
         className="chat-launcher fixed bottom-4 right-4 z-30 rounded-full border border-line bg-white px-4 py-3 text-sm font-semibold text-ink shadow-lg transition hover:bg-surface"
       >
-        Ask AI
+        Ask
       </button>
     );
   }
@@ -445,7 +445,7 @@ function ChatWidgetSession() {
       className="fixed bottom-4 right-4 z-30 flex max-h-[75vh] w-[22rem] max-w-[calc(100vw-2rem)] flex-col rounded-2xl border border-line bg-white shadow-2xl"
     >
       <div className="flex items-center justify-between rounded-t-2xl border-b border-line bg-surface px-3 py-2">
-        <p className="text-sm font-bold text-ink">Ask AI</p>
+        <p className="text-sm font-bold text-ink">Ask</p>
         <div className="flex items-center gap-1">
           {/* Back to the empty-chat start screen (starter chips included) —
               without this, the only way out of a conversation was a page

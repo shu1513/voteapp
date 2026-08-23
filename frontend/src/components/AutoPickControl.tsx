@@ -78,7 +78,7 @@ export function AutoPickControl({ electionId, seatsToFill }: AutoPickControlProp
           // ready user to the issue editor.
           disabled={saving || preferencesLoading}
           onClick={onClick}
-          className="rounded-lg border border-autopick-border bg-autopick px-3 py-1.5 text-sm font-semibold text-autopick-ink transition hover:bg-autopick-dark disabled:opacity-50"
+          className="rounded-full border border-autopick-border bg-autopick px-3 py-1.5 text-sm font-semibold text-autopick-ink transition hover:bg-autopick-dark disabled:opacity-50"
         >
           {autoPick.isPending ? "Picking…" : "Auto-pick by my issues"}
         </button>
