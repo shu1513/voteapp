@@ -70,9 +70,12 @@ describe("SettingsPage", () => {
       "/api/research-areas": { body: { research_areas: [] } },
       "/api/me/research-area-preferences": { body: { preferences: [] } },
     });
-    renderSettings();
+    const { queryClient } = renderSettings();
 
     expect(await screen.findByRole("heading", { name: "Email notifications" })).toBeInTheDocument();
+    // The section also renders nothing while its request is pending, so the
+    // absence only means "hidden because disabled" once that query settled.
+    await waitFor(() => expect(queryClient.getQueryState(["me", "membership"])?.status).toBe("success"));
     expect(screen.queryByRole("heading", { name: "Support Elections Simplified" })).not.toBeInTheDocument();
   });
 
