@@ -12,6 +12,7 @@ import {
   countUnresolvedTags,
   diffCandidateFingerprints,
   findIdentityKeyMismatches,
+  guardedCandidateIds,
   LABEL_PROJECTION_SQL,
   RECORD_PROJECTION_SQL,
   REKEY_RECORDS_SQL,
@@ -860,6 +861,29 @@ describe("planTagReconciliation", () => {
       ["c1", "k1", ["y"]],
       ["c1", "k2", ["a", "b"]],
       ["c2", "k", ["z"]],
+    ]);
+  });
+});
+
+describe("guardedCandidateIds", () => {
+  const records = [{ candidate_id: "c1" }, { candidate_id: "c1" }, { candidate_id: "c2" }];
+  const removals = [{ candidate_id: "c2" }, { candidate_id: "c3" }];
+
+  it("covers removal-only candidates under --reconcile-tags, so a deletion never skips the identity guards", () => {
+    // c3 has no record being written — only a tag being removed — and must
+    // still be fingerprinted: a same-key roll-call record on a drifted target
+    // could belong to a different person under the same UUID.
+    expect(guardedCandidateIds({ preflightRecords: records, removals, reconcileTags: true }).sort()).toEqual([
+      "c1",
+      "c2",
+      "c3",
+    ]);
+  });
+
+  it("leaves removal-only candidates out when reconciliation is off, since nothing will be deleted", () => {
+    expect(guardedCandidateIds({ preflightRecords: records, removals, reconcileTags: false }).sort()).toEqual([
+      "c1",
+      "c2",
     ]);
   });
 });

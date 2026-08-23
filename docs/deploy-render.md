@@ -189,7 +189,11 @@ heuristic. Without the flag nothing changes; the dry run just notes how many
 target-only tags would qualify. With it, the dry run prints one line per
 affected record (`remove [...]; keep [...]`) and the report file carries the
 same list under `tagReconciliation`; apply deletes them in the same transaction
-as the upserts, and aborts if any planned removal no longer matches a row.
+as the upserts, and aborts if any planned removal no longer matches a row. A
+candidate whose only change is a tag removal goes through the same identity
+fingerprint and missing/retired-candidate guards as one whose records are
+written — a same-key roll-call record under a drifted UUID must not lose
+someone else's tag.
 
 ```bash
 cd backend

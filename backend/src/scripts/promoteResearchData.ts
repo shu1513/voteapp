@@ -1121,6 +1121,32 @@ export function diffCandidateFingerprints(
   return conflicts;
 }
 
+/**
+ * Every candidate the run will WRITE under, for the two guards above. A tag
+ * removal is a write too, and most removals sit on records that are otherwise
+ * unchanged — their candidates would never reach the guards through the
+ * record plan alone. That matters because record_identity_key hashes only
+ * (description, url, date): roll-call records share all three across members,
+ * so a drifted target where a shared UUID names a different person would hold
+ * a same-key record for that person, and the delete would take their tag.
+ * Removal candidates are included only when reconciliation is enabled; without
+ * it nothing is deleted, and the default run must not gain an abort reason
+ * for candidates it will not touch.
+ */
+export function guardedCandidateIds(input: {
+  preflightRecords: readonly Pick<RecordRow, "candidate_id">[];
+  removals: readonly Pick<TagRemoval, "candidate_id">[];
+  reconcileTags: boolean;
+}): string[] {
+  const ids = new Set(input.preflightRecords.map((row) => row.candidate_id));
+  if (input.reconcileTags) {
+    for (const removal of input.removals) {
+      ids.add(removal.candidate_id);
+    }
+  }
+  return [...ids];
+}
+
 export async function findUnresolvableAreaSlugs(
   target: PromotionClient,
   slugs: readonly string[]
@@ -1428,7 +1454,11 @@ async function main(): Promise<void> {
 
     assertTransportableArrays([...labelPlan.inserts, ...labelPlan.updates]);
 
-    const pendingCandidateIds = [...new Set(preflightRecords.map((row) => row.candidate_id))];
+    const pendingCandidateIds = guardedCandidateIds({
+      preflightRecords,
+      removals: tagReconciliation.removals,
+      reconcileTags,
+    });
     const missingCandidates = await findUnresolvableCandidates(target, pendingCandidateIds);
     const missingSlugs = await findUnresolvableAreaSlugs(
       target,
