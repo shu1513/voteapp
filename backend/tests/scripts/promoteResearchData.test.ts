@@ -1,3 +1,7 @@
+import { readFile } from "node:fs/promises";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
 import { describe, expect, it } from "vitest";
 
 import {
@@ -8,6 +12,7 @@ import {
   countUnresolvedTags,
   diffCandidateFingerprints,
   findIdentityKeyMismatches,
+  guardedCandidateIds,
   LABEL_PROJECTION_SQL,
   RECORD_PROJECTION_SQL,
   REKEY_RECORDS_SQL,
@@ -17,11 +22,14 @@ import {
   parseEndpoint,
   planRecordRekeys,
   planRows,
+  planTagReconciliation,
+  RECONCILE_TAGS_DELETE_SQL,
   recordKey,
   rekeyWireRows,
   resolveIdentityTransitions,
   sameRecord,
   type RecordRow,
+  type TagRow,
   sameScalar,
   sameStringArray,
   TAG_PROJECTION_SQL,
@@ -287,6 +295,24 @@ describe("upsert statements", () => {
       expect(sql).not.toMatch(/\bDROP\b/i);
       expect(sql).not.toMatch(/\bALTER\b/i);
     }
+  });
+
+  it("the whole file holds exactly one DELETE — the opt-in tag reconciliation — and no TRUNCATE or DDL", async () => {
+    // The bounded exception to "never deletes" is RECONCILE_TAGS_DELETE_SQL
+    // and nothing else. Check the source text, not just the exported
+    // constants, so a DELETE written inline in main() cannot slip past.
+    const file = resolve(dirname(fileURLToPath(import.meta.url)), "../../src/scripts/promoteResearchData.ts");
+    const source = await readFile(file, "utf8");
+    expect(source).toContain(RECONCILE_TAGS_DELETE_SQL);
+    // Judge code, not prose: the comments are allowed to name the words.
+    const rest = source
+      .replace(RECONCILE_TAGS_DELETE_SQL, "")
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/^\s*\/\/.*$/gm, "");
+    expect(rest).not.toMatch(/\bDELETE\s+FROM\b/i);
+    expect(rest).not.toMatch(/\bTRUNCATE\b/i);
+    expect(rest).not.toMatch(/\bDROP\s+(TABLE|INDEX|COLUMN)\b/i);
+    expect(rest).not.toMatch(/\bALTER\s+TABLE\b/i);
   });
 
   it("guard every update with a distinctness check so unchanged rows never fire updated_at", () => {
@@ -681,6 +707,184 @@ describe("resolveIdentityTransitions", () => {
     ]);
     expect(resolved.get(candKeyOf("c1", "k1"))).toBe("k2");
     expect(resolved.get(candKeyOf("c1", "k2"))).toBe("k1");
+  });
+});
+
+describe("RECONCILE_TAGS_DELETE_SQL", () => {
+  it("deletes only from candidate_record_area_tags and issues nothing else", () => {
+    expect(RECONCILE_TAGS_DELETE_SQL).toMatch(/^\s*DELETE FROM public\.candidate_record_area_tags AS t\b/);
+    expect(RECONCILE_TAGS_DELETE_SQL.match(/\bDELETE\b/gi)).toHaveLength(1);
+    expect(RECONCILE_TAGS_DELETE_SQL).not.toMatch(/\b(INSERT|UPDATE|TRUNCATE|DROP|ALTER)\b/i);
+  });
+
+  it("resolves the record and area by natural key on the target, never by a transported id", () => {
+    expect(RECONCILE_TAGS_DELETE_SQL).toMatch(/r\.candidate_id = s\.candidate_id/);
+    expect(RECONCILE_TAGS_DELETE_SQL).toMatch(/r\.record_identity_key = s\.record_identity_key/);
+    expect(RECONCILE_TAGS_DELETE_SQL).toMatch(/a\.slug = s\.research_area_slug/);
+    expect(RECONCILE_TAGS_DELETE_SQL).toMatch(/t\.candidate_record_id = r\.id/);
+    expect(RECONCILE_TAGS_DELETE_SQL).toMatch(/t\.research_area_id = a\.id/);
+    const wireColumns = /jsonb_to_recordset\(\$1::jsonb\) AS s\(([\s\S]*?)\)/.exec(RECONCILE_TAGS_DELETE_SQL)?.[1] ?? "";
+    expect(wireColumns).not.toMatch(/\bid\b|candidate_record_id|research_area_id/);
+  });
+});
+
+describe("planTagReconciliation", () => {
+  const recordRow = (overrides: Partial<RecordRow>): RecordRow => ({
+    candidate_id: "c1",
+    record_identity_key: "key",
+    description: "Voted to adopt the budget for fiscal year 2025.",
+    source_url: "https://example.gov/doc/1",
+    event_date: "2024-03-06",
+    created_at_utc: "2026-07-28 06:14:50.777574",
+    origin: null,
+    origin_run_id: null,
+    ...overrides,
+  });
+  const tag = (candidate_id: string, record_identity_key: string, research_area_slug: string, stance: string | null = "for"): TagRow => ({
+    candidate_id,
+    record_identity_key,
+    research_area_slug,
+    stance,
+  });
+  const noSkips = { noLocalRecord: 0, similarityRekeyOnly: 0, carriedByRekey: 0 };
+
+  it("removes a tag the local record no longer carries when the record matches by key", () => {
+    const plan = planTagReconciliation({
+      targetOnlyTags: [tag("c1", "key", "housing"), tag("c1", "key", "taxes")],
+      sourceTags: [tag("c1", "key", "budget")],
+      sourceRecords: [recordRow({})],
+      rekeys: [],
+    });
+    expect(plan.records).toEqual([
+      {
+        candidate_id: "c1",
+        target_record_identity_key: "key",
+        local_record_identity_key: "key",
+        matched_via: "same_key",
+        remove: ["housing", "taxes"],
+        keep: ["budget"],
+      },
+    ]);
+    expect(plan.removals).toEqual([
+      { candidate_id: "c1", record_identity_key: "key", research_area_slug: "housing" },
+      { candidate_id: "c1", record_identity_key: "key", research_area_slug: "taxes" },
+    ]);
+    expect(plan.skipped).toEqual(noSkips);
+  });
+
+  it("never touches a target record that has no local counterpart", () => {
+    const plan = planTagReconciliation({
+      targetOnlyTags: [tag("c1", "orphan", "housing")],
+      sourceTags: [],
+      sourceRecords: [recordRow({ record_identity_key: "other" })],
+      rekeys: [],
+    });
+    expect(plan.records).toHaveLength(0);
+    expect(plan.removals).toHaveLength(0);
+    expect(plan.skipped).toEqual({ ...noSkips, noLocalRecord: 1 });
+  });
+
+  it("keeps candidates apart — the same key under another candidate is not a match", () => {
+    const plan = planTagReconciliation({
+      targetOnlyTags: [tag("c2", "key", "housing")],
+      sourceTags: [],
+      sourceRecords: [recordRow({ candidate_id: "c1" })],
+      rekeys: [],
+    });
+    expect(plan.removals).toHaveLength(0);
+    expect(plan.skipped).toEqual({ ...noSkips, noLocalRecord: 1 });
+  });
+
+  it("re-addresses a ledger-rekeyed record's tags to the NEW key and judges them there", () => {
+    // The target still holds old-key; the local edit moved the row to new-key
+    // and dropped the 'housing' tag in the same pass (the roll-call importer's
+    // normalization does exactly this). The rekey runs first in apply, so the
+    // delete must name the new key.
+    const sourceRow = recordRow({ record_identity_key: "new-key" });
+    const plan = planTagReconciliation({
+      targetOnlyTags: [tag("c1", "old-key", "housing"), tag("c1", "old-key", "budget")],
+      sourceTags: [tag("c1", "new-key", "budget")],
+      sourceRecords: [sourceRow],
+      rekeys: [{ sourceRow, oldKey: "old-key", via: "transition" }],
+    });
+    expect(plan.records).toEqual([
+      {
+        candidate_id: "c1",
+        target_record_identity_key: "old-key",
+        local_record_identity_key: "new-key",
+        matched_via: "transition",
+        remove: ["housing"],
+        keep: ["budget"],
+      },
+    ]);
+    expect(plan.removals).toEqual([
+      { candidate_id: "c1", record_identity_key: "new-key", research_area_slug: "housing" },
+    ]);
+    // 'budget' survives the rekey under the new key: a planned upsert, not a removal.
+    expect(plan.skipped).toEqual({ ...noSkips, carriedByRekey: 1 });
+  });
+
+  it("skips a record matched only by the similarity heuristic", () => {
+    const sourceRow = recordRow({ record_identity_key: "new-key" });
+    const plan = planTagReconciliation({
+      targetOnlyTags: [tag("c1", "old-key", "housing")],
+      sourceTags: [],
+      sourceRecords: [sourceRow],
+      rekeys: [{ sourceRow, oldKey: "old-key", via: "similarity" }],
+    });
+    expect(plan.removals).toHaveLength(0);
+    expect(plan.skipped).toEqual({ ...noSkips, similarityRekeyOnly: 1 });
+  });
+
+  it("is empty when source and target agree", () => {
+    const plan = planTagReconciliation({
+      targetOnlyTags: [],
+      sourceTags: [tag("c1", "key", "budget")],
+      sourceRecords: [recordRow({})],
+      rekeys: [],
+    });
+    expect(plan).toEqual({ records: [], removals: [], skipped: noSkips });
+  });
+
+  it("orders records and slugs deterministically so the report and the wire rows are stable", () => {
+    const plan = planTagReconciliation({
+      targetOnlyTags: [tag("c2", "k", "z"), tag("c1", "k2", "b"), tag("c1", "k1", "y"), tag("c1", "k2", "a")],
+      sourceTags: [],
+      sourceRecords: [
+        recordRow({ candidate_id: "c1", record_identity_key: "k1" }),
+        recordRow({ candidate_id: "c1", record_identity_key: "k2" }),
+        recordRow({ candidate_id: "c2", record_identity_key: "k" }),
+      ],
+      rekeys: [],
+    });
+    expect(plan.records.map((r) => [r.candidate_id, r.local_record_identity_key, r.remove])).toEqual([
+      ["c1", "k1", ["y"]],
+      ["c1", "k2", ["a", "b"]],
+      ["c2", "k", ["z"]],
+    ]);
+  });
+});
+
+describe("guardedCandidateIds", () => {
+  const records = [{ candidate_id: "c1" }, { candidate_id: "c1" }, { candidate_id: "c2" }];
+  const removals = [{ candidate_id: "c2" }, { candidate_id: "c3" }];
+
+  it("covers removal-only candidates under --reconcile-tags, so a deletion never skips the identity guards", () => {
+    // c3 has no record being written — only a tag being removed — and must
+    // still be fingerprinted: a same-key roll-call record on a drifted target
+    // could belong to a different person under the same UUID.
+    expect(guardedCandidateIds({ preflightRecords: records, removals, reconcileTags: true }).sort()).toEqual([
+      "c1",
+      "c2",
+      "c3",
+    ]);
+  });
+
+  it("leaves removal-only candidates out when reconciliation is off, since nothing will be deleted", () => {
+    expect(guardedCandidateIds({ preflightRecords: records, removals, reconcileTags: false }).sort()).toEqual([
+      "c1",
+      "c2",
+    ]);
   });
 });
 
