@@ -344,23 +344,6 @@
       "chamber": "house",
       "congress": 117,
       "session": 1,
-      "roll": 160,
-      "measure_id": "H R 239",
-      "vote_date": "2021-06-15",
-      "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 239, the Equal Access to Contraception for Veterans Act, which barred the Department of Veterans Affairs from charging veterans copays for contraceptives that private insurance must cover for free. Brought up under suspension of the rules, it fell short of the required two thirds, 240-188.",
-      "nay_description": "Voted against passing H.R. 239, the Equal Access to Contraception for Veterans Act, which barred the Department of Veterans Affairs from charging veterans copays for contraceptives that private insurance must cover for free. Brought up under suspension of the rules, it fell short of the required two thirds, 240-188.",
-      "labels": [
-        {
-          "slug": "womens_reproductive_rights",
-          "yea": "for"
-        }
-      ]
-    },
-    {
-      "chamber": "house",
-      "congress": 117,
-      "session": 1,
       "roll": 169,
       "measure_id": "H R 1187",
       "vote_date": "2021-06-16",
