@@ -53,9 +53,12 @@ Ohio's roster feed does not always put a plain surname in `lastname`:
 - For the twelve members who **share a surname with a colleague**, it
   carries a disambiguated form — `"Hall, D."`, `"Hall, T."`, `"Miller,
   J."`, `"Thomas, C."`, `"White, A."`, and so on.
-- For at least one multi-part surname it carries only part — Sarah Fowler
-  Arthur's `lastname` is `"Arthur"`, while her display name and her
-  candidate row are both "Sarah Fowler".
+- One failure is on OUR side, not the roster's: Sarah Fowler Arthur's
+  roster `lastname` is the full `"Fowler Arthur"` (display name "Sarah
+  Fowler Arthur"), but our candidate row holds the shorter "Sarah
+  Fowler", so the surname tail cannot match. That is an ordinary
+  name-variant miss like Mike/Michael Dovilla — no lastname-cleanup fix
+  reaches it.
 
 `proposeOhioCrosswalk` requires the roster `lastName` tokens to be the
 tail of the candidate's name tokens, so all thirteen fail to propose. The
