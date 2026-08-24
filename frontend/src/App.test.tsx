@@ -47,6 +47,8 @@ describe("App account nav", () => {
       "href",
       "/draft"
     );
+    // The mission pitch is public — guests get the link too.
+    expect(screen.getByRole("link", { name: "Mission" })).toHaveAttribute("href", "/mission");
     window.localStorage.clear();
     window.dispatchEvent(new StorageEvent("storage", { key: "voteapp_ballot_draft" }));
   });

@@ -43,15 +43,25 @@ function MembershipProfileLine({ me }: { me: Me }) {
   if (!status.data?.enabled) {
     return null;
   }
-  return status.data.membership ? (
-    <p className="mt-1 text-sm text-ink-soft">
-      Thank you for being a supporting member.{" "}
-      {/* Plain anchor: the section lives on this same page. */}
-      <a href="#support" className="font-medium underline hover:text-ink">
-        Manage membership
-      </a>
-    </p>
-  ) : (
+  if (status.data.membership) {
+    // Thank only a paid-up member. Other nonterminal states (incomplete,
+    // past_due, unpaid) say nothing here — the support section further down
+    // carries the accurate pending / fix-your-card copy, and "Become a
+    // member" would be wrong too: checkout 409s while any of them exists.
+    if (status.data.membership.stripe_status !== "active") {
+      return null;
+    }
+    return (
+      <p className="mt-1 text-sm text-ink-soft">
+        Thank you for being a supporting member.{" "}
+        {/* Plain anchor: the section lives on this same page. */}
+        <a href="#support" className="font-medium underline hover:text-ink">
+          Manage membership
+        </a>
+      </p>
+    );
+  }
+  return (
     <p className="mt-1 text-sm">
       <Link to="/mission" className="font-medium underline hover:text-ink">
         Become a member

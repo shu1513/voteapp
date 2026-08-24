@@ -4,7 +4,7 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 
 export const DEFAULT_SITE_SITEMAP_CACHE_TTL_MS = 60 * 60 * 1000;
 
-export const SITEMAP_STATIC_PATHS = ["/", "/disclaimer", "/terms", "/privacy"] as const;
+export const SITEMAP_STATIC_PATHS = ["/", "/mission", "/disclaimer", "/terms", "/privacy"] as const;
 
 export type SiteSitemapUrl = {
   path: string;

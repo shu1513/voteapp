@@ -57,12 +57,17 @@ export default function MissionPage() {
           resend it.
         </p>
       ) : (
+        // Shown while /api/me is unresolved too, same tradeoff as the header
+        // nav: a self-correcting logged-out CTA beats an invisible one, and
+        // warm navigation has the session cached anyway.
+        // ?next brings the prospective supporter back here after auth
+        // instead of into normal onboarding.
         <p className="text-sm">
-          <Link to="/login" className="font-semibold underline hover:text-ink">
+          <Link to="/login?next=%2Fmission" className="font-semibold underline hover:text-ink">
             Log in
           </Link>{" "}
           or{" "}
-          <Link to="/register" className="font-semibold underline hover:text-ink">
+          <Link to="/register?next=%2Fmission" className="font-semibold underline hover:text-ink">
             sign up
           </Link>{" "}
           to become a member or make a one-time contribution.

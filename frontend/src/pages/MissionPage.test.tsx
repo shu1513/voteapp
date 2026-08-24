@@ -25,8 +25,15 @@ describe("MissionPage", () => {
     renderMission();
 
     expect(await screen.findByRole("heading", { name: "Our mission" })).toBeInTheDocument();
-    expect(await screen.findByRole("link", { name: "Log in" })).toHaveAttribute("href", "/login");
-    expect(screen.getByRole("link", { name: "sign up" })).toHaveAttribute("href", "/register");
+    // ?next returns the prospective supporter here after auth.
+    expect(await screen.findByRole("link", { name: "Log in" })).toHaveAttribute(
+      "href",
+      "/login?next=%2Fmission"
+    );
+    expect(screen.getByRole("link", { name: "sign up" })).toHaveAttribute(
+      "href",
+      "/register?next=%2Fmission"
+    );
     // No payment forms and no error box — the membership query must not fire
     // without a verified session.
     expect(screen.queryByRole("button", { name: "Support monthly" })).not.toBeInTheDocument();

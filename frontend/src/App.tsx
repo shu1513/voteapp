@@ -55,6 +55,10 @@ function AccountNav() {
             {guestDraftNav.label}
           </Link>
         ) : null}
+        {/* Public page; guests are exactly who the mission pitch is for. */}
+        <Link to="/mission" className="whitespace-nowrap text-ink-soft hover:text-ink">
+          Mission
+        </Link>
         <Link to="/login" className="text-ink-soft hover:text-ink">
           Log in
         </Link>
