@@ -1,6 +1,7 @@
 import type { MetaFunction } from "react-router";
 import { Link } from "react-router";
 import { APP_NAME, useMe } from "@voteapp/api-client";
+import { EmailPreferenceToggles } from "../components/EmailPreferenceToggles";
 import { MembershipSection } from "../components/MembershipSection";
 import { VerifyPrompt } from "../components/VerifyPrompt";
 import { pageMeta } from "../lib/pageMeta";
@@ -74,9 +75,15 @@ export default function MissionPage() {
             help once.
           </li>
           <li>
-            <span className="font-semibold">Subscribe to our emails</span> — free. Create an account
-            and follow the elections and candidates you care about, and we’ll keep you updated on
-            what matters most to you. Our emails are very occasional, and we will never spam.
+            <span className="font-semibold">Subscribe to our emails</span> — free. We will keep you
+            updated on the elections and issues most important to you. Our emails are very
+            occasional, and we will never spam.
+            {me?.email_verified ? (
+              // The two subscription opt-ins this pitch is about, editable in
+              // place (Settings still carries the full set). Verified-only,
+              // like the endpoint behind them.
+              <EmailPreferenceToggles only={["email_digest", "email_issue_updates"]} />
+            ) : null}
           </li>
         </ol>
 

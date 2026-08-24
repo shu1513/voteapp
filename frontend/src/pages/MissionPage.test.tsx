@@ -6,6 +6,12 @@ import { apiError, stubApiRoutes } from "../test/mockApi";
 import { ME_UNVERIFIED, ME_VERIFIED } from "../test/fixtures";
 
 const NOT_MEMBER = { enabled: true, membership: null, total_net_cents: 0, payments: [] };
+const EMAIL_PREFERENCES = {
+  email_digest: true,
+  email_election_reminders: false,
+  email_new_election_alerts: true,
+  email_issue_updates: false,
+};
 
 function renderMission() {
   return renderRoutes(
@@ -50,21 +56,31 @@ describe("MissionPage", () => {
     expect(screen.queryByRole("button", { name: "Support monthly" })).not.toBeInTheDocument();
   });
 
-  it("shows the payment forms to a verified user when Stripe is configured", async () => {
+  it("shows the payment forms and the two email opt-ins to a verified user", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
       "/api/me/membership": { body: NOT_MEMBER },
+      "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
     });
     renderMission();
 
     expect(await screen.findByRole("button", { name: "Support monthly" })).toBeEnabled();
     expect(screen.getByRole("button", { name: "Support once" })).toBeEnabled();
+    // Way 3: only the two subscription toggles the pitch names, live values.
+    expect(
+      await screen.findByLabelText(/Updates about my candidates and election results/)
+    ).toBeChecked();
+    expect(screen.getByLabelText(/Updates about the issues you saved/)).not.toBeChecked();
+    expect(
+      screen.queryByLabelText(/Election reminder the day before election day/)
+    ).not.toBeInTheDocument();
   });
 
   it("keeps the pitch but no dead forms when Stripe is not configured", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
       "/api/me/membership": { body: { enabled: false } },
+      "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
     });
     const { queryClient } = renderMission();
 
