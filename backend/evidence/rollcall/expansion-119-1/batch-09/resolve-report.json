@@ -1,0 +1,1452 @@
+{
+  "importerVersion": "rollcall-resolve-v1",
+  "startedAt": "2026-08-24T00:44:11.380Z",
+  "finishedAt": "2026-08-24T00:44:15.271Z",
+  "evidenceDir": "/Users/shu/voteApp/.claude/worktrees/caveman-ultra-58491f/backend/evidence/rollcall/expansion-119-1/batch-09",
+  "scopeFrom": "2026-11-01",
+  "legislators": {
+    "sha": "750c0608efb6ef1fc3257ba72c99af3771d35088",
+    "people": 12768,
+    "files": [
+      {
+        "file": "legislators-current.yaml",
+        "sha256": "a4fde6aa9a67b210ea05b8671d88be0c40f5fe2162ed0c502d568294189429bb",
+        "count": 537,
+        "fromCache": true
+      },
+      {
+        "file": "legislators-historical.yaml",
+        "sha256": "9641615f336b3113d6f89152e3441128cbdc3f61ccf87c65da3a015076c78c91",
+        "count": 12231,
+        "fromCache": true
+      }
+    ]
+  },
+  "candidatesWithFecIds": 444,
+  "inScopeCandidates": 277,
+  "files": 1,
+  "fileErrors": 0,
+  "counts": {
+    "no_candidate": 80,
+    "matched": 14,
+    "out_of_scope": 6
+  },
+  "rolls": [
+    {
+      "file": "senate-119-1-roll00097.xml",
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 97,
+      "voteDate": "2025-02-27",
+      "question": "On the Joint Resolution",
+      "members": 100,
+      "counts": {
+        "no_candidate": 80,
+        "matched": 14,
+        "out_of_scope": 6
+      },
+      "matched": [
+        {
+          "memberId": "S370",
+          "name": "Booker (D-NJ)",
+          "state": "NJ",
+          "vote": "Nay",
+          "candidateId": "093ca08d-c5e5-4ff3-868a-270e86f85ec2",
+          "candidateName": "Cory Booker"
+        },
+        {
+          "memberId": "S372",
+          "name": "Capito (R-WV)",
+          "state": "WV",
+          "vote": "Yea",
+          "candidateId": "0013df3b-f6c9-40f9-8f65-c0de9e9ad0db",
+          "candidateName": "Shelley Moore Capito"
+        },
+        {
+          "memberId": "S252",
+          "name": "Collins (R-ME)",
+          "state": "ME",
+          "vote": "Yea",
+          "candidateId": "d2c61cb3-a248-400d-841b-325b99b9d42a",
+          "candidateName": "Susan M. Collins"
+        },
+        {
+          "memberId": "S374",
+          "name": "Cotton (R-AR)",
+          "state": "AR",
+          "vote": "Yea",
+          "candidateId": "cd32c906-b6ad-4115-9775-6efd296e1613",
+          "candidateName": "Tom Cotton"
+        },
+        {
+          "memberId": "S293",
+          "name": "Graham (R-SC)",
+          "state": "SC",
+          "vote": "Yea",
+          "candidateId": "4d7fa063-5514-4c0e-8a95-d59d4ea36dc9",
+          "candidateName": "Lindsey Graham"
+        },
+        {
+          "memberId": "S438",
+          "name": "Husted (R-OH)",
+          "state": "OH",
+          "vote": "Yea",
+          "candidateId": "8a0ac931-868c-4686-bc96-3e0e2d244601",
+          "candidateName": "Jon Husted"
+        },
+        {
+          "memberId": "S395",
+          "name": "Hyde-Smith (R-MS)",
+          "state": "MS",
+          "vote": "Yea",
+          "candidateId": "7b910854-d84c-494e-a2b6-abd6843e6a30",
+          "candidateName": "Cindy Hyde-Smith"
+        },
+        {
+          "memberId": "S409",
+          "name": "Lujan (D-NM)",
+          "state": "NM",
+          "vote": "Nay",
+          "candidateId": "c9a90468-5186-40f7-bb8e-32ff39e6cc90",
+          "candidateName": "Ben Ray Luján"
+        },
+        {
+          "memberId": "S322",
+          "name": "Merkley (D-OR)",
+          "state": "OR",
+          "vote": "Nay",
+          "candidateId": "2ddfe8c2-a267-495b-8f56-c1a032ae623f",
+          "candidateName": "Jeff Merkley"
+        },
+        {
+          "memberId": "S439",
+          "name": "Moody (R-FL)",
+          "state": "FL",
+          "vote": "Yea",
+          "candidateId": "dba75f21-52ae-4a14-a1bd-830fab6c69a4",
+          "candidateName": "Ashley Moody"
+        },
+        {
+          "memberId": "S414",
+          "name": "Ossoff (D-GA)",
+          "state": "GA",
+          "vote": "Nay",
+          "candidateId": "d5f44f88-1f42-4526-a8c0-672ca1726886",
+          "candidateName": "Jon Ossoff"
+        },
+        {
+          "memberId": "S423",
+          "name": "Ricketts (R-NE)",
+          "state": "NE",
+          "vote": "Yea",
+          "candidateId": "9b70aac3-1894-4dbe-ae1f-1cced409a1ac",
+          "candidateName": "Pete Ricketts"
+        },
+        {
+          "memberId": "S323",
+          "name": "Risch (R-ID)",
+          "state": "ID",
+          "vote": "Yea",
+          "candidateId": "aa7dd0de-6c3b-47b5-be70-10a44603ca10",
+          "candidateName": "Jim Risch"
+        },
+        {
+          "memberId": "S381",
+          "name": "Rounds (R-SD)",
+          "state": "SD",
+          "vote": "Yea",
+          "candidateId": "80b588b2-3675-40a3-a019-1df7fa05200d",
+          "candidateName": "Mike Rounds"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "unmatched": [
+    {
+      "chamber": "senate",
+      "memberId": "S428",
+      "name": "Alsobrooks (D-MD)",
+      "state": "MD",
+      "outcome": "no_candidate",
+      "legislator": "Angela D. Alsobrooks",
+      "fecIds": [
+        "S4MD00327"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S4MD00327",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S354",
+      "name": "Baldwin (D-WI)",
+      "state": "WI",
+      "outcome": "no_candidate",
+      "legislator": "Tammy Baldwin",
+      "fecIds": [
+        "H8WI00018",
+        "S2WI00219"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H8WI00018, S2WI00219",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S429",
+      "name": "Banks (R-IN)",
+      "state": "IN",
+      "outcome": "no_candidate",
+      "legislator": "Jim Banks",
+      "fecIds": [
+        "H6IN03229",
+        "S4IN00196"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H6IN03229, S4IN00196",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S317",
+      "name": "Barrasso (R-WY)",
+      "state": "WY",
+      "outcome": "no_candidate",
+      "legislator": "John Barrasso",
+      "fecIds": [
+        "S6WY00068"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S6WY00068",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S330",
+      "name": "Bennet (D-CO)",
+      "state": "CO",
+      "outcome": "no_candidate",
+      "legislator": "Michael F. Bennet",
+      "fecIds": [
+        "S0CO00211"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S0CO00211",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S396",
+      "name": "Blackburn (R-TN)",
+      "state": "TN",
+      "outcome": "no_candidate",
+      "legislator": "Marsha Blackburn",
+      "fecIds": [
+        "H2TN06030",
+        "S8TN00337"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H2TN06030, S8TN00337",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S341",
+      "name": "Blumenthal (D-CT)",
+      "state": "CT",
+      "outcome": "no_candidate",
+      "legislator": "Richard Blumenthal",
+      "fecIds": [
+        "S0CT00177"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S0CT00177",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S430",
+      "name": "Blunt Rochester (D-DE)",
+      "state": "DE",
+      "outcome": "no_candidate",
+      "legislator": "Lisa Blunt Rochester",
+      "fecIds": [
+        "H6DE00206",
+        "S4DE00060"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H6DE00206, S4DE00060",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S343",
+      "name": "Boozman (R-AR)",
+      "state": "AR",
+      "outcome": "no_candidate",
+      "legislator": "John Boozman",
+      "fecIds": [
+        "H2AR03176",
+        "S0AR00150"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H2AR03176, S0AR00150",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S416",
+      "name": "Britt (R-AL)",
+      "state": "AL",
+      "outcome": "no_candidate",
+      "legislator": "Katie Boyd Britt",
+      "fecIds": [
+        "S2AL00145"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S2AL00145",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S417",
+      "name": "Budd (R-NC)",
+      "state": "NC",
+      "outcome": "no_candidate",
+      "legislator": "Ted Budd",
+      "fecIds": [
+        "H6NC13129",
+        "S2NC00505"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H6NC13129, S2NC00505",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S275",
+      "name": "Cantwell (D-WA)",
+      "state": "WA",
+      "outcome": "no_candidate",
+      "legislator": "Maria Cantwell",
+      "fecIds": [
+        "S8WA00194",
+        "H2WA01054"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S8WA00194, H2WA01054",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S373",
+      "name": "Cassidy (R-LA)",
+      "state": "LA",
+      "outcome": "no_candidate",
+      "legislator": "Bill Cassidy",
+      "fecIds": [
+        "H8LA00017",
+        "S4LA00107"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H8LA00017, S4LA00107",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S337",
+      "name": "Coons (D-DE)",
+      "state": "DE",
+      "outcome": "no_candidate",
+      "legislator": "Christopher A. Coons",
+      "fecIds": [
+        "S0DE00092"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S0DE00092",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S287",
+      "name": "Cornyn (R-TX)",
+      "state": "TX",
+      "outcome": "no_candidate",
+      "legislator": "John Cornyn",
+      "fecIds": [
+        "S2TX00106"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S2TX00106",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S385",
+      "name": "Cortez Masto (D-NV)",
+      "state": "NV",
+      "outcome": "no_candidate",
+      "legislator": "Catherine Cortez Masto",
+      "fecIds": [
+        "S6NV00200"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S6NV00200",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S398",
+      "name": "Cramer (R-ND)",
+      "state": "ND",
+      "outcome": "no_candidate",
+      "legislator": "Kevin Cramer",
+      "fecIds": [
+        "H0ND01026",
+        "H6ND00074",
+        "S8ND00120"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H0ND01026, H6ND00074, S8ND00120",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S266",
+      "name": "Crapo (R-ID)",
+      "state": "ID",
+      "outcome": "no_candidate",
+      "legislator": "Mike Crapo",
+      "fecIds": [
+        "S8ID00027",
+        "H2ID02034"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S8ID00027, H2ID02034",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S355",
+      "name": "Cruz (R-TX)",
+      "state": "TX",
+      "outcome": "no_candidate",
+      "legislator": "Ted Cruz",
+      "fecIds": [
+        "S2TX00312"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S2TX00312",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S431",
+      "name": "Curtis (R-UT)",
+      "state": "UT",
+      "outcome": "no_candidate",
+      "legislator": "John R. Curtis",
+      "fecIds": [
+        "H8UT03238",
+        "S4UT00282"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H8UT03238, S4UT00282",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S375",
+      "name": "Daines (R-MT)",
+      "state": "MT",
+      "outcome": "no_candidate",
+      "legislator": "Steve Daines",
+      "fecIds": [
+        "H2MT01060",
+        "S2MT00096"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H2MT01060, S2MT00096",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S386",
+      "name": "Duckworth (D-IL)",
+      "state": "IL",
+      "outcome": "no_candidate",
+      "legislator": "Tammy Duckworth",
+      "fecIds": [
+        "H6IL06141",
+        "S6IL00292"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H6IL06141, S6IL00292",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S253",
+      "name": "Durbin (D-IL)",
+      "state": "IL",
+      "outcome": "no_candidate",
+      "legislator": "Richard J. Durbin",
+      "fecIds": [
+        "S6IL00151",
+        "H2IL20026"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S6IL00151, H2IL20026",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S376",
+      "name": "Ernst (R-IA)",
+      "state": "IA",
+      "outcome": "no_candidate",
+      "legislator": "Joni Ernst",
+      "fecIds": [
+        "S4IA00129"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S4IA00129",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S418",
+      "name": "Fetterman (D-PA)",
+      "state": "PA",
+      "outcome": "no_candidate",
+      "legislator": "John Fetterman",
+      "fecIds": [
+        "S6PA00274"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S6PA00274",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S357",
+      "name": "Fischer (R-NE)",
+      "state": "NE",
+      "outcome": "no_candidate",
+      "legislator": "Deb Fischer",
+      "fecIds": [
+        "S2NE00094"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S2NE00094",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S432",
+      "name": "Gallego (D-AZ)",
+      "state": "AZ",
+      "outcome": "no_candidate",
+      "legislator": "Ruben Gallego",
+      "fecIds": [
+        "H4AZ07043",
+        "S4AZ00139"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H4AZ07043, S4AZ00139",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S331",
+      "name": "Gillibrand (D-NY)",
+      "state": "NY",
+      "outcome": "no_candidate",
+      "legislator": "Kirsten E. Gillibrand",
+      "fecIds": [
+        "H6NY20167",
+        "S0NY00410"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H6NY20167, S0NY00410",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S153",
+      "name": "Grassley (R-IA)",
+      "state": "IA",
+      "outcome": "no_candidate",
+      "legislator": "Chuck Grassley",
+      "fecIds": [
+        "S0IA00028"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S0IA00028",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S388",
+      "name": "Hassan (D-NH)",
+      "state": "NH",
+      "outcome": "no_candidate",
+      "legislator": "Margaret Wood Hassan",
+      "fecIds": [
+        "S6NH00091"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S6NH00091",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S399",
+      "name": "Hawley (R-MO)",
+      "state": "MO",
+      "outcome": "no_candidate",
+      "legislator": "Josh Hawley",
+      "fecIds": [
+        "S8MO00160"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S8MO00160",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S359",
+      "name": "Heinrich (D-NM)",
+      "state": "NM",
+      "outcome": "no_candidate",
+      "legislator": "Martin Heinrich",
+      "fecIds": [
+        "H8NM01224",
+        "S2NM00088"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H8NM01224, S2NM00088",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S408",
+      "name": "Hickenlooper (D-CO)",
+      "state": "CO",
+      "outcome": "no_candidate",
+      "legislator": "John W. Hickenlooper",
+      "fecIds": [
+        "S0CO00575"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S0CO00575",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S361",
+      "name": "Hirono (D-HI)",
+      "state": "HI",
+      "outcome": "no_candidate",
+      "legislator": "Mazie K. Hirono",
+      "fecIds": [
+        "H6HI02251",
+        "S2HI00106"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H6HI02251, S2HI00106",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S344",
+      "name": "Hoeven (R-ND)",
+      "state": "ND",
+      "outcome": "no_candidate",
+      "legislator": "John Hoeven",
+      "fecIds": [
+        "S0ND00093"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S0ND00093",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S345",
+      "name": "Johnson (R-WI)",
+      "state": "WI",
+      "outcome": "no_candidate",
+      "legislator": "Ron Johnson",
+      "fecIds": [
+        "S0WI00197"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S0WI00197",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S437",
+      "name": "Justice (R-WV)",
+      "state": "WV",
+      "outcome": "no_candidate",
+      "legislator": "James C. Justice",
+      "fecIds": [
+        "S4WV00332"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S4WV00332",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S362",
+      "name": "Kaine (D-VA)",
+      "state": "VA",
+      "outcome": "no_candidate",
+      "legislator": "Tim Kaine",
+      "fecIds": [
+        "S2VA00142"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S2VA00142",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S406",
+      "name": "Kelly (D-AZ)",
+      "state": "AZ",
+      "outcome": "no_candidate",
+      "legislator": "Mark Kelly",
+      "fecIds": [
+        "S0AZ00350"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S0AZ00350",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S389",
+      "name": "Kennedy (R-LA)",
+      "state": "LA",
+      "outcome": "no_candidate",
+      "legislator": "John Kennedy",
+      "fecIds": [
+        "S4LA00065"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S4LA00065",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S426",
+      "name": "Kim (D-NJ)",
+      "state": "NJ",
+      "outcome": "no_candidate",
+      "legislator": "Andy Kim",
+      "fecIds": [
+        "H8NJ03206",
+        "S4NJ00466"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H8NJ03206, S4NJ00466",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S363",
+      "name": "King (I-ME)",
+      "state": "ME",
+      "outcome": "no_candidate",
+      "legislator": "Angus S. King, Jr.",
+      "fecIds": [
+        "S2ME00109"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S2ME00109",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S311",
+      "name": "Klobuchar (D-MN)",
+      "state": "MN",
+      "outcome": "no_candidate",
+      "legislator": "Amy Klobuchar",
+      "fecIds": [
+        "S6MN00267"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S6MN00267",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S378",
+      "name": "Lankford (R-OK)",
+      "state": "OK",
+      "outcome": "no_candidate",
+      "legislator": "James Lankford",
+      "fecIds": [
+        "H0OK05114",
+        "S4OK00232"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H0OK05114, S4OK00232",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S346",
+      "name": "Lee (R-UT)",
+      "state": "UT",
+      "outcome": "no_candidate",
+      "legislator": "Mike Lee",
+      "fecIds": [
+        "S0UT00165"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S0UT00165",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S410",
+      "name": "Lummis (R-WY)",
+      "state": "WY",
+      "outcome": "no_candidate",
+      "legislator": "Cynthia M. Lummis",
+      "fecIds": [
+        "H8WY00148",
+        "S0WY00137"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H8WY00148, S0WY00137",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S174",
+      "name": "McConnell (R-KY)",
+      "state": "KY",
+      "outcome": "no_candidate",
+      "legislator": "Mitch McConnell",
+      "fecIds": [
+        "S2KY00012"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S2KY00012",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S433",
+      "name": "McCormick (R-PA)",
+      "state": "PA",
+      "outcome": "no_candidate",
+      "legislator": "David McCormick",
+      "fecIds": [
+        "S2PA00661"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S2PA00661",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S347",
+      "name": "Moran (R-KS)",
+      "state": "KS",
+      "outcome": "no_candidate",
+      "legislator": "Jerry Moran",
+      "fecIds": [
+        "H6KS01096",
+        "S0KS00091"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H6KS01096, S0KS00091",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S434",
+      "name": "Moreno (R-OH)",
+      "state": "OH",
+      "outcome": "no_candidate",
+      "legislator": "Bernie Moreno",
+      "fecIds": [
+        "S4OH00192"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S4OH00192",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S419",
+      "name": "Mullin (R-OK)",
+      "state": "OK",
+      "outcome": "no_candidate",
+      "legislator": "Markwayne Mullin",
+      "fecIds": [
+        "H2OK02083",
+        "S2OK00186"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H2OK02083, S2OK00186",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S288",
+      "name": "Murkowski (R-AK)",
+      "state": "AK",
+      "outcome": "no_candidate",
+      "legislator": "Lisa Murkowski",
+      "fecIds": [
+        "S4AK00099"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S4AK00099",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S364",
+      "name": "Murphy (D-CT)",
+      "state": "CT",
+      "outcome": "no_candidate",
+      "legislator": "Christopher Murphy",
+      "fecIds": [
+        "H6CT05124",
+        "S2CT00132"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H6CT05124, S2CT00132",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S229",
+      "name": "Murray (D-WA)",
+      "state": "WA",
+      "outcome": "no_candidate",
+      "legislator": "Patty Murray",
+      "fecIds": [
+        "S2WA00189"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S2WA00189",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S413",
+      "name": "Padilla (D-CA)",
+      "state": "CA",
+      "outcome": "no_candidate",
+      "legislator": "Alex Padilla",
+      "fecIds": [
+        "S2CA00955"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S2CA00955",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S348",
+      "name": "Paul (R-KY)",
+      "state": "KY",
+      "outcome": "no_candidate",
+      "legislator": "Rand Paul",
+      "fecIds": [
+        "S0KY00156"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S0KY00156",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S380",
+      "name": "Peters (D-MI)",
+      "state": "MI",
+      "outcome": "no_candidate",
+      "legislator": "Gary C. Peters",
+      "fecIds": [
+        "H8MI09068",
+        "S4MI00355"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H8MI09068, S4MI00355",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S402",
+      "name": "Rosen (D-NV)",
+      "state": "NV",
+      "outcome": "no_candidate",
+      "legislator": "Jacky Rosen",
+      "fecIds": [
+        "H6NV03139",
+        "S8NV00156"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H6NV03139, S8NV00156",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S313",
+      "name": "Sanders (I-VT)",
+      "state": "VT",
+      "outcome": "no_candidate",
+      "legislator": "Bernard Sanders",
+      "fecIds": [
+        "H8VT01016",
+        "S4VT00033"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H8VT01016, S4VT00033",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S353",
+      "name": "Schatz (D-HI)",
+      "state": "HI",
+      "outcome": "no_candidate",
+      "legislator": "Brian Schatz",
+      "fecIds": [
+        "S4HI00136",
+        "H6HI02244"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S4HI00136, H6HI02244",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S427",
+      "name": "Schiff (D-CA)",
+      "state": "CA",
+      "outcome": "no_candidate",
+      "legislator": "Adam B. Schiff",
+      "fecIds": [
+        "H0CA27085",
+        "S4CA00555"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H0CA27085, S4CA00555",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S420",
+      "name": "Schmitt (R-MO)",
+      "state": "MO",
+      "outcome": "no_candidate",
+      "legislator": "Eric Schmitt",
+      "fecIds": [
+        "S2MO00544"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S2MO00544",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S270",
+      "name": "Schumer (D-NY)",
+      "state": "NY",
+      "outcome": "no_candidate",
+      "legislator": "Charles E. Schumer",
+      "fecIds": [
+        "S8NY00082",
+        "H0NY16010"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S8NY00082, H0NY16010",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S404",
+      "name": "Scott (R-FL)",
+      "state": "FL",
+      "outcome": "no_candidate",
+      "legislator": "Rick Scott",
+      "fecIds": [
+        "S8FL00273"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S8FL00273",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S365",
+      "name": "Scott (R-SC)",
+      "state": "SC",
+      "outcome": "no_candidate",
+      "legislator": "Tim Scott",
+      "fecIds": [
+        "H0SC01279",
+        "S4SC00240"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H0SC01279, S4SC00240",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S324",
+      "name": "Shaheen (D-NH)",
+      "state": "NH",
+      "outcome": "no_candidate",
+      "legislator": "Jeanne Shaheen",
+      "fecIds": [
+        "S0NH00219"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S0NH00219",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S435",
+      "name": "Sheehy (R-MT)",
+      "state": "MT",
+      "outcome": "no_candidate",
+      "legislator": "Tim Sheehy",
+      "fecIds": [
+        "S4MT00183"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S4MT00183",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S436",
+      "name": "Slotkin (D-MI)",
+      "state": "MI",
+      "outcome": "no_candidate",
+      "legislator": "Elissa Slotkin",
+      "fecIds": [
+        "H8MI08102",
+        "S4MI00470"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H8MI08102, S4MI00470",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S394",
+      "name": "Smith (D-MN)",
+      "state": "MN",
+      "outcome": "no_candidate",
+      "legislator": "Tina Smith",
+      "fecIds": [
+        "S8MN00578"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S8MN00578",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S303",
+      "name": "Thune (R-SD)",
+      "state": "SD",
+      "outcome": "no_candidate",
+      "legislator": "John Thune",
+      "fecIds": [
+        "S2SD00068",
+        "H6SD00085"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S2SD00068, H6SD00085",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S384",
+      "name": "Tillis (R-NC)",
+      "state": "NC",
+      "outcome": "no_candidate",
+      "legislator": "Thom Tillis",
+      "fecIds": [
+        "S4NC00162"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S4NC00162",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S412",
+      "name": "Tuberville (R-AL)",
+      "state": "AL",
+      "outcome": "no_candidate",
+      "legislator": "Tommy Tuberville",
+      "fecIds": [
+        "S0AL00230"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S0AL00230",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S390",
+      "name": "Van Hollen (D-MD)",
+      "state": "MD",
+      "outcome": "no_candidate",
+      "legislator": "Chris Van Hollen",
+      "fecIds": [
+        "H2MD08126",
+        "S6MD03441"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H2MD08126, S6MD03441",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S415",
+      "name": "Warnock (D-GA)",
+      "state": "GA",
+      "outcome": "no_candidate",
+      "legislator": "Raphael G. Warnock",
+      "fecIds": [
+        "S0GA00559"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S0GA00559",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S366",
+      "name": "Warren (D-MA)",
+      "state": "MA",
+      "outcome": "no_candidate",
+      "legislator": "Elizabeth Warren",
+      "fecIds": [
+        "S2MA00170"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S2MA00170",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S422",
+      "name": "Welch (D-VT)",
+      "state": "VT",
+      "outcome": "no_candidate",
+      "legislator": "Peter Welch",
+      "fecIds": [
+        "H6VT00160",
+        "H8VT00034",
+        "S2VT00235"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H6VT00160, H8VT00034, S2VT00235",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S316",
+      "name": "Whitehouse (D-RI)",
+      "state": "RI",
+      "outcome": "no_candidate",
+      "legislator": "Sheldon Whitehouse",
+      "fecIds": [
+        "S6RI00221"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S6RI00221",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S318",
+      "name": "Wicker (R-MS)",
+      "state": "MS",
+      "outcome": "no_candidate",
+      "legislator": "Roger F. Wicker",
+      "fecIds": [
+        "H4MS01078",
+        "S8MS00196"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H4MS01078, S8MS00196",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S247",
+      "name": "Wyden (D-OR)",
+      "state": "OR",
+      "outcome": "no_candidate",
+      "legislator": "Ron Wyden",
+      "fecIds": [
+        "S6OR00110",
+        "H0OR03026"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries S6OR00110, H0OR03026",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S391",
+      "name": "Young (R-IN)",
+      "state": "IN",
+      "outcome": "no_candidate",
+      "legislator": "Todd Young",
+      "fecIds": [
+        "H0IN09070",
+        "S6IN00191"
+      ],
+      "candidates": [],
+      "detail": "no candidate carries H0IN09070, S6IN00191",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S407",
+      "name": "Hagerty (R-TN)",
+      "state": "TN",
+      "outcome": "out_of_scope",
+      "legislator": "Bill Hagerty",
+      "fecIds": [
+        "S0TN00169"
+      ],
+      "candidates": [
+        {
+          "candidateId": "6176ba4c-3028-4dc9-a5e9-0bac035b69a0",
+          "name": "Bill Hagerty",
+          "inScope": false
+        }
+      ],
+      "detail": "Bill Hagerty is not on a Nov-2026-or-later election",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S369",
+      "name": "Markey (D-MA)",
+      "state": "MA",
+      "outcome": "out_of_scope",
+      "legislator": "Edward J. Markey",
+      "fecIds": [
+        "H6MA07101",
+        "S4MA00028"
+      ],
+      "candidates": [
+        {
+          "candidateId": "581100d2-df25-4ea2-9d0d-82b11f3ef44f",
+          "name": "Ed Markey",
+          "inScope": false
+        }
+      ],
+      "detail": "Ed Markey is not on a Nov-2026-or-later election",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S411",
+      "name": "Marshall (R-KS)",
+      "state": "KS",
+      "outcome": "out_of_scope",
+      "legislator": "Roger Marshall",
+      "fecIds": [
+        "H6KS01179",
+        "S0KS00315"
+      ],
+      "candidates": [
+        {
+          "candidateId": "95e433c8-9b58-4834-8adf-d83b3ed64682",
+          "name": "Roger Marshall",
+          "inScope": false
+        }
+      ],
+      "detail": "Roger Marshall is not on a Nov-2026-or-later election",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S259",
+      "name": "Reed (D-RI)",
+      "state": "RI",
+      "outcome": "out_of_scope",
+      "legislator": "Jack Reed",
+      "fecIds": [
+        "S6RI00163",
+        "H0RI02071"
+      ],
+      "candidates": [
+        {
+          "candidateId": "cede8617-161c-4e65-b19d-072c7c393d85",
+          "name": "Jack Reed",
+          "inScope": false
+        }
+      ],
+      "detail": "Jack Reed is not on a Nov-2026-or-later election",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S383",
+      "name": "Sullivan (R-AK)",
+      "state": "AK",
+      "outcome": "out_of_scope",
+      "legislator": "Dan Sullivan",
+      "fecIds": [
+        "S4AK00214"
+      ],
+      "candidates": [
+        {
+          "candidateId": "b8c7fb7e-2eda-46ec-b65f-7b0b9c6f842a",
+          "name": "Sullivan, Dan S.",
+          "inScope": false
+        }
+      ],
+      "detail": "Sullivan, Dan S. is not on a Nov-2026-or-later election",
+      "rolls": 1
+    },
+    {
+      "chamber": "senate",
+      "memberId": "S327",
+      "name": "Warner (D-VA)",
+      "state": "VA",
+      "outcome": "out_of_scope",
+      "legislator": "Mark R. Warner",
+      "fecIds": [
+        "S6VA00093",
+        "P80003023"
+      ],
+      "candidates": [
+        {
+          "candidateId": "ec68410a-fd44-4fec-8370-2a985da8d2af",
+          "name": "Mark Warner",
+          "inScope": false
+        }
+      ],
+      "detail": "Mark Warner is not on a Nov-2026-or-later election",
+      "rolls": 1
+    }
+  ]
+}

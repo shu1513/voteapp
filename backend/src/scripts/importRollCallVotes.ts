@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { Pool, type PoolClient } from "pg";
@@ -218,6 +218,22 @@ export function collectVoters(
     });
   }
   return { voters, notVoting };
+}
+
+/**
+ * Which report file a run writes. Once the dir holds import-report.json,
+ * import-dry-run-report.json is the reviewed pre-import plan (committed as
+ * evidence), so a later dry run — a post-import check — lands in a rerun
+ * file instead of eating the plan. Before the import, repeated dry runs
+ * overwrite the plan file; that is the reviewing loop.
+ */
+export function importReportFileName(evidenceDir: string, dryRun: boolean): string {
+  if (!dryRun) {
+    return "import-report.json";
+  }
+  return existsSync(resolve(evidenceDir, "import-report.json"))
+    ? "import-dry-run-rerun-report.json"
+    : "import-dry-run-report.json";
 }
 
 function readValueFlag(argv: readonly string[], flagName: string): string | null {
@@ -451,10 +467,7 @@ async function main(): Promise<void> {
     notified: rows.reduce((sum, row) => sum + row.notified, 0),
     rolls: rows,
   };
-  writeFileSync(
-    resolve(evidenceDir, dryRun ? "import-dry-run-report.json" : "import-report.json"),
-    `${JSON.stringify(report, null, 2)}\n`
-  );
+  writeFileSync(resolve(evidenceDir, importReportFileName(evidenceDir, dryRun)), `${JSON.stringify(report, null, 2)}\n`);
   console.log(
     JSON.stringify(
       {

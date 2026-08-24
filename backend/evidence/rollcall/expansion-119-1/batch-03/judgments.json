@@ -1,0 +1,276 @@
+{
+  "judgments": [
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 207,
+      "measure_id": "H.J.Res. 20",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted to send H.J.Res. 20 to the President, using the Congressional Review Act to repeal the Department of Energy efficiency standards for consumer gas-fired instantaneous water heaters. It passed the Senate 53-44.",
+      "nay_description": "Voted against sending H.J.Res. 20 to the President, which used the Congressional Review Act to repeal the Department of Energy efficiency standards for consumer gas-fired instantaneous water heaters. It passed the Senate 53-44.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 119,
+      "session": 1,
+      "roll": 104,
+      "measure_id": "S 146",
+      "vote_date": "2025-04-28",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S. 146, the TAKE IT DOWN Act, which made it a federal crime to publish nonconsensual intimate images, including computer-generated deepfakes, and required online platforms to remove them within 48 hours of a valid request. It passed the House 409-2 and was signed into law.",
+      "nay_description": "Voted against passing S. 146, the TAKE IT DOWN Act, which made it a federal crime to publish nonconsensual intimate images, including computer-generated deepfakes, and required online platforms to remove them within 48 hours of a valid request. It passed the House 409-2 and was signed into law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 119,
+      "session": 1,
+      "roll": 110,
+      "measure_id": "H J RES 60",
+      "vote_date": "2025-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 60, which used the Congressional Review Act to repeal the National Park Service rule limiting off-road vehicle use in parts of the Glen Canyon National Recreation Area around Lake Powell. It passed the House 219-205.",
+      "nay_description": "Voted against passing H.J.Res. 60, which used the Congressional Review Act to repeal the National Park Service rule limiting off-road vehicle use in parts of the Glen Canyon National Recreation Area around Lake Powell. It passed the House 219-205.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 119,
+      "session": 1,
+      "roll": 111,
+      "measure_id": "H J RES 87",
+      "vote_date": "2025-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 87, which revoked the Clean Air Act waivers letting California enforce its own heavy-duty vehicle emission warranty rules and its Advanced Clean Trucks and zero-emission fleet standards. It passed the House 231-191.",
+      "nay_description": "Voted against passing H.J.Res. 87, which revoked the Clean Air Act waivers letting California enforce its own heavy-duty vehicle emission warranty rules and its Advanced Clean Trucks and zero-emission fleet standards. It passed the House 231-191.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 119,
+      "session": 1,
+      "roll": 112,
+      "measure_id": "H J RES 89",
+      "vote_date": "2025-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 89, which revoked the Clean Air Act waiver letting California enforce its Omnibus Low NOx standards for heavy-duty on-road and off-road diesel engines. It passed the House 225-196.",
+      "nay_description": "Voted against passing H.J.Res. 89, which revoked the Clean Air Act waiver letting California enforce its Omnibus Low NOx standards for heavy-duty on-road and off-road diesel engines. It passed the House 225-196.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 223,
+      "measure_id": "H.J.Res. 42",
+      "vote_date": "2025-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted to send H.J.Res. 42 to the President, using the Congressional Review Act to repeal the Department of Energy rule tightening certification, labeling, and enforcement requirements behind appliance energy-efficiency standards. It passed the Senate 52-46.",
+      "nay_description": "Voted against sending H.J.Res. 42 to the President, which used the Congressional Review Act to repeal the Department of Energy rule tightening certification, labeling, and enforcement requirements behind appliance energy-efficiency standards. It passed the Senate 52-46.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 225,
+      "measure_id": "S.J.Res. 49",
+      "vote_date": "2025-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 49, which would have terminated the national emergency the President declared on April 2, 2025 to impose a 10 percent tariff on most imports and higher duties on specified trading partners. It failed in the Senate on a 49-49 tie.",
+      "nay_description": "Voted against passing S.J.Res. 49, which would have terminated the national emergency the President declared on April 2, 2025 to impose a 10 percent tariff on most imports and higher duties on specified trading partners. It failed in the Senate on a 49-49 tie.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 119,
+      "session": 1,
+      "roll": 113,
+      "measure_id": "H J RES 78",
+      "vote_date": "2025-05-01",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 78, which used the Congressional Review Act to repeal the U.S. Fish and Wildlife Service rule listing the San Francisco Bay-Delta longfin smelt as endangered, removing the fish's Endangered Species Act protection. It passed the House 216-195.",
+      "nay_description": "Voted against passing H.J.Res. 78, which used the Congressional Review Act to repeal the U.S. Fish and Wildlife Service rule listing the San Francisco Bay-Delta longfin smelt as endangered, removing the fish's Endangered Species Act protection. It passed the House 216-195.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 119,
+      "session": 1,
+      "roll": 114,
+      "measure_id": "H J RES 88",
+      "vote_date": "2025-05-01",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 88, which revoked the Clean Air Act waiver letting California enforce its Advanced Clean Cars II rules requiring rising shares of low-emission and zero-emission new cars. It passed the House 246-164.",
+      "nay_description": "Voted against passing H.J.Res. 88, which revoked the Clean Air Act waiver letting California enforce its Advanced Clean Cars II rules requiring rising shares of low-emission and zero-emission new cars. It passed the House 246-164.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 228,
+      "measure_id": "H.J.Res. 75",
+      "vote_date": "2025-05-01",
+      "review_status": "approved",
+      "yea_description": "Voted to send H.J.Res. 75 to the President, using the Congressional Review Act to repeal the Department of Energy efficiency standards for commercial refrigerators, freezers, and refrigerator-freezers. It passed the Senate 52-45.",
+      "nay_description": "Voted against sending H.J.Res. 75 to the President, which used the Congressional Review Act to repeal the Department of Energy efficiency standards for commercial refrigerators, freezers, and refrigerator-freezers. It passed the Senate 52-45.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 229,
+      "measure_id": "S.J.Res. 31",
+      "vote_date": "2025-05-01",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 31, which used the Congressional Review Act to repeal the EPA rule requiring plants that reclassify from major sources to area sources to keep controlling persistent and bioaccumulative hazardous air pollutants. It passed the Senate 52-46.",
+      "nay_description": "Voted against passing S.J.Res. 31, which used the Congressional Review Act to repeal the EPA rule requiring plants that reclassify from major sources to area sources to keep controlling persistent and bioaccumulative hazardous air pollutants. It passed the Senate 52-46.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 232,
+      "measure_id": "H.J.Res. 61",
+      "vote_date": "2025-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted to send H.J.Res. 61 to the President, using the Congressional Review Act to repeal the EPA emission standards for hazardous air pollutants released by rubber tire manufacturing plants. It passed the Senate 55-45.",
+      "nay_description": "Voted against sending H.J.Res. 61 to the President, which used the Congressional Review Act to repeal the EPA emission standards for hazardous air pollutants released by rubber tire manufacturing plants. It passed the Senate 55-45.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 237,
+      "measure_id": "S.J.Res. 13",
+      "vote_date": "2025-05-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 13, which used the Congressional Review Act to repeal the Comptroller of the Currency rule ending expedited automatic approvals and streamlined forms in bank merger reviews. It passed the Senate 52-47.",
+      "nay_description": "Voted against passing S.J.Res. 13, which used the Congressional Review Act to repeal the Comptroller of the Currency rule ending expedited automatic approvals and streamlined forms in bank merger reviews. It passed the Senate 52-47.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 238,
+      "measure_id": "S.J.Res. 7",
+      "vote_date": "2025-05-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 7, which used the Congressional Review Act to repeal the FCC rule letting schools and libraries use E-Rate discounts to lend Wi-Fi hotspots to students and patrons without home internet. It passed the Senate 50-38.",
+      "nay_description": "Voted against passing S.J.Res. 7, which used the Congressional Review Act to repeal the FCC rule letting schools and libraries use E-Rate discounts to lend Wi-Fi hotspots to students and patrons without home internet. It passed the Senate 50-38.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 239,
+      "measure_id": "H.J.Res. 60",
+      "vote_date": "2025-05-08",
+      "review_status": "approved",
+      "yea_description": "Voted to send H.J.Res. 60 to the President, using the Congressional Review Act to repeal the National Park Service rule limiting off-road vehicle use in parts of the Glen Canyon National Recreation Area around Lake Powell. It passed the Senate 50-43.",
+      "nay_description": "Voted against sending H.J.Res. 60 to the President, which used the Congressional Review Act to repeal the National Park Service rule limiting off-road vehicle use in parts of the Glen Canyon National Recreation Area around Lake Powell. It passed the Senate 50-43.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 119,
+      "session": 1,
+      "roll": 128,
+      "measure_id": "H R 2243",
+      "vote_date": "2025-05-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 2243, the LEOSA Reform Act of 2025, which let qualified active and retired law enforcement officers carry concealed firearms in school zones, national parks, public property, and certain federal buildings open to the public. It passed the House 229-193.",
+      "nay_description": "Voted against passing H.R. 2243, the LEOSA Reform Act of 2025, which let qualified active and retired law enforcement officers carry concealed firearms in school zones, national parks, public property, and certain federal buildings open to the public. It passed the House 229-193.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against"
+        }
+      ]
+    }
+  ]
+}

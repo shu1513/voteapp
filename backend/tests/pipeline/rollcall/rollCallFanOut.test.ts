@@ -176,13 +176,21 @@ describe("planCandidateRecord", () => {
       source_url: "https://clerk.house.gov/evs/2025/roll143.xml",
       description: "Voted to pass S.J. Res. 31, disapproving an EPA rule. It passed the House 216-212.",
     });
+    // Same guard on the measure branch: an amendment vote on THIS bill
+    // cites its own roll call, so naming the bill must not flag it (the
+    // Aderholt case from expansion batch 5).
+    const amendment = record({
+      id: "amendment",
+      source_url: "https://clerk.house.gov/Votes/2025143",
+      description: "Voted yes on an amendment to H.R. 1 during House consideration.",
+    });
     const nonVote = record({
       id: "chair",
       source_url: "https://collins.house.gov/media/press-releases/z",
       description: "Was appointed chair of the Subcommittee on Water Resources.",
     });
     const retiredPress = { ...press, id: "retired-press", retired_at: "2026-01-01T00:00:00Z" };
-    const decision = plan([press, paraphrase, otherRoll, nonVote, retiredPress]);
+    const decision = plan([press, paraphrase, otherRoll, amendment, nonVote, retiredPress]);
     expect(decision).toEqual({ plan: { action: "insert" }, relatedRecordIds: ["press", "paraphrase"] });
     // No measure (quorum call): the bill-id rule is off, the vote-claim
     // rule still works.

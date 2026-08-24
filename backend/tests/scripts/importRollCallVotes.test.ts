@@ -1,7 +1,11 @@
-import { describe, expect, it } from "vitest";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+import { afterEach, describe, expect, it } from "vitest";
 
 import type { FederalMemberResolution } from "../../src/pipeline/rollcall/federalMemberResolver.js";
-import { collectVoters, ROLLCALL_IMPORT_IMPORTER_VERSION } from "../../src/scripts/importRollCallVotes.js";
+import { collectVoters, importReportFileName, ROLLCALL_IMPORT_IMPORTER_VERSION } from "../../src/scripts/importRollCallVotes.js";
 
 function resolution(
   memberId: string,
@@ -51,5 +55,27 @@ describe("collectVoters", () => {
 
   it("stamps its own importer version", () => {
     expect(ROLLCALL_IMPORT_IMPORTER_VERSION).toBe("rollcall-import-v1");
+  });
+});
+
+describe("importReportFileName", () => {
+  let evidenceDir: string | null = null;
+
+  afterEach(() => {
+    if (evidenceDir) {
+      rmSync(evidenceDir, { recursive: true, force: true });
+      evidenceDir = null;
+    }
+  });
+
+  it("keeps the pre-import plan once the dir has been imported", () => {
+    evidenceDir = mkdtempSync(join(tmpdir(), "rollcall-import-report-"));
+    expect(importReportFileName(evidenceDir, false)).toBe("import-report.json");
+    // The reviewing loop: dry runs before the import overwrite the plan.
+    expect(importReportFileName(evidenceDir, true)).toBe("import-dry-run-report.json");
+    writeFileSync(join(evidenceDir, "import-report.json"), "{}\n");
+    // After the import, a dry run is a check and must not eat the plan.
+    expect(importReportFileName(evidenceDir, true)).toBe("import-dry-run-rerun-report.json");
+    expect(importReportFileName(evidenceDir, false)).toBe("import-report.json");
   });
 });
