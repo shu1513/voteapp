@@ -123,3 +123,33 @@ describe("looksLikeVoteClaim", () => {
     }
   });
 });
+
+describe("rollCallUrlKey (Ohio)", () => {
+  it("folds the Ohio actions URL's spellings to one per-bill key", () => {
+    const canonical = "https://search-prod.lis.state.oh.us/api/v2/general_assembly_136/legislation/hb96/actions/";
+    const key = rollCallUrlKey(canonical);
+    expect(key).toEqual({ chamber: null, key: "oh:136:hb96" });
+    for (const url of [
+      // The API 301s the slashless spelling to the canonical one.
+      "https://search-prod.lis.state.oh.us/api/v2/general_assembly_136/legislation/hb96/actions",
+      "http://search-prod.lis.state.oh.us/api/v2/general_assembly_136/legislation/HB96/actions/",
+      "https://search-prod.lis.state.oh.us/api/v2/general_assembly_136/legislation/hb96/actions/?x=1",
+    ]) {
+      expect(rollCallUrlKey(url)?.key, url).toBe("oh:136:hb96");
+    }
+    expect(citesSameRollCall(canonical, "oh:136:hb96")).toBe(true);
+    expect(citesAnyRollCall(canonical)).toBe(true);
+  });
+
+  it("stays quiet on other Ohio LIS paths", () => {
+    for (const url of [
+      "https://search-prod.lis.state.oh.us/api/v2/general_assembly_136/legislation/hb96/",
+      "https://search-prod.lis.state.oh.us/api/v2/general_assembly_136/legislation/",
+      "https://search-prod.lis.state.oh.us/api/v2/general_assembly_136/legislators/",
+      "https://www.legislature.ohio.gov/legislation/136/hb96",
+    ]) {
+      expect(rollCallUrlKey(url), url).toBeNull();
+      expect(citesAnyRollCall(url), url).toBe(false);
+    }
+  });
+});
