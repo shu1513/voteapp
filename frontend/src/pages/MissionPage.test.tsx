@@ -24,7 +24,7 @@ describe("MissionPage", () => {
     stubApiRoutes({ "/api/me": apiError(401, "unauthorized", "Not logged in") });
     renderMission();
 
-    expect(await screen.findByRole("heading", { name: "Our mission" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Mission" })).toBeInTheDocument();
     // ?next returns the prospective supporter here after auth.
     expect(await screen.findByRole("link", { name: "Log in" })).toHaveAttribute(
       "href",
@@ -68,7 +68,7 @@ describe("MissionPage", () => {
     });
     const { queryClient } = renderMission();
 
-    expect(await screen.findByRole("heading", { name: "Our mission" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Mission" })).toBeInTheDocument();
     await waitFor(() => expect(queryClient.getQueryState(["me", "membership"])?.status).toBe("success"));
     expect(screen.queryByRole("button", { name: "Support monthly" })).not.toBeInTheDocument();
   });
