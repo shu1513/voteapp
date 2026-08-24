@@ -145,6 +145,16 @@ function candidateName(result: AutoPickElectionResult, candidateId: string): str
 // Headline sentence per outcome/reason — the honest summary the spec
 // requires ("no pick" is a normal outcome, and saying why is the feature).
 function summarize(result: AutoPickElectionResult, seatsToFill: number | null): string {
+  // Race-type-independent "couldn't run" reasons come before the fork: a
+  // measure result carries them too (with an empty per-issue list), and
+  // letting the measure branch see one would mislabel a rank-your-issues
+  // problem as a tagging gap.
+  if (result.reason === "too_few_issues") {
+    return `Rank at least ${MIN_AUTO_PICK_ISSUES} issues first, so the pick reflects what matters to you.`;
+  }
+  if (result.reason === "election_closed") {
+    return "This election is no longer open for picks.";
+  }
   const shortlist = joinNames(result.shortlist_candidate_ids.map((id) => candidateName(result, id)));
   if (result.race_type === "ballot_measure") {
     if (result.reason === "veto") {
@@ -191,10 +201,6 @@ function summarize(result: AutoPickElectionResult, seatsToFill: number | null): 
         : "No pick: every candidate with a record here works against your issues.";
     case "all_vetoed":
       return "No pick: every candidate goes against one of your musts.";
-    case "too_few_issues":
-      return `Rank at least ${MIN_AUTO_PICK_ISSUES} issues first, so the pick reflects what matters to you.`;
-    case "election_closed":
-      return "This election is no longer open for picks.";
     default:
       return "No pick: none of these candidates has a record on your issues yet.";
   }
