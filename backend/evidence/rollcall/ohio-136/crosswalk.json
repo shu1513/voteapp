@@ -1,7 +1,7 @@
 {
   "jurisdiction": "OH",
   "general_assembly": 136,
-  "comment": "lpid -> candidate crosswalk, the state analog of the federal exact-FEC-id rule (plan §2). Every entry was proposed by rollcall:oh:resolve name matching (last name = token tail + first name exact or prefix, unique both directions) against the Nov-2026 Ohio state-legislative pool, then reviewed by the operator 2026-08-23 (all 79 pairs; 74 same-district identities, 5 known cross-chamber candidacies incl. the Gayle/Nathan Manning seat swap). Members without an entry are not yet reviewed; hand additions (name variants like Mike/Michael Dovilla, members running for non-legislative offices) belong here with a note.",
+  "comment": "lpid -> candidate crosswalk, the state analog of the federal exact-FEC-id rule (plan §2). Every entry was proposed by rollcall:oh:resolve name matching (last name = token tail + first name exact or prefix, unique both directions) against the Nov-2026 Ohio state-legislative pool, then reviewed by the operator 2026-08-23 (all 79 pairs; 74 same-district identities, 5 known cross-chamber candidacies incl. the Gayle/Nathan Manning seat swap). Hand sweep 2026-08-24 completed the file: 15 further pairs verified by name AND seat, and every remaining member carries an explicit null (reviewed, no candidate), so a no_crosswalk count now means an lpid the roster snapshot does not cover. hand additions (name variants like Mike/Michael Dovilla, members running for non-legislative offices) belong here with a note.",
   "entries": [
     {
       "lpid": "rep_abdullahi_munira_1",
@@ -12,6 +12,11 @@
       "lpid": "rep_abrams_cindy_1",
       "candidate_id": "2c64944c-d809-43b7-80b3-e8996777170c",
       "note": "Cindy Abrams (house 29) = Cindy Abrams, state_lower: State House District 29 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_arthur_sarah_1",
+      "candidate_id": "ff059208-3186-4c29-8582-59e610d6f092",
+      "note": "Sarah Fowler Arthur (house 99) = Sarah Fowler, state_lower: District 99 — hand-added 2026-08-24: surname variant: roster lastname \"Arthur\", displayname \"Sarah Fowler Arthur\"; candidate row carries current_office \"OH State Representative\""
     },
     {
       "lpid": "rep_bailey_ashley_1",
@@ -39,6 +44,11 @@
       "note": "Sean P. Brennan (house 14) = Sean Brennan, state_lower: State House District 14 (2024); Ohio"
     },
     {
+      "lpid": "rep_brent_juanita_1",
+      "candidate_id": null,
+      "note": "Juanita O. Brent (house 18) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
+    },
+    {
       "lpid": "rep_brewer_darnell_1",
       "candidate_id": "4b247bc8-d0d9-418c-8cc6-bd5432c7d974",
       "note": "Darnell T. Brewer (house 22) = Darnell Brewer, state_lower: State House District 22 (2024); Ohio"
@@ -47,6 +57,11 @@
       "lpid": "rep_brownlee_karen_1",
       "candidate_id": "d5326f43-21e5-4103-9eb2-8709da188845",
       "note": "Karen Brownlee (house 28) = Karen Brownlee, state_lower: State House District 28 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_callender_jamie_1",
+      "candidate_id": null,
+      "note": "Jamie Callender (house 57) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
     },
     {
       "lpid": "rep_claggett_thaddeus_1",
@@ -94,6 +109,16 @@
       "note": "Steve Demetriou (house 35) = Steve Demetriou, state_upper: State Senate District 27 (2024); Ohio"
     },
     {
+      "lpid": "rep_denson_sedrick_1",
+      "candidate_id": null,
+      "note": "Sedrick Denson (house 26) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
+    },
+    {
+      "lpid": "rep_dovilla_mike_1",
+      "candidate_id": "5e1e39f7-c8c6-4de1-ad4f-3e6339817edf",
+      "note": "Michael D. Dovilla (house 17) = Mike Dovilla, state_lower: District 17 — hand-added 2026-08-24: first-name variant: roster \"Michael D. Dovilla\""
+    },
+    {
       "lpid": "rep_ferguson_ron_1",
       "candidate_id": "ab26adab-1741-4018-9bff-9b3ba45a8676",
       "note": "Ron Ferguson (house 96) = Ron Ferguson, state_lower: State House District 96 (2024); Ohio"
@@ -124,6 +149,16 @@
       "note": "Jennifer Gross (house 45) = Jennifer Gross, state_lower: State House District 45 (2024); Ohio"
     },
     {
+      "lpid": "rep_hall_derrick_1",
+      "candidate_id": "7c3089b8-3698-45cd-b33b-3c2633c7e245",
+      "note": "Derrick Hall (house 34) = Derrick Hall, state_lower: District 34 — hand-added 2026-08-24: shares a surname with Thomas Hall; roster lastname is the disambiguated \"Hall, D.\""
+    },
+    {
+      "lpid": "rep_hall_thomas_1",
+      "candidate_id": "13d0f2fd-10d2-4929-a9c0-c108ab98988b",
+      "note": "Thomas Hall (house 46) = Thomas Hall, state_lower: District 46 — hand-added 2026-08-24: shares a surname with Derrick Hall; roster lastname is \"Hall, T.\""
+    },
+    {
       "lpid": "rep_hiner_mark_1",
       "candidate_id": "03226c2c-be46-4ab9-bbba-7812ce867efc",
       "note": "Mark Hiner (house 98) = Mark Hiner, state_lower: State House District 98 (2024); Ohio"
@@ -132,6 +167,11 @@
       "lpid": "rep_holmes_adam_1",
       "candidate_id": "354aaa98-86fa-488e-96e4-f707b28d7e3a",
       "note": "Adam Holmes (house 97) = Adam Holmes, state_lower: State House District 97 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_hoops_james_1",
+      "candidate_id": null,
+      "note": "James M. Hoops (house 81) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
     },
     {
       "lpid": "rep_huffman_matt_1",
@@ -149,6 +189,11 @@
       "note": "Dani Isaacsohn (house 24) = Dani Isaacsohn, state_lower: State House District 24 (2024); Ohio"
     },
     {
+      "lpid": "rep_jarrells_dontavius_1",
+      "candidate_id": null,
+      "note": "Dontavius L. Jarrells (house 1) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
+    },
+    {
       "lpid": "rep_john_marilyn_1",
       "candidate_id": "75c44113-2c4a-44ea-8ea7-508be1892e45",
       "note": "Marilyn John (house 76) = Marilyn John, state_lower: State House District 76 (2024); Ohio"
@@ -157,6 +202,11 @@
       "lpid": "rep_johnson_mark_1",
       "candidate_id": "2e647b2d-99b3-4e7d-af9b-9386b17acdb0",
       "note": "Mark Johnson (house 92) = Mark Johnson, state_lower: State House District 92 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_jones_don_1",
+      "candidate_id": null,
+      "note": "Don Jones (house 95) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
     },
     {
       "lpid": "rep_king_angela_1",
@@ -189,6 +239,11 @@
       "note": "Meredith R. Lawson-Rowe (house 5) = Meredith Lawson‐Rowe, state_lower: State House District 5 (2024); Ohio"
     },
     {
+      "lpid": "rep_lear_beth_1",
+      "candidate_id": null,
+      "note": "Beth Lear (house 61) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
+    },
+    {
       "lpid": "rep_lett_crystal_1",
       "candidate_id": "2b7f908d-acc9-4e74-835d-a6419cc6c3c3",
       "note": "Crystal Lett (house 11) = Crystal Lett, state_lower: State House District 11 (2024); Ohio"
@@ -202,6 +257,41 @@
       "lpid": "rep_manning_gayle_1",
       "candidate_id": "3f654575-c5ee-4536-b7e0-5e904cf9bc5a",
       "note": "Gayle Manning (house 52) = Gayle Manning, state_upper: State Senate District 13 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_mathews_adam_1",
+      "candidate_id": "250c57ad-3210-4ca3-86f1-eb1d83b3ef0e",
+      "note": "Adam Mathews (house 56) = Adam Mathews, state_lower: District 56 — hand-added 2026-08-24: roster lastname \"Mathews, A.\""
+    },
+    {
+      "lpid": "rep_mathews_ty_1",
+      "candidate_id": "76b5af3f-8e88-42d3-8b02-9d5c9abab96e",
+      "note": "Ty D. Mathews (house 83) = Ty Mathews, state_lower: District 83 — hand-added 2026-08-24: roster lastname \"Mathews, T.\"; roster displayname \"Ty D. Mathews\""
+    },
+    {
+      "lpid": "rep_mcclain_riordan_1",
+      "candidate_id": null,
+      "note": "Riordan T. McClain (house 87) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
+    },
+    {
+      "lpid": "rep_mcnally_lauren_1",
+      "candidate_id": null,
+      "note": "Lauren McNally (house 58) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
+    },
+    {
+      "lpid": "rep_miller_joe_1",
+      "candidate_id": "6cbb945f-9491-46fa-b245-33589f97f160",
+      "note": "Joseph A. Miller, III (house 53) = Joe Miller, state_upper: District 13 — hand-added 2026-08-24: roster lastname \"Miller, J.\"; House 53 member seeking Senate 13 — candidate row carries current_office \"Ohio State Representative\" and House-member records"
+    },
+    {
+      "lpid": "rep_miller_kevin_1",
+      "candidate_id": "1fb5478e-c9d3-4d8e-a781-b658453adacf",
+      "note": "Kevin D. Miller (house 69) = Kevin Miller, state_lower: District 69 — hand-added 2026-08-24: roster lastname \"Miller, K.\""
+    },
+    {
+      "lpid": "rep_miller_melanie_1",
+      "candidate_id": "bc5f1e65-f06b-4c4b-8baf-64b2b36304ce",
+      "note": "Melanie Miller (house 67) = Melanie Miller, state_lower: District 67 — hand-added 2026-08-24: roster lastname \"Miller, M.\""
     },
     {
       "lpid": "rep_mohamed_ismail_1",
@@ -229,6 +319,11 @@
       "note": "Mike Odioso (house 30) = Mike Odioso, state_lower: State House District 30 (2024); Ohio"
     },
     {
+      "lpid": "rep_oelslager_scott_1",
+      "candidate_id": null,
+      "note": "Scott Oelslager (house 48) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
+    },
+    {
       "lpid": "rep_peterson_bob_1",
       "candidate_id": "ace93669-7828-42ac-ad3f-9a055e899d28",
       "note": "Bob Peterson (house 91) = Bob Peterson, state_lower: State House District 91 (2024); Ohio"
@@ -254,6 +349,16 @@
       "note": "Tristan Rader (house 13) = Tristan Rader, state_lower: State House District 13 (2024); Ohio"
     },
     {
+      "lpid": "rep_ray_sharon_1",
+      "candidate_id": null,
+      "note": "Sharon A. Ray (house 66) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
+    },
+    {
+      "lpid": "rep_richardson_tracy_1",
+      "candidate_id": null,
+      "note": "Tracy M. Richardson (house 86) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
+    },
+    {
       "lpid": "rep_ritter_kevin_1",
       "candidate_id": "318006f5-6d09-4c25-b17a-f342b9dff0ff",
       "note": "Kevin Ritter (house 94) = Kevin Ritter, state_lower: State House District 94 (2024); Ohio"
@@ -264,9 +369,24 @@
       "note": "Monica Robb Blasdel (house 79) = Monica Robb Blasdel, state_lower: State House District 79 (2024); Ohio"
     },
     {
+      "lpid": "rep_robinson_phil_1",
+      "candidate_id": null,
+      "note": "Phillip M. Robinson, Jr. (house 19) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
+    },
+    {
+      "lpid": "rep_roemer_bill_1",
+      "candidate_id": null,
+      "note": "Bill Roemer (house 31) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
+    },
+    {
       "lpid": "rep_rogers_elgin_1",
       "candidate_id": "f7eefcd3-a726-46a6-86e9-04523169a1fb",
       "note": "Elgin Rogers, Jr. (house 42) = Elgin Rogers Jr., state_lower: State House District 42 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_russo_allison_1",
+      "candidate_id": null,
+      "note": "C. Allison Russo (house 7) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
     },
     {
       "lpid": "rep_salvo_jodi_1",
@@ -324,6 +444,26 @@
       "note": "Eric Synenberg (house 21) = Eric Synenberg, state_lower: State House District 21 (2024); Ohio"
     },
     {
+      "lpid": "rep_teska_michelle_1",
+      "candidate_id": "9029a3a3-cb8d-4562-88c0-8c5a28f98800",
+      "note": "Michelle Teska (house 55) = C. Michelle Teska, state_lower: District 55 — hand-added 2026-08-24: first-name variant: roster \"Michelle Teska\""
+    },
+    {
+      "lpid": "rep_thomas_cecil_1",
+      "candidate_id": "2db08c83-fb42-44a8-a348-a4e3905fa448",
+      "note": "Cecil Thomas (house 25) = Cecil Thomas, state_lower: District 25 — hand-added 2026-08-24: roster lastname \"Thomas, C.\""
+    },
+    {
+      "lpid": "rep_thomas_david_1",
+      "candidate_id": "af859547-21b0-4eaf-8cd2-28122a4f2ed3",
+      "note": "David Thomas (house 65) = David Thomas, state_lower: District 65 — hand-added 2026-08-24: roster lastname \"Thomas, D.\""
+    },
+    {
+      "lpid": "rep_thomas_jim_1",
+      "candidate_id": "cfdc8cbe-b57d-4a80-a92b-fb0d9cbc882a",
+      "note": "Jim Thomas (house 49) = Jim Thomas, state_lower: District 49 — hand-added 2026-08-24: roster lastname \"Thomas, J.\""
+    },
+    {
       "lpid": "rep_tims_desiree_1",
       "candidate_id": "43ab1dd0-41e0-4b25-b807-36848a56a31a",
       "note": "Desiree Tims (house 38) = Desiree Tims, state_lower: State House District 38 (2024); Ohio"
@@ -332,6 +472,26 @@
       "lpid": "rep_troy_daniel_1",
       "candidate_id": "59e74cbe-8b18-4210-a586-af4dc1ecc46c",
       "note": "Daniel P. Troy (house 23) = Dan Troy, state_lower: State House District 23 (2024); Ohio [first-name prefix, reviewed]"
+    },
+    {
+      "lpid": "rep_upchurch_terrence_1",
+      "candidate_id": null,
+      "note": "Terrence Upchurch (house 20) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
+    },
+    {
+      "lpid": "rep_white_andrea_1",
+      "candidate_id": "df71d861-1f3b-469e-9178-3eb75cdb5ded",
+      "note": "Andrea White (house 36) = Andrea White, state_lower: District 36 — hand-added 2026-08-24: roster lastname \"White, A.\""
+    },
+    {
+      "lpid": "rep_white_erika_1",
+      "candidate_id": "ecfe34a6-4e3b-4e8f-89c4-4b9ba618428d",
+      "note": "Erika White (house 41) = Erika White, state_lower: District 41 — hand-added 2026-08-24: roster lastname \"White, E.\""
+    },
+    {
+      "lpid": "rep_williams_josh_1",
+      "candidate_id": null,
+      "note": "Josh Williams (house 44) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
     },
     {
       "lpid": "rep_willis_bernard_1",
@@ -349,6 +509,41 @@
       "note": "Tom Young (house 37) = Tom Young, state_lower: State House District 37 (2024); Ohio"
     },
     {
+      "lpid": "sen_antonio_nickie_1",
+      "candidate_id": null,
+      "note": "Nickie J. Antonio (senate 23) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
+    },
+    {
+      "lpid": "sen_blackshear_willis_1",
+      "candidate_id": null,
+      "note": "Willis E. Blackshear, Jr. (senate 6) — reviewed 2026-08-24: Senate District 6 is not on the Nov-2026 ballot (only odd-numbered Ohio Senate districts are)"
+    },
+    {
+      "lpid": "sen_blessing_louis_1",
+      "candidate_id": null,
+      "note": "Louis W. Blessing, III (senate 8) — reviewed 2026-08-24: Senate District 8 is not on the Nov-2026 ballot (only odd-numbered Ohio Senate districts are)"
+    },
+    {
+      "lpid": "sen_brenner_andrew_1",
+      "candidate_id": null,
+      "note": "Andrew O. Brenner (senate 19) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
+    },
+    {
+      "lpid": "sen_chavez_brian_1",
+      "candidate_id": null,
+      "note": "Brian M. Chavez (senate 30) — reviewed 2026-08-24: Senate District 30 is not on the Nov-2026 ballot (only odd-numbered Ohio Senate districts are)"
+    },
+    {
+      "lpid": "sen_cirino_jerry_1",
+      "candidate_id": null,
+      "note": "Jerry C. Cirino (senate 18) — reviewed 2026-08-24: Senate District 18 is not on the Nov-2026 ballot (only odd-numbered Ohio Senate districts are)"
+    },
+    {
+      "lpid": "sen_craig_hearcel_1",
+      "candidate_id": null,
+      "note": "Hearcel F. Craig (senate 15) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
+    },
+    {
       "lpid": "sen_cutrona_al_1",
       "candidate_id": "8caf8d80-e512-4e1c-a6de-9b4c2ef2347b",
       "note": "Al Cutrona (senate 33) = Alessandro Cutrona, state_upper: State Senate District 33 (2024); Ohio [first-name prefix, reviewed]"
@@ -359,9 +554,19 @@
       "note": "William P. DeMora (senate 25) = William DeMora, state_upper: State Senate District 25 (2024); Ohio"
     },
     {
+      "lpid": "sen_gavarone_theresa_1",
+      "candidate_id": null,
+      "note": "Theresa Gavarone (senate 2) — reviewed 2026-08-24: Senate District 2 is not on the Nov-2026 ballot (only odd-numbered Ohio Senate districts are)"
+    },
+    {
       "lpid": "sen_hicks_hudson_paula_1",
       "candidate_id": "115484d9-dbd5-4298-b2fd-fa36be6d0878",
       "note": "Paula Hicks-Hudson (senate 11) = Paula Hicks-Hudson, state_upper: State Senate District 11 (2024); Ohio"
+    },
+    {
+      "lpid": "sen_huffman_stephen_1",
+      "candidate_id": null,
+      "note": "Stephen A. Huffman (senate 5) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
     },
     {
       "lpid": "sen_ingram_catherine_1",
@@ -369,9 +574,34 @@
       "note": "Catherine D. Ingram (senate 9) = Catherine Ingram, state_upper: State Senate District 9 (2024); Ohio"
     },
     {
+      "lpid": "sen_johnson_terry_1",
+      "candidate_id": null,
+      "note": "Terry Johnson (senate 14) — reviewed 2026-08-24: Senate District 14 is not on the Nov-2026 ballot (only odd-numbered Ohio Senate districts are)"
+    },
+    {
+      "lpid": "sen_koehler_kyle_1",
+      "candidate_id": null,
+      "note": "Kyle Koehler (senate 10) — reviewed 2026-08-24: Senate District 10 is not on the Nov-2026 ballot (only odd-numbered Ohio Senate districts are)"
+    },
+    {
       "lpid": "sen_landis_al_1",
       "candidate_id": "ffbcb516-1dc3-42f0-82b5-227786402673",
       "note": "Al Landis (senate 31) = Al Landis, state_upper: State Senate District 31 (2024); Ohio"
+    },
+    {
+      "lpid": "sen_lang_george_1",
+      "candidate_id": null,
+      "note": "George F. Lang (senate 4) — reviewed 2026-08-24: Senate District 4 is not on the Nov-2026 ballot (only odd-numbered Ohio Senate districts are)"
+    },
+    {
+      "lpid": "sen_liston_beth_1",
+      "candidate_id": null,
+      "note": "Beth Liston (senate 16) — reviewed 2026-08-24: Senate District 16 is not on the Nov-2026 ballot (only odd-numbered Ohio Senate districts are)"
+    },
+    {
+      "lpid": "sen_manchester_susan_1",
+      "candidate_id": null,
+      "note": "Susan Manchester (senate 12) — reviewed 2026-08-24: Senate District 12 is not on the Nov-2026 ballot (only odd-numbered Ohio Senate districts are)"
     },
     {
       "lpid": "sen_manning_nathan_1",
@@ -379,9 +609,44 @@
       "note": "Nathan H. Manning (senate 13) = Nathan Manning, state_lower: State House District 52 (2024); Ohio"
     },
     {
+      "lpid": "sen_mccolley_robert_1",
+      "candidate_id": null,
+      "note": "Rob McColley (senate 1) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
+    },
+    {
+      "lpid": "sen_obrien_sandra_1",
+      "candidate_id": null,
+      "note": "Sandra O'Brien (senate 32) — reviewed 2026-08-24: Senate District 32 is not on the Nov-2026 ballot (only odd-numbered Ohio Senate districts are)"
+    },
+    {
+      "lpid": "sen_patton_thomas_1",
+      "candidate_id": null,
+      "note": "Thomas F. Patton (senate 24) — reviewed 2026-08-24: Senate District 24 is not on the Nov-2026 ballot (only odd-numbered Ohio Senate districts are)"
+    },
+    {
+      "lpid": "sen_reineke_bill_1",
+      "candidate_id": null,
+      "note": "Bill Reineke (senate 26) — reviewed 2026-08-24: Senate District 26 is not on the Nov-2026 ballot (only odd-numbered Ohio Senate districts are)"
+    },
+    {
       "lpid": "sen_reynolds_michele_1",
       "candidate_id": "ec02043c-3ae3-4ffd-8faf-d9889684ee40",
       "note": "Michele Reynolds (senate 3) = Michele Reynolds, state_upper: State Senate District 3 (2024); Ohio"
+    },
+    {
+      "lpid": "sen_roegner_kristina_1",
+      "candidate_id": null,
+      "note": "Kristina D. Roegner (senate 27) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
+    },
+    {
+      "lpid": "sen_romanchuk_mark_1",
+      "candidate_id": null,
+      "note": "Mark Romanchuk (senate 22) — reviewed 2026-08-24: Senate District 22 is not on the Nov-2026 ballot (only odd-numbered Ohio Senate districts are)"
+    },
+    {
+      "lpid": "sen_schaffer_tim_1",
+      "candidate_id": null,
+      "note": "Tim Schaffer (senate 20) — reviewed 2026-08-24: Senate District 20 is not on the Nov-2026 ballot (only odd-numbered Ohio Senate districts are)"
     },
     {
       "lpid": "sen_smith_kent_1",
@@ -394,9 +659,19 @@
       "note": "Jane M. Timken (senate 29) = Jane Timken, state_upper: State Senate District 29 (2024); Ohio"
     },
     {
+      "lpid": "sen_weinstein_casey_1",
+      "candidate_id": null,
+      "note": "Casey Weinstein (senate 28) — reviewed 2026-08-24: Senate District 28 is not on the Nov-2026 ballot (only odd-numbered Ohio Senate districts are)"
+    },
+    {
       "lpid": "sen_wilkin_shane_1",
       "candidate_id": "dbe1026e-9a6f-46fe-9546-738ab147adab",
       "note": "Shane Wilkin (senate 17) = Shane Wilkin, state_upper: State Senate District 17 (2024); Ohio"
+    },
+    {
+      "lpid": "sen_wilson_steve_1",
+      "candidate_id": null,
+      "note": "Steve Wilson (senate 7) — reviewed 2026-08-24: seat is on the Nov-2026 ballot but no candidate in our data is this member"
     }
   ]
 }

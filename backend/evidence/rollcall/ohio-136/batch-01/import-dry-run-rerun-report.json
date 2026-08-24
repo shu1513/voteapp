@@ -2,13 +2,13 @@
   "importerVersion": "rollcall-oh-import-v1",
   "dryRun": true,
   "skipExisting": false,
-  "startedAt": "2026-08-24T05:09:05.502Z",
-  "finishedAt": "2026-08-24T05:09:07.337Z",
+  "startedAt": "2026-08-24T06:30:14.958Z",
+  "finishedAt": "2026-08-24T06:30:17.090Z",
   "generalAssembly": 136,
   "evidenceDir": "/Users/shu/voteApp/.claude/worktrees/caveman-ultra-58491f/backend/evidence/rollcall/ohio-136/batch-01",
   "scopeFrom": "2026-11-01",
   "crosswalkFile": "/Users/shu/voteApp/.claude/worktrees/caveman-ultra-58491f/backend/evidence/rollcall/ohio-136/crosswalk.json",
-  "crosswalkEntries": 79,
+  "crosswalkEntries": 134,
   "rosterFile": "/Users/shu/voteApp/.claude/worktrees/caveman-ultra-58491f/backend/evidence/rollcall/ohio-136/oh-legislators-136.json",
   "rosterMembers": 134,
   "files": 2,
@@ -16,7 +16,8 @@
     "dry_run": 2
   },
   "actions": {
-    "unchanged": 74
+    "unchanged": 74,
+    "insert": 15
   },
   "notified": 0,
   "rolls": [
@@ -32,14 +33,15 @@
       "voteDate": "2025-03-19",
       "measureId": "SB 1",
       "question": "Passed",
-      "originRunId": "rollcall:OH:house:136:1742433648:2026-08-24T05:09:05.502Z",
+      "originRunId": "rollcall:OH:house:136:1742433648:2026-08-24T06:30:14.958Z",
       "members": 93,
       "resolution": {
-        "matched": 64,
-        "no_crosswalk": 29
+        "matched": 79,
+        "unmatched_reviewed": 14
       },
       "actions": {
-        "unchanged": 64
+        "unchanged": 64,
+        "insert": 15
       },
       "notified": 0,
       "candidates": [
@@ -65,9 +67,7 @@
           "recordId": "686cc780-c530-4935-87af-b72f4fb7dc82",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "729b9fe5-ef5e-4d05-955d-fa9e097ac80b"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "dc7bb8fd-11b1-4e80-a486-17d462c6c4ea",
@@ -166,6 +166,18 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "5e1e39f7-c8c6-4de1-ad4f-3e6339817edf",
+          "candidateName": "Mike Dovilla",
+          "lpid": "rep_dovilla_mike_1",
+          "memberName": "Michael D. Dovilla",
+          "side": "yea",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "ab26adab-1741-4018-9bff-9b3ba45a8676",
           "candidateName": "Ron Ferguson",
           "lpid": "rep_ferguson_ron_1",
@@ -190,6 +202,18 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "ff059208-3186-4c29-8582-59e610d6f092",
+          "candidateName": "Sarah Fowler",
+          "lpid": "rep_arthur_sarah_1",
+          "memberName": "Sarah Fowler Arthur",
+          "side": "yea",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "4864fe15-33ae-45f9-9bfb-4fa1f8fd54e7",
           "candidateName": "Haraz Ghanbari",
           "lpid": "rep_ghanbari_haraz_1",
@@ -209,6 +233,18 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "61ac8e1e-cba7-45d8-9aa2-8abf0c03bd86",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "13d0f2fd-10d2-4929-a9c0-c108ab98988b",
+          "candidateName": "Thomas Hall",
+          "lpid": "rep_hall_thomas_1",
+          "memberName": "Thomas Hall",
+          "side": "yea",
+          "action": "insert",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -341,6 +377,54 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "ab8042a1-8444-4e3a-909b-f8934c6646f0",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "250c57ad-3210-4ca3-86f1-eb1d83b3ef0e",
+          "candidateName": "Adam Mathews",
+          "lpid": "rep_mathews_adam_1",
+          "memberName": "Adam Mathews",
+          "side": "yea",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "76b5af3f-8e88-42d3-8b02-9d5c9abab96e",
+          "candidateName": "Ty Mathews",
+          "lpid": "rep_mathews_ty_1",
+          "memberName": "Ty D. Mathews",
+          "side": "yea",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "1fb5478e-c9d3-4d8e-a781-b658453adacf",
+          "candidateName": "Kevin Miller",
+          "lpid": "rep_miller_kevin_1",
+          "memberName": "Kevin D. Miller",
+          "side": "yea",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "bc5f1e65-f06b-4c4b-8baf-64b2b36304ce",
+          "candidateName": "Melanie Miller",
+          "lpid": "rep_miller_melanie_1",
+          "memberName": "Melanie Miller",
+          "side": "yea",
+          "action": "insert",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -490,6 +574,54 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "9029a3a3-cb8d-4562-88c0-8c5a28f98800",
+          "candidateName": "C. Michelle Teska",
+          "lpid": "rep_teska_michelle_1",
+          "memberName": "Michelle Teska",
+          "side": "yea",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "af859547-21b0-4eaf-8cd2-28122a4f2ed3",
+          "candidateName": "David Thomas",
+          "lpid": "rep_thomas_david_1",
+          "memberName": "David Thomas",
+          "side": "yea",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "cfdc8cbe-b57d-4a80-a92b-fb0d9cbc882a",
+          "candidateName": "Jim Thomas",
+          "lpid": "rep_thomas_jim_1",
+          "memberName": "Jim Thomas",
+          "side": "yea",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "df71d861-1f3b-469e-9178-3eb75cdb5ded",
+          "candidateName": "Andrea White",
+          "lpid": "rep_white_andrea_1",
+          "memberName": "Andrea White",
+          "side": "yea",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "7970021b-8e2c-42e2-959e-e333f824be1a",
           "candidateName": "Bernard Willis",
           "lpid": "rep_willis_bernard_1",
@@ -634,6 +766,18 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "7c3089b8-3698-45cd-b33b-3c2633c7e245",
+          "candidateName": "Derrick Hall",
+          "lpid": "rep_hall_derrick_1",
+          "memberName": "Derrick Hall",
+          "side": "nay",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "f84c08e9-05cf-4532-99ee-f3c6ace8e7f4",
           "candidateName": "Latyna M. Humphrey",
           "lpid": "rep_humphrey_latyna_1",
@@ -677,6 +821,18 @@
           "side": "nay",
           "action": "unchanged",
           "recordId": "87136fc2-bd4e-43f1-9bcb-a18302ff8693",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "6cbb945f-9491-46fa-b245-33589f97f160",
+          "candidateName": "Joe Miller",
+          "lpid": "rep_miller_joe_1",
+          "memberName": "Joseph A. Miller, III",
+          "side": "nay",
+          "action": "insert",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -790,6 +946,18 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "2db08c83-fb42-44a8-a348-a4e3905fa448",
+          "candidateName": "Cecil Thomas",
+          "lpid": "rep_thomas_cecil_1",
+          "memberName": "Cecil Thomas",
+          "side": "nay",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "43ab1dd0-41e0-4b25-b807-36848a56a31a",
           "candidateName": "Desiree Tims",
           "lpid": "rep_tims_desiree_1",
@@ -812,6 +980,18 @@
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
+        },
+        {
+          "candidateId": "ecfe34a6-4e3b-4e8f-89c4-4b9ba618428d",
+          "candidateName": "Erika White",
+          "lpid": "rep_white_erika_1",
+          "memberName": "Erika White",
+          "side": "nay",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
         }
       ],
       "error": null
@@ -828,10 +1008,10 @@
       "voteDate": "2025-03-26",
       "measureId": "SB 1",
       "question": "Concurred in House amendments",
-      "originRunId": "rollcall:OH:senate:136:1743028529:2026-08-24T05:09:05.502Z",
+      "originRunId": "rollcall:OH:senate:136:1743028529:2026-08-24T06:30:14.958Z",
       "members": 31,
       "resolution": {
-        "no_crosswalk": 21,
+        "unmatched_reviewed": 21,
         "matched": 10
       },
       "actions": {
