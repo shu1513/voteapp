@@ -2,6 +2,7 @@ import type { MetaFunction } from "react-router";
 import { Link } from "react-router";
 import { APP_NAME, useMe } from "@voteapp/api-client";
 import { MembershipSection } from "../components/MembershipSection";
+import { VerifyPrompt } from "../components/VerifyPrompt";
 import { pageMeta } from "../lib/pageMeta";
 
 export const meta: MetaFunction = () =>
@@ -52,10 +53,9 @@ export default function MissionPage() {
         // the page never shows dead forms.
         <MembershipSection />
       ) : me ? (
-        <p className="text-sm text-ink-soft">
-          Verify your email address to support {APP_NAME} — the link is in your inbox, and Settings can
-          resend it.
-        </p>
+        // The standard unverified interstitial: names the address and offers
+        // a real resend (nothing else on this page can).
+        <VerifyPrompt email={me.email} />
       ) : (
         // Shown while /api/me is unresolved too, same tradeoff as the header
         // nav: a self-correcting logged-out CTA beats an invisible one, and

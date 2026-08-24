@@ -44,7 +44,9 @@ describe("MissionPage", () => {
     stubApiRoutes({ "/api/me": { body: ME_UNVERIFIED } });
     renderMission();
 
-    expect(await screen.findByText(/Verify your email address to support/)).toBeInTheDocument();
+    // The standard interstitial, with a real resend path.
+    expect(await screen.findByRole("heading", { name: "Verify your email" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Resend verification email" })).toBeEnabled();
     expect(screen.queryByRole("button", { name: "Support monthly" })).not.toBeInTheDocument();
   });
 
