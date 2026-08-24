@@ -1,0 +1,5668 @@
+{
+  "importerVersion": "rollcall-oh-resolve-v1",
+  "startedAt": "2026-08-24T06:50:54.983Z",
+  "finishedAt": "2026-08-24T06:50:55.072Z",
+  "generalAssembly": 136,
+  "evidenceDir": "/Users/shu/voteApp/.claude/worktrees/caveman-ultra-58491f/backend/evidence/rollcall/ohio-136/batch-02",
+  "scopeFrom": "2026-11-01",
+  "rosterSource": "/Users/shu/voteApp/.claude/worktrees/caveman-ultra-58491f/backend/evidence/rollcall/ohio-136/oh-legislators-136.json",
+  "rosterMembers": 134,
+  "candidatePool": 239,
+  "crosswalkFile": "/Users/shu/voteApp/.claude/worktrees/caveman-ultra-58491f/backend/evidence/rollcall/ohio-136/crosswalk.json",
+  "crosswalkEntries": 134,
+  "crosswalkLpidsNotInRoster": [],
+  "proposals": [
+    {
+      "lpid": "rep_abdullahi_munira_1",
+      "rosterName": "Munira Abdullahi",
+      "rosterSeat": "house 9",
+      "candidateId": "0d81987e-157b-4a78-ad2e-b22347dac4cf",
+      "candidateName": "Munira Abdullahi",
+      "candidacy": "state_lower: State House District 9 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_abrams_cindy_1",
+      "rosterName": "Cindy Abrams",
+      "rosterSeat": "house 29",
+      "candidateId": "2c64944c-d809-43b7-80b3-e8996777170c",
+      "candidateName": "Cindy Abrams",
+      "candidacy": "state_lower: State House District 29 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_bailey_ashley_1",
+      "rosterName": "Ashley Bryant Bailey",
+      "rosterSeat": "house 26",
+      "candidateId": "f64a0f77-fa84-4651-bfb8-53e42c55e7a5",
+      "candidateName": "Ashley Bryant Bailey",
+      "candidacy": "state_lower: State House District 26 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_baker_rachel_1",
+      "rosterName": "Rachel B. Baker",
+      "rosterSeat": "house 27",
+      "candidateId": "8610f570-dd20-4139-a2e5-d3bfcf73f6b9",
+      "candidateName": "Rachel Baker",
+      "candidacy": "state_lower: State House District 27 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_barhorst_tim_1",
+      "rosterName": "Tim Barhorst",
+      "rosterSeat": "house 85",
+      "candidateId": "f162f347-fd82-4e46-85c8-50c3f256f79b",
+      "candidateName": "Tim Barhorst",
+      "candidacy": "state_lower: State House District 85 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_bird_adam_1",
+      "rosterName": "Adam C. Bird",
+      "rosterSeat": "house 63",
+      "candidateId": "e2fd5cf8-cdd6-4c83-89d2-6f6856a68c1a",
+      "candidateName": "Adam Bird",
+      "candidacy": "state_lower: State House District 63 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_brennan_sean_1",
+      "rosterName": "Sean P. Brennan",
+      "rosterSeat": "house 14",
+      "candidateId": "52ee99ec-a520-4e87-a94d-cf782b9dc714",
+      "candidateName": "Sean Brennan",
+      "candidacy": "state_lower: State House District 14 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_brewer_darnell_1",
+      "rosterName": "Darnell T. Brewer",
+      "rosterSeat": "house 22",
+      "candidateId": "4b247bc8-d0d9-418c-8cc6-bd5432c7d974",
+      "candidateName": "Darnell Brewer",
+      "candidacy": "state_lower: State House District 22 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_brownlee_karen_1",
+      "rosterName": "Karen Brownlee",
+      "rosterSeat": "house 28",
+      "candidateId": "d5326f43-21e5-4103-9eb2-8709da188845",
+      "candidateName": "Karen Brownlee",
+      "candidacy": "state_lower: State House District 28 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_claggett_thaddeus_1",
+      "rosterName": "Thaddeus J. Claggett",
+      "rosterSeat": "house 68",
+      "candidateId": "dc7bb8fd-11b1-4e80-a486-17d462c6c4ea",
+      "candidateName": "Thaddeus Claggett",
+      "candidacy": "state_lower: State House District 68 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_click_gary_1",
+      "rosterName": "Gary Click",
+      "rosterSeat": "house 88",
+      "candidateId": "6d7d1afd-ae56-4f9e-8533-08e3a2cbb605",
+      "candidateName": "Gary Click",
+      "candidacy": "state_lower: State House District 88 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_cockley_christine_1",
+      "rosterName": "Christine Cockley",
+      "rosterSeat": "house 6",
+      "candidateId": "0cbb48d0-ef7a-468a-9dcb-b844670115ec",
+      "candidateName": "Christine Cockley",
+      "candidacy": "state_lower: State House District 6 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_craig_meredith_1",
+      "rosterName": "Meredith Craig",
+      "rosterSeat": "house 77",
+      "candidateId": "e81cbfc6-c60f-44e8-890f-361614bfcafb",
+      "candidateName": "Meredith Craig",
+      "candidacy": "state_lower: State House District 77 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_creech_rodney_1",
+      "rosterName": "Rodney Creech",
+      "rosterSeat": "house 40",
+      "candidateId": "0633c56f-c13a-4cf9-9b9f-b3b8b9189405",
+      "candidateName": "Rodney Creech",
+      "candidacy": "state_lower: State House District 40 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_daniels_jack_1",
+      "rosterName": "Jack K. Daniels",
+      "rosterSeat": "house 32",
+      "candidateId": "1c861773-e31b-4b2a-a569-94e7e427c510",
+      "candidateName": "Jack K. Daniels",
+      "candidacy": "state_lower: State House District 32 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_dean_levi_1",
+      "rosterName": "Levi Dean",
+      "rosterSeat": "house 71",
+      "candidateId": "ed4e6bfe-fcd2-4c23-a639-b27b0d9dfccb",
+      "candidateName": "Levi Dean",
+      "candidacy": "state_lower: State House District 71 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_deeter_kellie_1",
+      "rosterName": "Kellie Deeter",
+      "rosterSeat": "house 54",
+      "candidateId": "894ad038-e8a5-4587-ae99-a3a119dde698",
+      "candidateName": "Kellie Deeter",
+      "candidacy": "state_lower: State House District 54 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_demetriou_steve_1",
+      "rosterName": "Steve Demetriou",
+      "rosterSeat": "house 35",
+      "candidateId": "deeabe79-102f-4b6d-ba9b-ad30fadf5dd2",
+      "candidateName": "Steve Demetriou",
+      "candidacy": "state_upper: State Senate District 27 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_ferguson_ron_1",
+      "rosterName": "Ron Ferguson",
+      "rosterSeat": "house 96",
+      "candidateId": "ab26adab-1741-4018-9bff-9b3ba45a8676",
+      "candidateName": "Ron Ferguson",
+      "candidacy": "state_lower: State House District 96 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_fischer_tex_1",
+      "rosterName": "Tex Fischer",
+      "rosterSeat": "house 59",
+      "candidateId": "c5e781e0-c2c6-4f7a-9eb2-4d685cd266eb",
+      "candidateName": "Tex Fischer",
+      "candidacy": "state_lower: State House District 59 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_ghanbari_haraz_1",
+      "rosterName": "Haraz N. Ghanbari",
+      "rosterSeat": "house 75",
+      "candidateId": "4864fe15-33ae-45f9-9bfb-4fa1f8fd54e7",
+      "candidateName": "Haraz Ghanbari",
+      "candidacy": "state_lower: State House District 75 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_glassburn_chris_1",
+      "rosterName": "Chris Glassburn",
+      "rosterSeat": "house 15",
+      "candidateId": "67f5f1c2-2ec8-4b9e-b43f-4f529e016c49",
+      "candidateName": "Chris Glassburn",
+      "candidacy": "state_lower: State House District 15 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_grim_michele_1",
+      "rosterName": "Michele Grim",
+      "rosterSeat": "house 43",
+      "candidateId": "94b0d956-e6f8-4eaf-9572-f75b0ba16477",
+      "candidateName": "Michele Grim",
+      "candidacy": "state_lower: State House District 43 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_gross_jennifer_1",
+      "rosterName": "Jennifer Gross",
+      "rosterSeat": "house 45",
+      "candidateId": "2aaf9399-8f46-4308-9b21-ec13e620b129",
+      "candidateName": "Jennifer Gross",
+      "candidacy": "state_lower: State House District 45 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_hiner_mark_1",
+      "rosterName": "Mark Hiner",
+      "rosterSeat": "house 98",
+      "candidateId": "03226c2c-be46-4ab9-bbba-7812ce867efc",
+      "candidateName": "Mark Hiner",
+      "candidacy": "state_lower: State House District 98 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_holmes_adam_1",
+      "rosterName": "Adam Holmes",
+      "rosterSeat": "house 97",
+      "candidateId": "354aaa98-86fa-488e-96e4-f707b28d7e3a",
+      "candidateName": "Adam Holmes",
+      "candidacy": "state_lower: State House District 97 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_huffman_matt_1",
+      "rosterName": "Matt Huffman",
+      "rosterSeat": "house 78",
+      "candidateId": "9b20e916-2dcf-457e-a1d3-7b78683cb727",
+      "candidateName": "Matt Huffman",
+      "candidacy": "state_lower: State House District 78 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_humphrey_latyna_1",
+      "rosterName": "Latyna M. Humphrey",
+      "rosterSeat": "house 2",
+      "candidateId": "f84c08e9-05cf-4532-99ee-f3c6ace8e7f4",
+      "candidateName": "Latyna M. Humphrey",
+      "candidacy": "state_upper: State Senate District 15 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_isaacsohn_dani_1",
+      "rosterName": "Dani Isaacsohn",
+      "rosterSeat": "house 24",
+      "candidateId": "6295d98a-db16-4bf4-8bb0-c62387b27d25",
+      "candidateName": "Dani Isaacsohn",
+      "candidacy": "state_lower: State House District 24 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_john_marilyn_1",
+      "rosterName": "Marilyn John",
+      "rosterSeat": "house 76",
+      "candidateId": "75c44113-2c4a-44ea-8ea7-508be1892e45",
+      "candidateName": "Marilyn John",
+      "candidacy": "state_lower: State House District 76 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_johnson_mark_1",
+      "rosterName": "Mark Johnson",
+      "rosterSeat": "house 92",
+      "candidateId": "2e647b2d-99b3-4e7d-af9b-9386b17acdb0",
+      "candidateName": "Mark Johnson",
+      "candidacy": "state_lower: State House District 92 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_king_angela_1",
+      "rosterName": "Angela N. King",
+      "rosterSeat": "house 84",
+      "candidateId": "e2af8dc3-b98e-48d1-8d23-5a0f7285fe38",
+      "candidateName": "Angela King",
+      "candidacy": "state_lower: State House District 84 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_kishman_matthew_1",
+      "rosterName": "Matthew Kishman",
+      "rosterSeat": "house 50",
+      "candidateId": "d9a93c44-5cf4-408a-9814-60ee3ceadaff",
+      "candidateName": "Matthew Kishman",
+      "candidacy": "state_lower: State House District 50 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_klopfenstein_roy_1",
+      "rosterName": "Roy Klopfenstein",
+      "rosterSeat": "house 82",
+      "candidateId": "3d08bd35-726e-46bf-9e28-47f9ee16c0a9",
+      "candidateName": "Roy Klopfenstein",
+      "candidacy": "state_lower: State House District 82 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_lampton_brian_1",
+      "rosterName": "Brian Lampton",
+      "rosterSeat": "house 70",
+      "candidateId": "9dcdfce5-0c7a-4276-b9ea-69aa94bcebdf",
+      "candidateName": "Brian Lampton",
+      "candidacy": "state_lower: State House District 70 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_lare_jeff_1",
+      "rosterName": "Jeff LaRe",
+      "rosterSeat": "house 73",
+      "candidateId": "adbf64da-7d88-4b7c-8322-b1fd462fa2c4",
+      "candidateName": "Jeff LaRe",
+      "candidacy": "state_lower: State House District 73 (2024); Ohio",
+      "confidence": "first_prefix"
+    },
+    {
+      "lpid": "rep_lawson_rowe_meredith_1",
+      "rosterName": "Meredith R. Lawson-Rowe",
+      "rosterSeat": "house 5",
+      "candidateId": "34c27f41-cc77-464d-a5af-3e2032f5e372",
+      "candidateName": "Meredith Lawson‐Rowe",
+      "candidacy": "state_lower: State House District 5 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_lett_crystal_1",
+      "rosterName": "Crystal Lett",
+      "rosterSeat": "house 11",
+      "candidateId": "2b7f908d-acc9-4e74-835d-a6419cc6c3c3",
+      "candidateName": "Crystal Lett",
+      "candidacy": "state_lower: State House District 11 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_lorenz_brian_1",
+      "rosterName": "Brian Lorenz",
+      "rosterSeat": "house 60",
+      "candidateId": "eeadbc26-84ea-45ce-ae52-492b0df2e046",
+      "candidateName": "Brian Lorenz",
+      "candidacy": "state_lower: State House District 60 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_manning_gayle_1",
+      "rosterName": "Gayle Manning",
+      "rosterSeat": "house 52",
+      "candidateId": "3f654575-c5ee-4536-b7e0-5e904cf9bc5a",
+      "candidateName": "Gayle Manning",
+      "candidacy": "state_upper: State Senate District 13 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_mohamed_ismail_1",
+      "rosterName": "Ismail Mohamed",
+      "rosterSeat": "house 3",
+      "candidateId": "4ddc508c-ab0a-44c0-b521-ce6ea435f81f",
+      "candidateName": "Ismail Mohamed",
+      "candidacy": "state_lower: State House District 3 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_moore_ty_1",
+      "rosterName": "Ty Moore",
+      "rosterSeat": "house 95",
+      "candidateId": "8bc9b668-5713-4763-889f-d0ed3bbc1bf3",
+      "candidateName": "Ty Moore",
+      "candidacy": "state_lower: State House District 95 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_mullins_diane_1",
+      "rosterName": "Diane Mullins",
+      "rosterSeat": "house 47",
+      "candidateId": "c95b7dff-4ebc-4fd3-99ce-533391d5bea1",
+      "candidateName": "Diane Mullins",
+      "candidacy": "state_lower: State House District 47 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_newman_johnathan_1",
+      "rosterName": "Johnathan Newman",
+      "rosterSeat": "house 80",
+      "candidateId": "75b93f95-dfb9-4334-a5bb-61ec9a74d58e",
+      "candidateName": "Johnathan Newman",
+      "candidacy": "state_lower: State House District 80 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_odioso_mike_1",
+      "rosterName": "Mike Odioso",
+      "rosterSeat": "house 30",
+      "candidateId": "d03d80bb-1640-4da2-b988-26fb2b27be09",
+      "candidateName": "Mike Odioso",
+      "candidacy": "state_lower: State House District 30 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_peterson_bob_1",
+      "rosterName": "Bob Peterson",
+      "rosterSeat": "house 91",
+      "candidateId": "ace93669-7828-42ac-ad3f-9a055e899d28",
+      "candidateName": "Bob Peterson",
+      "candidacy": "state_lower: State House District 91 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_piccolantonio_beryl_1",
+      "rosterName": "Beryl Brown Piccolantonio",
+      "rosterSeat": "house 4",
+      "candidateId": "840f56e4-672d-42ac-b6bd-b671a5f37066",
+      "candidateName": "Beryl Brown Piccolantonio",
+      "candidacy": "state_lower: State House District 4 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_pizzulli_justin_1",
+      "rosterName": "Justin Pizzulli",
+      "rosterSeat": "house 90",
+      "candidateId": "bece28fb-fa58-4201-a8a1-8fa3be260394",
+      "candidateName": "Justin Pizzulli",
+      "candidacy": "state_lower: State House District 90 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_plummer_phil_1",
+      "rosterName": "Phil Plummer",
+      "rosterSeat": "house 39",
+      "candidateId": "52296bfb-8c71-4dbb-95be-76c21eeb5e3d",
+      "candidateName": "Phil Plummer",
+      "candidacy": "state_upper: State Senate District 5 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_rader_tristan_1",
+      "rosterName": "Tristan Rader",
+      "rosterSeat": "house 13",
+      "candidateId": "d7e3670d-f535-4b80-99cc-57af41e5f7ec",
+      "candidateName": "Tristan Rader",
+      "candidacy": "state_lower: State House District 13 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_ritter_kevin_1",
+      "rosterName": "Kevin Ritter",
+      "rosterSeat": "house 94",
+      "candidateId": "318006f5-6d09-4c25-b17a-f342b9dff0ff",
+      "candidateName": "Kevin Ritter",
+      "candidacy": "state_lower: State House District 94 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_robb_blasdel_monica_1",
+      "rosterName": "Monica Robb Blasdel",
+      "rosterSeat": "house 79",
+      "candidateId": "c768f320-bfcb-4fbb-87bf-d333a297f883",
+      "candidateName": "Monica Robb Blasdel",
+      "candidacy": "state_lower: State House District 79 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_rogers_elgin_1",
+      "rosterName": "Elgin Rogers, Jr.",
+      "rosterSeat": "house 42",
+      "candidateId": "f7eefcd3-a726-46a6-86e9-04523169a1fb",
+      "candidateName": "Elgin Rogers Jr.",
+      "candidacy": "state_lower: State House District 42 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_salvo_jodi_1",
+      "rosterName": "Jodi Salvo",
+      "rosterSeat": "house 51",
+      "candidateId": "e3bc0047-07c9-4ea0-83df-eac5f4f8be0e",
+      "candidateName": "Jodi Salvo",
+      "candidacy": "state_lower: State House District 51 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_santucci_nick_1",
+      "rosterName": "Nick Santucci",
+      "rosterSeat": "house 64",
+      "candidateId": "9f1d664b-6d90-4fca-84e9-1359f1660469",
+      "candidateName": "Nick Santucci",
+      "candidacy": "state_lower: State House District 64 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_schmidt_jean_1",
+      "rosterName": "Jean Schmidt",
+      "rosterSeat": "house 62",
+      "candidateId": "8d042dc5-62d6-4bef-bb71-36ec8ddbfdaf",
+      "candidateName": "Jean Schmidt",
+      "candidacy": "state_lower: State House District 62 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_sigrist_mark_1",
+      "rosterName": "Mark Sigrist",
+      "rosterSeat": "house 10",
+      "candidateId": "666b039e-0821-4ea6-9044-733083bba44f",
+      "candidateName": "Mark Sigrist",
+      "candidacy": "state_lower: State House District 10 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_sims_veronica_1",
+      "rosterName": "Veronica R. Sims",
+      "rosterSeat": "house 33",
+      "candidateId": "9a5ad5a8-9bc3-41ae-9e6a-8d3dc20d2aa0",
+      "candidateName": "Veronica Sims",
+      "candidacy": "state_lower: State House District 33 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_somani_anita_1",
+      "rosterName": "Anita Somani",
+      "rosterSeat": "house 8",
+      "candidateId": "37973555-0363-483f-845c-5038d6115ffc",
+      "candidateName": "Anita Somani",
+      "candidacy": "state_lower: State House District 8 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_stephens_jason_1",
+      "rosterName": "Jason Stephens",
+      "rosterSeat": "house 93",
+      "candidateId": "f33d3d90-f971-40fd-9923-89c6d880210a",
+      "candidateName": "Jason Stephens",
+      "candidacy": "state_lower: State House District 93 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_stewart_brian_1",
+      "rosterName": "Brian Stewart",
+      "rosterSeat": "house 12",
+      "candidateId": "e14876aa-595e-4ba0-9251-f92dfe3fe0b9",
+      "candidateName": "Brian Stewart",
+      "candidacy": "state_lower: State House District 12 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_swearingen_douglas_1",
+      "rosterName": "D. J. Swearingen",
+      "rosterSeat": "house 89",
+      "candidateId": "84e362b4-24f5-4f71-b33c-67bab2314cfe",
+      "candidateName": "D.J. Swearingen",
+      "candidacy": "state_lower: State House District 89 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_sweeney_bride_rose_1",
+      "rosterName": "Bride Rose Sweeney",
+      "rosterSeat": "house 16",
+      "candidateId": "706cadeb-a3c4-4879-831b-69a0141c1fe9",
+      "candidateName": "Bride Rose Sweeney",
+      "candidacy": "state_upper: State Senate District 23 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_synenberg_eric_1",
+      "rosterName": "Eric Synenberg",
+      "rosterSeat": "house 21",
+      "candidateId": "3011e44d-5cd9-4490-8f47-3983bc94a4e1",
+      "candidateName": "Eric Synenberg",
+      "candidacy": "state_lower: State House District 21 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_tims_desiree_1",
+      "rosterName": "Desiree Tims",
+      "rosterSeat": "house 38",
+      "candidateId": "43ab1dd0-41e0-4b25-b807-36848a56a31a",
+      "candidateName": "Desiree Tims",
+      "candidacy": "state_lower: State House District 38 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_troy_daniel_1",
+      "rosterName": "Daniel P. Troy",
+      "rosterSeat": "house 23",
+      "candidateId": "59e74cbe-8b18-4210-a586-af4dc1ecc46c",
+      "candidateName": "Dan Troy",
+      "candidacy": "state_lower: State House District 23 (2024); Ohio",
+      "confidence": "first_prefix"
+    },
+    {
+      "lpid": "rep_willis_bernard_1",
+      "rosterName": "Bernard Willis",
+      "rosterSeat": "house 74",
+      "candidateId": "7970021b-8e2c-42e2-959e-e333f824be1a",
+      "candidateName": "Bernard Willis",
+      "candidacy": "state_lower: State House District 74 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_workman_heidi_1",
+      "rosterName": "Heidi Workman",
+      "rosterSeat": "house 72",
+      "candidateId": "f7ebe151-dc41-4886-a195-caa4d3d97b71",
+      "candidateName": "Heidi Workman",
+      "candidacy": "state_lower: State House District 72 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "rep_young_tom_1",
+      "rosterName": "Tom Young",
+      "rosterSeat": "house 37",
+      "candidateId": "8bac956b-2216-4a7b-ba8b-7ed82986eee5",
+      "candidateName": "Tom Young",
+      "candidacy": "state_lower: State House District 37 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "sen_cutrona_al_1",
+      "rosterName": "Al Cutrona",
+      "rosterSeat": "senate 33",
+      "candidateId": "8caf8d80-e512-4e1c-a6de-9b4c2ef2347b",
+      "candidateName": "Alessandro Cutrona",
+      "candidacy": "state_upper: State Senate District 33 (2024); Ohio",
+      "confidence": "first_prefix"
+    },
+    {
+      "lpid": "sen_demora_william_1",
+      "rosterName": "William P. DeMora",
+      "rosterSeat": "senate 25",
+      "candidateId": "60d1a890-7fe5-47e8-847d-d8b0d3f0dcda",
+      "candidateName": "William DeMora",
+      "candidacy": "state_upper: State Senate District 25 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "sen_hicks_hudson_paula_1",
+      "rosterName": "Paula Hicks-Hudson",
+      "rosterSeat": "senate 11",
+      "candidateId": "115484d9-dbd5-4298-b2fd-fa36be6d0878",
+      "candidateName": "Paula Hicks-Hudson",
+      "candidacy": "state_upper: State Senate District 11 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "sen_ingram_catherine_1",
+      "rosterName": "Catherine D. Ingram",
+      "rosterSeat": "senate 9",
+      "candidateId": "a580aab9-0607-4088-9ae5-a7239c2e274e",
+      "candidateName": "Catherine Ingram",
+      "candidacy": "state_upper: State Senate District 9 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "sen_landis_al_1",
+      "rosterName": "Al Landis",
+      "rosterSeat": "senate 31",
+      "candidateId": "ffbcb516-1dc3-42f0-82b5-227786402673",
+      "candidateName": "Al Landis",
+      "candidacy": "state_upper: State Senate District 31 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "sen_manning_nathan_1",
+      "rosterName": "Nathan H. Manning",
+      "rosterSeat": "senate 13",
+      "candidateId": "4c95c67b-686a-4f22-bcd6-ecb199526fc7",
+      "candidateName": "Nathan Manning",
+      "candidacy": "state_lower: State House District 52 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "sen_reynolds_michele_1",
+      "rosterName": "Michele Reynolds",
+      "rosterSeat": "senate 3",
+      "candidateId": "ec02043c-3ae3-4ffd-8faf-d9889684ee40",
+      "candidateName": "Michele Reynolds",
+      "candidacy": "state_upper: State Senate District 3 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "sen_smith_kent_1",
+      "rosterName": "Kent Smith",
+      "rosterSeat": "senate 21",
+      "candidateId": "0e903668-ddcb-44e0-84eb-c8db81a5ea4d",
+      "candidateName": "Kent Smith",
+      "candidacy": "state_upper: State Senate District 21 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "sen_timken_jane_1",
+      "rosterName": "Jane M. Timken",
+      "rosterSeat": "senate 29",
+      "candidateId": "ee291a95-d9d0-4331-a764-ae6953835a43",
+      "candidateName": "Jane Timken",
+      "candidacy": "state_upper: State Senate District 29 (2024); Ohio",
+      "confidence": "first_and_last"
+    },
+    {
+      "lpid": "sen_wilkin_shane_1",
+      "rosterName": "Shane Wilkin",
+      "rosterSeat": "senate 17",
+      "candidateId": "dbe1026e-9a6f-46fe-9546-738ab147adab",
+      "candidateName": "Shane Wilkin",
+      "candidacy": "state_upper: State Senate District 17 (2024); Ohio",
+      "confidence": "first_and_last"
+    }
+  ],
+  "unmatchedRoster": [
+    {
+      "lpid": "rep_arthur_sarah_1",
+      "name": "Sarah Fowler Arthur",
+      "seat": "house 99",
+      "active": true
+    },
+    {
+      "lpid": "rep_brent_juanita_1",
+      "name": "Juanita O. Brent",
+      "seat": "house 18",
+      "active": true
+    },
+    {
+      "lpid": "rep_callender_jamie_1",
+      "name": "Jamie Callender",
+      "seat": "house 57",
+      "active": true
+    },
+    {
+      "lpid": "rep_denson_sedrick_1",
+      "name": "Sedrick Denson",
+      "seat": "house 26",
+      "active": false
+    },
+    {
+      "lpid": "rep_dovilla_mike_1",
+      "name": "Michael D. Dovilla",
+      "seat": "house 17",
+      "active": true
+    },
+    {
+      "lpid": "rep_hall_derrick_1",
+      "name": "Derrick Hall",
+      "seat": "house 34",
+      "active": true
+    },
+    {
+      "lpid": "rep_hall_thomas_1",
+      "name": "Thomas Hall",
+      "seat": "house 46",
+      "active": true
+    },
+    {
+      "lpid": "rep_hoops_james_1",
+      "name": "James M. Hoops",
+      "seat": "house 81",
+      "active": true
+    },
+    {
+      "lpid": "rep_jarrells_dontavius_1",
+      "name": "Dontavius L. Jarrells",
+      "seat": "house 1",
+      "active": true
+    },
+    {
+      "lpid": "rep_jones_don_1",
+      "name": "Don Jones",
+      "seat": "house 95",
+      "active": false
+    },
+    {
+      "lpid": "rep_lear_beth_1",
+      "name": "Beth Lear",
+      "seat": "house 61",
+      "active": true
+    },
+    {
+      "lpid": "rep_mathews_adam_1",
+      "name": "Adam Mathews",
+      "seat": "house 56",
+      "active": true
+    },
+    {
+      "lpid": "rep_mathews_ty_1",
+      "name": "Ty D. Mathews",
+      "seat": "house 83",
+      "active": true
+    },
+    {
+      "lpid": "rep_mcclain_riordan_1",
+      "name": "Riordan T. McClain",
+      "seat": "house 87",
+      "active": true
+    },
+    {
+      "lpid": "rep_mcnally_lauren_1",
+      "name": "Lauren McNally",
+      "seat": "house 58",
+      "active": true
+    },
+    {
+      "lpid": "rep_miller_joe_1",
+      "name": "Joseph A. Miller, III",
+      "seat": "house 53",
+      "active": true
+    },
+    {
+      "lpid": "rep_miller_kevin_1",
+      "name": "Kevin D. Miller",
+      "seat": "house 69",
+      "active": true
+    },
+    {
+      "lpid": "rep_miller_melanie_1",
+      "name": "Melanie Miller",
+      "seat": "house 67",
+      "active": true
+    },
+    {
+      "lpid": "rep_oelslager_scott_1",
+      "name": "Scott Oelslager",
+      "seat": "house 48",
+      "active": true
+    },
+    {
+      "lpid": "rep_ray_sharon_1",
+      "name": "Sharon A. Ray",
+      "seat": "house 66",
+      "active": true
+    },
+    {
+      "lpid": "rep_richardson_tracy_1",
+      "name": "Tracy M. Richardson",
+      "seat": "house 86",
+      "active": true
+    },
+    {
+      "lpid": "rep_robinson_phil_1",
+      "name": "Phillip M. Robinson, Jr.",
+      "seat": "house 19",
+      "active": true
+    },
+    {
+      "lpid": "rep_roemer_bill_1",
+      "name": "Bill Roemer",
+      "seat": "house 31",
+      "active": true
+    },
+    {
+      "lpid": "rep_russo_allison_1",
+      "name": "C. Allison Russo",
+      "seat": "house 7",
+      "active": true
+    },
+    {
+      "lpid": "rep_teska_michelle_1",
+      "name": "Michelle Teska",
+      "seat": "house 55",
+      "active": true
+    },
+    {
+      "lpid": "rep_thomas_cecil_1",
+      "name": "Cecil Thomas",
+      "seat": "house 25",
+      "active": true
+    },
+    {
+      "lpid": "rep_thomas_david_1",
+      "name": "David Thomas",
+      "seat": "house 65",
+      "active": true
+    },
+    {
+      "lpid": "rep_thomas_jim_1",
+      "name": "Jim Thomas",
+      "seat": "house 49",
+      "active": true
+    },
+    {
+      "lpid": "rep_upchurch_terrence_1",
+      "name": "Terrence Upchurch",
+      "seat": "house 20",
+      "active": true
+    },
+    {
+      "lpid": "rep_white_andrea_1",
+      "name": "Andrea White",
+      "seat": "house 36",
+      "active": true
+    },
+    {
+      "lpid": "rep_white_erika_1",
+      "name": "Erika White",
+      "seat": "house 41",
+      "active": true
+    },
+    {
+      "lpid": "rep_williams_josh_1",
+      "name": "Josh Williams",
+      "seat": "house 44",
+      "active": true
+    },
+    {
+      "lpid": "sen_antonio_nickie_1",
+      "name": "Nickie J. Antonio",
+      "seat": "senate 23",
+      "active": true
+    },
+    {
+      "lpid": "sen_blackshear_willis_1",
+      "name": "Willis E. Blackshear, Jr.",
+      "seat": "senate 6",
+      "active": true
+    },
+    {
+      "lpid": "sen_blessing_louis_1",
+      "name": "Louis W. Blessing, III",
+      "seat": "senate 8",
+      "active": true
+    },
+    {
+      "lpid": "sen_brenner_andrew_1",
+      "name": "Andrew O. Brenner",
+      "seat": "senate 19",
+      "active": true
+    },
+    {
+      "lpid": "sen_chavez_brian_1",
+      "name": "Brian M. Chavez",
+      "seat": "senate 30",
+      "active": true
+    },
+    {
+      "lpid": "sen_cirino_jerry_1",
+      "name": "Jerry C. Cirino",
+      "seat": "senate 18",
+      "active": true
+    },
+    {
+      "lpid": "sen_craig_hearcel_1",
+      "name": "Hearcel F. Craig",
+      "seat": "senate 15",
+      "active": true
+    },
+    {
+      "lpid": "sen_gavarone_theresa_1",
+      "name": "Theresa Gavarone",
+      "seat": "senate 2",
+      "active": true
+    },
+    {
+      "lpid": "sen_huffman_stephen_1",
+      "name": "Stephen A. Huffman",
+      "seat": "senate 5",
+      "active": true
+    },
+    {
+      "lpid": "sen_johnson_terry_1",
+      "name": "Terry Johnson",
+      "seat": "senate 14",
+      "active": true
+    },
+    {
+      "lpid": "sen_koehler_kyle_1",
+      "name": "Kyle Koehler",
+      "seat": "senate 10",
+      "active": true
+    },
+    {
+      "lpid": "sen_lang_george_1",
+      "name": "George F. Lang",
+      "seat": "senate 4",
+      "active": true
+    },
+    {
+      "lpid": "sen_liston_beth_1",
+      "name": "Beth Liston",
+      "seat": "senate 16",
+      "active": true
+    },
+    {
+      "lpid": "sen_manchester_susan_1",
+      "name": "Susan Manchester",
+      "seat": "senate 12",
+      "active": true
+    },
+    {
+      "lpid": "sen_mccolley_robert_1",
+      "name": "Rob McColley",
+      "seat": "senate 1",
+      "active": true
+    },
+    {
+      "lpid": "sen_obrien_sandra_1",
+      "name": "Sandra O'Brien",
+      "seat": "senate 32",
+      "active": true
+    },
+    {
+      "lpid": "sen_patton_thomas_1",
+      "name": "Thomas F. Patton",
+      "seat": "senate 24",
+      "active": true
+    },
+    {
+      "lpid": "sen_reineke_bill_1",
+      "name": "Bill Reineke",
+      "seat": "senate 26",
+      "active": true
+    },
+    {
+      "lpid": "sen_roegner_kristina_1",
+      "name": "Kristina D. Roegner",
+      "seat": "senate 27",
+      "active": true
+    },
+    {
+      "lpid": "sen_romanchuk_mark_1",
+      "name": "Mark Romanchuk",
+      "seat": "senate 22",
+      "active": true
+    },
+    {
+      "lpid": "sen_schaffer_tim_1",
+      "name": "Tim Schaffer",
+      "seat": "senate 20",
+      "active": true
+    },
+    {
+      "lpid": "sen_weinstein_casey_1",
+      "name": "Casey Weinstein",
+      "seat": "senate 28",
+      "active": true
+    },
+    {
+      "lpid": "sen_wilson_steve_1",
+      "name": "Steve Wilson",
+      "seat": "senate 7",
+      "active": true
+    }
+  ],
+  "unmatchedCandidates": [
+    {
+      "candidateId": "e4f8467f-5fe9-4d20-a8eb-d7c87be78ac4",
+      "name": "Aaron Jones",
+      "scope": "state_lower",
+      "districtName": "State House District 88 (2024); Ohio"
+    },
+    {
+      "candidateId": "250c57ad-3210-4ca3-86f1-eb1d83b3ef0e",
+      "name": "Adam Mathews",
+      "scope": "state_lower",
+      "districtName": "State House District 56 (2024); Ohio"
+    },
+    {
+      "candidateId": "71b2737c-5788-4437-bc0a-20be24f9623c",
+      "name": "Amanda Fontana",
+      "scope": "state_lower",
+      "districtName": "State House District 51 (2024); Ohio"
+    },
+    {
+      "candidateId": "7d6d3f38-fad3-4c92-8e9e-0b5e59fe9081",
+      "name": "Amy Rigsby",
+      "scope": "state_lower",
+      "districtName": "State House District 69 (2024); Ohio"
+    },
+    {
+      "candidateId": "8b989363-8ca8-4873-be75-5ff5cfadfefb",
+      "name": "Amy Wright",
+      "scope": "state_lower",
+      "districtName": "State House District 91 (2024); Ohio"
+    },
+    {
+      "candidateId": "df71d861-1f3b-469e-9178-3eb75cdb5ded",
+      "name": "Andrea White",
+      "scope": "state_lower",
+      "districtName": "State House District 36 (2024); Ohio"
+    },
+    {
+      "candidateId": "e1e69fd8-51db-496f-b0d3-cce933e63bef",
+      "name": "Arienne Childrey",
+      "scope": "state_lower",
+      "districtName": "State House District 84 (2024); Ohio"
+    },
+    {
+      "candidateId": "0d50f190-26e2-4129-9f16-30417abd2c4d",
+      "name": "Belinda Grassi",
+      "scope": "state_lower",
+      "districtName": "State House District 57 (2024); Ohio"
+    },
+    {
+      "candidateId": "2be7434b-45f6-4edd-84ae-6ed10211b061",
+      "name": "Benjamin McCall",
+      "scope": "state_lower",
+      "districtName": "State House District 46 (2024); Ohio"
+    },
+    {
+      "candidateId": "fac87790-b4ee-442b-bd55-563eb9510798",
+      "name": "Benjamin Weber",
+      "scope": "state_lower",
+      "districtName": "State House District 86 (2024); Ohio"
+    },
+    {
+      "candidateId": "3881d8f2-9c3a-464a-b8dc-507e3b0fd106",
+      "name": "Bernadine Kennedy Kent",
+      "scope": "state_lower",
+      "districtName": "State House District 3 (2024); Ohio"
+    },
+    {
+      "candidateId": "7aebbee2-d445-491b-8ff0-7fcbb24e0d7a",
+      "name": "Billy Fronimo",
+      "scope": "state_lower",
+      "districtName": "State House District 13 (2024); Ohio"
+    },
+    {
+      "candidateId": "a507b5e6-271c-40f8-b601-d523fe22cb06",
+      "name": "Bob Guy",
+      "scope": "state_lower",
+      "districtName": "State House District 79 (2024); Ohio"
+    },
+    {
+      "candidateId": "4bca3c80-f7df-4e8f-940c-6b46bc7aeb50",
+      "name": "Bradley Lacko",
+      "scope": "state_lower",
+      "districtName": "State House District 53 (2024); Ohio"
+    },
+    {
+      "candidateId": "574d32db-3a0f-42ce-9008-e75fbf1b8170",
+      "name": "Brenda Buchanan",
+      "scope": "state_lower",
+      "districtName": "State House District 54 (2024); Ohio"
+    },
+    {
+      "candidateId": "82edff14-fa6b-4c9c-8abe-6100967c6324",
+      "name": "Brian Deer",
+      "scope": "state_upper",
+      "districtName": "State Senate District 17 (2024); Ohio"
+    },
+    {
+      "candidateId": "f846d592-986d-40e5-84de-c1385c5abe3e",
+      "name": "Brooke Dillon",
+      "scope": "state_lower",
+      "districtName": "State House District 77 (2024); Ohio"
+    },
+    {
+      "candidateId": "6bb98380-9c59-48bd-8114-bb33696c3b8a",
+      "name": "Bruce Euans",
+      "scope": "state_lower",
+      "districtName": "State House District 9 (2024); Ohio"
+    },
+    {
+      "candidateId": "9029a3a3-cb8d-4562-88c0-8c5a28f98800",
+      "name": "C. Michelle Teska",
+      "scope": "state_lower",
+      "districtName": "State House District 55 (2024); Ohio"
+    },
+    {
+      "candidateId": "c3d52c24-bb55-441a-9eae-c8a3b2711178",
+      "name": "Caleb Price",
+      "scope": "state_lower",
+      "districtName": "State House District 30 (2024); Ohio"
+    },
+    {
+      "candidateId": "aa705dc5-92e3-41ca-bce3-2cf72eaafe83",
+      "name": "Cameron Koffel",
+      "scope": "state_lower",
+      "districtName": "State House District 7 (2024); Ohio"
+    },
+    {
+      "candidateId": "1168b462-913d-4a22-ba9b-11215c8d8fbf",
+      "name": "Cara Jacob",
+      "scope": "state_upper",
+      "districtName": "State Senate District 7 (2024); Ohio"
+    },
+    {
+      "candidateId": "2db08c83-fb42-44a8-a348-a4e3905fa448",
+      "name": "Cecil Thomas",
+      "scope": "state_lower",
+      "districtName": "State House District 25 (2024); Ohio"
+    },
+    {
+      "candidateId": "7c2b1c50-f542-4816-920b-4b51d28c201f",
+      "name": "Charity Martin King",
+      "scope": "state_lower",
+      "districtName": "State House District 2 (2024); Ohio"
+    },
+    {
+      "candidateId": "0b975e50-0699-4ef0-a795-7411b40d21cd",
+      "name": "Charrie L. Foglio",
+      "scope": "state_lower",
+      "districtName": "State House District 96 (2024); Ohio"
+    },
+    {
+      "candidateId": "c2cf999a-63b2-41d8-8a53-a87f240dcde4",
+      "name": "Chris Nardo",
+      "scope": "state_lower",
+      "districtName": "State House District 66 (2024); Ohio"
+    },
+    {
+      "candidateId": "71a6dd16-2656-4fd1-9c8c-aac2f6411da3",
+      "name": "Christina Hagan",
+      "scope": "state_lower",
+      "districtName": "State House District 48 (2024); Ohio"
+    },
+    {
+      "candidateId": "05196e2c-d74d-4256-8f4a-61a78a5b6a50",
+      "name": "Christopher Elder",
+      "scope": "state_lower",
+      "districtName": "State House District 82 (2024); Ohio"
+    },
+    {
+      "candidateId": "68f5abfc-2c0c-49f4-a99f-b6df79146fa7",
+      "name": "Chuck Horn",
+      "scope": "state_lower",
+      "districtName": "State House District 36 (2024); Ohio"
+    },
+    {
+      "candidateId": "88bbd0e3-97f6-4de0-8720-c5ee77e3214d",
+      "name": "Collin Docterman",
+      "scope": "state_lower",
+      "districtName": "State House District 90 (2024); Ohio"
+    },
+    {
+      "candidateId": "e70c05a2-608a-4aea-a837-31a94119d9c2",
+      "name": "Colton Stidam",
+      "scope": "state_lower",
+      "districtName": "State House District 76 (2024); Ohio"
+    },
+    {
+      "candidateId": "137322e5-9baa-4f9b-b7d3-dda9aded8f06",
+      "name": "Craig Riedel",
+      "scope": "state_upper",
+      "districtName": "State Senate District 1 (2024); Ohio"
+    },
+    {
+      "candidateId": "0a32065a-e284-4487-b995-cc317e31939a",
+      "name": "Craig Shubert",
+      "scope": "state_lower",
+      "districtName": "State House District 34 (2024); Ohio"
+    },
+    {
+      "candidateId": "81f82fad-da3f-4c84-9180-90dee8092b1d",
+      "name": "Daniel Conway",
+      "scope": "state_lower",
+      "districtName": "State House District 15 (2024); Ohio"
+    },
+    {
+      "candidateId": "7f73bc9d-3b9f-4021-a0fb-55a488685125",
+      "name": "Daquan Neal",
+      "scope": "state_lower",
+      "districtName": "State House District 39 (2024); Ohio"
+    },
+    {
+      "candidateId": "b677e0ce-b9e6-43c5-912f-3857b671f3ac",
+      "name": "Darrell Jackson",
+      "scope": "state_lower",
+      "districtName": "State House District 74 (2024); Ohio"
+    },
+    {
+      "candidateId": "5cbdaa69-4bab-4b4a-ad43-d1cf6a74a1bd",
+      "name": "David J. Fournier",
+      "scope": "state_lower",
+      "districtName": "State House District 44 (2024); Ohio"
+    },
+    {
+      "candidateId": "7717eab2-c4ba-487f-91ac-1955f57a3bef",
+      "name": "David Karmol",
+      "scope": "state_lower",
+      "districtName": "State House District 43 (2024); Ohio"
+    },
+    {
+      "candidateId": "af7398ce-c84a-466d-9b65-334252dfbd2a",
+      "name": "David Morgan",
+      "scope": "state_lower",
+      "districtName": "State House District 14 (2024); Ohio"
+    },
+    {
+      "candidateId": "8f0cf61e-6829-4d36-8d3a-62678b30e08e",
+      "name": "David Swanson",
+      "scope": "state_lower",
+      "districtName": "State House District 81 (2024); Ohio"
+    },
+    {
+      "candidateId": "af859547-21b0-4eaf-8cd2-28122a4f2ed3",
+      "name": "David Thomas",
+      "scope": "state_lower",
+      "districtName": "State House District 65 (2024); Ohio"
+    },
+    {
+      "candidateId": "6515e400-3dbe-4891-93fa-ba07d9ec3752",
+      "name": "Davida Russell",
+      "scope": "state_lower",
+      "districtName": "State House District 18 (2024); Ohio"
+    },
+    {
+      "candidateId": "20a14107-83a1-4a43-aaf4-7ab157fe8cdb",
+      "name": "Debbie Davidson",
+      "scope": "state_lower",
+      "districtName": "State House District 63 (2024); Ohio"
+    },
+    {
+      "candidateId": "68704beb-f556-43d6-802f-fca46b5a81aa",
+      "name": "Denise D'Angelo Steele",
+      "scope": "state_lower",
+      "districtName": "State House District 10 (2024); Ohio"
+    },
+    {
+      "candidateId": "7c3089b8-3698-45cd-b33b-3c2633c7e245",
+      "name": "Derrick Hall",
+      "scope": "state_lower",
+      "districtName": "State House District 34 (2024); Ohio"
+    },
+    {
+      "candidateId": "ccb1df98-6a5a-4044-93d1-479a2030384a",
+      "name": "Djordjije Popovic",
+      "scope": "state_lower",
+      "districtName": "State House District 32 (2024); Ohio"
+    },
+    {
+      "candidateId": "132d962e-9c87-40f6-83c1-7217fec68e12",
+      "name": "Don Roberts",
+      "scope": "state_upper",
+      "districtName": "State Senate District 25 (2024); Ohio"
+    },
+    {
+      "candidateId": "4c5f81f8-906d-4334-bcdf-5081c74eb843",
+      "name": "Donna Walker-Brown",
+      "scope": "state_lower",
+      "districtName": "State House District 20 (2024); Ohio"
+    },
+    {
+      "candidateId": "c9afd4dd-b1c3-49bb-a72b-72520a1dbf4a",
+      "name": "Easton Retzke",
+      "scope": "state_lower",
+      "districtName": "State House District 89 (2024); Ohio"
+    },
+    {
+      "candidateId": "aa90a3ce-a203-4fc8-a1ff-325046c29c2a",
+      "name": "Eboney Eldridge",
+      "scope": "state_lower",
+      "districtName": "State House District 5 (2024); Ohio"
+    },
+    {
+      "candidateId": "274daf95-8bde-43dc-97da-4940cf222a1c",
+      "name": "Ed Hargate",
+      "scope": "state_lower",
+      "districtName": "State House District 19 (2024); Ohio"
+    },
+    {
+      "candidateId": "b65ed897-5264-415b-98ea-93b42fd7dc0a",
+      "name": "Edward L. Schimmel",
+      "scope": "state_lower",
+      "districtName": "State House District 44 (2024); Ohio"
+    },
+    {
+      "candidateId": "76b3a1f3-806d-40c3-9324-c3c92c78cc32",
+      "name": "Elizabeth Maier",
+      "scope": "state_lower",
+      "districtName": "State House District 27 (2024); Ohio"
+    },
+    {
+      "candidateId": "ecfe34a6-4e3b-4e8f-89c4-4b9ba618428d",
+      "name": "Erika White",
+      "scope": "state_lower",
+      "districtName": "State House District 41 (2024); Ohio"
+    },
+    {
+      "candidateId": "365760b0-9d99-4ea0-b130-0983d80323c2",
+      "name": "Eugene Miller",
+      "scope": "state_lower",
+      "districtName": "State House District 20 (2024); Ohio"
+    },
+    {
+      "candidateId": "a65abfa9-56f8-465b-94f4-593dd21ff375",
+      "name": "Heather Fronk",
+      "scope": "state_lower",
+      "districtName": "State House District 58 (2024); Ohio"
+    },
+    {
+      "candidateId": "e7e08145-302e-4e0c-801f-ee1bbb194252",
+      "name": "Heather Sample",
+      "scope": "state_lower",
+      "districtName": "State House District 67 (2024); Ohio"
+    },
+    {
+      "candidateId": "feb3836c-bf67-4b07-a69e-3751767d09b3",
+      "name": "Ian Chamberlin",
+      "scope": "state_lower",
+      "districtName": "State House District 41 (2024); Ohio"
+    },
+    {
+      "candidateId": "05b3baf4-3fd1-4e43-a241-a0775f1ed3d1",
+      "name": "Ian Schwartz",
+      "scope": "state_lower",
+      "districtName": "State House District 62 (2024); Ohio"
+    },
+    {
+      "candidateId": "52774485-a7b4-4bd3-a70a-84b1f0e207c5",
+      "name": "J. Noah Spinner",
+      "scope": "state_lower",
+      "districtName": "State House District 31 (2024); Ohio"
+    },
+    {
+      "candidateId": "b7b2bf02-d4d0-4918-8d8e-8c0d8ca1be5b",
+      "name": "James Nowak",
+      "scope": "state_upper",
+      "districtName": "State Senate District 11 (2024); Ohio"
+    },
+    {
+      "candidateId": "f7f62b67-2dcb-493a-abd6-18762402c2e8",
+      "name": "Janet Wagner",
+      "scope": "state_upper",
+      "districtName": "State Senate District 19 (2024); Ohio"
+    },
+    {
+      "candidateId": "fdcfa7dd-1550-4ba7-8f53-3230f6b12e1f",
+      "name": "Jason Purviance",
+      "scope": "state_lower",
+      "districtName": "State House District 47 (2024); Ohio"
+    },
+    {
+      "candidateId": "8c8318c5-7046-4f94-870d-63e79d8612fa",
+      "name": "Jayson Ameer Rasheed",
+      "scope": "state_lower",
+      "districtName": "State House District 45 (2024); Ohio"
+    },
+    {
+      "candidateId": "41334feb-e02c-486e-9d8e-c1594f252c4e",
+      "name": "Jeff Clapper",
+      "scope": "state_lower",
+      "districtName": "State House District 72 (2024); Ohio"
+    },
+    {
+      "candidateId": "8e1ed230-10e9-4cc8-a216-dec449d9aad6",
+      "name": "Jeffrey Harris",
+      "scope": "state_upper",
+      "districtName": "State Senate District 5 (2024); Ohio"
+    },
+    {
+      "candidateId": "35789d47-c300-42af-bc65-a4136a26ecf1",
+      "name": "Jeffrey McClain",
+      "scope": "state_lower",
+      "districtName": "State House District 87 (2024); Ohio"
+    },
+    {
+      "candidateId": "c8fb81cb-a515-4020-b631-465a0f25f014",
+      "name": "Jeffrey R. Givan",
+      "scope": "state_lower",
+      "districtName": "State House District 78 (2024); Ohio"
+    },
+    {
+      "candidateId": "1372b32a-f12b-4744-97b0-7065fd59094a",
+      "name": "Jesse Styles",
+      "scope": "state_lower",
+      "districtName": "State House District 57 (2024); Ohio"
+    },
+    {
+      "candidateId": "12b0f992-91d9-4a62-86f7-15a37eba957a",
+      "name": "Jessica Harper",
+      "scope": "state_lower",
+      "districtName": "State House District 93 (2024); Ohio"
+    },
+    {
+      "candidateId": "daf7d781-7feb-4a3e-8db5-9364bbc7803d",
+      "name": "Jill Cole",
+      "scope": "state_lower",
+      "districtName": "State House District 28 (2024); Ohio"
+    },
+    {
+      "candidateId": "cfdc8cbe-b57d-4a80-a92b-fb0d9cbc882a",
+      "name": "Jim Thomas",
+      "scope": "state_lower",
+      "districtName": "State House District 49 (2024); Ohio"
+    },
+    {
+      "candidateId": "6cbb945f-9491-46fa-b245-33589f97f160",
+      "name": "Joe Miller",
+      "scope": "state_upper",
+      "districtName": "State Senate District 13 (2024); Ohio"
+    },
+    {
+      "candidateId": "282ef541-17b7-4517-bd45-e77fe8601f0b",
+      "name": "John Boccieri",
+      "scope": "state_lower",
+      "districtName": "State House District 58 (2024); Ohio"
+    },
+    {
+      "candidateId": "cc5b092d-0a08-48cd-ac7e-bf45c09a0e52",
+      "name": "Jonathan Bradner",
+      "scope": "state_lower",
+      "districtName": "State House District 29 (2024); Ohio"
+    },
+    {
+      "candidateId": "8e3115f2-d376-42b8-babe-ebfb3a069389",
+      "name": "Jordan Haire",
+      "scope": "state_lower",
+      "districtName": "State House District 47 (2024); Ohio"
+    },
+    {
+      "candidateId": "7bc9bb02-628b-4e0d-a7e2-270f6821e53d",
+      "name": "Joseph Healy",
+      "scope": "state_upper",
+      "districtName": "State Senate District 15 (2024); Ohio"
+    },
+    {
+      "candidateId": "222f35db-d690-455a-a9c5-bb7b9291dbc0",
+      "name": "Joshua Umbaugh",
+      "scope": "state_lower",
+      "districtName": "State House District 40 (2024); Ohio"
+    },
+    {
+      "candidateId": "b6a1b57e-f91d-4f24-b7cd-385674ea4089",
+      "name": "Julie A. Belich",
+      "scope": "state_lower",
+      "districtName": "State House District 23 (2024); Ohio"
+    },
+    {
+      "candidateId": "a1caf264-db70-4c28-90cb-9a8b485006c1",
+      "name": "Justin Peroli",
+      "scope": "state_lower",
+      "districtName": "State House District 66 (2024); Ohio"
+    },
+    {
+      "candidateId": "b8b605a3-9154-4e2b-a8d0-a4d272ccad77",
+      "name": "Katie Koehler Wagner",
+      "scope": "state_lower",
+      "districtName": "State House District 80 (2024); Ohio"
+    },
+    {
+      "candidateId": "858a5832-701f-4a72-9b88-9281a4ac7240",
+      "name": "Kelly Hunter-Kalagidis",
+      "scope": "state_lower",
+      "districtName": "State House District 8 (2024); Ohio"
+    },
+    {
+      "candidateId": "239c843d-6e4f-46e0-a7b3-9d0a8b614cc4",
+      "name": "Kenneth Sharp",
+      "scope": "state_upper",
+      "districtName": "State Senate District 11 (2024); Ohio"
+    },
+    {
+      "candidateId": "ce8552dc-0581-460b-af47-d9e9d9ce5159",
+      "name": "Kent Halloran",
+      "scope": "state_lower",
+      "districtName": "State House District 86 (2024); Ohio"
+    },
+    {
+      "candidateId": "1fb5478e-c9d3-4d8e-a781-b658453adacf",
+      "name": "Kevin Miller",
+      "scope": "state_lower",
+      "districtName": "State House District 69 (2024); Ohio"
+    },
+    {
+      "candidateId": "bd1f00e9-d4bb-4226-9680-112377a8dfe9",
+      "name": "Kim McCarthy",
+      "scope": "state_lower",
+      "districtName": "State House District 70 (2024); Ohio"
+    },
+    {
+      "candidateId": "56e4f72e-1803-4a2e-a84d-60fa00a3f8e5",
+      "name": "Krista Allison",
+      "scope": "state_lower",
+      "districtName": "State House District 49 (2024); Ohio"
+    },
+    {
+      "candidateId": "7e0b169e-594a-499a-8fd5-c07b87aea2f5",
+      "name": "Krista Magaw",
+      "scope": "state_lower",
+      "districtName": "State House District 71 (2024); Ohio"
+    },
+    {
+      "candidateId": "366112ed-8e31-40c1-bbd1-995b87946a89",
+      "name": "Laalitya Acharya",
+      "scope": "state_lower",
+      "districtName": "State House District 56 (2024); Ohio"
+    },
+    {
+      "candidateId": "841338b2-1824-4a1e-b869-3635f54de25e",
+      "name": "Laura Sirot",
+      "scope": "state_upper",
+      "districtName": "State Senate District 31 (2024); Ohio"
+    },
+    {
+      "candidateId": "27ab8e0e-85aa-4c24-b5e3-b072eab11ef5",
+      "name": "Liam N. Strausbaugh",
+      "scope": "state_lower",
+      "districtName": "State House District 12 (2024); Ohio"
+    },
+    {
+      "candidateId": "f1423266-9bf4-4ca2-862d-2b80ed727cdb",
+      "name": "Linda Matthews",
+      "scope": "state_upper",
+      "districtName": "State Senate District 9 (2024); Ohio"
+    },
+    {
+      "candidateId": "ee6aa19c-ccb9-4da6-968a-2673ed7e223c",
+      "name": "Lora Covrett",
+      "scope": "state_lower",
+      "districtName": "State House District 87 (2024); Ohio"
+    },
+    {
+      "candidateId": "8fa6203e-32aa-488c-b601-c4a3cae0de1b",
+      "name": "Lorna Westlake",
+      "scope": "state_lower",
+      "districtName": "State House District 65 (2024); Ohio"
+    },
+    {
+      "candidateId": "b233aeb3-4822-4d0e-a025-19279df0d44c",
+      "name": "Louis Murphy",
+      "scope": "state_lower",
+      "districtName": "State House District 99 (2024); Ohio"
+    },
+    {
+      "candidateId": "a7478545-023d-41bf-a001-fd8cf81d1253",
+      "name": "Lyndsey Stough",
+      "scope": "state_lower",
+      "districtName": "State House District 44 (2024); Ohio"
+    },
+    {
+      "candidateId": "99b26cd4-e431-432c-b78b-752d168a496e",
+      "name": "Maddux McCray",
+      "scope": "state_lower",
+      "districtName": "State House District 82 (2024); Ohio"
+    },
+    {
+      "candidateId": "9c1a5ada-ecef-40bf-8cd6-a7acce33177c",
+      "name": "Mark Campbell",
+      "scope": "state_lower",
+      "districtName": "State House District 39 (2024); Ohio"
+    },
+    {
+      "candidateId": "303d5f53-dbe8-4af9-99b1-2cf59b27494a",
+      "name": "Mason Blankenship",
+      "scope": "state_lower",
+      "districtName": "State House District 68 (2024); Ohio"
+    },
+    {
+      "candidateId": "1c1a7b58-b39c-4629-86f8-5c7b3c368de2",
+      "name": "Matt Lundy",
+      "scope": "state_lower",
+      "districtName": "State House District 53 (2024); Ohio"
+    },
+    {
+      "candidateId": "06a61886-a27c-4687-896f-1906e8a508ea",
+      "name": "Matthew Jackson",
+      "scope": "state_lower",
+      "districtName": "State House District 6 (2024); Ohio"
+    },
+    {
+      "candidateId": "84337ea5-ff18-4db8-979c-081149a5590a",
+      "name": "Maureen Lynn",
+      "scope": "state_lower",
+      "districtName": "State House District 18 (2024); Ohio"
+    },
+    {
+      "candidateId": "f14a8770-1713-4862-988f-e3c9c1ea8bc9",
+      "name": "Megan Coy",
+      "scope": "state_lower",
+      "districtName": "State House District 17 (2024); Ohio"
+    },
+    {
+      "candidateId": "bc5f1e65-f06b-4c4b-8baf-64b2b36304ce",
+      "name": "Melanie Miller",
+      "scope": "state_lower",
+      "districtName": "State House District 67 (2024); Ohio"
+    },
+    {
+      "candidateId": "8d1d0243-f90c-4426-937a-f87c4f33012e",
+      "name": "Michael Fricke",
+      "scope": "state_lower",
+      "districtName": "State House District 72 (2024); Ohio"
+    },
+    {
+      "candidateId": "e26d860d-088d-48ca-a8f2-866adccb5b74",
+      "name": "Michael Kripchak",
+      "scope": "state_upper",
+      "districtName": "State Senate District 33 (2024); Ohio"
+    },
+    {
+      "candidateId": "e8d1da18-c274-4709-9922-683647e0814f",
+      "name": "Michael Walton",
+      "scope": "state_lower",
+      "districtName": "State House District 64 (2024); Ohio"
+    },
+    {
+      "candidateId": "876f7460-c3c6-423f-9ffd-664fee7b72e0",
+      "name": "Mike Baker",
+      "scope": "state_lower",
+      "districtName": "State House District 52 (2024); Ohio"
+    },
+    {
+      "candidateId": "5e1e39f7-c8c6-4de1-ad4f-3e6339817edf",
+      "name": "Mike Dovilla",
+      "scope": "state_lower",
+      "districtName": "State House District 17 (2024); Ohio"
+    },
+    {
+      "candidateId": "98e790e9-a9d8-4d7d-a762-ca308f177400",
+      "name": "Mike Kahoe",
+      "scope": "state_lower",
+      "districtName": "State House District 31 (2024); Ohio"
+    },
+    {
+      "candidateId": "1be19af8-0a9c-4ba4-bf43-817bad32541a",
+      "name": "Mike Roberto",
+      "scope": "state_upper",
+      "districtName": "State Senate District 27 (2024); Ohio"
+    },
+    {
+      "candidateId": "81940e9f-b4e7-4c48-967d-f02f406dde68",
+      "name": "Mikhail Alterman",
+      "scope": "state_upper",
+      "districtName": "State Senate District 21 (2024); Ohio"
+    },
+    {
+      "candidateId": "0f1affb6-31dd-4e3e-923b-6e6ee9dbec6e",
+      "name": "Napoleon Rodgers Jr.",
+      "scope": "state_lower",
+      "districtName": "State House District 33 (2024); Ohio"
+    },
+    {
+      "candidateId": "83c83d8d-af45-4898-9646-0315b993a866",
+      "name": "Nick Morris",
+      "scope": "state_lower",
+      "districtName": "State House District 48 (2024); Ohio"
+    },
+    {
+      "candidateId": "0731e195-75ea-413c-9c59-98050cd6ffee",
+      "name": "Nicole Sigurdson",
+      "scope": "state_lower",
+      "districtName": "State House District 19 (2024); Ohio"
+    },
+    {
+      "candidateId": "ba37aeab-a5b8-4b9d-9fd3-adc225b682ed",
+      "name": "Patti Rockey",
+      "scope": "state_lower",
+      "districtName": "State House District 81 (2024); Ohio"
+    },
+    {
+      "candidateId": "f109d173-153a-4d8a-9a34-961e8f54bd9a",
+      "name": "Paul Cameron",
+      "scope": "state_lower",
+      "districtName": "State House District 95 (2024); Ohio"
+    },
+    {
+      "candidateId": "306c0e89-bc6b-44ae-a32e-37608a790141",
+      "name": "Paul Kurtz",
+      "scope": "state_lower",
+      "districtName": "State House District 55 (2024); Ohio"
+    },
+    {
+      "candidateId": "a1092268-56ce-43d7-a253-cb788199d980",
+      "name": "Philip L. Pirdy",
+      "scope": "state_lower",
+      "districtName": "State House District 55 (2024); Ohio"
+    },
+    {
+      "candidateId": "3b20de75-6581-49b2-be4d-6e507388168c",
+      "name": "Primary results pending",
+      "scope": "state_lower",
+      "districtName": "State House District 75 (2024); Ohio"
+    },
+    {
+      "candidateId": "09601d15-ca0f-430a-b2d5-ceabd0cf972b",
+      "name": "Raisheda Angus",
+      "scope": "state_upper",
+      "districtName": "State Senate District 25 (2024); Ohio"
+    },
+    {
+      "candidateId": "ac04c6f8-1cfa-4acb-ad6b-d64a6191cef0",
+      "name": "Richard Cole",
+      "scope": "state_lower",
+      "districtName": "State House District 5 (2024); Ohio"
+    },
+    {
+      "candidateId": "9b1a6579-ee90-4ebc-a398-8676243cb53e",
+      "name": "Rick Walker",
+      "scope": "state_lower",
+      "districtName": "State House District 57 (2024); Ohio"
+    },
+    {
+      "candidateId": "a8fc122e-bd49-453b-b5d3-132509e7e54d",
+      "name": "Robert Dintaman",
+      "scope": "state_upper",
+      "districtName": "State Senate District 23 (2024); Ohio"
+    },
+    {
+      "candidateId": "6fc496a5-3561-4905-8212-f2eeb8e7d9a9",
+      "name": "Robert McMahon",
+      "scope": "state_lower",
+      "districtName": "State House District 42 (2024); Ohio"
+    },
+    {
+      "candidateId": "8792430a-71a8-4802-a217-c9d9396a797d",
+      "name": "Rose Lounsbury",
+      "scope": "state_lower",
+      "districtName": "State House District 36 (2024); Ohio"
+    },
+    {
+      "candidateId": "eca947cf-1067-4ce7-8d01-497d2c85e107",
+      "name": "Ryan Rivers",
+      "scope": "state_upper",
+      "districtName": "State Senate District 19 (2024); Ohio"
+    },
+    {
+      "candidateId": "b04274d0-8936-4c5f-b031-333068a0ac30",
+      "name": "Rylan Finzer",
+      "scope": "state_lower",
+      "districtName": "State House District 50 (2024); Ohio"
+    },
+    {
+      "candidateId": "a65125f0-ffbd-4350-8a3c-c9dbbc999f2c",
+      "name": "Samantha Salamon",
+      "scope": "state_lower",
+      "districtName": "State House District 35 (2024); Ohio"
+    },
+    {
+      "candidateId": "ff059208-3186-4c29-8582-59e610d6f092",
+      "name": "Sarah Fowler",
+      "scope": "state_lower",
+      "districtName": "State House District 99 (2024); Ohio"
+    },
+    {
+      "candidateId": "3af6fe75-1d66-4bc7-a080-4ea1c5708d10",
+      "name": "Sarah Senff",
+      "scope": "state_lower",
+      "districtName": "State House District 92 (2024); Ohio"
+    },
+    {
+      "candidateId": "c5856bda-38d5-4bfc-967e-c1cd577b50fa",
+      "name": "Scott DiMauro",
+      "scope": "state_lower",
+      "districtName": "State House District 16 (2024); Ohio"
+    },
+    {
+      "candidateId": "b3030bb3-34c3-4ee6-a7fe-3f53ba3a1437",
+      "name": "Scott Grund",
+      "scope": "state_lower",
+      "districtName": "State House District 98 (2024); Ohio"
+    },
+    {
+      "candidateId": "ef9c8f73-5956-46fb-b1cb-8757acf27f9c",
+      "name": "Sean Hutson",
+      "scope": "state_lower",
+      "districtName": "State House District 66 (2024); Ohio"
+    },
+    {
+      "candidateId": "c7f285bf-de45-4d40-8e29-b06592461545",
+      "name": "Shawn Kaeser",
+      "scope": "state_lower",
+      "districtName": "State House District 11 (2024); Ohio"
+    },
+    {
+      "candidateId": "ca7711e6-8c56-4f81-b207-0c2e7fe08c74",
+      "name": "Shawn Stevens",
+      "scope": "state_lower",
+      "districtName": "State House District 61 (2024); Ohio"
+    },
+    {
+      "candidateId": "d573fe85-21fc-4f97-b87b-536ed445b060",
+      "name": "Sheila Coressel",
+      "scope": "state_lower",
+      "districtName": "State House District 83 (2024); Ohio"
+    },
+    {
+      "candidateId": "17b73c27-8c71-4e01-9d29-7fe7205f9ddf",
+      "name": "Shelby Kimball",
+      "scope": "state_lower",
+      "districtName": "State House District 60 (2024); Ohio"
+    },
+    {
+      "candidateId": "530fff77-400a-4e61-be11-3a0430d21f8e",
+      "name": "Sophia Tjotjos",
+      "scope": "state_lower",
+      "districtName": "State House District 16 (2024); Ohio"
+    },
+    {
+      "candidateId": "d538befe-9e86-45c7-a26f-6c86db73cc64",
+      "name": "Stacie Baker",
+      "scope": "state_upper",
+      "districtName": "State Senate District 3 (2024); Ohio"
+    },
+    {
+      "candidateId": "0e1cbb6d-a4c6-4775-884e-f4465e99ee68",
+      "name": "Stephanie Anderson",
+      "scope": "state_lower",
+      "districtName": "State House District 29 (2024); Ohio"
+    },
+    {
+      "candidateId": "6d22c958-e4ca-4292-a91b-612f8cdefb39",
+      "name": "Teri Wang",
+      "scope": "state_lower",
+      "districtName": "State House District 20 (2024); Ohio"
+    },
+    {
+      "candidateId": "13d0f2fd-10d2-4929-a9c0-c108ab98988b",
+      "name": "Thomas Hall",
+      "scope": "state_lower",
+      "districtName": "State House District 46 (2024); Ohio"
+    },
+    {
+      "candidateId": "63b90409-f3e7-4f66-afad-c01bde7c35b4",
+      "name": "Thomas West",
+      "scope": "state_upper",
+      "districtName": "State Senate District 29 (2024); Ohio"
+    },
+    {
+      "candidateId": "c81146c8-b969-442b-a5a3-c44e462efec6",
+      "name": "Tim Godwin",
+      "scope": "state_lower",
+      "districtName": "State House District 97 (2024); Ohio"
+    },
+    {
+      "candidateId": "a668655c-d864-4d0f-a9e0-b13f755f40b9",
+      "name": "Timothy Hornbacker",
+      "scope": "state_lower",
+      "districtName": "State House District 40 (2024); Ohio"
+    },
+    {
+      "candidateId": "d5d7500d-d6bd-400c-b777-98b381a46dab",
+      "name": "Tina Barhams",
+      "scope": "state_lower",
+      "districtName": "State House District 21 (2024); Ohio"
+    },
+    {
+      "candidateId": "fe0aeb6d-6b8f-44d8-a165-c41db8672588",
+      "name": "Tom Brinkman Jr.",
+      "scope": "state_lower",
+      "districtName": "State House District 26 (2024); Ohio"
+    },
+    {
+      "candidateId": "41641bd7-f03c-45f6-b6e3-0bbe7674b9b2",
+      "name": "Tom Herner",
+      "scope": "state_lower",
+      "districtName": "State House District 37 (2024); Ohio"
+    },
+    {
+      "candidateId": "76b5af3f-8e88-42d3-8b02-9d5c9abab96e",
+      "name": "Ty Mathews",
+      "scope": "state_lower",
+      "districtName": "State House District 83 (2024); Ohio"
+    },
+    {
+      "candidateId": "438ee8b8-2bec-4fd9-a871-f465fdc246a6",
+      "name": "Ukeme Awakessien Jeter",
+      "scope": "state_lower",
+      "districtName": "State House District 7 (2024); Ohio"
+    },
+    {
+      "candidateId": "da14f0f6-17c5-4647-8b32-228d7f54f8c4",
+      "name": "Victoria Maddox",
+      "scope": "state_lower",
+      "districtName": "State House District 85 (2024); Ohio"
+    },
+    {
+      "candidateId": "24d5eabd-6397-4f35-819c-f818f62f1f74",
+      "name": "Vik Sandhu",
+      "scope": "state_lower",
+      "districtName": "State House District 35 (2024); Ohio"
+    },
+    {
+      "candidateId": "885369a0-bf75-4d19-ba76-42e588411528",
+      "name": "Vince McGrail",
+      "scope": "state_lower",
+      "districtName": "State House District 61 (2024); Ohio"
+    },
+    {
+      "candidateId": "d6bc8dbe-a3ca-4648-927e-9b539791f9bd",
+      "name": "Wayne Penny Jr.",
+      "scope": "state_lower",
+      "districtName": "State House District 59 (2024); Ohio"
+    },
+    {
+      "candidateId": "13fdc742-2193-4a88-bfe5-d17234ef149c",
+      "name": "Wenda Sheard",
+      "scope": "state_lower",
+      "districtName": "State House District 94 (2024); Ohio"
+    },
+    {
+      "candidateId": "f3db79ca-efc5-495b-a4e2-f9d1d3a6ead0",
+      "name": "Whittney Wood",
+      "scope": "state_lower",
+      "districtName": "State House District 73 (2024); Ohio"
+    },
+    {
+      "candidateId": "e86ebc9d-8383-41a9-9072-c3383430bf63",
+      "name": "William Mercier",
+      "scope": "state_lower",
+      "districtName": "State House District 7 (2024); Ohio"
+    },
+    {
+      "candidateId": "6fcfe1b3-172e-4b11-a542-79f7ded387fc",
+      "name": "Zac Haines",
+      "scope": "state_upper",
+      "districtName": "State Senate District 7 (2024); Ohio"
+    },
+    {
+      "candidateId": "a0dd1a32-1b22-46ed-b9d0-9504ae160d11",
+      "name": "Zach Hall",
+      "scope": "state_lower",
+      "districtName": "State House District 43 (2024); Ohio"
+    }
+  ],
+  "files": 11,
+  "fileErrors": 0,
+  "counts": {
+    "matched": 579,
+    "unmatched_reviewed": 183
+  },
+  "rolls": [
+    {
+      "file": "oh-house-136-roll1763604123.json",
+      "chamber": "house",
+      "roll": 1763604123,
+      "bill": "sb293",
+      "members": 91,
+      "counts": {
+        "matched": 78,
+        "unmatched_reviewed": 13
+      },
+      "matched": [
+        {
+          "lpid": "rep_abrams_cindy_1",
+          "side": "yea",
+          "candidateId": "2c64944c-d809-43b7-80b3-e8996777170c",
+          "candidateName": "Cindy Abrams"
+        },
+        {
+          "lpid": "rep_barhorst_tim_1",
+          "side": "yea",
+          "candidateId": "f162f347-fd82-4e46-85c8-50c3f256f79b",
+          "candidateName": "Tim Barhorst"
+        },
+        {
+          "lpid": "rep_bird_adam_1",
+          "side": "yea",
+          "candidateId": "e2fd5cf8-cdd6-4c83-89d2-6f6856a68c1a",
+          "candidateName": "Adam Bird"
+        },
+        {
+          "lpid": "rep_claggett_thaddeus_1",
+          "side": "yea",
+          "candidateId": "dc7bb8fd-11b1-4e80-a486-17d462c6c4ea",
+          "candidateName": "Thaddeus Claggett"
+        },
+        {
+          "lpid": "rep_click_gary_1",
+          "side": "yea",
+          "candidateId": "6d7d1afd-ae56-4f9e-8533-08e3a2cbb605",
+          "candidateName": "Gary Click"
+        },
+        {
+          "lpid": "rep_craig_meredith_1",
+          "side": "yea",
+          "candidateId": "e81cbfc6-c60f-44e8-890f-361614bfcafb",
+          "candidateName": "Meredith Craig"
+        },
+        {
+          "lpid": "rep_creech_rodney_1",
+          "side": "yea",
+          "candidateId": "0633c56f-c13a-4cf9-9b9f-b3b8b9189405",
+          "candidateName": "Rodney Creech"
+        },
+        {
+          "lpid": "rep_daniels_jack_1",
+          "side": "yea",
+          "candidateId": "1c861773-e31b-4b2a-a569-94e7e427c510",
+          "candidateName": "Jack K. Daniels"
+        },
+        {
+          "lpid": "rep_dean_levi_1",
+          "side": "yea",
+          "candidateId": "ed4e6bfe-fcd2-4c23-a639-b27b0d9dfccb",
+          "candidateName": "Levi Dean"
+        },
+        {
+          "lpid": "rep_deeter_kellie_1",
+          "side": "yea",
+          "candidateId": "894ad038-e8a5-4587-ae99-a3a119dde698",
+          "candidateName": "Kellie Deeter"
+        },
+        {
+          "lpid": "rep_dovilla_mike_1",
+          "side": "yea",
+          "candidateId": "5e1e39f7-c8c6-4de1-ad4f-3e6339817edf",
+          "candidateName": "Mike Dovilla"
+        },
+        {
+          "lpid": "rep_ferguson_ron_1",
+          "side": "yea",
+          "candidateId": "ab26adab-1741-4018-9bff-9b3ba45a8676",
+          "candidateName": "Ron Ferguson"
+        },
+        {
+          "lpid": "rep_fischer_tex_1",
+          "side": "yea",
+          "candidateId": "c5e781e0-c2c6-4f7a-9eb2-4d685cd266eb",
+          "candidateName": "Tex Fischer"
+        },
+        {
+          "lpid": "rep_arthur_sarah_1",
+          "side": "yea",
+          "candidateId": "ff059208-3186-4c29-8582-59e610d6f092",
+          "candidateName": "Sarah Fowler"
+        },
+        {
+          "lpid": "rep_ghanbari_haraz_1",
+          "side": "yea",
+          "candidateId": "4864fe15-33ae-45f9-9bfb-4fa1f8fd54e7",
+          "candidateName": "Haraz Ghanbari"
+        },
+        {
+          "lpid": "rep_gross_jennifer_1",
+          "side": "yea",
+          "candidateId": "2aaf9399-8f46-4308-9b21-ec13e620b129",
+          "candidateName": "Jennifer Gross"
+        },
+        {
+          "lpid": "rep_hall_thomas_1",
+          "side": "yea",
+          "candidateId": "13d0f2fd-10d2-4929-a9c0-c108ab98988b",
+          "candidateName": "Thomas Hall"
+        },
+        {
+          "lpid": "rep_holmes_adam_1",
+          "side": "yea",
+          "candidateId": "354aaa98-86fa-488e-96e4-f707b28d7e3a",
+          "candidateName": "Adam Holmes"
+        },
+        {
+          "lpid": "rep_huffman_matt_1",
+          "side": "yea",
+          "candidateId": "9b20e916-2dcf-457e-a1d3-7b78683cb727",
+          "candidateName": "Matt Huffman"
+        },
+        {
+          "lpid": "rep_john_marilyn_1",
+          "side": "yea",
+          "candidateId": "75c44113-2c4a-44ea-8ea7-508be1892e45",
+          "candidateName": "Marilyn John"
+        },
+        {
+          "lpid": "rep_johnson_mark_1",
+          "side": "yea",
+          "candidateId": "2e647b2d-99b3-4e7d-af9b-9386b17acdb0",
+          "candidateName": "Mark Johnson"
+        },
+        {
+          "lpid": "rep_king_angela_1",
+          "side": "yea",
+          "candidateId": "e2af8dc3-b98e-48d1-8d23-5a0f7285fe38",
+          "candidateName": "Angela King"
+        },
+        {
+          "lpid": "rep_kishman_matthew_1",
+          "side": "yea",
+          "candidateId": "d9a93c44-5cf4-408a-9814-60ee3ceadaff",
+          "candidateName": "Matthew Kishman"
+        },
+        {
+          "lpid": "rep_klopfenstein_roy_1",
+          "side": "yea",
+          "candidateId": "3d08bd35-726e-46bf-9e28-47f9ee16c0a9",
+          "candidateName": "Roy Klopfenstein"
+        },
+        {
+          "lpid": "rep_lampton_brian_1",
+          "side": "yea",
+          "candidateId": "9dcdfce5-0c7a-4276-b9ea-69aa94bcebdf",
+          "candidateName": "Brian Lampton"
+        },
+        {
+          "lpid": "rep_lare_jeff_1",
+          "side": "yea",
+          "candidateId": "adbf64da-7d88-4b7c-8322-b1fd462fa2c4",
+          "candidateName": "Jeff LaRe"
+        },
+        {
+          "lpid": "rep_lorenz_brian_1",
+          "side": "yea",
+          "candidateId": "eeadbc26-84ea-45ce-ae52-492b0df2e046",
+          "candidateName": "Brian Lorenz"
+        },
+        {
+          "lpid": "rep_manning_gayle_1",
+          "side": "yea",
+          "candidateId": "3f654575-c5ee-4536-b7e0-5e904cf9bc5a",
+          "candidateName": "Gayle Manning"
+        },
+        {
+          "lpid": "rep_mathews_adam_1",
+          "side": "yea",
+          "candidateId": "250c57ad-3210-4ca3-86f1-eb1d83b3ef0e",
+          "candidateName": "Adam Mathews"
+        },
+        {
+          "lpid": "rep_mathews_ty_1",
+          "side": "yea",
+          "candidateId": "76b5af3f-8e88-42d3-8b02-9d5c9abab96e",
+          "candidateName": "Ty Mathews"
+        },
+        {
+          "lpid": "rep_miller_kevin_1",
+          "side": "yea",
+          "candidateId": "1fb5478e-c9d3-4d8e-a781-b658453adacf",
+          "candidateName": "Kevin Miller"
+        },
+        {
+          "lpid": "rep_miller_melanie_1",
+          "side": "yea",
+          "candidateId": "bc5f1e65-f06b-4c4b-8baf-64b2b36304ce",
+          "candidateName": "Melanie Miller"
+        },
+        {
+          "lpid": "rep_mullins_diane_1",
+          "side": "yea",
+          "candidateId": "c95b7dff-4ebc-4fd3-99ce-533391d5bea1",
+          "candidateName": "Diane Mullins"
+        },
+        {
+          "lpid": "rep_newman_johnathan_1",
+          "side": "yea",
+          "candidateId": "75b93f95-dfb9-4334-a5bb-61ec9a74d58e",
+          "candidateName": "Johnathan Newman"
+        },
+        {
+          "lpid": "rep_odioso_mike_1",
+          "side": "yea",
+          "candidateId": "d03d80bb-1640-4da2-b988-26fb2b27be09",
+          "candidateName": "Mike Odioso"
+        },
+        {
+          "lpid": "rep_peterson_bob_1",
+          "side": "yea",
+          "candidateId": "ace93669-7828-42ac-ad3f-9a055e899d28",
+          "candidateName": "Bob Peterson"
+        },
+        {
+          "lpid": "rep_pizzulli_justin_1",
+          "side": "yea",
+          "candidateId": "bece28fb-fa58-4201-a8a1-8fa3be260394",
+          "candidateName": "Justin Pizzulli"
+        },
+        {
+          "lpid": "rep_plummer_phil_1",
+          "side": "yea",
+          "candidateId": "52296bfb-8c71-4dbb-95be-76c21eeb5e3d",
+          "candidateName": "Phil Plummer"
+        },
+        {
+          "lpid": "rep_ritter_kevin_1",
+          "side": "yea",
+          "candidateId": "318006f5-6d09-4c25-b17a-f342b9dff0ff",
+          "candidateName": "Kevin Ritter"
+        },
+        {
+          "lpid": "rep_robb_blasdel_monica_1",
+          "side": "yea",
+          "candidateId": "c768f320-bfcb-4fbb-87bf-d333a297f883",
+          "candidateName": "Monica Robb Blasdel"
+        },
+        {
+          "lpid": "rep_salvo_jodi_1",
+          "side": "yea",
+          "candidateId": "e3bc0047-07c9-4ea0-83df-eac5f4f8be0e",
+          "candidateName": "Jodi Salvo"
+        },
+        {
+          "lpid": "rep_santucci_nick_1",
+          "side": "yea",
+          "candidateId": "9f1d664b-6d90-4fca-84e9-1359f1660469",
+          "candidateName": "Nick Santucci"
+        },
+        {
+          "lpid": "rep_schmidt_jean_1",
+          "side": "yea",
+          "candidateId": "8d042dc5-62d6-4bef-bb71-36ec8ddbfdaf",
+          "candidateName": "Jean Schmidt"
+        },
+        {
+          "lpid": "rep_stephens_jason_1",
+          "side": "yea",
+          "candidateId": "f33d3d90-f971-40fd-9923-89c6d880210a",
+          "candidateName": "Jason Stephens"
+        },
+        {
+          "lpid": "rep_stewart_brian_1",
+          "side": "yea",
+          "candidateId": "e14876aa-595e-4ba0-9251-f92dfe3fe0b9",
+          "candidateName": "Brian Stewart"
+        },
+        {
+          "lpid": "rep_swearingen_douglas_1",
+          "side": "yea",
+          "candidateId": "84e362b4-24f5-4f71-b33c-67bab2314cfe",
+          "candidateName": "D.J. Swearingen"
+        },
+        {
+          "lpid": "rep_teska_michelle_1",
+          "side": "yea",
+          "candidateId": "9029a3a3-cb8d-4562-88c0-8c5a28f98800",
+          "candidateName": "C. Michelle Teska"
+        },
+        {
+          "lpid": "rep_thomas_david_1",
+          "side": "yea",
+          "candidateId": "af859547-21b0-4eaf-8cd2-28122a4f2ed3",
+          "candidateName": "David Thomas"
+        },
+        {
+          "lpid": "rep_thomas_jim_1",
+          "side": "yea",
+          "candidateId": "cfdc8cbe-b57d-4a80-a92b-fb0d9cbc882a",
+          "candidateName": "Jim Thomas"
+        },
+        {
+          "lpid": "rep_willis_bernard_1",
+          "side": "yea",
+          "candidateId": "7970021b-8e2c-42e2-959e-e333f824be1a",
+          "candidateName": "Bernard Willis"
+        },
+        {
+          "lpid": "rep_workman_heidi_1",
+          "side": "yea",
+          "candidateId": "f7ebe151-dc41-4886-a195-caa4d3d97b71",
+          "candidateName": "Heidi Workman"
+        },
+        {
+          "lpid": "rep_young_tom_1",
+          "side": "yea",
+          "candidateId": "8bac956b-2216-4a7b-ba8b-7ed82986eee5",
+          "candidateName": "Tom Young"
+        },
+        {
+          "lpid": "rep_moore_ty_1",
+          "side": "yea",
+          "candidateId": "8bc9b668-5713-4763-889f-d0ed3bbc1bf3",
+          "candidateName": "Ty Moore"
+        },
+        {
+          "lpid": "rep_abdullahi_munira_1",
+          "side": "nay",
+          "candidateId": "0d81987e-157b-4a78-ad2e-b22347dac4cf",
+          "candidateName": "Munira Abdullahi"
+        },
+        {
+          "lpid": "rep_baker_rachel_1",
+          "side": "nay",
+          "candidateId": "8610f570-dd20-4139-a2e5-d3bfcf73f6b9",
+          "candidateName": "Rachel Baker"
+        },
+        {
+          "lpid": "rep_brennan_sean_1",
+          "side": "nay",
+          "candidateId": "52ee99ec-a520-4e87-a94d-cf782b9dc714",
+          "candidateName": "Sean Brennan"
+        },
+        {
+          "lpid": "rep_brewer_darnell_1",
+          "side": "nay",
+          "candidateId": "4b247bc8-d0d9-418c-8cc6-bd5432c7d974",
+          "candidateName": "Darnell Brewer"
+        },
+        {
+          "lpid": "rep_brownlee_karen_1",
+          "side": "nay",
+          "candidateId": "d5326f43-21e5-4103-9eb2-8709da188845",
+          "candidateName": "Karen Brownlee"
+        },
+        {
+          "lpid": "rep_glassburn_chris_1",
+          "side": "nay",
+          "candidateId": "67f5f1c2-2ec8-4b9e-b43f-4f529e016c49",
+          "candidateName": "Chris Glassburn"
+        },
+        {
+          "lpid": "rep_hall_derrick_1",
+          "side": "nay",
+          "candidateId": "7c3089b8-3698-45cd-b33b-3c2633c7e245",
+          "candidateName": "Derrick Hall"
+        },
+        {
+          "lpid": "rep_hiner_mark_1",
+          "side": "nay",
+          "candidateId": "03226c2c-be46-4ab9-bbba-7812ce867efc",
+          "candidateName": "Mark Hiner"
+        },
+        {
+          "lpid": "rep_humphrey_latyna_1",
+          "side": "nay",
+          "candidateId": "f84c08e9-05cf-4532-99ee-f3c6ace8e7f4",
+          "candidateName": "Latyna M. Humphrey"
+        },
+        {
+          "lpid": "rep_isaacsohn_dani_1",
+          "side": "nay",
+          "candidateId": "6295d98a-db16-4bf4-8bb0-c62387b27d25",
+          "candidateName": "Dani Isaacsohn"
+        },
+        {
+          "lpid": "rep_lawson_rowe_meredith_1",
+          "side": "nay",
+          "candidateId": "34c27f41-cc77-464d-a5af-3e2032f5e372",
+          "candidateName": "Meredith Lawson‐Rowe"
+        },
+        {
+          "lpid": "rep_lett_crystal_1",
+          "side": "nay",
+          "candidateId": "2b7f908d-acc9-4e74-835d-a6419cc6c3c3",
+          "candidateName": "Crystal Lett"
+        },
+        {
+          "lpid": "rep_miller_joe_1",
+          "side": "nay",
+          "candidateId": "6cbb945f-9491-46fa-b245-33589f97f160",
+          "candidateName": "Joe Miller"
+        },
+        {
+          "lpid": "rep_mohamed_ismail_1",
+          "side": "nay",
+          "candidateId": "4ddc508c-ab0a-44c0-b521-ce6ea435f81f",
+          "candidateName": "Ismail Mohamed"
+        },
+        {
+          "lpid": "rep_piccolantonio_beryl_1",
+          "side": "nay",
+          "candidateId": "840f56e4-672d-42ac-b6bd-b671a5f37066",
+          "candidateName": "Beryl Brown Piccolantonio"
+        },
+        {
+          "lpid": "rep_sigrist_mark_1",
+          "side": "nay",
+          "candidateId": "666b039e-0821-4ea6-9044-733083bba44f",
+          "candidateName": "Mark Sigrist"
+        },
+        {
+          "lpid": "rep_sims_veronica_1",
+          "side": "nay",
+          "candidateId": "9a5ad5a8-9bc3-41ae-9e6a-8d3dc20d2aa0",
+          "candidateName": "Veronica Sims"
+        },
+        {
+          "lpid": "rep_sweeney_bride_rose_1",
+          "side": "nay",
+          "candidateId": "706cadeb-a3c4-4879-831b-69a0141c1fe9",
+          "candidateName": "Bride Rose Sweeney"
+        },
+        {
+          "lpid": "rep_synenberg_eric_1",
+          "side": "nay",
+          "candidateId": "3011e44d-5cd9-4490-8f47-3983bc94a4e1",
+          "candidateName": "Eric Synenberg"
+        },
+        {
+          "lpid": "rep_thomas_cecil_1",
+          "side": "nay",
+          "candidateId": "2db08c83-fb42-44a8-a348-a4e3905fa448",
+          "candidateName": "Cecil Thomas"
+        },
+        {
+          "lpid": "rep_tims_desiree_1",
+          "side": "nay",
+          "candidateId": "43ab1dd0-41e0-4b25-b807-36848a56a31a",
+          "candidateName": "Desiree Tims"
+        },
+        {
+          "lpid": "rep_troy_daniel_1",
+          "side": "nay",
+          "candidateId": "59e74cbe-8b18-4210-a586-af4dc1ecc46c",
+          "candidateName": "Dan Troy"
+        },
+        {
+          "lpid": "rep_white_andrea_1",
+          "side": "nay",
+          "candidateId": "df71d861-1f3b-469e-9178-3eb75cdb5ded",
+          "candidateName": "Andrea White"
+        },
+        {
+          "lpid": "rep_white_erika_1",
+          "side": "nay",
+          "candidateId": "ecfe34a6-4e3b-4e8f-89c4-4b9ba618428d",
+          "candidateName": "Erika White"
+        },
+        {
+          "lpid": "rep_bailey_ashley_1",
+          "side": "nay",
+          "candidateId": "f64a0f77-fa84-4651-bfb8-53e42c55e7a5",
+          "candidateName": "Ashley Bryant Bailey"
+        }
+      ],
+      "noCrosswalk": [],
+      "error": null
+    },
+    {
+      "file": "oh-house-136-roll1763605433.json",
+      "chamber": "house",
+      "roll": 1763605433,
+      "bill": "hb88",
+      "members": 89,
+      "counts": {
+        "matched": 76,
+        "unmatched_reviewed": 13
+      },
+      "matched": [
+        {
+          "lpid": "rep_abrams_cindy_1",
+          "side": "yea",
+          "candidateId": "2c64944c-d809-43b7-80b3-e8996777170c",
+          "candidateName": "Cindy Abrams"
+        },
+        {
+          "lpid": "rep_barhorst_tim_1",
+          "side": "yea",
+          "candidateId": "f162f347-fd82-4e46-85c8-50c3f256f79b",
+          "candidateName": "Tim Barhorst"
+        },
+        {
+          "lpid": "rep_bird_adam_1",
+          "side": "yea",
+          "candidateId": "e2fd5cf8-cdd6-4c83-89d2-6f6856a68c1a",
+          "candidateName": "Adam Bird"
+        },
+        {
+          "lpid": "rep_brennan_sean_1",
+          "side": "yea",
+          "candidateId": "52ee99ec-a520-4e87-a94d-cf782b9dc714",
+          "candidateName": "Sean Brennan"
+        },
+        {
+          "lpid": "rep_claggett_thaddeus_1",
+          "side": "yea",
+          "candidateId": "dc7bb8fd-11b1-4e80-a486-17d462c6c4ea",
+          "candidateName": "Thaddeus Claggett"
+        },
+        {
+          "lpid": "rep_click_gary_1",
+          "side": "yea",
+          "candidateId": "6d7d1afd-ae56-4f9e-8533-08e3a2cbb605",
+          "candidateName": "Gary Click"
+        },
+        {
+          "lpid": "rep_craig_meredith_1",
+          "side": "yea",
+          "candidateId": "e81cbfc6-c60f-44e8-890f-361614bfcafb",
+          "candidateName": "Meredith Craig"
+        },
+        {
+          "lpid": "rep_creech_rodney_1",
+          "side": "yea",
+          "candidateId": "0633c56f-c13a-4cf9-9b9f-b3b8b9189405",
+          "candidateName": "Rodney Creech"
+        },
+        {
+          "lpid": "rep_daniels_jack_1",
+          "side": "yea",
+          "candidateId": "1c861773-e31b-4b2a-a569-94e7e427c510",
+          "candidateName": "Jack K. Daniels"
+        },
+        {
+          "lpid": "rep_dean_levi_1",
+          "side": "yea",
+          "candidateId": "ed4e6bfe-fcd2-4c23-a639-b27b0d9dfccb",
+          "candidateName": "Levi Dean"
+        },
+        {
+          "lpid": "rep_deeter_kellie_1",
+          "side": "yea",
+          "candidateId": "894ad038-e8a5-4587-ae99-a3a119dde698",
+          "candidateName": "Kellie Deeter"
+        },
+        {
+          "lpid": "rep_dovilla_mike_1",
+          "side": "yea",
+          "candidateId": "5e1e39f7-c8c6-4de1-ad4f-3e6339817edf",
+          "candidateName": "Mike Dovilla"
+        },
+        {
+          "lpid": "rep_ferguson_ron_1",
+          "side": "yea",
+          "candidateId": "ab26adab-1741-4018-9bff-9b3ba45a8676",
+          "candidateName": "Ron Ferguson"
+        },
+        {
+          "lpid": "rep_fischer_tex_1",
+          "side": "yea",
+          "candidateId": "c5e781e0-c2c6-4f7a-9eb2-4d685cd266eb",
+          "candidateName": "Tex Fischer"
+        },
+        {
+          "lpid": "rep_arthur_sarah_1",
+          "side": "yea",
+          "candidateId": "ff059208-3186-4c29-8582-59e610d6f092",
+          "candidateName": "Sarah Fowler"
+        },
+        {
+          "lpid": "rep_ghanbari_haraz_1",
+          "side": "yea",
+          "candidateId": "4864fe15-33ae-45f9-9bfb-4fa1f8fd54e7",
+          "candidateName": "Haraz Ghanbari"
+        },
+        {
+          "lpid": "rep_gross_jennifer_1",
+          "side": "yea",
+          "candidateId": "2aaf9399-8f46-4308-9b21-ec13e620b129",
+          "candidateName": "Jennifer Gross"
+        },
+        {
+          "lpid": "rep_hall_derrick_1",
+          "side": "yea",
+          "candidateId": "7c3089b8-3698-45cd-b33b-3c2633c7e245",
+          "candidateName": "Derrick Hall"
+        },
+        {
+          "lpid": "rep_hall_thomas_1",
+          "side": "yea",
+          "candidateId": "13d0f2fd-10d2-4929-a9c0-c108ab98988b",
+          "candidateName": "Thomas Hall"
+        },
+        {
+          "lpid": "rep_hiner_mark_1",
+          "side": "yea",
+          "candidateId": "03226c2c-be46-4ab9-bbba-7812ce867efc",
+          "candidateName": "Mark Hiner"
+        },
+        {
+          "lpid": "rep_holmes_adam_1",
+          "side": "yea",
+          "candidateId": "354aaa98-86fa-488e-96e4-f707b28d7e3a",
+          "candidateName": "Adam Holmes"
+        },
+        {
+          "lpid": "rep_huffman_matt_1",
+          "side": "yea",
+          "candidateId": "9b20e916-2dcf-457e-a1d3-7b78683cb727",
+          "candidateName": "Matt Huffman"
+        },
+        {
+          "lpid": "rep_john_marilyn_1",
+          "side": "yea",
+          "candidateId": "75c44113-2c4a-44ea-8ea7-508be1892e45",
+          "candidateName": "Marilyn John"
+        },
+        {
+          "lpid": "rep_johnson_mark_1",
+          "side": "yea",
+          "candidateId": "2e647b2d-99b3-4e7d-af9b-9386b17acdb0",
+          "candidateName": "Mark Johnson"
+        },
+        {
+          "lpid": "rep_king_angela_1",
+          "side": "yea",
+          "candidateId": "e2af8dc3-b98e-48d1-8d23-5a0f7285fe38",
+          "candidateName": "Angela King"
+        },
+        {
+          "lpid": "rep_kishman_matthew_1",
+          "side": "yea",
+          "candidateId": "d9a93c44-5cf4-408a-9814-60ee3ceadaff",
+          "candidateName": "Matthew Kishman"
+        },
+        {
+          "lpid": "rep_klopfenstein_roy_1",
+          "side": "yea",
+          "candidateId": "3d08bd35-726e-46bf-9e28-47f9ee16c0a9",
+          "candidateName": "Roy Klopfenstein"
+        },
+        {
+          "lpid": "rep_lampton_brian_1",
+          "side": "yea",
+          "candidateId": "9dcdfce5-0c7a-4276-b9ea-69aa94bcebdf",
+          "candidateName": "Brian Lampton"
+        },
+        {
+          "lpid": "rep_lare_jeff_1",
+          "side": "yea",
+          "candidateId": "adbf64da-7d88-4b7c-8322-b1fd462fa2c4",
+          "candidateName": "Jeff LaRe"
+        },
+        {
+          "lpid": "rep_lett_crystal_1",
+          "side": "yea",
+          "candidateId": "2b7f908d-acc9-4e74-835d-a6419cc6c3c3",
+          "candidateName": "Crystal Lett"
+        },
+        {
+          "lpid": "rep_lorenz_brian_1",
+          "side": "yea",
+          "candidateId": "eeadbc26-84ea-45ce-ae52-492b0df2e046",
+          "candidateName": "Brian Lorenz"
+        },
+        {
+          "lpid": "rep_manning_gayle_1",
+          "side": "yea",
+          "candidateId": "3f654575-c5ee-4536-b7e0-5e904cf9bc5a",
+          "candidateName": "Gayle Manning"
+        },
+        {
+          "lpid": "rep_mathews_adam_1",
+          "side": "yea",
+          "candidateId": "250c57ad-3210-4ca3-86f1-eb1d83b3ef0e",
+          "candidateName": "Adam Mathews"
+        },
+        {
+          "lpid": "rep_mathews_ty_1",
+          "side": "yea",
+          "candidateId": "76b5af3f-8e88-42d3-8b02-9d5c9abab96e",
+          "candidateName": "Ty Mathews"
+        },
+        {
+          "lpid": "rep_miller_joe_1",
+          "side": "yea",
+          "candidateId": "6cbb945f-9491-46fa-b245-33589f97f160",
+          "candidateName": "Joe Miller"
+        },
+        {
+          "lpid": "rep_miller_kevin_1",
+          "side": "yea",
+          "candidateId": "1fb5478e-c9d3-4d8e-a781-b658453adacf",
+          "candidateName": "Kevin Miller"
+        },
+        {
+          "lpid": "rep_miller_melanie_1",
+          "side": "yea",
+          "candidateId": "bc5f1e65-f06b-4c4b-8baf-64b2b36304ce",
+          "candidateName": "Melanie Miller"
+        },
+        {
+          "lpid": "rep_mullins_diane_1",
+          "side": "yea",
+          "candidateId": "c95b7dff-4ebc-4fd3-99ce-533391d5bea1",
+          "candidateName": "Diane Mullins"
+        },
+        {
+          "lpid": "rep_newman_johnathan_1",
+          "side": "yea",
+          "candidateId": "75b93f95-dfb9-4334-a5bb-61ec9a74d58e",
+          "candidateName": "Johnathan Newman"
+        },
+        {
+          "lpid": "rep_odioso_mike_1",
+          "side": "yea",
+          "candidateId": "d03d80bb-1640-4da2-b988-26fb2b27be09",
+          "candidateName": "Mike Odioso"
+        },
+        {
+          "lpid": "rep_peterson_bob_1",
+          "side": "yea",
+          "candidateId": "ace93669-7828-42ac-ad3f-9a055e899d28",
+          "candidateName": "Bob Peterson"
+        },
+        {
+          "lpid": "rep_pizzulli_justin_1",
+          "side": "yea",
+          "candidateId": "bece28fb-fa58-4201-a8a1-8fa3be260394",
+          "candidateName": "Justin Pizzulli"
+        },
+        {
+          "lpid": "rep_plummer_phil_1",
+          "side": "yea",
+          "candidateId": "52296bfb-8c71-4dbb-95be-76c21eeb5e3d",
+          "candidateName": "Phil Plummer"
+        },
+        {
+          "lpid": "rep_ritter_kevin_1",
+          "side": "yea",
+          "candidateId": "318006f5-6d09-4c25-b17a-f342b9dff0ff",
+          "candidateName": "Kevin Ritter"
+        },
+        {
+          "lpid": "rep_robb_blasdel_monica_1",
+          "side": "yea",
+          "candidateId": "c768f320-bfcb-4fbb-87bf-d333a297f883",
+          "candidateName": "Monica Robb Blasdel"
+        },
+        {
+          "lpid": "rep_salvo_jodi_1",
+          "side": "yea",
+          "candidateId": "e3bc0047-07c9-4ea0-83df-eac5f4f8be0e",
+          "candidateName": "Jodi Salvo"
+        },
+        {
+          "lpid": "rep_santucci_nick_1",
+          "side": "yea",
+          "candidateId": "9f1d664b-6d90-4fca-84e9-1359f1660469",
+          "candidateName": "Nick Santucci"
+        },
+        {
+          "lpid": "rep_schmidt_jean_1",
+          "side": "yea",
+          "candidateId": "8d042dc5-62d6-4bef-bb71-36ec8ddbfdaf",
+          "candidateName": "Jean Schmidt"
+        },
+        {
+          "lpid": "rep_sigrist_mark_1",
+          "side": "yea",
+          "candidateId": "666b039e-0821-4ea6-9044-733083bba44f",
+          "candidateName": "Mark Sigrist"
+        },
+        {
+          "lpid": "rep_stephens_jason_1",
+          "side": "yea",
+          "candidateId": "f33d3d90-f971-40fd-9923-89c6d880210a",
+          "candidateName": "Jason Stephens"
+        },
+        {
+          "lpid": "rep_stewart_brian_1",
+          "side": "yea",
+          "candidateId": "e14876aa-595e-4ba0-9251-f92dfe3fe0b9",
+          "candidateName": "Brian Stewart"
+        },
+        {
+          "lpid": "rep_swearingen_douglas_1",
+          "side": "yea",
+          "candidateId": "84e362b4-24f5-4f71-b33c-67bab2314cfe",
+          "candidateName": "D.J. Swearingen"
+        },
+        {
+          "lpid": "rep_teska_michelle_1",
+          "side": "yea",
+          "candidateId": "9029a3a3-cb8d-4562-88c0-8c5a28f98800",
+          "candidateName": "C. Michelle Teska"
+        },
+        {
+          "lpid": "rep_thomas_cecil_1",
+          "side": "yea",
+          "candidateId": "2db08c83-fb42-44a8-a348-a4e3905fa448",
+          "candidateName": "Cecil Thomas"
+        },
+        {
+          "lpid": "rep_thomas_david_1",
+          "side": "yea",
+          "candidateId": "af859547-21b0-4eaf-8cd2-28122a4f2ed3",
+          "candidateName": "David Thomas"
+        },
+        {
+          "lpid": "rep_thomas_jim_1",
+          "side": "yea",
+          "candidateId": "cfdc8cbe-b57d-4a80-a92b-fb0d9cbc882a",
+          "candidateName": "Jim Thomas"
+        },
+        {
+          "lpid": "rep_troy_daniel_1",
+          "side": "yea",
+          "candidateId": "59e74cbe-8b18-4210-a586-af4dc1ecc46c",
+          "candidateName": "Dan Troy"
+        },
+        {
+          "lpid": "rep_white_andrea_1",
+          "side": "yea",
+          "candidateId": "df71d861-1f3b-469e-9178-3eb75cdb5ded",
+          "candidateName": "Andrea White"
+        },
+        {
+          "lpid": "rep_willis_bernard_1",
+          "side": "yea",
+          "candidateId": "7970021b-8e2c-42e2-959e-e333f824be1a",
+          "candidateName": "Bernard Willis"
+        },
+        {
+          "lpid": "rep_workman_heidi_1",
+          "side": "yea",
+          "candidateId": "f7ebe151-dc41-4886-a195-caa4d3d97b71",
+          "candidateName": "Heidi Workman"
+        },
+        {
+          "lpid": "rep_young_tom_1",
+          "side": "yea",
+          "candidateId": "8bac956b-2216-4a7b-ba8b-7ed82986eee5",
+          "candidateName": "Tom Young"
+        },
+        {
+          "lpid": "rep_moore_ty_1",
+          "side": "yea",
+          "candidateId": "8bc9b668-5713-4763-889f-d0ed3bbc1bf3",
+          "candidateName": "Ty Moore"
+        },
+        {
+          "lpid": "rep_abdullahi_munira_1",
+          "side": "nay",
+          "candidateId": "0d81987e-157b-4a78-ad2e-b22347dac4cf",
+          "candidateName": "Munira Abdullahi"
+        },
+        {
+          "lpid": "rep_baker_rachel_1",
+          "side": "nay",
+          "candidateId": "8610f570-dd20-4139-a2e5-d3bfcf73f6b9",
+          "candidateName": "Rachel Baker"
+        },
+        {
+          "lpid": "rep_brewer_darnell_1",
+          "side": "nay",
+          "candidateId": "4b247bc8-d0d9-418c-8cc6-bd5432c7d974",
+          "candidateName": "Darnell Brewer"
+        },
+        {
+          "lpid": "rep_brownlee_karen_1",
+          "side": "nay",
+          "candidateId": "d5326f43-21e5-4103-9eb2-8709da188845",
+          "candidateName": "Karen Brownlee"
+        },
+        {
+          "lpid": "rep_humphrey_latyna_1",
+          "side": "nay",
+          "candidateId": "f84c08e9-05cf-4532-99ee-f3c6ace8e7f4",
+          "candidateName": "Latyna M. Humphrey"
+        },
+        {
+          "lpid": "rep_isaacsohn_dani_1",
+          "side": "nay",
+          "candidateId": "6295d98a-db16-4bf4-8bb0-c62387b27d25",
+          "candidateName": "Dani Isaacsohn"
+        },
+        {
+          "lpid": "rep_lawson_rowe_meredith_1",
+          "side": "nay",
+          "candidateId": "34c27f41-cc77-464d-a5af-3e2032f5e372",
+          "candidateName": "Meredith Lawson‐Rowe"
+        },
+        {
+          "lpid": "rep_mohamed_ismail_1",
+          "side": "nay",
+          "candidateId": "4ddc508c-ab0a-44c0-b521-ce6ea435f81f",
+          "candidateName": "Ismail Mohamed"
+        },
+        {
+          "lpid": "rep_piccolantonio_beryl_1",
+          "side": "nay",
+          "candidateId": "840f56e4-672d-42ac-b6bd-b671a5f37066",
+          "candidateName": "Beryl Brown Piccolantonio"
+        },
+        {
+          "lpid": "rep_sims_veronica_1",
+          "side": "nay",
+          "candidateId": "9a5ad5a8-9bc3-41ae-9e6a-8d3dc20d2aa0",
+          "candidateName": "Veronica Sims"
+        },
+        {
+          "lpid": "rep_synenberg_eric_1",
+          "side": "nay",
+          "candidateId": "3011e44d-5cd9-4490-8f47-3983bc94a4e1",
+          "candidateName": "Eric Synenberg"
+        },
+        {
+          "lpid": "rep_tims_desiree_1",
+          "side": "nay",
+          "candidateId": "43ab1dd0-41e0-4b25-b807-36848a56a31a",
+          "candidateName": "Desiree Tims"
+        },
+        {
+          "lpid": "rep_white_erika_1",
+          "side": "nay",
+          "candidateId": "ecfe34a6-4e3b-4e8f-89c4-4b9ba618428d",
+          "candidateName": "Erika White"
+        },
+        {
+          "lpid": "rep_bailey_ashley_1",
+          "side": "nay",
+          "candidateId": "f64a0f77-fa84-4651-bfb8-53e42c55e7a5",
+          "candidateName": "Ashley Bryant Bailey"
+        }
+      ],
+      "noCrosswalk": [],
+      "error": null
+    },
+    {
+      "file": "oh-house-136-roll1763614397.json",
+      "chamber": "house",
+      "roll": 1763614397,
+      "bill": "hb485",
+      "members": 86,
+      "counts": {
+        "matched": 74,
+        "unmatched_reviewed": 12
+      },
+      "matched": [
+        {
+          "lpid": "rep_abrams_cindy_1",
+          "side": "yea",
+          "candidateId": "2c64944c-d809-43b7-80b3-e8996777170c",
+          "candidateName": "Cindy Abrams"
+        },
+        {
+          "lpid": "rep_barhorst_tim_1",
+          "side": "yea",
+          "candidateId": "f162f347-fd82-4e46-85c8-50c3f256f79b",
+          "candidateName": "Tim Barhorst"
+        },
+        {
+          "lpid": "rep_bird_adam_1",
+          "side": "yea",
+          "candidateId": "e2fd5cf8-cdd6-4c83-89d2-6f6856a68c1a",
+          "candidateName": "Adam Bird"
+        },
+        {
+          "lpid": "rep_claggett_thaddeus_1",
+          "side": "yea",
+          "candidateId": "dc7bb8fd-11b1-4e80-a486-17d462c6c4ea",
+          "candidateName": "Thaddeus Claggett"
+        },
+        {
+          "lpid": "rep_click_gary_1",
+          "side": "yea",
+          "candidateId": "6d7d1afd-ae56-4f9e-8533-08e3a2cbb605",
+          "candidateName": "Gary Click"
+        },
+        {
+          "lpid": "rep_craig_meredith_1",
+          "side": "yea",
+          "candidateId": "e81cbfc6-c60f-44e8-890f-361614bfcafb",
+          "candidateName": "Meredith Craig"
+        },
+        {
+          "lpid": "rep_creech_rodney_1",
+          "side": "yea",
+          "candidateId": "0633c56f-c13a-4cf9-9b9f-b3b8b9189405",
+          "candidateName": "Rodney Creech"
+        },
+        {
+          "lpid": "rep_dean_levi_1",
+          "side": "yea",
+          "candidateId": "ed4e6bfe-fcd2-4c23-a639-b27b0d9dfccb",
+          "candidateName": "Levi Dean"
+        },
+        {
+          "lpid": "rep_deeter_kellie_1",
+          "side": "yea",
+          "candidateId": "894ad038-e8a5-4587-ae99-a3a119dde698",
+          "candidateName": "Kellie Deeter"
+        },
+        {
+          "lpid": "rep_dovilla_mike_1",
+          "side": "yea",
+          "candidateId": "5e1e39f7-c8c6-4de1-ad4f-3e6339817edf",
+          "candidateName": "Mike Dovilla"
+        },
+        {
+          "lpid": "rep_fischer_tex_1",
+          "side": "yea",
+          "candidateId": "c5e781e0-c2c6-4f7a-9eb2-4d685cd266eb",
+          "candidateName": "Tex Fischer"
+        },
+        {
+          "lpid": "rep_arthur_sarah_1",
+          "side": "yea",
+          "candidateId": "ff059208-3186-4c29-8582-59e610d6f092",
+          "candidateName": "Sarah Fowler"
+        },
+        {
+          "lpid": "rep_ghanbari_haraz_1",
+          "side": "yea",
+          "candidateId": "4864fe15-33ae-45f9-9bfb-4fa1f8fd54e7",
+          "candidateName": "Haraz Ghanbari"
+        },
+        {
+          "lpid": "rep_gross_jennifer_1",
+          "side": "yea",
+          "candidateId": "2aaf9399-8f46-4308-9b21-ec13e620b129",
+          "candidateName": "Jennifer Gross"
+        },
+        {
+          "lpid": "rep_hall_thomas_1",
+          "side": "yea",
+          "candidateId": "13d0f2fd-10d2-4929-a9c0-c108ab98988b",
+          "candidateName": "Thomas Hall"
+        },
+        {
+          "lpid": "rep_hiner_mark_1",
+          "side": "yea",
+          "candidateId": "03226c2c-be46-4ab9-bbba-7812ce867efc",
+          "candidateName": "Mark Hiner"
+        },
+        {
+          "lpid": "rep_holmes_adam_1",
+          "side": "yea",
+          "candidateId": "354aaa98-86fa-488e-96e4-f707b28d7e3a",
+          "candidateName": "Adam Holmes"
+        },
+        {
+          "lpid": "rep_huffman_matt_1",
+          "side": "yea",
+          "candidateId": "9b20e916-2dcf-457e-a1d3-7b78683cb727",
+          "candidateName": "Matt Huffman"
+        },
+        {
+          "lpid": "rep_john_marilyn_1",
+          "side": "yea",
+          "candidateId": "75c44113-2c4a-44ea-8ea7-508be1892e45",
+          "candidateName": "Marilyn John"
+        },
+        {
+          "lpid": "rep_johnson_mark_1",
+          "side": "yea",
+          "candidateId": "2e647b2d-99b3-4e7d-af9b-9386b17acdb0",
+          "candidateName": "Mark Johnson"
+        },
+        {
+          "lpid": "rep_king_angela_1",
+          "side": "yea",
+          "candidateId": "e2af8dc3-b98e-48d1-8d23-5a0f7285fe38",
+          "candidateName": "Angela King"
+        },
+        {
+          "lpid": "rep_kishman_matthew_1",
+          "side": "yea",
+          "candidateId": "d9a93c44-5cf4-408a-9814-60ee3ceadaff",
+          "candidateName": "Matthew Kishman"
+        },
+        {
+          "lpid": "rep_klopfenstein_roy_1",
+          "side": "yea",
+          "candidateId": "3d08bd35-726e-46bf-9e28-47f9ee16c0a9",
+          "candidateName": "Roy Klopfenstein"
+        },
+        {
+          "lpid": "rep_lampton_brian_1",
+          "side": "yea",
+          "candidateId": "9dcdfce5-0c7a-4276-b9ea-69aa94bcebdf",
+          "candidateName": "Brian Lampton"
+        },
+        {
+          "lpid": "rep_lare_jeff_1",
+          "side": "yea",
+          "candidateId": "adbf64da-7d88-4b7c-8322-b1fd462fa2c4",
+          "candidateName": "Jeff LaRe"
+        },
+        {
+          "lpid": "rep_lorenz_brian_1",
+          "side": "yea",
+          "candidateId": "eeadbc26-84ea-45ce-ae52-492b0df2e046",
+          "candidateName": "Brian Lorenz"
+        },
+        {
+          "lpid": "rep_manning_gayle_1",
+          "side": "yea",
+          "candidateId": "3f654575-c5ee-4536-b7e0-5e904cf9bc5a",
+          "candidateName": "Gayle Manning"
+        },
+        {
+          "lpid": "rep_mathews_adam_1",
+          "side": "yea",
+          "candidateId": "250c57ad-3210-4ca3-86f1-eb1d83b3ef0e",
+          "candidateName": "Adam Mathews"
+        },
+        {
+          "lpid": "rep_mathews_ty_1",
+          "side": "yea",
+          "candidateId": "76b5af3f-8e88-42d3-8b02-9d5c9abab96e",
+          "candidateName": "Ty Mathews"
+        },
+        {
+          "lpid": "rep_miller_kevin_1",
+          "side": "yea",
+          "candidateId": "1fb5478e-c9d3-4d8e-a781-b658453adacf",
+          "candidateName": "Kevin Miller"
+        },
+        {
+          "lpid": "rep_miller_melanie_1",
+          "side": "yea",
+          "candidateId": "bc5f1e65-f06b-4c4b-8baf-64b2b36304ce",
+          "candidateName": "Melanie Miller"
+        },
+        {
+          "lpid": "rep_mullins_diane_1",
+          "side": "yea",
+          "candidateId": "c95b7dff-4ebc-4fd3-99ce-533391d5bea1",
+          "candidateName": "Diane Mullins"
+        },
+        {
+          "lpid": "rep_newman_johnathan_1",
+          "side": "yea",
+          "candidateId": "75b93f95-dfb9-4334-a5bb-61ec9a74d58e",
+          "candidateName": "Johnathan Newman"
+        },
+        {
+          "lpid": "rep_odioso_mike_1",
+          "side": "yea",
+          "candidateId": "d03d80bb-1640-4da2-b988-26fb2b27be09",
+          "candidateName": "Mike Odioso"
+        },
+        {
+          "lpid": "rep_peterson_bob_1",
+          "side": "yea",
+          "candidateId": "ace93669-7828-42ac-ad3f-9a055e899d28",
+          "candidateName": "Bob Peterson"
+        },
+        {
+          "lpid": "rep_pizzulli_justin_1",
+          "side": "yea",
+          "candidateId": "bece28fb-fa58-4201-a8a1-8fa3be260394",
+          "candidateName": "Justin Pizzulli"
+        },
+        {
+          "lpid": "rep_plummer_phil_1",
+          "side": "yea",
+          "candidateId": "52296bfb-8c71-4dbb-95be-76c21eeb5e3d",
+          "candidateName": "Phil Plummer"
+        },
+        {
+          "lpid": "rep_ritter_kevin_1",
+          "side": "yea",
+          "candidateId": "318006f5-6d09-4c25-b17a-f342b9dff0ff",
+          "candidateName": "Kevin Ritter"
+        },
+        {
+          "lpid": "rep_robb_blasdel_monica_1",
+          "side": "yea",
+          "candidateId": "c768f320-bfcb-4fbb-87bf-d333a297f883",
+          "candidateName": "Monica Robb Blasdel"
+        },
+        {
+          "lpid": "rep_salvo_jodi_1",
+          "side": "yea",
+          "candidateId": "e3bc0047-07c9-4ea0-83df-eac5f4f8be0e",
+          "candidateName": "Jodi Salvo"
+        },
+        {
+          "lpid": "rep_santucci_nick_1",
+          "side": "yea",
+          "candidateId": "9f1d664b-6d90-4fca-84e9-1359f1660469",
+          "candidateName": "Nick Santucci"
+        },
+        {
+          "lpid": "rep_schmidt_jean_1",
+          "side": "yea",
+          "candidateId": "8d042dc5-62d6-4bef-bb71-36ec8ddbfdaf",
+          "candidateName": "Jean Schmidt"
+        },
+        {
+          "lpid": "rep_stephens_jason_1",
+          "side": "yea",
+          "candidateId": "f33d3d90-f971-40fd-9923-89c6d880210a",
+          "candidateName": "Jason Stephens"
+        },
+        {
+          "lpid": "rep_stewart_brian_1",
+          "side": "yea",
+          "candidateId": "e14876aa-595e-4ba0-9251-f92dfe3fe0b9",
+          "candidateName": "Brian Stewart"
+        },
+        {
+          "lpid": "rep_swearingen_douglas_1",
+          "side": "yea",
+          "candidateId": "84e362b4-24f5-4f71-b33c-67bab2314cfe",
+          "candidateName": "D.J. Swearingen"
+        },
+        {
+          "lpid": "rep_teska_michelle_1",
+          "side": "yea",
+          "candidateId": "9029a3a3-cb8d-4562-88c0-8c5a28f98800",
+          "candidateName": "C. Michelle Teska"
+        },
+        {
+          "lpid": "rep_thomas_david_1",
+          "side": "yea",
+          "candidateId": "af859547-21b0-4eaf-8cd2-28122a4f2ed3",
+          "candidateName": "David Thomas"
+        },
+        {
+          "lpid": "rep_thomas_jim_1",
+          "side": "yea",
+          "candidateId": "cfdc8cbe-b57d-4a80-a92b-fb0d9cbc882a",
+          "candidateName": "Jim Thomas"
+        },
+        {
+          "lpid": "rep_white_andrea_1",
+          "side": "yea",
+          "candidateId": "df71d861-1f3b-469e-9178-3eb75cdb5ded",
+          "candidateName": "Andrea White"
+        },
+        {
+          "lpid": "rep_workman_heidi_1",
+          "side": "yea",
+          "candidateId": "f7ebe151-dc41-4886-a195-caa4d3d97b71",
+          "candidateName": "Heidi Workman"
+        },
+        {
+          "lpid": "rep_young_tom_1",
+          "side": "yea",
+          "candidateId": "8bac956b-2216-4a7b-ba8b-7ed82986eee5",
+          "candidateName": "Tom Young"
+        },
+        {
+          "lpid": "rep_moore_ty_1",
+          "side": "yea",
+          "candidateId": "8bc9b668-5713-4763-889f-d0ed3bbc1bf3",
+          "candidateName": "Ty Moore"
+        },
+        {
+          "lpid": "rep_abdullahi_munira_1",
+          "side": "nay",
+          "candidateId": "0d81987e-157b-4a78-ad2e-b22347dac4cf",
+          "candidateName": "Munira Abdullahi"
+        },
+        {
+          "lpid": "rep_baker_rachel_1",
+          "side": "nay",
+          "candidateId": "8610f570-dd20-4139-a2e5-d3bfcf73f6b9",
+          "candidateName": "Rachel Baker"
+        },
+        {
+          "lpid": "rep_brennan_sean_1",
+          "side": "nay",
+          "candidateId": "52ee99ec-a520-4e87-a94d-cf782b9dc714",
+          "candidateName": "Sean Brennan"
+        },
+        {
+          "lpid": "rep_brewer_darnell_1",
+          "side": "nay",
+          "candidateId": "4b247bc8-d0d9-418c-8cc6-bd5432c7d974",
+          "candidateName": "Darnell Brewer"
+        },
+        {
+          "lpid": "rep_brownlee_karen_1",
+          "side": "nay",
+          "candidateId": "d5326f43-21e5-4103-9eb2-8709da188845",
+          "candidateName": "Karen Brownlee"
+        },
+        {
+          "lpid": "rep_glassburn_chris_1",
+          "side": "nay",
+          "candidateId": "67f5f1c2-2ec8-4b9e-b43f-4f529e016c49",
+          "candidateName": "Chris Glassburn"
+        },
+        {
+          "lpid": "rep_hall_derrick_1",
+          "side": "nay",
+          "candidateId": "7c3089b8-3698-45cd-b33b-3c2633c7e245",
+          "candidateName": "Derrick Hall"
+        },
+        {
+          "lpid": "rep_humphrey_latyna_1",
+          "side": "nay",
+          "candidateId": "f84c08e9-05cf-4532-99ee-f3c6ace8e7f4",
+          "candidateName": "Latyna M. Humphrey"
+        },
+        {
+          "lpid": "rep_isaacsohn_dani_1",
+          "side": "nay",
+          "candidateId": "6295d98a-db16-4bf4-8bb0-c62387b27d25",
+          "candidateName": "Dani Isaacsohn"
+        },
+        {
+          "lpid": "rep_lawson_rowe_meredith_1",
+          "side": "nay",
+          "candidateId": "34c27f41-cc77-464d-a5af-3e2032f5e372",
+          "candidateName": "Meredith Lawson‐Rowe"
+        },
+        {
+          "lpid": "rep_miller_joe_1",
+          "side": "nay",
+          "candidateId": "6cbb945f-9491-46fa-b245-33589f97f160",
+          "candidateName": "Joe Miller"
+        },
+        {
+          "lpid": "rep_mohamed_ismail_1",
+          "side": "nay",
+          "candidateId": "4ddc508c-ab0a-44c0-b521-ce6ea435f81f",
+          "candidateName": "Ismail Mohamed"
+        },
+        {
+          "lpid": "rep_piccolantonio_beryl_1",
+          "side": "nay",
+          "candidateId": "840f56e4-672d-42ac-b6bd-b671a5f37066",
+          "candidateName": "Beryl Brown Piccolantonio"
+        },
+        {
+          "lpid": "rep_sigrist_mark_1",
+          "side": "nay",
+          "candidateId": "666b039e-0821-4ea6-9044-733083bba44f",
+          "candidateName": "Mark Sigrist"
+        },
+        {
+          "lpid": "rep_sims_veronica_1",
+          "side": "nay",
+          "candidateId": "9a5ad5a8-9bc3-41ae-9e6a-8d3dc20d2aa0",
+          "candidateName": "Veronica Sims"
+        },
+        {
+          "lpid": "rep_sweeney_bride_rose_1",
+          "side": "nay",
+          "candidateId": "706cadeb-a3c4-4879-831b-69a0141c1fe9",
+          "candidateName": "Bride Rose Sweeney"
+        },
+        {
+          "lpid": "rep_synenberg_eric_1",
+          "side": "nay",
+          "candidateId": "3011e44d-5cd9-4490-8f47-3983bc94a4e1",
+          "candidateName": "Eric Synenberg"
+        },
+        {
+          "lpid": "rep_thomas_cecil_1",
+          "side": "nay",
+          "candidateId": "2db08c83-fb42-44a8-a348-a4e3905fa448",
+          "candidateName": "Cecil Thomas"
+        },
+        {
+          "lpid": "rep_tims_desiree_1",
+          "side": "nay",
+          "candidateId": "43ab1dd0-41e0-4b25-b807-36848a56a31a",
+          "candidateName": "Desiree Tims"
+        },
+        {
+          "lpid": "rep_troy_daniel_1",
+          "side": "nay",
+          "candidateId": "59e74cbe-8b18-4210-a586-af4dc1ecc46c",
+          "candidateName": "Dan Troy"
+        },
+        {
+          "lpid": "rep_white_erika_1",
+          "side": "nay",
+          "candidateId": "ecfe34a6-4e3b-4e8f-89c4-4b9ba618428d",
+          "candidateName": "Erika White"
+        },
+        {
+          "lpid": "rep_bailey_ashley_1",
+          "side": "nay",
+          "candidateId": "f64a0f77-fa84-4651-bfb8-53e42c55e7a5",
+          "candidateName": "Ashley Bryant Bailey"
+        }
+      ],
+      "noCrosswalk": [],
+      "error": null
+    },
+    {
+      "file": "oh-house-136-roll1763617311.json",
+      "chamber": "house",
+      "roll": 1763617311,
+      "bill": "hb492",
+      "members": 80,
+      "counts": {
+        "matched": 69,
+        "unmatched_reviewed": 11
+      },
+      "matched": [
+        {
+          "lpid": "rep_abrams_cindy_1",
+          "side": "yea",
+          "candidateId": "2c64944c-d809-43b7-80b3-e8996777170c",
+          "candidateName": "Cindy Abrams"
+        },
+        {
+          "lpid": "rep_barhorst_tim_1",
+          "side": "yea",
+          "candidateId": "f162f347-fd82-4e46-85c8-50c3f256f79b",
+          "candidateName": "Tim Barhorst"
+        },
+        {
+          "lpid": "rep_bird_adam_1",
+          "side": "yea",
+          "candidateId": "e2fd5cf8-cdd6-4c83-89d2-6f6856a68c1a",
+          "candidateName": "Adam Bird"
+        },
+        {
+          "lpid": "rep_brennan_sean_1",
+          "side": "yea",
+          "candidateId": "52ee99ec-a520-4e87-a94d-cf782b9dc714",
+          "candidateName": "Sean Brennan"
+        },
+        {
+          "lpid": "rep_brownlee_karen_1",
+          "side": "yea",
+          "candidateId": "d5326f43-21e5-4103-9eb2-8709da188845",
+          "candidateName": "Karen Brownlee"
+        },
+        {
+          "lpid": "rep_claggett_thaddeus_1",
+          "side": "yea",
+          "candidateId": "dc7bb8fd-11b1-4e80-a486-17d462c6c4ea",
+          "candidateName": "Thaddeus Claggett"
+        },
+        {
+          "lpid": "rep_click_gary_1",
+          "side": "yea",
+          "candidateId": "6d7d1afd-ae56-4f9e-8533-08e3a2cbb605",
+          "candidateName": "Gary Click"
+        },
+        {
+          "lpid": "rep_craig_meredith_1",
+          "side": "yea",
+          "candidateId": "e81cbfc6-c60f-44e8-890f-361614bfcafb",
+          "candidateName": "Meredith Craig"
+        },
+        {
+          "lpid": "rep_daniels_jack_1",
+          "side": "yea",
+          "candidateId": "1c861773-e31b-4b2a-a569-94e7e427c510",
+          "candidateName": "Jack K. Daniels"
+        },
+        {
+          "lpid": "rep_deeter_kellie_1",
+          "side": "yea",
+          "candidateId": "894ad038-e8a5-4587-ae99-a3a119dde698",
+          "candidateName": "Kellie Deeter"
+        },
+        {
+          "lpid": "rep_dovilla_mike_1",
+          "side": "yea",
+          "candidateId": "5e1e39f7-c8c6-4de1-ad4f-3e6339817edf",
+          "candidateName": "Mike Dovilla"
+        },
+        {
+          "lpid": "rep_arthur_sarah_1",
+          "side": "yea",
+          "candidateId": "ff059208-3186-4c29-8582-59e610d6f092",
+          "candidateName": "Sarah Fowler"
+        },
+        {
+          "lpid": "rep_ghanbari_haraz_1",
+          "side": "yea",
+          "candidateId": "4864fe15-33ae-45f9-9bfb-4fa1f8fd54e7",
+          "candidateName": "Haraz Ghanbari"
+        },
+        {
+          "lpid": "rep_glassburn_chris_1",
+          "side": "yea",
+          "candidateId": "67f5f1c2-2ec8-4b9e-b43f-4f529e016c49",
+          "candidateName": "Chris Glassburn"
+        },
+        {
+          "lpid": "rep_hall_derrick_1",
+          "side": "yea",
+          "candidateId": "7c3089b8-3698-45cd-b33b-3c2633c7e245",
+          "candidateName": "Derrick Hall"
+        },
+        {
+          "lpid": "rep_hall_thomas_1",
+          "side": "yea",
+          "candidateId": "13d0f2fd-10d2-4929-a9c0-c108ab98988b",
+          "candidateName": "Thomas Hall"
+        },
+        {
+          "lpid": "rep_hiner_mark_1",
+          "side": "yea",
+          "candidateId": "03226c2c-be46-4ab9-bbba-7812ce867efc",
+          "candidateName": "Mark Hiner"
+        },
+        {
+          "lpid": "rep_holmes_adam_1",
+          "side": "yea",
+          "candidateId": "354aaa98-86fa-488e-96e4-f707b28d7e3a",
+          "candidateName": "Adam Holmes"
+        },
+        {
+          "lpid": "rep_huffman_matt_1",
+          "side": "yea",
+          "candidateId": "9b20e916-2dcf-457e-a1d3-7b78683cb727",
+          "candidateName": "Matt Huffman"
+        },
+        {
+          "lpid": "rep_john_marilyn_1",
+          "side": "yea",
+          "candidateId": "75c44113-2c4a-44ea-8ea7-508be1892e45",
+          "candidateName": "Marilyn John"
+        },
+        {
+          "lpid": "rep_johnson_mark_1",
+          "side": "yea",
+          "candidateId": "2e647b2d-99b3-4e7d-af9b-9386b17acdb0",
+          "candidateName": "Mark Johnson"
+        },
+        {
+          "lpid": "rep_king_angela_1",
+          "side": "yea",
+          "candidateId": "e2af8dc3-b98e-48d1-8d23-5a0f7285fe38",
+          "candidateName": "Angela King"
+        },
+        {
+          "lpid": "rep_kishman_matthew_1",
+          "side": "yea",
+          "candidateId": "d9a93c44-5cf4-408a-9814-60ee3ceadaff",
+          "candidateName": "Matthew Kishman"
+        },
+        {
+          "lpid": "rep_klopfenstein_roy_1",
+          "side": "yea",
+          "candidateId": "3d08bd35-726e-46bf-9e28-47f9ee16c0a9",
+          "candidateName": "Roy Klopfenstein"
+        },
+        {
+          "lpid": "rep_lampton_brian_1",
+          "side": "yea",
+          "candidateId": "9dcdfce5-0c7a-4276-b9ea-69aa94bcebdf",
+          "candidateName": "Brian Lampton"
+        },
+        {
+          "lpid": "rep_lare_jeff_1",
+          "side": "yea",
+          "candidateId": "adbf64da-7d88-4b7c-8322-b1fd462fa2c4",
+          "candidateName": "Jeff LaRe"
+        },
+        {
+          "lpid": "rep_manning_gayle_1",
+          "side": "yea",
+          "candidateId": "3f654575-c5ee-4536-b7e0-5e904cf9bc5a",
+          "candidateName": "Gayle Manning"
+        },
+        {
+          "lpid": "rep_mathews_adam_1",
+          "side": "yea",
+          "candidateId": "250c57ad-3210-4ca3-86f1-eb1d83b3ef0e",
+          "candidateName": "Adam Mathews"
+        },
+        {
+          "lpid": "rep_mathews_ty_1",
+          "side": "yea",
+          "candidateId": "76b5af3f-8e88-42d3-8b02-9d5c9abab96e",
+          "candidateName": "Ty Mathews"
+        },
+        {
+          "lpid": "rep_miller_joe_1",
+          "side": "yea",
+          "candidateId": "6cbb945f-9491-46fa-b245-33589f97f160",
+          "candidateName": "Joe Miller"
+        },
+        {
+          "lpid": "rep_miller_kevin_1",
+          "side": "yea",
+          "candidateId": "1fb5478e-c9d3-4d8e-a781-b658453adacf",
+          "candidateName": "Kevin Miller"
+        },
+        {
+          "lpid": "rep_miller_melanie_1",
+          "side": "yea",
+          "candidateId": "bc5f1e65-f06b-4c4b-8baf-64b2b36304ce",
+          "candidateName": "Melanie Miller"
+        },
+        {
+          "lpid": "rep_newman_johnathan_1",
+          "side": "yea",
+          "candidateId": "75b93f95-dfb9-4334-a5bb-61ec9a74d58e",
+          "candidateName": "Johnathan Newman"
+        },
+        {
+          "lpid": "rep_odioso_mike_1",
+          "side": "yea",
+          "candidateId": "d03d80bb-1640-4da2-b988-26fb2b27be09",
+          "candidateName": "Mike Odioso"
+        },
+        {
+          "lpid": "rep_peterson_bob_1",
+          "side": "yea",
+          "candidateId": "ace93669-7828-42ac-ad3f-9a055e899d28",
+          "candidateName": "Bob Peterson"
+        },
+        {
+          "lpid": "rep_plummer_phil_1",
+          "side": "yea",
+          "candidateId": "52296bfb-8c71-4dbb-95be-76c21eeb5e3d",
+          "candidateName": "Phil Plummer"
+        },
+        {
+          "lpid": "rep_ritter_kevin_1",
+          "side": "yea",
+          "candidateId": "318006f5-6d09-4c25-b17a-f342b9dff0ff",
+          "candidateName": "Kevin Ritter"
+        },
+        {
+          "lpid": "rep_robb_blasdel_monica_1",
+          "side": "yea",
+          "candidateId": "c768f320-bfcb-4fbb-87bf-d333a297f883",
+          "candidateName": "Monica Robb Blasdel"
+        },
+        {
+          "lpid": "rep_salvo_jodi_1",
+          "side": "yea",
+          "candidateId": "e3bc0047-07c9-4ea0-83df-eac5f4f8be0e",
+          "candidateName": "Jodi Salvo"
+        },
+        {
+          "lpid": "rep_santucci_nick_1",
+          "side": "yea",
+          "candidateId": "9f1d664b-6d90-4fca-84e9-1359f1660469",
+          "candidateName": "Nick Santucci"
+        },
+        {
+          "lpid": "rep_schmidt_jean_1",
+          "side": "yea",
+          "candidateId": "8d042dc5-62d6-4bef-bb71-36ec8ddbfdaf",
+          "candidateName": "Jean Schmidt"
+        },
+        {
+          "lpid": "rep_sigrist_mark_1",
+          "side": "yea",
+          "candidateId": "666b039e-0821-4ea6-9044-733083bba44f",
+          "candidateName": "Mark Sigrist"
+        },
+        {
+          "lpid": "rep_stephens_jason_1",
+          "side": "yea",
+          "candidateId": "f33d3d90-f971-40fd-9923-89c6d880210a",
+          "candidateName": "Jason Stephens"
+        },
+        {
+          "lpid": "rep_swearingen_douglas_1",
+          "side": "yea",
+          "candidateId": "84e362b4-24f5-4f71-b33c-67bab2314cfe",
+          "candidateName": "D.J. Swearingen"
+        },
+        {
+          "lpid": "rep_thomas_david_1",
+          "side": "yea",
+          "candidateId": "af859547-21b0-4eaf-8cd2-28122a4f2ed3",
+          "candidateName": "David Thomas"
+        },
+        {
+          "lpid": "rep_thomas_jim_1",
+          "side": "yea",
+          "candidateId": "cfdc8cbe-b57d-4a80-a92b-fb0d9cbc882a",
+          "candidateName": "Jim Thomas"
+        },
+        {
+          "lpid": "rep_troy_daniel_1",
+          "side": "yea",
+          "candidateId": "59e74cbe-8b18-4210-a586-af4dc1ecc46c",
+          "candidateName": "Dan Troy"
+        },
+        {
+          "lpid": "rep_willis_bernard_1",
+          "side": "yea",
+          "candidateId": "7970021b-8e2c-42e2-959e-e333f824be1a",
+          "candidateName": "Bernard Willis"
+        },
+        {
+          "lpid": "rep_workman_heidi_1",
+          "side": "yea",
+          "candidateId": "f7ebe151-dc41-4886-a195-caa4d3d97b71",
+          "candidateName": "Heidi Workman"
+        },
+        {
+          "lpid": "rep_young_tom_1",
+          "side": "yea",
+          "candidateId": "8bac956b-2216-4a7b-ba8b-7ed82986eee5",
+          "candidateName": "Tom Young"
+        },
+        {
+          "lpid": "rep_moore_ty_1",
+          "side": "yea",
+          "candidateId": "8bc9b668-5713-4763-889f-d0ed3bbc1bf3",
+          "candidateName": "Ty Moore"
+        },
+        {
+          "lpid": "rep_abdullahi_munira_1",
+          "side": "nay",
+          "candidateId": "0d81987e-157b-4a78-ad2e-b22347dac4cf",
+          "candidateName": "Munira Abdullahi"
+        },
+        {
+          "lpid": "rep_baker_rachel_1",
+          "side": "nay",
+          "candidateId": "8610f570-dd20-4139-a2e5-d3bfcf73f6b9",
+          "candidateName": "Rachel Baker"
+        },
+        {
+          "lpid": "rep_brewer_darnell_1",
+          "side": "nay",
+          "candidateId": "4b247bc8-d0d9-418c-8cc6-bd5432c7d974",
+          "candidateName": "Darnell Brewer"
+        },
+        {
+          "lpid": "rep_dean_levi_1",
+          "side": "nay",
+          "candidateId": "ed4e6bfe-fcd2-4c23-a639-b27b0d9dfccb",
+          "candidateName": "Levi Dean"
+        },
+        {
+          "lpid": "rep_humphrey_latyna_1",
+          "side": "nay",
+          "candidateId": "f84c08e9-05cf-4532-99ee-f3c6ace8e7f4",
+          "candidateName": "Latyna M. Humphrey"
+        },
+        {
+          "lpid": "rep_isaacsohn_dani_1",
+          "side": "nay",
+          "candidateId": "6295d98a-db16-4bf4-8bb0-c62387b27d25",
+          "candidateName": "Dani Isaacsohn"
+        },
+        {
+          "lpid": "rep_lawson_rowe_meredith_1",
+          "side": "nay",
+          "candidateId": "34c27f41-cc77-464d-a5af-3e2032f5e372",
+          "candidateName": "Meredith Lawson‐Rowe"
+        },
+        {
+          "lpid": "rep_lorenz_brian_1",
+          "side": "nay",
+          "candidateId": "eeadbc26-84ea-45ce-ae52-492b0df2e046",
+          "candidateName": "Brian Lorenz"
+        },
+        {
+          "lpid": "rep_mohamed_ismail_1",
+          "side": "nay",
+          "candidateId": "4ddc508c-ab0a-44c0-b521-ce6ea435f81f",
+          "candidateName": "Ismail Mohamed"
+        },
+        {
+          "lpid": "rep_piccolantonio_beryl_1",
+          "side": "nay",
+          "candidateId": "840f56e4-672d-42ac-b6bd-b671a5f37066",
+          "candidateName": "Beryl Brown Piccolantonio"
+        },
+        {
+          "lpid": "rep_sims_veronica_1",
+          "side": "nay",
+          "candidateId": "9a5ad5a8-9bc3-41ae-9e6a-8d3dc20d2aa0",
+          "candidateName": "Veronica Sims"
+        },
+        {
+          "lpid": "rep_sweeney_bride_rose_1",
+          "side": "nay",
+          "candidateId": "706cadeb-a3c4-4879-831b-69a0141c1fe9",
+          "candidateName": "Bride Rose Sweeney"
+        },
+        {
+          "lpid": "rep_synenberg_eric_1",
+          "side": "nay",
+          "candidateId": "3011e44d-5cd9-4490-8f47-3983bc94a4e1",
+          "candidateName": "Eric Synenberg"
+        },
+        {
+          "lpid": "rep_teska_michelle_1",
+          "side": "nay",
+          "candidateId": "9029a3a3-cb8d-4562-88c0-8c5a28f98800",
+          "candidateName": "C. Michelle Teska"
+        },
+        {
+          "lpid": "rep_thomas_cecil_1",
+          "side": "nay",
+          "candidateId": "2db08c83-fb42-44a8-a348-a4e3905fa448",
+          "candidateName": "Cecil Thomas"
+        },
+        {
+          "lpid": "rep_tims_desiree_1",
+          "side": "nay",
+          "candidateId": "43ab1dd0-41e0-4b25-b807-36848a56a31a",
+          "candidateName": "Desiree Tims"
+        },
+        {
+          "lpid": "rep_white_erika_1",
+          "side": "nay",
+          "candidateId": "ecfe34a6-4e3b-4e8f-89c4-4b9ba618428d",
+          "candidateName": "Erika White"
+        },
+        {
+          "lpid": "rep_bailey_ashley_1",
+          "side": "nay",
+          "candidateId": "f64a0f77-fa84-4651-bfb8-53e42c55e7a5",
+          "candidateName": "Ashley Bryant Bailey"
+        }
+      ],
+      "noCrosswalk": [],
+      "error": null
+    },
+    {
+      "file": "oh-house-136-roll1774485008.json",
+      "chamber": "house",
+      "roll": 1774485008,
+      "bill": "hb249",
+      "members": 95,
+      "counts": {
+        "matched": 81,
+        "unmatched_reviewed": 14
+      },
+      "matched": [
+        {
+          "lpid": "rep_abrams_cindy_1",
+          "side": "yea",
+          "candidateId": "2c64944c-d809-43b7-80b3-e8996777170c",
+          "candidateName": "Cindy Abrams"
+        },
+        {
+          "lpid": "rep_barhorst_tim_1",
+          "side": "yea",
+          "candidateId": "f162f347-fd82-4e46-85c8-50c3f256f79b",
+          "candidateName": "Tim Barhorst"
+        },
+        {
+          "lpid": "rep_bird_adam_1",
+          "side": "yea",
+          "candidateId": "e2fd5cf8-cdd6-4c83-89d2-6f6856a68c1a",
+          "candidateName": "Adam Bird"
+        },
+        {
+          "lpid": "rep_claggett_thaddeus_1",
+          "side": "yea",
+          "candidateId": "dc7bb8fd-11b1-4e80-a486-17d462c6c4ea",
+          "candidateName": "Thaddeus Claggett"
+        },
+        {
+          "lpid": "rep_click_gary_1",
+          "side": "yea",
+          "candidateId": "6d7d1afd-ae56-4f9e-8533-08e3a2cbb605",
+          "candidateName": "Gary Click"
+        },
+        {
+          "lpid": "rep_craig_meredith_1",
+          "side": "yea",
+          "candidateId": "e81cbfc6-c60f-44e8-890f-361614bfcafb",
+          "candidateName": "Meredith Craig"
+        },
+        {
+          "lpid": "rep_creech_rodney_1",
+          "side": "yea",
+          "candidateId": "0633c56f-c13a-4cf9-9b9f-b3b8b9189405",
+          "candidateName": "Rodney Creech"
+        },
+        {
+          "lpid": "rep_daniels_jack_1",
+          "side": "yea",
+          "candidateId": "1c861773-e31b-4b2a-a569-94e7e427c510",
+          "candidateName": "Jack K. Daniels"
+        },
+        {
+          "lpid": "rep_dean_levi_1",
+          "side": "yea",
+          "candidateId": "ed4e6bfe-fcd2-4c23-a639-b27b0d9dfccb",
+          "candidateName": "Levi Dean"
+        },
+        {
+          "lpid": "rep_deeter_kellie_1",
+          "side": "yea",
+          "candidateId": "894ad038-e8a5-4587-ae99-a3a119dde698",
+          "candidateName": "Kellie Deeter"
+        },
+        {
+          "lpid": "rep_demetriou_steve_1",
+          "side": "yea",
+          "candidateId": "deeabe79-102f-4b6d-ba9b-ad30fadf5dd2",
+          "candidateName": "Steve Demetriou"
+        },
+        {
+          "lpid": "rep_dovilla_mike_1",
+          "side": "yea",
+          "candidateId": "5e1e39f7-c8c6-4de1-ad4f-3e6339817edf",
+          "candidateName": "Mike Dovilla"
+        },
+        {
+          "lpid": "rep_ferguson_ron_1",
+          "side": "yea",
+          "candidateId": "ab26adab-1741-4018-9bff-9b3ba45a8676",
+          "candidateName": "Ron Ferguson"
+        },
+        {
+          "lpid": "rep_fischer_tex_1",
+          "side": "yea",
+          "candidateId": "c5e781e0-c2c6-4f7a-9eb2-4d685cd266eb",
+          "candidateName": "Tex Fischer"
+        },
+        {
+          "lpid": "rep_arthur_sarah_1",
+          "side": "yea",
+          "candidateId": "ff059208-3186-4c29-8582-59e610d6f092",
+          "candidateName": "Sarah Fowler"
+        },
+        {
+          "lpid": "rep_ghanbari_haraz_1",
+          "side": "yea",
+          "candidateId": "4864fe15-33ae-45f9-9bfb-4fa1f8fd54e7",
+          "candidateName": "Haraz Ghanbari"
+        },
+        {
+          "lpid": "rep_gross_jennifer_1",
+          "side": "yea",
+          "candidateId": "2aaf9399-8f46-4308-9b21-ec13e620b129",
+          "candidateName": "Jennifer Gross"
+        },
+        {
+          "lpid": "rep_hall_thomas_1",
+          "side": "yea",
+          "candidateId": "13d0f2fd-10d2-4929-a9c0-c108ab98988b",
+          "candidateName": "Thomas Hall"
+        },
+        {
+          "lpid": "rep_hiner_mark_1",
+          "side": "yea",
+          "candidateId": "03226c2c-be46-4ab9-bbba-7812ce867efc",
+          "candidateName": "Mark Hiner"
+        },
+        {
+          "lpid": "rep_holmes_adam_1",
+          "side": "yea",
+          "candidateId": "354aaa98-86fa-488e-96e4-f707b28d7e3a",
+          "candidateName": "Adam Holmes"
+        },
+        {
+          "lpid": "rep_huffman_matt_1",
+          "side": "yea",
+          "candidateId": "9b20e916-2dcf-457e-a1d3-7b78683cb727",
+          "candidateName": "Matt Huffman"
+        },
+        {
+          "lpid": "rep_john_marilyn_1",
+          "side": "yea",
+          "candidateId": "75c44113-2c4a-44ea-8ea7-508be1892e45",
+          "candidateName": "Marilyn John"
+        },
+        {
+          "lpid": "rep_johnson_mark_1",
+          "side": "yea",
+          "candidateId": "2e647b2d-99b3-4e7d-af9b-9386b17acdb0",
+          "candidateName": "Mark Johnson"
+        },
+        {
+          "lpid": "rep_king_angela_1",
+          "side": "yea",
+          "candidateId": "e2af8dc3-b98e-48d1-8d23-5a0f7285fe38",
+          "candidateName": "Angela King"
+        },
+        {
+          "lpid": "rep_kishman_matthew_1",
+          "side": "yea",
+          "candidateId": "d9a93c44-5cf4-408a-9814-60ee3ceadaff",
+          "candidateName": "Matthew Kishman"
+        },
+        {
+          "lpid": "rep_klopfenstein_roy_1",
+          "side": "yea",
+          "candidateId": "3d08bd35-726e-46bf-9e28-47f9ee16c0a9",
+          "candidateName": "Roy Klopfenstein"
+        },
+        {
+          "lpid": "rep_lampton_brian_1",
+          "side": "yea",
+          "candidateId": "9dcdfce5-0c7a-4276-b9ea-69aa94bcebdf",
+          "candidateName": "Brian Lampton"
+        },
+        {
+          "lpid": "rep_lare_jeff_1",
+          "side": "yea",
+          "candidateId": "adbf64da-7d88-4b7c-8322-b1fd462fa2c4",
+          "candidateName": "Jeff LaRe"
+        },
+        {
+          "lpid": "rep_lorenz_brian_1",
+          "side": "yea",
+          "candidateId": "eeadbc26-84ea-45ce-ae52-492b0df2e046",
+          "candidateName": "Brian Lorenz"
+        },
+        {
+          "lpid": "rep_manning_gayle_1",
+          "side": "yea",
+          "candidateId": "3f654575-c5ee-4536-b7e0-5e904cf9bc5a",
+          "candidateName": "Gayle Manning"
+        },
+        {
+          "lpid": "rep_mathews_adam_1",
+          "side": "yea",
+          "candidateId": "250c57ad-3210-4ca3-86f1-eb1d83b3ef0e",
+          "candidateName": "Adam Mathews"
+        },
+        {
+          "lpid": "rep_mathews_ty_1",
+          "side": "yea",
+          "candidateId": "76b5af3f-8e88-42d3-8b02-9d5c9abab96e",
+          "candidateName": "Ty Mathews"
+        },
+        {
+          "lpid": "rep_miller_kevin_1",
+          "side": "yea",
+          "candidateId": "1fb5478e-c9d3-4d8e-a781-b658453adacf",
+          "candidateName": "Kevin Miller"
+        },
+        {
+          "lpid": "rep_miller_melanie_1",
+          "side": "yea",
+          "candidateId": "bc5f1e65-f06b-4c4b-8baf-64b2b36304ce",
+          "candidateName": "Melanie Miller"
+        },
+        {
+          "lpid": "rep_mullins_diane_1",
+          "side": "yea",
+          "candidateId": "c95b7dff-4ebc-4fd3-99ce-533391d5bea1",
+          "candidateName": "Diane Mullins"
+        },
+        {
+          "lpid": "rep_newman_johnathan_1",
+          "side": "yea",
+          "candidateId": "75b93f95-dfb9-4334-a5bb-61ec9a74d58e",
+          "candidateName": "Johnathan Newman"
+        },
+        {
+          "lpid": "rep_odioso_mike_1",
+          "side": "yea",
+          "candidateId": "d03d80bb-1640-4da2-b988-26fb2b27be09",
+          "candidateName": "Mike Odioso"
+        },
+        {
+          "lpid": "rep_peterson_bob_1",
+          "side": "yea",
+          "candidateId": "ace93669-7828-42ac-ad3f-9a055e899d28",
+          "candidateName": "Bob Peterson"
+        },
+        {
+          "lpid": "rep_pizzulli_justin_1",
+          "side": "yea",
+          "candidateId": "bece28fb-fa58-4201-a8a1-8fa3be260394",
+          "candidateName": "Justin Pizzulli"
+        },
+        {
+          "lpid": "rep_plummer_phil_1",
+          "side": "yea",
+          "candidateId": "52296bfb-8c71-4dbb-95be-76c21eeb5e3d",
+          "candidateName": "Phil Plummer"
+        },
+        {
+          "lpid": "rep_ritter_kevin_1",
+          "side": "yea",
+          "candidateId": "318006f5-6d09-4c25-b17a-f342b9dff0ff",
+          "candidateName": "Kevin Ritter"
+        },
+        {
+          "lpid": "rep_robb_blasdel_monica_1",
+          "side": "yea",
+          "candidateId": "c768f320-bfcb-4fbb-87bf-d333a297f883",
+          "candidateName": "Monica Robb Blasdel"
+        },
+        {
+          "lpid": "rep_salvo_jodi_1",
+          "side": "yea",
+          "candidateId": "e3bc0047-07c9-4ea0-83df-eac5f4f8be0e",
+          "candidateName": "Jodi Salvo"
+        },
+        {
+          "lpid": "rep_santucci_nick_1",
+          "side": "yea",
+          "candidateId": "9f1d664b-6d90-4fca-84e9-1359f1660469",
+          "candidateName": "Nick Santucci"
+        },
+        {
+          "lpid": "rep_schmidt_jean_1",
+          "side": "yea",
+          "candidateId": "8d042dc5-62d6-4bef-bb71-36ec8ddbfdaf",
+          "candidateName": "Jean Schmidt"
+        },
+        {
+          "lpid": "rep_stephens_jason_1",
+          "side": "yea",
+          "candidateId": "f33d3d90-f971-40fd-9923-89c6d880210a",
+          "candidateName": "Jason Stephens"
+        },
+        {
+          "lpid": "rep_stewart_brian_1",
+          "side": "yea",
+          "candidateId": "e14876aa-595e-4ba0-9251-f92dfe3fe0b9",
+          "candidateName": "Brian Stewart"
+        },
+        {
+          "lpid": "rep_swearingen_douglas_1",
+          "side": "yea",
+          "candidateId": "84e362b4-24f5-4f71-b33c-67bab2314cfe",
+          "candidateName": "D.J. Swearingen"
+        },
+        {
+          "lpid": "rep_teska_michelle_1",
+          "side": "yea",
+          "candidateId": "9029a3a3-cb8d-4562-88c0-8c5a28f98800",
+          "candidateName": "C. Michelle Teska"
+        },
+        {
+          "lpid": "rep_thomas_david_1",
+          "side": "yea",
+          "candidateId": "af859547-21b0-4eaf-8cd2-28122a4f2ed3",
+          "candidateName": "David Thomas"
+        },
+        {
+          "lpid": "rep_thomas_jim_1",
+          "side": "yea",
+          "candidateId": "cfdc8cbe-b57d-4a80-a92b-fb0d9cbc882a",
+          "candidateName": "Jim Thomas"
+        },
+        {
+          "lpid": "rep_white_andrea_1",
+          "side": "yea",
+          "candidateId": "df71d861-1f3b-469e-9178-3eb75cdb5ded",
+          "candidateName": "Andrea White"
+        },
+        {
+          "lpid": "rep_workman_heidi_1",
+          "side": "yea",
+          "candidateId": "f7ebe151-dc41-4886-a195-caa4d3d97b71",
+          "candidateName": "Heidi Workman"
+        },
+        {
+          "lpid": "rep_young_tom_1",
+          "side": "yea",
+          "candidateId": "8bac956b-2216-4a7b-ba8b-7ed82986eee5",
+          "candidateName": "Tom Young"
+        },
+        {
+          "lpid": "rep_moore_ty_1",
+          "side": "yea",
+          "candidateId": "8bc9b668-5713-4763-889f-d0ed3bbc1bf3",
+          "candidateName": "Ty Moore"
+        },
+        {
+          "lpid": "rep_abdullahi_munira_1",
+          "side": "nay",
+          "candidateId": "0d81987e-157b-4a78-ad2e-b22347dac4cf",
+          "candidateName": "Munira Abdullahi"
+        },
+        {
+          "lpid": "rep_baker_rachel_1",
+          "side": "nay",
+          "candidateId": "8610f570-dd20-4139-a2e5-d3bfcf73f6b9",
+          "candidateName": "Rachel Baker"
+        },
+        {
+          "lpid": "rep_brennan_sean_1",
+          "side": "nay",
+          "candidateId": "52ee99ec-a520-4e87-a94d-cf782b9dc714",
+          "candidateName": "Sean Brennan"
+        },
+        {
+          "lpid": "rep_brewer_darnell_1",
+          "side": "nay",
+          "candidateId": "4b247bc8-d0d9-418c-8cc6-bd5432c7d974",
+          "candidateName": "Darnell Brewer"
+        },
+        {
+          "lpid": "rep_brownlee_karen_1",
+          "side": "nay",
+          "candidateId": "d5326f43-21e5-4103-9eb2-8709da188845",
+          "candidateName": "Karen Brownlee"
+        },
+        {
+          "lpid": "rep_cockley_christine_1",
+          "side": "nay",
+          "candidateId": "0cbb48d0-ef7a-468a-9dcb-b844670115ec",
+          "candidateName": "Christine Cockley"
+        },
+        {
+          "lpid": "rep_glassburn_chris_1",
+          "side": "nay",
+          "candidateId": "67f5f1c2-2ec8-4b9e-b43f-4f529e016c49",
+          "candidateName": "Chris Glassburn"
+        },
+        {
+          "lpid": "rep_grim_michele_1",
+          "side": "nay",
+          "candidateId": "94b0d956-e6f8-4eaf-9572-f75b0ba16477",
+          "candidateName": "Michele Grim"
+        },
+        {
+          "lpid": "rep_hall_derrick_1",
+          "side": "nay",
+          "candidateId": "7c3089b8-3698-45cd-b33b-3c2633c7e245",
+          "candidateName": "Derrick Hall"
+        },
+        {
+          "lpid": "rep_humphrey_latyna_1",
+          "side": "nay",
+          "candidateId": "f84c08e9-05cf-4532-99ee-f3c6ace8e7f4",
+          "candidateName": "Latyna M. Humphrey"
+        },
+        {
+          "lpid": "rep_isaacsohn_dani_1",
+          "side": "nay",
+          "candidateId": "6295d98a-db16-4bf4-8bb0-c62387b27d25",
+          "candidateName": "Dani Isaacsohn"
+        },
+        {
+          "lpid": "rep_lawson_rowe_meredith_1",
+          "side": "nay",
+          "candidateId": "34c27f41-cc77-464d-a5af-3e2032f5e372",
+          "candidateName": "Meredith Lawson‐Rowe"
+        },
+        {
+          "lpid": "rep_lett_crystal_1",
+          "side": "nay",
+          "candidateId": "2b7f908d-acc9-4e74-835d-a6419cc6c3c3",
+          "candidateName": "Crystal Lett"
+        },
+        {
+          "lpid": "rep_miller_joe_1",
+          "side": "nay",
+          "candidateId": "6cbb945f-9491-46fa-b245-33589f97f160",
+          "candidateName": "Joe Miller"
+        },
+        {
+          "lpid": "rep_mohamed_ismail_1",
+          "side": "nay",
+          "candidateId": "4ddc508c-ab0a-44c0-b521-ce6ea435f81f",
+          "candidateName": "Ismail Mohamed"
+        },
+        {
+          "lpid": "rep_piccolantonio_beryl_1",
+          "side": "nay",
+          "candidateId": "840f56e4-672d-42ac-b6bd-b671a5f37066",
+          "candidateName": "Beryl Brown Piccolantonio"
+        },
+        {
+          "lpid": "rep_rader_tristan_1",
+          "side": "nay",
+          "candidateId": "d7e3670d-f535-4b80-99cc-57af41e5f7ec",
+          "candidateName": "Tristan Rader"
+        },
+        {
+          "lpid": "rep_sigrist_mark_1",
+          "side": "nay",
+          "candidateId": "666b039e-0821-4ea6-9044-733083bba44f",
+          "candidateName": "Mark Sigrist"
+        },
+        {
+          "lpid": "rep_sims_veronica_1",
+          "side": "nay",
+          "candidateId": "9a5ad5a8-9bc3-41ae-9e6a-8d3dc20d2aa0",
+          "candidateName": "Veronica Sims"
+        },
+        {
+          "lpid": "rep_somani_anita_1",
+          "side": "nay",
+          "candidateId": "37973555-0363-483f-845c-5038d6115ffc",
+          "candidateName": "Anita Somani"
+        },
+        {
+          "lpid": "rep_sweeney_bride_rose_1",
+          "side": "nay",
+          "candidateId": "706cadeb-a3c4-4879-831b-69a0141c1fe9",
+          "candidateName": "Bride Rose Sweeney"
+        },
+        {
+          "lpid": "rep_thomas_cecil_1",
+          "side": "nay",
+          "candidateId": "2db08c83-fb42-44a8-a348-a4e3905fa448",
+          "candidateName": "Cecil Thomas"
+        },
+        {
+          "lpid": "rep_tims_desiree_1",
+          "side": "nay",
+          "candidateId": "43ab1dd0-41e0-4b25-b807-36848a56a31a",
+          "candidateName": "Desiree Tims"
+        },
+        {
+          "lpid": "rep_troy_daniel_1",
+          "side": "nay",
+          "candidateId": "59e74cbe-8b18-4210-a586-af4dc1ecc46c",
+          "candidateName": "Dan Troy"
+        },
+        {
+          "lpid": "rep_white_erika_1",
+          "side": "nay",
+          "candidateId": "ecfe34a6-4e3b-4e8f-89c4-4b9ba618428d",
+          "candidateName": "Erika White"
+        },
+        {
+          "lpid": "rep_bailey_ashley_1",
+          "side": "nay",
+          "candidateId": "f64a0f77-fa84-4651-bfb8-53e42c55e7a5",
+          "candidateName": "Ashley Bryant Bailey"
+        }
+      ],
+      "noCrosswalk": [],
+      "error": null
+    },
+    {
+      "file": "oh-house-136-roll1774485447.json",
+      "chamber": "house",
+      "roll": 1774485447,
+      "bill": "hb252",
+      "members": 95,
+      "counts": {
+        "matched": 81,
+        "unmatched_reviewed": 14
+      },
+      "matched": [
+        {
+          "lpid": "rep_abrams_cindy_1",
+          "side": "yea",
+          "candidateId": "2c64944c-d809-43b7-80b3-e8996777170c",
+          "candidateName": "Cindy Abrams"
+        },
+        {
+          "lpid": "rep_barhorst_tim_1",
+          "side": "yea",
+          "candidateId": "f162f347-fd82-4e46-85c8-50c3f256f79b",
+          "candidateName": "Tim Barhorst"
+        },
+        {
+          "lpid": "rep_bird_adam_1",
+          "side": "yea",
+          "candidateId": "e2fd5cf8-cdd6-4c83-89d2-6f6856a68c1a",
+          "candidateName": "Adam Bird"
+        },
+        {
+          "lpid": "rep_brennan_sean_1",
+          "side": "yea",
+          "candidateId": "52ee99ec-a520-4e87-a94d-cf782b9dc714",
+          "candidateName": "Sean Brennan"
+        },
+        {
+          "lpid": "rep_claggett_thaddeus_1",
+          "side": "yea",
+          "candidateId": "dc7bb8fd-11b1-4e80-a486-17d462c6c4ea",
+          "candidateName": "Thaddeus Claggett"
+        },
+        {
+          "lpid": "rep_click_gary_1",
+          "side": "yea",
+          "candidateId": "6d7d1afd-ae56-4f9e-8533-08e3a2cbb605",
+          "candidateName": "Gary Click"
+        },
+        {
+          "lpid": "rep_craig_meredith_1",
+          "side": "yea",
+          "candidateId": "e81cbfc6-c60f-44e8-890f-361614bfcafb",
+          "candidateName": "Meredith Craig"
+        },
+        {
+          "lpid": "rep_creech_rodney_1",
+          "side": "yea",
+          "candidateId": "0633c56f-c13a-4cf9-9b9f-b3b8b9189405",
+          "candidateName": "Rodney Creech"
+        },
+        {
+          "lpid": "rep_daniels_jack_1",
+          "side": "yea",
+          "candidateId": "1c861773-e31b-4b2a-a569-94e7e427c510",
+          "candidateName": "Jack K. Daniels"
+        },
+        {
+          "lpid": "rep_dean_levi_1",
+          "side": "yea",
+          "candidateId": "ed4e6bfe-fcd2-4c23-a639-b27b0d9dfccb",
+          "candidateName": "Levi Dean"
+        },
+        {
+          "lpid": "rep_deeter_kellie_1",
+          "side": "yea",
+          "candidateId": "894ad038-e8a5-4587-ae99-a3a119dde698",
+          "candidateName": "Kellie Deeter"
+        },
+        {
+          "lpid": "rep_demetriou_steve_1",
+          "side": "yea",
+          "candidateId": "deeabe79-102f-4b6d-ba9b-ad30fadf5dd2",
+          "candidateName": "Steve Demetriou"
+        },
+        {
+          "lpid": "rep_dovilla_mike_1",
+          "side": "yea",
+          "candidateId": "5e1e39f7-c8c6-4de1-ad4f-3e6339817edf",
+          "candidateName": "Mike Dovilla"
+        },
+        {
+          "lpid": "rep_ferguson_ron_1",
+          "side": "yea",
+          "candidateId": "ab26adab-1741-4018-9bff-9b3ba45a8676",
+          "candidateName": "Ron Ferguson"
+        },
+        {
+          "lpid": "rep_fischer_tex_1",
+          "side": "yea",
+          "candidateId": "c5e781e0-c2c6-4f7a-9eb2-4d685cd266eb",
+          "candidateName": "Tex Fischer"
+        },
+        {
+          "lpid": "rep_arthur_sarah_1",
+          "side": "yea",
+          "candidateId": "ff059208-3186-4c29-8582-59e610d6f092",
+          "candidateName": "Sarah Fowler"
+        },
+        {
+          "lpid": "rep_ghanbari_haraz_1",
+          "side": "yea",
+          "candidateId": "4864fe15-33ae-45f9-9bfb-4fa1f8fd54e7",
+          "candidateName": "Haraz Ghanbari"
+        },
+        {
+          "lpid": "rep_glassburn_chris_1",
+          "side": "yea",
+          "candidateId": "67f5f1c2-2ec8-4b9e-b43f-4f529e016c49",
+          "candidateName": "Chris Glassburn"
+        },
+        {
+          "lpid": "rep_gross_jennifer_1",
+          "side": "yea",
+          "candidateId": "2aaf9399-8f46-4308-9b21-ec13e620b129",
+          "candidateName": "Jennifer Gross"
+        },
+        {
+          "lpid": "rep_hall_derrick_1",
+          "side": "yea",
+          "candidateId": "7c3089b8-3698-45cd-b33b-3c2633c7e245",
+          "candidateName": "Derrick Hall"
+        },
+        {
+          "lpid": "rep_hall_thomas_1",
+          "side": "yea",
+          "candidateId": "13d0f2fd-10d2-4929-a9c0-c108ab98988b",
+          "candidateName": "Thomas Hall"
+        },
+        {
+          "lpid": "rep_hiner_mark_1",
+          "side": "yea",
+          "candidateId": "03226c2c-be46-4ab9-bbba-7812ce867efc",
+          "candidateName": "Mark Hiner"
+        },
+        {
+          "lpid": "rep_holmes_adam_1",
+          "side": "yea",
+          "candidateId": "354aaa98-86fa-488e-96e4-f707b28d7e3a",
+          "candidateName": "Adam Holmes"
+        },
+        {
+          "lpid": "rep_huffman_matt_1",
+          "side": "yea",
+          "candidateId": "9b20e916-2dcf-457e-a1d3-7b78683cb727",
+          "candidateName": "Matt Huffman"
+        },
+        {
+          "lpid": "rep_john_marilyn_1",
+          "side": "yea",
+          "candidateId": "75c44113-2c4a-44ea-8ea7-508be1892e45",
+          "candidateName": "Marilyn John"
+        },
+        {
+          "lpid": "rep_johnson_mark_1",
+          "side": "yea",
+          "candidateId": "2e647b2d-99b3-4e7d-af9b-9386b17acdb0",
+          "candidateName": "Mark Johnson"
+        },
+        {
+          "lpid": "rep_king_angela_1",
+          "side": "yea",
+          "candidateId": "e2af8dc3-b98e-48d1-8d23-5a0f7285fe38",
+          "candidateName": "Angela King"
+        },
+        {
+          "lpid": "rep_kishman_matthew_1",
+          "side": "yea",
+          "candidateId": "d9a93c44-5cf4-408a-9814-60ee3ceadaff",
+          "candidateName": "Matthew Kishman"
+        },
+        {
+          "lpid": "rep_klopfenstein_roy_1",
+          "side": "yea",
+          "candidateId": "3d08bd35-726e-46bf-9e28-47f9ee16c0a9",
+          "candidateName": "Roy Klopfenstein"
+        },
+        {
+          "lpid": "rep_lampton_brian_1",
+          "side": "yea",
+          "candidateId": "9dcdfce5-0c7a-4276-b9ea-69aa94bcebdf",
+          "candidateName": "Brian Lampton"
+        },
+        {
+          "lpid": "rep_lare_jeff_1",
+          "side": "yea",
+          "candidateId": "adbf64da-7d88-4b7c-8322-b1fd462fa2c4",
+          "candidateName": "Jeff LaRe"
+        },
+        {
+          "lpid": "rep_lorenz_brian_1",
+          "side": "yea",
+          "candidateId": "eeadbc26-84ea-45ce-ae52-492b0df2e046",
+          "candidateName": "Brian Lorenz"
+        },
+        {
+          "lpid": "rep_mathews_adam_1",
+          "side": "yea",
+          "candidateId": "250c57ad-3210-4ca3-86f1-eb1d83b3ef0e",
+          "candidateName": "Adam Mathews"
+        },
+        {
+          "lpid": "rep_mathews_ty_1",
+          "side": "yea",
+          "candidateId": "76b5af3f-8e88-42d3-8b02-9d5c9abab96e",
+          "candidateName": "Ty Mathews"
+        },
+        {
+          "lpid": "rep_miller_joe_1",
+          "side": "yea",
+          "candidateId": "6cbb945f-9491-46fa-b245-33589f97f160",
+          "candidateName": "Joe Miller"
+        },
+        {
+          "lpid": "rep_miller_kevin_1",
+          "side": "yea",
+          "candidateId": "1fb5478e-c9d3-4d8e-a781-b658453adacf",
+          "candidateName": "Kevin Miller"
+        },
+        {
+          "lpid": "rep_miller_melanie_1",
+          "side": "yea",
+          "candidateId": "bc5f1e65-f06b-4c4b-8baf-64b2b36304ce",
+          "candidateName": "Melanie Miller"
+        },
+        {
+          "lpid": "rep_mullins_diane_1",
+          "side": "yea",
+          "candidateId": "c95b7dff-4ebc-4fd3-99ce-533391d5bea1",
+          "candidateName": "Diane Mullins"
+        },
+        {
+          "lpid": "rep_newman_johnathan_1",
+          "side": "yea",
+          "candidateId": "75b93f95-dfb9-4334-a5bb-61ec9a74d58e",
+          "candidateName": "Johnathan Newman"
+        },
+        {
+          "lpid": "rep_odioso_mike_1",
+          "side": "yea",
+          "candidateId": "d03d80bb-1640-4da2-b988-26fb2b27be09",
+          "candidateName": "Mike Odioso"
+        },
+        {
+          "lpid": "rep_peterson_bob_1",
+          "side": "yea",
+          "candidateId": "ace93669-7828-42ac-ad3f-9a055e899d28",
+          "candidateName": "Bob Peterson"
+        },
+        {
+          "lpid": "rep_pizzulli_justin_1",
+          "side": "yea",
+          "candidateId": "bece28fb-fa58-4201-a8a1-8fa3be260394",
+          "candidateName": "Justin Pizzulli"
+        },
+        {
+          "lpid": "rep_plummer_phil_1",
+          "side": "yea",
+          "candidateId": "52296bfb-8c71-4dbb-95be-76c21eeb5e3d",
+          "candidateName": "Phil Plummer"
+        },
+        {
+          "lpid": "rep_ritter_kevin_1",
+          "side": "yea",
+          "candidateId": "318006f5-6d09-4c25-b17a-f342b9dff0ff",
+          "candidateName": "Kevin Ritter"
+        },
+        {
+          "lpid": "rep_robb_blasdel_monica_1",
+          "side": "yea",
+          "candidateId": "c768f320-bfcb-4fbb-87bf-d333a297f883",
+          "candidateName": "Monica Robb Blasdel"
+        },
+        {
+          "lpid": "rep_salvo_jodi_1",
+          "side": "yea",
+          "candidateId": "e3bc0047-07c9-4ea0-83df-eac5f4f8be0e",
+          "candidateName": "Jodi Salvo"
+        },
+        {
+          "lpid": "rep_santucci_nick_1",
+          "side": "yea",
+          "candidateId": "9f1d664b-6d90-4fca-84e9-1359f1660469",
+          "candidateName": "Nick Santucci"
+        },
+        {
+          "lpid": "rep_schmidt_jean_1",
+          "side": "yea",
+          "candidateId": "8d042dc5-62d6-4bef-bb71-36ec8ddbfdaf",
+          "candidateName": "Jean Schmidt"
+        },
+        {
+          "lpid": "rep_sigrist_mark_1",
+          "side": "yea",
+          "candidateId": "666b039e-0821-4ea6-9044-733083bba44f",
+          "candidateName": "Mark Sigrist"
+        },
+        {
+          "lpid": "rep_stephens_jason_1",
+          "side": "yea",
+          "candidateId": "f33d3d90-f971-40fd-9923-89c6d880210a",
+          "candidateName": "Jason Stephens"
+        },
+        {
+          "lpid": "rep_stewart_brian_1",
+          "side": "yea",
+          "candidateId": "e14876aa-595e-4ba0-9251-f92dfe3fe0b9",
+          "candidateName": "Brian Stewart"
+        },
+        {
+          "lpid": "rep_swearingen_douglas_1",
+          "side": "yea",
+          "candidateId": "84e362b4-24f5-4f71-b33c-67bab2314cfe",
+          "candidateName": "D.J. Swearingen"
+        },
+        {
+          "lpid": "rep_sweeney_bride_rose_1",
+          "side": "yea",
+          "candidateId": "706cadeb-a3c4-4879-831b-69a0141c1fe9",
+          "candidateName": "Bride Rose Sweeney"
+        },
+        {
+          "lpid": "rep_teska_michelle_1",
+          "side": "yea",
+          "candidateId": "9029a3a3-cb8d-4562-88c0-8c5a28f98800",
+          "candidateName": "C. Michelle Teska"
+        },
+        {
+          "lpid": "rep_thomas_david_1",
+          "side": "yea",
+          "candidateId": "af859547-21b0-4eaf-8cd2-28122a4f2ed3",
+          "candidateName": "David Thomas"
+        },
+        {
+          "lpid": "rep_thomas_jim_1",
+          "side": "yea",
+          "candidateId": "cfdc8cbe-b57d-4a80-a92b-fb0d9cbc882a",
+          "candidateName": "Jim Thomas"
+        },
+        {
+          "lpid": "rep_troy_daniel_1",
+          "side": "yea",
+          "candidateId": "59e74cbe-8b18-4210-a586-af4dc1ecc46c",
+          "candidateName": "Dan Troy"
+        },
+        {
+          "lpid": "rep_white_andrea_1",
+          "side": "yea",
+          "candidateId": "df71d861-1f3b-469e-9178-3eb75cdb5ded",
+          "candidateName": "Andrea White"
+        },
+        {
+          "lpid": "rep_workman_heidi_1",
+          "side": "yea",
+          "candidateId": "f7ebe151-dc41-4886-a195-caa4d3d97b71",
+          "candidateName": "Heidi Workman"
+        },
+        {
+          "lpid": "rep_young_tom_1",
+          "side": "yea",
+          "candidateId": "8bac956b-2216-4a7b-ba8b-7ed82986eee5",
+          "candidateName": "Tom Young"
+        },
+        {
+          "lpid": "rep_moore_ty_1",
+          "side": "yea",
+          "candidateId": "8bc9b668-5713-4763-889f-d0ed3bbc1bf3",
+          "candidateName": "Ty Moore"
+        },
+        {
+          "lpid": "rep_abdullahi_munira_1",
+          "side": "nay",
+          "candidateId": "0d81987e-157b-4a78-ad2e-b22347dac4cf",
+          "candidateName": "Munira Abdullahi"
+        },
+        {
+          "lpid": "rep_baker_rachel_1",
+          "side": "nay",
+          "candidateId": "8610f570-dd20-4139-a2e5-d3bfcf73f6b9",
+          "candidateName": "Rachel Baker"
+        },
+        {
+          "lpid": "rep_brewer_darnell_1",
+          "side": "nay",
+          "candidateId": "4b247bc8-d0d9-418c-8cc6-bd5432c7d974",
+          "candidateName": "Darnell Brewer"
+        },
+        {
+          "lpid": "rep_brownlee_karen_1",
+          "side": "nay",
+          "candidateId": "d5326f43-21e5-4103-9eb2-8709da188845",
+          "candidateName": "Karen Brownlee"
+        },
+        {
+          "lpid": "rep_cockley_christine_1",
+          "side": "nay",
+          "candidateId": "0cbb48d0-ef7a-468a-9dcb-b844670115ec",
+          "candidateName": "Christine Cockley"
+        },
+        {
+          "lpid": "rep_grim_michele_1",
+          "side": "nay",
+          "candidateId": "94b0d956-e6f8-4eaf-9572-f75b0ba16477",
+          "candidateName": "Michele Grim"
+        },
+        {
+          "lpid": "rep_humphrey_latyna_1",
+          "side": "nay",
+          "candidateId": "f84c08e9-05cf-4532-99ee-f3c6ace8e7f4",
+          "candidateName": "Latyna M. Humphrey"
+        },
+        {
+          "lpid": "rep_isaacsohn_dani_1",
+          "side": "nay",
+          "candidateId": "6295d98a-db16-4bf4-8bb0-c62387b27d25",
+          "candidateName": "Dani Isaacsohn"
+        },
+        {
+          "lpid": "rep_lawson_rowe_meredith_1",
+          "side": "nay",
+          "candidateId": "34c27f41-cc77-464d-a5af-3e2032f5e372",
+          "candidateName": "Meredith Lawson‐Rowe"
+        },
+        {
+          "lpid": "rep_lett_crystal_1",
+          "side": "nay",
+          "candidateId": "2b7f908d-acc9-4e74-835d-a6419cc6c3c3",
+          "candidateName": "Crystal Lett"
+        },
+        {
+          "lpid": "rep_mohamed_ismail_1",
+          "side": "nay",
+          "candidateId": "4ddc508c-ab0a-44c0-b521-ce6ea435f81f",
+          "candidateName": "Ismail Mohamed"
+        },
+        {
+          "lpid": "rep_piccolantonio_beryl_1",
+          "side": "nay",
+          "candidateId": "840f56e4-672d-42ac-b6bd-b671a5f37066",
+          "candidateName": "Beryl Brown Piccolantonio"
+        },
+        {
+          "lpid": "rep_rader_tristan_1",
+          "side": "nay",
+          "candidateId": "d7e3670d-f535-4b80-99cc-57af41e5f7ec",
+          "candidateName": "Tristan Rader"
+        },
+        {
+          "lpid": "rep_rogers_elgin_1",
+          "side": "nay",
+          "candidateId": "f7eefcd3-a726-46a6-86e9-04523169a1fb",
+          "candidateName": "Elgin Rogers Jr."
+        },
+        {
+          "lpid": "rep_sims_veronica_1",
+          "side": "nay",
+          "candidateId": "9a5ad5a8-9bc3-41ae-9e6a-8d3dc20d2aa0",
+          "candidateName": "Veronica Sims"
+        },
+        {
+          "lpid": "rep_somani_anita_1",
+          "side": "nay",
+          "candidateId": "37973555-0363-483f-845c-5038d6115ffc",
+          "candidateName": "Anita Somani"
+        },
+        {
+          "lpid": "rep_thomas_cecil_1",
+          "side": "nay",
+          "candidateId": "2db08c83-fb42-44a8-a348-a4e3905fa448",
+          "candidateName": "Cecil Thomas"
+        },
+        {
+          "lpid": "rep_tims_desiree_1",
+          "side": "nay",
+          "candidateId": "43ab1dd0-41e0-4b25-b807-36848a56a31a",
+          "candidateName": "Desiree Tims"
+        },
+        {
+          "lpid": "rep_white_erika_1",
+          "side": "nay",
+          "candidateId": "ecfe34a6-4e3b-4e8f-89c4-4b9ba618428d",
+          "candidateName": "Erika White"
+        },
+        {
+          "lpid": "rep_bailey_ashley_1",
+          "side": "nay",
+          "candidateId": "f64a0f77-fa84-4651-bfb8-53e42c55e7a5",
+          "candidateName": "Ashley Bryant Bailey"
+        }
+      ],
+      "noCrosswalk": [],
+      "error": null
+    },
+    {
+      "file": "oh-house-136-roll1774487705.json",
+      "chamber": "house",
+      "roll": 1774487705,
+      "bill": "hb347",
+      "members": 96,
+      "counts": {
+        "matched": 82,
+        "unmatched_reviewed": 14
+      },
+      "matched": [
+        {
+          "lpid": "rep_abrams_cindy_1",
+          "side": "yea",
+          "candidateId": "2c64944c-d809-43b7-80b3-e8996777170c",
+          "candidateName": "Cindy Abrams"
+        },
+        {
+          "lpid": "rep_barhorst_tim_1",
+          "side": "yea",
+          "candidateId": "f162f347-fd82-4e46-85c8-50c3f256f79b",
+          "candidateName": "Tim Barhorst"
+        },
+        {
+          "lpid": "rep_bird_adam_1",
+          "side": "yea",
+          "candidateId": "e2fd5cf8-cdd6-4c83-89d2-6f6856a68c1a",
+          "candidateName": "Adam Bird"
+        },
+        {
+          "lpid": "rep_claggett_thaddeus_1",
+          "side": "yea",
+          "candidateId": "dc7bb8fd-11b1-4e80-a486-17d462c6c4ea",
+          "candidateName": "Thaddeus Claggett"
+        },
+        {
+          "lpid": "rep_click_gary_1",
+          "side": "yea",
+          "candidateId": "6d7d1afd-ae56-4f9e-8533-08e3a2cbb605",
+          "candidateName": "Gary Click"
+        },
+        {
+          "lpid": "rep_craig_meredith_1",
+          "side": "yea",
+          "candidateId": "e81cbfc6-c60f-44e8-890f-361614bfcafb",
+          "candidateName": "Meredith Craig"
+        },
+        {
+          "lpid": "rep_creech_rodney_1",
+          "side": "yea",
+          "candidateId": "0633c56f-c13a-4cf9-9b9f-b3b8b9189405",
+          "candidateName": "Rodney Creech"
+        },
+        {
+          "lpid": "rep_daniels_jack_1",
+          "side": "yea",
+          "candidateId": "1c861773-e31b-4b2a-a569-94e7e427c510",
+          "candidateName": "Jack K. Daniels"
+        },
+        {
+          "lpid": "rep_dean_levi_1",
+          "side": "yea",
+          "candidateId": "ed4e6bfe-fcd2-4c23-a639-b27b0d9dfccb",
+          "candidateName": "Levi Dean"
+        },
+        {
+          "lpid": "rep_deeter_kellie_1",
+          "side": "yea",
+          "candidateId": "894ad038-e8a5-4587-ae99-a3a119dde698",
+          "candidateName": "Kellie Deeter"
+        },
+        {
+          "lpid": "rep_demetriou_steve_1",
+          "side": "yea",
+          "candidateId": "deeabe79-102f-4b6d-ba9b-ad30fadf5dd2",
+          "candidateName": "Steve Demetriou"
+        },
+        {
+          "lpid": "rep_dovilla_mike_1",
+          "side": "yea",
+          "candidateId": "5e1e39f7-c8c6-4de1-ad4f-3e6339817edf",
+          "candidateName": "Mike Dovilla"
+        },
+        {
+          "lpid": "rep_ferguson_ron_1",
+          "side": "yea",
+          "candidateId": "ab26adab-1741-4018-9bff-9b3ba45a8676",
+          "candidateName": "Ron Ferguson"
+        },
+        {
+          "lpid": "rep_fischer_tex_1",
+          "side": "yea",
+          "candidateId": "c5e781e0-c2c6-4f7a-9eb2-4d685cd266eb",
+          "candidateName": "Tex Fischer"
+        },
+        {
+          "lpid": "rep_arthur_sarah_1",
+          "side": "yea",
+          "candidateId": "ff059208-3186-4c29-8582-59e610d6f092",
+          "candidateName": "Sarah Fowler"
+        },
+        {
+          "lpid": "rep_ghanbari_haraz_1",
+          "side": "yea",
+          "candidateId": "4864fe15-33ae-45f9-9bfb-4fa1f8fd54e7",
+          "candidateName": "Haraz Ghanbari"
+        },
+        {
+          "lpid": "rep_gross_jennifer_1",
+          "side": "yea",
+          "candidateId": "2aaf9399-8f46-4308-9b21-ec13e620b129",
+          "candidateName": "Jennifer Gross"
+        },
+        {
+          "lpid": "rep_hall_thomas_1",
+          "side": "yea",
+          "candidateId": "13d0f2fd-10d2-4929-a9c0-c108ab98988b",
+          "candidateName": "Thomas Hall"
+        },
+        {
+          "lpid": "rep_hiner_mark_1",
+          "side": "yea",
+          "candidateId": "03226c2c-be46-4ab9-bbba-7812ce867efc",
+          "candidateName": "Mark Hiner"
+        },
+        {
+          "lpid": "rep_holmes_adam_1",
+          "side": "yea",
+          "candidateId": "354aaa98-86fa-488e-96e4-f707b28d7e3a",
+          "candidateName": "Adam Holmes"
+        },
+        {
+          "lpid": "rep_huffman_matt_1",
+          "side": "yea",
+          "candidateId": "9b20e916-2dcf-457e-a1d3-7b78683cb727",
+          "candidateName": "Matt Huffman"
+        },
+        {
+          "lpid": "rep_john_marilyn_1",
+          "side": "yea",
+          "candidateId": "75c44113-2c4a-44ea-8ea7-508be1892e45",
+          "candidateName": "Marilyn John"
+        },
+        {
+          "lpid": "rep_johnson_mark_1",
+          "side": "yea",
+          "candidateId": "2e647b2d-99b3-4e7d-af9b-9386b17acdb0",
+          "candidateName": "Mark Johnson"
+        },
+        {
+          "lpid": "rep_king_angela_1",
+          "side": "yea",
+          "candidateId": "e2af8dc3-b98e-48d1-8d23-5a0f7285fe38",
+          "candidateName": "Angela King"
+        },
+        {
+          "lpid": "rep_kishman_matthew_1",
+          "side": "yea",
+          "candidateId": "d9a93c44-5cf4-408a-9814-60ee3ceadaff",
+          "candidateName": "Matthew Kishman"
+        },
+        {
+          "lpid": "rep_klopfenstein_roy_1",
+          "side": "yea",
+          "candidateId": "3d08bd35-726e-46bf-9e28-47f9ee16c0a9",
+          "candidateName": "Roy Klopfenstein"
+        },
+        {
+          "lpid": "rep_lampton_brian_1",
+          "side": "yea",
+          "candidateId": "9dcdfce5-0c7a-4276-b9ea-69aa94bcebdf",
+          "candidateName": "Brian Lampton"
+        },
+        {
+          "lpid": "rep_lare_jeff_1",
+          "side": "yea",
+          "candidateId": "adbf64da-7d88-4b7c-8322-b1fd462fa2c4",
+          "candidateName": "Jeff LaRe"
+        },
+        {
+          "lpid": "rep_lorenz_brian_1",
+          "side": "yea",
+          "candidateId": "eeadbc26-84ea-45ce-ae52-492b0df2e046",
+          "candidateName": "Brian Lorenz"
+        },
+        {
+          "lpid": "rep_manning_gayle_1",
+          "side": "yea",
+          "candidateId": "3f654575-c5ee-4536-b7e0-5e904cf9bc5a",
+          "candidateName": "Gayle Manning"
+        },
+        {
+          "lpid": "rep_mathews_adam_1",
+          "side": "yea",
+          "candidateId": "250c57ad-3210-4ca3-86f1-eb1d83b3ef0e",
+          "candidateName": "Adam Mathews"
+        },
+        {
+          "lpid": "rep_mathews_ty_1",
+          "side": "yea",
+          "candidateId": "76b5af3f-8e88-42d3-8b02-9d5c9abab96e",
+          "candidateName": "Ty Mathews"
+        },
+        {
+          "lpid": "rep_miller_kevin_1",
+          "side": "yea",
+          "candidateId": "1fb5478e-c9d3-4d8e-a781-b658453adacf",
+          "candidateName": "Kevin Miller"
+        },
+        {
+          "lpid": "rep_miller_melanie_1",
+          "side": "yea",
+          "candidateId": "bc5f1e65-f06b-4c4b-8baf-64b2b36304ce",
+          "candidateName": "Melanie Miller"
+        },
+        {
+          "lpid": "rep_mullins_diane_1",
+          "side": "yea",
+          "candidateId": "c95b7dff-4ebc-4fd3-99ce-533391d5bea1",
+          "candidateName": "Diane Mullins"
+        },
+        {
+          "lpid": "rep_newman_johnathan_1",
+          "side": "yea",
+          "candidateId": "75b93f95-dfb9-4334-a5bb-61ec9a74d58e",
+          "candidateName": "Johnathan Newman"
+        },
+        {
+          "lpid": "rep_odioso_mike_1",
+          "side": "yea",
+          "candidateId": "d03d80bb-1640-4da2-b988-26fb2b27be09",
+          "candidateName": "Mike Odioso"
+        },
+        {
+          "lpid": "rep_peterson_bob_1",
+          "side": "yea",
+          "candidateId": "ace93669-7828-42ac-ad3f-9a055e899d28",
+          "candidateName": "Bob Peterson"
+        },
+        {
+          "lpid": "rep_pizzulli_justin_1",
+          "side": "yea",
+          "candidateId": "bece28fb-fa58-4201-a8a1-8fa3be260394",
+          "candidateName": "Justin Pizzulli"
+        },
+        {
+          "lpid": "rep_plummer_phil_1",
+          "side": "yea",
+          "candidateId": "52296bfb-8c71-4dbb-95be-76c21eeb5e3d",
+          "candidateName": "Phil Plummer"
+        },
+        {
+          "lpid": "rep_ritter_kevin_1",
+          "side": "yea",
+          "candidateId": "318006f5-6d09-4c25-b17a-f342b9dff0ff",
+          "candidateName": "Kevin Ritter"
+        },
+        {
+          "lpid": "rep_robb_blasdel_monica_1",
+          "side": "yea",
+          "candidateId": "c768f320-bfcb-4fbb-87bf-d333a297f883",
+          "candidateName": "Monica Robb Blasdel"
+        },
+        {
+          "lpid": "rep_salvo_jodi_1",
+          "side": "yea",
+          "candidateId": "e3bc0047-07c9-4ea0-83df-eac5f4f8be0e",
+          "candidateName": "Jodi Salvo"
+        },
+        {
+          "lpid": "rep_santucci_nick_1",
+          "side": "yea",
+          "candidateId": "9f1d664b-6d90-4fca-84e9-1359f1660469",
+          "candidateName": "Nick Santucci"
+        },
+        {
+          "lpid": "rep_schmidt_jean_1",
+          "side": "yea",
+          "candidateId": "8d042dc5-62d6-4bef-bb71-36ec8ddbfdaf",
+          "candidateName": "Jean Schmidt"
+        },
+        {
+          "lpid": "rep_stephens_jason_1",
+          "side": "yea",
+          "candidateId": "f33d3d90-f971-40fd-9923-89c6d880210a",
+          "candidateName": "Jason Stephens"
+        },
+        {
+          "lpid": "rep_stewart_brian_1",
+          "side": "yea",
+          "candidateId": "e14876aa-595e-4ba0-9251-f92dfe3fe0b9",
+          "candidateName": "Brian Stewart"
+        },
+        {
+          "lpid": "rep_swearingen_douglas_1",
+          "side": "yea",
+          "candidateId": "84e362b4-24f5-4f71-b33c-67bab2314cfe",
+          "candidateName": "D.J. Swearingen"
+        },
+        {
+          "lpid": "rep_teska_michelle_1",
+          "side": "yea",
+          "candidateId": "9029a3a3-cb8d-4562-88c0-8c5a28f98800",
+          "candidateName": "C. Michelle Teska"
+        },
+        {
+          "lpid": "rep_thomas_david_1",
+          "side": "yea",
+          "candidateId": "af859547-21b0-4eaf-8cd2-28122a4f2ed3",
+          "candidateName": "David Thomas"
+        },
+        {
+          "lpid": "rep_thomas_jim_1",
+          "side": "yea",
+          "candidateId": "cfdc8cbe-b57d-4a80-a92b-fb0d9cbc882a",
+          "candidateName": "Jim Thomas"
+        },
+        {
+          "lpid": "rep_white_andrea_1",
+          "side": "yea",
+          "candidateId": "df71d861-1f3b-469e-9178-3eb75cdb5ded",
+          "candidateName": "Andrea White"
+        },
+        {
+          "lpid": "rep_workman_heidi_1",
+          "side": "yea",
+          "candidateId": "f7ebe151-dc41-4886-a195-caa4d3d97b71",
+          "candidateName": "Heidi Workman"
+        },
+        {
+          "lpid": "rep_young_tom_1",
+          "side": "yea",
+          "candidateId": "8bac956b-2216-4a7b-ba8b-7ed82986eee5",
+          "candidateName": "Tom Young"
+        },
+        {
+          "lpid": "rep_moore_ty_1",
+          "side": "yea",
+          "candidateId": "8bc9b668-5713-4763-889f-d0ed3bbc1bf3",
+          "candidateName": "Ty Moore"
+        },
+        {
+          "lpid": "rep_abdullahi_munira_1",
+          "side": "nay",
+          "candidateId": "0d81987e-157b-4a78-ad2e-b22347dac4cf",
+          "candidateName": "Munira Abdullahi"
+        },
+        {
+          "lpid": "rep_baker_rachel_1",
+          "side": "nay",
+          "candidateId": "8610f570-dd20-4139-a2e5-d3bfcf73f6b9",
+          "candidateName": "Rachel Baker"
+        },
+        {
+          "lpid": "rep_brennan_sean_1",
+          "side": "nay",
+          "candidateId": "52ee99ec-a520-4e87-a94d-cf782b9dc714",
+          "candidateName": "Sean Brennan"
+        },
+        {
+          "lpid": "rep_brewer_darnell_1",
+          "side": "nay",
+          "candidateId": "4b247bc8-d0d9-418c-8cc6-bd5432c7d974",
+          "candidateName": "Darnell Brewer"
+        },
+        {
+          "lpid": "rep_brownlee_karen_1",
+          "side": "nay",
+          "candidateId": "d5326f43-21e5-4103-9eb2-8709da188845",
+          "candidateName": "Karen Brownlee"
+        },
+        {
+          "lpid": "rep_cockley_christine_1",
+          "side": "nay",
+          "candidateId": "0cbb48d0-ef7a-468a-9dcb-b844670115ec",
+          "candidateName": "Christine Cockley"
+        },
+        {
+          "lpid": "rep_glassburn_chris_1",
+          "side": "nay",
+          "candidateId": "67f5f1c2-2ec8-4b9e-b43f-4f529e016c49",
+          "candidateName": "Chris Glassburn"
+        },
+        {
+          "lpid": "rep_grim_michele_1",
+          "side": "nay",
+          "candidateId": "94b0d956-e6f8-4eaf-9572-f75b0ba16477",
+          "candidateName": "Michele Grim"
+        },
+        {
+          "lpid": "rep_hall_derrick_1",
+          "side": "nay",
+          "candidateId": "7c3089b8-3698-45cd-b33b-3c2633c7e245",
+          "candidateName": "Derrick Hall"
+        },
+        {
+          "lpid": "rep_humphrey_latyna_1",
+          "side": "nay",
+          "candidateId": "f84c08e9-05cf-4532-99ee-f3c6ace8e7f4",
+          "candidateName": "Latyna M. Humphrey"
+        },
+        {
+          "lpid": "rep_isaacsohn_dani_1",
+          "side": "nay",
+          "candidateId": "6295d98a-db16-4bf4-8bb0-c62387b27d25",
+          "candidateName": "Dani Isaacsohn"
+        },
+        {
+          "lpid": "rep_lawson_rowe_meredith_1",
+          "side": "nay",
+          "candidateId": "34c27f41-cc77-464d-a5af-3e2032f5e372",
+          "candidateName": "Meredith Lawson‐Rowe"
+        },
+        {
+          "lpid": "rep_lett_crystal_1",
+          "side": "nay",
+          "candidateId": "2b7f908d-acc9-4e74-835d-a6419cc6c3c3",
+          "candidateName": "Crystal Lett"
+        },
+        {
+          "lpid": "rep_miller_joe_1",
+          "side": "nay",
+          "candidateId": "6cbb945f-9491-46fa-b245-33589f97f160",
+          "candidateName": "Joe Miller"
+        },
+        {
+          "lpid": "rep_mohamed_ismail_1",
+          "side": "nay",
+          "candidateId": "4ddc508c-ab0a-44c0-b521-ce6ea435f81f",
+          "candidateName": "Ismail Mohamed"
+        },
+        {
+          "lpid": "rep_piccolantonio_beryl_1",
+          "side": "nay",
+          "candidateId": "840f56e4-672d-42ac-b6bd-b671a5f37066",
+          "candidateName": "Beryl Brown Piccolantonio"
+        },
+        {
+          "lpid": "rep_rader_tristan_1",
+          "side": "nay",
+          "candidateId": "d7e3670d-f535-4b80-99cc-57af41e5f7ec",
+          "candidateName": "Tristan Rader"
+        },
+        {
+          "lpid": "rep_rogers_elgin_1",
+          "side": "nay",
+          "candidateId": "f7eefcd3-a726-46a6-86e9-04523169a1fb",
+          "candidateName": "Elgin Rogers Jr."
+        },
+        {
+          "lpid": "rep_sigrist_mark_1",
+          "side": "nay",
+          "candidateId": "666b039e-0821-4ea6-9044-733083bba44f",
+          "candidateName": "Mark Sigrist"
+        },
+        {
+          "lpid": "rep_sims_veronica_1",
+          "side": "nay",
+          "candidateId": "9a5ad5a8-9bc3-41ae-9e6a-8d3dc20d2aa0",
+          "candidateName": "Veronica Sims"
+        },
+        {
+          "lpid": "rep_somani_anita_1",
+          "side": "nay",
+          "candidateId": "37973555-0363-483f-845c-5038d6115ffc",
+          "candidateName": "Anita Somani"
+        },
+        {
+          "lpid": "rep_sweeney_bride_rose_1",
+          "side": "nay",
+          "candidateId": "706cadeb-a3c4-4879-831b-69a0141c1fe9",
+          "candidateName": "Bride Rose Sweeney"
+        },
+        {
+          "lpid": "rep_thomas_cecil_1",
+          "side": "nay",
+          "candidateId": "2db08c83-fb42-44a8-a348-a4e3905fa448",
+          "candidateName": "Cecil Thomas"
+        },
+        {
+          "lpid": "rep_tims_desiree_1",
+          "side": "nay",
+          "candidateId": "43ab1dd0-41e0-4b25-b807-36848a56a31a",
+          "candidateName": "Desiree Tims"
+        },
+        {
+          "lpid": "rep_troy_daniel_1",
+          "side": "nay",
+          "candidateId": "59e74cbe-8b18-4210-a586-af4dc1ecc46c",
+          "candidateName": "Dan Troy"
+        },
+        {
+          "lpid": "rep_white_erika_1",
+          "side": "nay",
+          "candidateId": "ecfe34a6-4e3b-4e8f-89c4-4b9ba618428d",
+          "candidateName": "Erika White"
+        },
+        {
+          "lpid": "rep_bailey_ashley_1",
+          "side": "nay",
+          "candidateId": "f64a0f77-fa84-4651-bfb8-53e42c55e7a5",
+          "candidateName": "Ashley Bryant Bailey"
+        }
+      ],
+      "noCrosswalk": [],
+      "error": null
+    },
+    {
+      "file": "oh-senate-136-roll1750290051.json",
+      "chamber": "senate",
+      "roll": 1750290051,
+      "bill": "sb172",
+      "members": 31,
+      "counts": {
+        "unmatched_reviewed": 23,
+        "matched": 8
+      },
+      "matched": [
+        {
+          "lpid": "sen_manning_nathan_1",
+          "side": "yea",
+          "candidateId": "4c95c67b-686a-4f22-bcd6-ecb199526fc7",
+          "candidateName": "Nathan Manning"
+        },
+        {
+          "lpid": "sen_landis_al_1",
+          "side": "yea",
+          "candidateId": "ffbcb516-1dc3-42f0-82b5-227786402673",
+          "candidateName": "Al Landis"
+        },
+        {
+          "lpid": "sen_wilkin_shane_1",
+          "side": "yea",
+          "candidateId": "dbe1026e-9a6f-46fe-9546-738ab147adab",
+          "candidateName": "Shane Wilkin"
+        },
+        {
+          "lpid": "sen_cutrona_al_1",
+          "side": "yea",
+          "candidateId": "8caf8d80-e512-4e1c-a6de-9b4c2ef2347b",
+          "candidateName": "Alessandro Cutrona"
+        },
+        {
+          "lpid": "sen_timken_jane_1",
+          "side": "yea",
+          "candidateId": "ee291a95-d9d0-4331-a764-ae6953835a43",
+          "candidateName": "Jane Timken"
+        },
+        {
+          "lpid": "sen_hicks_hudson_paula_1",
+          "side": "nay",
+          "candidateId": "115484d9-dbd5-4298-b2fd-fa36be6d0878",
+          "candidateName": "Paula Hicks-Hudson"
+        },
+        {
+          "lpid": "sen_demora_william_1",
+          "side": "nay",
+          "candidateId": "60d1a890-7fe5-47e8-847d-d8b0d3f0dcda",
+          "candidateName": "William DeMora"
+        },
+        {
+          "lpid": "sen_ingram_catherine_1",
+          "side": "nay",
+          "candidateId": "a580aab9-0607-4088-9ae5-a7239c2e274e",
+          "candidateName": "Catherine Ingram"
+        }
+      ],
+      "noCrosswalk": [],
+      "error": null
+    },
+    {
+      "file": "oh-senate-136-roll1763696144.json",
+      "chamber": "senate",
+      "roll": 1763696144,
+      "bill": "sb293",
+      "members": 33,
+      "counts": {
+        "unmatched_reviewed": 23,
+        "matched": 10
+      },
+      "matched": [
+        {
+          "lpid": "sen_manning_nathan_1",
+          "side": "yea",
+          "candidateId": "4c95c67b-686a-4f22-bcd6-ecb199526fc7",
+          "candidateName": "Nathan Manning"
+        },
+        {
+          "lpid": "sen_landis_al_1",
+          "side": "yea",
+          "candidateId": "ffbcb516-1dc3-42f0-82b5-227786402673",
+          "candidateName": "Al Landis"
+        },
+        {
+          "lpid": "sen_wilkin_shane_1",
+          "side": "yea",
+          "candidateId": "dbe1026e-9a6f-46fe-9546-738ab147adab",
+          "candidateName": "Shane Wilkin"
+        },
+        {
+          "lpid": "sen_reynolds_michele_1",
+          "side": "yea",
+          "candidateId": "ec02043c-3ae3-4ffd-8faf-d9889684ee40",
+          "candidateName": "Michele Reynolds"
+        },
+        {
+          "lpid": "sen_cutrona_al_1",
+          "side": "yea",
+          "candidateId": "8caf8d80-e512-4e1c-a6de-9b4c2ef2347b",
+          "candidateName": "Alessandro Cutrona"
+        },
+        {
+          "lpid": "sen_timken_jane_1",
+          "side": "yea",
+          "candidateId": "ee291a95-d9d0-4331-a764-ae6953835a43",
+          "candidateName": "Jane Timken"
+        },
+        {
+          "lpid": "sen_hicks_hudson_paula_1",
+          "side": "nay",
+          "candidateId": "115484d9-dbd5-4298-b2fd-fa36be6d0878",
+          "candidateName": "Paula Hicks-Hudson"
+        },
+        {
+          "lpid": "sen_demora_william_1",
+          "side": "nay",
+          "candidateId": "60d1a890-7fe5-47e8-847d-d8b0d3f0dcda",
+          "candidateName": "William DeMora"
+        },
+        {
+          "lpid": "sen_smith_kent_1",
+          "side": "nay",
+          "candidateId": "0e903668-ddcb-44e0-84eb-c8db81a5ea4d",
+          "candidateName": "Kent Smith"
+        },
+        {
+          "lpid": "sen_ingram_catherine_1",
+          "side": "nay",
+          "candidateId": "a580aab9-0607-4088-9ae5-a7239c2e274e",
+          "candidateName": "Catherine Ingram"
+        }
+      ],
+      "noCrosswalk": [],
+      "error": null
+    },
+    {
+      "file": "oh-senate-136-roll1776292440.json",
+      "chamber": "senate",
+      "roll": 1776292440,
+      "bill": "sb278",
+      "members": 33,
+      "counts": {
+        "unmatched_reviewed": 23,
+        "matched": 10
+      },
+      "matched": [
+        {
+          "lpid": "sen_manning_nathan_1",
+          "side": "yea",
+          "candidateId": "4c95c67b-686a-4f22-bcd6-ecb199526fc7",
+          "candidateName": "Nathan Manning"
+        },
+        {
+          "lpid": "sen_landis_al_1",
+          "side": "yea",
+          "candidateId": "ffbcb516-1dc3-42f0-82b5-227786402673",
+          "candidateName": "Al Landis"
+        },
+        {
+          "lpid": "sen_wilkin_shane_1",
+          "side": "yea",
+          "candidateId": "dbe1026e-9a6f-46fe-9546-738ab147adab",
+          "candidateName": "Shane Wilkin"
+        },
+        {
+          "lpid": "sen_reynolds_michele_1",
+          "side": "yea",
+          "candidateId": "ec02043c-3ae3-4ffd-8faf-d9889684ee40",
+          "candidateName": "Michele Reynolds"
+        },
+        {
+          "lpid": "sen_cutrona_al_1",
+          "side": "yea",
+          "candidateId": "8caf8d80-e512-4e1c-a6de-9b4c2ef2347b",
+          "candidateName": "Alessandro Cutrona"
+        },
+        {
+          "lpid": "sen_timken_jane_1",
+          "side": "yea",
+          "candidateId": "ee291a95-d9d0-4331-a764-ae6953835a43",
+          "candidateName": "Jane Timken"
+        },
+        {
+          "lpid": "sen_hicks_hudson_paula_1",
+          "side": "nay",
+          "candidateId": "115484d9-dbd5-4298-b2fd-fa36be6d0878",
+          "candidateName": "Paula Hicks-Hudson"
+        },
+        {
+          "lpid": "sen_demora_william_1",
+          "side": "nay",
+          "candidateId": "60d1a890-7fe5-47e8-847d-d8b0d3f0dcda",
+          "candidateName": "William DeMora"
+        },
+        {
+          "lpid": "sen_smith_kent_1",
+          "side": "nay",
+          "candidateId": "0e903668-ddcb-44e0-84eb-c8db81a5ea4d",
+          "candidateName": "Kent Smith"
+        },
+        {
+          "lpid": "sen_ingram_catherine_1",
+          "side": "nay",
+          "candidateId": "a580aab9-0607-4088-9ae5-a7239c2e274e",
+          "candidateName": "Catherine Ingram"
+        }
+      ],
+      "noCrosswalk": [],
+      "error": null
+    },
+    {
+      "file": "oh-senate-136-roll1781149605.json",
+      "chamber": "senate",
+      "roll": 1781149605,
+      "bill": "hb492",
+      "members": 33,
+      "counts": {
+        "unmatched_reviewed": 23,
+        "matched": 10
+      },
+      "matched": [
+        {
+          "lpid": "sen_manning_nathan_1",
+          "side": "yea",
+          "candidateId": "4c95c67b-686a-4f22-bcd6-ecb199526fc7",
+          "candidateName": "Nathan Manning"
+        },
+        {
+          "lpid": "sen_landis_al_1",
+          "side": "yea",
+          "candidateId": "ffbcb516-1dc3-42f0-82b5-227786402673",
+          "candidateName": "Al Landis"
+        },
+        {
+          "lpid": "sen_wilkin_shane_1",
+          "side": "yea",
+          "candidateId": "dbe1026e-9a6f-46fe-9546-738ab147adab",
+          "candidateName": "Shane Wilkin"
+        },
+        {
+          "lpid": "sen_reynolds_michele_1",
+          "side": "yea",
+          "candidateId": "ec02043c-3ae3-4ffd-8faf-d9889684ee40",
+          "candidateName": "Michele Reynolds"
+        },
+        {
+          "lpid": "sen_cutrona_al_1",
+          "side": "yea",
+          "candidateId": "8caf8d80-e512-4e1c-a6de-9b4c2ef2347b",
+          "candidateName": "Alessandro Cutrona"
+        },
+        {
+          "lpid": "sen_timken_jane_1",
+          "side": "yea",
+          "candidateId": "ee291a95-d9d0-4331-a764-ae6953835a43",
+          "candidateName": "Jane Timken"
+        },
+        {
+          "lpid": "sen_hicks_hudson_paula_1",
+          "side": "nay",
+          "candidateId": "115484d9-dbd5-4298-b2fd-fa36be6d0878",
+          "candidateName": "Paula Hicks-Hudson"
+        },
+        {
+          "lpid": "sen_demora_william_1",
+          "side": "nay",
+          "candidateId": "60d1a890-7fe5-47e8-847d-d8b0d3f0dcda",
+          "candidateName": "William DeMora"
+        },
+        {
+          "lpid": "sen_smith_kent_1",
+          "side": "nay",
+          "candidateId": "0e903668-ddcb-44e0-84eb-c8db81a5ea4d",
+          "candidateName": "Kent Smith"
+        },
+        {
+          "lpid": "sen_ingram_catherine_1",
+          "side": "nay",
+          "candidateId": "a580aab9-0607-4088-9ae5-a7239c2e274e",
+          "candidateName": "Catherine Ingram"
+        }
+      ],
+      "noCrosswalk": [],
+      "error": null
+    }
+  ]
+}

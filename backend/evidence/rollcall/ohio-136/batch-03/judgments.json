@@ -1,0 +1,106 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OH",
+      "chamber": "house",
+      "session": "136",
+      "roll": 1746659043,
+      "measure_id": "HB 126",
+      "vote_date": "2025-05-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.B. 126, which prohibited public nuisance lawsuits arising from the sale of a product. It passed the Ohio House 59-36.",
+      "nay_description": "Voted against passing H.B. 126, which prohibited public nuisance lawsuits arising from the sale of a product. It passed the Ohio House 59-36.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OH",
+      "chamber": "house",
+      "session": "136",
+      "roll": 1772069636,
+      "measure_id": "HB 503",
+      "vote_date": "2026-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.B. 503, which required voter approval for a municipality to decrease or repeal an existing municipal income tax reciprocity credit, and let voters authorize or increase such a credit by initiative. It passed the Ohio House 65-27.",
+      "nay_description": "Voted against passing H.B. 503, which required voter approval for a municipality to decrease or repeal an existing municipal income tax reciprocity credit, and let voters authorize or increase such a credit by initiative. It passed the Ohio House 65-27.",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OH",
+      "chamber": "house",
+      "session": "136",
+      "roll": 1773874979,
+      "measure_id": "HB 92",
+      "vote_date": "2026-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.B. 92, which barred municipalities from putting a lien on rental property over water or sewer bills left unpaid under a tenant's own service contract, and barred them from refusing or cutting off utility service to a landlord or a new tenant because a former tenant did not pay. It passed the Ohio House 67-30.",
+      "nay_description": "Voted against passing H.B. 92, which barred municipalities from putting a lien on rental property over water or sewer bills left unpaid under a tenant's own service contract, and barred them from refusing or cutting off utility service to a landlord or a new tenant because a former tenant did not pay. It passed the Ohio House 67-30.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OH",
+      "chamber": "house",
+      "session": "136",
+      "roll": 1781055485,
+      "measure_id": "HB 319",
+      "vote_date": "2026-06-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.B. 319, the Clinical Teaching Subsidy Reform Act, which directed the Chancellor of Higher Education to distribute an annual clinical teaching subsidy to Ohio's public medical schools and to publish each school's enrollment, the performance metrics used to allocate the money, and its final allocation. It passed the Ohio House 70-26.",
+      "nay_description": "Voted against passing H.B. 319, the Clinical Teaching Subsidy Reform Act, which directed the Chancellor of Higher Education to distribute an annual clinical teaching subsidy to Ohio's public medical schools and to publish each school's enrollment, the performance metrics used to allocate the money, and its final allocation. It passed the Ohio House 70-26.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OH",
+      "chamber": "senate",
+      "session": "136",
+      "roll": 1781162536,
+      "measure_id": "HB 173",
+      "vote_date": "2026-06-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.B. 173, which exempted companies that install or resell submetered utility service to tenants and condominium owners from regulation as public utilities by the Public Utilities Commission of Ohio. It passed the Ohio Senate 24-9 and was vetoed by the Governor on June 24, 2026.",
+      "nay_description": "Voted against passing H.B. 173, which exempted companies that install or resell submetered utility service to tenants and condominium owners from regulation as public utilities by the Public Utilities Commission of Ohio. It passed the Ohio Senate 24-9 and was vetoed by the Governor on June 24, 2026.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OH",
+      "chamber": "house",
+      "session": "136",
+      "roll": 1781207418,
+      "measure_id": "HB 173",
+      "vote_date": "2026-06-10",
+      "review_status": "approved",
+      "yea_description": "Voted to concur in Senate amendments to H.B. 173, which exempted companies that install or resell submetered utility service to tenants and condominium owners from regulation as public utilities by the Public Utilities Commission of Ohio. It passed the Ohio House 56-35 and was vetoed by the Governor on June 24, 2026.",
+      "nay_description": "Voted against concurring in Senate amendments to H.B. 173, which exempted companies that install or resell submetered utility service to tenants and condominium owners from regulation as public utilities by the Public Utilities Commission of Ohio. It passed the Ohio House 56-35 and was vetoed by the Governor on June 24, 2026.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against"
+        }
+      ]
+    }
+  ]
+}

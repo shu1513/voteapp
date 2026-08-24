@@ -1,50 +1,60 @@
 {
   "importerVersion": "rollcall-oh-import-v1",
-  "dryRun": false,
+  "dryRun": true,
   "skipExisting": false,
-  "startedAt": "2026-08-24T06:30:28.488Z",
-  "finishedAt": "2026-08-24T06:30:30.365Z",
+  "startedAt": "2026-08-24T20:20:29.935Z",
+  "finishedAt": "2026-08-24T20:20:30.892Z",
   "generalAssembly": 136,
-  "evidenceDir": "/Users/shu/voteApp/.claude/worktrees/caveman-ultra-58491f/backend/evidence/rollcall/ohio-136/batch-01",
+  "evidenceDir": "/Users/shu/voteApp/.claude/worktrees/caveman-ultra-58491f/backend/evidence/rollcall/ohio-136/batch-05",
   "scopeFrom": "2026-11-01",
   "crosswalkFile": "/Users/shu/voteApp/.claude/worktrees/caveman-ultra-58491f/backend/evidence/rollcall/ohio-136/crosswalk.json",
   "crosswalkEntries": 134,
   "rosterFile": "/Users/shu/voteApp/.claude/worktrees/caveman-ultra-58491f/backend/evidence/rollcall/ohio-136/oh-legislators-136.json",
   "rosterMembers": 134,
-  "files": 2,
+  "files": 1,
   "outcomes": {
-    "imported": 2
+    "dry_run": 1
   },
   "actions": {
-    "unchanged": 74,
-    "insert": 15
+    "unchanged": 81
   },
   "notified": 0,
   "rolls": [
     {
-      "file": "oh-house-136-roll1742433648.json",
+      "file": "oh-house-136-roll1750287866.json",
       "chamber": "house",
       "generalAssembly": 136,
-      "roll": 1742433648,
-      "outcome": "imported",
-      "legislativeVoteId": "bcb4bfd1-97bc-449b-8da6-23e50018db79",
+      "roll": 1750287866,
+      "outcome": "dry_run",
+      "legislativeVoteId": "59275ab8-8c37-4526-93e7-a011a68a9675",
       "reviewStatus": "approved",
-      "bill": "sb1",
-      "voteDate": "2025-03-19",
-      "measureId": "SB 1",
+      "bill": "hb116",
+      "voteDate": "2025-06-18",
+      "measureId": "HB 116",
       "question": "Passed",
-      "originRunId": "rollcall:OH:house:136:1742433648:2026-08-24T06:30:28.488Z",
-      "members": 93,
+      "originRunId": "rollcall:OH:house:136:1750287866:2026-08-24T20:20:29.935Z",
+      "members": 96,
       "resolution": {
-        "matched": 79,
-        "unmatched_reviewed": 14
+        "matched": 81,
+        "unmatched_reviewed": 15
       },
       "actions": {
-        "unchanged": 64,
-        "insert": 15
+        "unchanged": 81
       },
       "notified": 0,
       "candidates": [
+        {
+          "candidateId": "2c64944c-d809-43b7-80b3-e8996777170c",
+          "candidateName": "Cindy Abrams",
+          "lpid": "rep_abrams_cindy_1",
+          "memberName": "Cindy Abrams",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "efe152d8-de83-4b12-8005-48360d9b9f55",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
         {
           "candidateId": "f162f347-fd82-4e46-85c8-50c3f256f79b",
           "candidateName": "Tim Barhorst",
@@ -52,7 +62,7 @@
           "memberName": "Tim Barhorst",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "f5bc7bf8-af28-4521-8c09-c7f15c722309",
+          "recordId": "158d64f8-0585-4666-afe4-59b9057c676e",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -64,7 +74,7 @@
           "memberName": "Adam C. Bird",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "686cc780-c530-4935-87af-b72f4fb7dc82",
+          "recordId": "8698553a-e23b-4531-b0d3-e5b87f27be6b",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -76,7 +86,7 @@
           "memberName": "Thaddeus J. Claggett",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "5e461df8-10d3-4226-b324-bcef5a4d3112",
+          "recordId": "5e21adf3-9f8c-4205-9194-ed417ed1e7df",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -88,7 +98,7 @@
           "memberName": "Gary Click",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "ec4652fb-da76-41ae-9a04-9bd4e81b9a5d",
+          "recordId": "f5ed2367-5b70-4cea-96c5-28643954f398",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -100,7 +110,7 @@
           "memberName": "Meredith Craig",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "6c6d59e5-c3a4-4e00-ad28-71dddc6b03cb",
+          "recordId": "e8740113-a1e9-45cc-ac63-81eccc6b864a",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -112,7 +122,7 @@
           "memberName": "Rodney Creech",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "2659cf5e-e744-4a85-bacb-36a2876d6283",
+          "recordId": "d1307635-43d6-4908-8746-7a9bd5143467",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -124,7 +134,7 @@
           "memberName": "Jack K. Daniels",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "714a8527-e91b-4053-877d-6fc44a75a227",
+          "recordId": "ca9a4053-b1f2-436b-97a6-77e01b0993f6",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -136,7 +146,7 @@
           "memberName": "Levi Dean",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "1dc30f81-aec5-4545-b175-953f9e8c22c8",
+          "recordId": "34c336fa-8154-44c4-a25b-539a6b5d5723",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -148,7 +158,7 @@
           "memberName": "Kellie Deeter",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "0fea72b1-5961-4523-b99c-d8a612292a88",
+          "recordId": "b4b0ac18-ead3-4ad6-ba24-74d11a447c0f",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -160,7 +170,7 @@
           "memberName": "Steve Demetriou",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "e6835e4e-cca7-42b6-be66-64c5ffe1c8a2",
+          "recordId": "e3db4a37-ea67-4070-8759-749557c2af0a",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -171,8 +181,8 @@
           "lpid": "rep_dovilla_mike_1",
           "memberName": "Michael D. Dovilla",
           "side": "yea",
-          "action": "insert",
-          "recordId": "aec13836-a750-4ffc-b781-f0dfe6ac79a1",
+          "action": "unchanged",
+          "recordId": "755233ed-aa52-4b10-ab65-6a8c9abda9b8",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -184,7 +194,7 @@
           "memberName": "Ron Ferguson",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "a8bd54dd-1527-407b-9b9f-64a126e2bb1b",
+          "recordId": "045751f0-dfd9-4d3d-bcf0-7aa9ed3c09bc",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -196,7 +206,7 @@
           "memberName": "Tex Fischer",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "b57b7236-54dd-4d1b-bb6a-5735549cf2e7",
+          "recordId": "6c617dbc-2146-428a-8523-ab18a3788279",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -207,8 +217,8 @@
           "lpid": "rep_arthur_sarah_1",
           "memberName": "Sarah Fowler Arthur",
           "side": "yea",
-          "action": "insert",
-          "recordId": "298ada9b-fb16-4057-95a6-4fa87d9fc665",
+          "action": "unchanged",
+          "recordId": "26da0242-2dff-41d0-968d-f4a66db487d9",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -220,7 +230,7 @@
           "memberName": "Haraz N. Ghanbari",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "9893d8a0-a4e2-4dc2-9ee2-4134f27cad95",
+          "recordId": "e2102e32-c849-4177-a7a7-dcc7685280d2",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -232,7 +242,19 @@
           "memberName": "Jennifer Gross",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "61ac8e1e-cba7-45d8-9aa2-8abf0c03bd86",
+          "recordId": "d26a9410-6154-4ef6-b292-35b39401cd2e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "7c3089b8-3698-45cd-b33b-3c2633c7e245",
+          "candidateName": "Derrick Hall",
+          "lpid": "rep_hall_derrick_1",
+          "memberName": "Derrick Hall",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "faf46a96-3658-42d9-8212-8b61046813af",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -243,8 +265,8 @@
           "lpid": "rep_hall_thomas_1",
           "memberName": "Thomas Hall",
           "side": "yea",
-          "action": "insert",
-          "recordId": "0c4b2a2e-90d9-425a-a377-b89313aa02e8",
+          "action": "unchanged",
+          "recordId": "e4abe969-6fc8-42fa-bcfa-6b208da5a5c1",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -256,7 +278,7 @@
           "memberName": "Mark Hiner",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "aee752ea-4553-4b71-ad66-207133d77c89",
+          "recordId": "04c35ce8-16e9-4e04-a0fd-d7da53f9da1a",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -268,7 +290,7 @@
           "memberName": "Adam Holmes",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "60ec6af0-cfd6-4e41-8a2e-803bd1305028",
+          "recordId": "66ce624b-a653-403c-8a46-793cca986a55",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -280,7 +302,7 @@
           "memberName": "Matt Huffman",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "1ee13474-4b89-49d5-b665-e78bbade74a4",
+          "recordId": "a36ab0d3-1e68-4ff1-b7b9-512fa729dbd4",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -292,7 +314,7 @@
           "memberName": "Marilyn John",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "ca55f073-7eeb-4d25-966e-34c20c1cc784",
+          "recordId": "a1bd8877-887d-45dd-be80-94b07df17fea",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -304,7 +326,7 @@
           "memberName": "Mark Johnson",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "19f53ab8-99e9-43c9-847b-f3e6a76a39ee",
+          "recordId": "138c0864-df07-41cc-b7be-c3ffff3c7cc7",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -316,7 +338,7 @@
           "memberName": "Angela N. King",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "bbe8ee45-7228-4d39-982b-9be6bf44e166",
+          "recordId": "bf810fd5-1d9d-422e-b1d9-32e43c56411e",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -328,7 +350,7 @@
           "memberName": "Matthew Kishman",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "7dbfff0c-0db3-43a1-9608-f20e0f2f2399",
+          "recordId": "f2096a00-5bc4-446b-a2e9-06422f398cd0",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -340,7 +362,7 @@
           "memberName": "Roy Klopfenstein",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "7c266dd1-e381-4785-befe-7922ac15804a",
+          "recordId": "8d49c6a4-897e-4b5d-a78d-fc5b6723ab4c",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -352,7 +374,19 @@
           "memberName": "Brian Lampton",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "e49fdcc7-7f1a-4c0b-a5c7-3e460b6310d4",
+          "recordId": "3d43adcb-729d-4d2a-83c0-55d5556d7a4f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "adbf64da-7d88-4b7c-8322-b1fd462fa2c4",
+          "candidateName": "Jeff LaRe",
+          "lpid": "rep_lare_jeff_1",
+          "memberName": "Jeff LaRe",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "0fa2b26a-0818-4b86-b570-631bdb1fea80",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -364,7 +398,7 @@
           "memberName": "Brian Lorenz",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "1a281b80-8382-4a5c-b29f-a1a6333432a6",
+          "recordId": "c4c7a38f-9e03-4cbc-84b4-a7f0cf7105aa",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -376,7 +410,7 @@
           "memberName": "Gayle Manning",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "ab8042a1-8444-4e3a-909b-f8934c6646f0",
+          "recordId": "fb90899b-4eef-445d-9d02-38ce0bfdbc6a",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -387,8 +421,8 @@
           "lpid": "rep_mathews_adam_1",
           "memberName": "Adam Mathews",
           "side": "yea",
-          "action": "insert",
-          "recordId": "c2e876bc-2cc4-4f70-95f1-7f16c42b0309",
+          "action": "unchanged",
+          "recordId": "0d8e4f21-8a99-4d61-9402-e1649a36d1c7",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -399,8 +433,8 @@
           "lpid": "rep_mathews_ty_1",
           "memberName": "Ty D. Mathews",
           "side": "yea",
-          "action": "insert",
-          "recordId": "e94c3cc8-db43-41d6-b8fd-c9a6b1a693cc",
+          "action": "unchanged",
+          "recordId": "4edd7d5a-521c-482d-8dd2-c963ec21a7d0",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -411,8 +445,8 @@
           "lpid": "rep_miller_kevin_1",
           "memberName": "Kevin D. Miller",
           "side": "yea",
-          "action": "insert",
-          "recordId": "83e1097a-e14b-4a89-94b1-221722bad893",
+          "action": "unchanged",
+          "recordId": "cb97667e-d542-456a-addb-62678e6c0020",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -423,20 +457,20 @@
           "lpid": "rep_miller_melanie_1",
           "memberName": "Melanie Miller",
           "side": "yea",
-          "action": "insert",
-          "recordId": "349967ec-57bd-4f3c-aea1-14fed8756e04",
+          "action": "unchanged",
+          "recordId": "a4e2b889-218b-40aa-835d-e2b09b082b14",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
         },
         {
-          "candidateId": "c95b7dff-4ebc-4fd3-99ce-533391d5bea1",
-          "candidateName": "Diane Mullins",
-          "lpid": "rep_mullins_diane_1",
-          "memberName": "Diane Mullins",
+          "candidateId": "4ddc508c-ab0a-44c0-b521-ce6ea435f81f",
+          "candidateName": "Ismail Mohamed",
+          "lpid": "rep_mohamed_ismail_1",
+          "memberName": "Ismail Mohamed",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "76baa7c3-b64b-4e09-bcf8-9c334f77cd30",
+          "recordId": "169162f5-0bea-4ef9-9961-099d0d5fc890",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -448,7 +482,7 @@
           "memberName": "Johnathan Newman",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "8ff069cc-b999-4f88-b5af-f94b825433c7",
+          "recordId": "ce1f569d-e27a-4a25-b4f5-dd4ea0e170f0",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -460,7 +494,7 @@
           "memberName": "Mike Odioso",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "c15ab7fa-7573-4674-a2e1-d1e4f09326c1",
+          "recordId": "af9dfaf8-1154-441d-86cc-638cf621cc20",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -472,7 +506,19 @@
           "memberName": "Bob Peterson",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "1c5d5433-9fef-4852-a32b-31f62b684a6a",
+          "recordId": "371eabfc-2878-4c65-a54f-5f7f9f848d3f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "bece28fb-fa58-4201-a8a1-8fa3be260394",
+          "candidateName": "Justin Pizzulli",
+          "lpid": "rep_pizzulli_justin_1",
+          "memberName": "Justin Pizzulli",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "20a1fc5a-e349-4460-be13-c109173d87e0",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -484,7 +530,7 @@
           "memberName": "Phil Plummer",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "5efac84f-3e8b-42c5-a52d-dc202504fd7d",
+          "recordId": "a47e96d6-6c3b-420b-84ce-a18672bc66df",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -496,7 +542,7 @@
           "memberName": "Kevin Ritter",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "50c97fbb-8c6d-4292-b343-815773f92245",
+          "recordId": "b3d2319c-e9a6-4ad7-afa5-41d310992452",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -508,7 +554,19 @@
           "memberName": "Monica Robb Blasdel",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "75dd571d-1800-48c0-a65c-67c5a09a4e6c",
+          "recordId": "b4d76005-b8b8-436c-97af-a966ddb8bde2",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "f7eefcd3-a726-46a6-86e9-04523169a1fb",
+          "candidateName": "Elgin Rogers Jr.",
+          "lpid": "rep_rogers_elgin_1",
+          "memberName": "Elgin Rogers, Jr.",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "18e147ca-eed7-4265-a08a-6b2d4de0c54d",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -520,7 +578,7 @@
           "memberName": "Jodi Salvo",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "88e779e5-077d-45b7-be0a-0c00f91e3e07",
+          "recordId": "9083e981-6208-4799-8719-f01fa8534fb2",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -532,7 +590,7 @@
           "memberName": "Nick Santucci",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "a2653d84-ced4-47be-9403-c8a984a0d4ff",
+          "recordId": "ed5c6fb3-0114-453c-986a-fa8fff294f16",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -544,7 +602,31 @@
           "memberName": "Jean Schmidt",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "2695f221-0e58-4c4d-af10-be7c9aed5a8c",
+          "recordId": "2b43a6d3-b7fd-4742-850e-61a55dbe9206",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "666b039e-0821-4ea6-9044-733083bba44f",
+          "candidateName": "Mark Sigrist",
+          "lpid": "rep_sigrist_mark_1",
+          "memberName": "Mark Sigrist",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "8784b5c4-5f1a-4249-950a-1ba544cd7aee",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "f33d3d90-f971-40fd-9923-89c6d880210a",
+          "candidateName": "Jason Stephens",
+          "lpid": "rep_stephens_jason_1",
+          "memberName": "Jason Stephens",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "bb0fa6f5-5e74-463b-a095-bfe6a87227fe",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -556,7 +638,7 @@
           "memberName": "Brian Stewart",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "7f5d4b18-55f2-4618-9e1a-5f12e6615087",
+          "recordId": "487b7703-1faa-41f2-ab8c-962c5a7c39f3",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -568,7 +650,19 @@
           "memberName": "D. J. Swearingen",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "c53fc6df-1b20-4998-a586-20322bcacb82",
+          "recordId": "89c65245-ea44-4ca3-9adc-7f0155c852a8",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "706cadeb-a3c4-4879-831b-69a0141c1fe9",
+          "candidateName": "Bride Rose Sweeney",
+          "lpid": "rep_sweeney_bride_rose_1",
+          "memberName": "Bride Rose Sweeney",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "302f4f46-ba3c-4a07-a453-2c5e52bafec6",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -579,8 +673,20 @@
           "lpid": "rep_teska_michelle_1",
           "memberName": "Michelle Teska",
           "side": "yea",
-          "action": "insert",
-          "recordId": "3a8e9b4a-508a-4383-a109-bfe56b7126d2",
+          "action": "unchanged",
+          "recordId": "1d279620-f342-476f-a9bb-bac5b7f6c4e1",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "2db08c83-fb42-44a8-a348-a4e3905fa448",
+          "candidateName": "Cecil Thomas",
+          "lpid": "rep_thomas_cecil_1",
+          "memberName": "Cecil Thomas",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "997b9b28-cae4-4959-8bdb-ae981cbe7fe0",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -591,8 +697,8 @@
           "lpid": "rep_thomas_david_1",
           "memberName": "David Thomas",
           "side": "yea",
-          "action": "insert",
-          "recordId": "cff04ded-f865-43ad-a083-d84b4eed5852",
+          "action": "unchanged",
+          "recordId": "c6127b64-a13e-46cf-8602-982a72dcded2",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -603,8 +709,8 @@
           "lpid": "rep_thomas_jim_1",
           "memberName": "Jim Thomas",
           "side": "yea",
-          "action": "insert",
-          "recordId": "880bf5b0-75dc-45bd-b2f7-c493dd2be832",
+          "action": "unchanged",
+          "recordId": "d90f998d-efc8-40ba-bcff-6720b6a73754",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -615,8 +721,8 @@
           "lpid": "rep_white_andrea_1",
           "memberName": "Andrea White",
           "side": "yea",
-          "action": "insert",
-          "recordId": "ff521649-041a-45e4-8d60-b0038fd217bf",
+          "action": "unchanged",
+          "recordId": "373d3e31-ec12-4e8d-9eca-91cbc5799594",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -628,7 +734,7 @@
           "memberName": "Bernard Willis",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "56686284-4dde-4abf-9b4f-b94f327bdcf6",
+          "recordId": "8378a539-67b1-486d-be19-b74f011bbefe",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -640,7 +746,7 @@
           "memberName": "Heidi Workman",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "0c5d4395-be2a-49bf-9f57-778b17b28cc2",
+          "recordId": "74043978-4780-4b07-9f7f-2709e0894e88",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -652,7 +758,19 @@
           "memberName": "Tom Young",
           "side": "yea",
           "action": "unchanged",
-          "recordId": "4813ee3a-2f57-4116-a106-c2419047fa21",
+          "recordId": "04d7c937-db9d-4821-b646-1358631ec4b6",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "8bc9b668-5713-4763-889f-d0ed3bbc1bf3",
+          "candidateName": "Ty Moore",
+          "lpid": "rep_moore_ty_1",
+          "memberName": "Ty Moore",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "0bcb4ea2-f07c-419d-ab39-651a4e59cf78",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -664,19 +782,7 @@
           "memberName": "Munira Abdullahi",
           "side": "nay",
           "action": "unchanged",
-          "recordId": "25a935c0-18f6-44fb-b7a6-d3d060d56367",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "2c64944c-d809-43b7-80b3-e8996777170c",
-          "candidateName": "Cindy Abrams",
-          "lpid": "rep_abrams_cindy_1",
-          "memberName": "Cindy Abrams",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "b175f4d4-ff52-4b81-b59a-07cafc5abb78",
+          "recordId": "8f13a63b-e0f9-47e3-9fdb-3f5ecfd3a56f",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -688,7 +794,7 @@
           "memberName": "Rachel B. Baker",
           "side": "nay",
           "action": "unchanged",
-          "recordId": "b6c1bd69-1ccc-4182-a30d-9b644e581a7b",
+          "recordId": "509685e7-539e-4ec7-9e18-c8b03d1c4b5f",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -700,7 +806,7 @@
           "memberName": "Sean P. Brennan",
           "side": "nay",
           "action": "unchanged",
-          "recordId": "ae4d8f32-3a62-435f-a708-c1b4dba1a97a",
+          "recordId": "c8f31687-97c7-4339-982a-676ef3dfedb3",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -712,7 +818,7 @@
           "memberName": "Darnell T. Brewer",
           "side": "nay",
           "action": "unchanged",
-          "recordId": "e07ca60a-40f1-496f-a873-32d3f8131fba",
+          "recordId": "15ff622b-00a0-4945-a030-3fca7f2bb249",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -724,7 +830,7 @@
           "memberName": "Karen Brownlee",
           "side": "nay",
           "action": "unchanged",
-          "recordId": "d42ffa0c-71e5-4343-b519-2f1aa264ce31",
+          "recordId": "9e414ef2-6ffd-4fd8-ab10-1f01b4d293ab",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -736,7 +842,7 @@
           "memberName": "Christine Cockley",
           "side": "nay",
           "action": "unchanged",
-          "recordId": "25ce7797-471b-4a97-8450-3976d77187dc",
+          "recordId": "d33a6c5e-116c-4878-b945-1d6b0f1221b8",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -748,7 +854,7 @@
           "memberName": "Chris Glassburn",
           "side": "nay",
           "action": "unchanged",
-          "recordId": "61ad938c-c5f1-4d07-b469-cf2a817bd345",
+          "recordId": "9b1fb5f0-badc-4d21-a64d-164d2a32fea9",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -760,19 +866,7 @@
           "memberName": "Michele Grim",
           "side": "nay",
           "action": "unchanged",
-          "recordId": "82d82d3c-d0ff-43c2-bb55-bb172e90ced2",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "7c3089b8-3698-45cd-b33b-3c2633c7e245",
-          "candidateName": "Derrick Hall",
-          "lpid": "rep_hall_derrick_1",
-          "memberName": "Derrick Hall",
-          "side": "nay",
-          "action": "insert",
-          "recordId": "9ae23bed-edd6-4b59-b1c2-d811f6e81c2c",
+          "recordId": "f50f0216-1dc9-471d-8ae1-8685fd9e5482",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -784,7 +878,7 @@
           "memberName": "Latyna M. Humphrey",
           "side": "nay",
           "action": "unchanged",
-          "recordId": "0dac2473-e84c-4750-b93c-c4351f0ce5cd",
+          "recordId": "72acdd60-aaac-4a32-a3ff-a073f71c7e02",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -796,7 +890,7 @@
           "memberName": "Dani Isaacsohn",
           "side": "nay",
           "action": "unchanged",
-          "recordId": "8cc73312-ca1a-4120-a3ba-41c7d6bc8431",
+          "recordId": "57f2423f-4aa3-418d-9cd3-d4e57726d9f1",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -808,7 +902,7 @@
           "memberName": "Meredith R. Lawson-Rowe",
           "side": "nay",
           "action": "unchanged",
-          "recordId": "320b954e-ac16-48bc-9873-2e488e7f1831",
+          "recordId": "7e3614e2-f600-4e93-abea-626d9006172f",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -820,7 +914,7 @@
           "memberName": "Crystal Lett",
           "side": "nay",
           "action": "unchanged",
-          "recordId": "87136fc2-bd4e-43f1-9bcb-a18302ff8693",
+          "recordId": "7d8da741-3999-4bfe-8753-0dc5e5bea9fa",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -831,8 +925,8 @@
           "lpid": "rep_miller_joe_1",
           "memberName": "Joseph A. Miller, III",
           "side": "nay",
-          "action": "insert",
-          "recordId": "f9161231-031d-491e-a8a1-3399056c2f08",
+          "action": "unchanged",
+          "recordId": "3b25bcec-2e96-4f46-82e4-4dcc16de91ce",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -844,7 +938,7 @@
           "memberName": "Beryl Brown Piccolantonio",
           "side": "nay",
           "action": "unchanged",
-          "recordId": "0cc892d9-e0bb-4d28-aaff-644daa8f86c7",
+          "recordId": "1cf3de77-2922-42fb-be25-a67b84f3a977",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -856,31 +950,7 @@
           "memberName": "Tristan Rader",
           "side": "nay",
           "action": "unchanged",
-          "recordId": "805b98e5-c34d-4b94-a7d4-73f3181ebed0",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "f7eefcd3-a726-46a6-86e9-04523169a1fb",
-          "candidateName": "Elgin Rogers Jr.",
-          "lpid": "rep_rogers_elgin_1",
-          "memberName": "Elgin Rogers, Jr.",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "babffaf7-16a1-45e9-aea0-be62b028dbe7",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "666b039e-0821-4ea6-9044-733083bba44f",
-          "candidateName": "Mark Sigrist",
-          "lpid": "rep_sigrist_mark_1",
-          "memberName": "Mark Sigrist",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "cba286f2-0e56-4400-b4c1-61eadd8cd006",
+          "recordId": "f42aab38-9582-4d9b-ab42-26c24f177122",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -892,43 +962,7 @@
           "memberName": "Veronica R. Sims",
           "side": "nay",
           "action": "unchanged",
-          "recordId": "2ac4f1f2-fb7f-4485-809d-685e29b03bcc",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "37973555-0363-483f-845c-5038d6115ffc",
-          "candidateName": "Anita Somani",
-          "lpid": "rep_somani_anita_1",
-          "memberName": "Anita Somani",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "b206fc69-8af2-495d-8e85-9ec6925ba832",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "f33d3d90-f971-40fd-9923-89c6d880210a",
-          "candidateName": "Jason Stephens",
-          "lpid": "rep_stephens_jason_1",
-          "memberName": "Jason Stephens",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "1acae357-4770-4854-84ad-71eb7324a517",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "706cadeb-a3c4-4879-831b-69a0141c1fe9",
-          "candidateName": "Bride Rose Sweeney",
-          "lpid": "rep_sweeney_bride_rose_1",
-          "memberName": "Bride Rose Sweeney",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "d283ea1e-1e58-4f83-89b2-6af167f3ebeb",
+          "recordId": "343f7bfc-1fbf-4618-8250-6d0e542288e3",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -940,19 +974,7 @@
           "memberName": "Eric Synenberg",
           "side": "nay",
           "action": "unchanged",
-          "recordId": "16473ff2-67a3-4827-9db0-bfdcfdbac849",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "2db08c83-fb42-44a8-a348-a4e3905fa448",
-          "candidateName": "Cecil Thomas",
-          "lpid": "rep_thomas_cecil_1",
-          "memberName": "Cecil Thomas",
-          "side": "nay",
-          "action": "insert",
-          "recordId": "6fdc539b-573c-481e-8c9b-2e8fa526b779",
+          "recordId": "b27d8b66-b7da-4cfb-9b5e-be2c787f526f",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -964,7 +986,7 @@
           "memberName": "Desiree Tims",
           "side": "nay",
           "action": "unchanged",
-          "recordId": "78c46d71-3341-49b2-99ca-6023bf402d6d",
+          "recordId": "33e0f5d8-65ad-4e72-8436-7b35e220ce77",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -976,7 +998,7 @@
           "memberName": "Daniel P. Troy",
           "side": "nay",
           "action": "unchanged",
-          "recordId": "87eaf2f1-442d-43d7-a0e1-7d097e1e8185",
+          "recordId": "c22c4640-c2d0-4e71-96bb-b3ec42683931",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -987,154 +1009,8 @@
           "lpid": "rep_white_erika_1",
           "memberName": "Erika White",
           "side": "nay",
-          "action": "insert",
-          "recordId": "ff57e039-a19f-48c0-8507-72b156a6ac0a",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        }
-      ],
-      "error": null
-    },
-    {
-      "file": "oh-senate-136-roll1743028529.json",
-      "chamber": "senate",
-      "generalAssembly": 136,
-      "roll": 1743028529,
-      "outcome": "imported",
-      "legislativeVoteId": "6e4bc261-27d3-460b-a0c5-d1049fe5bc84",
-      "reviewStatus": "approved",
-      "bill": "sb1",
-      "voteDate": "2025-03-26",
-      "measureId": "SB 1",
-      "question": "Concurred in House amendments",
-      "originRunId": "rollcall:OH:senate:136:1743028529:2026-08-24T06:30:28.488Z",
-      "members": 31,
-      "resolution": {
-        "unmatched_reviewed": 21,
-        "matched": 10
-      },
-      "actions": {
-        "unchanged": 10
-      },
-      "notified": 0,
-      "candidates": [
-        {
-          "candidateId": "4c95c67b-686a-4f22-bcd6-ecb199526fc7",
-          "candidateName": "Nathan Manning",
-          "lpid": "sen_manning_nathan_1",
-          "memberName": "Nathan H. Manning",
-          "side": "yea",
           "action": "unchanged",
-          "recordId": "d4bfd7bc-5056-435d-9fae-bd9aac66785e",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "ffbcb516-1dc3-42f0-82b5-227786402673",
-          "candidateName": "Al Landis",
-          "lpid": "sen_landis_al_1",
-          "memberName": "Al Landis",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "1b5752c4-dc5b-452d-99ea-70eaa83b8fca",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "dbe1026e-9a6f-46fe-9546-738ab147adab",
-          "candidateName": "Shane Wilkin",
-          "lpid": "sen_wilkin_shane_1",
-          "memberName": "Shane Wilkin",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "a40f1c6b-5947-4cea-a86e-967dff7158b7",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "ec02043c-3ae3-4ffd-8faf-d9889684ee40",
-          "candidateName": "Michele Reynolds",
-          "lpid": "sen_reynolds_michele_1",
-          "memberName": "Michele Reynolds",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "706fab0e-7709-400d-9d83-ae9e49c7b6e7",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "8caf8d80-e512-4e1c-a6de-9b4c2ef2347b",
-          "candidateName": "Alessandro Cutrona",
-          "lpid": "sen_cutrona_al_1",
-          "memberName": "Al Cutrona",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "0fb3efc6-99e8-42d0-aaaf-7a24aa0e0ea6",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "ee291a95-d9d0-4331-a764-ae6953835a43",
-          "candidateName": "Jane Timken",
-          "lpid": "sen_timken_jane_1",
-          "memberName": "Jane M. Timken",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "8f8d3be4-cf2b-4437-98e5-783d6383ae75",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "115484d9-dbd5-4298-b2fd-fa36be6d0878",
-          "candidateName": "Paula Hicks-Hudson",
-          "lpid": "sen_hicks_hudson_paula_1",
-          "memberName": "Paula Hicks-Hudson",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "087ac2ad-8dad-4355-ad41-619b7f6f4bac",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "60d1a890-7fe5-47e8-847d-d8b0d3f0dcda",
-          "candidateName": "William DeMora",
-          "lpid": "sen_demora_william_1",
-          "memberName": "William P. DeMora",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "40da028e-830b-47ef-bad1-61c6d728b259",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "0e903668-ddcb-44e0-84eb-c8db81a5ea4d",
-          "candidateName": "Kent Smith",
-          "lpid": "sen_smith_kent_1",
-          "memberName": "Kent Smith",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "6ba33254-7555-4c93-9678-ef059bbaf0bd",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "a580aab9-0607-4088-9ae5-a7239c2e274e",
-          "candidateName": "Catherine Ingram",
-          "lpid": "sen_ingram_catherine_1",
-          "memberName": "Catherine D. Ingram",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "cfef5c3c-5133-49d7-8ec9-b56be6a3e23b",
+          "recordId": "807c04a9-40c5-454b-b1b1-4f9423fddaba",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []

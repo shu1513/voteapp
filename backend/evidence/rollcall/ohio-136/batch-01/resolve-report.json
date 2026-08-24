@@ -1,7 +1,7 @@
 {
   "importerVersion": "rollcall-oh-resolve-v1",
-  "startedAt": "2026-08-24T05:07:47.619Z",
-  "finishedAt": "2026-08-24T05:07:47.706Z",
+  "startedAt": "2026-08-24T06:30:01.423Z",
+  "finishedAt": "2026-08-24T06:30:01.533Z",
   "generalAssembly": 136,
   "evidenceDir": "/Users/shu/voteApp/.claude/worktrees/caveman-ultra-58491f/backend/evidence/rollcall/ohio-136/batch-01",
   "scopeFrom": "2026-11-01",
@@ -9,7 +9,7 @@
   "rosterMembers": 134,
   "candidatePool": 239,
   "crosswalkFile": "/Users/shu/voteApp/.claude/worktrees/caveman-ultra-58491f/backend/evidence/rollcall/ohio-136/crosswalk.json",
-  "crosswalkEntries": 79,
+  "crosswalkEntries": 134,
   "crosswalkLpidsNotInRoster": [],
   "proposals": [
     {
@@ -2021,8 +2021,8 @@
   "files": 2,
   "fileErrors": 0,
   "counts": {
-    "matched": 74,
-    "no_crosswalk": 50
+    "matched": 89,
+    "unmatched_reviewed": 35
   },
   "rolls": [
     {
@@ -2032,8 +2032,8 @@
       "bill": "sb1",
       "members": 93,
       "counts": {
-        "matched": 64,
-        "no_crosswalk": 29
+        "matched": 79,
+        "unmatched_reviewed": 14
       },
       "matched": [
         {
@@ -2097,6 +2097,12 @@
           "candidateName": "Steve Demetriou"
         },
         {
+          "lpid": "rep_dovilla_mike_1",
+          "side": "yea",
+          "candidateId": "5e1e39f7-c8c6-4de1-ad4f-3e6339817edf",
+          "candidateName": "Mike Dovilla"
+        },
+        {
           "lpid": "rep_ferguson_ron_1",
           "side": "yea",
           "candidateId": "ab26adab-1741-4018-9bff-9b3ba45a8676",
@@ -2109,6 +2115,12 @@
           "candidateName": "Tex Fischer"
         },
         {
+          "lpid": "rep_arthur_sarah_1",
+          "side": "yea",
+          "candidateId": "ff059208-3186-4c29-8582-59e610d6f092",
+          "candidateName": "Sarah Fowler"
+        },
+        {
           "lpid": "rep_ghanbari_haraz_1",
           "side": "yea",
           "candidateId": "4864fe15-33ae-45f9-9bfb-4fa1f8fd54e7",
@@ -2119,6 +2131,12 @@
           "side": "yea",
           "candidateId": "2aaf9399-8f46-4308-9b21-ec13e620b129",
           "candidateName": "Jennifer Gross"
+        },
+        {
+          "lpid": "rep_hall_thomas_1",
+          "side": "yea",
+          "candidateId": "13d0f2fd-10d2-4929-a9c0-c108ab98988b",
+          "candidateName": "Thomas Hall"
         },
         {
           "lpid": "rep_hiner_mark_1",
@@ -2185,6 +2203,30 @@
           "side": "yea",
           "candidateId": "3f654575-c5ee-4536-b7e0-5e904cf9bc5a",
           "candidateName": "Gayle Manning"
+        },
+        {
+          "lpid": "rep_mathews_adam_1",
+          "side": "yea",
+          "candidateId": "250c57ad-3210-4ca3-86f1-eb1d83b3ef0e",
+          "candidateName": "Adam Mathews"
+        },
+        {
+          "lpid": "rep_mathews_ty_1",
+          "side": "yea",
+          "candidateId": "76b5af3f-8e88-42d3-8b02-9d5c9abab96e",
+          "candidateName": "Ty Mathews"
+        },
+        {
+          "lpid": "rep_miller_kevin_1",
+          "side": "yea",
+          "candidateId": "1fb5478e-c9d3-4d8e-a781-b658453adacf",
+          "candidateName": "Kevin Miller"
+        },
+        {
+          "lpid": "rep_miller_melanie_1",
+          "side": "yea",
+          "candidateId": "bc5f1e65-f06b-4c4b-8baf-64b2b36304ce",
+          "candidateName": "Melanie Miller"
         },
         {
           "lpid": "rep_mullins_diane_1",
@@ -2259,6 +2301,30 @@
           "candidateName": "D.J. Swearingen"
         },
         {
+          "lpid": "rep_teska_michelle_1",
+          "side": "yea",
+          "candidateId": "9029a3a3-cb8d-4562-88c0-8c5a28f98800",
+          "candidateName": "C. Michelle Teska"
+        },
+        {
+          "lpid": "rep_thomas_david_1",
+          "side": "yea",
+          "candidateId": "af859547-21b0-4eaf-8cd2-28122a4f2ed3",
+          "candidateName": "David Thomas"
+        },
+        {
+          "lpid": "rep_thomas_jim_1",
+          "side": "yea",
+          "candidateId": "cfdc8cbe-b57d-4a80-a92b-fb0d9cbc882a",
+          "candidateName": "Jim Thomas"
+        },
+        {
+          "lpid": "rep_white_andrea_1",
+          "side": "yea",
+          "candidateId": "df71d861-1f3b-469e-9178-3eb75cdb5ded",
+          "candidateName": "Andrea White"
+        },
+        {
           "lpid": "rep_willis_bernard_1",
           "side": "yea",
           "candidateId": "7970021b-8e2c-42e2-959e-e333f824be1a",
@@ -2331,6 +2397,12 @@
           "candidateName": "Michele Grim"
         },
         {
+          "lpid": "rep_hall_derrick_1",
+          "side": "nay",
+          "candidateId": "7c3089b8-3698-45cd-b33b-3c2633c7e245",
+          "candidateName": "Derrick Hall"
+        },
+        {
           "lpid": "rep_humphrey_latyna_1",
           "side": "nay",
           "candidateId": "f84c08e9-05cf-4532-99ee-f3c6ace8e7f4",
@@ -2353,6 +2425,12 @@
           "side": "nay",
           "candidateId": "2b7f908d-acc9-4e74-835d-a6419cc6c3c3",
           "candidateName": "Crystal Lett"
+        },
+        {
+          "lpid": "rep_miller_joe_1",
+          "side": "nay",
+          "candidateId": "6cbb945f-9491-46fa-b245-33589f97f160",
+          "candidateName": "Joe Miller"
         },
         {
           "lpid": "rep_piccolantonio_beryl_1",
@@ -2409,6 +2487,12 @@
           "candidateName": "Eric Synenberg"
         },
         {
+          "lpid": "rep_thomas_cecil_1",
+          "side": "nay",
+          "candidateId": "2db08c83-fb42-44a8-a348-a4e3905fa448",
+          "candidateName": "Cecil Thomas"
+        },
+        {
           "lpid": "rep_tims_desiree_1",
           "side": "nay",
           "candidateId": "43ab1dd0-41e0-4b25-b807-36848a56a31a",
@@ -2419,39 +2503,15 @@
           "side": "nay",
           "candidateId": "59e74cbe-8b18-4210-a586-af4dc1ecc46c",
           "candidateName": "Dan Troy"
+        },
+        {
+          "lpid": "rep_white_erika_1",
+          "side": "nay",
+          "candidateId": "ecfe34a6-4e3b-4e8f-89c4-4b9ba618428d",
+          "candidateName": "Erika White"
         }
       ],
-      "noCrosswalk": [
-        "rep_dovilla_mike_1",
-        "rep_arthur_sarah_1",
-        "rep_hall_thomas_1",
-        "rep_hoops_james_1",
-        "rep_jones_don_1",
-        "rep_lear_beth_1",
-        "rep_mathews_adam_1",
-        "rep_mathews_ty_1",
-        "rep_mcclain_riordan_1",
-        "rep_miller_kevin_1",
-        "rep_miller_melanie_1",
-        "rep_ray_sharon_1",
-        "rep_richardson_tracy_1",
-        "rep_roemer_bill_1",
-        "rep_teska_michelle_1",
-        "rep_thomas_david_1",
-        "rep_thomas_jim_1",
-        "rep_white_andrea_1",
-        "rep_williams_josh_1",
-        "rep_brent_juanita_1",
-        "rep_denson_sedrick_1",
-        "rep_hall_derrick_1",
-        "rep_jarrells_dontavius_1",
-        "rep_miller_joe_1",
-        "rep_oelslager_scott_1",
-        "rep_robinson_phil_1",
-        "rep_thomas_cecil_1",
-        "rep_upchurch_terrence_1",
-        "rep_white_erika_1"
-      ],
+      "noCrosswalk": [],
       "error": null
     },
     {
@@ -2461,7 +2521,7 @@
       "bill": "sb1",
       "members": 31,
       "counts": {
-        "no_crosswalk": 21,
+        "unmatched_reviewed": 21,
         "matched": 10
       },
       "matched": [
@@ -2526,29 +2586,7 @@
           "candidateName": "Catherine Ingram"
         }
       ],
-      "noCrosswalk": [
-        "sen_wilson_steve_1",
-        "sen_mccolley_robert_1",
-        "sen_huffman_stephen_1",
-        "sen_roegner_kristina_1",
-        "sen_gavarone_theresa_1",
-        "sen_schaffer_tim_1",
-        "sen_johnson_terry_1",
-        "sen_cirino_jerry_1",
-        "sen_romanchuk_mark_1",
-        "sen_reineke_bill_1",
-        "sen_obrien_sandra_1",
-        "sen_chavez_brian_1",
-        "sen_koehler_kyle_1",
-        "sen_manchester_susan_1",
-        "sen_craig_hearcel_1",
-        "sen_antonio_nickie_1",
-        "sen_blessing_louis_1",
-        "sen_blackshear_willis_1",
-        "sen_liston_beth_1",
-        "sen_patton_thomas_1",
-        "sen_weinstein_casey_1"
-      ],
+      "noCrosswalk": [],
       "error": null
     }
   ]

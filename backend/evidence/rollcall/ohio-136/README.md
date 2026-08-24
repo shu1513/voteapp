@@ -71,25 +71,125 @@ the worktree has no `backend/.env`.
 
 - `oh-legislators-136.json` — roster snapshot (134 members after dropping
   4 vacant-seat placeholder rows), fetched 2026-08-23.
-- `crosswalk.json` — 79 reviewed entries (74 same-district identities, 5
-  known cross-chamber candidacies including the Gayle/Nathan Manning seat
-  swap). Members without an entry are NOT yet reviewed: the remaining
-  active-roster members need a hand sweep (name variants such as
-  Mike/Michael Dovilla, members running for non-legislative offices)
-  before the full run claims completeness.
+- `crosswalk.json` — COMPLETE: all 134 roster members reviewed
+  (2026-08-24 sweep). 94 are mapped to candidates — 79 proposer pairs (74
+  same-district identities, 5 known cross-chamber candidacies including
+  the Gayle/Nathan Manning seat swap) plus 15 hand-verified pairs (the
+  twelve shared-surname members whose roster lastname is the
+  disambiguated "Hall, D." form, two first-name variants, one surname
+  variant) — and 40 carry an explicit null entry with its reason
+  (sixteen are even-numbered Senate districts, which are not on the
+  Nov-2026 ballot). A `no_crosswalk` count therefore means an lpid the
+  roster snapshot does not cover, not unreviewed work.
+- `CODE-FINDINGS.md` — two source changes the data run turned up, recorded
+  rather than made. Read this before extending the pipeline.
+- `survey/` — the full GA-136 fetch report (963 vote actions over all 1,477
+  bills and joint resolutions) and `divided-worklist.tsv`, one row per
+  divided kept floor vote with the batch that judged it or the reason it
+  stays pending. Raw survey evidence is not committed: each action is
+  re-fetchable and pinned by the `source_sha256` on its row, and the
+  judged ones are copied into their batch directory.
 - `batch-01/` — S.B. 1 (Advance Ohio Higher Education Act): House passage
-  59-34 and Senate concurrence 20-11 judged and imported → **74 records /
-  74 candidates / 74 tags**; re-run all `unchanged`. The Senate's initial
-  passage (Feb 12) stays pending under the phase-2 decisive-vote rule.
-  One hand retirement: Adam Bird's press-release copy of the same vote
-  (record `729b9fe5…`), superseded by his roll-call record `686cc780…`.
+  59-34 and Senate concurrence 20-11 judged and imported. The Senate's
+  initial passage (Feb 12) stays pending under the phase-2 decisive-vote
+  rule. One hand retirement: Adam Bird's press-release copy of the same
+  vote (record `729b9fe5…`), superseded by his roll-call record
+  `686cc780…`. Re-imported after the crosswalk sweep, which added exactly
+  the 15 newly mapped members → **89 records / 89 candidates**; the
+  committed rerun report is a post-import dry run showing all 89
+  `unchanged`.
+- `batch-02/` — 11 rolls over 9 bills, each written from that bill's LSC
+  analysis: S.B. 172 (immigration arrests), S.B. 293 (absentee deadline,
+  House passage + Senate concurrence, enacted), H.B. 88 (drug
+  trafficking), H.B. 485 (Baby Olivia Act), H.B. 492 (interfering with
+  traffic arrests, both chambers, enacted), H.B. 249 (adult cabaret
+  performance), H.B. 252 (burglary), H.B. 347 (SHE WINS Act), S.B. 278
+  (damages against municipal gun controls) → **579 records**; re-run all
+  `unchanged`. Latyna Humphrey's press release condemning S.B. 293 was
+  flagged related and KEPT: it reports her public opposition, not how she
+  voted, so it is a distinct claim (the phase-1 Grijalva rule).
+
+- `batch-03/` — 6 rolls over 5 bills: H.B. 126 (public nuisance suits over
+  product sales), H.B. 503 (municipal income tax reciprocity credit),
+  H.B. 92 (utility liens and shutoffs on rental property), H.B. 319
+  (Clinical Teaching Subsidy Reform Act), and H.B. 173 (submetering
+  exemption, Senate passage + House concurrence, vetoed 2026-06-24) →
+  **410 records**; re-run all `unchanged`. Two same-day rows were flagged
+  related and kept — both describe different votes that day (Ghanbari on
+  the capital budget, Bryant Bailey on S.J.R. 10).
+
+- `batch-04/` — 4 rolls over 2 bills, judged on the REVIEWER'S explicit
+  direction call (2026-08-24), the hand-add path the plan reserves for
+  contested rolls: S.B. 56 (marijuana rewrite, both chambers' conference
+  reports, signed into law — the Senate's initial passage yields to the
+  decisive vote) filed under `public_safety_and_crime_control` yea=for,
+  and S.B. 50 (teen work hours, both chambers, vetoed) under
+  `corporate_accountability` yea=against, matching the phase-2
+  labor-rules precedent → **171 records**; re-run all `unchanged`. Both
+  related flags were distinct claims and kept (the batch-02 S.B. 293
+  press release again, and Humphrey's vote on S.C.R. 3 — a different
+  measure with its own citation).
+
+- `batch-05/` — H.B. 116 (Ohio Blockchain Basics Act, House passage
+  70-26), filed under `general` with NO stance on the reviewer's call
+  (2026-08-24): the record states what the vote was and takes no side,
+  since no research area covers digital assets at any stance → **81
+  records**; re-run all `unchanged`. Judgment revised same day after
+  review: the LSC summary bullet's grammar made the first wording read
+  as an anti-seizure rule, but the detailed analysis is explicit that
+  the INDIVIDUAL is the custody actor (governments may not impair a
+  person's ability to self-custody); all 81 records rewritten in place,
+  row ids kept.
+
+Totals after batch-05: **1,330 live `rollcall_import` records across 94
+Ohio candidates, 1,330 area tags, 24 approved roll calls** of the 466
+kept floor votes (472 rows stored: 466 kept, 2 excluded procedural, 4
+unknown joint-resolution actions), spanning ten stance areas plus
+`general`.
+
+## The judging gate
+
+Same as phase 2: a roll is judged only when the vote was **divided** (the
+losing side at least a quarter of the winning side) **and** a research
+area fits it without inventing a direction, with the bill's LSC analysis
+on file to write from. Of 466 kept floor votes, 66 are divided. All 66
+have now been read and dispositioned: **24 judged**, 42 pending, each
+with its reason in the worklist — 18 contested-direction, 8
+appropriations (H.B. 96, H.B. 730 — no research area maps onto a vote to
+fund the government), 4 superseded by the decisive vote in the same
+chamber, 3 omnibus, 3 mixed-direction, 2 stale-title vehicles, 2 trivia,
+2 too thin. The three no-fitting-area bills were resolved by reviewer
+calls: marijuana and teen work hours got direction calls in batch-04,
+and H.B. 116 (digital assets) went into `general` with no stance in
+batch-05 — the precedent for divided votes worth recording where no
+honest direction exists.
+
+The large contested-direction group is mostly Ohio's property-tax
+mechanics (H.B. 129, 186, 309, 335): they cut owners' bills and school
+revenue at the same time, so neither `cost_of_living_reduction` nor
+`public_education_quality` can be assigned without picking a side the
+analysis does not.
+
+Ohio-specific hazards found while judging, all caught by reading the LSC
+analysis rather than the title:
+
+- **Titles go stale on vehicle bills.** H.B. 472 is listed as "Waive ID,
+  birth certificate fees for homeless individuals"; its final analysis is
+  a mail-voting photo-ID bill. Phase 2's rule carries over — judge the
+  version the analysis on file describes, or leave it pending.
+- **Titles mislead about subject.** H.B. 5, the "Repeat Offender Act", is
+  a weapons-under-disability bill.
+- **"Would have" means it did not take effect.** LSC writes final
+  analyses of vetoed or unadopted provisions in the past conditional.
 
 ## Next
 
-1. Survey: `rollcall:oh:fetch --ga 136 --all-kept` (~1,477 hb/sb/hjr/sjr
-   bills, ~8 minutes at the default delay) into `survey/`, then read the
-   report's `unknownActions` before trusting the classifier vocabulary.
-2. Crosswalk hand sweep for the unreviewed active members.
-3. Judge divided floor votes batch by batch — same gate as phase 2
-   (divided = loser ≥ ¼ of winner, a research area that fits without
-   inventing a direction, LSC analysis on file).
+1. Nothing is left unexamined in the divided set. Reopening any pending
+   roll means disagreeing with a recorded reason, not doing new triage.
+   The 400 near-unanimous kept floor votes are the only untouched
+   material, and phase 2's gate excludes them by design.
+2. Act on `CODE-FINDINGS.md` — item 1 blocks a voter-ID constitutional
+   amendment (S.J.R. 10) from ever being judged.
+3. H.B. 184's two same-day House concurrence votes are stored nowhere by
+   design; if that bill matters, it needs the action-specific identity
+   the surrogate roll number cannot give.
