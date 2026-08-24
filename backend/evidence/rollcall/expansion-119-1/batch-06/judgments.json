@@ -18,23 +18,6 @@
       ]
     },
     {
-      "chamber": "house",
-      "congress": 119,
-      "session": 1,
-      "roll": 279,
-      "measure_id": "H R 1047",
-      "vote_date": "2025-09-18",
-      "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 1047, the GRID Power Act, which directed federal energy regulators to move dispatchable power plants, mainly fossil-fuel generation, to the front of the queue for connecting to the electric grid. It passed the House 216-206.",
-      "nay_description": "Voted against passing H.R. 1047, the GRID Power Act, which directed federal energy regulators to move dispatchable power plants, mainly fossil-fuel generation, to the front of the queue for connecting to the electric grid. It passed the House 216-206.",
-      "labels": [
-        {
-          "slug": "environment_and_public_health",
-          "yea": "against"
-        }
-      ]
-    },
-    {
       "chamber": "senate",
       "congress": 119,
       "session": 1,
