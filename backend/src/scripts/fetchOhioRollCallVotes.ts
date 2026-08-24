@@ -146,6 +146,48 @@ async function fetchOhioJsonWithRetry(url: string, delayMs: number): Promise<unk
   }
 }
 
+type Queryable = Pick<Pool, "query">;
+
+export type ParkedKeptVote = { id: string; rollNumber: number; reviewStatus: string; parked: boolean };
+
+/**
+ * Durable half of a same-day collision (the feed grows: a second kept vote
+ * can appear AFTER the first was stored, judged, or even imported — the
+ * preflight only sees what one fetch sees). Stored kept rows for the
+ * colliding (chamber, bill, day) are made non-importable in place:
+ * pending rows get is_floor_vote = NULL, which the approval CHECK turns
+ * into "cannot be approved" (and the normal upsert restores the flag if a
+ * later fetch shows the collision was a journal artifact). Approved rows
+ * are only REPORTED — the freeze trigger guards them and the importer
+ * never withdraws records, so resolving one is human work, exactly like a
+ * federal approved_conflict.
+ */
+export async function parkStoredKeptVotes(
+  db: Queryable,
+  key: { chamber: LegislativeVoteChamber; session: string; measureId: string; voteDate: string }
+): Promise<ParkedKeptVote[]> {
+  const stored = await db.query<{ id: string; roll_number: number; review_status: string }>(
+    `SELECT id, roll_number, review_status
+       FROM legislative_votes
+      WHERE jurisdiction = $1 AND chamber = $2 AND session = $3
+        AND measure_id = $4 AND vote_date = $5::date
+        AND is_floor_vote = true`,
+    [OHIO_JURISDICTION, key.chamber, key.session, key.measureId, key.voteDate]
+  );
+  const parked: ParkedKeptVote[] = [];
+  for (const row of stored.rows) {
+    let didPark = false;
+    if (row.review_status === "pending") {
+      await db.query(`UPDATE legislative_votes SET is_floor_vote = NULL WHERE id = $1 AND review_status = 'pending'`, [
+        row.id,
+      ]);
+      didPark = true;
+    }
+    parked.push({ id: row.id, rollNumber: row.roll_number, reviewStatus: row.review_status, parked: didPark });
+  }
+  return parked;
+}
+
 /** Every hb/sb/hjr/sjr bill number in the General Assembly's legislation list. */
 export function keptBillNumbers(legislationList: unknown): string[] {
   if (typeof legislationList !== "object" || legislationList === null) {
@@ -329,6 +371,15 @@ async function main(): Promise<void> {
           if (classification.isFloorVote === true && collidingDays.has(`${chamber}:${voteDate}`)) {
             row.outcome = "collision";
             row.error = `${bill} has two kept floor votes in the ${chamber} on ${voteDate}; the per-bill source URL cannot tell them apart`;
+            // The feed may have grown since one of them was stored; park
+            // what the queue already holds for this day.
+            if (pool) {
+              for (const parked of await parkStoredKeptVotes(pool, { chamber, session, measureId, voteDate })) {
+                row.error += parked.parked
+                  ? `; stored pending row ${parked.id} (roll ${parked.rollNumber}) parked (is_floor_vote cleared)`
+                  : `; stored ${parked.reviewStatus} row ${parked.id} (roll ${parked.rollNumber}) needs human re-review — its records may describe the wrong one of the two votes`;
+              }
+            }
             continue;
           }
           const rollKey = `${chamber}:${roll}`;

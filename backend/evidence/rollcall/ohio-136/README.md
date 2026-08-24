@@ -32,7 +32,13 @@ the worktree has no `backend/.env`.
   seconds — deterministic from the source, unique per chamber, int4-safe
   until 2038. The fetcher refuses collisions and refuses two kept floor
   votes of one chamber on one bill and day (the per-bill source URL could
-  not tell them apart).
+  not tell them apart) — both members of a colliding pair are rejected
+  before anything stores, and because the feed grows between fetches, a
+  stored PENDING kept row for a newly colliding day is parked in place
+  (`is_floor_vote` cleared, so it cannot be approved; the normal upsert
+  restores it if the collision turns out to be a journal artifact), while
+  an APPROVED one is reported for human re-review like a federal
+  approved_conflict.
 - **Committee-ness comes from the action code, never `cmte_name`.** A
   conference-report FLOOR vote carries the conference committee's name.
   `crpt_*`/`refer_*` are committee; `pass_300`, `msg_507`, `concur_606`,
