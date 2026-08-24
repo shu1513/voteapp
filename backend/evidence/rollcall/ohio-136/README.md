@@ -124,9 +124,15 @@ the worktree has no `backend/.env`.
   press release again, and Humphrey's vote on S.C.R. 3 — a different
   measure with its own citation).
 
-Totals after batch-04: **1,249 live `rollcall_import` records across 94
-Ohio candidates, 1,249 area tags, 23 approved roll calls** of 472
-queued, spanning ten research areas.
+- `batch-05/` — H.B. 116 (Ohio Blockchain Basics Act, House passage
+  70-26), filed under `general` with NO stance on the reviewer's call
+  (2026-08-24): the record states what the vote was and takes no side,
+  since no research area covers digital assets at any stance → **81
+  records**; re-run all `unchanged`.
+
+Totals after batch-05: **1,330 live `rollcall_import` records across 94
+Ohio candidates, 1,330 area tags, 24 approved roll calls** of 472
+queued, spanning ten stance areas plus `general`.
 
 ## The judging gate
 
@@ -134,15 +140,16 @@ Same as phase 2: a roll is judged only when the vote was **divided** (the
 losing side at least a quarter of the winning side) **and** a research
 area fits it without inventing a direction, with the bill's LSC analysis
 on file to write from. Of 466 kept floor votes, 66 are divided. All 66
-have now been read and dispositioned: **23 judged**, 43 pending, each
+have now been read and dispositioned: **24 judged**, 42 pending, each
 with its reason in the worklist — 18 contested-direction, 8
 appropriations (H.B. 96, H.B. 730 — no research area maps onto a vote to
 fund the government), 4 superseded by the decisive vote in the same
 chamber, 3 omnibus, 3 mixed-direction, 2 stale-title vehicles, 2 trivia,
-2 too thin, and 1 no-fitting-area (H.B. 116, digital assets — no
-research area covers them at any stance). The marijuana and teen-work
-rolls originally parked as no-fitting-area were filed in batch-04 on the
-reviewer's explicit direction call.
+2 too thin. The three no-fitting-area bills were resolved by reviewer
+calls: marijuana and teen work hours got direction calls in batch-04,
+and H.B. 116 (digital assets) went into `general` with no stance in
+batch-05 — the precedent for divided votes worth recording where no
+honest direction exists.
 
 The large contested-direction group is mostly Ohio's property-tax
 mechanics (H.B. 129, 186, 309, 335): they cut owners' bills and school

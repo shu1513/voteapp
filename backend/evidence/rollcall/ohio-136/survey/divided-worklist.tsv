@@ -12,7 +12,7 @@ n	vote_date	chamber	bill	measure_id	roll	yeas	nays	question	status
 11	2025-05-21	house	hb5	HB 5	1747870004	71	24	Passed	pending:mixed-direction (weapons-under-disability: raises some penalties, widens relief from disability)
 12	2025-06-11	senate	hb96	HB 96	1749692727	23	10	Passed	pending:appropriations
 13	2025-06-18	senate	sb4	SB 4	1750284927	24	8	Passed	pending:thin (summary is one line cross-referencing H.B. 96)
-14	2025-06-18	house	hb116	HB 116	1750287866	70	26	Passed	pending:no-fitting-area (digital assets; no research area covers them at any stance)
+14	2025-06-18	house	hb116	HB 116	1750287866	70	26	Passed	batch-05 (reviewer call 2026-08-24: general, no stance)
 15	2025-06-18	senate	sb172	SB 172	1750290051	23	8	Passed	batch-02
 16	2025-06-25	senate	hb96	HB 96	1750898160	23	10	Conference report agreed to	pending:appropriations
 17	2025-06-25	house	hb96	HB 96	1750902626	59	38	Conference report agreed to	pending:appropriations
