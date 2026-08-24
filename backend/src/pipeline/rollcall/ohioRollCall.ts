@@ -246,6 +246,34 @@ export function ohioKeptFloorDayCollisions(voteActions: readonly OhioAction[], m
   return new Set([...keptPerDay.entries()].filter(([, count]) => count > 1).map(([key]) => key));
 }
 
+const COMMITTEE_PREFLIGHT_PREFIXES = ["crpt_", "refer_"];
+
+/**
+ * Preflight for one bill's vote actions: the `chamber:roll` surrogate keys
+ * shared by MORE than one storable (non-committee) action. Ohio's surrogate
+ * roll number is the occurred second, so two distinct same-bill actions
+ * stamped the same second would silently fold into ONE legislative_votes
+ * row and one evidence file — the upsert would read the second as a
+ * republication of the first. The fetcher stores NEITHER. Actions this
+ * preflight cannot read are skipped here; the per-action loop reports them.
+ */
+export function ohioDuplicateRollKeys(voteActions: readonly OhioAction[]): Set<string> {
+  const owners = new Map<string, number>();
+  for (const action of voteActions) {
+    const actionCode = typeof action.action_code === "string" ? action.action_code : "";
+    if (COMMITTEE_PREFLIGHT_PREFIXES.some((prefix) => actionCode.startsWith(prefix))) {
+      continue;
+    }
+    try {
+      const key = `${ohioActionChamber(action)}:${ohioRollNumber(action)}`;
+      owners.set(key, (owners.get(key) ?? 0) + 1);
+    } catch {
+      continue;
+    }
+  }
+  return new Set([...owners.entries()].filter(([, count]) => count > 1).map(([key]) => key));
+}
+
 /**
  * The stored hash pins the ACTION ELEMENT as fetched, not the whole feed
  * response: a bill's actions array keeps growing after our fetch (the

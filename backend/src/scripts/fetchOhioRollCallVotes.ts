@@ -18,6 +18,7 @@ import {
   ohioActionVoteDate,
   ohioActionsUrl,
   ohioDisplayUrl,
+  ohioDuplicateRollKeys,
   ohioEvidenceFileName,
   ohioKeptFloorDayCollisions,
   ohioLegislationListUrl,
@@ -276,6 +277,9 @@ async function main(): Promise<void> {
       // votes — rejecting only the second would leave the first, equally
       // indistinguishable, in the queue.
       const collidingDays = ohioKeptFloorDayCollisions(voteActions, measure);
+      // Two distinct same-bill actions sharing one surrogate roll would
+      // silently fold into one row and one evidence file; reject both.
+      const duplicateRolls = ohioDuplicateRollKeys(voteActions);
 
       for (const action of voteActions) {
         const actionCode = typeof action.action_code === "string" ? action.action_code : "";
@@ -328,8 +332,15 @@ async function main(): Promise<void> {
             continue;
           }
           const rollKey = `${chamber}:${roll}`;
+          if (duplicateRolls.has(rollKey)) {
+            row.outcome = "collision";
+            row.error = `${bill} has two vote actions stamped ${roll} (${chamber}); they would fold into one row`;
+            continue;
+          }
+          // Same-bill repeats are preflighted above, so any repeat here is
+          // another bill claiming the key.
           const owner = rollOwner.get(rollKey);
-          if (owner !== undefined && owner !== bill) {
+          if (owner !== undefined) {
             row.outcome = "collision";
             row.error = `roll ${roll} (${chamber}) already belongs to ${owner} in this run`;
             continue;

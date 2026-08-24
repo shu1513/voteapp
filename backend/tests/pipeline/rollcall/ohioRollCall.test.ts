@@ -9,6 +9,7 @@ import {
   ohioActionsUrl,
   ohioActionVoteDate,
   ohioDisplayUrl,
+  ohioDuplicateRollKeys,
   ohioEvidenceFileName,
   ohioKeptFloorDayCollisions,
   ohioMeasureId,
@@ -179,5 +180,37 @@ describe("ohioKeptFloorDayCollisions", () => {
     expect(
       ohioKeptFloorDayCollisions([kept("House", "day010_h_20250301"), { action_code: "pass_300", chamber: "Joint" }], hb)
     ).toEqual(new Set());
+  });
+});
+
+describe("ohioDuplicateRollKeys", () => {
+  const action = (chamber: string, occurred: string, code = "pass_300") => ({
+    action_code: code,
+    chamber,
+    occurred,
+    yeas: ["rep_a_1"],
+    nays: [],
+  });
+
+  it("flags a surrogate roll shared by two distinct same-bill actions, even kept + excluded", () => {
+    expect(ohioDuplicateRollKeys([action("House", "2025-03-01T10:00:00-05:00"), action("House", "2025-03-01T10:05:00-05:00")])).toEqual(
+      new Set()
+    );
+    // A kept passage and an excluded refused-concur stamped the same second
+    // would fold into one row; both must be rejected.
+    const key = `house:${Date.parse("2025-03-01T15:00:00Z") / 1000}`;
+    expect(
+      ohioDuplicateRollKeys([action("House", "2025-03-01T10:00:00-05:00"), action("House", "2025-03-01T10:00:00-05:00", "msg_506")])
+    ).toEqual(new Set([key]));
+    // Same second in different chambers is two different keys.
+    expect(
+      ohioDuplicateRollKeys([action("House", "2025-03-01T10:00:00-05:00"), action("Senate", "2025-03-01T10:00:00-05:00")])
+    ).toEqual(new Set());
+    // Committee actions are never stored, so they never collide.
+    expect(
+      ohioDuplicateRollKeys([action("House", "2025-03-01T10:00:00-05:00"), action("House", "2025-03-01T10:00:00-05:00", "crpt_301")])
+    ).toEqual(new Set());
+    // An unreadable action is the per-action loop's problem.
+    expect(ohioDuplicateRollKeys([action("House", "2025-03-01T10:00:00-05:00"), { action_code: "pass_300" }])).toEqual(new Set());
   });
 });

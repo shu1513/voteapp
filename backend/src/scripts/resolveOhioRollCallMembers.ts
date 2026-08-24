@@ -126,7 +126,12 @@ async function main(): Promise<void> {
     rosterRaw = JSON.parse(readFileSync(rosterSource, "utf8")) as unknown;
   } else {
     rosterSource = ohioLegislatorsUrl(generalAssembly);
-    const response = await fetch(rosterSource, { headers: { accept: "application/json" } });
+    // Same 30s abort every other Ohio GET uses; a stalled roster request
+    // must not hang the run.
+    const response = await fetch(rosterSource, {
+      headers: { accept: "application/json" },
+      signal: AbortSignal.timeout(30_000),
+    });
     if (!response.ok) {
       throw new Error(`${rosterSource} answered ${response.status}`);
     }
