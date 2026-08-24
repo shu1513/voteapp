@@ -1171,18 +1171,17 @@ export function ElectionPage() {
             className="sticky bottom-3 z-30 mt-6 rounded-xl border border-line bg-white p-3 shadow-lg"
           >
             {/* Measure-side "Pick by my issues": answers Yes/No from the measure's
-                issue tags. Lives in the same card as the Yes/No pair — the
-                card is the page's one pick control. Same key rationale as
-                the office control: the route element survives rail walks. */}
-            <div className="mb-2">
-              <AutoPickControl key={data.id} electionId={data.id} seatsToFill={null} />
-            </div>
+                issue tags. Rides the same row as the Yes/No pair (trailing
+                slot, inline mode) — the card is the page's one pick control
+                and the decision is one row. Same key rationale as the office
+                control: the route element survives rail walks. */}
             <MeasureChoiceButtons
               electionId={data.id}
               raceTitle={data.official_ballot_title}
               electionDate={data.election_date}
               choice={myChoice}
               fullWidth
+              trailing={<AutoPickControl key={data.id} electionId={data.id} seatsToFill={null} inline />}
             />
             {/* Back link only for election-list arrivals — a My-Picks
                 arrival would get a back link and a draft link to the same

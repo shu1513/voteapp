@@ -291,4 +291,98 @@ describe("AutoPickControl", () => {
     expect(panel).toHaveTextContent("Vote No — this measure goes against an issue you drew a line on.");
     expect(panel).toHaveTextContent("Climate · conflicts");
   });
+
+  // The two measure no-answer flavors are distinct outcomes with distinct
+  // remedies — the panel must say which one happened.
+  it("tells a measure voter the measure isn't tagged with their issues", async () => {
+    stubApiRoutes({
+      "/api/me": { body: { user: SIGNED_IN } },
+      "/api/me/research-area-preferences": { body: THREE_PREFERENCES },
+      "/api/me/election-choices": { body: { choices: [] } },
+      "/api/me/auto-picks": {
+        body: {
+          results: [
+            pickedResult({
+              race_type: "ballot_measure",
+              outcome: "no_pick",
+              reason: "insufficient_evidence",
+              picked_candidate_ids: [],
+              candidates: [],
+              measure_per_issue: [],
+              unresearched: [],
+            }),
+          ],
+        },
+      },
+    });
+    renderControl();
+    await clickPickForMe();
+    const panel = await screen.findByRole("region", { name: "Why this pick" });
+    expect(panel).toHaveTextContent("No answer — this measure isn't tagged with any of your issues yet.");
+  });
+
+  it("tells a measure voter when their issues cancel out", async () => {
+    stubApiRoutes({
+      "/api/me": { body: { user: SIGNED_IN } },
+      "/api/me/research-area-preferences": { body: THREE_PREFERENCES },
+      "/api/me/election-choices": { body: { choices: [] } },
+      "/api/me/auto-picks": {
+        body: {
+          results: [
+            pickedResult({
+              race_type: "ballot_measure",
+              outcome: "no_pick",
+              reason: "insufficient_evidence",
+              picked_candidate_ids: [],
+              candidates: [],
+              measure_per_issue: [
+                { research_area_id: AREA_HOUSING, net: 1 },
+                { research_area_id: AREA_CLIMATE, net: -1 },
+              ],
+              unresearched: [],
+            }),
+          ],
+        },
+      },
+    });
+    renderControl();
+    await clickPickForMe();
+    const panel = await screen.findByRole("region", { name: "Why this pick" });
+    expect(panel).toHaveTextContent(
+      "No answer — this measure helps some of your issues and hurts others about equally, so it's your call."
+    );
+    expect(panel).toHaveTextContent("Housing · aligned");
+    expect(panel).toHaveTextContent("Climate · conflicts");
+  });
+
+  // Race-type-independent reasons must survive the measure branch: a
+  // failed preferences fetch defers the issue floor to the backend, and
+  // "isn't tagged" would misdirect a voter who needs to rank issues.
+  it("renders the backend issue floor on a measure, not the tagging message", async () => {
+    stubApiRoutes({
+      "/api/me": { body: { user: SIGNED_IN } },
+      "/api/me/research-area-preferences": apiError(500, "internal_error", "boom"),
+      "/api/me/election-choices": { body: { choices: [] } },
+      "/api/me/auto-picks": {
+        body: {
+          results: [
+            pickedResult({
+              race_type: "ballot_measure",
+              outcome: "no_pick",
+              reason: "too_few_issues",
+              picked_candidate_ids: [],
+              candidates: [],
+              measure_per_issue: [],
+              unresearched: [],
+            }),
+          ],
+        },
+      },
+    });
+    renderControl();
+    await clickPickForMe();
+    const panel = await screen.findByRole("region", { name: "Why this pick" });
+    expect(panel).toHaveTextContent("Rank at least 3 issues first");
+    expect(panel).not.toHaveTextContent("isn't tagged");
+  });
 });

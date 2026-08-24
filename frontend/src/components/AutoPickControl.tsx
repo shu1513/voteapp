@@ -26,6 +26,10 @@ type AutoPickControlProps = {
    * pass null for measures. Lets the panel flag a partial fill: "picked"
    * with fewer names than seats must not read as a finished race. */
   seatsToFill: number | null;
+  /** Render as `display: contents` so the button joins the parent's flex row
+   * (the measure card's "My pick: Yes/No" row) while the prompts and the
+   * "Why this pick" panel — all w-full — wrap onto their own lines. */
+  inline?: boolean;
 };
 
 function joinNames(names: string[]): string {
@@ -35,7 +39,7 @@ function joinNames(names: string[]): string {
   return `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
 }
 
-export function AutoPickControl({ electionId, seatsToFill }: AutoPickControlProps) {
+export function AutoPickControl({ electionId, seatsToFill, inline = false }: AutoPickControlProps) {
   const { me } = useMe();
   const { preferences, isLoading: preferencesLoading, isError: preferencesError } = useMyResearchAreas();
   const autoPick = useAutoPick();
@@ -68,7 +72,7 @@ export function AutoPickControl({ electionId, seatsToFill }: AutoPickControlProp
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className={inline ? "contents" : "flex flex-col gap-2"}>
       <span>
         <button
           type="button"
@@ -84,7 +88,7 @@ export function AutoPickControl({ electionId, seatsToFill }: AutoPickControlProp
         </button>
       </span>
       {prompt === "sign_in" ? (
-        <p role="status" className="rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink-mid">
+        <p role="status" className="w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink-mid">
           Sign up for free to see which candidates align with the issues important to me.{" "}
           <Link to="/register" className="font-medium underline decoration-dotted underline-offset-2 hover:text-ink">
             Sign up
@@ -96,7 +100,7 @@ export function AutoPickControl({ electionId, seatsToFill }: AutoPickControlProp
         </p>
       ) : null}
       {prompt === "rank_issues" ? (
-        <p role="status" className="rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink-mid">
+        <p role="status" className="w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink-mid">
           Rank at least {MIN_AUTO_PICK_ISSUES} issues first, so the pick reflects what matters to you.{" "}
           <Link
             to="/me/settings"
@@ -107,7 +111,7 @@ export function AutoPickControl({ electionId, seatsToFill }: AutoPickControlProp
         </p>
       ) : null}
       {autoPick.isError && !autoPick.isPending ? (
-        <p role="alert" className="text-sm font-medium text-red-800">
+        <p role="alert" className="w-full text-sm font-medium text-red-800">
           {autoPick.error instanceof ApiError
             ? autoPick.error.message
             : "Couldn't run the pick — check your connection and try again."}
@@ -141,6 +145,16 @@ function candidateName(result: AutoPickElectionResult, candidateId: string): str
 // Headline sentence per outcome/reason — the honest summary the spec
 // requires ("no pick" is a normal outcome, and saying why is the feature).
 function summarize(result: AutoPickElectionResult, seatsToFill: number | null): string {
+  // Race-type-independent "couldn't run" reasons come before the fork: a
+  // measure result carries them too (with an empty per-issue list), and
+  // letting the measure branch see one would mislabel a rank-your-issues
+  // problem as a tagging gap.
+  if (result.reason === "too_few_issues") {
+    return `Rank at least ${MIN_AUTO_PICK_ISSUES} issues first, so the pick reflects what matters to you.`;
+  }
+  if (result.reason === "election_closed") {
+    return "This election is no longer open for picks.";
+  }
   const shortlist = joinNames(result.shortlist_candidate_ids.map((id) => candidateName(result, id)));
   if (result.race_type === "ballot_measure") {
     if (result.reason === "veto") {
@@ -152,7 +166,14 @@ function summarize(result: AutoPickElectionResult, seatsToFill: number | null): 
     if (result.measure_position === "no") {
       return "Vote No — this measure goes against your issues overall.";
     }
-    return "No answer: this measure isn't tagged with your issues, or the sides balance out.";
+    // Two distinct "no answer" cases, and the user deserves to know which:
+    // an empty per-issue list means the measure shares no tags with their
+    // ranked issues; a non-empty list with no position means the weighted
+    // sides cancelled out (the chips below show the split).
+    if (result.measure_per_issue.length === 0) {
+      return "No answer — this measure isn't tagged with any of your issues yet.";
+    }
+    return "No answer — this measure helps some of your issues and hurts others about equally, so it's your call.";
   }
   if (result.outcome === "picked") {
     const picked = joinNames(result.picked_candidate_ids.map((id) => candidateName(result, id)));
@@ -180,10 +201,6 @@ function summarize(result: AutoPickElectionResult, seatsToFill: number | null): 
         : "No pick: every candidate with a record here works against your issues.";
     case "all_vetoed":
       return "No pick: every candidate goes against one of your musts.";
-    case "too_few_issues":
-      return `Rank at least ${MIN_AUTO_PICK_ISSUES} issues first, so the pick reflects what matters to you.`;
-    case "election_closed":
-      return "This election is no longer open for picks.";
     default:
       return "No pick: none of these candidates has a record on your issues yet.";
   }
@@ -231,7 +248,7 @@ function WhyThisPickPanel({ result, seatsToFill, areaName, onDismiss }: WhyThisP
   return (
     <section
       aria-label="Why this pick"
-      className="rounded-xl border border-line bg-surface/50 p-4 text-sm text-ink"
+      className="w-full rounded-xl border border-line bg-surface/50 p-4 text-sm text-ink"
     >
       <div className="flex items-start justify-between gap-2">
         <p className="font-medium">{summarize(result, seatsToFill)}</p>
