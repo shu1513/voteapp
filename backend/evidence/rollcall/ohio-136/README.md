@@ -77,19 +77,64 @@ the worktree has no `backend/.env`.
   active-roster members need a hand sweep (name variants such as
   Mike/Michael Dovilla, members running for non-legislative offices)
   before the full run claims completeness.
+- `CODE-FINDINGS.md` — two source changes the data run turned up, recorded
+  rather than made. Read this before extending the pipeline.
+- `survey/` — the full GA-136 fetch report (963 vote actions over all 1,477
+  bills and joint resolutions) and `divided-worklist.tsv`, one row per
+  divided kept floor vote with the batch that judged it or the reason it
+  stays pending. Raw survey evidence is not committed: each action is
+  re-fetchable and pinned by the `source_sha256` on its row, and the
+  judged ones are copied into their batch directory.
 - `batch-01/` — S.B. 1 (Advance Ohio Higher Education Act): House passage
-  59-34 and Senate concurrence 20-11 judged and imported → **74 records /
-  74 candidates / 74 tags**; re-run all `unchanged`. The Senate's initial
-  passage (Feb 12) stays pending under the phase-2 decisive-vote rule.
-  One hand retirement: Adam Bird's press-release copy of the same vote
-  (record `729b9fe5…`), superseded by his roll-call record `686cc780…`.
+  59-34 and Senate concurrence 20-11 judged and imported. The Senate's
+  initial passage (Feb 12) stays pending under the phase-2 decisive-vote
+  rule. One hand retirement: Adam Bird's press-release copy of the same
+  vote (record `729b9fe5…`), superseded by his roll-call record
+  `686cc780…`. Re-imported after the crosswalk sweep, which added exactly
+  the 15 newly mapped members → **89 records / 89 candidates**.
+- `batch-02/` — 11 rolls over 9 bills, each written from that bill's LSC
+  analysis: S.B. 172 (immigration arrests), S.B. 293 (absentee deadline,
+  House passage + Senate concurrence, enacted), H.B. 88 (drug
+  trafficking), H.B. 485 (Baby Olivia Act), H.B. 492 (interfering with
+  traffic arrests, both chambers, enacted), H.B. 249 (adult cabaret
+  performance), H.B. 252 (burglary), H.B. 347 (SHE WINS Act), S.B. 278
+  (damages against municipal gun controls) → **579 records**; re-run all
+  `unchanged`. Latyna Humphrey's press release condemning S.B. 293 was
+  flagged related and KEPT: it reports her public opposition, not how she
+  voted, so it is a distinct claim (the phase-1 Grijalva rule).
+
+Totals after batch-02: **668 live `rollcall_import` records across 94
+Ohio candidates, 668 area tags, 13 approved roll calls** of 472 queued.
+
+## The judging gate
+
+Same as phase 2: a roll is judged only when the vote was **divided** (the
+losing side at least a quarter of the winning side) **and** a research
+area fits it without inventing a direction, with the bill's LSC analysis
+on file to write from. Of 466 kept floor votes, 66 are divided; 13 are
+judged, 8 are appropriations (H.B. 96, H.B. 730 — no research area maps
+onto a vote to fund the government), and the rest are pending with their
+reason in the worklist.
+
+Ohio-specific hazards found while judging, all caught by reading the LSC
+analysis rather than the title:
+
+- **Titles go stale on vehicle bills.** H.B. 472 is listed as "Waive ID,
+  birth certificate fees for homeless individuals"; its final analysis is
+  a mail-voting photo-ID bill. Phase 2's rule carries over — judge the
+  version the analysis on file describes, or leave it pending.
+- **Titles mislead about subject.** H.B. 5, the "Repeat Offender Act", is
+  a weapons-under-disability bill.
+- **"Would have" means it did not take effect.** LSC writes final
+  analyses of vetoed or unadopted provisions in the past conditional.
 
 ## Next
 
-1. Survey: `rollcall:oh:fetch --ga 136 --all-kept` (~1,477 hb/sb/hjr/sjr
-   bills, ~8 minutes at the default delay) into `survey/`, then read the
-   report's `unknownActions` before trusting the classifier vocabulary.
-2. Crosswalk hand sweep for the unreviewed active members.
-3. Judge divided floor votes batch by batch — same gate as phase 2
-   (divided = loser ≥ ¼ of winner, a research area that fits without
-   inventing a direction, LSC analysis on file).
+1. Judge the remaining 31 unjudged divided rolls, batch by batch; the
+   analyses are re-fetchable from each bill's Documents tab (the
+   `Analysis` section's first link is the newest version).
+2. Act on `CODE-FINDINGS.md` — item 1 blocks a voter-ID constitutional
+   amendment (S.J.R. 10) from ever being judged.
+3. H.B. 184's two same-day House concurrence votes are stored nowhere by
+   design; if that bill matters, it needs the action-specific identity
+   the surrogate roll number cannot give.
