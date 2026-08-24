@@ -1,0 +1,402 @@
+{
+  "jurisdiction": "OH",
+  "general_assembly": 136,
+  "comment": "lpid -> candidate crosswalk, the state analog of the federal exact-FEC-id rule (plan §2). Every entry was proposed by rollcall:oh:resolve name matching (last name = token tail + first name exact or prefix, unique both directions) against the Nov-2026 Ohio state-legislative pool, then reviewed by the operator 2026-08-23 (all 79 pairs; 74 same-district identities, 5 known cross-chamber candidacies incl. the Gayle/Nathan Manning seat swap). Members without an entry are not yet reviewed; hand additions (name variants like Mike/Michael Dovilla, members running for non-legislative offices) belong here with a note.",
+  "entries": [
+    {
+      "lpid": "rep_abdullahi_munira_1",
+      "candidate_id": "0d81987e-157b-4a78-ad2e-b22347dac4cf",
+      "note": "Munira Abdullahi (house 9) = Munira Abdullahi, state_lower: State House District 9 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_abrams_cindy_1",
+      "candidate_id": "2c64944c-d809-43b7-80b3-e8996777170c",
+      "note": "Cindy Abrams (house 29) = Cindy Abrams, state_lower: State House District 29 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_bailey_ashley_1",
+      "candidate_id": "f64a0f77-fa84-4651-bfb8-53e42c55e7a5",
+      "note": "Ashley Bryant Bailey (house 26) = Ashley Bryant Bailey, state_lower: State House District 26 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_baker_rachel_1",
+      "candidate_id": "8610f570-dd20-4139-a2e5-d3bfcf73f6b9",
+      "note": "Rachel B. Baker (house 27) = Rachel Baker, state_lower: State House District 27 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_barhorst_tim_1",
+      "candidate_id": "f162f347-fd82-4e46-85c8-50c3f256f79b",
+      "note": "Tim Barhorst (house 85) = Tim Barhorst, state_lower: State House District 85 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_bird_adam_1",
+      "candidate_id": "e2fd5cf8-cdd6-4c83-89d2-6f6856a68c1a",
+      "note": "Adam C. Bird (house 63) = Adam Bird, state_lower: State House District 63 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_brennan_sean_1",
+      "candidate_id": "52ee99ec-a520-4e87-a94d-cf782b9dc714",
+      "note": "Sean P. Brennan (house 14) = Sean Brennan, state_lower: State House District 14 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_brewer_darnell_1",
+      "candidate_id": "4b247bc8-d0d9-418c-8cc6-bd5432c7d974",
+      "note": "Darnell T. Brewer (house 22) = Darnell Brewer, state_lower: State House District 22 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_brownlee_karen_1",
+      "candidate_id": "d5326f43-21e5-4103-9eb2-8709da188845",
+      "note": "Karen Brownlee (house 28) = Karen Brownlee, state_lower: State House District 28 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_claggett_thaddeus_1",
+      "candidate_id": "dc7bb8fd-11b1-4e80-a486-17d462c6c4ea",
+      "note": "Thaddeus J. Claggett (house 68) = Thaddeus Claggett, state_lower: State House District 68 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_click_gary_1",
+      "candidate_id": "6d7d1afd-ae56-4f9e-8533-08e3a2cbb605",
+      "note": "Gary Click (house 88) = Gary Click, state_lower: State House District 88 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_cockley_christine_1",
+      "candidate_id": "0cbb48d0-ef7a-468a-9dcb-b844670115ec",
+      "note": "Christine Cockley (house 6) = Christine Cockley, state_lower: State House District 6 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_craig_meredith_1",
+      "candidate_id": "e81cbfc6-c60f-44e8-890f-361614bfcafb",
+      "note": "Meredith Craig (house 77) = Meredith Craig, state_lower: State House District 77 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_creech_rodney_1",
+      "candidate_id": "0633c56f-c13a-4cf9-9b9f-b3b8b9189405",
+      "note": "Rodney Creech (house 40) = Rodney Creech, state_lower: State House District 40 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_daniels_jack_1",
+      "candidate_id": "1c861773-e31b-4b2a-a569-94e7e427c510",
+      "note": "Jack K. Daniels (house 32) = Jack K. Daniels, state_lower: State House District 32 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_dean_levi_1",
+      "candidate_id": "ed4e6bfe-fcd2-4c23-a639-b27b0d9dfccb",
+      "note": "Levi Dean (house 71) = Levi Dean, state_lower: State House District 71 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_deeter_kellie_1",
+      "candidate_id": "894ad038-e8a5-4587-ae99-a3a119dde698",
+      "note": "Kellie Deeter (house 54) = Kellie Deeter, state_lower: State House District 54 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_demetriou_steve_1",
+      "candidate_id": "deeabe79-102f-4b6d-ba9b-ad30fadf5dd2",
+      "note": "Steve Demetriou (house 35) = Steve Demetriou, state_upper: State Senate District 27 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_ferguson_ron_1",
+      "candidate_id": "ab26adab-1741-4018-9bff-9b3ba45a8676",
+      "note": "Ron Ferguson (house 96) = Ron Ferguson, state_lower: State House District 96 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_fischer_tex_1",
+      "candidate_id": "c5e781e0-c2c6-4f7a-9eb2-4d685cd266eb",
+      "note": "Tex Fischer (house 59) = Tex Fischer, state_lower: State House District 59 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_ghanbari_haraz_1",
+      "candidate_id": "4864fe15-33ae-45f9-9bfb-4fa1f8fd54e7",
+      "note": "Haraz N. Ghanbari (house 75) = Haraz Ghanbari, state_lower: State House District 75 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_glassburn_chris_1",
+      "candidate_id": "67f5f1c2-2ec8-4b9e-b43f-4f529e016c49",
+      "note": "Chris Glassburn (house 15) = Chris Glassburn, state_lower: State House District 15 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_grim_michele_1",
+      "candidate_id": "94b0d956-e6f8-4eaf-9572-f75b0ba16477",
+      "note": "Michele Grim (house 43) = Michele Grim, state_lower: State House District 43 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_gross_jennifer_1",
+      "candidate_id": "2aaf9399-8f46-4308-9b21-ec13e620b129",
+      "note": "Jennifer Gross (house 45) = Jennifer Gross, state_lower: State House District 45 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_hiner_mark_1",
+      "candidate_id": "03226c2c-be46-4ab9-bbba-7812ce867efc",
+      "note": "Mark Hiner (house 98) = Mark Hiner, state_lower: State House District 98 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_holmes_adam_1",
+      "candidate_id": "354aaa98-86fa-488e-96e4-f707b28d7e3a",
+      "note": "Adam Holmes (house 97) = Adam Holmes, state_lower: State House District 97 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_huffman_matt_1",
+      "candidate_id": "9b20e916-2dcf-457e-a1d3-7b78683cb727",
+      "note": "Matt Huffman (house 78) = Matt Huffman, state_lower: State House District 78 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_humphrey_latyna_1",
+      "candidate_id": "f84c08e9-05cf-4532-99ee-f3c6ace8e7f4",
+      "note": "Latyna M. Humphrey (house 2) = Latyna M. Humphrey, state_upper: State Senate District 15 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_isaacsohn_dani_1",
+      "candidate_id": "6295d98a-db16-4bf4-8bb0-c62387b27d25",
+      "note": "Dani Isaacsohn (house 24) = Dani Isaacsohn, state_lower: State House District 24 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_john_marilyn_1",
+      "candidate_id": "75c44113-2c4a-44ea-8ea7-508be1892e45",
+      "note": "Marilyn John (house 76) = Marilyn John, state_lower: State House District 76 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_johnson_mark_1",
+      "candidate_id": "2e647b2d-99b3-4e7d-af9b-9386b17acdb0",
+      "note": "Mark Johnson (house 92) = Mark Johnson, state_lower: State House District 92 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_king_angela_1",
+      "candidate_id": "e2af8dc3-b98e-48d1-8d23-5a0f7285fe38",
+      "note": "Angela N. King (house 84) = Angela King, state_lower: State House District 84 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_kishman_matthew_1",
+      "candidate_id": "d9a93c44-5cf4-408a-9814-60ee3ceadaff",
+      "note": "Matthew Kishman (house 50) = Matthew Kishman, state_lower: State House District 50 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_klopfenstein_roy_1",
+      "candidate_id": "3d08bd35-726e-46bf-9e28-47f9ee16c0a9",
+      "note": "Roy Klopfenstein (house 82) = Roy Klopfenstein, state_lower: State House District 82 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_lampton_brian_1",
+      "candidate_id": "9dcdfce5-0c7a-4276-b9ea-69aa94bcebdf",
+      "note": "Brian Lampton (house 70) = Brian Lampton, state_lower: State House District 70 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_lare_jeff_1",
+      "candidate_id": "adbf64da-7d88-4b7c-8322-b1fd462fa2c4",
+      "note": "Jeff LaRe (house 73) = Jeff LaRe, state_lower: State House District 73 (2024); Ohio [first-name prefix, reviewed]"
+    },
+    {
+      "lpid": "rep_lawson_rowe_meredith_1",
+      "candidate_id": "34c27f41-cc77-464d-a5af-3e2032f5e372",
+      "note": "Meredith R. Lawson-Rowe (house 5) = Meredith Lawson‐Rowe, state_lower: State House District 5 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_lett_crystal_1",
+      "candidate_id": "2b7f908d-acc9-4e74-835d-a6419cc6c3c3",
+      "note": "Crystal Lett (house 11) = Crystal Lett, state_lower: State House District 11 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_lorenz_brian_1",
+      "candidate_id": "eeadbc26-84ea-45ce-ae52-492b0df2e046",
+      "note": "Brian Lorenz (house 60) = Brian Lorenz, state_lower: State House District 60 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_manning_gayle_1",
+      "candidate_id": "3f654575-c5ee-4536-b7e0-5e904cf9bc5a",
+      "note": "Gayle Manning (house 52) = Gayle Manning, state_upper: State Senate District 13 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_mohamed_ismail_1",
+      "candidate_id": "4ddc508c-ab0a-44c0-b521-ce6ea435f81f",
+      "note": "Ismail Mohamed (house 3) = Ismail Mohamed, state_lower: State House District 3 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_moore_ty_1",
+      "candidate_id": "8bc9b668-5713-4763-889f-d0ed3bbc1bf3",
+      "note": "Ty Moore (house 95) = Ty Moore, state_lower: State House District 95 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_mullins_diane_1",
+      "candidate_id": "c95b7dff-4ebc-4fd3-99ce-533391d5bea1",
+      "note": "Diane Mullins (house 47) = Diane Mullins, state_lower: State House District 47 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_newman_johnathan_1",
+      "candidate_id": "75b93f95-dfb9-4334-a5bb-61ec9a74d58e",
+      "note": "Johnathan Newman (house 80) = Johnathan Newman, state_lower: State House District 80 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_odioso_mike_1",
+      "candidate_id": "d03d80bb-1640-4da2-b988-26fb2b27be09",
+      "note": "Mike Odioso (house 30) = Mike Odioso, state_lower: State House District 30 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_peterson_bob_1",
+      "candidate_id": "ace93669-7828-42ac-ad3f-9a055e899d28",
+      "note": "Bob Peterson (house 91) = Bob Peterson, state_lower: State House District 91 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_piccolantonio_beryl_1",
+      "candidate_id": "840f56e4-672d-42ac-b6bd-b671a5f37066",
+      "note": "Beryl Brown Piccolantonio (house 4) = Beryl Brown Piccolantonio, state_lower: State House District 4 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_pizzulli_justin_1",
+      "candidate_id": "bece28fb-fa58-4201-a8a1-8fa3be260394",
+      "note": "Justin Pizzulli (house 90) = Justin Pizzulli, state_lower: State House District 90 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_plummer_phil_1",
+      "candidate_id": "52296bfb-8c71-4dbb-95be-76c21eeb5e3d",
+      "note": "Phil Plummer (house 39) = Phil Plummer, state_upper: State Senate District 5 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_rader_tristan_1",
+      "candidate_id": "d7e3670d-f535-4b80-99cc-57af41e5f7ec",
+      "note": "Tristan Rader (house 13) = Tristan Rader, state_lower: State House District 13 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_ritter_kevin_1",
+      "candidate_id": "318006f5-6d09-4c25-b17a-f342b9dff0ff",
+      "note": "Kevin Ritter (house 94) = Kevin Ritter, state_lower: State House District 94 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_robb_blasdel_monica_1",
+      "candidate_id": "c768f320-bfcb-4fbb-87bf-d333a297f883",
+      "note": "Monica Robb Blasdel (house 79) = Monica Robb Blasdel, state_lower: State House District 79 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_rogers_elgin_1",
+      "candidate_id": "f7eefcd3-a726-46a6-86e9-04523169a1fb",
+      "note": "Elgin Rogers, Jr. (house 42) = Elgin Rogers Jr., state_lower: State House District 42 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_salvo_jodi_1",
+      "candidate_id": "e3bc0047-07c9-4ea0-83df-eac5f4f8be0e",
+      "note": "Jodi Salvo (house 51) = Jodi Salvo, state_lower: State House District 51 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_santucci_nick_1",
+      "candidate_id": "9f1d664b-6d90-4fca-84e9-1359f1660469",
+      "note": "Nick Santucci (house 64) = Nick Santucci, state_lower: State House District 64 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_schmidt_jean_1",
+      "candidate_id": "8d042dc5-62d6-4bef-bb71-36ec8ddbfdaf",
+      "note": "Jean Schmidt (house 62) = Jean Schmidt, state_lower: State House District 62 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_sigrist_mark_1",
+      "candidate_id": "666b039e-0821-4ea6-9044-733083bba44f",
+      "note": "Mark Sigrist (house 10) = Mark Sigrist, state_lower: State House District 10 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_sims_veronica_1",
+      "candidate_id": "9a5ad5a8-9bc3-41ae-9e6a-8d3dc20d2aa0",
+      "note": "Veronica R. Sims (house 33) = Veronica Sims, state_lower: State House District 33 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_somani_anita_1",
+      "candidate_id": "37973555-0363-483f-845c-5038d6115ffc",
+      "note": "Anita Somani (house 8) = Anita Somani, state_lower: State House District 8 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_stephens_jason_1",
+      "candidate_id": "f33d3d90-f971-40fd-9923-89c6d880210a",
+      "note": "Jason Stephens (house 93) = Jason Stephens, state_lower: State House District 93 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_stewart_brian_1",
+      "candidate_id": "e14876aa-595e-4ba0-9251-f92dfe3fe0b9",
+      "note": "Brian Stewart (house 12) = Brian Stewart, state_lower: State House District 12 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_swearingen_douglas_1",
+      "candidate_id": "84e362b4-24f5-4f71-b33c-67bab2314cfe",
+      "note": "D. J. Swearingen (house 89) = D.J. Swearingen, state_lower: State House District 89 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_sweeney_bride_rose_1",
+      "candidate_id": "706cadeb-a3c4-4879-831b-69a0141c1fe9",
+      "note": "Bride Rose Sweeney (house 16) = Bride Rose Sweeney, state_upper: State Senate District 23 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_synenberg_eric_1",
+      "candidate_id": "3011e44d-5cd9-4490-8f47-3983bc94a4e1",
+      "note": "Eric Synenberg (house 21) = Eric Synenberg, state_lower: State House District 21 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_tims_desiree_1",
+      "candidate_id": "43ab1dd0-41e0-4b25-b807-36848a56a31a",
+      "note": "Desiree Tims (house 38) = Desiree Tims, state_lower: State House District 38 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_troy_daniel_1",
+      "candidate_id": "59e74cbe-8b18-4210-a586-af4dc1ecc46c",
+      "note": "Daniel P. Troy (house 23) = Dan Troy, state_lower: State House District 23 (2024); Ohio [first-name prefix, reviewed]"
+    },
+    {
+      "lpid": "rep_willis_bernard_1",
+      "candidate_id": "7970021b-8e2c-42e2-959e-e333f824be1a",
+      "note": "Bernard Willis (house 74) = Bernard Willis, state_lower: State House District 74 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_workman_heidi_1",
+      "candidate_id": "f7ebe151-dc41-4886-a195-caa4d3d97b71",
+      "note": "Heidi Workman (house 72) = Heidi Workman, state_lower: State House District 72 (2024); Ohio"
+    },
+    {
+      "lpid": "rep_young_tom_1",
+      "candidate_id": "8bac956b-2216-4a7b-ba8b-7ed82986eee5",
+      "note": "Tom Young (house 37) = Tom Young, state_lower: State House District 37 (2024); Ohio"
+    },
+    {
+      "lpid": "sen_cutrona_al_1",
+      "candidate_id": "8caf8d80-e512-4e1c-a6de-9b4c2ef2347b",
+      "note": "Al Cutrona (senate 33) = Alessandro Cutrona, state_upper: State Senate District 33 (2024); Ohio [first-name prefix, reviewed]"
+    },
+    {
+      "lpid": "sen_demora_william_1",
+      "candidate_id": "60d1a890-7fe5-47e8-847d-d8b0d3f0dcda",
+      "note": "William P. DeMora (senate 25) = William DeMora, state_upper: State Senate District 25 (2024); Ohio"
+    },
+    {
+      "lpid": "sen_hicks_hudson_paula_1",
+      "candidate_id": "115484d9-dbd5-4298-b2fd-fa36be6d0878",
+      "note": "Paula Hicks-Hudson (senate 11) = Paula Hicks-Hudson, state_upper: State Senate District 11 (2024); Ohio"
+    },
+    {
+      "lpid": "sen_ingram_catherine_1",
+      "candidate_id": "a580aab9-0607-4088-9ae5-a7239c2e274e",
+      "note": "Catherine D. Ingram (senate 9) = Catherine Ingram, state_upper: State Senate District 9 (2024); Ohio"
+    },
+    {
+      "lpid": "sen_landis_al_1",
+      "candidate_id": "ffbcb516-1dc3-42f0-82b5-227786402673",
+      "note": "Al Landis (senate 31) = Al Landis, state_upper: State Senate District 31 (2024); Ohio"
+    },
+    {
+      "lpid": "sen_manning_nathan_1",
+      "candidate_id": "4c95c67b-686a-4f22-bcd6-ecb199526fc7",
+      "note": "Nathan H. Manning (senate 13) = Nathan Manning, state_lower: State House District 52 (2024); Ohio"
+    },
+    {
+      "lpid": "sen_reynolds_michele_1",
+      "candidate_id": "ec02043c-3ae3-4ffd-8faf-d9889684ee40",
+      "note": "Michele Reynolds (senate 3) = Michele Reynolds, state_upper: State Senate District 3 (2024); Ohio"
+    },
+    {
+      "lpid": "sen_smith_kent_1",
+      "candidate_id": "0e903668-ddcb-44e0-84eb-c8db81a5ea4d",
+      "note": "Kent Smith (senate 21) = Kent Smith, state_upper: State Senate District 21 (2024); Ohio"
+    },
+    {
+      "lpid": "sen_timken_jane_1",
+      "candidate_id": "ee291a95-d9d0-4331-a764-ae6953835a43",
+      "note": "Jane M. Timken (senate 29) = Jane Timken, state_upper: State Senate District 29 (2024); Ohio"
+    },
+    {
+      "lpid": "sen_wilkin_shane_1",
+      "candidate_id": "dbe1026e-9a6f-46fe-9546-738ab147adab",
+      "note": "Shane Wilkin (senate 17) = Shane Wilkin, state_upper: State Senate District 17 (2024); Ohio"
+    }
+  ]
+}

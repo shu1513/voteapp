@@ -1,0 +1,38 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OH",
+      "chamber": "house",
+      "session": "136",
+      "roll": 1742433648,
+      "measure_id": "SB 1",
+      "vote_date": "2025-03-19",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.B. 1, the Advance Ohio Higher Education Act, which banned diversity, equity, and inclusion offices and training at Ohio's public universities, barred full-time faculty strikes, and added post-tenure reviews for professors. It passed the Ohio House 59-34 and was signed into law.",
+      "nay_description": "Voted against passing S.B. 1, the Advance Ohio Higher Education Act, which banned diversity, equity, and inclusion offices and training at Ohio's public universities, barred full-time faculty strikes, and added post-tenure reviews for professors. It passed the Ohio House 59-34 and was signed into law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OH",
+      "chamber": "senate",
+      "session": "136",
+      "roll": 1743028529,
+      "measure_id": "SB 1",
+      "vote_date": "2025-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted to concur in House amendments to S.B. 1, the Advance Ohio Higher Education Act, sending to the Governor a law that banned diversity, equity, and inclusion offices and training at Ohio's public universities and barred full-time faculty strikes. It passed the Ohio Senate 20-11 and was signed into law.",
+      "nay_description": "Voted against concurring in House amendments to S.B. 1, the Advance Ohio Higher Education Act, which sent to the Governor a law that banned diversity, equity, and inclusion offices and training at Ohio's public universities and barred full-time faculty strikes. It passed the Ohio Senate 20-11 and was signed into law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against"
+        }
+      ]
+    }
+  ]
+}
