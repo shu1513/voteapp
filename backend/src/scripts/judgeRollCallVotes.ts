@@ -26,7 +26,10 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
 //   npm run rollcall:judge -- --judgments-file evidence/rollcall/<run-id>/judgments.json --dry-run
 //   npm run rollcall:judge -- --judgments-file evidence/rollcall/<run-id>/judgments.json
 //
-// judgments.json:
+// judgments.json (a federal entry names congress + session; a state entry
+// names jurisdiction + the source's session key instead, and its roll is
+// the stored surrogate roll number — for Ohio, the vote's occurred
+// timestamp in epoch seconds, printed by the fetch report):
 //   {
 //     "judgments": [
 //       {
@@ -36,11 +39,21 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
 //         "yea_description": "Voted to pass H.R. 1, ... It passed the House 215-214.",
 //         "nay_description": "Voted against passing H.R. 1, ... It passed the House 215-214.",
 //         "labels": [{ "slug": "personal_income_tax_reduction", "yea": "for" }, { "slug": "general" }]
+//       },
+//       {
+//         "jurisdiction": "OH", "chamber": "house", "session": "136",
+//         "roll": 1744207254, "measure_id": "HB 96", "vote_date": "2025-04-09",
+//         "review_status": "approved",
+//         "yea_description": "...", "nay_description": "...",
+//         "labels": [{ "slug": "government_spending_reduction", "yea": "against" }]
 //       }
 //     ]
 //   }
 
-const JURISDICTION = "US";
+const FEDERAL_JURISDICTION = "US";
+// State entries name their jurisdiction explicitly; only sources with a
+// fetcher are accepted, so a typo cannot write a judgment nothing imports.
+const STATE_JURISDICTIONS = new Set(["OH"]);
 const REVIEW_STATUSES = ["pending", "approved"] as const;
 
 function fail(index: number, message: string): never {
@@ -88,10 +101,28 @@ export function parseJudgmentsFile(raw: unknown, allowedSlugs: ReadonlySet<strin
     if (typeof chamber !== "string" || !(LEGISLATIVE_VOTE_CHAMBERS as readonly string[]).includes(chamber)) {
       fail(index, `chamber must be one of ${LEGISLATIVE_VOTE_CHAMBERS.join(", ")}`);
     }
-    const congress = readPositiveInteger(index, entry.congress, "congress");
-    const session = readPositiveInteger(index, entry.session, "session");
-    if (session !== 1 && session !== 2) {
-      fail(index, "session must be 1 or 2");
+    let jurisdiction: string;
+    let sessionKey: string;
+    if (entry.jurisdiction === undefined || entry.jurisdiction === FEDERAL_JURISDICTION) {
+      jurisdiction = FEDERAL_JURISDICTION;
+      const congress = readPositiveInteger(index, entry.congress, "congress");
+      const session = readPositiveInteger(index, entry.session, "session");
+      if (session !== 1 && session !== 2) {
+        fail(index, "session must be 1 or 2");
+      }
+      sessionKey = `${congress}-${session}`;
+    } else {
+      if (typeof entry.jurisdiction !== "string" || !STATE_JURISDICTIONS.has(entry.jurisdiction)) {
+        fail(index, `jurisdiction must be omitted (federal) or one of ${[...STATE_JURISDICTIONS].join(", ")}`);
+      }
+      jurisdiction = entry.jurisdiction;
+      if (entry.congress !== undefined) {
+        fail(index, "a state entry names session, not congress");
+      }
+      if (typeof entry.session !== "string" || entry.session.trim().length === 0) {
+        fail(index, "a state entry's session must be the source's session key (e.g. \"136\")");
+      }
+      sessionKey = entry.session.trim();
     }
     const roll = readPositiveInteger(index, entry.roll, "roll");
     const measureId = entry.measure_id;
@@ -117,15 +148,15 @@ export function parseJudgmentsFile(raw: unknown, allowedSlugs: ReadonlySet<strin
     } catch (error) {
       fail(index, (error instanceof Error ? error.message : String(error)).replace(/^labels_json/, "labels"));
     }
-    const key = `${chamber}:${congress}-${session}:${roll}`;
+    const key = `${jurisdiction}:${chamber}:${sessionKey}:${roll}`;
     if (seen.has(key)) {
       fail(index, `${key} appears more than once`);
     }
     seen.add(key);
     entries.push({
-      jurisdiction: JURISDICTION,
+      jurisdiction,
       chamber: chamber as LegislativeVoteChamber,
-      session: `${congress}-${session}`,
+      session: sessionKey,
       rollNumber: roll,
       measureId: measureId === null ? null : measureId.trim(),
       voteDate,

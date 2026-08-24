@@ -426,8 +426,35 @@ importer with different evidence (see "Governors" above for sources).
   vote, so retiring a redundant duplicate copy does not freeze the live
   record.
 
+## Decisions (2026-08-23, phase 3)
+
+- Ohio pilot runs on the OFFICIAL Ohio LIS API directly, not LegiScan: no
+  key or account needed, `state.oh.us` is listed by the source policy, and
+  the cited feed itself carries the per-member votes. LegiScan stays the
+  plan of record for the phase-4 rollout. Code: `rollcall:oh:fetch` /
+  `rollcall:oh:resolve` / `rollcall:oh:import` (+ state entries in the
+  shared `rollcall:judge` judgments format).
+- Ohio has no roll numbers → surrogate `roll_number` = the vote action's
+  `occurred` timestamp in epoch seconds (deterministic, unique per chamber,
+  int4-safe until 2038); the fetcher refuses collisions and refuses two
+  kept floor votes of one chamber on one bill and day, because the per-bill
+  actions URL is the source_url and could not tell them apart.
+- State identity layer = a committed per-GA crosswalk file
+  (`evidence/rollcall/ohio-136/crosswalk.json`), lpid → candidate id, the
+  review artifact playing the role of exact FEC ids. `rollcall:oh:resolve`
+  proposes pairs by strict name matching (report-only); a human decides
+  what enters the file; the importer attaches only what the file says. The
+  `candidate_external_ids` table waits for the multi-state rollout.
+- Committee-ness comes from Ohio's structured action codes, never
+  `cmte_name` (a conference-report floor vote carries the conference
+  committee's name). Unknown vote-bearing codes classify `is_floor_vote =
+  null` and are surfaced, never queued.
+- Judgment grounding for Ohio = the LSC Final Analysis PDF (CRS analog)
+  from the bill page's Documents tab; the two-sentence + labels + review
+  flow is unchanged.
+
 ## Open questions
 
-- Register a free LegiScan API key (needed for bulk datasets)?
+- Register a free LegiScan API key (needed for the phase-4 bulk datasets)?
 - LegiScan ToS read-through before redistributing raw dumps (data itself is
   CC BY 4.0).

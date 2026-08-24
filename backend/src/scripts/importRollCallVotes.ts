@@ -123,8 +123,10 @@ export type RollCallImportReportRow = RollCallEvidenceFile & {
  * other records writer uses (schema, quality gate, source policy, and that
  * the roll-call URL answers). Both must survive, and the stored URL must
  * still be this roll call — a redirect elsewhere would break the dedupe.
+ * (Shared with the Ohio importer: rollCallUrlKey folds the Ohio actions
+ * URL too, so the same check covers both feeds.)
  */
-async function validateSideTemplates(
+export async function validateSideTemplates(
   vote: LegislativeVoteForImport,
   timeoutMs: number
 ): Promise<Record<RollCallVoteSide, { description: string; sourceUrl: string; eventDate: string }>> {

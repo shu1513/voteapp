@@ -8,8 +8,12 @@ import type { LegislativeVoteChamber } from "./legislativeVotes.js";
 // folded to one key per roll call and compared on that, never as strings.
 
 export type RollCallUrlKey = {
-  chamber: LegislativeVoteChamber;
-  // `house:<year>:<roll>` or `senate:<congress>-<session>:<roll>`.
+  // Which chamber the URL itself names; null when the URL cannot say (an
+  // Ohio actions URL covers both chambers' votes on the bill). No caller
+  // compares on this field — the key string is the comparison unit.
+  chamber: LegislativeVoteChamber | null;
+  // `house:<year>:<roll>`, `senate:<congress>-<session>:<roll>`, or
+  // `oh:<general assembly>:<bill>`.
   key: string;
 };
 
@@ -18,6 +22,15 @@ const HOUSE_XML = /^https?:\/\/clerk\.house\.gov\/evs\/(\d{4})\/roll(\d{1,4})\.x
 const HOUSE_PAGE = /^https?:\/\/clerk\.house\.gov\/Votes\/(\d{4})(\d{1,4})(?:[?#].*)?$/i;
 const SENATE =
   /^https?:\/\/(?:www\.)?senate\.gov\/legislative\/LIS\/roll_call_votes\/vote\d+\/vote_(\d+)_([12])_(\d+)\.(?:htm|xml)(?:[?#].*)?$/i;
+// The Ohio LIS actions feed, one URL per BILL (Ohio has no roll numbers, so
+// the URL alone cannot name a single vote). Folding it to a per-bill key is
+// still sound for the fan-out's duplicate scan, whose comparisons are
+// per-candidate and date-scoped: a member votes in one chamber, and the
+// fetcher refuses two kept floor votes of one chamber on one bill and day,
+// so on a given candidate + date the bill identifies the roll call. The
+// canonical spelling ends in a trailing slash (the API 301s to it).
+const OHIO_ACTIONS =
+  /^https?:\/\/search-prod\.lis\.state\.oh\.us\/api\/v2\/general_assembly_(\d+)\/legislation\/([a-z]+\d+)\/actions\/?(?:[?#].*)?$/i;
 
 /** The roll call a URL cites, or null when it is not a roll-call URL. */
 export function rollCallUrlKey(url: string): RollCallUrlKey | null {
@@ -29,6 +42,10 @@ export function rollCallUrlKey(url: string): RollCallUrlKey | null {
   const senate = SENATE.exec(trimmed);
   if (senate) {
     return { chamber: "senate", key: `senate:${senate[1]}-${senate[2]}:${Number(senate[3])}` };
+  }
+  const ohio = OHIO_ACTIONS.exec(trimmed);
+  if (ohio) {
+    return { chamber: null, key: `oh:${Number(ohio[1])}:${ohio[2]!.toLowerCase()}` };
   }
   return null;
 }

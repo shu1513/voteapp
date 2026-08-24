@@ -60,10 +60,55 @@ describe("parseJudgmentsFile", () => {
       [{ judgments: [{ ...ENTRY, labels: [] }] }, /judgments\[0\]: labels is not a non-empty array/],
       [{ judgments: [{ ...ENTRY, labels: [{ slug: "housing", yea: "for" }] }] }, /'housing' is not allowed/],
       [{ judgments: [{ ...ENTRY, labels: [{ slug: "general", yea: "for" }] }] }, /must not include stance/],
-      [{ judgments: [ENTRY, { ...ENTRY, review_status: "pending" }] }, /judgments\[1\]: house:119-1:145 appears more than once/],
+      [{ judgments: [ENTRY, { ...ENTRY, review_status: "pending" }] }, /judgments\[1\]: US:house:119-1:145 appears more than once/],
     ];
     for (const [raw, pattern] of cases) {
       expect(() => parseJudgmentsFile(raw, SLUGS), JSON.stringify(raw).slice(0, 80)).toThrow(pattern);
+    }
+  });
+});
+
+const OHIO_ENTRY = {
+  jurisdiction: "OH",
+  chamber: "house",
+  session: "136",
+  roll: 1744207254,
+  measure_id: "HB 96",
+  vote_date: "2025-04-09",
+  review_status: "approved",
+  yea_description: "Voted to pass H.B. 96. It passed the Ohio House 60-39.",
+  nay_description: "Voted against passing H.B. 96. It passed the Ohio House 60-39.",
+  labels: [{ slug: "general" }],
+};
+
+describe("parseJudgmentsFile (state entries)", () => {
+  it("turns an Ohio entry into the store's judgment shape", () => {
+    expect(parseJudgmentsFile({ judgments: [OHIO_ENTRY] }, SLUGS)[0]).toMatchObject({
+      jurisdiction: "OH",
+      chamber: "house",
+      session: "136",
+      rollNumber: 1744207254,
+      measureId: "HB 96",
+      voteDate: "2025-04-09",
+      reviewStatus: "approved",
+    });
+  });
+
+  it("mixes federal and state entries in one file", () => {
+    const entries = parseJudgmentsFile({ judgments: [ENTRY, OHIO_ENTRY] }, SLUGS);
+    expect(entries.map((entry) => `${entry.jurisdiction}:${entry.session}`)).toEqual(["US:119-1", "OH:136"]);
+  });
+
+  it("rejects malformed state entries", () => {
+    const cases: [unknown, RegExp][] = [
+      [{ judgments: [{ ...OHIO_ENTRY, jurisdiction: "ZZ" }] }, /jurisdiction must be omitted \(federal\) or one of OH/],
+      [{ judgments: [{ ...OHIO_ENTRY, congress: 119 }] }, /a state entry names session, not congress/],
+      [{ judgments: [{ ...OHIO_ENTRY, session: 136 }] }, /session must be the source's session key/],
+      [{ judgments: [{ ...OHIO_ENTRY, session: " " }] }, /session must be the source's session key/],
+      [{ judgments: [OHIO_ENTRY, { ...OHIO_ENTRY, review_status: "pending" }] }, /OH:house:136:1744207254 appears more than once/],
+    ];
+    for (const [file, pattern] of cases) {
+      expect(() => parseJudgmentsFile(file, SLUGS), JSON.stringify(file).slice(0, 80)).toThrow(pattern);
     }
   });
 });
