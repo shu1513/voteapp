@@ -975,6 +975,23 @@ describe("createAuthService logoutAll", () => {
     const bumpCall = db.query.mock.calls.find((call) => String(call[0]).includes("session_epoch = session_epoch + 1"));
     expect(bumpCall?.[1]).toEqual([USER_ID]);
   });
+
+  it("revokes every push token, so signed-out devices stop receiving pushes", async () => {
+    const db = createDbMock(createDbClientMock());
+
+    const service = createAuthService({
+      db: db as never,
+      redis: createRedisMock() as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+    });
+
+    await service.logoutAll({ userId: USER_ID });
+    const revokeCall = db.query.mock.calls.find(
+      (call) => String(call[0]).includes("user_push_tokens") && String(call[0]).includes("revoked_at = now()")
+    );
+    expect(revokeCall?.[1]).toEqual([USER_ID]);
+  });
 });
 
 describe("createAuthService session epoch revocation", () => {

@@ -97,6 +97,25 @@ export async function revokeUserPushToken(db: Queryable, userId: string, expoPus
 }
 
 /**
+ * Soft-revokes every token the user has registered: logout-all means no
+ * device of theirs should keep receiving personalized pushes. Re-login
+ * re-registers (the upsert clears revoked_at).
+ */
+export async function revokeAllUserPushTokens(db: Queryable, userId: string): Promise<void> {
+  const normalizedUserId = normalizeUserId(userId);
+
+  await db.query(
+    `
+      UPDATE public.user_push_tokens
+      SET revoked_at = now()
+      WHERE user_id = $1::uuid
+        AND revoked_at IS NULL
+    `,
+    [normalizedUserId]
+  );
+}
+
+/**
  * Soft-revokes a token regardless of owner: the delivery path calls this when
  * Expo reports DeviceNotRegistered (ticket or receipt), which is a statement
  * about the device, not the account.

@@ -7,6 +7,7 @@ import type { AuthMailer } from "./authMailer.js";
 import { isUuid } from "../utils/uuid.js";
 import { CURRENT_TERMS_VERSION, isAcceptableTermsVersion } from "../constants/legal.js";
 import { recordTermsAcceptance } from "../pipeline/users/userTermsAcceptances.js";
+import { revokeAllUserPushTokens } from "../pipeline/users/userPushTokens.js";
 import type { VerifyGoogleIdToken } from "./googleIdToken.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
@@ -1404,6 +1405,10 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         `,
         [userId]
       );
+      // Sessions are not the only channel that reaches a device: push
+      // notifications carry personalized content too, so logout-all revokes
+      // every push token as well. Re-login re-registers the device's token.
+      await revokeAllUserPushTokens(options.db, userId);
       // Best-effort, like the other credential flows: the bump above already
       // revoked every session, so a Redis failure must not fail a logout-all
       // that succeeded from a security standpoint.
