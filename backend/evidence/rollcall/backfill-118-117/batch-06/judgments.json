@@ -1,0 +1,348 @@
+{
+  "judgments": [
+    {
+      "chamber": "senate",
+      "congress": 118,
+      "session": 1,
+      "roll": 77,
+      "measure_id": "S. 316",
+      "vote_date": "2023-03-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S. 316, which repealed the 1991 and 2002 authorizations for the use of military force against Iraq, withdrawing the standing legal basis for military action there. It passed the Senate 66-30.",
+      "nay_description": "Voted against passing S. 316, which repealed the 1991 and 2002 authorizations for the use of military force against Iraq, withdrawing the standing legal basis for military action there. It passed the Senate 66-30.",
+      "labels": [
+        {
+          "slug": "peaceful_foreign_policy",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 118,
+      "session": 1,
+      "roll": 79,
+      "measure_id": "H.J.Res. 27",
+      "vote_date": "2023-03-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 27, which used the Congressional Review Act to repeal the EPA and Army Corps rule defining which streams and wetlands are protected as waters of the United States under the Clean Water Act. It passed the Senate 53-43.",
+      "nay_description": "Voted against passing H.J.Res. 27, which used the Congressional Review Act to repeal the EPA and Army Corps rule defining which streams and wetlands are protected as waters of the United States under the Clean Water Act. It passed the Senate 53-43.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 118,
+      "session": 1,
+      "roll": 182,
+      "measure_id": "H R 1",
+      "vote_date": "2023-03-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 1, the Lower Energy Costs Act, which expanded oil, gas, and mineral production on federal land, sped up permitting and environmental review for energy projects, and repealed several climate program fees. It passed the House 225-204.",
+      "nay_description": "Voted against passing H.R. 1, the Lower Energy Costs Act, which expanded oil, gas, and mineral production on federal land, sped up permitting and environmental review for energy projects, and repealed several climate program fees. It passed the House 225-204.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 118,
+      "session": 1,
+      "roll": 192,
+      "measure_id": "H R 734",
+      "vote_date": "2023-04-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 734, the Protection of Women and Girls in Sports Act, which made it a Title IX violation for a federally funded school to let anyone whose sex at birth was male play on a women's or girls' team. It passed the House 219-203.",
+      "nay_description": "Voted against passing H.R. 734, the Protection of Women and Girls in Sports Act, which made it a Title IX violation for a federally funded school to let anyone whose sex at birth was male play on a women's or girls' team. It passed the House 219-203.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 118,
+      "session": 1,
+      "roll": 98,
+      "measure_id": "S.J.Res. 11",
+      "vote_date": "2023-04-26",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 11, which used the Congressional Review Act to repeal the EPA rule tightening nitrogen oxide and other emission standards for new heavy-duty trucks and engines. It passed the Senate 50-49.",
+      "nay_description": "Voted against passing S.J.Res. 11, which used the Congressional Review Act to repeal the EPA rule tightening nitrogen oxide and other emission standards for new heavy-duty trucks and engines. It passed the Senate 50-49.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 118,
+      "session": 1,
+      "roll": 110,
+      "measure_id": "S.J.Res. 9",
+      "vote_date": "2023-05-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 9, which used the Congressional Review Act to repeal the Fish and Wildlife Service rule listing the lesser prairie-chicken as threatened and endangered, removing its Endangered Species Act protection. It passed the Senate 50-48.",
+      "nay_description": "Voted against passing S.J.Res. 9, which used the Congressional Review Act to repeal the Fish and Wildlife Service rule listing the lesser prairie-chicken as threatened and endangered, removing its Endangered Species Act protection. It passed the Senate 50-48.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 118,
+      "session": 1,
+      "roll": 123,
+      "measure_id": "S.J.Res. 24",
+      "vote_date": "2023-05-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 24, which used the Congressional Review Act to repeal the Fish and Wildlife Service rule listing the northern long-eared bat as endangered, removing its Endangered Species Act protection. It passed the Senate 51-49.",
+      "nay_description": "Voted against passing S.J.Res. 24, which used the Congressional Review Act to repeal the Fish and Wildlife Service rule listing the northern long-eared bat as endangered, removing its Endangered Species Act protection. It passed the Senate 51-49.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 118,
+      "session": 1,
+      "roll": 209,
+      "measure_id": "H R 2",
+      "vote_date": "2023-05-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 2, the Secure the Border Act, which restarted border wall construction, sharply narrowed asylum eligibility, restricted parole and unaccompanied minor protections, and required employers nationwide to use E-Verify. It passed the House 219-213.",
+      "nay_description": "Voted against passing H.R. 2, the Secure the Border Act, which restarted border wall construction, sharply narrowed asylum eligibility, restricted parole and unaccompanied minor protections, and required employers nationwide to use E-Verify. It passed the House 219-213.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 118,
+      "session": 1,
+      "roll": 130,
+      "measure_id": "S.J.Res. 18",
+      "vote_date": "2023-05-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 18, which used the Congressional Review Act to repeal the 2022 public charge rule, reinstating the stricter 2019 standard that counted use of benefits such as Medicaid and food assistance against an immigrant seeking a green card. It passed the Senate 50-47.",
+      "nay_description": "Voted against passing S.J.Res. 18, which used the Congressional Review Act to repeal the 2022 public charge rule, reinstating the stricter 2019 standard that counted use of benefits such as Medicaid and food assistance against an immigrant seeking a green card. It passed the Senate 50-47.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 118,
+      "session": 1,
+      "roll": 225,
+      "measure_id": "H R 2494",
+      "vote_date": "2023-05-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 2494, the POLICE Act, which made assaulting a law enforcement officer, firefighter, or other first responder a deportable offense for any non-citizen. It passed the House 255-175.",
+      "nay_description": "Voted against passing H.R. 2494, the POLICE Act, which made assaulting a law enforcement officer, firefighter, or other first responder a deportable offense for any non-citizen. It passed the House 255-175.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against"
+        },
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 118,
+      "session": 1,
+      "roll": 232,
+      "measure_id": "S J RES 11",
+      "vote_date": "2023-05-23",
+      "review_status": "approved",
+      "yea_description": "Voted to send S.J.Res. 11 to the President, using the Congressional Review Act to repeal the EPA rule tightening nitrogen oxide and other emission standards for new heavy-duty trucks and engines. It passed the House 221-203.",
+      "nay_description": "Voted against sending S.J.Res. 11 to the President, which used the Congressional Review Act to repeal the EPA rule tightening nitrogen oxide and other emission standards for new heavy-duty trucks and engines. It passed the House 221-203.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 118,
+      "session": 1,
+      "roll": 234,
+      "measure_id": "H J RES 45",
+      "vote_date": "2023-05-24",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 45, which used the Congressional Review Act to repeal the Education Department rule that paused federal student loan payments and cancelled up to $20,000 of debt per borrower. It passed the House 218-203.",
+      "nay_description": "Voted against passing H.J.Res. 45, which used the Congressional Review Act to repeal the Education Department rule that paused federal student loan payments and cancelled up to $20,000 of debt per borrower. It passed the House 218-203.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 118,
+      "session": 1,
+      "roll": 237,
+      "measure_id": "H R 467",
+      "vote_date": "2023-05-25",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 467, the HALT Fentanyl Act, which permanently placed fentanyl-related substances as a class in Schedule I of the Controlled Substances Act and applied the same trafficking penalties to them. It passed the House 289-133.",
+      "nay_description": "Voted against passing H.R. 467, the HALT Fentanyl Act, which permanently placed fentanyl-related substances as a class in Schedule I of the Controlled Substances Act and applied the same trafficking penalties to them. It passed the House 289-133.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 118,
+      "session": 1,
+      "roll": 135,
+      "measure_id": "H.J.Res. 45",
+      "vote_date": "2023-06-01",
+      "review_status": "approved",
+      "yea_description": "Voted to send H.J.Res. 45 to the President, using the Congressional Review Act to repeal the Education Department rule that paused federal student loan payments and cancelled up to $20,000 of debt per borrower. It passed the Senate 52-46.",
+      "nay_description": "Voted against sending H.J.Res. 45 to the President, which used the Congressional Review Act to repeal the Education Department rule that paused federal student loan payments and cancelled up to $20,000 of debt per borrower. It passed the Senate 52-46.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 118,
+      "session": 1,
+      "roll": 252,
+      "measure_id": "H J RES 44",
+      "vote_date": "2023-06-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 44, which used the Congressional Review Act to repeal the ATF rule treating pistols fitted with stabilizing braces as short-barreled rifles subject to stricter registration. It passed the House 219-210.",
+      "nay_description": "Voted against passing H.J.Res. 44, which used the Congressional Review Act to repeal the ATF rule treating pistols fitted with stabilizing braces as short-barreled rifles subject to stricter registration. It passed the House 219-210.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 118,
+      "session": 1,
+      "roll": 255,
+      "measure_id": "H R 1615",
+      "vote_date": "2023-06-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 1615, the Gas Stove Protection and Freedom Act, which barred the Consumer Product Safety Commission from banning gas stoves or issuing a safety standard that would substantially restrict their use. It passed the House 248-180.",
+      "nay_description": "Voted against passing H.R. 1615, the Gas Stove Protection and Freedom Act, which barred the Consumer Product Safety Commission from banning gas stoves or issuing a safety standard that would substantially restrict their use. It passed the House 248-180.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 118,
+      "session": 1,
+      "roll": 268,
+      "measure_id": "H R 1640",
+      "vote_date": "2023-06-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 1640, the Save Our Gas Stoves Act, which blocked the Department of Energy from setting efficiency standards for kitchen ranges and ovens that would push consumers away from gas models. It passed the House 249-181.",
+      "nay_description": "Voted against passing H.R. 1640, the Save Our Gas Stoves Act, which blocked the Department of Energy from setting efficiency standards for kitchen ranges and ovens that would push consumers away from gas models. It passed the House 249-181.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 118,
+      "session": 1,
+      "roll": 171,
+      "measure_id": "H.J.Res. 44",
+      "vote_date": "2023-06-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 44, which would have used the Congressional Review Act to repeal the ATF rule treating pistols fitted with stabilizing braces as short-barreled rifles subject to stricter registration. It failed in the Senate 49-50.",
+      "nay_description": "Voted against passing H.J.Res. 44, which would have used the Congressional Review Act to repeal the ATF rule treating pistols fitted with stabilizing braces as short-barreled rifles subject to stricter registration. It failed in the Senate 49-50.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 118,
+      "session": 1,
+      "roll": 340,
+      "measure_id": "H R 3941",
+      "vote_date": "2023-07-19",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 3941, the Schools Not Shelters Act, which barred federally funded schools and colleges from housing immigrants who entered the country without authorization. It passed the House 222-201.",
+      "nay_description": "Voted against passing H.R. 3941, the Schools Not Shelters Act, which barred federally funded schools and colleges from housing immigrants who entered the country without authorization. It passed the House 222-201.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 118,
+      "session": 1,
+      "roll": 381,
+      "measure_id": "S J RES 9",
+      "vote_date": "2023-07-27",
+      "review_status": "approved",
+      "yea_description": "Voted to send S.J.Res. 9 to the President, using the Congressional Review Act to repeal the Fish and Wildlife Service rule listing the lesser prairie-chicken as threatened and endangered, removing its Endangered Species Act protection. It passed the House 221-206.",
+      "nay_description": "Voted against sending S.J.Res. 9 to the President, which used the Congressional Review Act to repeal the Fish and Wildlife Service rule listing the lesser prairie-chicken as threatened and endangered, removing its Endangered Species Act protection. It passed the House 221-206.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    }
+  ]
+}
