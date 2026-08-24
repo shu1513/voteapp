@@ -71,6 +71,33 @@ Two rules this run added:
   and the other is left pending, because there is no official text to
   write the other judgment from.
 
+## Result
+
+All 376 divided rolls were read. **161 judged** across nine batches;
+the other 215 left pending, each for one of the reasons above. Combined
+with the 119-1 run the database now holds **14,531 live
+`rollcall_import` records across 105 candidates, 15,911 area tags, and
+266 approved roll calls** out of 4,879 queued. Re-running an import
+returns every record `unchanged`.
+
+| Batch | Judged | Inserted | Rewritten |
+| --- | --- | --- | --- |
+| 01 | 25 | 1,231 | 1 |
+| 02 | 15 | 738 | 6 |
+| 03 | 13 | 644 | — |
+| 04 | 20 | 962 | 7 |
+| 05 | 13 | 712 | 9 |
+| 06 | 20 | 905 | 1 |
+| 07 | 15 | 838 | — |
+| 08 | 28 | 1,516 | — |
+| 09 | 12 | 747 | 1 |
+
+The 25 rewrites are all hand-written records that already cited the
+roll call's own URL; each keeps its row id and logs an identity
+transition, so promotion follows the re-key. Two hand-written duplicates
+that cited something else were retired by hand with reasons naming their
+replacements.
+
 ## Resuming in a fresh session
 
 The scratch directory does not survive a session, but everything needed
