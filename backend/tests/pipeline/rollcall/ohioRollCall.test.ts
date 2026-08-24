@@ -10,6 +10,7 @@ import {
   ohioActionVoteDate,
   ohioDisplayUrl,
   ohioEvidenceFileName,
+  ohioKeptFloorDayCollisions,
   ohioMeasureId,
   ohioRollNumber,
   parseOhioBillNumber,
@@ -144,5 +145,39 @@ describe("evidence", () => {
     expect(() => parseOhioVoteEvidence({ ...evidence, chamber: "senate" }, expected)).toThrow("file name says");
     expect(() => parseOhioVoteEvidence({ ...evidence, action: null }, expected)).toThrow("action is missing");
     expect(() => parseOhioVoteEvidence({ ...evidence, jurisdiction: "US" }, expected)).toThrow("jurisdiction");
+  });
+});
+
+describe("ohioKeptFloorDayCollisions", () => {
+  const hb = { type: "hb", number: "96" } as const;
+  const kept = (chamber: string, sessionDay: string, code = "pass_300") => ({
+    action_code: code,
+    chamber,
+    session_day: sessionDay,
+    yeas: ["rep_a_1"],
+    nays: [],
+  });
+
+  it("flags only a day holding two KEPT floor votes of one chamber", () => {
+    expect(
+      ohioKeptFloorDayCollisions(
+        [kept("House", "day010_h_20250301"), kept("House", "day011_h_20250302"), kept("Senate", "day010_s_20250301")],
+        hb
+      )
+    ).toEqual(new Set());
+    expect(
+      ohioKeptFloorDayCollisions([kept("House", "day010_h_20250301"), kept("House", "day010_h_20250301", "msg_507")], hb)
+    ).toEqual(new Set(["house:2025-03-01"]));
+    // Committee and excluded floor votes never collide with a kept one.
+    expect(
+      ohioKeptFloorDayCollisions(
+        [kept("House", "day010_h_20250301"), kept("House", "day010_h_20250301", "crpt_301"), kept("House", "day010_h_20250301", "msg_506")],
+        hb
+      )
+    ).toEqual(new Set());
+    // An unreadable action is the per-action loop's problem, not a collision.
+    expect(
+      ohioKeptFloorDayCollisions([kept("House", "day010_h_20250301"), { action_code: "pass_300", chamber: "Joint" }], hb)
+    ).toEqual(new Set());
   });
 });

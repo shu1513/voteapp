@@ -221,6 +221,32 @@ export function classifyOhioVoteAction(input: { actionCode: string; measure: Ohi
 }
 
 /**
+ * Preflight for one bill's vote actions: the `chamber:date` keys that hold
+ * MORE than one kept floor vote. The per-bill actions URL is the record's
+ * source_url and cannot tell two same-day floor votes apart, so the
+ * fetcher stores NEITHER member of a colliding pair (rejecting only the
+ * second would leave the first — equally indistinguishable — in the
+ * queue). Actions this preflight cannot read (bad chamber, bad date) are
+ * skipped here; the per-action loop reports them itself.
+ */
+export function ohioKeptFloorDayCollisions(voteActions: readonly OhioAction[], measure: OhioMeasure): Set<string> {
+  const keptPerDay = new Map<string, number>();
+  for (const action of voteActions) {
+    const actionCode = typeof action.action_code === "string" ? action.action_code : "";
+    if (classifyOhioVoteAction({ actionCode, measure }).isFloorVote !== true) {
+      continue;
+    }
+    try {
+      const key = `${ohioActionChamber(action)}:${ohioActionVoteDate(action)}`;
+      keptPerDay.set(key, (keptPerDay.get(key) ?? 0) + 1);
+    } catch {
+      continue;
+    }
+  }
+  return new Set([...keptPerDay.entries()].filter(([, count]) => count > 1).map(([key]) => key));
+}
+
+/**
  * The stored hash pins the ACTION ELEMENT as fetched, not the whole feed
  * response: a bill's actions array keeps growing after our fetch (the
  * governor signs, a journal correction lands), and re-hashing the whole

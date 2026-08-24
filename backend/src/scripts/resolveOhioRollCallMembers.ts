@@ -176,7 +176,9 @@ async function main(): Promise<void> {
     noCrosswalk: string[];
     error: string | null;
   }[] = [];
-  const files = listOhioRollCallEvidenceFiles(evidenceDir);
+  // Same filter the importer applies: a mixed-GA directory must not run
+  // another assembly's votes through this GA's roster and crosswalk.
+  const files = listOhioRollCallEvidenceFiles(evidenceDir).filter((file) => file.generalAssembly === generalAssembly);
   if (crosswalk !== null) {
     for (const evidence of files) {
       const row: (typeof rolls)[number] = {

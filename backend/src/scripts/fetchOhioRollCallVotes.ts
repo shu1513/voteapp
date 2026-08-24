@@ -19,6 +19,7 @@ import {
   ohioActionsUrl,
   ohioDisplayUrl,
   ohioEvidenceFileName,
+  ohioKeptFloorDayCollisions,
   ohioLegislationListUrl,
   ohioMeasureId,
   ohioRollNumber,
@@ -119,8 +120,15 @@ function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
+// Same abort window the federal fetcher uses: one stalled request must not
+// hang a 1,477-bill --all-kept run.
+const FETCH_TIMEOUT_MS = 30_000;
+
 async function fetchOhioJson(url: string): Promise<unknown> {
-  const response = await fetch(url, { headers: { accept: "application/json" } });
+  const response = await fetch(url, {
+    headers: { accept: "application/json" },
+    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+  });
   if (!response.ok) {
     throw new Error(`${url} answered ${response.status}`);
   }
@@ -263,8 +271,11 @@ async function main(): Promise<void> {
       }
       // One kept floor vote per (chamber, day) per bill: the per-bill
       // source URL cannot name a single vote, so the dedupe scan leans on
-      // this invariant (rollCallRecordUrls.ts). Checked before storing.
-      const keptPerDay = new Map<string, number>();
+      // this invariant (rollCallRecordUrls.ts). Preflighted over the whole
+      // bill BEFORE anything is stored, so a colliding pair rejects BOTH
+      // votes — rejecting only the second would leave the first, equally
+      // indistinguishable, in the queue.
+      const collidingDays = ohioKeptFloorDayCollisions(voteActions, measure);
 
       for (const action of voteActions) {
         const actionCode = typeof action.action_code === "string" ? action.action_code : "";
@@ -311,14 +322,10 @@ async function main(): Promise<void> {
             throw new Error("vote action has no result");
           }
 
-          if (classification.isFloorVote === true) {
-            const dayKey = `${chamber}:${voteDate}`;
-            keptPerDay.set(dayKey, (keptPerDay.get(dayKey) ?? 0) + 1);
-            if (keptPerDay.get(dayKey)! > 1) {
-              row.outcome = "collision";
-              row.error = `${bill} has two kept floor votes in the ${chamber} on ${voteDate}; the per-bill source URL cannot tell them apart`;
-              continue;
-            }
+          if (classification.isFloorVote === true && collidingDays.has(`${chamber}:${voteDate}`)) {
+            row.outcome = "collision";
+            row.error = `${bill} has two kept floor votes in the ${chamber} on ${voteDate}; the per-bill source URL cannot tell them apart`;
+            continue;
           }
           const rollKey = `${chamber}:${roll}`;
           const owner = rollOwner.get(rollKey);
@@ -328,6 +335,18 @@ async function main(): Promise<void> {
             continue;
           }
           rollOwner.set(rollKey, bill);
+          if (pool) {
+            const stored = await pool.query<{ measure_id: string | null }>(
+              `SELECT measure_id FROM legislative_votes
+                WHERE jurisdiction = $1 AND chamber = $2 AND session = $3 AND roll_number = $4`,
+              [OHIO_JURISDICTION, chamber, session, roll]
+            );
+            if (stored.rows[0] !== undefined && stored.rows[0].measure_id !== measureId) {
+              row.outcome = "collision";
+              row.error = `roll ${roll} (${chamber}) is stored as ${stored.rows[0].measure_id ?? "no measure"}, not ${measureId}`;
+              continue;
+            }
+          }
 
           const sourceSha256 = ohioActionSha256(action);
           const evidenceFile = ohioEvidenceFileName(chamber, generalAssembly, roll);
@@ -347,16 +366,6 @@ async function main(): Promise<void> {
 
           if (!pool) {
             row.outcome = "dry_run";
-            continue;
-          }
-          const stored = await pool.query<{ measure_id: string | null }>(
-            `SELECT measure_id FROM legislative_votes
-              WHERE jurisdiction = $1 AND chamber = $2 AND session = $3 AND roll_number = $4`,
-            [OHIO_JURISDICTION, chamber, session, roll]
-          );
-          if (stored.rows[0] !== undefined && stored.rows[0].measure_id !== measureId) {
-            row.outcome = "collision";
-            row.error = `roll ${roll} (${chamber}) is stored as ${stored.rows[0].measure_id ?? "no measure"}, not ${measureId}`;
             continue;
           }
           const result = await upsertLegislativeVoteSource(pool, {
