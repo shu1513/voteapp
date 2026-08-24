@@ -1,0 +1,229 @@
+{
+  "judgments": [
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 33,
+      "measure_id": "H R 4445",
+      "vote_date": "2022-02-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 4445, which let people alleging sexual assault or sexual harassment take their claim to court even if they had signed a forced arbitration agreement. It passed the House 335-97 and was signed into law.",
+      "nay_description": "Voted against passing H.R. 4445, which let people alleging sexual assault or sexual harassment take their claim to court even if they had signed a forced arbitration agreement. It passed the House 335-97 and was signed into law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 38,
+      "measure_id": "H R 3076",
+      "vote_date": "2022-02-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 3076, the Postal Service Reform Act, which ended the requirement that the Postal Service prefund retiree health benefits, moved postal retirees into a new Medicare-linked plan, and required six-day delivery. It passed the House 342-92 and was signed into law.",
+      "nay_description": "Voted against passing H.R. 3076, the Postal Service Reform Act, which ended the requirement that the Postal Service prefund retiree health benefits, moved postal retirees into a new Medicare-linked plan, and required six-day delivery. It passed the House 342-92 and was signed into law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 43,
+      "measure_id": "H R 3485",
+      "vote_date": "2022-02-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 3485, the Global Respect Act, which imposed visa sanctions on foreign nationals responsible for human rights abuses against people because of their sexual orientation or gender identity. It passed the House 227-206.",
+      "nay_description": "Voted against passing H.R. 3485, the Global Respect Act, which imposed visa sanctions on foreign nationals responsible for human rights abuses against people because of their sexual orientation or gender identity. It passed the House 227-206.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 57,
+      "measure_id": "H R 3967",
+      "vote_date": "2022-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 3967, the Honoring our PACT Act, which expanded VA health care and disability benefits for veterans exposed to burn pits and other toxic substances by presuming their illnesses were service-connected. It passed the House 256-174.",
+      "nay_description": "Voted against passing H.R. 3967, the Honoring our PACT Act, which expanded VA health care and disability benefits for veterans exposed to burn pits and other toxic substances by presuming their illnesses were service-connected. It passed the House 256-174.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 81,
+      "measure_id": "H R 963",
+      "vote_date": "2022-03-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 963, the FAIR Act, which made pre-dispute forced arbitration agreements unenforceable in employment, consumer, antitrust, and civil rights disputes. It passed the House 222-209.",
+      "nay_description": "Voted against passing H.R. 963, the FAIR Act, which made pre-dispute forced arbitration agreements unenforceable in employment, consumer, antitrust, and civil rights disputes. It passed the House 222-209.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 82,
+      "measure_id": "H R 2116",
+      "vote_date": "2022-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 2116, the CROWN Act, which barred discrimination based on hair texture or hairstyles commonly associated with a particular race or national origin in employment, housing, education, and federally funded programs. It passed the House 235-189.",
+      "nay_description": "Voted against passing H.R. 2116, the CROWN Act, which barred discrimination based on hair texture or hairstyles commonly associated with a particular race or national origin in employment, housing, education, and federally funded programs. It passed the House 235-189.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 109,
+      "measure_id": "H R 1916",
+      "vote_date": "2022-04-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 1916, the Ensuring Lasting Smiles Act, which required private health plans to cover diagnosis and treatment of congenital anomalies and birth defects, including reconstructive procedures. It passed the House 310-110.",
+      "nay_description": "Voted against passing H.R. 1916, the Ensuring Lasting Smiles Act, which required private health plans to cover diagnosis and treatment of congenital anomalies and birth defects, including reconstructive procedures. It passed the House 310-110.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 182,
+      "measure_id": "H R 5129",
+      "vote_date": "2022-05-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 5129, the Community Services Block Grant Modernization Act, which reauthorized through 2032 the block grants funding local antipoverty services and raised the income eligibility threshold. It passed the House 246-169.",
+      "nay_description": "Voted against passing H.R. 5129, the Community Services Block Grant Modernization Act, which reauthorized through 2032 the block grants funding local antipoverty services and raised the income eligibility threshold. It passed the House 246-169.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 221,
+      "measure_id": "H R 350",
+      "vote_date": "2022-05-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 350, the Domestic Terrorism Prevention Act, which created domestic terrorism units at the FBI, Justice Department, and Homeland Security and required regular reporting on domestic terrorist threats. It passed the House 222-203.",
+      "nay_description": "Voted against passing H.R. 350, the Domestic Terrorism Prevention Act, which created domestic terrorism units at the FBI, Justice Department, and Homeland Security and required regular reporting on domestic terrorist threats. It passed the House 222-203.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 232,
+      "measure_id": "H R 7688",
+      "vote_date": "2022-05-19",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 7688, the Consumer Fuel Price Gouging Prevention Act, which barred selling fuel at unconscionably excessive prices during a declared energy emergency and let the FTC enforce the ban. It passed the House 217-207.",
+      "nay_description": "Voted against passing H.R. 7688, the Consumer Fuel Price Gouging Prevention Act, which barred selling fuel at unconscionably excessive prices during a declared energy emergency and let the FTC enforce the ban. It passed the House 217-207.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for"
+        },
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 117,
+      "session": 2,
+      "roll": 211,
+      "measure_id": "S.J.Res. 46",
+      "vote_date": "2022-05-26",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 46, which would have used the Congressional Review Act to repeal the Justice and Homeland Security rule letting asylum officers decide asylum claims directly instead of sending them to immigration court. It failed in the Senate 46-48.",
+      "nay_description": "Voted against passing S.J.Res. 46, which would have used the Congressional Review Act to repeal the Justice and Homeland Security rule letting asylum officers decide asylum claims directly instead of sending them to immigration court. It failed in the Senate 46-48.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 245,
+      "measure_id": "H R 7910",
+      "vote_date": "2022-06-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 7910, the Protecting Our Kids Act, which raised the purchase age for many semiautomatic rifles to 21, banned new large-capacity magazines, tightened rules on untraceable firearms, and required safe storage. It passed the House 223-204.",
+      "nay_description": "Voted against passing H.R. 7910, the Protecting Our Kids Act, which raised the purchase age for many semiautomatic rifles to 21, banned new large-capacity magazines, tightened rules on untraceable firearms, and required safe storage. It passed the House 223-204.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 255,
+      "measure_id": "H R 2377",
+      "vote_date": "2022-06-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 2377, the Federal Extreme Risk Protection Order Act, which let federal courts temporarily bar someone found to be a danger from having firearms and funded state red flag laws. It passed the House 224-202.",
+      "nay_description": "Voted against passing H.R. 2377, the Federal Extreme Risk Protection Order Act, which let federal courts temporarily bar someone found to be a danger from having firearms and funded state red flag laws. It passed the House 224-202.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for"
+        }
+      ]
+    }
+  ]
+}
