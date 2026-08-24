@@ -103,18 +103,41 @@ the worktree has no `backend/.env`.
   flagged related and KEPT: it reports her public opposition, not how she
   voted, so it is a distinct claim (the phase-1 Grijalva rule).
 
-Totals after batch-02: **668 live `rollcall_import` records across 94
-Ohio candidates, 668 area tags, 13 approved roll calls** of 472 queued.
+- `batch-03/` — 6 rolls over 5 bills: H.B. 126 (public nuisance suits over
+  product sales), H.B. 503 (municipal income tax reciprocity credit),
+  H.B. 92 (utility liens and shutoffs on rental property), H.B. 319
+  (Clinical Teaching Subsidy Reform Act), and H.B. 173 (submetering
+  exemption, Senate passage + House concurrence, vetoed 2026-06-24) →
+  **410 records**; re-run all `unchanged`. Two same-day rows were flagged
+  related and kept — both describe different votes that day (Ghanbari on
+  the capital budget, Bryant Bailey on S.J.R. 10).
+
+Totals after batch-03: **1,078 live `rollcall_import` records across 94
+Ohio candidates, 1,078 area tags, 19 approved roll calls** of 472 queued,
+spanning ten research areas (public safety 236, civil rights 170,
+corporate accountability 167, reproductive rights 156, election integrity
+88, housing 83, education 81, income tax 79, gun control 10, immigration
+8).
 
 ## The judging gate
 
 Same as phase 2: a roll is judged only when the vote was **divided** (the
 losing side at least a quarter of the winning side) **and** a research
 area fits it without inventing a direction, with the bill's LSC analysis
-on file to write from. Of 466 kept floor votes, 66 are divided; 13 are
-judged, 8 are appropriations (H.B. 96, H.B. 730 — no research area maps
-onto a vote to fund the government), and the rest are pending with their
-reason in the worklist.
+on file to write from. Of 466 kept floor votes, 66 are divided. All 66
+have now been read and dispositioned: **19 judged**, 47 pending, each
+with its reason in the worklist — 18 contested-direction, 8
+appropriations (H.B. 96, H.B. 730 — no research area maps onto a vote to
+fund the government), 6 no-fitting-area (marijuana regulation, child
+labor, digital assets — real subjects that none of the 27 research areas
+covers), 3 superseded by the decisive vote in the same chamber, 3
+omnibus, 3 mixed-direction, 2 stale-title vehicles, 2 trivia, 2 too thin.
+
+The large contested-direction group is mostly Ohio's property-tax
+mechanics (H.B. 129, 186, 309, 335): they cut owners' bills and school
+revenue at the same time, so neither `cost_of_living_reduction` nor
+`public_education_quality` can be assigned without picking a side the
+analysis does not.
 
 Ohio-specific hazards found while judging, all caught by reading the LSC
 analysis rather than the title:
@@ -130,9 +153,10 @@ analysis rather than the title:
 
 ## Next
 
-1. Judge the remaining 31 unjudged divided rolls, batch by batch; the
-   analyses are re-fetchable from each bill's Documents tab (the
-   `Analysis` section's first link is the newest version).
+1. Nothing is left unexamined in the divided set. Reopening any pending
+   roll means disagreeing with a recorded reason, not doing new triage.
+   The 400 near-unanimous kept floor votes are the only untouched
+   material, and phase 2's gate excludes them by design.
 2. Act on `CODE-FINDINGS.md` — item 1 blocks a voter-ID constitutional
    amendment (S.J.R. 10) from ever being judged.
 3. H.B. 184's two same-day House concurrence votes are stored nowhere by

@@ -1,51 +1,51 @@
 n	vote_date	chamber	bill	measure_id	roll	yeas	nays	question	status
 1	2025-02-12	senate	sb1	SB 1	1739412000	21	11	Passed	pending:superseded-by-the-decisive-vote-in-this-chamber
-2	2025-02-26	senate	sb56	SB 56	1740617860	23	9	Passed	unjudged
+2	2025-02-26	senate	sb56	SB 56	1740617860	23	9	Passed	pending:no-fitting-area (marijuana regulation; none of the 27 research areas covers drug policy)
 3	2025-03-19	house	sb1	SB 1	1742433648	59	34	Passed	batch-01
-4	2025-03-19	house	hb28	HB 28	1742434442	62	30	Passed	unjudged
+4	2025-03-19	house	hb28	HB 28	1742434442	62	30	Passed	pending:contested-direction (eliminates replacement property tax levies)
 5	2025-03-26	senate	sb1	SB 1	1743028529	20	11	Concurred in House amendments	batch-01
-6	2025-03-26	house	hb94	HB 94	1743031151	75	20	Passed	unjudged
-7	2025-04-02	house	sb33	SB 33	1743633819	75	20	Passed	unjudged
-8	2025-04-09	senate	sb50	SB 50	1744237690	24	9	Passed	unjudged
+6	2025-03-26	house	hb94	HB 94	1743031151	75	20	Passed	pending:trivia (one-line change allowing labor notices to be posted online)
+7	2025-04-02	house	sb33	SB 33	1743633819	75	20	Passed	pending:trivia (one-line change allowing labor notices to be posted online)
+8	2025-04-09	senate	sb50	SB 50	1744237690	24	9	Passed	pending:no-fitting-area (minor work hours; vetoed, and no research area covers child labor)
 9	2025-04-09	house	hb96	HB 96	1744252394	60	39	Passed	pending:appropriations
-10	2025-05-07	house	hb126	HB 126	1746659043	59	36	Passed	unjudged
+10	2025-05-07	house	hb126	HB 126	1746659043	59	36	Passed	batch-03
 11	2025-05-21	house	hb5	HB 5	1747870004	71	24	Passed	pending:mixed-direction (weapons-under-disability: raises some penalties, widens relief from disability)
 12	2025-06-11	senate	hb96	HB 96	1749692727	23	10	Passed	pending:appropriations
 13	2025-06-18	senate	sb4	SB 4	1750284927	24	8	Passed	pending:thin (summary is one line cross-referencing H.B. 96)
-14	2025-06-18	house	hb116	HB 116	1750287866	70	26	Passed	unjudged
+14	2025-06-18	house	hb116	HB 116	1750287866	70	26	Passed	pending:no-fitting-area (digital assets and mining)
 15	2025-06-18	senate	sb172	SB 172	1750290051	23	8	Passed	batch-02
 16	2025-06-25	senate	hb96	HB 96	1750898160	23	10	Conference report agreed to	pending:appropriations
 17	2025-06-25	house	hb96	HB 96	1750902626	59	38	Conference report agreed to	pending:appropriations
 18	2025-07-21	house	hb96	HB 96	1753130867	61	28	Item passed notwithstanding objections of the Governor	pending:appropriations
 19	2025-10-01	senate	hb96	HB 96	1759359099	21	11	Item passed notwithstanding objections of the Governor	pending:appropriations
-20	2025-10-22	senate	sb156	SB 156	1761172564	24	9	Passed	unjudged
-21	2025-10-22	house	hb186	HB 186	1761174121	73	23	Passed	unjudged
-22	2025-10-22	house	hb335	HB 335	1761176291	71	24	Passed	unjudged
+20	2025-10-22	senate	sb156	SB 156	1761172564	24	9	Passed	pending:contested-direction (success sequence curriculum mandate)
+21	2025-10-22	house	hb186	HB 186	1761174121	73	23	Passed	pending:contested-direction (property-tax mechanics: relief for owners, less school revenue)
+22	2025-10-22	house	hb335	HB 335	1761176291	71	24	Passed	pending:contested-direction (property-tax mechanics: relief for owners, less school revenue)
 23	2025-11-05	senate	sb293	SB 293	1762390945	23	10	Passed	pending:superseded-by-the-decisive-vote-in-this-chamber
-24	2025-11-05	house	sb50	SB 50	1762391504	62	30	Passed	unjudged
+24	2025-11-05	house	sb50	SB 50	1762391504	62	30	Passed	pending:no-fitting-area (minor work hours; vetoed, and no research area covers child labor)
 25	2025-11-12	house	hb21	HB 21	1762995300	65	31	Passed	pending:contested-direction (health care sharing ministries exempted from insurance law)
 26	2025-11-19	house	sb293	SB 293	1763604123	61	30	Passed	batch-02
-27	2025-11-19	senate	hb129	HB 129	1763605388	23	10	Passed	unjudged
+27	2025-11-19	senate	hb129	HB 129	1763605388	23	10	Passed	pending:contested-direction (property-tax mechanics: relief for owners, less school revenue)
 28	2025-11-19	house	hb88	HB 88	1763605433	71	18	Passed	batch-02
-29	2025-11-19	senate	hb309	HB 309	1763608180	23	10	Passed	unjudged
-30	2025-11-19	house	hb324	HB 324	1763608797	60	28	Passed	unjudged
-31	2025-11-19	senate	hb335	HB 335	1763609548	23	10	Passed	unjudged
+29	2025-11-19	senate	hb309	HB 309	1763608180	23	10	Passed	pending:contested-direction (property-tax mechanics: relief for owners, less school revenue)
+30	2025-11-19	house	hb324	HB 324	1763608797	60	28	Passed	pending:contested-direction (prescribing conditions for high-adverse-effect drugs; the analysis names no abortion provision)
+31	2025-11-19	senate	hb335	HB 335	1763609548	23	10	Passed	pending:contested-direction (property-tax mechanics: relief for owners, less school revenue)
 32	2025-11-19	house	hb485	HB 485	1763614397	59	27	Passed	batch-02
 33	2025-11-19	senate	sb34	SB 34	1763614903	23	10	Passed	pending:contested-direction (founding-document classroom displays)
 34	2025-11-19	house	hb486	HB 486	1763616483	62	27	Passed	pending:contested-direction (instruction on positive impacts of religion)
 35	2025-11-19	house	hb492	HB 492	1763617311	59	21	Passed	batch-02
 36	2025-11-19	senate	sb219	SB 219	1763618086	25	8	Passed	pending:mixed-direction (protects the Oil and Gas Well Fund; also preempts local authority)
-37	2025-11-19	house	hb309	HB 309	1763624430	64	25	Concurred in Senate amendments	unjudged
-38	2025-11-19	house	hb335	HB 335	1763624465	67	22	Concurred in Senate amendments	unjudged
-39	2025-11-19	house	sb56	SB 56	1763637329	52	34	Conference report agreed to	unjudged
+37	2025-11-19	house	hb309	HB 309	1763624430	64	25	Concurred in Senate amendments	pending:contested-direction (property-tax mechanics: relief for owners, less school revenue)
+38	2025-11-19	house	hb335	HB 335	1763624465	67	22	Concurred in Senate amendments	pending:contested-direction (property-tax mechanics: relief for owners, less school revenue)
+39	2025-11-19	house	sb56	SB 56	1763637329	52	34	Conference report agreed to	pending:no-fitting-area (marijuana regulation; none of the 27 research areas covers drug policy)
 40	2025-11-19	senate	sb293	SB 293	1763696144	23	10	Concurred in House amendments	batch-02
-41	2025-12-09	senate	sb56	SB 56	1765324310	22	7	Conference report agreed to	unjudged
-42	2026-02-18	house	hb326	HB 326	1771466087	65	29	Passed	unjudged
-43	2026-02-25	house	hb503	HB 503	1772069636	65	27	Passed	unjudged
+41	2025-12-09	senate	sb56	SB 56	1765324310	22	7	Conference report agreed to	pending:no-fitting-area (marijuana regulation; none of the 27 research areas covers drug policy)
+42	2026-02-18	house	hb326	HB 326	1771466087	65	29	Passed	pending:contested-direction (which college-readiness assessments schools may choose)
+43	2026-02-25	house	hb503	HB 503	1772069636	65	27	Passed	batch-03
 44	2026-02-25	house	sb63	SB 63	1772071624	65	27	Passed	pending:contested-direction (ranked-choice-voting ban)
 45	2026-03-04	senate	sb63	SB 63	1772669509	24	7	Concurred in House amendments	pending:contested-direction (ranked-choice-voting ban)
-46	2026-03-18	house	hb92	HB 92	1773874979	67	30	Passed	unjudged
-47	2026-03-18	house	hb173	HB 173	1773875992	74	23	Passed	unjudged
+46	2026-03-18	house	hb92	HB 92	1773874979	67	30	Passed	batch-03
+47	2026-03-18	house	hb173	HB 173	1773875992	74	23	Passed	pending:superseded-by-the-decisive-vote-in-this-chamber
 48	2026-03-18	house	hb730	HB 730	1773879737	66	29	Passed	pending:appropriations
 49	2026-03-25	house	hb249	HB 249	1774485008	63	32	Passed	batch-02
 50	2026-03-25	house	hb252	HB 252	1774485447	70	25	Passed	batch-02
@@ -53,15 +53,15 @@ n	vote_date	chamber	bill	measure_id	roll	yeas	nays	question	status
 52	2026-03-25	house	hb347	HB 347	1774487705	64	32	Passed	batch-02
 53	2026-04-15	senate	sb278	SB 278	1776292440	24	9	Passed	batch-02
 54	2026-06-03	house	sb219	SB 219	1780528537	63	30	Passed	pending:mixed-direction (protects the Oil and Gas Well Fund; also preempts local authority)
-55	2026-06-09	house	hb319	HB 319	1781055485	70	26	Passed	unjudged
-56	2026-06-10	house	sb276	SB 276	1781137982	60	38	Passed - Amended	unjudged
+55	2026-06-09	house	hb319	HB 319	1781055485	70	26	Passed	batch-03
+56	2026-06-10	house	sb276	SB 276	1781137982	60	38	Passed - Amended	pending:contested-direction (school-psychologist licensure compact; divided despite being administrative)
 57	2026-06-10	senate	hb472	HB 472	1781141392	23	10	Passed	pending:stale-title-vehicle (final analysis is a mail-voting photo-ID bill, written “would have”; needs its own read)
-58	2026-06-10	senate	hb455	HB 455	1781149546	24	9	Passed	unjudged
+58	2026-06-10	senate	hb455	HB 455	1781149546	24	9	Passed	pending:omnibus (State Board of Education overhaul plus unrelated provisions; no honest dominant area)
 59	2026-06-10	senate	hb492	HB 492	1781149605	24	9	Passed	batch-02
 60	2026-06-10	house	hb472	HB 472	1781150551	60	34	Concurred in Senate amendments	pending:stale-title-vehicle (final analysis is a mail-voting photo-ID bill, written “would have”; needs its own read)
 61	2026-06-10	senate	sb294	SB 294	1781151870	24	9	Passed	pending:thin (one-line declaration of energy siting policy)
-62	2026-06-10	senate	sb311	SB 311	1781151972	24	9	Passed	unjudged
-63	2026-06-10	senate	hb173	HB 173	1781162536	24	9	Passed	unjudged
-64	2026-06-10	senate	sb276	SB 276	1781163509	24	9	Concurred in House amendments	unjudged
-65	2026-06-10	house	hb455	HB 455	1781207162	63	31	Concurred in Senate amendments	unjudged
-66	2026-06-10	house	hb173	HB 173	1781207418	56	35	Concurred in Senate amendments	unjudged
+62	2026-06-10	senate	sb311	SB 311	1781151972	24	9	Passed	pending:omnibus (school operations omnibus; no honest dominant area)
+63	2026-06-10	senate	hb173	HB 173	1781162536	24	9	Passed	batch-03
+64	2026-06-10	senate	sb276	SB 276	1781163509	24	9	Concurred in House amendments	pending:contested-direction (school-psychologist licensure compact; divided despite being administrative)
+65	2026-06-10	house	hb455	HB 455	1781207162	63	31	Concurred in Senate amendments	pending:omnibus (State Board of Education overhaul plus unrelated provisions; no honest dominant area)
+66	2026-06-10	house	hb173	HB 173	1781207418	56	35	Concurred in Senate amendments	batch-03
