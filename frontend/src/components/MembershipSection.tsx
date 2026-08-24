@@ -203,7 +203,8 @@ export function MembershipSection() {
     outcome === "success" || checkout.isPending || checkout.isSuccess || portal.isPending || portal.isSuccess;
 
   return (
-    <section className="rounded-xl border border-line bg-white p-4">
+    // id: anchor target for the Profile box's "Manage membership" link.
+    <section id="support" className="rounded-xl border border-line bg-white p-4">
       <h2 className="text-lg font-semibold">Support {APP_NAME}</h2>
       {outcome === "success" ? (
         <p role="status" className="mt-2 rounded-lg border border-green-700/40 bg-green-50 px-3 py-2 text-sm text-green-900">

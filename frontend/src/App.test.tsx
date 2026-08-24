@@ -59,6 +59,7 @@ describe("App account nav", () => {
     // Plain "My Draft" (no counter) while no pick is made / progress unknown.
     expect(screen.getByRole("link", { name: "My Draft" })).toHaveAttribute("href", "/me/picks");
     expect(screen.getByRole("link", { name: "My Candidates" })).toHaveAttribute("href", "/me/follows");
+    expect(screen.getByRole("link", { name: "Mission" })).toHaveAttribute("href", "/mission");
     expect(screen.getByRole("link", { name: "Settings" })).toHaveAttribute("href", "/me/settings");
 
     // The greeting sits beside the logo as plain text, not a link or button.

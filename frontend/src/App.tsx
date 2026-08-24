@@ -88,6 +88,9 @@ function AccountNav() {
       <Link to="/me/follows" className="whitespace-nowrap text-ink-soft hover:text-ink">
         My Candidates
       </Link>
+      <Link to="/mission" className="whitespace-nowrap text-ink-soft hover:text-ink">
+        Mission
+      </Link>
       <Link to="/me/settings" className="whitespace-nowrap text-ink-soft hover:text-ink">
         Settings
       </Link>

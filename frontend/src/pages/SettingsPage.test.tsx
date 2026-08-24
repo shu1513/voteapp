@@ -91,6 +91,37 @@ describe("SettingsPage", () => {
 
     expect(await screen.findByRole("heading", { name: "Support Elections Simplified" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Support monthly" })).toBeInTheDocument();
+    // Non-member: the Profile box invites, pointing at the mission page.
+    expect(screen.getByRole("link", { name: "Become a member" })).toHaveAttribute("href", "/mission");
+    expect(screen.queryByText(/Thank you for being a supporting member/)).not.toBeInTheDocument();
+  });
+
+  it("thanks a member in the Profile box and anchors to the support section", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
+      "/api/me/membership": {
+        body: {
+          enabled: true,
+          membership: {
+            stripe_status: "active",
+            monthly_amount_cents: 500,
+            cancel_at_period_end: false,
+            current_period_end: "2026-09-15T12:00:00.000Z",
+            started_at: "2026-08-15T12:00:00.000Z",
+          },
+          total_net_cents: 500,
+          payments: [],
+        },
+      },
+      "/api/research-areas": { body: { research_areas: [] } },
+      "/api/me/research-area-preferences": { body: { preferences: [] } },
+    });
+    renderSettings();
+
+    expect(await screen.findByText(/Thank you for being a supporting member/)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Manage membership" })).toHaveAttribute("href", "#support");
+    expect(screen.queryByRole("link", { name: "Become a member" })).not.toBeInTheDocument();
   });
 
   it("swaps password-gated sections for the add-a-password hint on Google-only accounts", async () => {

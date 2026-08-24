@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@voteapp/api-client";
-import type { EmailPreferences } from "@voteapp/api-client";
+import type { EmailPreferences, MembershipStatus } from "@voteapp/api-client";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import { MembershipSection } from "../components/MembershipSection";
 import { ResearchAreasSection } from "../components/ResearchAreasSection";
@@ -28,6 +28,37 @@ const inputClass =
   "mt-1 w-full rounded-md border border-line px-3 py-2 shadow-sm focus:border-ink focus:outline-none";
 const buttonClass =
   "rounded-lg bg-rausch px-4 py-2 text-sm font-semibold text-white transition hover:bg-rausch-dark disabled:cursor-not-allowed disabled:bg-line";
+
+/** One quiet line under the email: membership state + where to act on it.
+ * Rides the same query key as MembershipSection further down the page (one
+ * request, two observers). Renders nothing while loading, on error, when
+ * Stripe is unconfigured, or before the email is verified — the membership
+ * endpoint is verified-only, so the query must not fire before then. */
+function MembershipProfileLine({ me }: { me: Me }) {
+  const status = useQuery({
+    queryKey: ["me", "membership"],
+    queryFn: () => apiRequest<MembershipStatus>("/api/me/membership"),
+    enabled: me.email_verified,
+  });
+  if (!status.data?.enabled) {
+    return null;
+  }
+  return status.data.membership ? (
+    <p className="mt-1 text-sm text-ink-soft">
+      Thank you for being a supporting member.{" "}
+      {/* Plain anchor: the section lives on this same page. */}
+      <a href="#support" className="font-medium underline hover:text-ink">
+        Manage membership
+      </a>
+    </p>
+  ) : (
+    <p className="mt-1 text-sm">
+      <Link to="/mission" className="font-medium underline hover:text-ink">
+        Become a member
+      </Link>
+    </p>
+  );
+}
 
 function ProfileSection({ me }: { me: Me }) {
   const [firstName, setFirstName] = useState(me.first_name);
@@ -55,6 +86,7 @@ function ProfileSection({ me }: { me: Me }) {
   return (
     <Section title="Profile">
       <p className="mt-1 text-sm text-ink-soft">Signed in as {me.email}</p>
+      <MembershipProfileLine me={me} />
       <form
         onSubmit={(event) => {
           event.preventDefault();
