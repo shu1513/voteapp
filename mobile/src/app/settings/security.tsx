@@ -6,7 +6,7 @@ import { LabeledInput } from "../../components/LabeledInput";
 import { ErrorNotice } from "../../components/Status";
 import { useChangePassword, useDeleteAccount, useLogoutAll } from "../../lib/auth";
 
-// Port of the web settings Change password / Sessions / Delete account
+// Port of the web settings Change password / Sign out / Delete account
 // sections. All three work unverified — the backend gates none of them.
 
 function PasswordSection() {
@@ -69,14 +69,13 @@ function PasswordSection() {
   );
 }
 
-function SessionsSection() {
+function SignOutSection() {
   const router = useRouter();
+  // Signs out everywhere (all devices), matching the web settings page.
   const logoutAll = useLogoutAll();
 
   return (
-    <View className="rounded-xl border border-line bg-white p-4">
-      <Text className="text-lg font-semibold text-ink">Sessions</Text>
-      <Text className="mt-1 text-sm text-ink-soft">Log out of every device, including this one.</Text>
+    <View>
       <Pressable
         disabled={logoutAll.isPending}
         onPress={() => {
@@ -87,10 +86,10 @@ function SessionsSection() {
           });
         }}
         accessibilityRole="button"
-        className="mt-3 self-start rounded-lg border border-line bg-white px-4 py-2 active:border-rausch"
+        className="self-start rounded-lg border border-line bg-white px-4 py-2 active:border-rausch"
       >
         <Text className="text-sm font-semibold text-ink">
-          {logoutAll.isPending ? "Logging out…" : "Log out everywhere"}
+          {logoutAll.isPending ? "Signing out…" : "Sign out"}
         </Text>
       </Pressable>
       {logoutAll.isError ? (
@@ -184,7 +183,7 @@ export default function SecurityScreen() {
         {() => (
           <ScrollView keyboardShouldPersistTaps="handled" contentContainerClassName="gap-4 px-4 py-8">
             <PasswordSection />
-            <SessionsSection />
+            <SignOutSection />
             <DangerSection />
           </ScrollView>
         )}

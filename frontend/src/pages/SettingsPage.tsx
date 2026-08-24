@@ -7,11 +7,11 @@ import { ErrorNotice, LoadingNotice } from "../components/Status";
 import { MembershipSection } from "../components/MembershipSection";
 import { ResearchAreasSection } from "../components/ResearchAreasSection";
 import { SavedAddressForm } from "../components/SavedAddressForm";
-import { purgeAccountScopedQueries, useLogout, useMe, type Me } from "@voteapp/api-client";
+import { purgeAccountScopedQueries, useMe, type Me } from "@voteapp/api-client";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 // Account settings. Sections mirror the backend's gating: profile, password,
-// email change, sessions, and delete work for unverified users too (fixing a
+// email change, sign-out, and delete work for unverified users too (fixing a
 // typo or leaving must not require a verified inbox); email preferences and
 // the ranked issue editor are verified-only and hidden until then.
 
@@ -375,12 +375,11 @@ function EmailPreferencesSection() {
   );
 }
 
-function SessionsSection() {
+function SignOutSection() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  // Log out moved here from the header (freed a nav slot for My Draft):
-  // this-device logout and everywhere-logout now sit side by side.
-  const logout = useLogout();
+  // Signs out everywhere (all devices), not just this session: one button is
+  // simpler for non-technical users than a this-device/everywhere pair.
   const logoutAll = useMutation({
     mutationFn: () => apiRequest<{ status: string }>("/api/auth/logout-all", { method: "POST", body: {} }),
     onSuccess: () => {
@@ -391,45 +390,21 @@ function SessionsSection() {
   });
 
   return (
-    <Section title="Sessions">
-      <p className="mt-1 text-sm text-ink-soft">
-        Log out on this device, or on every device at once.
-      </p>
-      <div className="mt-3 flex flex-wrap gap-3">
-        <button
-          type="button"
-          disabled={logout.isPending || logoutAll.isPending}
-          onClick={() =>
-            logout.mutate(undefined, {
-              onSuccess: () => {
-                navigate("/");
-              },
-            })
-          }
-          className="rounded-lg border border-line bg-white px-4 py-2 text-sm font-semibold text-ink transition hover:border-rausch"
-        >
-          {logout.isPending ? "Logging out…" : "Log out"}
-        </button>
-        <button
-          type="button"
-          disabled={logout.isPending || logoutAll.isPending}
-          onClick={() => logoutAll.mutate()}
-          className="rounded-lg border border-line bg-white px-4 py-2 text-sm font-semibold text-ink transition hover:border-rausch"
-        >
-          {logoutAll.isPending ? "Logging out…" : "Log out everywhere"}
-        </button>
-      </div>
-      {logout.isError ? (
-        <div className="mt-2">
-          <ErrorNotice error={logout.error} />
-        </div>
-      ) : null}
+    <div>
+      <button
+        type="button"
+        disabled={logoutAll.isPending}
+        onClick={() => logoutAll.mutate()}
+        className="rounded-lg border border-line bg-white px-4 py-2 text-sm font-semibold text-ink transition hover:border-rausch"
+      >
+        {logoutAll.isPending ? "Signing out…" : "Sign out"}
+      </button>
       {logoutAll.isError ? (
         <div className="mt-2">
           <ErrorNotice error={logoutAll.error} />
         </div>
       ) : null}
-    </Section>
+    </div>
   );
 }
 
@@ -563,7 +538,7 @@ export function SettingsPage() {
       ) : (
         <AddPasswordSection me={me} />
       )}
-      <SessionsSection />
+      <SignOutSection />
       {me.has_password ? <DangerSection /> : null}
     </div>
   );

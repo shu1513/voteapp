@@ -109,8 +109,8 @@ describe("SettingsPage", () => {
     expect(screen.queryByRole("heading", { name: "Change password" })).not.toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Change email" })).not.toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Delete account" })).not.toBeInTheDocument();
-    // Sessions need no password and stay.
-    expect(screen.getByRole("heading", { name: "Sessions" })).toBeInTheDocument();
+    // Sign-out needs no password and stays.
+    expect(screen.getByRole("button", { name: "Sign out" })).toBeInTheDocument();
   });
 
   it("keeps the password-gated sections for accounts with a password", async () => {
