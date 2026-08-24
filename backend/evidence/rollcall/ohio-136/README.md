@@ -71,12 +71,16 @@ the worktree has no `backend/.env`.
 
 - `oh-legislators-136.json` — roster snapshot (134 members after dropping
   4 vacant-seat placeholder rows), fetched 2026-08-23.
-- `crosswalk.json` — 79 reviewed entries (74 same-district identities, 5
-  known cross-chamber candidacies including the Gayle/Nathan Manning seat
-  swap). Members without an entry are NOT yet reviewed: the remaining
-  active-roster members need a hand sweep (name variants such as
-  Mike/Michael Dovilla, members running for non-legislative offices)
-  before the full run claims completeness.
+- `crosswalk.json` — COMPLETE: all 134 roster members reviewed
+  (2026-08-24 sweep). 94 are mapped to candidates — 79 proposer pairs (74
+  same-district identities, 5 known cross-chamber candidacies including
+  the Gayle/Nathan Manning seat swap) plus 15 hand-verified pairs (the
+  twelve shared-surname members whose roster lastname is the
+  disambiguated "Hall, D." form, two first-name variants, one surname
+  variant) — and 40 carry an explicit null entry with its reason
+  (sixteen are even-numbered Senate districts, which are not on the
+  Nov-2026 ballot). A `no_crosswalk` count therefore means an lpid the
+  roster snapshot does not cover, not unreviewed work.
 - `CODE-FINDINGS.md` — two source changes the data run turned up, recorded
   rather than made. Read this before extending the pipeline.
 - `survey/` — the full GA-136 fetch report (963 vote actions over all 1,477
@@ -91,7 +95,9 @@ the worktree has no `backend/.env`.
   rule. One hand retirement: Adam Bird's press-release copy of the same
   vote (record `729b9fe5…`), superseded by his roll-call record
   `686cc780…`. Re-imported after the crosswalk sweep, which added exactly
-  the 15 newly mapped members → **89 records / 89 candidates**.
+  the 15 newly mapped members → **89 records / 89 candidates**; the
+  committed rerun report is a post-import dry run showing all 89
+  `unchanged`.
 - `batch-02/` — 11 rolls over 9 bills, each written from that bill's LSC
   analysis: S.B. 172 (immigration arrests), S.B. 293 (absentee deadline,
   House passage + Senate concurrence, enacted), H.B. 88 (drug
@@ -131,8 +137,10 @@ the worktree has no `backend/.env`.
   records**; re-run all `unchanged`.
 
 Totals after batch-05: **1,330 live `rollcall_import` records across 94
-Ohio candidates, 1,330 area tags, 24 approved roll calls** of 472
-queued, spanning ten stance areas plus `general`.
+Ohio candidates, 1,330 area tags, 24 approved roll calls** of the 466
+kept floor votes (472 rows stored: 466 kept, 2 excluded procedural, 4
+unknown joint-resolution actions), spanning ten stance areas plus
+`general`.
 
 ## The judging gate
 

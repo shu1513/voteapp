@@ -2,8 +2,8 @@
   "importerVersion": "rollcall-oh-import-v1",
   "dryRun": true,
   "skipExisting": false,
-  "startedAt": "2026-08-24T06:30:14.958Z",
-  "finishedAt": "2026-08-24T06:30:17.090Z",
+  "startedAt": "2026-08-24T18:58:13.272Z",
+  "finishedAt": "2026-08-24T18:58:15.301Z",
   "generalAssembly": 136,
   "evidenceDir": "/Users/shu/voteApp/.claude/worktrees/caveman-ultra-58491f/backend/evidence/rollcall/ohio-136/batch-01",
   "scopeFrom": "2026-11-01",
@@ -16,8 +16,7 @@
     "dry_run": 2
   },
   "actions": {
-    "unchanged": 74,
-    "insert": 15
+    "unchanged": 89
   },
   "notified": 0,
   "rolls": [
@@ -33,15 +32,14 @@
       "voteDate": "2025-03-19",
       "measureId": "SB 1",
       "question": "Passed",
-      "originRunId": "rollcall:OH:house:136:1742433648:2026-08-24T06:30:14.958Z",
+      "originRunId": "rollcall:OH:house:136:1742433648:2026-08-24T18:58:13.272Z",
       "members": 93,
       "resolution": {
         "matched": 79,
         "unmatched_reviewed": 14
       },
       "actions": {
-        "unchanged": 64,
-        "insert": 15
+        "unchanged": 79
       },
       "notified": 0,
       "candidates": [
@@ -171,8 +169,8 @@
           "lpid": "rep_dovilla_mike_1",
           "memberName": "Michael D. Dovilla",
           "side": "yea",
-          "action": "insert",
-          "recordId": null,
+          "action": "unchanged",
+          "recordId": "aec13836-a750-4ffc-b781-f0dfe6ac79a1",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -207,8 +205,8 @@
           "lpid": "rep_arthur_sarah_1",
           "memberName": "Sarah Fowler Arthur",
           "side": "yea",
-          "action": "insert",
-          "recordId": null,
+          "action": "unchanged",
+          "recordId": "298ada9b-fb16-4057-95a6-4fa87d9fc665",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -243,8 +241,8 @@
           "lpid": "rep_hall_thomas_1",
           "memberName": "Thomas Hall",
           "side": "yea",
-          "action": "insert",
-          "recordId": null,
+          "action": "unchanged",
+          "recordId": "0c4b2a2e-90d9-425a-a377-b89313aa02e8",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -387,8 +385,8 @@
           "lpid": "rep_mathews_adam_1",
           "memberName": "Adam Mathews",
           "side": "yea",
-          "action": "insert",
-          "recordId": null,
+          "action": "unchanged",
+          "recordId": "c2e876bc-2cc4-4f70-95f1-7f16c42b0309",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -399,8 +397,8 @@
           "lpid": "rep_mathews_ty_1",
           "memberName": "Ty D. Mathews",
           "side": "yea",
-          "action": "insert",
-          "recordId": null,
+          "action": "unchanged",
+          "recordId": "e94c3cc8-db43-41d6-b8fd-c9a6b1a693cc",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -411,8 +409,8 @@
           "lpid": "rep_miller_kevin_1",
           "memberName": "Kevin D. Miller",
           "side": "yea",
-          "action": "insert",
-          "recordId": null,
+          "action": "unchanged",
+          "recordId": "83e1097a-e14b-4a89-94b1-221722bad893",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -423,8 +421,8 @@
           "lpid": "rep_miller_melanie_1",
           "memberName": "Melanie Miller",
           "side": "yea",
-          "action": "insert",
-          "recordId": null,
+          "action": "unchanged",
+          "recordId": "349967ec-57bd-4f3c-aea1-14fed8756e04",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -579,8 +577,8 @@
           "lpid": "rep_teska_michelle_1",
           "memberName": "Michelle Teska",
           "side": "yea",
-          "action": "insert",
-          "recordId": null,
+          "action": "unchanged",
+          "recordId": "3a8e9b4a-508a-4383-a109-bfe56b7126d2",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -591,8 +589,8 @@
           "lpid": "rep_thomas_david_1",
           "memberName": "David Thomas",
           "side": "yea",
-          "action": "insert",
-          "recordId": null,
+          "action": "unchanged",
+          "recordId": "cff04ded-f865-43ad-a083-d84b4eed5852",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -603,8 +601,8 @@
           "lpid": "rep_thomas_jim_1",
           "memberName": "Jim Thomas",
           "side": "yea",
-          "action": "insert",
-          "recordId": null,
+          "action": "unchanged",
+          "recordId": "880bf5b0-75dc-45bd-b2f7-c493dd2be832",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -615,8 +613,8 @@
           "lpid": "rep_white_andrea_1",
           "memberName": "Andrea White",
           "side": "yea",
-          "action": "insert",
-          "recordId": null,
+          "action": "unchanged",
+          "recordId": "ff521649-041a-45e4-8d60-b0038fd217bf",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -771,8 +769,8 @@
           "lpid": "rep_hall_derrick_1",
           "memberName": "Derrick Hall",
           "side": "nay",
-          "action": "insert",
-          "recordId": null,
+          "action": "unchanged",
+          "recordId": "9ae23bed-edd6-4b59-b1c2-d811f6e81c2c",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -831,8 +829,8 @@
           "lpid": "rep_miller_joe_1",
           "memberName": "Joseph A. Miller, III",
           "side": "nay",
-          "action": "insert",
-          "recordId": null,
+          "action": "unchanged",
+          "recordId": "f9161231-031d-491e-a8a1-3399056c2f08",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -951,8 +949,8 @@
           "lpid": "rep_thomas_cecil_1",
           "memberName": "Cecil Thomas",
           "side": "nay",
-          "action": "insert",
-          "recordId": null,
+          "action": "unchanged",
+          "recordId": "6fdc539b-573c-481e-8c9b-2e8fa526b779",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -987,8 +985,8 @@
           "lpid": "rep_white_erika_1",
           "memberName": "Erika White",
           "side": "nay",
-          "action": "insert",
-          "recordId": null,
+          "action": "unchanged",
+          "recordId": "ff57e039-a19f-48c0-8507-72b156a6ac0a",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1008,7 +1006,7 @@
       "voteDate": "2025-03-26",
       "measureId": "SB 1",
       "question": "Concurred in House amendments",
-      "originRunId": "rollcall:OH:senate:136:1743028529:2026-08-24T06:30:14.958Z",
+      "originRunId": "rollcall:OH:senate:136:1743028529:2026-08-24T18:58:13.272Z",
       "members": 31,
       "resolution": {
         "unmatched_reviewed": 21,
