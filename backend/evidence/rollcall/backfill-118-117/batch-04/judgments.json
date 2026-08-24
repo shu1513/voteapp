@@ -1,0 +1,352 @@
+{
+  "judgments": [
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 267,
+      "measure_id": "H R 2773",
+      "vote_date": "2022-06-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 2773, the Recovering America's Wildlife Act, which sent dedicated federal funding to states and tribes to conserve and restore wildlife and plant species of greatest conservation need. It passed the House 231-190.",
+      "nay_description": "Voted against passing H.R. 2773, the Recovering America's Wildlife Act, which sent dedicated federal funding to states and tribes to conserve and restore wildlife and plant species of greatest conservation need. It passed the House 231-190.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 275,
+      "measure_id": "H R 2543",
+      "vote_date": "2022-06-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 2543, the Financial Services Racial Equity, Inclusion, and Economic Justice Act, which widened access to credit, mortgages, and banking, strengthened lending discrimination rules, and added a racial equity duty to the Federal Reserve's mandate. It passed the House 215-207.",
+      "nay_description": "Voted against passing H.R. 2543, the Financial Services Racial Equity, Inclusion, and Economic Justice Act, which widened access to credit, mortgages, and banking, strengthened lending discrimination rules, and added a racial equity duty to the Federal Reserve's mandate. It passed the House 215-207.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 277,
+      "measure_id": "H R 7606",
+      "vote_date": "2022-06-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 7606, the Lower Food and Fuel Costs Act, which funded nutrient management and precision agriculture, expanded biofuel infrastructure, and strengthened oversight of meat and poultry markets. It passed the House 221-204.",
+      "nay_description": "Voted against passing H.R. 7606, the Lower Food and Fuel Costs Act, which funded nutrient management and precision agriculture, expanded biofuel infrastructure, and strengthened oversight of meat and poultry markets. It passed the House 221-204.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 296,
+      "measure_id": "H R 4176",
+      "vote_date": "2022-06-23",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 4176, the LGBTQI+ Data Inclusion Act, which required federal statistical surveys to offer voluntary questions on sexual orientation and gender identity. It passed the House 220-201.",
+      "nay_description": "Voted against passing H.R. 4176, the LGBTQI+ Data Inclusion Act, which required federal statistical surveys to offer voluntary questions on sexual orientation and gender identity. It passed the House 220-201.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 307,
+      "measure_id": "H R 6538",
+      "vote_date": "2022-07-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 6538, the Active Shooter Alert Act, which created a national alert network, run by a Justice Department coordinator, to warn the public during an active shooter emergency. It passed the House 260-169.",
+      "nay_description": "Voted against passing H.R. 6538, the Active Shooter Alert Act, which created a national alert network, run by a Justice Department coordinator, to warn the public during an active shooter emergency. It passed the House 260-169.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 309,
+      "measure_id": "S 3373",
+      "vote_date": "2022-07-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S. 3373, the final version of the Honoring our PACT Act, which expanded VA health care and disability benefits for veterans exposed to burn pits and other toxic substances. It passed the House 342-88 and was signed into law.",
+      "nay_description": "Voted against passing S. 3373, the final version of the Honoring our PACT Act, which expanded VA health care and disability benefits for veterans exposed to burn pits and other toxic substances. It passed the House 342-88 and was signed into law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 350,
+      "measure_id": "H R 7900",
+      "vote_date": "2022-07-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 7900, the National Defense Authorization Act for Fiscal Year 2023, which set defense policy and authorized Department of Defense programs, procurement, and military construction. It passed the House 329-101.",
+      "nay_description": "Voted against passing H.R. 7900, the National Defense Authorization Act for Fiscal Year 2023, which set defense policy and authorized Department of Defense programs, procurement, and military construction. It passed the House 329-101.",
+      "labels": [
+        {
+          "slug": "national_defense",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 360,
+      "measure_id": "H R 8296",
+      "vote_date": "2022-07-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 8296, the Women's Health Protection Act of 2022, which created a federal statutory right to provide and receive abortion care after the Supreme Court overturned Roe v. Wade. It passed the House 219-210.",
+      "nay_description": "Voted against passing H.R. 8296, the Women's Health Protection Act of 2022, which created a federal statutory right to provide and receive abortion care after the Supreme Court overturned Roe v. Wade. It passed the House 219-210.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 362,
+      "measure_id": "H R 8297",
+      "vote_date": "2022-07-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 8297, which barred states from interfering with a person's ability to travel across state lines for abortion care or with anyone who helps them. It passed the House 223-205.",
+      "nay_description": "Voted against passing H.R. 8297, which barred states from interfering with a person's ability to travel across state lines for abortion care or with anyone who helps them. It passed the House 223-205.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 385,
+      "measure_id": "H R 8373",
+      "vote_date": "2022-07-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 8373, the Right to Contraception Act, which wrote into federal law the right to obtain contraception and the right of providers to supply it. It passed the House 228-195.",
+      "nay_description": "Voted against passing H.R. 8373, the Right to Contraception Act, which wrote into federal law the right to obtain contraception and the right of providers to supply it. It passed the House 228-195.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 410,
+      "measure_id": "H R 1808",
+      "vote_date": "2022-07-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 1808, the Assault Weapons Ban of 2022, which made it a crime to import, sell, manufacture, or transfer semiautomatic assault weapons and large capacity magazines, with exceptions for existing ones. It passed the House 217-213.",
+      "nay_description": "Voted against passing H.R. 1808, the Assault Weapons Ban of 2022, which made it a crime to import, sell, manufacture, or transfer semiautomatic assault weapons and large capacity magazines, with exceptions for existing ones. It passed the House 217-213.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 414,
+      "measure_id": "H R 5118",
+      "vote_date": "2022-07-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 5118, the Wildfire Response and Drought Resiliency Act, which funded wildfire mitigation, forest and watershed restoration, and drought resilience, and raised pay for federal wildland firefighters. It passed the House 218-199.",
+      "nay_description": "Voted against passing H.R. 5118, the Wildfire Response and Drought Resiliency Act, which funded wildfire mitigation, forest and watershed restoration, and drought resilience, and raised pay for federal wildland firefighters. It passed the House 218-199.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 117,
+      "session": 2,
+      "roll": 283,
+      "measure_id": "S.J.Res. 55",
+      "vote_date": "2022-08-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 55, which used the Congressional Review Act to repeal the Council on Environmental Quality rule that had restored broader environmental review requirements under the National Environmental Policy Act. It passed the Senate 50-47.",
+      "nay_description": "Voted against passing S.J.Res. 55, which used the Congressional Review Act to repeal the Council on Environmental Quality rule that had restored broader environmental review requirements under the National Environmental Policy Act. It passed the Senate 50-47.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 117,
+      "session": 2,
+      "roll": 325,
+      "measure_id": "H.R. 5376",
+      "vote_date": "2022-08-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 5376, the Inflation Reduction Act, which let Medicare negotiate drug prices and capped insulin costs for seniors, funded clean energy tax credits, and set a 15 percent minimum tax on large corporations. It passed the Senate 50-50 on the Vice President's tie-breaking vote.",
+      "nay_description": "Voted against passing H.R. 5376, the Inflation Reduction Act, which let Medicare negotiate drug prices and capped insulin costs for seniors, funded clean energy tax credits, and set a 15 percent minimum tax on large corporations. It passed the Senate 50-50 on the Vice President's tie-breaking vote.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for"
+        },
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 420,
+      "measure_id": "H R 5376",
+      "vote_date": "2022-08-12",
+      "review_status": "approved",
+      "yea_description": "Voted to send H.R. 5376, the Inflation Reduction Act, to the President, agreeing to the Senate version that let Medicare negotiate drug prices, capped insulin costs for seniors, funded clean energy tax credits, and set a 15 percent minimum tax on large corporations. It passed the House 220-207.",
+      "nay_description": "Voted against sending H.R. 5376, the Inflation Reduction Act, to the President, which let Medicare negotiate drug prices, capped insulin costs for seniors, funded clean energy tax credits, and set a 15 percent minimum tax on large corporations. It passed the House 220-207.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for"
+        },
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 437,
+      "measure_id": "H R 2988",
+      "vote_date": "2022-09-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 2988, the Whistleblower Protection Improvement Act, which strengthened protections for federal employees who report wrongdoing, shielded their identity, and barred retaliatory personnel actions. It passed the House 221-203.",
+      "nay_description": "Voted against passing H.R. 2988, the Whistleblower Protection Improvement Act, which strengthened protections for federal employees who report wrongdoing, shielded their identity, and barred retaliatory personnel actions. It passed the House 221-203.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 449,
+      "measure_id": "H R 8873",
+      "vote_date": "2022-09-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 8873, the Presidential Election Reform Act, which rewrote how electoral votes are cast and counted, requiring electors to be chosen under state law set before election day and narrowing grounds for objections in Congress. It passed the House 229-203.",
+      "nay_description": "Voted against passing H.R. 8873, the Presidential Election Reform Act, which rewrote how electoral votes are cast and counted, requiring electors to be chosen under state law set before election day and narrowing grounds for objections in Congress. It passed the House 229-203.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 453,
+      "measure_id": "H R 4118",
+      "vote_date": "2022-09-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 4118, the Break the Cycle of Violence Act, which funded community violence intervention programs and job training in neighborhoods with high rates of gun violence. It passed the House 220-207.",
+      "nay_description": "Voted against passing H.R. 4118, the Break the Cycle of Violence Act, which funded community violence intervention programs and job training in neighborhoods with high rates of gun violence. It passed the House 220-207.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 454,
+      "measure_id": "H R 5768",
+      "vote_date": "2022-09-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 5768, the VICTIM Act, which funded state, local, and tribal investigators and prosecutors to raise clearance rates for murders and other violent crimes. It passed the House 250-178.",
+      "nay_description": "Voted against passing H.R. 5768, the VICTIM Act, which funded state, local, and tribal investigators and prosecutors to raise clearance rates for murders and other violent crimes. It passed the House 250-178.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 460,
+      "measure_id": "H R 3843",
+      "vote_date": "2022-09-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 3843, the Merger Filing Fee Modernization Act, which raised filing fees on the largest corporate mergers to fund antitrust enforcement and required disclosure of foreign subsidies in merger filings. It passed the House 242-184.",
+      "nay_description": "Voted against passing H.R. 3843, the Merger Filing Fee Modernization Act, which raised filing fees on the largest corporate mergers to fund antitrust enforcement and required disclosure of foreign subsidies in merger filings. It passed the House 242-184.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    }
+  ]
+}
