@@ -112,12 +112,21 @@ the worktree has no `backend/.env`.
   related and kept — both describe different votes that day (Ghanbari on
   the capital budget, Bryant Bailey on S.J.R. 10).
 
-Totals after batch-03: **1,078 live `rollcall_import` records across 94
-Ohio candidates, 1,078 area tags, 19 approved roll calls** of 472 queued,
-spanning ten research areas (public safety 236, civil rights 170,
-corporate accountability 167, reproductive rights 156, election integrity
-88, housing 83, education 81, income tax 79, gun control 10, immigration
-8).
+- `batch-04/` — 4 rolls over 2 bills, judged on the REVIEWER'S explicit
+  direction call (2026-08-24), the hand-add path the plan reserves for
+  contested rolls: S.B. 56 (marijuana rewrite, both chambers' conference
+  reports, signed into law — the Senate's initial passage yields to the
+  decisive vote) filed under `public_safety_and_crime_control` yea=for,
+  and S.B. 50 (teen work hours, both chambers, vetoed) under
+  `corporate_accountability` yea=against, matching the phase-2
+  labor-rules precedent → **171 records**; re-run all `unchanged`. Both
+  related flags were distinct claims and kept (the batch-02 S.B. 293
+  press release again, and Humphrey's vote on S.C.R. 3 — a different
+  measure with its own citation).
+
+Totals after batch-04: **1,249 live `rollcall_import` records across 94
+Ohio candidates, 1,249 area tags, 23 approved roll calls** of 472
+queued, spanning ten research areas.
 
 ## The judging gate
 
@@ -125,13 +134,15 @@ Same as phase 2: a roll is judged only when the vote was **divided** (the
 losing side at least a quarter of the winning side) **and** a research
 area fits it without inventing a direction, with the bill's LSC analysis
 on file to write from. Of 466 kept floor votes, 66 are divided. All 66
-have now been read and dispositioned: **19 judged**, 47 pending, each
+have now been read and dispositioned: **23 judged**, 43 pending, each
 with its reason in the worklist — 18 contested-direction, 8
 appropriations (H.B. 96, H.B. 730 — no research area maps onto a vote to
-fund the government), 6 no-fitting-area (marijuana regulation, child
-labor, digital assets — real subjects that none of the 27 research areas
-covers), 3 superseded by the decisive vote in the same chamber, 3
-omnibus, 3 mixed-direction, 2 stale-title vehicles, 2 trivia, 2 too thin.
+fund the government), 4 superseded by the decisive vote in the same
+chamber, 3 omnibus, 3 mixed-direction, 2 stale-title vehicles, 2 trivia,
+2 too thin, and 1 no-fitting-area (H.B. 116, digital assets — no
+research area covers them at any stance). The marijuana and teen-work
+rolls originally parked as no-fitting-area were filed in batch-04 on the
+reviewer's explicit direction call.
 
 The large contested-direction group is mostly Ohio's property-tax
 mechanics (H.B. 129, 186, 309, 335): they cut owners' bills and school

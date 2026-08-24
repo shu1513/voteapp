@@ -1,0 +1,72 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OH",
+      "chamber": "house",
+      "session": "136",
+      "roll": 1763637329,
+      "measure_id": "SB 56",
+      "vote_date": "2025-11-19",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the conference report on S.B. 56, which rewrote Ohio's marijuana laws into a single Marijuana Control Law, barred possession or use of marijuana not bought from a licensed Ohio dispensary or grown at the user's own home, and ended the state's authority to approve new forms of adult-use marijuana. It passed the Ohio House 52-34 and was signed into law.",
+      "nay_description": "Voted against the conference report on S.B. 56, which rewrote Ohio's marijuana laws into a single Marijuana Control Law, barred possession or use of marijuana not bought from a licensed Ohio dispensary or grown at the user's own home, and ended the state's authority to approve new forms of adult-use marijuana. It passed the Ohio House 52-34 and was signed into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OH",
+      "chamber": "senate",
+      "session": "136",
+      "roll": 1765324310,
+      "measure_id": "SB 56",
+      "vote_date": "2025-12-09",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the conference report on S.B. 56, sending to the Governor a law that rewrote Ohio's marijuana laws into a single Marijuana Control Law, barred possession or use of marijuana not bought from a licensed Ohio dispensary or grown at the user's own home, and ended the state's authority to approve new forms of adult-use marijuana. It passed the Ohio Senate 22-7 and was signed into law.",
+      "nay_description": "Voted against the conference report on S.B. 56, which sent to the Governor a law that rewrote Ohio's marijuana laws into a single Marijuana Control Law, barred possession or use of marijuana not bought from a licensed Ohio dispensary or grown at the user's own home, and ended the state's authority to approve new forms of adult-use marijuana. It passed the Ohio Senate 22-7 and was signed into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OH",
+      "chamber": "senate",
+      "session": "136",
+      "roll": 1744237690,
+      "measure_id": "SB 50",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.B. 50, which would have let employers schedule 14- and 15-year-olds to work until 9 p.m. year-round with a parent's or guardian's written approval, loosening the work-hour limits for young teens during the school year. It passed the Ohio Senate 24-9 and was vetoed by the Governor.",
+      "nay_description": "Voted against passing S.B. 50, which would have let employers schedule 14- and 15-year-olds to work until 9 p.m. year-round with a parent's or guardian's written approval, loosening the work-hour limits for young teens during the school year. It passed the Ohio Senate 24-9 and was vetoed by the Governor.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OH",
+      "chamber": "house",
+      "session": "136",
+      "roll": 1762391504,
+      "measure_id": "SB 50",
+      "vote_date": "2025-11-05",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.B. 50, which would have let employers schedule 14- and 15-year-olds to work until 9 p.m. year-round with a parent's or guardian's written approval, loosening the work-hour limits for young teens during the school year. It passed the Ohio House 62-30 and was vetoed by the Governor.",
+      "nay_description": "Voted against passing S.B. 50, which would have let employers schedule 14- and 15-year-olds to work until 9 p.m. year-round with a parent's or guardian's written approval, loosening the work-hour limits for young teens during the school year. It passed the Ohio House 62-30 and was vetoed by the Governor.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against"
+        }
+      ]
+    }
+  ]
+}
