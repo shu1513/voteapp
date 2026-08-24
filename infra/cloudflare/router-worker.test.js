@@ -237,6 +237,7 @@ describe("isCacheablePublicPage", () => {
   const cacheable = [
     "/",
     "/ballot",
+    "/mission",
     "/disclaimer",
     "/terms",
     "/privacy",

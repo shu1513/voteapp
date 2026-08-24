@@ -11,6 +11,7 @@ export default [
     route("draft", "pages/DraftPage.tsx"),
     route("elections/:electionId", "pages/ElectionPage.tsx"),
     route("candidates/:candidateId", "pages/CandidatePage.tsx"),
+    route("mission", "pages/MissionPage.tsx"),
     route("disclaimer", "routes/disclaimer.tsx"),
     route("terms", "routes/terms.tsx"),
     route("privacy", "routes/privacy.tsx"),
