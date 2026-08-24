@@ -134,7 +134,12 @@ the worktree has no `backend/.env`.
   70-26), filed under `general` with NO stance on the reviewer's call
   (2026-08-24): the record states what the vote was and takes no side,
   since no research area covers digital assets at any stance → **81
-  records**; re-run all `unchanged`.
+  records**; re-run all `unchanged`. Judgment revised same day after
+  review: the LSC summary bullet's grammar made the first wording read
+  as an anti-seizure rule, but the detailed analysis is explicit that
+  the INDIVIDUAL is the custody actor (governments may not impair a
+  person's ability to self-custody); all 81 records rewritten in place,
+  row ids kept.
 
 Totals after batch-05: **1,330 live `rollcall_import` records across 94
 Ohio candidates, 1,330 area tags, 24 approved roll calls** of the 466
