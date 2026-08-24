@@ -200,47 +200,47 @@ n	congress_session	chamber	roll	vote_date	measure_id	class	result	tally	status
 199	118-1	house	141	2023-03-09	H R 140	passage	Passed	219-206	unjudged
 200	118-1	house	142	2023-03-09	H J RES 27	passage	Passed	227-198	batch-05
 201	118-1	house	161	2023-03-24	H R 5	passage	Passed	213-208	unjudged
-202	118-1	senate	77	2023-03-29	S. 316	passage	Bill Passed	66-30	unjudged
-203	118-1	senate	79	2023-03-29	H.J.Res. 27	passage	Joint Resolution Passed	53-43	unjudged
+202	118-1	senate	77	2023-03-29	S. 316	passage	Bill Passed	66-30	batch-06
+203	118-1	senate	79	2023-03-29	H.J.Res. 27	passage	Joint Resolution Passed	53-43	batch-06
 204	118-1	senate	80	2023-03-29	H.J.Res. 7	passage	Joint Resolution Passed	68-23	unjudged
-205	118-1	house	182	2023-03-30	H R 1	passage	Passed	225-204	unjudged
+205	118-1	house	182	2023-03-30	H R 1	passage	Passed	225-204	batch-06
 206	118-1	house	188	2023-04-19	H J RES 42	passage	Passed	229-189	unjudged
-207	118-1	house	192	2023-04-20	H R 734	passage	Passed	219-203	unjudged
-208	118-1	senate	98	2023-04-26	S.J.Res. 11	passage	Joint Resolution Passed	50-49	unjudged
+207	118-1	house	192	2023-04-20	H R 734	passage	Passed	219-203	batch-06
+208	118-1	senate	98	2023-04-26	S.J.Res. 11	passage	Joint Resolution Passed	50-49	batch-06
 209	118-1	house	199	2023-04-26	H R 2811	passage	Passed	217-215	unjudged
 210	118-1	house	202	2023-04-28	H J RES 39	passage	Passed	221-202	unjudged
 211	118-1	senate	109	2023-05-03	H.J.Res. 39	passage	Joint Resolution Passed	56-41	unjudged
-212	118-1	senate	110	2023-05-03	S.J.Res. 9	passage	Joint Resolution Passed	50-48	unjudged
+212	118-1	senate	110	2023-05-03	S.J.Res. 9	passage	Joint Resolution Passed	50-48	batch-06
 213	118-1	senate	122	2023-05-11	S.J.Res. 23	passage	Joint Resolution Passed	51-49	unjudged
-214	118-1	senate	123	2023-05-11	S.J.Res. 24	passage	Joint Resolution Passed	51-49	unjudged
-215	118-1	house	209	2023-05-11	H R 2	passage	Passed	219-213	unjudged
+214	118-1	senate	123	2023-05-11	S.J.Res. 24	passage	Joint Resolution Passed	51-49	batch-06
+215	118-1	house	209	2023-05-11	H R 2	passage	Passed	219-213	batch-06
 216	118-1	house	211	2023-05-11	H R 1163	passage	Passed	230-200	unjudged
 217	118-1	senate	126	2023-05-16	H.J.Res. 42	passage	Joint Resolution Passed	56-43	unjudged
-218	118-1	senate	130	2023-05-17	S.J.Res. 18	passage	Joint Resolution Passed	50-47	unjudged
+218	118-1	senate	130	2023-05-17	S.J.Res. 18	passage	Joint Resolution Passed	50-47	batch-06
 219	118-1	house	222	2023-05-17	H R 3091	passage	Passed	232-198	unjudged
-220	118-1	house	225	2023-05-17	H R 2494	passage	Passed	255-175	unjudged
-221	118-1	house	232	2023-05-23	S J RES 11	passage	Passed	221-203	unjudged
-222	118-1	house	234	2023-05-24	H J RES 45	passage	Passed	218-203	unjudged
-223	118-1	house	237	2023-05-25	H R 467	passage	Passed	289-133	unjudged
+220	118-1	house	225	2023-05-17	H R 2494	passage	Passed	255-175	batch-06
+221	118-1	house	232	2023-05-23	S J RES 11	passage	Passed	221-203	batch-06
+222	118-1	house	234	2023-05-24	H J RES 45	passage	Passed	218-203	batch-06
+223	118-1	house	237	2023-05-25	H R 467	passage	Passed	289-133	batch-06
 224	118-1	house	243	2023-05-31	H R 3746	passage	Passed	314-117	unjudged
-225	118-1	senate	135	2023-06-01	H.J.Res. 45	passage	Joint Resolution Passed	52-46	unjudged
+225	118-1	senate	135	2023-06-01	H.J.Res. 45	passage	Joint Resolution Passed	52-46	batch-06
 226	118-1	senate	146	2023-06-01	H.R. 3746	passage	Bill Passed	63-36	unjudged
-227	118-1	house	252	2023-06-13	H J RES 44	passage	Passed	219-210	unjudged
-228	118-1	house	255	2023-06-13	H R 1615	passage	Passed	248-180	unjudged
+227	118-1	house	252	2023-06-13	H J RES 44	passage	Passed	219-210	batch-06
+228	118-1	house	255	2023-06-13	H R 1615	passage	Passed	248-180	batch-06
 229	118-1	house	265	2023-06-14	H R 277	passage	Passed	221-210	unjudged
-230	118-1	house	268	2023-06-14	H R 1640	passage	Passed	249-181	unjudged
+230	118-1	house	268	2023-06-14	H R 1640	passage	Passed	249-181	batch-06
 231	118-1	house	271	2023-06-15	H R 288	passage	Passed	220-211	unjudged
 232	118-1	senate	167	2023-06-21	S.J.Res. 11	veto_override	Veto Sustained	50-50	unjudged
 233	118-1	house	282	2023-06-21	H R 3799	passage	Passed	220-209	unjudged
-234	118-1	senate	171	2023-06-22	H.J.Res. 44	passage	Joint Resolution Defeated	49-50	unjudged
+234	118-1	senate	171	2023-06-22	H.J.Res. 44	passage	Joint Resolution Defeated	49-50	batch-06
 235	118-1	house	289	2023-06-23	H R 3564	passage	Passed	230-189	unjudged
 236	118-1	house	328	2023-07-14	H R 2670	passage	Passed	219-210	unjudged
-237	118-1	house	340	2023-07-19	H R 3941	passage	Passed	222-201	unjudged
+237	118-1	house	340	2023-07-19	H R 3941	passage	Passed	222-201	batch-06
 238	118-1	house	365	2023-07-25	H R 1338	suspension	Failed	250-163	unjudged
 239	118-1	house	380	2023-07-27	H R 4366	passage	Passed	219-211	unjudged
-240	118-1	house	381	2023-07-27	S J RES 9	passage	Passed	221-206	unjudged
-241	118-1	house	382	2023-07-27	S J RES 24	passage	Passed	220-209	unjudged
-242	118-1	house	391	2023-09-14	H R 1435	passage	Passed	222-190	unjudged
+240	118-1	house	381	2023-07-27	S J RES 9	passage	Passed	221-206	batch-06
+241	118-1	house	382	2023-07-27	S J RES 24	passage	Passed	220-209	batch-07
+242	118-1	house	391	2023-09-14	H R 1435	passage	Passed	222-190	batch-07
 243	118-1	senate	242	2023-09-28	S.J.Res. 9	veto_override	Veto Sustained	47-46	unjudged
 244	118-1	senate	243	2023-09-28	S.J.Res. 24	veto_override	Veto Sustained	47-45	unjudged
 245	118-1	house	500	2023-09-28	H R 4665	passage	Passed	216-212	unjudged
@@ -250,8 +250,8 @@ n	congress_session	chamber	roll	vote_date	measure_id	class	result	tally	status
 249	118-1	house	507	2023-09-28	H R 4368	passage	Failed	191-237	unjudged
 250	118-1	house	511	2023-09-29	H R 5525	passage	Failed	198-232	unjudged
 251	118-1	house	513	2023-09-30	H R 5860	suspension	Passed	335-91	unjudged
-252	118-1	senate	260	2023-10-18	S.J.Res. 32	passage	Joint Resolution Passed	53-44	unjudged
-253	118-1	senate	272	2023-10-26	S.J.Res. 42	passage	Joint Resolution Defeated	47-50	unjudged
+252	118-1	senate	260	2023-10-18	S.J.Res. 32	passage	Joint Resolution Passed	53-44	batch-07
+253	118-1	senate	272	2023-10-26	S.J.Res. 42	passage	Joint Resolution Defeated	47-50	batch-07
 254	118-1	house	558	2023-10-26	H R 4394	passage	Passed	210-199	unjudged
 255	118-1	senate	285	2023-11-01	H.R. 662	passage	Bill Defeated	43-53	unjudged
 256	118-1	house	563	2023-11-01	H R 4364	passage	Passed	214-197	unjudged
@@ -259,30 +259,30 @@ n	congress_session	chamber	roll	vote_date	measure_id	class	result	tally	status
 258	118-1	house	597	2023-11-03	H R 4821	passage	Passed	213-203	unjudged
 259	118-1	senate	303	2023-11-08	S.J.Res. 38	passage	Joint Resolution Passed	50-48	unjudged
 260	118-1	house	658	2023-11-14	H R 6363	suspension	Passed	336-95	unjudged
-261	118-1	senate	310	2023-11-15	S.J.Res. 43	passage	Joint Resolution Defeated	49-50	unjudged
+261	118-1	senate	310	2023-11-15	S.J.Res. 43	passage	Joint Resolution Defeated	49-50	batch-07
 262	118-1	house	687	2023-11-30	H R 5961	passage	Passed	307-119	unjudged
-263	118-1	house	689	2023-11-30	H R 5283	passage	Passed	224-203	unjudged
-264	118-1	house	690	2023-12-01	S J RES 32	passage	Passed	221-202	unjudged
+263	118-1	house	689	2023-11-30	H R 5283	passage	Passed	224-203	batch-07
+264	118-1	house	690	2023-12-01	S J RES 32	passage	Passed	221-202	batch-07
 265	118-1	house	701	2023-12-06	H R 5933	passage	Passed	246-170	unjudged
-266	118-1	house	703	2023-12-06	H R 4468	passage	Passed	221-197	unjudged
-267	118-1	house	705	2023-12-07	H J RES 88	passage	Passed	210-189	unjudged
+266	118-1	house	703	2023-12-06	H R 4468	passage	Passed	221-197	batch-07
+267	118-1	house	705	2023-12-07	H J RES 88	passage	Passed	210-189	batch-07
 268	118-1	house	717	2023-12-12	H R 357	passage	Passed	218-203	unjudged
 269	118-1	house	718	2023-12-13	H R 1147	passage	Passed	330-99	unjudged
-270	118-1	house	723	2023-12-14	H R 2670	conference_report	Passed	310-118	unjudged
+270	118-1	house	723	2023-12-14	H R 2670	conference_report	Passed	310-118	batch-07
 271	118-2	senate	5	2024-01-10	S.J.Res. 32	veto_override	Veto Sustained	54-45	unjudged
 272	118-2	house	7	2024-01-11	H R 788	passage	Passed	211-197	unjudged
 273	118-2	house	8	2024-01-11	S J RES 38	passage	Passed	209-198	unjudged
-274	118-2	house	10	2024-01-12	H J RES 98	passage	Passed	206-177	unjudged
+274	118-2	house	10	2024-01-12	H J RES 98	passage	Passed	206-177	batch-07
 275	118-2	house	15	2024-01-18	H R 2872	concur_senate_amendment	Passed	314-108	unjudged
 276	118-2	house	17	2024-01-18	H R 6918	passage	Passed	214-208	unjudged
 277	118-2	house	19	2024-01-18	H R 6914	passage	Passed	212-207	unjudged
-278	118-2	house	25	2024-01-30	H R 5585	passage	Passed	271-154	unjudged
-279	118-2	house	27	2024-01-31	H R 6678	passage	Passed	272-155	unjudged
-280	118-2	house	31	2024-02-01	H R 6976	passage	Passed	274-150	unjudged
+278	118-2	house	25	2024-01-30	H R 5585	passage	Passed	271-154	batch-07
+279	118-2	house	27	2024-01-31	H R 6678	passage	Passed	272-155	batch-07
+280	118-2	house	31	2024-02-01	H R 6976	passage	Passed	274-150	batch-07
 281	118-2	house	38	2024-02-06	H R 7217	suspension	Failed	250-180	unjudged
 282	118-2	house	40	2024-02-07	H R 485	passage	Passed	211-208	unjudged
 283	118-2	senate	48	2024-02-13	H.R. 815	passage	Bill Passed	70-29	unjudged
-284	118-2	house	52	2024-02-15	H R 7176	passage	Passed	224-200	unjudged
+284	118-2	house	52	2024-02-15	H R 7176	passage	Passed	224-200	batch-07
 285	118-2	house	58	2024-02-29	H R 7463	suspension	Passed	320-99	unjudged
 286	118-2	senate	61	2024-02-29	S.J.Res. 38	veto_override	Veto Sustained	50-47	unjudged
 287	118-2	house	66	2024-03-07	H R 7511	passage	Passed	251-170	unjudged
