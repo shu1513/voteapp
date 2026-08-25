@@ -2076,6 +2076,10 @@ async function loadElectionRowById(db: Queryable, electionId: string): Promise<E
             AND d2.state_fips = d.state_fips
             AND d2.population IS NOT NULL
             AND d2.population > 0
+          -- Deterministic under duplicate statewide rows (the schema only
+          -- keys (district_type, geoid_compact)): largest population, the
+          -- same rule the recompute's MAX() aggregate applies.
+          ORDER BY d2.population DESC
           LIMIT 1
         ) AS scope_state_population
       FROM public.elections AS e

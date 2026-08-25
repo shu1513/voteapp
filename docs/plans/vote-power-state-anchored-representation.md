@@ -38,7 +38,7 @@ misleads, and widespread "below average" labels discourage voting.
 
 ## New formula
 
-```
+```text
 ratio = state_population / district_population      -- statewide row: ratio = 1
 score = 50 + 50 * ln(ratio) / ln(K),  clamped to [50, 100], rounded to 2 dp
 K = 50000

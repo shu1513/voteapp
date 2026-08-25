@@ -1113,11 +1113,17 @@ async function recomputeRepresentationPowerScores(client: PoolClient): Promise<v
   await client.query(
     `
       WITH state_populations AS (
-        SELECT state_fips, population::numeric AS population
+        -- One deterministic anchor per state: the schema's uniqueness key is
+        -- (district_type, geoid_compact), so nothing structurally forbids two
+        -- statewide rows for one state_fips. MAX() collapses any such
+        -- duplicate to one deterministic population; ballotLookup's
+        -- explanation subselect applies the same largest-population rule.
+        SELECT state_fips, MAX(population::numeric) AS population
         FROM public.districts
         WHERE district_type = 'statewide'
           AND population IS NOT NULL
           AND population > 0
+        GROUP BY state_fips
       ),
       scored AS (
         SELECT
@@ -1132,7 +1138,7 @@ async function recomputeRepresentationPowerScores(client: PoolClient): Promise<v
                   50::numeric,
                   50::numeric
                     + 50::numeric * LN(sp.population / d.population::numeric)
-                    / LN(${REPRESENTATION_RULER_K}::numeric)
+                    / LN($1::numeric)
                 )
               ),
               2
@@ -1146,7 +1152,8 @@ async function recomputeRepresentationPowerScores(client: PoolClient): Promise<v
       FROM scored
       WHERE public.districts.id = scored.id
         AND public.districts.representation_power_score IS DISTINCT FROM scored.representation_power_score
-    `
+    `,
+    [REPRESENTATION_RULER_K]
   );
 }
 
