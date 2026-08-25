@@ -356,7 +356,10 @@ function howCalculated(currentRatingUsed: boolean): string {
   const decisivenessBasis = currentRatingUsed
     ? "current race ratings from election analysts"
     : "past results";
-  return `Here's what goes into the rating. Representation: how much weight one vote carries here compared with a statewide vote — the smaller the district, the more each vote counts. Decisiveness: how likely this race is to be close, based on ${decisivenessBasis} and the number of candidates.`;
+  // Blank lines between the lead and the two axes: clients render this with
+  // newlines preserved (whitespace-pre-line on web), so each point reads as
+  // its own short paragraph instead of one dense block.
+  return `Here's what goes into the rating.\n\nRepresentation: how much weight one vote carries here compared with a statewide vote — the smaller the district, the more each vote counts.\n\nDecisiveness: how likely this race is to be close, based on ${decisivenessBasis} and the number of candidates.`;
 }
 
 function capitalize(text: string): string {

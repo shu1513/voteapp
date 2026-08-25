@@ -360,7 +360,7 @@ describe("explainVotePower", () => {
     // The how copy explains the displayed label (grade combination), never
     // the internal 45/55 sorting-score formula.
     expect(explanation.how).toBe(
-      "Here's what goes into the rating. Representation: how much weight one vote carries here compared with a statewide vote — the smaller the district, the more each vote counts. Decisiveness: how likely this race is to be close, based on past results and the number of candidates."
+      "Here's what goes into the rating.\n\nRepresentation: how much weight one vote carries here compared with a statewide vote — the smaller the district, the more each vote counts.\n\nDecisiveness: how likely this race is to be close, based on past results and the number of candidates."
     );
     expect(explanation.parts).toEqual([
       {
@@ -688,7 +688,7 @@ describe("explainVotePower with a current race rating", () => {
     });
 
     expect(explanation.how).toBe(
-      "Here's what goes into the rating. Representation: how much weight one vote carries here compared with a statewide vote — the smaller the district, the more each vote counts. Decisiveness: how likely this race is to be close, based on current race ratings from election analysts and the number of candidates."
+      "Here's what goes into the rating.\n\nRepresentation: how much weight one vote carries here compared with a statewide vote — the smaller the district, the more each vote counts.\n\nDecisiveness: how likely this race is to be close, based on current race ratings from election analysts and the number of candidates."
     );
     expect(explanation.parts[1]).toEqual({
       title: "Decisiveness",
