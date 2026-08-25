@@ -771,7 +771,7 @@ describe("ElectionCard result chip", () => {
 
   it("shows the current-cycle rating chip instead of the historic one when both arrive", () => {
     const historical = {
-      display_label: "Historically safe",
+      display_label: "Historically one-sided",
       display_description: "Based on the 2024 Governor result.",
       source: "MIT_2024",
       source_url: null,
@@ -794,10 +794,10 @@ describe("ElectionCard result chip", () => {
     );
     // Both chips at once would contradict on a race that flipped.
     expect(screen.getByText("Currently a toss-up")).toBeInTheDocument();
-    expect(screen.queryByText("Historically safe")).not.toBeInTheDocument();
+    expect(screen.queryByText("Historically one-sided")).not.toBeInTheDocument();
 
     // Fallback race (and any backend that predates the field): historic chip.
     renderCard(electionSummary({ id: "e-2", historical_competitiveness: historical }));
-    expect(screen.getByText("Historically safe")).toBeInTheDocument();
+    expect(screen.getByText("Historically one-sided")).toBeInTheDocument();
   });
 });

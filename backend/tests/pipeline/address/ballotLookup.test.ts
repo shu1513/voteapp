@@ -9987,7 +9987,7 @@ describe("current race rating read path", () => {
 
     expect(election.current_competitiveness).toEqual({
       display_label: "Currently a toss-up",
-      display_description: expect.stringContaining("Inside Elections and Sabato's Crystal Ball"),
+      display_description: expect.stringContaining("Inside Elections and University of Virginia's Sabato's Crystal Ball"),
       competitiveness_label: "toss_up",
       method: "outlet_consensus",
       confidence: "high",

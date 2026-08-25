@@ -60,7 +60,7 @@ describe("ElectionPage", () => {
     renderElection(() =>
       electionDetail({
         historical_competitiveness: {
-          display_label: "Historically safe",
+          display_label: "Historically one-sided",
           display_description: "Based on the 2024 Governor result.",
           source: "MIT_2024",
           source_url: null,
@@ -81,7 +81,7 @@ describe("ElectionPage", () => {
 
     // Both chips at once would contradict on a race that flipped.
     expect(await screen.findByText("Currently a toss-up")).toBeInTheDocument();
-    expect(screen.queryByText("Historically safe")).not.toBeInTheDocument();
+    expect(screen.queryByText("Historically one-sided")).not.toBeInTheDocument();
   });
 
   it("renders the election header and every candidate", async () => {
