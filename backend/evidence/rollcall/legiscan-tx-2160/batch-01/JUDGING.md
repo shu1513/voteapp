@@ -109,17 +109,38 @@ put a false sentence on roughly 103 candidates.
 ## Result
 
 The real run reconciled exactly to the dry run — same file count, same
-insert count, no errors either time:
+insert count, no errors either time. The dry run's 1,620 is a *plan*
+(`"dryRun": true`, nothing written); only the real run's 1,620 is rows in
+the database:
 
 ```text
-dry run   files 25 | outcomes {"dry_run": 25}  | errors 0 | inserts 1,620 | notified 0
-real run  files 25 | outcomes {"imported": 25} | errors 0 | inserts 1,620 | notified 0
+dry run   files 25 | outcomes {"dry_run": 25}  | errors 0 | planned inserts 1,620 | notified 0
+real run  files 25 | outcomes {"imported": 25} | errors 0 | inserts         1,620 | notified 0
 ```
 
 In the local database that is `candidate_records` 60,152 → 61,772, with
-1,620 rows carrying `origin_run_id LIKE 'rollcall:TX:%'` across 136 distinct
-Texas candidates. The review queue still reads 25 `approved` / 6,159
-`pending`: the importer reads the queue, it does not consume it.
+1,620 rows across 136 distinct Texas candidates:
+
+```sql
+select count(*), count(distinct candidate_id)
+  from candidate_records
+ where origin_run_id like 'rollcall:TX:%:2160:%:2026-08-25T05:30:09.633Z';
+-- 1620 | 136
+```
+
+The trailing timestamp is the run's `startedAt`, which the importer stamps
+once and shares across every roll in the run
+(`importLegiscanRollCallVotes.ts`, `originRunId`). It is what pins this
+query to batch-01. **Do not shorten it to `'rollcall:TX:%'` or to the
+session** — batch-02 will be session 2160 as well, so both of those will
+silently grow to include it and stop reconciling to 1,620. (They match
+exactly 1,620 today only because batch-01 is the sole Texas import so far.)
+
+The dry run's own stamp, `2026-08-25T05:18:18.287Z`, matches **zero** rows —
+positive proof the dry run wrote nothing.
+
+The review queue still reads 25 `approved` / 6,159 `pending`: the importer
+reads the queue, it does not consume it.
 
 Prod is untouched. Promotion is a separate `research:promote` run.
 
