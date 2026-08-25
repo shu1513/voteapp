@@ -325,6 +325,37 @@ describe("resolveAddressToDistricts with coordinates", () => {
     expect(result.districts).toHaveLength(1);
   });
 
+  it("surfaces the coordinate error, not not_found, when both paths fail", async () => {
+    const { CensusAddressGeocoderError } = await import("../../../src/pipeline/address/censusAddressGeocoder.js");
+    const coordinateError = new CensusAddressGeocoderError("timeout", "coordinates lookup timed out");
+    const geocodeCoordinates = vi.fn().mockRejectedValue(coordinateError);
+    const geocodeAddress = vi
+      .fn()
+      .mockRejectedValue(new CensusAddressGeocoderError("not_found", "no street match"));
+    const query = vi.fn();
+
+    await expect(
+      resolveAddressToDistricts({ query }, "1 MetLife Stadium Dr, East Rutherford, NJ 07073, USA", {
+        geocodeAddress,
+        geocodeCoordinates,
+        coordinates: COORDINATES,
+      })
+    ).rejects.toBe(coordinateError);
+    expect(geocodeAddress).toHaveBeenCalledOnce();
+  });
+
+  it("keeps not_found when the string path misses without a coordinate failure", async () => {
+    const { CensusAddressGeocoderError } = await import("../../../src/pipeline/address/censusAddressGeocoder.js");
+    const geocodeAddress = vi
+      .fn()
+      .mockRejectedValue(new CensusAddressGeocoderError("not_found", "no street match"));
+    const query = vi.fn();
+
+    await expect(
+      resolveAddressToDistricts({ query }, "1 Nowhere Rd, Nowhere, NJ 07073", { geocodeAddress })
+    ).rejects.toMatchObject({ code: "not_found" });
+  });
+
   it("propagates district DB failures from the point path", async () => {
     const geocodeCoordinates = vi.fn().mockResolvedValue({ geographies: GEOGRAPHIES });
     const geocodeAddress = vi.fn();

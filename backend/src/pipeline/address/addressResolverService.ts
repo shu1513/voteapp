@@ -86,6 +86,7 @@ export async function resolveAddressToDistricts(
   // Places response, and Google's ToS forbids persisting Places data — the
   // redis cache would store them for 14 days. A dropped cache is acceptable
   // here; this path runs once per explicit dropdown selection.
+  let coordinateGeocodeError: CensusAddressGeocoderError | null = null;
   if (options.coordinates) {
     const geocodeCoordinates =
       options.geocodeCoordinates ??
@@ -111,10 +112,14 @@ export async function resolveAddressToDistricts(
     } catch (error) {
       // Geocoder trouble (timeout, 5xx, malformed body) falls back to the
       // address-string path; anything else (e.g. the district DB lookup) is
-      // a real failure and propagates.
+      // a real failure and propagates. The error is kept: if the fallback
+      // ends in not_found — predictable for the venue addresses this path
+      // exists for — the response must say "upstream trouble, retry", not
+      // "check your address".
       if (!(error instanceof CensusAddressGeocoderError)) {
         throw error;
       }
+      coordinateGeocodeError = error;
     }
   }
 
@@ -127,7 +132,15 @@ export async function resolveAddressToDistricts(
   const resolved = cached
     ? cached
     : await (async () => {
-        const geocoded = await geocodeAddress(address);
+        const geocoded = await geocodeAddress(address).catch((error: unknown) => {
+          // not_found after a failed coordinate lookup: the string parser
+          // predictably misses venue addresses, so the honest error is the
+          // coordinate path's retryable one, not "address not found".
+          if (coordinateGeocodeError && error instanceof CensusAddressGeocoderError && error.code === "not_found") {
+            throw coordinateGeocodeError;
+          }
+          throw error;
+        });
         const keyResolution = resolveAddressDistrictKeysFromGeographies(geocoded.geographies);
         const value = {
           matched_address: geocoded.matched_address,
