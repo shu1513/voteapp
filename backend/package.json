@@ -12,6 +12,7 @@
     "state-resources:health": "tsx src/scripts/stateResourcesHealth.ts",
     "districts:load": "tsx src/scripts/loadDistricts.ts",
     "districts:load:all": "tsx src/scripts/loadAllDistricts.ts",
+    "districts:recompute-representation": "tsx src/scripts/recomputeRepresentationPowerScores.ts",
     "competitiveness:import": "tsx src/scripts/importHistoricalContestMargins.ts",
     "competitiveness:import:verified": "tsx src/scripts/importVerifiedHistoricalContestMargins.ts",
     "competitiveness:refresh": "npm run competitiveness:import:verified && npm run competitiveness:status",

@@ -1108,9 +1108,13 @@ async function deleteDistrict(
  *
  * Districts whose state has no positive-population statewide row, or with no
  * positive population themselves, score NULL (representation "unknown").
+ *
+ * Exported for the standalone districts:recompute-representation script,
+ * which reruns exactly this statement without a Census reload (model change
+ * rollouts, prod promotion). Returns the number of rows whose score changed.
  */
-async function recomputeRepresentationPowerScores(client: PoolClient): Promise<void> {
-  await client.query(
+export async function recomputeRepresentationPowerScores(client: PoolClient): Promise<number> {
+  const result = await client.query(
     `
       WITH state_populations AS (
         -- One deterministic anchor per state: the schema's uniqueness key is
@@ -1155,6 +1159,7 @@ async function recomputeRepresentationPowerScores(client: PoolClient): Promise<v
     `,
     [REPRESENTATION_RULER_K]
   );
+  return result.rowCount ?? 0;
 }
 
 /**
