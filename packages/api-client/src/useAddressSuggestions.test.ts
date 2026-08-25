@@ -265,9 +265,11 @@ describe("useAddressSuggestions", () => {
       .session_token;
     expect(midRetrieveToken).not.toBe(firstToken);
 
+    // The mid-retrieve typing superseded the selection, so the late result
+    // must be dropped instead of reverting the newer input.
     await act(async () => {
       resolveRetrieve({ address: "200 N Spring St, Los Angeles, CA 90012, USA" });
-      await selectPromise;
+      await expect(selectPromise).resolves.toBeNull();
     });
   });
 

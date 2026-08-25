@@ -25,7 +25,8 @@ export type UseAddressSuggestionsResult = {
   enabled: boolean;
   onInputChanged: (text: string) => void;
   /** Resolves to the full address (plus the place's coordinates when Google
-   * provides them), or null when retrieve failed. */
+   * provides them), or null when retrieve failed or was superseded by newer
+   * typing or another selection. */
   selectSuggestion: (
     suggestion: AddressSuggestion
   ) => Promise<{ address: string; location: AddressLocation | null } | null>;
@@ -153,7 +154,7 @@ export function useAddressSuggestions(): UseAddressSuggestionsResult {
       clearTimeout(debounceRef.current);
     }
     abortRef.current?.abort();
-    requestSeqRef.current += 1;
+    const seq = ++requestSeqRef.current;
     const sessionToken = sessionTokenRef.current;
     setSuggestions([]);
     if (!sessionToken) {
@@ -169,6 +170,13 @@ export function useAddressSuggestions(): UseAddressSuggestionsResult {
         method: "POST",
         body: { place_id: suggestion.place_id, session_token: sessionToken },
       });
+      if (seq !== requestSeqRef.current) {
+        // Superseded while in flight — the user typed or selected again
+        // (both bump the sequence synchronously), so applying this result
+        // would revert their newer input and carry its coordinates into
+        // district resolution. Drop it.
+        return null;
+      }
       return { address: response.address, location: response.location ?? null };
     } catch {
       // Retrieve failed; the user still has their typed text and can submit
