@@ -211,6 +211,33 @@ describe("googlePlacesAutocomplete retrieve", () => {
     );
   });
 
+  it("passes through an in-range location and nulls a missing or malformed one", () => {
+    expect(
+      parseGooglePlacesRetrievePayload({
+        formattedAddress: "1 Main St",
+        location: { latitude: 40.8135, longitude: -74.0741 },
+      }).location
+    ).toEqual({ lat: 40.8135, lng: -74.0741 });
+    expect(parseGooglePlacesRetrievePayload({ formattedAddress: "1 Main St" }).location).toBeNull();
+    expect(
+      parseGooglePlacesRetrievePayload({ formattedAddress: "1 Main St", location: { latitude: "40.8" } }).location
+    ).toBeNull();
+  });
+
+  it("nulls an out-of-range location instead of forwarding it", () => {
+    // The resolve validator 400s out-of-range coordinates, which would kill
+    // the whole search; the parser must drop them so the string path runs.
+    for (const location of [
+      { latitude: 91, longitude: 0 },
+      { latitude: -91, longitude: 0 },
+      { latitude: 0, longitude: 181 },
+      { latitude: 0, longitude: -181 },
+      { latitude: Number.NaN, longitude: 0 },
+    ]) {
+      expect(parseGooglePlacesRetrievePayload({ formattedAddress: "1 Main St", location }).location).toBeNull();
+    }
+  });
+
   it("rejects empty placeId before calling Google", async () => {
     const fetchImpl = vi.fn() as unknown as typeof fetch;
 

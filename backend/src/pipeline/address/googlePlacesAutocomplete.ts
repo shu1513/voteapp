@@ -232,6 +232,8 @@ export function parseGooglePlacesRetrievePayload(payload: unknown): RetrievedSug
   }
   // location is best-effort: a missing or malformed one must not fail the
   // retrieve — the resolver falls back to the address-string path without it.
+  // Range-checked with the same bounds the resolve validator enforces, so a
+  // bad value dies here as null instead of 400ing the whole search later.
   let location: RetrievedSuggestedAddress["location"] = null;
   if (isRecord(payload.location)) {
     const { latitude, longitude } = payload.location;
@@ -239,7 +241,11 @@ export function parseGooglePlacesRetrievePayload(payload: unknown): RetrievedSug
       typeof latitude === "number" &&
       typeof longitude === "number" &&
       Number.isFinite(latitude) &&
-      Number.isFinite(longitude)
+      Number.isFinite(longitude) &&
+      latitude >= -90 &&
+      latitude <= 90 &&
+      longitude >= -180 &&
+      longitude <= 180
     ) {
       location = { lat: latitude, lng: longitude };
     }
