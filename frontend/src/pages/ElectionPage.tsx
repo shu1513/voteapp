@@ -618,7 +618,9 @@ export function ElectionPage() {
               How do we calculate my vote power?
             </summary>
             <div className="mt-2 rounded-xl border border-line bg-white p-4">
-              <p className="text-ink">{data.vote_power.explanation.how}</p>
+              {/* The how copy arrives with blank lines between its points;
+                  preserve them so each axis reads as its own paragraph. */}
+              <p className="whitespace-pre-line text-ink">{data.vote_power.explanation.how}</p>
               {/* One row per graded measure, formula-style: title, grade, this
                   election's actual numbers, then a one-line why. */}
               <div className="mt-3 space-y-2">
