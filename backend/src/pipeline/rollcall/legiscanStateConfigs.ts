@@ -50,8 +50,30 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
 
 export const LEGISCAN_STATE_JURISDICTIONS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);
 
+// States already served by their OWN source pipeline. Importing one of these
+// through LegiScan would DUPLICATE every record: the two feeds cite the same
+// vote with different URLs, and the fan-out's duplicate scan compares folded
+// URL keys — `oh:136:sb56` from Ohio's actions feed never equals `ls:<roll
+// call id>` from the LegiScan page — so nothing would recognize the second
+// copy as the same vote. Ohio's GA-136 is 1,330 live records across 94
+// candidates; a LegiScan re-import would silently double them.
+//
+// LegiScan remains useful for these states as a read-only CROSS-CHECK. Ohio
+// was verified that way on 2026-08-24: all 466 kept floor votes matched
+// LegiScan exactly on chamber + date + measure + yea + nay, including all 24
+// judged rolls. Remove a state from this set only when its own pipeline is
+// being retired and its existing records are migrated or retired first.
+const JURISDICTIONS_WITH_DEDICATED_PIPELINES: ReadonlySet<string> = new Set(["OH"]);
+
 export function getLegiscanStateConfig(state: string): LegiscanStateConfig {
-  const config = LEGISCAN_STATE_CONFIGS[state.trim().toUpperCase()];
+  const jurisdiction = state.trim().toUpperCase();
+  if (JURISDICTIONS_WITH_DEDICATED_PIPELINES.has(jurisdiction)) {
+    throw new Error(
+      `${jurisdiction} is served by its own roll-call pipeline (rollcall:oh:*), not LegiScan; ` +
+        "importing it here would write a duplicate record for every vote already imported from that source"
+    );
+  }
+  const config = LEGISCAN_STATE_CONFIGS[jurisdiction];
   if (!config) {
     const registered = LEGISCAN_STATE_JURISDICTIONS.length > 0 ? LEGISCAN_STATE_JURISDICTIONS.join(", ") : "none yet";
     throw new Error(

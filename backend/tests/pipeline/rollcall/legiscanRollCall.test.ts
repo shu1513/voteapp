@@ -13,7 +13,11 @@ import {
   parseLegiscanVoteEvidence,
   LEGISCAN_EVIDENCE_FILE_PATTERN,
 } from "../../../src/pipeline/rollcall/legiscanRollCall.js";
-import type { LegiscanStateConfig } from "../../../src/pipeline/rollcall/legiscanStateConfigs.js";
+import {
+  getLegiscanStateConfig,
+  LEGISCAN_STATE_CONFIGS,
+  type LegiscanStateConfig,
+} from "../../../src/pipeline/rollcall/legiscanStateConfigs.js";
 
 // A synthetic state: 100-seat house, 30-seat senate, one kept and one
 // excluded pattern each. Real configs are written per state from survey
@@ -257,5 +261,21 @@ describe("evidence files", () => {
 describe("legiscanRollCallPageUrl", () => {
   it("builds the documented page shape", () => {
     expect(legiscanRollCallPageUrl("tx", "HB 1", 1523456)).toBe("https://legiscan.com/TX/rollcall/HB1/id/1523456");
+  });
+});
+
+describe("getLegiscanStateConfig", () => {
+  it("ships with no state registered, so no state can be fetched unsurveyed", () => {
+    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual([]);
+    expect(() => getLegiscanStateConfig("TX")).toThrow("no LegiScan state config for TX");
+  });
+
+  it("refuses a state that has its own pipeline, whatever the spelling", () => {
+    // Ohio's 1,330 live records cite its actions feed; the folded URL keys
+    // (`oh:136:sb56` vs `ls:<id>`) would never match, so a LegiScan import
+    // would duplicate every one of them instead of deduping.
+    for (const spelling of ["OH", "oh", " Oh "]) {
+      expect(() => getLegiscanStateConfig(spelling)).toThrow("served by its own roll-call pipeline");
+    }
   });
 });
