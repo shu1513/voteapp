@@ -10,7 +10,7 @@ it stays respected.
 
 Three roll calls on SB 2 differ in exactly one field:
 
-```
+```text
 roll_call_id 1557913 | 1592205 | 1586170
 bill_id 1939845 | date 2025-04-24 | chamber S | chamber_id 92
 desc "Senate concurs in House amendment(s)" | 19-12 | total 31
@@ -23,8 +23,9 @@ member's `vote_id`, is identical.
 
 ### Scale
 
-Grouping all 6,824 stored roll calls by
-`(chamber, bill_id, date, desc, yea, nay, sha1(member list))`:
+Grouping all 6,824 originally stored roll calls by the identity key —
+`(chamber, bill_id, date, desc, yea, nay, nv, absent, passed,
+sha1(member list))`:
 
 | | |
 |---|---|
@@ -47,6 +48,22 @@ ids give three different keys, so nothing recognizes them as one vote.
 Judging all three would write three near-identical records on the same
 senator for the same bill — the fan-out's multiplier working against us.
 
+### The member list alone is NOT the dedupe key
+
+Worth stating plainly, because the first version of the batch-01 selection
+script got this wrong: two roll calls with identical member lineups are
+**not** necessarily the same action.
+
+SB 13's senate third reading (roll 1522908, 2025-03-19) and its conference
+report adoption (roll 1588929, 2025-05-31) both passed 23-8 with the same
+23 senators voting yes. They are two and a half months and two distinct
+questions apart. The same is true of SB 33's third reading (1550482) and
+its concurrence vote (1579565), both 22-9.
+
+A cohesive party-line chamber will reproduce the same lineup over and over,
+so member-hash-alone silently merges distinct votes. The key must be the
+full tuple above — which is exactly what the fetch-time fix uses.
+
 ### How it is handled
 
 Fixed in the fetch step (`fetchLegiscanRollCallVotes.ts`): roll calls are
@@ -59,10 +76,15 @@ collision: re-issues carry new ids, so a duplicated id means a malformed
 dataset, not a re-issue.
 
 Batch 01 was selected before the fix and collapsed duplicates in the
-selection script instead (13 duplicate ids collapsed out of the 25
-selected votes, one roll per measure and chamber). After the fix and a
-re-fetch, all 25 selected roll numbers are the surviving lowest ids, so
-the selection stands unchanged.
+selection script instead, one roll per measure and chamber: **8** duplicate
+ids were collapsed out of the 25 selected votes. (An earlier revision
+reported 13; that count came from the member-hash-only bug described above,
+which inflated it by counting five genuinely distinct senate actions as
+duplicates. The 25 selected roll numbers were unaffected — the passage-vote
+preference picks the same roll either way — and the metadata in
+`rolls.json` was corrected.) After the fix and a re-fetch, all 25 selected
+roll numbers are the surviving lowest ids, so the selection stands
+unchanged.
 
 The Ohio pipeline is unaffected — the duplication is a LegiScan senate feed
 artifact, and Ohio does not go through LegiScan.
