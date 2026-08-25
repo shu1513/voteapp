@@ -32,6 +32,7 @@ import {
 import { fetchCensusJsonWithKeyRotation, readCensusApiKeysFromEnv } from "../../config/censusApi.js";
 import { loadProjectEnv } from "../../config/env.js";
 import { STATE_ABBR_BY_FIPS, getStateAbbreviationByFips, normalizeFips } from "../../constants/usStates.js";
+import { REPRESENTATION_RULER_K } from "../address/votePower.js";
 
 export const DISTRICTS_ACS_YEAR = 2024;
 export const CENSUS_STATES_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=state:*`;
@@ -1089,67 +1090,56 @@ async function deleteDistrict(
 }
 
 /**
- * Recomputes representation_power_score for every district row using a log-scaled inverse-population model:
- *   score_i = 100 * ln(max_scope_pop / pop_i) / ln(max_scope_pop / min_scope_pop)
+ * Recomputes representation_power_score for every district row using the
+ * state-anchored fixed-ruler model (docs/plans/vote-power-state-anchored-representation.md):
+ *   score_i = 50 + 50 * ln(state_pop / pop_i) / ln(K),  clamped to [50, 100]
+ * where state_pop is the population of the district's own state (its
+ * 'statewide' row) and K = REPRESENTATION_RULER_K.
  *
  * Why this model:
- * - Population-based structural measure that works across district types.
- * - Log scaling keeps scores interpretable (avoids extreme swings from raw inverse population).
- * - Bounded output (0..100) with deterministic behavior for edge cases.
+ * - Answers "how much stronger is one vote here than a statewide vote?" —
+ *   the comparison users actually make between races on one ballot.
+ * - A statewide race is the 50 ("average") baseline; smaller districts score
+ *   higher; representation alone can never grade below average.
+ * - K is a fixed constant, not a DB extreme, so scores never drift when new
+ *   (tiny) districts are imported later.
+ * - The 50 floor also absorbs data errors where a district's population
+ *   exceeds its state's.
  *
- * Scope rules:
- * - statewide/us_house: national scope per district_type.
- * - all other district types: state-level scope (district_type + state_fips).
+ * Districts whose state has no positive-population statewide row, or with no
+ * positive population themselves, score NULL (representation "unknown").
  */
 async function recomputeRepresentationPowerScores(client: PoolClient): Promise<void> {
   await client.query(
     `
-      WITH scoped AS (
-        SELECT
-          id,
-          district_type,
-          state_fips,
-          population::numeric AS population,
-          CASE
-            -- Federal congressional types compare nationally.
-            WHEN district_type IN ('statewide', 'us_house') THEN district_type
-            -- Other types compare within the same state.
-            ELSE district_type || ':' || COALESCE(state_fips, '')
-          END AS scope_key
+      WITH state_populations AS (
+        SELECT state_fips, population::numeric AS population
         FROM public.districts
-      ),
-      scope_stats AS (
-        SELECT
-          scope_key,
-          MIN(population) AS min_population,
-          MAX(population) AS max_population
-        FROM scoped
-        WHERE population IS NOT NULL
+        WHERE district_type = 'statewide'
+          AND population IS NOT NULL
           AND population > 0
-        GROUP BY scope_key
       ),
       scored AS (
         SELECT
-          scoped.id,
+          d.id,
           CASE
-            WHEN scoped.population IS NULL OR scoped.population <= 0 THEN NULL::numeric
-            WHEN scope_stats.scope_key IS NULL THEN NULL::numeric
-            WHEN scope_stats.max_population = scope_stats.min_population THEN 50::numeric
+            WHEN d.population IS NULL OR d.population <= 0 THEN NULL::numeric
+            WHEN sp.population IS NULL THEN NULL::numeric
             ELSE ROUND(
               LEAST(
                 100::numeric,
                 GREATEST(
-                  0::numeric,
-                  100::numeric
-                    * (LN(scope_stats.max_population) - LN(scoped.population))
-                    / NULLIF(LN(scope_stats.max_population) - LN(scope_stats.min_population), 0::numeric)
+                  50::numeric,
+                  50::numeric
+                    + 50::numeric * LN(sp.population / d.population::numeric)
+                    / LN(${REPRESENTATION_RULER_K}::numeric)
                 )
               ),
               2
             )
           END AS representation_power_score
-        FROM scoped
-        LEFT JOIN scope_stats ON scope_stats.scope_key = scoped.scope_key
+        FROM public.districts AS d
+        LEFT JOIN state_populations AS sp ON sp.state_fips = d.state_fips
       )
       UPDATE public.districts
       SET representation_power_score = scored.representation_power_score

@@ -2,6 +2,14 @@ import type { ElectionRaceType } from "../../types/election.js";
 import type { HistoricalContestCompetitivenessLabel } from "../competitiveness/competitivenessLabels.js";
 import { binMeanIntensity } from "../competitiveness/currentRaceRatingConsensus.js";
 
+// Fixed ruler for the state-anchored representation model: a district this
+// many times smaller than its state scores 100. Data-derived 2026-08-24
+// (docs/plans/vote-power-state-anchored-representation.md): the valid band is
+// ~3,600 (median US House district must stay "average") to ~105,000 (median
+// state senate district must reach "high"). A constant — not the smallest
+// district in the DB — so scores never drift when new districts are imported.
+export const REPRESENTATION_RULER_K = 50000;
+
 export type VotePowerLabel = "very_low" | "low" | "medium" | "high" | "very_high" | "unknown";
 
 export type VotePowerConfidence = "high" | "medium" | "low";
@@ -91,12 +99,11 @@ export type VotePowerExplanationContext = VotePowerInput & {
   // several when it is a weighted multi-year blend (the stat must not pin a
   // blended number on a single year).
   marginElectionYears?: number[] | null;
-  // Population extremes of the district's comparison group (the same scope
-  // the loader's representation-score SQL uses) plus a human name for the
-  // group, so the formula can show the real numbers.
+  // The district's own state population (the anchor of the loader's
+  // representation-score SQL) plus a human name for the baseline, so the
+  // formula can show the real numbers.
   representationScope?: {
-    maxPopulation: number;
-    minPopulation: number;
+    statePopulation: number;
     description: string;
   } | null;
   // Per-contest inputs behind a weighted multi-year margin, so the formula
@@ -225,14 +232,6 @@ function labelFromKnownAxis(input: {
   return "unknown";
 }
 
-function bumpLabel(label: VotePowerLabel): VotePowerLabel {
-  if (label === "unknown") {
-    return "unknown";
-  }
-  const index = LABELS.indexOf(label);
-  return LABELS[Math.min(index + 1, LABELS.length - 1)] ?? label;
-}
-
 function capLabel(label: VotePowerLabel, maxLabel: Exclude<VotePowerLabel, "unknown">): VotePowerLabel {
   if (label === "unknown") {
     return label;
@@ -243,7 +242,6 @@ function capLabel(label: VotePowerLabel, maxLabel: Exclude<VotePowerLabel, "unkn
 }
 
 function calculateScore(input: {
-  raceType: ElectionRaceType;
   representationPowerScore: number | null;
   representationLevel: VotePowerRepresentationLevel;
   decisivenessLevel: VotePowerDecisivenessLevel;
@@ -275,9 +273,6 @@ function calculateScore(input: {
 
   if (decisivenessLevel === "none") {
     raw = Math.min(raw, 25);
-  }
-  if (input.raceType === "ballot_measure") {
-    raw = Math.min(100, raw + 12);
   }
   if (input.hasMissingCoreAxis) {
     raw = Math.min(raw, 79);
@@ -353,16 +348,15 @@ function factorsFor(input: {
 // Describes the LABEL algorithm (the level matrix), not the numeric score:
 // the 45/55 weighted score is a sorting signal only and never shown on the
 // detail page, so surfacing its formula here would misattribute the rating.
-// The lead deliberately doesn't count the factors: ballot measures add a
-// direct-vote row (usually three rows, two when decisiveness is skipped),
-// so any "two things"/"three things" claim would contradict some panel.
-// Source-dependent tail: decisiveness rests on current analyst ratings when
-// one drove the label, on past results otherwise.
+// The lead deliberately doesn't count the parts: measures without history
+// skip the decisiveness row, so any "two things" claim would contradict
+// some panels. Source-dependent tail: decisiveness rests on current analyst
+// ratings when one drove the label, on past results otherwise.
 function howCalculated(currentRatingUsed: boolean): string {
   const decisivenessBasis = currentRatingUsed
     ? "current race ratings from election analysts"
     : "past results";
-  return `Here's what goes into the rating. Representation: how much weight one vote carries here — the smaller the district, the more each vote counts. Decisiveness: how likely this race is to be close, based on ${decisivenessBasis} and the number of candidates.`;
+  return `Here's what goes into the rating. Representation: how much weight one vote carries here compared with a statewide vote — the smaller the district, the more each vote counts. Decisiveness: how likely this race is to be close, based on ${decisivenessBasis} and the number of candidates.`;
 }
 
 function capitalize(text: string): string {
@@ -390,60 +384,53 @@ function formatCount(value: number): string {
 
 // First-match thresholds, not ranges: "33–65 average" would leave a 65.6
 // score in no bucket, and the grader itself works on >= comparisons.
-const REPRESENTATION_GRADE_SCALE = "grades: 66+ high, 33+ average, otherwise low";
+const REPRESENTATION_GRADE_SCALE =
+  "grades: 66+ high, 33+ average, otherwise low; a statewide race is the 50 baseline";
 
-// The loader's log-scaled inverse-population model, spelled out with this
+// The loader's state-anchored fixed-ruler model, spelled out with this
 // district's real numbers (see recomputeRepresentationPowerScores in
 // districtsLoader.ts — this string must describe that SQL faithfully,
-// including its two-decimal rounding and its equal-extremes midpoint rule).
+// including its 50..100 clamp and two-decimal rounding).
 //
 // The value after "=" is the STORED score the rating graded on, while the
-// expression's inputs are the CURRENT extremes from a live subselect. The
+// expression's inputs are the CURRENT populations from a live subselect. The
 // numeric equation therefore only renders after re-evaluating the model
 // here and confirming it reproduces the stored score; any drift (population
-// edits since the last scoring run, or SQL-numeric vs float rounding at a
-// .005 boundary) degrades to the symbolic form, which shows the stored
-// score without claiming the live inputs derive it.
+// edits since the last scoring run, a stored score from the retired
+// within-type model, or SQL-numeric vs float rounding at a .005 boundary)
+// degrades to the symbolic form, which shows the stored score without
+// claiming the live inputs derive it.
 function representationFormula(input: {
   representationPowerScore: number;
   districtPopulation: number | null;
-  representationScope: { maxPopulation: number; minPopulation: number; description: string } | null;
+  representationScope: { statePopulation: number; description: string } | null;
 }): string {
   const score = Math.round(input.representationPowerScore * 100) / 100;
   if (input.districtPopulation !== null && input.representationScope !== null) {
     const scope = input.representationScope;
-    if (scope.maxPopulation === scope.minPopulation) {
-      // ln(x ÷ x) ÷ ln(x ÷ x) is 0/0 — the SQL never evaluates it and
-      // assigns the midpoint instead. Equal extremes can also mean several
-      // districts with identical populations, so don't claim "only one".
-      if (score === 50) {
-        return `score = 50 by rule: ${scope.description} currently all have the same population, so the model assigns the midpoint of 50 (${REPRESENTATION_GRADE_SCALE})`;
-      }
-    } else {
-      const recomputed =
-        Math.round(
-          Math.min(
-            100,
-            Math.max(
-              0,
-              (100 * (Math.log(scope.maxPopulation) - Math.log(input.districtPopulation))) /
-                (Math.log(scope.maxPopulation) - Math.log(scope.minPopulation))
-            )
-          ) * 100
-        ) / 100;
-      if (recomputed === score) {
-        return `score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest), rounded to 2 decimals = 100 × ln(${formatCount(scope.maxPopulation)} ÷ ${formatCount(input.districtPopulation)}) ÷ ln(${formatCount(scope.maxPopulation)} ÷ ${formatCount(scope.minPopulation)}) = ${score}, comparing ${scope.description} (${REPRESENTATION_GRADE_SCALE})`;
-      }
+    const raw =
+      50 +
+      (50 * Math.log(scope.statePopulation / input.districtPopulation)) / Math.log(REPRESENTATION_RULER_K);
+    const rawRounded = Math.round(raw * 100) / 100;
+    const recomputed = Math.round(Math.min(100, Math.max(50, raw)) * 100) / 100;
+    if (recomputed === score) {
+      // When the 50..100 clamp engaged (a district more than K times smaller
+      // than its state hits the 100 cap; a data-error ratio below 1 hits the
+      // 50 floor), say so — otherwise the equation would print arithmetic
+      // that does not produce the stored score.
+      const clampSuffix =
+        rawRounded === recomputed ? "" : rawRounded > 100 ? ", capped at 100" : ", raised to the 50 floor";
+      return `score = 50 + 50 × ln(state population ÷ this district's) ÷ ln(${formatCount(REPRESENTATION_RULER_K)}) = 50 + 50 × ln(${formatCount(scope.statePopulation)} ÷ ${formatCount(input.districtPopulation)}) ÷ ln(${formatCount(REPRESENTATION_RULER_K)}) = ${rawRounded}${clampSuffix}, measured against ${scope.description} (${REPRESENTATION_GRADE_SCALE})`;
     }
   }
-  return `score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest population among comparable districts), rounded to 2 decimals = ${score} (${REPRESENTATION_GRADE_SCALE})`;
+  return `score = 50 + 50 × ln(state population ÷ this district's population) ÷ ln(${formatCount(REPRESENTATION_RULER_K)}), kept between 50 and 100 and rounded to 2 decimals = ${score} (${REPRESENTATION_GRADE_SCALE})`;
 }
 
 function representationPart(input: {
   representationLevel: VotePowerRepresentationLevel;
   representationPowerScore: number | null;
   districtPopulation: number | null;
-  representationScope: { maxPopulation: number; minPopulation: number; description: string } | null;
+  representationScope: { statePopulation: number; description: string } | null;
 }): VotePowerExplanationPart {
   if (input.representationLevel === "unknown" || input.representationPowerScore === null) {
     return {
@@ -455,10 +442,13 @@ function representationPart(input: {
     };
   }
 
+  // "low" is unreachable under the state-anchored model (scores floor at the
+  // statewide 50 baseline) but stays renderable: stored scores from the
+  // retired within-type model can still grade low until the recompute runs.
   const detailByLevel: Record<Exclude<VotePowerRepresentationLevel, "unknown">, string> = {
-    high: "Smaller districts give each vote more weight, and this district is small for its type.",
-    medium: "This district is mid-sized for its type, so each vote carries average weight.",
-    low: "This district is large for its type, so each vote is a smaller slice of the outcome.",
+    high: "This district is a small slice of its state, so each vote here carries much more weight than a vote in a statewide race.",
+    medium: "This district covers a large share of its state, so each vote carries about average weight — like a vote in a statewide race.",
+    low: "This district is large, so each vote is a smaller slice of the outcome.",
   };
   const populationSuffix =
     input.districtPopulation === null ? "" : ` About ${input.districtPopulation.toLocaleString("en-US")} people live here.`;
@@ -698,28 +688,7 @@ function marginStat(marginPercent: number | null, marginElectionYears: number[] 
   return `${points} weighted margin across ${formatYearList(years)}`;
 }
 
-// The bump can no-op (already at very_high, or eaten by the missing-data
-// cap), so the copy must not promise a boost the label never received.
-function ballotMeasurePart(boostApplied: boolean): VotePowerExplanationPart {
-  if (boostApplied) {
-    return {
-      title: "Ballot measure",
-      grade: "+1 step",
-      stat: null,
-      detail: "Your vote sets the policy directly, so the rating gets a one-step boost.",
-      formula: null,
-    };
-  }
-  return {
-    title: "Ballot measure",
-    grade: "Direct vote",
-    stat: null,
-    detail: "Your vote sets the policy directly, but it did not raise this rating further.",
-    formula: null,
-  };
-}
-
-function explanationResultFor(result: VotePowerResult, boostApplied: boolean, skipDecisiveness: boolean): string {
+function explanationResultFor(result: VotePowerResult, skipDecisiveness: boolean): string {
   if (result.label === "unknown") {
     return "Not enough data → no rating yet.";
   }
@@ -739,10 +708,6 @@ function explanationResultFor(result: VotePowerResult, boostApplied: boolean, sk
       pieces.push(`${levelDisplayWord(result.decisiveness_level)} decisiveness`);
     }
   }
-  if (boostApplied) {
-    pieces.push("a ballot-measure boost");
-  }
-
   return `${capitalize(pieces.join(" + "))} → My vote power: ${capitalize(RESULT_LABEL_TEXT[result.label])}.`;
 }
 
@@ -814,27 +779,6 @@ export function explainVotePower(input: VotePowerExplanationContext, result: Vot
     );
   }
 
-  // Re-run the label pipeline without the measure bump: the boost is only
-  // claimable when it actually moved the displayed label (bumpLabel tops out
-  // at very_high, and the missing-data cap runs after the bump).
-  let boostApplied = false;
-  if (isBallotMeasure && result.label !== "unknown") {
-    const missingCoreAxis =
-      result.representation_level === "unknown" ||
-      (result.decisiveness_level === "unknown" && !skipDecisiveness);
-    let noBoostLabel = labelFromKnownAxis({
-      representationLevel: result.representation_level,
-      decisivenessLevel: result.decisiveness_level,
-    });
-    if (missingCoreAxis) {
-      noBoostLabel = capLabel(noBoostLabel, "high");
-    }
-    boostApplied = result.label !== noBoostLabel;
-  }
-  if (isBallotMeasure) {
-    parts.push(ballotMeasurePart(boostApplied));
-  }
-
   // The current rating only claims the "how" copy when it actually drove a
   // graded decisiveness level (uncontested and unknown grades never read it).
   const currentRatingUsed =
@@ -851,7 +795,7 @@ export function explainVotePower(input: VotePowerExplanationContext, result: Vot
   return {
     how: howCalculated(currentRatingUsed),
     parts,
-    result: explanationResultFor(result, boostApplied, skipDecisiveness),
+    result: explanationResultFor(result, skipDecisiveness),
     caveat: caveats.length > 0 ? caveats.join(" ") : null,
   };
 }
@@ -866,16 +810,12 @@ export function calculateVotePower(input: VotePowerInput): VotePowerResult {
     representationLevel === "unknown" || (decisivenessLevel === "unknown" && !ballotMeasureWithRepresentation);
 
   let label = labelFromKnownAxis({ representationLevel, decisivenessLevel });
-  if (input.raceType === "ballot_measure") {
-    label = bumpLabel(label);
-  }
   if (missingCoreAxis) {
     label = capLabel(label, "high");
   }
 
   return {
     score: calculateScore({
-      raceType: input.raceType,
       representationPowerScore,
       representationLevel,
       decisivenessLevel,
