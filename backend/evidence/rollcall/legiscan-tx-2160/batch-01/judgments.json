@@ -1,0 +1,419 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "TX",
+      "chamber": "senate",
+      "session": "2160",
+      "roll": 1483210,
+      "measure_id": "SB 2",
+      "vote_date": "2025-02-05",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.B. 2, which created an education savings account program paying 85 percent of the estimated statewide average state and local funding per public school student into accounts parents may spend on private school tuition and other approved education expenses, with program spending capped at $1 billion for its first two-year budget period. It passed the Texas Senate 19-12 and was signed into law.",
+      "nay_description": "Voted against passing S.B. 2, which created an education savings account program paying 85 percent of the estimated statewide average state and local funding per public school student into accounts parents may spend on private school tuition and other approved education expenses, with program spending capped at $1 billion for its first two-year budget period. It passed the Texas Senate 19-12 and was signed into law.",
+      "labels": [
+        {
+          "slug": "general"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "house",
+      "session": "2160",
+      "roll": 1551194,
+      "measure_id": "SB 2",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.B. 2, which created an education savings account program paying 85 percent of the estimated statewide average state and local funding per public school student into accounts parents may spend on private school tuition and other approved education expenses, with program spending capped at $1 billion for its first two-year budget period. It passed the Texas House 86-61 and was signed into law.",
+      "nay_description": "Voted against passing S.B. 2, which created an education savings account program paying 85 percent of the estimated statewide average state and local funding per public school student into accounts parents may spend on private school tuition and other approved education expenses, with program spending capped at $1 billion for its first two-year budget period. It passed the Texas House 86-61 and was signed into law.",
+      "labels": [
+        {
+          "slug": "general"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "house",
+      "session": "2160",
+      "roll": 1559942,
+      "measure_id": "HJR 2",
+      "vote_date": "2025-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted to adopt H.J.R. 2, which proposed a constitutional amendment barring the legislature from imposing a state estate, inheritance, or death tax, and from newly taxing or raising taxes on gifts and inheritances beyond what was in effect on January 1, 2025. The Texas House adopted it 112-29, placing it on the November 4, 2025 statewide ballot.",
+      "nay_description": "Voted against adopting H.J.R. 2, which proposed a constitutional amendment barring the legislature from imposing a state estate, inheritance, or death tax, and from newly taxing or raising taxes on gifts and inheritances beyond what was in effect on January 1, 2025. The Texas House adopted it 112-29, placing it on the November 4, 2025 statewide ballot.",
+      "labels": [
+        {
+          "slug": "general"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "house",
+      "session": "2160",
+      "roll": 1532010,
+      "measure_id": "HJR 4",
+      "vote_date": "2025-04-01",
+      "review_status": "approved",
+      "yea_description": "Voted to adopt H.J.R. 4, which proposed a constitutional amendment barring the legislature from taxing securities transactions or imposing an occupation tax on registered securities market operators, while leaving general business, sales, and use taxes in place. The Texas House adopted it 111-31, placing it on the November 4, 2025 statewide ballot.",
+      "nay_description": "Voted against adopting H.J.R. 4, which proposed a constitutional amendment barring the legislature from taxing securities transactions or imposing an occupation tax on registered securities market operators, while leaving general business, sales, and use taxes in place. The Texas House adopted it 111-31, placing it on the November 4, 2025 statewide ballot.",
+      "labels": [
+        {
+          "slug": "general"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "senate",
+      "session": "2160",
+      "roll": 1575590,
+      "measure_id": "HJR 34",
+      "vote_date": "2025-05-21",
+      "review_status": "approved",
+      "yea_description": "Voted to adopt H.J.R. 34, which proposed a constitutional amendment letting the legislature exempt from property taxation the added value that border security infrastructure gives to land in counties bordering Mexico. The Texas Senate adopted it 23-8, placing it on the November 4, 2025 statewide ballot.",
+      "nay_description": "Voted against adopting H.J.R. 34, which proposed a constitutional amendment letting the legislature exempt from property taxation the added value that border security infrastructure gives to land in counties bordering Mexico. The Texas Senate adopted it 23-8, placing it on the November 4, 2025 statewide ballot.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "senate",
+      "session": "2160",
+      "roll": 1520079,
+      "measure_id": "SJR 18",
+      "vote_date": "2025-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted to adopt S.J.R. 18, which proposed a constitutional amendment permanently barring the legislature from taxing the realized or unrealized capital gains of individuals, families, estates, or trusts, while leaving property, sales, and use taxes in place. Texas levied no such tax at the time, so the amendment prevented a future one rather than ending an existing one. The Texas Senate adopted it 24-6, placing it on the November 4, 2025 statewide ballot.",
+      "nay_description": "Voted against adopting S.J.R. 18, which proposed a constitutional amendment permanently barring the legislature from taxing the realized or unrealized capital gains of individuals, families, estates, or trusts, while leaving property, sales, and use taxes in place. Texas levied no such tax at the time, so the amendment prevented a future one rather than ending an existing one. The Texas Senate adopted it 24-6, placing it on the November 4, 2025 statewide ballot.",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "house",
+      "session": "2160",
+      "roll": 1559068,
+      "measure_id": "SJR 18",
+      "vote_date": "2025-04-28",
+      "review_status": "approved",
+      "yea_description": "Voted to adopt S.J.R. 18, which proposed a constitutional amendment permanently barring the legislature from taxing the realized or unrealized capital gains of individuals, families, estates, or trusts, while leaving property, sales, and use taxes in place. Texas levied no such tax at the time, so the amendment prevented a future one rather than ending an existing one. The Texas House adopted it 104-26, placing it on the November 4, 2025 statewide ballot.",
+      "nay_description": "Voted against adopting S.J.R. 18, which proposed a constitutional amendment permanently barring the legislature from taxing the realized or unrealized capital gains of individuals, families, estates, or trusts, while leaving property, sales, and use taxes in place. Texas levied no such tax at the time, so the amendment prevented a future one rather than ending an existing one. The Texas House adopted it 104-26, placing it on the November 4, 2025 statewide ballot.",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "house",
+      "session": "2160",
+      "roll": 1558765,
+      "measure_id": "HJR 98",
+      "vote_date": "2025-04-28",
+      "review_status": "approved",
+      "yea_description": "Voted to adopt H.J.R. 98, an application asking the U.S. Congress to call a convention under Article V of the U.S. Constitution, limited to proposing amendments that impose fiscal restraints on the federal government, limit its power and jurisdiction, and set term limits for federal officials and members of Congress. The Texas House adopted it 86-57. It is a request to Congress and was not placed before Texas voters.",
+      "nay_description": "Voted against adopting H.J.R. 98, an application asking the U.S. Congress to call a convention under Article V of the U.S. Constitution, limited to proposing amendments that impose fiscal restraints on the federal government, limit its power and jurisdiction, and set term limits for federal officials and members of Congress. The Texas House adopted it 86-57. It is a request to Congress and was not placed before Texas voters.",
+      "labels": [
+        {
+          "slug": "general"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "senate",
+      "session": "2160",
+      "roll": 1568736,
+      "measure_id": "HJR 98",
+      "vote_date": "2025-05-08",
+      "review_status": "approved",
+      "yea_description": "Voted to adopt H.J.R. 98, an application asking the U.S. Congress to call a convention under Article V of the U.S. Constitution, limited to proposing amendments that impose fiscal restraints on the federal government, limit its power and jurisdiction, and set term limits for federal officials and members of Congress. The Texas Senate adopted it 17-14. It is a request to Congress and was not placed before Texas voters.",
+      "nay_description": "Voted against adopting H.J.R. 98, an application asking the U.S. Congress to call a convention under Article V of the U.S. Constitution, limited to proposing amendments that impose fiscal restraints on the federal government, limit its power and jurisdiction, and set term limits for federal officials and members of Congress. The Texas Senate adopted it 17-14. It is a request to Congress and was not placed before Texas voters.",
+      "labels": [
+        {
+          "slug": "general"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "house",
+      "session": "2160",
+      "roll": 1578072,
+      "measure_id": "SB 8",
+      "vote_date": "2025-05-25",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.B. 8, which required the sheriff of every Texas county that operates a jail to seek an agreement with U.S. Immigration and Customs Enforcement authorizing local officers to help enforce federal immigration law, created a state grant program to cover the costs, and let the attorney general sue a sheriff who does not comply. It passed the Texas House 86-47 and was signed into law.",
+      "nay_description": "Voted against passing S.B. 8, which required the sheriff of every Texas county that operates a jail to seek an agreement with U.S. Immigration and Customs Enforcement authorizing local officers to help enforce federal immigration law, created a state grant program to cover the costs, and let the attorney general sue a sheriff who does not comply. It passed the Texas House 86-47 and was signed into law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "senate",
+      "session": "2160",
+      "roll": 1585629,
+      "measure_id": "SB 8",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to approve the final version of S.B. 8, which required the sheriff of every Texas county that operates a jail to seek an agreement with U.S. Immigration and Customs Enforcement authorizing local officers to help enforce federal immigration law, created a state grant program to cover the costs, and let the attorney general sue a sheriff who does not comply. The Texas Senate approved it 20-11 and it was signed into law.",
+      "nay_description": "Voted against the final version of S.B. 8, which required the sheriff of every Texas county that operates a jail to seek an agreement with U.S. Immigration and Customs Enforcement authorizing local officers to help enforce federal immigration law, created a state grant program to cover the costs, and let the attorney general sue a sheriff who does not comply. The Texas Senate approved it 20-11 and it was signed into law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "house",
+      "session": "2160",
+      "roll": 1575967,
+      "measure_id": "SB 33",
+      "vote_date": "2025-05-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.B. 33, which barred Texas cities, counties, and other governmental entities from spending public money or providing logistical support to help someone obtain an abortion, and let the attorney general sue to halt violations and recover what was spent. It passed the Texas House 87-58 and was signed into law.",
+      "nay_description": "Voted against passing S.B. 33, which barred Texas cities, counties, and other governmental entities from spending public money or providing logistical support to help someone obtain an abortion, and let the attorney general sue to halt violations and recover what was spent. It passed the Texas House 87-58 and was signed into law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "senate",
+      "session": "2160",
+      "roll": 1550482,
+      "measure_id": "SB 33",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.B. 33, which barred Texas cities, counties, and other governmental entities from spending public money or providing logistical support to help someone obtain an abortion, and let the attorney general sue to halt violations and recover what was spent. It passed the Texas Senate 22-9 and was signed into law.",
+      "nay_description": "Voted against passing S.B. 33, which barred Texas cities, counties, and other governmental entities from spending public money or providing logistical support to help someone obtain an abortion, and let the attorney general sue to halt violations and recover what was spent. It passed the Texas Senate 22-9 and was signed into law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "house",
+      "session": "2160",
+      "roll": 1580073,
+      "measure_id": "SB 2972",
+      "vote_date": "2025-05-28",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.B. 2972, which narrowed the state law guaranteeing expressive activity at public universities to cover only enrolled students and employees, ended that statute's treatment of common outdoor campus areas as traditional public forums, and required each institution to prohibit overnight camping, expressive activity between 10 p.m. and 8 a.m., and concealing one's identity while protesting with the intent to evade rule enforcement, intimidate others, or interfere with campus officials. It passed the Texas House 97-39 and was signed into law.",
+      "nay_description": "Voted against passing S.B. 2972, which narrowed the state law guaranteeing expressive activity at public universities to cover only enrolled students and employees, ended that statute's treatment of common outdoor campus areas as traditional public forums, and required each institution to prohibit overnight camping, expressive activity between 10 p.m. and 8 a.m., and concealing one's identity while protesting with the intent to evade rule enforcement, intimidate others, or interfere with campus officials. It passed the Texas House 97-39 and was signed into law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "senate",
+      "session": "2160",
+      "roll": 1571446,
+      "measure_id": "SB 2972",
+      "vote_date": "2025-05-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.B. 2972, which narrowed the state law guaranteeing expressive activity at public universities to cover only enrolled students and employees, ended that statute's treatment of common outdoor campus areas as traditional public forums, and required each institution to prohibit overnight camping, expressive activity between 10 p.m. and 8 a.m., and concealing one's identity while protesting with the intent to evade rule enforcement, intimidate others, or interfere with campus officials. It passed the Texas Senate 21-10 and was signed into law.",
+      "nay_description": "Voted against passing S.B. 2972, which narrowed the state law guaranteeing expressive activity at public universities to cover only enrolled students and employees, ended that statute's treatment of common outdoor campus areas as traditional public forums, and required each institution to prohibit overnight camping, expressive activity between 10 p.m. and 8 a.m., and concealing one's identity while protesting with the intent to evade rule enforcement, intimidate others, or interfere with campus officials. It passed the Texas Senate 21-10 and was signed into law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "house",
+      "session": "2160",
+      "roll": 1578076,
+      "measure_id": "SB 12",
+      "vote_date": "2025-05-25",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.B. 12, which barred Texas school districts from assigning diversity, equity, and inclusion duties, from providing instruction on sexual orientation or gender identity in any grade, and from sponsoring student clubs based on sexual orientation or gender identity, and required written parental consent for club participation and for human sexuality instruction. It passed the Texas House 88-47 and was signed into law.",
+      "nay_description": "Voted against passing S.B. 12, which barred Texas school districts from assigning diversity, equity, and inclusion duties, from providing instruction on sexual orientation or gender identity in any grade, and from sponsoring student clubs based on sexual orientation or gender identity, and required written parental consent for club participation and for human sexuality instruction. It passed the Texas House 88-47 and was signed into law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "senate",
+      "session": "2160",
+      "roll": 1523046,
+      "measure_id": "SB 12",
+      "vote_date": "2025-03-19",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.B. 12, which barred Texas school districts from assigning diversity, equity, and inclusion duties, from providing instruction on sexual orientation or gender identity in any grade, and from sponsoring student clubs based on sexual orientation or gender identity, and required written parental consent for club participation and for human sexuality instruction. It passed the Texas Senate 20-11 and was signed into law.",
+      "nay_description": "Voted against passing S.B. 12, which barred Texas school districts from assigning diversity, equity, and inclusion duties, from providing instruction on sexual orientation or gender identity in any grade, and from sponsoring student clubs based on sexual orientation or gender identity, and required written parental consent for club participation and for human sexuality instruction. It passed the Texas Senate 20-11 and was signed into law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "house",
+      "session": "2160",
+      "roll": 1582919,
+      "measure_id": "SB 13",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to approve the final version of S.B. 13, which gave elected school boards final approval over school library materials, required proposed titles to be posted for 30 days before approval, let a parent bar their own child from checking out specific titles, and required a challenged title to be withheld from students until the district rules on the challenge. The Texas House approved it 81-48 and it was signed into law.",
+      "nay_description": "Voted against the final version of S.B. 13, which gave elected school boards final approval over school library materials, required proposed titles to be posted for 30 days before approval, let a parent bar their own child from checking out specific titles, and required a challenged title to be withheld from students until the district rules on the challenge. The Texas House approved it 81-48 and it was signed into law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "senate",
+      "session": "2160",
+      "roll": 1522908,
+      "measure_id": "SB 13",
+      "vote_date": "2025-03-19",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.B. 13, which gave elected school boards final approval over school library materials, required proposed titles to be posted for 30 days before approval, let a parent bar their own child from checking out specific titles, and required a challenged title to be withheld from students until the district rules on the challenge. It passed the Texas Senate 23-8 and was signed into law.",
+      "nay_description": "Voted against passing S.B. 13, which gave elected school boards final approval over school library materials, required proposed titles to be posted for 30 days before approval, let a parent bar their own child from checking out specific titles, and required a challenged title to be withheld from students until the district rules on the challenge. It passed the Texas Senate 23-8 and was signed into law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "house",
+      "session": "2160",
+      "roll": 1579978,
+      "measure_id": "SB 15",
+      "vote_date": "2025-05-28",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.B. 15, which barred cities over 150,000 people in larger counties from requiring new single-family lots on unplatted tracts of five acres or more to be bigger than 3,000 square feet, wider than 30 feet, or deeper than 75 feet, and let affected parties sue to enforce those limits. It passed the Texas House 86-43 and was signed into law.",
+      "nay_description": "Voted against passing S.B. 15, which barred cities over 150,000 people in larger counties from requiring new single-family lots on unplatted tracts of five acres or more to be bigger than 3,000 square feet, wider than 30 feet, or deeper than 75 feet, and let affected parties sue to enforce those limits. It passed the Texas House 86-43 and was signed into law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "senate",
+      "session": "2160",
+      "roll": 1522230,
+      "measure_id": "SB 15",
+      "vote_date": "2025-03-19",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.B. 15, which barred cities over 150,000 people in larger counties from requiring new single-family lots on unplatted tracts of five acres or more to be bigger than 3,000 square feet, wider than 30 feet, or deeper than 75 feet, and let affected parties sue to enforce those limits. It passed the Texas Senate 24-7 and was signed into law.",
+      "nay_description": "Voted against passing S.B. 15, which barred cities over 150,000 people in larger counties from requiring new single-family lots on unplatted tracts of five acres or more to be bigger than 3,000 square feet, wider than 30 feet, or deeper than 75 feet, and let affected parties sue to enforce those limits. It passed the Texas Senate 24-7 and was signed into law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "house",
+      "session": "2160",
+      "roll": 1581609,
+      "measure_id": "SB 17",
+      "vote_date": "2025-05-29",
+      "review_status": "approved",
+      "yea_description": "Voted to approve the final version of S.B. 17, which barred governments, companies, and certain individuals connected to countries designated as security threats from buying Texas real property, exempted U.S. citizens and lawful permanent residents, made a violation by a covered individual a state jail felony, and let the attorney general force a sale. The Texas House approved it 85-57 and it was signed into law.",
+      "nay_description": "Voted against the final version of S.B. 17, which barred governments, companies, and certain individuals connected to countries designated as security threats from buying Texas real property, exempted U.S. citizens and lawful permanent residents, made a violation by a covered individual a state jail felony, and let the attorney general force a sale. The Texas House approved it 85-57 and it was signed into law.",
+      "labels": [
+        {
+          "slug": "general"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "senate",
+      "session": "2160",
+      "roll": 1523169,
+      "measure_id": "SB 17",
+      "vote_date": "2025-03-19",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.B. 17, which barred governments, companies, and certain individuals connected to countries designated as security threats from buying Texas real property, exempted U.S. citizens and lawful permanent residents, made a violation by a covered individual a state jail felony, and let the attorney general force a sale. It passed the Texas Senate 24-7 and was signed into law.",
+      "nay_description": "Voted against passing S.B. 17, which barred governments, companies, and certain individuals connected to countries designated as security threats from buying Texas real property, exempted U.S. citizens and lawful permanent residents, made a violation by a covered individual a state jail felony, and let the attorney general force a sale. It passed the Texas Senate 24-7 and was signed into law.",
+      "labels": [
+        {
+          "slug": "general"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "house",
+      "session": "2160",
+      "roll": 1582405,
+      "measure_id": "SB 37",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to approve the final version of S.B. 37, which let university governing boards review the general education curriculum every five years and overturn curriculum changes and senior hiring decisions, made faculty senates advisory bodies that only the board may create, and created a governor-appointed higher education ombudsman. The Texas House approved it 83-47 and it was signed into law.",
+      "nay_description": "Voted against the final version of S.B. 37, which let university governing boards review the general education curriculum every five years and overturn curriculum changes and senior hiring decisions, made faculty senates advisory bodies that only the board may create, and created a governor-appointed higher education ombudsman. The Texas House approved it 83-47 and it was signed into law.",
+      "labels": [
+        {
+          "slug": "general"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "senate",
+      "session": "2160",
+      "roll": 1550655,
+      "measure_id": "SB 37",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.B. 37, which let university governing boards review the general education curriculum every five years and overturn curriculum changes and senior hiring decisions, made faculty senates advisory bodies that only the board may create, and created a governor-appointed higher education ombudsman. It passed the Texas Senate 20-11 and was signed into law.",
+      "nay_description": "Voted against passing S.B. 37, which let university governing boards review the general education curriculum every five years and overturn curriculum changes and senior hiring decisions, made faculty senates advisory bodies that only the board may create, and created a governor-appointed higher education ombudsman. It passed the Texas Senate 20-11 and was signed into law.",
+      "labels": [
+        {
+          "slug": "general"
+        }
+      ]
+    }
+  ]
+}
