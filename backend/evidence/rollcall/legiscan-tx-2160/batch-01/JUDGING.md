@@ -1,8 +1,8 @@
 # Batch 01 — judging notes
 
 25 judgments, one per selected roll call, in `judgments.json`. Applied to
-the local review queue; the fan-out has **not** been run for real yet, only
-`--dry-run` (report in `import-dry-run-report.json`).
+the local review queue, then fanned out for real on 2026-08-25
+(`import-report.json`; the pre-import plan is `import-dry-run-report.json`).
 
 ## Grounding
 
@@ -106,12 +106,43 @@ was not placed before Texas voters," and neither uses the phrase
 "constitutional amendment." Describing it as a ballot amendment would have
 put a false sentence on roughly 103 candidates.
 
-## Dry-run result
+## Result
+
+The real run reconciled exactly to the dry run — same file count, same
+insert count, no errors either time. The dry run's 1,620 is a *plan*
+(`"dryRun": true`, nothing written); only the real run's 1,620 is rows in
+the database:
 
 ```text
-files 25 | outcomes {"dry_run": 25} | errors 0
-inserts 1,620 | notified 0
+dry run   files 25 | outcomes {"dry_run": 25}  | errors 0 | planned inserts 1,620 | notified 0
+real run  files 25 | outcomes {"imported": 25} | errors 0 | inserts         1,620 | notified 0
 ```
+
+In the local database that is `candidate_records` 60,152 → 61,772, with
+1,620 rows across 136 distinct Texas candidates:
+
+```sql
+select count(*), count(distinct candidate_id)
+  from candidate_records
+ where origin_run_id like 'rollcall:TX:%:2160:%:2026-08-25T05:30:09.633Z';
+-- 1620 | 136
+```
+
+The trailing timestamp is the run's `startedAt`, which the importer stamps
+once and shares across every roll in the run
+(`importLegiscanRollCallVotes.ts`, `originRunId`). It is what pins this
+query to batch-01. **Do not shorten it to `'rollcall:TX:%'` or to the
+session** — batch-02 will be session 2160 as well, so both of those will
+silently grow to include it and stop reconciling to 1,620. (They match
+exactly 1,620 today only because batch-01 is the sole Texas import so far.)
+
+The dry run's own stamp, `2026-08-25T05:18:18.287Z`, matches **zero** rows —
+positive proof the dry run wrote nothing.
+
+The review queue still reads 25 `approved` / 6,159 `pending`: the importer
+reads the queue, it does not consume it.
+
+Prod is untouched. Promotion is a separate `research:promote` run.
 
 Per measure: SB 2 134, SB 33 131, HJR 98 130, SB 17 129, SB 12 125, SB 8 123,
 SB 2972 123, SB 37 122, SB 13 121, SJR 18 120, SB 15 118, HJR 4 116, HJR 2
@@ -123,6 +154,9 @@ notification window.
 
 ## Next
 
-Run the import for real once the descriptions have been reviewed. The
-sentences are the thing that replicates ~120 times, so they get read before
-they are written, not after.
+Batch-02, drawn from the 743 divided actions batch-01 left on the table.
+
+The discipline that made this batch safe, for whoever picks up the next one:
+the sentences replicate ~120 times each, so they get read before they are
+written, not after. Every figure in a description was checked against the
+section-by-section analysis, never the sponsor statement above it.
