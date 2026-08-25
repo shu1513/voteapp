@@ -275,18 +275,29 @@ export function parseLegiscanRollCall(raw: Record<string, unknown>): LegiscanRol
     chamber: chamberRaw === "H" ? "house" : "senate",
     votes,
   };
-  for (const [field, voteId] of [
-    ["yea", LEGISCAN_VOTE_YEA],
-    ["nay", LEGISCAN_VOTE_NAY],
-    ["nv", LEGISCAN_VOTE_NV],
-    ["absent", LEGISCAN_VOTE_ABSENT],
-  ] as const) {
-    if (rollCall[field] !== counts[voteId]) {
-      throw new Error(`${where}: ${field} says ${rollCall[field]} but the member list holds ${counts[voteId]}`);
+  // An EMPTY member list beside non-zero tallies is a real publication
+  // state, not a feed defect: the Texas Senate prints summary tallies with
+  // no positions on non-record votes (2,701 of TX 89R's 9,726 roll calls,
+  // measured 2026-08-24, zero of them a genuine summary/list disagreement).
+  // The summary then stands alone with nothing to cross-check; such a roll
+  // is UNRECORDED (votes.length === 0) — the fetcher skips it, since
+  // per-member positions are the whole point of the import. The
+  // cross-checks below run whenever positions ARE listed, so a partial or
+  // contradictory list still fails loudly.
+  if (votes.length > 0) {
+    for (const [field, voteId] of [
+      ["yea", LEGISCAN_VOTE_YEA],
+      ["nay", LEGISCAN_VOTE_NAY],
+      ["nv", LEGISCAN_VOTE_NV],
+      ["absent", LEGISCAN_VOTE_ABSENT],
+    ] as const) {
+      if (rollCall[field] !== counts[voteId]) {
+        throw new Error(`${where}: ${field} says ${rollCall[field]} but the member list holds ${counts[voteId]}`);
+      }
     }
-  }
-  if (rollCall.total !== votes.length) {
-    throw new Error(`${where}: total says ${rollCall.total} but the member list holds ${votes.length}`);
+    if (rollCall.total !== votes.length) {
+      throw new Error(`${where}: total says ${rollCall.total} but the member list holds ${votes.length}`);
+    }
   }
   return rollCall;
 }

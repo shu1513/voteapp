@@ -125,6 +125,11 @@ export type LegiscanSurveyRow = {
   chamber: string;
   desc: string;
   count: number;
+  // How many of `count` carry NO member positions (a summary-only tally,
+  // e.g. a Texas Senate non-record vote). A kept-looking desc that is
+  // mostly summary-only tells the config author what the state actually
+  // records — the fetcher can only import the recorded remainder.
+  withoutMemberList: number;
   minTotal: number;
   maxTotal: number;
   billTypes: string[];
@@ -159,6 +164,7 @@ export function surveyLegiscanDataset(dataset: LegiscanDataset): {
       chamber: rollCall.chamber,
       desc: rollCall.desc,
       count: 0,
+      withoutMemberList: 0,
       minTotal: rollCall.total,
       maxTotal: rollCall.total,
       billTypes: [],
@@ -166,6 +172,9 @@ export function surveyLegiscanDataset(dataset: LegiscanDataset): {
       sampleBills: [],
     };
     row.count += 1;
+    if (rollCall.votes.length === 0) {
+      row.withoutMemberList += 1;
+    }
     row.minTotal = Math.min(row.minTotal, rollCall.total);
     row.maxTotal = Math.max(row.maxTotal, rollCall.total);
     if (bill) {
@@ -315,6 +324,7 @@ async function main(): Promise<void> {
   const rows: LegiscanRollCallFetchReportRow[] = [];
   let excludedMeasureVotes = 0;
   let committeeVotes = 0;
+  let unrecordedVotes = 0;
   let billFilterMisses = 0;
   const rollOwner = new Map<number, string>();
   try {
@@ -359,6 +369,14 @@ async function main(): Promise<void> {
         row.measureId = bill.measureId;
         if (billFilter !== null && !billFilter.has(bill.measureId)) {
           billFilterMisses += 1;
+          continue;
+        }
+        // Summary tallies with no member positions (a Texas Senate
+        // non-record vote): nothing to fan out, so never stored — counted,
+        // with the survey's per-desc withoutMemberList column as the place
+        // to see which questions a state publishes this way.
+        if (rollCall.votes.length === 0) {
+          unrecordedVotes += 1;
           continue;
         }
 
@@ -490,6 +508,7 @@ async function main(): Promise<void> {
     billFilterMisses,
     excludedMeasureVotes,
     committeeVotes,
+    unrecordedVotes,
     floorVotes,
     surfaced,
     fileErrors: dataset.fileErrors,

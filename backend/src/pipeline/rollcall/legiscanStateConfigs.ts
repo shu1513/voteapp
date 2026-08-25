@@ -46,7 +46,56 @@ export type LegiscanStateConfig = {
 // accepts that (allowStatusCodes [403] in
 // verifyUniqueCandidateRecordSourceUrls), and a human viewer passes the
 // challenge in a browser, so the roll-call page stays a valid source_url.
-export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {};
+export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {
+  // Texas 89th Legislature, Regular Session (sine die). Vocabulary measured
+  // from the full dataset survey 2026-08-24: 11,503 bills, 9,726 roll
+  // calls, 181 people (= 150 House + 31 Senate). Registry pins the regular
+  // session; the two 2025 special sessions (LegiScan 2221, 2223 — the
+  // redistricting fight) would need their own entries later.
+  //
+  // What the survey established:
+  // - Texas passes bills on THIRD READING; the House stamps every desc
+  //   with a unique roll id (`Read 3rd time RV#3832`), so patterns must
+  //   tolerate a trailing ` rv#<n>`.
+  // - The chambers word constitutional-amendment passage DIFFERENTLY:
+  //   Senate prints `Read 3rd time`, the House prints `Adopted RV#<n>`
+  //   (all 24 House 2025 CA passages) — hence the second passage pattern.
+  // - The Senate publishes summary-only tallies (no member positions) on
+  //   non-record votes — 2,701 rolls incl. 1,223 `Read 3rd time`. Those
+  //   are skipped as unrecorded; the divided votes this campaign wants
+  //   tend to be record votes, so the target set keeps its positions.
+  // - The excluded list covers the measured floor-sized PROCEDURAL
+  //   families (~3,200 rolls: second readings, rule suspensions,
+  //   amendment steps, journal statements, scheduling), which would
+  //   otherwise flood the surfaced-null queue and bury real unknowns.
+  //   Deliberately NOT excluded, so they stay surfaced: bare `RV#<n>`
+  //   descs (~200, could be anything) and `Record vote` rows.
+  TX: {
+    jurisdiction: "TX",
+    sessionId: 2160,
+    chamberSizes: { house: 150, senate: 31 },
+    keptQuestions: [
+      { pattern: /^read 3rd time(?: rv#\d+)?$/, questionClass: "passage" },
+      { pattern: /^adopted(?: as amended)?(?: rv#\d+)?$/, questionClass: "passage" },
+      { pattern: /^(?:house|senate) concurs in (?:senate|house) amendment/, questionClass: "concurrence" },
+      { pattern: /adopts conference committee report/, questionClass: "conference_report" },
+    ],
+    excludedQuestions: [
+      /^read 2nd time/,
+      // `Rules suspended-Regular order of business`, `Three day rule
+      // suspended`, `Printing rule suspended` — scheduling motions, not
+      // the federal-style "suspend the rules AND PASS" (passage always
+      // gets its own third-reading row in Texas).
+      /rules? suspended/,
+      /^amend/,
+      // `Vote recorded in journal` / `Statement(s) of vote recorded in
+      // journal`: post-hoc journal entries, not questions.
+      /vote recorded in journal/,
+      /^laid out/,
+      /^point of order/,
+    ],
+  },
+};
 
 export const LEGISCAN_STATE_JURISDICTIONS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);
 
