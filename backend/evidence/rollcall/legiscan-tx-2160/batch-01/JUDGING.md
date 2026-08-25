@@ -1,8 +1,8 @@
 # Batch 01 — judging notes
 
 25 judgments, one per selected roll call, in `judgments.json`. Applied to
-the local review queue; the fan-out has **not** been run for real yet, only
-`--dry-run` (report in `import-dry-run-report.json`).
+the local review queue, then fanned out for real on 2026-08-25
+(`import-report.json`; the pre-import plan is `import-dry-run-report.json`).
 
 ## Grounding
 
@@ -106,12 +106,22 @@ was not placed before Texas voters," and neither uses the phrase
 "constitutional amendment." Describing it as a ballot amendment would have
 put a false sentence on roughly 103 candidates.
 
-## Dry-run result
+## Result
+
+The real run reconciled exactly to the dry run — same file count, same
+insert count, no errors either time:
 
 ```text
-files 25 | outcomes {"dry_run": 25} | errors 0
-inserts 1,620 | notified 0
+dry run   files 25 | outcomes {"dry_run": 25}  | errors 0 | inserts 1,620 | notified 0
+real run  files 25 | outcomes {"imported": 25} | errors 0 | inserts 1,620 | notified 0
 ```
+
+In the local database that is `candidate_records` 60,152 → 61,772, with
+1,620 rows carrying `origin_run_id LIKE 'rollcall:TX:%'` across 136 distinct
+Texas candidates. The review queue still reads 25 `approved` / 6,159
+`pending`: the importer reads the queue, it does not consume it.
+
+Prod is untouched. Promotion is a separate `research:promote` run.
 
 Per measure: SB 2 134, SB 33 131, HJR 98 130, SB 17 129, SB 12 125, SB 8 123,
 SB 2972 123, SB 37 122, SB 13 121, SJR 18 120, SB 15 118, HJR 4 116, HJR 2
@@ -123,6 +133,9 @@ notification window.
 
 ## Next
 
-Run the import for real once the descriptions have been reviewed. The
-sentences are the thing that replicates ~120 times, so they get read before
-they are written, not after.
+Batch-02, drawn from the 743 divided actions batch-01 left on the table.
+
+The discipline that made this batch safe, for whoever picks up the next one:
+the sentences replicate ~120 times each, so they get read before they are
+written, not after. Every figure in a description was checked against the
+section-by-section analysis, never the sponsor statement above it.
