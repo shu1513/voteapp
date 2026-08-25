@@ -156,6 +156,14 @@ describe("parseLegiscanRollCall", () => {
     expect(votes.nays).toHaveLength(0);
   });
 
+  it("still rejects an internally inconsistent summary, member list or not", () => {
+    // total must equal yea+nay+nv+absent even when no positions are
+    // published — the floor-vs-committee cut keys on total.
+    expect(() =>
+      parseLegiscanRollCall(rollCallElement({ yea: 31, nay: 0, nv: 0, absent: 0, total: 30, votes: [] }))
+    ).toThrow("total says 30 but yea+nay+nv+absent is 31");
+  });
+
   it("rejects a roll_call_id outside the int4 range and a bad chamber", () => {
     expect(() => parseLegiscanRollCall(rollCallElement({ roll_call_id: 2_200_000_000 }))).toThrow("storable range");
     expect(() => parseLegiscanRollCall(rollCallElement({ chamber: "J" }))).toThrow("chamber is not H or S");

@@ -299,6 +299,18 @@ export function parseLegiscanRollCall(raw: Record<string, unknown>): LegiscanRol
       throw new Error(`${where}: total says ${rollCall.total} but the member list holds ${votes.length}`);
     }
   }
+
+  // The summary must be internally consistent even with no member list to
+  // compare against: the floor-vs-committee cut keys on `total`, and the
+  // survey reads these tallies, so a state whose `total` meant something
+  // other than yea+nay+nv+absent must fail loudly, not classify quietly.
+  // (On recorded rolls the member-list checks above pinpoint the field; running it
+  // unconditionally keeps the invariant uniform. Zero violations across
+  // all 10,809 TX + OH dataset rolls, measured 2026-08-24.)
+  const tallySum = rollCall.yea + rollCall.nay + rollCall.nv + rollCall.absent;
+  if (tallySum !== rollCall.total) {
+    throw new Error(`${where}: total says ${rollCall.total} but yea+nay+nv+absent is ${tallySum}`);
+  }
   return rollCall;
 }
 
