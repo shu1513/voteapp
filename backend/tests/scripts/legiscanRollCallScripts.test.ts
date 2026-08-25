@@ -4,7 +4,9 @@ import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 
 import type { LegiscanMemberResolution } from "../../src/pipeline/rollcall/legiscanMemberResolver.js";
+import type { LegiscanRollCall } from "../../src/pipeline/rollcall/legiscanRollCall.js";
 import {
+  legiscanRollCallIdentityKey,
   parseLegiscanBillList,
   readLegiscanDataset,
   surveyLegiscanDataset,
@@ -100,6 +102,56 @@ describe("readLegiscanDataset + surveyLegiscanDataset", () => {
         sampleBills: ["HB1"],
       },
     ]);
+  });
+});
+
+describe("legiscanRollCallIdentityKey", () => {
+  // The TX 89R senate duplicate shape: LegiScan re-issues the same action
+  // under a new roll_call_id with every other field byte-identical.
+  const rollCall: LegiscanRollCall = {
+    rollCallId: 1557913,
+    billId: 1939845,
+    date: "2025-04-24",
+    desc: "Senate concurs in House amendment(s)",
+    yea: 2,
+    nay: 1,
+    nv: 0,
+    absent: 0,
+    total: 3,
+    passed: true,
+    chamber: "senate",
+    votes: [
+      { peopleId: 10, voteId: 1 },
+      { peopleId: 11, voteId: 1 },
+      { peopleId: 12, voteId: 2 },
+    ],
+  };
+
+  it("treats a re-issued roll_call_id as the same action", () => {
+    expect(legiscanRollCallIdentityKey({ ...rollCall, rollCallId: 1592205 })).toBe(legiscanRollCallIdentityKey(rollCall));
+  });
+
+  it("ignores member-list order", () => {
+    expect(legiscanRollCallIdentityKey({ ...rollCall, votes: [...rollCall.votes].reverse() })).toBe(
+      legiscanRollCallIdentityKey(rollCall)
+    );
+  });
+
+  it("separates actions that differ in any identity field", () => {
+    const key = legiscanRollCallIdentityKey(rollCall);
+    expect(legiscanRollCallIdentityKey({ ...rollCall, chamber: "house" })).not.toBe(key);
+    expect(legiscanRollCallIdentityKey({ ...rollCall, billId: 2 })).not.toBe(key);
+    expect(legiscanRollCallIdentityKey({ ...rollCall, date: "2025-04-25" })).not.toBe(key);
+    expect(legiscanRollCallIdentityKey({ ...rollCall, desc: "Read 3rd time" })).not.toBe(key);
+    expect(legiscanRollCallIdentityKey({ ...rollCall, yea: 3 })).not.toBe(key);
+    // A contradictory outcome is never a duplicate — the stored result
+    // comes from `passed`, so collapsing across it would pick one outcome
+    // silently.
+    expect(legiscanRollCallIdentityKey({ ...rollCall, passed: false })).not.toBe(key);
+    expect(
+      legiscanRollCallIdentityKey({ ...rollCall, votes: [{ peopleId: 10, voteId: 2 }, ...rollCall.votes.slice(1)] })
+    ).not.toBe(key);
+    expect(legiscanRollCallIdentityKey({ ...rollCall, votes: [] })).not.toBe(key);
   });
 });
 
