@@ -436,6 +436,19 @@ async function main(): Promise<void> {
           committeeVotes += 1;
           continue;
         }
+        // The same roll_call_id in two dataset files is a malformed
+        // dataset, never a LegiScan re-issue (re-issues carry NEW ids) —
+        // so the collision must surface before the identity collapse
+        // below could swallow an identical-content repeat.
+        const owner = rollOwner.get(rollCall.rollCallId);
+        if (owner !== undefined) {
+          row.outcome = "collision";
+          row.error = `roll_call_id ${rollCall.rollCallId} already belongs to ${owner} in this dataset`;
+          rows.push(row);
+          continue;
+        }
+        rollOwner.set(rollCall.rollCallId, bill.billNumber);
+
         // A re-issued id for an action already kept this run: votes are
         // processed in ascending roll_call_id order, so the kept id is the
         // lowest of its group — the rest are counted, never stored.
@@ -446,14 +459,6 @@ async function main(): Promise<void> {
         }
         keeperRollByIdentity.set(identity, rollCall.rollCallId);
         rows.push(row);
-
-        const owner = rollOwner.get(rollCall.rollCallId);
-        if (owner !== undefined) {
-          row.outcome = "collision";
-          row.error = `roll_call_id ${rollCall.rollCallId} already belongs to ${owner} in this dataset`;
-          continue;
-        }
-        rollOwner.set(rollCall.rollCallId, bill.billNumber);
 
         // The record's source_url: the bill feed's own per-roll page URL,
         // falling back to the documented page shape. Either way it must

@@ -1,11 +1,12 @@
 # Texas 89R — findings from the data
 
-Recorded during the narrowing pass (step 3). Neither is fixed in code yet;
-both are stated here so the decision is deliberate rather than forgotten.
+Recorded during the narrowing pass (step 3). Finding 1 is now fixed at
+fetch time (see below); finding 2 needs no code change and is stated so
+it stays respected.
 
 ## 1. LegiScan issues several `roll_call_id`s for one senate action
 
-**This is a real fan-out hazard and the narrowing works around it.**
+**This is a real fan-out hazard — now collapsed at fetch time.**
 
 Three roll calls on SB 2 differ in exactly one field:
 
@@ -46,18 +47,22 @@ ids give three different keys, so nothing recognizes them as one vote.
 Judging all three would write three near-identical records on the same
 senator for the same bill — the fan-out's multiplier working against us.
 
-### How it is handled for now
+### How it is handled
 
-Batch 01 collapses duplicates by member-list hash before selecting, and
-takes one roll per (measure, chamber). 13 duplicate ids were collapsed out
-of the 25 selected votes.
+Fixed in the fetch step (`fetchLegiscanRollCallVotes.ts`): roll calls are
+grouped by `legiscanRollCallIdentityKey` — (chamber, bill_id, date, desc,
+yea, nay, nv, absent, passed, sha1 of the sorted member list) — keeping
+the lowest `roll_call_id` of each group and counting the rest in the
+report as `duplicateVotes`, never stored, the same way unrecorded votes
+are handled. A repeated identical `roll_call_id` is still surfaced as a
+collision: re-issues carry new ids, so a duplicated id means a malformed
+dataset, not a re-issue.
 
-That is enough for a hand-picked batch and nothing more. **A larger Texas
-run needs this in code**, because the collapse currently lives in the
-selection script rather than in the importer. The natural place is the
-fetch step: keep the lowest `roll_call_id` of each identical group and
-record the rest as redundant, the same way unrecorded votes are counted but
-not stored. Deferred until a batch actually needs it.
+Batch 01 was selected before the fix and collapsed duplicates in the
+selection script instead (13 duplicate ids collapsed out of the 25
+selected votes, one roll per measure and chamber). After the fix and a
+re-fetch, all 25 selected roll numbers are the surviving lowest ids, so
+the selection stands unchanged.
 
 The Ohio pipeline is unaffected — the duplication is a LegiScan senate feed
 artifact, and Ohio does not go through LegiScan.
