@@ -257,8 +257,8 @@ describe("lookupBallotSummariesByDistrictIds", () => {
           historical_competitiveness: null,
           current_competitiveness: null,
           vote_power: {
-            score: 85,
-            label: "very_high",
+            score: 73,
+            label: "high",
             confidence: "high",
             representation_level: "high",
             decisiveness_level: "unknown",
@@ -1696,9 +1696,12 @@ describe("lookupElectionDetailById", () => {
               grade: "Average",
               stat: "50 out of 100",
               detail:
-                "This district is mid-sized for its type, so each vote carries average weight. About 104,650 people live here.",
+                "This district covers a large share of its state, so each vote carries about average weight — like a vote in a statewide race. About 104,650 people live here.",
+              // The stored 50.42 comes from the retired within-type model, so
+              // the live recompute cannot reproduce it and the formula
+              // degrades to the symbolic form.
               formula:
-                "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest), rounded to 2 decimals = 100 × ln(9,808,667 ÷ 104,650) ÷ ln(9,808,667 ÷ 1,204) = 50.42, comparing counties in CA (grades: 66+ high, 33+ average, otherwise low)",
+                "score = 50 + 50 × ln(state population ÷ this district's population) ÷ ln(50,000), kept between 50 and 100 and rounded to 2 decimals = 50.42 (grades: 66+ high, 33+ average, otherwise low; a statewide race is the 50 baseline)",
             },
             {
               title: "Decisiveness",
@@ -9192,7 +9195,7 @@ describe("lookupElectionDetailById", () => {
       historical_competitiveness: null,
       vote_power: {
         score: 100,
-        label: "very_high",
+        label: "high",
         confidence: "high",
         representation_level: "high",
         decisiveness_level: "unknown",

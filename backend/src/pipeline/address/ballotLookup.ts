@@ -402,12 +402,11 @@ type ElectionRow = {
   office_canonical_name?: string | null;
 };
 
-// Scope columns are optional: only loadElectionRowById selects them, and the
-// explanation degrades to a symbolic formula when they are absent.
+// The scope column is optional: only loadElectionRowById selects it, and the
+// explanation degrades to a symbolic formula when it is absent.
 type ElectionDetailRow = ElectionRow & {
   office_summary?: string | null;
-  scope_max_population?: string | number | null;
-  scope_min_population?: string | number | null;
+  scope_state_population?: string | number | null;
 };
 
 type ElectionSummaryRow = ElectionRow & {
@@ -2066,26 +2065,23 @@ async function loadElectionRowById(db: Queryable, electionId: string): Promise<E
         office.scope AS office_scope,
         office.canonical_name AS office_canonical_name,
         office.summary AS office_summary,
-        -- Population extremes of the district's comparison group, mirroring
-        -- the scope rule in recomputeRepresentationPowerScores (national for
-        -- statewide/us_house, per-state for everything else) so the detail
-        -- page can show the representation formula with real numbers.
+        -- Population of the district's own state (its statewide row), the
+        -- anchor of the state-anchored model in
+        -- recomputeRepresentationPowerScores, so the detail page can show
+        -- the representation formula with real numbers.
         (
-          SELECT MAX(d2.population)
+          SELECT d2.population
           FROM public.districts AS d2
-          WHERE d2.population IS NOT NULL
+          WHERE d2.district_type = 'statewide'
+            AND d2.state_fips = d.state_fips
+            AND d2.population IS NOT NULL
             AND d2.population > 0
-            AND d2.district_type = d.district_type
-            AND (d.district_type IN ('statewide', 'us_house') OR d2.state_fips = d.state_fips)
-        ) AS scope_max_population,
-        (
-          SELECT MIN(d2.population)
-          FROM public.districts AS d2
-          WHERE d2.population IS NOT NULL
-            AND d2.population > 0
-            AND d2.district_type = d.district_type
-            AND (d.district_type IN ('statewide', 'us_house') OR d2.state_fips = d.state_fips)
-        ) AS scope_min_population
+          -- Deterministic under duplicate statewide rows (the schema only
+          -- keys (district_type, geoid_compact)): largest population, the
+          -- same rule the recompute's MAX() aggregate applies.
+          ORDER BY d2.population DESC
+          LIMIT 1
+        ) AS scope_state_population
       FROM public.elections AS e
       JOIN public.districts AS d
         ON d.id = e.district_id
@@ -2099,46 +2095,19 @@ async function loadElectionRowById(db: Queryable, electionId: string): Promise<E
   return result.rows;
 }
 
-// Human name for the comparison group behind representation_power_score,
-// matching the scope rule in recomputeRepresentationPowerScores.
-function representationScopeDescription(districtType: string, state: string): string {
-  switch (districtType) {
-    case "statewide":
-      return "all statewide districts nationwide";
-    case "us_house":
-      return "all US House districts nationwide";
-    case "county":
-      return `counties in ${state}`;
-    case "place":
-      return `cities and towns in ${state}`;
-    case "state_upper":
-      return `state senate districts in ${state}`;
-    case "state_lower":
-      return `state house districts in ${state}`;
-    case "school_unified":
-      return `unified school districts in ${state}`;
-    case "school_secondary":
-      return `secondary school districts in ${state}`;
-    case "school_elementary":
-      return `elementary school districts in ${state}`;
-    default:
-      return `${districtType.replace(/_/g, " ")} districts in ${state}`;
-  }
-}
-
+// Human name for the state-anchored baseline behind
+// representation_power_score, matching recomputeRepresentationPowerScores.
 function toRepresentationScope(
   row: ElectionDetailRow | undefined,
-  district: { district_type: string; state: string }
-): { maxPopulation: number; minPopulation: number; description: string } | null {
-  const maxPopulation = parseDistrictPopulation(row?.scope_max_population);
-  const minPopulation = parseDistrictPopulation(row?.scope_min_population);
-  if (maxPopulation === null || minPopulation === null) {
+  district: { state: string }
+): { statePopulation: number; description: string } | null {
+  const statePopulation = parseDistrictPopulation(row?.scope_state_population);
+  if (statePopulation === null) {
     return null;
   }
   return {
-    maxPopulation,
-    minPopulation,
-    description: representationScopeDescription(district.district_type, district.state),
+    statePopulation,
+    description: `a statewide vote in ${district.state}`,
   };
 }
 
