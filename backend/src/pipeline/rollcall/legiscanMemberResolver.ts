@@ -360,7 +360,7 @@ function nameTokens(name: string): string[] {
   return name
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
+    .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z]+/g, " ")
     .trim()
     .split(" ")
