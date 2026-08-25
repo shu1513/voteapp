@@ -1,0 +1,208 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "TX",
+   "chamber": "house",
+   "session": "2160",
+   "roll": 1582092,
+   "measure_id": "HB 121",
+   "vote_date": "2025-05-30",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's version of H.B. 121, which required every school district to have a peace officer available on each campus during school hours or, under a good cause exception, a trained school marshal or district security officer, required a threat assessment team reviewing a special education student to include someone familiar with that student's disability and to report a serious risk of violence to the superintendent immediately, and let districts spend state school safety funding on security staff, facility hardening, and suicide prevention. The Texas House agreed 97-38 and the bill became law.",
+   "nay_description": "Voted against accepting the Senate's version of H.B. 121, which required every school district to have a peace officer available on each campus during school hours or, under a good cause exception, a trained school marshal or district security officer, required a threat assessment team reviewing a special education student to include someone familiar with that student's disability and to report a serious risk of violence to the superintendent immediately, and let districts spend state school safety funding on security staff, facility hardening, and suicide prevention. The Texas House agreed 97-38 and the bill became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TX",
+   "chamber": "house",
+   "session": "2160",
+   "roll": 1571090,
+   "measure_id": "HB 1586",
+   "vote_date": "2025-05-14",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H.B. 1586, which required the state health department to make the school immunization exemption affidavit available for download and to mail a blank form on written request, barred the department from requiring any information from a person who asks for the form, and dropped the requirement that the form carry a seal or other device to prevent copying. It did not change who qualifies for an exemption. It passed the Texas House 83-54 and became law.",
+   "nay_description": "Voted against passing H.B. 1586, which required the state health department to make the school immunization exemption affidavit available for download and to mail a blank form on written request, barred the department from requiring any information from a person who asks for the form, and dropped the requirement that the form carry a seal or other device to prevent copying. It did not change who qualifies for an exemption. It passed the Texas House 83-54 and became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TX",
+   "chamber": "house",
+   "session": "2160",
+   "roll": 1567009,
+   "measure_id": "HB 223",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H.B. 223, which removed lobbying, government relations, and similar services meant to influence state or federal lawmakers from the personal- and professional-services exemption in the municipal competitive bidding law, so that a city must put those contracts out for competitive procurement. It passed the Texas House 92-56 and became law.",
+   "nay_description": "Voted against passing H.B. 223, which removed lobbying, government relations, and similar services meant to influence state or federal lawmakers from the personal- and professional-services exemption in the municipal competitive bidding law, so that a city must put those contracts out for competitive procurement. It passed the Texas House 92-56 and became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TX",
+   "chamber": "senate",
+   "session": "2160",
+   "roll": 1581625,
+   "measure_id": "HB 223",
+   "vote_date": "2025-05-28",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H.B. 223, which removed lobbying, government relations, and similar services meant to influence state or federal lawmakers from the personal- and professional-services exemption in the municipal competitive bidding law, so that a city must put those contracts out for competitive procurement. It passed the Texas Senate 19-12 and became law.",
+   "nay_description": "Voted against passing H.B. 223, which removed lobbying, government relations, and similar services meant to influence state or federal lawmakers from the personal- and professional-services exemption in the municipal competitive bidding law, so that a city must put those contracts out for competitive procurement. It passed the Texas Senate 19-12 and became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TX",
+   "chamber": "house",
+   "session": "2160",
+   "roll": 1568356,
+   "measure_id": "HB 5033",
+   "vote_date": "2025-05-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H.B. 5033, which relieved the Texas Commission on Environmental Quality and the Department of Public Safety of any duty to implement or enforce the state's motor vehicle emissions inspection and maintenance program, but only if Congress repeals the federal Clean Air Act or amends it to drop the inspection mandate, or a federal constitutional amendment lets states bar such programs. Until one of those happens the existing inspection requirements stay in force. It passed the Texas House 101-45 and became law.",
+   "nay_description": "Voted against passing H.B. 5033, which relieved the Texas Commission on Environmental Quality and the Department of Public Safety of any duty to implement or enforce the state's motor vehicle emissions inspection and maintenance program, but only if Congress repeals the federal Clean Air Act or amends it to drop the inspection mandate, or a federal constitutional amendment lets states bar such programs. Until one of those happens the existing inspection requirements stay in force. It passed the Texas House 101-45 and became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TX",
+   "chamber": "senate",
+   "session": "2160",
+   "roll": 1578444,
+   "measure_id": "HB 5033",
+   "vote_date": "2025-05-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H.B. 5033, which relieved the Texas Commission on Environmental Quality and the Department of Public Safety of any duty to implement or enforce the state's motor vehicle emissions inspection and maintenance program, but only if Congress repeals the federal Clean Air Act or amends it to drop the inspection mandate, or a federal constitutional amendment lets states bar such programs. Until one of those happens the existing inspection requirements stay in force. It passed the Texas Senate 21-10 and became law.",
+   "nay_description": "Voted against passing H.B. 5033, which relieved the Texas Commission on Environmental Quality and the Department of Public Safety of any duty to implement or enforce the state's motor vehicle emissions inspection and maintenance program, but only if Congress repeals the federal Clean Air Act or amends it to drop the inspection mandate, or a federal constitutional amendment lets states bar such programs. Until one of those happens the existing inspection requirements stay in force. It passed the Texas Senate 21-10 and became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TX",
+   "chamber": "house",
+   "session": "2160",
+   "roll": 1576867,
+   "measure_id": "SB 1036",
+   "vote_date": "2025-05-23",
+   "review_status": "approved",
+   "yea_description": "Voted to pass S.B. 1036, which required residential solar salespeople and the retailers who hire them to register with the Texas Department of Licensing and Regulation and to carry insurance, required a sales agreement to name the licensed electrical contractor doing the installation and state the last day to cancel, gave a buyer through the fifth business day to cancel without penalty, barred false or deceptive statements and falsely implying a tie to a utility or government agency, and let the department order a refund and fine a violator up to $2,500 per violation, or $10,000 if the buyer was 65 or older. It passed the Texas House 94-37 and became law.",
+   "nay_description": "Voted against passing S.B. 1036, which required residential solar salespeople and the retailers who hire them to register with the Texas Department of Licensing and Regulation and to carry insurance, required a sales agreement to name the licensed electrical contractor doing the installation and state the last day to cancel, gave a buyer through the fifth business day to cancel without penalty, barred false or deceptive statements and falsely implying a tie to a utility or government agency, and let the department order a refund and fine a violator up to $2,500 per violation, or $10,000 if the buyer was 65 or older. It passed the Texas House 94-37 and became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TX",
+   "chamber": "senate",
+   "session": "2160",
+   "roll": 1539641,
+   "measure_id": "SB 1036",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass S.B. 1036, which required residential solar salespeople and the retailers who hire them to register with the Texas Department of Licensing and Regulation and to carry insurance, required a sales agreement to name the licensed electrical contractor doing the installation and state the last day to cancel, gave a buyer through the fifth business day to cancel without penalty, barred false or deceptive statements and falsely implying a tie to a utility or government agency, and let the department order a refund and fine a violator up to $2,500 per violation, or $10,000 if the buyer was 65 or older. It passed the Texas Senate 22-8 and became law.",
+   "nay_description": "Voted against passing S.B. 1036, which required residential solar salespeople and the retailers who hire them to register with the Texas Department of Licensing and Regulation and to carry insurance, required a sales agreement to name the licensed electrical contractor doing the installation and state the last day to cancel, gave a buyer through the fifth business day to cancel without penalty, barred false or deceptive statements and falsely implying a tie to a utility or government agency, and let the department order a refund and fine a violator up to $2,500 per violation, or $10,000 if the buyer was 65 or older. It passed the Texas Senate 22-8 and became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TX",
+   "chamber": "house",
+   "session": "2160",
+   "roll": 1541623,
+   "measure_id": "SB 14",
+   "vote_date": "2025-04-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass S.B. 14, which created the Texas Regulatory Efficiency Office in the governor's office to help agencies cut unnecessary rules, required proposed agency rules to be written in plain language and listed in a searchable public database, made a rule voidable if the agency failed to follow rulemaking procedure, and ended the requirement that courts defer to a state agency's interpretation of a statute or of its own rule. It passed the Texas House 97-51 and became law.",
+   "nay_description": "Voted against passing S.B. 14, which created the Texas Regulatory Efficiency Office in the governor's office to help agencies cut unnecessary rules, required proposed agency rules to be written in plain language and listed in a searchable public database, made a rule voidable if the agency failed to follow rulemaking procedure, and ended the requirement that courts defer to a state agency's interpretation of a statute or of its own rule. It passed the Texas House 97-51 and became law.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TX",
+   "chamber": "house",
+   "session": "2160",
+   "roll": 1582950,
+   "measure_id": "SB 2024",
+   "vote_date": "2025-06-01",
+   "review_status": "approved",
+   "yea_description": "Voted to adopt the conference committee report on S.B. 2024, which made it a Class A misdemeanor to market, advertise, or sell an e-cigarette product whose container uses cartoon characters, celebrity names, or images resembling candy or other food, whose shape is disguised as a school supply, phone, watch, headphones, clothing, backpack, cosmetic, or toy, that was made in or marketed as made in China or another country designated a foreign adversary, or that contains cannabinoids, alcohol, kratom, kava, mushrooms, or tianeptine. The Texas House adopted the report 96-35 and the bill became law.",
+   "nay_description": "Voted against adopting the conference committee report on S.B. 2024, which made it a Class A misdemeanor to market, advertise, or sell an e-cigarette product whose container uses cartoon characters, celebrity names, or images resembling candy or other food, whose shape is disguised as a school supply, phone, watch, headphones, clothing, backpack, cosmetic, or toy, that was made in or marketed as made in China or another country designated a foreign adversary, or that contains cannabinoids, alcohol, kratom, kava, mushrooms, or tianeptine. The Texas House adopted the report 96-35 and the bill became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TX",
+   "chamber": "senate",
+   "session": "2160",
+   "roll": 1556014,
+   "measure_id": "SB 2024",
+   "vote_date": "2025-04-23",
+   "review_status": "approved",
+   "yea_description": "Voted to pass the Senate version of S.B. 2024, which barred marketing, advertising, or selling an e-cigarette product whose container uses cartoon characters, celebrity names, or images resembling candy or other food, whose shape is disguised as a school supply, smart device, headphones, clothing, backpack, cosmetic, or toy, that was made in China, or that contains cannabinoids, alcohol, kratom, kava, or mushrooms. It passed the Texas Senate 20-11; the enacted law also reached products from other countries designated foreign adversaries and products containing tianeptine, and set the penalty at a Class A misdemeanor.",
+   "nay_description": "Voted against passing the Senate version of S.B. 2024, which barred marketing, advertising, or selling an e-cigarette product whose container uses cartoon characters, celebrity names, or images resembling candy or other food, whose shape is disguised as a school supply, smart device, headphones, clothing, backpack, cosmetic, or toy, that was made in China, or that contains cannabinoids, alcohol, kratom, kava, or mushrooms. It passed the Texas Senate 20-11; the enacted law also reached products from other countries designated foreign adversaries and products containing tianeptine, and set the penalty at a Class A misdemeanor.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TX",
+   "chamber": "house",
+   "session": "2160",
+   "roll": 1578719,
+   "measure_id": "SB 2835",
+   "vote_date": "2025-05-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass S.B. 2835, which let any Texas municipality approve an apartment building served by a single stairway if the building has no more than six stories above grade and no more than four dwelling units per floor, automatic sprinklers meeting National Fire Protection Association Standard 13, two-hour fire-rated corridors and stairway enclosures, an emergency escape opening on each floor, and smoke and fire detection with occupant notification, and which applied whether or not the city had adopted its own local code amendments. It passed the Texas House 81-57 and became law.",
+   "nay_description": "Voted against passing S.B. 2835, which let any Texas municipality approve an apartment building served by a single stairway if the building has no more than six stories above grade and no more than four dwelling units per floor, automatic sprinklers meeting National Fire Protection Association Standard 13, two-hour fire-rated corridors and stairway enclosures, an emergency escape opening on each floor, and smoke and fire detection with occupant notification, and which applied whether or not the city had adopted its own local code amendments. It passed the Texas House 81-57 and became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for"
+    }
+   ]
+  }
+ ]
+}
