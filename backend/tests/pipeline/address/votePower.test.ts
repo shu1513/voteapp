@@ -378,7 +378,7 @@ describe("explainVotePower", () => {
         stat: "1.8-point margin in 2022",
         detail: "Past results here were very close — a small number of votes could decide the winner.",
         formula:
-          'margin = 1.8 points → "toss-up" → grade high (margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise safe; toss-up and very competitive grade high, competitive and somewhat competitive grade average, safe grades low)',
+          'margin = 1.8 points → "toss-up" → grade high (margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise one-sided; toss-up and very competitive grade high, competitive and somewhat competitive grade average, one-sided grades low)',
       },
     ]);
     expect(explanation.result).toBe("High representation + high decisiveness → My vote power: Very high.");
@@ -414,7 +414,7 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts[1]?.formula).toBe(
-      'margin = 0.625 × 9.2 (2024) + 0.375 × 14.8 (2022) = 11.3 points → "somewhat competitive" → grade average (margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise safe; toss-up and very competitive grade high, competitive and somewhat competitive grade average, safe grades low)'
+      'margin = 0.625 × 9.2 (2024) + 0.375 × 14.8 (2022) = 11.3 points → "somewhat competitive" → grade average (margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise one-sided; toss-up and very competitive grade high, competitive and somewhat competitive grade average, one-sided grades low)'
     );
   });
 
@@ -561,7 +561,7 @@ describe("explainVotePower", () => {
       title: "Decisiveness",
       grade: "Unknown",
       stat: null,
-      detail: "No past results for this contest yet.",
+      detail: "No analyst ratings or past results for this contest yet.",
       formula: null,
     });
     expect(explanation.result).toBe("High representation → My vote power: High.");
@@ -588,7 +588,7 @@ describe("explainVotePower", () => {
         title: "Decisiveness",
         grade: "Unknown",
         stat: null,
-        detail: "No past results for this contest yet.",
+        detail: "No analyst ratings or past results for this contest yet.",
         formula: null,
       },
     ]);
@@ -668,7 +668,7 @@ describe("explainVotePower with a current race rating", () => {
   }
 
   const RATING_SCALE =
-    "(d: toss-up 0, tilt 2, lean(s) 3, likely 4, solid/safe 5; mean, first match: <1 toss-up, <2.5 very competitive, <3.5 competitive, <4.5 somewhat competitive, otherwise safe; toss-up and very competitive grade high, competitive and somewhat competitive grade average, safe grades low)";
+    "(d: toss-up 0, tilt 2, lean(s) 3, likely 4, solid/safe 5; mean, first match: <1 toss-up, <2.5 very competitive, <3.5 competitive, <4.5 somewhat competitive, otherwise one-sided; toss-up and very competitive grade high, competitive and somewhat competitive grade average, one-sided grades low)";
 
   it("swaps the decisiveness part to analyst-rating copy with the real derivation", () => {
     const explanation = explain({
@@ -695,7 +695,7 @@ describe("explainVotePower with a current race rating", () => {
       grade: "Average",
       stat: "rated competitive as of August 6, 2026",
       detail:
-        "Election analysts currently rate this race somewhat close. Rating from Inside Elections and Sabato's Crystal Ball.",
+        "Election analysts currently rate this race somewhat close. Rating from Inside Elections and University of Virginia's Sabato's Crystal Ball.",
       formula: `IE "Tilt Democrat" (d=2) + Sabato "Leans Democratic" (d=3) → mean 2.5 → "competitive" → grade average ${RATING_SCALE}`,
     });
     // Two agreeing outlets = high rating confidence: no rating caveat.
@@ -745,9 +745,9 @@ describe("explainVotePower with a current race rating", () => {
 
     expect(explanation.parts[1]).toMatchObject({
       grade: "Low",
-      stat: "rated safe as of July 30, 2026",
+      stat: "rated one-sided as of July 30, 2026",
       detail: "Election analysts currently rate this race one-sided. Rating from Inside Elections.",
-      formula: `IE "Solid Republican" (d=5) → mean 5 → "safe" → grade low ${RATING_SCALE}`,
+      formula: `IE "Solid Republican" (d=5) → mean 5 → "one-sided" → grade low ${RATING_SCALE}`,
     });
     expect(explanation.caveat).toBe(
       "The current race rating comes from a single analyst source, so it is less certain."

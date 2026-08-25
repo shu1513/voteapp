@@ -475,7 +475,7 @@ function representationPart(input: {
 // First-match thresholds so boundary margins read unambiguously: a 2.04
 // margin is "not ≤2, so ≤5 → very competitive", never inside a "0–2" range.
 const MARGIN_GRADE_SCALE =
-  "margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise safe; toss-up and very competitive grade high, competitive and somewhat competitive grade average, safe grades low";
+  "margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise one-sided; toss-up and very competitive grade high, competitive and somewhat competitive grade average, one-sided grades low";
 
 // The margin-to-grade pipeline with this contest's real numbers (see
 // classifyHistoricalContestMargin — this string must match its cutoffs).
@@ -510,7 +510,7 @@ function formatWeight(weight: number): string {
 // outlet keys (a future source) fall back to the raw key rather than lying.
 const RATING_OUTLET_DISPLAY: Record<string, { short: string; full: string }> = {
   inside_elections: { short: "IE", full: "Inside Elections" },
-  sabato: { short: "Sabato", full: "Sabato's Crystal Ball" },
+  sabato: { short: "Sabato", full: "University of Virginia's Sabato's Crystal Ball" },
 };
 
 export function ratingOutletDisplay(outlet: string): { short: string; full: string } {
@@ -533,13 +533,18 @@ export function formatRatingDate(asOf: string): string {
 }
 
 function competitivenessLabelText(label: HistoricalContestCompetitivenessLabel): string {
+  // "safe" is analyst jargon — voters read it as "safe seat for whom?"; the
+  // decisiveness prose already says "one-sided", so the label word matches.
+  if (label === "safe") {
+    return "one-sided";
+  }
   return label === "toss_up" ? "toss-up" : label.replace(/_/g, " ");
 }
 
 // Mirrors deriveConsensusLabel's ladder and bins (currentRaceRatingConsensus)
 // the way MARGIN_GRADE_SCALE mirrors classifyHistoricalContestMargin.
 const RATING_GRADE_SCALE =
-  "d: toss-up 0, tilt 2, lean(s) 3, likely 4, solid/safe 5; mean, first match: <1 toss-up, <2.5 very competitive, <3.5 competitive, <4.5 somewhat competitive, otherwise safe; toss-up and very competitive grade high, competitive and somewhat competitive grade average, safe grades low";
+  "d: toss-up 0, tilt 2, lean(s) 3, likely 4, solid/safe 5; mean, first match: <1 toss-up, <2.5 very competitive, <3.5 competitive, <4.5 somewhat competitive, otherwise one-sided; toss-up and very competitive grade high, competitive and somewhat competitive grade average, one-sided grades low";
 
 // The rating-to-grade pipeline with the real per-outlet observations. When a
 // consensus guardrail (opposite favored sides, or safe requiring all-Solid)
@@ -569,7 +574,7 @@ function currentRatingFormula(input: {
   return `${terms} → ${labelStep} → grade ${levelDisplayWord(input.decisivenessLevel)} (${RATING_GRADE_SCALE})`;
 }
 
-// "Inside Elections" / "Inside Elections and Sabato's Crystal Ball".
+// "Inside Elections" / "Inside Elections and University of Virginia's Sabato's Crystal Ball".
 function ratingSourceNames(outlets: VotePowerCurrentRating["outlets"]): string {
   const names = outlets.map((entry) => ratingOutletDisplay(entry.outlet).full);
   return names.length === 2 ? `${names[0]} and ${names[1]}` : names.join(", ");
@@ -621,7 +626,7 @@ function decisivenessPart(input: {
       title: "Decisiveness",
       grade: "Unknown",
       stat: null,
-      detail: "No past results for this contest yet.",
+      detail: "No analyst ratings or past results for this contest yet.",
       formula: null,
     };
   }
