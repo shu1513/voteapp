@@ -76,7 +76,8 @@
       "nay_description": "Voted against adopting H.J.R. 34, which proposed a constitutional amendment letting the legislature exempt from property taxation the added value that border security infrastructure gives to land in counties bordering Mexico. The Texas Senate adopted it 23-8, placing it on the November 4, 2025 statewide ballot.",
       "labels": [
         {
-          "slug": "general"
+          "slug": "immigration",
+          "yea": "against"
         }
       ]
     },
@@ -159,7 +160,7 @@
       "labels": [
         {
           "slug": "immigration",
-          "yea": "for"
+          "yea": "against"
         }
       ]
     },
@@ -176,7 +177,7 @@
       "labels": [
         {
           "slug": "immigration",
-          "yea": "for"
+          "yea": "against"
         }
       ]
     },
@@ -260,7 +261,8 @@
       "nay_description": "Voted against passing S.B. 12, which barred Texas school districts from assigning diversity, equity, and inclusion duties, from providing instruction on sexual orientation or gender identity in any grade, and from sponsoring student clubs based on sexual orientation or gender identity, and required written parental consent for club participation and for human sexuality instruction. It passed the Texas House 88-47 and was signed into law.",
       "labels": [
         {
-          "slug": "general"
+          "slug": "civil_rights",
+          "yea": "against"
         }
       ]
     },
@@ -276,7 +278,8 @@
       "nay_description": "Voted against passing S.B. 12, which barred Texas school districts from assigning diversity, equity, and inclusion duties, from providing instruction on sexual orientation or gender identity in any grade, and from sponsoring student clubs based on sexual orientation or gender identity, and required written parental consent for club participation and for human sexuality instruction. It passed the Texas Senate 20-11 and was signed into law.",
       "labels": [
         {
-          "slug": "general"
+          "slug": "civil_rights",
+          "yea": "against"
         }
       ]
     },
@@ -292,7 +295,8 @@
       "nay_description": "Voted against the final version of S.B. 13, which gave elected school boards final approval over school library materials, required proposed titles to be posted for 30 days before approval, let a parent bar their own child from checking out specific titles, and required a challenged title to be withheld from students until the district rules on the challenge. The Texas House approved it 81-48 and it was signed into law.",
       "labels": [
         {
-          "slug": "general"
+          "slug": "civil_rights",
+          "yea": "against"
         }
       ]
     },
@@ -308,7 +312,8 @@
       "nay_description": "Voted against passing S.B. 13, which gave elected school boards final approval over school library materials, required proposed titles to be posted for 30 days before approval, let a parent bar their own child from checking out specific titles, and required a challenged title to be withheld from students until the district rules on the challenge. It passed the Texas Senate 23-8 and was signed into law.",
       "labels": [
         {
-          "slug": "general"
+          "slug": "civil_rights",
+          "yea": "against"
         }
       ]
     },

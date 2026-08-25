@@ -50,34 +50,46 @@ Only `general` and `integrity_and_ethics` may carry no stance; every other
 research area requires `for` or `against`. The gate is Ohio's: a research
 area must fit **without inventing a direction the analysis does not take**.
 
+Stance direction follows the AREA DESCRIPTION in `research_areas`, not the
+bill's framing. The one that bites: `immigration` reads "Welcome immigration
+through a lawful, orderly, and humane system", so an enforcement bill is
+**against** — the convention every federal batch and Ohio's S.B. 172 already
+follow (Laken Riley, H.R. 2, the sanctuary-city bills: all against). The
+first revision of this file had SB 8 as `immigration / for`; that was
+direction-inverted and is corrected below. Likewise `national_defense` has
+only ever labeled NDAAs — strictly military — so SB 17 does not get it, and
+`personal_income_tax_reduction` is literally "Lower personal income tax",
+which fits a capital gains foreclosure (SJR 18) but not an estate-tax ban
+(HJR 2 stays general).
+
 | measure | label | why |
 |---|---|---|
 | SJR 18 | `personal_income_tax_reduction` / for | permanently forecloses an individual capital gains tax |
-| SB 8 | `immigration` / for | mandates and funds local participation in federal immigration enforcement |
+| SB 8 | `immigration` / against | mandates and funds local participation in federal immigration enforcement (Ohio S.B. 172, Laken Riley convention) |
+| HJR 34 | `immigration` / against | authorizes a tax break for hosting border security infrastructure (H.R. 2 border-wall convention) |
 | SB 33 | `womens_reproductive_rights` / against | bars public money and logistical support for obtaining an abortion |
 | SB 15 | `housing_affordability` / for | preempts municipal minimum-lot-size and density floors |
 | SB 2972 | `civil_rights` / against | narrows protected expressive activity to students and employees, ends traditional-public-forum status of common outdoor areas, mandates new prohibitions |
-| the other 9 measures | `general`, no stance | direction genuinely contested — see below |
+| SB 12 | `civil_rights` / against | bars student clubs based on sexual orientation or gender identity, bars instruction on those subjects, bans DEI duties — the Ohio S.B. 1 precedent (`civil_rights` / against for a DEI ban), and the federal convention (H.R. 28, H.R. 3492: against) |
+| SB 13 | `civil_rights` / against | mandatory content prohibitions ("indecent", "profane") broader than the prior harmful-material standard, plus an automatic block on student access to any challenged title until the district rules — same restriction-on-access shape as SB 2972 |
+| the other 6 measures | `general`, no stance | direction genuinely contested — see below |
 
-**15 of 25 votes carry no stance.** That is high, and deliberate. The
-contested ones:
+**10 of 25 votes carry no stance** (a second pass tightened this from 15:
+SB 12, SB 13, and HJR 34 gained stances under the conventions above, and
+SB 8's direction was corrected). The ones still `general`:
 
 - **SB 2** (vouchers) — the analysis funds the program separately, caps it
   at $1 billion, and gives districts an extra allotment when a student
   returns. Calling a yes vote "against public education quality" asserts a
   harm the document does not.
-- **SB 12** — genuinely mixed: it expands parental access and consent rights
-  while restricting DEI duties, instruction on sexual orientation or gender
-  identity, and certain student clubs. Ohio's "mixed-direction" category.
-- **SB 13** — strengthened parental control of library collections, or
-  restricted student access; the document does not settle which.
 - **SB 17** — a national-security reading and a civil-rights reading are
   both available, and the exemption for citizens and lawful permanent
   residents cuts against the second.
 - **SB 37** — shifts authority from faculty to appointed boards; accountability
   or loss of academic independence depending on the reader.
-- **HJR 2, HJR 4, HJR 34** — narrow tax prohibitions and one property-tax
-  exemption authorization; no area's direction follows from the text.
+- **HJR 2, HJR 4** — narrow tax prohibitions; `personal_income_tax_reduction`
+  is literally "Lower personal income tax", and neither an estate-tax ban nor
+  a securities-transaction-tax ban is an income tax.
 - **HJR 98** — bundles fiscal restraint, limiting federal power, and term
   limits into a procedural request.
 
