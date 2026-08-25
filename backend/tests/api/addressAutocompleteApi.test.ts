@@ -97,7 +97,9 @@ describe("address autocomplete API endpoints", () => {
 
   it("returns the selected address from the injected retrieve function", async () => {
     const resolveAddress = vi.fn();
-    const retrieveSuggestedAddress = vi.fn().mockResolvedValue({ address: SUGGESTION.description });
+    const retrieveSuggestedAddress = vi
+      .fn()
+      .mockResolvedValue({ address: SUGGESTION.description, location: { lat: 40.8135, lng: -74.0741 } });
 
     const response = await invokeExpressApp(createApiApp({ resolveAddress, retrieveSuggestedAddress }), {
       method: "POST",
@@ -107,7 +109,7 @@ describe("address autocomplete API endpoints", () => {
     });
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual({ address: SUGGESTION.description });
+    expect(response.body).toEqual({ address: SUGGESTION.description, location: { lat: 40.8135, lng: -74.0741 } });
     expect(retrieveSuggestedAddress).toHaveBeenCalledWith({
       placeId: SUGGESTION.place_id,
       sessionToken: SESSION_TOKEN,

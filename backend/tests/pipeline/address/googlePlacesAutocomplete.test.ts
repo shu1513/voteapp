@@ -191,7 +191,7 @@ describe("googlePlacesAutocomplete retrieve", () => {
 
     const result = await retrieveSuggestedAddressWithGooglePlaces(RETRIEVE_INPUT, { ...OPTIONS, fetchImpl });
 
-    expect(result).toEqual({ address: "1600 Pennsylvania Avenue NW, Washington, DC 20500, USA" });
+    expect(result).toEqual({ address: "1600 Pennsylvania Avenue NW, Washington, DC 20500, USA", location: null });
 
     const [url, init] = (fetchImpl as unknown as ReturnType<typeof vi.fn>).mock.calls[0] as [string, RequestInit];
     const parsedUrl = new URL(url);
@@ -201,7 +201,7 @@ describe("googlePlacesAutocomplete retrieve", () => {
     expect(init.method).toBe("GET");
     const headers = init.headers as Record<string, string>;
     expect(headers["x-goog-api-key"]).toBe("test-api-key");
-    expect(headers["x-goog-fieldmask"]).toBe("formattedAddress");
+    expect(headers["x-goog-fieldmask"]).toBe("formattedAddress,location");
   });
 
   it("rejects a response without formattedAddress as bad_response", () => {
@@ -209,6 +209,33 @@ describe("googlePlacesAutocomplete retrieve", () => {
     expect(() => parseGooglePlacesRetrievePayload({ formattedAddress: "  " })).toThrowError(
       GooglePlacesAutocompleteError
     );
+  });
+
+  it("passes through an in-range location and nulls a missing or malformed one", () => {
+    expect(
+      parseGooglePlacesRetrievePayload({
+        formattedAddress: "1 Main St",
+        location: { latitude: 40.8135, longitude: -74.0741 },
+      }).location
+    ).toEqual({ lat: 40.8135, lng: -74.0741 });
+    expect(parseGooglePlacesRetrievePayload({ formattedAddress: "1 Main St" }).location).toBeNull();
+    expect(
+      parseGooglePlacesRetrievePayload({ formattedAddress: "1 Main St", location: { latitude: "40.8" } }).location
+    ).toBeNull();
+  });
+
+  it("nulls an out-of-range location instead of forwarding it", () => {
+    // The resolve validator 400s out-of-range coordinates, which would kill
+    // the whole search; the parser must drop them so the string path runs.
+    for (const location of [
+      { latitude: 91, longitude: 0 },
+      { latitude: -91, longitude: 0 },
+      { latitude: 0, longitude: 181 },
+      { latitude: 0, longitude: -181 },
+      { latitude: Number.NaN, longitude: 0 },
+    ]) {
+      expect(parseGooglePlacesRetrievePayload({ formattedAddress: "1 Main St", location }).location).toBeNull();
+    }
   });
 
   it("rejects empty placeId before calling Google", async () => {

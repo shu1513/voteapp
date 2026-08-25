@@ -22,7 +22,7 @@ export const GOOGLE_PLACE_ID_PATTERN = /^[A-Za-z0-9_-]+$/;
 
 const SUGGEST_FIELD_MASK =
   "suggestions.placePrediction.placeId,suggestions.placePrediction.text,suggestions.placePrediction.structuredFormat";
-const RETRIEVE_FIELD_MASK = "formattedAddress";
+const RETRIEVE_FIELD_MASK = "formattedAddress,location";
 
 export type GooglePlacesAutocompleteErrorCode =
   | "invalid_input"
@@ -56,6 +56,9 @@ export type AddressSuggestion = {
 
 export type RetrievedSuggestedAddress = {
   address: string;
+  /** Place coordinates, or null when Google omits them. Pass-through only —
+   * never cached or persisted (Google ToS). */
+  location: { lat: number; lng: number } | null;
 };
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -227,7 +230,27 @@ export function parseGooglePlacesRetrievePayload(payload: unknown): RetrievedSug
   if (!isRecord(payload) || typeof payload.formattedAddress !== "string" || payload.formattedAddress.trim().length === 0) {
     throw new GooglePlacesAutocompleteError("bad_response", "Google Places details response is missing formattedAddress");
   }
-  return { address: payload.formattedAddress.trim() };
+  // location is best-effort: a missing or malformed one must not fail the
+  // retrieve — the resolver falls back to the address-string path without it.
+  // Range-checked with the same bounds the resolve validator enforces, so a
+  // bad value dies here as null instead of 400ing the whole search later.
+  let location: RetrievedSuggestedAddress["location"] = null;
+  if (isRecord(payload.location)) {
+    const { latitude, longitude } = payload.location;
+    if (
+      typeof latitude === "number" &&
+      typeof longitude === "number" &&
+      Number.isFinite(latitude) &&
+      Number.isFinite(longitude) &&
+      latitude >= -90 &&
+      latitude <= 90 &&
+      longitude >= -180 &&
+      longitude <= 180
+    ) {
+      location = { lat: latitude, lng: longitude };
+    }
+  }
+  return { address: payload.formattedAddress.trim(), location };
 }
 
 export async function retrieveSuggestedAddressWithGooglePlaces(

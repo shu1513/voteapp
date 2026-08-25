@@ -427,9 +427,13 @@ async function main(): Promise<void> {
   };
   const resolveAddressWithAutoResearch = async (
     inputAddress: string,
-    triggerSource: Exclude<ManualResearchTriggerSource, "manual_seed"> = "address_resolve"
+    triggerSource: Exclude<ManualResearchTriggerSource, "manual_seed"> = "address_resolve",
+    coordinates?: { lat: number; lng: number }
   ) => {
-    const result = await resolveAddressToDistricts(pool, inputAddress, buildAddressResolverOptions());
+    const result = await resolveAddressToDistricts(pool, inputAddress, {
+      ...buildAddressResolverOptions(),
+      coordinates,
+    });
     dispatchAutoDistrictResearch(result.districts, triggerSource);
     return result;
   };
@@ -850,7 +854,7 @@ async function main(): Promise<void> {
         address
       ),
     initializeUserDistricts: ({ userId, districtIds }) => initializeUserDistricts(pool, userId, districtIds),
-    resolveAddress: (address) => resolveAddressWithAutoResearch(address),
+    resolveAddress: (address, coordinates) => resolveAddressWithAutoResearch(address, "address_resolve", coordinates),
   });
 
   let server: Server | null = null;

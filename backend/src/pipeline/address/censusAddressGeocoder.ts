@@ -1,5 +1,7 @@
 export const CENSUS_ADDRESS_GEOCODER_URL =
   "https://geocoding.geo.census.gov/geocoder/geographies/onelineaddress";
+export const CENSUS_COORDINATES_GEOCODER_URL =
+  "https://geocoding.geo.census.gov/geocoder/geographies/coordinates";
 
 export const DEFAULT_CENSUS_ADDRESS_GEOCODER_BENCHMARK = "Public_AR_Current";
 export const DEFAULT_CENSUS_ADDRESS_GEOCODER_VINTAGE = "ACS2024_Current";
@@ -154,17 +156,84 @@ export function parseCensusAddressGeocoderPayload(payload: unknown): CensusAddre
   };
 }
 
-export async function geocodeAddressWithCensus(
+// The one-line parser is fed Google Places formattedAddress verbatim, which
+// always carries a trailing country ("..., NJ 07073, USA") the Census parser
+// does not expect, and sometimes a ZIP+4. Both degrade marginal matches. The
+// candidates go from most to least specific; later ones drop components the
+// parser mismatches on more often than it needs them.
+export function buildCensusAddressCandidates(address: string): string[] {
+  const candidates: string[] = [];
+  const push = (value: string) => {
+    const trimmed = value.trim();
+    if (trimmed.length > 0 && !candidates.includes(trimmed)) {
+      candidates.push(trimmed);
+    }
+  };
+
+  const original = address.trim();
+  push(original);
+
+  // Country suffix must follow a comma so a street name ending in "US" is
+  // never clipped; ZIP+4 collapses to the ZIP5 the benchmark indexes.
+  const noCountry = original.replace(/,\s*(?:USA|U\.S\.A\.|US|U\.S\.|United States(?: of America)?)\s*$/i, "");
+  const zip5 = noCountry.replace(/\b(\d{5})-\d{4}\b/, "$1");
+  push(zip5);
+
+  const parts = zip5
+    .split(",")
+    .map((part) => part.trim())
+    .filter((part) => part.length > 0);
+  if (parts.length >= 3) {
+    const street = parts[0];
+    const last = parts[parts.length - 1];
+    const zipMatch = last.match(/\b\d{5}\b/);
+    if (zipMatch) {
+      push(`${street}, ${zipMatch[0]}`);
+      const lastWithoutZip = last.replace(/\b\d{5}\b/, "").trim();
+      if (lastWithoutZip.length > 0) {
+        push([...parts.slice(0, -1), lastWithoutZip].join(", "));
+      }
+    }
+  }
+
+  return candidates;
+}
+
+// Retry ladder over buildCensusAddressCandidates: only a definitive
+// not_found moves to the next candidate — upstream failures (timeout, 5xx,
+// malformed body) propagate immediately, and the not_found finally thrown is
+// the ORIGINAL address's, so error semantics match the single-shot geocode.
+export async function geocodeAddressWithCensusFallbacks(
   address: string,
   options: CensusAddressGeocoderOptions = {}
 ): Promise<CensusAddressGeocodeResult> {
+  const candidates = buildCensusAddressCandidates(address);
+  if (candidates.length === 0) {
+    throw new CensusAddressGeocoderError("invalid_address", "address must not be empty");
+  }
+  let firstNotFound: CensusAddressGeocoderError | null = null;
+  for (const candidate of candidates) {
+    try {
+      return await geocodeAddressWithCensus(candidate, options);
+    } catch (error) {
+      if (error instanceof CensusAddressGeocoderError && error.code === "not_found") {
+        firstNotFound ??= error;
+        continue;
+      }
+      throw error;
+    }
+  }
+  throw firstNotFound as CensusAddressGeocoderError;
+}
+
+async function fetchCensusGeocoderPayload(url: string, options: CensusAddressGeocoderOptions): Promise<unknown> {
   const timeoutMs = normalizeTimeoutMs(options.timeoutMs);
   const fetchImpl = options.fetchImpl ?? globalThis.fetch;
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    const response = await fetchImpl(buildCensusAddressGeocoderUrl(address, options), {
+    const response = await fetchImpl(url, {
       method: "GET",
       redirect: "follow",
       signal: controller.signal,
@@ -178,17 +247,14 @@ export async function geocodeAddressWithCensus(
       );
     }
 
-    let payload: unknown;
     try {
-      payload = JSON.parse(bodyText) as unknown;
+      return JSON.parse(bodyText) as unknown;
     } catch {
       throw new CensusAddressGeocoderError(
         "bad_response",
         `Census geocoder returned non-JSON response; body=${truncate(bodyText)}`
       );
     }
-
-    return parseCensusAddressGeocoderPayload(payload);
   } catch (error) {
     if (isAbortError(error)) {
       throw new CensusAddressGeocoderError(
@@ -208,4 +274,64 @@ export async function geocodeAddressWithCensus(
   } finally {
     clearTimeout(timeout);
   }
+}
+
+export async function geocodeAddressWithCensus(
+  address: string,
+  options: CensusAddressGeocoderOptions = {}
+): Promise<CensusAddressGeocodeResult> {
+  const payload = await fetchCensusGeocoderPayload(buildCensusAddressGeocoderUrl(address, options), options);
+  return parseCensusAddressGeocoderPayload(payload);
+}
+
+export type CensusCoordinatesGeocodeResult = {
+  geographies: unknown;
+};
+
+export function buildCensusCoordinatesGeocoderUrl(
+  coordinates: CensusAddressCoordinates,
+  options: CensusAddressGeocoderOptions = {}
+): string {
+  const { lat, lng } = coordinates;
+  if (!Number.isFinite(lat) || lat < -90 || lat > 90 || !Number.isFinite(lng) || lng < -180 || lng > 180) {
+    throw new CensusAddressGeocoderError("invalid_address", `coordinates are out of range: lat=${lat}, lng=${lng}`);
+  }
+
+  const benchmark = normalizeRequiredString(
+    options.benchmark,
+    DEFAULT_CENSUS_ADDRESS_GEOCODER_BENCHMARK,
+    "benchmark"
+  );
+  const vintage = normalizeRequiredString(options.vintage, DEFAULT_CENSUS_ADDRESS_GEOCODER_VINTAGE, "vintage");
+  const layers = normalizeRequiredString(options.layers, DEFAULT_CENSUS_ADDRESS_GEOCODER_LAYERS, "layers");
+
+  const url = new URL(CENSUS_COORDINATES_GEOCODER_URL);
+  url.searchParams.set("x", String(lng));
+  url.searchParams.set("y", String(lat));
+  url.searchParams.set("benchmark", benchmark);
+  url.searchParams.set("vintage", vintage);
+  url.searchParams.set("layers", layers);
+  url.searchParams.set("format", "json");
+  return url.toString();
+}
+
+export function parseCensusCoordinatesGeocoderPayload(payload: unknown): CensusCoordinatesGeocodeResult {
+  if (!isRecord(payload) || !isRecord(payload.result)) {
+    throw new CensusAddressGeocoderError("bad_response", "Census geocoder response is missing result object");
+  }
+  // Unlike onelineaddress there is no addressMatches array: the coordinate
+  // lookup answers with the geographies containing the point, or an empty
+  // object when the point falls outside every layer.
+  if (!isRecord(payload.result.geographies)) {
+    throw new CensusAddressGeocoderError("bad_response", "Census geocoder response is missing geographies");
+  }
+  return { geographies: payload.result.geographies };
+}
+
+export async function geocodeCoordinatesWithCensus(
+  coordinates: CensusAddressCoordinates,
+  options: CensusAddressGeocoderOptions = {}
+): Promise<CensusCoordinatesGeocodeResult> {
+  const payload = await fetchCensusGeocoderPayload(buildCensusCoordinatesGeocoderUrl(coordinates, options), options);
+  return parseCensusCoordinatesGeocoderPayload(payload);
 }

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ApiError, apiRequest } from "./client";
-import type { AddressAutocompleteResponse, AddressRetrieveResponse, AddressSuggestion } from "./types";
+import type { AddressAutocompleteResponse, AddressLocation, AddressRetrieveResponse, AddressSuggestion } from "./types";
 
 // Autocomplete state machine per docs/address-autocomplete-frontend.md:
 // - fresh crypto.randomUUID() session token at the first keystroke that
@@ -24,8 +24,12 @@ export type UseAddressSuggestionsResult = {
   /** False once the backend reports autocomplete is not configured. */
   enabled: boolean;
   onInputChanged: (text: string) => void;
-  /** Resolves to the full address string, or null when retrieve failed. */
-  selectSuggestion: (suggestion: AddressSuggestion) => Promise<string | null>;
+  /** Resolves to the full address (plus the place's coordinates when Google
+   * provides them), or null when retrieve failed or was superseded by newer
+   * typing or another selection. */
+  selectSuggestion: (
+    suggestion: AddressSuggestion
+  ) => Promise<{ address: string; location: AddressLocation | null } | null>;
   clearSuggestions: () => void;
   /** Call on input focus: warms connections before the first keystroke. */
   warmup: () => void;
@@ -143,12 +147,14 @@ export function useAddressSuggestions(): UseAddressSuggestionsResult {
     });
   }, []);
 
-  const selectSuggestion = useCallback(async (suggestion: AddressSuggestion): Promise<string | null> => {
+  const selectSuggestion = useCallback(async (
+    suggestion: AddressSuggestion
+  ): Promise<{ address: string; location: AddressLocation | null } | null> => {
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
     }
     abortRef.current?.abort();
-    requestSeqRef.current += 1;
+    const seq = ++requestSeqRef.current;
     const sessionToken = sessionTokenRef.current;
     setSuggestions([]);
     if (!sessionToken) {
@@ -164,7 +170,14 @@ export function useAddressSuggestions(): UseAddressSuggestionsResult {
         method: "POST",
         body: { place_id: suggestion.place_id, session_token: sessionToken },
       });
-      return response.address;
+      if (seq !== requestSeqRef.current) {
+        // Superseded while in flight — the user typed or selected again
+        // (both bump the sequence synchronously), so applying this result
+        // would revert their newer input and carry its coordinates into
+        // district resolution. Drop it.
+        return null;
+      }
+      return { address: response.address, location: response.location ?? null };
     } catch {
       // Retrieve failed; the user still has their typed text and can submit
       // it manually. The token stays dead either way — the session state is

@@ -719,6 +719,43 @@ describe("parsePublicAddressResolveBodyValue", () => {
     ).toEqual({ address: "1 Main St", accepted_terms_version: CURRENT_TERMS_VERSION });
   });
 
+  it("passes through valid optional coordinates", async () => {
+    const { parsePublicAddressResolveBodyValue } = await import("../../src/api/apiValidation.js");
+    const { CURRENT_TERMS_VERSION } = await import("../../src/constants/legal.js");
+    expect(
+      parsePublicAddressResolveBodyValue({
+        address: "1 MetLife Stadium Dr, East Rutherford, NJ 07073, USA",
+        accepted_terms_version: CURRENT_TERMS_VERSION,
+        coordinates: { lat: 40.8135, lng: -74.0741 },
+      }).coordinates
+    ).toEqual({ lat: 40.8135, lng: -74.0741 });
+  });
+
+  it("omits coordinates when absent or null", async () => {
+    const { parsePublicAddressResolveBodyValue } = await import("../../src/api/apiValidation.js");
+    const { CURRENT_TERMS_VERSION } = await import("../../src/constants/legal.js");
+    const base = { address: "1 Main St", accepted_terms_version: CURRENT_TERMS_VERSION };
+    expect(parsePublicAddressResolveBodyValue(base).coordinates).toBeUndefined();
+    expect(parsePublicAddressResolveBodyValue({ ...base, coordinates: null }).coordinates).toBeUndefined();
+  });
+
+  it("rejects malformed or out-of-range coordinates", async () => {
+    const { parsePublicAddressResolveBodyValue } = await import("../../src/api/apiValidation.js");
+    const { CURRENT_TERMS_VERSION } = await import("../../src/constants/legal.js");
+    const base = { address: "1 Main St", accepted_terms_version: CURRENT_TERMS_VERSION };
+    for (const coordinates of [
+      "40.8,-74.1",
+      ["40.8", "-74.1"],
+      { lat: "40.8", lng: -74.1 },
+      { lat: 40.8 },
+      { lat: 91, lng: 0 },
+      { lat: 0, lng: -181 },
+      { lat: Number.NaN, lng: 0 },
+    ]) {
+      expect(() => parsePublicAddressResolveBodyValue({ ...base, coordinates })).toThrow(/coordinates/);
+    }
+  });
+
   it("leaves the saved-address payload alone — it has no clickwrap to carry", async () => {
     const { parseAuthenticatedAddressBodyValue } = await import("../../src/api/apiValidation.js");
     expect(parseAuthenticatedAddressBodyValue({ address: "1 Main St" })).toEqual({ address: "1 Main St" });

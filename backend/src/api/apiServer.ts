@@ -2372,7 +2372,7 @@ async function dispatchApiRequest(
       placeId: payload.place_id,
       sessionToken: payload.session_token,
     });
-    sendApiResponse(response, toJsonResponse(200, { address: result.address }, corsHeaders));
+    sendApiResponse(response, toJsonResponse(200, { address: result.address, location: result.location }, corsHeaders));
     return;
   }
 
@@ -2410,7 +2410,7 @@ async function dispatchApiRequest(
     return;
   }
 
-  const result = await options.resolveAddress(payload.address);
+  const result = await options.resolveAddress(payload.address, payload.coordinates);
   if (options.logDiagnostics) {
     try {
       options.logDiagnostics(toAddressResolutionDiagnostics(result));
