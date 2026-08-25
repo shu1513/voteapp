@@ -244,6 +244,7 @@ export function legiscanRollCallIdentityKey(rollCall: LegiscanRollCall): string 
     rollCall.nay,
     rollCall.nv,
     rollCall.absent,
+    rollCall.passed,
     memberListSha1,
   ]);
 }

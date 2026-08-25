@@ -128,9 +128,7 @@ describe("legiscanRollCallIdentityKey", () => {
   };
 
   it("treats a re-issued roll_call_id as the same action", () => {
-    expect(legiscanRollCallIdentityKey({ ...rollCall, rollCallId: 1592205, passed: false })).toBe(
-      legiscanRollCallIdentityKey(rollCall)
-    );
+    expect(legiscanRollCallIdentityKey({ ...rollCall, rollCallId: 1592205 })).toBe(legiscanRollCallIdentityKey(rollCall));
   });
 
   it("ignores member-list order", () => {
@@ -146,6 +144,10 @@ describe("legiscanRollCallIdentityKey", () => {
     expect(legiscanRollCallIdentityKey({ ...rollCall, date: "2025-04-25" })).not.toBe(key);
     expect(legiscanRollCallIdentityKey({ ...rollCall, desc: "Read 3rd time" })).not.toBe(key);
     expect(legiscanRollCallIdentityKey({ ...rollCall, yea: 3 })).not.toBe(key);
+    // A contradictory outcome is never a duplicate — the stored result
+    // comes from `passed`, so collapsing across it would pick one outcome
+    // silently.
+    expect(legiscanRollCallIdentityKey({ ...rollCall, passed: false })).not.toBe(key);
     expect(
       legiscanRollCallIdentityKey({ ...rollCall, votes: [{ peopleId: 10, voteId: 2 }, ...rollCall.votes.slice(1)] })
     ).not.toBe(key);
