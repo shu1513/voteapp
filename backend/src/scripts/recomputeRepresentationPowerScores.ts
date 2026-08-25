@@ -28,20 +28,30 @@ async function main(): Promise<void> {
     try {
       const updated = await recomputeRepresentationPowerScores(client);
 
-      // Sanity check the model's invariant: every scored statewide row is
-      // its own anchor, so each must sit exactly on the 50 baseline.
+      // The model's invariant: a statewide row with a positive population is
+      // its own anchor, so it must score exactly 50 (a NULL score there means
+      // the recompute failed to reach it). Rows without a positive population
+      // are legitimately unscored ("unknown") and stay out of the check.
       const statewideOffBaseline = await client.query<{ count: string }>(
         `
           SELECT COUNT(*) AS count
           FROM public.districts
           WHERE district_type = 'statewide'
+            AND population IS NOT NULL
+            AND population > 0
             AND representation_power_score IS DISTINCT FROM 50.00
         `
       );
+      const offBaseline = Number(statewideOffBaseline.rows[0]?.count ?? 0);
+      if (offBaseline > 0) {
+        // Exit nonzero: a rollout that broke the baseline must not read as a
+        // successful run in a log line nobody checks.
+        throw new Error(
+          `statewide baseline violated: ${offBaseline} positive-population statewide row(s) not scored exactly 50.00 (updated=${updated})`
+        );
+      }
 
-      console.log(
-        `representation recompute completed updated=${updated} statewide_off_baseline=${statewideOffBaseline.rows[0]?.count ?? "?"}`
-      );
+      console.log(`representation recompute completed updated=${updated} statewide_off_baseline=0`);
     } finally {
       client.release();
     }
