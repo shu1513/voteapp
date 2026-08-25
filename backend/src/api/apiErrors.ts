@@ -1,4 +1,5 @@
 import { CensusAddressGeocoderError } from "../pipeline/address/censusAddressGeocoder.js";
+import { ZipDistrictResolutionError } from "../pipeline/address/addressResolverService.js";
 import { GooglePlacesAutocompleteError } from "../pipeline/address/googlePlacesAutocomplete.js";
 import { CandidateDetailReaderError } from "../pipeline/candidates/candidateDetailReader.js";
 import { AuthenticatedAddressDistrictUpdateError } from "../pipeline/users/userAddressDistrictUpdater.js";
@@ -50,6 +51,11 @@ export function mapErrorToResponse(error: unknown): MappedApiError {
     if (error.code === "timeout" || error.code === "http_error" || error.code === "network_error") {
       return { statusCode: 503, code: "upstream_unavailable", message: error.message };
     }
+  }
+  // ZIP partial-ballot failures: caller-input problems like a bad address
+  // (422), with per-code messages the client can show directly.
+  if (error instanceof ZipDistrictResolutionError) {
+    return { statusCode: 422, code: error.code, message: error.message };
   }
   if (error instanceof GooglePlacesAutocompleteError) {
     if (error.code === "invalid_input") {

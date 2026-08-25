@@ -8,7 +8,10 @@ import { MAX_INITIALIZE_DISTRICT_IDS } from "../../src/api/apiValidation.js";
 import { CURRENT_TERMS_VERSION, GRACE_TERMS_VERSIONS } from "../../src/constants/legal.js";
 import type { CandidateElectionFinanceResult } from "../../src/pipeline/address/ballotLookup.js";
 import { CensusAddressGeocoderError } from "../../src/pipeline/address/censusAddressGeocoder.js";
-import type { AddressResolutionResult } from "../../src/pipeline/address/addressResolverService.js";
+import {
+  ZipDistrictResolutionError,
+  type AddressResolutionResult,
+} from "../../src/pipeline/address/addressResolverService.js";
 import { UserCandidateFollowsError } from "../../src/pipeline/users/userCandidateFollows.js";
 import { UserElectionChoicesError } from "../../src/pipeline/users/userElectionChoices.js";
 import { InitializeUserDistrictsError } from "../../src/pipeline/users/userDistrictInitializer.js";
@@ -20,6 +23,7 @@ import { UserResearchAreaPreferencesError } from "../../src/pipeline/users/userR
 const resolvedAddress: AddressResolutionResult = {
   matched_address: "3921 HARLAN AVE, BALDWIN PARK, CA, 91706",
   coordinates: { lat: 34.082500135664, lng: -117.981072355887 },
+  scope: "exact",
   address_match_count: 1,
   district_keys: [
     {
@@ -131,12 +135,14 @@ describe("createApiApp", () => {
       matched_address: resolvedAddress.matched_address,
       address_match_count: resolvedAddress.address_match_count,
       districts: resolvedAddress.districts,
+      scope: "exact",
     });
     expect(response.body).not.toHaveProperty("coordinates");
     expect(response.body).not.toHaveProperty("ballot");
-    expect(resolveAddress).toHaveBeenCalledWith("3921 Harlan Ave Baldwin Park CA 91706", undefined);
+    expect(resolveAddress).toHaveBeenCalledWith("3921 Harlan Ave Baldwin Park CA 91706", undefined, false);
     expect(logDiagnostics).toHaveBeenCalledWith({
       address_match_count: 1,
+      scope: "exact",
       district_keys: resolvedAddress.district_keys,
       missing_district_keys: [],
       warnings: [],
@@ -158,9 +164,62 @@ describe("createApiApp", () => {
     });
 
     expect(response.statusCode).toBe(200);
-    expect(resolveAddress).toHaveBeenCalledWith("1 MetLife Stadium Dr, East Rutherford, NJ 07073, USA", {
-      lat: 40.8135,
-      lng: -74.0741,
+    expect(resolveAddress).toHaveBeenCalledWith(
+      "1 MetLife Stadium Dr, East Rutherford, NJ 07073, USA",
+      { lat: 40.8135, lng: -74.0741 },
+      false
+    );
+  });
+
+  it("passes allow_partial through and rejects a non-boolean value", async () => {
+    const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
+
+    const accepted = await invokeExpressApp(createApiApp({ resolveAddress }), {
+      method: "POST",
+      path: "/api/address/resolve",
+      body: JSON.stringify({
+        address: "78701",
+        accepted_terms_version: CURRENT_TERMS_VERSION,
+        allow_partial: true,
+      }),
+      headers: { "content-type": "application/json" },
+    });
+    expect(accepted.statusCode).toBe(200);
+    expect(resolveAddress).toHaveBeenCalledWith("78701", undefined, true);
+
+    const rejected = await invokeExpressApp(createApiApp({ resolveAddress }), {
+      method: "POST",
+      path: "/api/address/resolve",
+      body: JSON.stringify({
+        address: "78701",
+        accepted_terms_version: CURRENT_TERMS_VERSION,
+        allow_partial: "yes",
+      }),
+      headers: { "content-type": "application/json" },
+    });
+    expect(rejected.statusCode).toBe(400);
+    expect(resolveAddress).toHaveBeenCalledTimes(1);
+  });
+
+  it("maps ZIP partial-path failures to 422 with their distinct codes", async () => {
+    const resolveAddress = vi
+      .fn()
+      .mockRejectedValue(new ZipDistrictResolutionError("zip_multi_state", "ZIP code 02861 crosses state lines"));
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
+      method: "POST",
+      path: "/api/address/resolve",
+      body: JSON.stringify({
+        address: "02861",
+        accepted_terms_version: CURRENT_TERMS_VERSION,
+        allow_partial: true,
+      }),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(422);
+    expect(response.body).toEqual({
+      error: { code: "zip_multi_state", message: "ZIP code 02861 crosses state lines" },
     });
   });
 
@@ -298,6 +357,7 @@ describe("createApiApp", () => {
       matched_address: resolvedAddress.matched_address,
       address_match_count: resolvedAddress.address_match_count,
       districts: resolvedAddress.districts,
+      scope: "exact",
     });
     expect(logDiagnostics).toHaveBeenCalledOnce();
   });
@@ -366,7 +426,7 @@ describe("createApiApp", () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.headers).not.toHaveProperty("access-control-allow-origin");
-    expect(resolveAddress).toHaveBeenCalledWith("3921 Harlan Ave Baldwin Park CA 91706", undefined);
+    expect(resolveAddress).toHaveBeenCalledWith("3921 Harlan Ave Baldwin Park CA 91706", undefined, false);
   });
 
   it("serves configured dynamic sitemap XML", async () => {
@@ -3434,6 +3494,7 @@ describe("createApiApp", () => {
       matched_address: resolvedAddressWithUuidDistrict.matched_address,
       address_match_count: resolvedAddressWithUuidDistrict.address_match_count,
       districts: resolvedAddressWithUuidDistrict.districts,
+      scope: "exact",
     });
     expect(initializeUserDistricts).not.toHaveBeenCalled();
 

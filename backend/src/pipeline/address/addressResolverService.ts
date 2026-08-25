@@ -32,12 +32,36 @@ import {
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
+// A ZIP input the exact pipeline cannot serve. Distinct codes because each
+// needs different user copy (docs/plans/partial-address-scope.md); apiErrors
+// maps them all to 422 like address_not_found.
+export type ZipDistrictResolutionErrorCode =
+  | "full_address_required"
+  | "zip_not_found"
+  | "zip_multi_state"
+  | "zip_unsupported_region";
+
+export class ZipDistrictResolutionError extends Error {
+  readonly code: ZipDistrictResolutionErrorCode;
+
+  constructor(code: ZipDistrictResolutionErrorCode, message: string) {
+    super(message);
+    this.name = "ZipDistrictResolutionError";
+    this.code = code;
+  }
+}
+
 export type AddressResolutionResult = {
   matched_address: string;
+  /** null for ZIP-scope results — the crosswalk path never geocodes. */
   coordinates: {
     lat: number;
     lng: number;
-  };
+  } | null;
+  /** "exact" = geocoded street address (all district types); "zip" =
+   * crosswalk-resolved partial ballot (statewide, plus county when the ZCTA
+   * has exactly one county). */
+  scope: "exact" | "zip";
   address_match_count: number;
   district_keys: AddressDistrictKey[];
   districts: AddressResolvedDistrict[];
@@ -60,6 +84,14 @@ export type AddressResolverServiceOptions = {
    * them. The address-string path stays as the fallback.
    */
   coordinates?: CensusAddressCoordinates;
+  /**
+   * Opt-in to the ZIP partial-ballot path. Default false so every existing
+   * caller — most importantly the authenticated saved-address updater, which
+   * must never replace a complete district set with a coarse one — keeps
+   * exact-only behavior: a ZIP-shaped input fails fast with
+   * full_address_required instead of dying in the geocoder.
+   */
+  allowPartial?: boolean;
 };
 
 function effectiveGeocoderCacheContext(options: CensusAddressGeocoderOptions | undefined): {
@@ -74,11 +106,96 @@ function effectiveGeocoderCacheContext(options: CensusAddressGeocoderOptions | u
   };
 }
 
+// A bare ZIP (optionally ZIP+4). Anything else — including "Austin, TX
+// 78701, USA" — stays on the exact geocoder pipeline.
+const ZIP_INPUT_PATTERN = /^(\d{5})(?:-\d{4})?$/;
+
+// The districts table covers 50 states + DC; these county-FIPS state
+// prefixes exist in the crosswalk (149 ZCTAs) but have no districts.
+const TERRITORY_STATE_FIPS = new Set(["60", "66", "69", "72", "78"]);
+
+async function resolveZipToDistricts(db: Queryable, zip5: string): Promise<AddressResolutionResult> {
+  const crosswalk = await db.query<{ county_geoid: string }>(
+    `SELECT county_geoid FROM public.address_zcta_county WHERE zcta5 = $1 ORDER BY county_geoid`,
+    [zip5]
+  );
+  if (crosswalk.rows.length === 0) {
+    throw new ZipDistrictResolutionError(
+      "zip_not_found",
+      `ZIP code ${zip5} is not in the Census ZCTA data — try a city and state, or a street address`
+    );
+  }
+
+  const countyGeoids = crosswalk.rows.map((row) => row.county_geoid);
+  const stateFipsSet = new Set(countyGeoids.map((geoid) => geoid.slice(0, 2)));
+  if (stateFipsSet.size > 1) {
+    // 137 ZCTAs cross a state line; even the statewide races are ambiguous
+    // there, and land-dominance is not address-dominance — refuse rather
+    // than guess (docs/plans/partial-address-scope.md).
+    throw new ZipDistrictResolutionError(
+      "zip_multi_state",
+      `ZIP code ${zip5} crosses state lines — enter your city and state, or a street address`
+    );
+  }
+  const stateFips = countyGeoids[0].slice(0, 2);
+  if (TERRITORY_STATE_FIPS.has(stateFips)) {
+    throw new ZipDistrictResolutionError(
+      "zip_unsupported_region",
+      `ZIP code ${zip5} is outside the covered 50 states and DC`
+    );
+  }
+
+  // Statewide always; county only in the unambiguous single-county case.
+  // Multi-county ZCTAs get statewide only — the visitor may live in any of
+  // the counties, and a partial ballot must never show someone else's races.
+  const districtKeys: AddressDistrictKey[] = [
+    {
+      district_type: "statewide",
+      geoid_compact: stateFips,
+      source: "layer_name",
+      layer_name: "zcta_county_crosswalk",
+    },
+    ...(countyGeoids.length === 1
+      ? [
+          {
+            district_type: "county",
+            geoid_compact: countyGeoids[0],
+            source: "layer_name",
+            layer_name: "zcta_county_crosswalk",
+          } satisfies AddressDistrictKey,
+        ]
+      : []),
+  ];
+
+  const districtLookup = await lookupAddressDistricts(db, districtKeys);
+  return {
+    matched_address: zip5,
+    coordinates: null,
+    scope: "zip",
+    address_match_count: 1,
+    district_keys: districtKeys,
+    districts: districtLookup.districts,
+    missing_district_keys: districtLookup.missing_district_keys,
+    warnings: [],
+  };
+}
+
 export async function resolveAddressToDistricts(
   db: Queryable,
   address: string,
   options: AddressResolverServiceOptions = {}
 ): Promise<AddressResolutionResult> {
+  const zipMatch = ZIP_INPUT_PATTERN.exec(address.trim());
+  if (zipMatch) {
+    if (!options.allowPartial) {
+      throw new ZipDistrictResolutionError(
+        "full_address_required",
+        "A full street address is required — a ZIP code alone cannot determine your districts"
+      );
+    }
+    return resolveZipToDistricts(db, zipMatch[1]);
+  }
+
   const geocodeAddress =
     options.geocodeAddress ?? ((input: string) => geocodeAddressWithCensusFallbacks(input, options.geocoderOptions));
 
@@ -102,6 +219,7 @@ export async function resolveAddressToDistricts(
         return {
           matched_address: address.trim(),
           coordinates: options.coordinates,
+          scope: "exact",
           address_match_count: 1,
           district_keys: keyResolution.district_keys,
           districts: districtLookup.districts,
@@ -165,6 +283,7 @@ export async function resolveAddressToDistricts(
   return {
     matched_address: resolved.matched_address,
     coordinates: resolved.coordinates,
+    scope: "exact",
     address_match_count: resolved.address_match_count,
     district_keys: resolved.district_keys,
     districts: districtLookup.districts,

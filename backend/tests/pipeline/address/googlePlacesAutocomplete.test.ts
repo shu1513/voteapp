@@ -191,7 +191,12 @@ describe("googlePlacesAutocomplete retrieve", () => {
 
     const result = await retrieveSuggestedAddressWithGooglePlaces(RETRIEVE_INPUT, { ...OPTIONS, fetchImpl });
 
-    expect(result).toEqual({ address: "1600 Pennsylvania Avenue NW, Washington, DC 20500, USA", location: null });
+    expect(result).toEqual({
+      address: "1600 Pennsylvania Avenue NW, Washington, DC 20500, USA",
+      location: null,
+      granularity: "address",
+      postal_code: null,
+    });
 
     const [url, init] = (fetchImpl as unknown as ReturnType<typeof vi.fn>).mock.calls[0] as [string, RequestInit];
     const parsedUrl = new URL(url);
@@ -201,7 +206,7 @@ describe("googlePlacesAutocomplete retrieve", () => {
     expect(init.method).toBe("GET");
     const headers = init.headers as Record<string, string>;
     expect(headers["x-goog-api-key"]).toBe("test-api-key");
-    expect(headers["x-goog-fieldmask"]).toBe("formattedAddress,location");
+    expect(headers["x-goog-fieldmask"]).toBe("formattedAddress,location,types,postalAddress");
   });
 
   it("rejects a response without formattedAddress as bad_response", () => {
@@ -235,6 +240,77 @@ describe("googlePlacesAutocomplete retrieve", () => {
       { latitude: Number.NaN, longitude: 0 },
     ]) {
       expect(parseGooglePlacesRetrievePayload({ formattedAddress: "1 Main St", location }).location).toBeNull();
+    }
+  });
+
+  it("classifies a postal_code selection as zip, with the five-digit ZIP and no location", () => {
+    const result = parseGooglePlacesRetrievePayload({
+      formattedAddress: "Austin, TX 78701, USA",
+      location: { latitude: 30.27, longitude: -97.74 },
+      types: ["postal_code"],
+      postalAddress: { postalCode: "78701" },
+    });
+    // The centroid must not leak: an area's point would resolve to a full
+    // exact ballot for whatever districts the point happens to sit in.
+    expect(result).toEqual({
+      address: "Austin, TX 78701, USA",
+      location: null,
+      granularity: "zip",
+      postal_code: "78701",
+    });
+  });
+
+  it("trims a ZIP+4 postalCode to five digits", () => {
+    const result = parseGooglePlacesRetrievePayload({
+      formattedAddress: "Austin, TX 78701, USA",
+      types: ["postal_code"],
+      postalAddress: { postalCode: "78701-2401" },
+    });
+    expect(result.granularity).toBe("zip");
+    expect(result.postal_code).toBe("78701");
+  });
+
+  it("downgrades a postal_code selection without a usable postalCode to region", () => {
+    for (const postalAddress of [undefined, {}, { postalCode: "ABC" }, { postalCode: "7870" }]) {
+      const result = parseGooglePlacesRetrievePayload({
+        formattedAddress: "Austin, TX 78701, USA",
+        location: { latitude: 30.27, longitude: -97.74 },
+        types: ["postal_code"],
+        ...(postalAddress !== undefined ? { postalAddress } : {}),
+      });
+      expect(result.granularity).toBe("region");
+      expect(result.postal_code).toBeNull();
+      expect(result.location).toBeNull();
+    }
+  });
+
+  it("classifies locality and other area selections as region with no location", () => {
+    for (const types of [
+      ["locality", "political"],
+      ["neighborhood", "political"],
+      ["administrative_area_level_2", "political"],
+      ["sublocality_level_1", "sublocality", "political"],
+    ]) {
+      const result = parseGooglePlacesRetrievePayload({
+        formattedAddress: "Austin, TX, USA",
+        location: { latitude: 30.27, longitude: -97.74 },
+        types,
+      });
+      expect(result.granularity).toBe("region");
+      expect(result.location).toBeNull();
+      expect(result.postal_code).toBeNull();
+    }
+  });
+
+  it("keeps the location for street addresses and venues", () => {
+    for (const types of [["street_address"], ["premise"], ["establishment", "point_of_interest", "stadium"], undefined]) {
+      const result = parseGooglePlacesRetrievePayload({
+        formattedAddress: "1 Main St, Springfield, IL 62701, USA",
+        location: { latitude: 39.8, longitude: -89.65 },
+        ...(types !== undefined ? { types } : {}),
+      });
+      expect(result.granularity).toBe("address");
+      expect(result.location).toEqual({ lat: 39.8, lng: -89.65 });
     }
   });
 

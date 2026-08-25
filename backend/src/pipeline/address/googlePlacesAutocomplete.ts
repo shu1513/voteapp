@@ -22,7 +22,37 @@ export const GOOGLE_PLACE_ID_PATTERN = /^[A-Za-z0-9_-]+$/;
 
 const SUGGEST_FIELD_MASK =
   "suggestions.placePrediction.placeId,suggestions.placePrediction.text,suggestions.placePrediction.structuredFormat";
-const RETRIEVE_FIELD_MASK = "formattedAddress,location";
+const RETRIEVE_FIELD_MASK = "formattedAddress,location,types,postalAddress";
+
+// Google types that mark a suggestion as an area, not a deliverable address.
+// Selecting one must NOT hand its centroid to the resolver as an exact point:
+// the centroid's House/state-leg/school districts are not the visitor's
+// (docs/plans/partial-address-scope.md). Server-side because the classification
+// gates correctness — the client only renders it.
+const REGION_PLACE_TYPES = new Set([
+  "postal_code",
+  "postal_code_prefix",
+  "postal_code_suffix",
+  "postal_town",
+  "locality",
+  "sublocality",
+  "sublocality_level_1",
+  "sublocality_level_2",
+  "sublocality_level_3",
+  "sublocality_level_4",
+  "sublocality_level_5",
+  "neighborhood",
+  "colloquial_area",
+  "school_district",
+  "administrative_area_level_1",
+  "administrative_area_level_2",
+  "administrative_area_level_3",
+  "administrative_area_level_4",
+  "administrative_area_level_5",
+  "administrative_area_level_6",
+  "administrative_area_level_7",
+  "country",
+]);
 
 export type GooglePlacesAutocompleteErrorCode =
   | "invalid_input"
@@ -56,9 +86,18 @@ export type AddressSuggestion = {
 
 export type RetrievedSuggestedAddress = {
   address: string;
-  /** Place coordinates, or null when Google omits them. Pass-through only —
-   * never cached or persisted (Google ToS). */
+  /** Place coordinates, or null when Google omits them — and always null for
+   * coarse (zip/region) selections, so no client can submit an area centroid
+   * as an exact point. Pass-through only — never cached or persisted
+   * (Google ToS). */
   location: { lat: number; lng: number } | null;
+  /** How specific the selected place is. "address": a deliverable address or
+   * venue — today's behavior. "zip": a ZIP code — postal_code carries the
+   * five digits for the partial-ballot flow. "region": any other area (city,
+   * neighborhood, county, state) — no supported flow yet. */
+  granularity: "address" | "zip" | "region";
+  /** Five-digit ZIP when granularity is "zip"; null otherwise. */
+  postal_code: string | null;
 };
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -230,12 +269,33 @@ export function parseGooglePlacesRetrievePayload(payload: unknown): RetrievedSug
   if (!isRecord(payload) || typeof payload.formattedAddress !== "string" || payload.formattedAddress.trim().length === 0) {
     throw new GooglePlacesAutocompleteError("bad_response", "Google Places details response is missing formattedAddress");
   }
+  // types is best-effort: absent or malformed types classify as "address",
+  // preserving today's behavior for venues and street addresses.
+  const types = Array.isArray(payload.types)
+    ? payload.types.filter((entry): entry is string => typeof entry === "string")
+    : [];
+  const isRegion = types.some((entry) => REGION_PLACE_TYPES.has(entry));
+  let granularity: RetrievedSuggestedAddress["granularity"] = isRegion ? "region" : "address";
+  let postalCode: string | null = null;
+  if (isRegion && types.includes("postal_code")) {
+    // postalAddress.postalCode may carry ZIP+4; the partial-ballot flow works
+    // on the five-digit ZCTA. A missing/odd value downgrades to "region"
+    // rather than inventing a ZIP.
+    const rawPostalCode = isRecord(payload.postalAddress) ? payload.postalAddress.postalCode : undefined;
+    const match = typeof rawPostalCode === "string" ? /^(\d{5})(?:-\d{4})?$/.exec(rawPostalCode.trim()) : null;
+    if (match) {
+      granularity = "zip";
+      postalCode = match[1];
+    }
+  }
+
   // location is best-effort: a missing or malformed one must not fail the
   // retrieve — the resolver falls back to the address-string path without it.
   // Range-checked with the same bounds the resolve validator enforces, so a
   // bad value dies here as null instead of 400ing the whole search later.
+  // Coarse selections never return one (see RetrievedSuggestedAddress).
   let location: RetrievedSuggestedAddress["location"] = null;
-  if (isRecord(payload.location)) {
+  if (granularity === "address" && isRecord(payload.location)) {
     const { latitude, longitude } = payload.location;
     if (
       typeof latitude === "number" &&
@@ -250,7 +310,7 @@ export function parseGooglePlacesRetrievePayload(payload: unknown): RetrievedSug
       location = { lat: latitude, lng: longitude };
     }
   }
-  return { address: payload.formattedAddress.trim(), location };
+  return { address: payload.formattedAddress.trim(), location, granularity, postal_code: postalCode };
 }
 
 export async function retrieveSuggestedAddressWithGooglePlaces(

@@ -14,6 +14,13 @@ export type ApiErrorCode =
   // points at Manage membership instead of a generic error.
   | "membership_exists"
   | "address_not_found"
+  // ZIP partial-ballot failures (docs/plans/partial-address-scope.md): each
+  // needs different client copy, so they are not folded into
+  // address_not_found. All 422.
+  | "full_address_required"
+  | "zip_not_found"
+  | "zip_multi_state"
+  | "zip_unsupported_region"
   | "districts_unavailable"
   | "upstream_unavailable"
   | "bad_upstream_response"

@@ -46,6 +46,7 @@ describe("resolveAddressToDistricts", () => {
     expect(result).toEqual({
       matched_address: "3921 HARLAN AVE, BALDWIN PARK, CA, 91706",
       coordinates: { lat: 34.082500135664, lng: -117.981072355887 },
+      scope: "exact",
       address_match_count: 1,
       district_keys: [
         {
@@ -369,5 +370,145 @@ describe("resolveAddressToDistricts with coordinates", () => {
       })
     ).rejects.toThrow("db down");
     expect(geocodeAddress).not.toHaveBeenCalled();
+  });
+});
+
+describe("resolveAddressToDistricts ZIP partial path", () => {
+  const STATEWIDE_ROW = {
+    id: "district-tx",
+    district_type: "statewide",
+    geoid_compact: "48",
+    name: "Texas",
+    state: "TX",
+    state_fips: "48",
+    population: 29145505,
+    representation_power_score: null,
+    requested_district_type: "statewide",
+    requested_geoid_compact: "48",
+  };
+  const COUNTY_ROW = {
+    id: "district-travis",
+    district_type: "county",
+    geoid_compact: "48453",
+    name: "Travis County",
+    state: "TX",
+    state_fips: "48",
+    population: 1290188,
+    representation_power_score: "8.10",
+    requested_district_type: "county",
+    requested_geoid_compact: "48453",
+  };
+
+  // First query = crosswalk lookup, second = district lookup.
+  function dbReturning(countyGeoids: string[], districtRows: unknown[]) {
+    return vi
+      .fn()
+      .mockResolvedValueOnce({ rows: countyGeoids.map((county_geoid) => ({ county_geoid })) })
+      .mockResolvedValueOnce({ rows: districtRows });
+  }
+
+  it("rejects ZIP-shaped input with full_address_required unless allowPartial is set", async () => {
+    const geocodeAddress = vi.fn();
+    const query = vi.fn();
+
+    for (const input of ["78701", " 78701 ", "78701-2401"]) {
+      await expect(
+        resolveAddressToDistricts({ query }, input, { geocodeAddress })
+      ).rejects.toMatchObject({ name: "ZipDistrictResolutionError", code: "full_address_required" });
+    }
+    // Never reaches the geocoder or the database: the refusal must not
+    // depend on network or crosswalk state.
+    expect(geocodeAddress).not.toHaveBeenCalled();
+    expect(query).not.toHaveBeenCalled();
+  });
+
+  it("resolves a single-county ZIP to statewide + county with zip scope and no coordinates", async () => {
+    const geocodeAddress = vi.fn();
+    const query = dbReturning(["48453"], [STATEWIDE_ROW, COUNTY_ROW]);
+
+    const result = await resolveAddressToDistricts({ query }, "78701", { geocodeAddress, allowPartial: true });
+
+    expect(geocodeAddress).not.toHaveBeenCalled();
+    expect(query.mock.calls[0]?.[1]).toEqual(["78701"]);
+    expect(query.mock.calls[1]?.[1]).toEqual([
+      ["statewide", "county"],
+      ["48", "48453"],
+    ]);
+    expect(result).toMatchObject({
+      matched_address: "78701",
+      coordinates: null,
+      scope: "zip",
+      address_match_count: 1,
+      missing_district_keys: [],
+      warnings: [],
+    });
+    expect(result.districts.map((district) => district.id)).toEqual(["district-tx", "district-travis"]);
+  });
+
+  it("trims ZIP+4 to the five-digit ZCTA", async () => {
+    const query = dbReturning(["48453"], [STATEWIDE_ROW, COUNTY_ROW]);
+
+    const result = await resolveAddressToDistricts({ query }, "78701-2401", { allowPartial: true });
+
+    expect(query.mock.calls[0]?.[1]).toEqual(["78701"]);
+    expect(result.matched_address).toBe("78701");
+  });
+
+  it("returns statewide only for a same-state multi-county ZIP", async () => {
+    const query = dbReturning(["48453", "48491"], [STATEWIDE_ROW]);
+
+    const result = await resolveAddressToDistricts({ query }, "78660", { allowPartial: true });
+
+    // No county key at all — the visitor may live in either county.
+    expect(query.mock.calls[1]?.[1]).toEqual([["statewide"], ["48"]]);
+    expect(result.scope).toBe("zip");
+    expect(result.districts.map((district) => district.id)).toEqual(["district-tx"]);
+  });
+
+  it("rejects a ZIP crossing state lines, even with a dominant county", async () => {
+    // 02861 is 99.5% Providence County RI by land but intersects Bristol
+    // County MA: land dominance is not address dominance, so refuse.
+    const query = dbReturning(["25005", "44007"], []);
+
+    await expect(resolveAddressToDistricts({ query }, "02861", { allowPartial: true })).rejects.toMatchObject({
+      code: "zip_multi_state",
+    });
+    expect(query).toHaveBeenCalledTimes(1);
+  });
+
+  it("rejects a ZIP with no crosswalk rows as zip_not_found", async () => {
+    const query = vi.fn().mockResolvedValueOnce({ rows: [] });
+
+    await expect(resolveAddressToDistricts({ query }, "00001", { allowPartial: true })).rejects.toMatchObject({
+      code: "zip_not_found",
+    });
+  });
+
+  it("rejects territory ZIPs as zip_unsupported_region", async () => {
+    // Puerto Rico: real ZCTA, but the districts table covers 50 states + DC.
+    const query = dbReturning(["72127"], []);
+
+    await expect(resolveAddressToDistricts({ query }, "00901", { allowPartial: true })).rejects.toMatchObject({
+      code: "zip_unsupported_region",
+    });
+    expect(query).toHaveBeenCalledTimes(1);
+  });
+
+  it("leaves non-ZIP input on the exact pipeline even with allowPartial", async () => {
+    const geocodeAddress = vi.fn().mockResolvedValue({
+      matched_address: "3921 HARLAN AVE, BALDWIN PARK, CA, 91706",
+      coordinates: { lat: 34.08, lng: -117.98 },
+      address_match_count: 1,
+      geographies: {},
+    });
+    const query = vi.fn().mockResolvedValue({ rows: [] });
+
+    const result = await resolveAddressToDistricts({ query }, "Austin, TX 78701, USA", {
+      geocodeAddress,
+      allowPartial: true,
+    });
+
+    expect(geocodeAddress).toHaveBeenCalledWith("Austin, TX 78701, USA");
+    expect(result.scope).toBe("exact");
   });
 });

@@ -202,6 +202,7 @@
     "db:migrate:check-files": "tsx src/scripts/dbMigrate.ts --check-files",
     "db:migrate:baseline": "tsx src/scripts/dbMigrate.ts --baseline",
     "db:seed:research-areas": "tsx src/scripts/seedResearchAreas.ts",
+    "import:zcta-county-crosswalk": "tsx src/scripts/importZctaCountyCrosswalk.ts",
     "db:seed:office-research-areas": "tsx src/scripts/seedOfficeResearchAreas.ts",
     "db:seed:presidential-cycles": "tsx src/scripts/seedPresidentialCycles.ts",
     "presidential-candidates:roster:enrich": "tsx src/scripts/enrichPresidentialRoster.ts",
