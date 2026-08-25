@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -18,6 +19,7 @@ import {
   parseLegiscanBill,
   parseLegiscanRollCall,
   type LegiscanBillSummary,
+  type LegiscanRollCall,
   type LegiscanVoteEvidence,
 } from "../pipeline/rollcall/legiscanRollCall.js";
 import { getLegiscanStateConfig } from "../pipeline/rollcall/legiscanStateConfigs.js";
@@ -215,6 +217,38 @@ export function parseLegiscanBillList(raw: string): Set<string> {
   return measures;
 }
 
+/**
+ * What makes two roll calls the same legislative action. LegiScan's senate
+ * feeds can issue several roll_call_ids for one action — TX 89R re-issued
+ * 640 of 6,824 stored rolls, all Senate, with every field except
+ * roll_call_id byte-identical (evidence/rollcall/legiscan-tx-2160/
+ * CODE-FINDINGS.md §1). The fan-out dedupes by `ls:<roll_call_id>`, so
+ * each extra id would become a near-identical record on the same member;
+ * the fetch collapses them on this key instead.
+ */
+export function legiscanRollCallIdentityKey(rollCall: LegiscanRollCall): string {
+  const memberListSha1 = createHash("sha1")
+    .update(
+      [...rollCall.votes]
+        .sort((a, b) => a.peopleId - b.peopleId)
+        .map((vote) => `${vote.peopleId}:${vote.voteId}`)
+        .join(",")
+    )
+    .digest("hex");
+  return JSON.stringify([
+    rollCall.chamber,
+    rollCall.billId,
+    rollCall.date,
+    rollCall.desc,
+    rollCall.yea,
+    rollCall.nay,
+    rollCall.nv,
+    rollCall.absent,
+    rollCall.passed,
+    memberListSha1,
+  ]);
+}
+
 function readValueFlag(argv: readonly string[], flagName: string): string | null {
   const index = argv.indexOf(flagName);
   if (index >= 0) {
@@ -325,8 +359,10 @@ async function main(): Promise<void> {
   let excludedMeasureVotes = 0;
   let committeeVotes = 0;
   let unrecordedVotes = 0;
+  let duplicateVotes = 0;
   let billFilterMisses = 0;
   const rollOwner = new Map<number, string>();
+  const keeperRollByIdentity = new Map<string, number>();
   try {
     // Deterministic order: by roll_call_id, which LegiScan issues in time
     // order. Parse errors surface as rows; unparseable ids sort first.
@@ -400,15 +436,29 @@ async function main(): Promise<void> {
           committeeVotes += 1;
           continue;
         }
-        rows.push(row);
-
+        // The same roll_call_id in two dataset files is a malformed
+        // dataset, never a LegiScan re-issue (re-issues carry NEW ids) —
+        // so the collision must surface before the identity collapse
+        // below could swallow an identical-content repeat.
         const owner = rollOwner.get(rollCall.rollCallId);
         if (owner !== undefined) {
           row.outcome = "collision";
           row.error = `roll_call_id ${rollCall.rollCallId} already belongs to ${owner} in this dataset`;
+          rows.push(row);
           continue;
         }
         rollOwner.set(rollCall.rollCallId, bill.billNumber);
+
+        // A re-issued id for an action already kept this run: votes are
+        // processed in ascending roll_call_id order, so the kept id is the
+        // lowest of its group — the rest are counted, never stored.
+        const identity = legiscanRollCallIdentityKey(rollCall);
+        if (keeperRollByIdentity.has(identity)) {
+          duplicateVotes += 1;
+          continue;
+        }
+        keeperRollByIdentity.set(identity, rollCall.rollCallId);
+        rows.push(row);
 
         // The record's source_url: the bill feed's own per-roll page URL,
         // falling back to the documented page shape. Either way it must
@@ -509,6 +559,7 @@ async function main(): Promise<void> {
     excludedMeasureVotes,
     committeeVotes,
     unrecordedVotes,
+    duplicateVotes,
     floorVotes,
     surfaced,
     fileErrors: dataset.fileErrors,

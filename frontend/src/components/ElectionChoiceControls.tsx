@@ -1,5 +1,4 @@
 import { useId } from "react";
-import type { ReactNode } from "react";
 import { ApiError, useElectionChoiceSaving, useMe, useSetElectionChoice } from "@voteapp/api-client";
 import type { ElectionChoice } from "@voteapp/api-client";
 import { setDraftCandidateChoice, setDraftMeasureChoice } from "../lib/ballotDraft";
@@ -271,9 +270,6 @@ type MeasureChoiceButtonsProps = {
   choice: ElectionChoice | undefined;
   /** Stretch the pair across the container (the sticky measure card). */
   fullWidth?: boolean;
-  /** Extra control rendered on the same row after the No button (the measure
-   * card's auto-pick button); its wrapped panels take full rows below. */
-  trailing?: ReactNode;
 };
 
 /**
@@ -290,7 +286,6 @@ export function MeasureChoiceButtons({
   electionDate,
   choice,
   fullWidth = false,
-  trailing,
 }: MeasureChoiceButtonsProps) {
   const { me } = useMe();
   const isGuest = me === null;
@@ -344,7 +339,6 @@ export function MeasureChoiceButtons({
       >
         {position === "no" ? "✓ No" : "No"}
       </button>
-      {trailing}
       {setChoice.isError && !setChoice.isPending ? <SaveError error={setChoice.error} /> : null}
     </div>
   );

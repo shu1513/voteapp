@@ -737,6 +737,9 @@ describe("ElectionPage", () => {
     // mid-page buttons are gone).
     const yes = await screen.findByRole("button", { name: "Yes" });
     expect(screen.getAllByRole("button", { name: "Yes" })).toHaveLength(1);
+    // Auto-pick moved off the sticky card into the measure section (after
+    // the yes/no explainer boxes) — still exactly one on the page.
+    expect(screen.getAllByRole("button", { name: "Auto-pick by my issues" })).toHaveLength(1);
     // Nothing to confirm before the pick.
     expect(screen.queryByRole("link", { name: /Ballot Draft/ })).not.toBeInTheDocument();
     await userEvent.setup().click(yes);

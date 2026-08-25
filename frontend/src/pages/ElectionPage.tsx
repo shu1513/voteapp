@@ -793,6 +793,17 @@ export function ElectionPage() {
                 <p className="mt-1 text-sm text-red-900">{measure.what_no_means}</p>
               </div>
             </div>
+            {/* Auto-pick sits here, not on the sticky card's row: right after
+                reading what Yes and No mean is where "answer from my issues"
+                helps, and three buttons on the card's one row were cramped.
+                Compact so the Yes/No pair stays the loud control; same gate
+                as the card, and same key rationale (the route element
+                survives rail walks). */}
+            {data.race_type === "ballot_measure" && showChoiceControls ? (
+              <div className="mt-3">
+                <AutoPickControl key={data.id} electionId={data.id} seatsToFill={null} compact />
+              </div>
+            ) : null}
             {/* No inline Yes/No here: the sticky card at the page's end is
                 the ONE pick control (same single-control rule as the
                 candidate page) — and being pinned, it stays on screen while
@@ -1172,18 +1183,12 @@ export function ElectionPage() {
             data-sticky-pick-cta=""
             className="sticky bottom-3 z-30 mt-6 rounded-xl border border-line bg-white p-3 shadow-lg"
           >
-            {/* Measure-side "Pick by my issues": answers Yes/No from the measure's
-                issue tags. Rides the same row as the Yes/No pair (trailing
-                slot, inline mode) — the card is the page's one pick control
-                and the decision is one row. Same key rationale as the office
-                control: the route element survives rail walks. */}
             <MeasureChoiceButtons
               electionId={data.id}
               raceTitle={data.official_ballot_title}
               electionDate={data.election_date}
               choice={myChoice}
               fullWidth
-              trailing={<AutoPickControl key={data.id} electionId={data.id} seatsToFill={null} inline />}
             />
             {/* Back link only for election-list arrivals — a My-Picks
                 arrival would get a back link and a draft link to the same
