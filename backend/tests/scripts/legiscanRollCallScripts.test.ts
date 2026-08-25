@@ -65,8 +65,12 @@ describe("readLegiscanDataset + surveyLegiscanDataset", () => {
         { people_id: 12, vote_id: 2 },
       ],
     };
+    // Same question published summary-only (empty member list, real
+    // tallies) — the Texas Senate non-record-vote shape.
+    const unrecorded = { ...rollCall, roll_call_id: 78, votes: [] };
     writeFileSync(join(dir, "XX/2025-2026_Regular_Session/bill/HB1.json"), JSON.stringify({ status: "OK", bill }));
     writeFileSync(join(dir, "XX/2025-2026_Regular_Session/vote/77.json"), JSON.stringify({ status: "OK", roll_call: rollCall }));
+    writeFileSync(join(dir, "XX/2025-2026_Regular_Session/vote/78.json"), JSON.stringify({ status: "OK", roll_call: unrecorded }));
     writeFileSync(
       join(dir, "XX/2025-2026_Regular_Session/people/10.json"),
       JSON.stringify({ status: "OK", person: { people_id: 10, name: "A B", first_name: "A", last_name: "B", role: "Rep" } })
@@ -76,7 +80,7 @@ describe("readLegiscanDataset + surveyLegiscanDataset", () => {
 
     const dataset = readLegiscanDataset(dir);
     expect(dataset.billsById.get(1)?.measureId).toBe("HB 1");
-    expect(dataset.votes).toHaveLength(1);
+    expect(dataset.votes).toHaveLength(2);
     expect(dataset.people).toHaveLength(1);
     expect(dataset.fileErrors).toHaveLength(1);
     expect(dataset.fileErrors[0]!.file).toContain("broken.json");
@@ -88,7 +92,8 @@ describe("readLegiscanDataset + surveyLegiscanDataset", () => {
       {
         chamber: "house",
         desc: "Third Reading",
-        count: 1,
+        count: 2,
+        withoutMemberList: 1,
         minTotal: 3,
         maxTotal: 3,
         billTypes: ["B"],

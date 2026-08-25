@@ -145,6 +145,25 @@ describe("parseLegiscanRollCall", () => {
     ).toThrow("unknown vote_id 9");
   });
 
+  it("accepts an unrecorded roll call (summary tallies, empty member list)", () => {
+    // A Texas Senate non-record vote: real tallies, no positions. Not a
+    // feed defect — the summary stands alone with nothing to cross-check.
+    const rollCall = parseLegiscanRollCall(rollCallElement({ yea: 31, nay: 0, nv: 0, absent: 0, total: 31, votes: [] }));
+    expect(rollCall.votes).toHaveLength(0);
+    expect(rollCall.yea).toBe(31);
+    const votes = legiscanMemberVotes(rollCall);
+    expect(votes.yeas).toHaveLength(0);
+    expect(votes.nays).toHaveLength(0);
+  });
+
+  it("still rejects an internally inconsistent summary, member list or not", () => {
+    // total must equal yea+nay+nv+absent even when no positions are
+    // published — the floor-vs-committee cut keys on total.
+    expect(() =>
+      parseLegiscanRollCall(rollCallElement({ yea: 31, nay: 0, nv: 0, absent: 0, total: 30, votes: [] }))
+    ).toThrow("total says 30 but yea+nay+nv+absent is 31");
+  });
+
   it("rejects a roll_call_id outside the int4 range and a bad chamber", () => {
     expect(() => parseLegiscanRollCall(rollCallElement({ roll_call_id: 2_200_000_000 }))).toThrow("storable range");
     expect(() => parseLegiscanRollCall(rollCallElement({ chamber: "J" }))).toThrow("chamber is not H or S");
@@ -265,9 +284,41 @@ describe("legiscanRollCallPageUrl", () => {
 });
 
 describe("getLegiscanStateConfig", () => {
-  it("ships with no state registered, so no state can be fetched unsurveyed", () => {
-    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual([]);
-    expect(() => getLegiscanStateConfig("TX")).toThrow("no LegiScan state config for TX");
+  it("serves only surveyed states; an unsurveyed state is refused by name", () => {
+    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual(["TX"]);
+    expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
+    expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
+    expect(() => getLegiscanStateConfig("PA")).toThrow("no LegiScan state config for PA");
+  });
+
+  it("classifies Texas's real desc vocabulary as surveyed", () => {
+    const config = LEGISCAN_STATE_CONFIGS.TX!;
+    const tx = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
+      classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+    // House stamps every desc with a unique roll id.
+    expect(tx("Read 3rd time RV#3832", 150)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(tx("Read 3rd time", 31, "senate")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    // The House-only constitutional-amendment passage wording.
+    expect(tx("Adopted RV#712", 150)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(tx("Adopted as amended RV#3001", 150)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(tx("Senate concurs in House amendment(s)", 31, "senate").questionClass).toBe("concurrence");
+    expect(tx("Senate adopts conference committee report", 31, "senate").questionClass).toBe("conference_report");
+    // Measured floor-sized procedural families are excluded, not surfaced.
+    for (const desc of [
+      "Read 2nd time RV#88",
+      "Read 2nd time & passed to engrossment",
+      "Rules suspended-Regular order of business",
+      "Three day rule suspended",
+      "Amendment fails of adoption RV#77",
+      "Statement(s) of vote recorded in journal RV#123",
+      "Laid out as postponed business RV#5",
+    ]) {
+      expect(tx(desc, 150).reason, desc).toBe("excluded_question");
+    }
+    // A bare roll id could be anything: surfaced, never dropped.
+    expect(tx("RV#105", 150)).toMatchObject({ isFloorVote: null, reason: "unknown_question" });
+    // Committee-sized unknowns are still cut by tally.
+    expect(tx("Reported favorably", 9).reason).toBe("committee_tally:9/150");
   });
 
   it("refuses a state that has its own pipeline, whatever the spelling", () => {
