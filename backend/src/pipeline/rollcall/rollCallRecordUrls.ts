@@ -12,8 +12,8 @@ export type RollCallUrlKey = {
   // Ohio actions URL covers both chambers' votes on the bill). No caller
   // compares on this field — the key string is the comparison unit.
   chamber: LegislativeVoteChamber | null;
-  // `house:<year>:<roll>`, `senate:<congress>-<session>:<roll>`, or
-  // `oh:<general assembly>:<bill>`.
+  // `house:<year>:<roll>`, `senate:<congress>-<session>:<roll>`,
+  // `oh:<general assembly>:<bill>`, or `ls:<roll_call_id>`.
   key: string;
 };
 
@@ -31,6 +31,12 @@ const SENATE =
 // canonical spelling ends in a trailing slash (the API 301s to it).
 const OHIO_ACTIONS =
   /^https?:\/\/search-prod\.lis\.state\.oh\.us\/api\/v2\/general_assembly_(\d+)\/legislation\/([a-z]+\d+)\/actions\/?(?:[?#].*)?$/i;
+// The LegiScan per-roll page (`legiscan.com/TX/rollcall/HB1/id/1523456`),
+// the phase-4 states' source_url. roll_call_id is unique across the whole
+// national corpus, so the id alone is the key — the state and bill path
+// segments are display sugar the key must not depend on.
+const LEGISCAN_ROLLCALL =
+  /^https?:\/\/(?:www\.)?legiscan\.com\/[A-Za-z]{2}\/rollcall\/[^/?#]+\/id\/(\d+)\/?(?:[?#].*)?$/i;
 
 /** The roll call a URL cites, or null when it is not a roll-call URL. */
 export function rollCallUrlKey(url: string): RollCallUrlKey | null {
@@ -46,6 +52,10 @@ export function rollCallUrlKey(url: string): RollCallUrlKey | null {
   const ohio = OHIO_ACTIONS.exec(trimmed);
   if (ohio) {
     return { chamber: null, key: `oh:${Number(ohio[1])}:${ohio[2]!.toLowerCase()}` };
+  }
+  const legiscan = LEGISCAN_ROLLCALL.exec(trimmed);
+  if (legiscan) {
+    return { chamber: null, key: `ls:${Number(legiscan[1])}` };
   }
   return null;
 }

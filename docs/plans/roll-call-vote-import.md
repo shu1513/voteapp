@@ -453,8 +453,55 @@ importer with different evidence (see "Governors" above for sources).
   from the bill page's Documents tab; the two-sentence + labels + review
   flow is unchanged.
 
+## Decisions (2026-08-24, phase 4 code)
+
+- Phase-4 spine = LegiScan bulk datasets, as recommended above, read from an
+  EXTRACTED dataset directory. No live-API code: bulk is the plan of record,
+  no key exists yet, and untestable download code would ship unverified. The
+  operator downloads the session ZIP (legiscan.com/datasets, or
+  `getDatasetRaw` with a key once registered) and unzips it; the fetcher
+  routes files by their envelope key (`bill` / `roll_call` / `person`),
+  never by archive layout. Schema pinned against the LegiScan API User
+  Manual v1.91 (rev 2025-03-17); every read field re-checked at parse time.
+  Code: `rollcall:legiscan:fetch` / `rollcall:legiscan:resolve` /
+  `rollcall:legiscan:import` (+ registry states accepted by the shared
+  `rollcall:judge`).
+- `roll_number` = LegiScan `roll_call_id` (real, globally unique, int4-safe);
+  `session` = LegiScan `session_id` as a string; `source_url` = the per-roll
+  page `legiscan.com/<ST>/rollcall/<bill>/id/<roll_call_id>` from the bill
+  feed's own `votes[].url` (constructed fallback), which names exactly one
+  vote — so none of Ohio's surrogate-roll or same-day-collision machinery
+  carries over. legiscan.com now sits behind a Cloudflare challenge (403);
+  the record validator explicitly allows 403, verified end-to-end.
+- Which descriptions are final-action floor votes is a PER-STATE fact:
+  `legiscanStateConfigs.ts` is a registry (jurisdiction, pinned session_id,
+  chamber sizes, kept/excluded desc regexes) that ships EMPTY. A state is
+  added only after `--survey` (config-free desc histogram per chamber with
+  tally ranges) has been read — patterns are measured, never guessed.
+  Committee-ness: kept desc + total ≥ 60% of chamber = floor; unknown desc +
+  total < 50% = committee (rejected before the queue, counted); everything
+  between classifies `is_floor_vote = null` — stored and surfaced, so a
+  state that lists only voting members cannot lose a floor vote silently.
+  Kept instrument types = LegiScan `bill_type` B / JR / JRCA / CA.
+- Identity layer = a committed crosswalk file keyed by `people_id`, pinned
+  to the jurisdiction only (people_id is stable across sessions, unlike
+  Ohio's per-GA lpids). The proposer keeps the Ohio name rules
+  (last-name tail + first exact-or-prefix, unique both directions) and adds
+  `seatAgrees` (member's `HD-063` vs the candidacy's district) as reviewer
+  information — a mismatch flags, never vetoes, since a member may be
+  running for another seat. LegiScan's `last_name` is a clean field, so the
+  Ohio pilot's `"Hall, D."` blind spot does not carry over. The importer
+  runs off committed files alone: evidence dir + crosswalk + the people
+  snapshot `legiscan-people-<st>-<sessionId>.json` that resolve writes.
+- Smoke-tested 2026-08-24 on a synthetic one-bill dataset against the local
+  DB: fetch (inserted → unchanged on re-run), judge (approved through the
+  registry gate), import dry-run + real (transaction, sha pin, live
+  sentence validation of the legiscan.com URL, zero records for an
+  all-null crosswalk), then the row deleted and the temp config removed.
+
 ## Open questions
 
-- Register a free LegiScan API key (needed for the phase-4 bulk datasets)?
+- Register a free LegiScan API key (needed to download the phase-4 bulk
+  datasets; the user must create the account).
 - LegiScan ToS read-through before redistributing raw dumps (data itself is
   CC BY 4.0).

@@ -30,6 +30,17 @@ describe("rollCallUrlKey", () => {
     );
   });
 
+  it("keys the LegiScan per-roll page on roll_call_id alone", () => {
+    const page = rollCallUrlKey("https://legiscan.com/TX/rollcall/HB1/id/1523456");
+    expect(page).toEqual({ chamber: null, key: "ls:1523456" });
+    // The state and bill segments are display sugar; www, trailing slash,
+    // and query strings fold away.
+    expect(rollCallUrlKey("https://www.legiscan.com/tx/rollcall/hb1/id/1523456/")).toEqual(page);
+    expect(rollCallUrlKey("http://legiscan.com/TX/rollcall/HB0001/id/1523456?utm=x")).toEqual(page);
+    // A LegiScan BILL page is not a roll call.
+    expect(rollCallUrlKey("https://legiscan.com/TX/bill/HB1/2025")).toBeNull();
+  });
+
   it("returns null for anything that is not a roll-call page", () => {
     for (const url of [
       "https://clerk.house.gov/members/A000370",
