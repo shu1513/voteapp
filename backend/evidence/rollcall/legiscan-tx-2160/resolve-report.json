@@ -1,0 +1,2686 @@
+{
+  "importerVersion": "rollcall-legiscan-resolve-v1",
+  "startedAt": "2026-08-25T02:43:02.487Z",
+  "finishedAt": "2026-08-25T02:43:06.336Z",
+  "jurisdiction": "TX",
+  "sessionId": 2160,
+  "evidenceDir": "/Users/shu/voteApp/.claude/worktrees/caveman-ultra-58491f/backend/evidence/rollcall/legiscan-tx-2160",
+  "scopeFrom": "2026-11-01",
+  "peopleSource": "/Users/shu/legiscan-data/tx-2160/extracted",
+  "peopleMembers": 181,
+  "candidatePool": 313,
+  "crosswalkFile": null,
+  "crosswalkEntries": null,
+  "crosswalkPeopleNotInSnapshot": [],
+  "proposals": [
+    {
+      "peopleId": 5851,
+      "rosterName": "Rafael Anchia",
+      "rosterSeat": "house HD-103",
+      "candidateId": "cffb5133-d81e-4d5d-b17a-8de7fd8128d1",
+      "candidateName": "Rafael Anchia",
+      "candidacy": "state_lower: State House District 103 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 5862,
+      "rosterName": "Angie Button",
+      "rosterSeat": "house HD-112",
+      "candidateId": "fe8e5a80-befe-4a61-bdb8-ba5f31fa194e",
+      "candidateName": "Angie Chen Button",
+      "candidacy": "state_lower: State House District 112 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 5874,
+      "rosterName": "Tom Craddick",
+      "rosterSeat": "house HD-082",
+      "candidateId": "7a3e5e01-255f-4956-a15b-740bf7286abf",
+      "candidateName": "Tom Craddick",
+      "candidacy": "state_lower: State House District 82 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 5877,
+      "rosterName": "Drew Darby",
+      "rosterSeat": "house HD-072",
+      "candidateId": "ef672b84-e44d-47fd-85a2-a17dbcf41d9d",
+      "candidateName": "Drew Darby",
+      "candidacy": "state_lower: State House District 72 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 5879,
+      "rosterName": "Yvonne Davis",
+      "rosterSeat": "house HD-111",
+      "candidateId": "dd401f04-b9d6-4883-b479-1f9c89bc74d0",
+      "candidateName": "Yvonne Davis",
+      "candidacy": "state_lower: State House District 111 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 5884,
+      "rosterName": "Harold Dutton",
+      "rosterSeat": "house HD-142",
+      "candidateId": "57520014-5562-4e6b-bd64-242bd165774d",
+      "candidateName": "Harold Dutton Jr.",
+      "candidacy": "state_lower: State House District 142 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 5899,
+      "rosterName": "Charlie Geren",
+      "rosterSeat": "house HD-099",
+      "candidateId": "ce2fe095-7cca-4266-b3ca-55a7f89e5d19",
+      "candidateName": "Charlie Geren",
+      "candidacy": "state_lower: State House District 99 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 5903,
+      "rosterName": "Ryan Guillen",
+      "rosterSeat": "house HD-031",
+      "candidateId": "553fef78-e156-43b8-b55d-f614fdacd19b",
+      "candidateName": "Ryan Guillen",
+      "candidacy": "state_lower: State House District 31 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 5904,
+      "rosterName": "Roland Gutierrez",
+      "rosterSeat": "senate SD-019",
+      "candidateId": "ef97d97b-b4a4-433a-8c35-bea79d9ec4b7",
+      "candidateName": "Roland Gutierrez",
+      "candidacy": "state_upper: State Senate District 19 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 5912,
+      "rosterName": "Ana Hernandez",
+      "rosterSeat": "house HD-143",
+      "candidateId": "5071a063-6cd7-4d6c-9358-3a73fc7b7102",
+      "candidateName": "Ana Hernandez",
+      "candidacy": "state_lower: State House District 143 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 5920,
+      "rosterName": "Donna Howard",
+      "rosterSeat": "house HD-048",
+      "candidateId": "e6933d95-39cc-483b-98c7-8999d95b5977",
+      "candidateName": "Donna Howard",
+      "candidacy": "state_lower: State House District 48 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 5921,
+      "rosterName": "Bryan Hughes",
+      "rosterSeat": "senate SD-001",
+      "candidateId": "edc07e39-b124-4092-a936-bc47d2a4eb66",
+      "candidateName": "Bryan Hughes",
+      "candidacy": "state_upper: State Senate District 1 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 5922,
+      "rosterName": "Todd Hunter",
+      "rosterSeat": "house HD-032",
+      "candidateId": "423c523f-13b5-4675-a444-b2d42a5d9735",
+      "candidateName": "Todd Hunter",
+      "candidacy": "state_lower: State House District 32 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 5933,
+      "rosterName": "Lois Kolkhorst",
+      "rosterSeat": "senate SD-018",
+      "candidateId": "d4e279b6-4835-491e-82b5-414a1aee499e",
+      "candidateName": "Lois Kolkhorst",
+      "candidacy": "state_upper: State Senate District 18 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 5944,
+      "rosterName": "Trey Martinez Fischer",
+      "rosterSeat": "house HD-116",
+      "candidateId": "57bae4ca-5b55-4735-b50b-6609e9b9a343",
+      "candidateName": "Trey Martinez Fischer",
+      "candidacy": "state_lower: State House District 116 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 5945,
+      "rosterName": "Armando Martinez",
+      "rosterSeat": "house HD-039",
+      "candidateId": "414d0535-889e-4ca6-be34-514d0c095b77",
+      "candidateName": "Armando Martinez",
+      "candidacy": "state_lower: State House District 39 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 5954,
+      "rosterName": "Joseph Moody",
+      "rosterSeat": "house HD-078",
+      "candidateId": "3f909c3d-1d7b-4687-8fed-f2e59bc7a6cf",
+      "candidateName": "Joseph Moody",
+      "candidacy": "state_lower: State House District 78 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 5971,
+      "rosterName": "Richard Raymond",
+      "rosterSeat": "house HD-042",
+      "candidateId": "0d075ea5-2057-487f-8d64-1060dd3d1058",
+      "candidateName": "Richard Raymond",
+      "candidacy": "state_lower: State House District 42 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 5997,
+      "rosterName": "Armando Walle",
+      "rosterSeat": "house HD-140",
+      "candidateId": "6e27e30e-45b0-4f16-a2a3-11705d660791",
+      "candidateName": "Armando Walle",
+      "candidacy": "state_lower: State House District 140 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 6032,
+      "rosterName": "Judith Zaffirini",
+      "rosterSeat": "senate SD-021",
+      "candidateId": "39907cb6-86ad-4bba-bc2b-ab75968f13bb",
+      "candidateName": "Judith Zaffirini",
+      "candidacy": "state_upper: State Senate District 21 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 11013,
+      "rosterName": "Charles Perry",
+      "rosterSeat": "senate SD-028",
+      "candidateId": "3e6ee0ff-b9c9-4279-91a2-d53942d0e5b7",
+      "candidateName": "Charles Perry",
+      "candidacy": "state_upper: State Senate District 28 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 11015,
+      "rosterName": "Charles Schwertner",
+      "rosterSeat": "senate SD-005",
+      "candidateId": "648b6263-5819-448d-ba52-728a1f87493a",
+      "candidateName": "Charles Schwertner",
+      "candidacy": "state_upper: State Senate District 5 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 11346,
+      "rosterName": "J.M. Lozano",
+      "rosterSeat": "house HD-043",
+      "candidateId": "aa411ca5-d140-47ea-a778-989b66fe6cf8",
+      "candidateName": "J.M. Lozano",
+      "candidacy": "state_lower: State House District 43 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 11349,
+      "rosterName": "Sergio Munoz",
+      "rosterSeat": "house HD-036",
+      "candidateId": "2d5cd0b7-693e-4306-ab50-01500833a095",
+      "candidateName": "Sergio Munoz Jr.",
+      "candidacy": "state_lower: State House District 36 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 11598,
+      "rosterName": "Ron Reynolds",
+      "rosterSeat": "house HD-027",
+      "candidateId": "eec4b97d-c668-4f66-945a-7894c810df96",
+      "candidateName": "Ron Reynolds",
+      "candidacy": "state_lower: State House District 27 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 11599,
+      "rosterName": "Borris Miles",
+      "rosterSeat": "senate SD-013",
+      "candidateId": "d06cd007-6532-4b4e-aaf7-b26793543f94",
+      "candidateName": "Borris Miles",
+      "candidacy": "state_upper: State Senate District 13 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 14046,
+      "rosterName": "Senfronia Thompson",
+      "rosterSeat": "house HD-141",
+      "candidateId": "0b23dea0-2212-4ecc-ad21-0f6638209c45",
+      "candidateName": "Senfronia Thompson",
+      "candidacy": "state_lower: State House District 141 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 14047,
+      "rosterName": "Jeff Leach",
+      "rosterSeat": "house HD-067",
+      "candidateId": "165606ec-8e0c-43a6-84a1-416acd2ec4d6",
+      "candidateName": "Jeff Leach",
+      "candidacy": "state_lower: State House District 67 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 14236,
+      "rosterName": "Terry Canales",
+      "rosterSeat": "house HD-040",
+      "candidateId": "bb5bd0bc-e497-4f2e-bef7-7b8beb5a8374",
+      "candidateName": "Terry Canales",
+      "candidacy": "state_lower: State House District 40 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 14568,
+      "rosterName": "Philip Cortez",
+      "rosterSeat": "house HD-117",
+      "candidateId": "72a5a714-3040-46bc-822e-c08f9c2ef923",
+      "candidateName": "Philip Cortez",
+      "candidacy": "state_lower: State House District 117 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 14784,
+      "rosterName": "Greg Bonnen",
+      "rosterSeat": "house HD-024",
+      "candidateId": "6c0c046b-1e35-4e9a-9346-f9efabd7b453",
+      "candidateName": "Greg Bonnen",
+      "candidacy": "state_lower: State House District 24 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 14990,
+      "rosterName": "Mary Gonzalez",
+      "rosterSeat": "house HD-075",
+      "candidateId": "7a76007a-df4b-466d-8eed-0ed6edf86e2f",
+      "candidateName": "Mary Gonzalez",
+      "candidacy": "state_lower: State House District 75 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15425,
+      "rosterName": "Ken King",
+      "rosterSeat": "house HD-088",
+      "candidateId": "653d3049-617f-474b-bdba-a6947ef69751",
+      "candidateName": "Ken King",
+      "candidacy": "state_lower: State House District 88 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15628,
+      "rosterName": "Oscar Longoria",
+      "rosterSeat": "house HD-035",
+      "candidateId": "65f12d7b-d966-490d-a134-1a8d6ce2ea4b",
+      "candidateName": "Oscar Longoria",
+      "candidacy": "state_lower: State House District 35 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15629,
+      "rosterName": "Mary Perez",
+      "rosterSeat": "house HD-144",
+      "candidateId": "a8b04351-1f25-4e40-85da-eb77da0eee4c",
+      "candidateName": "Mary Ann Perez",
+      "candidacy": "state_lower: State House District 144 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15686,
+      "rosterName": "James Frank",
+      "rosterSeat": "house HD-069",
+      "candidateId": "1fb382c0-1060-4b0a-a3c1-b6a8bc6b576e",
+      "candidateName": "James Frank",
+      "candidacy": "state_lower: State House District 69 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16346,
+      "rosterName": "William Metcalf",
+      "rosterSeat": "house HD-016",
+      "candidateId": "5da50773-9e16-4678-8a1c-44c828f5e70c",
+      "candidateName": "Will Metcalf",
+      "candidacy": "state_lower: State House District 16 (2024); Texas",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16526,
+      "rosterName": "Brooks Landgraf",
+      "rosterSeat": "house HD-081",
+      "candidateId": "df489be2-ada8-4296-aac0-2cb55acae819",
+      "candidateName": "Brooks Landgraf",
+      "candidacy": "state_lower: State House District 81 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16836,
+      "rosterName": "Dustin Burrows",
+      "rosterSeat": "house HD-083",
+      "candidateId": "5bdd6b2f-d43a-40fa-8208-cecb03175f68",
+      "candidateName": "Dustin Burrows",
+      "candidacy": "state_lower: State House District 83 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16842,
+      "rosterName": "Dennis Paul",
+      "rosterSeat": "house HD-129",
+      "candidateId": "6341f2a2-1a7d-4e55-986d-2e00f4a7e9e4",
+      "candidateName": "Dennis Paul",
+      "candidacy": "state_upper: State Senate District 11 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 16847,
+      "rosterName": "Matthew Shaheen",
+      "rosterSeat": "house HD-066",
+      "candidateId": "2a5ac18d-48cd-4017-83fa-30c3240d4139",
+      "candidateName": "Matt Shaheen",
+      "candidacy": "state_lower: State House District 66 (2024); Texas",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17365,
+      "rosterName": "Bob Hall",
+      "rosterSeat": "senate SD-002",
+      "candidateId": "9a7c11ba-469e-4e17-8962-953858f1bfc1",
+      "candidateName": "Bob Hall",
+      "candidacy": "state_upper: State Senate District 2 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17574,
+      "rosterName": "Toni Rose",
+      "rosterSeat": "house HD-110",
+      "candidateId": "9edb09bf-910f-4abb-9b66-11106597de11",
+      "candidateName": "Toni Rose",
+      "candidacy": "state_lower: State House District 110 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17984,
+      "rosterName": "Tom Oliverson",
+      "rosterSeat": "house HD-130",
+      "candidateId": "556b9c11-6094-4735-9ec7-98cafde93e1e",
+      "candidateName": "Tom Oliverson",
+      "candidacy": "state_lower: State House District 130 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18029,
+      "rosterName": "Barbara Gervin-Hawkins",
+      "rosterSeat": "house HD-120",
+      "candidateId": "08202d70-7f3d-491e-a20b-b5fa602889b4",
+      "candidateName": "Barbara Gervin-Hawkins",
+      "candidacy": "state_lower: State House District 120 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18672,
+      "rosterName": "Jay Dean",
+      "rosterSeat": "house HD-007",
+      "candidateId": "8ff64d90-459e-4509-8549-fe454e4c06b4",
+      "candidateName": "Jay Dean",
+      "candidacy": "state_lower: State House District 7 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18673,
+      "rosterName": "Cole Hefner",
+      "rosterSeat": "house HD-005",
+      "candidateId": "395df13b-a81e-470a-b0eb-b80d12994b4f",
+      "candidateName": "Cole Hefner",
+      "candidacy": "state_lower: State House District 5 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18680,
+      "rosterName": "Valoree Swanson",
+      "rosterSeat": "house HD-150",
+      "candidateId": "5ed7f58d-d2ba-4b1a-8532-346437848e33",
+      "candidateName": "Valoree Swanson",
+      "candidacy": "state_lower: State House District 150 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18682,
+      "rosterName": "Terry Wilson",
+      "rosterSeat": "house HD-020",
+      "candidateId": "3867e1f8-c4a2-4d04-aadf-444f036b36a4",
+      "candidateName": "Terry Wilson",
+      "candidacy": "state_lower: State House District 20 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19686,
+      "rosterName": "Peter Flores",
+      "rosterSeat": "senate SD-024",
+      "candidateId": "a05993b0-7d76-47e4-ac41-c66a56589357",
+      "candidateName": "Pete Flores",
+      "candidacy": "state_upper: State Senate District 24 (2024); Texas",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20016,
+      "rosterName": "Brad Buckley",
+      "rosterSeat": "house HD-054",
+      "candidateId": "33e8633a-c9b5-4d78-9d2a-df1926c03166",
+      "candidateName": "Brad Buckley",
+      "candidacy": "state_lower: State House District 54 (2024); Texas",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20173,
+      "rosterName": "Jared Patterson",
+      "rosterSeat": "house HD-106",
+      "candidateId": "b76c6fe3-cf0b-4797-b9b1-8dcf73a668a0",
+      "candidateName": "Jared Patterson",
+      "candidacy": "state_lower: State House District 106 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20228,
+      "rosterName": "Keith Bell",
+      "rosterSeat": "house HD-004",
+      "candidateId": "9b7dd16e-c903-4c0c-b5b5-456daf5c871e",
+      "candidateName": "Keith Bell",
+      "candidacy": "state_lower: State House District 4 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20229,
+      "rosterName": "Rhetta Bowers",
+      "rosterSeat": "house HD-113",
+      "candidateId": "9f2db8a2-d565-46ce-a5a6-950b9fd7ffda",
+      "candidateName": "Rhetta Andrews Bowers",
+      "candidacy": "state_lower: State House District 113 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20230,
+      "rosterName": "John Bucy",
+      "rosterSeat": "house HD-136",
+      "candidateId": "cd251954-90c5-4d6f-b071-8b2b9af817ec",
+      "candidateName": "John Bucy III",
+      "candidacy": "state_lower: State House District 136 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20232,
+      "rosterName": "Sheryl Cole",
+      "rosterSeat": "house HD-046",
+      "candidateId": "a858e781-6992-4516-95fd-5b69da710dbf",
+      "candidateName": "Sheryl Cole",
+      "candidacy": "state_lower: State House District 46 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20234,
+      "rosterName": "Jessica Gonzalez",
+      "rosterSeat": "house HD-104",
+      "candidateId": "4f6d9c06-f3e4-41be-9d45-dc699680b20b",
+      "candidateName": "Jessica Gonzalez",
+      "candidacy": "state_lower: State House District 104 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20237,
+      "rosterName": "Cody Harris",
+      "rosterSeat": "house HD-008",
+      "candidateId": "f7cb879a-15c6-426c-bc60-06b62ea4bdd2",
+      "candidateName": "Cody Harris",
+      "candidacy": "state_lower: State House District 8 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20241,
+      "rosterName": "Candy Noble",
+      "rosterSeat": "house HD-089",
+      "candidateId": "92e8f6cb-0a87-4768-a9e1-061481bb9704",
+      "candidateName": "Candy Noble",
+      "candidacy": "state_lower: State House District 89 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20248,
+      "rosterName": "Erin Zwiener",
+      "rosterSeat": "house HD-045",
+      "candidateId": "e14e415e-40a8-472d-9345-fcfba755daa2",
+      "candidateName": "Erin Zwiener",
+      "candidacy": "state_lower: State House District 45 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21335,
+      "rosterName": "Christina Morales",
+      "rosterSeat": "house HD-145",
+      "candidateId": "933a686e-761d-464f-80ec-25765f1722f8",
+      "candidateName": "Christina Morales",
+      "candidacy": "state_lower: State House District 145 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21636,
+      "rosterName": "Gary Gates",
+      "rosterSeat": "house HD-028",
+      "candidateId": "234a0f75-d8b7-47ae-9bfa-87f8e5ffd024",
+      "candidateName": "Gary Gates",
+      "candidacy": "state_lower: State House District 28 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21683,
+      "rosterName": "Eddie Morales",
+      "rosterSeat": "house HD-074",
+      "candidateId": "c9aa2447-83d0-4d57-ae00-d4099db15fce",
+      "candidateName": "Eddie Morales Jr.",
+      "candidacy": "state_lower: State House District 74 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21776,
+      "rosterName": "David Cook",
+      "rosterSeat": "house HD-096",
+      "candidateId": "633bafd5-f423-4ade-9da3-2c9502d44fab",
+      "candidateName": "David Cook",
+      "candidacy": "state_upper: State Senate District 22 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 22376,
+      "rosterName": "Cody Vasut",
+      "rosterSeat": "house HD-025",
+      "candidateId": "787f39a0-1cfb-4a40-a160-c1cab9ba148a",
+      "candidateName": "Cody Vasut",
+      "candidacy": "state_lower: State House District 25 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22427,
+      "rosterName": "Elizabeth Campos",
+      "rosterSeat": "house HD-119",
+      "candidateId": "d8809928-dac6-41b2-bbf4-784e2df75e4a",
+      "candidateName": "Elizabeth Campos",
+      "candidacy": "state_lower: State House District 119 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22431,
+      "rosterName": "Lacey Hull",
+      "rosterSeat": "house HD-138",
+      "candidateId": "b2c89d71-6c9f-4a0a-b0d6-c1b0dca7636c",
+      "candidateName": "Lacey Hull",
+      "candidacy": "state_lower: State House District 138 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22433,
+      "rosterName": "Ann Johnson",
+      "rosterSeat": "house HD-134",
+      "candidateId": "c5ab98e3-3c85-4009-a14c-3cb2c17626a4",
+      "candidateName": "Ann Johnson",
+      "candidacy": "state_lower: State House District 134 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22435,
+      "rosterName": "Shelby Slawson",
+      "rosterSeat": "house HD-059",
+      "candidateId": "c1c23532-8019-4e49-9713-99296b5d04ea",
+      "candidateName": "Shelby Slawson",
+      "candidacy": "state_lower: State House District 59 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22896,
+      "rosterName": "David Spiller",
+      "rosterSeat": "house HD-068",
+      "candidateId": "c0b84bdb-2203-42fc-8dea-eae9c786dd56",
+      "candidateName": "David Spiller",
+      "candidacy": "state_lower: State House District 68 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22955,
+      "rosterName": "Brian Harrison",
+      "rosterSeat": "house HD-010",
+      "candidateId": "972e1bcb-5b67-477d-a450-f80e047d0c9d",
+      "candidateName": "Brian E. Harrison",
+      "candidacy": "state_lower: State House District 10 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23120,
+      "rosterName": "Erin Gamez",
+      "rosterSeat": "house HD-038",
+      "candidateId": "0317d667-4533-4d2d-a98f-ee0114df66bc",
+      "candidateName": "Erin Gamez",
+      "candidacy": "state_lower: State House District 38 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23179,
+      "rosterName": "Terri Leo-Wilson",
+      "rosterSeat": "house HD-023",
+      "candidateId": "928c22bc-24f8-49e1-bed1-bf4b88fc315f",
+      "candidateName": "Terri Leo-Wilson",
+      "candidacy": "state_lower: State House District 23 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23180,
+      "rosterName": "Ellen Troxclair",
+      "rosterSeat": "house HD-019",
+      "candidateId": "f89b8d76-bbe2-476b-85c2-595901d0022a",
+      "candidateName": "Ellen Troxclair",
+      "candidacy": "state_lower: State House District 19 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23184,
+      "rosterName": "Mihaela Plesa",
+      "rosterSeat": "house HD-070",
+      "candidateId": "24283d17-7fbd-4bdf-983f-89e3c59de7be",
+      "candidateName": "Mihaela Plesa",
+      "candidacy": "state_lower: State House District 70 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23342,
+      "rosterName": "Carl Tepper",
+      "rosterSeat": "house HD-084",
+      "candidateId": "b70e97ff-8ec1-4a39-877f-5f8e9597a6e4",
+      "candidateName": "Carl Tepper",
+      "candidacy": "state_lower: State House District 84 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23384,
+      "rosterName": "Charles Cunningham",
+      "rosterSeat": "house HD-127",
+      "candidateId": "e46e12e2-2c71-4c22-a6de-5cb78d4bb3b0",
+      "candidateName": "Charles Cunningham",
+      "candidacy": "state_lower: State House District 127 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24075,
+      "rosterName": "Salman Bhojani",
+      "rosterSeat": "house HD-092",
+      "candidateId": "97ee8032-5858-4013-9bbc-b381fb4356fe",
+      "candidateName": "Salman Bhojani",
+      "candidacy": "state_lower: State House District 92 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24077,
+      "rosterName": "Ben Bumgarner",
+      "rosterSeat": "house HD-063",
+      "candidateId": "767eb099-71ca-4ca1-a745-4d0e93425276",
+      "candidateName": "Ben Bumgarner",
+      "candidacy": "state_lower: State House District 63 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24078,
+      "rosterName": "Mano DeAyala",
+      "rosterSeat": "house HD-133",
+      "candidateId": "e4ce86cf-9903-4737-b8fa-2599023ce290",
+      "candidateName": "Mano Deayala",
+      "candidacy": "state_lower: State House District 133 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24079,
+      "rosterName": "Mark Dorazio",
+      "rosterSeat": "house HD-122",
+      "candidateId": "e9f3f98a-1290-440d-aa9e-9aae7177906d",
+      "candidateName": "Mark Dorazio",
+      "candidacy": "state_lower: State House District 122 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24080,
+      "rosterName": "Maria Flores",
+      "rosterSeat": "house HD-051",
+      "candidateId": "fc260ae3-3b41-4351-bc07-a78b0ea219f6",
+      "candidateName": "Maria Luisa Flores",
+      "candidacy": "state_lower: State House District 51 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24082,
+      "rosterName": "Josey Garcia",
+      "rosterSeat": "house HD-124",
+      "candidateId": "31a9b4b1-2201-4ec7-b1ae-5f461b6dcb1f",
+      "candidateName": "Josey Garcia",
+      "candidacy": "state_lower: State House District 124 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24083,
+      "rosterName": "Stan Gerdes",
+      "rosterSeat": "house HD-017",
+      "candidateId": "85a10b98-721c-46a1-8567-5b695bab703e",
+      "candidateName": "Stan Gerdes",
+      "candidacy": "state_lower: State House District 17 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24084,
+      "rosterName": "Caroline Harris Davila",
+      "rosterSeat": "house HD-052",
+      "candidateId": "0797e27e-57f5-4681-bc05-c4aa098f0ecb",
+      "candidateName": "Caroline Harris Davila",
+      "candidacy": "state_lower: State House District 52 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24085,
+      "rosterName": "Richard Hayes",
+      "rosterSeat": "house HD-057",
+      "candidateId": "db2faa7d-4d28-4401-be69-13f472484058",
+      "candidateName": "Richard Hayes",
+      "candidacy": "state_lower: State House District 57 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24086,
+      "rosterName": "Carrie Isaac",
+      "rosterSeat": "house HD-073",
+      "candidateId": "404b954e-e61c-4d8d-8b1b-b7cafe795e08",
+      "candidateName": "Carrie Isaac",
+      "candidacy": "state_lower: State House District 73 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24087,
+      "rosterName": "Venton Jones",
+      "rosterSeat": "house HD-100",
+      "candidateId": "ca202528-7131-4d7c-a0d6-d29c6b465581",
+      "candidateName": "Venton Jones",
+      "candidacy": "state_lower: State House District 100 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24089,
+      "rosterName": "Suleman Lalani",
+      "rosterSeat": "house HD-076",
+      "candidateId": "5edc87f2-4b3b-4c74-bf3f-ae8b349fc064",
+      "candidateName": "Suleman Lalani",
+      "candidacy": "state_lower: State House District 76 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24090,
+      "rosterName": "Janie Lopez",
+      "rosterSeat": "house HD-037",
+      "candidateId": "12a536cb-4a5f-4a35-9a69-e5f7e6113d92",
+      "candidateName": "Janie Lopez",
+      "candidacy": "state_lower: State House District 37 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24091,
+      "rosterName": "Angelia Orr",
+      "rosterSeat": "house HD-013",
+      "candidateId": "37e9f504-cfed-43ce-9d29-781a2e14d4c2",
+      "candidateName": "Angelia Orr",
+      "candidacy": "state_lower: State House District 13 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24827,
+      "rosterName": "Kevin Sparks",
+      "rosterSeat": "senate SD-031",
+      "candidateId": "b0e6b87b-3407-43da-b408-4bf1323f2f4f",
+      "candidateName": "Kevin Sparks",
+      "candidacy": "state_upper: State Senate District 31 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25225,
+      "rosterName": "Pat Curry",
+      "rosterSeat": "house HD-056",
+      "candidateId": "bd68c7b2-8c8a-4895-af25-6651a2a81cdb",
+      "candidateName": "Pat Curry",
+      "candidacy": "state_lower: State House District 56 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25226,
+      "rosterName": "Cassandra Garcia Hernandez",
+      "rosterSeat": "house HD-115",
+      "candidateId": "d4607064-bd10-4c1f-856c-9c168e496253",
+      "candidateName": "Cassandra Garcia Hernandez",
+      "candidacy": "state_lower: State House District 115 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25227,
+      "rosterName": "Mike Olcott",
+      "rosterSeat": "house HD-060",
+      "candidateId": "79b6ba41-8deb-475b-a51e-b4156918478a",
+      "candidateName": "Mike Olcott",
+      "candidacy": "state_lower: State House District 60 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25228,
+      "rosterName": "Lauren Ashley Simmons",
+      "rosterSeat": "house HD-146",
+      "candidateId": "abd5f44e-7c57-4e7d-b07b-27e9fcc227d8",
+      "candidateName": "Lauren Ashley Simmons",
+      "candidacy": "state_lower: State House District 146 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25229,
+      "rosterName": "Alan Schoolcraft",
+      "rosterSeat": "house HD-044",
+      "candidateId": "1c7da73c-47b8-4595-bf2d-c487c3baec7a",
+      "candidateName": "Alan Schoolcraft",
+      "candidacy": "state_lower: State House District 44 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25230,
+      "rosterName": "Katrina Pierson",
+      "rosterSeat": "house HD-033",
+      "candidateId": "6909789e-5f60-4a6b-9398-b658703c64ba",
+      "candidateName": "Katrina Pierson",
+      "candidacy": "state_lower: State House District 33 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25231,
+      "rosterName": "Andy Hopper",
+      "rosterSeat": "house HD-064",
+      "candidateId": "3779da7b-fb2d-4f61-b440-e6505d91eeeb",
+      "candidateName": "Andy Hopper",
+      "candidacy": "state_lower: State House District 64 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25235,
+      "rosterName": "Hillary Hickland",
+      "rosterSeat": "house HD-055",
+      "candidateId": "7ac61259-0225-4580-a86b-d9b651cea299",
+      "candidateName": "Hillary Hickland",
+      "candidacy": "state_lower: State House District 55 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25236,
+      "rosterName": "Mitch Little",
+      "rosterSeat": "house HD-065",
+      "candidateId": "3644e6a4-cb92-4a75-a5b6-c6a0b8a254fa",
+      "candidateName": "Mitch Little",
+      "candidacy": "state_lower: State House District 65 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25237,
+      "rosterName": "Wesley Virdell",
+      "rosterSeat": "house HD-053",
+      "candidateId": "5f0609fb-ae02-4d1e-a495-30db3e0f58e0",
+      "candidateName": "Wesley Virdell",
+      "candidacy": "state_lower: State House District 53 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25361,
+      "rosterName": "Caroline Fairly",
+      "rosterSeat": "house HD-087",
+      "candidateId": "72c54bc9-968a-4068-b170-68edf39b5e3f",
+      "candidateName": "Caroline Fairly",
+      "candidacy": "state_lower: State House District 87 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25434,
+      "rosterName": "Daniel Alders",
+      "rosterSeat": "house HD-006",
+      "candidateId": "803d5a16-91cb-4074-81cf-fb055951cb04",
+      "candidateName": "Daniel Alders",
+      "candidacy": "state_lower: State House District 6 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25510,
+      "rosterName": "Jeff Barry",
+      "rosterSeat": "house HD-029",
+      "candidateId": "86942de7-7fe4-4de0-9bf0-7919551d3b8f",
+      "candidateName": "Jeffrey Barry",
+      "candidacy": "state_lower: State House District 29 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25511,
+      "rosterName": "Helen Kerwin",
+      "rosterSeat": "house HD-058",
+      "candidateId": "11c564a0-142d-4712-9156-187543f40b34",
+      "candidateName": "Helen Kerwin",
+      "candidacy": "state_lower: State House District 58 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25512,
+      "rosterName": "Paul Dyson",
+      "rosterSeat": "house HD-014",
+      "candidateId": "4f95a1f1-a018-48cb-bec8-a8773df7e042",
+      "candidateName": "Paul Dyson",
+      "candidacy": "state_lower: State House District 14 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25519,
+      "rosterName": "Joanne Shofner",
+      "rosterSeat": "house HD-011",
+      "candidateId": "a515c48f-ec22-4c71-b5de-0fd48398b9c9",
+      "candidateName": "Joanne Shofner",
+      "candidacy": "state_lower: State House District 11 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26329,
+      "rosterName": "Aicha Davis",
+      "rosterSeat": "house HD-109",
+      "candidateId": "88555061-a5b0-4ba8-abd4-c4957cda7c29",
+      "candidateName": "Aicha Davis",
+      "candidacy": "state_lower: State House District 109 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26330,
+      "rosterName": "Linda Garcia",
+      "rosterSeat": "house HD-107",
+      "candidateId": "51e67a89-10cd-45cc-b9a1-28ac1715b009",
+      "candidateName": "Linda Garcia",
+      "candidacy": "state_lower: State House District 107 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26331,
+      "rosterName": "Janis Holt",
+      "rosterSeat": "house HD-018",
+      "candidateId": "be756163-ef31-4347-9bc9-fb0f5bc718da",
+      "candidateName": "Janis Holt",
+      "candidacy": "state_lower: State House District 18 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26332,
+      "rosterName": "Marc LaHood",
+      "rosterSeat": "house HD-121",
+      "candidateId": "7a2c7ead-3853-439d-81ed-a76deefc8da0",
+      "candidateName": "Marc LaHood",
+      "candidacy": "state_lower: State House District 121 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26333,
+      "rosterName": "David Lowe",
+      "rosterSeat": "house HD-091",
+      "candidateId": "e90b9e3d-fa1e-459a-b1b5-efd63f3d271b",
+      "candidateName": "David Lowe",
+      "candidacy": "state_lower: State House District 91 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26334,
+      "rosterName": "Shelley Luther",
+      "rosterSeat": "house HD-062",
+      "candidateId": "8e288d0b-7c48-42d0-809a-c9f69e33374a",
+      "candidateName": "Shelley Luther",
+      "candidacy": "state_lower: State House District 62 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26335,
+      "rosterName": "Don McLaughlin",
+      "rosterSeat": "house HD-080",
+      "candidateId": "91779f8c-4682-4da6-8eb4-3b2118aca98c",
+      "candidateName": "Don McLaughlin",
+      "candidacy": "state_lower: State House District 80 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26336,
+      "rosterName": "John McQueeney",
+      "rosterSeat": "house HD-097",
+      "candidateId": "76d225cf-1ce2-471c-bde4-d6e6094992b0",
+      "candidateName": "John McQueeney",
+      "candidacy": "state_lower: State House District 97 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26337,
+      "rosterName": "Brent Money",
+      "rosterSeat": "house HD-002",
+      "candidateId": "66e85926-d88e-4067-99cb-7739ffe75629",
+      "candidateName": "Brent Money",
+      "candidacy": "state_lower: State House District 2 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26338,
+      "rosterName": "Matt Morgan",
+      "rosterSeat": "house HD-026",
+      "candidateId": "8c2f2f02-bee3-420e-8f2a-df852600f2f0",
+      "candidateName": "Matt Morgan",
+      "candidacy": "state_lower: State House District 26 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26340,
+      "rosterName": "Keresa Richardson",
+      "rosterSeat": "house HD-061",
+      "candidateId": "91f33fad-421d-4878-abce-b9b1479a2ba7",
+      "candidateName": "Keresa Richardson",
+      "candidacy": "state_lower: State House District 61 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26341,
+      "rosterName": "Denise Villalobos",
+      "rosterSeat": "house HD-034",
+      "candidateId": "f3c3c982-d676-41a5-b996-2c3b15cd077b",
+      "candidateName": "Denise Villalobos",
+      "candidacy": "state_lower: State House District 34 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26342,
+      "rosterName": "Charlene Ward Johnson",
+      "rosterSeat": "house HD-139",
+      "candidateId": "295a54be-543c-4e95-8493-5ea990a9c957",
+      "candidateName": "Charlene Ward Johnson",
+      "candidacy": "state_lower: State House District 139 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26343,
+      "rosterName": "Trey Wharton",
+      "rosterSeat": "house HD-012",
+      "candidateId": "8d76db61-5c46-4d2e-8897-de0416951b2c",
+      "candidateName": "Trey Wharton",
+      "candidacy": "state_lower: State House District 12 (2024); Texas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    }
+  ],
+  "unmatchedPeople": [
+    {
+      "peopleId": 11020,
+      "name": "Brian Birdwell",
+      "seat": "senate SD-022"
+    },
+    {
+      "peopleId": 14783,
+      "name": "Cecil Bell",
+      "seat": "house HD-003"
+    },
+    {
+      "peopleId": 14785,
+      "name": "Giovanni Capriglione",
+      "seat": "house HD-098"
+    },
+    {
+      "peopleId": 14786,
+      "name": "Robert Guerra",
+      "seat": "house HD-041"
+    },
+    {
+      "peopleId": 15077,
+      "name": "Donna Campbell",
+      "seat": "senate SD-025"
+    },
+    {
+      "peopleId": 15351,
+      "name": "Trent Ashby",
+      "seat": "house HD-009"
+    },
+    {
+      "peopleId": 15352,
+      "name": "Nicole Collier",
+      "seat": "house HD-095"
+    },
+    {
+      "peopleId": 15409,
+      "name": "Steve Toth",
+      "seat": "house HD-015"
+    },
+    {
+      "peopleId": 15631,
+      "name": "Eugene Wu",
+      "seat": "house HD-137"
+    },
+    {
+      "peopleId": 16267,
+      "name": "Paul Bettencourt",
+      "seat": "senate SD-007"
+    },
+    {
+      "peopleId": 16834,
+      "name": "Cesar Blanco",
+      "seat": "senate SD-029"
+    },
+    {
+      "peopleId": 16840,
+      "name": "Morgan Meyer",
+      "seat": "house HD-108"
+    },
+    {
+      "peopleId": 16843,
+      "name": "Dade Phelan",
+      "seat": "house HD-021"
+    },
+    {
+      "peopleId": 16845,
+      "name": "Ramon Romero",
+      "seat": "house HD-090"
+    },
+    {
+      "peopleId": 16846,
+      "name": "Mike Schofield",
+      "seat": "house HD-132"
+    },
+    {
+      "peopleId": 16848,
+      "name": "Gary Vandeaver",
+      "seat": "house HD-001"
+    },
+    {
+      "peopleId": 16851,
+      "name": "Tony Tinderholt",
+      "seat": "house HD-094"
+    },
+    {
+      "peopleId": 17576,
+      "name": "Chris Turner",
+      "seat": "house HD-101"
+    },
+    {
+      "peopleId": 17631,
+      "name": "Diego Bernal",
+      "seat": "house HD-123"
+    },
+    {
+      "peopleId": 18674,
+      "name": "Gina Hinojosa",
+      "seat": "house HD-049"
+    },
+    {
+      "peopleId": 18675,
+      "name": "Stan Lambert",
+      "seat": "house HD-071"
+    },
+    {
+      "peopleId": 19319,
+      "name": "Briscoe Cain",
+      "seat": "house HD-128"
+    },
+    {
+      "peopleId": 19730,
+      "name": "Angela Paxton",
+      "seat": "senate SD-008"
+    },
+    {
+      "peopleId": 19959,
+      "name": "Jon Rosenthal",
+      "seat": "house HD-135"
+    },
+    {
+      "peopleId": 20015,
+      "name": "Mayes Middleton",
+      "seat": "senate SD-011"
+    },
+    {
+      "peopleId": 20235,
+      "name": "Vikki Goodwin",
+      "seat": "house HD-047"
+    },
+    {
+      "peopleId": 20236,
+      "name": "Sam Harless",
+      "seat": "house HD-126"
+    },
+    {
+      "peopleId": 20240,
+      "name": "Terry Meza",
+      "seat": "house HD-105"
+    },
+    {
+      "peopleId": 20243,
+      "name": "Ana-Maria Rodriguez Ramos",
+      "seat": "house HD-102"
+    },
+    {
+      "peopleId": 20246,
+      "name": "James Talarico",
+      "seat": "house HD-050"
+    },
+    {
+      "peopleId": 20805,
+      "name": "Nathan Johnson",
+      "seat": "senate SD-016"
+    },
+    {
+      "peopleId": 21336,
+      "name": "Ray Lopez",
+      "seat": "house HD-125"
+    },
+    {
+      "peopleId": 21679,
+      "name": "Sarah Eckhardt",
+      "seat": "senate SD-014"
+    },
+    {
+      "peopleId": 22136,
+      "name": "Claudia Ordaz Perez",
+      "seat": "house HD-079"
+    },
+    {
+      "peopleId": 22437,
+      "name": "Penny Morales Shaw",
+      "seat": "house HD-148"
+    },
+    {
+      "peopleId": 23106,
+      "name": "John Lujan",
+      "seat": "house HD-118"
+    },
+    {
+      "peopleId": 23145,
+      "name": "Jolanda Jones",
+      "seat": "house HD-147"
+    },
+    {
+      "peopleId": 23190,
+      "name": "Nate Schatzline",
+      "seat": "house HD-093"
+    },
+    {
+      "peopleId": 24076,
+      "name": "John Bryant",
+      "seat": "house HD-114"
+    },
+    {
+      "peopleId": 24088,
+      "name": "Stan Kitzman",
+      "seat": "house HD-085"
+    },
+    {
+      "peopleId": 24094,
+      "name": "Christian Manuel",
+      "seat": "house HD-022"
+    },
+    {
+      "peopleId": 25224,
+      "name": "Molly Cook",
+      "seat": "senate SD-015"
+    },
+    {
+      "peopleId": 25362,
+      "name": "AJ Louderback",
+      "seat": "house HD-030"
+    },
+    {
+      "peopleId": 26339,
+      "name": "Vincent Perez",
+      "seat": "house HD-077"
+    },
+    {
+      "peopleId": 26344,
+      "name": "Brent Hagenbuch",
+      "seat": "senate SD-030"
+    },
+    {
+      "peopleId": 26345,
+      "name": "Adam Hinojosa",
+      "seat": "senate SD-027"
+    },
+    {
+      "peopleId": 5848,
+      "name": "Alma Allen",
+      "seat": "house HD-131"
+    },
+    {
+      "peopleId": 5850,
+      "name": "Carol Alvarado",
+      "seat": "senate SD-006"
+    },
+    {
+      "peopleId": 5875,
+      "name": "Charles Creighton",
+      "seat": "senate SD-004"
+    },
+    {
+      "peopleId": 5906,
+      "name": "Kelly Hancock",
+      "seat": "senate SD-009"
+    },
+    {
+      "peopleId": 5929,
+      "name": "Phil King",
+      "seat": "house SD-010"
+    },
+    {
+      "peopleId": 5949,
+      "name": "Jose Menendez",
+      "seat": "senate SD-026"
+    },
+    {
+      "peopleId": 5962,
+      "name": "Tan Parker",
+      "seat": "senate SD-012"
+    },
+    {
+      "peopleId": 5979,
+      "name": "John Smithee",
+      "seat": "house HD-086"
+    },
+    {
+      "peopleId": 5996,
+      "name": "Hubert Vo",
+      "seat": "house HD-149"
+    },
+    {
+      "peopleId": 6014,
+      "name": "Juan Hinojosa",
+      "seat": "senate SD-020"
+    },
+    {
+      "peopleId": 6015,
+      "name": "Joan Huffman",
+      "seat": "senate SD-017"
+    },
+    {
+      "peopleId": 6019,
+      "name": "Robert Nichols",
+      "seat": "senate SD-003"
+    },
+    {
+      "peopleId": 6029,
+      "name": "Royce West",
+      "seat": "senate SD-023"
+    }
+  ],
+  "unmatchedCandidates": [
+    {
+      "candidateId": "b885e633-c8f5-46ef-a04f-3b07e834a816",
+      "name": "A.J. Louderback",
+      "scope": "state_lower",
+      "districtName": "State House District 30 (2024); Texas"
+    },
+    {
+      "candidateId": "5587cd47-62eb-467a-97c4-cc323748d70c",
+      "name": "A'Yonna Kellum",
+      "scope": "state_lower",
+      "districtName": "State House District 150 (2024); Texas"
+    },
+    {
+      "candidateId": "28b9843a-07f2-4690-999c-600a8fdd273c",
+      "name": "Adrian Reyna",
+      "scope": "state_lower",
+      "districtName": "State House District 125 (2024); Texas"
+    },
+    {
+      "candidateId": "386bb802-4f7b-44c6-8244-19aae00742dc",
+      "name": "Alan Blaylock",
+      "scope": "state_lower",
+      "districtName": "State House District 93 (2024); Texas"
+    },
+    {
+      "candidateId": "7759e988-2c72-434a-8fc5-a10b8e14d8fc",
+      "name": "Albert Hunter",
+      "scope": "state_lower",
+      "districtName": "State House District 13 (2024); Texas"
+    },
+    {
+      "candidateId": "e4cc464d-169d-420b-9edb-fed9c8321918",
+      "name": "Albert Wittliff",
+      "scope": "state_lower",
+      "districtName": "State House District 129 (2024); Texas"
+    },
+    {
+      "candidateId": "6c387ab2-1b92-4d6f-820f-56d1ba5f12c6",
+      "name": "Alexandria Butler",
+      "scope": "state_lower",
+      "districtName": "State House District 146 (2024); Texas"
+    },
+    {
+      "candidateId": "8b5f0d36-4dc7-4694-88a2-cda18339aceb",
+      "name": "Amelia Rabroker",
+      "scope": "state_lower",
+      "districtName": "State House District 55 (2024); Texas"
+    },
+    {
+      "candidateId": "26face17-ec4d-46bf-9830-9f5849ca1007",
+      "name": "Amy Martinez-Salas",
+      "scope": "state_upper",
+      "districtName": "State Senate District 22 (2024); Texas"
+    },
+    {
+      "candidateId": "e650f451-a69c-48eb-a22c-b789b0b7caff",
+      "name": "Ana-Maria Ramos",
+      "scope": "state_lower",
+      "districtName": "State House District 102 (2024); Texas"
+    },
+    {
+      "candidateId": "01e2245f-1d68-4400-9b3e-634ca1ff010e",
+      "name": "Andie Ho",
+      "scope": "state_lower",
+      "districtName": "State House District 12 (2024); Texas"
+    },
+    {
+      "candidateId": "faf10a7e-50c5-4d14-b66a-3d58778ff20b",
+      "name": "Andrew Turner",
+      "scope": "state_lower",
+      "districtName": "State House District 59 (2024); Texas"
+    },
+    {
+      "candidateId": "4a5f7563-8948-4a98-a8ba-aeea171139de",
+      "name": "Angie Carraway",
+      "scope": "state_lower",
+      "districtName": "State House District 89 (2024); Texas"
+    },
+    {
+      "candidateId": "594e8983-5d5e-4d7b-8259-eeb80df981c8",
+      "name": "Anissa Chilmeran",
+      "scope": "state_lower",
+      "districtName": "State House District 61 (2024); Texas"
+    },
+    {
+      "candidateId": "5cc5f51e-2d51-4134-9aea-6a63734dd568",
+      "name": "Anthony Gupta",
+      "scope": "state_lower",
+      "districtName": "State House District 48 (2024); Texas"
+    },
+    {
+      "candidateId": "852c1e31-2a7d-4dd8-99b9-7a945ec9e81e",
+      "name": "Armin Mizani",
+      "scope": "state_lower",
+      "districtName": "State House District 98 (2024); Texas"
+    },
+    {
+      "candidateId": "39d9e6f5-64b9-41ec-a1d9-9ccb27a4af54",
+      "name": "Ashley Thornton",
+      "scope": "state_lower",
+      "districtName": "State House District 56 (2024); Texas"
+    },
+    {
+      "candidateId": "7b8f682e-db38-4a59-bf66-b186187f0a88",
+      "name": "Ben Mostyn",
+      "scope": "state_lower",
+      "districtName": "State House District 117 (2024); Texas"
+    },
+    {
+      "candidateId": "94cbff62-fa82-467b-82db-c7bb63c342aa",
+      "name": "Beth Llewellyn McLaughlin",
+      "scope": "state_lower",
+      "districtName": "State House District 97 (2024); Texas"
+    },
+    {
+      "candidateId": "0df7eb3a-66d7-4cc2-ab52-8aad059f5cfc",
+      "name": "Bobbie Clayton",
+      "scope": "state_lower",
+      "districtName": "State House District 16 (2024); Texas"
+    },
+    {
+      "candidateId": "3f405412-ae9d-45d5-bab1-ef3c80568126",
+      "name": "Bonnie Abadie",
+      "scope": "state_lower",
+      "districtName": "State House District 102 (2024); Texas"
+    },
+    {
+      "candidateId": "25a30f75-0d47-449b-bf97-53b383b5bf51",
+      "name": "Brad Bailey",
+      "scope": "state_lower",
+      "districtName": "State House District 15 (2024); Texas"
+    },
+    {
+      "candidateId": "de797ffb-f6f2-4a91-998e-af35d39c00b4",
+      "name": "Brett Ligon",
+      "scope": "state_upper",
+      "districtName": "State Senate District 4 (2024); Texas"
+    },
+    {
+      "candidateId": "46f8ff7f-b985-4063-9459-915206147da5",
+      "name": "Brett Robinson",
+      "scope": "state_lower",
+      "districtName": "State House District 130 (2024); Texas"
+    },
+    {
+      "candidateId": "c7279472-5030-4ae1-a07c-0f300a9754fb",
+      "name": "Brian Reed",
+      "scope": "state_lower",
+      "districtName": "State House District 138 (2024); Texas"
+    },
+    {
+      "candidateId": "2bf60c8a-d9c9-42e4-bd42-dc90c2ccc2bb",
+      "name": "BriTanya Brown",
+      "scope": "state_lower",
+      "districtName": "State House District 71 (2024); Texas"
+    },
+    {
+      "candidateId": "652c8538-bf2c-4275-8e0e-fa2a3f69bf0d",
+      "name": "Brittany Black",
+      "scope": "state_lower",
+      "districtName": "State House District 61 (2024); Texas"
+    },
+    {
+      "candidateId": "877f9147-f780-4df4-a69d-6f8f6797cd0e",
+      "name": "Cate Brennan",
+      "scope": "state_lower",
+      "districtName": "State House District 98 (2024); Texas"
+    },
+    {
+      "candidateId": "aa24e148-5924-4422-9746-e4386a7ec086",
+      "name": "Catherine Thorne",
+      "scope": "state_lower",
+      "districtName": "State House District 62 (2024); Texas"
+    },
+    {
+      "candidateId": "b8f08642-eca1-49bb-800b-4b6f416339a7",
+      "name": "Cathy Broadrick",
+      "scope": "state_lower",
+      "districtName": "State House District 82 (2024); Texas"
+    },
+    {
+      "candidateId": "0347ef85-9126-450d-8e8a-3c1f393dfa83",
+      "name": "Ceasar Sanchez",
+      "scope": "state_lower",
+      "districtName": "State House District 81 (2024); Texas"
+    },
+    {
+      "candidateId": "5459cb18-9203-47eb-9d73-1a0172e4462a",
+      "name": "Cecilia Castellano",
+      "scope": "state_lower",
+      "districtName": "State House District 80 (2024); Texas"
+    },
+    {
+      "candidateId": "6855af2e-d04a-4245-a56f-d93ac403c0f6",
+      "name": "Celeste Cabrera-Huff",
+      "scope": "state_lower",
+      "districtName": "State House District 40 (2024); Texas"
+    },
+    {
+      "candidateId": "667a21bf-f7ee-4e77-9e40-ed5de5be3d99",
+      "name": "Cheryl Bean",
+      "scope": "state_lower",
+      "districtName": "State House District 94 (2024); Texas"
+    },
+    {
+      "candidateId": "92433b38-50be-41a3-9f26-47fcb09b7469",
+      "name": "Cheryl Clark",
+      "scope": "state_lower",
+      "districtName": "State House District 23 (2024); Texas"
+    },
+    {
+      "candidateId": "9abc0da4-dd8c-456f-a6a6-d6c87bf0e653",
+      "name": "Chris Jimenez",
+      "scope": "state_lower",
+      "districtName": "State House District 52 (2024); Texas"
+    },
+    {
+      "candidateId": "19673a0f-0a1e-474e-915f-2034f543e773",
+      "name": "Chris Oldham",
+      "scope": "state_lower",
+      "districtName": "State House District 58 (2024); Texas"
+    },
+    {
+      "candidateId": "75d94b63-4907-4267-b73a-8a582a3b4e0e",
+      "name": "Chris Spencer",
+      "scope": "state_lower",
+      "districtName": "State House District 1 (2024); Texas"
+    },
+    {
+      "candidateId": "79d7108b-4eea-4180-9e41-b92af2a6ccd4",
+      "name": "Christian Manuel",
+      "scope": "state_lower",
+      "districtName": "State House District 22 (2024); Texas"
+    },
+    {
+      "candidateId": "31164562-e02e-4cad-96bf-769f23cd18f3",
+      "name": "Claudia Ordaz",
+      "scope": "state_lower",
+      "districtName": "State House District 79 (2024); Texas"
+    },
+    {
+      "candidateId": "8231f15b-abc3-4d9c-8623-044f7193f9cf",
+      "name": "Crystal Sedillo",
+      "scope": "state_lower",
+      "districtName": "State House District 30 (2024); Texas"
+    },
+    {
+      "candidateId": "fbb171c7-b545-43e6-9e46-3358335a017b",
+      "name": "Cullin Knutson",
+      "scope": "state_lower",
+      "districtName": "State House District 86 (2024); Texas"
+    },
+    {
+      "candidateId": "1d9a55ff-4831-4201-a1ad-d80e932328c9",
+      "name": "Danny Rosellini",
+      "scope": "state_lower",
+      "districtName": "State House District 115 (2024); Texas"
+    },
+    {
+      "candidateId": "bc4ec6c0-a884-4ec8-aac5-26533eb23dd8",
+      "name": "Darlene Breaux",
+      "scope": "state_lower",
+      "districtName": "State House District 149 (2024); Texas"
+    },
+    {
+      "candidateId": "968e7f9c-a2e2-4143-9845-6dcbaa898f3c",
+      "name": "Darren Hamilton",
+      "scope": "state_lower",
+      "districtName": "State House District 57 (2024); Texas"
+    },
+    {
+      "candidateId": "39966c4f-b6d5-433c-800f-ec4e39d0d085",
+      "name": "Dave Bennett",
+      "scope": "state_lower",
+      "districtName": "State House District 149 (2024); Texas"
+    },
+    {
+      "candidateId": "185ee207-5a03-4942-898a-f875b4b775c6",
+      "name": "David Flores",
+      "scope": "state_lower",
+      "districtName": "State House District 144 (2024); Texas"
+    },
+    {
+      "candidateId": "354cc0cd-7c5b-486d-9e36-43aeb6f24df6",
+      "name": "Dawn Richardson",
+      "scope": "state_lower",
+      "districtName": "State House District 54 (2024); Texas"
+    },
+    {
+      "candidateId": "dfbe1dae-317b-40be-9a51-37d1b2a87a93",
+      "name": "Deirdre Diamond",
+      "scope": "state_lower",
+      "districtName": "State House District 62 (2024); Texas"
+    },
+    {
+      "candidateId": "ee1a8985-f0f3-4831-9329-e15ea25bebdf",
+      "name": "Dennis Geesaman",
+      "scope": "state_lower",
+      "districtName": "State House District 85 (2024); Texas"
+    },
+    {
+      "candidateId": "e60a5e9b-70ce-457c-9cc7-203b5439710d",
+      "name": "Desiree Klaus",
+      "scope": "state_lower",
+      "districtName": "State House District 128 (2024); Texas"
+    },
+    {
+      "candidateId": "da394912-7207-4b2d-b391-33178609f262",
+      "name": "Detrick Deburr",
+      "scope": "state_lower",
+      "districtName": "State House District 65 (2024); Texas"
+    },
+    {
+      "candidateId": "f0025fc8-3401-4529-83b8-ab6222f2d770",
+      "name": "Diana Loya",
+      "scope": "state_lower",
+      "districtName": "State House District 87 (2024); Texas"
+    },
+    {
+      "candidateId": "edc63d30-9d93-4752-8401-e8db1f8f0b36",
+      "name": "Diana Luna",
+      "scope": "state_lower",
+      "districtName": "State House District 71 (2024); Texas"
+    },
+    {
+      "candidateId": "a2617541-61fc-4f82-a4f9-aed13c951352",
+      "name": "Ebony Turner",
+      "scope": "state_lower",
+      "districtName": "State House District 96 (2024); Texas"
+    },
+    {
+      "candidateId": "4b5b7c82-6ddf-4ecd-bad8-93187aba9b4f",
+      "name": "Elizabeth Markowitz",
+      "scope": "state_lower",
+      "districtName": "State House District 26 (2024); Texas"
+    },
+    {
+      "candidateId": "8a23291b-e576-41d0-bb63-98e1467e1595",
+      "name": "Ellen Fleischmann",
+      "scope": "state_lower",
+      "districtName": "State House District 96 (2024); Texas"
+    },
+    {
+      "candidateId": "653b7618-6309-4f99-b2f3-ec80c33c24c9",
+      "name": "Eric Norman",
+      "scope": "state_lower",
+      "districtName": "State House District 44 (2024); Texas"
+    },
+    {
+      "candidateId": "21be83b4-5f17-4906-8d1a-c7076b37d11b",
+      "name": "Erica Gillum",
+      "scope": "state_upper",
+      "districtName": "State Senate District 18 (2024); Texas"
+    },
+    {
+      "candidateId": "7231b8fd-f813-496c-97f7-8dd4d272017c",
+      "name": "Ericka Lomick",
+      "scope": "state_lower",
+      "districtName": "State House District 93 (2024); Texas"
+    },
+    {
+      "candidateId": "186ca2b3-e9e3-4e99-83d5-13138aa0ab52",
+      "name": "Fantasha Allen",
+      "scope": "state_lower",
+      "districtName": "State House District 7 (2024); Texas"
+    },
+    {
+      "candidateId": "d124c972-c535-43f9-a1c7-2b97b0176355",
+      "name": "Fatima Muse",
+      "scope": "state_lower",
+      "districtName": "State House District 2 (2024); Texas"
+    },
+    {
+      "candidateId": "f811a32a-9390-44e7-9544-89a82ea2be05",
+      "name": "Frank Carr",
+      "scope": "state_lower",
+      "districtName": "State House District 24 (2024); Texas"
+    },
+    {
+      "candidateId": "e40db82c-9be0-4c74-b7e2-104a387c4d2c",
+      "name": "Frank Salazar",
+      "scope": "state_lower",
+      "districtName": "State House District 143 (2024); Texas"
+    },
+    {
+      "candidateId": "27be77e8-beaa-4e95-a23e-2916edfbcbc0",
+      "name": "Gabriel Marroquin",
+      "scope": "state_lower",
+      "districtName": "State House District 32 (2024); Texas"
+    },
+    {
+      "candidateId": "c9a3daf7-1717-4296-8158-f291fde1bad7",
+      "name": "Gary Groves",
+      "scope": "state_lower",
+      "districtName": "State House District 41 (2024); Texas"
+    },
+    {
+      "candidateId": "fda0e6e5-4694-4567-97c1-89f1cd43dddc",
+      "name": "Gene Wu",
+      "scope": "state_lower",
+      "districtName": "State House District 137 (2024); Texas"
+    },
+    {
+      "candidateId": "aabaec4d-5315-4aaf-9687-a0d456ff8111",
+      "name": "George Flint",
+      "scope": "state_lower",
+      "districtName": "State House District 70 (2024); Texas"
+    },
+    {
+      "candidateId": "4c47e579-94cb-4c23-a6e3-dd4bbfe3a1b9",
+      "name": "H. Denise Wooten",
+      "scope": "state_lower",
+      "districtName": "State House District 63 (2024); Texas"
+    },
+    {
+      "candidateId": "dd61dc75-9066-429e-b530-418183c066ed",
+      "name": "Heather Wallace",
+      "scope": "state_lower",
+      "districtName": "State House District 88 (2024); Texas"
+    },
+    {
+      "candidateId": "aa1e13cc-22f8-4146-b4de-4f5d88d63170",
+      "name": "Hector Garza",
+      "scope": "state_lower",
+      "districtName": "State House District 5 (2024); Texas"
+    },
+    {
+      "candidateId": "52975025-c26b-4784-bd54-0d985928111a",
+      "name": "Heidi Hall",
+      "scope": "state_lower",
+      "districtName": "State House District 142 (2024); Texas"
+    },
+    {
+      "candidateId": "bd0a96e2-d4f1-4318-8c98-f299a13983a0",
+      "name": "Helen Zhou",
+      "scope": "state_lower",
+      "districtName": "State House District 137 (2024); Texas"
+    },
+    {
+      "candidateId": "25d14050-1921-43b8-a48e-add4be4ef403",
+      "name": "Holly Jeffreys",
+      "scope": "state_lower",
+      "districtName": "State House District 86 (2024); Texas"
+    },
+    {
+      "candidateId": "04edb535-e4ae-4e1e-baaa-27dee4f57a5d",
+      "name": "Howard Olsen IV",
+      "scope": "state_lower",
+      "districtName": "State House District 50 (2024); Texas"
+    },
+    {
+      "candidateId": "d1203e04-627e-4b10-94a6-b845bfcfaa9d",
+      "name": "Inocensia Moreno",
+      "scope": "state_lower",
+      "districtName": "State House District 145 (2024); Texas"
+    },
+    {
+      "candidateId": "de2320d9-542e-4b37-899a-df86ed3d1f3a",
+      "name": "Jacky Hernandez",
+      "scope": "state_lower",
+      "districtName": "State House District 21 (2024); Texas"
+    },
+    {
+      "candidateId": "13c8967e-0219-473e-95ea-61bcf6be9a71",
+      "name": "Janet Dudding",
+      "scope": "state_lower",
+      "districtName": "State House District 14 (2024); Texas"
+    },
+    {
+      "candidateId": "3bee1889-a5c3-40fb-bb2f-5b732b14e21c",
+      "name": "Jasmine Henderson",
+      "scope": "state_lower",
+      "districtName": "State House District 68 (2024); Texas"
+    },
+    {
+      "candidateId": "5c5e116e-8df8-4d64-bed2-d50fa2e0311c",
+      "name": "Jay Hardaway",
+      "scope": "state_lower",
+      "districtName": "State House District 71 (2024); Texas"
+    },
+    {
+      "candidateId": "81cbf358-6237-4851-a1c0-d69c36921bc5",
+      "name": "Jeff Chavez",
+      "scope": "state_lower",
+      "districtName": "State House District 8 (2024); Texas"
+    },
+    {
+      "candidateId": "28133b8a-4b47-4a47-8476-87acf9e74f7f",
+      "name": "Jeff Miller",
+      "scope": "state_lower",
+      "districtName": "State House District 14 (2024); Texas"
+    },
+    {
+      "candidateId": "9912f15f-59b0-48d8-9d9c-2117f9cf6b14",
+      "name": "Jeffrey Jackson",
+      "scope": "state_lower",
+      "districtName": "State House District 43 (2024); Texas"
+    },
+    {
+      "candidateId": "6a69d3d4-ac68-43d4-a99f-bad9363aaa18",
+      "name": "Jennifer Mushtaler",
+      "scope": "state_lower",
+      "districtName": "State House District 47 (2024); Texas"
+    },
+    {
+      "candidateId": "aa861d8b-6d1d-4f3d-87ac-56b1ca0f2d3e",
+      "name": "Jesse Romero",
+      "scope": "state_lower",
+      "districtName": "State House District 79 (2024); Texas"
+    },
+    {
+      "candidateId": "b3109de1-71b0-41e3-b264-d0d42be23e33",
+      "name": "Jessi Cowart",
+      "scope": "state_lower",
+      "districtName": "State House District 15 (2024); Texas"
+    },
+    {
+      "candidateId": "9edcb598-f090-452d-9537-ebd4e0f44588",
+      "name": "Jessica Martinez",
+      "scope": "state_lower",
+      "districtName": "State House District 51 (2024); Texas"
+    },
+    {
+      "candidateId": "773be21a-cd08-4c4c-a020-f9d8cf319153",
+      "name": "JJ Dominguez",
+      "scope": "state_lower",
+      "districtName": "State House District 31 (2024); Texas"
+    },
+    {
+      "candidateId": "5479e185-05b6-4f42-bd26-d27569ec0fe5",
+      "name": "Joe Herrera",
+      "scope": "state_upper",
+      "districtName": "State Senate District 24 (2024); Texas"
+    },
+    {
+      "candidateId": "02582a26-cf33-483d-ac6a-376881f4f180",
+      "name": "Joe Mayes",
+      "scope": "state_lower",
+      "districtName": "State House District 106 (2024); Texas"
+    },
+    {
+      "candidateId": "db5961f2-8c2a-450b-b9eb-cb326516c6a6",
+      "name": "John Betancourt",
+      "scope": "state_upper",
+      "districtName": "State Senate District 31 (2024); Texas"
+    },
+    {
+      "candidateId": "236372e2-1612-4af7-8317-7144d6434f7d",
+      "name": "Jonathan LaFevers",
+      "scope": "state_lower",
+      "districtName": "State House District 121 (2024); Texas"
+    },
+    {
+      "candidateId": "5589a47d-598d-49f3-9523-12d5733cb13e",
+      "name": "Jordan Hoffnagle",
+      "scope": "state_lower",
+      "districtName": "State House District 100 (2024); Texas"
+    },
+    {
+      "candidateId": "1cc974a7-bf1c-4a73-aaa9-c000ca714245",
+      "name": "Jordan Wheatley",
+      "scope": "state_lower",
+      "districtName": "State House District 67 (2024); Texas"
+    },
+    {
+      "candidateId": "16e16cef-5456-4f07-a5c4-8a7cacfc8975",
+      "name": "Jorge Borrego",
+      "scope": "state_lower",
+      "districtName": "State House District 118 (2024); Texas"
+    },
+    {
+      "candidateId": "c7e033f2-02b2-43d2-b071-ebeb0a49cd00",
+      "name": "Josh Wallenstein",
+      "scope": "state_lower",
+      "districtName": "State House District 133 (2024); Texas"
+    },
+    {
+      "candidateId": "29a1ff20-c6b2-4c6c-9cdd-6d48fef0db5f",
+      "name": "JP Woodruff",
+      "scope": "state_lower",
+      "districtName": "State House District 92 (2024); Texas"
+    },
+    {
+      "candidateId": "8633f7cf-4092-4624-af37-2056ab9b63ce",
+      "name": "Julie Dahlberg",
+      "scope": "state_upper",
+      "districtName": "State Senate District 21 (2024); Texas"
+    },
+    {
+      "candidateId": "28f70da7-b52c-434f-9542-ebe7d78a41d7",
+      "name": "Julie Evans",
+      "scope": "state_lower",
+      "districtName": "State House District 64 (2024); Texas"
+    },
+    {
+      "candidateId": "9eaaf8eb-5cf8-4994-9706-f13db25787d9",
+      "name": "Julie Hunt",
+      "scope": "state_lower",
+      "districtName": "State House District 141 (2024); Texas"
+    },
+    {
+      "candidateId": "5942c796-0991-493a-9a5c-a6829be2b52f",
+      "name": "Julio Salinas",
+      "scope": "state_lower",
+      "districtName": "State House District 41 (2024); Texas"
+    },
+    {
+      "candidateId": "9286d2ab-a854-4f92-a53a-fe7c4183e1ce",
+      "name": "Junior Ezeonu",
+      "scope": "state_lower",
+      "districtName": "State House District 101 (2024); Texas"
+    },
+    {
+      "candidateId": "7bf6d999-6986-4e73-9058-368577a7d446",
+      "name": "Kane Kelly",
+      "scope": "state_lower",
+      "districtName": "State House District 115 (2024); Texas"
+    },
+    {
+      "candidateId": "f67051c8-249b-40df-a68d-53f17c4d110a",
+      "name": "Karen Reeder",
+      "scope": "state_lower",
+      "districtName": "State House District 29 (2024); Texas"
+    },
+    {
+      "candidateId": "5d5b152c-ea09-4763-8f76-430f2267eda5",
+      "name": "Kathryn Hartmann",
+      "scope": "state_lower",
+      "districtName": "State House District 53 (2024); Texas"
+    },
+    {
+      "candidateId": "9fb539a2-0135-49ce-890b-e2423967c5a1",
+      "name": "Katie O'Brien Duzan",
+      "scope": "state_lower",
+      "districtName": "State House District 94 (2024); Texas"
+    },
+    {
+      "candidateId": "196a13b0-5b00-4937-aec9-6423e9e944a7",
+      "name": "Keenen Colbert",
+      "scope": "state_upper",
+      "districtName": "State Senate District 2 (2024); Texas"
+    },
+    {
+      "candidateId": "35236a95-d57f-4c46-b81b-c93ca871014a",
+      "name": "Kelly Hall",
+      "scope": "state_lower",
+      "districtName": "State House District 19 (2024); Texas"
+    },
+    {
+      "candidateId": "bbd22937-9ce5-4b69-beb8-9a55b1826d29",
+      "name": "Kenneth Parker",
+      "scope": "state_lower",
+      "districtName": "State House District 94 (2024); Texas"
+    },
+    {
+      "candidateId": "24c5cd4d-780a-4d4b-ad57-0378d1456061",
+      "name": "Krissy Guess",
+      "scope": "state_lower",
+      "districtName": "State House District 60 (2024); Texas"
+    },
+    {
+      "candidateId": "41125c18-ebd2-48fe-adc3-1e8f5c1972ab",
+      "name": "Kristen Plaisance",
+      "scope": "state_lower",
+      "districtName": "State House District 3 (2024); Texas"
+    },
+    {
+      "candidateId": "3da253fa-76fe-4cdb-aae2-60263d44e2e8",
+      "name": "Kristian Carranza",
+      "scope": "state_lower",
+      "districtName": "State House District 118 (2024); Texas"
+    },
+    {
+      "candidateId": "5dc5fd8d-bc63-44de-bfc0-e2b87c215c4f",
+      "name": "Kyle Harding",
+      "scope": "state_lower",
+      "districtName": "State House District 139 (2024); Texas"
+    },
+    {
+      "candidateId": "820266fc-fab2-4c2d-911b-88913375e38f",
+      "name": "L.D. Howard",
+      "scope": "state_lower",
+      "districtName": "State House District 124 (2024); Texas"
+    },
+    {
+      "candidateId": "dcb68296-eba2-4870-9f55-d4d060067523",
+      "name": "Laticia Ambroz",
+      "scope": "state_upper",
+      "districtName": "State Senate District 1 (2024); Texas"
+    },
+    {
+      "candidateId": "1936679e-feab-425b-befb-e10f0a0ef145",
+      "name": "Laura Cisneros",
+      "scope": "state_lower",
+      "districtName": "State House District 38 (2024); Texas"
+    },
+    {
+      "candidateId": "0356fdde-7a9b-455d-89a6-c0858bdb75c1",
+      "name": "Laura Garcia DeLeon",
+      "scope": "state_lower",
+      "districtName": "State House District 140 (2024); Texas"
+    },
+    {
+      "candidateId": "ba278921-0c5b-4f16-b523-c406d2105f38",
+      "name": "Lawrence Brandyburg",
+      "scope": "state_lower",
+      "districtName": "State House District 85 (2024); Texas"
+    },
+    {
+      "candidateId": "d79a2c67-ef8f-464e-96a4-5bd1c3bec680",
+      "name": "Lee Tice",
+      "scope": "state_lower",
+      "districtName": "State House District 122 (2024); Texas"
+    },
+    {
+      "candidateId": "e4fac86e-a8be-44e2-aee9-c3b94ab49f70",
+      "name": "Leigh Wambsganss",
+      "scope": "state_upper",
+      "districtName": "State Senate District 9 (2024); Texas"
+    },
+    {
+      "candidateId": "79718110-325f-4a08-bb30-3c8d472c51c5",
+      "name": "Leilani Barnett",
+      "scope": "state_lower",
+      "districtName": "State House District 69 (2024); Texas"
+    },
+    {
+      "candidateId": "db53937d-87c1-4cf2-91cc-edb40b88484c",
+      "name": "Linda Howell",
+      "scope": "state_lower",
+      "districtName": "State House District 76 (2024); Texas"
+    },
+    {
+      "candidateId": "1b76cd0c-b2e8-403d-9bbd-4993fbdb4090",
+      "name": "Lisa Emerson",
+      "scope": "state_lower",
+      "districtName": "State House District 126 (2024); Texas"
+    },
+    {
+      "candidateId": "aa0eeb35-f88b-4f4d-b9ca-e3335d7a290a",
+      "name": "Liz Ramos",
+      "scope": "state_lower",
+      "districtName": "State House District 135 (2024); Texas"
+    },
+    {
+      "candidateId": "7834be35-7330-4989-96c8-75a97cd4b234",
+      "name": "Lorenzo Johnson",
+      "scope": "state_lower",
+      "districtName": "State House District 6 (2024); Texas"
+    },
+    {
+      "candidateId": "83be841f-4e93-49d0-ac76-f92d0ef064f8",
+      "name": "Malik Williams",
+      "scope": "state_lower",
+      "districtName": "State House District 83 (2024); Texas"
+    },
+    {
+      "candidateId": "adebd3ae-95d5-450e-828d-79c6714a5502",
+      "name": "Marcus Cardenas",
+      "scope": "state_upper",
+      "districtName": "State Senate District 19 (2024); Texas"
+    },
+    {
+      "candidateId": "ecafae99-950a-4ae6-aa37-ed6b65315958",
+      "name": "Margaret Durham",
+      "scope": "state_lower",
+      "districtName": "State House District 84 (2024); Texas"
+    },
+    {
+      "candidateId": "ab80777e-3433-45d0-bea2-5764dda333ac",
+      "name": "Mark A. Moseley",
+      "scope": "state_lower",
+      "districtName": "State House District 4 (2024); Texas"
+    },
+    {
+      "candidateId": "6abc812a-17e5-4119-9df7-7a3ddd309bbe",
+      "name": "Mary Klenz",
+      "scope": "state_lower",
+      "districtName": "State House District 17 (2024); Texas"
+    },
+    {
+      "candidateId": "97880966-3e7d-44dd-90a6-0fcc606c7e7d",
+      "name": "Matthias-Jonah Early",
+      "scope": "state_lower",
+      "districtName": "State House District 20 (2024); Texas"
+    },
+    {
+      "candidateId": "a41ff2bc-3b3f-4993-9d7b-5bb71e640a45",
+      "name": "Max Alalibo",
+      "scope": "state_lower",
+      "districtName": "State House District 27 (2024); Texas"
+    },
+    {
+      "candidateId": "68e5ddae-7ba5-45fe-877b-488c69b8e0c1",
+      "name": "Melanie Medley-Thomas",
+      "scope": "state_lower",
+      "districtName": "State House District 103 (2024); Texas"
+    },
+    {
+      "candidateId": "1e483159-2777-40cc-b025-99f909dc61d3",
+      "name": "Melva Perez",
+      "scope": "state_lower",
+      "districtName": "State House District 119 (2024); Texas"
+    },
+    {
+      "candidateId": "351fad86-a85c-40fe-99f4-6aa49fab87f0",
+      "name": "Merrie Fox",
+      "scope": "state_lower",
+      "districtName": "State House District 73 (2024); Texas"
+    },
+    {
+      "candidateId": "8ea54103-0c4e-4413-9393-3aff20ffce9d",
+      "name": "Michael Myers",
+      "scope": "state_lower",
+      "districtName": "State House District 10 (2024); Texas"
+    },
+    {
+      "candidateId": "6527c8c5-2381-4b7e-a2fa-05ca1d88a5e9",
+      "name": "Michelle Williams",
+      "scope": "state_lower",
+      "districtName": "State House District 127 (2024); Texas"
+    },
+    {
+      "candidateId": "f0c39ff2-048c-4a4d-b2b3-56f8df84e1cf",
+      "name": "Michelle Winder",
+      "scope": "state_lower",
+      "districtName": "State House District 99 (2024); Texas"
+    },
+    {
+      "candidateId": "79f5c3ca-87f0-4a0d-b432-33af25358131",
+      "name": "Mike Meadors",
+      "scope": "state_lower",
+      "districtName": "State House District 25 (2024); Texas"
+    },
+    {
+      "candidateId": "6ef18e65-e04b-42e2-8e03-3bd1ec66c03e",
+      "name": "Mike Michna",
+      "scope": "state_lower",
+      "districtName": "State House District 134 (2024); Texas"
+    },
+    {
+      "candidateId": "4240218f-f8d8-4ed9-9e0d-8600d8c6cf20",
+      "name": "Mike Schofield",
+      "scope": "state_lower",
+      "districtName": "State House District 132 (2024); Texas"
+    },
+    {
+      "candidateId": "b885b12d-a972-4fe5-a8c3-645b22bea233",
+      "name": "Moniqua' Scott",
+      "scope": "state_lower",
+      "districtName": "State House District 15 (2024); Texas"
+    },
+    {
+      "candidateId": "a6da7cf7-696e-4166-95a3-65f2dd766834",
+      "name": "Nicholas Holbrook",
+      "scope": "state_lower",
+      "districtName": "State House District 98 (2024); Texas"
+    },
+    {
+      "candidateId": "6d35a8aa-76b5-4e30-9178-7d93d2930851",
+      "name": "Nicole King",
+      "scope": "state_lower",
+      "districtName": "State House District 3 (2024); Texas"
+    },
+    {
+      "candidateId": "375363ac-2e51-4bfe-961b-a86febdb6c7d",
+      "name": "Odus Evbagharu",
+      "scope": "state_lower",
+      "districtName": "State House District 135 (2024); Texas"
+    },
+    {
+      "candidateId": "00fa6220-99d7-4079-98da-8b23fe4b78e5",
+      "name": "Orlando Lopez",
+      "scope": "state_lower",
+      "districtName": "State House District 33 (2024); Texas"
+    },
+    {
+      "candidateId": "350c354b-90c7-4abf-ae6b-e4ad19475234",
+      "name": "Oscar Rosa",
+      "scope": "state_lower",
+      "districtName": "State House District 35 (2024); Texas"
+    },
+    {
+      "candidateId": "ebfbfed6-e64b-4c05-8b2c-44247d991e8d",
+      "name": "Oziel Ochoa Jr.",
+      "scope": "state_lower",
+      "districtName": "State House District 37 (2024); Texas"
+    },
+    {
+      "candidateId": "23a9827e-1137-4403-9056-61c6b6b35b66",
+      "name": "Paul Thomasson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 5 (2024); Texas"
+    },
+    {
+      "candidateId": "2547e13d-87a5-461d-91ee-e577e4b9a4e8",
+      "name": "Pooja Sethi",
+      "scope": "state_lower",
+      "districtName": "State House District 47 (2024); Texas"
+    },
+    {
+      "candidateId": "b525fe12-0b7c-42b5-8d8c-1f0424676e3a",
+      "name": "Rahsaan King",
+      "scope": "state_lower",
+      "districtName": "State House District 142 (2024); Texas"
+    },
+    {
+      "candidateId": "274e59ac-d5a2-4b76-a555-dc6e88ae9ffb",
+      "name": "Ray Callas",
+      "scope": "state_lower",
+      "districtName": "State House District 21 (2024); Texas"
+    },
+    {
+      "candidateId": "d32b74b1-9fd8-4592-95cd-1ade84e05b67",
+      "name": "Ray Stith",
+      "scope": "state_lower",
+      "districtName": "State House District 57 (2024); Texas"
+    },
+    {
+      "candidateId": "13dec829-0366-45da-af1e-1acc133abbb8",
+      "name": "Rhett Rosenquest Smith",
+      "scope": "state_lower",
+      "districtName": "State House District 116 (2024); Texas"
+    },
+    {
+      "candidateId": "b8d70843-c569-4cd4-a278-04cb91adb8c9",
+      "name": "Ricardo Martinez",
+      "scope": "state_lower",
+      "districtName": "State House District 125 (2024); Texas"
+    },
+    {
+      "candidateId": "d1477b46-8431-4e47-bf2a-bb4cfec56ce9",
+      "name": "Riley Rodriquez",
+      "scope": "state_upper",
+      "districtName": "State Senate District 28 (2024); Texas"
+    },
+    {
+      "candidateId": "79153f19-0e8a-4bb1-98be-99bd1f42b1cc",
+      "name": "Robert Garza",
+      "scope": "state_lower",
+      "districtName": "State House District 74 (2024); Texas"
+    },
+    {
+      "candidateId": "ce04ba73-eb55-42d6-8c4a-ccc4da1b0ead",
+      "name": "Rocky Thigpen",
+      "scope": "state_lower",
+      "districtName": "State House District 9 (2024); Texas"
+    },
+    {
+      "candidateId": "4880cff2-0916-4954-a651-69e405e0cbc7",
+      "name": "Ron Angeletti",
+      "scope": "state_upper",
+      "districtName": "State Senate District 4 (2024); Texas"
+    },
+    {
+      "candidateId": "c6caa11f-b3ea-47f4-b0a7-56c680f40ea9",
+      "name": "Roxanne Lathan",
+      "scope": "state_lower",
+      "districtName": "State House District 11 (2024); Texas"
+    },
+    {
+      "candidateId": "2007031a-f49f-4cdf-ab53-693387aaabac",
+      "name": "Samantha Lopez-Resendez",
+      "scope": "state_lower",
+      "districtName": "State House District 50 (2024); Texas"
+    },
+    {
+      "candidateId": "0dd69ba0-4836-4bbc-951f-183817ade21c",
+      "name": "Sandeep Srivastava",
+      "scope": "state_lower",
+      "districtName": "State House District 66 (2024); Texas"
+    },
+    {
+      "candidateId": "fa4c3b4c-c2d6-4723-bce6-e91a0024c347",
+      "name": "Sandy Ibanez",
+      "scope": "state_lower",
+      "districtName": "State House District 28 (2024); Texas"
+    },
+    {
+      "candidateId": "88052586-e9e6-4d77-9d68-a6bfa21d3ffd",
+      "name": "Sara McGee",
+      "scope": "state_lower",
+      "districtName": "State House District 132 (2024); Texas"
+    },
+    {
+      "candidateId": "83e9c1dc-762d-406f-a4f4-50f89eb4ccbf",
+      "name": "Scott Bowen",
+      "scope": "state_lower",
+      "districtName": "State House District 129 (2024); Texas"
+    },
+    {
+      "candidateId": "f6f77087-0632-4759-8fc9-db11e0658aac",
+      "name": "Scott Whitmarsh",
+      "scope": "state_lower",
+      "districtName": "State House District 131 (2024); Texas"
+    },
+    {
+      "candidateId": "b742529e-363c-4115-b1ef-7cf1f6c9b58f",
+      "name": "Sean Huffman",
+      "scope": "state_lower",
+      "districtName": "State House District 1 (2024); Texas"
+    },
+    {
+      "candidateId": "34eb1611-a9a2-48ae-b6c0-0643c81c3362",
+      "name": "Shannon Dicely",
+      "scope": "state_upper",
+      "districtName": "State Senate District 11 (2024); Texas"
+    },
+    {
+      "candidateId": "cde9e0b1-889f-46e0-b5a0-a0af8eed585d",
+      "name": "Shelley Tatum",
+      "scope": "state_lower",
+      "districtName": "State House District 9 (2024); Texas"
+    },
+    {
+      "candidateId": "c9432286-2f72-484b-b0ae-a2b90f5b25e5",
+      "name": "Shelly Nickels",
+      "scope": "state_lower",
+      "districtName": "State House District 122 (2024); Texas"
+    },
+    {
+      "candidateId": "16a9e134-5f83-47a5-a18f-edbba6462fc4",
+      "name": "Shiloh Salazar",
+      "scope": "state_lower",
+      "districtName": "State House District 72 (2024); Texas"
+    },
+    {
+      "candidateId": "c9c0e0c9-67b5-4390-9854-05caefc4f168",
+      "name": "Staci Childs",
+      "scope": "state_lower",
+      "districtName": "State House District 131 (2024); Texas"
+    },
+    {
+      "candidateId": "3232526a-3e59-4d10-b69f-b40a50e6ad20",
+      "name": "Stan Stanart",
+      "scope": "state_lower",
+      "districtName": "State House District 126 (2024); Texas"
+    },
+    {
+      "candidateId": "a98e7782-670b-4ede-8041-85de41227b11",
+      "name": "Stefanie Bord",
+      "scope": "state_lower",
+      "districtName": "State House District 126 (2024); Texas"
+    },
+    {
+      "candidateId": "803dedac-76a6-4853-a401-306ea8735638",
+      "name": "Stephanie Saenz",
+      "scope": "state_lower",
+      "districtName": "State House District 34 (2024); Texas"
+    },
+    {
+      "candidateId": "15a3e652-b484-420a-aa25-2cae2003e729",
+      "name": "Stephen Stanley",
+      "scope": "state_lower",
+      "districtName": "State House District 113 (2024); Texas"
+    },
+    {
+      "candidateId": "79c0faac-a0ec-483e-adf3-5e386d70e6df",
+      "name": "Sylvia Soto",
+      "scope": "state_lower",
+      "districtName": "State House District 124 (2024); Texas"
+    },
+    {
+      "candidateId": "e8229b7f-de5d-47c5-86c4-2e8f7ad66519",
+      "name": "Taylor Rehmet",
+      "scope": "state_upper",
+      "districtName": "State Senate District 9 (2024); Texas"
+    },
+    {
+      "candidateId": "4f34c9a5-a2c2-40ec-bf9d-bf7d6c8eb675",
+      "name": "Tennyson G. Moreno",
+      "scope": "state_lower",
+      "districtName": "State House District 45 (2024); Texas"
+    },
+    {
+      "candidateId": "44dadf5a-0d73-4440-a07d-189b1e4b0b6f",
+      "name": "Teresa Johnson-Hernandez",
+      "scope": "state_lower",
+      "districtName": "State House District 42 (2024); Texas"
+    },
+    {
+      "candidateId": "9a323294-75bc-4eea-a0ae-a11f8712ec4a",
+      "name": "Terry Meza",
+      "scope": "state_lower",
+      "districtName": "State House District 105 (2024); Texas"
+    },
+    {
+      "candidateId": "f1870b21-3e76-4146-970c-8ac9f11bc3f7",
+      "name": "Theodore Schramm",
+      "scope": "state_lower",
+      "districtName": "State House District 136 (2024); Texas"
+    },
+    {
+      "candidateId": "4ace7b28-4424-4f0f-83a6-e3b486dad602",
+      "name": "Tom Butler",
+      "scope": "state_lower",
+      "districtName": "State House District 128 (2024); Texas"
+    },
+    {
+      "candidateId": "6ef6ff3a-adc0-4cb5-9cae-6aa9d824ce77",
+      "name": "Tyler Smith",
+      "scope": "state_lower",
+      "districtName": "State House District 138 (2024); Texas"
+    },
+    {
+      "candidateId": "cb519709-8057-43b8-8066-3b6a7894464e",
+      "name": "Valorie Barton",
+      "scope": "state_lower",
+      "districtName": "State House District 18 (2024); Texas"
+    },
+    {
+      "candidateId": "339899a2-4aaa-4046-a0ca-25f25ba9dd8f",
+      "name": "Vanesia Johnson",
+      "scope": "state_lower",
+      "districtName": "State House District 76 (2024); Texas"
+    },
+    {
+      "candidateId": "c6402fe7-212c-4835-94ec-af8b09e498a1",
+      "name": "Will Campbell",
+      "scope": "state_lower",
+      "districtName": "State House District 109 (2024); Texas"
+    },
+    {
+      "candidateId": "fdbba3cc-2acf-4e41-b224-4f9d0827d458",
+      "name": "William Cunningham",
+      "scope": "state_lower",
+      "districtName": "State House District 26 (2024); Texas"
+    },
+    {
+      "candidateId": "b935c93f-c2e5-47a6-811d-1cbfcfd5ae65",
+      "name": "Yisak Worku",
+      "scope": "state_lower",
+      "districtName": "State House District 91 (2024); Texas"
+    },
+    {
+      "candidateId": "e0690476-71b7-44dd-8fa3-f3d3beaff435",
+      "name": "Zach Herbert",
+      "scope": "state_lower",
+      "districtName": "State House District 112 (2024); Texas"
+    },
+    {
+      "candidateId": "d7619a01-0dab-40b3-9255-0eea2305a16d",
+      "name": "Zack Dunn",
+      "scope": "state_lower",
+      "districtName": "State House District 121 (2024); Texas"
+    }
+  ],
+  "files": 0,
+  "fileErrors": 0,
+  "counts": {},
+  "rolls": []
+}
