@@ -191,7 +191,7 @@ describe("googlePlacesAutocomplete retrieve", () => {
 
     const result = await retrieveSuggestedAddressWithGooglePlaces(RETRIEVE_INPUT, { ...OPTIONS, fetchImpl });
 
-    expect(result).toEqual({ address: "1600 Pennsylvania Avenue NW, Washington, DC 20500, USA" });
+    expect(result).toEqual({ address: "1600 Pennsylvania Avenue NW, Washington, DC 20500, USA", location: null });
 
     const [url, init] = (fetchImpl as unknown as ReturnType<typeof vi.fn>).mock.calls[0] as [string, RequestInit];
     const parsedUrl = new URL(url);
@@ -201,7 +201,7 @@ describe("googlePlacesAutocomplete retrieve", () => {
     expect(init.method).toBe("GET");
     const headers = init.headers as Record<string, string>;
     expect(headers["x-goog-api-key"]).toBe("test-api-key");
-    expect(headers["x-goog-fieldmask"]).toBe("formattedAddress");
+    expect(headers["x-goog-fieldmask"]).toBe("formattedAddress,location");
   });
 
   it("rejects a response without formattedAddress as bad_response", () => {

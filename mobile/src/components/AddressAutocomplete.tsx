@@ -1,4 +1,4 @@
-import type { AddressSuggestion } from "@voteapp/api-client";
+import type { AddressLocation, AddressSuggestion } from "@voteapp/api-client";
 import { useAddressSuggestions } from "@voteapp/api-client";
 import { Pressable, Text, TextInput, View } from "react-native";
 
@@ -10,7 +10,10 @@ import { Pressable, Text, TextInput, View } from "react-native";
 
 type AddressAutocompleteProps = {
   value: string;
-  onChange: (value: string) => void;
+  /** location is set only when the value came from a completed dropdown
+   * selection; every keystroke or fallback call passes it as undefined, so
+   * callers that track coordinates must clear them when it is absent. */
+  onChange: (value: string, location?: AddressLocation | null) => void;
   placeholder?: string;
   /** Screen-reader label. React Native does not associate a sibling <Text>
    * with the input, so callers whose visible label differs from the default
@@ -32,9 +35,9 @@ export function AddressAutocomplete({
     // retrieved address (falls back to the description if retrieve fails).
     onChange(suggestion.description);
     clearSuggestions();
-    const address = await selectSuggestion(suggestion);
-    if (address) {
-      onChange(address);
+    const retrieved = await selectSuggestion(suggestion);
+    if (retrieved) {
+      onChange(retrieved.address, retrieved.location);
     }
   }
 

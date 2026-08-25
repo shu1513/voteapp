@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@voteapp/api-client";
-import type { AddressResolution } from "@voteapp/api-client";
+import type { AddressLocation, AddressResolution } from "@voteapp/api-client";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import { FullAddressExplanation } from "../components/FullAddressExplanation";
 import { PreSearchTermsDialog } from "../components/PreSearchTermsDialog";
@@ -19,6 +19,11 @@ export function HomePage() {
   const [searchParams] = useSearchParams();
   const { me } = useMe();
   const [address, setAddress] = useState("");
+  // Coordinates for the CURRENT address value, present only right after a
+  // completed autocomplete selection. Any manual edit passes no location and
+  // clears them, so stale coordinates can never ride along with a different
+  // address string.
+  const [addressLocation, setAddressLocation] = useState<AddressLocation | null>(null);
   const [termsOpen, setTermsOpen] = useState(false);
   // The dialog's checkbox. Reset to false every time the dialog opens, never
   // seeded from storage: remembering may decide whether the dialog opens, and
@@ -35,14 +40,20 @@ export function HomePage() {
   }, [me, oneOffSearch, navigate]);
 
   const resolve = useMutation({
-    mutationFn: (input: string) =>
+    mutationFn: (input: { address: string; coordinates: AddressLocation | null }) =>
       // The accepted version rides along because the endpoint enforces the
       // clickwrap too, refusing a search that carries no current acceptance.
       // Nothing is stored server-side; the disabled button is a courtesy, and
-      // the endpoint is the actual gate.
+      // the endpoint is the actual gate. Coordinates (from the autocomplete
+      // selection, when present) let the backend resolve venue addresses the
+      // Census street data lacks.
       apiRequest<AddressResolution>("/api/address/resolve", {
         method: "POST",
-        body: { address: input, accepted_terms_version: TERMS_VERSION },
+        body: {
+          address: input.address,
+          accepted_terms_version: TERMS_VERSION,
+          ...(input.coordinates ? { coordinates: input.coordinates } : {}),
+        },
       }),
     onSuccess: (resolution) => {
       // Stash for the anonymous-to-account handoff: if this visitor signs up,
@@ -81,7 +92,7 @@ export function HomePage() {
     // Storage is read here, in the handler, and never during render: reading
     // it while rendering would diverge from the server-rendered HTML.
     if (hasCurrentTermsAcceptance()) {
-      resolve.mutate(address.trim());
+      resolve.mutate({ address: address.trim(), coordinates: addressLocation });
       return;
     }
     setAccepted(false);
@@ -95,7 +106,7 @@ export function HomePage() {
     // Recorded before the request, so a failed search does not re-ask for an
     // agreement the visitor already gave.
     rememberTermsAcceptance();
-    resolve.mutate(address.trim());
+    resolve.mutate({ address: address.trim(), coordinates: addressLocation });
   }
 
   function cancelTerms() {
@@ -148,7 +159,10 @@ export function HomePage() {
             <AddressAutocomplete
               inputId="address"
               value={address}
-              onChange={setAddress}
+              onChange={(value, location) => {
+                setAddress(value);
+                setAddressLocation(location ?? null);
+              }}
               placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
             />
             {/* Notice belongs here, not only in the dialog: the autocomplete

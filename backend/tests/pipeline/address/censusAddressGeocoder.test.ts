@@ -2,9 +2,14 @@ import { describe, expect, it, vi } from "vitest";
 
 import {
   CensusAddressGeocoderError,
+  buildCensusAddressCandidates,
   buildCensusAddressGeocoderUrl,
+  buildCensusCoordinatesGeocoderUrl,
   geocodeAddressWithCensus,
+  geocodeAddressWithCensusFallbacks,
+  geocodeCoordinatesWithCensus,
   parseCensusAddressGeocoderPayload,
+  parseCensusCoordinatesGeocoderPayload,
 } from "../../../src/pipeline/address/censusAddressGeocoder.js";
 
 function jsonResponse(payload: unknown, init: ResponseInit = {}): Response {
@@ -168,5 +173,160 @@ describe("censusAddressGeocoder", () => {
       code: "network_error",
       message: "Census geocoder request failed: fetch failed",
     });
+  });
+});
+
+describe("buildCensusAddressCandidates", () => {
+  it("derives country-stripped, street+zip, and no-zip variants from a Google formattedAddress", () => {
+    expect(buildCensusAddressCandidates("1 MetLife Stadium Dr, East Rutherford, NJ 07073, USA")).toEqual([
+      "1 MetLife Stadium Dr, East Rutherford, NJ 07073, USA",
+      "1 MetLife Stadium Dr, East Rutherford, NJ 07073",
+      "1 MetLife Stadium Dr, 07073",
+      "1 MetLife Stadium Dr, East Rutherford, NJ",
+    ]);
+  });
+
+  it("collapses ZIP+4 to ZIP5", () => {
+    expect(buildCensusAddressCandidates("3921 Harlan Ave, Baldwin Park, CA 91706-1234")).toEqual([
+      "3921 Harlan Ave, Baldwin Park, CA 91706-1234",
+      "3921 Harlan Ave, Baldwin Park, CA 91706",
+      "3921 Harlan Ave, 91706",
+      "3921 Harlan Ave, Baldwin Park, CA",
+    ]);
+  });
+
+  it("returns a single candidate when there is nothing to vary", () => {
+    expect(buildCensusAddressCandidates("3921 Harlan Ave Baldwin Park CA 91706")).toEqual([
+      "3921 Harlan Ave Baldwin Park CA 91706",
+    ]);
+  });
+
+  it("only strips a country that follows a comma", () => {
+    expect(buildCensusAddressCandidates("10 Route US")).toEqual(["10 Route US"]);
+  });
+
+  it("returns no candidates for blank input", () => {
+    expect(buildCensusAddressCandidates("   ")).toEqual([]);
+  });
+});
+
+describe("geocodeAddressWithCensusFallbacks", () => {
+  const MATCH_PAYLOAD = {
+    result: {
+      addressMatches: [
+        {
+          matchedAddress: "1 METLIFE STADIUM DR, EAST RUTHERFORD, NJ, 07073",
+          coordinates: { x: -74.0741, y: 40.8135 },
+          geographies: { Counties: [] },
+        },
+      ],
+    },
+  };
+  const NO_MATCH_PAYLOAD = { result: { addressMatches: [] } };
+
+  it("returns the first candidate's match without trying later candidates", async () => {
+    const fetchImpl = vi.fn().mockResolvedValue(jsonResponse(MATCH_PAYLOAD)) as unknown as typeof fetch;
+
+    const result = await geocodeAddressWithCensusFallbacks(
+      "1 MetLife Stadium Dr, East Rutherford, NJ 07073, USA",
+      { fetchImpl }
+    );
+
+    expect(result.matched_address).toBe("1 METLIFE STADIUM DR, EAST RUTHERFORD, NJ, 07073");
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
+  it("falls through not_found to the next candidate", async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(jsonResponse(NO_MATCH_PAYLOAD))
+      .mockResolvedValueOnce(jsonResponse(MATCH_PAYLOAD)) as unknown as typeof fetch;
+
+    const result = await geocodeAddressWithCensusFallbacks(
+      "1 MetLife Stadium Dr, East Rutherford, NJ 07073, USA",
+      { fetchImpl }
+    );
+
+    expect(result.matched_address).toBe("1 METLIFE STADIUM DR, EAST RUTHERFORD, NJ, 07073");
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+    const calls = (fetchImpl as unknown as ReturnType<typeof vi.fn>).mock.calls as [string][];
+    expect(new URL(calls[0][0]).searchParams.get("address")).toBe(
+      "1 MetLife Stadium Dr, East Rutherford, NJ 07073, USA"
+    );
+    expect(new URL(calls[1][0]).searchParams.get("address")).toBe(
+      "1 MetLife Stadium Dr, East Rutherford, NJ 07073"
+    );
+  });
+
+  it("throws not_found when every candidate misses", async () => {
+    // Fresh Response per call: a shared body errors on the second read.
+    const fetchImpl = vi.fn().mockImplementation(() => Promise.resolve(jsonResponse(NO_MATCH_PAYLOAD))) as unknown as typeof fetch;
+
+    await expect(
+      geocodeAddressWithCensusFallbacks("1 MetLife Stadium Dr, East Rutherford, NJ 07073, USA", { fetchImpl })
+    ).rejects.toMatchObject({ code: "not_found" });
+    expect(fetchImpl).toHaveBeenCalledTimes(4);
+  });
+
+  it("propagates upstream failures immediately instead of retrying", async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValue(jsonResponse({ error: "boom" }, { status: 500, statusText: "Internal Server Error" })) as unknown as typeof fetch;
+
+    await expect(
+      geocodeAddressWithCensusFallbacks("1 MetLife Stadium Dr, East Rutherford, NJ 07073, USA", { fetchImpl })
+    ).rejects.toMatchObject({ code: "http_error" });
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
+  it("rejects blank addresses before calling Census", async () => {
+    const fetchImpl = vi.fn() as unknown as typeof fetch;
+
+    await expect(geocodeAddressWithCensusFallbacks("   ", { fetchImpl })).rejects.toMatchObject({
+      code: "invalid_address",
+    });
+    expect(fetchImpl).not.toHaveBeenCalled();
+  });
+});
+
+describe("censusCoordinatesGeocoder", () => {
+  it("builds a coordinates URL mapping lng to x and lat to y with defaults", () => {
+    const url = new URL(buildCensusCoordinatesGeocoderUrl({ lat: 40.8135, lng: -74.0741 }));
+
+    expect(url.origin + url.pathname).toBe("https://geocoding.geo.census.gov/geocoder/geographies/coordinates");
+    expect(url.searchParams.get("x")).toBe("-74.0741");
+    expect(url.searchParams.get("y")).toBe("40.8135");
+    expect(url.searchParams.get("benchmark")).toBe("Public_AR_Current");
+    expect(url.searchParams.get("vintage")).toBe("ACS2024_Current");
+    expect(url.searchParams.get("layers")).toBe("all");
+    expect(url.searchParams.get("format")).toBe("json");
+  });
+
+  it("rejects out-of-range coordinates", () => {
+    expect(() => buildCensusCoordinatesGeocoderUrl({ lat: 91, lng: 0 })).toThrowError(CensusAddressGeocoderError);
+    expect(() => buildCensusCoordinatesGeocoderUrl({ lat: 0, lng: 181 })).toThrowError(CensusAddressGeocoderError);
+    expect(() => buildCensusCoordinatesGeocoderUrl({ lat: Number.NaN, lng: 0 })).toThrowError(
+      CensusAddressGeocoderError
+    );
+  });
+
+  it("parses geographies from a coordinates response", () => {
+    const geographies = { Counties: [{ GEOID: "34003" }] };
+
+    expect(parseCensusCoordinatesGeocoderPayload({ result: { geographies } })).toEqual({ geographies });
+  });
+
+  it("rejects a coordinates response without geographies as bad_response", () => {
+    expect(() => parseCensusCoordinatesGeocoderPayload({ result: {} })).toThrowError(/geographies/);
+    expect(() => parseCensusCoordinatesGeocoderPayload({})).toThrowError(CensusAddressGeocoderError);
+  });
+
+  it("geocodes coordinates end to end via fetch", async () => {
+    const geographies = { Counties: [{ GEOID: "34003" }] };
+    const fetchImpl = fetchMockReturning(jsonResponse({ result: { geographies } }));
+
+    const result = await geocodeCoordinatesWithCensus({ lat: 40.8135, lng: -74.0741 }, { fetchImpl });
+
+    expect(result).toEqual({ geographies });
   });
 });

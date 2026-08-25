@@ -31,8 +31,17 @@ export type AddressAutocompleteResponse = {
   suggestions: AddressSuggestion[];
 };
 
+export type AddressLocation = {
+  lat: number;
+  lng: number;
+};
+
 export type AddressRetrieveResponse = {
   address: string;
+  // Place coordinates from Google, or null/absent when unavailable. Held in
+  // memory only and sent with resolve so venue addresses missing from the
+  // Census street data still find their districts. Never persisted.
+  location?: AddressLocation | null;
 };
 
 export type ResearchAreaSummary = {

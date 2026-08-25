@@ -1,5 +1,5 @@
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from "@headlessui/react";
-import type { AddressSuggestion } from "@voteapp/api-client";
+import type { AddressLocation, AddressSuggestion } from "@voteapp/api-client";
 import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
 import { useAddressSuggestions } from "@voteapp/api-client";
 
@@ -10,7 +10,10 @@ import { useAddressSuggestions } from "@voteapp/api-client";
 
 type AddressAutocompleteProps = {
   value: string;
-  onChange: (value: string) => void;
+  /** location is set only when the value came from a completed dropdown
+   * selection; every keystroke or fallback call passes it as undefined, so
+   * callers that track coordinates must clear them when it is absent. */
+  onChange: (value: string, location?: AddressLocation | null) => void;
   inputId: string;
   placeholder?: string;
 };
@@ -35,9 +38,9 @@ export function AddressAutocomplete({ value, onChange, inputId, placeholder }: A
     // Optimistically show the picked description, then upgrade to the full
     // retrieved address (falls back to the description if retrieve fails).
     onChange(suggestion.description);
-    const address = await selectSuggestion(suggestion);
-    if (address) {
-      onChange(address);
+    const retrieved = await selectSuggestion(suggestion);
+    if (retrieved) {
+      onChange(retrieved.address, retrieved.location);
     }
   }
 

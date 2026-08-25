@@ -132,6 +132,10 @@ export type AddressResolvePayload = {
  */
 export type PublicAddressResolvePayload = AddressResolvePayload & {
   accepted_terms_version: string;
+  /** Optional lat/lng from the Google Places autocomplete selection; lets the
+   * resolver look districts up by point when the Census street-range data
+   * lacks the address (stadiums, campuses). Absent for hand-typed input. */
+  coordinates?: { lat: number; lng: number };
 };
 
 export type AddressAutocompleteSuggestPayload = {
@@ -340,6 +344,30 @@ export function parseAddressBodyValue(parsed: unknown): AddressResolvePayload {
   };
 }
 
+function parseOptionalCoordinatesField(parsed: unknown): { lat: number; lng: number } | undefined {
+  const coordinates = (parsed as { coordinates?: unknown }).coordinates;
+  if (coordinates === undefined || coordinates === null) {
+    return undefined;
+  }
+  if (typeof coordinates !== "object" || Array.isArray(coordinates)) {
+    throw new TypeError("coordinates must be an object with numeric lat and lng fields");
+  }
+  const { lat, lng } = coordinates as { lat?: unknown; lng?: unknown };
+  if (
+    typeof lat !== "number" ||
+    typeof lng !== "number" ||
+    !Number.isFinite(lat) ||
+    !Number.isFinite(lng) ||
+    lat < -90 ||
+    lat > 90 ||
+    lng < -180 ||
+    lng > 180
+  ) {
+    throw new TypeError("coordinates must carry lat in [-90, 90] and lng in [-180, 180]");
+  }
+  return { lat, lng };
+}
+
 export function parsePublicAddressResolveBodyValue(parsed: unknown): PublicAddressResolvePayload {
   const { address } = parseAddressBodyValue(parsed);
   const acceptedTermsVersion = (parsed as { accepted_terms_version?: unknown }).accepted_terms_version;
@@ -350,6 +378,7 @@ export function parsePublicAddressResolveBodyValue(parsed: unknown): PublicAddre
   return {
     address,
     accepted_terms_version: acceptedTermsVersion.trim(),
+    coordinates: parseOptionalCoordinatesField(parsed),
   };
 }
 

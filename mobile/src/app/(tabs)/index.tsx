@@ -1,4 +1,4 @@
-import type { AddressResolution } from "@voteapp/api-client";
+import type { AddressLocation, AddressResolution } from "@voteapp/api-client";
 import { apiRequest, ADDRESS_FIELD_PRIVACY_NOTE, TERMS_VERSION, useMe } from "@voteapp/api-client";
 import { useMutation } from "@tanstack/react-query";
 import { useFocusEffect, useRouter } from "expo-router";
@@ -79,6 +79,10 @@ export default function HomeScreen() {
   const router = useRouter();
   const { me } = useMe();
   const [address, setAddress] = useState("");
+  // Coordinates for the CURRENT address value, present only right after a
+  // completed autocomplete selection; any manual edit clears them — same
+  // rule as the web home.
+  const [addressLocation, setAddressLocation] = useState<AddressLocation | null>(null);
   const [addressExplanationVisible, setAddressExplanationVisible] = useState(false);
   const [termsVisible, setTermsVisible] = useState(false);
   // Set only while the visitor is off reading a linked document, so the sheet
@@ -90,13 +94,19 @@ export default function HomeScreen() {
   const [accepted, setAccepted] = useState(false);
 
   const resolve = useMutation({
-    mutationFn: (input: string) =>
+    mutationFn: (input: { address: string; coordinates: AddressLocation | null }) =>
       // The accepted version rides along because the endpoint enforces the
       // clickwrap too, refusing a search without one. Nothing is stored
-      // server-side — same rule as the web.
+      // server-side — same rule as the web. Coordinates (from the
+      // autocomplete selection, when present) let the backend resolve venue
+      // addresses the Census street data lacks.
       apiRequest<AddressResolution>("/api/address/resolve", {
         method: "POST",
-        body: { address: input, accepted_terms_version: TERMS_VERSION },
+        body: {
+          address: input.address,
+          accepted_terms_version: TERMS_VERSION,
+          ...(input.coordinates ? { coordinates: input.coordinates } : {}),
+        },
       }),
     onSuccess: (resolution) => {
       // Stash for the anonymous-to-account handoff: if this visitor signs
@@ -147,10 +157,11 @@ export default function HomeScreen() {
     // Captured before the await: the field stays editable while the read is
     // in flight, and the search must use what was on screen when it started.
     const searchAddress = address.trim();
+    const searchCoordinates = addressLocation;
     setCheckingAcceptance(true);
     try {
       if (await hasCurrentTermsAcceptance()) {
-        resolve.mutate(searchAddress);
+        resolve.mutate({ address: searchAddress, coordinates: searchCoordinates });
         return;
       }
       setAccepted(false);
@@ -168,7 +179,7 @@ export default function HomeScreen() {
     // agreement already given. Fire-and-forget: never block the search on
     // being able to remember it.
     void rememberTermsAcceptance();
-    resolve.mutate(address.trim());
+    resolve.mutate({ address: address.trim(), coordinates: addressLocation });
   }
 
   function cancelTerms() {
@@ -226,7 +237,10 @@ export default function HomeScreen() {
             </Text>
             <AddressAutocomplete
               value={address}
-              onChange={setAddress}
+              onChange={(value, location) => {
+                setAddress(value);
+                setAddressLocation(location ?? null);
+              }}
               placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
               accessibilityLabel="Enter your address to see which elections you can vote in:"
             />

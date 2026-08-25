@@ -199,12 +199,18 @@ describe("useAddressSuggestions", () => {
     const suggestToken = (apiRequestMock.mock.calls[0][1] as { body: { session_token: string } }).body
       .session_token;
 
-    apiRequestMock.mockResolvedValueOnce({ address: "200 N Spring St, Los Angeles, CA 90012, USA" });
-    let retrieved: string | null = null;
+    apiRequestMock.mockResolvedValueOnce({
+      address: "200 N Spring St, Los Angeles, CA 90012, USA",
+      location: { lat: 34.0537, lng: -118.2427 },
+    });
+    let retrieved: { address: string; location: { lat: number; lng: number } | null } | null = null;
     await act(async () => {
       retrieved = await result.current.selectSuggestion(SUGGESTION);
     });
-    expect(retrieved).toBe("200 N Spring St, Los Angeles, CA 90012, USA");
+    expect(retrieved).toEqual({
+      address: "200 N Spring St, Los Angeles, CA 90012, USA",
+      location: { lat: 34.0537, lng: -118.2427 },
+    });
     const retrieveCall = apiRequestMock.mock.calls[1];
     expect(retrieveCall[0]).toBe("/api/address/autocomplete/retrieve");
     expect((retrieveCall[1] as { body: { session_token: string } }).body.session_token).toBe(suggestToken);
@@ -243,7 +249,7 @@ describe("useAddressSuggestions", () => {
           resolveRetrieve = resolve;
         })
     );
-    let selectPromise!: Promise<string | null>;
+    let selectPromise!: ReturnType<typeof result.current.selectSuggestion>;
     act(() => {
       selectPromise = result.current.selectSuggestion(SUGGESTION);
     });
@@ -279,7 +285,7 @@ describe("useAddressSuggestions", () => {
       .session_token;
 
     apiRequestMock.mockRejectedValueOnce(new ApiError(503, "upstream_unavailable", "Google hiccup"));
-    let retrieved: string | null = "sentinel";
+    let retrieved: Awaited<ReturnType<typeof result.current.selectSuggestion>> | "sentinel" = "sentinel";
     await act(async () => {
       retrieved = await result.current.selectSuggestion(SUGGESTION);
     });

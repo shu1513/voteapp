@@ -90,7 +90,10 @@ export type AuthApiRateLimitResult = {
 
 export type AddressApiServerOptions = {
   authService?: AuthService;
-  resolveAddress: (address: string) => Promise<AddressResolutionResult>;
+  resolveAddress: (
+    address: string,
+    coordinates?: { lat: number; lng: number }
+  ) => Promise<AddressResolutionResult>;
   suggestAddresses?: (input: { input: string; sessionToken: string }) => Promise<AddressSuggestion[]>;
   retrieveSuggestedAddress?: (input: { placeId: string; sessionToken: string }) => Promise<RetrievedSuggestedAddress>;
   // [ballot-personalized-ordering]: options + ordered result; on feature
