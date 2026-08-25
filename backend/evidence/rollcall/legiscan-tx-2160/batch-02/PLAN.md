@@ -21,7 +21,8 @@ how each measure was judged.
 
 Batch 01 wrote 1,620 records from 25 votes. This is the same order of size.
 House votes carry the batch: each reaches ~114 candidates against the
-senate's 13, because only 14 senate districts are on the Nov-2026 ballot.
+senate's 13 — the number of sitting senators the crosswalk maps to
+candidates on the Nov-2026 ballot.
 
 ## How these 27 were chosen
 
