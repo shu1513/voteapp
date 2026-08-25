@@ -15,7 +15,7 @@ writing starts.
 | …distinct actions (duplicate ids collapsed — see CODE-FINDINGS §1) | 768 |
 | selected for batch 01 | **25** (13 house, 12 senate) |
 | measures covered | 14 |
-| duplicate roll ids collapsed inside the selection | 13 |
+| duplicate roll ids collapsed inside the selection | 8 |
 | estimated records written | **~1,640** (house 13 × ~114, senate 12 × 13) |
 
 For scale: the Ohio pilot judged 24 roll calls and wrote 1,330 records. This
@@ -29,10 +29,10 @@ Four filters, applied in order:
 
 1. **Divided** — the phase-2 gate: the losing side is at least a quarter of
    the winning side. Already true of all 813.
-2. **Consequential** — the measure became law, was vetoed, or is a
-   constitutional amendment that reached the voters. A divided vote on a
-   bill that died in the other chamber is a real vote, but it is a weaker
-   thing to tell a voter, so it waits.
+2. **Consequential** — the measure became law, was vetoed, or is a joint
+   resolution the legislature adopted. A divided vote on a bill that died in
+   the other chamber is a real vote, but it is a weaker thing to tell a
+   voter, so it waits.
 3. **Nameable subject** — the bill has a clear policy subject that maps onto
    one of the 27 research areas. This is what makes an honest two-sentence
    description possible; it is the same reason the federal expansion left
@@ -44,28 +44,53 @@ Four filters, applied in order:
 
 ## The batch
 
-### Constitutional amendments that reached the ballot (7 votes, 5 measures)
+### Proposed constitutional amendments (5 votes, 4 measures)
 
-A Texas amendment needs two-thirds of each chamber, so a divided amendment
-vote is worth reading twice.
+These four propose amendments to the **Texas** constitution. Each needs
+two-thirds of each chamber, and once adopted it goes to the voters — so a
+divided amendment vote is worth reading twice. All four carry titles
+beginning "Proposing a constitutional amendment", which is the test used
+here; `rolls.json` marks them `measure_class:
+proposed_constitutional_amendment`.
 
 | measure | chamber | roll | date | tally | question |
 |---|---|---|---|---|---|
 | HJR 2 | house | 1559942 | 2025-04-29 | 112-29 | Adopted |
 | HJR 4 | house | 1532010 | 2025-04-01 | 111-31 | Adopted |
 | HJR 34 | senate | 1575590 | 2025-05-21 | 23-8 | Adopted |
-| HJR 98 | house | 1558765 | 2025-04-28 | 86-57 | Adopted |
-| HJR 98 | senate | 1568736 | 2025-05-08 | 17-14 | Adopted |
 | SJR 18 | house | 1559068 | 2025-04-28 | 104-26 | Adopted as amended |
 | SJR 18 | senate | 1520079 | 2025-03-18 | 24-6 | Read 3rd time |
 
 Subjects: prohibiting death taxes (HJR 2), barring an occupation tax on
-certain entities (HJR 4), an ad valorem exemption (HJR 34), an Article V
-convention application (HJR 98), and barring a tax on capital gains
-(SJR 18). HJR 98's senate vote at 17-14 is the closest in the batch.
+certain securities transactions (HJR 4), an ad valorem exemption for border
+security infrastructure (HJR 34), and barring a tax on capital gains
+(SJR 18).
 
 Where only one chamber appears, the other chamber adopted it without
 division.
+
+### Article V convention application (2 votes, 1 measure)
+
+**HJR 98 is not a proposed Texas constitutional amendment and never went on
+a ballot.** Its title begins "Applying to the Congress of the United States
+to call a convention under Article V" — it is an application asking Congress
+to convene a convention to amend the **federal** constitution, for fiscal
+restraints, limits on federal power, and federal term limits. It is a joint
+resolution like the four above, and LegiScan gives it the same bill type,
+which is exactly why it is easy to file in the wrong drawer.
+
+| measure | chamber | roll | date | tally | question |
+|---|---|---|---|---|---|
+| HJR 98 | house | 1558765 | 2025-04-28 | 86-57 | Adopted |
+| HJR 98 | senate | 1568736 | 2025-05-08 | 17-14 | Adopted |
+
+Kept in the batch — a convention application is a real and contested
+position, and the 17-14 senate vote is the closest in this batch. But
+**its judgment must describe it as an application to Congress, never as a
+constitutional amendment placed before voters.** Getting that wrong would
+put a false sentence on roughly 103 candidates at once. `rolls.json` marks
+it `measure_class: article_v_convention_application` so the distinction
+survives into the judging step.
 
 ### Marquee enacted bills (18 votes, 9 measures)
 

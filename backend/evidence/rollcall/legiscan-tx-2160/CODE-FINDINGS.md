@@ -46,11 +46,34 @@ ids give three different keys, so nothing recognizes them as one vote.
 Judging all three would write three near-identical records on the same
 senator for the same bill — the fan-out's multiplier working against us.
 
+### The member list alone is NOT the dedupe key
+
+Worth stating plainly, because the first version of the batch-01 selection
+script got this wrong: two roll calls with identical member lineups are
+**not** necessarily the same action.
+
+SB 13's senate third reading (roll 1522908, 2025-03-19) and its conference
+report adoption (roll 1588929, 2025-05-31) both passed 23-8 with the same
+23 senators voting yes. They are two and a half months and two distinct
+questions apart. The same is true of SB 33's third reading (1550482) and
+its concurrence vote (1579565), both 22-9.
+
+A cohesive party-line chamber will reproduce the same lineup over and over,
+so member-hash-alone silently merges distinct votes. The key must be the
+full tuple — `(chamber, bill_id, date, desc, yea, nay, nv, absent,
+sha1(member list))` — and any future fetch-step dedupe must use all of it.
+
 ### How it is handled for now
 
-Batch 01 collapses duplicates by member-list hash before selecting, and
-takes one roll per (measure, chamber). 13 duplicate ids were collapsed out
-of the 25 selected votes.
+Batch 01 collapses duplicates by the full key above before selecting, and
+takes one roll per (measure, chamber). **8** duplicate ids were collapsed
+out of the 25 selected votes.
+
+(An earlier revision of this file reported 13. That count came from the
+member-hash-only bug described above, which inflated it by counting five
+genuinely distinct senate actions as duplicates. The 25 selected roll
+numbers were unaffected — the passage-vote preference picks the same roll
+either way — but the metadata in `rolls.json` was wrong and is corrected.)
 
 That is enough for a hand-picked batch and nothing more. **A larger Texas
 run needs this in code**, because the collapse currently lives in the

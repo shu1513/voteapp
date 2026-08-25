@@ -13,6 +13,7 @@
       "nays": 29,
       "bill_title": "Proposing a constitutional amendment prohibiting the legislature from imposing death taxes applicable to a decedent's property or the transfer of an estate, inheritance, legacy, succession, or gift.",
       "bill_status": 4,
+      "measure_class": "proposed_constitutional_amendment",
       "duplicate_roll_ids_collapsed": 0,
       "other_divided_rolls_same_chamber": 0
     },
@@ -26,6 +27,7 @@
       "nays": 31,
       "bill_title": "Proposing a constitutional amendment prohibiting the enactment of a law imposing an occupation tax on certain entities that enter into transactions conveying securities or imposing a tax on certain securities transactions.",
       "bill_status": 4,
+      "measure_class": "proposed_constitutional_amendment",
       "duplicate_roll_ids_collapsed": 0,
       "other_divided_rolls_same_chamber": 0
     },
@@ -39,32 +41,7 @@
       "nays": 8,
       "bill_title": "Proposing a constitutional amendment to authorize the legislature to provide for an exemption from ad valorem taxation of the amount of the market value of real property located in a county that borders the United Mexican States that arises from the installation or construction on the property of border security infrastructure and related improvements.",
       "bill_status": 4,
-      "duplicate_roll_ids_collapsed": 0,
-      "other_divided_rolls_same_chamber": 0
-    },
-    {
-      "measure_id": "HJR 98",
-      "chamber": "house",
-      "roll_number": 1558765,
-      "vote_date": "2025-04-28",
-      "exact_question": "Adopted RV#602",
-      "yeas": 86,
-      "nays": 57,
-      "bill_title": "Applying to the Congress of the United States to call a convention under Article V of the United States Constitution for the limited purpose of proposing one or more amendments to the constitution to impose fiscal restraints on the federal government, to limit the power and jurisdiction of the federal government, and to limit the terms of office of federal officials and members of Congress.",
-      "bill_status": 4,
-      "duplicate_roll_ids_collapsed": 0,
-      "other_divided_rolls_same_chamber": 0
-    },
-    {
-      "measure_id": "HJR 98",
-      "chamber": "senate",
-      "roll_number": 1568736,
-      "vote_date": "2025-05-08",
-      "exact_question": "Adopted",
-      "yeas": 17,
-      "nays": 14,
-      "bill_title": "Applying to the Congress of the United States to call a convention under Article V of the United States Constitution for the limited purpose of proposing one or more amendments to the constitution to impose fiscal restraints on the federal government, to limit the power and jurisdiction of the federal government, and to limit the terms of office of federal officials and members of Congress.",
-      "bill_status": 4,
+      "measure_class": "proposed_constitutional_amendment",
       "duplicate_roll_ids_collapsed": 0,
       "other_divided_rolls_same_chamber": 0
     },
@@ -78,6 +55,7 @@
       "nays": 26,
       "bill_title": "Proposing a constitutional amendment prohibiting the imposition of a tax on the realized or unrealized capital gains of an individual, family, estate, or trust.",
       "bill_status": 4,
+      "measure_class": "proposed_constitutional_amendment",
       "duplicate_roll_ids_collapsed": 0,
       "other_divided_rolls_same_chamber": 0
     },
@@ -91,6 +69,35 @@
       "nays": 6,
       "bill_title": "Proposing a constitutional amendment prohibiting the imposition of a tax on the realized or unrealized capital gains of an individual, family, estate, or trust.",
       "bill_status": 4,
+      "measure_class": "proposed_constitutional_amendment",
+      "duplicate_roll_ids_collapsed": 0,
+      "other_divided_rolls_same_chamber": 0
+    },
+    {
+      "measure_id": "HJR 98",
+      "chamber": "house",
+      "roll_number": 1558765,
+      "vote_date": "2025-04-28",
+      "exact_question": "Adopted RV#602",
+      "yeas": 86,
+      "nays": 57,
+      "bill_title": "Applying to the Congress of the United States to call a convention under Article V of the United States Constitution for the limited purpose of proposing one or more amendments to the constitution to impose fiscal restraints on the federal government, to limit the power and jurisdiction of the federal government, and to limit the terms of office of federal officials and members of Congress.",
+      "bill_status": 4,
+      "measure_class": "article_v_convention_application",
+      "duplicate_roll_ids_collapsed": 0,
+      "other_divided_rolls_same_chamber": 0
+    },
+    {
+      "measure_id": "HJR 98",
+      "chamber": "senate",
+      "roll_number": 1568736,
+      "vote_date": "2025-05-08",
+      "exact_question": "Adopted",
+      "yeas": 17,
+      "nays": 14,
+      "bill_title": "Applying to the Congress of the United States to call a convention under Article V of the United States Constitution for the limited purpose of proposing one or more amendments to the constitution to impose fiscal restraints on the federal government, to limit the power and jurisdiction of the federal government, and to limit the terms of office of federal officials and members of Congress.",
+      "bill_status": 4,
+      "measure_class": "article_v_convention_application",
       "duplicate_roll_ids_collapsed": 0,
       "other_divided_rolls_same_chamber": 0
     },
@@ -104,6 +111,7 @@
       "nays": 61,
       "bill_title": "Relating to the establishment of an education savings account program.",
       "bill_status": 4,
+      "measure_class": "bill",
       "duplicate_roll_ids_collapsed": 0,
       "other_divided_rolls_same_chamber": 0
     },
@@ -117,8 +125,9 @@
       "nays": 12,
       "bill_title": "Relating to the establishment of an education savings account program.",
       "bill_status": 4,
-      "duplicate_roll_ids_collapsed": 3,
-      "other_divided_rolls_same_chamber": 0
+      "measure_class": "bill",
+      "duplicate_roll_ids_collapsed": 2,
+      "other_divided_rolls_same_chamber": 1
     },
     {
       "measure_id": "SB 8",
@@ -130,6 +139,7 @@
       "nays": 47,
       "bill_title": "Relating to agreements between certain sheriffs and the United States Immigration and Customs Enforcement to enforce federal immigration law and a grant program to cover the costs of implementing those agreements.",
       "bill_status": 4,
+      "measure_class": "bill",
       "duplicate_roll_ids_collapsed": 0,
       "other_divided_rolls_same_chamber": 1
     },
@@ -143,6 +153,7 @@
       "nays": 11,
       "bill_title": "Relating to agreements between certain sheriffs and the United States Immigration and Customs Enforcement to enforce federal immigration law and a grant program to cover the costs of implementing those agreements.",
       "bill_status": 4,
+      "measure_class": "bill",
       "duplicate_roll_ids_collapsed": 0,
       "other_divided_rolls_same_chamber": 0
     },
@@ -156,6 +167,7 @@
       "nays": 47,
       "bill_title": "Relating to parental rights in public education, to certain public school requirements and prohibitions regarding instruction, diversity, equity, and inclusion duties, and social transitioning, and to student clubs at public schools.",
       "bill_status": 4,
+      "measure_class": "bill",
       "duplicate_roll_ids_collapsed": 0,
       "other_divided_rolls_same_chamber": 1
     },
@@ -169,8 +181,9 @@
       "nays": 11,
       "bill_title": "Relating to parental rights in public education, to certain public school requirements and prohibitions regarding instruction, diversity, equity, and inclusion duties, and social transitioning, and to student clubs at public schools.",
       "bill_status": 4,
-      "duplicate_roll_ids_collapsed": 2,
-      "other_divided_rolls_same_chamber": 0
+      "measure_class": "bill",
+      "duplicate_roll_ids_collapsed": 1,
+      "other_divided_rolls_same_chamber": 1
     },
     {
       "measure_id": "SB 13",
@@ -182,6 +195,7 @@
       "nays": 48,
       "bill_title": "Relating to a school district's library materials and catalog, the establishment of local school library advisory councils, and parental rights regarding public school library catalogs and access by the parent's child to library materials.",
       "bill_status": 4,
+      "measure_class": "bill",
       "duplicate_roll_ids_collapsed": 0,
       "other_divided_rolls_same_chamber": 0
     },
@@ -195,8 +209,9 @@
       "nays": 8,
       "bill_title": "Relating to a school district's library materials and catalog, the establishment of local school library advisory councils, and parental rights regarding public school library catalogs and access by the parent's child to library materials.",
       "bill_status": 4,
-      "duplicate_roll_ids_collapsed": 1,
-      "other_divided_rolls_same_chamber": 0
+      "measure_class": "bill",
+      "duplicate_roll_ids_collapsed": 0,
+      "other_divided_rolls_same_chamber": 1
     },
     {
       "measure_id": "SB 15",
@@ -208,6 +223,7 @@
       "nays": 43,
       "bill_title": "Relating to size and density requirements for residential lots in certain municipalities; authorizing a fee.",
       "bill_status": 4,
+      "measure_class": "bill",
       "duplicate_roll_ids_collapsed": 0,
       "other_divided_rolls_same_chamber": 1
     },
@@ -221,6 +237,7 @@
       "nays": 7,
       "bill_title": "Relating to size and density requirements for residential lots in certain municipalities; authorizing a fee.",
       "bill_status": 4,
+      "measure_class": "bill",
       "duplicate_roll_ids_collapsed": 0,
       "other_divided_rolls_same_chamber": 0
     },
@@ -234,6 +251,7 @@
       "nays": 57,
       "bill_title": "Relating to the purchase or acquisition of an interest in real property by certain aliens or foreign entities; creating a criminal offense; providing a civil penalty.",
       "bill_status": 4,
+      "measure_class": "bill",
       "duplicate_roll_ids_collapsed": 0,
       "other_divided_rolls_same_chamber": 0
     },
@@ -247,6 +265,7 @@
       "nays": 7,
       "bill_title": "Relating to the purchase or acquisition of an interest in real property by certain aliens or foreign entities; creating a criminal offense; providing a civil penalty.",
       "bill_status": 4,
+      "measure_class": "bill",
       "duplicate_roll_ids_collapsed": 1,
       "other_divided_rolls_same_chamber": 1
     },
@@ -260,6 +279,7 @@
       "nays": 58,
       "bill_title": "Relating to certain prohibited transactions and logistical support between a governmental entity and an abortion assistance entity or abortion provider for the procurement of an abortion or related services.",
       "bill_status": 4,
+      "measure_class": "bill",
       "duplicate_roll_ids_collapsed": 0,
       "other_divided_rolls_same_chamber": 0
     },
@@ -273,8 +293,9 @@
       "nays": 9,
       "bill_title": "Relating to certain prohibited transactions and logistical support between a governmental entity and an abortion assistance entity or abortion provider for the procurement of an abortion or related services.",
       "bill_status": 4,
-      "duplicate_roll_ids_collapsed": 1,
-      "other_divided_rolls_same_chamber": 0
+      "measure_class": "bill",
+      "duplicate_roll_ids_collapsed": 0,
+      "other_divided_rolls_same_chamber": 1
     },
     {
       "measure_id": "SB 37",
@@ -286,6 +307,7 @@
       "nays": 47,
       "bill_title": "Relating to the governance of public institutions of higher education, including review of curriculum and certain degree and certificate programs, a faculty council or senate, training for members of the governing board, and the establishment, powers, and duties of the Texas Higher Education Coordinating Board Office of the Ombudsman.",
       "bill_status": 4,
+      "measure_class": "bill",
       "duplicate_roll_ids_collapsed": 0,
       "other_divided_rolls_same_chamber": 0
     },
@@ -299,8 +321,9 @@
       "nays": 11,
       "bill_title": "Relating to the governance of public institutions of higher education, including review of curriculum and certain degree and certificate programs, a faculty council or senate, training for members of the governing board, and the establishment, powers, and duties of the Texas Higher Education Coordinating Board Office of the Ombudsman.",
       "bill_status": 4,
-      "duplicate_roll_ids_collapsed": 2,
-      "other_divided_rolls_same_chamber": 0
+      "measure_class": "bill",
+      "duplicate_roll_ids_collapsed": 1,
+      "other_divided_rolls_same_chamber": 1
     },
     {
       "measure_id": "SB 2972",
@@ -312,6 +335,7 @@
       "nays": 39,
       "bill_title": "Relating to expressive activities at public institutions of higher education.",
       "bill_status": 4,
+      "measure_class": "bill",
       "duplicate_roll_ids_collapsed": 0,
       "other_divided_rolls_same_chamber": 1
     },
@@ -325,6 +349,7 @@
       "nays": 10,
       "bill_title": "Relating to expressive activities at public institutions of higher education.",
       "bill_status": 4,
+      "measure_class": "bill",
       "duplicate_roll_ids_collapsed": 3,
       "other_divided_rolls_same_chamber": 1
     }
