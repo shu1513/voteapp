@@ -1,0 +1,181 @@
+{
+  "jurisdiction": "TX",
+  "sessionId": 2160,
+  "chamber": "senate",
+  "rollNumber": 1587476,
+  "bill": "HB493",
+  "measureId": "HB 493",
+  "machineUrl": "https://legiscan.com/TX/rollcall/HB493/id/1587476",
+  "fetchedAt": "2026-08-25T04:21:34.405Z",
+  "rollCall": {
+    "roll_call_id": 1587476,
+    "bill_id": 1890280,
+    "date": "2025-06-01",
+    "desc": "Senate adopts conference committee report",
+    "yea": 23,
+    "nay": 8,
+    "nv": 0,
+    "absent": 0,
+    "total": 31,
+    "passed": 1,
+    "chamber": "S",
+    "chamber_id": 92,
+    "votes": [
+      {
+        "people_id": 5850,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 5875,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 5904,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 5906,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 5921,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 5929,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 5933,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 5949,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 5962,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 6014,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 6015,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 6019,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 6029,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 6032,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 11013,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 11015,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 11020,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 11599,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 15077,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 16267,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 16834,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 17365,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 19686,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 19730,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 20015,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 20805,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 21679,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 24827,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 25224,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 26344,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 26345,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      }
+    ]
+  }
+}
