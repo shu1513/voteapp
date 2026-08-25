@@ -26,10 +26,9 @@ type AutoPickControlProps = {
    * pass null for measures. Lets the panel flag a partial fill: "picked"
    * with fewer names than seats must not read as a finished race. */
   seatsToFill: number | null;
-  /** Render as `display: contents` so the button joins the parent's flex row
-   * (the measure card's "My pick: Yes/No" row) while the prompts and the
-   * "Why this pick" panel — all w-full — wrap onto their own lines. */
-  inline?: boolean;
+  /** Smaller pill (measure section's mid-page placement) — the Yes/No pair
+   * on the sticky card stays the page's loud control. */
+  compact?: boolean;
 };
 
 function joinNames(names: string[]): string {
@@ -39,7 +38,7 @@ function joinNames(names: string[]): string {
   return `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
 }
 
-export function AutoPickControl({ electionId, seatsToFill, inline = false }: AutoPickControlProps) {
+export function AutoPickControl({ electionId, seatsToFill, compact = false }: AutoPickControlProps) {
   const { me } = useMe();
   const { preferences, isLoading: preferencesLoading, isError: preferencesError } = useMyResearchAreas();
   const autoPick = useAutoPick();
@@ -72,7 +71,7 @@ export function AutoPickControl({ electionId, seatsToFill, inline = false }: Aut
   }
 
   return (
-    <div className={inline ? "contents" : "flex flex-col gap-2"}>
+    <div className="flex flex-col gap-2">
       <span>
         <button
           type="button"
@@ -82,7 +81,9 @@ export function AutoPickControl({ electionId, seatsToFill, inline = false }: Aut
           // ready user to the issue editor.
           disabled={saving || preferencesLoading}
           onClick={onClick}
-          className="rounded-full border border-autopick-border bg-autopick px-3 py-1.5 text-sm font-semibold text-autopick-ink transition hover:bg-autopick-dark disabled:opacity-50"
+          className={`rounded-full border border-autopick-border bg-autopick font-semibold text-autopick-ink transition hover:bg-autopick-dark disabled:opacity-50 ${
+            compact ? "px-2.5 py-1 text-xs" : "px-3 py-1.5 text-sm"
+          }`}
         >
           {autoPick.isPending ? "Picking…" : "Auto-pick by my issues"}
         </button>
