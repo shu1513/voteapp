@@ -285,7 +285,7 @@ export default function HomeScreen() {
             {/* Instructional label for first-time visitors — same copy as
                 the web home. Signed-in surfaces keep "Your address". */}
             <Text className="text-sm font-medium text-ink">
-              Enter your address, city, or ZIP code to see which elections you can vote in:
+              Enter your address to see which elections you can vote in:
             </Text>
             <AddressAutocomplete
               value={address}
@@ -297,7 +297,7 @@ export default function HomeScreen() {
               }}
               onRetrievePendingChange={setRetrievePending}
               placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
-              accessibilityLabel="Enter your address, city, or ZIP code to see which elections you can vote in:"
+              accessibilityLabel="Enter your address to see which elections you can vote in:"
             />
             {regionUnsupported ? (
               <Text accessibilityRole="alert" className="mt-1 text-xs text-rausch-dark">
@@ -310,7 +310,10 @@ export default function HomeScreen() {
                 visitor types and long before Search. */}
             {/* One link, not two — same as the web. The Privacy Policy is
                 still linked directly from the explainer below. */}
-            <Text className="mt-1 text-xs text-ink-soft">{ADDRESS_FIELD_PRIVACY_NOTE}</Text>
+            <Text className="mt-1 text-xs text-ink-soft">
+              ({ADDRESS_FIELD_PRIVACY_NOTE} A ZIP code or city works too — some local races only
+              appear with a street address.)
+            </Text>
             <Pressable
               accessibilityRole="button"
               onPress={() => setAddressExplanationVisible(true)}

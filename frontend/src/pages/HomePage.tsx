@@ -203,13 +203,12 @@ export function HomePage() {
                 address" — those users already know. "Home address" was
                 rejected as a demand for where you sleep, "Voting address"
                 read as the place you go to vote. */}
-            {/* Says what typing gets you AND that coarse input works — the
-                visitor who won't type where they live must learn a ZIP or
-                city is enough BEFORE giving up. The complete-vs-partial
-                trade lives in the explainer below and the partial banner,
-                not here. */}
+            {/* The label promises the outcome; the parenthetical below the
+                field carries both reassurances — privacy, and that a ZIP or
+                city is enough — so the visitor who won't type where they
+                live learns the escape hatch BEFORE giving up. */}
             <label htmlFor="address" className="block text-sm font-medium text-ink">
-              Enter your address, city, or ZIP code to see which elections you can vote in:
+              Enter your address to see which elections you can vote in:
             </label>
             <AddressAutocomplete
               inputId="address"
@@ -237,7 +236,8 @@ export function HomePage() {
                 the explainer below links it directly — so the inline copy of
                 it was noise beside the question people actually ask. */}
             <p className="mt-1 text-xs text-ink-soft">
-              {ADDRESS_FIELD_PRIVACY_NOTE} <FullAddressExplanation />
+              ({ADDRESS_FIELD_PRIVACY_NOTE} A ZIP code or city works too — some local races only
+              appear with a street address.) <FullAddressExplanation />
             </p>
           </div>
 
