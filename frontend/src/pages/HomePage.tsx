@@ -208,7 +208,7 @@ export function HomePage() {
                 city is enough — so the visitor who won't type where they
                 live learns the escape hatch BEFORE giving up. */}
             <label htmlFor="address" className="block text-sm font-medium text-ink">
-              Enter your address to see which elections you can vote in:
+              Enter address to see which elections you can vote in:
             </label>
             <AddressAutocomplete
               inputId="address"
@@ -240,8 +240,8 @@ export function HomePage() {
                 never saved), short enough to be read. Other surfaces keep
                 the full constant. */}
             <p className="mt-1 text-xs text-ink-soft">
-              (Only used to find your voting districts, never saved. A ZIP or city works too,
-              with fewer local races.) <FullAddressExplanation />
+              The address is only used to find voting districts. You can also search by ZIP or
+              city, with fewer local races. <FullAddressExplanation />
             </p>
           </div>
 

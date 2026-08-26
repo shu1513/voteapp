@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { PRE_SEARCH_AGREEMENT_PARAGRAPHS, TERMS_VERSION } from "@voteapp/api-client";
 import { HomePage } from "./HomePage";
 
-const ADDRESS_LABEL = "Enter your address to see which elections you can vote in:";
+const ADDRESS_LABEL = "Enter address to see which elections you can vote in:";
 const STORAGE_KEY = "voteapp_terms_acceptance";
 const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
 
@@ -83,8 +83,8 @@ describe("HomePage pre-search clickwrap", () => {
     // so this notice may never move into the dialog. The home page carries a
     // compressed variant of ADDRESS_FIELD_PRIVACY_NOTE (same two promises:
     // district lookup only, never saved) plus the ZIP/city hint.
-    expect(screen.getByText(/Only used to find your voting districts, never saved/)).toBeInTheDocument();
-    expect(screen.getByText(/A ZIP or city works too/)).toBeInTheDocument();
+    expect(screen.getByText(/The address is only used to find voting districts/)).toBeInTheDocument();
+    expect(screen.getByText(/You can also search by ZIP or city/)).toBeInTheDocument();
     // The policy is reachable without a second inline link — the footer
     // carries it site-wide and the explainer links it directly — so the note
     // offers the question people actually ask instead.
