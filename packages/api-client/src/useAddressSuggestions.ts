@@ -27,6 +27,12 @@ export type SelectedSuggestion = {
   granularity: "address" | "zip" | "region";
   /** Five-digit ZIP when granularity is "zip"; null otherwise. */
   postal_code: string | null;
+  /** Two-letter state for "region" selections when the server named one;
+   * null otherwise. Feeds resolve's region_state. */
+  state: string | null;
+  /** Locality name for "region" selections when the server named one; null
+   * otherwise. Feeds resolve's region_locality. */
+  locality: string | null;
 };
 
 export type UseAddressSuggestionsResult = {
@@ -173,10 +179,18 @@ export function useAddressSuggestions(): UseAddressSuggestionsResult {
     // starts a fresh session instead of reusing the spent token (the local
     // sessionToken copy still rides on the retrieve request).
     sessionTokenRef.current = null;
+    // Abortable like the suggests: a keystroke supersedes the result anyway
+    // (the seq check below), and without an abort the caller's
+    // retrieve-pending state would hold Search hostage for the full network
+    // round trip on a slow link. Aborting the HTTP request changes nothing
+    // server-side.
+    const controller = new AbortController();
+    abortRef.current = controller;
     try {
       const response = await apiRequest<AddressRetrieveResponse>("/api/address/autocomplete/retrieve", {
         method: "POST",
         body: { place_id: suggestion.place_id, session_token: sessionToken },
+        signal: controller.signal,
       });
       if (seq !== requestSeqRef.current) {
         // Superseded while in flight — the user typed or selected again
@@ -194,6 +208,8 @@ export function useAddressSuggestions(): UseAddressSuggestionsResult {
         location: granularity === "address" ? (response.location ?? null) : null,
         granularity,
         postal_code: granularity === "zip" && typeof response.postal_code === "string" ? response.postal_code : null,
+        state: granularity === "region" && typeof response.state === "string" ? response.state : null,
+        locality: granularity === "region" && typeof response.locality === "string" ? response.locality : null,
       };
     } catch {
       // Retrieve failed; the user still has their typed text and can submit

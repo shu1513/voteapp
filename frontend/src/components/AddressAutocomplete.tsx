@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from "@headlessui/react";
 import type { AddressLocation, AddressSuggestion } from "@voteapp/api-client";
 import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
@@ -15,14 +16,32 @@ type AddressAutocompleteProps = {
    * callers that track coordinates must clear them when it is absent.
    * granularity arrives only on a completed selection too: "zip" means the
    * value was replaced with the bare five-digit ZIP for the partial-ballot
-   * flow, "region" means the selection is an area with no supported flow —
-   * callers offering guidance must clear it whenever it is absent. */
-  onChange: (value: string, location?: AddressLocation | null, granularity?: "address" | "zip" | "region") => void;
+   * flow, "region" means the selection is an area — region carries the
+   * state (and locality when Google named one) for the region partial
+   * ballot, and without a state the caller can only offer guidance. Callers
+   * tracking any of these must clear them whenever they are absent. */
+  onChange: (
+    value: string,
+    location?: AddressLocation | null,
+    granularity?: "address" | "zip" | "region",
+    region?: { state: string; locality: string | null }
+  ) => void;
+  /** True while a selected suggestion's retrieve is in flight. The caller
+   * must hold Search: the input already shows the picked description, but
+   * classification (coordinates / ZIP / region state) has not landed, so a
+   * submit in this window would send a bare area string to the geocoder. */
+  onRetrievePendingChange?: (pending: boolean) => void;
   inputId: string;
   placeholder?: string;
 };
 
-export function AddressAutocomplete({ value, onChange, inputId, placeholder }: AddressAutocompleteProps) {
+export function AddressAutocomplete({
+  value,
+  onChange,
+  onRetrievePendingChange,
+  inputId,
+  placeholder,
+}: AddressAutocompleteProps) {
   const { suggestions, enabled, onInputChanged, selectSuggestion, clearSuggestions, warmup } =
     useAddressSuggestions();
 
@@ -35,6 +54,11 @@ export function AddressAutocomplete({ value, onChange, inputId, placeholder }: A
     onInputChanged(adopted);
   });
 
+  // Overlapping selections (pick, type, pick again) each hold and release
+  // the pending flag; a count keeps an earlier release from unfreezing
+  // Search while a later retrieve is still in flight.
+  const retrievesInFlight = useRef(0);
+
   async function onSelect(suggestion: AddressSuggestion | null) {
     if (!suggestion) {
       return;
@@ -42,7 +66,17 @@ export function AddressAutocomplete({ value, onChange, inputId, placeholder }: A
     // Optimistically show the picked description, then upgrade to the full
     // retrieved address (falls back to the description if retrieve fails).
     onChange(suggestion.description);
-    const retrieved = await selectSuggestion(suggestion);
+    retrievesInFlight.current += 1;
+    onRetrievePendingChange?.(true);
+    let retrieved: Awaited<ReturnType<typeof selectSuggestion>>;
+    try {
+      retrieved = await selectSuggestion(suggestion);
+    } finally {
+      retrievesInFlight.current -= 1;
+      if (retrievesInFlight.current === 0) {
+        onRetrievePendingChange?.(false);
+      }
+    }
     if (!retrieved) {
       return;
     }
@@ -52,7 +86,14 @@ export function AddressAutocomplete({ value, onChange, inputId, placeholder }: A
       onChange(retrieved.postal_code, null, "zip");
       return;
     }
-    onChange(retrieved.address, retrieved.location, retrieved.granularity);
+    onChange(
+      retrieved.address,
+      retrieved.location,
+      retrieved.granularity,
+      retrieved.granularity === "region" && retrieved.state
+        ? { state: retrieved.state, locality: retrieved.locality }
+        : undefined
+    );
   }
 
   return (

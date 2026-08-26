@@ -429,12 +429,16 @@ async function main(): Promise<void> {
     inputAddress: string,
     triggerSource: Exclude<ManualResearchTriggerSource, "manual_seed"> = "address_resolve",
     coordinates?: { lat: number; lng: number },
-    allowPartial?: boolean
+    allowPartial?: boolean,
+    regionState?: string,
+    regionLocality?: string
   ) => {
     const result = await resolveAddressToDistricts(pool, inputAddress, {
       ...buildAddressResolverOptions(),
       coordinates,
       allowPartial,
+      regionState,
+      regionLocality,
     });
     dispatchAutoDistrictResearch(result.districts, triggerSource);
     return result;
@@ -856,8 +860,8 @@ async function main(): Promise<void> {
         address
       ),
     initializeUserDistricts: ({ userId, districtIds }) => initializeUserDistricts(pool, userId, districtIds),
-    resolveAddress: (address, coordinates, allowPartial) =>
-      resolveAddressWithAutoResearch(address, "address_resolve", coordinates, allowPartial),
+    resolveAddress: (address, coordinates, allowPartial, regionState, regionLocality) =>
+      resolveAddressWithAutoResearch(address, "address_resolve", coordinates, allowPartial, regionState, regionLocality),
   });
 
   let server: Server | null = null;

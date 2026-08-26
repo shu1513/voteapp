@@ -37,9 +37,9 @@ export function FullAddressExplanation({ visible, onClose }: FullAddressExplanat
               exact districts that apply to you.
             </Text>
             <Text className="mt-3 text-sm text-ink-soft">
-              Prefer not to share your address? Enter just your ZIP code instead: you’ll get a
-              partial ballot with only the races every address in that ZIP shares, and you can add
-              your street address any time for the rest.
+              Prefer not to share your address? Enter just your ZIP code or city instead: you’ll
+              get a partial ballot for that area. You can enter your street address later to see
+              the remaining races.
             </Text>
             <Text className="mt-3 text-sm text-ink-soft">{ADDRESS_FIELD_PRIVACY_NOTE}</Text>
             <Text

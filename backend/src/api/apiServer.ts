@@ -2381,6 +2381,8 @@ async function dispatchApiRequest(
           location: result.location,
           granularity: result.granularity,
           postal_code: result.postal_code,
+          state: result.state,
+          locality: result.locality,
         },
         corsHeaders
       )
@@ -2422,7 +2424,13 @@ async function dispatchApiRequest(
     return;
   }
 
-  const result = await options.resolveAddress(payload.address, payload.coordinates, payload.allow_partial);
+  const result = await options.resolveAddress(
+    payload.address,
+    payload.coordinates,
+    payload.allow_partial,
+    payload.region_state,
+    payload.region_locality
+  );
   if (options.logDiagnostics) {
     try {
       options.logDiagnostics(toAddressResolutionDiagnostics(result));

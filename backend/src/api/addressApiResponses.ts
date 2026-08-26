@@ -8,9 +8,9 @@ export type PublicAddressResolutionResult = {
   // ask the user to confirm the matched address.
   address_match_count: number;
   districts: AddressResolutionResult["districts"];
-  /** "exact" = full district set from a geocoded address; "zip" = partial
-   * ballot (statewide, plus county when unambiguous) — the client labels the
-   * result and invites the street address. */
+  /** "exact" = full district set from a geocoded address; "zip"/"region" =
+   * partial ballot (statewide, plus county/place when unambiguous) — the
+   * client labels the result and invites the street address. */
   scope: AddressResolutionResult["scope"];
 };
 

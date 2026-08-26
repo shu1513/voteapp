@@ -724,6 +724,36 @@ describe("parsePublicAddressResolveBodyValue", () => {
     });
   });
 
+  it("normalizes region_state and region_locality, and rejects malformed ones", async () => {
+    const { parsePublicAddressResolveBodyValue } = await import("../../src/api/apiValidation.js");
+    const { CURRENT_TERMS_VERSION } = await import("../../src/constants/legal.js");
+    const base = { address: "Los Angeles, CA, USA", accepted_terms_version: CURRENT_TERMS_VERSION };
+
+    const parsed = parsePublicAddressResolveBodyValue({
+      ...base,
+      region_state: "ca",
+      region_locality: " Los Angeles ",
+    });
+    expect(parsed.region_state).toBe("CA");
+    expect(parsed.region_locality).toBe("Los Angeles");
+
+    // Absent fields stay absent, not undefined-valued keys.
+    expect("region_state" in parsePublicAddressResolveBodyValue(base)).toBe(false);
+
+    for (const region_state of ["C", "CAL", "C1", 12, null]) {
+      expect(() => parsePublicAddressResolveBodyValue({ ...base, region_state })).toThrow(/region_state/);
+    }
+    for (const region_locality of ["", "   ", "x".repeat(121), 12]) {
+      expect(() =>
+        parsePublicAddressResolveBodyValue({ ...base, region_state: "CA", region_locality })
+      ).toThrow(/region_locality/);
+    }
+    // A locality without a state has nothing to scope it.
+    expect(() => parsePublicAddressResolveBodyValue({ ...base, region_locality: "Los Angeles" })).toThrow(
+      /region_locality requires region_state/
+    );
+  });
+
   it("passes through valid optional coordinates", async () => {
     const { parsePublicAddressResolveBodyValue } = await import("../../src/api/apiValidation.js");
     const { CURRENT_TERMS_VERSION } = await import("../../src/constants/legal.js");

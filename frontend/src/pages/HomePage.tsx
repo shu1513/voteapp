@@ -9,7 +9,7 @@ import { PreSearchTermsDialog } from "../components/PreSearchTermsDialog";
 import { ErrorNotice } from "../components/Status";
 import { clearPendingDistrictIds, savePendingDistrictIds } from "../lib/pendingDistricts";
 import { useMe } from "@voteapp/api-client";
-import { ADDRESS_FIELD_PRIVACY_NOTE, TERMS_VERSION } from "@voteapp/api-client";
+import { TERMS_VERSION } from "@voteapp/api-client";
 import { hasCurrentTermsAcceptance, rememberTermsAcceptance } from "../lib/termsAcceptance";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
@@ -24,10 +24,20 @@ export function HomePage() {
   // clears them, so stale coordinates can never ride along with a different
   // address string.
   const [addressLocation, setAddressLocation] = useState<AddressLocation | null>(null);
-  // True right after the autocomplete selection was an area (city,
-  // neighborhood, road) — no supported flow, so the form shows guidance
-  // instead of letting the submit die in the geocoder. Any edit clears it.
-  const [regionSelected, setRegionSelected] = useState(false);
+  // Set right after the autocomplete selection was an area with a known
+  // state (city, neighborhood, county): the search runs the region
+  // partial-ballot path. Any edit clears it, like coordinates.
+  const [regionSelection, setRegionSelection] = useState<{ state: string; locality: string | null } | null>(null);
+  // True right after an area selection the server could not place in a state
+  // (a country pick, a territory) — nothing to search, so the form shows
+  // guidance instead of letting the submit die in the geocoder. Any edit
+  // clears it.
+  const [regionUnsupported, setRegionUnsupported] = useState(false);
+  // True while a picked suggestion's retrieve is in flight: the input
+  // already shows the description, but its classification (coordinates /
+  // ZIP / region) has not landed, so a quick Enter would send a bare area
+  // string to the geocoder and 422.
+  const [retrievePending, setRetrievePending] = useState(false);
   const [termsOpen, setTermsOpen] = useState(false);
   // The dialog's checkbox. Reset to false every time the dialog opens, never
   // seeded from storage: remembering may decide whether the dialog opens, and
@@ -44,7 +54,11 @@ export function HomePage() {
   }, [me, oneOffSearch, navigate]);
 
   const resolve = useMutation({
-    mutationFn: (input: { address: string; coordinates: AddressLocation | null }) =>
+    mutationFn: (input: {
+      address: string;
+      coordinates: AddressLocation | null;
+      region: { state: string; locality: string | null } | null;
+    }) =>
       // The accepted version rides along because the endpoint enforces the
       // clickwrap too, refusing a search that carries no current acceptance.
       // Nothing is stored server-side; the disabled button is a courtesy, and
@@ -56,11 +70,17 @@ export function HomePage() {
         body: {
           address: input.address,
           accepted_terms_version: TERMS_VERSION,
-          // Opt in to the ZIP partial-ballot path: this page renders the
-          // partial banner and scope-aware errors, so a bare ZIP gets a
-          // partial ballot here instead of a dead-end 422.
+          // Opt in to the ZIP/region partial-ballot paths: this page renders
+          // the partial banner and scope-aware errors, so a bare ZIP or a
+          // picked city gets a partial ballot here instead of a dead-end 422.
           allow_partial: true,
           ...(input.coordinates ? { coordinates: input.coordinates } : {}),
+          ...(input.region
+            ? {
+                region_state: input.region.state,
+                ...(input.region.locality ? { region_locality: input.region.locality } : {}),
+              }
+            : {}),
         },
       }),
     onSuccess: (resolution) => {
@@ -90,10 +110,13 @@ export function HomePage() {
       // partial=1 IS in the URL (it carries no location) so a refresh or a
       // shared link still labels the ballot as partial.
       const query = `d=${resolution.districts.map((district) => district.id).join(",")}`;
-      navigate(`/ballot?${query}${resolution.scope === "zip" ? "&partial=1" : ""}`, {
+      navigate(`/ballot?${query}${resolution.scope !== "exact" ? "&partial=1" : ""}`, {
         state: {
           matchedAddress: resolution.matched_address,
           addressMatchCount: resolution.address_match_count,
+          // Lets the partial banner name the search ("ZIP code 91706" vs
+          // "Los Angeles, CA, USA"); a bare link renders generic wording.
+          scope: resolution.scope,
         },
       });
     },
@@ -105,10 +128,11 @@ export function HomePage() {
     },
   });
 
-  // A region selection can only fail (no coordinates, and the string is an
-  // area the geocoder can't match), so Search disables while the guidance
-  // below the field explains what to do; any edit re-enables.
-  const canSearch = address.trim().length > 0 && !resolve.isPending && !regionSelected;
+  // A stateless region selection can only fail (no coordinates, no state,
+  // and the string is an area the geocoder can't match), so Search disables
+  // while the guidance below the field explains what to do; any edit
+  // re-enables.
+  const canSearch = address.trim().length > 0 && !resolve.isPending && !regionUnsupported && !retrievePending;
 
   function onSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -118,7 +142,7 @@ export function HomePage() {
     // Storage is read here, in the handler, and never during render: reading
     // it while rendering would diverge from the server-rendered HTML.
     if (hasCurrentTermsAcceptance()) {
-      resolve.mutate({ address: address.trim(), coordinates: addressLocation });
+      resolve.mutate({ address: address.trim(), coordinates: addressLocation, region: regionSelection });
       return;
     }
     setAccepted(false);
@@ -132,7 +156,7 @@ export function HomePage() {
     // Recorded before the request, so a failed search does not re-ask for an
     // agreement the visitor already gave.
     rememberTermsAcceptance();
-    resolve.mutate({ address: address.trim(), coordinates: addressLocation });
+    resolve.mutate({ address: address.trim(), coordinates: addressLocation, region: regionSelection });
   }
 
   function cancelTerms() {
@@ -179,27 +203,29 @@ export function HomePage() {
                 address" — those users already know. "Home address" was
                 rejected as a demand for where you sleep, "Voting address"
                 read as the place you go to vote. */}
-            {/* The headline above already promises "which elections you can
-                vote in"; the label's job is the complete-vs-partial trade —
-                the answer to the visitor who won't type where they live. */}
+            {/* The label promises the outcome; the parenthetical below the
+                field carries both reassurances — privacy, and that a ZIP or
+                city is enough — so the visitor who won't type where they
+                live learns the escape hatch BEFORE giving up. */}
             <label htmlFor="address" className="block text-sm font-medium text-ink">
-              Enter your full address for complete results — or just your ZIP code for partial
-              results:
+              Enter address to see which elections you can vote in:
             </label>
             <AddressAutocomplete
               inputId="address"
               value={address}
-              onChange={(value, location, granularity) => {
+              onChange={(value, location, granularity, region) => {
                 setAddress(value);
                 setAddressLocation(location ?? null);
-                setRegionSelected(granularity === "region");
+                setRegionSelection(granularity === "region" && region ? region : null);
+                setRegionUnsupported(granularity === "region" && !region);
               }}
+              onRetrievePendingChange={setRetrievePending}
               placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
             />
-            {regionSelected ? (
+            {regionUnsupported ? (
               <p role="alert" className="mt-1 text-xs text-rausch-dark">
-                That selection is an area, not an address. Pick a street address from the
-                suggestions — or enter just a ZIP code for partial results.
+                We can’t place that selection in a state. Pick a street address, city, or ZIP
+                code from the suggestions.
               </p>
             ) : null}
             {/* Notice belongs here, not only in the dialog: the autocomplete
@@ -209,8 +235,13 @@ export function HomePage() {
                 point of collection — the footer carries it on every page, and
                 the explainer below links it directly — so the inline copy of
                 it was noise beside the question people actually ask. */}
+            {/* Compressed variant of ADDRESS_FIELD_PRIVACY_NOTE plus the
+                coarse-input hint: same two promises (district lookup only,
+                never saved), short enough to be read. Other surfaces keep
+                the full constant. */}
             <p className="mt-1 text-xs text-ink-soft">
-              {ADDRESS_FIELD_PRIVACY_NOTE} <FullAddressExplanation />
+              The address is only used to find voting districts. You can also search by ZIP or
+              city, with fewer local races. <FullAddressExplanation />
             </p>
           </div>
 

@@ -3,14 +3,10 @@ import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {
-  ADDRESS_FIELD_PRIVACY_NOTE,
-  PRE_SEARCH_AGREEMENT_PARAGRAPHS,
-  TERMS_VERSION,
-} from "@voteapp/api-client";
+import { PRE_SEARCH_AGREEMENT_PARAGRAPHS, TERMS_VERSION } from "@voteapp/api-client";
 import { HomePage } from "./HomePage";
 
-const ADDRESS_LABEL = "Enter your full address for complete results — or just your ZIP code for partial results:";
+const ADDRESS_LABEL = "Enter address to see which elections you can vote in:";
 const STORAGE_KEY = "voteapp_terms_acceptance";
 const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
 
@@ -84,23 +80,23 @@ describe("HomePage pre-search clickwrap", () => {
   it("keeps the privacy note beside the address field, where collection starts", () => {
     renderHome();
     // The autocomplete forwards what is typed before Search is ever pressed,
-    // so this notice may never move into the dialog. Asserted through the
-    // shared constant rather than a copy of the sentence: the point under test
-    // is that the note renders at the field, and hardcoding the wording only
-    // made this fail on every edit to it.
-    expect(screen.getByText(ADDRESS_FIELD_PRIVACY_NOTE, { exact: false })).toBeInTheDocument();
+    // so this notice may never move into the dialog. The home page carries a
+    // compressed variant of ADDRESS_FIELD_PRIVACY_NOTE (same two promises:
+    // district lookup only, never saved) plus the ZIP/city hint.
+    expect(screen.getByText(/The address is only used to find voting districts/)).toBeInTheDocument();
+    expect(screen.getByText(/You can also search by ZIP or city/)).toBeInTheDocument();
     // The policy is reachable without a second inline link — the footer
     // carries it site-wide and the explainer links it directly — so the note
     // offers the question people actually ask instead.
     expect(screen.queryByRole("link", { name: "Privacy notice" })).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Why do we need the full address?" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Why full address?" })).toBeInTheDocument();
   });
 
   it("explains why a full address is needed without treating the explanation as consent", async () => {
     const user = userEvent.setup();
     renderHome();
 
-    const trigger = screen.getByRole("button", { name: "Why do we need the full address?" });
+    const trigger = screen.getByRole("button", { name: "Why full address?" });
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 
     await user.click(trigger);
@@ -342,12 +338,12 @@ describe("HomePage ZIP partial flow", () => {
     expect(sessionStorage.getItem(PENDING_KEY)).toBeNull();
   });
 
-  it("disables Search after an area selection and re-enables on the next edit", async () => {
+  it("disables Search after a stateless area selection and re-enables on the next edit", async () => {
     const suggestion = {
-      place_id: "place-austin",
-      description: "Austin, TX, USA",
-      main_text: "Austin",
-      secondary_text: "TX, USA",
+      place_id: "place-usa",
+      description: "United States",
+      main_text: "United States",
+      secondary_text: "",
     };
     const fetchMock = vi.fn().mockImplementation(async (path: string) => ({
       ok: true,
@@ -357,29 +353,148 @@ describe("HomePage ZIP partial flow", () => {
         path === "/api/address/autocomplete"
           ? { suggestions: [suggestion] }
           : path === "/api/address/autocomplete/retrieve"
-            ? { address: "Austin, TX, USA", location: null, granularity: "region", postal_code: null }
+            ? {
+                address: "United States",
+                location: null,
+                granularity: "region",
+                postal_code: null,
+                state: null,
+                locality: null,
+              }
             : { user: null },
     }));
     vi.stubGlobal("fetch", fetchMock);
     const user = userEvent.setup();
     renderHome();
 
-    await user.type(screen.getByLabelText(ADDRESS_LABEL), "Austin");
-    await user.click(await screen.findByRole("option", { name: /Austin/ }));
+    await user.type(screen.getByLabelText(ADDRESS_LABEL), "United States");
+    await user.click(await screen.findByRole("option", { name: /United States/ }));
 
-    // The selection is an area with no supported flow: guidance appears and
-    // Search stays off — a submit could only die in the geocoder. Escape
-    // first: Headless UI keeps the combobox marked open after our custom
-    // option click (pre-existing quirk of the `static` options pattern) and
-    // aria-hides the rest of the form while it is.
-    expect(await screen.findByText(/That selection is an area, not an address/)).toBeInTheDocument();
+    // The selection is an area the server could not place in a state:
+    // guidance appears and Search stays off — a submit could only die in the
+    // geocoder. Escape first: Headless UI keeps the combobox marked open
+    // after our custom option click (pre-existing quirk of the `static`
+    // options pattern) and aria-hides the rest of the form while it is.
+    expect(await screen.findByText(/We can’t place that selection in a state/)).toBeInTheDocument();
     await user.keyboard("{Escape}");
     expect(screen.getByRole("button", { name: "Search" })).toBeDisabled();
 
     await user.type(screen.getByLabelText(ADDRESS_LABEL), " 78701");
-    expect(screen.queryByText(/That selection is an area, not an address/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/We can’t place that selection in a state/)).not.toBeInTheDocument();
     await user.keyboard("{Escape}");
     expect(screen.getByRole("button", { name: "Search" })).toBeEnabled();
+  });
+
+  it("holds Search while a selection's retrieve is in flight", async () => {
+    const suggestion = {
+      place_id: "place-la",
+      description: "Los Angeles, CA, USA",
+      main_text: "Los Angeles",
+      secondary_text: "CA, USA",
+    };
+    let releaseRetrieve!: () => void;
+    const retrieveGate = new Promise<void>((resolve) => {
+      releaseRetrieve = resolve;
+    });
+    const fetchMock = vi.fn().mockImplementation(async (path: string) => {
+      if (path === "/api/address/autocomplete/retrieve") {
+        // Held open until the test releases it — the window under test.
+        await retrieveGate;
+      }
+      return {
+        ok: true,
+        status: 200,
+        headers: new Headers(),
+        json: async () =>
+          path === "/api/address/autocomplete"
+            ? { suggestions: [suggestion] }
+            : path === "/api/address/autocomplete/retrieve"
+              ? {
+                  address: "Los Angeles, CA, USA",
+                  location: null,
+                  granularity: "region",
+                  postal_code: null,
+                  state: "CA",
+                  locality: "Los Angeles",
+                }
+              : { user: null },
+      };
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const user = userEvent.setup();
+    renderHome();
+
+    await user.type(screen.getByLabelText(ADDRESS_LABEL), "Los Angeles");
+    await user.click(await screen.findByRole("option", { name: /Los Angeles/ }));
+    await user.keyboard("{Escape}");
+
+    // The input already shows the picked description, but classification has
+    // not landed — a submit now would send a bare area string to the
+    // geocoder, so Search must hold.
+    expect(screen.getByLabelText(ADDRESS_LABEL)).toHaveValue("Los Angeles, CA, USA");
+    expect(screen.getByRole("button", { name: "Search" })).toBeDisabled();
+
+    releaseRetrieve();
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Search" })).toBeEnabled();
+    });
+  });
+
+  it("searches a city selection through the region path and routes with partial=1", async () => {
+    const suggestion = {
+      place_id: "place-la",
+      description: "Los Angeles, CA, USA",
+      main_text: "Los Angeles",
+      secondary_text: "CA, USA",
+    };
+    const fetchMock = vi.fn().mockImplementation(async (path: string) => ({
+      ok: true,
+      status: 200,
+      headers: new Headers(),
+      json: async () =>
+        path === "/api/address/autocomplete"
+          ? { suggestions: [suggestion] }
+          : path === "/api/address/autocomplete/retrieve"
+            ? {
+                address: "Los Angeles, CA, USA",
+                location: null,
+                granularity: "region",
+                postal_code: null,
+                state: "CA",
+                locality: "Los Angeles",
+              }
+            : path === "/api/address/resolve"
+              ? {
+                  matched_address: "Los Angeles, CA, USA",
+                  address_match_count: 1,
+                  districts: [{ id: "d-ca" }, { id: "d-la" }],
+                  scope: "region",
+                }
+              : { user: null },
+    }));
+    vi.stubGlobal("fetch", fetchMock);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: TERMS_VERSION, acceptedAt: Date.now() }));
+    const user = userEvent.setup();
+    const { router } = renderHome();
+
+    await user.type(screen.getByLabelText(ADDRESS_LABEL), "Los Angeles");
+    await user.click(await screen.findByRole("option", { name: /Los Angeles/ }));
+    await waitFor(() => {
+      expect(screen.getByLabelText(ADDRESS_LABEL)).toHaveValue("Los Angeles, CA, USA");
+    });
+    await user.keyboard("{Escape}");
+    await user.click(screen.getByRole("button", { name: "Search" }));
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe("/ballot");
+    });
+    expect(router.state.location.search).toBe("?d=d-ca,d-la&partial=1");
+    // The resolve body carries the server-classified region, never a point.
+    const resolveCall = fetchMock.mock.calls.find(([path]) => path === "/api/address/resolve");
+    const body = JSON.parse((resolveCall?.[1] as { body: string }).body) as Record<string, unknown>;
+    expect(body.region_state).toBe("CA");
+    expect(body.region_locality).toBe("Los Angeles");
+    expect(body.coordinates).toBeUndefined();
   });
 
   it("routes an exact result without partial=1 and saves the pending handoff", async () => {

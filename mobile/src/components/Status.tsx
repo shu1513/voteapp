@@ -20,7 +20,9 @@ export function ErrorNotice({ error }: { error: unknown }) {
       // ZIP partial-path codes carry user-ready messages; the generic
       // street-address copy would misdiagnose them. Same rule as the web.
       message =
-        error.code.startsWith("zip_") || error.code === "full_address_required"
+        error.code.startsWith("zip_") ||
+        error.code === "full_address_required" ||
+        error.code === "region_unsupported"
           ? error.message
           : "We couldn't find that address. Check the street, city, and state, then try again.";
     } else if (error.status === 429) {

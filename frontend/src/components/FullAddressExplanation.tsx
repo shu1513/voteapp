@@ -17,7 +17,7 @@ export function FullAddressExplanation() {
         onClick={() => setOpen(true)}
         className="rounded-sm text-left underline hover:text-rausch focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rausch"
       >
-        Why do we need the full address?
+        Why full address?
       </button>
 
       <Dialog open={open} onClose={setOpen} className="relative z-40">
@@ -36,9 +36,9 @@ export function FullAddressExplanation() {
                   exact districts that apply to you.
                 </p>
                 <p>
-                  Prefer not to share your address? Enter just your ZIP code instead: you’ll get a
-                  partial ballot with only the races every address in that ZIP shares, and you can
-                  add your street address any time for the rest.
+                  Prefer not to share your address? Enter just your ZIP code or city instead:
+                  you’ll get a partial ballot for that area. You can enter your street address
+                  later to see the remaining races.
                 </p>
                 <p>{ADDRESS_FIELD_PRIVACY_NOTE}</p>
                 <p>

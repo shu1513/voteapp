@@ -213,6 +213,8 @@ describe("useAddressSuggestions", () => {
       location: { lat: 34.0537, lng: -118.2427 },
       granularity: "address",
       postal_code: null,
+      state: null,
+      locality: null,
     });
     const retrieveCall = apiRequestMock.mock.calls[1];
     expect(retrieveCall[0]).toBe("/api/address/autocomplete/retrieve");
@@ -235,13 +237,33 @@ describe("useAddressSuggestions", () => {
     for (const [response, expected] of [
       [
         { address: "Austin, TX 78701, USA", location: null, granularity: "zip", postal_code: "78701" },
-        { address: "Austin, TX 78701, USA", location: null, granularity: "zip", postal_code: "78701" },
+        {
+          address: "Austin, TX 78701, USA",
+          location: null,
+          granularity: "zip",
+          postal_code: "78701",
+          state: null,
+          locality: null,
+        },
       ],
       [
         // Defensive belt-and-braces: even if a server ever leaked a coarse
-        // location, the hook must drop it.
-        { address: "Austin, TX, USA", location: { lat: 30.27, lng: -97.74 }, granularity: "region" },
-        { address: "Austin, TX, USA", location: null, granularity: "region", postal_code: null },
+        // location, the hook must drop it. Region fields pass through.
+        {
+          address: "Austin, TX, USA",
+          location: { lat: 30.27, lng: -97.74 },
+          granularity: "region",
+          state: "TX",
+          locality: "Austin",
+        },
+        {
+          address: "Austin, TX, USA",
+          location: null,
+          granularity: "region",
+          postal_code: null,
+          state: "TX",
+          locality: "Austin",
+        },
       ],
     ] as const) {
       apiRequestMock.mockResolvedValueOnce({ suggestions: [SUGGESTION] });
@@ -377,5 +399,37 @@ describe("useAddressSuggestions", () => {
     });
     expect(result.current.enabled).toBe(true);
     expect(result.current.suggestions).toEqual([]);
+  });
+it("aborts an in-flight retrieve when the user types again, resolving null", async () => {
+    apiRequestMock.mockResolvedValueOnce({ suggestions: [SUGGESTION] });
+    const { result } = renderHook(() => useAddressSuggestions());
+    act(() => {
+      result.current.onInputChanged("200 N Spring");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(SUGGEST_DEBOUNCE_MS + 10);
+    });
+
+    // A retrieve that only settles when its signal aborts — the slow-network
+    // case. Without the abort, a caller holding Search on retrieve-pending
+    // would stay frozen for the whole round trip after the user typed on.
+    let retrieveSignal: AbortSignal | undefined;
+    apiRequestMock.mockImplementationOnce((_path: string, options: { signal?: AbortSignal }) => {
+      retrieveSignal = options.signal;
+      return new Promise((_resolve, reject) => {
+        options.signal?.addEventListener("abort", () => reject(new DOMException("Aborted", "AbortError")));
+      });
+    });
+    let retrievedPromise!: Promise<unknown>;
+    act(() => {
+      retrievedPromise = result.current.selectSuggestion(SUGGESTION);
+    });
+    expect(retrieveSignal?.aborted).toBe(false);
+
+    act(() => {
+      result.current.onInputChanged("500 Main St, typed manually");
+    });
+    expect(retrieveSignal?.aborted).toBe(true);
+    await expect(retrievedPromise).resolves.toBeNull();
   });
 });

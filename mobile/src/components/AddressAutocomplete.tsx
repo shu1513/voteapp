@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import type { AddressLocation, AddressSuggestion } from "@voteapp/api-client";
 import { useAddressSuggestions } from "@voteapp/api-client";
 import { Pressable, Text, TextInput, View } from "react-native";
@@ -13,9 +14,18 @@ type AddressAutocompleteProps = {
   /** location is set only when the value came from a completed dropdown
    * selection; every keystroke or fallback call passes it as undefined, so
    * callers that track coordinates must clear them when it is absent.
-   * granularity arrives only on a completed selection too — same contract
-   * as the web AddressAutocomplete. */
-  onChange: (value: string, location?: AddressLocation | null, granularity?: "address" | "zip" | "region") => void;
+   * granularity (and region, for area selections with a known state) arrive
+   * only on a completed selection too — same contract as the web
+   * AddressAutocomplete. */
+  onChange: (
+    value: string,
+    location?: AddressLocation | null,
+    granularity?: "address" | "zip" | "region",
+    region?: { state: string; locality: string | null }
+  ) => void;
+  /** True while a selected suggestion's retrieve is in flight — the caller
+   * must hold Search; same contract as the web AddressAutocomplete. */
+  onRetrievePendingChange?: (pending: boolean) => void;
   placeholder?: string;
   /** Screen-reader label. React Native does not associate a sibling <Text>
    * with the input, so callers whose visible label differs from the default
@@ -26,18 +36,34 @@ type AddressAutocompleteProps = {
 export function AddressAutocomplete({
   value,
   onChange,
+  onRetrievePendingChange,
   placeholder,
   accessibilityLabel = "Your address",
 }: AddressAutocompleteProps) {
   const { suggestions, enabled, onInputChanged, selectSuggestion, clearSuggestions, warmup } =
     useAddressSuggestions();
 
+  // Overlapping selections each hold and release the pending flag; a count
+  // keeps an earlier release from unfreezing Search while a later retrieve
+  // is still in flight.
+  const retrievesInFlight = useRef(0);
+
   async function onSelect(suggestion: AddressSuggestion) {
     // Optimistically show the picked description, then upgrade to the full
     // retrieved address (falls back to the description if retrieve fails).
     onChange(suggestion.description);
     clearSuggestions();
-    const retrieved = await selectSuggestion(suggestion);
+    retrievesInFlight.current += 1;
+    onRetrievePendingChange?.(true);
+    let retrieved: Awaited<ReturnType<typeof selectSuggestion>>;
+    try {
+      retrieved = await selectSuggestion(suggestion);
+    } finally {
+      retrievesInFlight.current -= 1;
+      if (retrievesInFlight.current === 0) {
+        onRetrievePendingChange?.(false);
+      }
+    }
     if (!retrieved) {
       return;
     }
@@ -47,7 +73,14 @@ export function AddressAutocomplete({
       onChange(retrieved.postal_code, null, "zip");
       return;
     }
-    onChange(retrieved.address, retrieved.location, retrieved.granularity);
+    onChange(
+      retrieved.address,
+      retrieved.location,
+      retrieved.granularity,
+      retrieved.granularity === "region" && retrieved.state
+        ? { state: retrieved.state, locality: retrieved.locality }
+        : undefined
+    );
   }
 
   return (

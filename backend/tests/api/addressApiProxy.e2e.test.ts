@@ -298,7 +298,13 @@ describeE2e("address API auth proxy E2E", () => {
       districts: resolvedAddress.districts,
       scope: "exact",
     });
-    expect(resolveAddress).toHaveBeenCalledWith("3921 Harlan Ave Baldwin Park CA 91706", undefined, false);
+    expect(resolveAddress).toHaveBeenCalledWith(
+      "3921 Harlan Ave Baldwin Park CA 91706",
+      undefined,
+      false,
+      undefined,
+      undefined
+    );
     expect(initializeUserDistricts).not.toHaveBeenCalled();
   });
 

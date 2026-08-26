@@ -20,8 +20,10 @@ export type AddressResolution = {
   districts: ResolvedDistrict[];
   // "exact" = geocoded street address, all district types. "zip" = partial
   // ballot from a bare ZIP (statewide, plus county when the ZIP maps to one
-  // county) — the UI labels it partial and invites the street address.
-  scope: "exact" | "zip";
+  // county). "region" = partial ballot from an area selection (statewide,
+  // plus the city when it matches an incorporated place). The UI labels
+  // partial results and invites the street address.
+  scope: "exact" | "zip" | "region";
 };
 
 export type AddressSuggestion = {
@@ -48,11 +50,15 @@ export type AddressRetrieveResponse = {
   // still find their districts. Never persisted.
   location?: AddressLocation | null;
   // Server-side classification of the selected place. "zip" carries
-  // postal_code for the partial-ballot flow; "region" (city, neighborhood,
-  // road…) has no supported flow — the UI asks for an address or a ZIP.
-  // Optional so a stale API omitting it reads as today's "address".
+  // postal_code for the ZIP partial-ballot flow; "region" (city,
+  // neighborhood, road…) carries state (and locality when Google names one)
+  // for the region partial-ballot flow — without a state the UI can only ask
+  // for an address or ZIP. Optional so a stale API omitting it reads as
+  // today's "address".
   granularity?: "address" | "zip" | "region";
   postal_code?: string | null;
+  state?: string | null;
+  locality?: string | null;
 };
 
 export type ResearchAreaSummary = {

@@ -196,6 +196,8 @@ describe("googlePlacesAutocomplete retrieve", () => {
       location: null,
       granularity: "address",
       postal_code: null,
+      state: null,
+      locality: null,
     });
 
     const [url, init] = (fetchImpl as unknown as ReturnType<typeof vi.fn>).mock.calls[0] as [string, RequestInit];
@@ -206,7 +208,7 @@ describe("googlePlacesAutocomplete retrieve", () => {
     expect(init.method).toBe("GET");
     const headers = init.headers as Record<string, string>;
     expect(headers["x-goog-api-key"]).toBe("test-api-key");
-    expect(headers["x-goog-fieldmask"]).toBe("formattedAddress,location,types,postalAddress");
+    expect(headers["x-goog-fieldmask"]).toBe("formattedAddress,location,types,addressComponents");
   });
 
   it("rejects a response without formattedAddress as bad_response", () => {
@@ -251,11 +253,18 @@ describe("googlePlacesAutocomplete retrieve", () => {
   });
 
   it("classifies a postal_code selection as zip, with the five-digit ZIP and no location", () => {
+    // Real payload shape (live check 2026-08-25): Google returns an EMPTY
+    // postalAddress for postal_code places — the ZIP lives only in the
+    // postal_code address component, alongside locality/state components.
     const result = parseGooglePlacesRetrievePayload({
       formattedAddress: "Austin, TX 78701, USA",
       location: { latitude: 30.27, longitude: -97.74 },
       types: ["postal_code"],
-      postalAddress: { postalCode: "78701" },
+      addressComponents: [
+        { longText: "78701", shortText: "78701", types: ["postal_code"] },
+        { longText: "Austin", shortText: "Austin", types: ["locality", "political"] },
+        { longText: "Texas", shortText: "TX", types: ["administrative_area_level_1", "political"] },
+      ],
     });
     // The centroid must not leak: an area's point would resolve to a full
     // exact ballot for whatever districts the point happens to sit in.
@@ -264,26 +273,36 @@ describe("googlePlacesAutocomplete retrieve", () => {
       location: null,
       granularity: "zip",
       postal_code: "78701",
+      state: null,
+      locality: null,
     });
   });
 
-  it("trims a ZIP+4 postalCode to five digits", () => {
+  it("trims a ZIP+4 postal_code component to five digits", () => {
     const result = parseGooglePlacesRetrievePayload({
       formattedAddress: "Austin, TX 78701, USA",
       types: ["postal_code"],
-      postalAddress: { postalCode: "78701-2401" },
+      addressComponents: [{ longText: "78701-2401", shortText: "78701-2401", types: ["postal_code"] }],
     });
     expect(result.granularity).toBe("zip");
     expect(result.postal_code).toBe("78701");
   });
 
-  it("downgrades a postal_code selection without a usable postalCode to region", () => {
-    for (const postalAddress of [undefined, {}, { postalCode: "ABC" }, { postalCode: "7870" }]) {
+  it("downgrades a postal_code selection without a usable postal_code component to region", () => {
+    for (const addressComponents of [
+      undefined,
+      [],
+      [{ longText: "Austin", shortText: "Austin", types: ["locality", "political"] }],
+      [{ longText: "ABC", shortText: "ABC", types: ["postal_code"] }],
+      [{ longText: "7870", shortText: "7870", types: ["postal_code"] }],
+      [{ shortText: "78701", types: ["postal_code"] }],
+      "not-an-array",
+    ]) {
       const result = parseGooglePlacesRetrievePayload({
         formattedAddress: "Austin, TX 78701, USA",
         location: { latitude: 30.27, longitude: -97.74 },
         types: ["postal_code"],
-        ...(postalAddress !== undefined ? { postalAddress } : {}),
+        ...(addressComponents !== undefined ? { addressComponents } : {}),
       });
       expect(result.granularity).toBe("region");
       expect(result.postal_code).toBeNull();
@@ -307,6 +326,64 @@ describe("googlePlacesAutocomplete retrieve", () => {
       expect(result.location).toBeNull();
       expect(result.postal_code).toBeNull();
     }
+  });
+
+  it("carries state and locality on region selections, shape-checked", () => {
+    const result = parseGooglePlacesRetrievePayload({
+      formattedAddress: "Los Angeles, CA, USA",
+      location: { latitude: 34.05, longitude: -118.24 },
+      types: ["locality", "political"],
+      addressComponents: [
+        { longText: "Los Angeles", shortText: "Los Angeles", types: ["locality", "political"] },
+        { longText: "California", shortText: "CA", types: ["administrative_area_level_1", "political"] },
+        { longText: "United States", shortText: "US", types: ["country", "political"] },
+      ],
+    });
+    expect(result.granularity).toBe("region");
+    expect(result.location).toBeNull();
+    expect(result.state).toBe("CA");
+    expect(result.locality).toBe("Los Angeles");
+
+    // A neighborhood pick carries the containing city's locality component,
+    // but neighborhoods can straddle city lines — it must NOT become a place
+    // lookup; only the state passes through.
+    const neighborhood = parseGooglePlacesRetrievePayload({
+      formattedAddress: "Hollywood, Los Angeles, CA, USA",
+      types: ["neighborhood", "political"],
+      addressComponents: [
+        { longText: "Hollywood", shortText: "Hollywood", types: ["neighborhood", "political"] },
+        { longText: "Los Angeles", shortText: "Los Angeles", types: ["locality", "political"] },
+        { longText: "California", shortText: "CA", types: ["administrative_area_level_1", "political"] },
+      ],
+    });
+    expect(neighborhood.granularity).toBe("region");
+    expect(neighborhood.state).toBe("CA");
+    expect(neighborhood.locality).toBeNull();
+
+    // A malformed state code or missing components must read as null, and a
+    // state selection has no locality component at all.
+    const noComponents = parseGooglePlacesRetrievePayload({
+      formattedAddress: "California, USA",
+      types: ["administrative_area_level_1", "political"],
+      addressComponents: [
+        { longText: "California", shortText: "Calif.", types: ["administrative_area_level_1", "political"] },
+      ],
+    });
+    expect(noComponents.state).toBeNull();
+    expect(noComponents.locality).toBeNull();
+
+    // Address selections never carry region fields.
+    const address = parseGooglePlacesRetrievePayload({
+      formattedAddress: "1 Main St, Springfield, IL 62701, USA",
+      location: { latitude: 39.8, longitude: -89.65 },
+      types: ["street_address"],
+      addressComponents: [
+        { longText: "Springfield", shortText: "Springfield", types: ["locality", "political"] },
+        { longText: "Illinois", shortText: "IL", types: ["administrative_area_level_1", "political"] },
+      ],
+    });
+    expect(address.state).toBeNull();
+    expect(address.locality).toBeNull();
   });
 
   it("keeps the location for street addresses and venues", () => {

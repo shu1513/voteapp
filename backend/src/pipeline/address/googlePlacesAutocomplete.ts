@@ -22,7 +22,11 @@ export const GOOGLE_PLACE_ID_PATTERN = /^[A-Za-z0-9_-]+$/;
 
 const SUGGEST_FIELD_MASK =
   "suggestions.placePrediction.placeId,suggestions.placePrediction.text,suggestions.placePrediction.structuredFormat";
-const RETRIEVE_FIELD_MASK = "formattedAddress,location,types,postalAddress";
+// addressComponents, not postalAddress: Google returns an empty postalAddress
+// for postal_code places (verified live 2026-08-25 — place "Irwindale, CA
+// 91706" came back with types=["postal_code"] and no postalAddress at all),
+// while addressComponents always carries the postal_code component.
+const RETRIEVE_FIELD_MASK = "formattedAddress,location,types,addressComponents";
 
 // Google types that mark a suggestion as an area, not a deliverable address.
 // Selecting one must NOT hand its centroid to the resolver as an exact point:
@@ -97,10 +101,18 @@ export type RetrievedSuggestedAddress = {
   /** How specific the selected place is. "address": a deliverable address or
    * venue — today's behavior. "zip": a ZIP code — postal_code carries the
    * five digits for the partial-ballot flow. "region": any other area (city,
-   * neighborhood, county, state) — no supported flow yet. */
+   * neighborhood, county, state) — the region partial-ballot flow. */
   granularity: "address" | "zip" | "region";
   /** Five-digit ZIP when granularity is "zip"; null otherwise. */
   postal_code: string | null;
+  /** Two-letter state abbreviation for "region" selections, when Google's
+   * administrative_area_level_1 component names one; null otherwise. Feeds
+   * the resolve endpoint's region partial-ballot path. */
+  state: string | null;
+  /** The locality component's name for "region" selections ("Los Angeles"),
+   * when present; null otherwise. Lets the resolver look for the matching
+   * incorporated place's races. */
+  locality: string | null;
 };
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -282,16 +294,48 @@ export function parseGooglePlacesRetrievePayload(payload: unknown): RetrievedSug
   const isRegion = types.some((entry) => REGION_PLACE_TYPES.has(entry));
   let granularity: RetrievedSuggestedAddress["granularity"] = isRegion ? "region" : "address";
   let postalCode: string | null = null;
+  const components = Array.isArray(payload.addressComponents) ? payload.addressComponents : [];
+  const componentText = (componentType: string, field: "longText" | "shortText"): string | null => {
+    for (const component of components) {
+      if (
+        isRecord(component) &&
+        Array.isArray(component.types) &&
+        component.types.includes(componentType) &&
+        typeof component[field] === "string"
+      ) {
+        const text = component[field].trim();
+        if (text.length > 0) {
+          return text;
+        }
+      }
+    }
+    return null;
+  };
   if (isRegion && types.includes("postal_code")) {
-    // postalAddress.postalCode may carry ZIP+4; the partial-ballot flow works
-    // on the five-digit ZCTA. A missing/odd value downgrades to "region"
-    // rather than inventing a ZIP.
-    const rawPostalCode = isRecord(payload.postalAddress) ? payload.postalAddress.postalCode : undefined;
-    const match = typeof rawPostalCode === "string" ? /^(\d{5})(?:-\d{4})?$/.exec(rawPostalCode.trim()) : null;
+    // The ZIP lives in the postal_code address component (its value may carry
+    // ZIP+4; the partial-ballot flow works on the five-digit ZCTA). A
+    // missing/odd value downgrades to "region" rather than inventing a ZIP.
+    const rawPostalCode = componentText("postal_code", "longText");
+    const match = rawPostalCode === null ? null : /^(\d{5})(?:-\d{4})?$/.exec(rawPostalCode);
     if (match) {
       granularity = "zip";
       postalCode = match[1];
     }
+  }
+
+  // Region selections carry the state (and locality, when Google names one)
+  // so the resolve endpoint can serve the region partial ballot. Shape-checked
+  // here; the resolver validates membership in the covered 50 states + DC.
+  let state: string | null = null;
+  let locality: string | null = null;
+  if (granularity === "region") {
+    const rawState = componentText("administrative_area_level_1", "shortText");
+    state = rawState !== null && /^[A-Z]{2}$/.test(rawState) ? rawState : null;
+    // Only when the selection IS a locality: a neighborhood or sublocality
+    // pick also carries a locality component, but those areas can straddle
+    // city lines — offering the containing city's races would show some
+    // residents someone else's ballot. Such picks stay statewide only.
+    locality = types.includes("locality") ? componentText("locality", "longText") : null;
   }
 
   // location is best-effort: a missing or malformed one must not fail the
@@ -317,7 +361,7 @@ export function parseGooglePlacesRetrievePayload(payload: unknown): RetrievedSug
       location = { lat: latitude, lng: longitude };
     }
   }
-  return { address: payload.formattedAddress.trim(), location, granularity, postal_code: postalCode };
+  return { address: payload.formattedAddress.trim(), location, granularity, postal_code: postalCode, state, locality };
 }
 
 export async function retrieveSuggestedAddressWithGooglePlaces(
