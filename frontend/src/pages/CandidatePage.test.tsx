@@ -805,13 +805,13 @@ describe("CandidatePage", () => {
 
     const cta = await screen.findByRole("button", { name: "Make my pick: Jordan Voter" });
     // Nothing to confirm before the pick.
-    expect(screen.queryByRole("link", { name: /Ballot Draft/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /My Draft/ })).not.toBeInTheDocument();
     await userEvent.click(cta);
 
     // The draft link wears the header nav's exact label (deep-link count
     // form — no ballot seen, so no denominator) and points at the guest
     // draft page.
-    const draftLink = await screen.findByRole("link", { name: "My Ballot Draft (1)" });
+    const draftLink = await screen.findByRole("link", { name: "My Draft (1)" });
     expect(draftLink).toHaveAttribute("href", "/draft");
     // Deep link, no router state: there is no election to go back to.
     expect(screen.queryByRole("link", { name: "Back to election" })).not.toBeInTheDocument();

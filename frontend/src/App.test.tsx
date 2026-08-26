@@ -1,21 +1,30 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { App } from "./App";
 import { PicksPage } from "./pages/PicksPage";
 import { renderRoutes } from "./test/render";
 import { apiError, stubApiRoutes } from "./test/mockApi";
 import { ballotSummary, electionSummary, ME_VERIFIED } from "./test/fixtures";
 
-function renderApp() {
+function renderApp(initialEntry = "/") {
   return renderRoutes(
     [
       {
         path: "/",
         element: <App />,
-        children: [{ index: true, element: <p>home content</p> }],
+        children: [
+          { index: true, element: <p>home content</p> },
+          // A stand-in non-landing page: the guest nav shows more on these
+          // than on the address-search landing at "/".
+          { path: "elections/e-1", element: <p>election content</p> },
+          // Catch-all so in-test navigation (e.g. clicking Settings in the
+          // account menu) keeps the app shell mounted.
+          { path: "*", element: <p>other content</p> },
+        ],
       },
     ],
-    "/"
+    initialEntry
   );
 }
 
@@ -25,17 +34,37 @@ afterEach(() => {
 });
 
 describe("App account nav", () => {
-  it("shows log in and sign up when logged out", async () => {
+  it("shows only log in and sign up on the search landing when logged out", async () => {
     stubApiRoutes({ "/api/me": apiError(401, "unauthorized", "Not logged in") });
     renderApp();
     expect(await screen.findByRole("link", { name: "Log in" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Sign up" })).toBeInTheDocument();
     // A first-time visitor has no draft to link to — the nav stays clean
     // until they've seen a ballot or made a pick.
-    expect(screen.queryByRole("link", { name: "My Ballot Draft" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /My Draft/ })).not.toBeInTheDocument();
+    // Mission never rides in the guest header; the footer link keeps the
+    // page reachable.
+    expect(screen.queryByRole("navigation", { name: "Footer" })).not.toBeNull();
+    const header = screen.getByRole("banner");
+    expect(header.querySelector('a[href="/mission"]')).toBeNull();
   });
 
-  it("shows the draft link once the guest has looked at a ballot", async () => {
+  it("shows the draft link once the guest has looked at a ballot — but never on the search landing", async () => {
+    stubApiRoutes({ "/api/me": apiError(401, "unauthorized", "Not logged in") });
+    window.localStorage.setItem(
+      "voteapp_ballot_draft",
+      JSON.stringify({ v: 1, district_ids: ["dddddddd-1111-4111-8111-111111111111"], target: null, choices: {} })
+    );
+    window.dispatchEvent(new StorageEvent("storage", { key: "voteapp_ballot_draft" }));
+    renderApp("/elections/e-1");
+    expect(await screen.findByRole("link", { name: "My Draft" })).toHaveAttribute("href", "/draft");
+    window.localStorage.clear();
+    window.dispatchEvent(new StorageEvent("storage", { key: "voteapp_ballot_draft" }));
+  });
+
+  it("keeps the same guest draft off the search landing's header", async () => {
+    // Same draft as above, but rendered at "/" — the landing's whole job is
+    // starting a fresh search, so the draft link stays out of its header.
     stubApiRoutes({ "/api/me": apiError(401, "unauthorized", "Not logged in") });
     window.localStorage.setItem(
       "voteapp_ballot_draft",
@@ -43,35 +72,47 @@ describe("App account nav", () => {
     );
     window.dispatchEvent(new StorageEvent("storage", { key: "voteapp_ballot_draft" }));
     renderApp();
-    expect(await screen.findByRole("link", { name: "My Ballot Draft" })).toHaveAttribute(
-      "href",
-      "/draft"
-    );
-    // The mission pitch is public — guests get the link too.
-    expect(screen.getByRole("link", { name: "Mission" })).toHaveAttribute("href", "/mission");
+    expect(await screen.findByRole("link", { name: "Log in" })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /My Draft/ })).not.toBeInTheDocument();
     window.localStorage.clear();
     window.dispatchEvent(new StorageEvent("storage", { key: "voteapp_ballot_draft" }));
   });
 
-  it("renders the signed-in links inline at every width — no hamburger menu", async () => {
+  it("collapses the signed-in nav to My Draft plus the account menu", async () => {
     stubApiRoutes({ "/api/me": { body: ME_VERIFIED } });
     renderApp();
 
-    expect(await screen.findByRole("link", { name: "My Elections" })).toHaveAttribute("href", "/me/ballot");
     // Plain "My Draft" (no counter) while no pick is made / progress unknown.
-    expect(screen.getByRole("link", { name: "My Draft" })).toHaveAttribute("href", "/me/picks");
-    expect(screen.getByRole("link", { name: "My Candidates" })).toHaveAttribute("href", "/me/follows");
-    expect(screen.getByRole("link", { name: "Mission" })).toHaveAttribute("href", "/mission");
-    expect(screen.getByRole("link", { name: "Settings" })).toHaveAttribute("href", "/me/settings");
+    expect(await screen.findByRole("link", { name: "My Draft" })).toHaveAttribute("href", "/me/picks");
 
-    // The greeting sits beside the logo as plain text, not a link or button.
-    const greeting = screen.getByText("Hi Sam");
-    expect(greeting.closest("a")).toBeNull();
-    expect(greeting.closest("button")).toBeNull();
+    // Everything else waits behind the greeting-as-menu-button, closed by
+    // default.
+    const trigger = screen.getByRole("button", { name: /Hi Sam/ });
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+    expect(screen.queryByRole("link", { name: "My Elections" })).not.toBeInTheDocument();
 
-    // The links must never hide behind a disclosure at narrow widths — the
-    // nav wraps instead. No Menu button, no menu items.
-    expect(screen.queryByRole("button", { name: "Menu" })).not.toBeInTheDocument();
+    await userEvent.click(trigger);
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+    const header = within(screen.getByRole("banner"));
+    expect(header.getByRole("link", { name: "My Elections" })).toHaveAttribute("href", "/me/ballot");
+    expect(header.getByRole("link", { name: "My Candidates" })).toHaveAttribute("href", "/me/follows");
+    // The footer carries its own Mission link, hence the header scoping.
+    expect(header.getByRole("link", { name: "Mission" })).toHaveAttribute("href", "/mission");
+    expect(header.getByRole("link", { name: "Settings" })).toHaveAttribute("href", "/me/settings");
+
+    // Escape closes it without navigating.
+    await userEvent.keyboard("{Escape}");
+    expect(screen.queryByRole("link", { name: "My Elections" })).not.toBeInTheDocument();
+  });
+
+  it("closes the account menu when a menu link navigates", async () => {
+    stubApiRoutes({ "/api/me": { body: ME_VERIFIED } });
+    renderApp();
+
+    await userEvent.click(await screen.findByRole("button", { name: /Hi Sam/ }));
+    await userEvent.click(screen.getByRole("link", { name: "Settings" }));
+    expect(screen.queryByRole("link", { name: "My Elections" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Hi Sam/ })).toHaveAttribute("aria-expanded", "false");
   });
 
   it("cold-loading /me/picks shares ONE ballot request between the header badge and the page", async () => {

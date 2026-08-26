@@ -741,14 +741,14 @@ describe("ElectionPage", () => {
     // the yes/no explainer boxes) — still exactly one on the page.
     expect(screen.getAllByRole("button", { name: "Auto-pick by my issues" })).toHaveLength(1);
     // Nothing to confirm before the pick.
-    expect(screen.queryByRole("link", { name: /Ballot Draft/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /My Draft/ })).not.toBeInTheDocument();
     await userEvent.setup().click(yes);
 
     // The position lands in the localStorage draft and the confirmation
     // actions appear (deep link count form — no ballot seen).
     expect(await screen.findByRole("button", { name: "✓ Yes" })).toBeInTheDocument();
     expect(readBallotDraft().choices["e-1"].measure_position).toBe("yes");
-    expect(await screen.findByRole("link", { name: "My Ballot Draft (1)" })).toHaveAttribute(
+    expect(await screen.findByRole("link", { name: "My Draft (1)" })).toHaveAttribute(
       "href",
       "/draft"
     );
