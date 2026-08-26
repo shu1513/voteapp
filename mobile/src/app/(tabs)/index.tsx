@@ -322,7 +322,7 @@ export default function HomeScreen() {
               onPress={() => setAddressExplanationVisible(true)}
               className="mt-1 self-start"
             >
-              <Text className="text-xs text-ink-soft underline">Why do we need the full address?</Text>
+              <Text className="text-xs text-ink-soft underline">Why full address?</Text>
             </Pressable>
           </View>
 

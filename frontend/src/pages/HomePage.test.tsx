@@ -89,14 +89,14 @@ describe("HomePage pre-search clickwrap", () => {
     // carries it site-wide and the explainer links it directly — so the note
     // offers the question people actually ask instead.
     expect(screen.queryByRole("link", { name: "Privacy notice" })).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Why do we need the full address?" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Why full address?" })).toBeInTheDocument();
   });
 
   it("explains why a full address is needed without treating the explanation as consent", async () => {
     const user = userEvent.setup();
     renderHome();
 
-    const trigger = screen.getByRole("button", { name: "Why do we need the full address?" });
+    const trigger = screen.getByRole("button", { name: "Why full address?" });
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 
     await user.click(trigger);

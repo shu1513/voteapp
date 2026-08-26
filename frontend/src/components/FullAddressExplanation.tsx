@@ -17,7 +17,7 @@ export function FullAddressExplanation() {
         onClick={() => setOpen(true)}
         className="rounded-sm text-left underline hover:text-rausch focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rausch"
       >
-        Why do we need the full address?
+        Why full address?
       </button>
 
       <Dialog open={open} onClose={setOpen} className="relative z-40">
