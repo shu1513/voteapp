@@ -120,6 +120,19 @@ describe("App account nav", () => {
     expect(screen.getByRole("button", { name: /Hi Sam/ })).toHaveAttribute("aria-expanded", "false");
   });
 
+  it("closes the account menu when the selected link is the current page", async () => {
+    // Selecting the link for the page already on screen leaves
+    // location.pathname unchanged, so only the panel's own click handler
+    // can close it.
+    stubApiRoutes({ "/api/me": { body: ME_VERIFIED } });
+    renderApp("/me/settings");
+
+    await userEvent.click(await screen.findByRole("button", { name: /Hi Sam/ }));
+    await userEvent.click(screen.getByRole("link", { name: "Settings" }));
+    expect(screen.queryByRole("link", { name: "My Elections" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Hi Sam/ })).toHaveAttribute("aria-expanded", "false");
+  });
+
   it("cold-loading /me/picks shares ONE ballot request between the header badge and the page", async () => {
     // The header's pick counter (usePickProgress) and PicksPage ride the
     // same query key and url on purpose — rendering the page WITHOUT the

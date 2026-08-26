@@ -80,7 +80,14 @@ function AccountMenu({ firstName }: { firstName: string }) {
         </span>
       </button>
       {open ? (
-        <span className="absolute right-0 top-full z-10 mt-2 flex w-44 flex-col rounded-lg border border-line bg-white py-1 shadow-md">
+        // The panel's own click handler (not the pathname effect alone)
+        // closes it on link activation: selecting the link for the page
+        // already on screen leaves location.pathname unchanged, so the
+        // effect never fires and the menu would stay open.
+        <span
+          onClick={() => setOpen(false)}
+          className="absolute right-0 top-full z-10 mt-2 flex w-44 flex-col rounded-lg border border-line bg-white py-1 shadow-md"
+        >
           <Link to="/me/ballot" className="px-4 py-2 text-ink-soft hover:bg-surface hover:text-ink">
             My Elections
           </Link>
