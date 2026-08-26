@@ -3,7 +3,9 @@
 /* EB Garamond, self-hosted (SIL OFL): the open-source revival of the same
    Garamont punches Adobe Garamond Pro (Vogue's editorial body face) draws
    on. Variable weight axis, latin subset only — the app is English. Served
-   from /fonts so a voting app makes no third-party font requests. */
+   from /fonts so a voting app makes no third-party font requests; the OFL
+   notice ships beside the binaries (public/fonts/OFL.txt), as the license
+   requires of redistributed copies. */
 @font-face {
   font-family: "EB Garamond";
   font-style: normal;

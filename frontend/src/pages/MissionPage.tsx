@@ -81,8 +81,11 @@ export default function MissionPage() {
             {me?.email_verified ? (
               // The two subscription opt-ins this pitch is about, editable in
               // place (Settings still carries the full set). Verified-only,
-              // like the endpoint behind them.
-              <EmailPreferenceToggles only={["email_digest", "email_issue_updates"]} />
+              // like the endpoint behind them. font-sans: form controls are
+              // UI chrome, exempt from the essay's inherited text-body serif.
+              <div className="font-sans">
+                <EmailPreferenceToggles only={["email_digest", "email_issue_updates"]} />
+              </div>
             ) : null}
           </li>
         </ol>
