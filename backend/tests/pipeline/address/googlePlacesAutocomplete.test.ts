@@ -221,11 +221,18 @@ describe("googlePlacesAutocomplete retrieve", () => {
       parseGooglePlacesRetrievePayload({
         formattedAddress: "1 Main St",
         location: { latitude: 40.8135, longitude: -74.0741 },
+        types: ["street_address"],
       }).location
     ).toEqual({ lat: 40.8135, lng: -74.0741 });
-    expect(parseGooglePlacesRetrievePayload({ formattedAddress: "1 Main St" }).location).toBeNull();
     expect(
-      parseGooglePlacesRetrievePayload({ formattedAddress: "1 Main St", location: { latitude: "40.8" } }).location
+      parseGooglePlacesRetrievePayload({ formattedAddress: "1 Main St", types: ["street_address"] }).location
+    ).toBeNull();
+    expect(
+      parseGooglePlacesRetrievePayload({
+        formattedAddress: "1 Main St",
+        location: { latitude: "40.8" },
+        types: ["street_address"],
+      }).location
     ).toBeNull();
   });
 
@@ -303,14 +310,46 @@ describe("googlePlacesAutocomplete retrieve", () => {
   });
 
   it("keeps the location for street addresses and venues", () => {
-    for (const types of [["street_address"], ["premise"], ["establishment", "point_of_interest", "stadium"], undefined]) {
+    for (const types of [["street_address"], ["premise"], ["establishment", "point_of_interest", "stadium"]]) {
       const result = parseGooglePlacesRetrievePayload({
         formattedAddress: "1 Main St, Springfield, IL 62701, USA",
         location: { latitude: 39.8, longitude: -89.65 },
-        ...(types !== undefined ? { types } : {}),
+        types,
       });
       expect(result.granularity).toBe("address");
       expect(result.location).toEqual({ lat: 39.8, lng: -89.65 });
+    }
+  });
+
+  it("classifies a bare road as region — its point is arbitrary along the way", () => {
+    const result = parseGooglePlacesRetrievePayload({
+      formattedAddress: "US-101, California, USA",
+      location: { latitude: 36.5, longitude: -121.9 },
+      types: ["route"],
+    });
+    expect(result.granularity).toBe("region");
+    expect(result.location).toBeNull();
+  });
+
+  it("fails closed on missing or empty types: address granularity, but no location", () => {
+    // The type list is the proof that coordinates are a real point; without
+    // it the string path still runs, but the centroid must not.
+    for (const payload of [
+      { formattedAddress: "1 Main St, Springfield, IL 62701, USA", location: { latitude: 39.8, longitude: -89.65 } },
+      {
+        formattedAddress: "1 Main St, Springfield, IL 62701, USA",
+        location: { latitude: 39.8, longitude: -89.65 },
+        types: [],
+      },
+      {
+        formattedAddress: "1 Main St, Springfield, IL 62701, USA",
+        location: { latitude: 39.8, longitude: -89.65 },
+        types: "street_address",
+      },
+    ]) {
+      const result = parseGooglePlacesRetrievePayload(payload);
+      expect(result.granularity).toBe("address");
+      expect(result.location).toBeNull();
     }
   });
 

@@ -30,6 +30,9 @@ const RETRIEVE_FIELD_MASK = "formattedAddress,location,types,postalAddress";
 // (docs/plans/partial-address-scope.md). Server-side because the classification
 // gates correctness — the client only renders it.
 const REGION_PLACE_TYPES = new Set([
+  // A bare road ("US 101", "Harlan Ave"): its point is an arbitrary spot
+  // along the way, and long routes cross district lines.
+  "route",
   "postal_code",
   "postal_code_prefix",
   "postal_code_suffix",
@@ -269,8 +272,10 @@ export function parseGooglePlacesRetrievePayload(payload: unknown): RetrievedSug
   if (!isRecord(payload) || typeof payload.formattedAddress !== "string" || payload.formattedAddress.trim().length === 0) {
     throw new GooglePlacesAutocompleteError("bad_response", "Google Places details response is missing formattedAddress");
   }
-  // types is best-effort: absent or malformed types classify as "address",
-  // preserving today's behavior for venues and street addresses.
+  // Absent or malformed types classify as "address" (the response is still a
+  // retrieved place the string path can geocode) but fail CLOSED on the
+  // location below: the type list is what proves coordinates are safe to
+  // treat as an exact point, so no proof means no coordinates.
   const types = Array.isArray(payload.types)
     ? payload.types.filter((entry): entry is string => typeof entry === "string")
     : [];
@@ -293,9 +298,11 @@ export function parseGooglePlacesRetrievePayload(payload: unknown): RetrievedSug
   // retrieve — the resolver falls back to the address-string path without it.
   // Range-checked with the same bounds the resolve validator enforces, so a
   // bad value dies here as null instead of 400ing the whole search later.
-  // Coarse selections never return one (see RetrievedSuggestedAddress).
+  // Coarse selections never return one (see RetrievedSuggestedAddress), and
+  // neither does a response with no usable types — unverifiable coordinates
+  // must not become an exact point.
   let location: RetrievedSuggestedAddress["location"] = null;
-  if (granularity === "address" && isRecord(payload.location)) {
+  if (granularity === "address" && types.length > 0 && isRecord(payload.location)) {
     const { latitude, longitude } = payload.location;
     if (
       typeof latitude === "number" &&

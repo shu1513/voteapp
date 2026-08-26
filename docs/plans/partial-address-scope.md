@@ -80,12 +80,15 @@ Fix in the retrieve step (server-side — never trust the client to classify):
 
 - Add `types,postalAddress` to `RETRIEVE_FIELD_MASK` (pass-through only;
   Google ToS forbids persisting).
-- Classify server-side: if `types` intersects a region set (`postal_code`,
-  `postal_code_prefix`, `locality`, `sublocality*`, `neighborhood`,
-  `administrative_area_level_*`, `postal_town`, `country`), the selection is
-  coarse — return `location: null` plus `granularity: "zip" | "region"` and,
-  for `postal_code`, the 5-digit `postal_code` from `postalAddress`.
-  Everything else keeps today's behavior (`granularity: "address"`).
+- Classify server-side: if `types` intersects a region set (`route`,
+  `postal_code`, `postal_code_prefix`, `locality`, `sublocality*`,
+  `neighborhood`, `administrative_area_level_*`, `postal_town`, `country`),
+  the selection is coarse — return `location: null` plus
+  `granularity: "zip" | "region"` and, for `postal_code`, the 5-digit
+  `postal_code` from `postalAddress`. Everything else keeps today's behavior
+  (`granularity: "address"`) — except that a response with missing/empty
+  `types` fails closed: address granularity, but no location, since the type
+  list is the proof the coordinates are a real point.
 - Old clients (shipped mobile builds) ignore the new fields, get a null
   location, submit the text string, and land on today's 422 — strictly safer
   than the current wrong-ballot behavior, with no forced upgrade.

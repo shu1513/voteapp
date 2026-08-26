@@ -122,7 +122,7 @@ async function resolveZipToDistricts(db: Queryable, zip5: string): Promise<Addre
   if (crosswalk.rows.length === 0) {
     throw new ZipDistrictResolutionError(
       "zip_not_found",
-      `ZIP code ${zip5} is not in the Census ZCTA data — try a city and state, or a street address`
+      `ZIP code ${zip5} is not in the Census ZCTA data — enter a full street address`
     );
   }
 
@@ -134,7 +134,7 @@ async function resolveZipToDistricts(db: Queryable, zip5: string): Promise<Addre
     // than guess (docs/plans/partial-address-scope.md).
     throw new ZipDistrictResolutionError(
       "zip_multi_state",
-      `ZIP code ${zip5} crosses state lines — enter your city and state, or a street address`
+      `ZIP code ${zip5} crosses state lines — enter a full street address`
     );
   }
   const stateFips = countyGeoids[0].slice(0, 2);
