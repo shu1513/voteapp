@@ -25,16 +25,16 @@ export default function MissionPage() {
   return (
     <div className="mx-auto max-w-3xl space-y-6 px-4 py-8">
       <section className="space-y-3 text-body text-ink">
-        <h1 className="text-title font-bold">Mission</h1>
+        <h1 className="font-sans text-title font-bold">Mission</h1>
 
-        <h2 className="pt-2 text-heading font-semibold">Why do we do what we do?</h2>
+        <h2 className="pt-2 font-sans text-heading font-semibold">Why do we do what we do?</h2>
         <p>When we go voting, two problems show up immediately:</p>
         <ol className="list-decimal space-y-1 pl-6">
           <li>We don’t know if our votes actually matter.</li>
           <li>We don’t know who most of these candidates are.</li>
         </ol>
 
-        <h2 className="pt-2 text-heading font-semibold">Do our votes matter?</h2>
+        <h2 className="pt-2 font-sans text-heading font-semibold">Do our votes matter?</h2>
         <p>
           In a presidential election, unless we live in a key district in a swing state, our vote is
           one among more than 150 million. But in a city council or school board race, a few hundred
@@ -42,21 +42,21 @@ export default function MissionPage() {
           more — our schools, our street safety, our water quality, our local taxes.
         </p>
 
-        <h2 className="pt-2 text-heading font-semibold">Who are these candidates?</h2>
+        <h2 className="pt-2 font-sans text-heading font-semibold">Who are these candidates?</h2>
         <p>
           The bigger the election — think presidential — the more media coverage it gets. Smaller
           elections, the local races where our vote is most powerful, usually get almost none. And
           what little information we do get is usually marketing written by the campaigns themselves.
         </p>
 
-        <h2 className="pt-2 text-heading font-semibold">What {APP_NAME} does</h2>
+        <h2 className="pt-2 font-sans text-heading font-semibold">What {APP_NAME} does</h2>
         <p>
           The purpose of {APP_NAME} is to give real track records of candidates based on what they
           actually did, so we can see more clearly who these candidates are, and make a decision on
           who to pick based on the issues that matter to us — not on their ads.
         </p>
 
-        <h2 className="pt-2 text-heading font-semibold">How we do it</h2>
+        <h2 className="pt-2 font-sans text-heading font-semibold">How we do it</h2>
         <p>
           We use AI (from American companies only) to research public sources, validate everything
           against multiple methods before it’s written, and run quality passes with both humans and

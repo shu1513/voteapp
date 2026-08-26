@@ -1,5 +1,28 @@
 @import "tailwindcss";
 
+/* EB Garamond, self-hosted (SIL OFL): the open-source revival of the same
+   Garamont punches Adobe Garamond Pro (Vogue's editorial body face) draws
+   on. Variable weight axis, latin subset only — the app is English. Served
+   from /fonts so a voting app makes no third-party font requests. */
+@font-face {
+  font-family: "EB Garamond";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/fonts/eb-garamond-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "EB Garamond";
+  font-style: italic;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/fonts/eb-garamond-latin-italic.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 @theme {
   /* Fluid type roles (Vogue/Verso pattern: one token per role, components
      never carry raw sizes). clamp() interpolates 320px -> 1280px viewports;
@@ -9,7 +32,10 @@
        title      22 -> 32px  page h1
        heading    19 -> 22px  section h2
        subheading 16 -> 17px  card/callout h3
-       body       17 -> 19px  reading prose (summaries, records, long-form)
+       body     17.5 -> 20px  reading prose (summaries, records, long-form);
+                              sized for EB Garamond's small x-height — at
+                              equal px the serif reads a size smaller than
+                              the sans, and Vogue runs this face at 20px
      UI chrome (labels, buttons, meta) stays on the static text-sm/text-xs
      tiers below, and dialog titles stay on static text-lg: overlays are
      compact panels, not page hierarchy, and all five dialogs share that
@@ -22,8 +48,11 @@
   --text-heading--line-height: 1.35;
   --text-subheading: clamp(1rem, 0.9792rem + 0.1042vw, 1.0625rem);
   --text-subheading--line-height: 1.45;
-  --text-body: clamp(1.0625rem, 1.0208rem + 0.2083vw, 1.1875rem);
+  --text-body: clamp(1.09375rem, 1.0417rem + 0.2604vw, 1.25rem);
   --text-body--line-height: 1.6;
+  /* Serif for reading prose only; Georgia is the metric-closest system
+     fallback while the woff2 loads. UI keeps the default sans. */
+  --font-body: "EB Garamond", Georgia, "Times New Roman", serif;
   /* Caption floor raised from Tailwind's 12px: 12px gray text fails APCA
      even for ancillary copy; 13px is the smallest tier Vogue ships. */
   --text-xs: 0.8125rem;
@@ -79,6 +108,16 @@
   --color-nudge: #e8f5e9;
   --color-nudge-line: #a5d6a7;
   --color-nudge-deep: #166534;
+}
+
+/* The prose role carries the serif with it: every text-body surface reads
+   in EB Garamond without each call site opting in. Font family only — size
+   and line-height come from the --text-body tokens above. Same layer and
+   specificity as the generated utility, so composing classes still win. */
+@layer utilities {
+  .text-body {
+    font-family: var(--font-body);
+  }
 }
 
 /* Pages with a sticky pick card (candidate pages, data-sticky-pick-cta)
