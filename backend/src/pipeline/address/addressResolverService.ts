@@ -185,6 +185,24 @@ async function resolveZipToDistricts(db: Queryable, zip5: string): Promise<Addre
       : []),
   ];
 
+  // Place races (mayor etc.) when the ZCTA lies wholly inside one legally
+  // incorporated place — the import baked that containment decision into
+  // address_zcta_place, so presence of a row IS the proof. Independent of
+  // the county rule: an NYC ZIP spans boroughs (no single county) yet sits
+  // entirely inside the city.
+  const placeRow = await db.query<{ place_geoid: string }>(
+    `SELECT place_geoid FROM public.address_zcta_place WHERE zcta5 = $1`,
+    [zip5]
+  );
+  if (placeRow.rows.length === 1) {
+    districtKeys.push({
+      district_type: "place",
+      geoid_compact: placeRow.rows[0].place_geoid,
+      source: "layer_name",
+      layer_name: "zcta_place_crosswalk",
+    });
+  }
+
   const districtLookup = await lookupAddressDistricts(db, districtKeys);
   return {
     matched_address: zip5,

@@ -399,11 +399,13 @@ describe("resolveAddressToDistricts ZIP partial path", () => {
     requested_geoid_compact: "48453",
   };
 
-  // First query = crosswalk lookup, second = district lookup.
-  function dbReturning(countyGeoids: string[], districtRows: unknown[]) {
+  // Query order: county crosswalk, then place crosswalk, then district
+  // lookup (error branches stop after the first).
+  function dbReturning(countyGeoids: string[], districtRows: unknown[], placeGeoid: string | null = null) {
     return vi
       .fn()
       .mockResolvedValueOnce({ rows: countyGeoids.map((county_geoid) => ({ county_geoid })) })
+      .mockResolvedValueOnce({ rows: placeGeoid === null ? [] : [{ place_geoid: placeGeoid }] })
       .mockResolvedValueOnce({ rows: districtRows });
   }
 
@@ -430,7 +432,9 @@ describe("resolveAddressToDistricts ZIP partial path", () => {
 
     expect(geocodeAddress).not.toHaveBeenCalled();
     expect(query.mock.calls[0]?.[1]).toEqual(["78701"]);
-    expect(query.mock.calls[1]?.[1]).toEqual([
+    // Second query is the place-containment lookup for the same ZIP.
+    expect(query.mock.calls[1]?.[1]).toEqual(["78701"]);
+    expect(query.mock.calls[2]?.[1]).toEqual([
       ["statewide", "county"],
       ["48", "48453"],
     ]);
@@ -460,7 +464,7 @@ describe("resolveAddressToDistricts ZIP partial path", () => {
     const result = await resolveAddressToDistricts({ query }, "78660", { allowPartial: true });
 
     // No county key at all — the visitor may live in either county.
-    expect(query.mock.calls[1]?.[1]).toEqual([["statewide"], ["48"]]);
+    expect(query.mock.calls[2]?.[1]).toEqual([["statewide"], ["48"]]);
     expect(result.scope).toBe("zip");
     expect(result.districts.map((district) => district.id)).toEqual(["district-tx"]);
   });
@@ -492,6 +496,57 @@ describe("resolveAddressToDistricts ZIP partial path", () => {
       code: "zip_unsupported_region",
     });
     expect(query).toHaveBeenCalledTimes(1);
+  });
+
+  it("adds place races when the ZCTA is wholly inside one incorporated place", async () => {
+    const PLACE_ROW = {
+      id: "district-austin",
+      district_type: "place",
+      geoid_compact: "4805000",
+      name: "Austin city, Texas",
+      state: "TX",
+      state_fips: "48",
+      population: 961855,
+      representation_power_score: "7.90",
+      requested_district_type: "place",
+      requested_geoid_compact: "4805000",
+    };
+    const query = dbReturning(["48453"], [STATEWIDE_ROW, COUNTY_ROW, PLACE_ROW], "4805000");
+
+    const result = await resolveAddressToDistricts({ query }, "78701", { allowPartial: true });
+
+    expect(query.mock.calls[1]?.[1]).toEqual(["78701"]);
+    expect(query.mock.calls[2]?.[1]).toEqual([
+      ["statewide", "county", "place"],
+      ["48", "48453", "4805000"],
+    ]);
+    expect(result.scope).toBe("zip");
+    expect(result.districts.map((district) => district.id)).toEqual([
+      "district-tx",
+      "district-travis",
+      "district-austin",
+    ]);
+  });
+
+  it("adds the place even for a multi-county ZCTA (an NYC ZIP spans boroughs)", async () => {
+    const NYC_STATEWIDE = { ...STATEWIDE_ROW, id: "district-ny", geoid_compact: "36", state: "NY" };
+    const NYC_PLACE = {
+      ...STATEWIDE_ROW,
+      id: "district-nyc",
+      district_type: "place",
+      geoid_compact: "3651000",
+      state: "NY",
+    };
+    const query = dbReturning(["36047", "36061"], [NYC_STATEWIDE, NYC_PLACE], "3651000");
+
+    const result = await resolveAddressToDistricts({ query }, "10001", { allowPartial: true });
+
+    // No county key (ambiguous), but the city key rides along.
+    expect(query.mock.calls[2]?.[1]).toEqual([
+      ["statewide", "place"],
+      ["36", "3651000"],
+    ]);
+    expect(result.districts.map((district) => district.id)).toEqual(["district-ny", "district-nyc"]);
   });
 
   it("leaves non-ZIP input on the exact pipeline even with allowPartial", async () => {
@@ -638,6 +693,7 @@ describe("resolveAddressToDistricts region partial path", () => {
     const query = vi
       .fn()
       .mockResolvedValueOnce({ rows: [{ county_geoid: "06037" }] })
+      .mockResolvedValueOnce({ rows: [] }) // place containment: none
       .mockResolvedValueOnce({ rows: [STATEWIDE_ROW] });
 
     const result = await resolveAddressToDistricts({ query }, "91706", {

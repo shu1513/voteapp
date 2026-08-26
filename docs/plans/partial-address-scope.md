@@ -37,7 +37,7 @@ Scope tiers:
 | Input | Districts returned | How resolved |
 |---|---|---|
 | street address (today) | all 9 types | Census geocode — unchanged |
-| ZIP | `statewide`; + `county` only when the ZCTA has **exactly one** county relationship | local ZCTA↔county crosswalk, **no geocoder call** |
+| ZIP | `statewide`; + `county` only when the ZCTA has **exactly one** county relationship; + `place` only when the ZCTA lies **wholly inside one** legally incorporated place (migration 256 / `import:zcta-place-crosswalk`: exactly one place-overlap record, zero land outside it, CLASSFP C\* — CDPs never; 3,087 of 33,791 ZCTAs, incl. NYC/SF/DC/consolidated balances; the containment decision is baked at import) | local ZCTA↔county + ZCTA↔place crosswalks, **no geocoder call** |
 | region selection (city, neighborhood, county…) | `statewide`; + `place` only for a **locality** pick whose name + state matches **exactly one** incorporated place in `districts` | Google `addressComponents` state/locality relayed via `region_state`/`region_locality`; identity by exact Census name ("Los Angeles city, California"), CDPs excluded, **no geocoder call** |
 
 Conservative county rule (verified against the file, 2026-08-25):
@@ -229,8 +229,8 @@ picks (a country) still get inline guidance.
 
 ## Later research (explicitly not v1)
 
-- ZCTA↔place crosswalk (city races for a ZIP); county races for cities
-  (needs a place↔county containment source); labeled multi-county display;
+- County races for cities (needs a place↔county containment source; the
+  ZCTA↔place crosswalk shipped 2026-08-25); labeled multi-county display;
   HUD address-ratio crosswalk; any per-user coarse location storage;
   fuzzy/alias locality matching (consolidated governments like
   Nashville-Davidson, Louisville/Jefferson).
