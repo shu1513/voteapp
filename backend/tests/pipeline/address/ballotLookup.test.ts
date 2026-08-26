@@ -10005,6 +10005,24 @@ describe("current race rating read path", () => {
     expect(election.vote_power.score).toBe(88);
   });
 
+  it("labels very_competitive and competitive ratings with distinct chip text", async () => {
+    // The two labels grade different decisiveness levels (high vs medium),
+    // so their chips must not read identically.
+    const veryCompetitive = await lookupBallotSummariesByDistrictIds(
+      { query: summaryQueryMock({ rating: ratingRow({ competitiveness_label: "very_competitive" }) }) },
+      [ratedDistrictId]
+    );
+    expect(veryCompetitive.elections[0]!.current_competitiveness?.display_label).toBe("Currently very competitive");
+    expect(veryCompetitive.elections[0]!.vote_power.decisiveness_level).toBe("high");
+
+    const competitive = await lookupBallotSummariesByDistrictIds(
+      { query: summaryQueryMock({ rating: ratingRow({ competitiveness_label: "competitive" }) }) },
+      [ratedDistrictId]
+    );
+    expect(competitive.elections[0]!.current_competitiveness?.display_label).toBe("Currently competitive");
+    expect(competitive.elections[0]!.vote_power.decisiveness_level).toBe("medium");
+  });
+
   it("falls back to historic margins when the stored row is none_found", async () => {
     // The DC delegate race can only ever store none_found rows, so this is
     // also the DC-untouched case.

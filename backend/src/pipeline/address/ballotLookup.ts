@@ -781,6 +781,7 @@ function historicalCompetitivenessDisplayLabel(label: HistoricalContestCompetiti
     case "toss_up":
       return "Historically a toss-up";
     case "very_competitive":
+      return "Historically very competitive";
     case "competitive":
       return "Historically competitive";
     case "somewhat_competitive":
@@ -863,13 +864,17 @@ function historicalCompetitivenessDisplayDescription(row: HistoricalContestWeigh
   return `Based on weighted margins from ${formatYearList(row.election_years)} ${office} results.`;
 }
 
-// Mirrors historicalCompetitivenessDisplayLabel's collapsing so the two
+// Mirrors historicalCompetitivenessDisplayLabel tier-for-tier so the two
 // chips read as the same scale ("Currently ..." vs "Historically ...").
+// very_competitive and competitive stay distinct: they grade different
+// decisiveness levels (high vs medium), so collapsing them made two races
+// with the same chip text show different vote power ratings.
 function currentCompetitivenessDisplayLabel(label: HistoricalContestCompetitivenessLabel): string {
   switch (label) {
     case "toss_up":
       return "Currently a toss-up";
     case "very_competitive":
+      return "Currently very competitive";
     case "competitive":
       return "Currently competitive";
     case "somewhat_competitive":
