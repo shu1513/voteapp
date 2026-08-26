@@ -122,7 +122,7 @@ export function App() {
       return;
     }
     lastPathname.current = location.pathname;
-    mainRef.current?.focus();
+    mainRef.current?.focus({ preventScroll: true });
   }, [location.pathname]);
 
   return (
