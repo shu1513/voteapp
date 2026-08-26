@@ -15,9 +15,16 @@ type AddressAutocompleteProps = {
    * callers that track coordinates must clear them when it is absent.
    * granularity arrives only on a completed selection too: "zip" means the
    * value was replaced with the bare five-digit ZIP for the partial-ballot
-   * flow, "region" means the selection is an area with no supported flow —
-   * callers offering guidance must clear it whenever it is absent. */
-  onChange: (value: string, location?: AddressLocation | null, granularity?: "address" | "zip" | "region") => void;
+   * flow, "region" means the selection is an area — region carries the
+   * state (and locality when Google named one) for the region partial
+   * ballot, and without a state the caller can only offer guidance. Callers
+   * tracking any of these must clear them whenever they are absent. */
+  onChange: (
+    value: string,
+    location?: AddressLocation | null,
+    granularity?: "address" | "zip" | "region",
+    region?: { state: string; locality: string | null }
+  ) => void;
   inputId: string;
   placeholder?: string;
 };
@@ -52,7 +59,14 @@ export function AddressAutocomplete({ value, onChange, inputId, placeholder }: A
       onChange(retrieved.postal_code, null, "zip");
       return;
     }
-    onChange(retrieved.address, retrieved.location, retrieved.granularity);
+    onChange(
+      retrieved.address,
+      retrieved.location,
+      retrieved.granularity,
+      retrieved.granularity === "region" && retrieved.state
+        ? { state: retrieved.state, locality: retrieved.locality }
+        : undefined
+    );
   }
 
   return (

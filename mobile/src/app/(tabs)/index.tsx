@@ -83,10 +83,14 @@ export default function HomeScreen() {
   // completed autocomplete selection; any manual edit clears them — same
   // rule as the web home.
   const [addressLocation, setAddressLocation] = useState<AddressLocation | null>(null);
-  // True right after the autocomplete selection was an area (city,
-  // neighborhood, road) — no supported flow, so the form shows guidance.
-  // Any edit clears it — same rule as the web home.
-  const [regionSelected, setRegionSelected] = useState(false);
+  // Set right after the autocomplete selection was an area with a known
+  // state (city, neighborhood, county): the search runs the region
+  // partial-ballot path. Any edit clears it — same rule as the web home.
+  const [regionSelection, setRegionSelection] = useState<{ state: string; locality: string | null } | null>(null);
+  // True right after an area selection the server could not place in a
+  // state — nothing to search, so the form shows guidance. Any edit clears
+  // it — same rule as the web home.
+  const [regionUnsupported, setRegionUnsupported] = useState(false);
   const [addressExplanationVisible, setAddressExplanationVisible] = useState(false);
   const [termsVisible, setTermsVisible] = useState(false);
   // Set only while the visitor is off reading a linked document, so the sheet
@@ -98,7 +102,11 @@ export default function HomeScreen() {
   const [accepted, setAccepted] = useState(false);
 
   const resolve = useMutation({
-    mutationFn: (input: { address: string; coordinates: AddressLocation | null }) =>
+    mutationFn: (input: {
+      address: string;
+      coordinates: AddressLocation | null;
+      region: { state: string; locality: string | null } | null;
+    }) =>
       // The accepted version rides along because the endpoint enforces the
       // clickwrap too, refusing a search without one. Nothing is stored
       // server-side — same rule as the web. Coordinates (from the
@@ -109,10 +117,17 @@ export default function HomeScreen() {
         body: {
           address: input.address,
           accepted_terms_version: TERMS_VERSION,
-          // Opt in to the ZIP partial-ballot path: this build renders the
-          // partial banner and scope-aware errors — same as the web home.
+          // Opt in to the ZIP/region partial-ballot paths: this build
+          // renders the partial banner and scope-aware errors — same as the
+          // web home.
           allow_partial: true,
           ...(input.coordinates ? { coordinates: input.coordinates } : {}),
+          ...(input.region
+            ? {
+                region_state: input.region.state,
+                ...(input.region.locality ? { region_locality: input.region.locality } : {}),
+              }
+            : {}),
         },
       }),
     onSuccess: (resolution) => {
@@ -137,7 +152,7 @@ export default function HomeScreen() {
       // Straight to the elections — the districts list is a detour nobody
       // asked for. The matched address goes through the in-memory holder,
       // never navigation params — see lib/matchedAddress.ts.
-      setMatchedAddress(resolution.matched_address, resolution.address_match_count);
+      setMatchedAddress(resolution.matched_address, resolution.address_match_count, resolution.scope);
       // Dismiss the sheet before navigating. A native Modal is a window-level
       // overlay that the navigator does not clip, and pushing a screen leaves
       // this one mounted, so a sheet left open would sit on top of the ballot
@@ -152,7 +167,7 @@ export default function HomeScreen() {
           d: resolution.districts.map((district) => district.id).join(","),
           // Unlike the address, the partial flag holds no location, so it
           // may ride navigation params — same reasoning as the web URL.
-          ...(resolution.scope === "zip" ? { partial: "1" } : {}),
+          ...(resolution.scope !== "exact" ? { partial: "1" } : {}),
         },
       });
     },
@@ -170,11 +185,11 @@ export default function HomeScreen() {
   // two handoff saves. The web has no equivalent gap: localStorage is
   // synchronous.
   const [checkingAcceptance, setCheckingAcceptance] = useState(false);
-  // regionSelected: a region selection can only fail (no coordinates, and
-  // the string is an area the geocoder can't match) — Search disables while
-  // the guidance under the field explains; any edit re-enables. Same rule
-  // as the web home.
-  const canSearch = address.trim().length > 0 && !resolve.isPending && !checkingAcceptance && !regionSelected;
+  // regionUnsupported: a stateless region selection can only fail (no
+  // coordinates, no state, and the string is an area the geocoder can't
+  // match) — Search disables while the guidance under the field explains;
+  // any edit re-enables. Same rule as the web home.
+  const canSearch = address.trim().length > 0 && !resolve.isPending && !checkingAcceptance && !regionUnsupported;
 
   async function onSearchPress() {
     if (!canSearch) {
@@ -184,10 +199,11 @@ export default function HomeScreen() {
     // in flight, and the search must use what was on screen when it started.
     const searchAddress = address.trim();
     const searchCoordinates = addressLocation;
+    const searchRegion = regionSelection;
     setCheckingAcceptance(true);
     try {
       if (await hasCurrentTermsAcceptance()) {
-        resolve.mutate({ address: searchAddress, coordinates: searchCoordinates });
+        resolve.mutate({ address: searchAddress, coordinates: searchCoordinates, region: searchRegion });
         return;
       }
       setAccepted(false);
@@ -205,7 +221,7 @@ export default function HomeScreen() {
     // agreement already given. Fire-and-forget: never block the search on
     // being able to remember it.
     void rememberTermsAcceptance();
-    resolve.mutate({ address: address.trim(), coordinates: addressLocation });
+    resolve.mutate({ address: address.trim(), coordinates: addressLocation, region: regionSelection });
   }
 
   function cancelTerms() {
@@ -259,23 +275,24 @@ export default function HomeScreen() {
             {/* Instructional label for first-time visitors — same copy as
                 the web home. Signed-in surfaces keep "Your address". */}
             <Text className="text-sm font-medium text-ink">
-              Enter your full address for complete results — or just your ZIP code for partial
+              Enter your full address for complete results — or a city or ZIP code for partial
               results:
             </Text>
             <AddressAutocomplete
               value={address}
-              onChange={(value, location, granularity) => {
+              onChange={(value, location, granularity, region) => {
                 setAddress(value);
                 setAddressLocation(location ?? null);
-                setRegionSelected(granularity === "region");
+                setRegionSelection(granularity === "region" && region ? region : null);
+                setRegionUnsupported(granularity === "region" && !region);
               }}
               placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
-              accessibilityLabel="Enter your full address for complete results — or just your ZIP code for partial results:"
+              accessibilityLabel="Enter your full address for complete results — or a city or ZIP code for partial results:"
             />
-            {regionSelected ? (
+            {regionUnsupported ? (
               <Text accessibilityRole="alert" className="mt-1 text-xs text-rausch-dark">
-                That selection is an area, not an address. Pick a street address from the
-                suggestions — or enter just a ZIP code for partial results.
+                We can’t place that selection in a state. Pick a street address, city, or ZIP
+                code from the suggestions.
               </Text>
             ) : null}
             {/* Notice belongs at the field: the autocomplete forwards what is

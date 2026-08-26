@@ -98,21 +98,21 @@ export default function BallotScreen() {
           </Text>
         </Text>
       ) : null}
-      {/* Same partial-ballot label as the web ballot page. The ZIP itself is
-          the matched address from the in-memory holder; without it (screen
-          remount) the generic wording renders. */}
+      {/* Same partial-ballot label as the web ballot page. The ZIP or area
+          name is the matched address from the in-memory holder; without it
+          (screen remount) the generic wording renders. */}
       {isPartialBallot ? (
         <View accessibilityRole="alert" className="mt-2 rounded-md border border-line bg-surface px-3 py-2">
           <Text className="text-sm text-ink">
-            This is a partial ballot
-            {matchedAddress ? (
+            {matchedAddress && matched?.scope && matched.scope !== "exact" ? (
               <>
-                {" "}for ZIP code <Text className="font-medium">{matchedAddress}</Text>
+                This is a partial ballot for {matched.scope === "zip" ? "ZIP code " : ""}
+                <Text className="font-medium">{matchedAddress}</Text>: it lists only the races
+                every address there shares.
               </>
             ) : (
-              " from a ZIP code search"
-            )}
-            : it lists only the races every address in the ZIP shares.{" "}
+              "This is a partial ballot: it lists only races shared across a wider area."
+            )}{" "}
             <Text className="underline" accessibilityRole="link" onPress={() => router.dismissTo("/")}>
               Enter your street address
             </Text>{" "}

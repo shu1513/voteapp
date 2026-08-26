@@ -136,10 +136,16 @@ export type PublicAddressResolvePayload = AddressResolvePayload & {
    * resolver look districts up by point when the Census street-range data
    * lacks the address (stadiums, campuses). Absent for hand-typed input. */
   coordinates?: { lat: number; lng: number };
-  /** Opt-in to the ZIP partial-ballot path. Defaults false so clients that
-   * predate the feature (shipped mobile builds) keep exact-only behavior —
-   * they have no UI to explain a partial result. */
+  /** Opt-in to the ZIP/region partial-ballot paths. Defaults false so
+   * clients that predate the feature (shipped mobile builds) keep exact-only
+   * behavior — they have no UI to explain a partial result. */
   allow_partial: boolean;
+  /** Two-letter state from a Google region selection (retrieve response
+   * `state`); routes the request to the region partial-ballot path. */
+  region_state?: string;
+  /** Locality name from the same region selection; only meaningful with
+   * region_state — used to look for the matching incorporated place. */
+  region_locality?: string;
 };
 
 export type AddressAutocompleteSuggestPayload = {
@@ -384,11 +390,29 @@ export function parsePublicAddressResolveBodyValue(parsed: unknown): PublicAddre
     throw new TypeError("allow_partial must be a boolean when present");
   }
 
+  const regionState = (parsed as { region_state?: unknown }).region_state;
+  if (regionState !== undefined && (typeof regionState !== "string" || !/^[A-Za-z]{2}$/.test(regionState))) {
+    throw new TypeError("region_state must be a two-letter state abbreviation when present");
+  }
+
+  const regionLocality = (parsed as { region_locality?: unknown }).region_locality;
+  if (
+    regionLocality !== undefined &&
+    (typeof regionLocality !== "string" || regionLocality.trim().length === 0 || regionLocality.length > 120)
+  ) {
+    throw new TypeError("region_locality must be a non-empty string of at most 120 characters when present");
+  }
+  if (regionLocality !== undefined && regionState === undefined) {
+    throw new TypeError("region_locality requires region_state");
+  }
+
   return {
     address,
     accepted_terms_version: acceptedTermsVersion.trim(),
     coordinates: parseOptionalCoordinatesField(parsed),
     allow_partial: allowPartial ?? false,
+    ...(regionState !== undefined ? { region_state: regionState.toUpperCase() } : {}),
+    ...(regionLocality !== undefined ? { region_locality: regionLocality.trim() } : {}),
   };
 }
 

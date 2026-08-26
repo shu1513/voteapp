@@ -10,7 +10,7 @@ import {
 } from "@voteapp/api-client";
 import { HomePage } from "./HomePage";
 
-const ADDRESS_LABEL = "Enter your full address for complete results — or just your ZIP code for partial results:";
+const ADDRESS_LABEL = "Enter your full address for complete results — or a city or ZIP code for partial results:";
 const STORAGE_KEY = "voteapp_terms_acceptance";
 const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
 
@@ -342,12 +342,12 @@ describe("HomePage ZIP partial flow", () => {
     expect(sessionStorage.getItem(PENDING_KEY)).toBeNull();
   });
 
-  it("disables Search after an area selection and re-enables on the next edit", async () => {
+  it("disables Search after a stateless area selection and re-enables on the next edit", async () => {
     const suggestion = {
-      place_id: "place-austin",
-      description: "Austin, TX, USA",
-      main_text: "Austin",
-      secondary_text: "TX, USA",
+      place_id: "place-usa",
+      description: "United States",
+      main_text: "United States",
+      secondary_text: "",
     };
     const fetchMock = vi.fn().mockImplementation(async (path: string) => ({
       ok: true,
@@ -357,29 +357,93 @@ describe("HomePage ZIP partial flow", () => {
         path === "/api/address/autocomplete"
           ? { suggestions: [suggestion] }
           : path === "/api/address/autocomplete/retrieve"
-            ? { address: "Austin, TX, USA", location: null, granularity: "region", postal_code: null }
+            ? {
+                address: "United States",
+                location: null,
+                granularity: "region",
+                postal_code: null,
+                state: null,
+                locality: null,
+              }
             : { user: null },
     }));
     vi.stubGlobal("fetch", fetchMock);
     const user = userEvent.setup();
     renderHome();
 
-    await user.type(screen.getByLabelText(ADDRESS_LABEL), "Austin");
-    await user.click(await screen.findByRole("option", { name: /Austin/ }));
+    await user.type(screen.getByLabelText(ADDRESS_LABEL), "United States");
+    await user.click(await screen.findByRole("option", { name: /United States/ }));
 
-    // The selection is an area with no supported flow: guidance appears and
-    // Search stays off — a submit could only die in the geocoder. Escape
-    // first: Headless UI keeps the combobox marked open after our custom
-    // option click (pre-existing quirk of the `static` options pattern) and
-    // aria-hides the rest of the form while it is.
-    expect(await screen.findByText(/That selection is an area, not an address/)).toBeInTheDocument();
+    // The selection is an area the server could not place in a state:
+    // guidance appears and Search stays off — a submit could only die in the
+    // geocoder. Escape first: Headless UI keeps the combobox marked open
+    // after our custom option click (pre-existing quirk of the `static`
+    // options pattern) and aria-hides the rest of the form while it is.
+    expect(await screen.findByText(/We can’t place that selection in a state/)).toBeInTheDocument();
     await user.keyboard("{Escape}");
     expect(screen.getByRole("button", { name: "Search" })).toBeDisabled();
 
     await user.type(screen.getByLabelText(ADDRESS_LABEL), " 78701");
-    expect(screen.queryByText(/That selection is an area, not an address/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/We can’t place that selection in a state/)).not.toBeInTheDocument();
     await user.keyboard("{Escape}");
     expect(screen.getByRole("button", { name: "Search" })).toBeEnabled();
+  });
+
+  it("searches a city selection through the region path and routes with partial=1", async () => {
+    const suggestion = {
+      place_id: "place-la",
+      description: "Los Angeles, CA, USA",
+      main_text: "Los Angeles",
+      secondary_text: "CA, USA",
+    };
+    const fetchMock = vi.fn().mockImplementation(async (path: string) => ({
+      ok: true,
+      status: 200,
+      headers: new Headers(),
+      json: async () =>
+        path === "/api/address/autocomplete"
+          ? { suggestions: [suggestion] }
+          : path === "/api/address/autocomplete/retrieve"
+            ? {
+                address: "Los Angeles, CA, USA",
+                location: null,
+                granularity: "region",
+                postal_code: null,
+                state: "CA",
+                locality: "Los Angeles",
+              }
+            : path === "/api/address/resolve"
+              ? {
+                  matched_address: "Los Angeles, CA, USA",
+                  address_match_count: 1,
+                  districts: [{ id: "d-ca" }, { id: "d-la" }],
+                  scope: "region",
+                }
+              : { user: null },
+    }));
+    vi.stubGlobal("fetch", fetchMock);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: TERMS_VERSION, acceptedAt: Date.now() }));
+    const user = userEvent.setup();
+    const { router } = renderHome();
+
+    await user.type(screen.getByLabelText(ADDRESS_LABEL), "Los Angeles");
+    await user.click(await screen.findByRole("option", { name: /Los Angeles/ }));
+    await waitFor(() => {
+      expect(screen.getByLabelText(ADDRESS_LABEL)).toHaveValue("Los Angeles, CA, USA");
+    });
+    await user.keyboard("{Escape}");
+    await user.click(screen.getByRole("button", { name: "Search" }));
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe("/ballot");
+    });
+    expect(router.state.location.search).toBe("?d=d-ca,d-la&partial=1");
+    // The resolve body carries the server-classified region, never a point.
+    const resolveCall = fetchMock.mock.calls.find(([path]) => path === "/api/address/resolve");
+    const body = JSON.parse((resolveCall?.[1] as { body: string }).body) as Record<string, unknown>;
+    expect(body.region_state).toBe("CA");
+    expect(body.region_locality).toBe("Los Angeles");
+    expect(body.coordinates).toBeUndefined();
   });
 
   it("routes an exact result without partial=1 and saves the pending handoff", async () => {

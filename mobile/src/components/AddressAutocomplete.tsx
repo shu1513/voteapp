@@ -13,9 +13,15 @@ type AddressAutocompleteProps = {
   /** location is set only when the value came from a completed dropdown
    * selection; every keystroke or fallback call passes it as undefined, so
    * callers that track coordinates must clear them when it is absent.
-   * granularity arrives only on a completed selection too — same contract
-   * as the web AddressAutocomplete. */
-  onChange: (value: string, location?: AddressLocation | null, granularity?: "address" | "zip" | "region") => void;
+   * granularity (and region, for area selections with a known state) arrive
+   * only on a completed selection too — same contract as the web
+   * AddressAutocomplete. */
+  onChange: (
+    value: string,
+    location?: AddressLocation | null,
+    granularity?: "address" | "zip" | "region",
+    region?: { state: string; locality: string | null }
+  ) => void;
   placeholder?: string;
   /** Screen-reader label. React Native does not associate a sibling <Text>
    * with the input, so callers whose visible label differs from the default
@@ -47,7 +53,14 @@ export function AddressAutocomplete({
       onChange(retrieved.postal_code, null, "zip");
       return;
     }
-    onChange(retrieved.address, retrieved.location, retrieved.granularity);
+    onChange(
+      retrieved.address,
+      retrieved.location,
+      retrieved.granularity,
+      retrieved.granularity === "region" && retrieved.state
+        ? { state: retrieved.state, locality: retrieved.locality }
+        : undefined
+    );
   }
 
   return (

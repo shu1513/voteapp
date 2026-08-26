@@ -10,12 +10,15 @@ export type MatchedAddressHandoff = {
   // Geocoder candidate count; above 1 means the search was ambiguous and the
   // ballot is for the first match, so the ballot screen shows a warning.
   matchCount: number;
+  // Which search produced the ballot; the partial banner names a "zip"
+  // search's ZIP or a "region" search's area, and stays generic without it.
+  scope: "exact" | "zip" | "region";
 };
 
 let pendingMatchedAddress: MatchedAddressHandoff | null = null;
 
-export function setMatchedAddress(address: string, matchCount: number): void {
-  pendingMatchedAddress = { address, matchCount };
+export function setMatchedAddress(address: string, matchCount: number, scope: MatchedAddressHandoff["scope"]): void {
+  pendingMatchedAddress = { address, matchCount, scope };
 }
 
 /** Returns and clears the pending handoff (single use). */

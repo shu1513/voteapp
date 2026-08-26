@@ -14,11 +14,13 @@ export function ErrorNotice({ error }: { error: unknown }) {
   let message = "Something went wrong. Please try again.";
   if (error instanceof ApiError) {
     if (error.status === 422) {
-      // ZIP partial-path codes carry user-ready messages ("ZIP code 02861
+      // Partial-path codes carry user-ready messages ("ZIP code 02861
       // crosses state lines — enter a full street address"); the generic
       // street-address copy would misdiagnose them.
       message =
-        error.code.startsWith("zip_") || error.code === "full_address_required"
+        error.code.startsWith("zip_") ||
+        error.code === "full_address_required" ||
+        error.code === "region_unsupported"
           ? error.message
           : "We couldn't find that address. Check the street, city, and state, then try again.";
     } else if (error.status === 429) {

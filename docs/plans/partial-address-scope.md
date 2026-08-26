@@ -1,9 +1,10 @@
 # Partial-address scope (ZIP ballot)
 
-Status: PR 1 (backend + data, #858) MERGED 2026-08-25; PR 2 (web + mobile)
-implemented. v1 is **ZIP only** — city input is deferred (see "Later
-research"). Crosswalk stats verified against the actual Census file; the
-retrieve centroid bug was confirmed in code and fixed in PR 1.
+Status: PR 1 (backend + data, #858) and PR 2 (web + mobile, #859) MERGED
+2026-08-25; ZIP-place retrieve fix (#860) and region/city selections (see
+"Region selections") followed the same day. Crosswalk stats verified against
+the actual Census file; the retrieve centroid bug was confirmed in code and
+fixed in PR 1.
 
 ## Problem
 
@@ -37,6 +38,7 @@ Scope tiers:
 |---|---|---|
 | street address (today) | all 9 types | Census geocode — unchanged |
 | ZIP | `statewide`; + `county` only when the ZCTA has **exactly one** county relationship | local ZCTA↔county crosswalk, **no geocoder call** |
+| region selection (city, neighborhood, county…) | `statewide`; + `place` only for a **locality** pick whose name + state matches **exactly one** incorporated place in `districts` | Google `addressComponents` state/locality relayed via `region_state`/`region_locality`; identity by exact Census name ("Los Angeles city, California"), CDPs excluded, **no geocoder call** |
 
 Conservative county rule (verified against the file, 2026-08-25):
 
@@ -210,14 +212,25 @@ banner; regression: exact flow unchanged.
    mobile release through the normal Expo channel (old builds stay safe via
    `allow_partial`).
 
+## Region selections (added 2026-08-25)
+
+City picks work: the retrieve step returns `state` +`locality` for `region`
+selections (locality only when the selection's own types include `locality` —
+a neighborhood pick also carries its containing city's component, but
+neighborhoods can straddle city lines). The client relays them as
+`region_state`/`region_locality`; the resolver serves `statewide` always
+(scope `"region"`), plus `place` races when
+`"{locality} {city|town|village|borough|municipality}, {StateName}"` matches
+exactly one `districts` row — the exact-name identity check stands in for the
+deferred geometry work: no match (CDPs, decorated consolidated-government
+names, unincorporated communities) or several matches fall back to statewide
+only. Unknown/territory states → `region_unsupported` (422). Stateless region
+picks (a country) still get inline guidance.
+
 ## Later research (explicitly not v1)
 
-- **City input.** Needs *identity* verification, not point filtering: Google
-  `locality` ≠ Census incorporated place (mailing-city names extend past
-  municipal limits; CDPs aren't governments; a centroid can even fall outside
-  a concave/multipart polygon). A future pass would match the selected
-  locality+state to a Census place name/GEOID before returning `place` races.
-  Until then, region selections get guidance, never results.
-- ZCTA↔place crosswalk (city races for a ZIP); labeled multi-county display;
-  county races for cities; HUD address-ratio crosswalk; any per-user coarse
-  location storage.
+- ZCTA↔place crosswalk (city races for a ZIP); county races for cities
+  (needs a place↔county containment source); labeled multi-county display;
+  HUD address-ratio crosswalk; any per-user coarse location storage;
+  fuzzy/alias locality matching (consolidated governments like
+  Nashville-Davidson, Louisville/Jefferson).

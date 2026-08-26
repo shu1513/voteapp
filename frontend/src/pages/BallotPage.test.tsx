@@ -40,13 +40,29 @@ describe("BallotPage", () => {
     renderBallot({
       pathname: "/ballot",
       search: "?d=d-1&partial=1",
-      state: { matchedAddress: "78701", addressMatchCount: 1 },
+      state: { matchedAddress: "78701", addressMatchCount: 1, scope: "zip" },
     });
 
     const banner = await screen.findByRole("alert");
     expect(banner).toHaveTextContent("This is a partial ballot for ZIP code 78701");
-    expect(banner).toHaveTextContent("only the races every address in the ZIP shares");
+    expect(banner).toHaveTextContent("only the races every address there shares");
     expect(screen.getByRole("link", { name: "Enter your street address" })).toHaveAttribute("href", "/?new=1");
+  });
+
+  it("labels a partial ballot, naming the area from router state on a region search", async () => {
+    stubApiRoutes({
+      ...ANONYMOUS,
+      "/api/ballot": { body: ballotSummary([electionSummary()]) },
+    });
+    renderBallot({
+      pathname: "/ballot",
+      search: "?d=d-1&partial=1",
+      state: { matchedAddress: "Los Angeles, CA, USA", addressMatchCount: 1, scope: "region" },
+    });
+
+    const banner = await screen.findByRole("alert");
+    expect(banner).toHaveTextContent("This is a partial ballot for Los Angeles, CA, USA");
+    expect(banner).not.toHaveTextContent("ZIP code");
   });
 
   it("labels a partial ballot generically on a bare link with no router state", async () => {
@@ -59,7 +75,9 @@ describe("BallotPage", () => {
     renderBallot("/ballot?d=d-1&partial=1");
 
     const banner = await screen.findByRole("alert");
-    expect(banner).toHaveTextContent("This is a partial ballot from a ZIP code search");
+    expect(banner).toHaveTextContent(
+      "This is a partial ballot: it lists only races shared across a wider area."
+    );
   });
 
   it("shows no partial label without the flag", async () => {

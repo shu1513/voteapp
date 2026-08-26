@@ -30,16 +30,20 @@ import {
   lookupAddressDistricts,
 } from "./addressDistrictLookup.js";
 
+import { STATE_FIPS_BY_ABBREVIATION, STATE_NAME_BY_FIPS } from "../../constants/usStates.js";
+
 type Queryable = Pick<Pool | PoolClient, "query">;
 
-// A ZIP input the exact pipeline cannot serve. Distinct codes because each
-// needs different user copy (docs/plans/partial-address-scope.md); apiErrors
-// maps them all to 422 like address_not_found.
+// A coarse (ZIP or region) input the exact pipeline cannot serve. Distinct
+// codes because each needs different user copy
+// (docs/plans/partial-address-scope.md); apiErrors maps them all to 422 like
+// address_not_found.
 export type ZipDistrictResolutionErrorCode =
   | "full_address_required"
   | "zip_not_found"
   | "zip_multi_state"
-  | "zip_unsupported_region";
+  | "zip_unsupported_region"
+  | "region_unsupported";
 
 export class ZipDistrictResolutionError extends Error {
   readonly code: ZipDistrictResolutionErrorCode;
@@ -53,15 +57,17 @@ export class ZipDistrictResolutionError extends Error {
 
 export type AddressResolutionResult = {
   matched_address: string;
-  /** null for ZIP-scope results — the crosswalk path never geocodes. */
+  /** null for coarse-scope results — the partial paths never geocode. */
   coordinates: {
     lat: number;
     lng: number;
   } | null;
   /** "exact" = geocoded street address (all district types); "zip" =
    * crosswalk-resolved partial ballot (statewide, plus county when the ZCTA
-   * has exactly one county). */
-  scope: "exact" | "zip";
+   * has exactly one county); "region" = area-selection partial ballot
+   * (statewide, plus the incorporated place when the locality name matches
+   * exactly one). */
+  scope: "exact" | "zip" | "region";
   address_match_count: number;
   district_keys: AddressDistrictKey[];
   districts: AddressResolvedDistrict[];
@@ -92,6 +98,18 @@ export type AddressResolverServiceOptions = {
    * full_address_required instead of dying in the geocoder.
    */
   allowPartial?: boolean;
+  /**
+   * Two-letter state from the server-classified Google region selection
+   * (retrieve response `state`). Presence routes the request to the region
+   * partial-ballot path — only under allowPartial, like the ZIP path.
+   */
+  regionState?: string;
+  /**
+   * Locality name from the same region selection ("Los Angeles"), when
+   * Google named one. Used only to look for the matching incorporated
+   * place's races; no match just means statewide only.
+   */
+  regionLocality?: string;
 };
 
 function effectiveGeocoderCacheContext(options: CensusAddressGeocoderOptions | undefined): {
@@ -180,6 +198,74 @@ async function resolveZipToDistricts(db: Queryable, zip5: string): Promise<Addre
   };
 }
 
+// Census place names carry the legal type and state ("Los Angeles city,
+// California"). Only incorporated forms — a CDP is not a government, has no
+// races, and is exactly the mailing-name trap the plan warns about; a Google
+// locality that is really a CDP simply finds no match and stays statewide.
+const INCORPORATED_PLACE_NAME_SUFFIXES = ["city", "town", "village", "borough", "municipality"];
+
+async function resolveRegionToDistricts(
+  db: Queryable,
+  input: { state: string; locality: string | null; matchedAddress: string }
+): Promise<AddressResolutionResult> {
+  const stateFips = STATE_FIPS_BY_ABBREVIATION[input.state];
+  if (!stateFips) {
+    throw new ZipDistrictResolutionError(
+      "region_unsupported",
+      `That area is outside the covered 50 states and DC — enter a city, ZIP code, or street address in the US`
+    );
+  }
+
+  // Statewide is always safe: a city, neighborhood, or county never crosses
+  // a state line. Everything finer needs identity, not geometry.
+  const districtKeys: AddressDistrictKey[] = [
+    {
+      district_type: "statewide",
+      geoid_compact: stateFips,
+      source: "layer_name",
+      layer_name: "region_selection",
+    },
+  ];
+
+  // Place races only on an exact, unique name match: the Google locality name
+  // plus the Census legal-type suffix must equal exactly one place district
+  // in the state. Zero matches (CDPs, unincorporated communities,
+  // consolidated governments with decorated names) or several fall back to
+  // statewide only — a partial ballot must never show someone else's races.
+  const locality = input.locality?.trim();
+  if (locality) {
+    const stateName = STATE_NAME_BY_FIPS[stateFips];
+    const candidateNames = INCORPORATED_PLACE_NAME_SUFFIXES.map((suffix) =>
+      `${locality} ${suffix}, ${stateName}`.toLowerCase()
+    );
+    const places = await db.query<{ geoid_compact: string }>(
+      `SELECT geoid_compact FROM public.districts
+       WHERE district_type = 'place' AND state = $1 AND lower(name) = ANY($2)`,
+      [input.state, candidateNames]
+    );
+    if (places.rows.length === 1) {
+      districtKeys.push({
+        district_type: "place",
+        geoid_compact: places.rows[0].geoid_compact,
+        source: "layer_name",
+        layer_name: "region_selection",
+      });
+    }
+  }
+
+  const districtLookup = await lookupAddressDistricts(db, districtKeys);
+  return {
+    matched_address: input.matchedAddress,
+    coordinates: null,
+    scope: "region",
+    address_match_count: 1,
+    district_keys: districtKeys,
+    districts: districtLookup.districts,
+    missing_district_keys: districtLookup.missing_district_keys,
+    warnings: [],
+  };
+}
+
 export async function resolveAddressToDistricts(
   db: Queryable,
   address: string,
@@ -194,6 +280,24 @@ export async function resolveAddressToDistricts(
       );
     }
     return resolveZipToDistricts(db, zipMatch[1]);
+  }
+
+  // Region selection (city/neighborhood/county/state picked from the
+  // autocomplete). The state comes from the server-classified retrieve
+  // response relayed by the client — an honest chain, and the worst a forged
+  // value can produce is a public statewide ballot the caller asked for.
+  if (options.regionState !== undefined) {
+    if (!options.allowPartial) {
+      throw new ZipDistrictResolutionError(
+        "full_address_required",
+        "A full street address is required — an area alone cannot determine your districts"
+      );
+    }
+    return resolveRegionToDistricts(db, {
+      state: options.regionState,
+      locality: options.regionLocality ?? null,
+      matchedAddress: address.trim(),
+    });
   }
 
   const geocodeAddress =

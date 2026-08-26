@@ -64,6 +64,10 @@ export const STATE_NAME_BY_ABBREVIATION: Record<string, string> = Object.fromEnt
   Object.values(STATE_INFO_BY_FIPS).map((info) => [info.abbreviation, info.name])
 );
 
+export const STATE_FIPS_BY_ABBREVIATION: Record<string, string> = Object.fromEntries(
+  Object.entries(STATE_INFO_BY_FIPS).map(([fips, info]) => [info.abbreviation, fips])
+);
+
 /**
  * Normalizes a state FIPS value to a two-character string.
  */

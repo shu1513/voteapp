@@ -139,7 +139,7 @@ describe("createApiApp", () => {
     });
     expect(response.body).not.toHaveProperty("coordinates");
     expect(response.body).not.toHaveProperty("ballot");
-    expect(resolveAddress).toHaveBeenCalledWith("3921 Harlan Ave Baldwin Park CA 91706", undefined, false);
+    expect(resolveAddress).toHaveBeenCalledWith("3921 Harlan Ave Baldwin Park CA 91706", undefined, false, undefined, undefined);
     expect(logDiagnostics).toHaveBeenCalledWith({
       address_match_count: 1,
       scope: "exact",
@@ -167,8 +167,29 @@ describe("createApiApp", () => {
     expect(resolveAddress).toHaveBeenCalledWith(
       "1 MetLife Stadium Dr, East Rutherford, NJ 07073, USA",
       { lat: 40.8135, lng: -74.0741 },
-      false
+      false,
+      undefined,
+      undefined
     );
+  });
+
+  it("passes region_state and region_locality through to the resolver", async () => {
+    const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
+      method: "POST",
+      path: "/api/address/resolve",
+      body: JSON.stringify({
+        address: "Los Angeles, CA, USA",
+        accepted_terms_version: CURRENT_TERMS_VERSION,
+        allow_partial: true,
+        region_state: "CA",
+        region_locality: "Los Angeles",
+      }),
+      headers: { "content-type": "application/json" },
+    });
+    expect(response.statusCode).toBe(200);
+    expect(resolveAddress).toHaveBeenCalledWith("Los Angeles, CA, USA", undefined, true, "CA", "Los Angeles");
   });
 
   it("passes allow_partial through and rejects a non-boolean value", async () => {
@@ -185,7 +206,7 @@ describe("createApiApp", () => {
       headers: { "content-type": "application/json" },
     });
     expect(accepted.statusCode).toBe(200);
-    expect(resolveAddress).toHaveBeenCalledWith("78701", undefined, true);
+    expect(resolveAddress).toHaveBeenCalledWith("78701", undefined, true, undefined, undefined);
 
     const rejected = await invokeExpressApp(createApiApp({ resolveAddress }), {
       method: "POST",
@@ -426,7 +447,7 @@ describe("createApiApp", () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.headers).not.toHaveProperty("access-control-allow-origin");
-    expect(resolveAddress).toHaveBeenCalledWith("3921 Harlan Ave Baldwin Park CA 91706", undefined, false);
+    expect(resolveAddress).toHaveBeenCalledWith("3921 Harlan Ave Baldwin Park CA 91706", undefined, false, undefined, undefined);
   });
 
   it("serves configured dynamic sitemap XML", async () => {

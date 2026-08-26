@@ -84,9 +84,13 @@ export function BallotPage() {
   const location = useLocation();
   const hydrated = useHydrated();
   const routerState = hydrated
-    ? (location.state as { matchedAddress?: unknown; addressMatchCount?: unknown } | null)
+    ? (location.state as { matchedAddress?: unknown; addressMatchCount?: unknown; scope?: unknown } | null)
     : null;
   const matchedAddress = typeof routerState?.matchedAddress === "string" ? routerState.matchedAddress : null;
+  // Which partial search produced this ballot ("zip" names the ZIP, "region"
+  // names the area); null on bare links, where the banner stays generic.
+  const partialScope =
+    routerState?.scope === "zip" || routerState?.scope === "region" ? routerState.scope : null;
   // The geocoder returned more than one candidate address and the ballot is
   // for the first one — the confirmation line alone is too easy to skim past.
   const ambiguousMatchCount =
@@ -275,20 +279,22 @@ export function BallotPage() {
           address) and only appears when the geocoder was ambiguous — the one
           case where the ballot has a real chance of being for the wrong
           address. */}
-      {/* ZIP searches land here with partial=1 in the URL (the flag carries
-          no location, so unlike the matched address it survives refreshes
-          and shared links). The ZIP itself rides router state as the
-          matched address; a bare link renders the generic wording. */}
+      {/* ZIP and city searches land here with partial=1 in the URL (the flag
+          carries no location, so unlike the matched address it survives
+          refreshes and shared links). The ZIP or area name rides router
+          state as the matched address; a bare link renders the generic
+          wording. */}
       {isPartialBallot ? (
         <p role="alert" className="mt-2 rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink">
-          This is a partial ballot{matchedAddress ? (
+          {matchedAddress && partialScope ? (
             <>
-              {" "}for ZIP code <span className="font-medium">{matchedAddress}</span>
+              This is a partial ballot for {partialScope === "zip" ? "ZIP code " : ""}
+              <span className="font-medium">{matchedAddress}</span>: it lists only the races every
+              address there shares.
             </>
           ) : (
-            " from a ZIP code search"
-          )}
-          : it lists only the races every address in the ZIP shares.{" "}
+            "This is a partial ballot: it lists only races shared across a wider area."
+          )}{" "}
           <Link to="/?new=1" className="underline hover:text-rausch">
             Enter your street address
           </Link>{" "}

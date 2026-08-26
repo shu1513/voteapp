@@ -196,6 +196,8 @@ describe("googlePlacesAutocomplete retrieve", () => {
       location: null,
       granularity: "address",
       postal_code: null,
+      state: null,
+      locality: null,
     });
 
     const [url, init] = (fetchImpl as unknown as ReturnType<typeof vi.fn>).mock.calls[0] as [string, RequestInit];
@@ -271,6 +273,8 @@ describe("googlePlacesAutocomplete retrieve", () => {
       location: null,
       granularity: "zip",
       postal_code: "78701",
+      state: null,
+      locality: null,
     });
   });
 
@@ -322,6 +326,64 @@ describe("googlePlacesAutocomplete retrieve", () => {
       expect(result.location).toBeNull();
       expect(result.postal_code).toBeNull();
     }
+  });
+
+  it("carries state and locality on region selections, shape-checked", () => {
+    const result = parseGooglePlacesRetrievePayload({
+      formattedAddress: "Los Angeles, CA, USA",
+      location: { latitude: 34.05, longitude: -118.24 },
+      types: ["locality", "political"],
+      addressComponents: [
+        { longText: "Los Angeles", shortText: "Los Angeles", types: ["locality", "political"] },
+        { longText: "California", shortText: "CA", types: ["administrative_area_level_1", "political"] },
+        { longText: "United States", shortText: "US", types: ["country", "political"] },
+      ],
+    });
+    expect(result.granularity).toBe("region");
+    expect(result.location).toBeNull();
+    expect(result.state).toBe("CA");
+    expect(result.locality).toBe("Los Angeles");
+
+    // A neighborhood pick carries the containing city's locality component,
+    // but neighborhoods can straddle city lines — it must NOT become a place
+    // lookup; only the state passes through.
+    const neighborhood = parseGooglePlacesRetrievePayload({
+      formattedAddress: "Hollywood, Los Angeles, CA, USA",
+      types: ["neighborhood", "political"],
+      addressComponents: [
+        { longText: "Hollywood", shortText: "Hollywood", types: ["neighborhood", "political"] },
+        { longText: "Los Angeles", shortText: "Los Angeles", types: ["locality", "political"] },
+        { longText: "California", shortText: "CA", types: ["administrative_area_level_1", "political"] },
+      ],
+    });
+    expect(neighborhood.granularity).toBe("region");
+    expect(neighborhood.state).toBe("CA");
+    expect(neighborhood.locality).toBeNull();
+
+    // A malformed state code or missing components must read as null, and a
+    // state selection has no locality component at all.
+    const noComponents = parseGooglePlacesRetrievePayload({
+      formattedAddress: "California, USA",
+      types: ["administrative_area_level_1", "political"],
+      addressComponents: [
+        { longText: "California", shortText: "Calif.", types: ["administrative_area_level_1", "political"] },
+      ],
+    });
+    expect(noComponents.state).toBeNull();
+    expect(noComponents.locality).toBeNull();
+
+    // Address selections never carry region fields.
+    const address = parseGooglePlacesRetrievePayload({
+      formattedAddress: "1 Main St, Springfield, IL 62701, USA",
+      location: { latitude: 39.8, longitude: -89.65 },
+      types: ["street_address"],
+      addressComponents: [
+        { longText: "Springfield", shortText: "Springfield", types: ["locality", "political"] },
+        { longText: "Illinois", shortText: "IL", types: ["administrative_area_level_1", "political"] },
+      ],
+    });
+    expect(address.state).toBeNull();
+    expect(address.locality).toBeNull();
   });
 
   it("keeps the location for street addresses and venues", () => {

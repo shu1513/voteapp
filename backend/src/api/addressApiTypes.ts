@@ -93,7 +93,9 @@ export type AddressApiServerOptions = {
   resolveAddress: (
     address: string,
     coordinates?: { lat: number; lng: number },
-    allowPartial?: boolean
+    allowPartial?: boolean,
+    regionState?: string,
+    regionLocality?: string
   ) => Promise<AddressResolutionResult>;
   suggestAddresses?: (input: { input: string; sessionToken: string }) => Promise<AddressSuggestion[]>;
   retrieveSuggestedAddress?: (input: { placeId: string; sessionToken: string }) => Promise<RetrievedSuggestedAddress>;
