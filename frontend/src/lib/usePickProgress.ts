@@ -72,9 +72,11 @@ export function useMyPicksProgress(): PickProgress | null {
  * draft to speak of, and a dead-end nav item there is noise. Null is also
  * what the SSR pass returns (server snapshot is an empty draft), so the
  * edge-cached anonymous document stays draft-free and identical for every
- * visitor. Once live, the label stays a plain "My Ballot Draft" until the
- * first pick — a "0/20" on arrival reads as homework, not collecting — then
- * counts up and finally takes the earned name, "My Election Picks ✓".
+ * visitor. Once live, the label stays a plain "My Draft" until the first
+ * pick — a "0/20" on arrival reads as homework, not collecting — then
+ * counts up and finally takes the earned name, "My Picks ✓". Same short
+ * vocabulary as the signed-in labels (myDraftLabel) so the header fits one
+ * line on a 375px phone.
  */
 export function useGuestDraftNav(): { to: string; label: string; complete: boolean } | null {
   const draft = useBallotDraft();
@@ -82,9 +84,7 @@ export function useGuestDraftNav(): { to: string; label: string; complete: boole
   if (progress && progress.picked > 0) {
     return {
       to: "/draft",
-      label: progress.complete
-        ? "My Election Picks ✓"
-        : `My Ballot Draft ${progress.picked}/${progress.total}`,
+      label: progress.complete ? "My Picks ✓" : `My Draft ${progress.picked}/${progress.total}`,
       complete: progress.complete,
     };
   }
@@ -94,11 +94,11 @@ export function useGuestDraftNav(): { to: string; label: string; complete: boole
   // address-search fallback.
   const pickCount = draftPickCount(draft);
   if (pickCount > 0) {
-    return { to: "/draft", label: `My Ballot Draft (${pickCount})`, complete: false };
+    return { to: "/draft", label: `My Draft (${pickCount})`, complete: false };
   }
   // Ballot seen but nothing picked yet: plain label, no counter.
   if (draft.district_ids.length > 0) {
-    return { to: "/draft", label: "My Ballot Draft", complete: false };
+    return { to: "/draft", label: "My Draft", complete: false };
   }
   return null;
 }
