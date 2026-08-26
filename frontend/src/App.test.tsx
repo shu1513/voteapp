@@ -100,9 +100,14 @@ describe("App account nav", () => {
     expect(header.getByRole("link", { name: "Mission" })).toHaveAttribute("href", "/mission");
     expect(header.getByRole("link", { name: "Settings" })).toHaveAttribute("href", "/me/settings");
 
-    // Escape closes it without navigating.
+    // Escape closes it without navigating — and when keyboard focus sits on
+    // a link that unmounts with the panel, it returns to the trigger
+    // instead of dropping to <body>.
+    await userEvent.tab();
+    expect(screen.getByRole("link", { name: "My Elections" })).toHaveFocus();
     await userEvent.keyboard("{Escape}");
     expect(screen.queryByRole("link", { name: "My Elections" })).not.toBeInTheDocument();
+    expect(trigger).toHaveFocus();
   });
 
   it("closes the account menu when a menu link navigates", async () => {

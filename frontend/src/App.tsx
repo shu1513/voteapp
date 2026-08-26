@@ -18,6 +18,7 @@ import { myDraftLabel, useGuestDraftNav, useMyPicksProgress } from "./lib/usePic
 function AccountMenu({ firstName }: { firstName: string }) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLSpanElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
 
   // Light-dismiss: outside click/tap or Escape closes the menu.
@@ -32,6 +33,13 @@ function AccountMenu({ firstName }: { firstName: string }) {
     }
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
+        // A keyboard user may have tabbed onto a link that is about to
+        // unmount; hand focus back to the trigger so it doesn't drop to
+        // <body>. (Activating a link is covered separately: navigation
+        // moves focus to <main>.)
+        if (menuRef.current?.contains(document.activeElement)) {
+          triggerRef.current?.focus();
+        }
         setOpen(false);
       }
     }
@@ -51,9 +59,14 @@ function AccountMenu({ firstName }: { firstName: string }) {
 
   return (
     <span ref={menuRef} className="relative flex min-w-0">
+      {/* Disclosure, not a role="menu" menu: plain links behind an
+          aria-expanded button (the APG disclosure-navigation pattern).
+          role="menu" would announce application-menu semantics and demand
+          arrow-key behavior these links don't have — so no aria-haspopup
+          either, which implies exactly that. */}
       <button
+        ref={triggerRef}
         type="button"
-        aria-haspopup="true"
         aria-expanded={open}
         onClick={() => setOpen((wasOpen) => !wasOpen)}
         className="flex min-w-0 items-center gap-1 text-sm font-semibold text-navy"

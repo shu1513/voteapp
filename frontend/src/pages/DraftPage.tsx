@@ -11,7 +11,7 @@ import { PickDateCard } from "./PicksPage";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 
-// The guest's My Picks: the header's "My Ballot Draft" link lands here, and
+// The guest's My Picks: the header's "My Draft" link lands here, and
 // the page renders the SAME date cards the signed-in /me/picks page shows —
 // races from the guest's last-viewed ballot, picks from the localStorage
 // draft — minus sharing (the share API is account-only). The one addition is
