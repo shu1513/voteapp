@@ -651,12 +651,15 @@ describe("resolveAddressToDistricts region partial path", () => {
       regionLocality: "Los Angeles",
     });
 
-    // Name candidates carry every incorporated legal-type suffix, lowercased,
-    // and never the CDP form.
+    // Name candidates: the bare form (Carson City-style names carry no
+    // suffix) plus every incorporated legal-type suffix, lowercased, and
+    // never the CDP form.
     expect(query.mock.calls[0]?.[1]).toEqual([
       "CA",
       [
+        "los angeles, california",
         "los angeles city, california",
+        "los angeles city and borough, california",
         "los angeles town, california",
         "los angeles village, california",
         "los angeles borough, california",
@@ -669,6 +672,28 @@ describe("resolveAddressToDistricts region partial path", () => {
     ]);
     expect(result.scope).toBe("region");
     expect(result.districts.map((district) => district.id)).toEqual(["district-ca", "district-la"]);
+  });
+
+  it("matches suffixless and city-and-borough place names (Carson City, Juneau)", async () => {
+    for (const [state, locality, candidate] of [
+      ["NV", "Carson City", "carson city, nevada"],
+      ["AK", "Juneau", "juneau city and borough, alaska"],
+    ] as const) {
+      const query = vi
+        .fn()
+        .mockResolvedValueOnce({ rows: [{ geoid_compact: "9999999" }] })
+        .mockResolvedValueOnce({ rows: [STATEWIDE_ROW] });
+
+      await resolveAddressToDistricts({ query }, `${locality}, ${state}, USA`, {
+        allowPartial: true,
+        regionState: state,
+        regionLocality: locality,
+      });
+
+      expect(query.mock.calls[0]?.[1]?.[1]).toContain(candidate);
+      // The place key made it into the district lookup.
+      expect(query.mock.calls[1]?.[1]?.[0]).toEqual(["statewide", "place"]);
+    }
   });
 
   it("stays statewide only when the locality matches zero or several places", async () => {

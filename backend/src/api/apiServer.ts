@@ -2381,6 +2381,8 @@ async function dispatchApiRequest(
           location: result.location,
           granularity: result.granularity,
           postal_code: result.postal_code,
+          state: result.state,
+          locality: result.locality,
         },
         corsHeaders
       )

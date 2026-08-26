@@ -95,11 +95,20 @@ describe("address autocomplete API endpoints", () => {
     });
   });
 
-  it("returns the selected address from the injected retrieve function", async () => {
+  it("returns the full retrieve classification, not just address and location", async () => {
+    // Regression: the handler once serialized only address/location/
+    // granularity/postal_code, silently dropping the region fields — city
+    // selections then never reached the region resolver through the real
+    // API even though the Google client computed them.
     const resolveAddress = vi.fn();
-    const retrieveSuggestedAddress = vi
-      .fn()
-      .mockResolvedValue({ address: SUGGESTION.description, location: { lat: 40.8135, lng: -74.0741 } });
+    const retrieveSuggestedAddress = vi.fn().mockResolvedValue({
+      address: "Los Angeles, CA, USA",
+      location: null,
+      granularity: "region",
+      postal_code: null,
+      state: "CA",
+      locality: "Los Angeles",
+    });
 
     const response = await invokeExpressApp(createApiApp({ resolveAddress, retrieveSuggestedAddress }), {
       method: "POST",
@@ -109,7 +118,14 @@ describe("address autocomplete API endpoints", () => {
     });
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual({ address: SUGGESTION.description, location: { lat: 40.8135, lng: -74.0741 } });
+    expect(response.body).toEqual({
+      address: "Los Angeles, CA, USA",
+      location: null,
+      granularity: "region",
+      postal_code: null,
+      state: "CA",
+      locality: "Los Angeles",
+    });
     expect(retrieveSuggestedAddress).toHaveBeenCalledWith({
       placeId: SUGGESTION.place_id,
       sessionToken: SESSION_TOKEN,

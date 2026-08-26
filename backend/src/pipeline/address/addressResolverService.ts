@@ -217,10 +217,18 @@ async function resolveZipToDistricts(db: Queryable, zip5: string): Promise<Addre
 }
 
 // Census place names carry the legal type and state ("Los Angeles city,
-// California"). Only incorporated forms — a CDP is not a government, has no
-// races, and is exactly the mailing-name trap the plan warns about; a Google
-// locality that is really a CDP simply finds no match and stays statewide.
-const INCORPORATED_PLACE_NAME_SUFFIXES = ["city", "town", "village", "borough", "municipality"];
+// California"; Alaska's consolidated "Juneau city and borough, Alaska").
+// Only incorporated forms — a CDP is not a government, has no races, and is
+// exactly the mailing-name trap the plan warns about; a Google locality that
+// is really a CDP simply finds no match and stays statewide.
+const INCORPORATED_PLACE_NAME_SUFFIXES = [
+  "city",
+  "city and borough",
+  "town",
+  "village",
+  "borough",
+  "municipality",
+];
 
 async function resolveRegionToDistricts(
   db: Queryable,
@@ -253,9 +261,13 @@ async function resolveRegionToDistricts(
   const locality = input.locality?.trim();
   if (locality) {
     const stateName = STATE_NAME_BY_FIPS[stateFips];
-    const candidateNames = INCORPORATED_PLACE_NAME_SUFFIXES.map((suffix) =>
-      `${locality} ${suffix}, ${stateName}`.toLowerCase()
-    );
+    // The bare form first: a handful of places carry the legal type inside
+    // the proper name and get no suffix ("Carson City, Nevada"). CDPs can
+    // never collide with it — their names always end " CDP".
+    const candidateNames = [
+      `${locality}, ${stateName}`,
+      ...INCORPORATED_PLACE_NAME_SUFFIXES.map((suffix) => `${locality} ${suffix}, ${stateName}`),
+    ].map((name) => name.toLowerCase());
     const places = await db.query<{ geoid_compact: string }>(
       `SELECT geoid_compact FROM public.districts
        WHERE district_type = 'place' AND state = $1 AND lower(name) = ANY($2)`,
