@@ -181,9 +181,9 @@ with "Affects my issues" and (on the saved page) "Followed candidates first" so
 the controls row stops accreting loose chips.
 
 1. **Impact filter.** A minimum-label threshold, two options: "High or
-   above" (`high` + `very_high`) and "Average or above" (`medium` +
+   above" (`high` + `very_high`) and "Normal or above" (`medium` +
    `high` + `very_high`) — checkbox labels reuse the card vocabulary from
-   `formatVotePowerLabel` ("Average", never "medium"; the wire/URL word
+   `formatVotePowerLabel` ("Normal", never "medium"; the wire/URL word
    stays `medium`). The thresholds nest, so exactly one can be engaged:
    checking one swaps the other off, unchecking means any impact (no
    explicit "Any" option — unchecked already says it). Labels only, never
@@ -198,8 +198,8 @@ the controls row stops accreting loose chips.
    when the ballot has MORE THAN 7 elections (`LONG_BALLOT_THRESHOLD = 7`
    in the shared derivation) AND that option's threshold actually splits
    the list (all-match is a no-op; none-match would empty the ballot
-   unexplained). "Average or above" is additionally withheld when it would
-   keep the same set as "High or above" (a ballot with no Average races) —
+   unexplained). "Normal or above" is additionally withheld when it would
+   keep the same set as "High or above" (a ballot with no Normal races) —
    never two checkboxes doing the same thing. The gate covers the *offer*
    only: once engaged — e.g. arriving via a shared `?impact=high` URL onto
    a short ballot — the engaged option stays visible and keeps applying
