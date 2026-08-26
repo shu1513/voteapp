@@ -97,7 +97,7 @@ export function RegisterPage() {
   if (register.isSuccess) {
     return (
       <div className="mx-auto max-w-md px-4 py-10">
-        <h1 className="text-2xl font-bold">Check your email</h1>
+        <h1 className="text-title font-bold">Check your email</h1>
         <p className="mt-3 text-ink-soft">
           We sent a verification link to <strong className="text-ink">{email.trim()}</strong>. Open it to
           verify your account, then log in.
@@ -126,7 +126,7 @@ export function RegisterPage() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-10">
-      <h1 className="text-2xl font-bold">Create your account</h1>
+      <h1 className="text-title font-bold">Create your account</h1>
 
       {/* The clickwrap checkbox leads the page because it gates BOTH signup
           paths below it — Google directly underneath and the email form

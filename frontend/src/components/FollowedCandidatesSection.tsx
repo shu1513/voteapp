@@ -177,7 +177,7 @@ export function FollowedCandidatesSection() {
   return (
     <section>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-xl font-bold text-ink">My Candidates</h2>
+        <h2 className="text-heading font-bold text-ink">My Candidates</h2>
         {/* Typeahead over the whole candidate database (ARIA combobox via
             Headless UI — do not hand-roll keyboard handling; no `static` on
             the options so Escape/blur close the dropdown natively). Picking a

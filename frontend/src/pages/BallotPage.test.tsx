@@ -123,7 +123,7 @@ describe("BallotPage", () => {
     ).toBeInTheDocument();
     const h1 = screen.getByRole("heading", { level: 1, name: "My elections:" });
     expect(h1).not.toHaveClass("sr-only");
-    expect(h1).toHaveClass("text-2xl");
+    expect(h1).toHaveClass("text-title");
     expect(screen.queryByText(/elections across/)).not.toBeInTheDocument();
     expect(screen.queryByText("Which districts?")).not.toBeInTheDocument();
     expect(screen.queryByText("What do these labels mean?")).not.toBeInTheDocument();

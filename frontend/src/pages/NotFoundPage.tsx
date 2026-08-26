@@ -5,7 +5,7 @@ export function NotFoundPage() {
   useDocumentTitle("Page not found");
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 text-center">
-      <h1 className="text-2xl font-bold">Page not found</h1>
+      <h1 className="text-title font-bold">Page not found</h1>
       <p className="mt-2 text-ink-soft">That page doesn't exist or may have moved.</p>
       <Link
         to="/"

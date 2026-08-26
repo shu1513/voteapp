@@ -1,6 +1,30 @@
 @import "tailwindcss";
 
 @theme {
+  /* Fluid type roles (Vogue/Verso pattern: one token per role, components
+     never carry raw sizes). clamp() interpolates 320px -> 1280px viewports;
+     the rem term keeps user zoom working. Prose NEVER drops below 17px on
+     phones (Vogue holds body at a constant 20px); only headings scale down
+     on small screens.
+       title      22 -> 32px  page h1
+       heading    19 -> 22px  section h2
+       subheading 16 -> 17px  card/callout h3
+       body       17 -> 19px  reading prose (summaries, records, long-form)
+     UI chrome (labels, buttons, meta) stays on the static text-sm/text-xs
+     tiers below. */
+  --text-title: clamp(1.375rem, 1.1667rem + 1.0417vw, 2rem);
+  --text-title--line-height: 1.2;
+  --text-heading: clamp(1.1875rem, 1.125rem + 0.3125vw, 1.375rem);
+  --text-heading--line-height: 1.35;
+  --text-subheading: clamp(1rem, 0.9792rem + 0.1042vw, 1.0625rem);
+  --text-subheading--line-height: 1.45;
+  --text-body: clamp(1.0625rem, 1.0208rem + 0.2083vw, 1.1875rem);
+  --text-body--line-height: 1.6;
+  /* Caption floor raised from Tailwind's 12px: 12px gray text fails APCA
+     even for ancillary copy; 13px is the smallest tier Vogue ships. */
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.4;
+
   /* Palette referenced from Airbnb: Rausch coral primary, near-black ink,
      gray hierarchy, hairline borders, airy white surfaces. */
   --color-rausch: #ff385c;

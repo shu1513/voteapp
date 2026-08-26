@@ -25,7 +25,7 @@ export function ResetPasswordPage() {
   if (!token) {
     return (
       <div className="mx-auto max-w-md px-4 py-10">
-        <h1 className="text-2xl font-bold">Invalid link</h1>
+        <h1 className="text-title font-bold">Invalid link</h1>
         <p className="mt-3 text-ink-soft">
           This password reset link is incomplete. Request a new one from the{" "}
           <Link to="/forgot-password" className="underline hover:text-ink">
@@ -40,7 +40,7 @@ export function ResetPasswordPage() {
   if (reset.isSuccess) {
     return (
       <div className="mx-auto max-w-md px-4 py-10">
-        <h1 className="text-2xl font-bold">Password updated</h1>
+        <h1 className="text-title font-bold">Password updated</h1>
         <p className="mt-3 text-ink-soft">
           Your password has been changed and you have been logged out everywhere. Log in with the new
           password.
@@ -59,7 +59,7 @@ export function ResetPasswordPage() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-10">
-      <h1 className="text-2xl font-bold">Choose a new password</h1>
+      <h1 className="text-title font-bold">Choose a new password</h1>
 
       <form
         onSubmit={(event) => {

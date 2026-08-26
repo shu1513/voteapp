@@ -554,7 +554,7 @@ export function PicksPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <section>
-        <h1 className="text-2xl font-bold">My Election Draft{dates.length > 1 ? "s" : ""}</h1>
+        <h1 className="text-title font-bold">My Election Draft{dates.length > 1 ? "s" : ""}</h1>
         {ballot.isPending || (choicesLoading && !choicesError) ? (
           <LoadingNotice text="Loading your elections…" />
         ) : null}

@@ -17,7 +17,7 @@ export function VerifyPrompt({ email }: { email: string }) {
 
   return (
     <div className="mx-auto max-w-md px-4 py-10">
-      <h1 className="text-2xl font-bold">Verify your email</h1>
+      <h1 className="text-title font-bold">Verify your email</h1>
       <p className="mt-3 text-ink-soft">
         We sent a verification link to <strong className="text-ink">{email}</strong>. Personalized features
         unlock once it's confirmed.

@@ -19,7 +19,7 @@ import { useDocumentTitle } from "../lib/useDocumentTitle";
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="rounded-xl border border-line bg-white p-4">
-      <h2 className="text-lg font-semibold">{title}</h2>
+      <h2 className="text-heading font-semibold">{title}</h2>
       {children}
     </section>
   );
@@ -378,7 +378,7 @@ function DangerSection() {
 
   return (
     <section className="rounded-xl border border-rausch/40 bg-rausch/5 p-4">
-      <h2 className="text-lg font-semibold text-rausch-dark">Delete account</h2>
+      <h2 className="text-heading font-semibold text-rausch-dark">Delete account</h2>
       <p className="mt-1 text-sm text-ink-soft">
         Permanently deletes your account, saved districts, follows, and preferences. This cannot be undone.
       </p>
@@ -468,7 +468,7 @@ export function SettingsPage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-4 px-4 py-8">
-      <h1 className="text-2xl font-bold">Settings</h1>
+      <h1 className="text-title font-bold">Settings</h1>
       <ProfileSection me={me} />
       {me.email_verified ? (
         <>

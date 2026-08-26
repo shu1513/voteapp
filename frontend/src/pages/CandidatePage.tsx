@@ -387,7 +387,7 @@ function StanceSummary({
       ) : null}
       {mixed.length > 0 ? (
         <div className="mt-3 rounded border border-amber-200 bg-amber-50 p-3">
-          <h3 className="text-sm font-semibold text-amber-900">Mixed record</h3>
+          <h3 className="text-subheading font-semibold text-amber-900">Mixed record</h3>
           <p className="mt-1 text-sm text-ink">
             {/* Same "N support · N oppose" phrasing as the record group
                 headers, so the two surfaces can't drift apart. */}
@@ -430,7 +430,7 @@ function RecordItem({
   const stanceTag = stanceAreaId != null ? recordStanceTag(record, stanceAreaId) : null;
   return (
     <li className="rounded-xl border border-line bg-white p-3">
-      <p className="text-sm text-ink">{record.description}</p>
+      <p className="text-body text-ink">{record.description}</p>
       <p className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-ink-soft">
         <span>{formatElectionDate(record.event_date)}</span>
         {stanceTag ? (
@@ -503,7 +503,7 @@ function ElectionHistorySection({
 }) {
   return (
     <section className="mt-6">
-      <h2 className="text-lg font-semibold">{heading}</h2>
+      <h2 className="text-heading font-semibold">{heading}</h2>
       <ul className="mt-2 divide-y divide-line rounded-xl border border-line bg-white">
         {elections.map((election) => (
           <li key={election.candidate_election_id} className="px-3 py-2 text-sm">
@@ -881,7 +881,7 @@ export function CandidatePage() {
           }}
         />
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h1 className="text-2xl font-bold">{candidate.display_name}</h1>
+          <h1 className="text-title font-bold">{candidate.display_name}</h1>
           <div className="flex items-center gap-2">
             <ShareButton
               path={`/candidates/${candidate.candidate_id}`}
@@ -934,7 +934,7 @@ export function CandidatePage() {
             ))}
           </p>
         ) : null}
-        {candidate.summary ? <p className="mt-3 text-ink">{candidate.summary}</p> : null}
+        {candidate.summary ? <p className="mt-3 text-body text-ink">{candidate.summary}</p> : null}
 
         {/* Directly after the summary, before the pick rows — the same order
             as the measure page (explainer boxes, then choice buttons). */}
@@ -994,7 +994,7 @@ export function CandidatePage() {
                   a typo next to a list of many items, and "Records" reads as
                   documents. This is the home-page promise ("who these
                   candidates really are by their records") paid off. */}
-              <h2 className="text-lg font-semibold">Track record</h2>
+              <h2 className="text-heading font-semibold">Track record</h2>
               <label className="flex items-center gap-2 text-sm text-ink-soft">
                 View
                 <select
