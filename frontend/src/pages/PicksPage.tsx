@@ -288,7 +288,7 @@ export function PickDateCard({
   return (
     <section className="rounded-xl border border-line bg-white p-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h3 className="text-lg font-semibold text-ink">My {formatElectionDate(date)} Election Draft</h3>
+        <h3 className="text-heading font-semibold text-ink">My {formatElectionDate(date)} Election Draft</h3>
         {/* Mint-on-demand: no share row (and no live public URL) exists until
             the user asks for one. Hidden entirely while the card has zero
             picks — the backend refuses to mint for an empty card anyway. */}

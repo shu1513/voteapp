@@ -11,7 +11,11 @@
        subheading 16 -> 17px  card/callout h3
        body       17 -> 19px  reading prose (summaries, records, long-form)
      UI chrome (labels, buttons, meta) stays on the static text-sm/text-xs
-     tiers below. */
+     tiers below, and dialog titles stay on static text-lg: overlays are
+     compact panels, not page hierarchy, and all five dialogs share that
+     size on purpose. The ballot facsimile header is also static — it
+     imitates a paper document and is printed, where viewport-fluid sizes
+     don't belong. */
   --text-title: clamp(1.375rem, 1.1667rem + 1.0417vw, 2rem);
   --text-title--line-height: 1.2;
   --text-heading: clamp(1.1875rem, 1.125rem + 0.3125vw, 1.375rem);
