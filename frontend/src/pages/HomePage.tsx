@@ -7,7 +7,7 @@ import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import { FullAddressExplanation } from "../components/FullAddressExplanation";
 import { PreSearchTermsDialog } from "../components/PreSearchTermsDialog";
 import { ErrorNotice } from "../components/Status";
-import { savePendingDistrictIds } from "../lib/pendingDistricts";
+import { clearPendingDistrictIds, savePendingDistrictIds } from "../lib/pendingDistricts";
 import { useMe } from "@voteapp/api-client";
 import { ADDRESS_FIELD_PRIVACY_NOTE, TERMS_VERSION } from "@voteapp/api-client";
 import { hasCurrentTermsAcceptance, rememberTermsAcceptance } from "../lib/termsAcceptance";
@@ -24,6 +24,10 @@ export function HomePage() {
   // clears them, so stale coordinates can never ride along with a different
   // address string.
   const [addressLocation, setAddressLocation] = useState<AddressLocation | null>(null);
+  // True right after the autocomplete selection was an area (city,
+  // neighborhood, road) — no supported flow, so the form shows guidance
+  // instead of letting the submit die in the geocoder. Any edit clears it.
+  const [regionSelected, setRegionSelected] = useState(false);
   const [termsOpen, setTermsOpen] = useState(false);
   // The dialog's checkbox. Reset to false every time the dialog opens, never
   // seeded from storage: remembering may decide whether the dialog opens, and
@@ -52,6 +56,10 @@ export function HomePage() {
         body: {
           address: input.address,
           accepted_terms_version: TERMS_VERSION,
+          // Opt in to the ZIP partial-ballot path: this page renders the
+          // partial banner and scope-aware errors, so a bare ZIP gets a
+          // partial ballot here instead of a dead-end 422.
+          allow_partial: true,
           ...(input.coordinates ? { coordinates: input.coordinates } : {}),
         },
       }),
@@ -61,13 +69,28 @@ export function HomePage() {
       // when identity is KNOWN to be logged out or unverified — while /api/me
       // is still loading (me === undefined) a verified user's one-off search
       // must not re-arm the handoff.
-      if (me === null || me?.email_verified === false) {
-        savePendingDistrictIds(resolution.districts.map((district) => district.id));
+      if (resolution.scope === "exact") {
+        if (me === null || me?.email_verified === false) {
+          savePendingDistrictIds(resolution.districts.map((district) => district.id));
+        }
+      } else {
+        // A partial (ZIP) result must not become a signed-up account's
+        // saved ballot — the account would be permanently incomplete with
+        // nothing recording why. Clearing instead of skipping keeps "last
+        // search wins": a stale exact set from an earlier search must not
+        // initialize an account the visitor thinks reflects this one.
+        // Unconditional, unlike the save: the identity guard exists so a
+        // verified user's one-off search cannot ARM the handoff — clearing
+        // is harmless in every identity state, including still-loading.
+        clearPendingDistrictIds();
       }
       // Straight to the elections — the districts list is a detour nobody asked for.
       // The matched address rides along in router state (never the URL — it is
       // personal data) so the ballot page can show which address was geocoded.
-      navigate(`/ballot?d=${resolution.districts.map((district) => district.id).join(",")}`, {
+      // partial=1 IS in the URL (it carries no location) so a refresh or a
+      // shared link still labels the ballot as partial.
+      const query = `d=${resolution.districts.map((district) => district.id).join(",")}`;
+      navigate(`/ballot?${query}${resolution.scope === "zip" ? "&partial=1" : ""}`, {
         state: {
           matchedAddress: resolution.matched_address,
           addressMatchCount: resolution.address_match_count,
@@ -82,7 +105,10 @@ export function HomePage() {
     },
   });
 
-  const canSearch = address.trim().length > 0 && !resolve.isPending;
+  // A region selection can only fail (no coordinates, and the string is an
+  // area the geocoder can't match), so Search disables while the guidance
+  // below the field explains what to do; any edit re-enables.
+  const canSearch = address.trim().length > 0 && !resolve.isPending && !regionSelected;
 
   function onSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -153,18 +179,29 @@ export function HomePage() {
                 address" — those users already know. "Home address" was
                 rejected as a demand for where you sleep, "Voting address"
                 read as the place you go to vote. */}
+            {/* The headline above already promises "which elections you can
+                vote in"; the label's job is the complete-vs-partial trade —
+                the answer to the visitor who won't type where they live. */}
             <label htmlFor="address" className="block text-sm font-medium text-ink">
-              Enter address to see which elections you can vote in:
+              Enter your full address for complete results — or just your ZIP code for partial
+              results:
             </label>
             <AddressAutocomplete
               inputId="address"
               value={address}
-              onChange={(value, location) => {
+              onChange={(value, location, granularity) => {
                 setAddress(value);
                 setAddressLocation(location ?? null);
+                setRegionSelected(granularity === "region");
               }}
               placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
             />
+            {regionSelected ? (
+              <p role="alert" className="mt-1 text-xs text-rausch-dark">
+                That selection is an area, not an address. Pick a street address from the
+                suggestions — or enter just a ZIP code for partial results.
+              </p>
+            ) : null}
             {/* Notice belongs here, not only in the dialog: the autocomplete
                 forwards what is typed after three characters, so collection
                 starts while the visitor types and long before Search. */}

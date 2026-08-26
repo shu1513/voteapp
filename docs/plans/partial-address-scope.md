@@ -1,8 +1,9 @@
 # Partial-address scope (ZIP ballot)
 
-Status: planned 2026-08-25, revised same day after review (crosswalk stats
-verified against the actual Census file; centroid bug confirmed in code). No
-PRs yet. v1 is **ZIP only** — city input is deferred (see "Later research").
+Status: PR 1 (backend + data, #858) MERGED 2026-08-25; PR 2 (web + mobile)
+implemented. v1 is **ZIP only** — city input is deferred (see "Later
+research"). Crosswalk stats verified against the actual Census file; the
+retrieve centroid bug was confirmed in code and fixed in PR 1.
 
 ## Problem
 

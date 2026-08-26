@@ -36,6 +36,11 @@ export function FullAddressExplanation({ visible, onClose }: FullAddressExplanat
               ZIP can vote in different races. Only a full street address can match you to the
               exact districts that apply to you.
             </Text>
+            <Text className="mt-3 text-sm text-ink-soft">
+              Prefer not to share your address? Enter just your ZIP code instead: you’ll get a
+              partial ballot with only the races every address in that ZIP shares, and you can add
+              your street address any time for the rest.
+            </Text>
             <Text className="mt-3 text-sm text-ink-soft">{ADDRESS_FIELD_PRIVACY_NOTE}</Text>
             <Text
               className="mt-3 text-sm text-ink underline"

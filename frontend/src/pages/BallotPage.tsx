@@ -94,6 +94,10 @@ export function BallotPage() {
       ? routerState.addressMatchCount
       : null;
   const [searchParams, setSearchParams] = useSearchParams();
+  // Set by ZIP searches; deliberately a URL param, not router state — it
+  // holds no location, and the partial label must survive refresh and
+  // shared links.
+  const isPartialBallot = searchParams.get("partial") === "1";
   const districtIds = (searchParams.get("d") ?? "")
     .split(",")
     .map((id) => id.trim())
@@ -271,6 +275,27 @@ export function BallotPage() {
           address) and only appears when the geocoder was ambiguous — the one
           case where the ballot has a real chance of being for the wrong
           address. */}
+      {/* ZIP searches land here with partial=1 in the URL (the flag carries
+          no location, so unlike the matched address it survives refreshes
+          and shared links). The ZIP itself rides router state as the
+          matched address; a bare link renders the generic wording. */}
+      {isPartialBallot ? (
+        <p role="alert" className="mt-2 rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink">
+          This is a partial ballot{matchedAddress ? (
+            <>
+              {" "}for ZIP code <span className="font-medium">{matchedAddress}</span>
+            </>
+          ) : (
+            " from a ZIP code search"
+          )}
+          : it lists only the races every address in the ZIP shares.{" "}
+          <Link to="/?new=1" className="underline hover:text-rausch">
+            Enter your street address
+          </Link>{" "}
+          to check for additional congressional, legislative, local, and school races.
+        </p>
+      ) : null}
+
       {matchedAddress && ambiguousMatchCount ? (
         <p role="alert" className="mt-2 rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink">
           Your search matched {ambiguousMatchCount} possible addresses, and this ballot is for{" "}

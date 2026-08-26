@@ -32,6 +32,47 @@ describe("BallotPage", () => {
     expect(screen.getByRole("link", { name: "Start with your address" })).toHaveAttribute("href", "/");
   });
 
+  it("labels a partial ballot, naming the ZIP from router state", async () => {
+    stubApiRoutes({
+      ...ANONYMOUS,
+      "/api/ballot": { body: ballotSummary([electionSummary()]) },
+    });
+    renderBallot({
+      pathname: "/ballot",
+      search: "?d=d-1&partial=1",
+      state: { matchedAddress: "78701", addressMatchCount: 1 },
+    });
+
+    const banner = await screen.findByRole("alert");
+    expect(banner).toHaveTextContent("This is a partial ballot for ZIP code 78701");
+    expect(banner).toHaveTextContent("only the races every address in the ZIP shares");
+    expect(screen.getByRole("link", { name: "Enter your street address" })).toHaveAttribute("href", "/?new=1");
+  });
+
+  it("labels a partial ballot generically on a bare link with no router state", async () => {
+    // partial=1 lives in the URL precisely so a refresh or shared link keeps
+    // the label; the ZIP itself (router state) is gone then.
+    stubApiRoutes({
+      ...ANONYMOUS,
+      "/api/ballot": { body: ballotSummary([electionSummary()]) },
+    });
+    renderBallot("/ballot?d=d-1&partial=1");
+
+    const banner = await screen.findByRole("alert");
+    expect(banner).toHaveTextContent("This is a partial ballot from a ZIP code search");
+  });
+
+  it("shows no partial label without the flag", async () => {
+    stubApiRoutes({
+      ...ANONYMOUS,
+      "/api/ballot": { body: ballotSummary([electionSummary()]) },
+    });
+    renderBallot("/ballot?d=d-1");
+
+    expect(await screen.findByText("Governor")).toBeInTheDocument();
+    expect(screen.queryByText(/partial ballot/)).not.toBeInTheDocument();
+  });
+
   it("shows the service-trouble copy on a 500", async () => {
     stubApiRoutes({
       ...ANONYMOUS,

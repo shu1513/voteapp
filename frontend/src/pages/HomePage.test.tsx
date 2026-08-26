@@ -10,7 +10,7 @@ import {
 } from "@voteapp/api-client";
 import { HomePage } from "./HomePage";
 
-const ADDRESS_LABEL = "Enter address to see which elections you can vote in:";
+const ADDRESS_LABEL = "Enter your full address for complete results — or just your ZIP code for partial results:";
 const STORAGE_KEY = "voteapp_terms_acceptance";
 const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
 
@@ -23,21 +23,24 @@ function renderHome() {
     { path: "/terms", element: <p /> },
     { path: "/privacy", element: <p /> },
   ]);
-  return render(
+  const rendered = render(
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
     </QueryClientProvider>
   );
+  return { ...rendered, router };
 }
 
-function stubResolveFetch() {
+function stubResolveFetch(
+  resolution: Record<string, unknown> = { matched_address: "123 Main St", address_match_count: 1, districts: [], scope: "exact" }
+) {
   const fetchMock = vi.fn().mockImplementation(async (path: string) => ({
     ok: true,
     status: 200,
     headers: new Headers(),
     json: async () =>
       path === "/api/address/resolve"
-        ? { matched_address: "123 Main St", address_match_count: 1, districts: [] }
+        ? resolution
         : // The autocomplete suggest call races these tests on a real 275ms
           // debounce timer; it must get a well-formed (empty) response, not
           // the fallthrough body, whenever it happens to fire in time.
@@ -55,6 +58,7 @@ async function typeAddress(user: ReturnType<typeof userEvent.setup>) {
 
 beforeEach(() => {
   localStorage.clear();
+  sessionStorage.clear();
 });
 
 afterEach(() => {
@@ -206,6 +210,7 @@ describe("HomePage pre-search clickwrap", () => {
       expect(JSON.parse((resolveCall as [string, { body: string }])[1].body)).toEqual({
         address: "123 Main St, Austin, TX",
         accepted_terms_version: TERMS_VERSION,
+        allow_partial: true,
       });
     });
   });
@@ -272,5 +277,127 @@ describe("HomePage pre-search clickwrap", () => {
     // Fails closed: showing the terms once more costs a click, skipping them
     // wrongly costs the agreement.
     expect(screen.getByRole("dialog")).toBeInTheDocument();
+  });
+});
+
+describe("HomePage ZIP partial flow", () => {
+  const PENDING_KEY = "voteapp_pending_district_ids";
+
+  async function searchFor(user: ReturnType<typeof userEvent.setup>, input: string) {
+    await user.type(screen.getByLabelText(ADDRESS_LABEL), input);
+    await user.click(screen.getByRole("button", { name: "Search" }));
+    await user.click(screen.getByRole("checkbox"));
+    await user.click(screen.getByRole("button", { name: "Agree and search" }));
+  }
+
+  it("routes a ZIP result to the ballot with partial=1 and clears any pending handoff", async () => {
+    // A stale exact search must not initialize a later signup: last search wins.
+    sessionStorage.setItem(PENDING_KEY, JSON.stringify(["stale-district"]));
+    stubResolveFetch({
+      matched_address: "78701",
+      address_match_count: 1,
+      districts: [{ id: "d-tx" }, { id: "d-travis" }],
+      scope: "zip",
+    });
+    const user = userEvent.setup();
+    const { router } = renderHome();
+
+    await searchFor(user, "78701");
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe("/ballot");
+    });
+    expect(router.state.location.search).toBe("?d=d-tx,d-travis&partial=1");
+    expect(sessionStorage.getItem(PENDING_KEY)).toBeNull();
+  });
+
+  it("clears the pending handoff on a ZIP result even while identity is still loading", async () => {
+    // The save is identity-gated (a verified user's one-off search must not
+    // ARM the handoff); the clear is not — a stale exact set must never
+    // outlive a newer partial search just because /api/me was slow.
+    sessionStorage.setItem(PENDING_KEY, JSON.stringify(["stale-district"]));
+    const fetchMock = vi.fn().mockImplementation(async (path: string) => {
+      if (path === "/api/me") {
+        return new Promise(() => {}); // identity never resolves
+      }
+      return {
+        ok: true,
+        status: 200,
+        headers: new Headers(),
+        json: async () =>
+          path === "/api/address/resolve"
+            ? { matched_address: "78701", address_match_count: 1, districts: [{ id: "d-tx" }], scope: "zip" }
+            : { suggestions: [] },
+      };
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const user = userEvent.setup();
+    const { router } = renderHome();
+
+    await searchFor(user, "78701");
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe("/ballot");
+    });
+    expect(sessionStorage.getItem(PENDING_KEY)).toBeNull();
+  });
+
+  it("disables Search after an area selection and re-enables on the next edit", async () => {
+    const suggestion = {
+      place_id: "place-austin",
+      description: "Austin, TX, USA",
+      main_text: "Austin",
+      secondary_text: "TX, USA",
+    };
+    const fetchMock = vi.fn().mockImplementation(async (path: string) => ({
+      ok: true,
+      status: 200,
+      headers: new Headers(),
+      json: async () =>
+        path === "/api/address/autocomplete"
+          ? { suggestions: [suggestion] }
+          : path === "/api/address/autocomplete/retrieve"
+            ? { address: "Austin, TX, USA", location: null, granularity: "region", postal_code: null }
+            : { user: null },
+    }));
+    vi.stubGlobal("fetch", fetchMock);
+    const user = userEvent.setup();
+    renderHome();
+
+    await user.type(screen.getByLabelText(ADDRESS_LABEL), "Austin");
+    await user.click(await screen.findByRole("option", { name: /Austin/ }));
+
+    // The selection is an area with no supported flow: guidance appears and
+    // Search stays off — a submit could only die in the geocoder. Escape
+    // first: Headless UI keeps the combobox marked open after our custom
+    // option click (pre-existing quirk of the `static` options pattern) and
+    // aria-hides the rest of the form while it is.
+    expect(await screen.findByText(/That selection is an area, not an address/)).toBeInTheDocument();
+    await user.keyboard("{Escape}");
+    expect(screen.getByRole("button", { name: "Search" })).toBeDisabled();
+
+    await user.type(screen.getByLabelText(ADDRESS_LABEL), " 78701");
+    expect(screen.queryByText(/That selection is an area, not an address/)).not.toBeInTheDocument();
+    await user.keyboard("{Escape}");
+    expect(screen.getByRole("button", { name: "Search" })).toBeEnabled();
+  });
+
+  it("routes an exact result without partial=1 and saves the pending handoff", async () => {
+    stubResolveFetch({
+      matched_address: "123 Main St",
+      address_match_count: 1,
+      districts: [{ id: "d-1" }],
+      scope: "exact",
+    });
+    const user = userEvent.setup();
+    const { router } = renderHome();
+
+    await searchFor(user, "123 Main St, Austin, TX");
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe("/ballot");
+    });
+    expect(router.state.location.search).toBe("?d=d-1");
+    expect(JSON.parse(sessionStorage.getItem(PENDING_KEY) ?? "null")).toEqual(["d-1"]);
   });
 });

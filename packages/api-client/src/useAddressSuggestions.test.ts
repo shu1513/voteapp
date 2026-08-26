@@ -203,13 +203,16 @@ describe("useAddressSuggestions", () => {
       address: "200 N Spring St, Los Angeles, CA 90012, USA",
       location: { lat: 34.0537, lng: -118.2427 },
     });
-    let retrieved: { address: string; location: { lat: number; lng: number } | null } | null = null;
+    let retrieved: Awaited<ReturnType<typeof result.current.selectSuggestion>> = null;
     await act(async () => {
       retrieved = await result.current.selectSuggestion(SUGGESTION);
     });
+    // No granularity in the response (stale API) reads as "address".
     expect(retrieved).toEqual({
       address: "200 N Spring St, Los Angeles, CA 90012, USA",
       location: { lat: 34.0537, lng: -118.2427 },
+      granularity: "address",
+      postal_code: null,
     });
     const retrieveCall = apiRequestMock.mock.calls[1];
     expect(retrieveCall[0]).toBe("/api/address/autocomplete/retrieve");
@@ -226,6 +229,38 @@ describe("useAddressSuggestions", () => {
     const nextToken = (apiRequestMock.mock.calls[2][1] as { body: { session_token: string } }).body
       .session_token;
     expect(nextToken).not.toBe(suggestToken);
+  });
+
+  it("passes granularity through and strips coordinates from coarse selections", async () => {
+    for (const [response, expected] of [
+      [
+        { address: "Austin, TX 78701, USA", location: null, granularity: "zip", postal_code: "78701" },
+        { address: "Austin, TX 78701, USA", location: null, granularity: "zip", postal_code: "78701" },
+      ],
+      [
+        // Defensive belt-and-braces: even if a server ever leaked a coarse
+        // location, the hook must drop it.
+        { address: "Austin, TX, USA", location: { lat: 30.27, lng: -97.74 }, granularity: "region" },
+        { address: "Austin, TX, USA", location: null, granularity: "region", postal_code: null },
+      ],
+    ] as const) {
+      apiRequestMock.mockResolvedValueOnce({ suggestions: [SUGGESTION] });
+      const { result } = renderHook(() => useAddressSuggestions());
+      act(() => {
+        result.current.onInputChanged("Austin");
+      });
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(SUGGEST_DEBOUNCE_MS + 10);
+      });
+
+      apiRequestMock.mockResolvedValueOnce(response);
+      let retrieved: Awaited<ReturnType<typeof result.current.selectSuggestion>> = null;
+      await act(async () => {
+        retrieved = await result.current.selectSuggestion(SUGGESTION);
+      });
+      expect(retrieved).toEqual(expected);
+      apiRequestMock.mockClear();
+    }
   });
 
   it("clears the token before the retrieve settles: typing mid-retrieve gets a fresh session", async () => {
