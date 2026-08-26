@@ -79,14 +79,16 @@ advertise coarse input before fixing classification.
 
 Fix in the retrieve step (server-side — never trust the client to classify):
 
-- Add `types,postalAddress` to `RETRIEVE_FIELD_MASK` (pass-through only;
-  Google ToS forbids persisting).
+- Add `types,addressComponents` to `RETRIEVE_FIELD_MASK` (pass-through only;
+  Google ToS forbids persisting). Not `postalAddress`: Google returns an empty
+  `postalAddress` for postal_code places (verified live 2026-08-25), so the
+  ZIP must come from the `postal_code` address component.
 - Classify server-side: if `types` intersects a region set (`route`,
   `postal_code`, `postal_code_prefix`, `locality`, `sublocality*`,
   `neighborhood`, `administrative_area_level_*`, `postal_town`, `country`),
   the selection is coarse — return `location: null` plus
   `granularity: "zip" | "region"` and, for `postal_code`, the 5-digit
-  `postal_code` from `postalAddress`. Everything else keeps today's behavior
+  `postal_code` from the `postal_code` address component. Everything else keeps today's behavior
   (`granularity: "address"`) — except that a response with missing/empty
   `types` fails closed: address granularity, but no location, since the type
   list is the proof the coordinates are a real point.

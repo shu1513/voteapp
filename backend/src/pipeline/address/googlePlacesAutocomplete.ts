@@ -22,7 +22,11 @@ export const GOOGLE_PLACE_ID_PATTERN = /^[A-Za-z0-9_-]+$/;
 
 const SUGGEST_FIELD_MASK =
   "suggestions.placePrediction.placeId,suggestions.placePrediction.text,suggestions.placePrediction.structuredFormat";
-const RETRIEVE_FIELD_MASK = "formattedAddress,location,types,postalAddress";
+// addressComponents, not postalAddress: Google returns an empty postalAddress
+// for postal_code places (verified live 2026-08-25 — place "Irwindale, CA
+// 91706" came back with types=["postal_code"] and no postalAddress at all),
+// while addressComponents always carries the postal_code component.
+const RETRIEVE_FIELD_MASK = "formattedAddress,location,types,addressComponents";
 
 // Google types that mark a suggestion as an area, not a deliverable address.
 // Selecting one must NOT hand its centroid to the resolver as an exact point:
@@ -283,14 +287,25 @@ export function parseGooglePlacesRetrievePayload(payload: unknown): RetrievedSug
   let granularity: RetrievedSuggestedAddress["granularity"] = isRegion ? "region" : "address";
   let postalCode: string | null = null;
   if (isRegion && types.includes("postal_code")) {
-    // postalAddress.postalCode may carry ZIP+4; the partial-ballot flow works
-    // on the five-digit ZCTA. A missing/odd value downgrades to "region"
-    // rather than inventing a ZIP.
-    const rawPostalCode = isRecord(payload.postalAddress) ? payload.postalAddress.postalCode : undefined;
-    const match = typeof rawPostalCode === "string" ? /^(\d{5})(?:-\d{4})?$/.exec(rawPostalCode.trim()) : null;
-    if (match) {
-      granularity = "zip";
-      postalCode = match[1];
+    // The ZIP lives in the postal_code address component (its value may carry
+    // ZIP+4; the partial-ballot flow works on the five-digit ZCTA). A
+    // missing/odd value downgrades to "region" rather than inventing a ZIP.
+    const components = Array.isArray(payload.addressComponents) ? payload.addressComponents : [];
+    for (const component of components) {
+      if (
+        !isRecord(component) ||
+        !Array.isArray(component.types) ||
+        !component.types.includes("postal_code") ||
+        typeof component.longText !== "string"
+      ) {
+        continue;
+      }
+      const match = /^(\d{5})(?:-\d{4})?$/.exec(component.longText.trim());
+      if (match) {
+        granularity = "zip";
+        postalCode = match[1];
+        break;
+      }
     }
   }
 

@@ -206,7 +206,7 @@ describe("googlePlacesAutocomplete retrieve", () => {
     expect(init.method).toBe("GET");
     const headers = init.headers as Record<string, string>;
     expect(headers["x-goog-api-key"]).toBe("test-api-key");
-    expect(headers["x-goog-fieldmask"]).toBe("formattedAddress,location,types,postalAddress");
+    expect(headers["x-goog-fieldmask"]).toBe("formattedAddress,location,types,addressComponents");
   });
 
   it("rejects a response without formattedAddress as bad_response", () => {
@@ -251,11 +251,18 @@ describe("googlePlacesAutocomplete retrieve", () => {
   });
 
   it("classifies a postal_code selection as zip, with the five-digit ZIP and no location", () => {
+    // Real payload shape (live check 2026-08-25): Google returns an EMPTY
+    // postalAddress for postal_code places — the ZIP lives only in the
+    // postal_code address component, alongside locality/state components.
     const result = parseGooglePlacesRetrievePayload({
       formattedAddress: "Austin, TX 78701, USA",
       location: { latitude: 30.27, longitude: -97.74 },
       types: ["postal_code"],
-      postalAddress: { postalCode: "78701" },
+      addressComponents: [
+        { longText: "78701", shortText: "78701", types: ["postal_code"] },
+        { longText: "Austin", shortText: "Austin", types: ["locality", "political"] },
+        { longText: "Texas", shortText: "TX", types: ["administrative_area_level_1", "political"] },
+      ],
     });
     // The centroid must not leak: an area's point would resolve to a full
     // exact ballot for whatever districts the point happens to sit in.
@@ -267,23 +274,31 @@ describe("googlePlacesAutocomplete retrieve", () => {
     });
   });
 
-  it("trims a ZIP+4 postalCode to five digits", () => {
+  it("trims a ZIP+4 postal_code component to five digits", () => {
     const result = parseGooglePlacesRetrievePayload({
       formattedAddress: "Austin, TX 78701, USA",
       types: ["postal_code"],
-      postalAddress: { postalCode: "78701-2401" },
+      addressComponents: [{ longText: "78701-2401", shortText: "78701-2401", types: ["postal_code"] }],
     });
     expect(result.granularity).toBe("zip");
     expect(result.postal_code).toBe("78701");
   });
 
-  it("downgrades a postal_code selection without a usable postalCode to region", () => {
-    for (const postalAddress of [undefined, {}, { postalCode: "ABC" }, { postalCode: "7870" }]) {
+  it("downgrades a postal_code selection without a usable postal_code component to region", () => {
+    for (const addressComponents of [
+      undefined,
+      [],
+      [{ longText: "Austin", shortText: "Austin", types: ["locality", "political"] }],
+      [{ longText: "ABC", shortText: "ABC", types: ["postal_code"] }],
+      [{ longText: "7870", shortText: "7870", types: ["postal_code"] }],
+      [{ shortText: "78701", types: ["postal_code"] }],
+      "not-an-array",
+    ]) {
       const result = parseGooglePlacesRetrievePayload({
         formattedAddress: "Austin, TX 78701, USA",
         location: { latitude: 30.27, longitude: -97.74 },
         types: ["postal_code"],
-        ...(postalAddress !== undefined ? { postalAddress } : {}),
+        ...(addressComponents !== undefined ? { addressComponents } : {}),
       });
       expect(result.granularity).toBe("region");
       expect(result.postal_code).toBeNull();
