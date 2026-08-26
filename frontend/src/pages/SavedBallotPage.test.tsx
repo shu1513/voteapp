@@ -228,7 +228,7 @@ describe("SavedBallotPage", () => {
       expect(await screen.findByRole("checkbox", { name: "Followed candidates first" })).toBeInTheDocument();
       expect(screen.queryByRole("checkbox", { name: "Affects my issues" })).not.toBeInTheDocument();
       expect(screen.queryByRole("checkbox", { name: "High or above" })).not.toBeInTheDocument();
-      expect(screen.queryByRole("checkbox", { name: "Average or above" })).not.toBeInTheDocument();
+      expect(screen.queryByRole("checkbox", { name: "Normal or above" })).not.toBeInTheDocument();
     });
 
     it("filters to matching races with a hidden count, and Show all restores", async () => {

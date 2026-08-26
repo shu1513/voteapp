@@ -227,17 +227,17 @@ describe("BallotPage", () => {
       ]),
     };
     const LOW_POWER = { ...VOTE_POWER, label: "low" as const };
-    const AVERAGE_POWER = { ...VOTE_POWER, label: "medium" as const };
+    const NORMAL_POWER = { ...VOTE_POWER, label: "medium" as const };
     // 8 elections (past the >7 threshold) splitting on both impact
     // thresholds: the fixture default label is "high", so Governor and
-    // State Senate sit at the top tier, School Board at Average, and the
+    // State Senate sit at the top tier, School Board at Normal, and the
     // five council seats below. Council seat 1 also carries the saved
     // area, for the combined-filters case.
     const LONG_BALLOT = {
       body: ballotSummary([
         electionSummary({ research_areas: [HOUSING] }),
         electionSummary({ id: "e-2", official_ballot_title: "State Senate" }),
-        electionSummary({ id: "e-3", official_ballot_title: "School Board", vote_power: AVERAGE_POWER }),
+        electionSummary({ id: "e-3", official_ballot_title: "School Board", vote_power: NORMAL_POWER }),
         ...Array.from({ length: 5 }, (_, seat) =>
           electionSummary({
             id: `lo-${seat}`,
@@ -340,7 +340,7 @@ describe("BallotPage", () => {
       expect(router.state.location.search).not.toContain("impact=high");
     });
 
-    it("swaps to the Average-or-above threshold instead of combining", async () => {
+    it("swaps to the Normal-or-above threshold instead of combining", async () => {
       stubApiRoutes({ ...ANONYMOUS, "/api/ballot": LONG_BALLOT });
       const user = userEvent.setup();
       const { router } = renderBallot("/ballot?d=d-1");
@@ -351,22 +351,22 @@ describe("BallotPage", () => {
 
       // The thresholds nest, so checking the other one REPLACES the first
       // rather than combining with it.
-      await user.click(screen.getByRole("checkbox", { name: "Average or above" }));
+      await user.click(screen.getByRole("checkbox", { name: "Normal or above" }));
       expect(screen.getByRole("checkbox", { name: "High or above" })).not.toBeChecked();
-      expect(screen.getByRole("checkbox", { name: "Average or above" })).toBeChecked();
+      expect(screen.getByRole("checkbox", { name: "Normal or above" })).toBeChecked();
       expect(screen.getByText("School Board")).toBeInTheDocument();
       expect(screen.queryByText("City Council Seat 1")).not.toBeInTheDocument();
       expect(screen.getByText(/5 elections hidden/)).toBeInTheDocument();
       expect(router.state.location.search).toContain("impact=medium");
 
       // Unchecking the engaged threshold means "any impact".
-      await user.click(screen.getByRole("checkbox", { name: "Average or above" }));
+      await user.click(screen.getByRole("checkbox", { name: "Normal or above" }));
       expect(screen.getByText("City Council Seat 1")).toBeInTheDocument();
       expect(router.state.location.search).not.toContain("impact=");
     });
 
-    it("withholds the Average option when the ballot has no Average races", async () => {
-      // High and Average-or-above would keep the same set: offering both
+    it("withholds the Normal option when the ballot has no Normal races", async () => {
+      // High and Normal-or-above would keep the same set: offering both
       // would be two checkboxes doing the same thing.
       stubApiRoutes({
         ...ANONYMOUS,
@@ -389,7 +389,7 @@ describe("BallotPage", () => {
 
       await user.click(await screen.findByRole("button", { name: "Filters" }));
       expect(screen.getByRole("checkbox", { name: "High or above" })).toBeInTheDocument();
-      expect(screen.queryByRole("checkbox", { name: "Average or above" })).not.toBeInTheDocument();
+      expect(screen.queryByRole("checkbox", { name: "Normal or above" })).not.toBeInTheDocument();
     });
 
     it("applies a ?impact=high URL even on a short ballot", async () => {

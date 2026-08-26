@@ -105,8 +105,8 @@ describe("formatVotePowerLabel", () => {
     expect(formatVotePowerLabel("very_low")).toBe("Very low");
     // "Low" reads as a verdict on the voter; the chip says "Below average".
     expect(formatVotePowerLabel("low")).toBe("Below average");
-    // "Medium" is a size word; the scale speaks in average-relative terms.
-    expect(formatVotePowerLabel("medium")).toBe("Average");
+    // "Medium" is a size word; it ships as "Normal".
+    expect(formatVotePowerLabel("medium")).toBe("Normal");
     expect(formatVotePowerLabel("unknown")).toBe("Unknown");
     expect(formatVotePowerLabel("super_high")).toBe("super_high");
   });

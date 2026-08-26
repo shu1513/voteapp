@@ -20,10 +20,10 @@ const CHIP_TEXT_OFF = "text-xs text-ink";
  * choices survive navigating into an election and back, matching the web's
  * URL params). Renders nothing when it has nothing to offer.
  *
- * The impact checkboxes are nested thresholds ("High or above" ⊂ "Average
+ * The impact checkboxes are nested thresholds ("High or above" ⊂ "Normal
  * or above"), so exactly one can be engaged: checking one swaps the other
  * off, and unchecking means any impact. Labels reuse the card vocabulary
- * from formatVotePowerLabel — "Average", never "medium".
+ * from formatVotePowerLabel — "Normal", never "medium".
  */
 export function BallotFiltersControl({
   showIssues,
@@ -103,7 +103,7 @@ export function BallotFiltersControl({
                   ) : null}
                   {showImpactMedium ? (
                     <Checkbox
-                      label="Average or above"
+                      label="Normal or above"
                       checked={impactLevel === "medium"}
                       onChange={(checked) => onImpactChange(checked ? "medium" : null)}
                     />
