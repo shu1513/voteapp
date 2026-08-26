@@ -60,7 +60,7 @@ export const VOTE_POWER_WITH_EXPLANATION: VotePower = {
     parts: [
       {
         title: "Representation",
-        grade: "Average",
+        grade: "Normal",
         stat: "50 out of 100",
         detail: "This district is mid-sized for its type, so each vote carries average weight.",
         formula: "score = 100 × ln(9,808,667 ÷ 104,650) ÷ ln(9,808,667 ÷ 1,204) = 50",
@@ -73,7 +73,7 @@ export const VOTE_POWER_WITH_EXPLANATION: VotePower = {
         formula: null,
       },
     ],
-    result: "Average representation + high decisiveness → My vote power: High.",
+    result: "Normal representation + high decisiveness → My vote power: High.",
     caveat: "Some data is missing.",
   },
 };

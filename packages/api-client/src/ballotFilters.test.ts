@@ -92,13 +92,13 @@ describe("deriveBallotFilters — affects my issues", () => {
 describe("deriveBallotFilters — vote power thresholds", () => {
   const VERY_HIGH = election("vh-1", [], "very_high");
   const HIGH = election("h-1", [], "high");
-  const AVERAGE = election("m-1", [], "medium");
+  const NORMAL = election("m-1", [], "medium");
   // A long ballot (> LONG_BALLOT_THRESHOLD) with all three tiers plus an
   // unknown, splitting on both thresholds.
   const longMixed = [
     VERY_HIGH,
     HIGH,
-    AVERAGE,
+    NORMAL,
     election("m-2", [], "medium"),
     election("l-1", [], "low"),
     election("l-2", [], "very_low"),
@@ -116,7 +116,7 @@ describe("deriveBallotFilters — vote power thresholds", () => {
     expect(view.activeFilterCount).toBe(1);
   });
 
-  it("medium threshold keeps Average and above", () => {
+  it("medium threshold keeps Normal and above", () => {
     const view = deriveBallotFilters({ ...OFF, elections: longMixed, impactRequested: "medium" });
     expect(view.impactLevel).toBe("medium");
     expect(view.visibleElections.map((e) => e.id)).toEqual(["vh-1", "h-1", "m-1", "m-2"]);
@@ -145,31 +145,31 @@ describe("deriveBallotFilters — vote power thresholds", () => {
     const allHighView = deriveBallotFilters({ ...OFF, elections: allHigh });
     expect(allHighView.showImpactHigh).toBe(false);
     expect(allHighView.showImpactMedium).toBe(false);
-    // Long but none at Average or above: both would empty the ballot.
+    // Long but none at Normal or above: both would empty the ballot.
     const noneHigh = Array.from({ length: 8 }, (_, i) => election(`n-${i}`, [], "low"));
     const noneView = deriveBallotFilters({ ...OFF, elections: noneHigh });
     expect(noneView.showImpactHigh).toBe(false);
     expect(noneView.showImpactMedium).toBe(false);
     // No high races at all: only the medium option is offered.
-    const mediumOnly = [AVERAGE, ...Array.from({ length: 7 }, (_, i) => election(`lo-${i}`, [], "low"))];
+    const mediumOnly = [NORMAL, ...Array.from({ length: 7 }, (_, i) => election(`lo-${i}`, [], "low"))];
     const mediumView = deriveBallotFilters({ ...OFF, elections: mediumOnly });
     expect(mediumView.showImpactHigh).toBe(false);
     expect(mediumView.showImpactMedium).toBe(true);
   });
 
   it("withholds the medium option when it would duplicate the high option", () => {
-    // No Average races: medium and high thresholds keep the same set, so
+    // No Normal races: medium and high thresholds keep the same set, so
     // offering both would be two checkboxes doing the same thing.
-    const noAverage = [
+    const noNormal = [
       VERY_HIGH,
       HIGH,
       ...Array.from({ length: 6 }, (_, i) => election(`lo-${i}`, [], "low")),
     ];
-    const view = deriveBallotFilters({ ...OFF, elections: noAverage });
+    const view = deriveBallotFilters({ ...OFF, elections: noNormal });
     expect(view.showImpactHigh).toBe(true);
     expect(view.showImpactMedium).toBe(false);
     // Unless it is the engaged threshold — an active filter never vanishes.
-    const engaged = deriveBallotFilters({ ...OFF, elections: noAverage, impactRequested: "medium" });
+    const engaged = deriveBallotFilters({ ...OFF, elections: noNormal, impactRequested: "medium" });
     expect(engaged.showImpactMedium).toBe(true);
   });
 
@@ -179,7 +179,7 @@ describe("deriveBallotFilters — vote power thresholds", () => {
     // no saved areas).
     const view = deriveBallotFilters({
       ...OFF,
-      elections: [HIGH, AVERAGE],
+      elections: [HIGH, NORMAL],
       impactRequested: "high",
     });
     expect(view.impactLevel).toBe("high");

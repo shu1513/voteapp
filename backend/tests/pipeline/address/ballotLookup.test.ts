@@ -1693,7 +1693,7 @@ describe("lookupElectionDetailById", () => {
           parts: [
             {
               title: "Representation",
-              grade: "Average",
+              grade: "Normal",
               stat: "50 out of 100",
               detail:
                 "This district covers a large share of its state, so each vote carries about average weight — like a vote in a statewide race. About 104,650 people live here.",
@@ -1701,7 +1701,7 @@ describe("lookupElectionDetailById", () => {
               // the live recompute cannot reproduce it and the formula
               // degrades to the symbolic form.
               formula:
-                "score = 50 + 50 × ln(state population ÷ this district's population) ÷ ln(50,000), kept between 50 and 100 and rounded to 2 decimals = 50.42 (grades: 66+ high, 33+ average, otherwise low; a statewide race is the 50 baseline)",
+                "score = 50 + 50 × ln(state population ÷ this district's population) ÷ ln(50,000), kept between 50 and 100 and rounded to 2 decimals = 50.42 (grades: 66+ high, 33+ normal, otherwise low; a statewide race is the 50 baseline)",
             },
             {
               title: "Decisiveness",
@@ -1711,7 +1711,7 @@ describe("lookupElectionDetailById", () => {
               formula: null,
             },
           ],
-          result: "Average representation + an uncontested race → My vote power: Below average.",
+          result: "Normal representation + an uncontested race → My vote power: Below average.",
           caveat: null,
         },
       },

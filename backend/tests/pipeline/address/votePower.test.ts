@@ -370,7 +370,7 @@ describe("explainVotePower", () => {
         detail:
           "This district is a small slice of its state, so each vote here carries much more weight than a vote in a statewide race. About 736,081 people live here.",
         formula:
-          "score = 50 + 50 × ln(state population ÷ this district's) ÷ ln(50,000) = 50 + 50 × ln(39,287,377 ÷ 736,081) ÷ ln(50,000) = 68.38, measured against a statewide vote in CA (grades: 66+ high, 33+ average, otherwise low; a statewide race is the 50 baseline)",
+          "score = 50 + 50 × ln(state population ÷ this district's) ÷ ln(50,000) = 50 + 50 × ln(39,287,377 ÷ 736,081) ÷ ln(50,000) = 68.38, measured against a statewide vote in CA (grades: 66+ high, 33+ normal, otherwise low; a statewide race is the 50 baseline)",
       },
       {
         title: "Decisiveness",
@@ -378,7 +378,7 @@ describe("explainVotePower", () => {
         stat: "1.8-point margin in 2022",
         detail: "Past results here were very close — a small number of votes could decide the winner.",
         formula:
-          'margin = 1.8 points → "toss-up" → grade high (margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise one-sided; toss-up and very competitive grade high, competitive and somewhat competitive grade average, one-sided grades low)',
+          'margin = 1.8 points → "toss-up" → grade high (margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise one-sided; toss-up and very competitive grade high, competitive and somewhat competitive grade normal, one-sided grades low)',
       },
     ]);
     expect(explanation.result).toBe("High representation + high decisiveness → My vote power: Very high.");
@@ -395,7 +395,7 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts[0]?.formula).toBe(
-      "score = 50 + 50 × ln(state population ÷ this district's population) ÷ ln(50,000), kept between 50 and 100 and rounded to 2 decimals = 90 (grades: 66+ high, 33+ average, otherwise low; a statewide race is the 50 baseline)"
+      "score = 50 + 50 × ln(state population ÷ this district's population) ÷ ln(50,000), kept between 50 and 100 and rounded to 2 decimals = 90 (grades: 66+ high, 33+ normal, otherwise low; a statewide race is the 50 baseline)"
     );
   });
 
@@ -414,7 +414,7 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts[1]?.formula).toBe(
-      'margin = 0.625 × 9.2 (2024) + 0.375 × 14.8 (2022) = 11.3 points → "somewhat competitive" → grade average (margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise one-sided; toss-up and very competitive grade high, competitive and somewhat competitive grade average, one-sided grades low)'
+      'margin = 0.625 × 9.2 (2024) + 0.375 × 14.8 (2022) = 11.3 points → "somewhat competitive" → grade normal (margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise one-sided; toss-up and very competitive grade high, competitive and somewhat competitive grade normal, one-sided grades low)'
     );
   });
 
@@ -428,7 +428,7 @@ describe("explainVotePower", () => {
       competitivenessLabel: "safe",
     });
 
-    expect(explanation.parts[0]).toMatchObject({ grade: "Average", stat: "65 out of 100" });
+    expect(explanation.parts[0]).toMatchObject({ grade: "Normal", stat: "65 out of 100" });
     // Without a population the detail stays a single sentence.
     expect(explanation.parts[0]?.detail).toBe(
       "This district covers a large share of its state, so each vote carries about average weight — like a vote in a statewide race."
@@ -445,12 +445,12 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts[1]).toMatchObject({ grade: "Low", stat: "40-point margin" });
-    expect(explanation.result).toBe("Average representation + low decisiveness → My vote power: Below average.");
+    expect(explanation.result).toBe("Normal representation + low decisiveness → My vote power: Below average.");
   });
 
-  it('displays a medium rating as "Average" in the result line', () => {
+  it('displays a medium rating as "Normal" in the result line', () => {
     // medium representation + medium decisiveness → medium label; every
-    // user-visible "medium" — both axes and the rating — reads "average".
+    // user-visible "medium" — both axes and the rating — reads "normal".
     const explanation = explain({
       raceType: "office",
       candidateCount: 2,
@@ -459,7 +459,7 @@ describe("explainVotePower", () => {
       marginPercent: 8,
     });
 
-    expect(explanation.result).toBe("Average representation + average decisiveness → My vote power: Average.");
+    expect(explanation.result).toBe("Normal representation + normal decisiveness → My vote power: Normal.");
   });
 
   it("labels a multi-year margin as a weighted blend instead of pinning it on one year", () => {
@@ -534,7 +534,7 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts.map((part) => part.title)).toEqual(["Representation", "Decisiveness"]);
-    expect(explanation.result).toBe("Average representation + average decisiveness → My vote power: Average.");
+    expect(explanation.result).toBe("Normal representation + normal decisiveness → My vote power: Normal.");
   });
 
   it("rates a measure with unknown representation on decisiveness alone", () => {
@@ -623,7 +623,7 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts[0]?.formula).toBe(
-      "score = 50 + 50 × ln(state population ÷ this district's) ÷ ln(50,000) = 50 + 50 × ln(39,287,377 ÷ 39,287,377) ÷ ln(50,000) = 50, measured against a statewide vote in CA (grades: 66+ high, 33+ average, otherwise low; a statewide race is the 50 baseline)"
+      "score = 50 + 50 × ln(state population ÷ this district's) ÷ ln(50,000) = 50 + 50 × ln(39,287,377 ÷ 39,287,377) ÷ ln(50,000) = 50, measured against a statewide vote in CA (grades: 66+ high, 33+ normal, otherwise low; a statewide race is the 50 baseline)"
     );
   });
 
@@ -640,7 +640,7 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts[0]?.formula).toBe(
-      "score = 50 + 50 × ln(state population ÷ this district's) ÷ ln(50,000) = 50 + 50 × ln(39,287,377 ÷ 500) ÷ ln(50,000) = 102.09, capped at 100, measured against a statewide vote in CA (grades: 66+ high, 33+ average, otherwise low; a statewide race is the 50 baseline)"
+      "score = 50 + 50 × ln(state population ÷ this district's) ÷ ln(50,000) = 50 + 50 × ln(39,287,377 ÷ 500) ÷ ln(50,000) = 102.09, capped at 100, measured against a statewide vote in CA (grades: 66+ high, 33+ normal, otherwise low; a statewide race is the 50 baseline)"
     );
   });
 
@@ -657,7 +657,7 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts[0]?.formula).toBe(
-      "score = 50 + 50 × ln(state population ÷ this district's population) ÷ ln(50,000), kept between 50 and 100 and rounded to 2 decimals = 90 (grades: 66+ high, 33+ average, otherwise low; a statewide race is the 50 baseline)"
+      "score = 50 + 50 × ln(state population ÷ this district's population) ÷ ln(50,000), kept between 50 and 100 and rounded to 2 decimals = 90 (grades: 66+ high, 33+ normal, otherwise low; a statewide race is the 50 baseline)"
     );
   });
 });
@@ -668,7 +668,7 @@ describe("explainVotePower with a current race rating", () => {
   }
 
   const RATING_SCALE =
-    "(d: toss-up 0, tilt 2, lean(s) 3, likely 4, solid/safe 5; mean, first match: <1 toss-up, <2.5 very competitive, <3.5 competitive, <4.5 somewhat competitive, otherwise one-sided; toss-up and very competitive grade high, competitive and somewhat competitive grade average, one-sided grades low)";
+    "(d: toss-up 0, tilt 2, lean(s) 3, likely 4, solid/safe 5; mean, first match: <1 toss-up, <2.5 very competitive, <3.5 competitive, <4.5 somewhat competitive, otherwise one-sided; toss-up and very competitive grade high, competitive and somewhat competitive grade normal, one-sided grades low)";
 
   it("swaps the decisiveness part to analyst-rating copy with the real derivation", () => {
     const explanation = explain({
@@ -692,11 +692,11 @@ describe("explainVotePower with a current race rating", () => {
     );
     expect(explanation.parts[1]).toEqual({
       title: "Decisiveness",
-      grade: "Average",
+      grade: "Normal",
       stat: "rated competitive as of August 6, 2026",
       detail:
         "Election analysts currently rate this race somewhat close. Rating from Inside Elections and University of Virginia's Sabato's Crystal Ball.",
-      formula: `IE "Tilt Democrat" (d=2) + Sabato "Leans Democratic" (d=3) → mean 2.5 → "competitive" → grade average ${RATING_SCALE}`,
+      formula: `IE "Tilt Democrat" (d=2) + Sabato "Leans Democratic" (d=3) → mean 2.5 → "competitive" → grade normal ${RATING_SCALE}`,
     });
     // Two agreeing outlets = high rating confidence: no rating caveat.
     expect(explanation.caveat).toBeNull();

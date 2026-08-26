@@ -8,7 +8,7 @@ import type { BallotRaceType, VoteImpactThreshold } from "@voteapp/api-client";
  * ballot_measure` like `sort`, so the choices survive navigating into an
  * election and back; off/All by default (absent params). The values are
  * the wire words (`medium`, `ballot_measure` — matching the backend
- * labels) even though the UI says "Average" / "Ballot Measures".
+ * labels) even though the UI says "Normal" / "Ballot Measures".
  * Deliberately NOT account preferences — hiding races should never
  * silently persist across visits. Uses the functional updater so it
  * composes with other params (the anonymous page's `d` and `sort`)

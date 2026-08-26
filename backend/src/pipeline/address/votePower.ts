@@ -5,7 +5,7 @@ import { binMeanIntensity } from "../competitiveness/currentRaceRatingConsensus.
 // Fixed ruler for the state-anchored representation model: a district this
 // many times smaller than its state scores 100. Data-derived 2026-08-24
 // (docs/plans/vote-power-state-anchored-representation.md): the valid band is
-// ~3,600 (median US House district must stay "average") to ~105,000 (median
+// ~3,600 (median US House district must stay "normal") to ~105,000 (median
 // state senate district must reach "high"). A constant — not the smallest
 // district in the DB — so scores never drift when new districts are imported.
 export const REPRESENTATION_RULER_K = 50000;
@@ -366,11 +366,11 @@ function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-// Display word for an axis level or rating: "medium" ships as "average"
-// (the user-facing scale speaks in average-relative terms; see the
+// Display word for an axis level or rating: "medium" ships as "normal"
+// (the user-facing middle tier reads "normal"; see the
 // api-client's formatVotePowerLabel). Internal level keys stay "medium".
 function levelDisplayWord(level: string): string {
-  return level === "medium" ? "average" : level;
+  return level === "medium" ? "normal" : level;
 }
 
 // 12 -> "12", 3.25 -> "3.25", 2.04 -> "2.04": two decimals at most — the
@@ -385,10 +385,10 @@ function formatCount(value: number): string {
   return value.toLocaleString("en-US");
 }
 
-// First-match thresholds, not ranges: "33–65 average" would leave a 65.6
+// First-match thresholds, not ranges: "33–65 normal" would leave a 65.6
 // score in no bucket, and the grader itself works on >= comparisons.
 const REPRESENTATION_GRADE_SCALE =
-  "grades: 66+ high, 33+ average, otherwise low; a statewide race is the 50 baseline";
+  "grades: 66+ high, 33+ normal, otherwise low; a statewide race is the 50 baseline";
 
 // The loader's state-anchored fixed-ruler model, spelled out with this
 // district's real numbers (see recomputeRepresentationPowerScores in
@@ -475,7 +475,7 @@ function representationPart(input: {
 // First-match thresholds so boundary margins read unambiguously: a 2.04
 // margin is "not ≤2, so ≤5 → very competitive", never inside a "0–2" range.
 const MARGIN_GRADE_SCALE =
-  "margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise one-sided; toss-up and very competitive grade high, competitive and somewhat competitive grade average, one-sided grades low";
+  "margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise one-sided; toss-up and very competitive grade high, competitive and somewhat competitive grade normal, one-sided grades low";
 
 // The margin-to-grade pipeline with this contest's real numbers (see
 // classifyHistoricalContestMargin — this string must match its cutoffs).
@@ -544,7 +544,7 @@ function competitivenessLabelText(label: HistoricalContestCompetitivenessLabel):
 // Mirrors deriveConsensusLabel's ladder and bins (currentRaceRatingConsensus)
 // the way MARGIN_GRADE_SCALE mirrors classifyHistoricalContestMargin.
 const RATING_GRADE_SCALE =
-  "d: toss-up 0, tilt 2, lean(s) 3, likely 4, solid/safe 5; mean, first match: <1 toss-up, <2.5 very competitive, <3.5 competitive, <4.5 somewhat competitive, otherwise one-sided; toss-up and very competitive grade high, competitive and somewhat competitive grade average, one-sided grades low";
+  "d: toss-up 0, tilt 2, lean(s) 3, likely 4, solid/safe 5; mean, first match: <1 toss-up, <2.5 very competitive, <3.5 competitive, <4.5 somewhat competitive, otherwise one-sided; toss-up and very competitive grade high, competitive and somewhat competitive grade normal, one-sided grades low";
 
 // The rating-to-grade pipeline with the real per-outlet observations. When a
 // consensus guardrail (opposite favored sides, or safe requiring all-Solid)
@@ -721,11 +721,11 @@ function explanationResultFor(result: VotePowerResult, skipDecisiveness: boolean
 
 // Display words for the rating in the result line. "low" reads as a verdict
 // on the voter and "medium" as a size word, so they ship as "below average"
-// and "average" (mirrors the api-client's formatVotePowerLabel chip copy).
+// and "normal" (mirrors the api-client's formatVotePowerLabel chip copy).
 const RESULT_LABEL_TEXT: Record<Exclude<VotePowerLabel, "unknown">, string> = {
   very_low: "very low",
   low: "below average",
-  medium: "average",
+  medium: "normal",
   high: "high",
   very_high: "very high",
 };

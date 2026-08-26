@@ -6,9 +6,9 @@ import type { ElectionSummary } from "./types";
 export const LONG_BALLOT_THRESHOLD = 7;
 
 /** The impact filter is a minimum-label threshold, not a label set: "high"
- * keeps High + Very high, "medium" keeps Average and above. The wire word
+ * keeps High + Very high, "medium" keeps Normal and above. The wire word
  * stays `medium` (matching the backend label and the URL param) even though
- * the UI renders it as "Average" via formatVotePowerLabel. */
+ * the UI renders it as "Normal" via formatVotePowerLabel. */
 export type VoteImpactThreshold = "high" | "medium";
 
 /** The two ElectionSummary.race_type values the tabs slice on. Wire words
@@ -58,13 +58,13 @@ function matchesImpact(election: ElectionSummary, threshold: VoteImpactThreshold
  *   areas are still LOADING the web pages withhold the list instead of
  *   calling this (see useMyResearchAreas().isLoading).
  * - My vote power: keep = elections at or above the requested threshold
- *   ("High or above" / "Average or above"). One threshold at a time — they
+ *   ("High or above" / "Normal or above"). One threshold at a time — they
  *   nest, so combining them is meaningless and the UI auto-swaps. No data
  *   gate — vote_power ships on every summary, anonymous included — so an
  *   engaged request always applies; LONG_BALLOT_THRESHOLD gates only the
  *   OFFER (a shared ?impact=high link onto a short ballot still filters).
  *   The medium option is additionally withheld when it would duplicate the
- *   high option (a ballot with no Average races), so the panel never
+ *   high option (a ballot with no Normal races), so the panel never
  *   offers two checkboxes that do the same thing.
  *
  * Same visibility rule as the election page's records filter: while OFF a
