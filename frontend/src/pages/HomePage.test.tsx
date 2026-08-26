@@ -389,6 +389,61 @@ describe("HomePage ZIP partial flow", () => {
     expect(screen.getByRole("button", { name: "Search" })).toBeEnabled();
   });
 
+  it("holds Search while a selection's retrieve is in flight", async () => {
+    const suggestion = {
+      place_id: "place-la",
+      description: "Los Angeles, CA, USA",
+      main_text: "Los Angeles",
+      secondary_text: "CA, USA",
+    };
+    let releaseRetrieve!: () => void;
+    const retrieveGate = new Promise<void>((resolve) => {
+      releaseRetrieve = resolve;
+    });
+    const fetchMock = vi.fn().mockImplementation(async (path: string) => {
+      if (path === "/api/address/autocomplete/retrieve") {
+        // Held open until the test releases it — the window under test.
+        await retrieveGate;
+      }
+      return {
+        ok: true,
+        status: 200,
+        headers: new Headers(),
+        json: async () =>
+          path === "/api/address/autocomplete"
+            ? { suggestions: [suggestion] }
+            : path === "/api/address/autocomplete/retrieve"
+              ? {
+                  address: "Los Angeles, CA, USA",
+                  location: null,
+                  granularity: "region",
+                  postal_code: null,
+                  state: "CA",
+                  locality: "Los Angeles",
+                }
+              : { user: null },
+      };
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const user = userEvent.setup();
+    renderHome();
+
+    await user.type(screen.getByLabelText(ADDRESS_LABEL), "Los Angeles");
+    await user.click(await screen.findByRole("option", { name: /Los Angeles/ }));
+    await user.keyboard("{Escape}");
+
+    // The input already shows the picked description, but classification has
+    // not landed — a submit now would send a bare area string to the
+    // geocoder, so Search must hold.
+    expect(screen.getByLabelText(ADDRESS_LABEL)).toHaveValue("Los Angeles, CA, USA");
+    expect(screen.getByRole("button", { name: "Search" })).toBeDisabled();
+
+    releaseRetrieve();
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Search" })).toBeEnabled();
+    });
+  });
+
   it("searches a city selection through the region path and routes with partial=1", async () => {
     const suggestion = {
       place_id: "place-la",

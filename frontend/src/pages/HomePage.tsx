@@ -33,6 +33,11 @@ export function HomePage() {
   // guidance instead of letting the submit die in the geocoder. Any edit
   // clears it.
   const [regionUnsupported, setRegionUnsupported] = useState(false);
+  // True while a picked suggestion's retrieve is in flight: the input
+  // already shows the description, but its classification (coordinates /
+  // ZIP / region) has not landed, so a quick Enter would send a bare area
+  // string to the geocoder and 422.
+  const [retrievePending, setRetrievePending] = useState(false);
   const [termsOpen, setTermsOpen] = useState(false);
   // The dialog's checkbox. Reset to false every time the dialog opens, never
   // seeded from storage: remembering may decide whether the dialog opens, and
@@ -127,7 +132,7 @@ export function HomePage() {
   // and the string is an area the geocoder can't match), so Search disables
   // while the guidance below the field explains what to do; any edit
   // re-enables.
-  const canSearch = address.trim().length > 0 && !resolve.isPending && !regionUnsupported;
+  const canSearch = address.trim().length > 0 && !resolve.isPending && !regionUnsupported && !retrievePending;
 
   function onSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -214,6 +219,7 @@ export function HomePage() {
                 setRegionSelection(granularity === "region" && region ? region : null);
                 setRegionUnsupported(granularity === "region" && !region);
               }}
+              onRetrievePendingChange={setRetrievePending}
               placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
             />
             {regionUnsupported ? (

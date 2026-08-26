@@ -286,14 +286,18 @@ export function BallotPage() {
           wording. */}
       {isPartialBallot ? (
         <p role="alert" className="mt-2 rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink">
+          {/* No "every address there shares" promise: ward/seat races ride
+              the area's district row on exact ballots too (see ElectionCard's
+              sub_district_seat note), and each such race already carries its
+              own "may not cover your address" label. */}
           {matchedAddress && partialScope ? (
             <>
               This is a partial ballot for {partialScope === "zip" ? "ZIP code " : ""}
-              <span className="font-medium">{matchedAddress}</span>: it lists only the races every
-              address there shares.
+              <span className="font-medium">{matchedAddress}</span>: races that depend on your
+              exact location are not included.
             </>
           ) : (
-            "This is a partial ballot: it lists only races shared across a wider area."
+            "This is a partial ballot: races that depend on your exact location are not included."
           )}{" "}
           <Link to="/?new=1" className="underline hover:text-rausch">
             Enter your street address

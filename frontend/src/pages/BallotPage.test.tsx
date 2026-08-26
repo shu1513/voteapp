@@ -45,7 +45,7 @@ describe("BallotPage", () => {
 
     const banner = await screen.findByRole("alert");
     expect(banner).toHaveTextContent("This is a partial ballot for ZIP code 78701");
-    expect(banner).toHaveTextContent("only the races every address there shares");
+    expect(banner).toHaveTextContent("races that depend on your exact location are not included");
     expect(screen.getByRole("link", { name: "Enter your street address" })).toHaveAttribute("href", "/?new=1");
   });
 
@@ -76,7 +76,7 @@ describe("BallotPage", () => {
 
     const banner = await screen.findByRole("alert");
     expect(banner).toHaveTextContent(
-      "This is a partial ballot: it lists only races shared across a wider area."
+      "This is a partial ballot: races that depend on your exact location are not included."
     );
   });
 

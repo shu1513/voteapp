@@ -91,6 +91,11 @@ export default function HomeScreen() {
   // state — nothing to search, so the form shows guidance. Any edit clears
   // it — same rule as the web home.
   const [regionUnsupported, setRegionUnsupported] = useState(false);
+  // True while a picked suggestion's retrieve is in flight: the input
+  // already shows the description, but its classification has not landed,
+  // so a quick tap on Search would send a bare area string to the geocoder
+  // and 422 — same rule as the web home.
+  const [retrievePending, setRetrievePending] = useState(false);
   const [addressExplanationVisible, setAddressExplanationVisible] = useState(false);
   const [termsVisible, setTermsVisible] = useState(false);
   // Set only while the visitor is off reading a linked document, so the sheet
@@ -189,7 +194,12 @@ export default function HomeScreen() {
   // coordinates, no state, and the string is an area the geocoder can't
   // match) — Search disables while the guidance under the field explains;
   // any edit re-enables. Same rule as the web home.
-  const canSearch = address.trim().length > 0 && !resolve.isPending && !checkingAcceptance && !regionUnsupported;
+  const canSearch =
+    address.trim().length > 0 &&
+    !resolve.isPending &&
+    !checkingAcceptance &&
+    !regionUnsupported &&
+    !retrievePending;
 
   async function onSearchPress() {
     if (!canSearch) {
@@ -286,6 +296,7 @@ export default function HomeScreen() {
                 setRegionSelection(granularity === "region" && region ? region : null);
                 setRegionUnsupported(granularity === "region" && !region);
               }}
+              onRetrievePendingChange={setRetrievePending}
               placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
               accessibilityLabel="Enter your full address for complete results — or a city or ZIP code for partial results:"
             />

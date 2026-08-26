@@ -104,14 +104,18 @@ export default function BallotScreen() {
       {isPartialBallot ? (
         <View accessibilityRole="alert" className="mt-2 rounded-md border border-line bg-surface px-3 py-2">
           <Text className="text-sm text-ink">
+            {/* No "every address there shares" promise: ward/seat races ride
+                the area's district row on exact ballots too, and each such
+                race already carries its own "may not cover your address"
+                label — same reasoning as the web ballot page. */}
             {matchedAddress && matched?.scope && matched.scope !== "exact" ? (
               <>
                 This is a partial ballot for {matched.scope === "zip" ? "ZIP code " : ""}
-                <Text className="font-medium">{matchedAddress}</Text>: it lists only the races
-                every address there shares.
+                <Text className="font-medium">{matchedAddress}</Text>: races that depend on your
+                exact location are not included.
               </>
             ) : (
-              "This is a partial ballot: it lists only races shared across a wider area."
+              "This is a partial ballot: races that depend on your exact location are not included."
             )}{" "}
             <Text className="underline" accessibilityRole="link" onPress={() => router.dismissTo("/")}>
               Enter your street address
