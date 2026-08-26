@@ -136,6 +136,10 @@ export type PublicAddressResolvePayload = AddressResolvePayload & {
    * resolver look districts up by point when the Census street-range data
    * lacks the address (stadiums, campuses). Absent for hand-typed input. */
   coordinates?: { lat: number; lng: number };
+  /** Opt-in to the ZIP partial-ballot path. Defaults false so clients that
+   * predate the feature (shipped mobile builds) keep exact-only behavior —
+   * they have no UI to explain a partial result. */
+  allow_partial: boolean;
 };
 
 export type AddressAutocompleteSuggestPayload = {
@@ -375,10 +379,16 @@ export function parsePublicAddressResolveBodyValue(parsed: unknown): PublicAddre
     throw new TypeError("Request body must include non-empty string field: accepted_terms_version");
   }
 
+  const allowPartial = (parsed as { allow_partial?: unknown }).allow_partial;
+  if (allowPartial !== undefined && typeof allowPartial !== "boolean") {
+    throw new TypeError("allow_partial must be a boolean when present");
+  }
+
   return {
     address,
     accepted_terms_version: acceptedTermsVersion.trim(),
     coordinates: parseOptionalCoordinatesField(parsed),
+    allow_partial: allowPartial ?? false,
   };
 }
 

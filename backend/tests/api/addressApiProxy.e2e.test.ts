@@ -17,6 +17,7 @@ const districtId = "11111111-1111-4111-8111-111111111111";
 const resolvedAddress: AddressResolutionResult = {
   matched_address: "3921 HARLAN AVE, BALDWIN PARK, CA, 91706",
   coordinates: { lat: 34.082500135664, lng: -117.981072355887 },
+  scope: "exact",
   address_match_count: 1,
   district_keys: [
     {
@@ -295,8 +296,9 @@ describeE2e("address API auth proxy E2E", () => {
       matched_address: resolvedAddress.matched_address,
       address_match_count: resolvedAddress.address_match_count,
       districts: resolvedAddress.districts,
+      scope: "exact",
     });
-    expect(resolveAddress).toHaveBeenCalledWith("3921 Harlan Ave Baldwin Park CA 91706", undefined);
+    expect(resolveAddress).toHaveBeenCalledWith("3921 Harlan Ave Baldwin Park CA 91706", undefined, false);
     expect(initializeUserDistricts).not.toHaveBeenCalled();
   });
 

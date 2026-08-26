@@ -92,7 +92,8 @@ export type AddressApiServerOptions = {
   authService?: AuthService;
   resolveAddress: (
     address: string,
-    coordinates?: { lat: number; lng: number }
+    coordinates?: { lat: number; lng: number },
+    allowPartial?: boolean
   ) => Promise<AddressResolutionResult>;
   suggestAddresses?: (input: { input: string; sessionToken: string }) => Promise<AddressSuggestion[]>;
   retrieveSuggestedAddress?: (input: { placeId: string; sessionToken: string }) => Promise<RetrievedSuggestedAddress>;

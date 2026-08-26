@@ -716,7 +716,12 @@ describe("parsePublicAddressResolveBodyValue", () => {
         address: "  1 Main St  ",
         accepted_terms_version: ` ${CURRENT_TERMS_VERSION} `,
       })
-    ).toEqual({ address: "1 Main St", accepted_terms_version: CURRENT_TERMS_VERSION });
+    ).toEqual({
+      address: "1 Main St",
+      accepted_terms_version: CURRENT_TERMS_VERSION,
+      coordinates: undefined,
+      allow_partial: false,
+    });
   });
 
   it("passes through valid optional coordinates", async () => {
