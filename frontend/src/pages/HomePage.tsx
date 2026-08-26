@@ -9,7 +9,7 @@ import { PreSearchTermsDialog } from "../components/PreSearchTermsDialog";
 import { ErrorNotice } from "../components/Status";
 import { clearPendingDistrictIds, savePendingDistrictIds } from "../lib/pendingDistricts";
 import { useMe } from "@voteapp/api-client";
-import { ADDRESS_FIELD_PRIVACY_NOTE, TERMS_VERSION } from "@voteapp/api-client";
+import { TERMS_VERSION } from "@voteapp/api-client";
 import { hasCurrentTermsAcceptance, rememberTermsAcceptance } from "../lib/termsAcceptance";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
@@ -235,9 +235,13 @@ export function HomePage() {
                 point of collection — the footer carries it on every page, and
                 the explainer below links it directly — so the inline copy of
                 it was noise beside the question people actually ask. */}
+            {/* Compressed variant of ADDRESS_FIELD_PRIVACY_NOTE plus the
+                coarse-input hint: same two promises (district lookup only,
+                never saved), short enough to be read. Other surfaces keep
+                the full constant. */}
             <p className="mt-1 text-xs text-ink-soft">
-              ({ADDRESS_FIELD_PRIVACY_NOTE} A ZIP code or city works too — some local races only
-              appear with a street address.) <FullAddressExplanation />
+              (Only used to find your voting districts, never saved. A ZIP or city works too,
+              with fewer local races.) <FullAddressExplanation />
             </p>
           </div>
 

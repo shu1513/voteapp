@@ -3,11 +3,7 @@ import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {
-  ADDRESS_FIELD_PRIVACY_NOTE,
-  PRE_SEARCH_AGREEMENT_PARAGRAPHS,
-  TERMS_VERSION,
-} from "@voteapp/api-client";
+import { PRE_SEARCH_AGREEMENT_PARAGRAPHS, TERMS_VERSION } from "@voteapp/api-client";
 import { HomePage } from "./HomePage";
 
 const ADDRESS_LABEL = "Enter your address to see which elections you can vote in:";
@@ -84,11 +80,11 @@ describe("HomePage pre-search clickwrap", () => {
   it("keeps the privacy note beside the address field, where collection starts", () => {
     renderHome();
     // The autocomplete forwards what is typed before Search is ever pressed,
-    // so this notice may never move into the dialog. Asserted through the
-    // shared constant rather than a copy of the sentence: the point under test
-    // is that the note renders at the field, and hardcoding the wording only
-    // made this fail on every edit to it.
-    expect(screen.getByText(ADDRESS_FIELD_PRIVACY_NOTE, { exact: false })).toBeInTheDocument();
+    // so this notice may never move into the dialog. The home page carries a
+    // compressed variant of ADDRESS_FIELD_PRIVACY_NOTE (same two promises:
+    // district lookup only, never saved) plus the ZIP/city hint.
+    expect(screen.getByText(/Only used to find your voting districts, never saved/)).toBeInTheDocument();
+    expect(screen.getByText(/A ZIP or city works too/)).toBeInTheDocument();
     // The policy is reachable without a second inline link — the footer
     // carries it site-wide and the explainer links it directly — so the note
     // offers the question people actually ask instead.

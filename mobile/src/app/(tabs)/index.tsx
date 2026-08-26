@@ -1,5 +1,5 @@
 import type { AddressLocation, AddressResolution } from "@voteapp/api-client";
-import { apiRequest, ADDRESS_FIELD_PRIVACY_NOTE, TERMS_VERSION, useMe } from "@voteapp/api-client";
+import { apiRequest, TERMS_VERSION, useMe } from "@voteapp/api-client";
 import { useMutation } from "@tanstack/react-query";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
@@ -310,9 +310,12 @@ export default function HomeScreen() {
                 visitor types and long before Search. */}
             {/* One link, not two — same as the web. The Privacy Policy is
                 still linked directly from the explainer below. */}
+            {/* Compressed variant of ADDRESS_FIELD_PRIVACY_NOTE plus the
+                coarse-input hint — same as the web home; other surfaces
+                keep the full constant. */}
             <Text className="mt-1 text-xs text-ink-soft">
-              ({ADDRESS_FIELD_PRIVACY_NOTE} A ZIP code or city works too — some local races only
-              appear with a street address.)
+              (Only used to find your voting districts, never saved. A ZIP or city works too,
+              with fewer local races.)
             </Text>
             <Pressable
               accessibilityRole="button"
