@@ -23,7 +23,7 @@ export function ForgotPasswordPage() {
   if (forgot.isSuccess) {
     return (
       <div className="mx-auto max-w-md px-4 py-10">
-        <h1 className="text-2xl font-bold">Check your email</h1>
+        <h1 className="text-title font-bold">Check your email</h1>
         <p className="mt-3 text-ink-soft">
           If an account exists for <strong className="text-ink">{email.trim()}</strong>, we sent a password
           reset link. It expires in 24 hours.
@@ -39,7 +39,7 @@ export function ForgotPasswordPage() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-10">
-      <h1 className="text-2xl font-bold">Reset your password</h1>
+      <h1 className="text-title font-bold">Reset your password</h1>
       <p className="mt-2 text-sm text-ink-soft">Enter your account email and we'll send a reset link.</p>
 
       <form

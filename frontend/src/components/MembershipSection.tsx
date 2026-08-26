@@ -127,7 +127,7 @@ function PaymentHistory({ payments }: { payments: MembershipPayment[] }) {
   }
   return (
     <div className="mt-4">
-      <h3 className="text-sm font-semibold text-ink">Payment history</h3>
+      <h3 className="text-subheading font-semibold text-ink">Payment history</h3>
       <ul className="mt-1 divide-y divide-line text-sm">
         {payments.map((payment, index) => (
           <li key={`${payment.paid_at}-${index}`} className="flex flex-wrap justify-between gap-x-3 py-1.5">
@@ -205,7 +205,7 @@ export function MembershipSection() {
   return (
     // id: anchor target for the Profile box's "Manage membership" link.
     <section id="support" className="rounded-xl border border-line bg-white p-4">
-      <h2 className="text-lg font-semibold">Support {APP_NAME}</h2>
+      <h2 className="text-heading font-semibold">Support {APP_NAME}</h2>
       {outcome === "success" ? (
         <p role="status" className="mt-2 rounded-lg border border-green-700/40 bg-green-50 px-3 py-2 text-sm text-green-900">
           Thank you for your support! Your payment may take a moment to appear below.

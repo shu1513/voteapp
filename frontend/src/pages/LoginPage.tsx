@@ -74,7 +74,7 @@ export function LoginPage() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-10">
-      <h1 className="text-2xl font-bold">Log in</h1>
+      <h1 className="text-title font-bold">Log in</h1>
 
       <div className="mt-6">
         <GoogleSignInButton

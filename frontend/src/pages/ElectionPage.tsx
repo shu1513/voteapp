@@ -539,7 +539,7 @@ export function ElectionPage() {
           }}
         />
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h1 className="text-2xl font-bold">{data.official_ballot_title}</h1>
+          <h1 className="text-title font-bold">{data.official_ballot_title}</h1>
           <ShareButton
             path={`/elections/${data.id}`}
             shareText={`${data.official_ballot_title} — ${formatElectionDate(data.election_date)}`}
@@ -664,7 +664,7 @@ export function ElectionPage() {
           // Description first, then what the election affects — what the office does,
           // then which issues it touches.
           <section className="mt-6 rounded-xl border border-line bg-white p-4">
-            <h2 className="text-lg font-semibold">About this office</h2>
+            <h2 className="text-heading font-semibold">About this office</h2>
             {officeSummary ? (
               <>
                 {officeSummary.hook ? <p className="mt-2 text-sm text-ink">{officeSummary.hook}</p> : null}
@@ -709,7 +709,7 @@ export function ElectionPage() {
 
         {measure ? (
           <section className="mt-6 rounded-xl border border-line bg-white p-4">
-            <h2 className="text-lg font-semibold text-dem-blue">Ballot Measure</h2>
+            <h2 className="text-heading font-semibold text-dem-blue">Ballot Measure</h2>
             {measure.research_area_tags.length > 0 ? (
               // Comma-separated colored text, not boxed chips (boxes read as
               // buttons). Tags group by stance under a leading verb
@@ -768,7 +768,7 @@ export function ElectionPage() {
                 ) : null}
               </div>
             ) : null}
-            {measure.summary ? <p className="mt-2 text-sm text-ink">{measure.summary}</p> : null}
+            {measure.summary ? <p className="mt-2 text-body text-ink">{measure.summary}</p> : null}
             {measure.official_measure_url ? (
               <p className="mt-2 text-sm">
                 <a
@@ -785,11 +785,11 @@ export function ElectionPage() {
             ) : null}
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
               <div className="rounded border border-green-200 bg-green-50 p-3">
-                <h3 className="text-sm font-semibold text-green-900">A YES vote means</h3>
+                <h3 className="text-subheading font-semibold text-green-900">A YES vote means</h3>
                 <p className="mt-1 text-sm text-green-900">{measure.what_yes_means}</p>
               </div>
               <div className="rounded border border-red-200 bg-red-50 p-3">
-                <h3 className="text-sm font-semibold text-red-900">A NO vote means</h3>
+                <h3 className="text-subheading font-semibold text-red-900">A NO vote means</h3>
                 <p className="mt-1 text-sm text-red-900">{measure.what_no_means}</p>
               </div>
             </div>
@@ -810,7 +810,7 @@ export function ElectionPage() {
                 these explainer boxes are read. */}
             {measure.results.length > 0 ? (
               <div className="mt-3">
-                <h3 className="text-sm font-semibold">Results</h3>
+                <h3 className="text-subheading font-semibold">Results</h3>
                 {hasCertifiedRow(measure.results) ? null : (
                   <p className="mt-1 text-xs text-ink-soft">
                     Unofficial until certified by the relevant election authority.
@@ -856,7 +856,7 @@ export function ElectionPage() {
         {data.candidates.length > 0 ? (
           <section className="mt-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <h2 className="text-lg font-semibold">Candidates</h2>
+              <h2 className="text-heading font-semibold">Candidates</h2>
               {showChoiceControls && data.seats_to_fill != null && data.seats_to_fill > 1 ? (
                 <span className="text-xs text-ink-soft">
                   This election fills {data.seats_to_fill} seats — pick up to {data.seats_to_fill} candidates.
@@ -1096,7 +1096,7 @@ export function ElectionPage() {
           // Empty office roster: say WHY instead of hiding the section (roster
           // awaiting certification, profiles being prepared, or unavailable).
           <section className="mt-6">
-            <h2 className="text-lg font-semibold">Candidates</h2>
+            <h2 className="text-heading font-semibold">Candidates</h2>
             <p className="mt-3 rounded-xl border border-line bg-white p-4 text-sm text-ink-soft">
               {formatRosterStatus(data.candidate_roster_status).long}
             </p>
@@ -1105,7 +1105,7 @@ export function ElectionPage() {
 
         {data.results.length > 0 ? (
           <section className="mt-6 rounded-xl border border-line bg-white p-4">
-            <h2 className="text-lg font-semibold">Results</h2>
+            <h2 className="text-heading font-semibold">Results</h2>
             {hasCertifiedRow(data.results) ? null : (
               <p className="mt-1 text-xs text-ink-soft">
                 Unofficial until certified by the relevant election authority.

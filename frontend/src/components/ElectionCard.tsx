@@ -184,7 +184,7 @@ export function ElectionList({
           {/* The ballot pages carry no h1 banner; these date headings are the
               page's identity, so they read as full sentences and lead the
               visual hierarchy. */}
-          <h2 className="text-xl font-bold text-ink">Elections on {formatElectionDate(group.date)}</h2>
+          <h2 className="text-heading font-bold text-ink">Elections on {formatElectionDate(group.date)}</h2>
           <div className="mt-2 space-y-3">
             {group.elections.map((election) => (
               <ElectionCard
@@ -206,7 +206,7 @@ export function ElectionList({
               on officials" would misplace that blame. Matches the generic
               roster-status copy. Leads with "Elections" to parallel the
               "Elections on {date}" headings above it. */}
-          <h2 className="text-xl font-bold text-ink">Elections awaiting candidate information</h2>
+          <h2 className="text-heading font-bold text-ink">Elections awaiting candidate information</h2>
           <div className="mt-2 space-y-3">
             {awaitingCandidates.map((election) => (
               <ElectionCard

@@ -50,7 +50,7 @@ export function VerifyTokenPage({ endpoint, title, successMessage }: VerifyToken
   if (!token) {
     return (
       <div className="mx-auto max-w-md px-4 py-10">
-        <h1 className="text-2xl font-bold">Invalid link</h1>
+        <h1 className="text-title font-bold">Invalid link</h1>
         <p className="mt-3 text-ink-soft">This link is incomplete. Use the most recent email we sent you.</p>
       </div>
     );
@@ -58,7 +58,7 @@ export function VerifyTokenPage({ endpoint, title, successMessage }: VerifyToken
 
   return (
     <div className="mx-auto max-w-md px-4 py-10">
-      <h1 className="text-2xl font-bold">{title}</h1>
+      <h1 className="text-title font-bold">{title}</h1>
       {verify.isPending ? <LoadingNotice text="Confirming…" /> : null}
       {verify.isSuccess ? (
         <>

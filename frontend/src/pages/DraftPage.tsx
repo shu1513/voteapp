@@ -114,7 +114,7 @@ export function DraftPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="text-2xl font-bold">My Ballot Draft</h1>
+      <h1 className="text-title font-bold">My Ballot Draft</h1>
 
       {districtIds.length === 0 ? (
         pickCount === 0 ? (
@@ -192,7 +192,7 @@ export function DraftPage() {
               unknowable. */}
           {ballot.isSuccess && extraRows.length > 0 ? (
             <section className="mt-6">
-              <h2 className="text-lg font-semibold text-ink">Other saved picks</h2>
+              <h2 className="text-heading font-semibold text-ink">Other saved picks</h2>
               <p className="mt-0.5 text-xs text-ink-soft">
                 Races you picked from a direct link — not part of the ballot above.
               </p>

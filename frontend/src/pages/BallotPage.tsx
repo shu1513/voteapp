@@ -230,7 +230,7 @@ export function BallotPage() {
           elections. "My elections", not "Upcoming elections": the list keeps
           just-finished elections for BALLOT_PAST_ELECTION_VISIBILITY_DAYS so
           their results stay discoverable, and those are not upcoming. */}
-      <h1 className="mb-4 text-2xl font-bold text-ink">My elections:</h1>
+      <h1 className="mb-4 text-title font-bold text-ink">My elections:</h1>
       {/* Filters and sorting on the left, the "How to vote" resources on the
           right — the disclosure panels each open inline under their own
           column. The how-to-vote control waits for the ballot response
