@@ -179,10 +179,18 @@ export function useAddressSuggestions(): UseAddressSuggestionsResult {
     // starts a fresh session instead of reusing the spent token (the local
     // sessionToken copy still rides on the retrieve request).
     sessionTokenRef.current = null;
+    // Abortable like the suggests: a keystroke supersedes the result anyway
+    // (the seq check below), and without an abort the caller's
+    // retrieve-pending state would hold Search hostage for the full network
+    // round trip on a slow link. Aborting the HTTP request changes nothing
+    // server-side.
+    const controller = new AbortController();
+    abortRef.current = controller;
     try {
       const response = await apiRequest<AddressRetrieveResponse>("/api/address/autocomplete/retrieve", {
         method: "POST",
         body: { place_id: suggestion.place_id, session_token: sessionToken },
+        signal: controller.signal,
       });
       if (seq !== requestSeqRef.current) {
         // Superseded while in flight — the user typed or selected again

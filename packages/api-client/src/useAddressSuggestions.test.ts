@@ -400,4 +400,36 @@ describe("useAddressSuggestions", () => {
     expect(result.current.enabled).toBe(true);
     expect(result.current.suggestions).toEqual([]);
   });
+it("aborts an in-flight retrieve when the user types again, resolving null", async () => {
+    apiRequestMock.mockResolvedValueOnce({ suggestions: [SUGGESTION] });
+    const { result } = renderHook(() => useAddressSuggestions());
+    act(() => {
+      result.current.onInputChanged("200 N Spring");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(SUGGEST_DEBOUNCE_MS + 10);
+    });
+
+    // A retrieve that only settles when its signal aborts — the slow-network
+    // case. Without the abort, a caller holding Search on retrieve-pending
+    // would stay frozen for the whole round trip after the user typed on.
+    let retrieveSignal: AbortSignal | undefined;
+    apiRequestMock.mockImplementationOnce((_path: string, options: { signal?: AbortSignal }) => {
+      retrieveSignal = options.signal;
+      return new Promise((_resolve, reject) => {
+        options.signal?.addEventListener("abort", () => reject(new DOMException("Aborted", "AbortError")));
+      });
+    });
+    let retrievedPromise!: Promise<unknown>;
+    act(() => {
+      retrievedPromise = result.current.selectSuggestion(SUGGESTION);
+    });
+    expect(retrieveSignal?.aborted).toBe(false);
+
+    act(() => {
+      result.current.onInputChanged("500 Main St, typed manually");
+    });
+    expect(retrieveSignal?.aborted).toBe(true);
+    await expect(retrievedPromise).resolves.toBeNull();
+  });
 });

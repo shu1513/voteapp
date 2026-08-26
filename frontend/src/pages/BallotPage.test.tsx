@@ -45,7 +45,7 @@ describe("BallotPage", () => {
 
     const banner = await screen.findByRole("alert");
     expect(banner).toHaveTextContent("This is a partial ballot for ZIP code 78701");
-    expect(banner).toHaveTextContent("races that depend on your exact location are not included");
+    expect(banner).toHaveTextContent("Enter your street address");
     expect(screen.getByRole("link", { name: "Enter your street address" })).toHaveAttribute("href", "/?new=1");
   });
 
@@ -75,9 +75,8 @@ describe("BallotPage", () => {
     renderBallot("/ballot?d=d-1&partial=1");
 
     const banner = await screen.findByRole("alert");
-    expect(banner).toHaveTextContent(
-      "This is a partial ballot: races that depend on your exact location are not included."
-    );
+    expect(banner).toHaveTextContent("This is a partial ballot.");
+    expect(banner).toHaveTextContent("Enter your street address");
   });
 
   it("shows no partial label without the flag", async () => {
