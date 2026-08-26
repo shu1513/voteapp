@@ -161,7 +161,7 @@ export function PublicPickCardPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <section className="rounded-xl border border-line bg-white p-5">
-        <h1 className="text-2xl font-bold text-ink">{cardTitle(card)}</h1>
+        <h1 className="text-title font-bold text-ink">{cardTitle(card)}</h1>
         <p className="mt-1 text-sm text-ink-soft">Shared from {APP_NAME}.</p>
         {card.entries.length === 0 ? (
           <p className="mt-4 text-sm text-ink-soft">This card has no picks right now.</p>

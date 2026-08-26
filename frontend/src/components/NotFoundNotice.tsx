@@ -4,7 +4,7 @@ import { Link } from "react-router";
 export function NotFoundNotice({ subject }: { subject: "Election" | "Candidate" | "Pick card" }) {
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 text-center">
-      <h1 className="text-2xl font-bold">{subject} not found</h1>
+      <h1 className="text-title font-bold">{subject} not found</h1>
       <p className="mt-2 text-ink-soft">It may have been removed, or the link may be wrong.</p>
       <Link
         to="/"

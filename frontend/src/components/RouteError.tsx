@@ -18,7 +18,7 @@ export function RouteError() {
   }, [error]);
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 text-center text-ink">
-      <h1 className="text-2xl font-bold">Something went wrong</h1>
+      <h1 className="text-title font-bold">Something went wrong</h1>
       <p className="mt-2 text-ink-soft">The page hit an unexpected error. Reloading usually fixes it.</p>
       <div className="mt-6 flex items-center justify-center gap-4">
         <button

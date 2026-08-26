@@ -174,22 +174,23 @@ export function HomePage() {
       <div className="border-b border-line bg-surface">
         <div className="mx-auto max-w-2xl px-4 py-10">
           {/* One sentence, no sub-line: the promise is the whole pitch, and a
-              second paragraph under it only pushed the address field down. Set
-              full 3xl only from sm up: this headline is a whole sentence, and
-              at 3xl on a phone it ran six lines and pushed the address field
-              off the fold. */}
-          <h1 className="text-xl font-bold sm:text-3xl">
+              second paragraph under it only pushed the address field down.
+              text-title interpolates 22 -> 32px with the viewport, so a phone
+              never sees the 30px+ size that once ran six lines and pushed the
+              address field off the fold — and there is no breakpoint jump. */}
+          <h1 className="text-title font-bold">
             Find out which elections you can vote in — and who the candidates really are by their
             track records instead of slogans.
           </h1>
           {/* What the service is, where a first-time visitor actually looks.
               It used to sit in the footer, under the fold, where it repeated
               the disclaimer link beside it and told nobody anything. */}
-          {/* Centred while the headline stays left: the headline is a long
-              sentence that would be hard to read ragged on both sides, and the
-              contrast makes this read as a standalone claim about the service
-              rather than a third line of the headline. */}
-          <p className="mt-3 text-center text-sm font-medium text-ink-soft sm:text-base">
+          {/* Left-aligned like the headline and the form: one alignment axis
+              for the whole hero (a lone centred line under a left rag read as
+              a mistake). Size and ink-mid — not alignment — set it apart as a
+              standalone claim; ink-soft was too faint for a line that has to
+              be read in full (APCA Lc 74 at 14px). */}
+          <p className="mt-3 text-base font-medium text-ink-mid">
             Independent, nonpartisan, AI-assisted election research with linked sources.
           </p>
         </div>
@@ -222,8 +223,10 @@ export function HomePage() {
               onRetrievePendingChange={setRetrievePending}
               placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
             />
+            {/* text-sm + the deep brand step: the 12px/rausch-dark pairing
+                failed APCA for an error the visitor must act on. */}
             {regionUnsupported ? (
-              <p role="alert" className="mt-1 text-xs text-rausch-dark">
+              <p role="alert" className="mt-1 text-sm text-rausch-deep">
                 We can’t place that selection in a state. Pick a street address, city, or ZIP
                 code from the suggestions.
               </p>

@@ -415,7 +415,7 @@ export function SavedBallotPage() {
             <AddressSavedNotice saved={addressSaved} />
           </div>
         ) : null}
-        <h1 className="text-2xl font-bold">Set your address</h1>
+        <h1 className="text-title font-bold">Set your address</h1>
         <p className="mt-2 text-sm text-ink-soft">
           Enter your address once and your ballot will be waiting every time you come back.
         </p>
@@ -437,7 +437,7 @@ export function SavedBallotPage() {
           ("Elections on …") below it — same wording as the public ballot page
           so the list reads the same before and after sign-in. No count
           subtitle. */}
-      <h1 className="mb-4 text-2xl font-bold text-ink">My elections:</h1>
+      <h1 className="mb-4 text-title font-bold text-ink">My elections:</h1>
       {/* Filters and ordering on the left, official how-to-vote links on the
           right — the same split as the public ballot page, so the resources
           reach signed-in voters too (their home page redirects here). */}
