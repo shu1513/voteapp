@@ -121,15 +121,18 @@ export default function HomeScreen() {
       // Save only when identity is KNOWN to be logged out or unverified —
       // while /api/me is still loading (me === undefined) a verified user's
       // one-off search must not re-arm the handoff. Same rule as the web.
-      if (me === null || me?.email_verified === false) {
-        if (resolution.scope === "exact") {
+      if (resolution.scope === "exact") {
+        if (me === null || me?.email_verified === false) {
           void savePendingDistrictIds(resolution.districts.map((district) => district.id));
-        } else {
-          // A partial (ZIP) result must not become a signed-up account's
-          // saved ballot; clearing keeps "last search wins" — same rule as
-          // the web home.
-          void clearPendingDistrictIds();
         }
+      } else {
+        // A partial (ZIP) result must not become a signed-up account's
+        // saved ballot; clearing keeps "last search wins". Unconditional,
+        // unlike the save: the identity guard exists so a verified user's
+        // one-off search cannot ARM the handoff — clearing is harmless in
+        // every identity state, including still-loading. Same rule as the
+        // web home.
+        void clearPendingDistrictIds();
       }
       // Straight to the elections — the districts list is a detour nobody
       // asked for. The matched address goes through the in-memory holder,
@@ -167,7 +170,11 @@ export default function HomeScreen() {
   // two handoff saves. The web has no equivalent gap: localStorage is
   // synchronous.
   const [checkingAcceptance, setCheckingAcceptance] = useState(false);
-  const canSearch = address.trim().length > 0 && !resolve.isPending && !checkingAcceptance;
+  // regionSelected: a region selection can only fail (no coordinates, and
+  // the string is an area the geocoder can't match) — Search disables while
+  // the guidance under the field explains; any edit re-enables. Same rule
+  // as the web home.
+  const canSearch = address.trim().length > 0 && !resolve.isPending && !checkingAcceptance && !regionSelected;
 
   async function onSearchPress() {
     if (!canSearch) {

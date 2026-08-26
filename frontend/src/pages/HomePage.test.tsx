@@ -311,6 +311,77 @@ describe("HomePage ZIP partial flow", () => {
     expect(sessionStorage.getItem(PENDING_KEY)).toBeNull();
   });
 
+  it("clears the pending handoff on a ZIP result even while identity is still loading", async () => {
+    // The save is identity-gated (a verified user's one-off search must not
+    // ARM the handoff); the clear is not — a stale exact set must never
+    // outlive a newer partial search just because /api/me was slow.
+    sessionStorage.setItem(PENDING_KEY, JSON.stringify(["stale-district"]));
+    const fetchMock = vi.fn().mockImplementation(async (path: string) => {
+      if (path === "/api/me") {
+        return new Promise(() => {}); // identity never resolves
+      }
+      return {
+        ok: true,
+        status: 200,
+        headers: new Headers(),
+        json: async () =>
+          path === "/api/address/resolve"
+            ? { matched_address: "78701", address_match_count: 1, districts: [{ id: "d-tx" }], scope: "zip" }
+            : { suggestions: [] },
+      };
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const user = userEvent.setup();
+    const { router } = renderHome();
+
+    await searchFor(user, "78701");
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe("/ballot");
+    });
+    expect(sessionStorage.getItem(PENDING_KEY)).toBeNull();
+  });
+
+  it("disables Search after an area selection and re-enables on the next edit", async () => {
+    const suggestion = {
+      place_id: "place-austin",
+      description: "Austin, TX, USA",
+      main_text: "Austin",
+      secondary_text: "TX, USA",
+    };
+    const fetchMock = vi.fn().mockImplementation(async (path: string) => ({
+      ok: true,
+      status: 200,
+      headers: new Headers(),
+      json: async () =>
+        path === "/api/address/autocomplete"
+          ? { suggestions: [suggestion] }
+          : path === "/api/address/autocomplete/retrieve"
+            ? { address: "Austin, TX, USA", location: null, granularity: "region", postal_code: null }
+            : { user: null },
+    }));
+    vi.stubGlobal("fetch", fetchMock);
+    const user = userEvent.setup();
+    renderHome();
+
+    await user.type(screen.getByLabelText(ADDRESS_LABEL), "Austin");
+    await user.click(await screen.findByRole("option", { name: /Austin/ }));
+
+    // The selection is an area with no supported flow: guidance appears and
+    // Search stays off — a submit could only die in the geocoder. Escape
+    // first: Headless UI keeps the combobox marked open after our custom
+    // option click (pre-existing quirk of the `static` options pattern) and
+    // aria-hides the rest of the form while it is.
+    expect(await screen.findByText(/That selection is an area, not an address/)).toBeInTheDocument();
+    await user.keyboard("{Escape}");
+    expect(screen.getByRole("button", { name: "Search" })).toBeDisabled();
+
+    await user.type(screen.getByLabelText(ADDRESS_LABEL), " 78701");
+    expect(screen.queryByText(/That selection is an area, not an address/)).not.toBeInTheDocument();
+    await user.keyboard("{Escape}");
+    expect(screen.getByRole("button", { name: "Search" })).toBeEnabled();
+  });
+
   it("routes an exact result without partial=1 and saves the pending handoff", async () => {
     stubResolveFetch({
       matched_address: "123 Main St",
