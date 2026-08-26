@@ -203,12 +203,13 @@ export function HomePage() {
                 address" — those users already know. "Home address" was
                 rejected as a demand for where you sleep, "Voting address"
                 read as the place you go to vote. */}
-            {/* The headline above already promises "which elections you can
-                vote in"; the label's job is the complete-vs-partial trade —
-                the answer to the visitor who won't type where they live. */}
+            {/* Says what typing gets you AND that coarse input works — the
+                visitor who won't type where they live must learn a ZIP or
+                city is enough BEFORE giving up. The complete-vs-partial
+                trade lives in the explainer below and the partial banner,
+                not here. */}
             <label htmlFor="address" className="block text-sm font-medium text-ink">
-              Enter your full address for complete results — or a city or ZIP code for partial
-              results:
+              Enter your address, city, or ZIP code to see which elections you can vote in:
             </label>
             <AddressAutocomplete
               inputId="address"

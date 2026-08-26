@@ -285,8 +285,7 @@ export default function HomeScreen() {
             {/* Instructional label for first-time visitors — same copy as
                 the web home. Signed-in surfaces keep "Your address". */}
             <Text className="text-sm font-medium text-ink">
-              Enter your full address for complete results — or a city or ZIP code for partial
-              results:
+              Enter your address, city, or ZIP code to see which elections you can vote in:
             </Text>
             <AddressAutocomplete
               value={address}
@@ -298,7 +297,7 @@ export default function HomeScreen() {
               }}
               onRetrievePendingChange={setRetrievePending}
               placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
-              accessibilityLabel="Enter your full address for complete results — or a city or ZIP code for partial results:"
+              accessibilityLabel="Enter your address, city, or ZIP code to see which elections you can vote in:"
             />
             {regionUnsupported ? (
               <Text accessibilityRole="alert" className="mt-1 text-xs text-rausch-dark">

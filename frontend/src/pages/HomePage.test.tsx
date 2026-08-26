@@ -10,7 +10,7 @@ import {
 } from "@voteapp/api-client";
 import { HomePage } from "./HomePage";
 
-const ADDRESS_LABEL = "Enter your full address for complete results — or a city or ZIP code for partial results:";
+const ADDRESS_LABEL = "Enter your address, city, or ZIP code to see which elections you can vote in:";
 const STORAGE_KEY = "voteapp_terms_acceptance";
 const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
 
