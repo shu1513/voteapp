@@ -37,8 +37,8 @@ export function FullAddressExplanation() {
                 </p>
                 <p>
                   Prefer not to share your address? Enter just your ZIP code or city instead:
-                  you’ll get a partial ballot for that area, and you can add your street address
-                  any time for the rest.
+                  you’ll get a partial ballot for that area. You can enter your street address
+                  later to see the remaining races.
                 </p>
                 <p>{ADDRESS_FIELD_PRIVACY_NOTE}</p>
                 <p>
