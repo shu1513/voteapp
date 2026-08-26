@@ -18,6 +18,10 @@ export type AddressResolution = {
   // ballot is for the first match, so the UI must flag the matched address.
   address_match_count: number;
   districts: ResolvedDistrict[];
+  // "exact" = geocoded street address, all district types. "zip" = partial
+  // ballot from a bare ZIP (statewide, plus county when the ZIP maps to one
+  // county) — the UI labels it partial and invites the street address.
+  scope: "exact" | "zip";
 };
 
 export type AddressSuggestion = {
@@ -38,10 +42,17 @@ export type AddressLocation = {
 
 export type AddressRetrieveResponse = {
   address: string;
-  // Place coordinates from Google, or null/absent when unavailable. Held in
-  // memory only and sent with resolve so venue addresses missing from the
-  // Census street data still find their districts. Never persisted.
+  // Place coordinates from Google, or null/absent when unavailable — and
+  // always null for coarse (zip/region) selections. Held in memory only and
+  // sent with resolve so venue addresses missing from the Census street data
+  // still find their districts. Never persisted.
   location?: AddressLocation | null;
+  // Server-side classification of the selected place. "zip" carries
+  // postal_code for the partial-ballot flow; "region" (city, neighborhood,
+  // road…) has no supported flow — the UI asks for an address or a ZIP.
+  // Optional so a stale API omitting it reads as today's "address".
+  granularity?: "address" | "zip" | "region";
+  postal_code?: string | null;
 };
 
 export type ResearchAreaSummary = {

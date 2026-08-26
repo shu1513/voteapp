@@ -14,7 +14,13 @@ export function ErrorNotice({ error }: { error: unknown }) {
   let message = "Something went wrong. Please try again.";
   if (error instanceof ApiError) {
     if (error.status === 422) {
-      message = "We couldn't find that address. Check the street, city, and state, then try again.";
+      // ZIP partial-path codes carry user-ready messages ("ZIP code 02861
+      // crosses state lines — enter a full street address"); the generic
+      // street-address copy would misdiagnose them.
+      message =
+        error.code.startsWith("zip_") || error.code === "full_address_required"
+          ? error.message
+          : "We couldn't find that address. Check the street, city, and state, then try again.";
     } else if (error.status === 429) {
       message = error.retryAfterSeconds
         ? `Too many requests. Please wait ${error.retryAfterSeconds} seconds and try again.`

@@ -30,7 +30,11 @@ import { consumeMatchedAddress, type MatchedAddressHandoff } from "../lib/matche
  */
 export default function BallotScreen() {
   const router = useRouter();
-  const params = useLocalSearchParams<{ d?: string }>();
+  const params = useLocalSearchParams<{ d?: string; partial?: string }>();
+  // Set by ZIP searches. A param, not the in-memory holder: it carries no
+  // location, and the partial label must survive remounts — same reasoning
+  // as the web's partial=1 URL param.
+  const isPartialBallot = params.partial === "1";
   const { savedAreaIds, hasSaved } = useMyResearchAreas();
   const [sort, setSort] = useState<BallotSort>("vote_power");
   // Filters: local state like sort — the screen stays mounted under a stack
@@ -84,13 +88,37 @@ export default function BallotScreen() {
       <Stack.Screen options={{ title: "Your ballot" }} />
       <Text className="text-2xl font-bold text-ink">Your ballot</Text>
 
-      {matchedAddress ? (
+      {/* Suppressed on partial ballots: the ZIP is not an address, and the
+          partial banner below already names it. */}
+      {matchedAddress && !isPartialBallot ? (
         <Text className="mt-1 text-sm text-ink-soft">
           Matched address: <Text className="font-medium text-ink">{matchedAddress}</Text>{" "}
           <Text className="underline" accessibilityRole="link" onPress={() => router.dismissTo("/")}>
             Not your address?
           </Text>
         </Text>
+      ) : null}
+      {/* Same partial-ballot label as the web ballot page. The ZIP itself is
+          the matched address from the in-memory holder; without it (screen
+          remount) the generic wording renders. */}
+      {isPartialBallot ? (
+        <View accessibilityRole="alert" className="mt-2 rounded-md border border-line bg-surface px-3 py-2">
+          <Text className="text-sm text-ink">
+            This is a partial ballot
+            {matchedAddress ? (
+              <>
+                {" "}for ZIP code <Text className="font-medium">{matchedAddress}</Text>
+              </>
+            ) : (
+              " from a ZIP code search"
+            )}
+            : it lists only the races every address in the ZIP shares.{" "}
+            <Text className="underline" accessibilityRole="link" onPress={() => router.dismissTo("/")}>
+              Enter your street address
+            </Text>{" "}
+            to check for additional congressional, legislative, local, and school races.
+          </Text>
+        </View>
       ) : null}
       {matchedAddress && ambiguousMatchCount ? (
         // Same warning as the web ballot page (role="alert" there).

@@ -10,7 +10,7 @@ import { PreSearchTermsSheet } from "../../components/PreSearchTermsSheet";
 import { ErrorNotice } from "../../components/Status";
 import { useLogout } from "../../lib/auth";
 import { setMatchedAddress } from "../../lib/matchedAddress";
-import { savePendingDistrictIds } from "../../lib/pendingDistricts";
+import { clearPendingDistrictIds, savePendingDistrictIds } from "../../lib/pendingDistricts";
 import { hasCurrentTermsAcceptance, rememberTermsAcceptance } from "../../lib/termsAcceptance";
 
 /**
@@ -83,6 +83,10 @@ export default function HomeScreen() {
   // completed autocomplete selection; any manual edit clears them — same
   // rule as the web home.
   const [addressLocation, setAddressLocation] = useState<AddressLocation | null>(null);
+  // True right after the autocomplete selection was an area (city,
+  // neighborhood, road) — no supported flow, so the form shows guidance.
+  // Any edit clears it — same rule as the web home.
+  const [regionSelected, setRegionSelected] = useState(false);
   const [addressExplanationVisible, setAddressExplanationVisible] = useState(false);
   const [termsVisible, setTermsVisible] = useState(false);
   // Set only while the visitor is off reading a linked document, so the sheet
@@ -105,6 +109,9 @@ export default function HomeScreen() {
         body: {
           address: input.address,
           accepted_terms_version: TERMS_VERSION,
+          // Opt in to the ZIP partial-ballot path: this build renders the
+          // partial banner and scope-aware errors — same as the web home.
+          allow_partial: true,
           ...(input.coordinates ? { coordinates: input.coordinates } : {}),
         },
       }),
@@ -115,7 +122,14 @@ export default function HomeScreen() {
       // while /api/me is still loading (me === undefined) a verified user's
       // one-off search must not re-arm the handoff. Same rule as the web.
       if (me === null || me?.email_verified === false) {
-        void savePendingDistrictIds(resolution.districts.map((district) => district.id));
+        if (resolution.scope === "exact") {
+          void savePendingDistrictIds(resolution.districts.map((district) => district.id));
+        } else {
+          // A partial (ZIP) result must not become a signed-up account's
+          // saved ballot; clearing keeps "last search wins" — same rule as
+          // the web home.
+          void clearPendingDistrictIds();
+        }
       }
       // Straight to the elections — the districts list is a detour nobody
       // asked for. The matched address goes through the in-memory holder,
@@ -131,7 +145,12 @@ export default function HomeScreen() {
       setAccepted(false);
       router.push({
         pathname: "/ballot",
-        params: { d: resolution.districts.map((district) => district.id).join(",") },
+        params: {
+          d: resolution.districts.map((district) => district.id).join(","),
+          // Unlike the address, the partial flag holds no location, so it
+          // may ride navigation params — same reasoning as the web URL.
+          ...(resolution.scope === "zip" ? { partial: "1" } : {}),
+        },
       });
     },
     onError: () => {
@@ -233,17 +252,25 @@ export default function HomeScreen() {
             {/* Instructional label for first-time visitors — same copy as
                 the web home. Signed-in surfaces keep "Your address". */}
             <Text className="text-sm font-medium text-ink">
-              Enter your address to see which elections you can vote in:
+              Enter your full address for complete results — or just your ZIP code for partial
+              results:
             </Text>
             <AddressAutocomplete
               value={address}
-              onChange={(value, location) => {
+              onChange={(value, location, granularity) => {
                 setAddress(value);
                 setAddressLocation(location ?? null);
+                setRegionSelected(granularity === "region");
               }}
               placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
-              accessibilityLabel="Enter your address to see which elections you can vote in:"
+              accessibilityLabel="Enter your full address for complete results — or just your ZIP code for partial results:"
             />
+            {regionSelected ? (
+              <Text accessibilityRole="alert" className="mt-1 text-xs text-rausch-dark">
+                That selection is an area, not an address. Pick a street address from the
+                suggestions — or enter just a ZIP code for partial results.
+              </Text>
+            ) : null}
             {/* Notice belongs at the field: the autocomplete forwards what is
                 typed after three characters, so collection starts while the
                 visitor types and long before Search. */}

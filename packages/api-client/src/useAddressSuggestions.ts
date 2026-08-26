@@ -19,17 +19,25 @@ import type { AddressAutocompleteResponse, AddressLocation, AddressRetrieveRespo
 export const SUGGEST_DEBOUNCE_MS = 125;
 export const SUGGEST_MIN_CHARS = 3;
 
+export type SelectedSuggestion = {
+  address: string;
+  location: AddressLocation | null;
+  /** Server-side classification (see AddressRetrieveResponse); a stale API
+   * omitting it reads as "address", matching its old behavior. */
+  granularity: "address" | "zip" | "region";
+  /** Five-digit ZIP when granularity is "zip"; null otherwise. */
+  postal_code: string | null;
+};
+
 export type UseAddressSuggestionsResult = {
   suggestions: AddressSuggestion[];
   /** False once the backend reports autocomplete is not configured. */
   enabled: boolean;
   onInputChanged: (text: string) => void;
   /** Resolves to the full address (plus the place's coordinates when Google
-   * provides them), or null when retrieve failed or was superseded by newer
-   * typing or another selection. */
-  selectSuggestion: (
-    suggestion: AddressSuggestion
-  ) => Promise<{ address: string; location: AddressLocation | null } | null>;
+   * provides them) and the server's granularity classification, or null when
+   * retrieve failed or was superseded by newer typing or another selection. */
+  selectSuggestion: (suggestion: AddressSuggestion) => Promise<SelectedSuggestion | null>;
   clearSuggestions: () => void;
   /** Call on input focus: warms connections before the first keystroke. */
   warmup: () => void;
@@ -149,7 +157,7 @@ export function useAddressSuggestions(): UseAddressSuggestionsResult {
 
   const selectSuggestion = useCallback(async (
     suggestion: AddressSuggestion
-  ): Promise<{ address: string; location: AddressLocation | null } | null> => {
+  ): Promise<SelectedSuggestion | null> => {
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
     }
@@ -177,7 +185,16 @@ export function useAddressSuggestions(): UseAddressSuggestionsResult {
         // district resolution. Drop it.
         return null;
       }
-      return { address: response.address, location: response.location ?? null };
+      const granularity =
+        response.granularity === "zip" || response.granularity === "region" ? response.granularity : "address";
+      return {
+        address: response.address,
+        // Belt and braces on top of the server's fail-closed rule: a coarse
+        // place's point must never ride into district resolution.
+        location: granularity === "address" ? (response.location ?? null) : null,
+        granularity,
+        postal_code: granularity === "zip" && typeof response.postal_code === "string" ? response.postal_code : null,
+      };
     } catch {
       // Retrieve failed; the user still has their typed text and can submit
       // it manually. The token stays dead either way — the session state is
