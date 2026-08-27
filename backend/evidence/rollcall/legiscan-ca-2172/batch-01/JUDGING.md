@@ -43,17 +43,20 @@ because filter 5 dropped the measures that would have.
 
 - **SB 627 is not a flat mask ban.** The statute exempts undercover and tactical operations,
   occupational health and safety law, protecting an identity during prosecution, and disability
-  accommodations; a translucent shield is not a "facial covering"; and an agency that posts a
-  compliant policy by 2026-07-01 exempts its personnel from the criminal penalty. The Texas SB 2972
-  lesson — **when a statute qualifies a ban, the description must carry the qualification** — so
-  the descriptions say "the exemptions are narrow" and name them, rather than "banned masks".
+  accommodations; a translucent shield is not a "facial covering"; and Section 185.5(f) exempts the
+  personnel of any agency that posts a compliant policy by 2026-07-01 from the criminal penalty
+  entirely. The Texas SB 2972 lesson — **when a statute qualifies a ban, the description must carry
+  the qualification** — so the descriptions name the operational exemptions AND the agency-policy
+  safe harbor (the first pass carried only the former; fixed on review, see below).
 - **SB 42 is conditional.** It was chaptered, but because it amends the voter-approved Political
   Reform Act its provisions only take effect if voters approve them on 2026-11-03. Saying it
   "became law" alone would be misleading, so both descriptions state the condition.
 - **AB 1319 sunsets.** The provisions go inoperative 2031-12-31 and are repealed 2032-01-01; the
   descriptions say so. It also shields entities operating under a federal biological opinion.
-- **SB 704's dealer checks start later than the bill.** The transfer rule applies on enactment, the
-  eligibility check and record-keeping from 2027-07-01. The descriptions carry both dates.
+- **SB 704's dealer checks start later than the rest.** SB 704 has no urgency clause, so as an
+  ordinary 2025 statute its transfer rule took effect 2026-01-01; only the eligibility check and
+  record-keeping wait until 2027-07-01. The descriptions carry the 2027 date and do not claim an
+  effective date for the rest.
 - **AB 692 applies prospectively** — contracts entered into on or after 2026-01-01, not existing
   ones.
 - **AB 325 has two distinct changes** (pleading standard; pricing algorithms), and the algorithm ban
@@ -94,3 +97,35 @@ all — AD-29 has no Nov-2026 election in our data, so he is one of the 88 expli
 watching in a later batch — this session is still live, with rolls as recent as 2026-08-20.
 
 Prod untouched.
+
+## Review response (2026-08-27) — 4 descriptions tightened, 119 records rewritten in place
+
+External review caught four descriptions that flattened enacted qualifications — the same failure
+class as Texas SB 2972. All four verified against the chaptered text and fixed:
+
+1. **SB 627** (P1): the first pass called the exemptions "narrow" and omitted the biggest one —
+   Section 185.5(f)'s safe harbor exempting the personnel of any agency that posts a compliant
+   facial-covering policy by 2026-07-01 from the criminal penalty. 30 records rewritten.
+2. **AB 495** (P2): "schools and child care providers must keep their immigration-enforcement
+   policies current" overstated the child-care half. The keep-policies-current duty binds local
+   educational agencies; licensed child daycare facilities instead get an immigration-status
+   information-collection ban plus duties to report law-enforcement requests and maintain emergency
+   contacts (digest item (4)). 32 records rewritten.
+3. **AB 692** (P2): the ban on stay-or-pay terms has five enacted exception classes — government
+   loan-repayment/forgiveness programs, qualifying transferable-credential tuition contracts,
+   approved apprenticeships, qualifying discretionary signing bonuses, and residential-property
+   contracts. The descriptions now say so. 26 records rewritten.
+4. **SB 704** (P2): the dealer-transfer rule has eight enacted exemption classes; the descriptions
+   now name the principal ones (law enforcement, military, licensed dealers and curio collectors,
+   estates, attached barrels, same-transaction firearm purchases). 31 records rewritten. The P3
+   note-only error ("applies on enactment" — no urgency clause, so 2026-01-01) is fixed above.
+
+**Rewrite ledger:** `rollcall:judge` 8 `updated` / 12 `unchanged`; import dry run planned 119
+rewrites / 179 unchanged; the real run rewrote all 119 (one transient `citation URL fetch timed
+out` on roll 1602473 made the first attempt report 19 imported / 1 error with all 119 rewrites
+already applied; the immediate re-run was 20 `imported` / 298 `unchanged` / 0 errors). Row count
+unchanged at 298 / 33 candidates. **The batch now spans two stamps** (a rewrite re-stamps
+`origin_run_id`, the TX batch-02 mechanic): 179 rows at `2026-08-27T01:50:49.334Z` + 119 at
+`2026-08-27T21:12:30.294Z` — batch predicates must group both. Verified per-fix record counts:
+SB 627 = 30, AB 495 = 32, AB 692 = 26, SB 704 = 31 (sum 119).
+
