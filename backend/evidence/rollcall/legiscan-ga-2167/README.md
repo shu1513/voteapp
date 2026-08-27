@@ -46,3 +46,40 @@ as resolution-typed measures; 8 surfaced unknown; 0 small-tally.
 **196 divided floor votes** (House 88 / Senate 108) under the phase-2 gate
 `LEAST(yea,nay) >= GREATEST(yea,nay)/4`; **115 of them are on measures that
 became law**, spanning 68 distinct measures. That is the batch worklist.
+
+## Crosswalk (2026-08-26)
+
+`crosswalk.json` — **242 entries: 208 mapped, 34 explicit null.** The proposer produced 196
+(193 exact first+last, 3 first-prefix); all were accepted, including three `seatAgrees:false`
+pairs that are sitting House members running for the Senate (Will Wade HD-009 → SD-51, Saira
+Draper HD-090 → SD-44, Ruwa Romman HD-097 → SD-7), each confirmed against the candidate row's
+party and profile.
+
+**12 hand-added in three classes the proposer cannot reach:**
+
+- 6 name variants — the snapshot's `first_name` is a legal name the candidate does not use
+  (`Hugh` for Bruce Williamson, whose `Bruce` sits in the nickname field the proposer does not
+  read; `Homer` DeLoach, `Butch`/`Larry` Parrish, `James`/`Matt` Hatchett), a nickname that is
+  not a prefix (`Angie` vs `Angela` O'Steen), or the candidate's first token is an extra given
+  name (`Muhammad` Akbar Ali). Every one was confirmed by seat **and** party.
+- 5 sitting legislators running outside the state-legislative pool — Tim Fleming (HD-114 →
+  Secretary of State), Tanya Miller (HD-062 → Attorney General), Brian Strickland (SD-042 →
+  Attorney General), Greg Dolezal (SD-027 → Lieutenant Governor), Josh McLaurin (SD-014 →
+  Lieutenant Governor). These are the highest-value entries and the proposer cannot see them
+  by design.
+- 1 combined name-and-seat change — Teddy Reese. His SD-15 candidacy IS in the pool
+  (`state_upper`), but the snapshot's `first_name` is the legal `Tremaine` (`Teddy` is the
+  nickname) and his seat changed HD-140 → SD-15, so neither the name rule nor seat
+  corroboration could reach him.
+
+Validation over all 2,362 stored rolls: matched **216,752** / unmatched_reviewed 28,363 /
+`no_crosswalk` **0** / `out_of_scope` **0**, 0 file errors, 0 zero-match rolls. Fan-out size:
+**median 149 matched candidates per House roll, 42 per Senate roll** (Texas was 114 / 13).
+
+`proposals-report.json` is the proposal pass only. The full-resolution report is 8 MB and is
+never committed; it lives with the dataset under `/Users/shu/legiscan-data/`.
+
+## Batches
+
+- `batch-01/` — 18 rolls / 10 marquee enacted measures / 1,725 records, imported to local
+  `voteapp` 2026-08-26. See `batch-01/PLAN.md` and `batch-01/JUDGING.md`.

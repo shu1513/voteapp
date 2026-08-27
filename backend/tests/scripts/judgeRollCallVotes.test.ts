@@ -22,6 +22,14 @@ describe("parseJudgmentsFile", () => {
     expect(parseJudgmentsFile({ judgments: [{ ...ENTRY, measure_id: null, review_status: "pending" }] }, SLUGS)[0]?.measureId).toBeNull();
   });
 
+  it("carries an official_vote_date override, defaulting to none", () => {
+    expect(parseJudgmentsFile({ judgments: [ENTRY] }, SLUGS)[0]?.officialVoteDate).toBeNull();
+    expect(parseJudgmentsFile({ judgments: [{ ...ENTRY, official_vote_date: null }] }, SLUGS)[0]?.officialVoteDate).toBeNull();
+    expect(
+      parseJudgmentsFile({ judgments: [{ ...ENTRY, official_vote_date: "2025-05-23" }] }, SLUGS)[0]?.officialVoteDate
+    ).toBe("2025-05-23");
+  });
+
   it("turns a file entry into the store's judgment shape", () => {
     expect(parseJudgmentsFile({ judgments: [ENTRY] }, SLUGS)).toEqual([
       {
@@ -31,6 +39,7 @@ describe("parseJudgmentsFile", () => {
         rollNumber: 145,
         measureId: "H R 1",
         voteDate: "2025-05-22",
+        officialVoteDate: null,
         yeaDescription: ENTRY.yea_description,
         nayDescription: ENTRY.nay_description,
         labels: [
@@ -54,6 +63,8 @@ describe("parseJudgmentsFile", () => {
       [{ judgments: [{ ...ENTRY, measure_id: undefined }] }, /measure_id must be a non-empty string, or null/],
       [{ judgments: [{ ...ENTRY, measure_id: " " }] }, /measure_id must be a non-empty string, or null/],
       [{ judgments: [{ ...ENTRY, vote_date: "May 22, 2025" }] }, /vote_date must be an ISO date/],
+      [{ judgments: [{ ...ENTRY, official_vote_date: "6/1/2026" }] }, /official_vote_date must be an ISO date/],
+      [{ judgments: [{ ...ENTRY, official_vote_date: "2025-05-22" }] }, /official_vote_date equals vote_date/],
       [{ judgments: [{ ...ENTRY, review_status: "rejected" }] }, /review_status must be one of pending, approved/],
       [{ judgments: [{ ...ENTRY, nay_description: " " }] }, /nay_description must be a non-empty string/],
       [{ judgments: [{ ...ENTRY, nay_description: ENTRY.yea_description.toUpperCase() }] }, /same sentence/],

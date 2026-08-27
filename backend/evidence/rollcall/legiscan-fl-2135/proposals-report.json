@@ -1,0 +1,1527 @@
+{
+  "importerVersion": "rollcall-legiscan-resolve-v1",
+  "startedAt": "2026-08-27T01:08:31.472Z",
+  "finishedAt": "2026-08-27T01:08:31.617Z",
+  "jurisdiction": "FL",
+  "sessionId": 2135,
+  "evidenceDir": "/Users/shu/legiscan-data/fl-2135-evidence",
+  "scopeFrom": "2026-11-01",
+  "peopleSource": "/Users/shu/voteApp/.claude/worktrees/caveman-ultra-8f7bde/backend/evidence/rollcall/legiscan-fl-2135/legiscan-people-fl-2135.json",
+  "peopleMembers": 162,
+  "candidatePool": 125,
+  "crosswalkFile": null,
+  "crosswalkEntries": null,
+  "crosswalkPeopleNotInSnapshot": [],
+  "proposals": [
+    {
+      "peopleId": 1622,
+      "rosterName": "Mackenson Bernard",
+      "rosterSeat": "senate SD-024",
+      "candidateId": "e48ba822-e1fa-47f9-8940-d09ab493b94c",
+      "candidateName": "Mack Bernard",
+      "candidacy": "state_upper: State Senate District 24 (2024); Florida",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16389,
+      "rosterName": "Colleen Burton",
+      "rosterSeat": "senate SD-012",
+      "candidateId": "21471af8-a4c0-4097-9301-96a9e7881914",
+      "candidateName": "Colleen Burton",
+      "candidacy": "state_upper: State Senate District 12 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16763,
+      "rosterName": "Jay Trumbull",
+      "rosterSeat": "senate SD-002",
+      "candidateId": "8021f9e0-52c0-476d-918f-fa124c8d491b",
+      "candidateName": "Jay Trumbull",
+      "candidacy": "state_upper: State Senate District 2 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19070,
+      "rosterName": "Clay Yarborough",
+      "rosterSeat": "senate SD-004",
+      "candidateId": "a21c1bf6-a8a1-40a5-8ca5-e5c18bc57c93",
+      "candidateName": "Clay Yarborough",
+      "candidacy": "state_upper: State Senate District 4 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19703,
+      "rosterName": "Josie Tomkow",
+      "rosterSeat": "house HD-051",
+      "candidateId": "37d58a74-1157-4d30-bd0a-47e77cd0e8c5",
+      "candidateName": "Josie Tomkow",
+      "candidacy": "state_upper: State Senate District 14 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 20905,
+      "rosterName": "Ana Rodriguez",
+      "rosterSeat": "senate SD-040",
+      "candidateId": "3ac25543-06d8-4de3-814d-a13f4037338a",
+      "candidateName": "Ana Maria Rodriguez",
+      "candidacy": "state_upper: State Senate District 40 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21381,
+      "rosterName": "Dan Daley",
+      "rosterSeat": "house HD-096",
+      "candidateId": "1a988826-bb82-458f-948b-4357f71d135b",
+      "candidateName": "Dan Daley",
+      "candidacy": "state_lower: State House District 96 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21391,
+      "rosterName": "Jason Shoaf",
+      "rosterSeat": "house HD-007",
+      "candidateId": "ca4b84f6-88db-447b-a520-f5342b7deb55",
+      "candidateName": "Jason Shoaf",
+      "candidacy": "state_lower: State House District 7 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21701,
+      "rosterName": "Robin Bartleman",
+      "rosterSeat": "house HD-103",
+      "candidateId": "63e888ab-4779-4b25-b9ca-2080b4ff7174",
+      "candidateName": "Robin Bartleman",
+      "candidacy": "state_lower: State House District 103 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21739,
+      "rosterName": "Linda Chaney",
+      "rosterSeat": "house HD-061",
+      "candidateId": "8719bfe0-2e77-41cf-8e9f-d3e79f31eff9",
+      "candidateName": "Linda Chaney",
+      "candidacy": "state_lower: State House District 61 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21758,
+      "rosterName": "David Borrero",
+      "rosterSeat": "house HD-111",
+      "candidateId": "39fdacff-fff7-4266-9158-2a411fd777ff",
+      "candidateName": "David Borrero",
+      "candidacy": "state_lower: State House District 111 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21775,
+      "rosterName": "Ileana Garcia",
+      "rosterSeat": "senate SD-036",
+      "candidateId": "4c8f40d7-a40d-405f-8de9-aae5c34467b0",
+      "candidateName": "Ileana Garcia",
+      "candidacy": "state_upper: State Senate District 36 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21888,
+      "rosterName": "Christine Hunschofsky",
+      "rosterSeat": "house HD-095",
+      "candidateId": "8004c7b5-4f27-4b00-bee8-ba0f077f83ab",
+      "candidateName": "Christine Hunschofsky",
+      "candidacy": "state_lower: State House District 95 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21892,
+      "rosterName": "Sam Garrison",
+      "rosterSeat": "house HD-011",
+      "candidateId": "6c7626b4-b0a6-4fff-8f03-97139891b5fd",
+      "candidateName": "Sam Garrison",
+      "candidacy": "state_lower: State House District 11 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21983,
+      "rosterName": "John Snyder",
+      "rosterSeat": "house HD-086",
+      "candidateId": "456d8ade-bbec-4226-a774-eca410fcf89f",
+      "candidateName": "John Snyder",
+      "candidacy": "state_lower: State House District 86 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22022,
+      "rosterName": "Mike Giallombardo",
+      "rosterSeat": "house HD-079",
+      "candidateId": "6ce2450d-05f2-4724-a261-bb78a11a7a3c",
+      "candidateName": "Mike Giallombardo",
+      "candidacy": "state_lower: State House District 79 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22167,
+      "rosterName": "Michelle Salzman",
+      "rosterSeat": "house HD-001",
+      "candidateId": "999857e6-30c5-491f-a72e-17da4c3c41f9",
+      "candidateName": "Michelle Salzman",
+      "candidacy": "state_lower: State House District 1 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22173,
+      "rosterName": "Marie Woodson",
+      "rosterSeat": "house HD-105",
+      "candidateId": "3988e84f-1c35-4a00-af93-b3cc4a4bd7a3",
+      "candidateName": "Marie Paule Woodson",
+      "candidacy": "state_lower: State House District 105 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22261,
+      "rosterName": "Adam Botana",
+      "rosterSeat": "house HD-080",
+      "candidateId": "82937afb-9562-422f-8a79-aacd09e63765",
+      "candidateName": "Adam Botana",
+      "candidacy": "state_lower: State House District 80 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22529,
+      "rosterName": "Fiona McFarland",
+      "rosterSeat": "house HD-073",
+      "candidateId": "eb5266f9-5a22-42db-b2ef-b7915eb5f6e9",
+      "candidateName": "Fiona McFarland",
+      "candidacy": "state_lower: State House District 73 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22559,
+      "rosterName": "Patt Maney",
+      "rosterSeat": "house HD-004",
+      "candidateId": "513dfa2c-77c2-413a-a9a9-9f15a50e06a0",
+      "candidateName": "T. Patterson Maney",
+      "candidacy": "state_lower: State House District 4 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22580,
+      "rosterName": "Jim Mooney",
+      "rosterSeat": "house HD-120",
+      "candidateId": "12eaa446-1ad6-49a6-b159-f7b408656b25",
+      "candidateName": "James Vernon \"Jim\" Mooney Jr.",
+      "candidacy": "state_lower: State House District 120 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22660,
+      "rosterName": "Webster Barnaby",
+      "rosterSeat": "house HD-029",
+      "candidateId": "28d27330-f3de-4f7e-8a3d-b952a3976d77",
+      "candidateName": "Webster Barnaby",
+      "candidacy": "state_lower: State House District 29 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22662,
+      "rosterName": "Kaylee Tuck",
+      "rosterSeat": "house HD-083",
+      "candidateId": "ee9dedbe-75ad-4daf-bc75-1db2c3978d01",
+      "candidateName": "Kaylee Tuck",
+      "candidacy": "state_lower: State House District 83 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22672,
+      "rosterName": "Lauren Melo",
+      "rosterSeat": "house HD-082",
+      "candidateId": "b305486e-3b4a-405c-b8ba-c0bb76aa09c7",
+      "candidateName": "Lauren Melo",
+      "candidacy": "state_upper: State Senate District 28 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 22722,
+      "rosterName": "Traci Koster",
+      "rosterSeat": "house HD-066",
+      "candidateId": "1b3c9d5a-fb31-4e6d-abd2-fa56360d70c1",
+      "candidateName": "Traci Koster",
+      "candidacy": "state_lower: State House District 66 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22852,
+      "rosterName": "Jennifer Bradley",
+      "rosterSeat": "senate SD-006",
+      "candidateId": "c4737951-b19f-4989-8b75-72da7b7a0351",
+      "candidateName": "Jennifer Bradley",
+      "candidacy": "state_upper: State Senate District 6 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23066,
+      "rosterName": "Daryl Campbell",
+      "rosterSeat": "house HD-099",
+      "candidateId": "941cf774-55ff-487c-9b84-d4cdb736342e",
+      "candidateName": "Daryl Nevroy Campbell",
+      "candidacy": "state_lower: State House District 99 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23116,
+      "rosterName": "Jervonte Edmonds",
+      "rosterSeat": "house HD-088",
+      "candidateId": "b028226d-cac2-4913-9a7d-55d2d1f65267",
+      "candidateName": "Jervonte \"Tae\" Edmonds",
+      "candidacy": "state_lower: State House District 88 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23121,
+      "rosterName": "Rosalind Osgood",
+      "rosterSeat": "senate SD-032",
+      "candidateId": "f1139f62-5aa7-4ad0-a4b6-d150d88ef029",
+      "candidateName": "Rosalind Osgood",
+      "candidacy": "state_upper: State Senate District 32 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23317,
+      "rosterName": "Hillary Cassel",
+      "rosterSeat": "house HD-101",
+      "candidateId": "31f46f82-e416-4697-8544-4b1b36f9d68e",
+      "candidateName": "Hillary Cassel",
+      "candidacy": "state_lower: State House District 101 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23320,
+      "rosterName": "Alexis Calatayud",
+      "rosterSeat": "senate SD-038",
+      "candidateId": "e0c0c169-beb3-4468-b125-757df092a818",
+      "candidateName": "Alexis Calatayud",
+      "candidacy": "state_upper: State Senate District 38 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23328,
+      "rosterName": "Lisa Dunkley",
+      "rosterSeat": "house HD-097",
+      "candidateId": "f811bb79-dbf8-4292-96fd-09d1aeb98f22",
+      "candidateName": "Lisa Dunkley",
+      "candidacy": "state_lower: State House District 97 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23332,
+      "rosterName": "Chase Tramont",
+      "rosterSeat": "house HD-030",
+      "candidateId": "60eb147f-d2ae-425b-8d09-7c0823152c0f",
+      "candidateName": "Chase Tramont",
+      "candidacy": "state_lower: State House District 30 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23339,
+      "rosterName": "Kimberly Berfield",
+      "rosterSeat": "house HD-058",
+      "candidateId": "54182a8a-fa90-4abd-9d20-b8952b4e079b",
+      "candidateName": "Kimberly Berfield",
+      "candidacy": "state_lower: State House District 58 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23343,
+      "rosterName": "Shane Abbott",
+      "rosterSeat": "house HD-005",
+      "candidateId": "c12c516d-e0f3-4e1d-a719-870f78e1063b",
+      "candidateName": "Shane Abbott",
+      "candidacy": "state_lower: State House District 5 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23344,
+      "rosterName": "Daniel Alvarez",
+      "rosterSeat": "house HD-069",
+      "candidateId": "731af163-3098-4320-8361-2ab307918e27",
+      "candidateName": "Daniel \"Danny\" Alvarez",
+      "candidacy": "state_lower: State House District 69 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23348,
+      "rosterName": "Jennifer Canady",
+      "rosterSeat": "house HD-050",
+      "candidateId": "6323dcd9-8521-4aec-89f5-284be154d991",
+      "candidateName": "Jennifer Canady",
+      "candidacy": "state_lower: State House District 50 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23350,
+      "rosterName": "Karen Gonzalez Pittman",
+      "rosterSeat": "house HD-065",
+      "candidateId": "16e3ffc9-0e3e-4220-88e0-4f8d39bd11e7",
+      "candidateName": "Karen Gonzalez Pittman",
+      "candidacy": "state_lower: State House District 65 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23351,
+      "rosterName": "Peggy Gossett-Seidman",
+      "rosterSeat": "house HD-091",
+      "candidateId": "7b50476c-8355-4a13-8cd7-0ee201156d03",
+      "candidateName": "Peggy Gossett-Seidman",
+      "candidacy": "state_lower: State House District 91 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23354,
+      "rosterName": "Berny Jacques",
+      "rosterSeat": "house HD-059",
+      "candidateId": "3509a73c-629a-4b21-b71a-411c772a1388",
+      "candidateName": "Berny Jacques",
+      "candidacy": "state_lower: State House District 59 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23355,
+      "rosterName": "Kiyan Michael",
+      "rosterSeat": "house HD-016",
+      "candidateId": "a45cdfc9-c000-4bf0-88e7-af5366335566",
+      "candidateName": "Kiyan Michael",
+      "candidacy": "state_lower: State House District 16 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23356,
+      "rosterName": "Juan Porras",
+      "rosterSeat": "house HD-119",
+      "candidateId": "6e81b17f-25e2-46bb-9cae-7c42b3238d08",
+      "candidateName": "Juan Carlos Porras",
+      "candidacy": "state_lower: State House District 119 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23359,
+      "rosterName": "Adam Anderson",
+      "rosterSeat": "house HD-057",
+      "candidateId": "63c4fcc5-2f90-41a3-9299-2209c6443de4",
+      "candidateName": "Adam C. Anderson",
+      "candidacy": "state_lower: State House District 57 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23361,
+      "rosterName": "Gallop Franklin",
+      "rosterSeat": "house HD-008",
+      "candidateId": "89f18519-b94d-4e88-bde9-b908cb0d5d09",
+      "candidateName": "Gallop Franklin",
+      "candidacy": "state_lower: State House District 8 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25366,
+      "rosterName": "Wallace Aristide",
+      "rosterSeat": "house HD-107",
+      "candidateId": "d70202eb-d487-4700-b45c-27919d31d0c8",
+      "candidateName": "Wallace Aristide",
+      "candidacy": "state_lower: State House District 107 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25367,
+      "rosterName": "Yvette Benarroch",
+      "rosterSeat": "house HD-081",
+      "candidateId": "fa8100cc-98ab-445f-8d1e-703e617867d7",
+      "candidateName": "Yvette Benarroch",
+      "candidacy": "state_lower: State House District 81 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25368,
+      "rosterName": "Omar Blanco",
+      "rosterSeat": "house HD-115",
+      "candidateId": "b90bf1c9-7806-4678-8616-dfe73b5bf9ff",
+      "candidateName": "Omar Blanco",
+      "candidacy": "state_lower: State House District 115 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25369,
+      "rosterName": "Erika Booth",
+      "rosterSeat": "house HD-035",
+      "candidateId": "e5599112-ef26-4e68-af67-fa9f95ab6185",
+      "candidateName": "Erika Booth",
+      "candidacy": "state_lower: State House District 35 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25370,
+      "rosterName": "Nan Cobb",
+      "rosterSeat": "house HD-026",
+      "candidateId": "d16332e4-ebd7-4eae-91d9-be59f655b7fd",
+      "candidateName": "Nan Cobb",
+      "candidacy": "state_lower: State House District 26 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25373,
+      "rosterName": "Anne Gerwig",
+      "rosterSeat": "house HD-093",
+      "candidateId": "c69c598a-847d-447c-b756-188e5d66b101",
+      "candidateName": "Anne Gerwig",
+      "candidacy": "state_lower: State House District 93 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25374,
+      "rosterName": "Sam Greco",
+      "rosterSeat": "house HD-019",
+      "candidateId": "1c361b3d-8b5e-4fb1-92cc-c09947c9ebab",
+      "candidateName": "Sam Greco",
+      "candidacy": "state_lower: State House District 19 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25378,
+      "rosterName": "Jennifer Kincart Jonsson",
+      "rosterSeat": "house HD-049",
+      "candidateId": "6262a7a7-2192-472f-a558-fedb329652a8",
+      "candidateName": "Jennifer Kincart Jonsson",
+      "candidacy": "state_lower: State House District 49 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25383,
+      "rosterName": "Bill Partington",
+      "rosterSeat": "house HD-028",
+      "candidateId": "9701e853-ffb8-49b0-90d2-403b1afa97b8",
+      "candidateName": "Bill Partington",
+      "candidacy": "state_lower: State House District 28 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25385,
+      "rosterName": "Judson Sapp",
+      "rosterSeat": "house HD-020",
+      "candidateId": "20e3a776-176d-41d1-a86a-715064c8b2e3",
+      "candidateName": "Judson Sapp",
+      "candidacy": "state_lower: State House District 20 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25386,
+      "rosterName": "Leonard Spencer",
+      "rosterSeat": "house HD-045",
+      "candidateId": "79a2d581-1406-432f-ae98-ea9176feeb72",
+      "candidateName": "Leonard Spencer",
+      "candidacy": "state_lower: State House District 45 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25388,
+      "rosterName": "Meg Weinberger",
+      "rosterSeat": "house HD-094",
+      "candidateId": "4ea5d168-59e3-4c9a-8eea-272d7739975a",
+      "candidateName": "Megan Weinberger",
+      "candidacy": "state_lower: State House District 94 (2024); Florida",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26477,
+      "rosterName": "Nathan Boyles",
+      "rosterSeat": "house HD-003",
+      "candidateId": "d1f7fab3-b4e2-4090-afeb-2b6788c81a37",
+      "candidateName": "Nathan Boyles",
+      "candidacy": "state_lower: State House District 3 (2024); Florida",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    }
+  ],
+  "unmatchedPeople": [
+    {
+      "peopleId": 12360,
+      "name": "Ben Albritton",
+      "seat": "senate SD-027"
+    },
+    {
+      "peopleId": 12363,
+      "name": "Lori Berman",
+      "seat": "senate SD-026"
+    },
+    {
+      "peopleId": 12366,
+      "name": "Jason Brodeur",
+      "seat": "senate SD-010"
+    },
+    {
+      "peopleId": 12379,
+      "name": "Gayle Harrell",
+      "seat": "senate SD-031"
+    },
+    {
+      "peopleId": 12387,
+      "name": "Kathleen Passidomo",
+      "seat": "senate SD-028"
+    },
+    {
+      "peopleId": 15947,
+      "name": "Bruce Antone",
+      "seat": "house HD-041"
+    },
+    {
+      "peopleId": 16026,
+      "name": "Shevrin Jones",
+      "seat": "senate SD-034"
+    },
+    {
+      "peopleId": 16595,
+      "name": "Daniel Burgess",
+      "seat": "senate SD-023"
+    },
+    {
+      "peopleId": 1664,
+      "name": "Ed Hooper",
+      "seat": "senate SD-021"
+    },
+    {
+      "peopleId": 1678,
+      "name": "Debbie Mayfield",
+      "seat": "house HD-032"
+    },
+    {
+      "peopleId": 1706,
+      "name": "Darryl Rouson",
+      "seat": "senate SD-016"
+    },
+    {
+      "peopleId": 17099,
+      "name": "Blaise Ingoglia",
+      "seat": "senate SD-011"
+    },
+    {
+      "peopleId": 1714,
+      "name": "Kelly Skidmore",
+      "seat": "house HD-092"
+    },
+    {
+      "peopleId": 17173,
+      "name": "Bryan Avila",
+      "seat": "senate SD-039"
+    },
+    {
+      "peopleId": 1720,
+      "name": "Geraldine Thompson",
+      "seat": "senate SD-015"
+    },
+    {
+      "peopleId": 1749,
+      "name": "Don Gaetz",
+      "seat": "senate SD-001"
+    },
+    {
+      "peopleId": 17676,
+      "name": "Jim Boyd",
+      "seat": "senate SD-020"
+    },
+    {
+      "peopleId": 18057,
+      "name": "Joe Gruters",
+      "seat": "senate SD-022"
+    },
+    {
+      "peopleId": 19017,
+      "name": "Randy Fine",
+      "seat": "senate SD-019"
+    },
+    {
+      "peopleId": 19040,
+      "name": "Kimberly Daniels",
+      "seat": "house HD-014"
+    },
+    {
+      "peopleId": 19047,
+      "name": "Tom Leek",
+      "seat": "senate SD-007"
+    },
+    {
+      "peopleId": 19064,
+      "name": "Erin Grall",
+      "seat": "senate SD-029"
+    },
+    {
+      "peopleId": 19069,
+      "name": "Stan McClain",
+      "seat": "senate SD-009"
+    },
+    {
+      "peopleId": 19218,
+      "name": "Tracie Davis",
+      "seat": "senate SD-005"
+    },
+    {
+      "peopleId": 19337,
+      "name": "Carlos Smith",
+      "seat": "senate SD-017"
+    },
+    {
+      "peopleId": 19426,
+      "name": "Daniel Perez",
+      "seat": "house HD-116"
+    },
+    {
+      "peopleId": 19490,
+      "name": "Lawrence McClure",
+      "seat": "house HD-068"
+    },
+    {
+      "peopleId": 19698,
+      "name": "Tyler Sirois",
+      "seat": "house HD-031"
+    },
+    {
+      "peopleId": 19701,
+      "name": "Anna Eskamani",
+      "seat": "house HD-042"
+    },
+    {
+      "peopleId": 19738,
+      "name": "Will Robinson",
+      "seat": "house HD-071"
+    },
+    {
+      "peopleId": 19912,
+      "name": "Chuck Brannan",
+      "seat": "house HD-010"
+    },
+    {
+      "peopleId": 19919,
+      "name": "Alex Andrade",
+      "seat": "house HD-002"
+    },
+    {
+      "peopleId": 19940,
+      "name": "Tina Polsky",
+      "seat": "senate SD-030"
+    },
+    {
+      "peopleId": 19954,
+      "name": "Tommy Wright",
+      "seat": "senate SD-008"
+    },
+    {
+      "peopleId": 19960,
+      "name": "Susan Valdes",
+      "seat": "house HD-064"
+    },
+    {
+      "peopleId": 20006,
+      "name": "Joseph Casello",
+      "seat": "house HD-090"
+    },
+    {
+      "peopleId": 20358,
+      "name": "Dotie Joseph",
+      "seat": "house HD-108"
+    },
+    {
+      "peopleId": 20418,
+      "name": "Toby Overdorf",
+      "seat": "house HD-085"
+    },
+    {
+      "peopleId": 20422,
+      "name": "Dianne Hart",
+      "seat": "house HD-063"
+    },
+    {
+      "peopleId": 20540,
+      "name": "Michael Gottlieb",
+      "seat": "house HD-102"
+    },
+    {
+      "peopleId": 20632,
+      "name": "Jason Pizzo",
+      "seat": "senate SD-037"
+    },
+    {
+      "peopleId": 20836,
+      "name": "Wyman Duggan",
+      "seat": "house HD-012"
+    },
+    {
+      "peopleId": 20907,
+      "name": "Chip LaMarca",
+      "seat": "house HD-100"
+    },
+    {
+      "peopleId": 20953,
+      "name": "David Smith",
+      "seat": "house HD-038"
+    },
+    {
+      "peopleId": 20958,
+      "name": "Mike Caruso",
+      "seat": "house HD-087"
+    },
+    {
+      "peopleId": 21024,
+      "name": "James Buchanan",
+      "seat": "house HD-074"
+    },
+    {
+      "peopleId": 21025,
+      "name": "Nick DiCeglie",
+      "seat": "senate SD-018"
+    },
+    {
+      "peopleId": 21029,
+      "name": "Fentrice Driskell",
+      "seat": "house HD-067"
+    },
+    {
+      "peopleId": 21380,
+      "name": "Randy Maggard",
+      "seat": "house HD-054"
+    },
+    {
+      "peopleId": 21700,
+      "name": "Allison Tant",
+      "seat": "house HD-009"
+    },
+    {
+      "peopleId": 21780,
+      "name": "Kristen Arrington",
+      "seat": "senate SD-025"
+    },
+    {
+      "peopleId": 21781,
+      "name": "Thomas Fabricio",
+      "seat": "house HD-110"
+    },
+    {
+      "peopleId": 21782,
+      "name": "Alejandro Rizo",
+      "seat": "house HD-112"
+    },
+    {
+      "peopleId": 21887,
+      "name": "Yvonne Hayes Hinson",
+      "seat": "house HD-021"
+    },
+    {
+      "peopleId": 21920,
+      "name": "Michele Rayner-Goolsby",
+      "seat": "house HD-062"
+    },
+    {
+      "peopleId": 22129,
+      "name": "Dana Trabulsy",
+      "seat": "house HD-084"
+    },
+    {
+      "peopleId": 22207,
+      "name": "Jenna Persons-Mulicka",
+      "seat": "house HD-078"
+    },
+    {
+      "peopleId": 22415,
+      "name": "Keith Truenow",
+      "seat": "senate SD-013"
+    },
+    {
+      "peopleId": 22512,
+      "name": "Felicia Simone Robinson",
+      "seat": "house HD-104"
+    },
+    {
+      "peopleId": 22516,
+      "name": "Kevin Chambliss",
+      "seat": "house HD-117"
+    },
+    {
+      "peopleId": 22527,
+      "name": "Demi Busatta Cabrera",
+      "seat": "house HD-114"
+    },
+    {
+      "peopleId": 22550,
+      "name": "Angela Nixon",
+      "seat": "house HD-013"
+    },
+    {
+      "peopleId": 23295,
+      "name": "Joel Rudman",
+      "seat": "house HD-003"
+    },
+    {
+      "peopleId": 23318,
+      "name": "Johanna Lopez",
+      "seat": "house HD-043"
+    },
+    {
+      "peopleId": 23319,
+      "name": "Vicki Lopez",
+      "seat": "house HD-113"
+    },
+    {
+      "peopleId": 23321,
+      "name": "Jonathan Martin",
+      "seat": "senate SD-033"
+    },
+    {
+      "peopleId": 23322,
+      "name": "Jennifer Harris",
+      "seat": "house HD-044"
+    },
+    {
+      "peopleId": 23323,
+      "name": "LaVon Bracy Davis",
+      "seat": "house HD-040"
+    },
+    {
+      "peopleId": 23324,
+      "name": "Jay Collins",
+      "seat": "senate SD-014"
+    },
+    {
+      "peopleId": 23325,
+      "name": "Corey Simon",
+      "seat": "senate SD-003"
+    },
+    {
+      "peopleId": 23327,
+      "name": "Lindsay Cross",
+      "seat": "house HD-060"
+    },
+    {
+      "peopleId": 23329,
+      "name": "Ashley Gantt",
+      "seat": "house HD-109"
+    },
+    {
+      "peopleId": 23331,
+      "name": "Kevin Steele",
+      "seat": "house HD-055"
+    },
+    {
+      "peopleId": 23333,
+      "name": "Brad Yeager",
+      "seat": "house HD-056"
+    },
+    {
+      "peopleId": 23338,
+      "name": "Doug Bankson",
+      "seat": "house HD-039"
+    },
+    {
+      "peopleId": 23341,
+      "name": "Fabian Basabe",
+      "seat": "house HD-106"
+    },
+    {
+      "peopleId": 23346,
+      "name": "Dean Black",
+      "seat": "house HD-015"
+    },
+    {
+      "peopleId": 23347,
+      "name": "Robert Brackett",
+      "seat": "house HD-034"
+    },
+    {
+      "peopleId": 23349,
+      "name": "Tiffany Esposito",
+      "seat": "house HD-077"
+    },
+    {
+      "peopleId": 23352,
+      "name": "Philip Griffitts",
+      "seat": "house HD-006"
+    },
+    {
+      "peopleId": 23353,
+      "name": "Jeff Holcomb",
+      "seat": "house HD-053"
+    },
+    {
+      "peopleId": 23357,
+      "name": "John Temple",
+      "seat": "house HD-052"
+    },
+    {
+      "peopleId": 23358,
+      "name": "Taylor Yarkosky",
+      "seat": "house HD-025"
+    },
+    {
+      "peopleId": 23360,
+      "name": "Jessica Baker",
+      "seat": "house HD-017"
+    },
+    {
+      "peopleId": 24808,
+      "name": "Rachel Plakon",
+      "seat": "house HD-036"
+    },
+    {
+      "peopleId": 24809,
+      "name": "Susan Plasencia",
+      "seat": "house HD-037"
+    },
+    {
+      "peopleId": 24810,
+      "name": "Paula Stark",
+      "seat": "house HD-047"
+    },
+    {
+      "peopleId": 24962,
+      "name": "Ryan Chamberlin",
+      "seat": "house HD-024"
+    },
+    {
+      "peopleId": 24994,
+      "name": "Mike Redondo",
+      "seat": "house HD-118"
+    },
+    {
+      "peopleId": 25364,
+      "name": "Jon Albert",
+      "seat": "house HD-048"
+    },
+    {
+      "peopleId": 25365,
+      "name": "Jose Alvarez",
+      "seat": "house HD-046"
+    },
+    {
+      "peopleId": 25371,
+      "name": "William Conerly",
+      "seat": "house HD-072"
+    },
+    {
+      "peopleId": 25372,
+      "name": "Richard Gentry",
+      "seat": "house HD-027"
+    },
+    {
+      "peopleId": 25375,
+      "name": "J.J. Grow",
+      "seat": "house HD-023"
+    },
+    {
+      "peopleId": 25376,
+      "name": "Chad Johnson",
+      "seat": "house HD-022"
+    },
+    {
+      "peopleId": 25377,
+      "name": "Kim Kendall",
+      "seat": "house HD-018"
+    },
+    {
+      "peopleId": 25379,
+      "name": "Monique Miller",
+      "seat": "house HD-033"
+    },
+    {
+      "peopleId": 25380,
+      "name": "Danny Nix",
+      "seat": "house HD-075"
+    },
+    {
+      "peopleId": 25381,
+      "name": "Vanessa Oliver",
+      "seat": "house HD-076"
+    },
+    {
+      "peopleId": 25382,
+      "name": "Michael Owen",
+      "seat": "house HD-070"
+    },
+    {
+      "peopleId": 25384,
+      "name": "Mitch Rosenwald",
+      "seat": "house HD-098"
+    },
+    {
+      "peopleId": 25387,
+      "name": "Debra Tendrich",
+      "seat": "house HD-089"
+    },
+    {
+      "peopleId": 25389,
+      "name": "Barbara Sharief",
+      "seat": "senate SD-035"
+    },
+    {
+      "peopleId": 26478,
+      "name": "Brian Hodgers",
+      "seat": "house HD-032"
+    }
+  ],
+  "unmatchedCandidates": [
+    {
+      "candidateId": "d55b1e40-d59d-4734-bc52-feb7019f13bc",
+      "name": "Alex Rizo",
+      "scope": "state_lower",
+      "districtName": "State House District 112 (2024); Florida"
+    },
+    {
+      "candidateId": "f66ba1b4-4848-40a7-a2c6-36a7427d3f85",
+      "name": "Alexander Finney",
+      "scope": "state_lower",
+      "districtName": "State House District 5 (2024); Florida"
+    },
+    {
+      "candidateId": "baa241a8-7f37-4f24-bb0b-554392bb704c",
+      "name": "Alfred Reynolds",
+      "scope": "state_upper",
+      "districtName": "State Senate District 12 (2024); Florida"
+    },
+    {
+      "candidateId": "4cda3e42-d95b-4aaa-bdae-72e0dbeaa674",
+      "name": "Ashley Elizabeth Herrmann",
+      "scope": "state_lower",
+      "districtName": "State House District 69 (2024); Florida"
+    },
+    {
+      "candidateId": "ee2c3fed-cca7-4d31-bcfb-28ff4d9c6e68",
+      "name": "Ashley Perez-Biliskov",
+      "scope": "state_lower",
+      "districtName": "State House District 116 (2024); Florida"
+    },
+    {
+      "candidateId": "5f2a94aa-354a-4877-b04a-5cd5c014ab29",
+      "name": "August Mangeney",
+      "scope": "state_lower",
+      "districtName": "State House District 93 (2024); Florida"
+    },
+    {
+      "candidateId": "94d445db-1a54-44ca-ac19-18a52f676d80",
+      "name": "Ben Braver",
+      "scope": "state_lower",
+      "districtName": "State House District 65 (2024); Florida"
+    },
+    {
+      "candidateId": "9632b3fa-581d-474f-84e1-da004b64ecdb",
+      "name": "Benjamin Sandlin",
+      "scope": "state_lower",
+      "districtName": "State House District 12 (2024); Florida"
+    },
+    {
+      "candidateId": "d27629f4-7f60-428e-98c5-403026e9aed9",
+      "name": "Bonnie Jackson",
+      "scope": "state_lower",
+      "districtName": "State House District 42 (2024); Florida"
+    },
+    {
+      "candidateId": "36eb3bb5-d933-49e0-bafb-f09d225863c4",
+      "name": "Brian Nathan",
+      "scope": "state_upper",
+      "districtName": "State Senate District 14 (2024); Florida"
+    },
+    {
+      "candidateId": "ca4ab411-decb-4d60-9b3e-1bbf893c796f",
+      "name": "Bryan Beckman",
+      "scope": "state_lower",
+      "districtName": "State House District 58 (2024); Florida"
+    },
+    {
+      "candidateId": "9369e4c9-eba1-4434-91e3-39540ac6ffdc",
+      "name": "Crescente Furnaguera",
+      "scope": "state_upper",
+      "districtName": "State Senate District 32 (2024); Florida"
+    },
+    {
+      "candidateId": "783f4e62-609b-4dd6-96bd-85a2eab0622f",
+      "name": "David Silverberg",
+      "scope": "state_upper",
+      "districtName": "State Senate District 28 (2024); Florida"
+    },
+    {
+      "candidateId": "99cebd02-8154-45a7-8529-81d291ab50c2",
+      "name": "David Silvers",
+      "scope": "state_upper",
+      "districtName": "State Senate District 26 (2024); Florida"
+    },
+    {
+      "candidateId": "3cf6dc43-74bb-41c9-8972-b6be1e35b79a",
+      "name": "Demi Busatta",
+      "scope": "state_lower",
+      "districtName": "State House District 114 (2024); Florida"
+    },
+    {
+      "candidateId": "6c53c42f-4502-4679-93d7-022d60b1fc29",
+      "name": "Don Kanfer",
+      "scope": "state_lower",
+      "districtName": "State House District 29 (2024); Florida"
+    },
+    {
+      "candidateId": "64d18ff8-6127-40da-a0eb-7d4b98ba4712",
+      "name": "Doug Barrow",
+      "scope": "state_lower",
+      "districtName": "State House District 94 (2024); Florida"
+    },
+    {
+      "candidateId": "19383666-bbf6-4ed8-8ef9-7aa292f2d4b1",
+      "name": "Edwin Munoz",
+      "scope": "state_lower",
+      "districtName": "State House District 30 (2024); Florida"
+    },
+    {
+      "candidateId": "7eeb4b0a-72a6-4bbb-ad64-f15b935c9f9a",
+      "name": "Elizabeth Holmes",
+      "scope": "state_lower",
+      "districtName": "State House District 94 (2024); Florida"
+    },
+    {
+      "candidateId": "761c6437-216f-4c13-bba4-ef92af275010",
+      "name": "Elizabeth Pandich",
+      "scope": "state_lower",
+      "districtName": "State House District 86 (2024); Florida"
+    },
+    {
+      "candidateId": "a404c6d8-7db1-4e3b-afb1-cd9b485a123c",
+      "name": "Eric Gray",
+      "scope": "state_lower",
+      "districtName": "State House District 35 (2024); Florida"
+    },
+    {
+      "candidateId": "939436e4-a95a-4b78-af78-031dfa75314d",
+      "name": "Erin Huntley",
+      "scope": "state_lower",
+      "districtName": "State House District 45 (2024); Florida"
+    },
+    {
+      "candidateId": "bc17237e-83a2-442b-8014-ce30bad2a73c",
+      "name": "Felipe Sousa-Lazaballet",
+      "scope": "state_lower",
+      "districtName": "State House District 42 (2024); Florida"
+    },
+    {
+      "candidateId": "49c9feae-3ce5-450d-b151-abd58582caaf",
+      "name": "Francesca Yabraian",
+      "scope": "state_lower",
+      "districtName": "State House District 1 (2024); Florida"
+    },
+    {
+      "candidateId": "8deb7d19-d9eb-4af4-98f4-53c0b0530162",
+      "name": "George Lavin",
+      "scope": "state_upper",
+      "districtName": "State Senate District 36 (2024); Florida"
+    },
+    {
+      "candidateId": "ca8dedf4-49a5-43a1-a79a-118caa8dc483",
+      "name": "Imtiaz Mohammad",
+      "scope": "state_lower",
+      "districtName": "State House District 103 (2024); Florida"
+    },
+    {
+      "candidateId": "9742a20d-eada-4ea2-9408-8db3e4f1e053",
+      "name": "Ingrid Wadsworth",
+      "scope": "state_lower",
+      "districtName": "State House District 3 (2024); Florida"
+    },
+    {
+      "candidateId": "df95e9a3-3dce-4d89-aacf-b14bb76c7918",
+      "name": "Ionel Roiban",
+      "scope": "state_lower",
+      "districtName": "State House District 90 (2024); Florida"
+    },
+    {
+      "candidateId": "740e7630-099a-4618-9721-71cfd7221966",
+      "name": "Jackie Green",
+      "scope": "state_upper",
+      "districtName": "State Senate District 24 (2024); Florida"
+    },
+    {
+      "candidateId": "ced6c38b-985a-41f5-aca9-e7e0928d3fd3",
+      "name": "Jake Johansson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 8 (2024); Florida"
+    },
+    {
+      "candidateId": "941c89cd-1627-4b6a-9fdf-cd8c0e428332",
+      "name": "Jane Aman",
+      "scope": "state_lower",
+      "districtName": "State House District 37 (2024); Florida"
+    },
+    {
+      "candidateId": "696533fe-b034-4388-99fa-3dc18e5c9999",
+      "name": "Jarvis Washington",
+      "scope": "state_lower",
+      "districtName": "State House District 50 (2024); Florida"
+    },
+    {
+      "candidateId": "0b33b5b3-5f3c-4f78-ac0f-10ae6595b03c",
+      "name": "Jason Bellamy-Fults",
+      "scope": "state_upper",
+      "districtName": "State Senate District 6 (2024); Florida"
+    },
+    {
+      "candidateId": "b9dc6f4f-d62d-413b-b6dd-b604dbd0bea5",
+      "name": "John Emerling",
+      "scope": "state_lower",
+      "districtName": "State House District 4 (2024); Florida"
+    },
+    {
+      "candidateId": "084b8b0a-75a1-4bcd-92e3-e10ef45db1ed",
+      "name": "Jose A. \"Dante\" Sanchez Sanchez",
+      "scope": "state_lower",
+      "districtName": "State House District 66 (2024); Florida"
+    },
+    {
+      "candidateId": "d6db4320-0630-4a1c-aded-b38400c6956c",
+      "name": "Jose Antonio Stoute",
+      "scope": "state_upper",
+      "districtName": "State Senate District 40 (2024); Florida"
+    },
+    {
+      "candidateId": "1e8d1a50-27f2-4d4a-87c1-189b55bfedd1",
+      "name": "Joseph \"Joe\" Hannoush",
+      "scope": "state_lower",
+      "districtName": "State House District 28 (2024); Florida"
+    },
+    {
+      "candidateId": "d1c603e3-ec9f-44e6-bbb2-fdff77cf508c",
+      "name": "Joseph Thornton",
+      "scope": "state_upper",
+      "districtName": "State Senate District 6 (2024); Florida"
+    },
+    {
+      "candidateId": "41e85dc8-5f4c-45ce-be64-365d25060ca7",
+      "name": "Judy Ngying",
+      "scope": "state_upper",
+      "districtName": "State Senate District 8 (2024); Florida"
+    },
+    {
+      "candidateId": "5d2b48a4-5854-43ce-91a7-4719c4c8436b",
+      "name": "Lauren Donahoo",
+      "scope": "state_upper",
+      "districtName": "State Senate District 2 (2024); Florida"
+    },
+    {
+      "candidateId": "42be11b5-bd26-4499-99e9-c8fcc056b7cf",
+      "name": "Lee Butler",
+      "scope": "state_lower",
+      "districtName": "State House District 20 (2024); Florida"
+    },
+    {
+      "candidateId": "9c5c6ef6-5a49-485f-bab3-fe6bc57d4a53",
+      "name": "Leigh Estes",
+      "scope": "state_lower",
+      "districtName": "State House District 83 (2024); Florida"
+    },
+    {
+      "candidateId": "8270e928-72b4-43cb-badb-b75d932fcad8",
+      "name": "Lindsay Polega-Quigley",
+      "scope": "state_lower",
+      "districtName": "State House District 60 (2024); Florida"
+    },
+    {
+      "candidateId": "2649b0b4-c311-4e03-9be9-b8dd9909443d",
+      "name": "Lisa Klein",
+      "scope": "state_lower",
+      "districtName": "State House District 73 (2024); Florida"
+    },
+    {
+      "candidateId": "7a240b92-1225-44b2-90be-547abd605116",
+      "name": "Lisette Bonano",
+      "scope": "state_lower",
+      "districtName": "State House District 67 (2024); Florida"
+    },
+    {
+      "candidateId": "34e96549-886a-480b-8c33-d2f532efb5d0",
+      "name": "Luis Garcia",
+      "scope": "state_lower",
+      "districtName": "State House District 91 (2024); Florida"
+    },
+    {
+      "candidateId": "1c57a3af-8a5e-4392-b5e0-71b52dbc29af",
+      "name": "Luis Viera",
+      "scope": "state_lower",
+      "districtName": "State House District 67 (2024); Florida"
+    },
+    {
+      "candidateId": "5d4a579f-88c7-4c75-a1f8-9bd5189f61c9",
+      "name": "Marcos Reyes",
+      "scope": "state_lower",
+      "districtName": "State House District 115 (2024); Florida"
+    },
+    {
+      "candidateId": "ef015349-2cb6-4307-942d-067af5816488",
+      "name": "May Thach",
+      "scope": "state_lower",
+      "districtName": "State House District 61 (2024); Florida"
+    },
+    {
+      "candidateId": "302df18b-d2bf-43c4-ba9e-262be85aba78",
+      "name": "Melissa Rutland",
+      "scope": "state_lower",
+      "districtName": "State House District 60 (2024); Florida"
+    },
+    {
+      "candidateId": "f45f4b83-0307-4302-8cf6-62774311c8e9",
+      "name": "Nicolas Ramos",
+      "scope": "state_lower",
+      "districtName": "State House District 116 (2024); Florida"
+    },
+    {
+      "candidateId": "1daeec22-2e34-4bd4-9245-d6a5d8950b78",
+      "name": "Ramiro Orta",
+      "scope": "state_upper",
+      "districtName": "State Senate District 40 (2024); Florida"
+    },
+    {
+      "candidateId": "41a59bd9-45c4-4b2c-95c5-f70c248cc2aa",
+      "name": "Rey Lazaro Sordo",
+      "scope": "state_lower",
+      "districtName": "State House District 119 (2024); Florida"
+    },
+    {
+      "candidateId": "5cbadabe-2871-494f-a3f6-e7a8b29b6775",
+      "name": "Richard Lamondin",
+      "scope": "state_upper",
+      "districtName": "State Senate District 38 (2024); Florida"
+    },
+    {
+      "candidateId": "62271968-cf3e-4b9b-95ac-c60de6980b7c",
+      "name": "Rick Roth",
+      "scope": "state_upper",
+      "districtName": "State Senate District 26 (2024); Florida"
+    },
+    {
+      "candidateId": "974de21c-ea95-4eea-9b52-3ae329866d30",
+      "name": "Ricky Santiago",
+      "scope": "state_lower",
+      "districtName": "State House District 50 (2024); Florida"
+    },
+    {
+      "candidateId": "54ca6f59-7e11-4f30-9c16-969c09b3ccbe",
+      "name": "Rob Long",
+      "scope": "state_lower",
+      "districtName": "State House District 90 (2024); Florida"
+    },
+    {
+      "candidateId": "2cf38dcc-b9a8-4d62-a613-f546548e7fb8",
+      "name": "Robert Anzalone",
+      "scope": "state_lower",
+      "districtName": "State House District 49 (2024); Florida"
+    },
+    {
+      "candidateId": "57766cb1-8d1d-4cf0-abc9-8bc8747dc4dc",
+      "name": "Robert Prater",
+      "scope": "state_lower",
+      "districtName": "State House District 37 (2024); Florida"
+    },
+    {
+      "candidateId": "a11bb892-3a7d-43ad-bac3-7ac8518aa552",
+      "name": "Robyn Elaine Lawrence",
+      "scope": "state_lower",
+      "districtName": "State House District 26 (2024); Florida"
+    },
+    {
+      "candidateId": "724218cd-0756-4eb9-a16b-b086eb370c3c",
+      "name": "Susan Rochelle Leff",
+      "scope": "state_lower",
+      "districtName": "State House District 59 (2024); Florida"
+    },
+    {
+      "candidateId": "814743e4-343d-4d41-a68c-3f447838115c",
+      "name": "Suzanna Pavelle",
+      "scope": "state_lower",
+      "districtName": "State House District 19 (2024); Florida"
+    },
+    {
+      "candidateId": "67533616-0671-4276-848a-ffca2d089e28",
+      "name": "Terrance Freeman",
+      "scope": "state_lower",
+      "districtName": "State House District 12 (2024); Florida"
+    },
+    {
+      "candidateId": "78663491-8f4c-4804-a6ff-1355649dd3ce",
+      "name": "Todd Delmay",
+      "scope": "state_lower",
+      "districtName": "State House District 101 (2024); Florida"
+    },
+    {
+      "candidateId": "b5a4ab72-1e89-46ee-b1ba-ace544dbe0fa",
+      "name": "Wendy Hoy",
+      "scope": "state_lower",
+      "districtName": "State House District 57 (2024); Florida"
+    },
+    {
+      "candidateId": "8098f31c-6d5d-4310-b628-fa8d72be2c75",
+      "name": "William Joseph",
+      "scope": "state_lower",
+      "districtName": "State House District 88 (2024); Florida"
+    },
+    {
+      "candidateId": "96f489a6-4b1d-4963-92c5-146c3ebf7a55",
+      "name": "William Moskal",
+      "scope": "state_lower",
+      "districtName": "State House District 80 (2024); Florida"
+    }
+  ],
+  "files": 906,
+  "fileErrors": 0,
+  "counts": {},
+  "rolls": []
+}

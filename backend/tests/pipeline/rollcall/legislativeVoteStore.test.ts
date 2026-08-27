@@ -162,6 +162,7 @@ describe("loadLegislativeVote", () => {
         {
           id: "row-1",
           vote_date: "2025-05-22",
+          official_vote_date: null,
           measure_id: "H R 1",
           exact_question: "On Passage",
           is_floor_vote: true,
@@ -182,6 +183,7 @@ describe("loadLegislativeVote", () => {
     expect(loaded).toEqual({
       id: "row-1",
       voteDate: "2025-05-22",
+      officialVoteDate: null,
       measureId: "H R 1",
       exactQuestion: "On Passage",
       isFloorVote: true,
@@ -211,6 +213,7 @@ describe("assertLegislativeVoteStillApproved", () => {
   const vote = {
     id: "row-1",
     voteDate: "2025-05-22",
+    officialVoteDate: null,
     measureId: "H R 1",
     exactQuestion: "On Passage",
     isFloorVote: true,
@@ -226,6 +229,7 @@ describe("assertLegislativeVoteStillApproved", () => {
   const current = {
     review_status: "approved",
     source_sha256: vote.sourceSha256,
+    official_vote_date: null,
     yea_description: vote.yeaDescription,
     nay_description: vote.nayDescription,
     labels_json: [{ slug: "immigration", yea: "for" }],
@@ -247,6 +251,8 @@ describe("assertLegislativeVoteStillApproved", () => {
     await expect(assertLegislativeVoteStillApproved({ query: relabeled }, vote)).rejects.toThrow(/different content/);
     const refetched = vi.fn().mockResolvedValue({ rows: [{ ...current, source_sha256: "b".repeat(64) }] });
     await expect(assertLegislativeVoteStillApproved({ query: refetched }, vote)).rejects.toThrow(/different content/);
+    const redated = vi.fn().mockResolvedValue({ rows: [{ ...current, official_vote_date: "2025-05-23" }] });
+    await expect(assertLegislativeVoteStillApproved({ query: redated }, vote)).rejects.toThrow(/different content/);
     const gone = vi.fn().mockResolvedValue({ rows: [] });
     await expect(assertLegislativeVoteStillApproved({ query: gone }, vote)).rejects.toThrow(/no longer exists/);
   });
@@ -260,6 +266,7 @@ describe("applyLegislativeVoteJudgment", () => {
     rollNumber: 145,
     measureId: "H.R. 1",
     voteDate: "2025-05-22",
+    officialVoteDate: null,
     yeaDescription: "Voted to pass H.R. 1.",
     nayDescription: "Voted against passing H.R. 1.",
     labels: [{ slug: "immigration", yea: "for" as const }],
@@ -271,6 +278,7 @@ describe("applyLegislativeVoteJudgment", () => {
     // The Clerk's spelling; the judgment's `H.R. 1` must still match.
     measure_id: "H R 1",
     vote_date: "2025-05-22",
+    official_vote_date: null,
     review_status: "pending",
     yea_description: null,
     nay_description: null,
@@ -288,18 +296,28 @@ describe("applyLegislativeVoteJudgment", () => {
     expect(approved.query.mock.calls[0]?.[0]).toMatch(/FOR UPDATE/);
     expect(approved.query.mock.calls[0]?.[1]).toEqual(["US", "house", "119-1", 145]);
     const [sql, params] = approved.query.mock.calls[1]!;
-    expect(sql).toMatch(/reviewed_at = CASE WHEN \$5 = 'approved' THEN now\(\) ELSE NULL END/);
+    expect(sql).toMatch(/reviewed_at = CASE WHEN \$6 = 'approved' THEN now\(\) ELSE NULL END/);
     expect(params).toEqual([
       "row-1",
       judgment.yeaDescription,
       judgment.nayDescription,
       JSON.stringify(judgment.labels),
+      null,
       "approved",
     ]);
 
     const pending = db(stored);
     await expect(applyLegislativeVoteJudgment(pending, { ...judgment, reviewStatus: "pending" })).resolves.toBe("updated");
-    expect(pending.query.mock.calls[1]?.[1]?.[4]).toBe("pending");
+    expect(pending.query.mock.calls[1]?.[1]?.[5]).toBe("pending");
+  });
+
+  it("writes the official_vote_date override alongside the judgment", async () => {
+    const overridden = db(stored);
+    await expect(applyLegislativeVoteJudgment(overridden, { ...judgment, officialVoteDate: "2025-05-23" })).resolves.toBe(
+      "updated"
+    );
+    expect(overridden.query.mock.calls[1]?.[0]).toMatch(/official_vote_date = \$5::date/);
+    expect(overridden.query.mock.calls[1]?.[1]?.[4]).toBe("2025-05-23");
   });
 
   it("is a no-op when the row already holds the same judgment and status", async () => {
@@ -326,7 +344,23 @@ describe("applyLegislativeVoteJudgment", () => {
     await expect(applyLegislativeVoteJudgment(reworded, judgment)).resolves.toBe("updated");
     expect(reworded.query).toHaveBeenCalledTimes(3);
     expect(reworded.query.mock.calls[1]?.[0]).toMatch(/SET review_status = 'pending',\s+reviewed_at = NULL/);
-    expect(reworded.query.mock.calls[2]?.[1]?.[4]).toBe("approved");
+    expect(reworded.query.mock.calls[2]?.[1]?.[5]).toBe("approved");
+
+    // A changed override alone is a judgment change too: same pending-first
+    // path, since the freeze trigger covers official_vote_date.
+    const redated = db({
+      ...stored,
+      review_status: "approved",
+      yea_description: judgment.yeaDescription,
+      nay_description: judgment.nayDescription,
+      labels_json: [{ slug: "immigration", yea: "for" }],
+    });
+    await expect(applyLegislativeVoteJudgment(redated, { ...judgment, officialVoteDate: "2025-05-23" })).resolves.toBe(
+      "updated"
+    );
+    expect(redated.query).toHaveBeenCalledTimes(3);
+    expect(redated.query.mock.calls[1]?.[0]).toMatch(/SET review_status = 'pending',\s+reviewed_at = NULL/);
+    expect(redated.query.mock.calls[2]?.[1]?.[4]).toBe("2025-05-23");
   });
 
   it("refuses a judgment written about a different measure or date than the row holds", async () => {
@@ -372,7 +406,7 @@ describe("applyLegislativeVoteJudgment", () => {
         .mockResolvedValue({ rowCount: 1 }),
     };
     await expect(applyLegislativeVoteJudgment(nothingYet, { ...judgment, reviewStatus: "pending" })).resolves.toBe("updated");
-    expect(nothingYet.query.mock.calls[2]?.[1]?.[4]).toBe("pending");
+    expect(nothingYet.query.mock.calls[2]?.[1]?.[5]).toBe("pending");
   });
 
   it("refuses a missing row and refuses to approve a non-floor vote", async () => {

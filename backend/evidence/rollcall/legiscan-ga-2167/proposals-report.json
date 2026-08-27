@@ -1,0 +1,3379 @@
+{
+  "importerVersion": "rollcall-legiscan-resolve-v1",
+  "startedAt": "2026-08-27T00:46:41.333Z",
+  "finishedAt": "2026-08-27T00:46:43.071Z",
+  "jurisdiction": "GA",
+  "sessionId": 2167,
+  "evidenceDir": "/Users/shu/legiscan-data/ga-2167-evidence",
+  "scopeFrom": "2026-11-01",
+  "peopleSource": "/Users/shu/legiscan-data/ga-2167/GA/2025-2026_Regular_Session",
+  "peopleMembers": 242,
+  "candidatePool": 390,
+  "crosswalkFile": null,
+  "crosswalkEntries": null,
+  "crosswalkPeopleNotInSnapshot": [],
+  "proposals": [
+    {
+      "peopleId": 1782,
+      "rosterName": "Lee Anderson",
+      "rosterSeat": "senate SD-024",
+      "candidateId": "628eae8d-858c-45dd-aef3-37b097758d92",
+      "candidateName": "Lee Anderson",
+      "candidacy": "state_upper: State Senate District 24 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1797,
+      "rosterName": "Debbie Buckner",
+      "rosterSeat": "house HD-137",
+      "candidateId": "8432baf6-98c2-48b4-92cb-b2ae2ef13c77",
+      "candidateName": "Debbie Buckner",
+      "candidacy": "state_lower: State House District 137 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1799,
+      "rosterName": "Jon Burns",
+      "rosterSeat": "house HD-159",
+      "candidateId": "e924410c-8e33-4520-9940-737b47c8557f",
+      "candidateName": "Jon G. Burns",
+      "candidacy": "state_lower: State House District 159 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1801,
+      "rosterName": "Charlice Byrd",
+      "rosterSeat": "house HD-020",
+      "candidateId": "b6a7abfb-7954-491e-b910-be78d927a914",
+      "candidateName": "Charlice Byrd",
+      "candidacy": "state_lower: State House District 20 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1807,
+      "rosterName": "Mike Cheokas",
+      "rosterSeat": "house HD-151",
+      "candidateId": "c51a4d44-afd5-4d1b-8a15-417e382b8dea",
+      "candidateName": "Mike Cheokas",
+      "candidacy": "state_lower: State House District 151 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1813,
+      "rosterName": "Sharon Cooper",
+      "rosterSeat": "house HD-045",
+      "candidateId": "5d46c96c-6e5c-4271-a2a9-6292ad0aeed7",
+      "candidateName": "Sharon Cooper",
+      "candidacy": "state_lower: State House District 45 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1820,
+      "rosterName": "Katie Dempsey",
+      "rosterSeat": "house HD-013",
+      "candidateId": "ec3c47bc-e723-4806-ab53-40b591ceddba",
+      "candidateName": "Katie Dempsey",
+      "candidacy": "state_lower: State House District 13 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1826,
+      "rosterName": "Karla Drenner",
+      "rosterSeat": "house HD-085",
+      "candidateId": "5c3b164b-d06e-4c32-8bd8-51c148f13fd4",
+      "candidateName": "Karla Drenner",
+      "candidacy": "state_lower: State House District 85 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1844,
+      "rosterName": "Gerald Greene",
+      "rosterSeat": "house HD-154",
+      "candidateId": "0f8335b3-b751-4c0d-901e-2e5fd858e556",
+      "candidateName": "Gerald Greene",
+      "candidacy": "state_lower: State House District 154 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1862,
+      "rosterName": "Carolyn Hugley",
+      "rosterSeat": "house HD-141",
+      "candidateId": "012533fb-d4d6-4aa3-a94b-1567219fa05e",
+      "candidateName": "Carolyn Hugley",
+      "candidacy": "state_lower: State House District 141 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1870,
+      "rosterName": "Sheila Jones",
+      "rosterSeat": "house HD-060",
+      "candidateId": "f03ea1cc-ae78-4b89-9e58-39a9444132eb",
+      "candidateName": "Sheila Jones",
+      "candidacy": "state_lower: State House District 60 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1884,
+      "rosterName": "David Lucas",
+      "rosterSeat": "senate SD-026",
+      "candidateId": "9dfe44f9-fce4-4140-b0e3-a55e625de50b",
+      "candidateName": "David Lucas Sr.",
+      "candidacy": "state_upper: State Senate District 26 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1888,
+      "rosterName": "Randal Mangham",
+      "rosterSeat": "senate SD-055",
+      "candidateId": "ff189ebf-e5b6-4692-aa6e-aaae0b17ce38",
+      "candidateName": "Randal Mangham",
+      "candidacy": "state_upper: State Senate District 55 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1891,
+      "rosterName": "Charles Martin",
+      "rosterSeat": "house HD-049",
+      "candidateId": "5bec5c2a-57b3-4f5e-a0f7-afcf1193105b",
+      "candidateName": "Charles Martin Jr.",
+      "candidacy": "state_lower: State House District 49 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1900,
+      "rosterName": "Billy Mitchell",
+      "rosterSeat": "house HD-088",
+      "candidateId": "b42b2061-1864-48a5-88fd-4af04b259f12",
+      "candidateName": "Billy Mitchell",
+      "candidacy": "state_lower: State House District 88 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1908,
+      "rosterName": "Mary Oliver",
+      "rosterSeat": "house HD-084",
+      "candidateId": "8ef66804-9435-4973-ae4f-72dd6bd38a3a",
+      "candidateName": "Mary Margaret Oliver",
+      "candidacy": "state_lower: State House District 84 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1911,
+      "rosterName": "Don Parsons",
+      "rosterSeat": "house HD-044",
+      "candidateId": "ce32c129-906c-4931-8e51-2c9358a08520",
+      "candidateName": "Don Parsons",
+      "candidacy": "state_lower: State House District 44 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1914,
+      "rosterName": "Alan Powell",
+      "rosterSeat": "house HD-033",
+      "candidateId": "f3db1332-8827-4c10-b35f-2dbaed9e398e",
+      "candidateName": "Alan Powell",
+      "candidacy": "state_lower: State House District 33 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1931,
+      "rosterName": "Ed Setzler",
+      "rosterSeat": "senate SD-037",
+      "candidateId": "20082a2a-a202-4e4f-8af2-19cd3b4b16c5",
+      "candidateName": "Ed Setzler",
+      "candidacy": "state_upper: State Senate District 37 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1947,
+      "rosterName": "Ron Stephens",
+      "rosterSeat": "house HD-164",
+      "candidateId": "0b9bd1da-7ca5-4636-9ecb-79ed98edaee8",
+      "candidateName": "Ron Stephens",
+      "candidacy": "state_lower: State House District 164 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1958,
+      "rosterName": "Al Williams",
+      "rosterSeat": "house HD-168",
+      "candidateId": "9b18ac07-00ac-469e-8860-9fe4a44c08ab",
+      "candidateName": "Al Williams",
+      "candidacy": "state_lower: State House District 168 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1984,
+      "rosterName": "Lee Hawkins",
+      "rosterSeat": "house HD-027",
+      "candidateId": "3f9c75ca-d982-4f00-8db0-7c3c611d444e",
+      "candidateName": "Lee Hawkins",
+      "candidacy": "state_lower: State House District 27 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1993,
+      "rosterName": "Donzella James",
+      "rosterSeat": "senate SD-028",
+      "candidateId": "5bb0d24e-f5f1-4514-b844-56e66dfb8a2c",
+      "candidateName": "Donzella James",
+      "candidacy": "state_upper: State Senate District 28 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1999,
+      "rosterName": "Nan Orrock",
+      "rosterSeat": "senate SD-036",
+      "candidateId": "93df8a10-227a-494f-99f4-7a8e7a3b366e",
+      "candidateName": "Nan Orrock",
+      "candidacy": "state_upper: State Senate District 36 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 11778,
+      "rosterName": "Dar'shun Kendrick",
+      "rosterSeat": "house HD-095",
+      "candidateId": "7a69c28c-3d41-480c-af00-86455629dedb",
+      "candidateName": "Dar'shun Kendrick",
+      "candidacy": "state_lower: State House District 95 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 11785,
+      "rosterName": "Frank Ginn",
+      "rosterSeat": "senate SD-047",
+      "candidateId": "91f33fcf-bff5-47f7-81f5-8a39f6c26dbb",
+      "candidateName": "Frank Ginn",
+      "candidacy": "state_upper: State Senate District 47 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 11786,
+      "rosterName": "Gail Davenport",
+      "rosterSeat": "senate SD-017",
+      "candidateId": "1e399553-8fbe-46f5-9f2e-cde3467475d7",
+      "candidateName": "Gail Davenport",
+      "candidacy": "state_upper: State Senate District 17 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 11788,
+      "rosterName": "John Albers",
+      "rosterSeat": "senate SD-056",
+      "candidateId": "372cae41-3416-4785-a2b2-aabca0550da5",
+      "candidateName": "John Albers",
+      "candidacy": "state_upper: State Senate District 56 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 11925,
+      "rosterName": "Rick Jasperse",
+      "rosterSeat": "house HD-011",
+      "candidateId": "8fd2b631-b600-4b7a-9a5b-5b39f5e2ba73",
+      "candidateName": "Rick Jasperse",
+      "candidacy": "state_lower: State House District 11 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 11927,
+      "rosterName": "Ben Watson",
+      "rosterSeat": "senate SD-001",
+      "candidateId": "ab43f4fc-6a52-49e9-b633-2ddf03ad9560",
+      "candidateName": "Ben Watson",
+      "candidacy": "state_upper: State Senate District 1 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12039,
+      "rosterName": "Stacey Evans",
+      "rosterSeat": "house HD-057",
+      "candidateId": "004f83e7-7f84-4eff-a620-6991b3a3a9f3",
+      "candidateName": "Stacey Evans",
+      "candidacy": "state_lower: State House District 57 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12041,
+      "rosterName": "Scott Holcomb",
+      "rosterSeat": "house HD-101",
+      "candidateId": "1f212612-bc0e-4eb4-9f3e-da743adaf916",
+      "candidateName": "Scott Holcomb",
+      "candidacy": "state_lower: State House District 101 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12043,
+      "rosterName": "Darlene Taylor",
+      "rosterSeat": "house HD-173",
+      "candidateId": "ec1f2d28-74f9-4d88-ba75-57c318e763c7",
+      "candidateName": "Darlene Taylor",
+      "candidacy": "state_lower: State House District 173 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12120,
+      "rosterName": "Yasmin Neal",
+      "rosterSeat": "house HD-079",
+      "candidateId": "fc6eb005-9f36-40d5-be85-d8319051b194",
+      "candidateName": "Yasmin Neal",
+      "candidacy": "state_lower: State House District 79 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12192,
+      "rosterName": "David Wilkerson",
+      "rosterSeat": "house HD-038",
+      "candidateId": "adc1958c-cce5-421f-8a39-f03cacdeea2d",
+      "candidateName": "David Wilkerson",
+      "candidacy": "state_lower: State House District 38 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12194,
+      "rosterName": "Sandra Scott",
+      "rosterSeat": "house HD-076",
+      "candidateId": "0b9d4d2f-9155-4834-ba17-c5b82e7cdf94",
+      "candidateName": "Sandra Scott",
+      "candidacy": "state_lower: State House District 76 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12477,
+      "rosterName": "Robert Dickey",
+      "rosterSeat": "house HD-134",
+      "candidateId": "e7257eaa-3a73-489c-aadc-27f48c1f31b0",
+      "candidateName": "Robert Dickey",
+      "candidacy": "state_lower: State House District 134 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 13757,
+      "rosterName": "Miriam Paris",
+      "rosterSeat": "house HD-142",
+      "candidateId": "07a9d555-10ff-4ccf-937f-9ef3b3f91546",
+      "candidateName": "Miriam Paris",
+      "candidacy": "state_lower: State House District 142 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 13779,
+      "rosterName": "John Carson",
+      "rosterSeat": "house HD-046",
+      "candidateId": "6ebaef69-5ec4-4598-8cc5-1690c0b96d7d",
+      "candidateName": "John Carson",
+      "candidacy": "state_lower: State House District 46 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15161,
+      "rosterName": "Chuck Hufstetler",
+      "rosterSeat": "senate SD-052",
+      "candidateId": "e0adffa7-6df9-4426-8f68-c1208b464a4b",
+      "candidateName": "Chuck Hufstetler",
+      "candidacy": "state_upper: State Senate District 52 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15168,
+      "rosterName": "Bill Hitchens",
+      "rosterSeat": "house HD-161",
+      "candidateId": "cf3ca907-49fc-4daf-93d6-65dd3aa98d16",
+      "candidateName": "Bill Hitchens",
+      "candidacy": "state_lower: State House District 161 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15175,
+      "rosterName": "Demetrius Douglas",
+      "rosterSeat": "house HD-078",
+      "candidateId": "201432fc-d16b-43c6-925a-14ccb52126cb",
+      "candidateName": "Demetrius Douglas",
+      "candidacy": "state_lower: State House District 78 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15177,
+      "rosterName": "Eddie Lumsden",
+      "rosterSeat": "house HD-012",
+      "candidateId": "47fe544d-4c60-4348-8062-b1a5766cf162",
+      "candidateName": "Eddie Lumsden",
+      "candidacy": "state_lower: State House District 12 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15187,
+      "rosterName": "Kimberly Alexander",
+      "rosterSeat": "house HD-066",
+      "candidateId": "41bf5257-18ae-442a-b3e6-5a5b75b2259a",
+      "candidateName": "Kimberly Alexander",
+      "candidacy": "state_lower: State House District 66 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15194,
+      "rosterName": "Michael Smith",
+      "rosterSeat": "house HD-041",
+      "candidateId": "041e2717-7540-4222-b901-04d3c5f0c0e4",
+      "candidateName": "Michael Smith",
+      "candidacy": "state_lower: State House District 41 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15195,
+      "rosterName": "Patty Stinson",
+      "rosterSeat": "house HD-150",
+      "candidateId": "9550664b-53a2-4dca-b1c2-de5237dad3b1",
+      "candidateName": "Patty Stinson",
+      "candidacy": "state_lower: State House District 150 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15198,
+      "rosterName": "Sam Watson",
+      "rosterSeat": "senate SD-011",
+      "candidateId": "5c74e8f6-f5af-43e3-80d8-f677f55b5825",
+      "candidateName": "Sam Watson",
+      "candidacy": "state_upper: State Senate District 11 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15199,
+      "rosterName": "Spencer Frye",
+      "rosterSeat": "house HD-122",
+      "candidateId": "d09f0bba-c40c-4d0e-ba59-38c85917fbab",
+      "candidateName": "Spencer Frye",
+      "candidacy": "state_lower: State House District 122 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15201,
+      "rosterName": "Tonya Anderson",
+      "rosterSeat": "senate SD-043",
+      "candidateId": "8a5d4e6d-4e34-4c0f-8691-38124467e197",
+      "candidateName": "Tonya Anderson",
+      "candidacy": "state_upper: State Senate District 43 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15202,
+      "rosterName": "Trey Kelley",
+      "rosterSeat": "house HD-016",
+      "candidateId": "e0b12207-0d76-4dd0-9e95-30e25e3b95e0",
+      "candidateName": "Trey Kelley",
+      "candidacy": "state_lower: State House District 16 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16153,
+      "rosterName": "Chuck Efstration",
+      "rosterSeat": "house HD-104",
+      "candidateId": "f10c58c1-bbed-4cb9-834d-5027bb698155",
+      "candidateName": "Chuck Efstration",
+      "candidacy": "state_lower: State House District 104 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16155,
+      "rosterName": "Brian Prince",
+      "rosterSeat": "house HD-132",
+      "candidateId": "1097240f-7179-4005-bf77-4c0b21a63edc",
+      "candidateName": "Brian Prince",
+      "candidacy": "state_lower: State House District 132 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16222,
+      "rosterName": "Steve Tarvin",
+      "rosterSeat": "house HD-002",
+      "candidateId": "6ee9b10f-6bb3-4bab-840a-05a79b6557c6",
+      "candidateName": "Steve Tarvin",
+      "candidacy": "state_lower: State House District 2 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16721,
+      "rosterName": "John Corbett",
+      "rosterSeat": "house HD-174",
+      "candidateId": "a620286e-00a1-4aa0-a6ca-81c40b589199",
+      "candidateName": "John Corbett",
+      "candidacy": "state_lower: State House District 174 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16725,
+      "rosterName": "Jesse Petrea",
+      "rosterSeat": "house HD-166",
+      "candidateId": "35510be8-f0e5-41b0-98ed-43dbc285e278",
+      "candidateName": "Jesse Petrea",
+      "candidacy": "state_lower: State House District 166 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16730,
+      "rosterName": "Marty Harbin",
+      "rosterSeat": "senate SD-016",
+      "candidateId": "1a28933d-c5c4-4342-b05a-157867b68061",
+      "candidateName": "Marty Harbin",
+      "candidacy": "state_upper: State Senate District 16 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16731,
+      "rosterName": "Harold Jones",
+      "rosterSeat": "senate SD-022",
+      "candidateId": "96abc127-047b-4fc4-ab8e-0f980163e524",
+      "candidateName": "Harold Jones",
+      "candidacy": "state_upper: State Senate District 22 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16735,
+      "rosterName": "Michael Rhett",
+      "rosterSeat": "senate SD-033",
+      "candidateId": "a9add994-5a18-4f19-a0c5-e5dfee89291a",
+      "candidateName": "Michael Rhett",
+      "candidacy": "state_upper: State Senate District 33 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17556,
+      "rosterName": "Trey Rhodes",
+      "rosterSeat": "house HD-124",
+      "candidateId": "75bb6175-c9a0-4251-8d3a-ef7eded1891b",
+      "candidateName": "Trey Rhodes",
+      "candidacy": "state_lower: State House District 124 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17797,
+      "rosterName": "Shaw Blackmon",
+      "rosterSeat": "house HD-146",
+      "candidateId": "b50add51-76ab-4880-a3ee-d7ed4e7122df",
+      "candidateName": "Shaw Blackmon",
+      "candidacy": "state_lower: State House District 146 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17798,
+      "rosterName": "Doreen Carter",
+      "rosterSeat": "house HD-093",
+      "candidateId": "57486682-a29a-43a8-bb6f-a8cf1e79a950",
+      "candidateName": "Doreen Carter",
+      "candidacy": "state_lower: State House District 93 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17843,
+      "rosterName": "Larry Walker",
+      "rosterSeat": "senate SD-020",
+      "candidateId": "af285cd5-259f-4e58-9bb3-32b2f3e35b87",
+      "candidateName": "Larry Walker",
+      "candidacy": "state_upper: State Senate District 20 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18706,
+      "rosterName": "Karen Mathiak",
+      "rosterSeat": "house HD-082",
+      "candidateId": "4123b635-5874-4ade-810c-be9a7f43d542",
+      "candidateName": "Karen Mathiak",
+      "candidacy": "state_lower: State House District 82 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18707,
+      "rosterName": "Samuel Park",
+      "rosterSeat": "house HD-107",
+      "candidateId": "69b8b247-3fc2-4406-9cf3-ab112818f1c6",
+      "candidateName": "Samuel Park",
+      "candidacy": "state_lower: State House District 107 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18708,
+      "rosterName": "Ricky Williams",
+      "rosterSeat": "senate SD-025",
+      "candidateId": "5f558da7-504c-4c7c-be93-23c2b15e8597",
+      "candidateName": "Ricky Williams",
+      "candidacy": "state_upper: State Senate District 25 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18875,
+      "rosterName": "Josh Bonner",
+      "rosterSeat": "house HD-073",
+      "candidateId": "cc8a0cfa-7dc9-43ad-9174-9800a8570b40",
+      "candidateName": "Josh Bonner",
+      "candidacy": "state_lower: State House District 73 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18879,
+      "rosterName": "Debra Bazemore",
+      "rosterSeat": "house HD-069",
+      "candidateId": "c4213c78-49e1-484b-8c1d-ad1462069022",
+      "candidateName": "Debra Bazemore",
+      "candidacy": "state_lower: State House District 69 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18880,
+      "rosterName": "Rhonda Burnough",
+      "rosterSeat": "house HD-077",
+      "candidateId": "38d29955-63eb-400a-a98e-1d77600d67cf",
+      "candidateName": "Rhonda Burnough",
+      "candidacy": "state_lower: State House District 77 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18883,
+      "rosterName": "Matt Dubnik",
+      "rosterSeat": "house HD-029",
+      "candidateId": "2bea4ece-5d2d-4064-887a-78ec36c09975",
+      "candidateName": "Matt Dubnik",
+      "candidacy": "state_lower: State House District 29 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18887,
+      "rosterName": "Scott Hilton",
+      "rosterSeat": "house HD-048",
+      "candidateId": "b3e66036-2068-4730-bb28-2410e8450e2f",
+      "candidateName": "Scott Hilton",
+      "candidacy": "state_lower: State House District 48 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18890,
+      "rosterName": "Todd Jones",
+      "rosterSeat": "house HD-025",
+      "candidateId": "c7e87e5a-e217-4566-b7e3-c2d2e7f52762",
+      "candidateName": "Todd Jones",
+      "candidacy": "state_lower: State House District 25 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18895,
+      "rosterName": "Mark Newton",
+      "rosterSeat": "house HD-127",
+      "candidateId": "a908a75d-40d6-48a2-96dd-20338d31bc42",
+      "candidateName": "Mark Newton",
+      "candidacy": "state_lower: State House District 127 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18896,
+      "rosterName": "Jason Ridley",
+      "rosterSeat": "house HD-006",
+      "candidateId": "37c37d67-08b5-40ad-8d5a-66dec98a9631",
+      "candidateName": "Jason Ridley",
+      "candidacy": "state_lower: State House District 6 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18898,
+      "rosterName": "Deborah Silcox",
+      "rosterSeat": "house HD-053",
+      "candidateId": "98d175a4-72be-4258-8ada-64114ded864a",
+      "candidateName": "Deborah Silcox",
+      "candidacy": "state_lower: State House District 53 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18899,
+      "rosterName": "Matt Brass",
+      "rosterSeat": "senate SD-006",
+      "candidateId": "f0beb55c-8088-41f4-ab5e-34d832c673e8",
+      "candidateName": "Matt Brass",
+      "candidacy": "state_upper: State Senate District 6 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19105,
+      "rosterName": "Chuck Payne",
+      "rosterSeat": "senate SD-054",
+      "candidateId": "c03dbfb3-40d2-4dcc-8c59-ce4b87437a54",
+      "candidateName": "Chuck Payne",
+      "candidacy": "state_upper: State Senate District 54 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19497,
+      "rosterName": "Kim Schofield",
+      "rosterSeat": "house HD-063",
+      "candidateId": "eb499e48-473b-49f9-a16c-21e8f3bee19c",
+      "candidateName": "Kim Schofield",
+      "candidacy": "state_lower: State House District 63 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19498,
+      "rosterName": "Kay Kirkpatrick",
+      "rosterSeat": "senate SD-032",
+      "candidateId": "c4c03ce7-4e8d-494a-9382-84f6c1366d51",
+      "candidateName": "Kay Kirkpatrick",
+      "candidacy": "state_upper: State Senate District 32 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19524,
+      "rosterName": "Kasey Carpenter",
+      "rosterSeat": "house HD-004",
+      "candidateId": "99b853ba-0ae5-49b9-a92c-dc2192c7d935",
+      "candidateName": "Kasey Carpenter",
+      "candidacy": "state_lower: State House District 4 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19584,
+      "rosterName": "John LaHood",
+      "rosterSeat": "house HD-175",
+      "candidateId": "3c3f5934-c492-4c79-a558-8d9d3ed7785f",
+      "candidateName": "John LaHood",
+      "candidacy": "state_lower: State House District 175 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20735,
+      "rosterName": "Sally Harrell",
+      "rosterSeat": "senate SD-040",
+      "candidateId": "dbd26188-8615-4254-9bc1-032517f12761",
+      "candidateName": "Sally Harrell",
+      "candidacy": "state_upper: State Senate District 40 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20737,
+      "rosterName": "Sheikh Rahman",
+      "rosterSeat": "senate SD-005",
+      "candidateId": "b135007f-905b-4c6d-86bc-7eeb3ac3040c",
+      "candidateName": "Sheikh Rahman",
+      "candidacy": "state_upper: State Senate District 5 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20738,
+      "rosterName": "Randy Robertson",
+      "rosterSeat": "senate SD-029",
+      "candidateId": "4784c588-8963-4a71-9185-d6ed78835a44",
+      "candidateName": "Randy Robertson",
+      "candidacy": "state_upper: State Senate District 29 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20841,
+      "rosterName": "El-Mahdi Holly",
+      "rosterSeat": "house HD-116",
+      "candidateId": "d7a722ef-c2f8-442b-b2f1-7c8277b5b8c6",
+      "candidateName": "El-Mahdi Holly",
+      "candidacy": "state_lower: State House District 116 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20844,
+      "rosterName": "Vance Smith",
+      "rosterSeat": "house HD-138",
+      "candidateId": "4c7ec7bf-7f10-4210-96d5-c4b56d354283",
+      "candidateName": "Vance Smith",
+      "candidacy": "state_lower: State House District 138 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20969,
+      "rosterName": "Viola Davis",
+      "rosterSeat": "house HD-087",
+      "candidateId": "955e84b6-52e4-4800-938e-fbb1f1afb457",
+      "candidateName": "Viola Davis",
+      "candidacy": "state_lower: State House District 87 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20970,
+      "rosterName": "Chris Erwin",
+      "rosterSeat": "house HD-032",
+      "candidateId": "face7459-ca0f-47c7-b95e-5fb6db166208",
+      "candidateName": "Chris Erwin",
+      "candidacy": "state_lower: State House District 32 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20973,
+      "rosterName": "Matthew Gambill",
+      "rosterSeat": "house HD-015",
+      "candidateId": "89bcf79c-ae7b-43a7-9b90-dc352b69986f",
+      "candidateName": "Matthew Gambill",
+      "candidacy": "state_lower: State House District 15 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20974,
+      "rosterName": "Joseph Gullett",
+      "rosterSeat": "house HD-019",
+      "candidateId": "6a80e588-a068-4bd0-9a24-5cc08d24a8a3",
+      "candidateName": "Joseph Gullett",
+      "candidacy": "state_lower: State House District 19 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20975,
+      "rosterName": "Betsy Holland",
+      "rosterSeat": "house HD-054",
+      "candidateId": "3c43ef19-563a-459a-a177-7b7cfef78551",
+      "candidateName": "Betsy Holland",
+      "candidacy": "state_lower: State House District 54 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20980,
+      "rosterName": "Danny Mathis",
+      "rosterSeat": "house HD-133",
+      "candidateId": "ddd0dd4f-32aa-4c20-b1c4-58bf1cc13a31",
+      "candidateName": "Danny Mathis",
+      "candidacy": "state_lower: State House District 133 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20982,
+      "rosterName": "Steven Meeks",
+      "rosterSeat": "house HD-178",
+      "candidateId": "ac2952e1-ad4d-4bd4-a6d5-aa9420546c3e",
+      "candidateName": "Steven Meeks",
+      "candidacy": "state_lower: State House District 178 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20983,
+      "rosterName": "Martin Momtahan",
+      "rosterSeat": "house HD-017",
+      "candidateId": "82a0ad3c-a4a3-4cdc-99f3-a67ae752f361",
+      "candidateName": "Martin Momtahan",
+      "candidacy": "state_lower: State House District 17 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20987,
+      "rosterName": "Steven Sainz",
+      "rosterSeat": "house HD-180",
+      "candidateId": "0a966b03-7cf7-447f-9d24-3f8a1112d328",
+      "candidateName": "Steven Sainz",
+      "candidacy": "state_lower: State House District 180 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20988,
+      "rosterName": "Mitchell Scoggins",
+      "rosterSeat": "house HD-014",
+      "candidateId": "d930dee7-c02d-42df-94af-c220c31f3efd",
+      "candidateName": "Mitchell Scoggins",
+      "candidacy": "state_lower: State House District 14 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20989,
+      "rosterName": "Dale Washburn",
+      "rosterSeat": "house HD-144",
+      "candidateId": "16f15d9f-090b-453f-b20f-4a3e0874753b",
+      "candidateName": "Dale Washburn",
+      "candidacy": "state_lower: State House District 144 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20992,
+      "rosterName": "Mary Williams",
+      "rosterSeat": "house HD-037",
+      "candidateId": "821d8447-07fa-4704-98a1-4506bbe4e522",
+      "candidateName": "Mary Frances Williams",
+      "candidacy": "state_lower: State House District 37 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20993,
+      "rosterName": "Noel Williams",
+      "rosterSeat": "house HD-148",
+      "candidateId": "4589f246-8f81-47ec-9e98-36cf4ae692fb",
+      "candidateName": "Noel Williams Jr.",
+      "candidacy": "state_lower: State House District 148 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21114,
+      "rosterName": "Ginny Ehrhart",
+      "rosterSeat": "house HD-036",
+      "candidateId": "7a3f48b9-396a-428d-b380-a04d5e00a0b3",
+      "candidateName": "Ginny Ehrhart",
+      "candidacy": "state_lower: State House District 36 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21240,
+      "rosterName": "Matt Barton",
+      "rosterSeat": "house HD-005",
+      "candidateId": "ffe84d2f-9333-4126-bb39-fb52fd9f211d",
+      "candidateName": "Matt Barton",
+      "candidacy": "state_lower: State House District 5 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21333,
+      "rosterName": "James Burchett",
+      "rosterSeat": "house HD-176",
+      "candidateId": "0b027a13-1590-4f87-82a0-5b131169cef2",
+      "candidateName": "James Burchett",
+      "candidacy": "state_lower: State House District 176 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21417,
+      "rosterName": "Bill Yearta",
+      "rosterSeat": "house HD-152",
+      "candidateId": "83a5ff40-00ac-4eaf-bb74-2d23f9d47075",
+      "candidateName": "Bill Yearta",
+      "candidacy": "state_lower: State House District 152 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21611,
+      "rosterName": "Joe Campbell",
+      "rosterSeat": "house HD-171",
+      "candidateId": "ed561191-a61f-4f04-abe8-1d2bda4becc0",
+      "candidateName": "Joe Campbell",
+      "candidacy": "state_lower: State House District 171 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21619,
+      "rosterName": "Carden Summers",
+      "rosterSeat": "senate SD-013",
+      "candidateId": "b84f5566-44c2-42c8-9ec2-5cee8b43beaf",
+      "candidateName": "Carden Summers",
+      "candidacy": "state_upper: State Senate District 13 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22295,
+      "rosterName": "Jason Anavitarte",
+      "rosterSeat": "senate SD-031",
+      "candidateId": "ea67436b-5323-4451-be72-febabb9ac4cd",
+      "candidateName": "Jason Anavitarte",
+      "candidacy": "state_upper: State Senate District 31 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22296,
+      "rosterName": "Michelle Au",
+      "rosterSeat": "house HD-050",
+      "candidateId": "c19ccf2d-fffc-416b-9270-7d1a347d98ec",
+      "candidateName": "Michelle Au",
+      "candidacy": "state_lower: State House District 50 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22297,
+      "rosterName": "Max Burns",
+      "rosterSeat": "senate SD-023",
+      "candidateId": "803d7551-3b66-474c-a726-41d5f4cf463e",
+      "candidateName": "Max Burns",
+      "candidacy": "state_upper: State Senate District 23 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22298,
+      "rosterName": "Clint Dixon",
+      "rosterSeat": "senate SD-045",
+      "candidateId": "ced23c7f-7967-4e2f-8ca4-32da12322d78",
+      "candidateName": "Clint Dixon",
+      "candidacy": "state_upper: State Senate District 45 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22299,
+      "rosterName": "Russ Goodman",
+      "rosterSeat": "senate SD-008",
+      "candidateId": "0fcfceaf-9361-45a9-9afb-4b793f4f84fb",
+      "candidateName": "Russ Goodman",
+      "candidacy": "state_upper: State Senate District 8 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22300,
+      "rosterName": "Sonya Halpern",
+      "rosterSeat": "senate SD-039",
+      "candidateId": "fc2ff322-bb8a-41fc-af3c-827b520ad669",
+      "candidateName": "Sonya Halpern",
+      "candidacy": "state_upper: State Senate District 39 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22301,
+      "rosterName": "Bo Hatchett",
+      "rosterSeat": "senate SD-050",
+      "candidateId": "ae86e333-5426-406a-956a-6be0ae1674a3",
+      "candidateName": "Bo Hatchett",
+      "candidacy": "state_upper: State Senate District 50 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22302,
+      "rosterName": "Billy Hickman",
+      "rosterSeat": "senate SD-004",
+      "candidateId": "144d7fbb-b7f5-4aef-944e-fe44533b2ebd",
+      "candidateName": "Billy Hickman",
+      "candidacy": "state_upper: State Senate District 4 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22303,
+      "rosterName": "Kim Jackson",
+      "rosterSeat": "senate SD-041",
+      "candidateId": "d6ed3305-aea1-45b4-ab49-a233e5e3a478",
+      "candidateName": "Kim Jackson",
+      "candidacy": "state_upper: State Senate District 41 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22305,
+      "rosterName": "Nikki Merritt",
+      "rosterSeat": "senate SD-009",
+      "candidateId": "6c3ede43-5fe2-4cff-ad1a-f726729b205f",
+      "candidateName": "Nikki Merritt",
+      "candidacy": "state_upper: State Senate District 9 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22325,
+      "rosterName": "Victor Anderson",
+      "rosterSeat": "house HD-010",
+      "candidateId": "dab64126-de0e-41ca-8317-c4eaaed6654f",
+      "candidateName": "Victor Anderson",
+      "candidacy": "state_lower: State House District 10 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22326,
+      "rosterName": "Mike Cameron",
+      "rosterSeat": "house HD-001",
+      "candidateId": "cf8ae44a-1086-4857-a3a2-472484099251",
+      "candidateName": "Mike Cameron",
+      "candidacy": "state_lower: State House District 1 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22327,
+      "rosterName": "Beth Camp",
+      "rosterSeat": "house HD-135",
+      "candidateId": "17a523f4-12e5-45d7-be70-5073fb5c7da4",
+      "candidateName": "Beth Camp",
+      "candidacy": "state_lower: State House District 135 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22328,
+      "rosterName": "Clint Crowe",
+      "rosterSeat": "house HD-118",
+      "candidateId": "0479e6bb-6489-40f1-96ee-45b7d784ffde",
+      "candidateName": "Clint Crowe",
+      "candidacy": "state_lower: State House District 118 (2024); Georgia",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22330,
+      "rosterName": "Stan Gunter",
+      "rosterSeat": "house HD-008",
+      "candidateId": "eb9f1088-7420-489f-a9dd-8801c19e6f02",
+      "candidateName": "Stan Gunter",
+      "candidacy": "state_lower: State House District 8 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22332,
+      "rosterName": "David Jenkins",
+      "rosterSeat": "house HD-136",
+      "candidateId": "095bf8a0-1e46-4043-9e2b-0c7467de9f87",
+      "candidateName": "David Jenkins",
+      "candidacy": "state_lower: State House District 136 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22333,
+      "rosterName": "Rob Leverett",
+      "rosterSeat": "house HD-123",
+      "candidateId": "5f519ac6-41c1-4c5e-9aac-b149b9c645d8",
+      "candidateName": "Rob Leverett",
+      "candidacy": "state_lower: State House District 123 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22334,
+      "rosterName": "Regina Lewis-Ward",
+      "rosterSeat": "house HD-115",
+      "candidateId": "9d52e6ed-47ca-423f-8ef2-b6e4bf0dcbc0",
+      "candidateName": "Regina Lewis-Ward",
+      "candidacy": "state_lower: State House District 115 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22335,
+      "rosterName": "Marvin Lim",
+      "rosterSeat": "house HD-098",
+      "candidateId": "bfab7ec3-2123-4560-ad8a-0bbb17962d5e",
+      "candidateName": "Marvin Lim",
+      "candidacy": "state_lower: State House District 98 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22338,
+      "rosterName": "Derek Mallow",
+      "rosterSeat": "senate SD-002",
+      "candidateId": "3ebac5af-1e8e-40eb-a0d1-47346765cedd",
+      "candidateName": "Derek Mallow",
+      "candidacy": "state_upper: State Senate District 2 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22339,
+      "rosterName": "Lauren McDonald",
+      "rosterSeat": "house HD-026",
+      "candidateId": "f4d6665a-ca09-4362-897e-e408884e4eae",
+      "candidateName": "Lauren McDonald",
+      "candidacy": "state_lower: State House District 26 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22342,
+      "rosterName": "Shea Roberts",
+      "rosterSeat": "house HD-052",
+      "candidateId": "67a33845-2d43-4780-879a-f3e05e302a13",
+      "candidateName": "Shea Roberts",
+      "candidacy": "state_lower: State House District 52 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22343,
+      "rosterName": "Tyler Smith",
+      "rosterSeat": "house HD-018",
+      "candidateId": "cf1df18c-3f91-484d-a31b-c4c88a74fdc5",
+      "candidateName": "Tyler Smith",
+      "candidacy": "state_lower: State House District 18 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22344,
+      "rosterName": "Rhonda Taylor",
+      "rosterSeat": "house HD-092",
+      "candidateId": "4def5ee4-9913-4f18-8dfd-37420f77c965",
+      "candidateName": "Rhonda Taylor",
+      "candidacy": "state_lower: State House District 92 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22345,
+      "rosterName": "Brad Thomas",
+      "rosterSeat": "house HD-021",
+      "candidateId": "556aae84-0e56-43a3-934b-f86b4bbda1d5",
+      "candidateName": "Brad Thomas",
+      "candidacy": "state_lower: State House District 21 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22347,
+      "rosterName": "Will Wade",
+      "rosterSeat": "house HD-009",
+      "candidateId": "cee83702-2bfd-4f2b-a601-cecbe463d532",
+      "candidateName": "Will Wade",
+      "candidacy": "state_upper: State Senate District 51 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 22900,
+      "rosterName": "Angela Moore",
+      "rosterSeat": "house HD-091",
+      "candidateId": "1200ef81-cdb3-4788-abd2-0c591a756636",
+      "candidateName": "Angela Moore",
+      "candidacy": "state_lower: State House District 91 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22970,
+      "rosterName": "Leesa Hagan",
+      "rosterSeat": "house HD-156",
+      "candidateId": "bc7f7013-46c3-4bd4-b238-cc236f06f81e",
+      "candidateName": "Leesa Hagan",
+      "candidacy": "state_lower: State House District 156 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22972,
+      "rosterName": "Devan Seabaugh",
+      "rosterSeat": "house HD-034",
+      "candidateId": "3c718aaf-c7fe-4f3f-8933-167c194df8ed",
+      "candidateName": "Devan Seabaugh",
+      "candidacy": "state_lower: State House District 34 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23945,
+      "rosterName": "Shawn Still",
+      "rosterSeat": "senate SD-048",
+      "candidateId": "7aaae09e-4386-45ec-bf54-755e36b9c0cd",
+      "candidateName": "Shawn Still",
+      "candidacy": "state_upper: State Senate District 48 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23974,
+      "rosterName": "Mike Hodges",
+      "rosterSeat": "senate SD-003",
+      "candidateId": "8db8b578-96ca-4482-ab8b-577daa40eacc",
+      "candidateName": "Mike Hodges",
+      "candidacy": "state_upper: State Senate District 3 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24402,
+      "rosterName": "Imani Barnes",
+      "rosterSeat": "house HD-086",
+      "candidateId": "9d3a8648-9472-4806-8238-d8f6bdb859e0",
+      "candidateName": "Imani Barnes",
+      "candidacy": "state_lower: State House District 86 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24403,
+      "rosterName": "Esther Panitch",
+      "rosterSeat": "house HD-051",
+      "candidateId": "d26ab7ce-9db7-4e41-8918-6679845dec3e",
+      "candidateName": "Esther Panitch",
+      "candidacy": "state_lower: State House District 51 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24404,
+      "rosterName": "Soo Hong",
+      "rosterSeat": "house HD-103",
+      "candidateId": "4ca5ca00-5c99-4d7a-ad87-80e29e17f2da",
+      "candidateName": "Soo Hong",
+      "candidacy": "state_lower: State House District 103 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24405,
+      "rosterName": "Inga Willis",
+      "rosterSeat": "house HD-055",
+      "candidateId": "5df18933-efb0-4a67-9350-fa07c59e496c",
+      "candidateName": "Inga Willis",
+      "candidacy": "state_lower: State House District 55 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24419,
+      "rosterName": "Solomon Adesanya",
+      "rosterSeat": "house HD-043",
+      "candidateId": "f62a434d-c924-4149-8621-fb1125a171d7",
+      "candidateName": "Solomon Adesanya",
+      "candidacy": "state_lower: State House District 43 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24420,
+      "rosterName": "Segun Adeyina",
+      "rosterSeat": "house HD-110",
+      "candidateId": "ed512cb3-22c4-4378-b445-f4379079dc11",
+      "candidateName": "Segun Adeyina",
+      "candidacy": "state_lower: State House District 110 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24421,
+      "rosterName": "Bethany Ballard",
+      "rosterSeat": "house HD-147",
+      "candidateId": "b5296a7e-e3e7-49f2-b922-cebc921acfd9",
+      "candidateName": "Bethany Ballard",
+      "candidacy": "state_lower: State House District 147 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24422,
+      "rosterName": "Lisa Campbell",
+      "rosterSeat": "house HD-035",
+      "candidateId": "58aca65a-97ef-4694-aa4d-51cac44c7760",
+      "candidateName": "Lisa Campbell",
+      "candidacy": "state_lower: State House District 35 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24423,
+      "rosterName": "Brent Cox",
+      "rosterSeat": "house HD-028",
+      "candidateId": "6c3fbf59-2dc3-44e1-abfc-592bd23cb9c4",
+      "candidateName": "Brent Cox",
+      "candidacy": "state_lower: State House District 28 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24424,
+      "rosterName": "Omari Crawford",
+      "rosterSeat": "house HD-089",
+      "candidateId": "f8116fcc-acbc-493a-b1fd-22d84deedb55",
+      "candidateName": "Omari Crawford",
+      "candidacy": "state_lower: State House District 89 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24425,
+      "rosterName": "Terry Cummings",
+      "rosterSeat": "house HD-039",
+      "candidateId": "eb1f8381-6c8b-45a6-b5cc-245a4d34ce85",
+      "candidateName": "Terry Cummings",
+      "candidacy": "state_lower: State House District 39 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24427,
+      "rosterName": "Saira Draper",
+      "rosterSeat": "house HD-090",
+      "candidateId": "fe919880-ebec-424c-9f7e-8520a4ffe482",
+      "candidateName": "Saira Draper",
+      "candidacy": "state_upper: State Senate District 44 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 24429,
+      "rosterName": "Lehman Franklin",
+      "rosterSeat": "house HD-160",
+      "candidateId": "f6c10a85-2f08-41e4-9e81-e1f1c65f9a53",
+      "candidateName": "Lehman Franklin",
+      "candidacy": "state_lower: State House District 160 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24431,
+      "rosterName": "Lydia Glaize",
+      "rosterSeat": "house HD-067",
+      "candidateId": "afa68d56-05a7-40fe-87c0-1883cf933e9a",
+      "candidateName": "Lydia Glaize",
+      "candidacy": "state_lower: State House District 67 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24432,
+      "rosterName": "Mitchell Horner",
+      "rosterSeat": "house HD-003",
+      "candidateId": "4b9dc557-5e56-4a36-9ded-07c3c5e7d4fb",
+      "candidateName": "Mitchell Horner",
+      "candidacy": "state_lower: State House District 3 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24433,
+      "rosterName": "Karlton Howard",
+      "rosterSeat": "house HD-129",
+      "candidateId": "8dd766b8-738e-45ae-9ff7-a26603b5a629",
+      "candidateName": "Karlton Howard",
+      "candidacy": "state_lower: State House District 129 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24434,
+      "rosterName": "David Huddleston",
+      "rosterSeat": "house HD-072",
+      "candidateId": "7b5e231f-d5f6-4377-8f31-c2b819c774a2",
+      "candidateName": "David Huddleston",
+      "candidacy": "state_lower: State House District 72 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24435,
+      "rosterName": "Karen Lupton",
+      "rosterSeat": "house HD-083",
+      "candidateId": "3d82995b-88ab-4c47-b0f3-63d7207c7f7d",
+      "candidateName": "Karen Lupton",
+      "candidacy": "state_lower: State House District 83 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24436,
+      "rosterName": "Reynaldo Martinez",
+      "rosterSeat": "house HD-111",
+      "candidateId": "d1028879-2883-4ba6-ade9-18027d1c8494",
+      "candidateName": "Rey Martinez",
+      "candidacy": "state_lower: State House District 111 (2024); Georgia",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24437,
+      "rosterName": "Derrick McCollum",
+      "rosterSeat": "house HD-030",
+      "candidateId": "b82988ad-31d3-42c0-8eec-23a68dbbba9b",
+      "candidateName": "Derrick McCollum",
+      "candidacy": "state_lower: State House District 30 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24441,
+      "rosterName": "Kimberly New",
+      "rosterSeat": "house HD-040",
+      "candidateId": "0afad274-0b6c-4c8c-93a6-857d2a3b7f65",
+      "candidateName": "Kimberly New",
+      "candidacy": "state_lower: State House District 40 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24442,
+      "rosterName": "Gabe Okoye",
+      "rosterSeat": "house HD-102",
+      "candidateId": "09989cc8-c41b-4078-bb8d-62fd94795a49",
+      "candidateName": "Gabe Okoye",
+      "candidacy": "state_lower: State House District 102 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24443,
+      "rosterName": "Phil Olaleye",
+      "rosterSeat": "house HD-059",
+      "candidateId": "6b0b0574-ffc4-45f9-9717-8ffa1c4f32ff",
+      "candidateName": "Phil Olaleye",
+      "candidacy": "state_lower: State House District 59 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24445,
+      "rosterName": "Matt Reeves",
+      "rosterSeat": "house HD-099",
+      "candidateId": "555dc4a1-000f-4f9c-8f87-c8d1c53fb778",
+      "candidateName": "Matt Reeves",
+      "candidacy": "state_lower: State House District 99 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24446,
+      "rosterName": "Jordan Ridley",
+      "rosterSeat": "house HD-022",
+      "candidateId": "fd6f2fdd-4d85-4f38-a3f3-8d436d4007f8",
+      "candidateName": "Jordan Ridley",
+      "candidacy": "state_lower: State House District 22 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24447,
+      "rosterName": "Ruwa Romman",
+      "rosterSeat": "house HD-097",
+      "candidateId": "b434e58f-ed8b-467d-a589-fb8bdd26d2b4",
+      "candidateName": "Ruwa Romman",
+      "candidacy": "state_upper: State Senate District 7 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 24448,
+      "rosterName": "David Sampson",
+      "rosterSeat": "house HD-153",
+      "candidateId": "19dd014c-b0fa-40ec-9a86-a059669990a9",
+      "candidateName": "David Sampson",
+      "candidacy": "state_lower: State House District 153 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24449,
+      "rosterName": "Rick Townsend",
+      "rosterSeat": "house HD-179",
+      "candidateId": "78e638a1-fbee-4bb7-a80d-c5fa50770b19",
+      "candidateName": "Rick Townsend",
+      "candidacy": "state_lower: State House District 179 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24450,
+      "rosterName": "Long Tran",
+      "rosterSeat": "house HD-080",
+      "candidateId": "8fcbb2de-a423-422c-970c-aafd27cff764",
+      "candidateName": "Long Tran",
+      "candidacy": "state_lower: State House District 80 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24452,
+      "rosterName": "Anne Westbrook",
+      "rosterSeat": "house HD-163",
+      "candidateId": "a1c95373-ce34-4779-9cd8-2d537db50da1",
+      "candidateName": "Anne Westbrook",
+      "candidacy": "state_lower: State House District 163 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24453,
+      "rosterName": "Carter Barrett",
+      "rosterSeat": "house HD-024",
+      "candidateId": "0fce0c1c-5abd-45e3-83ff-a8fa4e16e767",
+      "candidateName": "Carter Barrett",
+      "candidacy": "state_lower: State House District 24 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24875,
+      "rosterName": "Charles Cannon",
+      "rosterSeat": "house HD-172",
+      "candidateId": "9a3b68ec-d06f-4805-bdca-a19475b28485",
+      "candidateName": "Charles Cannon",
+      "candidacy": "state_lower: State House District 172 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24876,
+      "rosterName": "Johnny Chastain",
+      "rosterSeat": "house HD-007",
+      "candidateId": "5918787c-5a78-478b-bf6d-67bae8cd1517",
+      "candidateName": "Johnny Chastain",
+      "candidacy": "state_lower: State House District 7 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24911,
+      "rosterName": "Holt Persinger",
+      "rosterSeat": "house HD-119",
+      "candidateId": "943a5983-1788-4d77-bc2c-f0e536b93462",
+      "candidateName": "Holt Persinger",
+      "candidacy": "state_lower: State House District 119 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24929,
+      "rosterName": "Eric Bell",
+      "rosterSeat": "house HD-075",
+      "candidateId": "d2dce545-3f38-4ab2-8d76-62bdffbf60b1",
+      "candidateName": "Eric Bell II",
+      "candidacy": "state_lower: State House District 75 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25168,
+      "rosterName": "Timothy Bearden",
+      "rosterSeat": "senate SD-030",
+      "candidateId": "e6de79ae-f54c-47ec-9c17-c42040bcfe98",
+      "candidateName": "Tim Bearden",
+      "candidacy": "state_upper: State Senate District 30 (2024); Georgia",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25179,
+      "rosterName": "Gary Richardson",
+      "rosterSeat": "house HD-125",
+      "candidateId": "234b96f7-2bcb-441e-bce0-0afe6d17dd69",
+      "candidateName": "Gary Richardson",
+      "candidacy": "state_lower: State House District 125 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26223,
+      "rosterName": "Arlene Beckles",
+      "rosterSeat": "house HD-096",
+      "candidateId": "872fea15-2d61-49fd-bdb7-99d68e5d8b6b",
+      "candidateName": "Arlene Beckles",
+      "candidacy": "state_lower: State House District 96 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26224,
+      "rosterName": "Bryce Berry",
+      "rosterSeat": "house HD-056",
+      "candidateId": "562fad50-911d-4e38-816a-1ad99753355d",
+      "candidateName": "Bryce Berry",
+      "candidacy": "state_lower: State House District 56 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26225,
+      "rosterName": "Rob Clifton",
+      "rosterSeat": "house HD-131",
+      "candidateId": "aafd91f9-0684-4a19-b074-445df8b6d53d",
+      "candidateName": "Rob Clifton",
+      "candidacy": "state_lower: State House District 131 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26226,
+      "rosterName": "Robert Dawson",
+      "rosterSeat": "house HD-065",
+      "candidateId": "b9950b0a-84c7-4357-94f1-3acc69975885",
+      "candidateName": "Robert Dawson",
+      "candidacy": "state_lower: State House District 65 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26227,
+      "rosterName": "Sandy Donatucci",
+      "rosterSeat": "house HD-105",
+      "candidateId": "51f6371a-4cd7-4fe2-9fb3-ca7e860b1927",
+      "candidateName": "Sandy Donatucci",
+      "candidacy": "state_lower: State House District 105 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26228,
+      "rosterName": "Robert Flournoy",
+      "rosterSeat": "house HD-074",
+      "candidateId": "4380e33e-5c52-40f7-b8b5-776fdeb9e4d0",
+      "candidateName": "Robert Flournoy Jr.",
+      "candidacy": "state_lower: State House District 74 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26229,
+      "rosterName": "Jaclyn Ford",
+      "rosterSeat": "house HD-170",
+      "candidateId": "2fb13cf9-6d5d-46b1-b383-de9c06dd6066",
+      "candidateName": "Jaclyn Ford",
+      "candidacy": "state_lower: State House District 170 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26230,
+      "rosterName": "Floyd Griffin",
+      "rosterSeat": "house HD-149",
+      "candidateId": "ad871962-e75d-478f-95c4-73434aa02bd7",
+      "candidateName": "Floyd Griffin",
+      "candidacy": "state_lower: State House District 149 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26231,
+      "rosterName": "Tangie Herring",
+      "rosterSeat": "house HD-145",
+      "candidateId": "274d63a1-7e19-4923-988f-c3d1e9db9b7f",
+      "candidateName": "Tangie Herring",
+      "candidacy": "state_lower: State House District 145 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26232,
+      "rosterName": "Jutt Howard",
+      "rosterSeat": "house HD-071",
+      "candidateId": "34dbb7d4-f8a9-456c-8f4a-5663d9dba58c",
+      "candidateName": "Justin Howard",
+      "candidacy": "state_lower: State House District 71 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26233,
+      "rosterName": "Anissa Jones",
+      "rosterSeat": "house HD-143",
+      "candidateId": "3d58d9eb-2950-4b1b-8f68-29bcd48e7982",
+      "candidateName": "Anissa Jones",
+      "candidacy": "state_lower: State House District 143 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26234,
+      "rosterName": "Noelle Kahaian",
+      "rosterSeat": "house HD-081",
+      "candidateId": "2b77689f-75ea-4110-8556-06fd1f74449b",
+      "candidateName": "Noelle Kahaian",
+      "candidacy": "state_lower: State House District 81 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26235,
+      "rosterName": "Mekyah McQueen",
+      "rosterSeat": "house HD-061",
+      "candidateId": "48e2ba01-c1e6-4688-8069-03e572f7d4ab",
+      "candidateName": "Mekyah McQueen",
+      "candidacy": "state_lower: State House District 61 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26236,
+      "rosterName": "L.C. Myles",
+      "rosterSeat": "house HD-126",
+      "candidateId": "4344fbcf-ad2b-4eee-bd68-a2563ed773a0",
+      "candidateName": "L.C. Myles Jr.",
+      "candidacy": "state_lower: State House District 126 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26238,
+      "rosterName": "Carmen Rice",
+      "rosterSeat": "house HD-139",
+      "candidateId": "b48fcc4d-4047-460d-8d26-e3bb6ac05ef9",
+      "candidateName": "Carmen Rice",
+      "candidacy": "state_lower: State House District 139 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26239,
+      "rosterName": "Gabriel Sanchez",
+      "rosterSeat": "house HD-042",
+      "candidateId": "4f38b3e3-46fd-41ab-b481-5ef268dde1d4",
+      "candidateName": "Gabriel Sanchez",
+      "candidacy": "state_lower: State House District 42 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26241,
+      "rosterName": "Drew Echols",
+      "rosterSeat": "senate SD-049",
+      "candidateId": "4a344542-3b4f-4f56-9371-c013ecda8c9f",
+      "candidateName": "Drew Echols",
+      "candidacy": "state_upper: State Senate District 49 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26242,
+      "rosterName": "RaShaun Kemp",
+      "rosterSeat": "senate SD-038",
+      "candidateId": "023739fd-28c3-4986-9727-92509f77104d",
+      "candidateName": "Rashaun Kemp",
+      "candidacy": "state_upper: State Senate District 38 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26243,
+      "rosterName": "Kenya Wicks",
+      "rosterSeat": "senate SD-034",
+      "candidateId": "ad936966-f0ce-4bc5-856e-74e81e580609",
+      "candidateName": "Kenya Wicks",
+      "candidacy": "state_upper: State Senate District 34 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26566,
+      "rosterName": "Eric Gisler",
+      "rosterSeat": "house HD-121",
+      "candidateId": "c5d8c2a7-72ee-44ab-8bf6-a5686c618bf6",
+      "candidateName": "Eric Gisler",
+      "candidacy": "state_lower: State House District 121 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26567,
+      "rosterName": "Jason T. Dickerson",
+      "rosterSeat": "senate SD-021",
+      "candidateId": "1143b66e-68f3-41a2-ab62-ff9ce14c6974",
+      "candidateName": "Jason Dickerson",
+      "candidacy": "state_upper: State Senate District 21 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26568,
+      "rosterName": "Jaha Howard",
+      "rosterSeat": "senate SD-035",
+      "candidateId": "35a05d02-ae4d-4464-a14a-a98b47b7096d",
+      "candidateName": "Jaha Howard",
+      "candidacy": "state_upper: State Senate District 35 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26569,
+      "rosterName": "Bill Fincher",
+      "rosterSeat": "house HD-023",
+      "candidateId": "c46bb71e-e814-4901-867e-c8666416a7f3",
+      "candidateName": "Bill Fincher",
+      "candidacy": "state_lower: State House District 23 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26632,
+      "rosterName": "Steven McNeel",
+      "rosterSeat": "senate SD-018",
+      "candidateId": "e4c48cda-701e-4807-9628-a0496aab5a9b",
+      "candidateName": "Steven McNeel",
+      "candidacy": "state_upper: State Senate District 18 (2024); Georgia",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    }
+  ],
+  "unmatchedPeople": [
+    {
+      "peopleId": 11777,
+      "name": "Bruce Williamson",
+      "seat": "house HD-112"
+    },
+    {
+      "peopleId": 11792,
+      "name": "Steve Gooch",
+      "seat": "senate SD-051"
+    },
+    {
+      "peopleId": 11926,
+      "name": "Elena Parent",
+      "seat": "senate SD-044"
+    },
+    {
+      "peopleId": 12040,
+      "name": "James Hatchett",
+      "seat": "house HD-155"
+    },
+    {
+      "peopleId": 13780,
+      "name": "Emory Dunahoo",
+      "seat": "house HD-031"
+    },
+    {
+      "peopleId": 15155,
+      "name": "Brandon Beach",
+      "seat": "senate SD-021"
+    },
+    {
+      "peopleId": 15169,
+      "name": "Brian Strickland",
+      "seat": "senate SD-042"
+    },
+    {
+      "peopleId": 15176,
+      "name": "Dexter Sharper",
+      "seat": "house HD-177"
+    },
+    {
+      "peopleId": 15185,
+      "name": "Karen Bennett",
+      "seat": "house HD-094"
+    },
+    {
+      "peopleId": 15191,
+      "name": "Mandi Ballinger",
+      "seat": "house HD-023"
+    },
+    {
+      "peopleId": 16154,
+      "name": "Dewey McClain",
+      "seat": "house HD-109"
+    },
+    {
+      "peopleId": 16729,
+      "name": "William Werkheiser",
+      "seat": "house HD-157"
+    },
+    {
+      "peopleId": 16732,
+      "name": "John Kennedy",
+      "seat": "senate SD-018"
+    },
+    {
+      "peopleId": 17397,
+      "name": "David Clark",
+      "seat": "house HD-100"
+    },
+    {
+      "peopleId": 17915,
+      "name": "Park Cannon",
+      "seat": "house HD-058"
+    },
+    {
+      "peopleId": 1863,
+      "name": "Mack Jackson",
+      "seat": "house HD-128"
+    },
+    {
+      "peopleId": 1869,
+      "name": "Jan Jones",
+      "seat": "house HD-047"
+    },
+    {
+      "peopleId": 18709,
+      "name": "Blake Tillery",
+      "seat": "senate SD-019"
+    },
+    {
+      "peopleId": 18884,
+      "name": "Carl Gilliard",
+      "seat": "house HD-162"
+    },
+    {
+      "peopleId": 18889,
+      "name": "Derrick Jackson",
+      "seat": "house HD-068"
+    },
+    {
+      "peopleId": 1910,
+      "name": "Butch Parrish",
+      "seat": "house HD-158"
+    },
+    {
+      "peopleId": 1941,
+      "name": "Lynn Smith",
+      "seat": "house HD-070"
+    },
+    {
+      "peopleId": 1974,
+      "name": "Bill Cowsert",
+      "seat": "senate SD-046"
+    },
+    {
+      "peopleId": 1982,
+      "name": "Ed Harbison",
+      "seat": "senate SD-015"
+    },
+    {
+      "peopleId": 1995,
+      "name": "Emanuel Jones",
+      "seat": "senate SD-010"
+    },
+    {
+      "peopleId": 2008,
+      "name": "Freddie Sims",
+      "seat": "senate SD-012"
+    },
+    {
+      "peopleId": 20734,
+      "name": "Greg Dolezal",
+      "seat": "senate SD-027"
+    },
+    {
+      "peopleId": 20842,
+      "name": "Josh McLaurin",
+      "seat": "senate SD-014"
+    },
+    {
+      "peopleId": 20968,
+      "name": "Jasmine Clark",
+      "seat": "house HD-108"
+    },
+    {
+      "peopleId": 20972,
+      "name": "Houston Gaines",
+      "seat": "house HD-120"
+    },
+    {
+      "peopleId": 20977,
+      "name": "Shelly Hutchinson",
+      "seat": "house HD-106"
+    },
+    {
+      "peopleId": 20985,
+      "name": "Colton Moore",
+      "seat": "senate SD-053"
+    },
+    {
+      "peopleId": 20990,
+      "name": "Marcus Wiedower",
+      "seat": "house HD-121"
+    },
+    {
+      "peopleId": 22329,
+      "name": "Buddy DeLoach",
+      "seat": "house HD-167"
+    },
+    {
+      "peopleId": 22331,
+      "name": "Sharon Henderson",
+      "seat": "house HD-113"
+    },
+    {
+      "peopleId": 22971,
+      "name": "Edna Jackson",
+      "seat": "house HD-165"
+    },
+    {
+      "peopleId": 23973,
+      "name": "Jason Esteves",
+      "seat": "senate SD-035"
+    },
+    {
+      "peopleId": 24428,
+      "name": "Tim Fleming",
+      "seat": "house HD-114"
+    },
+    {
+      "peopleId": 24430,
+      "name": "Lynn Heffner",
+      "seat": "house HD-130"
+    },
+    {
+      "peopleId": 24438,
+      "name": "Tanya Miller",
+      "seat": "house HD-062"
+    },
+    {
+      "peopleId": 24444,
+      "name": "Teddy Reese",
+      "seat": "house HD-140"
+    },
+    {
+      "peopleId": 24985,
+      "name": "Nabilah Islam Parkes",
+      "seat": "senate SD-007"
+    },
+    {
+      "peopleId": 26222,
+      "name": "Sylvia Baker",
+      "seat": "house HD-064"
+    },
+    {
+      "peopleId": 26237,
+      "name": "Angie O'Steen",
+      "seat": "house HD-169"
+    },
+    {
+      "peopleId": 26240,
+      "name": "Mary Ann Santos",
+      "seat": "house HD-117"
+    },
+    {
+      "peopleId": 26565,
+      "name": "Akbar Ali",
+      "seat": "house HD-106"
+    }
+  ],
+  "unmatchedCandidates": [
+    {
+      "candidateId": "193d1cf0-1b9a-4ffa-bbc9-401e46330294",
+      "name": "Adam Chitwood",
+      "scope": "state_lower",
+      "districtName": "State House District 173 (2024); Georgia"
+    },
+    {
+      "candidateId": "347f044a-2d6c-4ac0-8971-517eb2a17317",
+      "name": "Adam Cleveland",
+      "scope": "state_lower",
+      "districtName": "State House District 48 (2024); Georgia"
+    },
+    {
+      "candidateId": "85667e3b-f7eb-469b-9189-877b06350b9a",
+      "name": "Aizaz Shaikh",
+      "scope": "state_upper",
+      "districtName": "State Senate District 7 (2024); Georgia"
+    },
+    {
+      "candidateId": "c399cfb8-90c3-4bb8-bb03-bb8d9e0e31bb",
+      "name": "Alec Miller",
+      "scope": "state_upper",
+      "districtName": "State Senate District 31 (2024); Georgia"
+    },
+    {
+      "candidateId": "ad07c552-3b74-496c-887e-a2d188495b31",
+      "name": "Andre Stafford",
+      "scope": "state_lower",
+      "districtName": "State House District 42 (2024); Georgia"
+    },
+    {
+      "candidateId": "e4da195e-8e3d-4849-9c51-0d244659d582",
+      "name": "Angie O'Steen",
+      "scope": "state_lower",
+      "districtName": "State House District 169 (2024); Georgia"
+    },
+    {
+      "candidateId": "203acb2b-f5f6-4a57-b446-fe6a4388559a",
+      "name": "Anissa Knight Wiseman",
+      "scope": "state_lower",
+      "districtName": "State House District 175 (2024); Georgia"
+    },
+    {
+      "candidateId": "2221c1ac-9f34-4431-9ab5-6c066bddb08c",
+      "name": "Anna Higgins",
+      "scope": "state_lower",
+      "districtName": "State House District 71 (2024); Georgia"
+    },
+    {
+      "candidateId": "7c329b91-f458-4439-a0ca-f07b8c4f76b5",
+      "name": "Anthony Aragues Jr.",
+      "scope": "state_lower",
+      "districtName": "State House District 21 (2024); Georgia"
+    },
+    {
+      "candidateId": "4615b9c8-52e9-431a-a797-95c10eb2f165",
+      "name": "Anthony Dickson",
+      "scope": "state_lower",
+      "districtName": "State House District 82 (2024); Georgia"
+    },
+    {
+      "candidateId": "fddb4ccb-38d2-49cc-9cc3-12395752d805",
+      "name": "Anthony Tippetts",
+      "scope": "state_upper",
+      "districtName": "State Senate District 45 (2024); Georgia"
+    },
+    {
+      "candidateId": "04da6f63-1de0-4861-8907-34e1fcb8830c",
+      "name": "Azure Duan",
+      "scope": "state_lower",
+      "districtName": "State House District 50 (2024); Georgia"
+    },
+    {
+      "candidateId": "f1dd87b3-f89a-41ce-9477-f9ae68678ae2",
+      "name": "Barry Dunham",
+      "scope": "state_lower",
+      "districtName": "State House District 178 (2024); Georgia"
+    },
+    {
+      "candidateId": "a625675a-6074-4216-8b1b-054b6c3ae000",
+      "name": "Bella Bautista",
+      "scope": "state_lower",
+      "districtName": "State House District 14 (2024); Georgia"
+    },
+    {
+      "candidateId": "6239c9b9-8246-4ff4-8172-7db10abb67bd",
+      "name": "Bentley Hudgins",
+      "scope": "state_lower",
+      "districtName": "State House District 90 (2024); Georgia"
+    },
+    {
+      "candidateId": "ff12df35-e8c7-4ed6-b5e0-c552b4c6afff",
+      "name": "Beth Fuller",
+      "scope": "state_lower",
+      "districtName": "State House District 53 (2024); Georgia"
+    },
+    {
+      "candidateId": "ab5a0b8e-6b9e-4e04-8109-993ae23bd73d",
+      "name": "Braden Doxey",
+      "scope": "state_lower",
+      "districtName": "State House District 30 (2024); Georgia"
+    },
+    {
+      "candidateId": "74298c50-d6f3-4121-a43c-b10db577a1fd",
+      "name": "Bradley Anderson",
+      "scope": "state_lower",
+      "districtName": "State House District 157 (2024); Georgia"
+    },
+    {
+      "candidateId": "3c3bf492-5137-4646-bd82-4a35ede0532c",
+      "name": "Bret Dunn",
+      "scope": "state_upper",
+      "districtName": "State Senate District 42 (2024); Georgia"
+    },
+    {
+      "candidateId": "bef8ca07-8a49-453d-bf04-04265c1552e4",
+      "name": "Brett Mauldin",
+      "scope": "state_lower",
+      "districtName": "State House District 114 (2024); Georgia"
+    },
+    {
+      "candidateId": "2a2cac1a-87d9-4f78-8ff3-8525d9a96c65",
+      "name": "Brian Anderson",
+      "scope": "state_lower",
+      "districtName": "State House District 80 (2024); Georgia"
+    },
+    {
+      "candidateId": "4cb6a084-9a5e-421a-9772-5a468c1f22fc",
+      "name": "Bruce Williamson",
+      "scope": "state_lower",
+      "districtName": "State House District 112 (2024); Georgia"
+    },
+    {
+      "candidateId": "227f6420-0e8b-4072-9c48-c4c71d278fb6",
+      "name": "Buddy DeLoach",
+      "scope": "state_lower",
+      "districtName": "State House District 167 (2024); Georgia"
+    },
+    {
+      "candidateId": "0b3b26de-fdf5-427d-84d2-40e2ef4cc332",
+      "name": "Calvin Palmer",
+      "scope": "state_lower",
+      "districtName": "State House District 142 (2024); Georgia"
+    },
+    {
+      "candidateId": "c9224375-428d-409c-913d-0cd2a9aa26e5",
+      "name": "Carol Hubbard",
+      "scope": "state_lower",
+      "districtName": "State House District 122 (2024); Georgia"
+    },
+    {
+      "candidateId": "ad41c119-89c5-4e46-a085-fa3679f17246",
+      "name": "Cary Moore",
+      "scope": "state_lower",
+      "districtName": "State House District 150 (2024); Georgia"
+    },
+    {
+      "candidateId": "57b8c641-3971-4462-8d2b-b7a09f009b58",
+      "name": "Catherine Morris",
+      "scope": "state_lower",
+      "districtName": "State House District 119 (2024); Georgia"
+    },
+    {
+      "candidateId": "db8964d4-20a7-4d80-8062-57f8a0944137",
+      "name": "Cathy Kott",
+      "scope": "state_lower",
+      "districtName": "State House District 6 (2024); Georgia"
+    },
+    {
+      "candidateId": "3f05d643-da61-4bc3-83f3-2515526a1f0e",
+      "name": "Chad Bingham",
+      "scope": "state_lower",
+      "districtName": "State House District 31 (2024); Georgia"
+    },
+    {
+      "candidateId": "f4942770-520c-4d3a-b5c8-b429c89673ef",
+      "name": "Channing Taylor",
+      "scope": "state_lower",
+      "districtName": "State House District 127 (2024); Georgia"
+    },
+    {
+      "candidateId": "f8ac6df5-2ee6-43c2-beb1-549bd5be039f",
+      "name": "Charles Lollar",
+      "scope": "state_lower",
+      "districtName": "State House District 110 (2024); Georgia"
+    },
+    {
+      "candidateId": "46d334c0-092f-476e-afcb-7d055a905fbd",
+      "name": "Chris Dockery",
+      "scope": "state_lower",
+      "districtName": "State House District 9 (2024); Georgia"
+    },
+    {
+      "candidateId": "9df9d04a-b107-41b9-9966-ad9ef0fc77d1",
+      "name": "Chris Luchey",
+      "scope": "state_lower",
+      "districtName": "State House District 103 (2024); Georgia"
+    },
+    {
+      "candidateId": "2a748b10-1e49-4137-9ec5-dc410a44a4d1",
+      "name": "Chuck Hand",
+      "scope": "state_upper",
+      "districtName": "State Senate District 15 (2024); Georgia"
+    },
+    {
+      "candidateId": "f7e18d22-da5a-49e2-af5d-0ab243b99258",
+      "name": "Corey Foreman",
+      "scope": "state_upper",
+      "districtName": "State Senate District 1 (2024); Georgia"
+    },
+    {
+      "candidateId": "56f60977-808c-47c7-889a-f784ec01c9af",
+      "name": "Cyndie Hutchings",
+      "scope": "state_lower",
+      "districtName": "State House District 138 (2024); Georgia"
+    },
+    {
+      "candidateId": "a3614110-7c90-426d-9be3-16773be8f18f",
+      "name": "Cynthia Johnson",
+      "scope": "state_lower",
+      "districtName": "State House District 148 (2024); Georgia"
+    },
+    {
+      "candidateId": "ba01019f-910b-434c-b2a5-5e32c83eed88",
+      "name": "Cynthia Starke-Jones",
+      "scope": "state_lower",
+      "districtName": "State House District 19 (2024); Georgia"
+    },
+    {
+      "candidateId": "a2c0a72d-cf08-4716-bd12-e5d197d2cf2c",
+      "name": "Damita Bishop",
+      "scope": "state_lower",
+      "districtName": "State House District 61 (2024); Georgia"
+    },
+    {
+      "candidateId": "65420982-b1e5-4e77-abcc-d574fa771963",
+      "name": "Daniel Cook",
+      "scope": "state_lower",
+      "districtName": "State House District 67 (2024); Georgia"
+    },
+    {
+      "candidateId": "0292ab36-0b87-4677-a30e-c735006674bb",
+      "name": "Danielle Bell",
+      "scope": "state_lower",
+      "districtName": "State House District 44 (2024); Georgia"
+    },
+    {
+      "candidateId": "2b20639f-e585-4219-872f-00aa7fa983d1",
+      "name": "Darcy Castro",
+      "scope": "state_upper",
+      "districtName": "State Senate District 37 (2024); Georgia"
+    },
+    {
+      "candidateId": "c12219b7-0f14-4c24-b7c1-c46bb2390bc3",
+      "name": "Darius Francis",
+      "scope": "state_lower",
+      "districtName": "State House District 115 (2024); Georgia"
+    },
+    {
+      "candidateId": "119a38ef-1ec1-4029-b328-28997a500e9c",
+      "name": "Dave Cooper",
+      "scope": "state_upper",
+      "districtName": "State Senate District 50 (2024); Georgia"
+    },
+    {
+      "candidateId": "4fea37bc-9645-42d3-8912-e459497770ad",
+      "name": "David Carson",
+      "scope": "state_lower",
+      "districtName": "State House District 130 (2024); Georgia"
+    },
+    {
+      "candidateId": "7fdece35-ec7e-4acf-a50b-c463996ba0f1",
+      "name": "David Dillie",
+      "scope": "state_lower",
+      "districtName": "State House District 161 (2024); Georgia"
+    },
+    {
+      "candidateId": "f634b5ba-cba0-4d0a-9778-3e8428f721b4",
+      "name": "David Hall",
+      "scope": "state_lower",
+      "districtName": "State House District 174 (2024); Georgia"
+    },
+    {
+      "candidateId": "ea75ea22-7151-4ec8-b73a-9891ffc39c0b",
+      "name": "David Hamrick",
+      "scope": "state_lower",
+      "districtName": "State House District 79 (2024); Georgia"
+    },
+    {
+      "candidateId": "a6e68131-c37d-4140-a107-f97650070a5a",
+      "name": "David Sikes",
+      "scope": "state_upper",
+      "districtName": "State Senate District 19 (2024); Georgia"
+    },
+    {
+      "candidateId": "5c9ec14d-57d1-4740-a756-ca40a1956f08",
+      "name": "Diana Spangler",
+      "scope": "state_lower",
+      "districtName": "State House District 16 (2024); Georgia"
+    },
+    {
+      "candidateId": "b26eb7f8-d47b-4949-a63b-bdda4ad4aea5",
+      "name": "Diane Boulai",
+      "scope": "state_lower",
+      "districtName": "State House District 70 (2024); Georgia"
+    },
+    {
+      "candidateId": "c723c91c-6217-41f3-baa3-72b661fd9cda",
+      "name": "Don Scarbrough",
+      "scope": "state_lower",
+      "districtName": "State House District 113 (2024); Georgia"
+    },
+    {
+      "candidateId": "8678587d-3439-4f4d-8cb9-921ed74af766",
+      "name": "Dumont Walker",
+      "scope": "state_lower",
+      "districtName": "State House District 46 (2024); Georgia"
+    },
+    {
+      "candidateId": "88de76b9-e131-4652-8865-7ec104e027be",
+      "name": "Edward Brown",
+      "scope": "state_upper",
+      "districtName": "State Senate District 12 (2024); Georgia"
+    },
+    {
+      "candidateId": "d5e89bf0-e45b-4c8b-9f0b-00c7113185cf",
+      "name": "Edward Kvietkus Jr.",
+      "scope": "state_lower",
+      "districtName": "State House District 140 (2024); Georgia"
+    },
+    {
+      "candidateId": "99804e93-870d-42b8-8591-bc706bbdcb17",
+      "name": "Elaine Padgett",
+      "scope": "state_lower",
+      "districtName": "State House District 25 (2024); Georgia"
+    },
+    {
+      "candidateId": "ed9fc9d9-2ca9-4796-8631-14c5e49ea684",
+      "name": "Elisa Lassiter",
+      "scope": "state_lower",
+      "districtName": "State House District 40 (2024); Georgia"
+    },
+    {
+      "candidateId": "f5b159dd-ba89-4409-acc0-efda8ac6a40c",
+      "name": "Elliot Valdez",
+      "scope": "state_lower",
+      "districtName": "State House District 139 (2024); Georgia"
+    },
+    {
+      "candidateId": "50aeee2c-7d8a-4cba-aa6d-e8b0fede83f5",
+      "name": "Elsie Napier",
+      "scope": "state_lower",
+      "districtName": "State House District 177 (2024); Georgia"
+    },
+    {
+      "candidateId": "feeb720b-f8f1-46b6-aa4d-504ab520ccda",
+      "name": "Elvia Davila",
+      "scope": "state_lower",
+      "districtName": "State House District 108 (2024); Georgia"
+    },
+    {
+      "candidateId": "457041f8-6ce7-4151-8905-a2292c2e58f9",
+      "name": "Elvis Casely",
+      "scope": "state_lower",
+      "districtName": "State House District 35 (2024); Georgia"
+    },
+    {
+      "candidateId": "77b7fec0-444e-4d26-935a-3f2e972cbb7d",
+      "name": "Eric Helvy",
+      "scope": "state_upper",
+      "districtName": "State Senate District 38 (2024); Georgia"
+    },
+    {
+      "candidateId": "49ec1290-87ac-4de4-9de7-cb453768e0bf",
+      "name": "Eric Lee",
+      "scope": "state_upper",
+      "districtName": "State Senate District 42 (2024); Georgia"
+    },
+    {
+      "candidateId": "7e0fce8d-ac50-415e-bc97-aa3762c7f05c",
+      "name": "Eric Wilson",
+      "scope": "state_lower",
+      "districtName": "State House District 145 (2024); Georgia"
+    },
+    {
+      "candidateId": "fdb6eb68-74f9-4f21-b256-d0aa2cc2c94f",
+      "name": "Farooq Mughal",
+      "scope": "state_lower",
+      "districtName": "State House District 105 (2024); Georgia"
+    },
+    {
+      "candidateId": "157c6bb0-177c-4d9e-8656-1e9dda2ed005",
+      "name": "Furquan Stafford",
+      "scope": "state_upper",
+      "districtName": "State Senate District 10 (2024); Georgia"
+    },
+    {
+      "candidateId": "412505db-c91d-4a47-8bb7-2ce376647779",
+      "name": "Gary St. Lawrence",
+      "scope": "state_upper",
+      "districtName": "State Senate District 51 (2024); Georgia"
+    },
+    {
+      "candidateId": "7683d38f-d609-4255-8079-9cc42c58b23d",
+      "name": "Gordon Rolle",
+      "scope": "state_lower",
+      "districtName": "State House District 65 (2024); Georgia"
+    },
+    {
+      "candidateId": "0fca17f0-ee16-40f6-ad3e-1bfa9ec43dfe",
+      "name": "Gregory Miller",
+      "scope": "state_lower",
+      "districtName": "State House District 54 (2024); Georgia"
+    },
+    {
+      "candidateId": "fb958173-0d59-4ae1-b0ae-6b42b6477ce6",
+      "name": "Harry James",
+      "scope": "state_lower",
+      "districtName": "State House District 154 (2024); Georgia"
+    },
+    {
+      "candidateId": "a6a05b2b-c266-45cd-9fe5-3c3593d625b3",
+      "name": "Helmut Love",
+      "scope": "state_lower",
+      "districtName": "State House District 57 (2024); Georgia"
+    },
+    {
+      "candidateId": "252df520-499b-4f07-a088-a833c4328fb5",
+      "name": "Holly Chaney",
+      "scope": "state_lower",
+      "districtName": "State House District 12 (2024); Georgia"
+    },
+    {
+      "candidateId": "31b265df-89f4-4d25-8ac2-a4fe6e98ef11",
+      "name": "Hope Beard",
+      "scope": "state_lower",
+      "districtName": "State House District 123 (2024); Georgia"
+    },
+    {
+      "candidateId": "f39f2444-427f-4e9e-b57d-2f064a0fc9a7",
+      "name": "Jack Miller",
+      "scope": "state_lower",
+      "districtName": "State House District 47 (2024); Georgia"
+    },
+    {
+      "candidateId": "a8262380-bee8-4fbf-9459-5b18064360bd",
+      "name": "Jack Zibluk",
+      "scope": "state_upper",
+      "districtName": "State Senate District 53 (2024); Georgia"
+    },
+    {
+      "candidateId": "44ed6e0d-adf4-433c-87e4-53cf901010f5",
+      "name": "James Shade",
+      "scope": "state_lower",
+      "districtName": "State House District 22 (2024); Georgia"
+    },
+    {
+      "candidateId": "1ebcec61-0054-432e-9f20-2e7ea2ee0c7f",
+      "name": "James Smith",
+      "scope": "state_lower",
+      "districtName": "State House District 83 (2024); Georgia"
+    },
+    {
+      "candidateId": "d60f3abc-f960-4d5d-84be-9ae1ebd1e7c7",
+      "name": "James Wolfe",
+      "scope": "state_lower",
+      "districtName": "State House District 151 (2024); Georgia"
+    },
+    {
+      "candidateId": "4882e25d-18fb-47f2-85aa-279e3a9b1eb0",
+      "name": "Jason Tanner",
+      "scope": "state_lower",
+      "districtName": "State House District 20 (2024); Georgia"
+    },
+    {
+      "candidateId": "bc62f3e1-405e-4efc-adf7-67692aab4631",
+      "name": "Jeff Lowe",
+      "scope": "state_upper",
+      "districtName": "State Senate District 29 (2024); Georgia"
+    },
+    {
+      "candidateId": "85f6239a-26af-4a21-bc8b-bb7256b99141",
+      "name": "Jeff Newlin",
+      "scope": "state_upper",
+      "districtName": "State Senate District 41 (2024); Georgia"
+    },
+    {
+      "candidateId": "e374e64b-4a36-4e20-806e-f0d7ce9d6c8f",
+      "name": "Jennifer Ambler",
+      "scope": "state_lower",
+      "districtName": "State House District 100 (2024); Georgia"
+    },
+    {
+      "candidateId": "7ea83a5b-7048-4097-8bb6-3ab69cc34eeb",
+      "name": "Jennifer Bowers Hutchison",
+      "scope": "state_lower",
+      "districtName": "State House District 101 (2024); Georgia"
+    },
+    {
+      "candidateId": "f96bb6a4-e0d4-488e-8fbd-3b27e57e0a0f",
+      "name": "Jenny Eppard",
+      "scope": "state_lower",
+      "districtName": "State House District 131 (2024); Georgia"
+    },
+    {
+      "candidateId": "e1e17aca-586a-42a4-9c7e-e6c697b00c26",
+      "name": "Jermarkus Jacobs",
+      "scope": "state_upper",
+      "districtName": "State Senate District 6 (2024); Georgia"
+    },
+    {
+      "candidateId": "c469d32a-ebfa-4f30-8bc6-562c5bc5d807",
+      "name": "Jessica Roper",
+      "scope": "state_upper",
+      "districtName": "State Senate District 27 (2024); Georgia"
+    },
+    {
+      "candidateId": "816cac04-b741-4137-a27e-81796dcc4506",
+      "name": "Joe Powers",
+      "scope": "state_lower",
+      "districtName": "State House District 155 (2024); Georgia"
+    },
+    {
+      "candidateId": "5e84d0ea-1284-4cea-baad-4a687cfc2d1d",
+      "name": "John Brown",
+      "scope": "state_lower",
+      "districtName": "State House District 10 (2024); Georgia"
+    },
+    {
+      "candidateId": "a769b5d3-b957-466e-8846-7b0c7091314e",
+      "name": "John Franklin Guest, Jr.",
+      "scope": "state_upper",
+      "districtName": "State Senate District 39 (2024); Georgia"
+    },
+    {
+      "candidateId": "bf6cb26e-3873-4725-916a-05c1da975851",
+      "name": "Joseph Kirkland IV",
+      "scope": "state_lower",
+      "districtName": "State House District 27 (2024); Georgia"
+    },
+    {
+      "candidateId": "55fb260e-72ec-4e15-af28-46cfd3715dbf",
+      "name": "Josh Clark",
+      "scope": "state_lower",
+      "districtName": "State House District 100 (2024); Georgia"
+    },
+    {
+      "candidateId": "a17ffe6f-d026-476a-b2f5-63fe43f52efb",
+      "name": "Joshua Wilkerson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 19 (2024); Georgia"
+    },
+    {
+      "candidateId": "f1e1edc2-7f41-45fb-84e7-85f5c1f6a766",
+      "name": "Juan Estrada",
+      "scope": "state_lower",
+      "districtName": "State House District 109 (2024); Georgia"
+    },
+    {
+      "candidateId": "1082fee5-7639-4afd-9fb4-961ab1f2222c",
+      "name": "Justin Gillespie",
+      "scope": "state_upper",
+      "districtName": "State Senate District 47 (2024); Georgia"
+    },
+    {
+      "candidateId": "a1dab558-b449-4a22-a660-c55cd28b6a05",
+      "name": "Jyot Singh",
+      "scope": "state_lower",
+      "districtName": "State House District 97 (2024); Georgia"
+    },
+    {
+      "candidateId": "76ed0ee6-6799-4b91-9f65-355db2e4783d",
+      "name": "Karla Daniels Hooper",
+      "scope": "state_lower",
+      "districtName": "State House District 113 (2024); Georgia"
+    },
+    {
+      "candidateId": "6e37d7b4-dd29-4d15-9636-e3a022b7c95a",
+      "name": "Katie Corkren",
+      "scope": "state_upper",
+      "districtName": "State Senate District 36 (2024); Georgia"
+    },
+    {
+      "candidateId": "7a9c8c3c-7f08-4161-adcf-f76b1e284331",
+      "name": "Keith Gettmann",
+      "scope": "state_lower",
+      "districtName": "State House District 51 (2024); Georgia"
+    },
+    {
+      "candidateId": "5040561c-f0d6-4464-bbfb-f1940de897a8",
+      "name": "Kenn Collier",
+      "scope": "state_lower",
+      "districtName": "State House District 62 (2024); Georgia"
+    },
+    {
+      "candidateId": "deb4a28e-7c47-453c-8dc9-9383918f571f",
+      "name": "Kevin Abel",
+      "scope": "state_upper",
+      "districtName": "State Senate District 14 (2024); Georgia"
+    },
+    {
+      "candidateId": "c31c62bf-bd21-4254-839c-174fc2c7efb9",
+      "name": "Kevin Remillard",
+      "scope": "state_lower",
+      "districtName": "State House District 168 (2024); Georgia"
+    },
+    {
+      "candidateId": "68b86b59-b35b-4419-bf5b-abad882ff01d",
+      "name": "Kim Thomas Smith",
+      "scope": "state_lower",
+      "districtName": "State House District 117 (2024); Georgia"
+    },
+    {
+      "candidateId": "ab02a574-edb9-442d-96a7-af0bbd2babfb",
+      "name": "Kori Simmons",
+      "scope": "state_upper",
+      "districtName": "State Senate District 21 (2024); Georgia"
+    },
+    {
+      "candidateId": "589deb67-c48f-45df-9249-4fdb477a7504",
+      "name": "Landen Baynard",
+      "scope": "state_lower",
+      "districtName": "State House District 73 (2024); Georgia"
+    },
+    {
+      "candidateId": "fdb45809-0310-414a-9242-5ce8afd0d32a",
+      "name": "Lanny Thomas",
+      "scope": "state_upper",
+      "districtName": "State Senate District 53 (2024); Georgia"
+    },
+    {
+      "candidateId": "413f7af9-107b-4391-9b2b-d5158ebea342",
+      "name": "Larry Johnson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 10 (2024); Georgia"
+    },
+    {
+      "candidateId": "bf45c9a1-3c85-4ef6-a680-03179c495cfa",
+      "name": "Larry Parrish",
+      "scope": "state_lower",
+      "districtName": "State House District 158 (2024); Georgia"
+    },
+    {
+      "candidateId": "7b7cef60-0d40-4351-bb37-4ec2f54322d0",
+      "name": "Laura Murvartian",
+      "scope": "state_upper",
+      "districtName": "State Senate District 48 (2024); Georgia"
+    },
+    {
+      "candidateId": "58b71b30-a880-4dd6-8eec-a4cf9c740dc3",
+      "name": "Lauren Jones",
+      "scope": "state_lower",
+      "districtName": "State House District 15 (2024); Georgia"
+    },
+    {
+      "candidateId": "096c4d22-70f0-4b9c-be3c-f59d38f274f8",
+      "name": "Leonard Hennessy",
+      "scope": "state_lower",
+      "districtName": "State House District 125 (2024); Georgia"
+    },
+    {
+      "candidateId": "e4cd74b9-04b0-469d-8dbb-cf540c185d8b",
+      "name": "Lindsay Defranco",
+      "scope": "state_lower",
+      "districtName": "State House District 47 (2024); Georgia"
+    },
+    {
+      "candidateId": "81ff448e-6354-451d-8b9b-77135aff4ae2",
+      "name": "Lisa Maria",
+      "scope": "state_lower",
+      "districtName": "State House District 112 (2024); Georgia"
+    },
+    {
+      "candidateId": "e83c574e-469a-49be-8b06-8d67cf798c32",
+      "name": "Lorraine Thomas",
+      "scope": "state_upper",
+      "districtName": "State Senate District 24 (2024); Georgia"
+    },
+    {
+      "candidateId": "50604837-d887-4631-a4a2-01bbee4e4776",
+      "name": "Luc Noiset",
+      "scope": "state_lower",
+      "districtName": "State House District 36 (2024); Georgia"
+    },
+    {
+      "candidateId": "b66baa31-6127-4a6d-916a-0506a3513a97",
+      "name": "Lydia Parchue",
+      "scope": "state_lower",
+      "districtName": "State House District 64 (2024); Georgia"
+    },
+    {
+      "candidateId": "2e3e976a-421c-4728-b0f2-065dacc6154f",
+      "name": "Mack Guest IV",
+      "scope": "state_lower",
+      "districtName": "State House District 121 (2024); Georgia"
+    },
+    {
+      "candidateId": "5d283cf9-71e4-4bea-91a0-54e2698b3db7",
+      "name": "Marc McMain",
+      "scope": "state_upper",
+      "districtName": "State Senate District 46 (2024); Georgia"
+    },
+    {
+      "candidateId": "110c24ed-43e7-4902-8ca5-94419bd96d46",
+      "name": "Marcus Ryan",
+      "scope": "state_lower",
+      "districtName": "State House District 176 (2024); Georgia"
+    },
+    {
+      "candidateId": "a2f90f3a-d11b-456e-90c7-722c323b1ca9",
+      "name": "Margaret Spear",
+      "scope": "state_lower",
+      "districtName": "State House District 3 (2024); Georgia"
+    },
+    {
+      "candidateId": "b75c20ed-b55a-4e01-8bd6-0fd21730c713",
+      "name": "Marquese Averett",
+      "scope": "state_lower",
+      "districtName": "State House District 140 (2024); Georgia"
+    },
+    {
+      "candidateId": "27a5f820-2225-4dd3-b48d-8d2f4879d169",
+      "name": "Mary Williams Benefield",
+      "scope": "state_upper",
+      "districtName": "State Senate District 55 (2024); Georgia"
+    },
+    {
+      "candidateId": "4e86361a-150d-4e63-bb9f-edc74085732f",
+      "name": "Mateo Sanabria",
+      "scope": "state_lower",
+      "districtName": "State House District 28 (2024); Georgia"
+    },
+    {
+      "candidateId": "8308a829-f172-4677-a8f8-f657d54f7b1b",
+      "name": "Mathewos Samson",
+      "scope": "state_lower",
+      "districtName": "State House District 58 (2024); Georgia"
+    },
+    {
+      "candidateId": "31d4581a-3010-422a-a906-5ebd4b127e50",
+      "name": "Matt Hatchett",
+      "scope": "state_lower",
+      "districtName": "State House District 155 (2024); Georgia"
+    },
+    {
+      "candidateId": "b72019be-42fb-4da4-b3af-d03e543c06bf",
+      "name": "Maureen Gault",
+      "scope": "state_lower",
+      "districtName": "State House District 24 (2024); Georgia"
+    },
+    {
+      "candidateId": "208bcb3f-2911-4179-8682-f76680337412",
+      "name": "Melanie Miller",
+      "scope": "state_lower",
+      "districtName": "State House District 124 (2024); Georgia"
+    },
+    {
+      "candidateId": "758dc7ee-3fe7-4f0d-b536-2809f887d409",
+      "name": "Melina Mast",
+      "scope": "state_upper",
+      "districtName": "State Senate District 40 (2024); Georgia"
+    },
+    {
+      "candidateId": "28f3bc67-d35c-48ef-819a-636d024090c0",
+      "name": "Melissa Stuckey",
+      "scope": "state_lower",
+      "districtName": "State House District 70 (2024); Georgia"
+    },
+    {
+      "candidateId": "296f5672-7d4a-4239-bfe2-0a8be5bbb9b4",
+      "name": "Meredith Greene",
+      "scope": "state_lower",
+      "districtName": "State House District 26 (2024); Georgia"
+    },
+    {
+      "candidateId": "23ebf65c-d5d3-4ced-ac0c-e665a6f62cf0",
+      "name": "Micah King",
+      "scope": "state_lower",
+      "districtName": "State House District 157 (2024); Georgia"
+    },
+    {
+      "candidateId": "ced57b6d-40db-4b3a-bb79-1a12ac389351",
+      "name": "Michael Caw",
+      "scope": "state_lower",
+      "districtName": "State House District 114 (2024); Georgia"
+    },
+    {
+      "candidateId": "1852b217-deaa-4636-9973-94a0453eb7ef",
+      "name": "Michael Hettig",
+      "scope": "state_upper",
+      "districtName": "State Senate District 32 (2024); Georgia"
+    },
+    {
+      "candidateId": "94b5bb1a-04f3-4b9f-8f9c-60e349a14c96",
+      "name": "Michael Johnson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 9 (2024); Georgia"
+    },
+    {
+      "candidateId": "8bd384d9-037c-47d3-abe4-90f758a11bbd",
+      "name": "Michelle Kang",
+      "scope": "state_lower",
+      "districtName": "State House District 99 (2024); Georgia"
+    },
+    {
+      "candidateId": "86ecef0a-50bf-46c2-ab59-7f5362eb4538",
+      "name": "Michelle Schreiner",
+      "scope": "state_lower",
+      "districtName": "State House District 45 (2024); Georgia"
+    },
+    {
+      "candidateId": "d168b923-0301-4996-a6ce-e4d45eadae6d",
+      "name": "Mike Dudgeon",
+      "scope": "state_upper",
+      "districtName": "State Senate District 27 (2024); Georgia"
+    },
+    {
+      "candidateId": "7d43515c-ff71-4e8c-9254-1fc0015202c1",
+      "name": "Mike Dvorscak",
+      "scope": "state_upper",
+      "districtName": "State Senate District 14 (2024); Georgia"
+    },
+    {
+      "candidateId": "1376b52b-cf2f-4daf-9402-feb0b3d29709",
+      "name": "MiQuan A. Green",
+      "scope": "state_lower",
+      "districtName": "State House District 165 (2024); Georgia"
+    },
+    {
+      "candidateId": "e6789a22-d71c-4e57-88a0-ed12b9962336",
+      "name": "Mishael White",
+      "scope": "state_lower",
+      "districtName": "State House District 81 (2024); Georgia"
+    },
+    {
+      "candidateId": "9685c414-e5a3-4426-9371-98544ee067bc",
+      "name": "Mitchell Rosa",
+      "scope": "state_lower",
+      "districtName": "State House District 152 (2024); Georgia"
+    },
+    {
+      "candidateId": "8e4502d7-6922-4094-aeec-dd4e4b4b280b",
+      "name": "Muhammad Akbar Ali",
+      "scope": "state_lower",
+      "districtName": "State House District 106 (2024); Georgia"
+    },
+    {
+      "candidateId": "3cfc4512-08c2-4002-8ef3-218c7db289f9",
+      "name": "Murray Berkowitz",
+      "scope": "state_lower",
+      "districtName": "State House District 107 (2024); Georgia"
+    },
+    {
+      "candidateId": "505108a4-034b-4147-a9c0-07709b6bdf9f",
+      "name": "Nathaniel Hicks Jr.",
+      "scope": "state_lower",
+      "districtName": "State House District 167 (2024); Georgia"
+    },
+    {
+      "candidateId": "2259d875-8325-48ef-a32c-78b9c5117cf3",
+      "name": "Ngozi Orabueze",
+      "scope": "state_upper",
+      "districtName": "State Senate District 44 (2024); Georgia"
+    },
+    {
+      "candidateId": "b90af38b-9529-415a-a603-f5d651da6f7b",
+      "name": "Nick Mitchell",
+      "scope": "state_lower",
+      "districtName": "State House District 8 (2024); Georgia"
+    },
+    {
+      "candidateId": "7e189d84-c275-4fdc-b3d4-787714934765",
+      "name": "Orlando Scott",
+      "scope": "state_lower",
+      "districtName": "State House District 162 (2024); Georgia"
+    },
+    {
+      "candidateId": "3480dfac-4ad5-4fce-9f3e-4d57892db892",
+      "name": "Pat Daley",
+      "scope": "state_lower",
+      "districtName": "State House District 166 (2024); Georgia"
+    },
+    {
+      "candidateId": "624692ba-6bce-443d-a123-b7928ac547e8",
+      "name": "Pat Rhudy",
+      "scope": "state_lower",
+      "districtName": "State House District 18 (2024); Georgia"
+    },
+    {
+      "candidateId": "3a553e88-08f8-4599-adb6-91bacdd98085",
+      "name": "Quentin Postell Jr.",
+      "scope": "state_lower",
+      "districtName": "State House District 4 (2024); Georgia"
+    },
+    {
+      "candidateId": "d0f05208-96db-46b9-94c4-66734268a3ff",
+      "name": "Rahim Asani",
+      "scope": "state_lower",
+      "districtName": "State House District 108 (2024); Georgia"
+    },
+    {
+      "candidateId": "0e869266-db4a-4c1e-b294-e234014c7dde",
+      "name": "Randy Peters",
+      "scope": "state_lower",
+      "districtName": "State House District 149 (2024); Georgia"
+    },
+    {
+      "candidateId": "caa19ff0-9bf4-4be8-a395-505c244b6311",
+      "name": "Rasmus Jensen",
+      "scope": "state_lower",
+      "districtName": "State House District 5 (2024); Georgia"
+    },
+    {
+      "candidateId": "3749f209-b4c2-453b-8cfe-bb3183c0277b",
+      "name": "Ray Smith",
+      "scope": "state_upper",
+      "districtName": "State Senate District 46 (2024); Georgia"
+    },
+    {
+      "candidateId": "3179296a-340e-46b1-b8d0-b4fe33b49f5f",
+      "name": "Rebecca Sims",
+      "scope": "state_lower",
+      "districtName": "State House District 32 (2024); Georgia"
+    },
+    {
+      "candidateId": "84ca26bd-4995-4cb0-a442-a8b2d9b758b8",
+      "name": "Reggie Hall",
+      "scope": "state_lower",
+      "districtName": "State House District 95 (2024); Georgia"
+    },
+    {
+      "candidateId": "a0b4148e-0bdb-414a-8dcc-049c405d2b7f",
+      "name": "Regina Liparoto",
+      "scope": "state_lower",
+      "districtName": "State House District 141 (2024); Georgia"
+    },
+    {
+      "candidateId": "4df11fe9-43ad-49d2-83c2-425e3ba84d54",
+      "name": "Renita Duncan",
+      "scope": "state_lower",
+      "districtName": "State House District 147 (2024); Georgia"
+    },
+    {
+      "candidateId": "e979d5be-27ce-4261-b519-6b51200224bc",
+      "name": "Rob Epstein",
+      "scope": "state_lower",
+      "districtName": "State House District 23 (2024); Georgia"
+    },
+    {
+      "candidateId": "7eb4606c-3431-437a-b17d-135672966e1c",
+      "name": "Roger Smith",
+      "scope": "state_lower",
+      "districtName": "State House District 9 (2024); Georgia"
+    },
+    {
+      "candidateId": "bafb153c-517c-4605-a04d-ffd5bb8f39ce",
+      "name": "Ryan Fountain",
+      "scope": "state_lower",
+      "districtName": "State House District 11 (2024); Georgia"
+    },
+    {
+      "candidateId": "005f9cd9-07fc-4396-b9e8-b88bbb9596c7",
+      "name": "Samantha Boston",
+      "scope": "state_lower",
+      "districtName": "State House District 90 (2024); Georgia"
+    },
+    {
+      "candidateId": "9f70229b-e387-4cc8-a41b-e4ee91a21fea",
+      "name": "Samie Conyers",
+      "scope": "state_lower",
+      "districtName": "State House District 116 (2024); Georgia"
+    },
+    {
+      "candidateId": "deae1afc-4d70-489e-96cf-ceaf9229b12c",
+      "name": "Scott Jackson",
+      "scope": "state_lower",
+      "districtName": "State House District 111 (2024); Georgia"
+    },
+    {
+      "candidateId": "3ebfb0d3-b3fe-41fb-a792-2439ce485fee",
+      "name": "Scott Soracco",
+      "scope": "state_lower",
+      "districtName": "State House District 29 (2024); Georgia"
+    },
+    {
+      "candidateId": "49988667-432a-44f3-909c-5ca966255ac3",
+      "name": "Sharonda Bell",
+      "scope": "state_lower",
+      "districtName": "State House District 118 (2024); Georgia"
+    },
+    {
+      "candidateId": "27419b77-08b6-4169-95fb-a267f2736b9b",
+      "name": "Shayna Boston",
+      "scope": "state_upper",
+      "districtName": "State Senate District 23 (2024); Georgia"
+    },
+    {
+      "candidateId": "361c9707-1398-4c26-8839-5f1a09c33ef8",
+      "name": "Sheila Clark Nelson",
+      "scope": "state_lower",
+      "districtName": "State House District 130 (2024); Georgia"
+    },
+    {
+      "candidateId": "fdb6cd35-7782-47fb-ac87-450bbd350d31",
+      "name": "Sonya Wimberly Hawkins",
+      "scope": "state_upper",
+      "districtName": "State Senate District 16 (2024); Georgia"
+    },
+    {
+      "candidateId": "4c311431-8fac-4ef9-bf17-b11ecf913ade",
+      "name": "Stephanie Burgess",
+      "scope": "state_lower",
+      "districtName": "State House District 164 (2024); Georgia"
+    },
+    {
+      "candidateId": "5b4eb1fe-0978-4194-a1e4-05c69def72ab",
+      "name": "Steven Disbrow",
+      "scope": "state_lower",
+      "districtName": "State House District 1 (2024); Georgia"
+    },
+    {
+      "candidateId": "97023bc0-5b8f-4f84-b9e0-6f96fb6ee460",
+      "name": "Sully Sullivan",
+      "scope": "state_lower",
+      "districtName": "State House District 59 (2024); Georgia"
+    },
+    {
+      "candidateId": "9ce13e1e-bfe9-4fe6-b824-0e040a854ee2",
+      "name": "Suzanna Karatassos",
+      "scope": "state_lower",
+      "districtName": "State House District 120 (2024); Georgia"
+    },
+    {
+      "candidateId": "2456a4a1-3a70-4bf4-b23a-4dc79f8c3cfd",
+      "name": "Sylvia Wayfer",
+      "scope": "state_lower",
+      "districtName": "State House District 64 (2024); Georgia"
+    },
+    {
+      "candidateId": "d1d9d78d-bcdd-48f9-aa9a-91292acf4e28",
+      "name": "Tamyko Green",
+      "scope": "state_lower",
+      "districtName": "State House District 17 (2024); Georgia"
+    },
+    {
+      "candidateId": "6560c737-fbe7-4817-8fdc-856b9b9def90",
+      "name": "Teddy Reese",
+      "scope": "state_upper",
+      "districtName": "State Senate District 15 (2024); Georgia"
+    },
+    {
+      "candidateId": "357895ee-0ed9-43d2-89b7-d78e171cf562",
+      "name": "Teresa Lin",
+      "scope": "state_lower",
+      "districtName": "State House District 49 (2024); Georgia"
+    },
+    {
+      "candidateId": "fb717739-9b5c-4853-a712-34e94e123fe6",
+      "name": "Timoria McQueen Saba",
+      "scope": "state_lower",
+      "districtName": "State House District 68 (2024); Georgia"
+    },
+    {
+      "candidateId": "32b17ff4-e0cd-4d5e-8d3a-90865fdb18cb",
+      "name": "Timothy Burson",
+      "scope": "state_lower",
+      "districtName": "State House District 87 (2024); Georgia"
+    },
+    {
+      "candidateId": "c45a7e30-d68b-4cd6-b2c8-c1771e8c15cd",
+      "name": "Timothy Wilkinson",
+      "scope": "state_lower",
+      "districtName": "State House District 73 (2024); Georgia"
+    },
+    {
+      "candidateId": "105424b6-4382-4c14-afb4-e05ba7b1042a",
+      "name": "Titus Nichols",
+      "scope": "state_lower",
+      "districtName": "State House District 34 (2024); Georgia"
+    },
+    {
+      "candidateId": "451535a4-4131-4958-9352-8535ecb2d2fa",
+      "name": "Torrey Balam",
+      "scope": "state_lower",
+      "districtName": "State House District 58 (2024); Georgia"
+    },
+    {
+      "candidateId": "0454a194-5b84-4631-9207-06afd9e241c2",
+      "name": "Tracy Wheeler",
+      "scope": "state_upper",
+      "districtName": "State Senate District 26 (2024); Georgia"
+    },
+    {
+      "candidateId": "137ad66b-b08a-4cbc-a231-ae27d85a92d1",
+      "name": "Trey Sheppard",
+      "scope": "state_lower",
+      "districtName": "State House District 128 (2024); Georgia"
+    },
+    {
+      "candidateId": "983a81dc-0a54-4bd2-8cb5-d34e9003110a",
+      "name": "Tyion Fields",
+      "scope": "state_lower",
+      "districtName": "State House District 85 (2024); Georgia"
+    },
+    {
+      "candidateId": "57cc9b0f-dd25-429a-ac96-478ad8b72ae4",
+      "name": "Tyrone Evans",
+      "scope": "state_lower",
+      "districtName": "State House District 128 (2024); Georgia"
+    },
+    {
+      "candidateId": "faadd249-a7dc-4406-8ec5-5ae11e681dae",
+      "name": "Venola Mason",
+      "scope": "state_lower",
+      "districtName": "State House District 94 (2024); Georgia"
+    },
+    {
+      "candidateId": "5f0577b5-bbc5-4616-bc48-5ece3180c878",
+      "name": "Vincent Mendes III",
+      "scope": "state_lower",
+      "districtName": "State House District 13 (2024); Georgia"
+    },
+    {
+      "candidateId": "6ada9bdc-ff9a-4bb1-b72c-54075a05fd35",
+      "name": "Wanda Cooper",
+      "scope": "state_upper",
+      "districtName": "State Senate District 30 (2024); Georgia"
+    },
+    {
+      "candidateId": "380f1390-a2ea-4fa1-9e75-26d5bbd46a45",
+      "name": "Ward Black",
+      "scope": "state_lower",
+      "districtName": "State House District 120 (2024); Georgia"
+    },
+    {
+      "candidateId": "19b2772f-7a9c-4cae-a959-f2ba28977f6e",
+      "name": "Whitney Echenique",
+      "scope": "state_lower",
+      "districtName": "State House District 2 (2024); Georgia"
+    },
+    {
+      "candidateId": "d200e125-99e4-49aa-81f7-ed52b16c7956",
+      "name": "William Freeman",
+      "scope": "state_lower",
+      "districtName": "State House District 88 (2024); Georgia"
+    },
+    {
+      "candidateId": "d0bffbd0-1a0a-4cbe-adf5-1c11315ea901",
+      "name": "William Harris",
+      "scope": "state_lower",
+      "districtName": "State House District 126 (2024); Georgia"
+    },
+    {
+      "candidateId": "56dedbc8-7474-422a-8b0b-e4f2858ce149",
+      "name": "William Wallace",
+      "scope": "state_upper",
+      "districtName": "State Senate District 49 (2024); Georgia"
+    },
+    {
+      "candidateId": "3210e086-40d3-4d58-a49e-730df0ad885a",
+      "name": "Yassin Moghazy",
+      "scope": "state_lower",
+      "districtName": "State House District 97 (2024); Georgia"
+    }
+  ],
+  "files": 2362,
+  "fileErrors": 0,
+  "counts": {},
+  "rolls": []
+}
