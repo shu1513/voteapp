@@ -167,6 +167,51 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       /^point of order/,
     ],
   },
+  // Florida 2025 Regular Session (sine die 2025-06-16, after the budget
+  // extension). Vocabulary measured from the full dataset survey
+  // 2026-08-26: 1,960 bills, 3,003 roll calls, 219 people (the chambers
+  // seat 120 + 40; the surplus are mid-session replacements and members
+  // who appear only on committee rolls).
+  //
+  // What the survey established:
+  // - Florida's floor vocabulary is the cleanest measured so far: EXACTLY
+  //   two desc shapes, `House: Third Reading RCS#<n>` (401 rolls) and
+  //   `Senate: Third Reading RCS#<n>` (382). Every other desc in the feed
+  //   is a literal committee name. The feed carries no concurrence,
+  //   conference-report or veto-override desc at all, so `passage` is the
+  //   only question class Florida can produce.
+  // - The House stamps a unique RCS number on every vote (401 distinct
+  //   descs for 401 votes); the Senate recycles RCS#1..61 across days.
+  //   Patterns tolerate the suffix, as in Texas.
+  // - Tallies separate cleanly: floor rolls total 119-120 of 120 (House)
+  //   and 38-39 of 40 (Senate), while every House committee tops out at
+  //   30 (25%). The one exception is `Senate Rules`, a 25-member committee
+  //   = 62% of the chamber, which clears the committee-tally cut and would
+  //   otherwise sit in the surfaced-null queue for all 154 of its rolls.
+  //   It is excluded by NAME because its tally cannot distinguish it.
+  // - Unlike Texas, every Florida roll carries a member list (0
+  //   summary-only tallies), and no roll_call_id is reused for a second
+  //   identical floor action (102 duplicate-identity groups exist, all
+  //   committee, all rejected before the queue).
+  // - Constitutional amendments ride JOINT RESOLUTIONS here (bill_type JR,
+  //   27 in session), already a kept type — Florida needs no second
+  //   passage pattern the way Texas did.
+  // - Florida also prints FAILED floor votes under the same desc (HB 1205
+  //   lost a Senate vote 10-26 and a House vote 27-82 before passing), so
+  //   selection must pick the decisive roll per chamber; classification
+  //   neither can nor tries to.
+  FL: {
+    jurisdiction: "FL",
+    sessionId: 2135,
+    chamberSizes: { house: 120, senate: 40 },
+    keptQuestions: [{ pattern: /^(?:house|senate): third reading(?: rcs#\d+)?$/, questionClass: "passage" }],
+    excludedQuestions: [
+      // The Senate Rules COMMITTEE (always exactly 25 of 40 senators), not
+      // a floor motion: too big for the committee-tally cut, so it has to
+      // be named. No House committee comes close to that cut.
+      /^senate rules$/,
+    ],
+  },
 };
 
 export const LEGISCAN_STATE_JURISDICTIONS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);
