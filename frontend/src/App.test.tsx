@@ -99,12 +99,13 @@ describe("App account nav", () => {
     // The footer carries its own Mission link, hence the header scoping.
     expect(header.getByRole("link", { name: "Mission" })).toHaveAttribute("href", "/mission");
     expect(header.getByRole("link", { name: "Settings" })).toHaveAttribute("href", "/me/settings");
+    expect(header.getByRole("button", { name: "Sign Out" })).toBeInTheDocument();
 
     // Escape closes it without navigating — and when keyboard focus sits on
     // a link that unmounts with the panel, it returns to the trigger
     // instead of dropping to <body>.
     await userEvent.tab();
-    expect(screen.getByRole("link", { name: "My Elections" })).toHaveFocus();
+    expect(header.getByRole("link", { name: "Mission" })).toHaveFocus();
     await userEvent.keyboard("{Escape}");
     expect(screen.queryByRole("link", { name: "My Elections" })).not.toBeInTheDocument();
     expect(trigger).toHaveFocus();

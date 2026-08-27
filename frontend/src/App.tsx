@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, Outlet, ScrollRestoration, useLocation } from "react-router";
+import { Link, Outlet, ScrollRestoration, useLocation, useNavigate } from "react-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChatWidget } from "./components/chatbot/ChatWidget";
 import { RouteError } from "./components/RouteError";
 import { TermsRenewalGate } from "./components/TermsRenewalGate";
-import { APP_NAME, VERIFY_WITH_OFFICIALS_NOTE, useMe } from "@voteapp/api-client";
+import { APP_NAME, VERIFY_WITH_OFFICIALS_NOTE, apiRequest, purgeAccountScopedQueries, useMe } from "@voteapp/api-client";
 import { useFlushBallotDraft } from "./lib/useFlushBallotDraft";
 import { myDraftLabel, useGuestDraftNav, useMyPicksProgress } from "./lib/usePickProgress";
 
 /**
  * The signed-in account menu: a "Hi {first name} ▾" button that discloses
- * the low-frequency destinations (My Elections, My Candidates, Mission,
- * Settings). Collapsing them is what keeps the signed-in header to ONE line
+ * the low-frequency destinations (Mission, My Elections, My Candidates,
+ * Settings, Sign Out). Collapsing them is what keeps the signed-in header to ONE line
  * on a 375px phone — the previous all-links-visible nav wrapped onto two
  * extra lines there. The greeting doubles as the trigger; dark navy +
  * semibold keeps it visually distinct from the plain links beside it.
@@ -20,6 +21,18 @@ function AccountMenu({ firstName }: { firstName: string }) {
   const menuRef = useRef<HTMLSpanElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  // Signs out everywhere (all devices), not just this session: one button is
+  // simpler for non-technical users than a this-device/everywhere pair.
+  const logoutAll = useMutation({
+    mutationFn: () => apiRequest<{ status: string }>("/api/auth/logout-all", { method: "POST", body: {} }),
+    onSuccess: () => {
+      queryClient.setQueryData(["me"], null);
+      purgeAccountScopedQueries(queryClient);
+      navigate("/");
+    },
+  });
 
   // Light-dismiss: outside click/tap or Escape closes the menu.
   useEffect(() => {
@@ -88,18 +101,38 @@ function AccountMenu({ firstName }: { firstName: string }) {
           onClick={() => setOpen(false)}
           className="absolute right-0 top-full z-10 mt-2 flex w-44 flex-col rounded-lg border border-line bg-white py-1 shadow-md"
         >
+          <Link to="/mission" className="px-4 py-2 text-ink-soft hover:bg-surface hover:text-ink">
+            Mission
+          </Link>
           <Link to="/me/ballot" className="px-4 py-2 text-ink-soft hover:bg-surface hover:text-ink">
             My Elections
           </Link>
           <Link to="/me/follows" className="px-4 py-2 text-ink-soft hover:bg-surface hover:text-ink">
             My Candidates
           </Link>
-          <Link to="/mission" className="px-4 py-2 text-ink-soft hover:bg-surface hover:text-ink">
-            Mission
-          </Link>
           <Link to="/me/settings" className="px-4 py-2 text-ink-soft hover:bg-surface hover:text-ink">
             Settings
           </Link>
+          {/* stopPropagation: the panel's onClick would close the menu, which
+              would hide the pending/error states this button reports inline.
+              Success navigates to "/", which closes the menu via the pathname
+              effect (and unmounts this component once /api/me returns null). */}
+          <button
+            type="button"
+            disabled={logoutAll.isPending}
+            onClick={(event) => {
+              event.stopPropagation();
+              logoutAll.mutate();
+            }}
+            className="px-4 py-2 text-left text-ink-soft hover:bg-surface hover:text-ink disabled:cursor-not-allowed"
+          >
+            {logoutAll.isPending ? "Signing out…" : "Sign Out"}
+          </button>
+          {logoutAll.isError ? (
+            <span role="alert" className="px-4 pb-2 text-xs text-red-700">
+              Sign out failed. Try again.
+            </span>
+          ) : null}
         </span>
       ) : null}
     </span>
@@ -171,19 +204,18 @@ function AccountNav() {
   // post-pick actions), mirroring the guest label rules.
   const draftLabel = myDraftLabel(picksProgress);
 
-  // Two items, one line: the working document (My Draft) stays a visible
-  // link, everything else lives in the account menu. Log out stays in
-  // Settings (Sessions section) — a rarely-used action doesn't earn header
-  // space.
+  // Two items, one line: the greeting/menu leads, the working document
+  // (My Draft) stays a visible link beside it. Sign Out lives at the bottom
+  // of the account menu — a rarely-used action doesn't earn header space.
   // min-w-0 down the chain (span → AccountMenu → name span): the row never
   // wraps; the NAME is what gives way, ellipsizing to whatever width is
   // left beside the draft link.
   return (
     <span className="flex min-w-0 items-center gap-x-2.5 sm:gap-x-4">
+      <AccountMenu firstName={me.first_name} />
       <Link to="/me/picks" className="shrink-0 whitespace-nowrap text-ink-soft hover:text-ink">
         {draftLabel}
       </Link>
-      <AccountMenu firstName={me.first_name} />
     </span>
   );
 }
