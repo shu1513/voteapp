@@ -171,6 +171,16 @@ promotion-side consumers wanting journal-exact dates should prefer the ILGA
 BillStatus XML. Auditing every selected roll's date against the ILGA XML is
 now part of the batch recipe.
 
+A second review pass asked for "an explicit reviewed override for
+`event_date`". That mechanism does not exist, and every hand-edit that would
+simulate it is provably unsafe — a records-only SQL fix makes the next
+import re-run insert 91 duplicates (the duplicate scan is date-scoped), and
+a row-plus-judgment fix makes batch-01 permanently fail the importer's
+evidence-date cross-check. The override is parked as a designed code
+follow-up in `../CODE-FINDINGS.md` §1, to be built after the parallel state
+campaigns land; 31 pending 2026-05-31 rolls in the worklist are the
+remaining suspect pool.
+
 ## Operational notes
 
 1. **A real re-run overwrites `import-report.json`.** A *dry* re-run writes
