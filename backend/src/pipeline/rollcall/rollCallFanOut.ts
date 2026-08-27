@@ -227,17 +227,20 @@ export function shouldNotifyForVoteDate(voteDate: string, todayIso: string): boo
 type Queryable = Pick<Pool | PoolClient, "query">;
 
 /**
- * Every candidate_records row (live or retired) of the given candidates on
- * the given dates, grouped by candidate. Importers pass the effective date
- * (official_vote_date ?? vote_date) plus the raw source date when an
- * official-date override is set: a roll imported before its override got the
- * raw date, and the scan must still see those rows so they rewrite in place
- * instead of duplicating on the new date.
+ * Every candidate_records row (live or retired) of the given candidates that
+ * may be this roll call, grouped by candidate. Two nets, both needed:
+ * the given dates — the effective date (official_vote_date ?? vote_date)
+ * plus the raw source date — catch hand-written rows, which carry no run id;
+ * the origin_run_id roll prefix catches this pipeline's own rows on ANY
+ * date, since a changed or cleared official-date override leaves them on a
+ * date no longer in the scan window and they must still rewrite in place
+ * instead of duplicating.
  */
 export async function loadExistingRecordsForDate(
   db: Queryable,
   candidateIds: readonly string[],
-  eventDates: readonly string[]
+  eventDates: readonly string[],
+  originRunIdPrefix: string
 ): Promise<Map<string, ExistingCandidateRecord[]>> {
   const byCandidate = new Map<string, ExistingCandidateRecord[]>();
   if (candidateIds.length === 0) {
@@ -248,10 +251,13 @@ export async function loadExistingRecordsForDate(
       SELECT candidate_id, id, description, source_url, record_identity_key, retired_at::text AS retired_at
       FROM public.candidate_records
       WHERE candidate_id = ANY($1::uuid[])
-        AND event_date = ANY($2::date[])
+        AND (
+          event_date = ANY($2::date[])
+          OR (origin = 'rollcall_import' AND starts_with(origin_run_id, $3))
+        )
       ORDER BY created_at, id
     `,
-    [candidateIds, eventDates]
+    [candidateIds, eventDates, originRunIdPrefix]
   );
   for (const { candidate_id: candidateId, ...record } of result.rows) {
     const records = byCandidate.get(candidateId) ?? [];

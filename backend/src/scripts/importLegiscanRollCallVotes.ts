@@ -327,18 +327,20 @@ async function main(): Promise<void> {
         if (!rollCallKey) {
           throw new Error(`machine_url ${vote.machineUrl} is not a recognized roll-call URL`);
         }
-        const originRunId = `rollcall:${config.jurisdiction}:${evidence.chamber}:${session}:${evidence.roll}:${startedAt.toISOString()}`;
+        const originRunPrefix = `rollcall:${config.jurisdiction}:${evidence.chamber}:${session}:${evidence.roll}:`;
+        const originRunId = `${originRunPrefix}${startedAt.toISOString()}`;
         row.originRunId = originRunId;
 
         const resolutions = resolveLegiscanMembers(votes, crosswalk, snapshot.byPeopleId, candidatesById);
         const voters = collectLegiscanVoters(resolutions, row.resolution);
-        // The effective date plus, under an override, the raw source date:
-        // rows imported before the override sit on the raw date and must be
-        // seen so they rewrite in place instead of duplicating.
+        // The effective and raw dates catch hand-written rows; the run-id
+        // prefix catches this pipeline's own rows on any date, so a changed
+        // or cleared override still rewrites them instead of duplicating.
         const existingByCandidate = await loadExistingRecordsForDate(
           pool,
           voters.map((voter) => voter.candidateId),
-          [...new Set([vote.officialVoteDate ?? vote.voteDate, vote.voteDate])]
+          [...new Set([vote.officialVoteDate ?? vote.voteDate, vote.voteDate])],
+          originRunPrefix
         );
         const work = voters.map((voter) => {
           const template = templates[voter.side];
