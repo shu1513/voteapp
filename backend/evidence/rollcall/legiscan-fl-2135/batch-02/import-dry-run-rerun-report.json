@@ -2,8 +2,8 @@
   "importerVersion": "rollcall-legiscan-import-v1",
   "dryRun": true,
   "skipExisting": false,
-  "startedAt": "2026-08-27T19:51:55.880Z",
-  "finishedAt": "2026-08-27T19:51:56.725Z",
+  "startedAt": "2026-08-27T20:05:22.947Z",
+  "finishedAt": "2026-08-27T20:05:23.612Z",
   "jurisdiction": "FL",
   "sessionId": 2135,
   "evidenceDir": "/Users/shu/voteApp/.claude/worktrees/caveman-ultra-8f7bde/backend/evidence/rollcall/legiscan-fl-2135/batch-02",
@@ -34,7 +34,7 @@
       "voteDate": "2025-04-29",
       "measureId": "S 700",
       "question": "House: Third Reading RCS#275",
-      "originRunId": "rollcall:FL:house:2135:1559666:2026-08-27T19:51:55.880Z",
+      "originRunId": "rollcall:FL:house:2135:1559666:2026-08-27T20:05:22.947Z",
       "members": 115,
       "notVoting": 4,
       "absent": 0,
@@ -675,7 +675,7 @@
       "voteDate": "2025-05-01",
       "measureId": "H 1205",
       "question": "House: Third Reading RCS#403",
-      "originRunId": "rollcall:FL:house:2135:1563815:2026-08-27T19:51:55.880Z",
+      "originRunId": "rollcall:FL:house:2135:1563815:2026-08-27T20:05:22.947Z",
       "members": 111,
       "notVoting": 8,
       "absent": 0,
@@ -1316,7 +1316,7 @@
       "voteDate": "2025-04-16",
       "measureId": "S 700",
       "question": "Senate: Third Reading RCS#19",
-      "originRunId": "rollcall:FL:senate:2135:1549853:2026-08-27T19:51:55.880Z",
+      "originRunId": "rollcall:FL:senate:2135:1549853:2026-08-27T20:05:22.947Z",
       "members": 36,
       "notVoting": 1,
       "absent": 1,
@@ -1339,9 +1339,7 @@
           "recordId": "c0f175ff-7edb-4d31-ae6f-c99d4b667101",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "085bd48c-6c3f-4c5a-b74e-1272c7f61006"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "8021f9e0-52c0-476d-918f-fa124c8d491b",
@@ -1455,7 +1453,7 @@
       "voteDate": "2025-05-02",
       "measureId": "H 1205",
       "question": "Senate: Third Reading RCS#10",
-      "originRunId": "rollcall:FL:senate:2135:1564585:2026-08-27T19:51:55.880Z",
+      "originRunId": "rollcall:FL:senate:2135:1564585:2026-08-27T20:05:22.947Z",
       "members": 37,
       "notVoting": 0,
       "absent": 1,

@@ -9,7 +9,7 @@ title" — and delegated the call. This batch is the result. The other ten
 batch-01 deferrals stay deferred; their reasons in `../batch-01/PLAN.md` held
 up (budget vehicles, no nameable subject, or thin grab-bags).
 
-## HB 1205 — Amendments to the State Constitution (ch. 2025-2)
+## HB 1205 — Amendments to the State Constitution (ch. 2025-21)
 
 **Why it was deferred:** the direction looked two-sided (verification vs.
 restricting a lawful petition process), and the chambers appeared to have voted

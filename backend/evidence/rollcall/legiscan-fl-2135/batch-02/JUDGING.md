@@ -5,7 +5,7 @@
 ## Sources
 
 - **HB 1205:** the House **Final Bill Analysis** (`h1205z.GOS.PDF`, describes
-  the enacted ch. 2025-2) plus the Senate's **House Message summary**
+  the enacted ch. 2025-21) plus the Senate's **House Message summary**
   (`2025h01205.hms.ee.PDF`), which pins what House amendment 258567 changed
   (possession cap 5 → 25 forms). The full floor-amendment history on the bill
   page established that rolls 1563815 and 1564585 are votes on the exact
@@ -41,8 +41,7 @@
   research area; per the standing rule, political contestedness alone is not
   the two-directions test. The description names the restrictive provisions
   in full — third-degree felony for unregistered possession of >25 forms,
-  30→10-day deadline, resident/citizen/felon eligibility bars, one-amendment
-  and three-cycle sponsor caps — so a nay-leaning reader is not misled about
+  30→10-day deadline, resident/citizen/felon eligibility bars, one-initiative-per-committee cap and the three-election petition expiry — so a nay-leaning reader is not misled about
   what yes meant.
 - **SB 700 → `general`, no stance** (Ohio H.B. 116 / GA blockchain
   precedent). Strands run different directions in different areas: the
@@ -64,8 +63,31 @@ Real run on local `voteapp`, `startedAt` **2026-08-27T19:51:43.245Z**:
   (+120); the stamp predicate returns 120. Convergence dry run: all 120
   `unchanged`. The dry-run stamp (`…T19:51:15.436Z`) matches zero rows.
 - FL batch stamps now: `01:26:41.127Z` = 333, `17:24:02.253Z` = 52 (batch-01
-  + its review fix), `19:51:43.245Z` = 120 (batch-02). FL total **505
-  records / 62 candidates**.
+  + its review fix), `19:51:43.245Z` = 60 + `20:05:21.743Z` = 60 (batch-02:
+  the SB 700 inserts keep the insert-run stamp; the HB 1205 records carry the
+  review-fix rewrite stamp). FL total **505 records / 62 candidates**.
+
+## Review fix (2026-08-27): the three-cycle rule and a chapter typo
+
+External review caught two errors, both verified against Florida's own
+Ethics and Elections Committee bill summary
+(`flsenate.gov/Committees/billsummaries/2025/html/1205`):
+
+1. **The three-election limit attaches to the PETITION, not the committee.**
+   The descriptions said sponsoring committees were "limited to one amendment
+   at a time and three election cycles"; the enacted rule is that a proposed
+   amendment expires if it goes three general elections without gathering at
+   least 25 percent of the required signatures (it may be refiled anew). All
+   four descriptions corrected; rewrite run `20:05:21.743Z` restored the 60
+   imported HB 1205 records, 0 errors, convergence dry run all 120
+   `unchanged`. The committed `import-report.json` is the rewrite run
+   (batch-01 convention); the insert run's numbers stand above.
+2. **HB 1205 is chapter 2025-21, not 2025-2.** The Final Bill Analysis PDF
+   itself carries the typo ("ch. 2025-2, L.O.F.") and it was copied into
+   PLAN.md and this file; the bill history and the committee summary both
+   say 2025-21. Both documents corrected. ⚠ A lesson for FL sourcing: even
+   the Final Bill Analysis needs its citations cross-checked against the
+   bill-history page — SB 700's `2025-22` was verified correct.
 
 ## Duplicate retired
 
