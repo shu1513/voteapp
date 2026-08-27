@@ -59,8 +59,10 @@ enrolled text is the ground truth, and it is what both chambers voted — the
 Senate passed the engrossed text 27-9, the House passed the identical text
 88-27 after both of its floor amendments failed). Its strands pull in
 different directions across different areas: the water-additive limitation
-ends community fluoridation (`environment_and_public_health`/against on its
-own), while the farmworker-housing preemption, the Honest Services Registry
+ends community fluoridation (initially assessed as
+`environment_and_public_health`/against; that label was later dropped on the
+user's direction call — see below), while the farmworker-housing preemption,
+the Honest Services Registry
 (charities attest to no foreign-source-of-concern funding), EV-charger
 consumer regulation, and mosquito-control funding read as neutral-to-for in
 other areas. No SINGLE stance can honestly cover the whole act — but on the user's

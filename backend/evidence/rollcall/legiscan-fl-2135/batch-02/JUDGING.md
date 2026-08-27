@@ -48,15 +48,15 @@
   `environment_and_public_health`/against label was DROPPED on the user's
   explicit direction call (the user credits the fluoride-harm evidence, so
   the fluoride provision's direction is contested and carries no stance
-  either way; the description keeps the fluoride facts). Tagging the whole 92-section act with ONE direction would
-  ascribe the omnibus to its most famous strand; tagging NOTHING wastes the
-  real directional strands. Multi-label is the pilot-proven middle path.
-  Per-area tests and the corporate_accountability skip are in `PLAN.md`.
-  ⚠ Importer mechanic learned here: a labels-only change reports every
-  record `unchanged` — tag-sync runs separately from the record-row
-  compare, so verify the flip in `candidate_record_area_tags`, not in the
-  import report (60 × environment + 60 × housing confirmed, `general`
-  tags gone, queue row labels_json matches).
+  either way; the description keeps the fluoride facts). Per-area tests and
+  the corporate_accountability skip are in `PLAN.md`. Final verified state:
+  each SB 700 record carries exactly one tag, `housing_affordability` (60
+  tags); the interim environment tags and the original `general` tags are
+  both gone, and the queue rows' `labels_json` matches.
+  ⚠ Importer mechanic learned during the relabels: a labels-only change
+  reports every record `unchanged` — tag-sync runs separately from the
+  record-row compare — so verify tag flips in `candidate_record_area_tags`,
+  never in the import report.
 
 ## Import ledger
 
