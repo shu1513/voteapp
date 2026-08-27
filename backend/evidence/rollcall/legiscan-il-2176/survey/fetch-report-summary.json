@@ -1,0 +1,25 @@
+{
+  "runId": "rollcall-legiscan-fetch-il-20260827T012644Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "jurisdiction": "IL",
+  "sessionId": 2176,
+  "dryRun": false,
+  "startedAt": "2026-08-27T01:26:44.219Z",
+  "finishedAt": "2026-08-27T01:27:10.116Z",
+  "datasetDir": "/Users/shu/legiscan-data/il-2176/extracted",
+  "evidenceDir": "/Users/shu/legiscan-data/il-2176-evidence/fetch",
+  "bills": 12073,
+  "datasetVotes": 9077,
+  "billFilter": null,
+  "billFilterMisses": 0,
+  "excludedMeasureVotes": 269,
+  "committeeVotes": 0,
+  "unrecordedVotes": 0,
+  "duplicateVotes": 433,
+  "floorVotes": 2063,
+  "surfaced": 200,
+  "fileErrors": [],
+  "counts": {
+    "inserted": 8375
+  }
+}
