@@ -1,0 +1,190 @@
+# Kansas Campaign Finance Plan
+
+Written 2026-08-26, revised same day after adversarial review. Based on a live probe of the Kansas SOS CFR viewer and the KPDC scanned archive, with every load-bearing claim verified against primary sources (statute text, filed PDFs, live systems, VoteApp's own ballot data). Companion facts doc: `backend/docs/kansas-finance-feasibility.md`.
+
+Verdict: buildable. Viewer-first architecture — NOT PDF-first. The "last updated March 15, 2022" search on the KPDC site is a legacy app (`kansas.gov/ethics/EthicsSite/`); the live source is the SOS CFR viewer, which is public and current (contribution rows verified through 7/23/2026, IE filings listed through 8/20/2026).
+
+## Verified sources (probed live 2026-08-26)
+
+### Primary: SOS CFR viewer (`https://sos.ks.gov/elections/cfr_viewer/cfr_examiner_entry.aspx`)
+
+ASP.NET WebForms postback app. Access rules proven end-to-end with curl:
+
+- Default curl UA → 403. A browser UA works. Keep a cookie jar.
+- Every POST must round-trip `__VIEWSTATE`, `__VIEWSTATEGENERATOR`, `__EVENTVALIDATION` from the previous response, HTML-unescaped before re-encoding.
+- Report identity lives in server session state — no report id appears in any URL, and grid postback targets (`grdviewCfrResults$ctl02$…`) are row positions on one result page, NOT durable identifiers. Persist the *search recipe* (name, office, district, filing type, filed/amendment dates) plus the artifact itself; each sync re-runs the search and re-walks rows. Single session per walk, concurrency 1 within a session. Parallel sessions are unproven — Phase 0 tests 2–3 concurrent sessions before the plan assumes them.
+
+Categories and what each yields:
+
+1. **Contribution search** (`ddlViewerOptions=Contribution` → `cfr_examiner_contribution.aspx`). Statewide candidates only (mandatory e-file since 2010-01-10). Fields: `txtContributorName, txtCandidateName, txtContributorCity, ddlStates, ddlContributionType, txtCashAmount, txtStartDate, txtEndDate` (MM/DD/YYYY). Results page `btnExport` → `Contributions.xls`, an HTML `<table>` of the search's result set — verified complete at 4,285 rows / 6.9 MB. **No cap was observed at that size; that does not prove no cap exists.** Phase 0 tests a much larger result set; the fallback is per-candidate-per-period exports (the natural shape anyway). Row span-ids: `lblCandName, lblContributor, lblAddress, lblAddress2, lblCity, lblState, lblZip, lblOccupation, lblIndustry` (observed always empty), `lblDate, lblTypeofTender, lblAmount, lblInKindAmount, lblInKindDescription, lblStartDate, lblEndDate`.
+2. **Expenditure search** — same shape for statewide Schedule C (not yet exercised; Phase 0 item).
+3. **Candidate Campaign Filings** (`ddlViewerOptions=Candidate` → `cfr_examiner.aspx`). ALL offices: `txtFirstName, txtLastName, drpdownOffice` (State Representative, State Senator, Governor, State Board of Education, District Attorney, …), `txtDistrictNo, drpdownFilingType` ("Receipts and Expenditures Report", "Appointment of Treasurer", "Affidavit of Exemption Candidate", "Last Minute Contribution", "Termination Statement", …), filed-date range. Enumeration verified: 354 State Rep R&E reports filed 7/1–8/26/2026. Result rows open either:
+   - **native HTML report** (e-filed): `reports/exp_report_main.aspx` cover with SUMMARY lines 1–7, then `__doPostBack('lnkbtnSchedule{A,B,C,D}View','')` → itemized schedules incl. occupation column and unitemized-total lines (verified on Helwig, State Rep D1), or
+   - a PDF icon (paper filing) → scanned PDF, same artifact as the KPDC tree.
+4. **Individual Entity** → filing type "Individual Expenditures": lists dedicated IE statements (316 records all-time; Aug-2026 filings appear here before the KPDC scan tree). The statements themselves are scanned PDFs even here.
+
+### Secondary: KPDC scanned archive (`https://www.kansas.gov/ethics/CFAScanned/...`)
+
+Plain-HTML link trees per office family and cycle: `House/2026ElecCycle/HLinks2026EC.htm`, `StWide/2026ElecCycle/SWLinks2026EC.htm`, `Senate/2026SpecialElection/SLinks2026SpecialElection.htm` (exists — Seat 24 filings live now), `Others/<cycle>/IndependentExpendLink.htm` (IE), `PACs/...`. Broad archive incl. paper filings, but **completeness is not guaranteed** — scanning lags (Aug IE filings visible only in the viewer) and the PAC index itself warns some reports appear on the site only after scanning. Treat the viewer's filing enumeration as the freshness/completeness reference and the tree as an artifact source. Every PDF here — including e-filed reports — is print-then-scan with a noisy OCR layer. Filename grammar: `<officecode><initials>_<period>.pdf` (`SW01CH_202607`, `S24TA_AT`), `_AT` appointment, `_2026PLF` last-minute, `Aff` affidavit, `amend` prefix. `kansas.gov` 302s to `www.kansas.gov` — always follow redirects.
+
+### Historical only: legacy contributor search
+
+`kansas.gov/ethics/EthicsSite/` search, linked from KPDC "Campaign Contributor Data" — frozen 2022-03-15, data back to 1993. Never mix into the current pipeline. Optional fixture source.
+
+## Statutory + calendar facts the code must encode
+
+- **K.S.A. 25-4148(a)**: reporting periods per election phase. 2026 calendar (official KPDC due-dates sheet): report due 1/10/2026 covers 1/1/2025–12/31/2025; due 7/27/2026 covers 1/1/2026–7/23/2026; due 10/26/2026 covers 7/24/2026–10/22/2026; due 1/10/2027 covers 10/23/2026–12/31/2026. Candidate last-minute contribution reports ($300+): windows 7/24–7/29 (due 7/30) and 10/23–10/28 (due 10/29). Off-years: annual January-10 report only — **a year with no periodic reports can be `not_required`, not `missing`**.
+- **K.S.A. 25-4148**: itemize contributions over $50 aggregate; ≤$50 may be an unitemized lump. Itemized sums therefore NEVER equal cover totals — totals come from covers only (verified gap: Holscher itemized $389,246.47 + $4,803.67 in-kind vs cover $412,630.21).
+- **K.S.A. 25-4148a**: occupation filed for individual contributions over $150; if the contributor is not employed for compensation, the SPOUSE's occupation is filed. Caption: "Occupation reported for the contributor, or the contributor's spouse when Kansas law requires it." Occupation sometimes appears voluntarily below $150 (Helwig: "Retired" on $100) — use when present; absence below $150 is not missing data.
+- **K.S.A. 25-4150** (rewritten by HB 2206, 2025): dedicated IE statement from any person other than a candidate/party/political committee at $1,000+ aggregate per calendar year; vendors itemized above $500 aggregate; each row carries candidate, office, and explicit supported/opposed.
+- **K.S.A. 25-4148(c)** (subsection of the report statute): PAC/party *regular* reports name each candidate who is the subject of an in-kind contribution over $300 or an independent expenditure over $300 — but the blank Schedule C has one shared column with no direction field and no independent-vs-in-kind marker.
+- **K.S.A. 25-4148c** (distinct statute, easy to confuse with the above): party/political committees making $300+ of independent expenditures during the final 11-day pre-election window must file *last-minute IE reports* — one due the Thursday before the election, plus DAILY reports for the Thursday–Sunday immediately preceding. Names the candidate whose nomination/election/defeat is expressly advocated. These rows later reappear in the committee's next regular report.
+- **K.S.A. 25-4154(d)**: no one may copy contributor names from filed reports and use them for a commercial purpose (class A misdemeanor). This plan makes NO judgment about whether any VoteApp use is commercial — especially with paid memberships launching. Engineering posture: contributor names stay in restricted raw staging only, never in published surfaces, breakdowns, or API output; occupation/size aggregates carry no names; any future name-bearing feature (e.g. outside-group funder lists) requires counsel and, ideally, KPDC guidance FIRST. Get the counsel/KPDC review of the whole ingestion pattern started in Phase 0, not at ship time.
+- Affidavit of exemption: candidates expecting under $1,000 in and out per campaign phase file an affidavit instead of reports — `affidavit_exempt`, never a synthetic $0.
+
+## Scope
+
+November 2026, in priority order:
+
+1. **Statewide** (Governor, AG, SOS, Treasurer, Insurance Commissioner) — mandatory e-file, contribution/expenditure export. Cycle window 1/1/2023–12/31/2026.
+2. **State House** (all 125) — cycle window 1/1/2025–12/31/2026. Mixed e-file and paper.
+3. **State Senate SPECIAL elections** — 2026 has them (VoteApp DB already carries D24 and D25 special primaries on 8/4/2026; KPDC has a live `Senate/2026SpecialElection` index for Seat 24). Exact district list comes from final ballot data at sync time, not from this plan. Regular Senate cycle is 2028.
+4. **State Board of Education odd districts** and **District Attorneys** where VoteApp carries the race.
+
+Out of scope for v1: county/municipal offices (filed with county election officers, no central repository), outside-group donor/funder name lists (25-4154(d) gate + noncommittee IE forms disclose no receipts), committee-to-committee transfer tracing.
+
+## Identity and matching rules
+
+Candidate link resolution (fail closed):
+
+1. Normalized name or verified alias, exact office family, exact district when districted, compatible cycle/special.
+2. Anchor on a viewer Candidate-filings search recipe (or KPDC index row for paper-only filers); persist recipe, filed name/address, artifact URLs/hashes, and per-period filing status. Never persist postback coordinates as identifiers.
+3. Two plausible matches → no link. Never match on name alone.
+
+Every money row passes a person/entity classification gate before aggregation: individuals (occupation-eligible) vs organizations (PAC/party/firm/union — excluded from occupation buckets). Ambiguous names quarantine rather than guess.
+
+Outside-spending target resolution: candidate name + compatible office; exact district when the row gives one (`HD101 CASEY SLAUGHTER SUPPORT`). District absent + more than one plausible candidate → quarantine. Direction only from the filed Supported/Opposed value (or explicit support/oppose/elect/defeat purpose text) — never inferred from committee name, ideology, or slate.
+
+## Aggregation rules
+
+All money arithmetic in **integer cents**. Reconciliation checks are exact equality, no float tolerance.
+
+- **Totals raised/spent = cover SUMMARY lines** (2 receipts, 4 expenditures, 6 in-kind), summed across every authoritative period in the office's cycle window. Self-check every cover: line 1+2=3 and 3−4=5 exactly, else quarantine the report. Cash on hand = line 5 of the latest authoritative report, never summed.
+- **Publish gate is per candidate**: a candidate ships only when 100% of their money rows parsed cleanly and every period is accounted for (`report_filed | amended | affidavit_exempt | not_required | terminated | not_yet_due`). Any `missing_or_late | failed_extraction | ambiguous` row → that candidate stays on last-good snapshot. No global "99% is fine" bar.
+- **Amendments**: the one verified example (Perry `H003DP_amend2607`, in-kind $223.28→$463.28) was a full replacement report, and the *working hypothesis* is replace-not-add — but the pipeline VERIFIES it per report (amendment's own cover must reconcile; supersede only when the amendment is a complete report for the same period) instead of assuming it. A partial/delta-shaped amendment fails closed pending a form-specific rule.
+- **Last-minute filings** (candidate PLF and 25-4148c committee reports) duplicate into the next regular report. Use for freshness; dedupe on arrival of the regular report.
+- **Occupation breakdown** from itemized individual rows only. Aggregate dollars, not counts. Preserve `Retired`, `Not Employed`, `Homemaker`, `Student`, `Farmer`, `Self-employed`; blanks/illegible → Unknown; conservative normalization only (free-text typos like "Ownere" stay unless the fix is unambiguous). Report coverage alongside: occupation-covered itemized-individual dollars over (a) itemized-individual dollars and (b) all direct dollars — the unitemized lump is excluded from buckets and surfaces as coverage metadata, never as an "Unknown occupation" bucket.
+- **Contribution size buckets** from itemized transactions only.
+
+### Outside spending — THREE paths, one dedupe
+
+1. **Dedicated IE statements** (25-4150, noncommittee spenders; `Others/` tree): explicit per-row Support/Oppose. **"Total this Period" is a cumulative control total WITHIN one reporting period and RESETS at period boundaries** — verified: Kansas Comeback statements inside 1/1–7/23 run 370,443.63 → 378,943.63 → 383,943.63, then the first statement of the 7/24–10/22 period (`IE_KC4_2607`) resets to 138,270.00. Sum unique rows; validate against the within-period running totals; never add total lines; never treat the reset as a correction. Masterson oppose fixture through 8/26: **$522,213.63**.
+2. **Committee last-minute IE reports** (25-4148c; final-11-day window, Thursday + daily filings): candidate named, express advocacy. Rows reappear in the committee's next regular report — dedupe forward.
+3. **Regular PAC/party Schedule C** (25-4148(c)): candidate named over $300 but no direction and no independent-vs-in-kind marker; verified duplicating path 1 (PAC869 repeats OnMessage $359,633 / O'Donnell $10,810.63 / $8,500 / $5,000 against "Ty Masterson" with no direction).
+
+Policy: dedicated statements are authoritative for candidate+direction. Paths 2 and 3 are inventory: matched on filer+date+vendor+amount+candidate they are duplicates (corroboration, not money); unmatched rows enter totals only with explicitly directional AND explicitly independent purpose text; otherwise quarantined. Multi-candidate spends without per-candidate amounts are excluded (Koch GA fixture: $1,544.08 / 34 unnamed candidates ≈ $45.41 each, unitemized per KPDC advice). Coverage state per candidate: `complete_for_explicit_rows | partial_unresolved_direction | partial_unallocated | none_found | source_unavailable`; only the first feeds ordinary totals; `none_found` ≠ zero.
+
+IE statements are scanned PDFs with disqualifying OCR noise (`$58.741.00`) — v1 transcribes them with verification (amounts checked against zoomed page images, checksummed against within-period running totals). Volume small: 28 PDFs on the 2026 index, 316 filings all-time.
+
+## Architecture
+
+```
+backend/src/pipeline/kansasFinance/
+  kansasCfrViewerClient.ts            # session mgmt, UA, viewstate round-trip, category flows, export fetch
+  kansasCfrViewerParsers.ts           # export table, cover HTML, schedule A/B/C/D HTML, lookup grids
+  kansasKpdcIndexClient.ts            # CFAScanned link trees
+  kansasFinanceArtifactCache.ts       # url, sha256, fetched_at, kind, period, supersession; immutable versions
+  kansasFinancePdfExtractor.ts        # OCR-layer reader for paper filings + IE statements; page confidence; quarantine
+  kansasReportInventory.ts            # per-candidate period ledger and statuses
+  kansasCandidateCommitteeResolver.ts
+  kansasCandidateFinanceAutoLink.ts
+  kansasDirectContributionAggregator.ts
+  kansasOutsideSpendingAggregator.ts  # three-path dedupe, allocation/coverage states
+  kansasFinanceEligibleOffices.ts
+  kansasFinanceWriter.ts              # createStandardStateFinanceSnapshotWriter wrapper
+  kansasCandidateFinanceSync.ts
+  kansasBallotLookupFinanceLoader.ts
+  index.ts
+```
+
+Inventory statuses: `report_filed | amended | affidavit_exempt | last_minute | terminated | not_required | not_yet_due | missing_or_late | failed_extraction`. `not_required` covers off-year annual-only periods and pre-candidacy periods; `terminated` follows a termination statement. A blank historic period is only `missing_or_late` when the calendar says a report was actually due.
+
+Snapshot writer populates the standard tables via a new migration (`ks_candidate_finance_links`, `ks_candidate_finance_summaries`, `ks_candidate_finance_direct_breakdowns`, `ks_candidate_finance_outside_groups`, `ks_candidate_finance_outside_group_breakdowns`; identifiers ≤63 chars; next free migration number — check open PRs, Nevada #885 may take 257; never renumber). Kansas staging additionally keeps: per-period cover ledger (integer cents), unitemized totals, coverage-state enum, OCR confidence, supersession graph. No outside donor/industry rows in v1.
+
+CLI scripts follow house convention: `kansas-candidates:finance:probe`, `kansas-candidates:finance:link`, `kansas-candidates:finance:sync-due`, `kansas-candidates:finance:raw:refresh` (mirror Missouri/RI/NH naming).
+
+## Phases
+
+### Phase 0 — DONE 2026-08-26 (live run green, zero failures)
+
+Implemented: `backend/src/pipeline/kansasFinance/` (`kansasCfrViewerClient`, `kansasCfrViewerParsers`, `kansasFinancePdfText`, `kansasPhaseZero`) + `backend/src/scripts/probeKansasCandidateFinance.ts`, npm script `kansas-candidates:finance:phase-zero`, 39 unit tests. Live results:
+
+- **Exports**: Holscher contributions 4,285 rows = page count, $389,246.47 itemized, occupation dollar-share 85.5%; Schmidt (Insurance Comm.) 759 rows / $277,517.89 / 80.6%. **Expenditure flow works** (form fields `txtEntity/txtCandidateName/txtCity/ddlStates/ddlExpenditureType/txtAmount/txtStartDate/txtEndDate`, results page `cfr_examiner_expenditure_results.aspx`; Holscher 311 rows $527,362.41).
+- **Cap test**: all-statewide 1/1–7/23/26 search = 15,876 records, export returned all 15,876 (25.8 MB, 23 candidates). No cap observed at that size.
+- **Enumeration**: House 354 R&E filings; grid shows 20 rows/page (pagination via `__doPostBack('grdviewCfrResults','Page$N')` — page-1-only in Phase 0, **Phase 1 client must page**). Senate: 9 filings (specials confirmed in viewer), 7 e-file / 2 paper. Paper rows carry `<img id="…_paper_N" title="Paper Filing">`; e-file rows carry `lblDate_N` + name postbacks.
+- **Helwig walk**: cover arithmetic + Schedule A/C totals cent-exact. Schedules are plain GETs (`reports/schedule_{a,b,c,d}_report.aspx`) once the report is in session; the cover's schedule postbacks 500 but are unnecessary.
+- **OCR covers**: rotation-aware pdfjs extraction added (scans are 90°-rotated; y-grouping scrambles lines without it). Label-anchored recovery + identity check: **2/5 recovered** (both e-file-print scans; one via an uncertain-read validated by the identities). The 3 paper-leaning scans failed → per the plan gate, **paper filers go to a bounded manual-transcription queue**, not automated OCR.
+- **Concurrency**: 2 parallel sessions both succeeded.
+- **Perry fixture**: both covers recover, receipts identical ($2,550.00) → full-replacement confirmed mechanically.
+- **Kansas Comeback fixture**: within-period running totals + period reset validated; oppose total exactly **$522,213.63**; all four artifacts contain the transcribed amounts and Oppose/Masterson.
+- **Koch GA fixture**: confirmed unallocated (no district-coded rows), $1,544.08 present.
+- Client facts locked in code comments: UA must start with `Mozilla/5.0` (403 otherwise — honest compatible token used); POSTs must echo ALL hidden fields (`__VIEWSTATEENCRYPTED` omission = 500); navigation is POST→302→GET with session cookies; 500 "Runtime Error" = bad postback, never retried; record count read from `<span id="lblRecordCount">`.
+- Remaining from the Phase 0 list: legal/KPDC 25-4154(d) review kickoff (user action).
+
+### Phase 0 — original checklist (for reference)
+
+1. Contribution export for two statewide candidates; assert full parse and occupation coverage math.
+2. **Expenditure search + export** (unexercised flow). If export is absent/capped → per-report Schedule C HTML fallback; record the answer here.
+3. **Export cap test**: run a search returning ≥20k rows (e.g. all contributions in a wide date range); confirm export completeness against the on-screen record count.
+4. Candidate-filings enumeration for all 125 House districts + Senate specials: classify e-file vs paper per filer; measure the real paper rate (probe sample was 3/12).
+5. Walk one e-filed legislator end-to-end (cover + Schedules A–D), reconcile cover arithmetic in integer cents.
+6. Parse 5 paper-filer PDFs: how many covers reconcile from OCR alone vs need transcription.
+7. **Concurrency test**: 2–3 parallel viewer sessions; record whether the app tolerates them.
+8. Fixtures, each asserted: Helwig (Schedule A occupation + cover reconcile), Perry amendment pair (replacement verified, no double count), Kansas Comeback four statements + PAC869 (**oppose total exactly $522,213.63**, within-period running totals validated, period reset honored, cross-source dedupe, no cumulative-total addition), Koch GA (excluded, `partial_unallocated`).
+9. Kick off the counsel/KPDC 25-4154(d) review of the ingestion + publication pattern.
+
+Gate: covers reconcile exactly on every e-filed fixture; the Comeback number lands exactly; export completeness confirmed at scale. Paper-cover OCR reconcile below ~90% → paper filers become a bounded manual-transcription queue, not a lowered bar.
+
+### Phase 1 — clients + artifact cache
+
+Timeouts long, retries 1, per-session concurrency 1, polite delay; parallelism only as proven in Phase 0.7. Immutable artifact versions (changed bytes at same URL → new version, rerun normalization).
+
+### Phase 2 — parsers + inventory
+
+Every parsed report carries: period, type, amendment relation, filing channel (viewer-html | kpdc-pdf), extraction confidence. Period ledger driven by the official due-date calendar above.
+
+### Phase 3 — resolver + auto-link
+
+Standard auto-link against Nov-2026 ballot candidates for eligible offices (incl. Senate special districts as ballot data lands). Manual link CLI fallback.
+
+### Phase 4 — direct side (first shippable release)
+
+Aggregator + writer + sync: cover-sourced totals, occupation and size breakdowns with coverage metrics, per-period ledger. Per-candidate publish gate as above.
+
+### Phase 5 — outside spending (second release)
+
+Verified IE-statement transcription, 25-4148c last-minute report ingestion near the election, Schedule C inventory, three-path dedupe, coverage states; `outsideSupportTotal`/`outsideOpposeTotal` written only for `complete_for_explicit_rows`.
+
+### Phase 6 — live run + validation
+
+Full sync across scope; spot-audit 10 candidates cent-exact against covers; verify the Masterson oppose total equals $522,213.63 plus any later statements.
+
+### Phase 7 — flags, labels, prod (per new-state checklist)
+
+- Flags: code defaults false in `backend/src/config/featureFlags.ts`; add BOTH `KANSAS_CAMPAIGN_FINANCE_ENABLED=true` and `KANSAS_CAMPAIGN_FINANCE_SYNC_ENABLED=true` to `backend/.env` (alphabetical), read flag to `render.yaml`.
+- Source label: new source in `backend/src/pipeline/address/ballotLookupFinanceShared.ts` AND `KANSAS_SOS: "Kansas Secretary of State / KPDC"` in `FINANCE_SOURCE_LABELS` (`packages/api-client/src/format.ts`, keeping key style consistent with `MISSOURI_MEC`/`OHIO_SOS`) plus the `financeSourceLabel` test in `format.test.ts`.
+- Loader registered in the ballot-lookup finance dispatch alongside the other states; typecheck + vitest green in backend and frontend/api-client.
+- Prod: apply migration, promote data per finance sync runbook; Render deploys are manual (POST full SHA).
+
+## Fail-closed rules
+
+No snapshot publish for a candidate when: ambiguous link; any due period unaccounted; cover arithmetic off by one cent; amendment not verifiably a replacement; any money row unparsed or with broken row integrity (contributor/occupation/amount not provably same row); person/entity class ambiguous on an occupation-bound row; Schedule C direction ambiguous; multi-candidate spend unallocated; last-minute/regular dedupe unresolved; only source is the 2022 legacy database. Retain last-good snapshot on refresh failure.
+
+## Risks
+
+1. **Viewer fragility**: session-state postbacks, no durable IDs; markup drift breaks the walker. Mitigation: search-recipe persistence, artifact cache, whitespace-tolerant parsers, KPDC tree as degraded cover fallback.
+2. **Paper-filer OCR**: real rate unknown until Phase 0.4; worst case a bounded manual queue.
+3. **Scan lag / archive completeness**: viewer enumeration is the completeness reference; KPDC tree alone is insufficient near deadlines.
+4. **Export cap** unverified above 4,285 rows (Phase 0.3).
+5. **Election-week volume**: 25-4148c daily filings land Thu–Sun before the election; sync cadence must tighten that week.
+6. **Legal**: 25-4154(d) review outcome could constrain staging or force design changes — which is why it starts in Phase 0.
