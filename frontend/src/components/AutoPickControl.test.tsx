@@ -109,14 +109,21 @@ async function clickPickForMe() {
 }
 
 describe("AutoPickControl", () => {
-  it("prompts guests to sign up without calling the API", async () => {
+  // Progressive disclosure for brand-new visitors: an account-only control
+  // renders nothing at all for guests (and while the session is resolving,
+  // so it never flashes at them).
+  it("renders nothing for guests", () => {
     mockMe = null;
-    const fetchMock = stubApiRoutes({});
+    stubApiRoutes({});
     renderControl();
-    await clickPickForMe();
-    expect(await screen.findByRole("link", { name: "Sign up" })).toHaveAttribute("href", "/register");
-    expect(screen.getByRole("link", { name: "sign in" })).toHaveAttribute("href", "/login");
-    expect(fetchMock).not.toHaveBeenCalledWith(expect.stringContaining("auto-picks"), expect.anything());
+    expect(screen.queryByRole("button", { name: "Auto-pick by my issues" })).not.toBeInTheDocument();
+  });
+
+  it("renders nothing while the session is still resolving", () => {
+    mockMe = undefined;
+    stubApiRoutes({});
+    renderControl();
+    expect(screen.queryByRole("button", { name: "Auto-pick by my issues" })).not.toBeInTheDocument();
   });
 
   it("prompts for more ranked issues below the floor, linking to the issue editor", async () => {
