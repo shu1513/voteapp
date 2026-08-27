@@ -285,8 +285,9 @@ describe("legiscanRollCallPageUrl", () => {
 
 describe("getLegiscanStateConfig", () => {
   it("serves only surveyed states; an unsurveyed state is refused by name", () => {
-    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual(["TX"]);
+    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual(["GA", "TX"]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
+    expect(getLegiscanStateConfig("GA").sessionId).toBe(2167);
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("PA")).toThrow("no LegiScan state config for PA");
   });
@@ -319,6 +320,69 @@ describe("getLegiscanStateConfig", () => {
     expect(tx("RV#105", 150)).toMatchObject({ isFloorVote: null, reason: "unknown_question" });
     // Committee-sized unknowns are still cut by tally.
     expect(tx("Reported favorably", 9).reason).toBe("committee_tally:9/150");
+  });
+
+  it("classifies Georgia's real desc vocabulary as surveyed", () => {
+    const config = LEGISCAN_STATE_CONFIGS.GA!;
+    const ga = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
+      classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+    // Every Georgia desc carries a per-chamber vote number; the House
+    // spelling puts a space before the colon.
+    expect(ga("Passage: House Vote #804", 176)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(ga("Passage By Substitute: Senate Vote #221", 54, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(ga("Passage As Amended: Senate Vote #98", 56, "senate").questionClass).toBe("passage");
+    // Concurrence is matched on the `Agree To` stem: the chambers print 14
+    // spellings of it, several abbreviated past readability.
+    for (const desc of [
+      "Agree To Senate Substitute: House Vote #612",
+      "Agree To Senate Sub As Am: House Vote #77",
+      "Agree To Sam To Hsub: House Vote #401",
+      "Agree To House Amendment To Senate Substitute: Senate Vote #700",
+    ]) {
+      expect(ga(desc, 176).questionClass, desc).toBe("concurrence");
+    }
+    expect(ga("Adopt Conference Committee Report: Senate Vote #820", 56, "senate").questionClass).toBe(
+      "conference_report"
+    );
+    expect(ga("Adopt CCR: House Vote #876", 180).questionClass).toBe("conference_report");
+    // En-bloc local calendars (one roll attached to up to ten bills) and the
+    // measured motion families are excluded, not surfaced.
+    for (const desc of [
+      "Local Calendar : House Vote #270",
+      "Local Consent Calendar: Senate Vote #873",
+      "Supplemental Local Consent Calendar: Senate Vote #200",
+      "Uncontested House Resolutions: House Vote #61",
+      "Motion To Engross: Hb 52, Hb 248, Hb 963: Senate Vote #876",
+      "Motion For The Previous Question: Senate Vote #310",
+      "Adoption Of Amendment #1 By The Senator From The 38th: Senate Vote #145",
+      "Adoption Of The Amendment By The Sen From The 41st As Amended: Senate Vote #563",
+      "Reconsider: House Vote #602",
+      "Immediately Transmit: House Vote #90",
+      "Shall The Ruling Of The Chair Be Sustained: Senate Vote #250",
+    ]) {
+      expect(ga(desc, 176).reason, desc).toBe("excluded_question");
+    }
+    // Oddities stay surfaced for a human rather than being guessed at.
+    expect(ga("Recede From Senate Amendment: Senate Vote #335", 56, "senate")).toMatchObject({
+      isFloorVote: null,
+      reason: "unknown_question",
+    });
+    expect(ga("Sbs 234, 235, & 336 Passage: House Vote #436", 180)).toMatchObject({ reason: "unknown_question" });
+    // Georgia's constitutional amendments ride on resolutions, which the
+    // shared kept-types list drops before this config is consulted
+    // (evidence/rollcall/legiscan-ga-2167/CODE-FINDINGS.md).
+    expect(
+      classifyLegiscanRollCall({
+        desc: "Adoption Of Constitutional Amendment: Senate Vote #749",
+        total: 56,
+        chamber: "senate",
+        billType: "R",
+        config,
+      }).reason
+    ).toBe("excluded_measure:R");
   });
 
   it("refuses a state that has its own pipeline, whatever the spelling", () => {

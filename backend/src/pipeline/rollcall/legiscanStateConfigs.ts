@@ -47,6 +47,78 @@ export type LegiscanStateConfig = {
 // verifyUniqueCandidateRecordSourceUrls), and a human viewer passes the
 // challenge in a browser, so the roll-call page stays a valid source_url.
 export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {
+  // Georgia General Assembly, 2025-2026 Regular Session (both years, sine
+  // die 2026-04-03). Vocabulary measured from the full dataset survey
+  // 2026-08-26: 5,480 bills, 2,520 roll calls, 242 people (180 House + 56
+  // Senate seats plus mid-biennium turnover).
+  //
+  // What the survey established:
+  // - Georgia stamps EVERY desc with a unique chamber vote number
+  //   (`Passage: House Vote #804`, `Local Calendar : House Vote #270` —
+  //   note the space before the colon), so every pattern has to tolerate a
+  //   trailing ` : <chamber> vote #<n>`. 1,696 raw descs collapse to 155
+  //   families once that suffix is folded.
+  // - Passage is worded `Passage`, `Passage By Substitute` and `Passage As
+  //   Amended`; the second chamber's concurrence is always worded `Agree
+  //   To …` (14 variants, incl. abbreviations like `Agree To Sam To Hsub`),
+  //   so the concurrence rule matches the `agree to ` stem rather than
+  //   enumerating them. Conference reports come as `Adopt Conference
+  //   Committee Report` plus two one-off spellings (`Adopt CCR`, `Adopt
+  //   Conference Comm. Report`).
+  // - LOCAL CALENDARS ARE EXCLUDED BY RULE. Georgia passes local
+  //   legislation (single-county/city bills) in en-bloc consent calendars:
+  //   one roll call is attached to up to ten different bills (`Local
+  //   Consent Calendar` 331, `Local Calendar` 319, plus supplemental
+  //   variants). Those rolls have no single measure, and none is divided.
+  // - The dataset carries NO committee votes at all: every tally is a
+  //   whole-chamber tally (House 175-180, Senate 54-56), so nothing lands
+  //   in the small-tally or committee buckets.
+  // - Georgia proposes CONSTITUTIONAL AMENDMENTS as resolutions
+  //   (`HR 251`, `SR 838`), which LegiScan types `R` — a type the shared
+  //   kept-types list drops before this config is consulted. Two enacted
+  //   Nov-2026 ballot amendments (HR 251, HR 1243) therefore cannot be
+  //   queued today; see evidence/rollcall/legiscan-ga-2167/CODE-FINDINGS.md.
+  //   Keeping `R` wholesale is NOT the fix: 3,239 of the session's 5,480
+  //   "bills" are resolutions, mostly commendations, and several of those
+  //   are divided (a Trump commendation split 31-18).
+  GA: {
+    jurisdiction: "GA",
+    sessionId: 2167,
+    chamberSizes: { house: 180, senate: 56 },
+    keptQuestions: [
+      {
+        pattern: /^passage(?: by substitute)?(?: as amended)?(?:\s*:?\s*(?:house|senate) vote ?#\d+)?$/,
+        questionClass: "passage",
+      },
+      { pattern: /^agree to /, questionClass: "concurrence" },
+      { pattern: /^adopt (?:conference committee report|conference comm\.? report|ccr)/, questionClass: "conference_report" },
+    ],
+    excludedQuestions: [
+      // `Motion To Table`, `Motion To Engross`, `Motion For The Previous
+      // Question`, `Motion To Withdraw And Commit`, `Motion To Adjourn` —
+      // scheduling and debate motions. Engrossment motions also name a
+      // whole calendar of bills in the desc.
+      /^motion /,
+      // Floor amendment votes: `Adoption Of Amendment #1 By The Senator
+      // From The 38th` and its `Adoption Of The Amendment … As Amended`
+      // spelling. Deliberately NOT matching `adoption of constitutional
+      // amendment`, which is a final question (currently unreachable, see
+      // the resolution note above).
+      /^adoption of amend/,
+      /^adoption of the amendment/,
+      /^reconsider/,
+      /\brecon\b/,
+      // En-bloc local and study-committee calendars (one roll, many bills).
+      /local consent calendar/,
+      /local calendar/,
+      /consent calendar/,
+      /uncontested house resolutions/,
+      /^immediately transmit/,
+      /^table(?:\s*:?\s*(?:house|senate) vote ?#\d+)?$/,
+      /shall the ruling of the chair/,
+      /^point of order/,
+    ],
+  },
   // Texas 89th Legislature, Regular Session (sine die). Vocabulary measured
   // from the full dataset survey 2026-08-24: 11,503 bills, 9,726 roll
   // calls, 181 people (= 150 House + 31 Senate). Registry pins the regular
