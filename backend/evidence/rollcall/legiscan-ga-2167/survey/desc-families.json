@@ -1,0 +1,2299 @@
+{
+  "runId": "rollcall-legiscan-fetch-ga-20260827T003834Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "GA",
+  "startedAt": "2026-08-27T00:38:34.332Z",
+  "datasetDir": "/Users/shu/legiscan-data/ga-2167/GA/2025-2026_Regular_Session",
+  "bills": 5480,
+  "votes": 2520,
+  "people": 242,
+  "billTypeCounts": {
+    "B": 2241,
+    "R": 3239
+  },
+  "sessionIds": {
+    "2167": 5480
+  },
+  "fileErrors": [],
+  "voteParseErrors": [],
+  "note": "Desc families folded over the per-chamber vote-number suffix Georgia stamps on every desc (\": House Vote #804\"); 1,696 raw descs -> 155 families. Raw per-desc rows live in the untracked run report under /Users/shu/legiscan-data/.",
+  "descFamilies": [
+    {
+      "chamber": "house",
+      "descFamily": "passage",
+      "count": 567,
+      "withoutMemberList": 0,
+      "minTotal": 175,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB143",
+        "HB113",
+        "HB428"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "local consent calendar",
+      "count": 331,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB760",
+        "HB1599",
+        "HB1005"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "local calendar",
+      "count": 319,
+      "withoutMemberList": 0,
+      "minTotal": 175,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1575",
+        "HB1530",
+        "SB612"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "passage by substitute",
+      "count": 255,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB131",
+        "SB141",
+        "SB88"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "passage",
+      "count": 222,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB155",
+        "SB42",
+        "SB101"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "agree to house substitute",
+      "count": 86,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SB68",
+        "SB83",
+        "SB13"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "agree to senate substitute",
+      "count": 85,
+      "withoutMemberList": 0,
+      "minTotal": 175,
+      "maxTotal": 180,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB223",
+        "HB161",
+        "HR97"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to table remaining legislation on the rules calendar",
+      "count": 70,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SB628",
+        "HB1107"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "local calendar without hbs 851 & 852",
+      "count": 38,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB845"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "adopt",
+      "count": 32,
+      "withoutMemberList": 0,
+      "minTotal": 175,
+      "maxTotal": 180,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR32",
+        "HR69",
+        "HR7"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "supplemental local consent calendar",
+      "count": 30,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB756"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "consent calendar for senate study committees",
+      "count": 30,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR429",
+        "SR952"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "passage as amended",
+      "count": 28,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB195",
+        "SB29",
+        "SB63"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR247",
+        "SR231",
+        "SR7"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "agree to senate sub as am",
+      "count": 20,
+      "withoutMemberList": 0,
+      "minTotal": 175,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB67",
+        "HB58",
+        "HB551"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "agree to house substitute as amended",
+      "count": 20,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB68",
+        "SB69",
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to engross",
+      "count": 20,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SB152",
+        "SB129",
+        "SB212"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "agree to house amendment to senate substitute",
+      "count": 16,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB67",
+        "HB58",
+        "HB551"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to engross: sb 214, hb 66, hb 79, hb 129, hb 134, hb 141, hb 370, hb 397, hb 445, hb 463, hb 532, hb 586, hb 652",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB445"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption by substitute",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR8",
+        "HR97",
+        "HR98"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "uncontested house resolutions",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR72"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "supplemental local calendar",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 176,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB627",
+        "HB756",
+        "HB862"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "agree to senate amendment",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 176,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB475",
+        "HB351",
+        "HB156"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to engross: hb 52, hb 248, hb 963, hb 964, hb 1001, hb 1077, hb 1116, hb 1129, hb 1132, hb 1209",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB964"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of constitutional amendment",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR32",
+        "SR56",
+        "SR838"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion for the previous question",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB446",
+        "HB998",
+        "HB1302"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to withdraw and commit",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB647",
+        "SB510",
+        "SB541"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to engross: sb 423, sb 515, sb 566, sb 568, sb 573, sr 838",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 55,
+      "maxTotal": 55,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SB515"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "reconsider",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 176,
+      "maxTotal": 180,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SB8",
+        "HB862",
+        "HB717"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion for reconsideration",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SB4",
+        "HB360",
+        "HB127"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "shall the ruling of the chair be sustained",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB127",
+        "HB127",
+        "HB54"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "agree to senate amend to house sub",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 176,
+      "maxTotal": 176,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB220",
+        "SB293",
+        "SB503"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to remove from the table",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 55,
+      "maxTotal": 56,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB360",
+        "HB127",
+        "SR668"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to table",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB111",
+        "HB127",
+        "HB127"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to engross: hb 229, hb 583, hb 960, hb 1070",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1070"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to engross: hb 328, hb 369, hb 519, hb 1112",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB328"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to engross: sb 306, sb 465, sb 498, sr 668",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 55,
+      "maxTotal": 55,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SB306"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to engross: sb 45, sb 59, sb 89, and sr 56",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "agree to house amendment to senate amendment",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB207",
+        "HB999",
+        "HB295"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "consent calendar expressing the will of the senate",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 55,
+      "maxTotal": 55,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR744",
+        "SR567"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 38th",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 55,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB116",
+        "SB552",
+        "SB445"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 44th",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB30",
+        "SB185",
+        "HB651"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #2 by the senator from the 41st",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1",
+        "HB268",
+        "SB39"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "agree to house amendment to senate substitute as amended",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB58",
+        "HB266",
+        "HB54"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "recon sb 234, 235, & 336",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB336"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "sbs 234, 235, & 336 passage",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB336"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to engross: hb 144, hb 153, hb 511",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB144"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to engross: hb 90, hb 223, hr 32",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HR32"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "agree to senate amend to ham to ssub",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 176,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB266",
+        "HB155",
+        "HB651"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "agree to senate sub as amended by house",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HR7",
+        "HB370",
+        "HB253"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "immediately transmit",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 176,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB68",
+        "SB79",
+        "HB974"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adopt conference committee report",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB68",
+        "HB973",
+        "HB974"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 14th",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SB154",
+        "SR23",
+        "HB61"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to resolve debate",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB127",
+        "HB945",
+        "HB1185"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "sb614 & sb627 recon",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 176,
+      "maxTotal": 176,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB627"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to engross: hb 112, hr 42",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB112"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to engross: hb 266, hb 426",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB426"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to engross: hb 376, hb 1159",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1159"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to engross: hb 92, hb 290",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB92"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to engross: sb 177, sb 199",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB177"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to engross: sb 31, sb 175",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB175"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to engross: sb 403, hb 414",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB414"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to engross: sb 432, sb 446",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB432"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to engross: sb 476, sb 477",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB476"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "agree to sam to hsub",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB69",
+        "SB40"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "agree to senate am as am",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 176,
+      "maxTotal": 176,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB999",
+        "HB1396"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "agree to senate amendment to house sub",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 176,
+      "maxTotal": 176,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB170",
+        "SB179"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "table",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 176,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB204",
+        "SB175"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amend #1a by sen from the 14th to amend #1 by sen from the 14th",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB291",
+        "HB61"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amend #1a by sen from the 6th to amend #1 by sen from the 6th",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB220",
+        "SB293"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 1st",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB645",
+        "HB1138"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 29th",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB254",
+        "HB1161"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 37th",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB220",
+        "HB451"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #2 by the senator from the 9th",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB348",
+        "HB1396"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of the amendment by the sen from the 19th as amended",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 55,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB945",
+        "HB295"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to immediately transmit to governor",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 55,
+      "maxTotal": 55,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB204",
+        "HB973"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to immediately transmit",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB39",
+        "SB382"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to reconsider amendment #1",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB254",
+        "HB86"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "adjournment",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 176,
+      "maxTotal": 176,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR998"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "adopt ccr",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 176,
+      "maxTotal": 176,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB974"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "adopt conference comm. report",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB68"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "agree to sam to hsub as ham",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 176,
+      "maxTotal": 176,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB207"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "agree to senate am as amended by house",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB491"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "agree to senate amend as ham",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 176,
+      "maxTotal": 176,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB295"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "agree to senate sub as amend by house",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB54"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "agree to senate sub as house amend",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 176,
+      "maxTotal": 176,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1199"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "agree to senate sub as house amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB651"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "am 62 0077",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 176,
+      "maxTotal": 176,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1247"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "immediately transmit to governor",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 177,
+      "maxTotal": 177,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB973"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "move from eu&t to scrm",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 175,
+      "maxTotal": 175,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1063"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "move from p&ch to hth",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB520"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "remove from local cal/vote separately",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 176,
+      "maxTotal": 176,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1567"
+      ]
+    },
+    {
+      "chamber": "house",
+      "descFamily": "supplemental local calendar #2",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 176,
+      "maxTotal": 176,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1534"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amend #1a by sen from the 14th to amend #1 by sen from the 19th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 55,
+      "maxTotal": 55,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB945"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amend #1a by sen from the 19th to amend #1 by sen from the 1st",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB54"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amend #1a by sen from the 19th to amend #1 by sen from the 50th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 55,
+      "maxTotal": 55,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB443"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amend #1a by sen from the 30th to amend #1 by sen from the 29th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB651"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amend #1a by sen from the 37th to amend #1 by sen from the 9th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR246"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amend #1a by sen from the 50th to amend #1 by sen from the 13th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB57"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amend #1a by sen from the 56th to amend #1 by sen from the 44th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB163"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amend #1a by sen from the 7th to amend #1 by sen from the 7th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB340"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amend #1b by sen from the 19th to amend #1 by sen from the 41st",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB440"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amend #1b by sen from the 35th to amend #1 by sen from the 19th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 55,
+      "maxTotal": 55,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB945"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amend #1c by sen from the 23rd to amend #1 by sen from the 19th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 55,
+      "maxTotal": 55,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB945"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amend #2a by sen from the 7th to amend #2 by sen from the 7th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB68"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amend #3b by sen from the 19th to amend #3 by sen from the 18th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB57"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 19th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB233"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 22nd",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 26th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB85"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 27th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB28"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 28th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 55,
+      "maxTotal": 55,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB230"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 2nd",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB348"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 30th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB150"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 35th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 55,
+      "maxTotal": 55,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB523"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 42nd",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB296"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 46th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1247"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 49th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB36"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 50th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB155"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 53rd",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR148"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 56th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB86"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 6th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB351"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 7th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB340"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #1 by the senator from the 9th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB138"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #2 by the senator from the 10th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR246"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #2 by the senator from the 46th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB296"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #2 by the senator from the 53rd",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB475"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #2 by the senator from the 5th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 55,
+      "maxTotal": 55,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB406"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #2 by the senator from the 6th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB220"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #2 by the senator from the 7th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB68"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #3 by the senator from the 14th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR246"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #3 by the senator from the 23rd",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB220"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #3 by the senator from the 2nd",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB297"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #3 by the senator from the 37th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB999"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #3 by the senator from the 41st",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1396"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #3 by the senator from the 44th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #3 by the senator from the 45th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB295"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #4 by the senator from the 19th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1185"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of amendment #4 by the senator from the 29th",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB220"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of the amendment by the sen from the 13th as amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB57"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of the amendment by the sen from the 14th as amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB291"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of the amendment by the sen from the 32nd as amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB308"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of the amendment by the sen from the 39th as amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1215"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of the amendment by the sen from the 41st as amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB440"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of the amendment by the sen from the 55th as amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB21"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "adoption of the amendment by the sen from the 9th as amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR246"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "agree to house amendment to senate amendment to house substitute",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB207"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "agree to house amendment to senate substitute as amended by am #2",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB155"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "agree to house substitute as amended by amendment #2",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB77"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "immediately transmit to governor",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB350"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to adjourn",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 55,
+      "maxTotal": 55,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR998"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to print",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 54,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB247"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to reconsider amendment #2",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB39"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to reconsider the motion to resolve debate",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB127"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "motion to suspend senate rule 7-1-6(b)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 55,
+      "maxTotal": 55,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR624"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "descFamily": "recede from senate amendment",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB86"
+      ]
+    }
+  ]
+}
