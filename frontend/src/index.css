@@ -28,6 +28,11 @@
      even for ancillary copy; 13px is the smallest tier Vogue ships. */
   --text-xs: 0.8125rem;
   --text-xs--line-height: 1.4;
+  /* Chrome tier raised from Tailwind's 14px: card meta, form labels, and
+     list bullets all sit on text-sm, and 14px read too small on phones.
+     15px keeps chrome visibly below body (17px+) while staying legible. */
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.45;
 
   /* Palette referenced from Airbnb: Rausch coral primary, near-black ink,
      gray hierarchy, hairline borders, airy white surfaces. */

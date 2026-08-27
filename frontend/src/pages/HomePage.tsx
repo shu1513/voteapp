@@ -179,8 +179,8 @@ export function HomePage() {
               never sees the 30px+ size that once ran six lines and pushed the
               address field off the fold — and there is no breakpoint jump. */}
           <h1 className="text-title font-bold">
-            Find out which elections you can vote in — and who the candidates really are by their
-            track records instead of slogans.
+            See how much power your vote has in each election, and who the candidates really are by
+            their track records instead of ads.
           </h1>
           {/* What the service is, where a first-time visitor actually looks.
               It used to sit in the footer, under the fold, where it repeated
