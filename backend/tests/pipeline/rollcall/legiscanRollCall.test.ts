@@ -285,8 +285,9 @@ describe("legiscanRollCallPageUrl", () => {
 
 describe("getLegiscanStateConfig", () => {
   it("serves only surveyed states; an unsurveyed state is refused by name", () => {
-    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual(["TX"]);
+    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual(["TX", "FL"]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
+    expect(getLegiscanStateConfig("FL").sessionId).toBe(2135);
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("PA")).toThrow("no LegiScan state config for PA");
   });
@@ -319,6 +320,30 @@ describe("getLegiscanStateConfig", () => {
     expect(tx("RV#105", 150)).toMatchObject({ isFloorVote: null, reason: "unknown_question" });
     // Committee-sized unknowns are still cut by tally.
     expect(tx("Reported favorably", 9).reason).toBe("committee_tally:9/150");
+  });
+
+  it("classifies Florida's real desc vocabulary as surveyed", () => {
+    const config = LEGISCAN_STATE_CONFIGS.FL!;
+    const fl = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
+      classifyLegiscanRollCall({ desc, total, chamber, billType, config });
+    // The only two floor shapes Florida prints: the House numbers every
+    // vote, the Senate recycles its numbers across days.
+    expect(fl("House: Third Reading RCS#1204", 120)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(fl("Senate: Third Reading RCS#3", 39, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // Constitutional amendments ride joint resolutions, not a second desc.
+    expect(fl("House: Third Reading RCS#900", 119, "house", "JR")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // Senate Rules seats 25 of 40 — above the committee cut, so it is
+    // excluded by name rather than surfaced 154 times.
+    expect(fl("Senate Rules", 25, "senate").reason).toBe("excluded_question");
+    // Every other committee is cut by tally in both chambers.
+    expect(fl("House Budget Committee", 30).reason).toBe("committee_tally:30/120");
+    expect(fl("Senate Fiscal Policy", 19, "senate").reason).toBe("committee_tally:19/40");
   });
 
   it("refuses a state that has its own pipeline, whatever the spelling", () => {
