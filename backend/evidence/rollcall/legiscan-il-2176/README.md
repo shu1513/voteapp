@@ -172,15 +172,49 @@ carried 64-40 two months later. Both are stored as kept floor votes, and
 `passed` is the only thing separating them. A description must never say a
 measure passed on the strength of a failed motion.
 
-## Batch-01
+### Fourth hazard: a roll can be a vote on an ENTIRELY DIFFERENT BILL
 
-See `batch-01/PLAN.md` and `batch-01/JUDGING.md`. 22 rolls / 11 measures /
-**1,364 records across 132 candidates**, imported to local `voteapp`
-2026-08-26.
+The gut-and-replace convention has a worse form than a stale title. **H.B.
+2568's house roll was cast on the trust code and unclaimed property text**; the
+Senate then replaced the whole bill with the Equality for Every Family Act, so
+the two chambers voted different *subjects* under one bill number. Only the
+senate roll is on the enacted law. Three more measures in batch-02 have the
+same shape (H.B. 1312, H.B. 5090, H.B. 1836) and were safe only because their
+stale-text votes (106-0, 101-1, 107-6) were too one-sided to clear the divided
+gate's 25%-minority threshold, so they never entered the pool — luck, not a
+safeguard. **On any Illinois measure whose chambers voted months apart,
+check what each roll's text actually was before importing it.**
+
+## Batches
+
+| batch | rolls | measures | records | candidates |
+|---|---|---|---|---|
+| [batch-01](batch-01/PLAN.md) | 22 | 11 | 1,364 | 132 |
+| [batch-02](batch-02/PLAN.md) | 54 | 29 | 3,319 | 132 |
+
+**Illinois total: 4,683 records across 132 candidates, local `voteapp` only.**
 
 ## What is left
 
-`survey/divided-enacted-worklist.tsv` is the resumable ledger: one row per
-divided-and-enacted floor roll (427 of them), with a `status` column marking
-the 22 judged in batch-01 and the reason H.B. 3564 was dropped. **405 rolls
-on 237 measures remain for batch-02 and later.**
+`survey/divided-enacted-worklist.tsv` is the resumable ledger, and after
+batch-02 **every one of its 427 rolls carries a disposition**:
+
+| disposition | rolls |
+|---|---|
+| `candidate:batch-03` — passes the synopsis screen, awaiting judging capacity | 204 |
+| `judged:batch-02` | 54 |
+| `screened:no-defensible-stance` | 42 |
+| `screened:technical-or-omnibus` | 36 |
+| `screened:contested-direction` | 26 |
+| `judged:batch-01` | 22 |
+| `screened:appropriations-or-bonds` | 14 |
+| `screened:local-or-narrow` | 14 |
+| `screened:superseded-roll` | 5 |
+| `screened:mixed-direction` | 4 |
+| `screened:version-split` | 3 |
+| `pending:date-skew` | 3 |
+
+A `screened:*` verdict is a decision not to import, with the reason recorded in
+the row. `candidate:batch-03` is a positive triage result from reading the
+measure's Legislative Reference Bureau synopsis — those 204 rolls are the
+resume point, and no further triage is needed to pick them up.
