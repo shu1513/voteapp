@@ -119,6 +119,49 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       /^point of order/,
     ],
   },
+  // Illinois 104th General Assembly (2025-2026, both years in one dataset).
+  // Vocabulary measured from the full dataset survey 2026-08-26: 12,073 bills,
+  // 9,077 roll calls, 181 people (121 distinct HD + 60 distinct SD holders over
+  // the biennium; the chambers seat 118 + 59).
+  //
+  // What the survey established:
+  // - Illinois passes bills on THIRD READING and prints the plainest desc
+  //   vocabulary of any state surveyed so far: 104 distinct descs, no per-roll
+  //   id suffix (Texas), no ` : House Vote #<n>` suffix (Georgia).
+  // - **Every committee desc ends in the literal word `Committee`** — including
+  //   the mis-typed `House Police & Fire Committee Committee` — so committee
+  //   votes are excluded by RULE here, not left to the tally heuristic alone.
+  // - **Each floor family is printed in TWO SPELLINGS, split by date and never
+  //   overlapping**: `Third Reading in House` (2025-04..2025-05) became
+  //   `House Third Reading` (2025-10..2026-05) when LegiScan changed its
+  //   formatting mid-dataset; same for Concurrence and Motion. Both spellings
+  //   are required. Verified they never describe the same physical vote: over
+  //   all 9,077 rolls there is no (chamber, bill, date, tally, member-list)
+  //   group carrying more than one desc, so keeping both cannot double-count.
+  // - Deliberately NOT excluded, so they stay surfaced for a human: the
+  //   `Motion in House/Senate` + `House/Senate Motion` family (213 rolls). It
+  //   is a garbage bucket — it holds genuine third-reading passages, motions to
+  //   reconsider, Note Act motions AND the amendatory-veto votes (Illinois's
+  //   distinctive override question), and the desc alone cannot separate them.
+  //   `Agreed Bill List` (2) and `House Amendments` (1) are surfaced for the
+  //   same reason; the latter is the only JRCA floor roll in the dataset
+  //   (HJRCA 28, House 74-38, never voted by the Senate, so no constitutional
+  //   amendment from this GA reached the ballot).
+  // - Resolution ADOPTION motions (`Senate Motion To Adopt`, `Motion To Adopt
+  //   in Senate`, 31 rolls) attach only to JR/R measures. Illinois joint
+  //   resolutions are never presented to the governor, so they can never clear
+  //   the campaign's became-law filter; excluded by rule to keep the surfaced
+  //   queue readable.
+  IL: {
+    jurisdiction: "IL",
+    sessionId: 2176,
+    chamberSizes: { house: 118, senate: 59 },
+    keptQuestions: [
+      { pattern: /^(?:third reading in (?:house|senate)|(?:house|senate) third reading)$/, questionClass: "passage" },
+      { pattern: /^(?:concurrence in (?:house|senate)|(?:house|senate) concurrence)$/, questionClass: "concurrence" },
+    ],
+    excludedQuestions: [/committee$/, /^(?:senate motion to adopt|motion to adopt in senate)$/],
+  },
   // Tennessee 114th General Assembly (2025 + 2026 regular sessions are one
   // LegiScan dataset). Vocabulary measured from the full dataset survey
   // 2026-08-27: 9,159 bills, 15,468 roll calls, 136 people (= 99 House +
@@ -244,6 +287,51 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       /vote recorded in journal/,
       /^laid out/,
       /^point of order/,
+    ],
+  },
+  // Florida 2025 Regular Session (sine die 2025-06-16, after the budget
+  // extension). Vocabulary measured from the full dataset survey
+  // 2026-08-26: 1,960 bills, 3,003 roll calls, 219 people (the chambers
+  // seat 120 + 40; the surplus are mid-session replacements and members
+  // who appear only on committee rolls).
+  //
+  // What the survey established:
+  // - Florida's floor vocabulary is the cleanest measured so far: EXACTLY
+  //   two desc shapes, `House: Third Reading RCS#<n>` (401 rolls) and
+  //   `Senate: Third Reading RCS#<n>` (382). Every other desc in the feed
+  //   is a literal committee name. The feed carries no concurrence,
+  //   conference-report or veto-override desc at all, so `passage` is the
+  //   only question class Florida can produce.
+  // - The House stamps a unique RCS number on every vote (401 distinct
+  //   descs for 401 votes); the Senate recycles RCS#1..61 across days.
+  //   Patterns tolerate the suffix, as in Texas.
+  // - Tallies separate cleanly: floor rolls total 119-120 of 120 (House)
+  //   and 38-39 of 40 (Senate), while every House committee tops out at
+  //   30 (25%). The one exception is `Senate Rules`, a 25-member committee
+  //   = 62% of the chamber, which clears the committee-tally cut and would
+  //   otherwise sit in the surfaced-null queue for all 154 of its rolls.
+  //   It is excluded by NAME because its tally cannot distinguish it.
+  // - Unlike Texas, every Florida roll carries a member list (0
+  //   summary-only tallies), and no roll_call_id is reused for a second
+  //   identical floor action (102 duplicate-identity groups exist, all
+  //   committee, all rejected before the queue).
+  // - Constitutional amendments ride JOINT RESOLUTIONS here (bill_type JR,
+  //   27 in session), already a kept type — Florida needs no second
+  //   passage pattern the way Texas did.
+  // - Florida also prints FAILED floor votes under the same desc (HB 1205
+  //   lost a Senate vote 10-26 and a House vote 27-82 before passing), so
+  //   selection must pick the decisive roll per chamber; classification
+  //   neither can nor tries to.
+  FL: {
+    jurisdiction: "FL",
+    sessionId: 2135,
+    chamberSizes: { house: 120, senate: 40 },
+    keptQuestions: [{ pattern: /^(?:house|senate): third reading(?: rcs#\d+)?$/, questionClass: "passage" }],
+    excludedQuestions: [
+      // The Senate Rules COMMITTEE (always exactly 25 of 40 senators), not
+      // a floor motion: too big for the committee-tally cut, so it has to
+      // be named. No House committee comes close to that cut.
+      /^senate rules$/,
     ],
   },
 };

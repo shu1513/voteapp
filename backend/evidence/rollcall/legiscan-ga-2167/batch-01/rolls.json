@@ -1,0 +1,259 @@
+{
+  "jurisdiction": "GA",
+  "sessionId": 2167,
+  "batch": "batch-01",
+  "rolls": [
+    {
+      "measure_id": "SB 68",
+      "chamber": "house",
+      "roll": 1523850,
+      "vote_date": "2025-03-20",
+      "yeas": 91,
+      "nays": 82,
+      "question": "passage",
+      "version_check": "House committee substitute; identical to the enrolled Act",
+      "label": {
+        "slug": "corporate_accountability",
+        "yea": "against"
+      }
+    },
+    {
+      "measure_id": "SB 68",
+      "chamber": "senate",
+      "roll": 1524305,
+      "vote_date": "2025-03-21",
+      "yeas": 34,
+      "nays": 21,
+      "question": "concurrence",
+      "version_check": "the Senate's own passage vote was on its engrossed version, so the concurrence in the House substitute is the vote on the enacted text",
+      "label": {
+        "slug": "corporate_accountability",
+        "yea": "against"
+      }
+    },
+    {
+      "measure_id": "SB 1",
+      "chamber": "house",
+      "roll": 1531583,
+      "vote_date": "2025-03-31",
+      "yeas": 100,
+      "nays": 64,
+      "question": "passage",
+      "version_check": "House committee substitute; identical to the enrolled Act",
+      "label": {
+        "slug": "civil_rights",
+        "yea": "against"
+      }
+    },
+    {
+      "measure_id": "SB 1",
+      "chamber": "senate",
+      "roll": 1531585,
+      "vote_date": "2025-03-31",
+      "yeas": 34,
+      "nays": 20,
+      "question": "concurrence",
+      "version_check": "the Senate's February passage vote was on its engrossed version; this concurrence is the vote on the enacted text",
+      "label": {
+        "slug": "civil_rights",
+        "yea": "against"
+      }
+    },
+    {
+      "measure_id": "SB 185",
+      "chamber": "senate",
+      "roll": 1504026,
+      "vote_date": "2025-03-03",
+      "yeas": 37,
+      "nays": 15,
+      "question": "passage",
+      "version_check": "engrossed text identical to the enrolled Act; the House vote (100-2) was not divided",
+      "label": {
+        "slug": "civil_rights",
+        "yea": "against"
+      }
+    },
+    {
+      "measure_id": "HB 111",
+      "chamber": "house",
+      "roll": 1508201,
+      "vote_date": "2025-03-06",
+      "yeas": 110,
+      "nays": 60,
+      "question": "passage",
+      "version_check": "introduced text identical to the enrolled Act",
+      "label": {
+        "slug": "personal_income_tax_reduction",
+        "yea": "for"
+      }
+    },
+    {
+      "measure_id": "HB 111",
+      "chamber": "senate",
+      "roll": 1523866,
+      "vote_date": "2025-03-20",
+      "yeas": 30,
+      "nays": 23,
+      "question": "passage",
+      "version_check": "introduced text identical to the enrolled Act",
+      "label": {
+        "slug": "personal_income_tax_reduction",
+        "yea": "for"
+      }
+    },
+    {
+      "measure_id": "SB 144",
+      "chamber": "senate",
+      "roll": 1505591,
+      "vote_date": "2025-03-04",
+      "yeas": 42,
+      "nays": 12,
+      "question": "passage",
+      "version_check": "the engrossed print of the text the Senate passed is identical to the enrolled Act, including the EPA-concealment exception",
+      "label": {
+        "slug": "corporate_accountability",
+        "yea": "against"
+      }
+    },
+    {
+      "measure_id": "SB 144",
+      "chamber": "house",
+      "roll": 1517793,
+      "vote_date": "2025-03-13",
+      "yeas": 101,
+      "nays": 58,
+      "question": "passage",
+      "version_check": "engrossed text identical to the enrolled Act",
+      "label": {
+        "slug": "corporate_accountability",
+        "yea": "against"
+      }
+    },
+    {
+      "measure_id": "SB 212",
+      "chamber": "senate",
+      "roll": 1508337,
+      "vote_date": "2025-03-06",
+      "yeas": 33,
+      "nays": 19,
+      "question": "passage",
+      "version_check": "the Senate passed its engrossed version; the House substitute restructured the attestation and added an exception for people attending public events",
+      "label": {
+        "slug": "data_privacy",
+        "yea": "for"
+      }
+    },
+    {
+      "measure_id": "SB 212",
+      "chamber": "house",
+      "roll": 1531712,
+      "vote_date": "2025-03-31",
+      "yeas": 98,
+      "nays": 66,
+      "question": "passage",
+      "version_check": "House committee substitute; identical to the enrolled Act",
+      "label": {
+        "slug": "data_privacy",
+        "yea": "for"
+      }
+    },
+    {
+      "measure_id": "HB 1247",
+      "chamber": "house",
+      "roll": 1676408,
+      "vote_date": "2026-04-02",
+      "yeas": 98,
+      "nays": 70,
+      "question": "concurrence",
+      "version_check": "the House's March passage vote was on an earlier committee substitute; this concurrence is the vote on the final text",
+      "label": {
+        "slug": "government_efficiency",
+        "yea": "for"
+      }
+    },
+    {
+      "measure_id": "HB 1247",
+      "chamber": "senate",
+      "roll": 1676409,
+      "vote_date": "2026-04-03",
+      "yeas": 34,
+      "nays": 18,
+      "question": "concurrence",
+      "version_check": "the Senate's own passage vote (48-2) was not divided; this concurrence is the vote on the final text",
+      "label": {
+        "slug": "government_efficiency",
+        "yea": "for"
+      }
+    },
+    {
+      "measure_id": "SB 443",
+      "chamber": "senate",
+      "roll": 1652181,
+      "vote_date": "2026-03-03",
+      "yeas": 35,
+      "nays": 17,
+      "question": "passage",
+      "version_check": "engrossed text identical to the enrolled Act",
+      "label": {
+        "slug": "public_safety_and_crime_control",
+        "yea": "for"
+      }
+    },
+    {
+      "measure_id": "SB 443",
+      "chamber": "house",
+      "roll": 1668391,
+      "vote_date": "2026-03-23",
+      "yeas": 96,
+      "nays": 69,
+      "question": "passage",
+      "version_check": "engrossed text identical to the enrolled Act",
+      "label": {
+        "slug": "public_safety_and_crime_control",
+        "yea": "for"
+      }
+    },
+    {
+      "measure_id": "SB 552",
+      "chamber": "house",
+      "roll": 1674325,
+      "vote_date": "2026-03-31",
+      "yeas": 95,
+      "nays": 68,
+      "question": "passage",
+      "version_check": "House committee substitute; identical to the enrolled Act apart from a dropped effective-date section. The Senate votes were not divided",
+      "label": {
+        "slug": "civil_rights",
+        "yea": "for"
+      }
+    },
+    {
+      "measure_id": "SB 472",
+      "chamber": "house",
+      "roll": 1670665,
+      "vote_date": "2026-03-25",
+      "yeas": 96,
+      "nays": 58,
+      "question": "passage",
+      "version_check": "House committee substitute; identical to the enrolled Act",
+      "label": {
+        "slug": "public_education_quality",
+        "yea": "for"
+      }
+    },
+    {
+      "measure_id": "SB 472",
+      "chamber": "senate",
+      "roll": 1672157,
+      "vote_date": "2026-03-27",
+      "yeas": 29,
+      "nays": 17,
+      "question": "concurrence",
+      "version_check": "the Senate's own passage vote (40-8) was not divided; this concurrence is the vote on the enacted text",
+      "label": {
+        "slug": "public_education_quality",
+        "yea": "for"
+      }
+    }
+  ]
+}
