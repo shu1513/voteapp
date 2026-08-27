@@ -369,6 +369,9 @@ describe("getLegiscanStateConfig", () => {
     // Oddities stay surfaced rather than guessed at, and committee descs are
     // cut by tally — Tennessee names the committee in the desc.
     expect(tn("FLOOR VOTE: REGULAR CALENDAR 2", 94)).toMatchObject({ isFloorVote: null, reason: "unknown_question" });
+    // The dataset's one prefix-only desc (`FLOOR VOTE:`, roll 1698192) is a
+    // real non-empty string: it parses, matches nothing, and surfaces.
+    expect(tn("FLOOR VOTE:", 33, "senate")).toMatchObject({ isFloorVote: null, reason: "unknown_question" });
     expect(tn("HOUSE JUDICIARY COMMITTEE: Rec. for pass; ref to Calendar & Rules Committee", 22).reason).toBe(
       "committee_tally:22/99"
     );
