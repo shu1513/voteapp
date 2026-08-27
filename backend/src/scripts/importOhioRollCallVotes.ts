@@ -319,7 +319,7 @@ async function main(): Promise<void> {
         const existingByCandidate = await loadExistingRecordsForDate(
           pool,
           voters.map((voter) => voter.candidateId),
-          vote.voteDate
+          vote.officialVoteDate ?? vote.voteDate
         );
         const work = voters.map((voter) => {
           const template = templates[voter.side];
@@ -357,7 +357,7 @@ async function main(): Promise<void> {
           continue;
         }
 
-        const notify = shouldNotifyForVoteDate(vote.voteDate, today);
+        const notify = shouldNotifyForVoteDate(vote.officialVoteDate ?? vote.voteDate, today);
         const client: PoolClient = await pool.connect();
         try {
           await client.query("BEGIN");

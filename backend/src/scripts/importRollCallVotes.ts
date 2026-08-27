@@ -143,7 +143,10 @@ export async function validateSideTemplates(
         records: sides.map((side) => ({
           description: sentences[side],
           source_url: vote.machineUrl,
-          event_date: vote.voteDate,
+          // The reviewed official-date override (migration 257) is the
+          // records' event_date; the raw source date stays on the row for
+          // the evidence checks.
+          event_date: vote.officialVoteDate ?? vote.voteDate,
         })),
       },
       timeoutMs
@@ -373,7 +376,7 @@ async function main(): Promise<void> {
         const existingByCandidate = await loadExistingRecordsForDate(
           pool,
           voters.voters.map((voter) => voter.candidateId),
-          vote.voteDate
+          vote.officialVoteDate ?? vote.voteDate
         );
         const work = voters.voters.map((voter) => {
           const template = templates[voter.side];
@@ -403,7 +406,7 @@ async function main(): Promise<void> {
           continue;
         }
 
-        const notify = shouldNotifyForVoteDate(vote.voteDate, today);
+        const notify = shouldNotifyForVoteDate(vote.officialVoteDate ?? vote.voteDate, today);
         const client: PoolClient = await pool.connect();
         try {
           await client.query("BEGIN");

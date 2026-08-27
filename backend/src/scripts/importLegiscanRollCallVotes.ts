@@ -94,6 +94,7 @@ export type LegiscanRollCallImportReportRow = LegiscanRollCallEvidenceFile & {
   reviewStatus: LegislativeVoteReviewStatus | null;
   bill: string | null;
   voteDate: string | null;
+  officialVoteDate: string | null;
   measureId: string | null;
   question: string | null;
   originRunId: string | null;
@@ -249,6 +250,7 @@ async function main(): Promise<void> {
         reviewStatus: null,
         bill: null,
         voteDate: null,
+        officialVoteDate: null,
         measureId: null,
         question: null,
         originRunId: null,
@@ -276,6 +278,7 @@ async function main(): Promise<void> {
         row.legislativeVoteId = vote.id;
         row.reviewStatus = vote.reviewStatus;
         row.voteDate = vote.voteDate;
+        row.officialVoteDate = vote.officialVoteDate;
         row.measureId = vote.measureId;
         row.question = vote.exactQuestion;
         if (vote.reviewStatus !== "approved") {
@@ -332,7 +335,7 @@ async function main(): Promise<void> {
         const existingByCandidate = await loadExistingRecordsForDate(
           pool,
           voters.map((voter) => voter.candidateId),
-          vote.voteDate
+          vote.officialVoteDate ?? vote.voteDate
         );
         const work = voters.map((voter) => {
           const template = templates[voter.side];
@@ -370,7 +373,7 @@ async function main(): Promise<void> {
           continue;
         }
 
-        const notify = shouldNotifyForVoteDate(vote.voteDate, today);
+        const notify = shouldNotifyForVoteDate(vote.officialVoteDate ?? vote.voteDate, today);
         const client: PoolClient = await pool.connect();
         try {
           await client.query("BEGIN");

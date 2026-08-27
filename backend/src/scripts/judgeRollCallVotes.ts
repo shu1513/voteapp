@@ -30,7 +30,11 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
 // judgments.json (a federal entry names congress + session; a state entry
 // names jurisdiction + the source's session key instead, and its roll is
 // the stored surrogate roll number — for Ohio, the vote's occurred
-// timestamp in epoch seconds, printed by the fetch report):
+// timestamp in epoch seconds, printed by the fetch report). An entry may
+// carry an optional official_vote_date when the source stamped the
+// legislative day instead of the calendar day (an overnight sine-die vote):
+// vote_date stays what the source file says, and the records fan out on the
+// official date. Cite the official record that dates it in the run's notes:
 //   {
 //     "judgments": [
 //       {
@@ -136,6 +140,13 @@ export function parseJudgmentsFile(raw: unknown, allowedSlugs: ReadonlySet<strin
     if (typeof voteDate !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(voteDate)) {
       fail(index, "vote_date must be an ISO date (YYYY-MM-DD)");
     }
+    const officialVoteDate = entry.official_vote_date ?? null;
+    if (officialVoteDate !== null && (typeof officialVoteDate !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(officialVoteDate))) {
+      fail(index, "official_vote_date must be an ISO date (YYYY-MM-DD), or omitted");
+    }
+    if (officialVoteDate === voteDate) {
+      fail(index, "official_vote_date equals vote_date; omit it unless the source stamped a different day");
+    }
     const reviewStatus = entry.review_status;
     if (typeof reviewStatus !== "string" || !(REVIEW_STATUSES as readonly string[]).includes(reviewStatus)) {
       fail(index, `review_status must be one of ${REVIEW_STATUSES.join(", ")}`);
@@ -163,6 +174,7 @@ export function parseJudgmentsFile(raw: unknown, allowedSlugs: ReadonlySet<strin
       rollNumber: roll,
       measureId: measureId === null ? null : measureId.trim(),
       voteDate,
+      officialVoteDate,
       yeaDescription,
       nayDescription,
       labels,

@@ -7,8 +7,9 @@ type Queryable = Pick<Pool, "query">;
 
 // The columns the fetcher owns on public.legislative_votes (migration 251).
 // Judgment columns (yea_description, nay_description, labels_json,
-// review_status, reviewed_at) are written only by applyLegislativeVoteJudgment
-// (rollcall:judge) and read by the importer (loadLegislativeVote).
+// official_vote_date, review_status, reviewed_at) are written only by
+// applyLegislativeVoteJudgment (rollcall:judge) and read by the importer
+// (loadLegislativeVote).
 export type LegislativeVoteSourceRow = {
   jurisdiction: string;
   chamber: LegislativeVoteChamber;
@@ -193,6 +194,7 @@ export async function upsertLegislativeVoteSource(
             yea_description = NULL,
             nay_description = NULL,
             labels_json = NULL,
+            official_vote_date = NULL,
             review_status = 'pending',
             reviewed_at = NULL`
     : "";
@@ -242,6 +244,10 @@ export async function upsertLegislativeVoteSource(
 export type LegislativeVoteForImport = {
   id: string;
   voteDate: string;
+  // The reviewed override for a source that stamped the legislative day
+  // (migration 257). The fan-out's event_date is officialVoteDate ??
+  // voteDate; every evidence-vs-row check stays on voteDate.
+  officialVoteDate: string | null;
   measureId: string | null;
   exactQuestion: string;
   isFloorVote: boolean | null;
@@ -262,6 +268,7 @@ export async function loadLegislativeVote(
   const result = await db.query<{
     id: string;
     vote_date: string;
+    official_vote_date: string | null;
     measure_id: string | null;
     exact_question: string;
     is_floor_vote: boolean | null;
@@ -276,6 +283,7 @@ export async function loadLegislativeVote(
   }>(
     `SELECT id,
             vote_date::text AS vote_date,
+            official_vote_date::text AS official_vote_date,
             measure_id,
             exact_question,
             is_floor_vote,
@@ -301,6 +309,7 @@ export async function loadLegislativeVote(
   return {
     id: row.id,
     voteDate: row.vote_date,
+    officialVoteDate: row.official_vote_date,
     measureId: row.measure_id,
     exactQuestion: row.exact_question,
     isFloorVote: row.is_floor_vote,
@@ -326,11 +335,12 @@ export async function assertLegislativeVoteStillApproved(db: Queryable, vote: Le
   const result = await db.query<{
     review_status: LegislativeVoteReviewStatus;
     source_sha256: string;
+    official_vote_date: string | null;
     yea_description: string | null;
     nay_description: string | null;
     labels_json: unknown;
   }>(
-    `SELECT review_status, source_sha256, yea_description, nay_description, labels_json
+    `SELECT review_status, source_sha256, official_vote_date::text AS official_vote_date, yea_description, nay_description, labels_json
        FROM legislative_votes
       WHERE id = $1
       FOR SHARE`,
@@ -345,6 +355,7 @@ export async function assertLegislativeVoteStillApproved(db: Queryable, vote: Le
   }
   if (
     row.source_sha256 !== vote.sourceSha256 ||
+    row.official_vote_date !== vote.officialVoteDate ||
     row.yea_description !== vote.yeaDescription ||
     row.nay_description !== vote.nayDescription ||
     JSON.stringify(row.labels_json) !== JSON.stringify(vote.labelsJson)
@@ -363,6 +374,10 @@ export type LegislativeVoteJudgment = {
   // measureId compares as a parsed measure (`H R 1` and `H.R. 1` agree).
   measureId: string | null;
   voteDate: string;
+  // The official record's date, when the source stamped the legislative day
+  // instead (an overnight sine-die vote). null = no override; the whole
+  // judgment is written as given, so re-applying with null clears one.
+  officialVoteDate: string | null;
   yeaDescription: string;
   nayDescription: string;
   // Already shape-checked (see parseRollCallLabels); stored as given.
@@ -422,12 +437,13 @@ export async function applyLegislativeVoteJudgment(
     is_floor_vote: boolean | null;
     measure_id: string | null;
     vote_date: string;
+    official_vote_date: string | null;
     review_status: LegislativeVoteReviewStatus;
     yea_description: string | null;
     nay_description: string | null;
     labels_json: unknown;
   }>(
-    `SELECT id, is_floor_vote, measure_id, vote_date::text AS vote_date, review_status, yea_description, nay_description, labels_json
+    `SELECT id, is_floor_vote, measure_id, vote_date::text AS vote_date, official_vote_date::text AS official_vote_date, review_status, yea_description, nay_description, labels_json
        FROM legislative_votes
       WHERE jurisdiction = $1
         AND chamber = $2
@@ -470,6 +486,7 @@ export async function applyLegislativeVoteJudgment(
   const sameJudgment =
     row.yea_description === judgment.yeaDescription &&
     row.nay_description === judgment.nayDescription &&
+    row.official_vote_date === judgment.officialVoteDate &&
     canonicalLabels(row.labels_json) === canonicalLabels(judgment.labels);
   if (sameJudgment && row.review_status === judgment.reviewStatus) {
     return "unchanged";
@@ -488,10 +505,11 @@ export async function applyLegislativeVoteJudgment(
         SET yea_description = $2,
             nay_description = $3,
             labels_json = $4::jsonb,
-            review_status = $5,
-            reviewed_at = CASE WHEN $5 = 'approved' THEN now() ELSE NULL END
+            official_vote_date = $5::date,
+            review_status = $6,
+            reviewed_at = CASE WHEN $6 = 'approved' THEN now() ELSE NULL END
       WHERE id = $1`,
-    [row.id, judgment.yeaDescription, judgment.nayDescription, labelsJson, judgment.reviewStatus]
+    [row.id, judgment.yeaDescription, judgment.nayDescription, labelsJson, judgment.officialVoteDate, judgment.reviewStatus]
   );
   return "updated";
 }
