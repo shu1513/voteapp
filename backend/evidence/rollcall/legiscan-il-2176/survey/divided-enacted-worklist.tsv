@@ -1,428 +1,428 @@
 bill	chamber	roll	date	yeas	nays	desc	status
-SB1950	H	1581480	2025-05-29	63	42	Third Reading in House	pending
-SB1950	S	1719303	2025-10-30	30	27	Senate Concurrence	pending
-HB2755	S	1582781	2025-05-31	31	25	Third Reading in Senate	pending
-HB2755	H	1582782	2025-05-31	71	43	Concurrence in House	pending
+SB1950	H	1581480	2025-05-29	63	42	Third Reading in House	screened:no-defensible-stance — End-of-Life Options for Terminally Ill Patients Act — no area carries an honest direction for medical aid in dying (recorded in batch-01)
+SB1950	S	1719303	2025-10-30	30	27	Senate Concurrence	screened:no-defensible-stance — End-of-Life Options for Terminally Ill Patients Act — no area carries an honest direction for medical aid in dying (recorded in batch-01)
+HB2755	S	1582781	2025-05-31	31	25	Third Reading in Senate	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB2755	H	1582782	2025-05-31	71	43	Concurrence in House	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
 SB0008	S	1545154	2025-04-10	33	19	Third Reading in Senate	judged:batch-01
 SB0008	H	1580413	2025-05-28	69	40	Third Reading in House	judged:batch-01
-HB3247	H	1580454	2025-05-28	70	40	Third Reading in House	pending
-HB3247	S	1582610	2025-05-31	32	20	Third Reading in Senate	pending
-SB0106	S	1537171	2025-04-04	32	19	Third Reading in Senate	pending
-SB0106	H	1574217	2025-05-20	72	40	Third Reading in House	pending
-HB3772	H	1544731	2025-04-10	62	46	Third Reading in House	pending
-HB3772	S	1582716	2025-05-31	30	21	Third Reading in Senate	pending
-HB3772	H	1720677	2026-05-30	72	40	House Concurrence	pending
-HB1075	S	1582889	2025-05-31	32	23	Third Reading in Senate	pending
-HB1075	H	1582890	2025-05-31	74	41	Concurrence in House	pending
-SB0108	S	1544368	2025-04-10	35	19	Third Reading in Senate	pending
-SB0108	H	1574219	2025-05-20	70	40	Third Reading in House	pending
+HB3247	H	1580454	2025-05-28	70	40	Third Reading in House	judged:batch-02
+HB3247	S	1582610	2025-05-31	32	20	Third Reading in Senate	judged:batch-02
+SB0106	S	1537171	2025-04-04	32	19	Third Reading in Senate	screened:no-defensible-stance — authorises ICJIA to enter service agreements
+SB0106	H	1574217	2025-05-20	72	40	Third Reading in House	screened:no-defensible-stance — authorises ICJIA to enter service agreements
+HB3772	H	1544731	2025-04-10	62	46	Third Reading in House	screened:version-split — the roll that adopted the enacted text (house concurrence 72-40, 2026-05-30) is outside the divided set, and Senate Cmte Amendment 2 added a school-board liability shield cutting against the bill
+HB3772	S	1582716	2025-05-31	30	21	Third Reading in Senate	screened:version-split — the roll that adopted the enacted text (house concurrence 72-40, 2026-05-30) is outside the divided set, and Senate Cmte Amendment 2 added a school-board liability shield cutting against the bill
+HB3772	H	1720677	2026-05-30	72	40	House Concurrence	screened:version-split — the roll that adopted the enacted text (house concurrence 72-40, 2026-05-30) is outside the divided set, and Senate Cmte Amendment 2 added a school-board liability shield cutting against the bill
+HB1075	S	1582889	2025-05-31	32	23	Third Reading in Senate	screened:appropriations-or-bonds — no honest research area for a fund-the-government or bond vote
+HB1075	H	1582890	2025-05-31	74	41	Concurrence in House	screened:appropriations-or-bonds — no honest research area for a fund-the-government or bond vote
+SB0108	S	1544368	2025-04-10	35	19	Third Reading in Senate	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+SB0108	H	1574219	2025-05-20	70	40	Third Reading in House	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
 SB2339	S	1544480	2025-04-10	35	21	Third Reading in Senate	judged:batch-01
 SB2339	H	1582511	2025-05-31	75	42	Third Reading in House	judged:batch-01
-SB2339	S	1717513	2025-10-30	37	20	Senate Concurrence	pending
-HB0460	H	1574246	2025-05-20	70	40	Third Reading in House	pending
-HB0460	S	1582161	2025-05-30	34	18	Third Reading in Senate	pending
-SB0025	H	1722387	2025-10-29	70	37	House Third Reading	pending
-SB0025	S	1722388	2025-10-30	37	22	Senate Concurrence	pending
-SB3019	S	1718412	2026-05-31	36	19	Senate Concurrence	pending
-SB3019	H	1718414	2026-05-31	73	41	House Third Reading	pending
-HB0022	S	1581393	2025-05-29	33	21	Third Reading in Senate	pending
-HB0022	H	1582363	2025-05-31	77	40	Concurrence in House	pending
-HB5290	H	1717102	2026-04-09	70	36	House Third Reading	pending
-HB5290	S	1717103	2026-05-14	36	19	Senate Third Reading	pending
-SB3333	S	1719621	2026-04-15	35	18	Senate Third Reading	pending
-SB3333	H	1719622	2026-05-29	70	37	House Third Reading	pending
-SB1467	S	1541611	2025-04-09	37	19	Third Reading in Senate	pending
-SB1467	H	1575316	2025-05-21	72	38	Third Reading in House	pending
-HB2436	H	1544809	2025-04-10	68	41	Third Reading in House	pending
-HB2436	S	1582066	2025-05-30	37	19	Third Reading in Senate	pending
-SB0328	H	1582364	2025-05-31	77	40	Third Reading in House	pending
-SB0328	S	1582833	2025-05-31	37	19	Concurrence in Senate	pending
-HB4304	H	1716924	2026-04-14	72	37	House Third Reading	pending
-HB4304	S	1716925	2026-05-31	37	19	Senate Third Reading	pending
+SB2339	S	1717513	2025-10-30	37	20	Senate Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB0460	H	1574246	2025-05-20	70	40	Third Reading in House	judged:batch-02
+HB0460	S	1582161	2025-05-30	34	18	Third Reading in Senate	judged:batch-02
+SB0025	H	1722387	2025-10-29	70	37	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB0025	S	1722388	2025-10-30	37	22	Senate Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB3019	S	1718412	2026-05-31	36	19	Senate Concurrence	screened:no-defensible-stance — Targeted Advertising Services Tax — a revenue measure with no area direction
+SB3019	H	1718414	2026-05-31	73	41	House Third Reading	screened:no-defensible-stance — Targeted Advertising Services Tax — a revenue measure with no area direction
+HB0022	S	1581393	2025-05-29	33	21	Third Reading in Senate	screened:local-or-narrow — one village, district or fee; not a statewide position
+HB0022	H	1582363	2025-05-31	77	40	Concurrence in House	screened:local-or-narrow — one village, district or fee; not a statewide position
+HB5290	H	1717102	2026-04-09	70	36	House Third Reading	screened:no-defensible-stance — Sales Finance Agency licensing mechanics
+HB5290	S	1717103	2026-05-14	36	19	Senate Third Reading	screened:no-defensible-stance — Sales Finance Agency licensing mechanics
+SB3333	S	1719621	2026-04-15	35	18	Senate Third Reading	screened:contested-direction — sentence credit for pretrial custody reads as both rehabilitation and reduced time served
+SB3333	H	1719622	2026-05-29	70	37	House Third Reading	screened:contested-direction — sentence credit for pretrial custody reads as both rehabilitation and reduced time served
+SB1467	S	1541611	2025-04-09	37	19	Third Reading in Senate	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+SB1467	H	1575316	2025-05-21	72	38	Third Reading in House	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB2436	H	1544809	2025-04-10	68	41	Third Reading in House	judged:batch-02
+HB2436	S	1582066	2025-05-30	37	19	Third Reading in Senate	judged:batch-02
+SB0328	H	1582364	2025-05-31	77	40	Third Reading in House	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+SB0328	S	1582833	2025-05-31	37	19	Concurrence in Senate	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB4304	H	1716924	2026-04-14	72	37	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4304	S	1716925	2026-05-31	37	19	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
 SB3341	S	1717532	2026-05-20	37	19	Senate Third Reading	judged:batch-01
 SB3341	H	1717533	2026-05-27	73	38	House Third Reading	judged:batch-01
-HB3248	H	1542150	2025-04-09	71	42	Third Reading in House	pending
-HB3248	S	1576075	2025-05-22	37	19	Third Reading in Senate	pending
-HB3248	H	1582292	2025-05-30	76	39	Concurrence in House	pending
-SB2437	S	1582772	2025-05-31	36	19	Concurrence in Senate	pending
-SB2437	H	1582774	2025-05-31	76	39	Third Reading in House	pending
-HB3125	H	1540551	2025-04-08	75	38	Third Reading in House	pending
-HB3125	S	1576580	2025-05-22	37	20	Third Reading in Senate	pending
-SB2164	S	1541985	2025-04-09	37	19	Third Reading in Senate	pending
-SB2164	H	1576215	2025-05-22	75	38	Third Reading in House	pending
-HB2568	H	1545195	2025-04-10	75	38	Third Reading in House	pending
-HB2568	S	1581586	2025-05-29	36	19	Third Reading in Senate	pending
-HB2568	H	1582443	2025-05-31	77	40	Concurrence in House	pending
-SB3255	S	1721085	2026-05-31	37	21	Senate Concurrence	pending
-SB3255	H	1721086	2026-05-31	77	39	House Third Reading	pending
-HB3637	H	1538632	2025-04-07	67	39	Third Reading in House	pending
-HB3637	S	1576080	2025-05-22	38	19	Third Reading in Senate	pending
-HB3637	H	1582263	2025-05-30	75	39	Concurrence in House	pending
-HB3709	H	1539767	2025-04-08	74	40	Third Reading in House	pending
-HB3709	S	1582128	2025-05-30	37	19	Third Reading in Senate	pending
-HB3709	H	1582505	2025-05-31	78	39	Concurrence in House	pending
-HB2425	H	1543722	2025-04-10	76	38	Third Reading in House	pending
-HB2425	S	1581340	2025-05-29	36	18	Third Reading in Senate	pending
-HB2419	H	1544981	2025-04-10	76	38	Third Reading in House	pending
-HB2419	S	1576506	2025-05-22	37	19	Third Reading in Senate	pending
-HB2419	H	1582280	2025-05-30	77	39	Concurrence in House	pending
-SB0019	S	1545001	2025-04-10	32	22	Third Reading in Senate	pending
-SB0019	H	1574260	2025-05-20	74	37	Third Reading in House	pending
-SB0248	S	1562104	2025-04-30	34	17	Third Reading in Senate	pending
-SB0248	H	1719968	2026-05-31	63	42	House Third Reading	pending
-HB5384	H	1716837	2026-04-09	70	36	House Third Reading	pending
-HB5384	S	1716838	2026-05-14	38	19	Senate Third Reading	pending
-HB5492	H	1718096	2026-04-15	74	37	House Third Reading	pending
-HB5492	S	1718097	2026-05-30	38	19	Senate Third Reading	pending
-HB5492	H	1718098	2026-05-31	75	39	House Concurrence	pending
-HB5093	H	1718440	2026-04-09	71	37	House Third Reading	pending
-HB5093	S	1718441	2026-05-30	38	19	Senate Third Reading	pending
-HB5093	H	1718442	2026-05-31	70	40	House Concurrence	pending
+HB3248	H	1542150	2025-04-09	71	42	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3248	S	1576075	2025-05-22	37	19	Third Reading in Senate	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3248	H	1582292	2025-05-30	76	39	Concurrence in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2437	S	1582772	2025-05-31	36	19	Concurrence in Senate	pending:date-skew — ILGA action trail dates this 2025-06-01; awaiting the official_vote_date override (CODE-FINDINGS 1)
+SB2437	H	1582774	2025-05-31	76	39	Third Reading in House	judged:batch-02
+HB3125	H	1540551	2025-04-08	75	38	Third Reading in House	screened:no-defensible-stance — driving-instructor licence prerequisites
+HB3125	S	1576580	2025-05-22	37	20	Third Reading in Senate	screened:no-defensible-stance — driving-instructor licence prerequisites
+SB2164	S	1541985	2025-04-09	37	19	Third Reading in Senate	judged:batch-02
+SB2164	H	1576215	2025-05-22	75	38	Third Reading in House	judged:batch-02
+HB2568	H	1545195	2025-04-10	75	38	Third Reading in House	screened:superseded-roll — another roll on this measure was judged in batch-02 under the one-roll-per-chamber rule
+HB2568	S	1581586	2025-05-29	36	19	Third Reading in Senate	judged:batch-02
+HB2568	H	1582443	2025-05-31	77	40	Concurrence in House	screened:superseded-roll — another roll on this measure was judged in batch-02 under the one-roll-per-chamber rule
+SB3255	S	1721085	2026-05-31	37	21	Senate Concurrence	screened:appropriations-or-bonds — no honest research area for a fund-the-government or bond vote
+SB3255	H	1721086	2026-05-31	77	39	House Third Reading	screened:appropriations-or-bonds — no honest research area for a fund-the-government or bond vote
+HB3637	H	1538632	2025-04-07	67	39	Third Reading in House	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB3637	S	1576080	2025-05-22	38	19	Third Reading in Senate	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB3637	H	1582263	2025-05-30	75	39	Concurrence in House	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB3709	H	1539767	2025-04-08	74	40	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3709	S	1582128	2025-05-30	37	19	Third Reading in Senate	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3709	H	1582505	2025-05-31	78	39	Concurrence in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB2425	H	1543722	2025-04-10	76	38	Third Reading in House	judged:batch-02
+HB2425	S	1581340	2025-05-29	36	18	Third Reading in Senate	judged:batch-02
+HB2419	H	1544981	2025-04-10	76	38	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB2419	S	1576506	2025-05-22	37	19	Third Reading in Senate	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB2419	H	1582280	2025-05-30	77	39	Concurrence in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB0019	S	1545001	2025-04-10	32	22	Third Reading in Senate	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB0019	H	1574260	2025-05-20	74	37	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB0248	S	1562104	2025-04-30	34	17	Third Reading in Senate	screened:contested-direction — post-conviction relief for under-21 offenders cuts both toward fairness and against finality for victims
+SB0248	H	1719968	2026-05-31	63	42	House Third Reading	screened:contested-direction — post-conviction relief for under-21 offenders cuts both toward fairness and against finality for victims
+HB5384	H	1716837	2026-04-09	70	36	House Third Reading	screened:no-defensible-stance — removes an annual currency-exchange examination mandate
+HB5384	S	1716838	2026-05-14	38	19	Senate Third Reading	screened:no-defensible-stance — removes an annual currency-exchange examination mandate
+HB5492	H	1718096	2026-04-15	74	37	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB5492	S	1718097	2026-05-30	38	19	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB5492	H	1718098	2026-05-31	75	39	House Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB5093	H	1718440	2026-04-09	71	37	House Third Reading	judged:batch-02
+HB5093	S	1718441	2026-05-30	38	19	Senate Third Reading	judged:batch-02
+HB5093	H	1718442	2026-05-31	70	40	House Concurrence	screened:superseded-roll — another roll on this measure was judged in batch-02 under the one-roll-per-chamber rule
 HB5095	H	1719534	2026-04-14	72	37	House Third Reading	judged:batch-01
 HB5095	S	1719535	2026-05-21	38	19	Senate Third Reading	judged:batch-01
-HB3374	H	1546353	2025-04-11	74	39	Third Reading in House	pending
-HB3374	S	1582817	2025-05-31	37	19	Third Reading in Senate	pending
-HB3374	H	1582818	2025-05-31	77	38	Concurrence in House	pending
-HB3374	H	1721364	2025-06-01	77	38	House Concurrence	pending
-HB3487	H	1543614	2025-04-10	75	37	Third Reading in House	pending
-HB3487	S	1576006	2025-05-22	37	19	Third Reading in Senate	pending
-HB4844	H	1716767	2026-04-16	69	34	House Third Reading	pending
-HB4844	S	1716768	2026-05-20	35	20	Senate Third Reading	pending
-HB4533	H	1717543	2026-04-14	73	38	House Third Reading	pending
-HB4533	S	1717544	2026-05-20	39	19	Senate Third Reading	pending
-HB5487	H	1719350	2026-04-09	70	36	House Third Reading	pending
-HB5487	S	1719351	2026-05-30	39	19	Senate Third Reading	pending
-HB5487	H	1719352	2026-05-31	75	39	House Concurrence	pending
-HB4834	H	1721015	2026-04-08	68	37	House Third Reading	pending
-HB4834	S	1721016	2026-05-20	39	19	Senate Third Reading	pending
-HB2949	H	1720747	2026-05-31	76	39	House Concurrence	pending
-HB2949	S	1720749	2026-05-31	37	18	Senate Third Reading	pending
-HB3492	S	1721809	2025-10-29	37	18	Senate Third Reading	pending
-HB3492	H	1721810	2025-10-30	66	39	House Concurrence	pending
-HB5020	H	1717225	2026-04-17	70	34	House Third Reading	pending
-HB5020	S	1717226	2026-05-30	37	18	Senate Third Reading	pending
-HB5020	H	1717227	2026-05-31	75	39	House Concurrence	pending
-HB4420	H	1723398	2026-04-16	75	36	House Third Reading	pending
-HB4420	S	1723399	2026-05-20	39	19	Senate Third Reading	pending
-HB4966	H	1719211	2026-04-16	71	34	House Third Reading	pending
-HB4966	S	1719212	2026-05-29	35	19	Senate Third Reading	pending
-HB4966	H	1719213	2026-05-31	75	40	House Concurrence	pending
-HB3751	H	1541747	2025-04-09	76	39	Third Reading in House	pending
-HB3751	S	1719830	2026-05-28	40	19	Senate Third Reading	pending
-HB4714	H	1721520	2026-04-14	73	37	House Third Reading	pending
-HB4714	S	1721521	2026-05-19	40	19	Senate Third Reading	pending
-SB0405	S	1562456	2025-04-30	38	18	Third Reading in Senate	pending
-SB0405	H	1576636	2025-05-22	74	39	Third Reading in House	pending
-SB0405	S	1582743	2025-05-31	35	19	Concurrence in Senate	pending
-SB2487	H	1576864	2025-05-23	71	35	Third Reading in House	pending
-SB2487	S	1582728	2025-05-31	38	18	Concurrence in Senate	pending
-HB0850	H	1580241	2025-05-28	74	40	Third Reading in House	pending
-HB0850	S	1582412	2025-05-31	36	17	Third Reading in Senate	pending
-SB3487	S	1723040	2026-04-16	37	19	Senate Third Reading	pending
-SB3487	H	1723041	2026-05-21	72	34	House Third Reading	pending
-HB3363	H	1542294	2025-04-09	72	41	Third Reading in House	pending
-HB3363	S	1582633	2025-05-31	36	19	Third Reading in Senate	pending
-HB3363	H	1582854	2025-05-31	77	36	Concurrence in House	pending
-HB5390	H	1718529	2026-04-16	73	34	House Third Reading	pending
-HB5390	S	1718530	2026-05-20	39	19	Senate Third Reading	pending
+HB3374	H	1546353	2025-04-11	74	39	Third Reading in House	screened:appropriations-or-bonds — no honest research area for a fund-the-government or bond vote
+HB3374	S	1582817	2025-05-31	37	19	Third Reading in Senate	screened:appropriations-or-bonds — no honest research area for a fund-the-government or bond vote
+HB3374	H	1582818	2025-05-31	77	38	Concurrence in House	screened:appropriations-or-bonds — no honest research area for a fund-the-government or bond vote
+HB3374	H	1721364	2025-06-01	77	38	House Concurrence	screened:appropriations-or-bonds — no honest research area for a fund-the-government or bond vote
+HB3487	H	1543614	2025-04-10	75	37	Third Reading in House	screened:no-defensible-stance — professional-licensure data collection
+HB3487	S	1576006	2025-05-22	37	19	Third Reading in Senate	screened:no-defensible-stance — professional-licensure data collection
+HB4844	H	1716767	2026-04-16	69	34	House Third Reading	judged:batch-02
+HB4844	S	1716768	2026-05-20	35	20	Senate Third Reading	judged:batch-02
+HB4533	H	1717543	2026-04-14	73	38	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4533	S	1717544	2026-05-20	39	19	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB5487	H	1719350	2026-04-09	70	36	House Third Reading	screened:no-defensible-stance — law firm ownership eligibility
+HB5487	S	1719351	2026-05-30	39	19	Senate Third Reading	screened:no-defensible-stance — law firm ownership eligibility
+HB5487	H	1719352	2026-05-31	75	39	House Concurrence	screened:no-defensible-stance — law firm ownership eligibility
+HB4834	H	1721015	2026-04-08	68	37	House Third Reading	judged:batch-02
+HB4834	S	1721016	2026-05-20	39	19	Senate Third Reading	judged:batch-02
+HB2949	H	1720747	2026-05-31	76	39	House Concurrence	screened:appropriations-or-bonds — no honest research area for a fund-the-government or bond vote
+HB2949	S	1720749	2026-05-31	37	18	Senate Third Reading	screened:appropriations-or-bonds — no honest research area for a fund-the-government or bond vote
+HB3492	S	1721809	2025-10-29	37	18	Senate Third Reading	screened:contested-direction — juvenile justice study paired with sex-offender registration procedure changes
+HB3492	H	1721810	2025-10-30	66	39	House Concurrence	screened:contested-direction — juvenile justice study paired with sex-offender registration procedure changes
+HB5020	H	1717225	2026-04-17	70	34	House Third Reading	screened:contested-direction — extended-jurisdiction juvenile prosecution: more process, but also adult-sentence exposure
+HB5020	S	1717226	2026-05-30	37	18	Senate Third Reading	screened:contested-direction — extended-jurisdiction juvenile prosecution: more process, but also adult-sentence exposure
+HB5020	H	1717227	2026-05-31	75	39	House Concurrence	screened:contested-direction — extended-jurisdiction juvenile prosecution: more process, but also adult-sentence exposure
+HB4420	H	1723398	2026-04-16	75	36	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4420	S	1723399	2026-05-20	39	19	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4966	H	1719211	2026-04-16	71	34	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4966	S	1719212	2026-05-29	35	19	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4966	H	1719213	2026-05-31	75	40	House Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3751	H	1541747	2025-04-09	76	39	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3751	S	1719830	2026-05-28	40	19	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4714	H	1721520	2026-04-14	73	37	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4714	S	1721521	2026-05-19	40	19	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB0405	S	1562456	2025-04-30	38	18	Third Reading in Senate	judged:batch-02
+SB0405	H	1576636	2025-05-22	74	39	Third Reading in House	judged:batch-02
+SB0405	S	1582743	2025-05-31	35	19	Concurrence in Senate	screened:superseded-roll — another roll on this measure was judged in batch-02 under the one-roll-per-chamber rule
+SB2487	H	1576864	2025-05-23	71	35	Third Reading in House	screened:contested-direction — makes an IDHR fact-finding conference discretionary rather than mandatory — efficiency or weaker enforcement
+SB2487	S	1582728	2025-05-31	38	18	Concurrence in Senate	screened:contested-direction — makes an IDHR fact-finding conference discretionary rather than mandatory — efficiency or weaker enforcement
+HB0850	H	1580241	2025-05-28	74	40	Third Reading in House	screened:no-defensible-stance — ISP data analysis duty
+HB0850	S	1582412	2025-05-31	36	17	Third Reading in Senate	screened:no-defensible-stance — ISP data analysis duty
+SB3487	S	1723040	2026-04-16	37	19	Senate Third Reading	judged:batch-02
+SB3487	H	1723041	2026-05-21	72	34	House Third Reading	judged:batch-02
+HB3363	H	1542294	2025-04-09	72	41	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3363	S	1582633	2025-05-31	36	19	Third Reading in Senate	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3363	H	1582854	2025-05-31	77	36	Concurrence in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB5390	H	1718529	2026-04-16	73	34	House Third Reading	judged:batch-02
+HB5390	S	1718530	2026-05-20	39	19	Senate Third Reading	judged:batch-02
 HB5295	H	1721610	2026-04-16	73	34	House Third Reading	judged:batch-01
 HB5295	S	1721611	2026-05-30	38	19	Senate Third Reading	judged:batch-01
-HB5295	H	1721612	2026-05-31	73	39	House Concurrence	pending
-HB1083	H	1586216	2025-04-10	74	38	Third Reading in House	pending
-HB1083	S	1586217	2025-05-21	39	18	Third Reading in Senate	pending
-HB4639	H	1718656	2026-04-16	65	39	House Third Reading	pending
-HB4639	S	1718657	2026-05-20	39	18	Senate Third Reading	pending
-HB1863	S	1720392	2025-10-29	39	18	Senate Third Reading	pending
-HB1863	H	1720393	2025-10-30	76	35	House Concurrence	pending
-SB1519	S	1542233	2025-04-09	37	17	Third Reading in Senate	pending
-SB1519	H	1580328	2025-05-28	69	44	Third Reading in House	pending
-SB0343	S	1723995	2026-05-21	34	21	Senate Third Reading	pending
-SB0343	H	1723997	2026-05-31	75	34	House Third Reading	pending
-HB0767	H	1717418	2025-10-28	74	38	House Third Reading	pending
-HB0767	S	1717419	2025-10-30	40	18	Senate Third Reading	pending
-HB2335	H	1541579	2025-04-09	75	40	Third Reading in House	pending
-HB2335	S	1718546	2026-05-29	36	16	Senate Third Reading	pending
-HB2335	H	1718547	2026-05-31	74	39	House Concurrence	pending
-SB2319	S	1576405	2025-05-22	39	19	Third Reading in Senate	pending
-SB2319	H	1582429	2025-05-31	81	36	Third Reading in House	pending
-SB2319	S	1582888	2025-05-31	39	18	Concurrence in Senate	pending
-SB2111	S	1717317	2025-10-30	36	21	Senate Concurrence	pending
-SB2111	H	1717319	2025-10-31	72	32	House Third Reading	pending
-SB1507	S	1543883	2025-04-10	37	19	Third Reading in Senate	pending
-SB1507	H	1576906	2025-05-22	77	34	Third Reading in House	pending
-HB4277	H	1723605	2026-04-14	75	33	House Third Reading	pending
-HB4277	S	1723606	2026-05-20	36	19	Senate Third Reading	pending
-HB5024	H	1716944	2026-04-08	72	35	House Third Reading	pending
-HB5024	S	1716945	2026-05-31	39	17	Senate Third Reading	pending
-SB1911	S	1722052	2025-10-30	37	19	Senate Concurrence	pending
-SB1911	H	1722055	2025-10-30	76	33	House Third Reading	pending
-SB2039	S	1535789	2025-04-03	37	16	Third Reading in Senate	pending
-SB2039	H	1578731	2025-05-27	75	39	Third Reading in House	pending
-SB2039	S	1582643	2025-05-31	38	18	Concurrence in Senate	pending
-HB1312	S	1717212	2025-10-30	40	18	Senate Third Reading	pending
-HB1312	H	1717214	2025-10-31	75	32	House Concurrence	pending
-HB3564	H	1539660	2025-04-08	61	43	Third Reading in House	dropped: first House concurrence motion LOST 56-36-2, the successful one came 8 amendments and 2 months later; no single defensible per-chamber question
-HB3564	S	1722460	2025-10-30	39	16	Senate Third Reading	dropped: first House concurrence motion LOST 56-36-2, the successful one came 8 amendments and 2 months later; no single defensible per-chamber question
-HB3564	H	1722461	2026-02-26	56	36	House Concurrence	dropped: first House concurrence motion LOST 56-36-2, the successful one came 8 amendments and 2 months later; no single defensible per-chamber question
-HB3564	H	1722464	2026-04-08	64	40	House Concurrence	dropped: first House concurrence motion LOST 56-36-2, the successful one came 8 amendments and 2 months later; no single defensible per-chamber question
-SB2431	S	1542039	2025-04-09	39	16	Third Reading in Senate	pending
-SB2431	H	1580247	2025-05-28	75	39	Third Reading in House	pending
-SB2431	S	1582635	2025-05-31	40	17	Concurrence in Senate	pending
-HB2726	H	1544869	2025-04-10	75	37	Third Reading in House	pending
-HB2726	S	1575184	2025-05-21	39	16	Third Reading in Senate	pending
-HB4456	H	1717748	2026-04-15	74	37	House Third Reading	pending
-HB4456	S	1717749	2026-05-19	42	17	Senate Third Reading	pending
-SB0453	S	1580076	2025-05-28	39	16	Third Reading in Senate	pending
-SB0453	H	1582370	2025-05-31	82	33	Third Reading in House	pending
-HB3493	H	1545477	2025-04-11	77	38	Third Reading in House	pending
-HB3493	S	1582177	2025-05-30	40	16	Third Reading in Senate	pending
-HB3493	H	1582780	2025-05-31	77	39	Concurrence in House	pending
+HB5295	H	1721612	2026-05-31	73	39	House Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1083	H	1586216	2025-04-10	74	38	Third Reading in House	judged:batch-02
+HB1083	S	1586217	2025-05-21	39	18	Third Reading in Senate	judged:batch-02
+HB4639	H	1718656	2026-04-16	65	39	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4639	S	1718657	2026-05-20	39	18	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1863	S	1720392	2025-10-29	39	18	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1863	H	1720393	2025-10-30	76	35	House Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1519	S	1542233	2025-04-09	37	17	Third Reading in Senate	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1519	H	1580328	2025-05-28	69	44	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB0343	S	1723995	2026-05-21	34	21	Senate Third Reading	screened:local-or-narrow — one village, district or fee; not a statewide position
+SB0343	H	1723997	2026-05-31	75	34	House Third Reading	screened:local-or-narrow — one village, district or fee; not a statewide position
+HB0767	H	1717418	2025-10-28	74	38	House Third Reading	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB0767	S	1717419	2025-10-30	40	18	Senate Third Reading	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB2335	H	1541579	2025-04-09	75	40	Third Reading in House	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB2335	S	1718546	2026-05-29	36	16	Senate Third Reading	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB2335	H	1718547	2026-05-31	74	39	House Concurrence	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+SB2319	S	1576405	2025-05-22	39	19	Third Reading in Senate	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2319	H	1582429	2025-05-31	81	36	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2319	S	1582888	2025-05-31	39	18	Concurrence in Senate	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2111	S	1717317	2025-10-30	36	21	Senate Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2111	H	1717319	2025-10-31	72	32	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1507	S	1543883	2025-04-10	37	19	Third Reading in Senate	screened:no-defensible-stance — a UIC transportation study
+SB1507	H	1576906	2025-05-22	77	34	Third Reading in House	screened:no-defensible-stance — a UIC transportation study
+HB4277	H	1723605	2026-04-14	75	33	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4277	S	1723606	2026-05-20	36	19	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB5024	H	1716944	2026-04-08	72	35	House Third Reading	judged:batch-02
+HB5024	S	1716945	2026-05-31	39	17	Senate Third Reading	pending:date-skew — ILGA action trail dates this 2026-06-01; awaiting the official_vote_date override (CODE-FINDINGS 1)
+SB1911	S	1722052	2025-10-30	37	19	Senate Concurrence	screened:appropriations-or-bonds — no honest research area for a fund-the-government or bond vote
+SB1911	H	1722055	2025-10-30	76	33	House Third Reading	screened:appropriations-or-bonds — no honest research area for a fund-the-government or bond vote
+SB2039	S	1535789	2025-04-03	37	16	Third Reading in Senate	screened:no-defensible-stance — a higher-education data dashboard report
+SB2039	H	1578731	2025-05-27	75	39	Third Reading in House	screened:no-defensible-stance — a higher-education data dashboard report
+SB2039	S	1582643	2025-05-31	38	18	Concurrence in Senate	screened:no-defensible-stance — a higher-education data dashboard report
+HB1312	S	1717212	2025-10-30	40	18	Senate Third Reading	judged:batch-02
+HB1312	H	1717214	2025-10-31	75	32	House Concurrence	judged:batch-02
+HB3564	H	1539660	2025-04-08	61	43	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3564	S	1722460	2025-10-30	39	16	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3564	H	1722461	2026-02-26	56	36	House Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3564	H	1722464	2026-04-08	64	40	House Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2431	S	1542039	2025-04-09	39	16	Third Reading in Senate	screened:no-defensible-stance — DNR fireworks authorisation
+SB2431	H	1580247	2025-05-28	75	39	Third Reading in House	screened:no-defensible-stance — DNR fireworks authorisation
+SB2431	S	1582635	2025-05-31	40	17	Concurrence in Senate	screened:no-defensible-stance — DNR fireworks authorisation
+HB2726	H	1544869	2025-04-10	75	37	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB2726	S	1575184	2025-05-21	39	16	Third Reading in Senate	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4456	H	1717748	2026-04-15	74	37	House Third Reading	judged:batch-02
+HB4456	S	1717749	2026-05-19	42	17	Senate Third Reading	judged:batch-02
+SB0453	S	1580076	2025-05-28	39	16	Third Reading in Senate	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB0453	H	1582370	2025-05-31	82	33	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3493	H	1545477	2025-04-11	77	38	Third Reading in House	screened:no-defensible-stance — carve-out from a local-regulation rule for one class of municipality
+HB3493	S	1582177	2025-05-30	40	16	Third Reading in Senate	screened:no-defensible-stance — carve-out from a local-regulation rule for one class of municipality
+HB3493	H	1582780	2025-05-31	77	39	Concurrence in House	screened:no-defensible-stance — carve-out from a local-regulation rule for one class of municipality
 SB1976	S	1575572	2025-05-21	38	19	Third Reading in Senate	judged:batch-01
 SB1976	H	1582212	2025-05-30	80	32	Third Reading in House	judged:batch-01
-HB4762	H	1723720	2026-04-16	72	37	House Third Reading	pending
-HB4762	S	1723721	2026-05-20	40	16	Senate Third Reading	pending
-HB4762	H	1723722	2026-05-27	74	35	House Concurrence	pending
+HB4762	H	1723720	2026-04-16	72	37	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4762	S	1723721	2026-05-20	40	16	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4762	H	1723722	2026-05-27	74	35	House Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
 HB3489	H	1539817	2025-04-08	77	36	Third Reading in House	judged:batch-01
 HB3489	S	1576151	2025-05-22	41	16	Third Reading in Senate	judged:batch-01
-SB2968	S	1722106	2026-04-16	41	16	Senate Third Reading	pending
-SB2968	H	1722107	2026-05-27	75	36	House Third Reading	pending
-HB1158	H	1538619	2025-04-07	72	30	Third Reading in House	pending
-HB1158	S	1575168	2025-05-21	42	16	Third Reading in Senate	pending
-HB3510	H	1545087	2025-04-10	76	38	Third Reading in House	pending
-HB3510	S	1576643	2025-05-22	42	16	Third Reading in Senate	pending
-SB1859	S	1544672	2025-04-10	40	15	Third Reading in Senate	pending
-SB1859	H	1576920	2025-05-23	71	38	Third Reading in House	pending
-SB1859	S	1582707	2025-05-31	40	16	Concurrence in Senate	pending
-SB2456	H	1582216	2025-05-30	83	31	Third Reading in House	pending
-SB2456	S	1582885	2025-05-31	38	19	Concurrence in Senate	pending
-SB1797	S	1544218	2025-04-10	39	17	Third Reading in Senate	pending
-SB1797	H	1582079	2025-05-30	76	38	Third Reading in House	pending
-SB1797	S	1582866	2025-05-31	41	15	Concurrence in Senate	pending
-HB5234	H	1718930	2026-04-09	67	31	House Third Reading	pending
-HB5234	S	1718931	2026-05-30	41	15	Senate Third Reading	pending
-HB4758	H	1719422	2026-04-16	82	30	House Third Reading	pending
-HB4758	S	1719423	2026-05-29	41	15	Senate Third Reading	pending
-HB1700	H	1542571	2025-04-09	84	30	Third Reading in House	pending
-HB1700	S	1720626	2026-05-30	36	20	Senate Third Reading	pending
-HB1700	H	1720627	2026-05-31	75	39	House Concurrence	pending
-HB3078	H	1545871	2025-04-11	76	39	Third Reading in House	pending
-HB3078	S	1582541	2025-05-31	42	15	Third Reading in Senate	pending
-HB1437	H	1544990	2025-04-10	74	38	Third Reading in House	pending
-HB1437	H	1720222	2025-10-30	74	26	House Concurrence	pending
-HB1437	S	1720223	2025-10-30	41	16	Senate Third Reading	pending
-HB1437	H	1720224	2025-10-31	74	26	House Concurrence	pending
-HB2397	H	1538332	2025-04-07	78	27	Third Reading in House	pending
-HB2397	S	1576072	2025-05-22	33	19	Third Reading in Senate	pending
-HB1189	H	1540145	2025-04-08	82	28	Third Reading in House	pending
-HB1189	S	1575256	2025-05-21	40	18	Third Reading in Senate	pending
-SB1740	H	1576842	2025-05-23	79	29	Third Reading in House	pending
-SB1740	S	1582703	2025-05-31	41	14	Concurrence in Senate	pending
-HB4217	H	1720544	2026-04-14	82	28	House Third Reading	pending
-HB4217	S	1720545	2026-05-20	43	15	Senate Third Reading	pending
+SB2968	S	1722106	2026-04-16	41	16	Senate Third Reading	screened:no-defensible-stance — non-profit investment pool eligibility
+SB2968	H	1722107	2026-05-27	75	36	House Third Reading	screened:no-defensible-stance — non-profit investment pool eligibility
+HB1158	H	1538619	2025-04-07	72	30	Third Reading in House	screened:appropriations-or-bonds — no honest research area for a fund-the-government or bond vote
+HB1158	S	1575168	2025-05-21	42	16	Third Reading in Senate	screened:appropriations-or-bonds — no honest research area for a fund-the-government or bond vote
+HB3510	H	1545087	2025-04-10	76	38	Third Reading in House	screened:mixed-direction — two stretch-code deadlines slip a year while a third is pulled forward a year; a schedule reshuffle, not a direction
+HB3510	S	1576643	2025-05-22	42	16	Third Reading in Senate	screened:mixed-direction — two stretch-code deadlines slip a year while a third is pulled forward a year; a schedule reshuffle, not a direction
+SB1859	S	1544672	2025-04-10	40	15	Third Reading in Senate	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1859	H	1576920	2025-05-23	71	38	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1859	S	1582707	2025-05-31	40	16	Concurrence in Senate	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2456	H	1582216	2025-05-30	83	31	Third Reading in House	screened:contested-direction — energy efficiency extension bundled with a FOIA exemption for expressway camera images
+SB2456	S	1582885	2025-05-31	38	19	Concurrence in Senate	screened:contested-direction — energy efficiency extension bundled with a FOIA exemption for expressway camera images
+SB1797	S	1544218	2025-04-10	39	17	Third Reading in Senate	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1797	H	1582079	2025-05-30	76	38	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1797	S	1582866	2025-05-31	41	15	Concurrence in Senate	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB5234	H	1718930	2026-04-09	67	31	House Third Reading	screened:no-defensible-stance — takes effect only if HB 3564 becomes law; HB 3564 itself was dropped in batch-01
+HB5234	S	1718931	2026-05-30	41	15	Senate Third Reading	screened:no-defensible-stance — takes effect only if HB 3564 becomes law; HB 3564 itself was dropped in batch-01
+HB4758	H	1719422	2026-04-16	82	30	House Third Reading	judged:batch-02
+HB4758	S	1719423	2026-05-29	41	15	Senate Third Reading	judged:batch-02
+HB1700	H	1542571	2025-04-09	84	30	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1700	S	1720626	2026-05-30	36	20	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1700	H	1720627	2026-05-31	75	39	House Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3078	H	1545871	2025-04-11	76	39	Third Reading in House	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB3078	S	1582541	2025-05-31	42	15	Third Reading in Senate	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB1437	H	1544990	2025-04-10	74	38	Third Reading in House	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB1437	H	1720222	2025-10-30	74	26	House Concurrence	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB1437	S	1720223	2025-10-30	41	16	Senate Third Reading	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB1437	H	1720224	2025-10-31	74	26	House Concurrence	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB2397	H	1538332	2025-04-07	78	27	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB2397	S	1576072	2025-05-22	33	19	Third Reading in Senate	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1189	H	1540145	2025-04-08	82	28	Third Reading in House	judged:batch-02
+HB1189	S	1575256	2025-05-21	40	18	Third Reading in Senate	judged:batch-02
+SB1740	H	1576842	2025-05-23	79	29	Third Reading in House	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+SB1740	S	1582703	2025-05-31	41	14	Concurrence in Senate	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB4217	H	1720544	2026-04-14	82	28	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4217	S	1720545	2026-05-20	43	15	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
 SB3777	S	1721226	2026-05-20	38	20	Senate Third Reading	judged:batch-01
 SB3777	H	1721227	2026-05-31	72	38	House Third Reading	judged:batch-01
-SB3777	S	1721228	2026-05-31	41	14	Senate Concurrence	pending
-SB0714	S	1720248	2026-05-13	42	14	Senate Third Reading	pending
-SB0714	H	1720249	2026-05-27	70	38	House Third Reading	pending
-HB4862	H	1720568	2026-04-16	81	27	House Third Reading	pending
-HB4862	S	1720569	2026-05-20	43	15	Senate Third Reading	pending
-HB1365	S	1575014	2025-05-21	39	16	Third Reading in Senate	pending
-HB1365	H	1582046	2025-05-30	85	28	Concurrence in House	pending
-HB1367	H	1539808	2025-04-08	75	39	Third Reading in House	pending
-HB1367	S	1575171	2025-05-21	43	14	Third Reading in Senate	pending
-HB4273	H	1717613	2026-04-14	73	37	House Third Reading	pending
-HB4273	S	1717614	2026-05-13	43	14	Senate Third Reading	pending
-HB4273	H	1717615	2026-05-27	72	38	House Concurrence	pending
-HB5552	H	1719956	2026-04-09	71	34	House Third Reading	pending
-HB5552	S	1719957	2026-05-20	43	14	Senate Third Reading	pending
-HB5552	H	1719958	2026-05-27	74	37	House Concurrence	pending
-SB0191	S	1562725	2025-04-30	39	13	Third Reading in Senate	pending
-SB0191	H	1574908	2025-05-21	83	27	Third Reading in House	pending
-HB1836	S	1720142	2025-10-29	39	17	Senate Third Reading	pending
-HB1836	H	1720143	2025-10-30	80	26	House Concurrence	pending
-HB4571	H	1717392	2026-04-14	76	33	House Third Reading	pending
-HB4571	S	1717393	2026-05-31	44	14	Senate Third Reading	pending
-SB2980	S	1723794	2026-04-15	42	13	Senate Third Reading	pending
-SB2980	H	1723795	2026-05-21	73	34	House Third Reading	pending
-HB5228	H	1716845	2026-04-17	76	24	House Third Reading	pending
-HB5228	S	1716846	2026-05-30	39	19	Senate Third Reading	pending
-HB5228	H	1716847	2026-05-31	89	27	House Concurrence	pending
-HB4788	H	1722358	2026-04-14	73	38	House Third Reading	pending
-HB4788	S	1722359	2026-05-20	43	13	Senate Third Reading	pending
-HB3094	H	1538471	2025-04-07	69	37	Third Reading in House	pending
-HB3094	S	1576105	2025-05-22	44	13	Third Reading in Senate	pending
-HB4418	H	1722447	2026-04-09	69	33	House Third Reading	pending
-HB4418	S	1722448	2026-05-28	44	13	Senate Third Reading	pending
-HB5316	H	1723643	2026-04-09	70	35	House Third Reading	pending
-HB5316	S	1723644	2026-05-14	44	13	Senate Third Reading	pending
+SB3777	S	1721228	2026-05-31	41	14	Senate Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB0714	S	1720248	2026-05-13	42	14	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB0714	H	1720249	2026-05-27	70	38	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4862	H	1720568	2026-04-16	81	27	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4862	S	1720569	2026-05-20	43	15	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1365	S	1575014	2025-05-21	39	16	Third Reading in Senate	screened:no-defensible-stance — therapist and counsellor licensure mechanics
+HB1365	H	1582046	2025-05-30	85	28	Concurrence in House	screened:no-defensible-stance — therapist and counsellor licensure mechanics
+HB1367	H	1539808	2025-04-08	75	39	Third Reading in House	screened:contested-direction — cuts the township open-space acreage threshold — conservation access vs. development latitude
+HB1367	S	1575171	2025-05-21	43	14	Third Reading in Senate	screened:contested-direction — cuts the township open-space acreage threshold — conservation access vs. development latitude
+HB4273	H	1717613	2026-04-14	73	37	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4273	S	1717614	2026-05-13	43	14	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4273	H	1717615	2026-05-27	72	38	House Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB5552	H	1719956	2026-04-09	71	34	House Third Reading	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB5552	S	1719957	2026-05-20	43	14	Senate Third Reading	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB5552	H	1719958	2026-05-27	74	37	House Concurrence	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+SB0191	S	1562725	2025-04-30	39	13	Third Reading in Senate	judged:batch-02
+SB0191	H	1574908	2025-05-21	83	27	Third Reading in House	judged:batch-02
+HB1836	S	1720142	2025-10-29	39	17	Senate Third Reading	judged:batch-02
+HB1836	H	1720143	2025-10-30	80	26	House Concurrence	judged:batch-02
+HB4571	H	1717392	2026-04-14	76	33	House Third Reading	judged:batch-02
+HB4571	S	1717393	2026-05-31	44	14	Senate Third Reading	judged:batch-02
+SB2980	S	1723794	2026-04-15	42	13	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2980	H	1723795	2026-05-21	73	34	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB5228	H	1716845	2026-04-17	76	24	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB5228	S	1716846	2026-05-30	39	19	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB5228	H	1716847	2026-05-31	89	27	House Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4788	H	1722358	2026-04-14	73	38	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4788	S	1722359	2026-05-20	43	13	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3094	H	1538471	2025-04-07	69	37	Third Reading in House	screened:no-defensible-stance — a construction-industry carve-out from the Transportation Benefits Program Act
+HB3094	S	1576105	2025-05-22	44	13	Third Reading in Senate	screened:no-defensible-stance — a construction-industry carve-out from the Transportation Benefits Program Act
+HB4418	H	1722447	2026-04-09	69	33	House Third Reading	judged:batch-02
+HB4418	S	1722448	2026-05-28	44	13	Senate Third Reading	judged:batch-02
+HB5316	H	1723643	2026-04-09	70	35	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB5316	S	1723644	2026-05-14	44	13	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
 HB4339	H	1718089	2026-04-08	77	24	House Third Reading	judged:batch-01
 HB4339	S	1718090	2026-05-29	41	12	Senate Third Reading	judged:batch-01
-SB3272	S	1718701	2026-04-14	41	12	Senate Third Reading	pending
-SB3272	H	1718702	2026-05-21	70	35	House Third Reading	pending
-HB4725	H	1722983	2026-04-16	79	23	House Third Reading	pending
-HB4725	S	1722984	2026-05-20	43	14	Senate Third Reading	pending
-HB4577	H	1718058	2026-04-08	80	26	House Third Reading	pending
-HB4577	S	1718059	2026-05-20	45	13	Senate Third Reading	pending
-HB4577	H	1718060	2026-05-27	76	27	House Concurrence	pending
-SB3465	S	1718180	2026-04-15	37	14	Senate Third Reading	pending
-SB3465	H	1718181	2026-05-27	71	37	House Third Reading	pending
-SB3465	S	1718182	2026-05-31	45	13	Senate Concurrence	pending
-SB1348	S	1541926	2025-04-09	42	12	Third Reading in Senate	pending
-SB1348	H	1575109	2025-05-21	71	37	Third Reading in House	pending
-HB5090	H	1719024	2026-05-31	83	28	House Concurrence	pending
-HB5090	S	1719026	2026-05-31	42	12	Senate Third Reading	pending
-SB3329	S	1719489	2026-04-29	42	12	Senate Third Reading	pending
-SB3329	H	1719490	2026-05-21	78	28	House Third Reading	pending
-HB3026	H	1586231	2025-04-08	77	35	Third Reading in House	pending
-HB3026	S	1586232	2025-05-22	43	12	Third Reading in Senate	pending
-HB2517	H	1544745	2025-04-10	82	29	Third Reading in House	pending
-HB2517	S	1575419	2025-05-21	44	12	Third Reading in Senate	pending
-HB0250	H	1576183	2025-05-22	72	37	Third Reading in House	pending
-HB0250	S	1719741	2025-10-29	45	12	Senate Third Reading	pending
-HB0250	H	1719742	2025-10-30	76	37	House Concurrence	pending
-HB1430	H	1538841	2025-04-07	67	38	Third Reading in House	pending
-HB1430	S	1576619	2025-05-22	46	12	Third Reading in Senate	pending
-HB4461	H	1718198	2026-04-16	74	37	House Third Reading	pending
-HB4461	S	1718199	2026-05-19	46	12	Senate Third Reading	pending
+SB3272	S	1718701	2026-04-14	41	12	Senate Third Reading	screened:mixed-direction — the concrete legal effect is exempting ICC expert hiring from the Procurement Code; clean-energy benefit is indirect
+SB3272	H	1718702	2026-05-21	70	35	House Third Reading	screened:mixed-direction — the concrete legal effect is exempting ICC expert hiring from the Procurement Code; clean-energy benefit is indirect
+HB4725	H	1722983	2026-04-16	79	23	House Third Reading	judged:batch-02
+HB4725	S	1722984	2026-05-20	43	14	Senate Third Reading	judged:batch-02
+HB4577	H	1718058	2026-04-08	80	26	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4577	S	1718059	2026-05-20	45	13	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4577	H	1718060	2026-05-27	76	27	House Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB3465	S	1718180	2026-04-15	37	14	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB3465	H	1718181	2026-05-27	71	37	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB3465	S	1718182	2026-05-31	45	13	Senate Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1348	S	1541926	2025-04-09	42	12	Third Reading in Senate	screened:no-defensible-stance — sheriff process-service fee amounts
+SB1348	H	1575109	2025-05-21	71	37	Third Reading in House	screened:no-defensible-stance — sheriff process-service fee amounts
+HB5090	H	1719024	2026-05-31	83	28	House Concurrence	pending:date-skew — ILGA action trail dates this 2026-06-01; awaiting the official_vote_date override (CODE-FINDINGS 1)
+HB5090	S	1719026	2026-05-31	42	12	Senate Third Reading	judged:batch-02
+SB3329	S	1719489	2026-04-29	42	12	Senate Third Reading	screened:contested-direction — deletes a firearm-transfer element from the order-of-protection offense while adding others
+SB3329	H	1719490	2026-05-21	78	28	House Third Reading	screened:contested-direction — deletes a firearm-transfer element from the order-of-protection offense while adding others
+HB3026	H	1586231	2025-04-08	77	35	Third Reading in House	judged:batch-02
+HB3026	S	1586232	2025-05-22	43	12	Third Reading in Senate	judged:batch-02
+HB2517	H	1544745	2025-04-10	82	29	Third Reading in House	judged:batch-02
+HB2517	S	1575419	2025-05-21	44	12	Third Reading in Senate	judged:batch-02
+HB0250	H	1576183	2025-05-22	72	37	Third Reading in House	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB0250	S	1719741	2025-10-29	45	12	Senate Third Reading	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB0250	H	1719742	2025-10-30	76	37	House Concurrence	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB1430	H	1538841	2025-04-07	67	38	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1430	S	1576619	2025-05-22	46	12	Third Reading in Senate	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4461	H	1718198	2026-04-16	74	37	House Third Reading	judged:batch-02
+HB4461	S	1718199	2026-05-19	46	12	Senate Third Reading	judged:batch-02
 HB1373	H	1540287	2025-04-08	75	40	Third Reading in House	judged:batch-01
 HB1373	S	1582371	2025-05-31	43	11	Third Reading in Senate	judged:batch-01
-SB2285	S	1544867	2025-04-10	43	11	Third Reading in Senate	pending
-SB2285	H	1575956	2025-05-22	76	38	Third Reading in House	pending
+SB2285	S	1544867	2025-04-10	43	11	Third Reading in Senate	screened:no-defensible-stance — redefines bicycle in the Vehicle Code
+SB2285	H	1575956	2025-05-22	76	38	Third Reading in House	screened:no-defensible-stance — redefines bicycle in the Vehicle Code
 SB3772	S	1718025	2026-04-29	43	11	Senate Third Reading	judged:batch-01
 SB3772	H	1718026	2026-05-30	73	39	House Third Reading	judged:batch-01
-SB2266	S	1541817	2025-04-09	44	11	Third Reading in Senate	pending
-SB2266	H	1578737	2025-05-27	75	39	Third Reading in House	pending
-HB4379	H	1719876	2026-04-17	72	18	House Third Reading	pending
-HB4379	H	1719877	2026-05-31	83	22	House Concurrence	pending
-HB4379	S	1719878	2026-05-31	46	12	Senate Third Reading	pending
-HB2546	S	1576509	2025-05-22	33	21	Third Reading in Senate	pending
-HB3662	H	1543398	2025-04-09	72	42	Third Reading in House	pending
-SB3066	H	1724228	2026-05-21	70	40	House Third Reading	pending
-SB1667	H	1574060	2025-05-20	73	40	Third Reading in House	pending
-SB0067	H	1575955	2025-05-22	75	40	Third Reading in House	pending
-SB3917	H	1718613	2026-05-22	64	34	House Third Reading	pending
-HB4540	H	1721350	2026-04-14	72	38	House Third Reading	pending
-HB1712	H	1541838	2025-04-09	76	40	Third Reading in House	pending
-HB2771	H	1542484	2025-04-09	76	40	Third Reading in House	pending
-SB1261	H	1575131	2025-05-21	71	37	Third Reading in House	pending
-HB3566	H	1544647	2025-04-10	73	38	Third Reading in House	pending
-HB3800	H	1544997	2025-04-10	73	38	Third Reading in House	pending
-HB4160	H	1719799	2026-04-14	73	38	House Third Reading	pending
-HB4702	H	1723007	2026-04-14	73	38	House Third Reading	pending
-HB1699	H	1586223	2025-04-09	75	39	Third Reading in House	pending
-SB1594	H	1576878	2025-05-23	72	37	Third Reading in House	pending
-HB5135	H	1719507	2026-04-09	72	37	House Third Reading	pending
-HB3409	H	1540439	2025-04-08	69	38	Third Reading in House	pending
-HB3409	H	1720411	2026-05-29	74	38	House Concurrence	pending
-SB2280	H	1576913	2025-05-23	71	36	Third Reading in House	pending
-SB1181	H	1576020	2025-05-22	75	38	Third Reading in House	pending
-HB2516	H	1543848	2025-04-10	71	39	Third Reading in House	pending
-HB2516	H	1582721	2025-05-31	77	39	Concurrence in House	pending
-HB1302	H	1541943	2025-04-09	76	38	Third Reading in House	pending
-HB0742	H	1545113	2025-04-10	74	37	Third Reading in House	pending
-SB1441	H	1575391	2025-05-21	74	37	Third Reading in House	pending
-SB1560	H	1575406	2025-05-21	72	36	Third Reading in House	pending
-SB3942	H	1722712	2026-05-30	76	38	House Third Reading	pending
-HB2394	H	1540396	2025-04-08	75	37	Third Reading in House	pending
-HB3309	H	1545366	2025-04-11	75	37	Third Reading in House	pending
-HB3460	H	1717984	2026-04-16	75	37	House Third Reading	pending
-HB4327	H	1718643	2026-05-28	75	37	House Third Reading	pending
-SB1989	S	1718359	2025-10-30	39	19	Senate Concurrence	pending
-HB4826	H	1722873	2026-04-08	71	37	House Third Reading	pending
-HB4826	H	1722875	2026-05-27	74	36	House Concurrence	pending
-HB1616	H	1539121	2025-04-07	70	34	Third Reading in House	pending
-HB5269	H	1723096	2026-04-09	70	34	House Third Reading	pending
-HB3638	H	1539857	2025-04-08	77	37	Third Reading in House	pending
-SB3037	H	1717358	2026-05-27	75	36	House Third Reading	pending
-SB3565	H	1718521	2026-05-29	73	35	House Third Reading	pending
-SB2179	H	1576017	2025-05-22	76	36	Third Reading in House	pending
-SB0314	H	1580584	2025-05-28	77	36	Third Reading in House	pending
-HB0862	H	1722806	2026-05-31	77	36	House Concurrence	pending
-SB1743	H	1718322	2026-05-22	67	31	House Third Reading	pending
-SB2309	H	1575876	2025-05-22	78	36	Third Reading in House	pending
-SB1920	H	1576860	2025-05-23	74	34	Third Reading in House	pending
-SB3205	H	1723275	2026-05-21	74	34	House Third Reading	pending
-HB1085	H	1539077	2025-04-07	72	33	Third Reading in House	pending
-SB3897	H	1724256	2026-05-22	68	31	House Third Reading	pending
-SB2426	H	1581829	2025-05-29	77	35	Third Reading in House	pending
-HB1810	H	1718111	2026-04-16	72	34	House Third Reading	pending
-HB1810	H	1718113	2026-05-31	80	36	House Concurrence	pending
-HB4537	H	1721921	2026-05-30	80	35	House Concurrence	pending
-SB0175	H	1575156	2025-05-21	76	33	Third Reading in House	pending
-HB4255	H	1718515	2026-04-14	76	33	House Third Reading	pending
-HB4606	H	1718840	2026-04-08	73	31	House Third Reading	pending
-SB0069	H	1574406	2025-05-20	78	33	Third Reading in House	pending
-HB5284	H	1719226	2026-04-17	71	32	House Third Reading	pending
-HB5284	H	1719228	2026-05-28	78	33	House Concurrence	pending
-HB5460	H	1720537	2026-04-15	76	32	House Third Reading	pending
-HB1576	H	1541250	2025-04-08	75	38	Third Reading in House	pending
-HB1576	H	1582419	2025-05-31	81	34	Concurrence in House	pending
-HB4536	S	1723121	2026-05-20	41	17	Senate Third Reading	pending
-SB1614	H	1582070	2025-05-30	80	33	Third Reading in House	pending
-HB3595	H	1720951	2026-05-31	80	33	House Concurrence	pending
-SB4006	H	1717874	2026-05-27	78	32	House Third Reading	pending
-HB5070	H	1723157	2026-04-09	69	28	House Third Reading	pending
-SB3222	H	1718754	2026-05-31	77	31	House Third Reading	pending
-HB1586	H	1539140	2025-04-07	68	38	Third Reading in House	pending
-HB1586	H	1582042	2025-05-30	82	33	Concurrence in House	pending
-HB2488	H	1542203	2025-04-09	79	37	Third Reading in House	pending
-HB2488	H	1582278	2025-05-30	82	33	Concurrence in House	pending
-SB2913	H	1717483	2026-05-21	78	31	House Third Reading	pending
-SB2696	H	1723235	2026-05-29	77	30	House Third Reading	pending
-SB3422	H	1723289	2026-05-21	77	30	House Third Reading	pending
-SB2506	H	1576001	2025-05-22	81	31	Third Reading in House	pending
-HB3019	H	1582746	2025-05-31	84	32	Concurrence in House	pending
-SB2019	H	1576074	2025-05-22	83	31	Third Reading in House	pending
-HB5551	H	1717980	2026-05-28	81	30	House Concurrence	pending
-HB4491	H	1718374	2026-04-16	81	30	House Third Reading	pending
-SB1947	H	1575845	2025-05-22	84	31	Third Reading in House	pending
-HB1628	H	1542832	2025-04-09	82	30	Third Reading in House	pending
-HB0032	H	1544740	2025-04-10	82	30	Third Reading in House	pending
-HB0032	H	1582359	2025-05-31	77	40	Concurrence in House	pending
-HB4587	H	1723152	2026-04-16	77	28	House Third Reading	pending
-HB3046	H	1541083	2025-04-08	83	30	Third Reading in House	pending
-SB2735	H	1724320	2026-05-27	78	28	House Third Reading	pending
-HB2464	H	1546298	2025-04-11	84	30	Third Reading in House	pending
-SB2253	H	1580688	2025-05-28	84	30	Third Reading in House	pending
-HB3200	H	1545966	2025-04-11	85	30	Third Reading in House	pending
-SB4025	H	1723679	2026-05-28	83	29	House Third Reading	pending
-SB1173	H	1575317	2025-05-21	81	28	Third Reading in House	pending
-HB3811	H	1720802	2026-04-16	81	28	House Third Reading	pending
-SB1344	H	1582483	2025-05-31	87	30	Third Reading in House	pending
-SB3107	H	1718235	2026-05-27	79	27	House Third Reading	pending
-SB4041	H	1724011	2026-05-22	71	24	House Third Reading	pending
-HB2987	H	1586220	2025-05-20	83	28	Third Reading in House	pending
-SB3314	H	1723917	2026-05-21	83	28	House Third Reading	pending
-SB0807	S	1722658	2026-05-07	42	14	Senate Third Reading	pending
-SB0212	H	1574922	2025-05-21	82	27	Third Reading in House	pending
-HB5511	H	1722070	2026-04-16	82	27	House Third Reading	pending
-HB1224	H	1541808	2025-04-09	79	35	Third Reading in House	pending
-HB1224	H	1582864	2025-05-31	86	28	Concurrence in House	pending
-HB1224	H	1717523	2025-06-01	86	28	House Concurrence	pending
-SB0024	H	1582508	2025-05-31	87	28	Third Reading in House	pending
-HB3275	H	1544772	2025-04-10	85	27	Third Reading in House	pending
-HB4890	H	1722906	2026-04-16	82	26	House Third Reading	pending
-SB2761	H	1717623	2026-05-21	79	25	House Third Reading	pending
-HB4948	H	1717950	2026-04-16	77	24	House Third Reading	pending
-HB4535	H	1721044	2026-04-08	81	25	House Third Reading	pending
-HB3193	H	1546245	2025-04-11	85	26	Third Reading in House	pending
-SB2762	H	1720826	2026-05-29	82	25	House Third Reading	pending
-SB2914	H	1721514	2026-05-21	83	25	House Third Reading	pending
-HB1332	H	1541594	2025-04-09	87	26	Third Reading in House	pending
-HB3711	H	1544505	2025-04-10	87	26	Third Reading in House	pending
-SB1799	H	1576863	2025-05-23	83	24	Third Reading in House	pending
-HB3097	H	1545290	2025-04-10	84	24	Third Reading in House	pending
-SB1491	H	1575282	2025-05-21	87	24	Third Reading in House	pending
-SB2972	H	1717891	2026-05-21	80	22	House Third Reading	pending
-SB2408	H	1578857	2025-05-27	88	24	Third Reading in House	pending
-HB2564	H	1719186	2026-04-08	76	29	House Third Reading	pending
-HB2564	H	1719188	2026-05-31	92	25	House Concurrence	pending
-HB0598	H	1720770	2026-02-24	81	22	House Third Reading	pending
-HB4514	H	1723013	2026-04-17	81	22	House Third Reading	pending
-HB3385	H	1582496	2025-05-31	91	24	Concurrence in House	pending
-HB1859	S	1575036	2025-05-21	46	12	Third Reading in Senate	pending
-HB0228	S	1716954	2026-05-20	46	12	Senate Third Reading	pending
-HB4397	S	1722086	2026-05-19	46	12	Senate Third Reading	pending
-HB3352	H	1544842	2025-04-10	89	23	Third Reading in House	pending
-SB1793	H	1576137	2025-05-22	90	23	Third Reading in House	pending
-SB3020	H	1718891	2026-05-27	91	23	House Third Reading	pending
+SB2266	S	1541817	2025-04-09	44	11	Third Reading in Senate	screened:contested-direction — exempts non-community water supplies from the Act except for enumerated purposes
+SB2266	H	1578737	2025-05-27	75	39	Third Reading in House	screened:contested-direction — exempts non-community water supplies from the Act except for enumerated purposes
+HB4379	H	1719876	2026-04-17	72	18	House Third Reading	judged:batch-02
+HB4379	H	1719877	2026-05-31	83	22	House Concurrence	screened:superseded-roll — another roll on this measure was judged in batch-02 under the one-roll-per-chamber rule
+HB4379	S	1719878	2026-05-31	46	12	Senate Third Reading	judged:batch-02
+HB2546	S	1576509	2025-05-22	33	21	Third Reading in Senate	screened:contested-direction — parole review for under-21 offenders
+HB3662	H	1543398	2025-04-09	72	42	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB3066	H	1724228	2026-05-21	70	40	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1667	H	1574060	2025-05-20	73	40	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB0067	H	1575955	2025-05-22	75	40	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB3917	H	1718613	2026-05-22	64	34	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4540	H	1721350	2026-04-14	72	38	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1712	H	1541838	2025-04-09	76	40	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB2771	H	1542484	2025-04-09	76	40	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1261	H	1575131	2025-05-21	71	37	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3566	H	1544647	2025-04-10	73	38	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3800	H	1544997	2025-04-10	73	38	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4160	H	1719799	2026-04-14	73	38	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4702	H	1723007	2026-04-14	73	38	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1699	H	1586223	2025-04-09	75	39	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1594	H	1576878	2025-05-23	72	37	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB5135	H	1719507	2026-04-09	72	37	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3409	H	1540439	2025-04-08	69	38	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3409	H	1720411	2026-05-29	74	38	House Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2280	H	1576913	2025-05-23	71	36	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1181	H	1576020	2025-05-22	75	38	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB2516	H	1543848	2025-04-10	71	39	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB2516	H	1582721	2025-05-31	77	39	Concurrence in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1302	H	1541943	2025-04-09	76	38	Third Reading in House	screened:contested-direction — deletes a provision on motions to vacate trafficking-related convictions
+HB0742	H	1545113	2025-04-10	74	37	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1441	H	1575391	2025-05-21	74	37	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1560	H	1575406	2025-05-21	72	36	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB3942	H	1722712	2026-05-30	76	38	House Third Reading	screened:contested-direction — juvenile release notification changes
+HB2394	H	1540396	2025-04-08	75	37	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3309	H	1545366	2025-04-11	75	37	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3460	H	1717984	2026-04-16	75	37	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4327	H	1718643	2026-05-28	75	37	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1989	S	1718359	2025-10-30	39	19	Senate Concurrence	screened:local-or-narrow — one village, district or fee; not a statewide position
+HB4826	H	1722873	2026-04-08	71	37	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4826	H	1722875	2026-05-27	74	36	House Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1616	H	1539121	2025-04-07	70	34	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB5269	H	1723096	2026-04-09	70	34	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3638	H	1539857	2025-04-08	77	37	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB3037	H	1717358	2026-05-27	75	36	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB3565	H	1718521	2026-05-29	73	35	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2179	H	1576017	2025-05-22	76	36	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB0314	H	1580584	2025-05-28	77	36	Third Reading in House	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB0862	H	1722806	2026-05-31	77	36	House Concurrence	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+SB1743	H	1718322	2026-05-22	67	31	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2309	H	1575876	2025-05-22	78	36	Third Reading in House	screened:local-or-narrow — one village, district or fee; not a statewide position
+SB1920	H	1576860	2025-05-23	74	34	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB3205	H	1723275	2026-05-21	74	34	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1085	H	1539077	2025-04-07	72	33	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB3897	H	1724256	2026-05-22	68	31	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2426	H	1581829	2025-05-29	77	35	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1810	H	1718111	2026-04-16	72	34	House Third Reading	screened:contested-direction — renames earned sentence credit and changes eligibility
+HB1810	H	1718113	2026-05-31	80	36	House Concurrence	screened:contested-direction — renames earned sentence credit and changes eligibility
+HB4537	H	1721921	2026-05-30	80	35	House Concurrence	screened:local-or-narrow — one village, district or fee; not a statewide position
+SB0175	H	1575156	2025-05-21	76	33	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4255	H	1718515	2026-04-14	76	33	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4606	H	1718840	2026-04-08	73	31	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB0069	H	1574406	2025-05-20	78	33	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB5284	H	1719226	2026-04-17	71	32	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB5284	H	1719228	2026-05-28	78	33	House Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB5460	H	1720537	2026-04-15	76	32	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1576	H	1541250	2025-04-08	75	38	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1576	H	1582419	2025-05-31	81	34	Concurrence in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4536	S	1723121	2026-05-20	41	17	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1614	H	1582070	2025-05-30	80	33	Third Reading in House	screened:local-or-narrow — one village, district or fee; not a statewide position
+HB3595	H	1720951	2026-05-31	80	33	House Concurrence	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+SB4006	H	1717874	2026-05-27	78	32	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB5070	H	1723157	2026-04-09	69	28	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB3222	H	1718754	2026-05-31	77	31	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1586	H	1539140	2025-04-07	68	38	Third Reading in House	screened:contested-direction — merit-standard changes to State service positions
+HB1586	H	1582042	2025-05-30	82	33	Concurrence in House	screened:contested-direction — merit-standard changes to State service positions
+HB2488	H	1542203	2025-04-09	79	37	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB2488	H	1582278	2025-05-30	82	33	Concurrence in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2913	H	1717483	2026-05-21	78	31	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2696	H	1723235	2026-05-29	77	30	House Third Reading	screened:local-or-narrow — one village, district or fee; not a statewide position
+SB3422	H	1723289	2026-05-21	77	30	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2506	H	1576001	2025-05-22	81	31	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3019	H	1582746	2025-05-31	84	32	Concurrence in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2019	H	1576074	2025-05-22	83	31	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB5551	H	1717980	2026-05-28	81	30	House Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4491	H	1718374	2026-04-16	81	30	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1947	H	1575845	2025-05-22	84	31	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1628	H	1542832	2025-04-09	82	30	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB0032	H	1544740	2025-04-10	82	30	Third Reading in House	screened:local-or-narrow — one village, district or fee; not a statewide position
+HB0032	H	1582359	2025-05-31	77	40	Concurrence in House	screened:local-or-narrow — one village, district or fee; not a statewide position
+HB4587	H	1723152	2026-04-16	77	28	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3046	H	1541083	2025-04-08	83	30	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2735	H	1724320	2026-05-27	78	28	House Third Reading	screened:local-or-narrow — one village, district or fee; not a statewide position
+HB2464	H	1546298	2025-04-11	84	30	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2253	H	1580688	2025-05-28	84	30	Third Reading in House	screened:local-or-narrow — one village, district or fee; not a statewide position
+HB3200	H	1545966	2025-04-11	85	30	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB4025	H	1723679	2026-05-28	83	29	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1173	H	1575317	2025-05-21	81	28	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3811	H	1720802	2026-04-16	81	28	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1344	H	1582483	2025-05-31	87	30	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB3107	H	1718235	2026-05-27	79	27	House Third Reading	screened:local-or-narrow — one village, district or fee; not a statewide position
+SB4041	H	1724011	2026-05-22	71	24	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB2987	H	1586220	2025-05-20	83	28	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB3314	H	1723917	2026-05-21	83	28	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB0807	S	1722658	2026-05-07	42	14	Senate Third Reading	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+SB0212	H	1574922	2025-05-21	82	27	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB5511	H	1722070	2026-04-16	82	27	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1224	H	1541808	2025-04-09	79	35	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1224	H	1582864	2025-05-31	86	28	Concurrence in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1224	H	1717523	2025-06-01	86	28	House Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB0024	H	1582508	2025-05-31	87	28	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3275	H	1544772	2025-04-10	85	27	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4890	H	1722906	2026-04-16	82	26	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2761	H	1717623	2026-05-21	79	25	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4948	H	1717950	2026-04-16	77	24	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB4535	H	1721044	2026-04-08	81	25	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3193	H	1546245	2025-04-11	85	26	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2762	H	1720826	2026-05-29	82	25	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2914	H	1721514	2026-05-21	83	25	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1332	H	1541594	2025-04-09	87	26	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3711	H	1544505	2025-04-10	87	26	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1799	H	1576863	2025-05-23	83	24	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3097	H	1545290	2025-04-10	84	24	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1491	H	1575282	2025-05-21	87	24	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2972	H	1717891	2026-05-21	80	22	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB2408	H	1578857	2025-05-27	88	24	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB2564	H	1719186	2026-04-08	76	29	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB2564	H	1719188	2026-05-31	92	25	House Concurrence	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB0598	H	1720770	2026-02-24	81	22	House Third Reading	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB4514	H	1723013	2026-04-17	81	22	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3385	H	1582496	2025-05-31	91	24	Concurrence in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB1859	S	1575036	2025-05-21	46	12	Third Reading in Senate	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB0228	S	1716954	2026-05-20	46	12	Senate Third Reading	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
+HB4397	S	1722086	2026-05-19	46	12	Senate Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+HB3352	H	1544842	2025-04-10	89	23	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB1793	H	1576137	2025-05-22	90	23	Third Reading in House	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
+SB3020	H	1718891	2026-05-27	91	23	House Third Reading	candidate:batch-03 — synopsis screen says stance-defensible; awaiting judging capacity
