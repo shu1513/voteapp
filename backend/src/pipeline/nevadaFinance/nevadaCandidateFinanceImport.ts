@@ -1,0 +1,399 @@
+import type { Pool, PoolClient } from "pg";
+
+import {
+  readNevadaCandidateReportsArtifact,
+  readNevadaMonthlyContributions,
+  readNevadaMonthlyExpenditures,
+  readNevadaReportHtmlArtifact,
+  readNevadaRosterArtifact,
+  nevadaSlugForFilerName,
+} from "./nevadaAuroraArtifacts.js";
+import { nevadaFilerKey } from "./nevadaAuroraCsv.js";
+import { aggregateNevadaDirectContributions } from "./nevadaDirectContributionAggregator.js";
+import {
+  resolveNevadaCandidateFilers,
+  type NevadaResolverCandidate,
+  type NevadaRosterEntry,
+} from "./nevadaCandidateFilerResolver.js";
+import { NEVADA_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./nevadaFinanceEligibleOffices.js";
+import {
+  replaceNevadaCandidateFinanceSnapshot,
+  upsertNevadaFinanceLink,
+} from "./nevadaFinanceWriter.js";
+import {
+  buildNevadaCycleSummary,
+  parseNevadaCandidateReportSummary,
+  selectNevadaCycleReports,
+} from "./nevadaReportSummary.js";
+
+type Queryable = Pick<Pool | PoolClient, "query">;
+type ConnectableQueryable = Queryable & { connect: () => Promise<PoolClient> };
+
+function candidateDetailsUrl(detailToken: string, electionYear: number): string {
+  return `https://www.nvsos.gov/SOSCandidateServices/AnonymousAccess/CEFDSearchUU/CandidateDetails.aspx?o=${detailToken}&y=${electionYear}`;
+}
+
+function electionYearFromDate(electionDate: string): number {
+  const match = electionDate.match(/^(\d{4})-\d{2}-\d{2}$/);
+  if (!match) {
+    throw new Error(`Invalid election date ${JSON.stringify(electionDate)} (expected yyyy-mm-dd)`);
+  }
+  return Number(match[1]);
+}
+
+const ELIGIBLE_CANDIDATE_SQL = `
+SELECT
+  c.id AS candidate_id,
+  e.id AS election_id,
+  (c.first_name || ' ' || c.last_name) AS candidate_name,
+  o.scope AS office_scope,
+  o.canonical_name AS office_canonical_name,
+  d.name AS district_name
+FROM candidates c
+JOIN candidate_elections ce ON ce.candidate_id = c.id
+JOIN elections e ON e.id = ce.election_id
+JOIN districts d ON d.id = e.district_id
+JOIN offices o ON o.id = e.office_id
+WHERE d.state = 'NV'
+  AND e.election_date = $1
+  AND (o.scope || '::' || o.canonical_name) = ANY($2)
+ORDER BY c.last_name, c.first_name
+`;
+
+export type NevadaAutoLinkResult = {
+  electionYear: number;
+  candidateCount: number;
+  matched: { candidateName: string; filerName: string; confirmedOffice: string }[];
+  skipped: { candidateName: string; reason: string; detail: string }[];
+  linksWritten: number;
+};
+
+export async function autoLinkNevadaCandidateFinance(input: {
+  db: Queryable;
+  artifactDir: string;
+  electionDate: string;
+  write: boolean;
+}): Promise<NevadaAutoLinkResult> {
+  const electionYear = electionYearFromDate(input.electionDate);
+  const { rows } = await input.db.query(ELIGIBLE_CANDIDATE_SQL, [
+    input.electionDate,
+    [...NEVADA_FINANCE_ELIGIBLE_OFFICE_KEYS],
+  ]);
+  const candidates: NevadaResolverCandidate[] = (
+    rows as {
+      candidate_id: string;
+      election_id: string;
+      candidate_name: string;
+      office_scope: string;
+      office_canonical_name: string;
+      district_name: string | null;
+    }[]
+  ).map((row) => ({
+    candidateId: row.candidate_id,
+    electionId: row.election_id,
+    electionYear,
+    candidateName: row.candidate_name,
+    officeScope: row.office_scope,
+    officeCanonicalName: row.office_canonical_name,
+    districtName: row.district_name,
+  }));
+
+  const rosterEntries: NevadaRosterEntry[] = [];
+  for (const entry of await readNevadaRosterArtifact(input.artifactDir, electionYear)) {
+    let reportRows: NevadaRosterEntry["reportRows"] = [];
+    try {
+      reportRows = (
+        await readNevadaCandidateReportsArtifact(input.artifactDir, electionYear, entry.slug)
+      ).reportRows;
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+    }
+    rosterEntries.push({
+      name: entry.name,
+      slug: entry.slug,
+      detailToken: entry.detailToken,
+      reportRows,
+    });
+  }
+
+  const resolution = resolveNevadaCandidateFilers({ candidates, rosterEntries });
+  let linksWritten = 0;
+  if (input.write) {
+    for (const match of resolution.matches) {
+      await upsertNevadaFinanceLink({
+        db: input.db,
+        link: {
+          candidateId: match.candidate.candidateId,
+          electionId: match.candidate.electionId,
+          electionYear,
+          candidateNameNormalized: match.candidate.candidateName.trim().replace(/\s+/g, " "),
+          officeName: match.candidate.officeCanonicalName,
+          district: match.candidate.districtName,
+          filerName: match.roster.name,
+          linkSource: "aurora_search",
+          sourceUrl: candidateDetailsUrl(match.roster.detailToken, electionYear),
+          lastVerifiedAt: new Date(),
+        },
+      });
+      linksWritten += 1;
+    }
+  }
+
+  return {
+    electionYear,
+    candidateCount: candidates.length,
+    matched: resolution.matches.map((match) => ({
+      candidateName: match.candidate.candidateName,
+      filerName: match.roster.name,
+      confirmedOffice: match.confirmedOffice,
+    })),
+    skipped: resolution.skips.map((skip) => ({
+      candidateName: skip.candidate.candidateName,
+      reason: skip.reason,
+      detail: skip.detail,
+    })),
+    linksWritten,
+  };
+}
+
+type NevadaLinkRow = {
+  candidate_id: string;
+  election_id: string;
+  election_year: number;
+  candidate_name_normalized: string;
+  office_name: string;
+  district: string | null;
+  filer_key: string;
+  filer_name: string;
+  source_url: string | null;
+};
+
+export type NevadaImportCandidateResult = {
+  filerName: string;
+  status: "imported" | "quarantined" | "dry_run_ok";
+  reportCount?: number;
+  totalReceipts?: number;
+  totalDisbursements?: number;
+  cashOnHand?: number;
+  directContributionTotal?: number;
+  breakdownCount?: number;
+  warnings: string[];
+  reason?: string;
+};
+
+export type NevadaImportResult = {
+  electionYear: number;
+  linkCount: number;
+  monthsLoaded: string[];
+  results: NevadaImportCandidateResult[];
+  importedCount: number;
+  quarantinedCount: number;
+};
+
+export async function importNevadaCandidateFinance(input: {
+  db: ConnectableQueryable;
+  artifactDir: string;
+  electionDate: string;
+  write: boolean;
+  /** Optional filer-name filter (normalized comparison). */
+  onlyFiler?: string | null;
+}): Promise<NevadaImportResult> {
+  const electionYear = electionYearFromDate(input.electionDate);
+  const { rows } = await input.db.query(
+    `SELECT candidate_id, election_id, election_year, candidate_name_normalized,
+            office_name, district, filer_key, filer_name, source_url
+     FROM nv_candidate_finance_links
+     WHERE election_year = $1 AND link_status = 'active'
+     ORDER BY filer_name`,
+    [electionYear]
+  );
+  let links = rows as NevadaLinkRow[];
+  if (input.onlyFiler) {
+    const onlyKey = nevadaFilerKey(input.onlyFiler);
+    links = links.filter((link) => link.filer_key === onlyKey);
+  }
+
+  // Read every linked candidate's report list first so one monthly-CSV load
+  // covers the widest selected period.
+  const plans: {
+    link: NevadaLinkRow;
+    slug: string;
+    selection: ReturnType<typeof selectNevadaCycleReports>;
+  }[] = [];
+  const results: NevadaImportCandidateResult[] = [];
+  for (const link of links) {
+    const slug = nevadaSlugForFilerName(link.filer_name);
+    try {
+      const reports = await readNevadaCandidateReportsArtifact(input.artifactDir, electionYear, slug);
+      if (nevadaFilerKey(reports.name) !== link.filer_key) {
+        throw new Error(
+          `reports.json filer ${JSON.stringify(reports.name)} does not match link ${JSON.stringify(link.filer_name)}`
+        );
+      }
+      const selection = selectNevadaCycleReports({ rows: reports.reportRows, electionYear });
+      if (selection.selected.length === 0) {
+        results.push({
+          filerName: link.filer_name,
+          status: "quarantined",
+          reason: "no cycle reports found in AURORA report list",
+          warnings: [],
+        });
+        continue;
+      }
+      plans.push({ link, slug, selection });
+    } catch (error) {
+      results.push({
+        filerName: link.filer_name,
+        status: "quarantined",
+        reason: error instanceof Error ? error.message : String(error),
+        warnings: [],
+      });
+    }
+  }
+
+  const startMonth = `${electionYear - 1}-01`;
+  let maxPeriodEnd = `${electionYear - 1}-12-31`;
+  for (const plan of plans) {
+    for (const report of plan.selection.selected) {
+      if (report.period.end > maxPeriodEnd) maxPeriodEnd = report.period.end;
+    }
+  }
+  const endMonth = maxPeriodEnd.slice(0, 7);
+  const [contributions, expenditures] = plans.length
+    ? await Promise.all([
+        readNevadaMonthlyContributions(input.artifactDir, startMonth, endMonth),
+        readNevadaMonthlyExpenditures(input.artifactDir, startMonth, endMonth),
+      ])
+    : [
+        { rows: [], monthsLoaded: [], fileCount: 0 },
+        { rows: [], monthsLoaded: [], fileCount: 0 },
+      ];
+
+  let importedCount = 0;
+  for (const plan of plans) {
+    const warnings: string[] = [];
+    try {
+      if (plan.selection.unrecognizedReportNames.length > 0) {
+        warnings.push(
+          `unrecognized report names ignored: ${plan.selection.unrecognizedReportNames.join(" | ")}`
+        );
+      }
+      const parsedReports = [];
+      for (const report of plan.selection.selected) {
+        const html = await readNevadaReportHtmlArtifact(
+          input.artifactDir,
+          electionYear,
+          plan.slug,
+          report.syn
+        );
+        parsedReports.push({
+          report,
+          summary: parseNevadaCandidateReportSummary(html, `${plan.link.filer_name} ${report.reportName}`),
+        });
+      }
+      const cycle = buildNevadaCycleSummary(parsedReports);
+      const periodStart = plan.selection.selected[0].period.start;
+      const periodEnd = cycle.latestPeriodEnd;
+
+      const aggregation = aggregateNevadaDirectContributions({
+        filerKey: plan.link.filer_key,
+        periodStart,
+        periodEnd,
+        contributionRows: contributions.rows,
+        sourceUrl: plan.link.source_url,
+      });
+      const contributionSumCents = aggregation.directContributionTotalCents;
+      if (
+        contributionSumCents < cycle.itemizedContributionFloorCents ||
+        contributionSumCents > cycle.itemizedContributionCeilingCents
+      ) {
+        throw new Error(
+          `contribution reconciliation failed: CSV sum ${contributionSumCents} outside ` +
+            `[${cycle.itemizedContributionFloorCents}, ${cycle.itemizedContributionCeilingCents}] cents`
+        );
+      }
+      let expenditureSumCents = 0;
+      for (const row of expenditures.rows) {
+        if (row.filerKey !== plan.link.filer_key || row.isLegalDefenseFund) continue;
+        if (row.date < periodStart || row.date > periodEnd) continue;
+        expenditureSumCents += row.amountCents;
+      }
+      if (
+        expenditureSumCents < cycle.itemizedExpenseFloorCents ||
+        expenditureSumCents > cycle.itemizedExpenseCeilingCents
+      ) {
+        throw new Error(
+          `expenditure reconciliation failed: CSV sum ${expenditureSumCents} outside ` +
+            `[${cycle.itemizedExpenseFloorCents}, ${cycle.itemizedExpenseCeilingCents}] cents`
+        );
+      }
+      if (cycle.cashOnHandCents < 0) {
+        throw new Error(`negative ending fund balance ${cycle.cashOnHandCents} cents is not storable`);
+      }
+
+      const candidateResult: NevadaImportCandidateResult = {
+        filerName: plan.link.filer_name,
+        status: input.write ? "imported" : "dry_run_ok",
+        reportCount: plan.selection.selected.length,
+        totalReceipts: cycle.totalReceiptsCents / 100,
+        totalDisbursements: cycle.totalDisbursementsCents / 100,
+        cashOnHand: cycle.cashOnHandCents / 100,
+        directContributionTotal: aggregation.directContributionTotalCents / 100,
+        breakdownCount: aggregation.directBreakdowns.length,
+        warnings,
+      };
+      if (input.write) {
+        await replaceNevadaCandidateFinanceSnapshot({
+          db: input.db,
+          link: {
+            candidateId: plan.link.candidate_id,
+            electionId: plan.link.election_id,
+            electionYear,
+            candidateNameNormalized: plan.link.candidate_name_normalized,
+            officeName: plan.link.office_name,
+            district: plan.link.district,
+            filerName: plan.link.filer_name,
+            linkSource: "aurora_search",
+            sourceUrl: plan.link.source_url,
+          },
+          summary: {
+            totalReceipts: cycle.totalReceiptsCents / 100,
+            // The shared loader publishes direct_contribution_total as the
+            // displayed total_raised, so it carries the official line-8 sum
+            // (all contributions, unitemized included); the itemized CSV sum
+            // stays internal to the reconciliation gate and breakdowns.
+            directContributionTotal: cycle.totalReceiptsCents / 100,
+            totalDisbursements: cycle.totalDisbursementsCents / 100,
+            cashOnHand: cycle.cashOnHandCents / 100,
+            sourceUrl: plan.link.source_url,
+          },
+          directBreakdowns: aggregation.directBreakdowns.map((breakdown) => ({
+            categoryType: breakdown.categoryType,
+            categoryName: breakdown.categoryName,
+            amount: breakdown.amount,
+            contributorCount: breakdown.contributorCount,
+            sourceUrl: breakdown.sourceUrl,
+          })),
+        });
+        importedCount += 1;
+      }
+      results.push(candidateResult);
+    } catch (error) {
+      results.push({
+        filerName: plan.link.filer_name,
+        status: "quarantined",
+        reason: error instanceof Error ? error.message : String(error),
+        warnings,
+      });
+    }
+  }
+
+  return {
+    electionYear,
+    linkCount: links.length,
+    monthsLoaded: contributions.monthsLoaded,
+    results,
+    importedCount,
+    quarantinedCount: results.filter((result) => result.status === "quarantined").length,
+  };
+}

@@ -1,0 +1,773 @@
+{
+ "_provenance": "Parsed live from https://www.nvsos.gov/SOSCandidateServices/AnonymousAccess/ViewCCEReport.aspx?syn=<syn> on 2026-08-26 via browser page-context fetch. Candidate-form summary lines 1-13; period = 'This Period' column, cumulative = 'Cumulative From Beginning of Report Period #1' column (null on line 13, whose period cell is empty and whose only value sits in the cumulative column).",
+ "reports": {
+  "lombardo-ce2-2026": {
+   "syn": "VIaXpzflhK1ypCoLWITo6w%253d%253d",
+   "html_len": 882794,
+   "filed": "Jul 15 2026",
+   "summary": {
+    "1": {
+     "period": 2169835.15,
+     "cumulative": 4388590.56
+    },
+    "2": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "3": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "4": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "5": {
+     "period": 105239.54,
+     "cumulative": 203472.25
+    },
+    "6": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "7": {
+     "period": 9413.78,
+     "cumulative": 19593.88
+    },
+    "8": {
+     "period": 2284488.47,
+     "cumulative": 4611656.69
+    },
+    "9": {
+     "period": 3232197.28,
+     "cumulative": 4237285.52
+    },
+    "10": {
+     "period": 105239.54,
+     "cumulative": 203472.25
+    },
+    "11": {
+     "period": 853.07,
+     "cumulative": 1512.35
+    },
+    "12": {
+     "period": 3338289.89,
+     "cumulative": 4442270.12
+    },
+    "13": {
+     "period": 9197364.58,
+     "cumulative": null
+    }
+   }
+  },
+  "lombardo-ce2-ldf-2026": {
+   "syn": "ouXIVy61l2K6K5Hjk8kKTA%253d%253d",
+   "html_len": 76077,
+   "filed": "Jul 15 2026",
+   "summary": {
+    "1": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "2": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "3": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "4": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "5": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "6": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "7": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "8": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "9": {
+     "period": 64307.93,
+     "cumulative": 76070.18
+    },
+    "10": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "11": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "12": {
+     "period": 64307.93,
+     "cumulative": 76070.18
+    },
+    "13": {
+     "period": 0,
+     "cumulative": null
+    }
+   }
+  },
+  "lombardo-annual-2026": {
+   "syn": "VGhlK5fd7GOvZBiGs2jb%252fQ%253d%253d",
+   "html_len": 1204346,
+   "filed": "Jan 15 2026",
+   "period_note": "covers Jan 1 2025 - Dec 31 2025",
+   "summary": {
+    "1": {
+     "period": 4358721.33,
+     "cumulative": 4358721.33
+    },
+    "2": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "3": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "4": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "5": {
+     "period": 111022.27,
+     "cumulative": 111022.27
+    },
+    "6": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "7": {
+     "period": 9420.31,
+     "cumulative": 9420.31
+    },
+    "8": {
+     "period": 4479163.91,
+     "cumulative": 4479163.91
+    },
+    "9": {
+     "period": 900249.22,
+     "cumulative": 900249.22
+    },
+    "10": {
+     "period": 111022.27,
+     "cumulative": 111022.27
+    },
+    "11": {
+     "period": 1119.45,
+     "cumulative": 1119.45
+    },
+    "12": {
+     "period": 1012390.94,
+     "cumulative": 1012390.94
+    },
+    "13": {
+     "period": 9027978.01,
+     "cumulative": null
+    }
+   }
+  },
+  "cannizzaro-ce2-2026": {
+   "syn": "mzPvWm2U7s4rhGbtdSVrAA%253d%253d",
+   "html_len": 405643,
+   "filed": "Jul 15 2026",
+   "summary": {
+    "1": {
+     "period": 562379.39,
+     "cumulative": 823484.65
+    },
+    "2": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "3": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "4": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "5": {
+     "period": 3431.59,
+     "cumulative": 7573.47
+    },
+    "6": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "7": {
+     "period": 23437.96,
+     "cumulative": 34384.78
+    },
+    "8": {
+     "period": 589248.94,
+     "cumulative": 865442.9
+    },
+    "9": {
+     "period": 1331849.44,
+     "cumulative": 1432449.21
+    },
+    "10": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "11": {
+     "period": 221.26,
+     "cumulative": 445.2
+    },
+    "12": {
+     "period": 1332070.7,
+     "cumulative": 1432894.41
+    },
+    "13": {
+     "period": 240195.54,
+     "cumulative": null
+    }
+   }
+  },
+  "cannizzaro-ce1-2026": {
+   "syn": "7QfFDqzFp37vhEVXq9tkkg%253d%253d",
+   "html_len": 256462,
+   "filed": "Apr 15 2026",
+   "summary": {
+    "1": {
+     "period": 261105.26,
+     "cumulative": 261105.26
+    },
+    "2": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "3": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "4": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "5": {
+     "period": 4141.88,
+     "cumulative": 4141.88
+    },
+    "6": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "7": {
+     "period": 10946.82,
+     "cumulative": 10946.82
+    },
+    "8": {
+     "period": 276193.96,
+     "cumulative": 276193.96
+    },
+    "9": {
+     "period": 100599.77,
+     "cumulative": 100599.77
+    },
+    "10": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "11": {
+     "period": 223.94,
+     "cumulative": 223.94
+    },
+    "12": {
+     "period": 100823.71,
+     "cumulative": 100823.71
+    },
+    "13": {
+     "period": 986448.89,
+     "cumulative": null
+    }
+   }
+  },
+  "cannizzaro-annual-2026-amended": {
+   "syn": "LolLUyWgBI0jVQ68PO4I5g%253d%253d",
+   "html_len": 446109,
+   "filed": "Aug 25 2026",
+   "summary": {
+    "1": {
+     "period": 618690.78,
+     "cumulative": 618690.78
+    },
+    "2": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "3": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "4": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "5": {
+     "period": 3689.15,
+     "cumulative": 3689.15
+    },
+    "6": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "7": {
+     "period": 23007.66,
+     "cumulative": 23007.66
+    },
+    "8": {
+     "period": 645387.59,
+     "cumulative": 645387.59
+    },
+    "9": {
+     "period": 237875.3,
+     "cumulative": 237875.3
+    },
+    "10": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "11": {
+     "period": 418.93,
+     "cumulative": 418.93
+    },
+    "12": {
+     "period": 238294.23,
+     "cumulative": 238294.23
+    },
+    "13": {
+     "period": 815319.84,
+     "cumulative": null
+    }
+   }
+  },
+  "cannizzaro-annual-2026-original": {
+   "syn": "H33hKEHOyydot7Rdkhr07A%253d%253d",
+   "html_len": 446159,
+   "filed": "Jan 15 2026",
+   "summary": {
+    "1": {
+     "period": 618690.78,
+     "cumulative": 618690.78
+    },
+    "2": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "3": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "4": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "5": {
+     "period": 3689.15,
+     "cumulative": 3689.15
+    },
+    "6": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "7": {
+     "period": 23007.66,
+     "cumulative": 23007.66
+    },
+    "8": {
+     "period": 645387.59,
+     "cumulative": 645387.59
+    },
+    "9": {
+     "period": 237875.3,
+     "cumulative": 237875.3
+    },
+    "10": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "11": {
+     "period": 418.93,
+     "cumulative": 418.93
+    },
+    "12": {
+     "period": 238294.23,
+     "cumulative": 238294.23
+    },
+    "13": {
+     "period": 815319.84,
+     "cumulative": null
+    }
+   }
+  },
+  "hansen-ce2-2026": {
+   "syn": "lprHC6FfIoXeStbp1YA8Hg%253d%253d",
+   "html_len": 87198,
+   "filed": "Jul 15 2026",
+   "summary": {
+    "1": {
+     "period": 18000,
+     "cumulative": 31500
+    },
+    "2": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "3": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "4": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "5": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "6": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "7": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "8": {
+     "period": 18000,
+     "cumulative": 31500
+    },
+    "9": {
+     "period": 23034.31,
+     "cumulative": 27749.9
+    },
+    "10": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "11": {
+     "period": 1263.82,
+     "cumulative": 2093.49
+    },
+    "12": {
+     "period": 24298.13,
+     "cumulative": 29843.39
+    },
+    "13": {
+     "period": 23678.19,
+     "cumulative": null
+    }
+   }
+  },
+  "hansen-ce1-2026": {
+   "syn": "%252fVQjy2ZzxYgbqo7keLZd6A%253d%253d",
+   "html_len": 79480,
+   "filed": "Apr 15 2026",
+   "summary": {
+    "1": {
+     "period": 13500,
+     "cumulative": 13500
+    },
+    "2": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "3": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "4": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "5": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "6": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "7": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "8": {
+     "period": 13500,
+     "cumulative": 13500
+    },
+    "9": {
+     "period": 4715.59,
+     "cumulative": 4715.59
+    },
+    "10": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "11": {
+     "period": 829.67,
+     "cumulative": 829.67
+    },
+    "12": {
+     "period": 5545.26,
+     "cumulative": 5545.26
+    },
+    "13": {
+     "period": 25920.41,
+     "cumulative": null
+    }
+   }
+  },
+  "hansen-ce4-2024-amended": {
+   "syn": "GobBBA%252buBToYQQlTM08bvQ%253d%253d",
+   "html_len": 106937,
+   "filed": "Jan 10 2026",
+   "summary": {
+    "1": {
+     "period": 35000,
+     "cumulative": 122200
+    },
+    "2": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "3": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "4": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "5": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "6": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "7": {
+     "period": 0,
+     "cumulative": 270
+    },
+    "8": {
+     "period": 35000,
+     "cumulative": 122470
+    },
+    "9": {
+     "period": 42525.29,
+     "cumulative": 103108.05
+    },
+    "10": {
+     "period": 0,
+     "cumulative": 2701.21
+    },
+    "11": {
+     "period": 0,
+     "cumulative": 2283.77
+    },
+    "12": {
+     "period": 42525.29,
+     "cumulative": 108093.03
+    },
+    "13": {
+     "period": 47360.49,
+     "cumulative": null
+    }
+   }
+  },
+  "hansen-ce4-2024-original": {
+   "syn": "Uwqc5XHzC%252fH6IcXNvX0%252bxw%253d%253d",
+   "html_len": 105029,
+   "filed": "Jan 15 2025",
+   "summary": {
+    "1": {
+     "period": 33500,
+     "cumulative": 120700
+    },
+    "2": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "3": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "4": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "5": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "6": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "7": {
+     "period": 0,
+     "cumulative": 270
+    },
+    "8": {
+     "period": 33500,
+     "cumulative": 120970
+    },
+    "9": {
+     "period": 42525.29,
+     "cumulative": 103108.05
+    },
+    "10": {
+     "period": 0,
+     "cumulative": 2701.21
+    },
+    "11": {
+     "period": 423.47,
+     "cumulative": 2707.24
+    },
+    "12": {
+     "period": 42948.76,
+     "cumulative": 108516.5
+    },
+    "13": {
+     "period": 47360.49,
+     "cumulative": null
+    }
+   }
+  },
+  "krasner-ce2-2026": {
+   "syn": "QKsgCQxbZObEnMW5lk1cdg%253d%253d",
+   "html_len": 127007,
+   "filed": "Jul 11 2026",
+   "summary": {
+    "1": {
+     "period": 65729.8,
+     "cumulative": 96479.8
+    },
+    "2": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "3": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "4": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "5": {
+     "period": 950,
+     "cumulative": 950
+    },
+    "6": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "7": {
+     "period": 264.01,
+     "cumulative": 364.01
+    },
+    "8": {
+     "period": 66943.81,
+     "cumulative": 97793.81
+    },
+    "9": {
+     "period": 116527.04,
+     "cumulative": 166483.15
+    },
+    "10": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "11": {
+     "period": 364.22,
+     "cumulative": 972.2
+    },
+    "12": {
+     "period": 116891.26,
+     "cumulative": 167455.35
+    },
+    "13": {
+     "period": 71684.65,
+     "cumulative": null
+    }
+   }
+  },
+  "herndon-ce2-2026": {
+   "syn": "Nnl2mJDoNoQiQu5rh49bgw%253d%253d",
+   "html_len": 75997,
+   "filed": "Jul 14 2026",
+   "summary": {
+    "1": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "2": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "3": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "4": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "5": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "6": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "7": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "8": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "9": {
+     "period": 308.9,
+     "cumulative": 3705.44
+    },
+    "10": {
+     "period": 0,
+     "cumulative": 0
+    },
+    "11": {
+     "period": 402.29,
+     "cumulative": 560.95
+    },
+    "12": {
+     "period": 711.19,
+     "cumulative": 4266.39
+    },
+    "13": {
+     "period": 9269.5,
+     "cumulative": null
+    }
+   }
+  }
+ }
+}

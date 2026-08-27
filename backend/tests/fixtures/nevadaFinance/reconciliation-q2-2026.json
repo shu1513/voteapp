@@ -1,0 +1,87 @@
+{
+ "_provenance": "Contribution/expenditure searches with 'Export Results to CSV Only', window 4/1/2026-6/30/2026, run live 2026-08-26. Sums grouped by exact Recipient/Payer; [LDF] = rows whose Report contains 'Legal Defense Fund'.",
+ "rule": "itemized CSV sum: lines(1+5) <= sum <= lines(1+5+7) for contributions; lines(9+10) <= sum <= lines(9+10+11) for expenditures. Filers MAY itemize <=$100 transactions (Krasner did; the others did not). Headline totals must come from summary lines 8/12, never from CSV sums.",
+ "results": {
+  "lombardo": {
+   "cont": {
+    "rows": 864,
+    "sum": 2275074.69,
+    "expected_1_plus_5": 2275074.69,
+    "verdict": "exact at 1+5"
+   },
+   "exp": {
+    "rows": 259,
+    "sum": 3337436.82,
+    "ldf_rows": 2,
+    "ldf_sum": 64307.93,
+    "expected_9_plus_10": 3337436.82,
+    "ldf_expected_line9": 64307.93,
+    "verdict": "exact at 9+10; LDF rows separately equal LDF report line 9"
+   }
+  },
+  "cannizzaro": {
+   "cont": {
+    "rows": 324,
+    "sum": 565810.98,
+    "expected_1_plus_5": 565810.98,
+    "verdict": "exact at 1+5"
+   },
+   "exp": {
+    "rows": 153,
+    "sum": 1331849.44,
+    "expected_9_plus_10": 1331849.44,
+    "verdict": "exact at 9+10"
+   }
+  },
+  "hansen": {
+   "cont": {
+    "rows": 11,
+    "sum": 18000.0,
+    "expected_1_plus_5": 18000.0,
+    "verdict": "exact at 1+5"
+   },
+   "exp": {
+    "rows": 12,
+    "sum": 23034.31,
+    "expected_9_plus_10": 23034.31,
+    "verdict": "exact at 9+10"
+   }
+  },
+  "krasner": {
+   "cont": {
+    "rows": 35,
+    "sum": 66943.81,
+    "expected_1_plus_5": 66679.8,
+    "line7": 264.01,
+    "verdict": "exact at 1+5+7 (filer itemized the <=$100 money)"
+   },
+   "exp": {
+    "rows": 46,
+    "sum": 116891.26,
+    "expected_9_plus_10": 116527.04,
+    "line11": 364.22,
+    "verdict": "exact at 9+10+11"
+   }
+  },
+  "herndon": {
+   "cont": {
+    "rows": 0,
+    "sum": 0,
+    "expected_1_plus_5": 0,
+    "verdict": "empty export = header-only CSV"
+   },
+   "exp": {
+    "rows": 2,
+    "sum": 308.9,
+    "expected_9_plus_10": 308.9,
+    "verdict": "exact at 9+10"
+   }
+  }
+ },
+ "additivity_checks": {
+  "cannizzaro": "CE1 period line1 261105.26 + CE2 period line1 562379.39 = CE2 cumulative line1 823484.65; line9 100599.77 + 1331849.44 = 1432449.21",
+  "hansen": "CE1 13500 + CE2 18000 = CE2 cumulative 31500 (line1); 4715.59 + 23034.31 = 27749.90 (line9)"
+ },
+ "annual_semantics": "On Annual CE Filings (period = full prior calendar year), the This-Period and Cumulative columns are identical: the filing is self-contained and NOT part of the CE#1-#4 cumulative chain (CE#1 cumulative == CE#1 period, i.e. the chain restarts each election year).",
+ "amended_semantics": "hansen CE4-2024 amended differs from original (line1 35000 vs 33500; line11 0 vs 423.47); cannizzaro annual-2026 amended kept identical totals (itemization-only amendment). Transaction search returns ONLY the amended report's rows."
+}
