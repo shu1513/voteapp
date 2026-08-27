@@ -96,3 +96,17 @@ Gaps in that report (found here, not there):
 - **Launch-checklist addition**: new sources also need a `FINANCE_SOURCE_HOME_URLS` entry in `packages/api-client/src/finance.ts` (missed by the label-only checklist).
 - Per-state finance snapshot tables are never promoted to prod — prod data comes from running the sync against production (promote scripts only carry `finance_committee_labels`).
 
+## Phase 0 results (2026-08-26, probe `npm run alabama-candidates:finance:phase-zero`)
+
+**PASSED — all gates green** (`ok: true`). Code: `backend/src/pipeline/alabamaFinance/` + `backend/src/scripts/probeAlabamaCampaignFinance.ts`.
+
+- **Authority contract established and gated**: a race row's MONETARYCONTRIB / NONMONETARYCONTRIB / MONETARYEXP each equal the sum of the committee's filed report covers, cent-exact — verified on Jones (23 filings, incl. a Major Contribution Report filed mid-probe), Tuberville (99 filings), Boyd (15 filings, 10 amended). This replaces extract-sum reconciliation as the Phase 0 gate.
+- **Extracts can UNDERCOUNT**: rows present in filed covers can be absent from every annual extract file (Tuberville: $150,000.00 cash; Boyd: $244.40 expenditures — checked 2017–2026). Extract completeness is a coverage ratio (observed 0.989–1.0), not an exactness invariant. Totals must come from the race API / covers; extracts serve contribution-size buckets only, with coverage reported.
+- **2024 extract needed**: a 2025-registered committee reported a 2024-dated contribution (Boyd, $20.00) that lives in the 2024 file. Sync extract-year window = transaction-date years, not committee life.
+- **Amendment semantics safe**: the filings list returns one row per report (current version); Σ covers == race even with 10 amended filings. `Amended=Y` extract rows are current versions (kept).
+- **Major Contribution Report cover layout** differs: `Total Cash Contribution / Total In-Kind Contributions / Total Receipt from Other Sources`, no expenditures/ending balance. Parser handles both layouts.
+- **Portal intermittently serves System Exception pages** on filing-detail fetches — retry (3 attempts) required; with it, zero unparsed covers.
+- **Other Receipts extract == race OTHERSOURCES cent-exact** (Tuberville $125,319.78 = 2025+2026 files; Boyd $220.11). Interest/refund receipts live there, not in cash.
+- Identity residuals (report-only): ENDINGFUNDS − (begin+cash+other−exp) = $500.00 (Jones), $324.70 (Boyd), $0.00 (Tuberville) — all three components individually cover-exact, so the residual sits in the balance columns; `cashOnHand` should prefer the filing-chain ending balance if this matters at sync time.
+- Quarantine counts by the probe's parser match the earlier python probes exactly (2026 exp: 829 of 34,457; 2026 cash: 4).
+

@@ -64,6 +64,8 @@ Freshness note: race API is live; extracts lag to ~02:32 AM. A raised-total drif
 
 ## Phase 0: reconciliation probe (no schema, no flags)
 
+**STATUS: DONE 2026-08-26 — PASSED** (`npm run alabama-candidates:finance:phase-zero`, `ok: true`). Key outcome: the gate became the **authority contract** — race totals == Σ filed-report covers, cent-exact (verified 3 fixtures incl. 99-filing Tuberville and 10-amendment Boyd) — while extracts get a coverage ratio (observed 0.989–1.0; they can miss rows covers contain). Full findings in `backend/docs/alabama-campaign-finance.md` §Phase 0 results. Consequences for later phases: totals from race API, buckets from extracts with coverage reported; extract-year window = transaction-date years (2024 file needed); Major Contribution Report covers have a reduced layout; filing-detail fetches need retries.
+
 Script `npm run alabama:finance:phase0` (pattern: `newHampshirePhaseZero.ts`). Must demonstrate, against live data:
 
 1. Race rows for ≥3 offices (Governor + one legislative chamber + one judicial) enumerate correctly from scraped dropdown ids under election 160.
