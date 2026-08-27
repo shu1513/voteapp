@@ -111,6 +111,25 @@ describe("App account nav", () => {
     expect(trigger).toHaveFocus();
   });
 
+  it("signing out on the landing hands focus to main, not <body>", async () => {
+    // Same-page sign-out is the one path the route-focus effect can't cover:
+    // the pathname stays "/", the menu (holding the focused button) unmounts
+    // with the session, and without the explicit focus hand-off the focus
+    // would drop to <body>.
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/auth/logout-all": { body: { status: "ok" } },
+    });
+    renderApp();
+
+    await userEvent.click(await screen.findByRole("button", { name: /Hi Sam/ }));
+    await userEvent.click(screen.getByRole("button", { name: "Sign Out" }));
+
+    // Session gone: the guest header replaces the account menu.
+    expect(await screen.findByRole("link", { name: "Sign up" })).toBeInTheDocument();
+    expect(screen.getByRole("main")).toHaveFocus();
+  });
+
   it("closes the account menu when a menu link navigates", async () => {
     stubApiRoutes({ "/api/me": { body: ME_VERIFIED } });
     renderApp();

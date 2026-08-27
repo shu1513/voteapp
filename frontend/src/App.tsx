@@ -31,6 +31,11 @@ function AccountMenu({ firstName }: { firstName: string }) {
       queryClient.setQueryData(["me"], null);
       purgeAccountScopedQueries(queryClient);
       navigate("/");
+      // Signing out while already on "/" keeps the pathname unchanged, so
+      // the route-focus effect never fires — and this whole menu (with the
+      // focused button) unmounts, dropping focus to <body>. Hand focus to
+      // <main> ourselves; on other pages the effect targets it anyway.
+      document.getElementById("main")?.focus({ preventScroll: true });
     },
   });
 
