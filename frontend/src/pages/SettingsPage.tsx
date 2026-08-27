@@ -12,9 +12,10 @@ import { purgeAccountScopedQueries, useMe, type Me } from "@voteapp/api-client";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 // Account settings. Sections mirror the backend's gating: profile, password,
-// email change, sign-out, and delete work for unverified users too (fixing a
-// typo or leaving must not require a verified inbox); email preferences and
-// the ranked issue editor are verified-only and hidden until then.
+// email change, and delete work for unverified users too (fixing a typo or
+// leaving must not require a verified inbox); email preferences and the
+// ranked issue editor are verified-only and hidden until then. Sign Out
+// lives in the header account menu (App.tsx), not here.
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -329,39 +330,6 @@ function EmailPreferencesSection() {
   );
 }
 
-function SignOutSection() {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  // Signs out everywhere (all devices), not just this session: one button is
-  // simpler for non-technical users than a this-device/everywhere pair.
-  const logoutAll = useMutation({
-    mutationFn: () => apiRequest<{ status: string }>("/api/auth/logout-all", { method: "POST", body: {} }),
-    onSuccess: () => {
-      queryClient.setQueryData(["me"], null);
-      purgeAccountScopedQueries(queryClient);
-      navigate("/");
-    },
-  });
-
-  return (
-    <div>
-      <button
-        type="button"
-        disabled={logoutAll.isPending}
-        onClick={() => logoutAll.mutate()}
-        className="rounded-lg border border-line bg-white px-4 py-2 text-sm font-semibold text-ink transition hover:border-rausch"
-      >
-        {logoutAll.isPending ? "Signing out…" : "Sign out"}
-      </button>
-      {logoutAll.isError ? (
-        <div className="mt-2">
-          <ErrorNotice error={logoutAll.error} />
-        </div>
-      ) : null}
-    </div>
-  );
-}
-
 function DangerSection() {
   const [password, setPassword] = useState("");
   const [confirming, setConfirming] = useState(false);
@@ -492,7 +460,6 @@ export function SettingsPage() {
       ) : (
         <AddPasswordSection me={me} />
       )}
-      <SignOutSection />
       {me.has_password ? <DangerSection /> : null}
     </div>
   );
