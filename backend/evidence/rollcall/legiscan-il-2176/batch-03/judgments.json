@@ -1,0 +1,58 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "IL",
+   "chamber": "senate",
+   "session": "2176",
+   "roll": 1716945,
+   "measure_id": "HB 5024",
+   "vote_date": "2026-05-31",
+   "official_vote_date": "2026-06-01",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H.B. 5024, which barred locating, constructing, or operating a detention center facility within 1,500 feet of the property boundary of a school, day care center or home, cemetery, public park, forest preserve, public housing, private residence, or place of religious worship, regardless of the address used. As passed, the definition of a detention center facility covers facilities of units of government as well as of federal immigration authorities. The Illinois Senate passed it 39-17 and it became law.",
+   "nay_description": "Voted against passing H.B. 5024, which barred locating, constructing, or operating a detention center facility within 1,500 feet of the property boundary of a school, day care center or home, cemetery, public park, forest preserve, public housing, private residence, or place of religious worship, regardless of the address used. As passed, the definition of a detention center facility covers facilities of units of government as well as of federal immigration authorities. The Illinois Senate passed it 39-17 and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "IL",
+   "chamber": "senate",
+   "session": "2176",
+   "roll": 1582772,
+   "measure_id": "SB 2437",
+   "vote_date": "2025-05-31",
+   "official_vote_date": "2025-06-01",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the House's version of S.B. 2437, which required hospitals with licensed obstetric beds and birthing centers to adopt written policies, within six months, letting a Medicaid patient have a Medicaid-enrolled doula of their choice accompany them before, during, and after childbirth without counting against any support-person limit. The bill also extended medical assistance to foreign-born victims of human trafficking, torture, and other serious crimes and their family members, added coverage for over-the-counter choline supplements during pregnancy, required quarterly reporting on compliance with the existing ban on prior authorization for FDA-approved mental-illness drugs, and created the Certified Family Health Aide Program letting a legally responsible caregiver be certified to provide nursing-type care. The Illinois Senate agreed 36-19 and it became law. The Senate had passed a narrower doula-only version 56-0 in April, before the bill was expanded into this Medicaid package.",
+   "nay_description": "Voted against agreeing to the House's version of S.B. 2437, which required hospitals with licensed obstetric beds and birthing centers to adopt written policies, within six months, letting a Medicaid patient have a Medicaid-enrolled doula of their choice accompany them before, during, and after childbirth without counting against any support-person limit. The bill also extended medical assistance to foreign-born victims of human trafficking, torture, and other serious crimes and their family members, added coverage for over-the-counter choline supplements during pregnancy, required quarterly reporting on compliance with the existing ban on prior authorization for FDA-approved mental-illness drugs, and created the Certified Family Health Aide Program letting a legally responsible caregiver be certified to provide nursing-type care. The Illinois Senate agreed 36-19 and it became law. The Senate had passed a narrower doula-only version 56-0 in April, before the bill was expanded into this Medicaid package.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "IL",
+   "chamber": "house",
+   "session": "2176",
+   "roll": 1719024,
+   "measure_id": "HB 5090",
+   "vote_date": "2026-05-31",
+   "official_vote_date": "2026-06-01",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Senate's version of H.B. 5090, the Transportation Network Driver Labor Relations Act, which gave rideshare drivers the right to self-organize, to form or join a driver organization, and to bargain collectively, required the Illinois Labor Relations Board to certify an exclusive bargaining representative for the driver unit and required covered companies to bargain over mandatory subjects, set out unfair work practice rules and impasse procedures, and imposed a per-trip fee on every trip originating in Illinois payable into a new Rideshare Workers Support Fund. The Illinois House agreed 83-28 and it became law. The Senate had replaced the bill's original construction-procurement text with this labor act on the last night of session.",
+   "nay_description": "Voted against agreeing to the Senate's version of H.B. 5090, the Transportation Network Driver Labor Relations Act, which gave rideshare drivers the right to self-organize, to form or join a driver organization, and to bargain collectively, required the Illinois Labor Relations Board to certify an exclusive bargaining representative for the driver unit and required covered companies to bargain over mandatory subjects, set out unfair work practice rules and impasse procedures, and imposed a per-trip fee on every trip originating in Illinois payable into a new Rideshare Workers Support Fund. The Illinois House agreed 83-28 and it became law. The Senate had replaced the bill's original construction-procurement text with this labor act on the last night of session.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for"
+    }
+   ]
+  }
+ ]
+}
