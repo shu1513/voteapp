@@ -285,9 +285,10 @@ describe("legiscanRollCallPageUrl", () => {
 
 describe("getLegiscanStateConfig", () => {
   it("serves only surveyed states; an unsurveyed state is refused by name", () => {
-    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual(["GA", "TX", "FL"]);
+    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual(["GA", "IL", "TX", "FL"]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("GA").sessionId).toBe(2167);
+    expect(getLegiscanStateConfig("IL").sessionId).toBe(2176);
     expect(getLegiscanStateConfig("FL").sessionId).toBe(2135);
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("PA")).toThrow("no LegiScan state config for PA");
@@ -408,6 +409,43 @@ describe("getLegiscanStateConfig", () => {
     // Every other committee is cut by tally in both chambers.
     expect(fl("House Budget Committee", 30).reason).toBe("committee_tally:30/120");
     expect(fl("Senate Fiscal Policy", 19, "senate").reason).toBe("committee_tally:19/40");
+  });
+
+  it("classifies Illinois's real desc vocabulary as surveyed", () => {
+    const config = LEGISCAN_STATE_CONFIGS.IL!;
+    const il = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
+      classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+    // Both spellings of each floor family: LegiScan reworded them mid-dataset
+    // (2025 spring = "<question> in <Chamber>", 2025 fall on = "<Chamber> <question>").
+    expect(il("Third Reading in House", 117)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(il("House Third Reading", 114)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(il("Third Reading in Senate", 59, "senate")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(il("Senate Third Reading", 59, "senate")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(il("Concurrence in House", 115).questionClass).toBe("concurrence");
+    expect(il("House Concurrence", 108).questionClass).toBe("concurrence");
+    expect(il("Concurrence in Senate", 59, "senate").questionClass).toBe("concurrence");
+    expect(il("Senate Concurrence", 59, "senate").questionClass).toBe("concurrence");
+    // Every committee desc ends in the literal word — including the doubled
+    // one the clerk actually prints — so committees are excluded by rule.
+    for (const desc of [
+      "House Executive Committee",
+      "Senate Judiciary Committee",
+      "House Police &amp; Fire Committee Committee",
+      "House Tax Policy: Sales Tax Subcommittee Committee",
+    ]) {
+      expect(il(desc, 12).reason, desc).toBe("excluded_question");
+    }
+    // Resolution adoptions can never clear the became-law filter.
+    expect(il("Senate Motion To Adopt", 59, "senate").reason).toBe("excluded_question");
+    expect(il("Motion To Adopt in Senate", 59, "senate").reason).toBe("excluded_question");
+    // The Motion bucket mixes real passages, procedural motions and the
+    // amendatory-veto votes: surfaced for a human, never auto-kept.
+    for (const desc of ["Motion in Senate", "Motion in House", "House Motion", "Senate Motion"]) {
+      expect(il(desc, 117), desc).toMatchObject({ isFloorVote: null, reason: "unknown_question" });
+    }
+    // The only JRCA floor roll in the dataset, and the consent calendars.
+    expect(il("House Amendments", 115)).toMatchObject({ isFloorVote: null, reason: "unknown_question" });
+    expect(il("Agreed Bill List in Senate", 59, "senate")).toMatchObject({ isFloorVote: null });
   });
 
   it("refuses a state that has its own pipeline, whatever the spelling", () => {

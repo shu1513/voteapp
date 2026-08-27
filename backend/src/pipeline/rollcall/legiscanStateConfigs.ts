@@ -119,6 +119,49 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       /^point of order/,
     ],
   },
+  // Illinois 104th General Assembly (2025-2026, both years in one dataset).
+  // Vocabulary measured from the full dataset survey 2026-08-26: 12,073 bills,
+  // 9,077 roll calls, 181 people (121 distinct HD + 60 distinct SD holders over
+  // the biennium; the chambers seat 118 + 59).
+  //
+  // What the survey established:
+  // - Illinois passes bills on THIRD READING and prints the plainest desc
+  //   vocabulary of any state surveyed so far: 104 distinct descs, no per-roll
+  //   id suffix (Texas), no ` : House Vote #<n>` suffix (Georgia).
+  // - **Every committee desc ends in the literal word `Committee`** — including
+  //   the mis-typed `House Police & Fire Committee Committee` — so committee
+  //   votes are excluded by RULE here, not left to the tally heuristic alone.
+  // - **Each floor family is printed in TWO SPELLINGS, split by date and never
+  //   overlapping**: `Third Reading in House` (2025-04..2025-05) became
+  //   `House Third Reading` (2025-10..2026-05) when LegiScan changed its
+  //   formatting mid-dataset; same for Concurrence and Motion. Both spellings
+  //   are required. Verified they never describe the same physical vote: over
+  //   all 9,077 rolls there is no (chamber, bill, date, tally, member-list)
+  //   group carrying more than one desc, so keeping both cannot double-count.
+  // - Deliberately NOT excluded, so they stay surfaced for a human: the
+  //   `Motion in House/Senate` + `House/Senate Motion` family (213 rolls). It
+  //   is a garbage bucket — it holds genuine third-reading passages, motions to
+  //   reconsider, Note Act motions AND the amendatory-veto votes (Illinois's
+  //   distinctive override question), and the desc alone cannot separate them.
+  //   `Agreed Bill List` (2) and `House Amendments` (1) are surfaced for the
+  //   same reason; the latter is the only JRCA floor roll in the dataset
+  //   (HJRCA 28, House 74-38, never voted by the Senate, so no constitutional
+  //   amendment from this GA reached the ballot).
+  // - Resolution ADOPTION motions (`Senate Motion To Adopt`, `Motion To Adopt
+  //   in Senate`, 31 rolls) attach only to JR/R measures. Illinois joint
+  //   resolutions are never presented to the governor, so they can never clear
+  //   the campaign's became-law filter; excluded by rule to keep the surfaced
+  //   queue readable.
+  IL: {
+    jurisdiction: "IL",
+    sessionId: 2176,
+    chamberSizes: { house: 118, senate: 59 },
+    keptQuestions: [
+      { pattern: /^(?:third reading in (?:house|senate)|(?:house|senate) third reading)$/, questionClass: "passage" },
+      { pattern: /^(?:concurrence in (?:house|senate)|(?:house|senate) concurrence)$/, questionClass: "concurrence" },
+    ],
+    excludedQuestions: [/committee$/, /^(?:senate motion to adopt|motion to adopt in senate)$/],
+  },
   // Texas 89th Legislature, Regular Session (sine die). Vocabulary measured
   // from the full dataset survey 2026-08-24: 11,503 bills, 9,726 roll
   // calls, 181 people (= 150 House + 31 Senate). Registry pins the regular
