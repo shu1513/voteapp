@@ -33,10 +33,12 @@ July, the superseded memo said January.
 - The Senate voted on 2025-04-10 (24-8) on SA0302 as modified by SA0381: amendments to
   **§ 40-29-202**, the certificate-of-restoration route.
 - The House voted on 2026-03-09 (64-24) on HA0602, a delete-all substitute amending
-  **§ 40-29-102** instead. (LegiScan dates the roll 03-09; the official history prints
-  the passage line under 03/10 — a one-day journal offset. The imported `vote_date`
-  follows the roll.) That is what became law (PC 605), and the Senate concurred 31-1
-  on March 13 — a lopsided vote that is not in this batch.
+  **§ 40-29-102** instead. The official bill page and LegiScan agree on March 9; an
+  earlier draft of this note claimed the official history said 03/10 and called 03-09
+  a "journal offset" — that was a scraping off-by-one (the history table prints the
+  action cell before the date cell), not a real discrepancy. That is what became law
+  (PC 605), and the Senate concurred 31-1 on March 12 — a lopsided vote that is not
+  in this batch.
 
 The Senate's description says it voted the Senate's version and names what later
 changed; the House's description describes the enacted text. Both carry
