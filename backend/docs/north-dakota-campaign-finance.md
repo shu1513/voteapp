@@ -9,12 +9,20 @@ itemized rows in 2025, 8% in 2026 so far.)
 ## System
 
 - New portal: **https://cfrs.sos.nd.gov** (React SPA, "CFRS", Civix-family;
-  launched ~2025). Old vip.sos.nd.gov portal is dead ("site no longer active").
+  launched 2026-01-01). Old vip.sos.nd.gov portal is dead ("site no longer active").
 - JSON API base: `https://cfrs.sos.nd.gov/api/Public-Service/...` — anonymous,
-  no auth. **WAF blocks plain curl** (403 + TLS interception weirdness from this
-  network); calls made from browser context work. An adapter should try Node
-  `fetch` with browser-ish UA first; if 403, the bulk-CSV route below goes
-  through presigned S3 URLs which are WAF-free once obtained.
+  no auth. **Node transport SOLVED (verified live 2026-08-26, all endpoints 200
+  from plain Node fetch):** two requirements —
+  1. **TLS**: the server sends a broken chain (the leaf certificate twice, no
+     intermediate), so Node/curl fail with `UNABLE_TO_VERIFY_LEAF_SIGNATURE`.
+     Fix: pin the Sectigo intermediate ("Sectigo Public Server Authentication
+     CA OV R36", from the leaf's AIA URL
+     http://crt.sectigo.com/SectigoPublicServerAuthenticationCAOVR36.crt) via
+     `NODE_EXTRA_CA_CERTS` or an agent `ca` option. Browsers tolerate the
+     broken chain, which is why browser-context calls always worked.
+  2. **Headers**: `User-Agent: Mozilla/5.0` + `Origin`/`Referer` of the portal
+     (NH Akamai lesson; plain curl UA gets WAF 403).
+  Presigned S3 URLs need neither (normal chain, no WAF).
 - ND historically had NO expenditure disclosure. CFRS-era data (2025+) includes
   expenditures. Bulk data exists only for 2025 and 2026 (registrations back to
   2014). Fine for the Nov-2026 use case.
@@ -72,16 +80,36 @@ lump rows; cover-sheet reconciliation possible via Filed reports PDFs if wanted)
 
 ## Outside spending (support / oppose) — YES
 
+- **Transaction API contract PINNED (verified live 2026-08-26 from Node):**
+  `POST /api/Public-Service/CommitteeTransactions/getAllPublicTransactionDataList`
+  with body `{pageNumber, pageSize, transactionCategory, sortColumn:
+  "transactionDate", sortDirection: "DESC", transactionYear: ""}` where
+  `transactionCategory` = `"CON"` (5,340 contributions), `"EXP"` (635
+  expenditures), or `"IE"` **plus `orgTypeCode: "104"`** (52 IE rows — without
+  orgTypeCode, `"IE"` falls through to all 6,027 transactions). Codes from the
+  SPA enums: category CON/EXP/IE; orgTypeCode 101 candidate cmte / 102 SPAC /
+  103 PAC / 104 IE cmte / 105 ECC. Unknown members 400 with a
+  could-not-find-member error naming them; unknown VALUES silently return the
+  default dataset — distinguish 0-rows from filter-ignored by checking a known
+  fixture. Contribution rows carry `employerOccupation` (populated on $5k+
+  individual rows).
 - Stances: `GET /api/Public-Service/CommitteeTransactions/getStanceForPublic`
   → `SU` Support / `OP` Oppose.
-- IE transactions: `POST
-  /api/Public-Service/CommitteeTransactions/getAllPublicTransactionDataList`
-  (the trackfinance?tab=IE page's call) → rows with `stanceDescription`,
-  `candidateNameAssocation` (sic), `committeeName`, `transactionAmount`,
-  `transactionDate`, `electionYear`, `orgType:"Independent Expenditure
-  Committee"`, `transactionTotalYTD`, and a per-filing PDF
-  (`s3ReportFilePath`). 52 rows / $208,647 for 2026 at probe time.
+- IE rows: `stanceDescription`, `candidateNameAssocation` (sic),
+  `committeeName`, `transactionAmount`, `transactionDate`, `electionYear`,
+  `transactionTotalYTD`, distinct `transactionID` per row, `amendedFlag`,
+  `reportVersionID`, per-filing PDF (`s3ReportFilePath`). 2026 at probe time:
+  52 rows, 52 distinct transactionIDs, 3 committees, 26 candidates, all
+  Support.
 - IE chart: `GET .../getIndependentExpenditureChartData`.
+- **Gotcha: `transactionTotalYTD` is the REPORT total, not year-to-date.**
+  StrongND Fund has two filings: May 29 ($44,281.36, one row, control
+  44,281.36) and June 4 (25 rows, control 153,999.98). Each filing's rows sum
+  to its OWN control cent-exact; the committee's true 2026 total is the sum of
+  unique rows across filings ($198,281.34), which no single "YTD" value
+  reports. Reconciliation rule: group rows by `s3ReportFilePath`, require
+  sum(rows) == that report's `transactionTotalYTD`; committee totals = sum of
+  unique `transactionID`s.
 - **Rows are per-candidate ALLOCATIONS (corrected 2026-08-26 after review).**
   StrongND Fund's rows sum exactly to the filing's YTD control: 7 × $16,857.14 +
   18 × $2,000 = $153,999.98 = `transactionTotalYTD`, each row with its own
