@@ -24,6 +24,8 @@ vi.mock("undici", () => ({
 
 import {
   classifyCitationVerificationFailure,
+  decodeLatin1MisreadHeader,
+  isResourceChangingRedirect,
   isTlsCertificateReachabilityFailure,
   resetCitationHostCooldownsForTests,
   verifyHttpUrlReachability,
@@ -68,8 +70,91 @@ describe("urlReachability", () => {
   });
 });
 
+describe("decodeLatin1MisreadHeader", () => {
+  it("recovers UTF-8 bytes that were surfaced as latin-1", () => {
+    expect(decodeLatin1MisreadHeader("/News/Ford\u00c2\u00a0Secure")).toBe("/News/Ford\u00a0Secure");
+  });
+
+  it("leaves pure ASCII untouched", () => {
+    expect(decodeLatin1MisreadHeader("/plain/path?a=1")).toBe("/plain/path?a=1");
+  });
+
+  it("leaves bytes that are not valid UTF-8 untouched", () => {
+    // 0xFF never starts a valid UTF-8 sequence, so strict decoding rejects it
+    // and a genuine latin-1 path survives.
+    const latin1Only = "/caf\u00ff";
+    expect(decodeLatin1MisreadHeader(latin1Only)).toBe(latin1Only);
+  });
+
+  it("leaves an already-correct non-latin1 string untouched", () => {
+    expect(decodeLatin1MisreadHeader("/\u4e2d\u6587")).toBe("/\u4e2d\u6587");
+  });
+
+  it("leaves a mixed string (mojibake run plus a real wide char) untouched", () => {
+    // A char above 0xFF proves the value was never a latin-1 byte read, so
+    // the mojibake-looking prefix must NOT be reinterpreted \u2014 partial
+    // decoding would corrupt the value.
+    const mixed = "/a\u00c2\u00a0\u4e2d";
+    expect(decodeLatin1MisreadHeader(mixed)).toBe(mixed);
+  });
+});
+
+describe("isResourceChangingRedirect", () => {
+  it("ignores scheme upgrades and trailing-slash canonicalization", () => {
+    expect(isResourceChangingRedirect("http://example.gov/a", "https://example.gov/a")).toBe(false);
+    expect(isResourceChangingRedirect("https://example.gov/a", "https://example.gov/a/")).toBe(
+      false
+    );
+    expect(isResourceChangingRedirect("https://EXAMPLE.gov/a", "https://example.gov/a")).toBe(false);
+  });
+
+  it("ignores apex <-> www canonicalization when the path and query match", () => {
+    expect(
+      isResourceChangingRedirect("https://example.gov/a", "https://www.example.gov/a")
+    ).toBe(false);
+    expect(
+      isResourceChangingRedirect("https://www.example.gov/a", "https://example.gov/a")
+    ).toBe(false);
+    // The combined common case: bare http apex -> canonical https www.
+    expect(
+      isResourceChangingRedirect("http://example.gov/a", "https://www.example.gov/a/")
+    ).toBe(false);
+    // www with a DIFFERENT path is a move, not canonicalization.
+    expect(
+      isResourceChangingRedirect("https://example.gov/a", "https://www.example.gov/Error")
+    ).toBe(true);
+  });
+
+  it("flags host, path and query changes", () => {
+    expect(isResourceChangingRedirect("https://example.gov/a", "https://cdn.example.gov/a")).toBe(
+      true
+    );
+    expect(isResourceChangingRedirect("https://example.gov/a", "https://example.gov/Error")).toBe(
+      true
+    );
+    expect(isResourceChangingRedirect("https://example.gov/a?x=1", "https://example.gov/a")).toBe(
+      true
+    );
+  });
+
+  it("flags a port change and a scheme downgrade", () => {
+    expect(
+      isResourceChangingRedirect("https://example.gov/a", "https://example.gov:8443/a")
+    ).toBe(true);
+    expect(isResourceChangingRedirect("https://example.gov/a", "http://example.gov/a")).toBe(true);
+  });
+
+  it("treats unparseable input as changed so the confirming GET still runs", () => {
+    expect(isResourceChangingRedirect("not a url", "https://example.gov/a")).toBe(true);
+  });
+});
+
 describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
   beforeEach(() => {
+    // Cooldowns AND GET-preferred hosts are module-global; several tests
+    // below (redirect confirmation, 429s) record hosts like example.gov that
+    // other tests reuse, so every test starts from a clean slate.
+    resetCitationHostCooldownsForTests();
     agentCloseMock.mockReset();
     agentCloseMock.mockResolvedValue(undefined);
     agentOptionsMock.mockReset();
@@ -466,6 +551,86 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
     expect(result.ok).toBe(true);
   });
 
+  it("confirms with GET when a succeeding HEAD was redirected onto an error page (OLIS)", async () => {
+    // Live behaviour: olis.oregonlegislature.gov 302s every HEAD of a measure
+    // overview to /liz/<session>/Error, which answers 200. Trusting HEAD's
+    // chain stores the error page as the citation.
+    const overview = "https://olis.oregonlegislature.gov/liz/2025R1/Measures/Overview/HB2545";
+    const errorPage = "https://olis.oregonlegislature.gov/liz/2025R1/Error";
+    const { calls } = stubFetch((method, url) => {
+      if (method === "HEAD" && url === overview) {
+        return { status: 302, location: errorPage };
+      }
+      return { status: 200 };
+    });
+
+    const result = await verifyHttpUrlReachability(overview);
+
+    expect(calls.map((call) => call.method)).toEqual(["HEAD", "HEAD", "GET"]);
+    expect(result.ok).toBe(true);
+    expect(result.ok && result.finalUrl).toBe(overview);
+
+    // The host's HEAD answers are misleading by demonstration, so it is
+    // marked GET-preferred: the next URL on it skips the wasted HEAD walk.
+    const second = await verifyHttpUrlReachability(
+      "https://olis.oregonlegislature.gov/liz/2025R1/Measures/Overview/HB2541"
+    );
+    expect(second.ok).toBe(true);
+    expect(calls.map((call) => call.method)).toEqual(["HEAD", "HEAD", "GET", "GET"]);
+  });
+
+  it("accepts an allowlisted 403 behind a resource-changing redirect without a confirming GET", async () => {
+    // The caller's allowlist (403 anti-bot default) already declared this
+    // status acceptable; a confirming GET could only flip acceptance into a
+    // failure (WAFs often escalate GET harder than HEAD).
+    const { calls } = stubFetch((_method, url) => {
+      if (url === "https://example.gov/wafd") {
+        return { status: 302, location: "https://example.gov/blocked" };
+      }
+      return { status: 403 };
+    });
+
+    const result = await verifyHttpUrlReachability("https://example.gov/wafd");
+
+    expect(calls.map((call) => call.method)).toEqual(["HEAD", "HEAD"]);
+    expect(result.ok).toBe(true);
+  });
+
+  it("resolves a redirect whose Location header arrived as mis-decoded UTF-8", async () => {
+    // Live: ag.nv.gov answers the slashless press-release path with a 301
+    // whose Location holds raw UTF-8 bytes for a non-breaking space.
+    const misdecoded = "/News/PR/2026/Ford\u00c2\u00a0Secure/";
+    const { calls } = stubFetch((_method, url) =>
+      url === "https://ag.example.gov/News/PR/2026/Ford%C2%A0Secure"
+        ? { status: 301, location: misdecoded }
+        : { status: 200 }
+    );
+
+    const result = await verifyHttpUrlReachability(
+      "https://ag.example.gov/News/PR/2026/Ford%C2%A0Secure"
+    );
+
+    expect(result.ok).toBe(true);
+    // Single-encoded (%C2%A0), not the doubled %C3%82%C2%A0 that 404s.
+    expect(result.ok && result.finalUrl).toBe(
+      "https://ag.example.gov/News/PR/2026/Ford%C2%A0Secure/"
+    );
+    expect(calls.every((call) => !call.url.includes("%C3%82"))).toBe(true);
+  });
+
+  it("does not issue a confirming GET for a trailing-slash-only redirect", async () => {
+    const { calls } = stubFetch((_method, url) =>
+      url === "https://example.gov/page"
+        ? { status: 301, location: "https://example.gov/page/" }
+        : { status: 200 }
+    );
+
+    const result = await verifyHttpUrlReachability("https://example.gov/page");
+
+    expect(calls.map((call) => call.method)).toEqual(["HEAD", "HEAD"]);
+    expect(result.ok).toBe(true);
+  });
+
   it("does not issue a GET when the HEAD status is in the default allowlist", async () => {
     const { calls } = stubFetch(() => ({ status: 403 }));
 
@@ -488,10 +653,15 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
 
     const result = await verifyHttpUrlReachability("https://example.gov/start");
 
-    expect(calls.map((call) => call.url)).toEqual([
-      "https://example.gov/start",
-      "https://example.gov/middle",
-      "https://docs.example.gov/final",
+    // The chain is walked twice: HEAD first, then the confirming GET, because
+    // the redirect changed the resource (see isResourceChangingRedirect).
+    expect(calls).toEqual([
+      { method: "HEAD", url: "https://example.gov/start" },
+      { method: "HEAD", url: "https://example.gov/middle" },
+      { method: "HEAD", url: "https://docs.example.gov/final" },
+      { method: "GET", url: "https://example.gov/start" },
+      { method: "GET", url: "https://example.gov/middle" },
+      { method: "GET", url: "https://docs.example.gov/final" },
     ]);
     expect(result).toEqual(
       expect.objectContaining({ ok: true, finalUrl: "https://docs.example.gov/final", status: 200 })
@@ -673,9 +843,11 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
 
     const result = await verifyHttpUrlReachability("https://example.gov/start");
 
-    expect(calls.map((call) => call.url)).toEqual([
-      "https://example.gov/start",
-      "https://example.gov/moved/here",
+    expect(calls).toEqual([
+      { method: "HEAD", url: "https://example.gov/start" },
+      { method: "HEAD", url: "https://example.gov/moved/here" },
+      { method: "GET", url: "https://example.gov/start" },
+      { method: "GET", url: "https://example.gov/moved/here" },
     ]);
     expect(result.ok).toBe(true);
   });
@@ -777,6 +949,29 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
       const secondResult = await second;
       expect(secondResult.ok).toBe(true);
       expect(calls.length).toBeGreaterThan(callsAfterFirst);
+    });
+
+    it("does not spend a confirming GET on a 429 that arrived behind a resource-changing redirect", async () => {
+      // The redirect-confirmation arm is gated on response.ok, so a 429 at
+      // the end of a redirected HEAD chain must fall through to the 429
+      // branch (cooldown + Retry-After) instead of immediately re-walking
+      // with GET — which would double the burst at the host that just asked
+      // us to back off, and could mask the 429 behind a GET 200.
+      const { calls } = stubFetch((_method, url) => {
+        if (url === "https://frontdoor2.example.gov/doc") {
+          return { status: 302, location: "https://cdn2.example.gov/doc.pdf" };
+        }
+        return { status: 429, retryAfter: "7" };
+      });
+
+      const result = await verifyHttpUrlReachability("https://frontdoor2.example.gov/doc");
+
+      expect(calls.map((call) => call.method)).toEqual(["HEAD", "HEAD"]);
+      expect(result).toEqual({
+        ok: false,
+        reason: "citation fetch returned status 429 (retry-after: 7s)",
+        retryAfterSeconds: 7,
+      });
     });
 
     it("cools down the redirect target that actually returned the 429, not just the input host", async () => {

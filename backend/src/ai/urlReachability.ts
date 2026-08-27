@@ -84,6 +84,83 @@ export function classifyCitationVerificationFailure(reason: string): "transient"
   return "permanent";
 }
 
+/**
+ * Recovers a Location header whose non-ASCII bytes were decoded as latin-1.
+ *
+ * HTTP headers carry bytes, and undici surfaces them as latin-1 — so a host
+ * that emits a UTF-8 path in Location hands us one char per byte. Resolving
+ * that against the base URL percent-encodes each of those chars separately,
+ * doubling the encoding: the UTF-8 bytes C2 A0 (a non-breaking space) arrive
+ * as "Â " and re-encode to %C3%82%C2%A0, which the origin then 404s.
+ * (Live: ag.nv.gov redirects a press-release path this way; the mojibake URL
+ * was stored as a citation and resolved to the site's error page.)
+ *
+ * The bytes are only reinterpreted when every char fits in a byte (a char
+ * above 0xFF means the value was NOT a latin-1 byte read in the first place,
+ * and reinterpreting would corrupt it) AND they decode as strict UTF-8 — a
+ * genuine latin-1 path is left alone, since arbitrary latin-1 rarely parses
+ * as UTF-8.
+ */
+export function decodeLatin1MisreadHeader(headerValue: string): string {
+  if (!/[\u0080-\u00FF]/.test(headerValue) || /[^\u0000-\u00FF]/.test(headerValue)) {
+    return headerValue;
+  }
+  try {
+    return new TextDecoder("utf-8", { fatal: true }).decode(Buffer.from(headerValue, "latin1"));
+  } catch {
+    return headerValue;
+  }
+}
+
+/**
+ * True when a redirect landed somewhere that could serve different content
+ * than the requested URL. Cosmetic canonicalization — the http -> https
+ * upgrade, apex <-> www on the same path, a purely trailing slash — is not a
+ * move; anything else (host, port, path, query, or a scheme DOWNGRADE) is.
+ *
+ * Used to decide whether a HEAD-derived redirect chain still needs a GET to
+ * confirm it. Unparseable input is treated as changed: failing toward the
+ * extra GET keeps a bad finalUrl out of storage, which is the direction that
+ * matters.
+ */
+export function isResourceChangingRedirect(fromUrl: string, toUrl: string): boolean {
+  let from: URL;
+  let to: URL;
+  try {
+    from = new URL(fromUrl);
+    to = new URL(toUrl);
+  } catch {
+    return true;
+  }
+  // Only the plain http -> https upgrade is cosmetic. A downgrade (or any
+  // other scheme change) can land on a different server entirely — the same
+  // laundering class this check exists to catch.
+  if (from.protocol !== to.protocol && !(from.protocol === "http:" && to.protocol === "https:")) {
+    return true;
+  }
+  // apex <-> www with an identical path and query is canonicalization by
+  // construction — and the single most common redirect on the public web,
+  // so flagging it would double request volume across the health sweeps.
+  // (URL lowercases hostnames at parse time; no case handling needed.)
+  const stripLeadingWww = (hostname: string): string =>
+    hostname.startsWith("www.") ? hostname.slice(4) : hostname;
+  if (stripLeadingWww(from.hostname) !== stripLeadingWww(to.hostname)) {
+    return true;
+  }
+  // URL.hostname excludes the port, so it is compared separately: a port
+  // change is a different service on the same machine. Scheme-default ports
+  // are already dropped at parse time, so "" === "" for the common case.
+  if (from.port !== to.port) {
+    return true;
+  }
+  if (from.search !== to.search) {
+    return true;
+  }
+  const stripTrailingSlash = (pathname: string): string =>
+    pathname.length > 1 && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+  return stripTrailingSlash(from.pathname) !== stripTrailingSlash(to.pathname);
+}
+
 function stripIpv6Brackets(hostnameOrIp: string): string {
   return hostnameOrIp.toLowerCase().replace(/^\[|\]$/g, "");
 }
@@ -453,7 +530,7 @@ async function fetchWithValidatedRedirects(
     }
     let resolvedLocation: string;
     try {
-      resolvedLocation = new URL(location, currentUrl).toString();
+      resolvedLocation = new URL(decodeLatin1MisreadHeader(location), currentUrl).toString();
     } catch {
       return { failure: { ok: false, reason: "citation final URL is invalid after redirects" } };
     }
@@ -686,32 +763,62 @@ export async function verifyHttpUrlReachability(
     let response = initialResult.response;
     let finalUrl = initialResult.finalUrl;
 
-    // HEAD is an optimization, not the authoritative answer: beyond hosts
-    // that reject the method outright (405/501), some servers answer HEAD
-    // with a different status than GET for the same resource (CivicPlus
-    // DocumentCenter PDFs return HEAD 404 / GET 200, verified live), so any
-    // failing HEAD status is confirmed with a GET before the URL is failed.
-    // The GET re-walks the redirect chain from the original URL with the
-    // same per-hop validation — HEAD and GET can redirect differently, so
-    // HEAD's chain proves nothing about GET's.
+    // HEAD is an optimization, not the authoritative answer, in two ways.
     //
-    // EXCEPT 429: an immediate GET would double the burst at a host that
-    // just asked us to back off, and a differing GET status would silently
-    // discard the 429 and its Retry-After. The host is instead marked
-    // GET-preferred, so the post-cooldown retry tests the resource with GET
-    // directly — covering limiters that throttle HEAD but serve GET.
-    if (
-      effectiveMethod === "HEAD" &&
-      !response.ok &&
-      response.status !== 429 &&
-      !allowStatusCodes.has(response.status)
-    ) {
-      const getResult = await fetchWithValidatedRedirects(normalizedInputUrl, "GET", timeoutMs);
-      if ("failure" in getResult) {
-        return getResult.failure;
+    // Failing status: beyond hosts that reject the method outright
+    // (405/501), some servers answer HEAD with a different status than GET
+    // for the same resource (CivicPlus DocumentCenter PDFs return HEAD 404 /
+    // GET 200, verified live), so any failing HEAD status is confirmed with
+    // a GET before the URL is failed. EXCEPT 429: an immediate GET would
+    // double the burst at a host that just asked us to back off, and a
+    // differing GET status would silently discard the 429 and its
+    // Retry-After. The 429 branch below instead records the cooldown and
+    // marks the host GET-preferred, so the post-cooldown retry tests the
+    // resource with GET directly — covering limiters that throttle HEAD but
+    // serve GET. Allowlisted statuses (the 403 anti-bot default) are
+    // likewise accepted as-is: the caller already declared them acceptable,
+    // and a GET could only flip that acceptance into a failure.
+    //
+    // Succeeding redirect: a HEAD that SUCCEEDED after a resource-changing
+    // redirect is no more trustworthy about its chain. Some hosts 302 HEAD
+    // onto an error page that then answers 200, so the call reports ok with
+    // finalUrl pointing at the error page while GET serves the real resource
+    // (live: olis.oregonlegislature.gov 302s every HEAD of a
+    // Measures/Overview page to /liz/<session>/Error, which returns 200; GET
+    // returns the measure). Callers store the resolved finalUrl, so without
+    // the confirmation the verifier launders a working citation into a
+    // stored error-page URL — the exact defect found on 60 stored Oregon
+    // records. The `response.ok` gate keeps this arm off the 429 and
+    // allowlisted-status paths above, and isResourceChangingRedirect keeps
+    // it off cosmetic canonicalization (https upgrade, apex<->www, trailing
+    // slash), which would otherwise double traffic for no signal. The host
+    // is also marked GET-preferred: its HEAD answers are misleading by
+    // demonstration, so later URLs on it start with GET and skip the wasted
+    // double walk.
+    //
+    // Either way the GET re-walks the redirect chain from the original URL
+    // with the same per-hop validation — HEAD and GET can redirect
+    // differently, so HEAD's chain proves nothing about GET's. If the GET
+    // walk itself fails, the failure is returned rather than falling back to
+    // the HEAD result: storing a HEAD-derived finalUrl that GET could not
+    // confirm is the defect this exists to prevent, and a skipped
+    // verification is retryable while a stored error page is not.
+    if (effectiveMethod === "HEAD") {
+      const failingStatusNeedsGet =
+        !response.ok && response.status !== 429 && !allowStatusCodes.has(response.status);
+      const redirectNeedsGet =
+        response.ok && isResourceChangingRedirect(normalizedInputUrl, finalUrl);
+      if (failingStatusNeedsGet || redirectNeedsGet) {
+        if (redirectNeedsGet && inputHostname) {
+          recordGetPreferredHost(inputHostname);
+        }
+        const getResult = await fetchWithValidatedRedirects(normalizedInputUrl, "GET", timeoutMs);
+        if ("failure" in getResult) {
+          return getResult.failure;
+        }
+        response = getResult.response;
+        finalUrl = getResult.finalUrl;
       }
-      response = getResult.response;
-      finalUrl = getResult.finalUrl;
     }
 
     if (!response.ok && !allowStatusCodes.has(response.status)) {
