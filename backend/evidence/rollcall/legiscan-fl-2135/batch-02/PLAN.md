@@ -59,18 +59,41 @@ enrolled text is the ground truth, and it is what both chambers voted — the
 Senate passed the engrossed text 27-9, the House passed the identical text
 88-27 after both of its floor amendments failed). Its strands pull in
 different directions across different areas: the water-additive limitation
-ends community fluoridation (`environment_and_public_health`/against on its
-own), while the farmworker-housing preemption, the Honest Services Registry
+ends community fluoridation (initially assessed as
+`environment_and_public_health`/against; that label was later dropped on the
+user's direction call — see below), while the farmworker-housing preemption,
+the Honest Services Registry
 (charities attest to no foreign-source-of-concern funding), EV-charger
 consumer regulation, and mosquito-control funding read as neutral-to-for in
-other areas. That is the two-directions test, so **no single honest stance
-exists** — but the vote is the session's most salient environmental-health
-fight (the failed 13-21 floor amendment was precisely an attempt to preserve
-local fluoridation), squarely the Ohio H.B. 116 / Georgia blockchain
-precedent: a divided, enacted vote worth recording with no direction.
+other areas. No SINGLE stance can honestly cover the whole act — but on the user's
+direction the strands were tagged individually instead of collapsing to
+`general` (the pilot precedent: 1,545 tags on 1,163 federal records proves
+multi-label fan-out). Each candidate area was tested on its own:
 
-**Judgment:** `general`, **no stance**, both chambers, description leading
-with the fluoride provision (what the floor fight and the nays were about)
+- `environment_and_public_health` → **NO LABEL, by the user's direction
+  call**. The initial analysis tagged the fluoride limitation /against on
+  the mainstream-consensus reading (CDC/ADA treat community fluoridation as
+  a protective standard). The user holds the opposing view — that fluoride
+  is harmful — which is precisely the contested-direction situation the
+  framework escalates to a human: whether ending fluoridation protects or
+  harms community health depends on which evidence base one credits, so
+  the vote carries no stance in this area either way. The description
+  still leads with the fluoride provision as fact; only the directional
+  credit is withheld. (Precedent: the user's GA batch-04 / Ohio H.B. 116
+  direction calls.)
+- `housing_affordability` → **for**: s. 163.3162(5) is a real, operative
+  preemption — "a governmental entity may not adopt or enforce any
+  legislation … to inhibit the construction" of farmworker housing meeting
+  H-2A, health and building standards. Supply-expanding on its face.
+- `corporate_accountability` → **considered and SKIPPED**: the EV-charger
+  consumer regulation resembles TX SB 1036 (for), but the same act's
+  plant-based "mislabeling" ban reads as consumer protection OR incumbent
+  protection, and the Honest Services Registry is a voluntary charity
+  attestation, not corporate accountability — ambiguity within the area
+  means no stance for that area.
+
+**Judgment:** `housing_affordability` yea = **for**, both chambers,
+description leading with the fluoride provision (as fact, no direction)
 and honestly framing the omnibus.
 
 ## Selected rolls
