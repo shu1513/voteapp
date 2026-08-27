@@ -164,9 +164,17 @@ describe("parseLegiscanRollCall", () => {
     ).toThrow("total says 30 but yea+nay+nv+absent is 31");
   });
 
+  it("reads an Assembly chamber as the lower chamber", () => {
+    // California (and NV/NJ/NY/WI) call the lower chamber the Assembly, and
+    // LegiScan prints the state's own abbreviation: all 9,948 lower-chamber
+    // rolls of CA 2172 carry `A`.
+    expect(parseLegiscanRollCall(rollCallElement({ chamber: "A" })).chamber).toBe("house");
+    expect(parseLegiscanRollCall(rollCallElement({ chamber: "S" })).chamber).toBe("senate");
+  });
+
   it("rejects a roll_call_id outside the int4 range and a bad chamber", () => {
     expect(() => parseLegiscanRollCall(rollCallElement({ roll_call_id: 2_200_000_000 }))).toThrow("storable range");
-    expect(() => parseLegiscanRollCall(rollCallElement({ chamber: "J" }))).toThrow("chamber is not H or S");
+    expect(() => parseLegiscanRollCall(rollCallElement({ chamber: "J" }))).toThrow("chamber is not H, A or S");
   });
 });
 
@@ -285,12 +293,13 @@ describe("legiscanRollCallPageUrl", () => {
 
 describe("getLegiscanStateConfig", () => {
   it("serves only surveyed states; an unsurveyed state is refused by name", () => {
-    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual(["GA", "IL", "TN", "TX", "FL"]);
+    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual(["GA", "IL", "TN", "TX", "FL", "CA"]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
     expect(getLegiscanStateConfig("GA").sessionId).toBe(2167);
     expect(getLegiscanStateConfig("IL").sessionId).toBe(2176);
     expect(getLegiscanStateConfig("FL").sessionId).toBe(2135);
+    expect(getLegiscanStateConfig("CA").sessionId).toBe(2172);
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("PA")).toThrow("no LegiScan state config for PA");
   });
@@ -501,6 +510,49 @@ describe("getLegiscanStateConfig", () => {
     // The only JRCA floor roll in the dataset, and the consent calendars.
     expect(il("House Amendments", 115)).toMatchObject({ isFloorVote: null, reason: "unknown_question" });
     expect(il("Agreed Bill List in Senate", 59, "senate")).toMatchObject({ isFloorVote: null });
+  });
+
+  it("classifies California's real desc vocabulary as surveyed", () => {
+    const config = LEGISCAN_STATE_CONFIGS.CA!;
+    const ca = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
+      classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+    // California prints the measure and its author inside the desc, so the
+    // question is a phrase, not the whole string.
+    expect(ca("AB 111 Gabriel Assembly Third Reading", 80)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(ca("SB 586 Jones Senate Third Reading By Jeff Gonzalez", 79).questionClass).toBe("passage");
+    expect(ca("AB 40 Bonta Third Reading Urgency", 80).questionClass).toBe("passage");
+    expect(ca("AB 992 Irwin Concurrence in Senate Amendments", 80).questionClass).toBe("concurrence");
+    expect(ca("AB 260 Aguiar-Curry Concurrence - Urgency Added", 80).questionClass).toBe("concurrence");
+    expect(ca("AB 808 Addis Consent Calendar Second Day Regular Session", 78).questionClass).toBe("passage");
+    // The Senate leads with the question and spells it differently.
+    expect(ca("Senate 3rd Reading SB680 Rubio", 40, "senate").questionClass).toBe("passage");
+    expect(ca("Assembly 3rd Reading AB123 BUDGET (Gabriel) By Wiener", 40, "senate").questionClass).toBe("passage");
+    expect(ca("Unfinished Business SB524 Arreguín et al. Concurrence", 40, "senate").questionClass).toBe("concurrence");
+    expect(ca("Consent Calendar 2nd AB1781 Michelle Rodriguez", 40, "senate").questionClass).toBe("passage");
+    expect(ca("Special Consent ACR51 Haney et al", 40, "senate").questionClass).toBe("passage");
+    expect(ca("W/O Ref. To File SB48 Gonzalez", 40, "senate").questionClass).toBe("passage");
+    // Committee votes are worded as recommendations naming the same
+    // destinations — the chamber word and the `^` anchor keep them out.
+    for (const [desc, total] of [
+      ["Do pass. To consent calendar", 11],
+      ["Be adopted. To third reading", 10],
+      ["Do pass, but first be re-referred to the Committee on [Appropriations]", 7],
+      ["Placed on suspense file", 7],
+    ] as const) {
+      expect(classifyLegiscanRollCall({ desc, total, chamber: "house", billType: "B", config }).reason, desc).toBe(
+        `committee_tally:${total}/80`
+      );
+    }
+    // Second-reading urgency votes and procedural motions are excluded.
+    for (const desc of [
+      "Assembly 2nd Reading AB1207 Irwin et al. By Limón Urgency Clause",
+      "Senate 3rd Reading SB274 Cervantes Motion To Reconsider",
+      // The vote GRANTING reconsideration, not the question itself.
+      "Unfinished Business SB627 Wiener et al. Concurrence Reconsider",
+      "HR 4 Essayli Assembly Third Reading Motion To Lay On The Table By Aguiar-Curry",
+    ]) {
+      expect(ca(desc, 80).reason, desc).toBe("excluded_question");
+    }
   });
 
   it("refuses a state that has its own pipeline, whatever the spelling", () => {
