@@ -1,0 +1,1743 @@
+{
+  "runId": "rollcall-legiscan-fetch-il-20260827T012110Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "IL",
+  "startedAt": "2026-08-27T01:21:10.417Z",
+  "finishedAt": "2026-08-27T01:21:14.928Z",
+  "datasetDir": "/Users/shu/legiscan-data/il-2176/extracted",
+  "bills": 12073,
+  "votes": 9077,
+  "people": 181,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "House Executive Committee",
+      "count": 1493,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 12,
+      "billTypes": [
+        "B",
+        "JR",
+        "JRCA",
+        "R"
+      ],
+      "sampleBills": [
+        "HB3176",
+        "SB0118",
+        "HB0271"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Executive Committee",
+      "count": 1255,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0765",
+        "SB0118",
+        "SB1030"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Third Reading in House",
+      "count": 605,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 117,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3356",
+        "HB2456",
+        "HB1538"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Third Reading",
+      "count": 531,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 117,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0118",
+        "HB5317",
+        "HB5463"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Third Reading",
+      "count": 331,
+      "withoutMemberList": 0,
+      "minTotal": 59,
+      "maxTotal": 59,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1796",
+        "HB4844",
+        "SB3258"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Third Reading in Senate",
+      "count": 325,
+      "withoutMemberList": 0,
+      "minTotal": 59,
+      "maxTotal": 59,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0220",
+        "SB1295",
+        "SB1441"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Judiciary Committee",
+      "count": 200,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1842",
+        "HB1364",
+        "HB3144"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Education Committee",
+      "count": 191,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 15,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB1799",
+        "SB3774",
+        "SB0939"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House State Government Administration Committee",
+      "count": 176,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB1612",
+        "HR0526",
+        "HB1788"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Judiciary - Civil Committee",
+      "count": 171,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 20,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4844",
+        "HB3144",
+        "SB1523"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion in Senate",
+      "count": 157,
+      "withoutMemberList": 0,
+      "minTotal": 59,
+      "maxTotal": 59,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SR0001",
+        "SB0027",
+        "SB1774"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Concurrence",
+      "count": 132,
+      "withoutMemberList": 0,
+      "minTotal": 101,
+      "maxTotal": 117,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB5228",
+        "HB4757",
+        "HB4909"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Judiciary - Criminal Committee",
+      "count": 126,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0118",
+        "SB2949",
+        "HB4434"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Human Services Committee",
+      "count": 123,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 12,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HR0277",
+        "HB1597",
+        "HB4757"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Criminal Law Committee",
+      "count": 116,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1302",
+        "SB2949",
+        "SB1796"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Labor &amp; Commerce Committee",
+      "count": 108,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 29,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB5265",
+        "SB1799",
+        "HB2565"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Health Care Licenses Committee",
+      "count": 107,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 15,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB2495",
+        "SB3325",
+        "HB2874"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate State Government Committee",
+      "count": 106,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 10,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SB3731",
+        "SB1550",
+        "SB2481"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Insurance Committee",
+      "count": 105,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3445",
+        "SB3258",
+        "HB2671"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Licensed Activities Committee",
+      "count": 105,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB2495",
+        "SB3325",
+        "HB3360"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Transportation: Vehicles &amp; Safety Committee",
+      "count": 104,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 12,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB4232",
+        "HR0926",
+        "HB4558"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Concurrence in House",
+      "count": 102,
+      "withoutMemberList": 0,
+      "minTotal": 115,
+      "maxTotal": 117,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1362",
+        "HB1062",
+        "HB3050"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Education Policy Committee",
+      "count": 102,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 13,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB0851",
+        "HB2986",
+        "SB3070"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Insurance Committee",
+      "count": 100,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB3258",
+        "SB2878",
+        "HB4203"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Health and Human Services Committee",
+      "count": 97,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 12,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HB1597",
+        "SJR0030",
+        "SB2939"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Public Health Committee",
+      "count": 95,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HR0081",
+        "HR0471",
+        "HB2589"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Elem Sec Ed: Adm., Lic. &amp; Charter Committee",
+      "count": 92,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB3774",
+        "HB3097",
+        "HB4137"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Energy &amp; Environment Committee",
+      "count": 90,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 29,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB5317",
+        "HB3510",
+        "HB1640"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Transportation Committee",
+      "count": 90,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 19,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB2857",
+        "SB2111",
+        "SB3336"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Revenue &amp; Finance Committee",
+      "count": 81,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 20,
+      "billTypes": [
+        "B",
+        "JRCA"
+      ],
+      "sampleBills": [
+        "HB5013",
+        "HB1885",
+        "HB5033"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Public Health Committee",
+      "count": 77,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 10,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SR0377",
+        "HB2589",
+        "HB2874"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Higher Education Committee",
+      "count": 73,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 12,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HB5463",
+        "HB4304",
+        "HB3689"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Concurrence in Senate",
+      "count": 70,
+      "withoutMemberList": 0,
+      "minTotal": 59,
+      "maxTotal": 59,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB0103",
+        "SB1261",
+        "SB1814"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Local Government Committee",
+      "count": 69,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 11,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB1615",
+        "SB3471",
+        "HB1908"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Agriculture &amp; Conservation Committee",
+      "count": 67,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SJR0024",
+        "HR0423",
+        "HB3056"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Concurrence",
+      "count": 61,
+      "withoutMemberList": 0,
+      "minTotal": 59,
+      "maxTotal": 59,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0118",
+        "SB3258",
+        "SB3398"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Energy and Public Utilities Committee",
+      "count": 58,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3510",
+        "SB3273",
+        "SB2424"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Labor Committee",
+      "count": 56,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2327",
+        "HB3046",
+        "SB2406"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Police &amp; Fire Committee Committee",
+      "count": 52,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 15,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB2977",
+        "SB0100",
+        "HB2409"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Trans: Regulation, Roads &amp; Bridges Committee",
+      "count": 52,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 20,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HB4046",
+        "HJR0058",
+        "HJR0061"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion in House",
+      "count": 52,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 117,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HR0015",
+        "HR0092",
+        "HR0118"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Personnel &amp; Pensions Committee",
+      "count": 49,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB0079",
+        "HB2854",
+        "HB4491"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Restorative Justice &amp; Public Safety Committee",
+      "count": 49,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 11,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB1302",
+        "HB1643",
+        "SB1899"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Higher Education Committee",
+      "count": 49,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB0460",
+        "HB3011",
+        "HB1149"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Counties &amp; Townships Committee",
+      "count": 47,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1911",
+        "HB1615",
+        "HB1878"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Environment and Conservation Committee",
+      "count": 47,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 10,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB5317",
+        "SB1872",
+        "HB2366"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Consumer Protection Committee",
+      "count": 42,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB0228",
+        "HB4538",
+        "SB1288"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Cities &amp; Villages Committee",
+      "count": 40,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 11,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB1842",
+        "HB0643",
+        "HB2894"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Agriculture Committee",
+      "count": 39,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 13,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SJR0024",
+        "SB2309",
+        "SB3640"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Housing Committee",
+      "count": 37,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 18,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HB4571",
+        "HB1814",
+        "HB3526"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Financial Institutions &amp; Licensing Committee",
+      "count": 36,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3554",
+        "HB5384",
+        "HB5290"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Health Care Availability &amp; Access Committee",
+      "count": 35,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB3489",
+        "HB4243",
+        "HB2464"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Public Utilities Committee",
+      "count": 35,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2849",
+        "HB3650",
+        "SB3273"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Pensions Committee",
+      "count": 35,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 10,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB4909",
+        "SB2016",
+        "HB0079"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Adoption &amp; Child Welfare Committee",
+      "count": 33,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 12,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SB0031",
+        "SB1504",
+        "HB2907"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Child Care Access &amp; Early Childhood Committee",
+      "count": 32,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 15,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB5373",
+        "HB3439",
+        "HB3444"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Mental Health &amp; Addiction Committee",
+      "count": 26,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 23,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HR0723",
+        "HB3440",
+        "HB1085"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Motion To Adopt",
+      "count": 25,
+      "withoutMemberList": 0,
+      "minTotal": 59,
+      "maxTotal": 59,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR0058",
+        "HJR0061",
+        "HJR0017"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Veterans' Affairs Committee",
+      "count": 23,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 17,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HB4336",
+        "HR0103",
+        "SB0039"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Financial Institutions Committee",
+      "count": 23,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB1994",
+        "SB3018",
+        "SB3019"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Tax Policy: Other Taxes Subcommitte Committee",
+      "count": 19,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1061",
+        "HB1867",
+        "HB3421"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Child Welfare Committee",
+      "count": 18,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 10,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SR0128",
+        "SB0031",
+        "HB3439"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Gun Violence Prevention Committee",
+      "count": 17,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HR0551",
+        "HR0409",
+        "HB1316"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Immigration &amp; Human Rights Committee",
+      "count": 15,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 12,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HB2436",
+        "HR0221",
+        "HB1929"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Approp-Pensions &amp; Personnel Committee",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4909",
+        "HB2378",
+        "HB2482"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Behavioral and Mental Health Committee",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB3645",
+        "SR0193",
+        "SB1844"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Approp-Elementary &amp; Secondary Educ Committee",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB1861",
+        "HB5363",
+        "SB2149"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Gaming Committee",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 18,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3729",
+        "HB2724",
+        "HB1505"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Consumer Protection Committee",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB2737",
+        "SB1288",
+        "HB0045"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Veterans Affairs Committee",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HB2547",
+        "SR0011",
+        "HB2506"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Approp-Health and Human Services Committee",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 23,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HB4756",
+        "HB1862",
+        "HB2682"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Int Relations, Tourism, &amp; Trade Committee",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR0197",
+        "HR0249",
+        "HR0693"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Museum, Arts, Culture, &amp; Entertain Committee",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 12,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HR0586",
+        "HB0917",
+        "HB4734"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Prescription Drug Affordability Committee",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 13,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SB3896",
+        "HR0648",
+        "HB3454"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Commerce Committee",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HB5470",
+        "HB3187",
+        "SR0083"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Economic Opportunity &amp; Equity Committee",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR0016",
+        "HB5263",
+        "HB5264"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Human Rights Committee",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SR0118",
+        "SR0814",
+        "SB0613"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Cybersecurity, Data Analytics, &amp; IT Committee",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3646",
+        "HB3506",
+        "HB3851"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion To Adopt in Senate",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 59,
+      "maxTotal": 59,
+      "billTypes": [
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SR0004",
+        "SJR0002",
+        "SJR0013"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Appropriations Committee",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB2508",
+        "SB2511",
+        "SB2512"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Approp-Public Safety &amp; Infrastruct Committee",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 12,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB0076",
+        "HB1329",
+        "HR0160"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Ethics &amp; Elections Committee",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 18,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB0575",
+        "HR0652",
+        "HB4339"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Income Tax Subcommittee Committee",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1369",
+        "HB1074",
+        "HB1173"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Sales Tax Subcommittee Committee",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1772",
+        "HB2899",
+        "HB2851"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Small Business, Tech Innovation Committee",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 12,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB3540",
+        "HB0878",
+        "HB3655"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Tax Credit and Incentives Committee",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3068",
+        "HB1819",
+        "HB5065"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Procurement Committee",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 3,
+      "maxTotal": 3,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1612",
+        "SB1827"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Motion",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 109,
+      "maxTotal": 114,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1312",
+        "HB2568",
+        "HB4708"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Tax Policy: Sales Tax Subcommittee Committee",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3022",
+        "HB1458",
+        "HB2686"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Condominiums Committee",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 3,
+      "maxTotal": 3,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB3527",
+        "SB3401"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate End of Life Issues Committee",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 3,
+      "maxTotal": 3,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1793"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Approp-Higher Education Committee",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 18,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1581",
+        "HB4520"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Finance Subcommittee Committee",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1885",
+        "HB1390"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Property Tax Subcommittee Committee",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4849",
+        "HB2382"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Tax Policy: Finance Subcommittee Committee",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2772",
+        "HB1919"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Revenue Committee",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3662",
+        "HB4537"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Tobacco Committee",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 3,
+      "maxTotal": 3,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB2393"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Agreed Bill List",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 113,
+      "maxTotal": 113,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR0857"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Amendments",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 115,
+      "maxTotal": 115,
+      "billTypes": [
+        "JRCA"
+      ],
+      "sampleBills": [
+        "HJRCA0028"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Approp-General Service Committee",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1704"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Fire Subcommittee Committee",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 3,
+      "maxTotal": 3,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2336"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Tax Policy: Income Tax Subcommittee Committee",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2483"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Agreed Bill List in Senate",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 59,
+      "maxTotal": 59,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0026"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Motion",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 59,
+      "maxTotal": 59,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2568"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 10019,
+    "JR": 135,
+    "JRCA": 39,
+    "R": 1880
+  },
+  "sessionIds": {
+    "2176": 12073
+  },
+  "voteParseErrors": []
+}
