@@ -53,13 +53,13 @@ Returned contributions appear as **positive expenditure rows** (`Refund Excessiv
 2. **Search rows track amendments** ✓ — Evette search rows dated inside the amended pre-election filing period (2026-04-01..05-20) = exactly 356 rows summing $402,494.46, matching Amendment 4's contributionsTotal to the cent. `Contribution/Search` serves current (amended) data. Her governor cycle is a single run (officeRunId 77609) spanning 2025-2026 rows.
 3. **Agency ask** — outstanding: send the State Ethics Commission the outside-spending data request (beneficiary per § 8-13-1308(F)(4), IE classification, stance, bulk extract). Gates only the deferred outside phase; v1 does not wait.
 
-## Phase 1: client, artifact cache, types
+## Phase 1: client + types — DONE 2026-08-26
 
-Create `backend/src/pipeline/southCarolinaFinance/` with:
+`backend/src/pipeline/southCarolinaFinance/southCarolinaEthicsClient.ts` — the four endpoints, row types inline (NH client idiom), typed error class, injected `fetchImpl`, timeout via `AbortSignal.timeout`, 64 MB byte cap, JSON content-type required (SPA HTML fallback rejected), report rows integrity-checked against the requested `candidateFilerId`, contribution search refuses to fire without candidate text + valid year, contributor street addresses never parsed. Bonus source finding folded in: report-index rows carry `reportWithDates.campaignId` (= officeRunId) plus ISO `filingStartDate`/`filingEndDate` and `isPrimary`/`isGeneral`/`isPreElection`/`isFinal` — run grouping and period ordering use these, no date heuristics.
 
-- `southCarolinaEthicsClient.ts` — the four endpoints above, nothing else (no expenditure-search client in v1; spending comes from report summaries). Bounded timeout, concurrency 1–2, one retry. An HTML body (SPA fallback) is an error, not data. Refuse to issue a contribution search without candidate text + year.
-- `southCarolinaFinanceArtifactCache.ts` — raw JSON cached under gitignored `scratch/south-carolina-campaign-finance/`, directory mode `0700` (the New Hampshire cache convention). Keys: `filer/{id}/reports`, `report/{reportId}/details`, `search/{candidateFilerId}/{year}` (key by filer + year even though the request carries surname text). Detail JSON for a superseded version id is immutable; the report index, newest-version details, and search slices refresh on sync. Atomic temp-file writes, byte caps, nonempty checks. Never log raw rows or contributor addresses; committed fixtures are trimmed and sanitized (no street addresses).
-- `southCarolinaFinanceTypes.ts` — report index row, report detail, search row.
+**No disk artifact cache in v1** (revised from the original plan): unlike New Hampshire's bulk CSVs or Missouri's acquired exports, SC syncs are three or four small per-candidate JSON calls where fresh data is exactly what a due sync wants, and nothing is shared across candidates. Dropping the cache removes a file, an acquisition/read indirection, and the on-disk donor-address privacy surface entirely. Tests inject `fetchImpl`.
+
+Tests: `backend/tests/pipeline/southCarolinaFinance/southCarolinaEthicsClient.test.ts` (13 tests — bare-string filer body, filer-mismatch fail-closed, HTML fallback, numeric-year body, blank-occupation nulling, group-flag validation, unfiltered-search refusal, HTTP/network error wrapping). Live smoke passed: all four endpoints parsed real payloads; Wilson filtered search rows (candidateId 54344, run 77574) summed to 485,932,827 cents == report income Total, cent-exact.
 
 No PDF, no DOM scraping, no browser tier, no AI anywhere in this module.
 
