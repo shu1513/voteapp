@@ -53,15 +53,50 @@ Direction follows the **area description**, never the bill's framing.
 
 Descriptions end **"and it became law"** rather than "was signed into law": LegiScan status 4 records enactment, not the governor's signature (batch-02 Texas precedent). HB 6025's description names both halves of the repealed section, including the confiscation savings clause that disappeared with it, rather than flattening the repeal to "loosened gun rules".
 
+## Review fix (2026-08-27): HB 351 threshold
+
+External review caught a real boundary error: both HB 351 descriptions said
+"more than 50 miles per hour over the limit", but enrolled s. 316.1922(1)(a)
+creates the offense at **"in excess of the speed limit by 50 mph or more"** —
+exactly 50 over commits it. Both descriptions now read "50 miles per hour or
+more over the limit". The mandatory-hearing clause was deliberately left at
+"more than 50": its trigger statute, s. 316.1926(2), reads "exceeds the speed
+limit **in excess of 50 miles per hour or more**" — Florida's own wording is
+garbled at that boundary, so no phrasing is more faithful than another.
+
+The rewrite run restored **52** records, not 51. The extra one is Marie Paule
+Woodson's SB 56 house record (id `58341a81-03c8-4d36-ac5c-9b3840f4bb73`),
+which something edited in the local DB about three hours after the initial
+import (updated 2026-08-26 21:11 local; the phrasing matches the
+records-quality-repair sweep's plain-language style). The import restored it
+to the canonical judgment text on purpose: one candidate carrying a private
+paraphrase of the same vote as 47 others breaks the judged-once invariant,
+and every future re-import would flag it. If plainer wording is wanted for a
+roll-call record, it belongs in `judgments.json`, where it reaches every
+candidate on the roll.
+
 ## Import ledger
 
-Real run on local `voteapp`, `startedAt` **2026-08-27T01:26:41.127Z**:
+Two real runs on local `voteapp`; **both stamps together are the batch.**
 
-- 11 files, all `imported`, **0 errors**, **385 inserts**, 0 rewrites, 0 notified, 0 related-row flags.
-- Reconciled three ways: the report says 385; `candidate_records` went 66,213 → 66,598 (+385); `origin_run_id LIKE 'rollcall:FL:%:2026-08-27T01:26:41.127Z'` returns 385.
-- The dry run's own stamp (`…T01:26:13.750Z`) matches **zero** rows — positive proof `--dry-run` is inert.
+| Run | `startedAt` | Result |
+| --- | --- | --- |
+| insert run | 2026-08-27T01:26:41.127Z | 11 files `imported`, 0 errors, **385 inserts**, 0 notified (report now superseded on disk; numbers preserved here) |
+| rewrite run (HB 351 fix) | 2026-08-27T17:24:02.253Z | 11 files `imported`, 0 errors, **333 unchanged + 52 rewrites**, 0 notified — the committed `import-report.json` |
+
+- Initial run reconciled three ways: report 385; `candidate_records` 66,213 → 66,598 (+385); the stamp predicate returned 385. Total unchanged by the rewrite run (row count stays 385, rewrites are in place).
+- Both dry-run stamps (`…T01:26:13.750Z` plan, `…T17:24:14.235Z` convergence) match **zero** rows — `--dry-run` is inert. `import-dry-run-rerun-report.json` is the convergence proof: all 385 `unchanged` after the fix.
+- A rewrite re-stamps `origin_run_id` with the rewriting run's `startedAt` (Texas batch-02 mechanic), so the batch predicate is now grouped:
+
+```sql
+select right(origin_run_id, 24) as stamp, count(*)
+  from candidate_records
+ where origin_run_id like 'rollcall:FL:%'
+ group by 1 order by 1;
+-- 2026-08-27T01:26:41.127Z | 333   (insert run, untouched by the fix)
+-- 2026-08-27T17:24:02.253Z |  52   (51 HB 351 threshold rewrites + 1 Woodson restore)
+```
+
 - **62 distinct candidates, not the 63 in the crosswalk.** Nathan Boyles (HD-003, people_id 26477) won the June 2025 special election and first appears in a roll call on 2025-06-16, after every vote in this batch. Not a fan-out gap — the Texas Speaker-Burrows finding in a different shape.
 
 Queue after judging: 11 approved / 895 pending of 906 stored FL rows.
-
-To re-derive the batch predicate after any rewrite run, group by stamp — a rewrite re-stamps `origin_run_id` with the rewriting run's `startedAt` (Texas batch-02 mechanic).
