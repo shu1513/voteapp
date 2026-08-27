@@ -63,15 +63,31 @@ ends community fluoridation (`environment_and_public_health`/against on its
 own), while the farmworker-housing preemption, the Honest Services Registry
 (charities attest to no foreign-source-of-concern funding), EV-charger
 consumer regulation, and mosquito-control funding read as neutral-to-for in
-other areas. That is the two-directions test, so **no single honest stance
-exists** — but the vote is the session's most salient environmental-health
-fight (the failed 13-21 floor amendment was precisely an attempt to preserve
-local fluoridation), squarely the Ohio H.B. 116 / Georgia blockchain
-precedent: a divided, enacted vote worth recording with no direction.
+other areas. No SINGLE stance can honestly cover the whole act — but on the user's
+direction the strands were tagged individually instead of collapsing to
+`general` (the pilot precedent: 1,545 tags on 1,163 federal records proves
+multi-label fan-out). Each candidate area was tested on its own:
 
-**Judgment:** `general`, **no stance**, both chambers, description leading
-with the fluoride provision (what the floor fight and the nays were about)
-and honestly framing the omnibus.
+- `environment_and_public_health` → **against**: the fluoride limitation is
+  the act's most consequential health provision and the floor fight (the
+  failed 13-21 amendment was the fluoride-preservation attempt). The one
+  counter-strand in the area — raising the mosquito-control matching-fund
+  cap — is de minimis next to ending fluoridation in ~29 counties (the
+  HB 351 principle: a minor softening inside a bill does not flip it).
+- `housing_affordability` → **for**: s. 163.3162(5) is a real, operative
+  preemption — "a governmental entity may not adopt or enforce any
+  legislation … to inhibit the construction" of farmworker housing meeting
+  H-2A, health and building standards. Supply-expanding on its face.
+- `corporate_accountability` → **considered and SKIPPED**: the EV-charger
+  consumer regulation resembles TX SB 1036 (for), but the same act's
+  plant-based "mislabeling" ban reads as consumer protection OR incumbent
+  protection, and the Honest Services Registry is a voluntary charity
+  attestation, not corporate accountability — ambiguity within the area
+  means no stance for that area.
+
+**Judgment:** `environment_and_public_health` yea = **against** +
+`housing_affordability` yea = **for**, both chambers, description leading
+with the fluoride provision and honestly framing the omnibus.
 
 ## Selected rolls
 

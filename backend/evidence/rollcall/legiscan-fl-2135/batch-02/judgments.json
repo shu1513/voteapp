@@ -46,7 +46,12 @@
    "nay_description": "Voted against SB 700, which rewrote the laws governing the Department of Agriculture and Consumer Services in 92 sections. Its most fought-over provision limited public water systems to additives that meet or surpass drinking water standards, remove contaminants, or improve water quality \u2014 ending the addition of fluoride for dental health, which about 29 Florida counties then practiced (a Senate amendment to preserve local fluoridation failed 13-21). Among much else, the bill also barred local governments from blocking housing for legally verified agricultural workers on working farms, gave the state a right of first refusal when an electric utility sells farmland, preempted local permitting standards for electric-vehicle charging stations and required public chargers to register with the state, made it a crime to operate a drone over agricultural land, private property, or shooting ranges in specified ways, and created an Honest Services Registry of charities that attest to taking no money or direction from foreign sources of concern. The Florida Senate passed it 27-9 and it became law.",
    "labels": [
     {
-     "slug": "general"
+     "slug": "environment_and_public_health",
+     "yea": "against"
+    },
+    {
+     "slug": "housing_affordability",
+     "yea": "for"
     }
    ]
   },
@@ -62,7 +67,12 @@
    "nay_description": "Voted against SB 700, which rewrote the laws governing the Department of Agriculture and Consumer Services in 92 sections. Its most fought-over provision limited public water systems to additives that meet or surpass drinking water standards, remove contaminants, or improve water quality \u2014 ending the addition of fluoride for dental health, which about 29 Florida counties then practiced (a Senate amendment to preserve local fluoridation failed 13-21). Among much else, the bill also barred local governments from blocking housing for legally verified agricultural workers on working farms, gave the state a right of first refusal when an electric utility sells farmland, preempted local permitting standards for electric-vehicle charging stations and required public chargers to register with the state, made it a crime to operate a drone over agricultural land, private property, or shooting ranges in specified ways, and created an Honest Services Registry of charities that attest to taking no money or direction from foreign sources of concern. The Florida House passed it 88-27 and it became law.",
    "labels": [
     {
-     "slug": "general"
+     "slug": "environment_and_public_health",
+     "yea": "against"
+    },
+    {
+     "slug": "housing_affordability",
+     "yea": "for"
     }
    ]
   }

@@ -43,15 +43,18 @@
   in full — third-degree felony for unregistered possession of >25 forms,
   30→10-day deadline, resident/citizen/felon eligibility bars, one-initiative-per-committee cap and the three-election petition expiry — so a nay-leaning reader is not misled about
   what yes meant.
-- **SB 700 → `general`, no stance** (Ohio H.B. 116 / GA blockchain
-  precedent). Strands run different directions in different areas: the
-  fluoride limitation is `environment_and_public_health`/against on its own,
-  but the same yes vote enacted farmworker-housing protections, charity
-  foreign-influence attestations, EV-charger consumer regulation, and
-  mosquito-control funding. Tagging the whole 92-section act with the
-  direction of two sections would ascribe the omnibus to its most famous
-  strand — precisely the title-over-text mistake this campaign guards
-  against.
+- **SB 700 → TWO stances, one per major directional strand**
+  (`environment_and_public_health`/against + `housing_affordability`/for) —
+  revised from the initial `general` no-stance call on the user's
+  suggestion. Tagging the whole 92-section act with ONE direction would
+  ascribe the omnibus to its most famous strand; tagging NOTHING wastes the
+  real directional strands. Multi-label is the pilot-proven middle path.
+  Per-area tests and the corporate_accountability skip are in `PLAN.md`.
+  ⚠ Importer mechanic learned here: a labels-only change reports every
+  record `unchanged` — tag-sync runs separately from the record-row
+  compare, so verify the flip in `candidate_record_area_tags`, not in the
+  import report (60 × environment + 60 × housing confirmed, `general`
+  tags gone, queue row labels_json matches).
 
 ## Import ledger
 
