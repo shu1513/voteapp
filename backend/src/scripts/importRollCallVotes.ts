@@ -143,7 +143,10 @@ export async function validateSideTemplates(
         records: sides.map((side) => ({
           description: sentences[side],
           source_url: vote.machineUrl,
-          event_date: vote.voteDate,
+          // The reviewed official-date override (migration 257) is the
+          // records' event_date; the raw source date stays on the row for
+          // the evidence checks.
+          event_date: vote.officialVoteDate ?? vote.voteDate,
         })),
       },
       timeoutMs
@@ -364,16 +367,21 @@ async function main(): Promise<void> {
         const sideLabels = { yea: labelsForSide(labels, "yea"), nay: labelsForSide(labels, "nay") };
         const measure = parseFederalMeasure(vote.measureId);
         const rollCallKey = rollCallUrlKey(vote.machineUrl)!.key;
-        const originRunId = `rollcall:${JURISDICTION}:${evidence.chamber}:${session}:${evidence.roll}:${startedAt.toISOString()}`;
+        const originRunPrefix = `rollcall:${JURISDICTION}:${evidence.chamber}:${session}:${evidence.roll}:`;
+        const originRunId = `${originRunPrefix}${startedAt.toISOString()}`;
         row.originRunId = originRunId;
 
         const resolutions = resolveFederalMembers(members, vote.voteDate, legislators.index, candidatesByFec);
         const voters = collectVoters(resolutions, row.resolution);
         row.notVoting = voters.notVoting;
+        // The effective and raw dates catch hand-written rows; the run-id
+        // prefix catches this pipeline's own rows on any date, so a changed
+        // or cleared override still rewrites them instead of duplicating.
         const existingByCandidate = await loadExistingRecordsForDate(
           pool,
           voters.voters.map((voter) => voter.candidateId),
-          vote.voteDate
+          [...new Set([vote.officialVoteDate ?? vote.voteDate, vote.voteDate])],
+          originRunPrefix
         );
         const work = voters.voters.map((voter) => {
           const template = templates[voter.side];
@@ -403,7 +411,7 @@ async function main(): Promise<void> {
           continue;
         }
 
-        const notify = shouldNotifyForVoteDate(vote.voteDate, today);
+        const notify = shouldNotifyForVoteDate(vote.officialVoteDate ?? vote.voteDate, today);
         const client: PoolClient = await pool.connect();
         try {
           await client.query("BEGIN");

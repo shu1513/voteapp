@@ -66,6 +66,8 @@ describe("legislative votes migration", () => {
       "yea_description",
       "nay_description",
       "labels_json",
+      // The reviewed sine-die date override (migration 257).
+      "official_vote_date",
       "review_status",
       "reviewed_at",
       "importer_version",

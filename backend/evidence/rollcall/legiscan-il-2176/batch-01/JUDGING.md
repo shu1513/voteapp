@@ -194,3 +194,24 @@ remaining suspect pool.
    a concurrent `manual:candidate-records:` write and a `source_url_repair`
    run both landed during this batch's verification steps. The import's own
    accounting was unaffected each time.
+
+
+## Official-date override applied (2026-08-27)
+
+The House roll on S.B. 3777 (roll_call_id 1721227) carries
+`official_vote_date: 2026-06-01` in `judgments.json`, applied with the
+override mechanism from CODE-FINDINGS.md §1 once it was built (migration
+257). LegiScan stamps the vote 2026-05-31 — the legislative day of the
+overnight sine-die session — while the official record dates the House's
+Third Reading passage 6/1/2026: the ILGA BillStatus XML action trail,
+https://ftp.ilga.gov/Legislation/104/BillStatus/XML/10400SB3777.xml
+("Third Reading - Short Debate - Passed 072-038-000", 6/1/2026). The row's
+`vote_date` stays the LegiScan value the sha-pinned evidence asserts; the
+re-run import rewrote the 91 fanned-out records onto 2026-06-01 in place
+(same row ids, 91 `rollcall_normalization` identity transitions logged).
+
+Ledgers: `import-report.json` stays the original insert ledger; the override
+re-run is `import-override-rerun-report.json` (`{"unchanged": 1273,
+"rewrite": 91}`, no inserts, no notifications), and
+`import-dry-run-rerun-report.json` is the post-override convergence check
+(`{"unchanged": 1364}`).
