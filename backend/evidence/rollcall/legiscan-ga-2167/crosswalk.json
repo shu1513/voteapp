@@ -165,7 +165,7 @@
     {
       "people_id": 11777,
       "candidate_id": "4cb6a084-9a5e-421a-9772-5a468c1f22fc",
-      "note": "LegiScan first_name is the full legal name 'Hugh Brewster Williamson III', so no first/last match; same seat HD-112, same party (R), candidate holds the office"
+      "note": "snapshot first_name is the legal 'Hugh' (Bruce lives in the nickname field, which the proposer does not read), so no first/last match; same seat HD-112, same party (R), candidate holds the office"
     },
     {
       "people_id": 11778,
@@ -995,7 +995,7 @@
     {
       "people_id": 24444,
       "candidate_id": "6560c737-fbe7-4817-8fdc-856b9b9def90",
-      "note": "sitting representative (HD-140) running for State Senate District 15, the open seat of retiring Sen. Ed Harbison; same party (D)"
+      "note": "snapshot first_name is the legal 'Tremaine' (Teddy is the nickname) AND the seat changed: sitting representative (HD-140) running for State Senate District 15, the open seat of retiring Sen. Ed Harbison; same party (D)"
     },
     {
       "people_id": 24445,

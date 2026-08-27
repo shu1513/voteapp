@@ -55,18 +55,22 @@ pairs that are sitting House members running for the Senate (Will Wade HD-009 �
 Draper HD-090 → SD-44, Ruwa Romman HD-097 → SD-7), each confirmed against the candidate row's
 party and profile.
 
-**12 hand-added in two classes the proposer cannot reach:**
+**12 hand-added in three classes the proposer cannot reach:**
 
-- 6 name variants — LegiScan's `first_name` holds the full legal name (`Hugh Brewster
-  Williamson III`), a different legal name (`Homer` DeLoach, `Butch`/`Larry` Parrish, `James`/
-  `Matt` Hatchett), a nickname that is not a prefix (`Angie` vs `Angela` O'Steen), or the
-  candidate's first token is an extra given name (`Muhammad` Akbar Ali). Every one was
-  confirmed by seat **and** party.
-- 6 sitting legislators running outside the state-legislative pool — Teddy Reese (HD-140 →
-  SD-15), Tim Fleming (HD-114 → Secretary of State), Tanya Miller (HD-062 → Attorney General),
-  Brian Strickland (SD-042 → Attorney General), Greg Dolezal (SD-027 → Lieutenant Governor),
-  Josh McLaurin (SD-014 → Lieutenant Governor). These are the highest-value entries and the
-  proposer cannot see them by design.
+- 6 name variants — the snapshot's `first_name` is a legal name the candidate does not use
+  (`Hugh` for Bruce Williamson, whose `Bruce` sits in the nickname field the proposer does not
+  read; `Homer` DeLoach, `Butch`/`Larry` Parrish, `James`/`Matt` Hatchett), a nickname that is
+  not a prefix (`Angie` vs `Angela` O'Steen), or the candidate's first token is an extra given
+  name (`Muhammad` Akbar Ali). Every one was confirmed by seat **and** party.
+- 5 sitting legislators running outside the state-legislative pool — Tim Fleming (HD-114 →
+  Secretary of State), Tanya Miller (HD-062 → Attorney General), Brian Strickland (SD-042 →
+  Attorney General), Greg Dolezal (SD-027 → Lieutenant Governor), Josh McLaurin (SD-014 →
+  Lieutenant Governor). These are the highest-value entries and the proposer cannot see them
+  by design.
+- 1 combined name-and-seat change — Teddy Reese. His SD-15 candidacy IS in the pool
+  (`state_upper`), but the snapshot's `first_name` is the legal `Tremaine` (`Teddy` is the
+  nickname) and his seat changed HD-140 → SD-15, so neither the name rule nor seat
+  corroboration could reach him.
 
 Validation over all 2,362 stored rolls: matched **216,752** / unmatched_reviewed 28,363 /
 `no_crosswalk` **0** / `out_of_scope` **0**, 0 file errors, 0 zero-match rolls. Fan-out size:
