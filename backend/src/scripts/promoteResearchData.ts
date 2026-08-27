@@ -365,7 +365,7 @@ export const LABEL_PROJECTION_SQL = `
   FROM public.finance_committee_labels
 `;
 
-const KEY_SEPARATOR = " ";
+const KEY_SEPARATOR = "\u0000";
 
 export function recordKey(row: Pick<RecordRow, "candidate_id" | "record_identity_key">): string {
   return [row.candidate_id, row.record_identity_key].join(KEY_SEPARATOR);

@@ -372,7 +372,7 @@ async function renderPng(input: PickCardOgImageInput): Promise<Buffer> {
 }
 
 export function renderPickCardOgImage(input: PickCardOgImageInput): Promise<Buffer> {
-  const key = `${input.firstName ?? ""} ${input.electionDate}`;
+  const key = `${input.firstName ?? ""}\u0000${input.electionDate}`;
   const cached = renderCache.get(key);
   if (cached) {
     return cached;
