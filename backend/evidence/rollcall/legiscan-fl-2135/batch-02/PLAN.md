@@ -68,12 +68,17 @@ direction the strands were tagged individually instead of collapsing to
 `general` (the pilot precedent: 1,545 tags on 1,163 federal records proves
 multi-label fan-out). Each candidate area was tested on its own:
 
-- `environment_and_public_health` → **against**: the fluoride limitation is
-  the act's most consequential health provision and the floor fight (the
-  failed 13-21 amendment was the fluoride-preservation attempt). The one
-  counter-strand in the area — raising the mosquito-control matching-fund
-  cap — is de minimis next to ending fluoridation in ~29 counties (the
-  HB 351 principle: a minor softening inside a bill does not flip it).
+- `environment_and_public_health` → **NO LABEL, by the user's direction
+  call**. The initial analysis tagged the fluoride limitation /against on
+  the mainstream-consensus reading (CDC/ADA treat community fluoridation as
+  a protective standard). The user holds the opposing view — that fluoride
+  is harmful — which is precisely the contested-direction situation the
+  framework escalates to a human: whether ending fluoridation protects or
+  harms community health depends on which evidence base one credits, so
+  the vote carries no stance in this area either way. The description
+  still leads with the fluoride provision as fact; only the directional
+  credit is withheld. (Precedent: the user's GA batch-04 / Ohio H.B. 116
+  direction calls.)
 - `housing_affordability` → **for**: s. 163.3162(5) is a real, operative
   preemption — "a governmental entity may not adopt or enforce any
   legislation … to inhibit the construction" of farmworker housing meeting
@@ -85,9 +90,9 @@ multi-label fan-out). Each candidate area was tested on its own:
   attestation, not corporate accountability — ambiguity within the area
   means no stance for that area.
 
-**Judgment:** `environment_and_public_health` yea = **against** +
-`housing_affordability` yea = **for**, both chambers, description leading
-with the fluoride provision and honestly framing the omnibus.
+**Judgment:** `housing_affordability` yea = **for**, both chambers,
+description leading with the fluoride provision (as fact, no direction)
+and honestly framing the omnibus.
 
 ## Selected rolls
 

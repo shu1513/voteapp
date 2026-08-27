@@ -43,10 +43,12 @@
   in full — third-degree felony for unregistered possession of >25 forms,
   30→10-day deadline, resident/citizen/felon eligibility bars, one-initiative-per-committee cap and the three-election petition expiry — so a nay-leaning reader is not misled about
   what yes meant.
-- **SB 700 → TWO stances, one per major directional strand**
-  (`environment_and_public_health`/against + `housing_affordability`/for) —
-  revised from the initial `general` no-stance call on the user's
-  suggestion. Tagging the whole 92-section act with ONE direction would
+- **SB 700 → `housing_affordability`/for only** — revised twice: first
+  from `general` to per-strand stances on the user's suggestion, then the
+  `environment_and_public_health`/against label was DROPPED on the user's
+  explicit direction call (the user credits the fluoride-harm evidence, so
+  the fluoride provision's direction is contested and carries no stance
+  either way; the description keeps the fluoride facts). Tagging the whole 92-section act with ONE direction would
   ascribe the omnibus to its most famous strand; tagging NOTHING wastes the
   real directional strands. Multi-label is the pilot-proven middle path.
   Per-area tests and the corporate_accountability skip are in `PLAN.md`.
