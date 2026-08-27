@@ -5,7 +5,20 @@ Follows the Ohio (`ohio-136/CODE-FINDINGS.md`) and Texas
 mechanisms found during the data campaign that need CODE, parked here rather
 than hand-patched around.
 
-## 1. No official-date override — and every hand-fix is provably unsafe
+## 1. ~~No official-date override~~ — BUILT AND SHIPPED
+
+**RESOLVED 2026-08-27 by [#899](https://github.com/shu1513/voteapp/pull/899)**
+(migration 257, `legislative_votes.official_vote_date`), built to the design
+below. Follow-up `cd4d105d` finds prior imports by run-id prefix, which closes
+the duplicate hazard the design worried about. All four known Illinois skews
+now carry an override and their 248 records sit on the official dates:
+S.B. 3777 house, plus H.B. 5024 senate, S.B. 2437 senate and H.B. 5090 house
+in `batch-03/`. The re-run test (157 `unchanged`) confirms a moved
+`event_date` no longer causes duplicates. **Migration 257 is local only —
+prod needs it before any Illinois promotion.** The original finding is kept
+below as the record of why the hand-fixes were refused.
+
+### Original finding (historical)
 
 **The gap.** S.B. 3777's House third reading is officially dated **6/1/2026**
 (ILGA BillStatus XML); LegiScan stamps it 2026-05-31, because the dataset
