@@ -1,0 +1,344 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602370,
+      "measure_id": "SB 79",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 79, which requires cities and counties to allow apartment buildings near major transit stops on land already zoned for housing, commercial or mixed use, with minimum height, density and floor-area standards that rise the closer a site sits to the stop. Projects must meet affordability, demolition and antidisplacement, and labor standards, and a local government may adopt its own transit-oriented plan in place of the state standards. It passed the California State Assembly 43-19 and became law.",
+      "nay_description": "Voted against passing SB 79, which requires cities and counties to allow apartment buildings near major transit stops on land already zoned for housing, commercial or mixed use, with minimum height, density and floor-area standards that rise the closer a site sits to the stop. Projects must meet affordability, demolition and antidisplacement, and labor standards, and a local government may adopt its own transit-oriented plan in place of the state standards. It passed the California State Assembly 43-19 and became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1602275,
+      "measure_id": "SB 79",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Assembly's amendments to SB 79, which requires cities and counties to allow apartment buildings near major transit stops on land already zoned for housing, commercial or mixed use, with minimum height, density and floor-area standards that rise the closer a site sits to the stop. Projects must meet affordability, demolition and antidisplacement, and labor standards, and a local government may adopt its own transit-oriented plan in place of the state standards. The California State Senate agreed to the amendments 21-8, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Assembly's amendments to SB 79, which requires cities and counties to allow apartment buildings near major transit stops on land already zoned for housing, commercial or mixed use, with minimum height, density and floor-area standards that rise the closer a site sits to the stop. Projects must meet affordability, demolition and antidisplacement, and labor standards, and a local government may adopt its own transit-oriented plan in place of the state standards. The California State Senate agreed to the amendments 21-8, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601634,
+      "measure_id": "SB 627",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 627, which makes it a crime, chargeable as an infraction or a misdemeanor, for a law enforcement officer to wear a face covering that conceals their identity while performing their duties, and defines law enforcement officer to include federal agents and officers of other states operating in California. The exemptions are narrow — undercover or tactical operations, occupational health and safety law, protecting an identity during prosecution, and disability accommodations — and every agency operating in the state must post a written facial-covering policy by July 1, 2026. It passed the California State Assembly 45-23 and became law.",
+      "nay_description": "Voted against passing SB 627, which makes it a crime, chargeable as an infraction or a misdemeanor, for a law enforcement officer to wear a face covering that conceals their identity while performing their duties, and defines law enforcement officer to include federal agents and officers of other states operating in California. The exemptions are narrow — undercover or tactical operations, occupational health and safety law, protecting an identity during prosecution, and disability accommodations — and every agency operating in the state must post a written facial-covering policy by July 1, 2026. It passed the California State Assembly 45-23 and became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601939,
+      "measure_id": "SB 627",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Assembly's amendments to SB 627, which makes it a crime, chargeable as an infraction or a misdemeanor, for a law enforcement officer to wear a face covering that conceals their identity while performing their duties, and defines law enforcement officer to include federal agents and officers of other states operating in California. The exemptions are narrow — undercover or tactical operations, occupational health and safety law, protecting an identity during prosecution, and disability accommodations — and every agency operating in the state must post a written facial-covering policy by July 1, 2026. The California State Senate agreed to the amendments 28-11, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Assembly's amendments to SB 627, which makes it a crime, chargeable as an infraction or a misdemeanor, for a law enforcement officer to wear a face covering that conceals their identity while performing their duties, and defines law enforcement officer to include federal agents and officers of other states operating in California. The exemptions are narrow — undercover or tactical operations, occupational health and safety law, protecting an identity during prosecution, and disability accommodations — and every agency operating in the state must post a written facial-covering policy by July 1, 2026. The California State Senate agreed to the amendments 28-11, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601776,
+      "measure_id": "AB 495",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass AB 495, the Family Preparedness Plan Act of 2025, which widens the range of relatives who may sign a caregiver's authorization affidavit to enroll a child in school and consent to school-related medical care, and lets a court appoint an adult the custodial parent names as a joint guardian when that parent will be temporarily unavailable, including because of an immigration-related administrative action. Records of those guardianship proceedings are confidential, and schools and child care providers must keep their immigration-enforcement policies current with the Attorney General's guidance. It passed the California State Senate 29-10 and became law.",
+      "nay_description": "Voted against passing AB 495, the Family Preparedness Plan Act of 2025, which widens the range of relatives who may sign a caregiver's authorization affidavit to enroll a child in school and consent to school-related medical care, and lets a court appoint an adult the custodial parent names as a joint guardian when that parent will be temporarily unavailable, including because of an immigration-related administrative action. Records of those guardianship proceedings are confidential, and schools and child care providers must keep their immigration-enforcement policies current with the Attorney General's guidance. It passed the California State Senate 29-10 and became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602457,
+      "measure_id": "AB 495",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's amendments to AB 495, the Family Preparedness Plan Act of 2025, which widens the range of relatives who may sign a caregiver's authorization affidavit to enroll a child in school and consent to school-related medical care, and lets a court appoint an adult the custodial parent names as a joint guardian when that parent will be temporarily unavailable, including because of an immigration-related administrative action. Records of those guardianship proceedings are confidential, and schools and child care providers must keep their immigration-enforcement policies current with the Attorney General's guidance. The California State Assembly agreed to the amendments 60-20, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Senate's amendments to AB 495, the Family Preparedness Plan Act of 2025, which widens the range of relatives who may sign a caregiver's authorization affidavit to enroll a child in school and consent to school-related medical care, and lets a court appoint an adult the custodial parent names as a joint guardian when that parent will be temporarily unavailable, including because of an immigration-related administrative action. Records of those guardianship proceedings are confidential, and schools and child care providers must keep their immigration-enforcement policies current with the Attorney General's guidance. The California State Assembly agreed to the amendments 60-20, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601453,
+      "measure_id": "SB 580",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 580, which requires the Attorney General to publish, by July 1, 2026, model policies for state and local agencies on interacting with immigration authorities, along with guidance and audit criteria for limiting how far the information in government databases is available for immigration enforcement. State and local agencies must adopt the model policy or an equivalent one by January 1, 2027. It passed the California State Assembly 58-19 and became law.",
+      "nay_description": "Voted against passing SB 580, which requires the Attorney General to publish, by July 1, 2026, model policies for state and local agencies on interacting with immigration authorities, along with guidance and audit criteria for limiting how far the information in government databases is available for immigration enforcement. State and local agencies must adopt the model policy or an equivalent one by January 1, 2027. It passed the California State Assembly 58-19 and became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601770,
+      "measure_id": "SB 580",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Assembly's amendments to SB 580, which requires the Attorney General to publish, by July 1, 2026, model policies for state and local agencies on interacting with immigration authorities, along with guidance and audit criteria for limiting how far the information in government databases is available for immigration enforcement. State and local agencies must adopt the model policy or an equivalent one by January 1, 2027. The California State Senate agreed to the amendments 30-10, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Assembly's amendments to SB 580, which requires the Attorney General to publish, by July 1, 2026, model policies for state and local agencies on interacting with immigration authorities, along with guidance and audit criteria for limiting how far the information in government databases is available for immigration enforcement. State and local agencies must adopt the model policy or an equivalent one by January 1, 2027. The California State Senate agreed to the amendments 30-10, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601396,
+      "measure_id": "SB 704",
+      "vote_date": "2025-09-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 704, which bars selling or transferring a firearm barrel unless the transaction is completed in person through a licensed firearms dealer, and bars possessing barrels with intent to sell unless the seller is a licensed dealer. From July 1, 2027 the dealer must run an eligibility check on the buyer, for a fee of up to $5, and record the transaction; a first or second violation is a misdemeanor and further violations may be charged as felonies. It passed the California State Assembly 57-20 and became law.",
+      "nay_description": "Voted against passing SB 704, which bars selling or transferring a firearm barrel unless the transaction is completed in person through a licensed firearms dealer, and bars possessing barrels with intent to sell unless the seller is a licensed dealer. From July 1, 2027 the dealer must run an eligibility check on the buyer, for a fee of up to $5, and record the transaction; a first or second violation is a misdemeanor and further violations may be charged as felonies. It passed the California State Assembly 57-20 and became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601640,
+      "measure_id": "SB 704",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Assembly's amendments to SB 704, which bars selling or transferring a firearm barrel unless the transaction is completed in person through a licensed firearms dealer, and bars possessing barrels with intent to sell unless the seller is a licensed dealer. From July 1, 2027 the dealer must run an eligibility check on the buyer, for a fee of up to $5, and record the transaction; a first or second violation is a misdemeanor and further violations may be charged as felonies. The California State Senate agreed to the amendments 29-10, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Assembly's amendments to SB 704, which bars selling or transferring a firearm barrel unless the transaction is completed in person through a licensed firearms dealer, and bars possessing barrels with intent to sell unless the seller is a licensed dealer. From July 1, 2027 the dealer must run an eligibility check on the buyer, for a fee of up to $5, and record the transaction; a first or second violation is a misdemeanor and further violations may be charged as felonies. The California State Senate agreed to the amendments 29-10, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601916,
+      "measure_id": "AB 325",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass AB 325, which lets an antitrust complaint under California's Cartwright Act proceed when it pleads facts showing a conspiracy to restrain trade is plausible, and states that such a complaint need not allege facts tending to rule out independent action. It also makes it unlawful to use or distribute a common pricing algorithm as part of such a conspiracy, or to coerce another business into adopting the price or term the algorithm recommends. It passed the California State Senate 29-9 and became law.",
+      "nay_description": "Voted against passing AB 325, which lets an antitrust complaint under California's Cartwright Act proceed when it pleads facts showing a conspiracy to restrain trade is plausible, and states that such a complaint need not allege facts tending to rule out independent action. It also makes it unlawful to use or distribute a common pricing algorithm as part of such a conspiracy, or to coerce another business into adopting the price or term the algorithm recommends. It passed the California State Senate 29-9 and became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602313,
+      "measure_id": "AB 325",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's amendments to AB 325, which lets an antitrust complaint under California's Cartwright Act proceed when it pleads facts showing a conspiracy to restrain trade is plausible, and states that such a complaint need not allege facts tending to rule out independent action. It also makes it unlawful to use or distribute a common pricing algorithm as part of such a conspiracy, or to coerce another business into adopting the price or term the algorithm recommends. The California State Assembly agreed to the amendments 54-18, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Senate's amendments to AB 325, which lets an antitrust complaint under California's Cartwright Act proceed when it pleads facts showing a conspiracy to restrain trade is plausible, and states that such a complaint need not allege facts tending to rule out independent action. It also makes it unlawful to use or distribute a common pricing algorithm as part of such a conspiracy, or to coerce another business into adopting the price or term the algorithm recommends. The California State Assembly agreed to the amendments 54-18, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601772,
+      "measure_id": "AB 692",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass AB 692, which makes it unlawful, for employment contracts entered into on or after January 1, 2026, to require a worker to accept stay-or-pay terms, such as owing an employer, training provider or debt collector money if the worker's job ends. Those terms are declared void as restraints on a lawful trade, and a worker subjected to them may sue, on their own behalf or for others in the same position, for civil penalties and other relief. It passed the California State Senate 25-11 and became law.",
+      "nay_description": "Voted against passing AB 692, which makes it unlawful, for employment contracts entered into on or after January 1, 2026, to require a worker to accept stay-or-pay terms, such as owing an employer, training provider or debt collector money if the worker's job ends. Those terms are declared void as restraints on a lawful trade, and a worker subjected to them may sue, on their own behalf or for others in the same position, for civil penalties and other relief. It passed the California State Senate 25-11 and became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602504,
+      "measure_id": "AB 692",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's amendments to AB 692, which makes it unlawful, for employment contracts entered into on or after January 1, 2026, to require a worker to accept stay-or-pay terms, such as owing an employer, training provider or debt collector money if the worker's job ends. Those terms are declared void as restraints on a lawful trade, and a worker subjected to them may sue, on their own behalf or for others in the same position, for civil penalties and other relief. The California State Assembly agreed to the amendments 46-20, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Senate's amendments to AB 692, which makes it unlawful, for employment contracts entered into on or after January 1, 2026, to require a worker to accept stay-or-pay terms, such as owing an employer, training provider or debt collector money if the worker's job ends. Those terms are declared void as restraints on a lawful trade, and a worker subjected to them may sue, on their own behalf or for others in the same position, for civil penalties and other relief. The California State Assembly agreed to the amendments 46-20, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601163,
+      "measure_id": "AB 1415",
+      "vote_date": "2025-09-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass AB 1415, which extends the Office of Health Care Affordability's oversight to management services organizations and adds definitions for investor owners such as hedge funds, and requires those organizations to submit data to the office. It also requires advance written notice to the office of mergers and other transactions involving management services organizations and the entities that own or control them. It passed the California State Senate 26-10 and became law.",
+      "nay_description": "Voted against passing AB 1415, which extends the Office of Health Care Affordability's oversight to management services organizations and adds definitions for investor owners such as hedge funds, and requires those organizations to submit data to the office. It also requires advance written notice to the office of mergers and other transactions involving management services organizations and the entities that own or control them. It passed the California State Senate 26-10 and became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601306,
+      "measure_id": "AB 1415",
+      "vote_date": "2025-09-08",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's amendments to AB 1415, which extends the Office of Health Care Affordability's oversight to management services organizations and adds definitions for investor owners such as hedge funds, and requires those organizations to submit data to the office. It also requires advance written notice to the office of mergers and other transactions involving management services organizations and the entities that own or control them. The California State Assembly agreed to the amendments 51-19, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Senate's amendments to AB 1415, which extends the Office of Health Care Affordability's oversight to management services organizations and adds definitions for investor owners such as hedge funds, and requires those organizations to submit data to the office. It also requires advance written notice to the office of mergers and other transactions involving management services organizations and the entities that own or control them. The California State Assembly agreed to the amendments 51-19, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601758,
+      "measure_id": "AB 1319",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass AB 1319, which makes it unlawful in California to import, export, transport, sell, buy or possess for sale any fish, wildlife or plant taken in violation of a state or federal wildlife law as those laws stood on January 19, 2025, with seized evidence forfeited on conviction. It also requires the Department of Fish and Wildlife to publish findings adding a species to a provisional candidate list when federal protections for it are reduced; the provisions expire at the end of 2031. It passed the California State Senate 25-10 and became law.",
+      "nay_description": "Voted against passing AB 1319, which makes it unlawful in California to import, export, transport, sell, buy or possess for sale any fish, wildlife or plant taken in violation of a state or federal wildlife law as those laws stood on January 19, 2025, with seized evidence forfeited on conviction. It also requires the Department of Fish and Wildlife to publish findings adding a species to a provisional candidate list when federal protections for it are reduced; the provisions expire at the end of 2031. It passed the California State Senate 25-10 and became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602473,
+      "measure_id": "AB 1319",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's amendments to AB 1319, which makes it unlawful in California to import, export, transport, sell, buy or possess for sale any fish, wildlife or plant taken in violation of a state or federal wildlife law as those laws stood on January 19, 2025, with seized evidence forfeited on conviction. It also requires the Department of Fish and Wildlife to publish findings adding a species to a provisional candidate list when federal protections for it are reduced; the provisions expire at the end of 2031. The California State Assembly agreed to the amendments 51-19, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Senate's amendments to AB 1319, which makes it unlawful in California to import, export, transport, sell, buy or possess for sale any fish, wildlife or plant taken in violation of a state or federal wildlife law as those laws stood on January 19, 2025, with seized evidence forfeited on conviction. It also requires the Department of Fish and Wildlife to publish findings adding a species to a provisional candidate list when federal protections for it are reduced; the provisions expire at the end of 2031. The California State Assembly agreed to the amendments 51-19, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602272,
+      "measure_id": "SB 42",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 42, the California Fair Elections Act of 2026, which repeals the state ban on candidates accepting public money to run for office for candidates who accept spending limits and meet qualifying criteria, bars spending public funds on legal defense or on repaying a candidate's own loans to their campaign, and raises the fine for contributions by foreign governments. Because it amends the voter-approved Political Reform Act, its provisions take effect only if voters approve them at the November 3, 2026 statewide general election. It passed the California State Assembly 59-20 and became law.",
+      "nay_description": "Voted against passing SB 42, the California Fair Elections Act of 2026, which repeals the state ban on candidates accepting public money to run for office for candidates who accept spending limits and meet qualifying criteria, bars spending public funds on legal defense or on repaying a candidate's own loans to their campaign, and raises the fine for contributions by foreign governments. Because it amends the voter-approved Political Reform Act, its provisions take effect only if voters approve them at the November 3, 2026 statewide general election. It passed the California State Assembly 59-20 and became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1602930,
+      "measure_id": "SB 42",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Assembly's amendments to SB 42, the California Fair Elections Act of 2026, which repeals the state ban on candidates accepting public money to run for office for candidates who accept spending limits and meet qualifying criteria, bars spending public funds on legal defense or on repaying a candidate's own loans to their campaign, and raises the fine for contributions by foreign governments. Because it amends the voter-approved Political Reform Act, its provisions take effect only if voters approve them at the November 3, 2026 statewide general election. The California State Senate agreed to the amendments 29-8, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Assembly's amendments to SB 42, the California Fair Elections Act of 2026, which repeals the state ban on candidates accepting public money to run for office for candidates who accept spending limits and meet qualifying criteria, bars spending public funds on legal defense or on repaying a candidate's own loans to their campaign, and raises the fine for contributions by foreign governments. Because it amends the voter-approved Political Reform Act, its provisions take effect only if voters approve them at the November 3, 2026 statewide general election. The California State Senate agreed to the amendments 29-8, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for"
+        }
+      ]
+    }
+  ]
+}
