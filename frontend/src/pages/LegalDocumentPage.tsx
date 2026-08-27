@@ -29,7 +29,7 @@ type LegalDocumentPageProps = {
 export function LegalDocumentPage({ document }: LegalDocumentPageProps) {
   useDocumentTitle(TITLES[document]);
   return (
-    <article className="text-body mx-auto max-w-3xl px-4 py-8 [&_h1]:font-sans [&_h1]:text-title [&_h1]:font-bold [&_h2]:mt-6 [&_h2]:font-sans [&_h2]:text-heading [&_h2]:font-semibold [&_p]:mt-2 [&_p]:leading-relaxed [&_li]:mt-1 [&_ul]:list-disc [&_ul]:pl-6 [&_a]:text-rausch-dark [&_a]:underline">
+    <article className="text-body mx-auto max-w-3xl px-4 py-8 [&_h1]:text-title [&_h1]:font-bold [&_h2]:mt-6 [&_h2]:text-heading [&_h2]:font-semibold [&_p]:mt-2 [&_p]:leading-relaxed [&_li]:mt-1 [&_ul]:list-disc [&_ul]:pl-6 [&_a]:text-rausch-dark [&_a]:underline">
       <ReactMarkdown>{DOCUMENTS[document]}</ReactMarkdown>
     </article>
   );
