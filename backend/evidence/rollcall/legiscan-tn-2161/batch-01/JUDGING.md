@@ -32,9 +32,11 @@ July, the superseded memo said January.
 
 - The Senate voted on 2025-04-10 (24-8) on SA0302 as modified by SA0381: amendments to
   **§ 40-29-202**, the certificate-of-restoration route.
-- The House voted on 2026-03-10 (64-24) on HA0602, a delete-all substitute amending
-  **§ 40-29-102** instead. That is what became law (PC 605), and the Senate concurred
-  31-1 two days later — a lopsided vote that is not in this batch.
+- The House voted on 2026-03-09 (64-24) on HA0602, a delete-all substitute amending
+  **§ 40-29-102** instead. (LegiScan dates the roll 03-09; the official history prints
+  the passage line under 03/10 — a one-day journal offset. The imported `vote_date`
+  follows the roll.) That is what became law (PC 605), and the Senate concurred 31-1
+  on March 13 — a lopsided vote that is not in this batch.
 
 The Senate's description says it voted the Senate's version and names what later
 changed; the House's description describes the enacted text. Both carry
@@ -80,6 +82,15 @@ raising machine-gun offences from a Class E to a Class C felony. The enrolled ac
 through cross-reference edits inside § 39-17-1302; the Fiscal Review Committee's memo
 (FM0950, matching the enacted filing number) states the reclassification directly.
 
+**HB 1093's drive-by consequence is two provisions, and the description names both**
+(review fix — the first pass named only the first): § 40-35-303 as amended makes a
+defendant convicted of aggravated assault with a firearm fired from inside a motor
+vehicle ineligible for **probation** (Section 8), and the new § 40-35-501(gg) removes
+**release eligibility** for the same offense — 100% of the sentence served, credits
+usable only for privileges and classification (Sections 9-10). The bill caption words
+the second provision as "ineligible for parole". The 14 records were rewritten in
+place after import.
+
 ## Import
 
 Dry run: 14 files, 0 errors, **199 planned inserts**, 0 notified.
@@ -88,14 +99,25 @@ notified, **31 distinct candidates** (every mapped crosswalk entry).
 
 Reconciled three ways:
 
-- report `actions` = `{"insert": 199}`
+- initial-run report `actions` = `{"insert": 199}` (see the report-provenance note below)
 - `candidate_records` 67,973 → 68,172 = +199
-- `origin_run_id LIKE 'rollcall:TN:%:2161:%:2026-08-27T01:49:40.074Z'` → 199 records /
-  31 candidates / 14 distinct run ids
+- grouped `origin_run_id` stamps (a rewrite re-stamps the rewriting run's `startedAt`,
+  the batch-02 mechanic): **185 records @ `2026-08-27T01:49:40.074Z`** (the initial
+  import) **+ 14 @ `2026-08-27T20:44:47.015Z`** (the HB 1093 description rewrite)
+  = 199 records / 31 candidates. A single-stamp predicate no longer covers the batch.
 
 The dry run's own stamp (`2026-08-27T01:48:33.021Z`) matches **zero** rows, which is
-positive proof `--dry-run` is inert. A second real run reported all 199 `unchanged`.
-Production was never touched.
+positive proof `--dry-run` is inert. Production was never touched.
+
+**Report provenance:** `import-report.json` uses a fixed filename, so the idempotency
+re-run **overwrote** the initial run's report (`insert: 199`) with its own
+(`unchanged: 199`) before the trimmed copy was committed. The committed files are
+therefore: `import-dry-run-report.json` (the pre-import plan, `insert: 199`),
+`import-rerun-report.json` (the idempotency re-run, `unchanged: 199` — previously
+mislabeled `import-report.json`), and `import-rewrite-report.json` (the HB 1093
+description fix, `rewrite: 14, unchanged: 185`). The initial run's full report was
+not preserved; its `insert: 199` result is evidenced by the dry-run plan it matched
+exactly and by the DB stamp census above.
 
 ## Related-record flags reviewed
 

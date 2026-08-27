@@ -9,7 +9,10 @@ LegiScan bulk dataset `2161` (TN 114th General Assembly), downloaded 2026-08-27:
 9,159 bills / 15,468 roll calls / 136 people. Both regular sessions (2025 and 2026)
 ship in one dataset. The extracted dataset and the 8,648 evidence JSONs live outside
 the repo at `/Users/shu/legiscan-data/tn-2161/` and `/Users/shu/legiscan-data/tn-2161-evidence/`
-(Texas precedent — the repo keeps only the curated subset).
+(Texas precedent — the repo keeps only the curated subset). The 14 roll JSONs the
+batch-01 import consumed ARE committed, flat in `batch-01/` (also the Texas layout),
+so the judged votes stay independently verifiable and re-importable after the
+crosswalk grows.
 
 ## Data quality
 
