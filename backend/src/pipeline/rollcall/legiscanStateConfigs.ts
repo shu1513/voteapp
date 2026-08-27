@@ -60,7 +60,7 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   //   families once that suffix is folded.
   // - Passage is worded `Passage`, `Passage By Substitute` and `Passage As
   //   Amended`; the second chamber's concurrence is always worded `Agree
-  //   To …` (14 variants, incl. abbreviations like `Agree To Sam To Hsub`),
+  //   To …` (23 variants, incl. abbreviations like `Agree To Sam To Hsub`),
   //   so the concurrence rule matches the `agree to ` stem rather than
   //   enumerating them. Conference reports come as `Adopt Conference
   //   Committee Report` plus two one-off spellings (`Adopt CCR`, `Adopt
