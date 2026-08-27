@@ -153,7 +153,19 @@ synopsis, which for an amended bill describes just the delta ("Reinserts the
 provisions of the engrossed bill with the following changes"). It is not a
 substitute for the synopsis stack in the BillStatus XML.
 
-### Second hazard: a `Concurrence` roll can be a motion that LOST
+### Second hazard: the sine-die overnight day is stamped a day early
+
+The dataset contains **no June dates at all**, but the House demonstrably ran
+its 2026 sine-die session past midnight: the ILGA BillStatus XML dates
+S.B. 3777's 72-38 House third reading **6/1/2026** while LegiScan stamps it
+2026-05-31 (the legislative day). An audit of all 22 batch-01 rolls against
+the ILGA XML found this to be the only skew (21/22 exact). The stored date
+stays LegiScan's — the evidence sha pins the roll_call element and the cited
+source page shows the same date — but any roll dated on a session's last
+calendar day should have its date checked against the ILGA XML, and
+journal-exact consumers should prefer the ILGA date.
+
+### Third hazard: a `Concurrence` roll can be a motion that LOST
 
 H.B. 3564's first House concurrence motion **lost 56-36-2**; a second one
 carried 64-40 two months later. Both are stored as kept floor votes, and

@@ -11,7 +11,7 @@ The BillStatus XML's action trail states outright which amendments were
 `Adopted` and which were `Tabled`, `Postponed` or `Lost`, so the check is
 exact rather than inferred.
 
-**Seven measures: both chambers voted the same text.** S.B. 8 (Senate adopted
+**Eight measures: both chambers voted the same text.** S.B. 8 (Senate adopted
 CA1 + FA3; the House tabled its only amendment), H.B. 1373 (House adopted
 CA1 by voice; the Senate tabled both of its filed amendments), S.B. 3341
 (Senate adopted FA2; the House tabled FA1), H.B. 5095, S.B. 1976 and S.B.
@@ -130,14 +130,57 @@ batch is ever rewritten in place, use the grouped-stamp form.
 
 **Prod untouched.** Promotion is a separate step.
 
-## Two operational notes
+## Review response (2026-08-27)
+
+**Comma splice in every description — FIXED, and the fix path is worth
+recording.** Every yea/nay description joined its two sentences with a comma
+("…from 72 to 48 hours, The Illinois Senate passed it…"). The fix looked
+routine — edit `judgments.json`, re-judge, re-import — but the re-import
+reported **1,362 `unchanged`**: `buildCandidateRecordIdentityKey` normalizes
+text with `[^a-z0-9]+ → " "`, so a punctuation-only edit is
+**identity-invariant** and the fan-out correctly sees the old rows as already
+matching. (Texas batch-02's description edits rewrote 361 records because
+they changed *words*, which changes the key.) Since the pipeline's own
+identity model declares the two texts the same record, the repair was applied
+directly in SQL — `replace(description, ', The Illinois', '. The Illinois')`
+on the 1,362 rows, which preserves every `record_identity_key` byte-for-byte
+— after the judge run had updated the 22 `legislative_votes` sentences. A
+final import run converged: **22 files, all 1,364 `unchanged`**
+(`import-verify-report.json`). Rule for next time: **a punctuation-only
+description fix never propagates through re-import; fix the judgments file
+and the live rows together.**
+
+The 2 records the 18:51 run counted as `rewrite` (Paul Jacobs and Regan
+Deering, H.B. 4339 nay side) were collateral from a concurrent
+`source_url_repair` run in another session against the shared local DB — it
+had re-keyed those two rows, and the import restored the canonical key,
+picking up the fixed text in the same write.
+
+**S.B. 3777 house vote date — LegiScan says 2026-05-31, the official record
+says June 1; kept, documented.** The ILGA BillStatus XML dates the 72-38
+House third reading **6/1/2026**; the whole LegiScan dataset contains **no
+June dates at all** — the House ran its sine-die session past midnight and
+LegiScan stamped the legislative day. A full audit of all 22 rolls against
+the ILGA XML found **21/22 exact matches**; this is the only skew. The date
+is kept as LegiScan's because the row's evidence sha pins the roll_call
+element (date field included) and a re-fetch would silently revert any
+hand-edit; the record's `source_url` is the LegiScan page, which displays
+the same date it asserts, so the citation stays self-consistent; and no
+description states a date. The skew is recorded here and in the README —
+promotion-side consumers wanting journal-exact dates should prefer the ILGA
+BillStatus XML. Auditing every selected roll's date against the ILGA XML is
+now part of the batch recipe.
+
+## Operational notes
 
 1. **A real re-run overwrites `import-report.json`.** A *dry* re-run writes
    `import-dry-run-rerun-report.json` and leaves the ledger alone, but a real
    one does not — the idempotency re-run here replaced the ledger's
    `{"insert": 1364}` with `{"unchanged": 1364}`, and it was restored from
-   the run's stdout. Capture the ledger before re-running.
-2. During the re-run `candidate_records` rose by one row that this import did
-   not write: a concurrent `manual:candidate-records:` run from another
-   session against the same local database. The import's own accounting
-   (1,364 unchanged, 0 inserts) is unaffected.
+   the run's stdout. Capture the ledger before re-running. The committed
+   `import-report.json` is the original insert ledger;
+   `import-verify-report.json` is the post-review convergence run.
+2. The shared local database is also in use by the parallel state sessions —
+   a concurrent `manual:candidate-records:` write and a `source_url_repair`
+   run both landed during this batch's verification steps. The import's own
+   accounting was unaffected each time.

@@ -39,7 +39,7 @@ Applied in order to the 2,063 kept floor rolls:
 | S.B. 3772 environmental justice permitting | 104-0827 | `environment_and_public_health` / for | S 1718025 (43-11), H 1718026 (73-39) |
 | H.B. 4339 high school voter registration | 104-0549 | `election_integrity` / for | H 1718089 (77-24), S 1718090 (41-12) |
 
-Eight research areas, none of which had any Illinois coverage before this
+Seven research areas, none of which had any Illinois coverage before this
 batch.
 
 ## Dropped, with reasons
