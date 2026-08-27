@@ -285,8 +285,9 @@ describe("legiscanRollCallPageUrl", () => {
 
 describe("getLegiscanStateConfig", () => {
   it("serves only surveyed states; an unsurveyed state is refused by name", () => {
-    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual(["GA", "IL", "TX", "FL"]);
+    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual(["GA", "IL", "TN", "TX", "FL"]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
+    expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
     expect(getLegiscanStateConfig("GA").sessionId).toBe(2167);
     expect(getLegiscanStateConfig("IL").sessionId).toBe(2176);
     expect(getLegiscanStateConfig("FL").sessionId).toBe(2135);
@@ -322,6 +323,60 @@ describe("getLegiscanStateConfig", () => {
     expect(tx("RV#105", 150)).toMatchObject({ isFloorVote: null, reason: "unknown_question" });
     // Committee-sized unknowns are still cut by tally.
     expect(tx("Reported favorably", 9).reason).toBe("committee_tally:9/150");
+  });
+
+  it("classifies Tennessee's real desc vocabulary as surveyed", () => {
+    const config = LEGISCAN_STATE_CONFIGS.TN!;
+    const tn = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
+      classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+    // Tennessee labels its own floor votes; the House prints the calendar
+    // into the desc, the Senate prints the bare question.
+    expect(tn("FLOOR VOTE: REGULAR CALENDAR PASSAGE ON THIRD CONSIDERATION", 96)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(tn("FLOOR VOTE: CONSENT CALENDAR 3 PASSAGE ON THIRD CONSIDERATION", 93).questionClass).toBe("passage");
+    expect(tn("FLOOR VOTE: APPROPRIATIONS CALENDAR AS AMENDED PASSAGE ON THIRD CONSIDERATION", 95).questionClass).toBe(
+      "passage"
+    );
+    expect(tn("FLOOR VOTE: as Amended Third Consideration", 33, "senate").questionClass).toBe("passage");
+    expect(tn("FLOOR VOTE: Third Consideration", 32, "senate").questionClass).toBe("passage");
+    // The Senate takes its consent calendar and every resolution as a bare
+    // `Motion to Adopt`; the House spells the resolution version the same way.
+    expect(tn("FLOOR VOTE: Motion to Adopt", 32, "senate").questionClass).toBe("passage");
+    expect(tn("FLOOR VOTE: Motion to Adopt Third and Final Reading", 32, "senate").questionClass).toBe("passage");
+    expect(tn("FLOOR VOTE: REGULAR CALENDAR MOTION TO ADOPT", 93).questionClass).toBe("passage");
+    expect(tn("FLOOR VOTE: Motion to Concur House Amendment # 1", 33, "senate").questionClass).toBe("concurrence");
+    expect(tn("FLOOR VOTE: MESSAGE CALENDAR CONCUR IN SENATE AMENDMENT # 2", 95).questionClass).toBe("concurrence");
+    expect(tn("FLOOR VOTE: MOTION TO ADOPT CONFERENCE COMMITTEE REPORT", 90).questionClass).toBe("conference_report");
+    expect(tn("FLOOR VOTE: MOTION TO ADOPT CONFERENCE COMMITTEE REPORT 2", 90).questionClass).toBe("conference_report");
+    // The trailing `PASSAGE ON THIRD CONSIDERATION` is the calendar item's
+    // text, not the question: amendment and previous-question rolls carry it
+    // too, and each one sits beside a plain passage roll on the same day.
+    for (const desc of [
+      "FLOOR VOTE: REGULAR CALENDAR PREVIOUS QUESTION AS AMENDED PASSAGE ON THIRD CONSIDERATION",
+      "FLOOR VOTE: APPROPRIATIONS CALENDAR MOTION TO ADOPT AMENDMENT # 12 BY WILLIAMS PASSAGE ON THIRD CONSIDERATION",
+      "FLOOR VOTE: APPROPRIATIONS CALENDAR MOTION TO CONSIDER AMENDMENT # 10 BY HARDAWAY PASSAGE ON THIRD CONSIDERATION",
+      "FLOOR VOTE: REGULAR CALENDAR AMENDMENT # 2 BY JONES J AS AMENDED PASSAGE ON THIRD CONSIDERATION",
+      "FLOOR VOTE: Motion to Adopt Amend# 2 by Senator Oliver",
+      "FLOOR VOTE: REGULAR CALENDAR LAY ON THE TABLE MOTION TO ADOPT AMENDMENT # 3 BY JOHNSON PASSAGE ON THIRD CONSIDERATION",
+      "FLOOR VOTE: MOTION TO ADOPT MINORITY CONFERENCE COMMITTEE REPORT",
+      "FLOOR VOTE: Motion to Suspend the Rules",
+      "FLOOR VOTE: REGULAR CALENDAR MOTION TO DEFER",
+      "FLOOR VOTE: REFER TO COMMITTEE",
+      "FLOOR VOTE: Motion to Adopt Appoint Conference Committee",
+    ]) {
+      expect(tn(desc, 95).reason, desc).toBe("excluded_question");
+    }
+    // Oddities stay surfaced rather than guessed at, and committee descs are
+    // cut by tally — Tennessee names the committee in the desc.
+    expect(tn("FLOOR VOTE: REGULAR CALENDAR 2", 94)).toMatchObject({ isFloorVote: null, reason: "unknown_question" });
+    // The dataset's one prefix-only desc (`FLOOR VOTE:`, roll 1698192) is a
+    // real non-empty string: it parses, matches nothing, and surfaces.
+    expect(tn("FLOOR VOTE:", 33, "senate")).toMatchObject({ isFloorVote: null, reason: "unknown_question" });
+    expect(tn("HOUSE JUDICIARY COMMITTEE: Rec. for pass; ref to Calendar & Rules Committee", 22).reason).toBe(
+      "committee_tally:22/99"
+    );
   });
 
   it("classifies Georgia's real desc vocabulary as surveyed", () => {

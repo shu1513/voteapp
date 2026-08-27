@@ -162,6 +162,85 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     ],
     excludedQuestions: [/committee$/, /^(?:senate motion to adopt|motion to adopt in senate)$/],
   },
+  // Tennessee 114th General Assembly (2025 + 2026 regular sessions are one
+  // LegiScan dataset). Vocabulary measured from the full dataset survey
+  // 2026-08-27: 9,159 bills, 15,468 roll calls, 136 people (= 99 House +
+  // 33 Senate + 4 members who resigned or were replaced mid-term).
+  //
+  // What the survey established:
+  // - Tennessee is the first state whose feed LABELS floor votes: every
+  //   floor desc starts `FLOOR VOTE:` and every committee desc starts with
+  //   the committee's name (`HOUSE JUDICIARY COMMITTEE: Rec. for pass…`).
+  //   0 of the 6,111 non-`FLOOR VOTE:` rolls carry a floor-sized tally, so
+  //   the patterns anchor on that prefix and the tally check only
+  //   corroborates.
+  // - The House prints the CALENDAR and every motion that preceded the
+  //   question into one desc (`REGULAR CALENDAR MOTION TO ADOPT AMENDMENT
+  //   # 12 BY WILLIAMS PASSAGE ON THIRD CONSIDERATION`), so the trailing
+  //   `PASSAGE ON THIRD CONSIDERATION` is calendar context, NOT the
+  //   question — amendment and previous-question rolls carry it too. Both
+  //   families are excluded, and each of the 106 previous-question rolls
+  //   and all 296 amendment rolls was verified to sit beside a plain
+  //   passage roll on the same bill, chamber and day.
+  // - Ground truth: each bill's own history prints `Passed H., as am.,
+  //   Ayes 82, Nays 8` lines. HB0487 pins the reading — the plain roll is
+  //   82-8 (`Passed H.`), the previous-question roll beside it is 69-20.
+  // - The Senate passes on `Third Consideration` / `as Amended Third
+  //   Consideration`, and takes its CONSENT calendar and every resolution
+  //   as a bare `Motion to Adopt` (3,509 rolls, only 2 divided; SB0462's
+  //   32-0 `Motion to Adopt` is the Consent Calendar 2 vote its history
+  //   leaves untallied). That is a real final question, so it is kept as
+  //   passage; the House spells the same thing `CONSENT CALENDAR PASSAGE
+  //   ON THIRD CONSIDERATION`.
+  // - Minority conference reports (4 rolls) are excluded: they are the
+  //   losing alternative to the conference report, never the measure.
+  // - 2 rolls stay unknown by design (one desc that is only the bare
+  //   `FLOOR VOTE:` prefix with nothing after it — a real, non-empty
+  //   string that parses fine — and one bare `REGULAR CALENDAR 2`), so
+  //   they surface instead of being guessed.
+  TN: {
+    jurisdiction: "TN",
+    sessionId: 2161,
+    chamberSizes: { house: 99, senate: 33 },
+    keptQuestions: [
+      // House final passage, under any calendar (regular, consent 1-4,
+      // appropriations, message, unfinished business).
+      { pattern: /^floor vote: .*passage on third consideration$/, questionClass: "passage" },
+      // Senate final passage.
+      { pattern: /^floor vote: (?:as amended )?third consideration$/, questionClass: "passage" },
+      // Adoption of a resolution, and the Senate consent calendar.
+      {
+        pattern: /^floor vote: .*motion to adopt(?: as amended)?(?: third consideration| third and final reading)?$/,
+        questionClass: "passage",
+      },
+      // `Motion to Concur House Amendment # 1`, `MESSAGE CALENDAR CONCUR IN
+      // SENATE AMENDMENT # 1`, `REGULAR CALENDAR AS AMENDED MOTION TO
+      // CONCUR`. Tennessee never prints a refusal-to-concur question.
+      { pattern: /^floor vote: .*concur/, questionClass: "concurrence" },
+      { pattern: /^floor vote: .*conference committee report(?: \d+)?$/, questionClass: "conference_report" },
+    ],
+    excludedQuestions: [
+      // The motion for the previous question (debate cutoff), which the
+      // House and Senate both print with the pending question's calendar
+      // text appended.
+      /^floor vote: .*previous question/,
+      // Floor amendment votes: `MOTION TO ADOPT AMENDMENT # 4 BY WILLIAMS`,
+      // `MOTION TO CONSIDER AMENDMENT # 10 BY HARDAWAY`, the bare
+      // `AMENDMENT # 2 BY JONES J` spelling, and the Senate's `amend# 2 by
+      // senator yarbro`. The lookahead keeps concurrence descs, which name
+      // the amendment being concurred in, out of this rule.
+      /^floor vote: (?!.*concur).*amend(?:ment)?\s*#\s*\d+/,
+      /^floor vote: .*lay on the table/,
+      /^floor vote: .*motion to (?:table|defer|adjourn|recall|reconsider|amend|suspend the rules)/,
+      /^floor vote: .*minority conf/,
+      /^floor vote: .*re-?refer to committee/,
+      /^floor vote: .*refer to committee$/,
+      /^floor vote: .*division of question/,
+      /^floor vote: .*appoint conference committee/,
+      /^floor vote: test motion entry$/,
+      /^floor vote: motion$/,
+    ],
+  },
   // Texas 89th Legislature, Regular Session (sine die). Vocabulary measured
   // from the full dataset survey 2026-08-24: 11,503 bills, 9,726 roll
   // calls, 181 people (= 150 House + 31 Senate). Registry pins the regular
