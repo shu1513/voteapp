@@ -180,8 +180,9 @@ Senate then replaced the whole bill with the Equality for Every Family Act, so
 the two chambers voted different *subjects* under one bill number. Only the
 senate roll is on the enacted law. Three more measures in batch-02 have the
 same shape (H.B. 1312, H.B. 5090, H.B. 1836) and were safe only because their
-stale-text votes were unanimous and so never entered the divided pool — luck,
-not a safeguard. **On any Illinois measure whose chambers voted months apart,
+stale-text votes (106-0, 101-1, 107-6) were too one-sided to clear the divided
+gate's 25%-minority threshold, so they never entered the pool — luck, not a
+safeguard. **On any Illinois measure whose chambers voted months apart,
 check what each roll's text actually was before importing it.**
 
 ## Batches

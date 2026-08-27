@@ -31,13 +31,15 @@ The same shape appears three more times in this batch and is handled correctly
 because the divided-vote gate happened to exclude the stale roll: H.B. 1312's
 first house vote (106-0, on a POW/MIA commemorative day), H.B. 5090's first
 house vote (101-1, on construction procurement) and H.B. 1836's first house
-vote (107-6, on eavesdropping and grand juries) were all unanimous or nearly
-so, so they never entered the divided pool. **That is luck, not a safeguard.**
+vote (107-6, on eavesdropping and grand juries) were all so one-sided that
+they failed the divided gate's 25%-minority threshold, so they never entered
+the pool. **That is luck, not a safeguard.**
 
 ## Date skew: it is per-roll, and it recurs
 
-Batch-01 found one skewed roll (S.B. 3777). This batch audited all 54 selected
-rolls against the ILGA action trail and found **three more**:
+Batch-01 found one skewed roll (S.B. 3777). This batch audited **all 64 rolls
+of the initial selection** (32 measures, two rolls each) against the ILGA
+action trail and found **three more**:
 
 | roll | LegiScan | official ILGA |
 |---|---|---|
@@ -53,8 +55,12 @@ sine-die days" and must be done per roll.
 
 Unlike batch-01, these three were **held out of the import** rather than
 imported with a known-wrong date, and are marked `pending:date-skew` in the
-worklist. That is the more conservative call, taken because review flagged the
-batch-01 skew twice.
+worklist — the more conservative call than batch-01's keep-and-document,
+taken because review flagged that skew twice. The arithmetic from selection
+to import: 64 rolls audited, minus 6 when three whole measures were dropped
+under filter 5 (H.B. 3772, H.B. 3510, S.B. 3272), minus H.B. 2568's
+different-bill house roll, minus these 3 date-skew holds, equals the
+**54 imported**.
 
 **The override now exists locally.** While this batch was being judged, the
 background session implementing `CODE-FINDINGS.md` §1 added
@@ -148,3 +154,31 @@ holds **4,683** roll-call records, which reconciles against batch-01 exactly:
 + 2 rewritten by the batch-01 punctuation repair + 3,319 from this batch.
 
 **Prod untouched.**
+
+## Review response (2026-08-27, second pass)
+
+**The comma splice recurred — same bug as batch-01, reintroduced by a fresh
+builder template.** All 108 yea/nay descriptions joined their two sentences
+with a comma, propagating to all 3,319 records. Fixed by the batch-01 recipe:
+`judgments.json` edited in every copy, `rollcall:judge` re-run (54 updated),
+and the live rows repaired directly in SQL — a punctuation-only edit is
+identity-invariant (`buildCandidateRecordIdentityKey` strips punctuation), so
+re-import cannot propagate it and the SQL `replace()` preserves every
+`record_identity_key`. Verification is the SQL counts, stated precisely: **0
+records matching `, The Illinois` and 4,683 matching `. The Illinois`** across
+all Illinois records, and 0 approved rows carrying the splice. The follow-up
+no-op import run (all 3,319 `unchanged`, `import-verify-report.json`) is a
+sanity check only — `unchanged` proves identity-key match, which is
+punctuation-invariant, so it cannot prove text equality either way.
+
+Root cause both times: a builder template whose measure bodies end with a
+trailing comma before the tail sentence. The durable rule for batch-03: **the
+join between body and tail must be built with a period, and the builder must
+assert `", The "` appears nowhere in any description before writing the file.**
+
+Also corrected in this pass: the date-audit wording above (the audit covered
+the 64-roll initial selection, not the 54 survivors — the three skewed rolls
+were audited and then held out), and the README's claim that the stale-text
+votes were "unanimous" (H.B. 5090 was 101-1 and H.B. 1836 was 107-6; what
+kept them out of the pool is the divided gate's 25%-minority threshold, not
+unanimity).
