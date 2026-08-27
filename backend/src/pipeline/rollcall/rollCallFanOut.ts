@@ -226,11 +226,18 @@ export function shouldNotifyForVoteDate(voteDate: string, todayIso: string): boo
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
-/** Every candidate_records row (live or retired) of the given candidates on one date, grouped by candidate. */
+/**
+ * Every candidate_records row (live or retired) of the given candidates on
+ * the given dates, grouped by candidate. Importers pass the effective date
+ * (official_vote_date ?? vote_date) plus the raw source date when an
+ * official-date override is set: a roll imported before its override got the
+ * raw date, and the scan must still see those rows so they rewrite in place
+ * instead of duplicating on the new date.
+ */
 export async function loadExistingRecordsForDate(
   db: Queryable,
   candidateIds: readonly string[],
-  eventDate: string
+  eventDates: readonly string[]
 ): Promise<Map<string, ExistingCandidateRecord[]>> {
   const byCandidate = new Map<string, ExistingCandidateRecord[]>();
   if (candidateIds.length === 0) {
@@ -241,10 +248,10 @@ export async function loadExistingRecordsForDate(
       SELECT candidate_id, id, description, source_url, record_identity_key, retired_at::text AS retired_at
       FROM public.candidate_records
       WHERE candidate_id = ANY($1::uuid[])
-        AND event_date = $2::date
+        AND event_date = ANY($2::date[])
       ORDER BY created_at, id
     `,
-    [candidateIds, eventDate]
+    [candidateIds, eventDates]
   );
   for (const { candidate_id: candidateId, ...record } of result.rows) {
     const records = byCandidate.get(candidateId) ?? [];
@@ -287,6 +294,9 @@ export async function insertRollCallRecord(client: Queryable, record: RollCallRe
  * so its tags' history and notification events stay attached, with the
  * identity transition that lets research:promote follow the re-key. Guarded
  * on the old key so a row edited since the plan was made is left alone.
+ * event_date moves with the content: identity keys embed it, so a row found
+ * on the raw source date after an official-date override was set lands on
+ * the official date (same-date rewrites just restate it).
  */
 export async function rewriteRollCallRecord(
   client: Queryable,
@@ -297,15 +307,24 @@ export async function rewriteRollCallRecord(
       UPDATE public.candidate_records
       SET description = $3,
           source_url = $4,
-          record_identity_key = $5,
+          event_date = $5::date,
+          record_identity_key = $6,
           origin = 'rollcall_import',
-          origin_run_id = $6,
+          origin_run_id = $7,
           updated_at = now()
       WHERE id = $1
         AND record_identity_key = $2
         AND retired_at IS NULL
     `,
-    [record.recordId, record.oldIdentityKey, record.description, record.sourceUrl, record.identityKey, record.originRunId]
+    [
+      record.recordId,
+      record.oldIdentityKey,
+      record.description,
+      record.sourceUrl,
+      record.eventDate,
+      record.identityKey,
+      record.originRunId,
+    ]
   );
   if (result.rowCount !== 1) {
     throw new Error(`record ${record.recordId} changed under the rewrite (key ${record.oldIdentityKey})`);

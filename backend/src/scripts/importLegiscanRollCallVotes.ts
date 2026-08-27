@@ -332,10 +332,13 @@ async function main(): Promise<void> {
 
         const resolutions = resolveLegiscanMembers(votes, crosswalk, snapshot.byPeopleId, candidatesById);
         const voters = collectLegiscanVoters(resolutions, row.resolution);
+        // The effective date plus, under an override, the raw source date:
+        // rows imported before the override sit on the raw date and must be
+        // seen so they rewrite in place instead of duplicating.
         const existingByCandidate = await loadExistingRecordsForDate(
           pool,
           voters.map((voter) => voter.candidateId),
-          vote.officialVoteDate ?? vote.voteDate
+          [...new Set([vote.officialVoteDate ?? vote.voteDate, vote.voteDate])]
         );
         const work = voters.map((voter) => {
           const template = templates[voter.side];
