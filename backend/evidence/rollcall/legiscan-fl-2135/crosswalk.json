@@ -1,0 +1,816 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "FL",
+  "entries": [
+    {
+      "people_id": 1622,
+      "candidate_id": "e48ba822-e1fa-47f9-8940-d09ab493b94c",
+      "note": "roster Mackenson, candidate Mack (first-name prefix); seat SD-024 agrees"
+    },
+    {
+      "people_id": 1664,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-21 has no candidates on file"
+    },
+    {
+      "people_id": 1678,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-32 has no candidates on file"
+    },
+    {
+      "people_id": 1706,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-16 has no candidates on file"
+    },
+    {
+      "people_id": 1714,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-92 has no candidates on file"
+    },
+    {
+      "people_id": 1720,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-15 has no candidates on file"
+    },
+    {
+      "people_id": 1749,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-1 has no candidates on file"
+    },
+    {
+      "people_id": 12360,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-27 has no candidates on file"
+    },
+    {
+      "people_id": 12363,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-26 has other candidates on file"
+    },
+    {
+      "people_id": 12366,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-10 has no candidates on file"
+    },
+    {
+      "people_id": 12379,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-31 has no candidates on file"
+    },
+    {
+      "people_id": 12387,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-28 has other candidates on file"
+    },
+    {
+      "people_id": 15947,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-41 has no candidates on file"
+    },
+    {
+      "people_id": 16026,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-34 has no candidates on file"
+    },
+    {
+      "people_id": 16389,
+      "candidate_id": "21471af8-a4c0-4097-9301-96a9e7881914",
+      "note": null
+    },
+    {
+      "people_id": 16595,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-23 has no candidates on file"
+    },
+    {
+      "people_id": 16763,
+      "candidate_id": "8021f9e0-52c0-476d-918f-fa124c8d491b",
+      "note": null
+    },
+    {
+      "people_id": 17099,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-11 has no candidates on file"
+    },
+    {
+      "people_id": 17173,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-39 has no candidates on file"
+    },
+    {
+      "people_id": 17676,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-20 has no candidates on file"
+    },
+    {
+      "people_id": 18057,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-22 has no candidates on file"
+    },
+    {
+      "people_id": 19017,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-19 has no candidates on file"
+    },
+    {
+      "people_id": 19040,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-14 has no candidates on file"
+    },
+    {
+      "people_id": 19047,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-7 has no candidates on file"
+    },
+    {
+      "people_id": 19064,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-29 has no candidates on file"
+    },
+    {
+      "people_id": 19069,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-9 has no candidates on file"
+    },
+    {
+      "people_id": 19070,
+      "candidate_id": "a21c1bf6-a8a1-40a5-8ca5-e5c18bc57c93",
+      "note": null
+    },
+    {
+      "people_id": 19218,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-5 has no candidates on file"
+    },
+    {
+      "people_id": 19337,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-17 has no candidates on file"
+    },
+    {
+      "people_id": 19426,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-116 has other candidates on file"
+    },
+    {
+      "people_id": 19490,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-68 has no candidates on file"
+    },
+    {
+      "people_id": 19698,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-31 has no candidates on file"
+    },
+    {
+      "people_id": 19701,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-42 has other candidates on file"
+    },
+    {
+      "people_id": 19703,
+      "candidate_id": "37d58a74-1157-4d30-bd0a-47e77cd0e8c5",
+      "note": "sitting HD-051 representative running for SD-014 (seat disagrees by design; unique name on both sides)"
+    },
+    {
+      "people_id": 19738,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-71 has no candidates on file"
+    },
+    {
+      "people_id": 19912,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-10 has no candidates on file"
+    },
+    {
+      "people_id": 19919,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-2 has no candidates on file"
+    },
+    {
+      "people_id": 19940,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-30 has no candidates on file"
+    },
+    {
+      "people_id": 19954,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-8 has other candidates on file"
+    },
+    {
+      "people_id": 19960,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-64 has no candidates on file"
+    },
+    {
+      "people_id": 20006,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-90 has other candidates on file"
+    },
+    {
+      "people_id": 20358,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-108 has no candidates on file"
+    },
+    {
+      "people_id": 20418,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-85 has no candidates on file"
+    },
+    {
+      "people_id": 20422,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-63 has no candidates on file"
+    },
+    {
+      "people_id": 20540,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-102 has no candidates on file"
+    },
+    {
+      "people_id": 20632,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-37 has no candidates on file"
+    },
+    {
+      "people_id": 20836,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-12 has other candidates on file"
+    },
+    {
+      "people_id": 20905,
+      "candidate_id": "3ac25543-06d8-4de3-814d-a13f4037338a",
+      "note": null
+    },
+    {
+      "people_id": 20907,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-100 has no candidates on file"
+    },
+    {
+      "people_id": 20953,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-38 has no candidates on file"
+    },
+    {
+      "people_id": 20958,
+      "candidate_id": "775c375e-4382-4156-a4d6-e803d2d8d8bb",
+      "note": "hand-added: seven years in the Florida House (HD-087), now Palm Beach County Clerk of the Circuit Court seeking election; outside the state-leg pool"
+    },
+    {
+      "people_id": 21024,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-74 has no candidates on file"
+    },
+    {
+      "people_id": 21025,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-18 has no candidates on file"
+    },
+    {
+      "people_id": 21029,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-67 has other candidates on file"
+    },
+    {
+      "people_id": 21380,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-54 has no candidates on file"
+    },
+    {
+      "people_id": 21381,
+      "candidate_id": "1a988826-bb82-458f-948b-4357f71d135b",
+      "note": null
+    },
+    {
+      "people_id": 21391,
+      "candidate_id": "ca4b84f6-88db-447b-a520-f5342b7deb55",
+      "note": null
+    },
+    {
+      "people_id": 21700,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-9 has no candidates on file"
+    },
+    {
+      "people_id": 21701,
+      "candidate_id": "63e888ab-4779-4b25-b9ca-2080b4ff7174",
+      "note": null
+    },
+    {
+      "people_id": 21739,
+      "candidate_id": "8719bfe0-2e77-41cf-8e9f-d3e79f31eff9",
+      "note": null
+    },
+    {
+      "people_id": 21758,
+      "candidate_id": "39fdacff-fff7-4266-9158-2a411fd777ff",
+      "note": null
+    },
+    {
+      "people_id": 21775,
+      "candidate_id": "4c8f40d7-a40d-405f-8de9-aae5c34467b0",
+      "note": null
+    },
+    {
+      "people_id": 21780,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-25 has no candidates on file"
+    },
+    {
+      "people_id": 21781,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-110 has no candidates on file"
+    },
+    {
+      "people_id": 21782,
+      "candidate_id": "d55b1e40-d59d-4734-bc52-feb7019f13bc",
+      "note": "hand-added: legal first name Alejandro is not a prefix of the candidate's Alex"
+    },
+    {
+      "people_id": 21887,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-21 has no candidates on file"
+    },
+    {
+      "people_id": 21888,
+      "candidate_id": "8004c7b5-4f27-4b00-bee8-ba0f077f83ab",
+      "note": null
+    },
+    {
+      "people_id": 21892,
+      "candidate_id": "6c7626b4-b0a6-4fff-8f03-97139891b5fd",
+      "note": null
+    },
+    {
+      "people_id": 21920,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-62 has no candidates on file"
+    },
+    {
+      "people_id": 21983,
+      "candidate_id": "456d8ade-bbec-4226-a774-eca410fcf89f",
+      "note": null
+    },
+    {
+      "people_id": 22022,
+      "candidate_id": "6ce2450d-05f2-4724-a261-bb78a11a7a3c",
+      "note": null
+    },
+    {
+      "people_id": 22129,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-84 has no candidates on file"
+    },
+    {
+      "people_id": 22167,
+      "candidate_id": "999857e6-30c5-491f-a72e-17da4c3c41f9",
+      "note": null
+    },
+    {
+      "people_id": 22173,
+      "candidate_id": "3988e84f-1c35-4a00-af93-b3cc4a4bd7a3",
+      "note": null
+    },
+    {
+      "people_id": 22207,
+      "candidate_id": "ab83b34c-9ef7-4ca1-9636-27a58867a79b",
+      "note": "hand-added: former HD-078 representative, now Lee County Supervisor of Elections and seeking election to that office; outside the state-leg pool"
+    },
+    {
+      "people_id": 22261,
+      "candidate_id": "82937afb-9562-422f-8a79-aacd09e63765",
+      "note": null
+    },
+    {
+      "people_id": 22415,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-13 has no candidates on file"
+    },
+    {
+      "people_id": 22512,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-104 has no candidates on file"
+    },
+    {
+      "people_id": 22516,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-117 has no candidates on file"
+    },
+    {
+      "people_id": 22527,
+      "candidate_id": "3cf6dc43-74bb-41c9-8972-b6be1e35b79a",
+      "note": "hand-added: candidate drops the second surname (Busatta Cabrera -> Busatta)"
+    },
+    {
+      "people_id": 22529,
+      "candidate_id": "eb5266f9-5a22-42db-b2ef-b7915eb5f6e9",
+      "note": null
+    },
+    {
+      "people_id": 22550,
+      "candidate_id": "35920caf-4c9d-46df-82cc-fd21c34ad166",
+      "note": "hand-added: sitting HD-013 representative running STATEWIDE (US Senate), outside the state-leg pool; Angie is not a prefix of Angela"
+    },
+    {
+      "people_id": 22559,
+      "candidate_id": "513dfa2c-77c2-413a-a9a9-9f15a50e06a0",
+      "note": null
+    },
+    {
+      "people_id": 22580,
+      "candidate_id": "12eaa446-1ad6-49a6-b159-f7b408656b25",
+      "note": null
+    },
+    {
+      "people_id": 22660,
+      "candidate_id": "28d27330-f3de-4f7e-8a3d-b952a3976d77",
+      "note": null
+    },
+    {
+      "people_id": 22662,
+      "candidate_id": "ee9dedbe-75ad-4daf-bc75-1db2c3978d01",
+      "note": null
+    },
+    {
+      "people_id": 22672,
+      "candidate_id": "b305486e-3b4a-405c-b8ba-c0bb76aa09c7",
+      "note": "sitting HD-082 representative running for SD-028 (seat disagrees by design; unique name on both sides)"
+    },
+    {
+      "people_id": 22722,
+      "candidate_id": "1b3c9d5a-fb31-4e6d-abd2-fa56360d70c1",
+      "note": null
+    },
+    {
+      "people_id": 22852,
+      "candidate_id": "c4737951-b19f-4989-8b75-72da7b7a0351",
+      "note": null
+    },
+    {
+      "people_id": 23066,
+      "candidate_id": "941cf774-55ff-487c-9b84-d4cdb736342e",
+      "note": null
+    },
+    {
+      "people_id": 23116,
+      "candidate_id": "b028226d-cac2-4913-9a7d-55d2d1f65267",
+      "note": null
+    },
+    {
+      "people_id": 23121,
+      "candidate_id": "f1139f62-5aa7-4ad0-a4b6-d150d88ef029",
+      "note": null
+    },
+    {
+      "people_id": 23295,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-3 has other candidates on file"
+    },
+    {
+      "people_id": 23317,
+      "candidate_id": "31f46f82-e416-4697-8544-4b1b36f9d68e",
+      "note": null
+    },
+    {
+      "people_id": 23318,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-43 has no candidates on file"
+    },
+    {
+      "people_id": 23319,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-113 has no candidates on file"
+    },
+    {
+      "people_id": 23320,
+      "candidate_id": "e0c0c169-beb3-4468-b125-757df092a818",
+      "note": null
+    },
+    {
+      "people_id": 23321,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-33 has no candidates on file"
+    },
+    {
+      "people_id": 23322,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-44 has no candidates on file"
+    },
+    {
+      "people_id": 23323,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-40 has no candidates on file"
+    },
+    {
+      "people_id": 23324,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-14 has other candidates on file"
+    },
+    {
+      "people_id": 23325,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-3 has no candidates on file"
+    },
+    {
+      "people_id": 23327,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-60 has other candidates on file"
+    },
+    {
+      "people_id": 23328,
+      "candidate_id": "f811bb79-dbf8-4292-96fd-09d1aeb98f22",
+      "note": null
+    },
+    {
+      "people_id": 23329,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-109 has no candidates on file"
+    },
+    {
+      "people_id": 23331,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-55 has no candidates on file"
+    },
+    {
+      "people_id": 23332,
+      "candidate_id": "60eb147f-d2ae-425b-8d09-7c0823152c0f",
+      "note": null
+    },
+    {
+      "people_id": 23333,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-56 has no candidates on file"
+    },
+    {
+      "people_id": 23338,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-39 has no candidates on file"
+    },
+    {
+      "people_id": 23339,
+      "candidate_id": "54182a8a-fa90-4abd-9d20-b8952b4e079b",
+      "note": null
+    },
+    {
+      "people_id": 23341,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-106 has no candidates on file"
+    },
+    {
+      "people_id": 23343,
+      "candidate_id": "c12c516d-e0f3-4e1d-a719-870f78e1063b",
+      "note": null
+    },
+    {
+      "people_id": 23344,
+      "candidate_id": "731af163-3098-4320-8361-2ab307918e27",
+      "note": null
+    },
+    {
+      "people_id": 23346,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-15 has no candidates on file"
+    },
+    {
+      "people_id": 23347,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-34 has no candidates on file"
+    },
+    {
+      "people_id": 23348,
+      "candidate_id": "6323dcd9-8521-4aec-89f5-284be154d991",
+      "note": null
+    },
+    {
+      "people_id": 23349,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-77 has no candidates on file"
+    },
+    {
+      "people_id": 23350,
+      "candidate_id": "16e3ffc9-0e3e-4220-88e0-4f8d39bd11e7",
+      "note": null
+    },
+    {
+      "people_id": 23351,
+      "candidate_id": "7b50476c-8355-4a13-8cd7-0ee201156d03",
+      "note": null
+    },
+    {
+      "people_id": 23352,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-6 has no candidates on file"
+    },
+    {
+      "people_id": 23353,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-53 has no candidates on file"
+    },
+    {
+      "people_id": 23354,
+      "candidate_id": "3509a73c-629a-4b21-b71a-411c772a1388",
+      "note": null
+    },
+    {
+      "people_id": 23355,
+      "candidate_id": "a45cdfc9-c000-4bf0-88e7-af5366335566",
+      "note": null
+    },
+    {
+      "people_id": 23356,
+      "candidate_id": "6e81b17f-25e2-46bb-9cae-7c42b3238d08",
+      "note": null
+    },
+    {
+      "people_id": 23357,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-52 has no candidates on file"
+    },
+    {
+      "people_id": 23358,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-25 has no candidates on file"
+    },
+    {
+      "people_id": 23359,
+      "candidate_id": "63c4fcc5-2f90-41a3-9299-2209c6443de4",
+      "note": null
+    },
+    {
+      "people_id": 23360,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-17 has no candidates on file"
+    },
+    {
+      "people_id": 23361,
+      "candidate_id": "89f18519-b94d-4e88-bde9-b908cb0d5d09",
+      "note": null
+    },
+    {
+      "people_id": 24808,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-36 has no candidates on file"
+    },
+    {
+      "people_id": 24809,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-37 has other candidates on file"
+    },
+    {
+      "people_id": 24810,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-47 has no candidates on file"
+    },
+    {
+      "people_id": 24962,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-24 has no candidates on file"
+    },
+    {
+      "people_id": 24994,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-118 has no candidates on file"
+    },
+    {
+      "people_id": 25364,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-48 has no candidates on file"
+    },
+    {
+      "people_id": 25365,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-46 has no candidates on file"
+    },
+    {
+      "people_id": 25366,
+      "candidate_id": "d70202eb-d487-4700-b45c-27919d31d0c8",
+      "note": null
+    },
+    {
+      "people_id": 25367,
+      "candidate_id": "fa8100cc-98ab-445f-8d1e-703e617867d7",
+      "note": null
+    },
+    {
+      "people_id": 25368,
+      "candidate_id": "b90bf1c9-7806-4678-8616-dfe73b5bf9ff",
+      "note": null
+    },
+    {
+      "people_id": 25369,
+      "candidate_id": "e5599112-ef26-4e68-af67-fa9f95ab6185",
+      "note": null
+    },
+    {
+      "people_id": 25370,
+      "candidate_id": "d16332e4-ebd7-4eae-91d9-be59f655b7fd",
+      "note": null
+    },
+    {
+      "people_id": 25371,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-72 has no candidates on file"
+    },
+    {
+      "people_id": 25372,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-27 has no candidates on file"
+    },
+    {
+      "people_id": 25373,
+      "candidate_id": "c69c598a-847d-447c-b756-188e5d66b101",
+      "note": null
+    },
+    {
+      "people_id": 25374,
+      "candidate_id": "1c361b3d-8b5e-4fb1-92cc-c09947c9ebab",
+      "note": null
+    },
+    {
+      "people_id": 25375,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-23 has no candidates on file"
+    },
+    {
+      "people_id": 25376,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-22 has no candidates on file"
+    },
+    {
+      "people_id": 25377,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-18 has no candidates on file"
+    },
+    {
+      "people_id": 25378,
+      "candidate_id": "6262a7a7-2192-472f-a558-fedb329652a8",
+      "note": null
+    },
+    {
+      "people_id": 25379,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-33 has no candidates on file"
+    },
+    {
+      "people_id": 25380,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-75 has no candidates on file"
+    },
+    {
+      "people_id": 25381,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-76 has no candidates on file"
+    },
+    {
+      "people_id": 25382,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-70 has no candidates on file"
+    },
+    {
+      "people_id": 25383,
+      "candidate_id": "9701e853-ffb8-49b0-90d2-403b1afa97b8",
+      "note": null
+    },
+    {
+      "people_id": 25384,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-98 has no candidates on file"
+    },
+    {
+      "people_id": 25385,
+      "candidate_id": "20e3a776-176d-41d1-a86a-715064c8b2e3",
+      "note": null
+    },
+    {
+      "people_id": 25386,
+      "candidate_id": "79a2d581-1406-432f-ae98-ea9176feeb72",
+      "note": null
+    },
+    {
+      "people_id": 25387,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-89 has no candidates on file"
+    },
+    {
+      "people_id": 25388,
+      "candidate_id": "4ea5d168-59e3-4c9a-8eea-272d7739975a",
+      "note": "roster Meg, candidate Megan (first-name prefix); seat HD-094 agrees"
+    },
+    {
+      "people_id": 25389,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; senate-35 has no candidates on file"
+    },
+    {
+      "people_id": 26477,
+      "candidate_id": "d1f7fab3-b4e2-4090-afeb-2b6788c81a37",
+      "note": null
+    },
+    {
+      "people_id": 26478,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file; house-32 has no candidates on file"
+    }
+  ]
+}
