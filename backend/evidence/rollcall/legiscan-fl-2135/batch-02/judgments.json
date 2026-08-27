@@ -1,0 +1,70 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "FL",
+   "chamber": "house",
+   "session": "2135",
+   "roll": 1563815,
+   "measure_id": "H 1205",
+   "vote_date": "2025-05-01",
+   "review_status": "approved",
+   "yea_description": "Voted for HB 1205, which overhauled Florida's citizen-initiative petition process: it required every petition circulator, paid or volunteer, to register with the state and be a Florida resident and United States citizen without an unrestored felony conviction; made it a third-degree felony for an unregistered person to possess more than 25 signed petition forms beyond their own and their immediate family's; invalidated forms collected by unregistered or ineligible circulators; cut the form-delivery deadline from 30 days to 10 and raised late fines to as much as $2,500 per form; required forms to carry the signer's Florida driver license, identification card, or last four Social Security digits; had election supervisors mail each voter a notice when their petition signature was verified, with a prepaid form to revoke a forged or misrepresented signature; required the Office of Election Crimes and Security to investigate whenever more than a quarter of a reporting period's forms are invalidated, and made petition fraud prosecutable under Florida's RICO racketeering law; limited each sponsoring committee to one amendment at a time and three election cycles; and barred state government from spending public funds on advertisements about proposed amendments. The Florida House accepted the Senate's rewrite with one change and passed it 81-30, and it became law.",
+   "nay_description": "Voted against HB 1205, which overhauled Florida's citizen-initiative petition process: it required every petition circulator, paid or volunteer, to register with the state and be a Florida resident and United States citizen without an unrestored felony conviction; made it a third-degree felony for an unregistered person to possess more than 25 signed petition forms beyond their own and their immediate family's; invalidated forms collected by unregistered or ineligible circulators; cut the form-delivery deadline from 30 days to 10 and raised late fines to as much as $2,500 per form; required forms to carry the signer's Florida driver license, identification card, or last four Social Security digits; had election supervisors mail each voter a notice when their petition signature was verified, with a prepaid form to revoke a forged or misrepresented signature; required the Office of Election Crimes and Security to investigate whenever more than a quarter of a reporting period's forms are invalidated, and made petition fraud prosecutable under Florida's RICO racketeering law; limited each sponsoring committee to one amendment at a time and three election cycles; and barred state government from spending public funds on advertisements about proposed amendments. The Florida House accepted the Senate's rewrite with one change and passed it 81-30, and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "FL",
+   "chamber": "senate",
+   "session": "2135",
+   "roll": 1564585,
+   "measure_id": "H 1205",
+   "vote_date": "2025-05-02",
+   "review_status": "approved",
+   "yea_description": "Voted for HB 1205, which overhauled Florida's citizen-initiative petition process: it required every petition circulator, paid or volunteer, to register with the state and be a Florida resident and United States citizen without an unrestored felony conviction; made it a third-degree felony for an unregistered person to possess more than 25 signed petition forms beyond their own and their immediate family's; invalidated forms collected by unregistered or ineligible circulators; cut the form-delivery deadline from 30 days to 10 and raised late fines to as much as $2,500 per form; required forms to carry the signer's Florida driver license, identification card, or last four Social Security digits; had election supervisors mail each voter a notice when their petition signature was verified, with a prepaid form to revoke a forged or misrepresented signature; required the Office of Election Crimes and Security to investigate whenever more than a quarter of a reporting period's forms are invalidated, and made petition fraud prosecutable under Florida's RICO racketeering law; limited each sponsoring committee to one amendment at a time and three election cycles; and barred state government from spending public funds on advertisements about proposed amendments. The Florida Senate agreed to the House's change 28-9, completing passage, and it became law.",
+   "nay_description": "Voted against HB 1205, which overhauled Florida's citizen-initiative petition process: it required every petition circulator, paid or volunteer, to register with the state and be a Florida resident and United States citizen without an unrestored felony conviction; made it a third-degree felony for an unregistered person to possess more than 25 signed petition forms beyond their own and their immediate family's; invalidated forms collected by unregistered or ineligible circulators; cut the form-delivery deadline from 30 days to 10 and raised late fines to as much as $2,500 per form; required forms to carry the signer's Florida driver license, identification card, or last four Social Security digits; had election supervisors mail each voter a notice when their petition signature was verified, with a prepaid form to revoke a forged or misrepresented signature; required the Office of Election Crimes and Security to investigate whenever more than a quarter of a reporting period's forms are invalidated, and made petition fraud prosecutable under Florida's RICO racketeering law; limited each sponsoring committee to one amendment at a time and three election cycles; and barred state government from spending public funds on advertisements about proposed amendments. The Florida Senate agreed to the House's change 28-9, completing passage, and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "FL",
+   "chamber": "senate",
+   "session": "2135",
+   "roll": 1549853,
+   "measure_id": "S 700",
+   "vote_date": "2025-04-16",
+   "review_status": "approved",
+   "yea_description": "Voted for SB 700, which rewrote the laws governing the Department of Agriculture and Consumer Services in 92 sections. Its most fought-over provision limited public water systems to additives that meet or surpass drinking water standards, remove contaminants, or improve water quality \u2014 ending the addition of fluoride for dental health, which about 29 Florida counties then practiced (a Senate amendment to preserve local fluoridation failed 13-21). Among much else, the bill also barred local governments from blocking housing for legally verified agricultural workers on working farms, gave the state a right of first refusal when an electric utility sells farmland, preempted local permitting standards for electric-vehicle charging stations and required public chargers to register with the state, made it a crime to operate a drone over agricultural land, private property, or shooting ranges in specified ways, and created an Honest Services Registry of charities that attest to taking no money or direction from foreign sources of concern. The Florida Senate passed it 27-9 and it became law.",
+   "nay_description": "Voted against SB 700, which rewrote the laws governing the Department of Agriculture and Consumer Services in 92 sections. Its most fought-over provision limited public water systems to additives that meet or surpass drinking water standards, remove contaminants, or improve water quality \u2014 ending the addition of fluoride for dental health, which about 29 Florida counties then practiced (a Senate amendment to preserve local fluoridation failed 13-21). Among much else, the bill also barred local governments from blocking housing for legally verified agricultural workers on working farms, gave the state a right of first refusal when an electric utility sells farmland, preempted local permitting standards for electric-vehicle charging stations and required public chargers to register with the state, made it a crime to operate a drone over agricultural land, private property, or shooting ranges in specified ways, and created an Honest Services Registry of charities that attest to taking no money or direction from foreign sources of concern. The Florida Senate passed it 27-9 and it became law.",
+   "labels": [
+    {
+     "slug": "general"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "FL",
+   "chamber": "house",
+   "session": "2135",
+   "roll": 1559666,
+   "measure_id": "S 700",
+   "vote_date": "2025-04-29",
+   "review_status": "approved",
+   "yea_description": "Voted for SB 700, which rewrote the laws governing the Department of Agriculture and Consumer Services in 92 sections. Its most fought-over provision limited public water systems to additives that meet or surpass drinking water standards, remove contaminants, or improve water quality \u2014 ending the addition of fluoride for dental health, which about 29 Florida counties then practiced (a Senate amendment to preserve local fluoridation failed 13-21). Among much else, the bill also barred local governments from blocking housing for legally verified agricultural workers on working farms, gave the state a right of first refusal when an electric utility sells farmland, preempted local permitting standards for electric-vehicle charging stations and required public chargers to register with the state, made it a crime to operate a drone over agricultural land, private property, or shooting ranges in specified ways, and created an Honest Services Registry of charities that attest to taking no money or direction from foreign sources of concern. The Florida House passed it 88-27 and it became law.",
+   "nay_description": "Voted against SB 700, which rewrote the laws governing the Department of Agriculture and Consumer Services in 92 sections. Its most fought-over provision limited public water systems to additives that meet or surpass drinking water standards, remove contaminants, or improve water quality \u2014 ending the addition of fluoride for dental health, which about 29 Florida counties then practiced (a Senate amendment to preserve local fluoridation failed 13-21). Among much else, the bill also barred local governments from blocking housing for legally verified agricultural workers on working farms, gave the state a right of first refusal when an electric utility sells farmland, preempted local permitting standards for electric-vehicle charging stations and required public chargers to register with the state, made it a crime to operate a drone over agricultural land, private property, or shooting ranges in specified ways, and created an Honest Services Registry of charities that attest to taking no money or direction from foreign sources of concern. The Florida House passed it 88-27 and it became law.",
+   "labels": [
+    {
+     "slug": "general"
+    }
+   ]
+  }
+ ]
+}
