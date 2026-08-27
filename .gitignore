@@ -14,3 +14,4 @@ scratch/north-carolina-campaign-finance/
 # re-downloadable from the portals. Parser fixtures are committed separately
 # under backend/tests/fixtures/georgiaFinance/.
 scratch/georgia-campaign-finance/
+scratch/montana-campaign-finance/
