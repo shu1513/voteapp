@@ -1,0 +1,242 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "TN",
+      "chamber": "house",
+      "session": "2161",
+      "roll": 1554040,
+      "measure_id": "SB 1084",
+      "vote_date": "2025-04-22",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1084, the Dismantling DEI Departments Act, which barred state government, counties, cities, metropolitan governments and public colleges and universities from using a discriminatory preference in an effort to increase diversity, equity or inclusion, or from keeping an office, division or department for that purpose, and voided conflicting policies already in place. An entity is exempt if the comptroller of the treasury finds that compliance would cost it federal funding, and the state-level definition does not reach demographic-based public health, medical research or disease prevention outreach, or neutral outreach programs that keep equal access to state services and contracting without quotas or preferential treatment. The Tennessee House passed it 72-25 and it became law.",
+      "nay_description": "Voted against Senate Bill 1084, the Dismantling DEI Departments Act, which barred state government, counties, cities, metropolitan governments and public colleges and universities from using a discriminatory preference in an effort to increase diversity, equity or inclusion, or from keeping an office, division or department for that purpose, and voided conflicting policies already in place. An entity is exempt if the comptroller of the treasury finds that compliance would cost it federal funding, and the state-level definition does not reach demographic-based public health, medical research or disease prevention outreach, or neutral outreach programs that keep equal access to state services and contracting without quotas or preferential treatment. The Tennessee House passed it 72-25 and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TN",
+      "chamber": "house",
+      "session": "2161",
+      "roll": 1687321,
+      "measure_id": "SB 1713",
+      "vote_date": "2026-04-21",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1713, which required the head of every state department or agency, of every county, municipal and metropolitan government, and the president or campus head of every public college and university, to file an annual attestation with the comptroller of the treasury, starting January 1, 2027, that the entity has not used a discriminatory preference to increase diversity, equity or inclusion, and let the attorney general investigate allegations that a state entity is violating that ban. The Tennessee House passed it 66-20 and it became law.",
+      "nay_description": "Voted against Senate Bill 1713, which required the head of every state department or agency, of every county, municipal and metropolitan government, and the president or campus head of every public college and university, to file an annual attestation with the comptroller of the treasury, starting January 1, 2027, that the entity has not used a discriminatory preference to increase diversity, equity or inclusion, and let the attorney general investigate allegations that a state entity is violating that ban. The Tennessee House passed it 66-20 and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TN",
+      "chamber": "house",
+      "session": "2161",
+      "roll": 1535748,
+      "measure_id": "HB 749",
+      "vote_date": "2025-04-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 749, which made an out-of-state driver license invalid in Tennessee when it belongs to a class of licenses issued exclusively to illegal aliens and marked so as to be distinguishable from licenses issued to citizens and lawful residents, made driving on such a license a Class B misdemeanor, and required the Department of Safety to publish and maintain a list of those out-of-state license classes by December 1, 2025. The Tennessee House passed it 68-21 and it became law.",
+      "nay_description": "Voted against House Bill 749, which made an out-of-state driver license invalid in Tennessee when it belongs to a class of licenses issued exclusively to illegal aliens and marked so as to be distinguishable from licenses issued to citizens and lawful residents, made driving on such a license a Class B misdemeanor, and required the Department of Safety to publish and maintain a list of those out-of-state license classes by December 1, 2025. The Tennessee House passed it 68-21 and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TN",
+      "chamber": "house",
+      "session": "2161",
+      "roll": 1687306,
+      "measure_id": "SB 1915",
+      "vote_date": "2026-04-21",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1915, which extended Tennessee's public-benefit verification law to counties, cities and towns, requiring them to verify that every applicant 18 or older for a federal, state or local public benefit is a United States citizen or lawfully present, to carry an attestation notice on their forms and automated phone systems from the first reprinting or system update after July 1, 2026, and to end a recurring benefit once a final verification shows the applicant is not a citizen or qualified alien. A benefit may not be delayed solely because verification is still pending, and enforcement complaints are filed with the attorney general. The Tennessee House passed it 73-21 and it became law.",
+      "nay_description": "Voted against Senate Bill 1915, which extended Tennessee's public-benefit verification law to counties, cities and towns, requiring them to verify that every applicant 18 or older for a federal, state or local public benefit is a United States citizen or lawfully present, to carry an attestation notice on their forms and automated phone systems from the first reprinting or system update after July 1, 2026, and to end a recurring benefit once a final verification shows the applicant is not a citizen or qualified alien. A benefit may not be delayed solely because verification is still pending, and enforcement complaints are filed with the attorney general. The Tennessee House passed it 73-21 and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TN",
+      "chamber": "senate",
+      "session": "2161",
+      "roll": 1688578,
+      "measure_id": "SB 1915",
+      "vote_date": "2026-04-22",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the House's version of Senate Bill 1915, which extended Tennessee's public-benefit verification law to counties, cities and towns, requiring them to verify that every applicant 18 or older for a federal, state or local public benefit is a United States citizen or lawfully present, to carry an attestation notice on their forms and automated phone systems from the first reprinting or system update after July 1, 2026, and to end a recurring benefit once a final verification shows the applicant is not a citizen or qualified alien. A benefit may not be delayed solely because verification is still pending, and enforcement complaints are filed with the attorney general. The Tennessee Senate concurred 24-6 and it became law.",
+      "nay_description": "Voted against agreeing to the House's version of Senate Bill 1915, which extended Tennessee's public-benefit verification law to counties, cities and towns, requiring them to verify that every applicant 18 or older for a federal, state or local public benefit is a United States citizen or lawfully present, to carry an attestation notice on their forms and automated phone systems from the first reprinting or system update after July 1, 2026, and to end a recurring benefit once a final verification shows the applicant is not a citizen or qualified alien. A benefit may not be delayed solely because verification is still pending, and enforcement complaints are filed with the attorney general. The Tennessee Senate concurred 24-6 and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TN",
+      "chamber": "house",
+      "session": "2161",
+      "roll": 1553646,
+      "measure_id": "SB 670",
+      "vote_date": "2025-04-21",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 670, which sorted Tennessee's isolated wetlands into artificial, low-, moderate- and high-quality categories and allowed the alteration of an artificial isolated wetland of any size, a low-quality isolated wetland up to one acre, and a moderate-quality isolated wetland up to a quarter acre with no permit, no notice and no compensatory mitigation, so long as the work discharges no toxic pollutants and keeps sediment, petroleum and other chemicals out of state waters. Larger low- and moderate-quality alterations up to two acres move to a general permit that may not impose riparian buffer, cumulative impact or antidegradation requirements, with any mitigation capped at 1:1 and 2:1 ratios. The Tennessee House passed it 71-21 and it became law.",
+      "nay_description": "Voted against Senate Bill 670, which sorted Tennessee's isolated wetlands into artificial, low-, moderate- and high-quality categories and allowed the alteration of an artificial isolated wetland of any size, a low-quality isolated wetland up to one acre, and a moderate-quality isolated wetland up to a quarter acre with no permit, no notice and no compensatory mitigation, so long as the work discharges no toxic pollutants and keeps sediment, petroleum and other chemicals out of state waters. Larger low- and moderate-quality alterations up to two acres move to a general permit that may not impose riparian buffer, cumulative impact or antidegradation requirements, with any mitigation capped at 1:1 and 2:1 ratios. The Tennessee House passed it 71-21 and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TN",
+      "chamber": "house",
+      "session": "2161",
+      "roll": 1661430,
+      "measure_id": "HB 2070",
+      "vote_date": "2026-03-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2070, the Tennessee Energy Freedom Act, which barred any liability or injunctive relief for carbon dioxide, methane or nitrous oxide emissions from exploring for, producing, transporting, selling, refining or burning coal, oil and natural gas unless the activity is proven to violate the federal Clean Air Act or another federal environmental law, limited any claim by another government or a private party to fossil-fuel products actually shipped into that jurisdiction, declared the chapter retroactive and extraterritorial, and created a court process in which a company's emissions are conclusively presumed to be zero if it declares them below ten percent of a baseline drawn from China and India's combined emissions. The Tennessee House passed it 69-18 and it became law.",
+      "nay_description": "Voted against House Bill 2070, the Tennessee Energy Freedom Act, which barred any liability or injunctive relief for carbon dioxide, methane or nitrous oxide emissions from exploring for, producing, transporting, selling, refining or burning coal, oil and natural gas unless the activity is proven to violate the federal Clean Air Act or another federal environmental law, limited any claim by another government or a private party to fossil-fuel products actually shipped into that jurisdiction, declared the chapter retroactive and extraterritorial, and created a court process in which a company's emissions are conclusively presumed to be zero if it declares them below ten percent of a baseline drawn from China and India's combined emissions. The Tennessee House passed it 69-18 and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TN",
+      "chamber": "house",
+      "session": "2161",
+      "roll": 1681950,
+      "measure_id": "SB 2348",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 2348, which required a public school serving any of grades nine through twelve with 750 to 1,500 students to employ at least a full-time library information specialist holding that endorsement, required a school with fewer than 750 students to employ at least a part-time endorsed specialist or designate a teacher as library information coordinator, required a teacher or staff member to supervise students whenever the library is open during school hours without a specialist present, and directed the state board of education to qualify an advanced degree in media and technology toward the endorsement. The Tennessee House passed it 70-24 and it became law.",
+      "nay_description": "Voted against Senate Bill 2348, which required a public school serving any of grades nine through twelve with 750 to 1,500 students to employ at least a full-time library information specialist holding that endorsement, required a school with fewer than 750 students to employ at least a part-time endorsed specialist or designate a teacher as library information coordinator, required a teacher or staff member to supervise students whenever the library is open during school hours without a specialist present, and directed the state board of education to qualify an advanced degree in media and technology toward the endorsement. The Tennessee House passed it 70-24 and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TN",
+      "chamber": "senate",
+      "session": "2161",
+      "roll": 1686179,
+      "measure_id": "SB 2040",
+      "vote_date": "2026-04-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 2040, the Freedom, Access, and Integrity in Registered Pharmacy (FAIR Rx) Act, which from July 1, 2028 barred anyone holding more than a five percent interest from simultaneously owning or controlling a pharmacy and both a health insurance issuer and a pharmacy benefits manager. Hospital and health-system pharmacies are not treated as pharmacy benefits managers, unaffiliated pharmacies keep their mail-order, specialty and delivery services, FDA-designated orphan and limited-distribution drugs are excluded, and a pharmacy in violation may keep operating through December 31, 2028 while it pursues a bona fide sale to an unaffiliated buyer. The Tennessee Senate passed it 24-9 and it became law.",
+      "nay_description": "Voted against Senate Bill 2040, the Freedom, Access, and Integrity in Registered Pharmacy (FAIR Rx) Act, which from July 1, 2028 barred anyone holding more than a five percent interest from simultaneously owning or controlling a pharmacy and both a health insurance issuer and a pharmacy benefits manager. Hospital and health-system pharmacies are not treated as pharmacy benefits managers, unaffiliated pharmacies keep their mail-order, specialty and delivery services, FDA-designated orphan and limited-distribution drugs are excluded, and a pharmacy in violation may keep operating through December 31, 2028 while it pursues a bona fide sale to an unaffiliated buyer. The Tennessee Senate passed it 24-9 and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TN",
+      "chamber": "house",
+      "session": "2161",
+      "roll": 1548823,
+      "measure_id": "SB 1360",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1360, which widened the legal protections Tennessee gives makers and sellers of firearms and related products. It extended the products covered to knives, saps and other bladed or blunt defensive weapons, body armor, magazines, silencers, rapid-fire devices, optics and other firearm accessories; narrowed negligent entrustment to a sale where the seller knew or reasonably should have known, by clear and convincing evidence, that the buyer intended to and did use the product criminally to injure someone; provided that lawful sales do not by themselves constitute a nuisance, civil conspiracy, negligent entrustment or unlawful business practice; required a litigant enforcing an out-of-state judgment against a dealer, maker or seller to prove by clear and convincing evidence that the claim would not have been barred in Tennessee, on pain of treble damages and fees; and tightened the state's preemption of local firearm regulation. The Tennessee House passed it 72-20 and it became law.",
+      "nay_description": "Voted against Senate Bill 1360, which widened the legal protections Tennessee gives makers and sellers of firearms and related products. It extended the products covered to knives, saps and other bladed or blunt defensive weapons, body armor, magazines, silencers, rapid-fire devices, optics and other firearm accessories; narrowed negligent entrustment to a sale where the seller knew or reasonably should have known, by clear and convincing evidence, that the buyer intended to and did use the product criminally to injure someone; provided that lawful sales do not by themselves constitute a nuisance, civil conspiracy, negligent entrustment or unlawful business practice; required a litigant enforcing an out-of-state judgment against a dealer, maker or seller to prove by clear and convincing evidence that the claim would not have been barred in Tennessee, on pain of treble damages and fees; and tightened the state's preemption of local firearm regulation. The Tennessee House passed it 72-20 and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TN",
+      "chamber": "senate",
+      "session": "2161",
+      "roll": 1556833,
+      "measure_id": "HB 1093",
+      "vote_date": "2025-04-22",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1093, which expanded the definition of machine gun to cover any part or combination of parts designed and intended solely to convert a firearm into a machine gun, raised possessing, manufacturing, transporting, repairing or selling a machine gun from a Class E to a Class C felony, extended the unlawful-possession offenses that apply after a disqualifying felony conviction to cover ammunition as well as firearms, and made a defendant convicted of aggravated assault involving a firearm fired from inside a motor vehicle ineligible for probation. The Tennessee Senate passed it 23-8 and it became law.",
+      "nay_description": "Voted against House Bill 1093, which expanded the definition of machine gun to cover any part or combination of parts designed and intended solely to convert a firearm into a machine gun, raised possessing, manufacturing, transporting, repairing or selling a machine gun from a Class E to a Class C felony, extended the unlawful-possession offenses that apply after a disqualifying felony conviction to cover ammunition as well as firearms, and made a defendant convicted of aggravated assault involving a firearm fired from inside a motor vehicle ineligible for probation. The Tennessee Senate passed it 23-8 and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TN",
+      "chamber": "senate",
+      "session": "2161",
+      "roll": 1543982,
+      "measure_id": "SB 336",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted for the Senate's version of Senate Bill 336, which removed a condition a person had to meet before having voting rights restored by certificate after a felony sentence, and replaced the requirement of being current on all child support obligations with being compliant with all current child support orders, including orders for arrearages, for the previous twelve months. The House later rewrote the bill: the version that became law makes the change in the general restoration statute instead, dropping the requirement to pay all court costs assessed against the person and requiring twelve months of compliance with child support orders. The Tennessee Senate passed its version 24-8.",
+      "nay_description": "Voted against the Senate's version of Senate Bill 336, which removed a condition a person had to meet before having voting rights restored by certificate after a felony sentence, and replaced the requirement of being current on all child support obligations with being compliant with all current child support orders, including orders for arrearages, for the previous twelve months. The House later rewrote the bill: the version that became law makes the change in the general restoration statute instead, dropping the requirement to pay all court costs assessed against the person and requiring twelve months of compliance with child support orders. The Tennessee Senate passed its version 24-8.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TN",
+      "chamber": "house",
+      "session": "2161",
+      "roll": 1657505,
+      "measure_id": "SB 336",
+      "vote_date": "2026-03-09",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 336 as rewritten in the House, which dropped the requirement that a person pay all court costs assessed against them before voting rights are restored after a felony sentence, and instead required only that the person have been compliant with all child support orders, including orders for arrearages, for the previous twelve months. The Tennessee House passed it 64-24, the Senate concurred, and it became law.",
+      "nay_description": "Voted against Senate Bill 336 as rewritten in the House, which dropped the requirement that a person pay all court costs assessed against them before voting rights are restored after a felony sentence, and instead required only that the person have been compliant with all child support orders, including orders for arrearages, for the previous twelve months. The Tennessee House passed it 64-24, the Senate concurred, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TN",
+      "chamber": "house",
+      "session": "2161",
+      "roll": 1666206,
+      "measure_id": "HB 2185",
+      "vote_date": "2026-03-19",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2185, which allowed the state's voter-registration verification portal to also draw on data from the federal Systematic Alien Verification for Entitlements (SAVE) program if U.S. Citizenship and Immigration Services makes that data available through a secure web service. The Tennessee House passed it 68-22 and it became law.",
+      "nay_description": "Voted against House Bill 2185, which allowed the state's voter-registration verification portal to also draw on data from the federal Systematic Alien Verification for Entitlements (SAVE) program if U.S. Citizenship and Immigration Services makes that data available through a secure web service. The Tennessee House passed it 68-22 and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for"
+        }
+      ]
+    }
+  ]
+}
