@@ -530,7 +530,11 @@ describe("getLegiscanStateConfig", () => {
     expect(ca("Unfinished Business SB524 Arreguín et al. Concurrence", 40, "senate").questionClass).toBe("concurrence");
     expect(ca("Consent Calendar 2nd AB1781 Michelle Rodriguez", 40, "senate").questionClass).toBe("passage");
     expect(ca("Special Consent ACR51 Haney et al", 40, "senate").questionClass).toBe("passage");
-    expect(ca("W/O Ref. To File SB48 Gonzalez", 40, "senate").questionClass).toBe("passage");
+    // The file-section label on a substantive vote taken up without
+    // reference to file; the waiver itself is by unanimous consent with no
+    // roll call. SB 48's 27-5 here IS the Senate's concurrence in Assembly
+    // amendments (Ayes 27, Noes 5 in the official history).
+    expect(ca("W/O Ref. To File SB48 Gonzalez", 40, "senate").questionClass).toBe("concurrence");
     // Committee votes are worded as recommendations naming the same
     // destinations — the chamber word and the `^` anchor keep them out.
     for (const [desc, total] of [

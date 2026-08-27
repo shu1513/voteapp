@@ -384,9 +384,20 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       { pattern: /consent calendar (?:first|second) day/, questionClass: "passage" },
       { pattern: /^consent calendar\b/, questionClass: "passage" },
       { pattern: /^special consent\b/, questionClass: "passage" },
-      // `W/O Ref. To File SB48 Gonzalez`: taken up and passed without
-      // reference to file, a Senate floor passage vote.
-      { pattern: /^w\/o ref\. to file\b/, questionClass: "passage" },
+      // `W/O Ref. To File SB48 Gonzalez`: the file-section label on a
+      // SUBSTANTIVE vote taken up without reference to file — the waiver
+      // itself is granted by unanimous consent and has NO roll call (the
+      // history prints `Consent granted to take up without reference to
+      // file` with no tally). The recorded roll matches the substantive
+      // action's tally exactly: SB 48's 27-5 is `Assembly amendments
+      // concurred in. (Ayes 27. Noes 5.)`, SB 166's 29-9 and SB 694's 25-6
+      // likewise. Of the 36 kept-type instances, 32 are the Senate's
+      // concurrence in Assembly amendments — including every divided one —
+      // so the class is concurrence; the remaining 4 are near-unanimous
+      // second-chamber ACA passages, for which this label is nominal (the
+      // class is report metadata only, and the judge reads the bill
+      // history before writing a description either way).
+      { pattern: /^w\/o ref\. to file\b/, questionClass: "concurrence" },
       { pattern: /concurrence in (?:senate|assembly) amendments|concurrence - urgency added/, questionClass: "concurrence" },
       { pattern: /^unfinished business\b.*\bconcurrence\b/, questionClass: "concurrence" },
     ],
