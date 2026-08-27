@@ -334,7 +334,7 @@ describe("getLegiscanStateConfig", () => {
       questionClass: "passage",
     });
     expect(ga("Passage As Amended: Senate Vote #98", 56, "senate").questionClass).toBe("passage");
-    // Concurrence is matched on the `Agree To` stem: the chambers print 14
+    // Concurrence is matched on the `Agree To` stem: the chambers print 23
     // spellings of it, several abbreviated past readability.
     for (const desc of [
       "Agree To Senate Substitute: House Vote #612",
