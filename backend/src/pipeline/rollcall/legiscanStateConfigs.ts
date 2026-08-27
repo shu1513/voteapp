@@ -151,8 +151,10 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   //   ON THIRD CONSIDERATION`.
   // - Minority conference reports (4 rolls) are excluded: they are the
   //   losing alternative to the conference report, never the measure.
-  // - 2 rolls stay unknown by design (one blank desc, one bare `REGULAR
-  //   CALENDAR 2`), so they surface instead of being guessed.
+  // - 2 rolls stay unknown by design (one desc that is only the bare
+  //   `FLOOR VOTE:` prefix with nothing after it — a real, non-empty
+  //   string that parses fine — and one bare `REGULAR CALENDAR 2`), so
+  //   they surface instead of being guessed.
   TN: {
     jurisdiction: "TN",
     sessionId: 2161,
