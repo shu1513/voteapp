@@ -300,7 +300,7 @@ function ElectionCard({
           card answers "how much does my vote matter, and who's running?" on
           its first line. */}
       <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-        {/* rausch-deep, not -dark: 16px semibold needs 4.5:1 on the card's
+        {/* rausch-deep, not -dark: 16-17px semibold needs 4.5:1 on the card's
             tinted bg, and rausch-dark is 4.41:1 there. */}
         <h3 className="text-subheading font-semibold text-ink transition group-hover:text-rausch-deep">
           {election.official_ballot_title}

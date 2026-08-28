@@ -688,7 +688,7 @@ export function ElectionPage() {
               // Same one-list, comma-separated presentation as the ballot
               // cards: saved matches lead in semibold, with a screen-reader-
               // only "(saved)" cue keeping the distinction audible.
-              <p className="mt-3 text-xs">
+              <p className="mt-3 text-sm">
                 {/* Same verb label as the ballot cards — see ElectionCard. */}
                 <span className="font-medium text-ink-soft">Affects:</span>{" "}
                 {/* Comma separators live outside the spans as plain text
@@ -1043,7 +1043,7 @@ export function ElectionPage() {
                       // >= 1 — aggregateRecordAreaStances drops
                       // neutral/untagged records — so "against == 0" can only
                       // mean all-for.
-                      <p className="mt-2 text-xs">
+                      <p className="mt-2 text-sm">
                         {/* Without a label the row was a bare "Housing
                             Affordability +1" — an issue name and a number with
                             nothing saying what was counted. "Records:" names
