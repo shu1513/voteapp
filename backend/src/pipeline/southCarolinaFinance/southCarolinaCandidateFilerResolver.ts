@@ -100,7 +100,12 @@ export function southCarolinaFilerSearchTerm(candidateName: string): string | nu
 // person's filer. An unhyphenated compound surname can miss and stay unlinked,
 // which is the conservative direction.
 function rosterSurnameKey(candidateName: string): string {
-  const withoutParens = candidateName.replace(/\([^()]*\)/g, " ");
+  // Strip a trailing generational suffix BEFORE comma detection: rosters carry
+  // "Julius Walker, Jr." / "Donnie Davis, II", whose comma marks the suffix,
+  // not a Last, First boundary.
+  const withoutParens = candidateName
+    .replace(/\([^()]*\)/g, " ")
+    .replace(/,?\s+(?:JR|SR|II|III|IV)\.?\s*$/i, "");
   const commaIndex = withoutParens.indexOf(",");
   if (commaIndex > 0) {
     return normalizePersonName(withoutParens.slice(0, commaIndex));
@@ -179,6 +184,8 @@ export function resolveSouthCarolinaCandidateFiler(input: {
   const seenFilerIds = new Set<number>();
   let sawNameCandidate = false;
 
+  // One set per filer id is the input contract (the auto-link fetches each
+  // filer's report index once); a repeated id keeps the first set.
   for (const set of input.filerReportSets) {
     const filerId = set.filer.candidateFilerId;
     if (filerId <= 0 || seenFilerIds.has(filerId)) {

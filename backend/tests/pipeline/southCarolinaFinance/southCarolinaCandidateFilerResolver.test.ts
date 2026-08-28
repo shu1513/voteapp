@@ -90,6 +90,7 @@ describe("southCarolinaFilerSearchTerm", () => {
     expect(southCarolinaFilerSearchTerm("Lester L. Wilks Jr.")).toBe("Wilks");
     expect(southCarolinaFilerSearchTerm("Hao Wu")).toBe("Wu");
     expect(southCarolinaFilerSearchTerm("Wilson, Alan")).toBe("Wilson");
+    expect(southCarolinaFilerSearchTerm("Julius Walker, Jr.")).toBe("Walker");
   });
 
   it("returns null when no searchable surname word remains", () => {
@@ -107,6 +108,19 @@ describe("filterSouthCarolinaFilersByExactSurname", () => {
     ];
     const kept = filterSouthCarolinaFilersByExactSurname("Alan Wilson", rows);
     expect(kept.map((row) => row.candidateFilerId)).toEqual([54344]);
+  });
+
+  it("reads a comma-separated generational suffix as a suffix, not a Last, First boundary", () => {
+    const rows = [
+      filerRow({ candidate: "Walker, Julius", candidateFilerId: 62000 }),
+      filerRow({ candidate: "Davis, Donnie L", candidateFilerId: 62001 }),
+    ];
+    expect(
+      filterSouthCarolinaFilersByExactSurname("Julius Walker, Jr.", rows).map((row) => row.candidateFilerId)
+    ).toEqual([62000]);
+    expect(
+      filterSouthCarolinaFilersByExactSurname("Donnie Davis, II", rows).map((row) => row.candidateFilerId)
+    ).toEqual([62001]);
   });
 
   it("matches hyphenated surnames exactly", () => {
