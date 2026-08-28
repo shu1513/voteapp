@@ -25,7 +25,7 @@ import type {
 } from "./southCarolinaEthicsClient.js";
 
 export const SOUTH_CAROLINA_DIRECT_COVERAGE_NOTE =
-  "Occupation and contribution-size breakdowns use itemized contributions; filings may aggregate contributions of $100 or less.";
+  "Occupation and contribution-size breakdowns use itemized contributions; filings may aggregate contributions of $100 or less, and a candidate's personal contributions may not be itemized.";
 
 export const SOUTH_CAROLINA_UNKNOWN_OCCUPATION_LABEL = "Unknown";
 
@@ -104,16 +104,34 @@ class AggregationFailure extends Error {}
 // (= officeRunId; one run per election event). Ordering inside a run and the
 // final-report choice use the filing-period end — never submission or
 // amendment timestamps (the Evette Jul-10/Jul-14 trap).
+// acceptedElectionDates (M/D/YYYY, as served) narrows runs to the linked
+// office's cycle events — primary/runoff/general dates the sync derives
+// upstream. Without it the filter is the election year alone, which can admit
+// an unrelated same-year run (a special election for another office); WITH it,
+// omitting the primary date silently drops the primary run's money — the sync
+// must pass the full statutory trio or nothing.
 export function selectSouthCarolinaAcceptedRuns(
   reports: readonly SouthCarolinaCandidateReportRow[],
-  electionYear: number
+  electionYear: number,
+  acceptedElectionDates?: readonly string[]
 ): SouthCarolinaAcceptedRun[] {
   if (!Number.isInteger(electionYear) || electionYear < 2000 || electionYear > 2100) {
     throw new Error(`Invalid South Carolina election year: ${electionYear}`);
   }
+  const acceptedDates = acceptedElectionDates ? new Set(acceptedElectionDates) : null;
+  if (acceptedDates) {
+    for (const date of acceptedDates) {
+      if (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(date) || Number.parseInt(date.slice(-4), 10) !== electionYear) {
+        throw new Error(`Invalid South Carolina accepted election date: ${date}`);
+      }
+    }
+  }
   const byRun = new Map<number, SouthCarolinaCandidateReportRow[]>();
   for (const report of reports) {
     if (Number.parseInt(report.electionDate.slice(-4), 10) !== electionYear) {
+      continue;
+    }
+    if (acceptedDates && !acceptedDates.has(report.electionDate)) {
       continue;
     }
     const rows = byRun.get(report.campaignId) ?? [];
@@ -140,10 +158,13 @@ export function selectSouthCarolinaAcceptedRuns(
 // Contribution/Search year filters a sync must request.
 export function southCarolinaContributionYearsForRuns(
   reports: readonly SouthCarolinaCandidateReportRow[],
-  electionYear: number
+  electionYear: number,
+  acceptedElectionDates?: readonly string[]
 ): number[] {
   const years = new Set<number>();
-  const accepted = new Set(selectSouthCarolinaAcceptedRuns(reports, electionYear).map((run) => run.campaignId));
+  const accepted = new Set(
+    selectSouthCarolinaAcceptedRuns(reports, electionYear, acceptedElectionDates).map((run) => run.campaignId)
+  );
   for (const report of reports) {
     if (!accepted.has(report.campaignId)) {
       continue;
@@ -214,6 +235,21 @@ function cycleTotalsFromDetails(run: SouthCarolinaAcceptedRun, details: SouthCar
       `South Carolina finance run ${run.campaignId} detail totals disagree with report ${run.finalReport.reportId} index row`
     );
   }
+  const campaignFundsLines = details.totals.filter((line) => keyText(line.totalType) === "CAMPAIGN FUNDS");
+  if (campaignFundsLines.length !== 1) {
+    throw new AggregationFailure(
+      `South Carolina finance run ${run.campaignId} detail has ${campaignFundsLines.length} Campaign Funds balance lines`
+    );
+  }
+  const endingBalanceCents = toCents(
+    campaignFundsLines[0]!.endingBalance,
+    `run ${run.campaignId} Campaign Funds ending balance`
+  );
+  if (endingBalanceCents !== toCents(run.finalReport.balance, `run ${run.campaignId} index balance`)) {
+    throw new AggregationFailure(
+      `South Carolina finance run ${run.campaignId} Campaign Funds ending balance disagrees with report ${run.finalReport.reportId} index row`
+    );
+  }
 
   return { totalReceiptsCents, directCents, cashInKindCents, personalCents, disbursementsCents };
 }
@@ -246,7 +282,7 @@ function addAggregate(
   amountCents: number,
   contributor: string
 ): void {
-  const key = `${categoryType} ${keyText(categoryName)}`;
+  const key = `${categoryType}\u0000${keyText(categoryName)}`;
   const aggregate = aggregates.get(key);
   if (aggregate) {
     aggregate.amountCents += amountCents;
@@ -263,6 +299,7 @@ export function aggregateSouthCarolinaDirectFinance(input: {
   // One entry per accepted run's finalReport.reportId (selectSouthCarolinaAcceptedRuns).
   detailsByReportId: ReadonlyMap<number, SouthCarolinaReportDetails>;
   contributionRows: readonly SouthCarolinaContributionSearchRow[];
+  acceptedElectionDates?: readonly string[];
   sourceUrl?: string | null;
   maxOccupationBreakdowns?: number;
 }): SouthCarolinaDirectFinanceAggregation {
@@ -270,7 +307,7 @@ export function aggregateSouthCarolinaDirectFinance(input: {
   if (!Number.isSafeInteger(maxOccupationBreakdowns) || maxOccupationBreakdowns <= 0) {
     throw new Error(`Invalid South Carolina occupation breakdown limit: ${input.maxOccupationBreakdowns}`);
   }
-  const runs = selectSouthCarolinaAcceptedRuns(input.reports, input.electionYear);
+  const runs = selectSouthCarolinaAcceptedRuns(input.reports, input.electionYear, input.acceptedElectionDates);
   if (runs.length === 0) {
     return { status: "no_filed_reports" };
   }
@@ -338,24 +375,24 @@ export function aggregateSouthCarolinaDirectFinance(input: {
     }
 
     // Per-run reconciliation against the authoritative summary. Search rows
-    // are cash + in-kind; the candidate's own personal contributions may also
-    // appear as rows, so both identities count as full coverage.
+    // are cash + in-kind, and the candidate's own personal contributions may
+    // appear as rows too — fully, partially, or not at all. Coverage is full
+    // only when the itemized sum reaches the whole direct total; anything
+    // short of that leaves money out of the breakdowns and gets the note.
+    // A sum above the direct total is unexplained and fails closed.
     let partialCoverage = false;
     for (const run of runs) {
       const target = runTargets.get(run.campaignId)!;
+      const fullDirectCents = target.cashInKindCents + target.personalCents;
       const itemized = itemizedCentsByRun.get(run.campaignId) ?? 0;
-      if (itemized === target.cashInKindCents || itemized === target.cashInKindCents + target.personalCents) {
-        continue;
+      if (itemized > fullDirectCents) {
+        throw new AggregationFailure(
+          `South Carolina finance run ${run.campaignId} itemized sum ${itemized} exceeds summary contributions ${fullDirectCents}`
+        );
       }
-      if (itemized < target.cashInKindCents) {
+      if (itemized < fullDirectCents) {
         partialCoverage = true;
-        continue;
       }
-      throw new AggregationFailure(
-        `South Carolina finance run ${run.campaignId} itemized sum ${itemized} exceeds summary contributions ${
-          target.cashInKindCents + target.personalCents
-        }`
-      );
     }
 
     const byType = new Map<Aggregate["categoryType"], Aggregate[]>();

@@ -41,6 +41,7 @@ function details(input: {
   loans?: number;
   credits?: number;
   expTotal?: number;
+  endingBalance?: number;
   extraIncome?: { type: string; electionCycleTotal: number }[];
 }): SouthCarolinaReportDetails {
   const cash = input.cash ?? 0;
@@ -71,7 +72,7 @@ function details(input: {
       line("Total", incomeTotal),
     ],
     expenditures: [line("Expenditures", expTotal), line("Total", expTotal)],
-    totals: [{ totalType: "Campaign Funds", startingBalance: 0, endingBalance: 0 }],
+    totals: [{ totalType: "Campaign Funds", startingBalance: 0, endingBalance: input.endingBalance ?? 0 }],
     versions: [{ id: 1, name: "Original Report" }],
   };
 }
@@ -173,8 +174,8 @@ describe("aggregateSouthCarolinaDirectFinance", () => {
       electionYear: 2026,
       reports: [primaryFinal, generalFinal],
       detailsByReportId: new Map([
-        [10, details({ cash: 1000, inKind: 100, personal: 0, loans: 400, credits: 0, expTotal: 900 })],
-        [20, details({ cash: 1200, inKind: 0, personal: 100, loans: 0, credits: 10, expTotal: 300 })],
+        [10, details({ cash: 1000, inKind: 100, personal: 0, loans: 400, credits: 0, expTotal: 900, endingBalance: 600 })],
+        [20, details({ cash: 1200, inKind: 0, personal: 100, loans: 0, credits: 10, expTotal: 300, endingBalance: 1610 })],
       ]),
       contributionRows: [
         contributionRow({ contributionId: 1, officeRunId: 100, amount: 1000, contributorName: "Alice Donor", contributorOccupation: "Attorney" }),
@@ -214,7 +215,7 @@ describe("aggregateSouthCarolinaDirectFinance", () => {
       candidateFilerId: 54395,
       electionYear: 2026,
       reports: [reportRow({ reportId: 10, contributions: 500, expenses: 0, balance: 500 })],
-      detailsByReportId: new Map([[10, details({ cash: 500 })]]),
+      detailsByReportId: new Map([[10, details({ cash: 500, endingBalance: 500 })]]),
       contributionRows: [contributionRow({ contributionId: 1, amount: 300 })],
     });
     expect(result).toMatchObject({
@@ -248,7 +249,7 @@ describe("aggregateSouthCarolinaDirectFinance", () => {
       candidateFilerId: 54395,
       electionYear: 2026,
       reports: [reportRow({ reportId: 10, contributions: 100, balance: 100 })],
-      detailsByReportId: new Map([[10, details({ cash: 100 })]]),
+      detailsByReportId: new Map([[10, details({ cash: 100, endingBalance: 100 })]]),
       contributionRows: [contributionRow({ contributionId: 1, amount: 150 })],
     });
     expect(result).toMatchObject({ status: "failed" });
@@ -259,7 +260,7 @@ describe("aggregateSouthCarolinaDirectFinance", () => {
       candidateFilerId: 54395,
       electionYear: 2026,
       reports: [reportRow({ reportId: 10, contributions: 600, balance: 600 })],
-      detailsByReportId: new Map([[10, details({ cash: 500, personal: 100 })]]),
+      detailsByReportId: new Map([[10, details({ cash: 500, personal: 100, endingBalance: 600 })]]),
       contributionRows: [
         contributionRow({ contributionId: 1, amount: 500 }),
         contributionRow({ contributionId: 2, amount: 100, contributorName: "Pamela Evette" }),
@@ -273,7 +274,7 @@ describe("aggregateSouthCarolinaDirectFinance", () => {
       candidateFilerId: 54395,
       electionYear: 2026,
       reports: [reportRow({ reportId: 10, contributions: 200, balance: 200 })],
-      detailsByReportId: new Map([[10, details({ cash: 200 })]]),
+      detailsByReportId: new Map([[10, details({ cash: 200, endingBalance: 200 })]]),
       contributionRows: [
         contributionRow({ contributionId: 7, amount: 100 }),
         contributionRow({ contributionId: 7, amount: 100 }),
@@ -290,7 +291,7 @@ describe("aggregateSouthCarolinaDirectFinance", () => {
       candidateFilerId: 54395,
       electionYear: 2026,
       reports: [reportRow({ reportId: 10, contributions: 100, balance: 100 })],
-      detailsByReportId: new Map([[10, details({ cash: 100 })]]),
+      detailsByReportId: new Map([[10, details({ cash: 100, endingBalance: 100 })]]),
       contributionRows: [contributionRow({ contributionId: 1, amount: -25 })],
     });
     expect(result).toMatchObject({ status: "failed" });
@@ -313,11 +314,73 @@ describe("aggregateSouthCarolinaDirectFinance", () => {
       electionYear: 2026,
       reports: [reportRow({ reportId: 10, contributions: 100, balance: 100 })],
       detailsByReportId: new Map([
-        [10, details({ cash: 100, extraIncome: [{ type: "Mystery Funds", electionCycleTotal: 0 }] })],
+        [10, details({ cash: 100, endingBalance: 100, extraIncome: [{ type: "Mystery Funds", electionCycleTotal: 0 }] })],
       ]),
       contributionRows: [contributionRow({ contributionId: 1, amount: 100 })],
     });
     expect(tolerated).toMatchObject({ status: "aggregated" });
+  });
+
+  it("excludes an unrelated same-year run when accepted election dates are provided", () => {
+    const novemberRun = reportRow({
+      reportId: 10,
+      campaignId: 100,
+      electionDate: "11/3/2026",
+      contributions: 500,
+      balance: 500,
+      filingEndDate: "2026-06-30T00:00:00",
+    });
+    const specialRun = reportRow({
+      reportId: 20,
+      campaignId: 900,
+      electionDate: "3/10/2026",
+      contributions: 9000,
+      balance: 9000,
+      filingEndDate: "2026-03-31T00:00:00",
+    });
+    const result = aggregateSouthCarolinaDirectFinance({
+      candidateFilerId: 54395,
+      electionYear: 2026,
+      reports: [novemberRun, specialRun],
+      detailsByReportId: new Map([[10, details({ cash: 500, endingBalance: 500 })]]),
+      contributionRows: [contributionRow({ contributionId: 1, officeRunId: 100, amount: 500 })],
+      acceptedElectionDates: ["6/9/2026", "6/23/2026", "11/3/2026"],
+    });
+    expect(result).toMatchObject({ status: "aggregated", totalReceipts: 500, runCount: 1 });
+    expect(
+      southCarolinaContributionYearsForRuns([novemberRun, specialRun], 2026, ["6/9/2026", "6/23/2026", "11/3/2026"])
+    ).toEqual([2026]);
+  });
+
+  it("marks coverage partial when positive personal contributions are not fully itemized", () => {
+    const build = (itemized: number) =>
+      aggregateSouthCarolinaDirectFinance({
+        candidateFilerId: 54395,
+        electionYear: 2026,
+        reports: [reportRow({ reportId: 10, contributions: 600, balance: 600 })],
+        detailsByReportId: new Map([[10, details({ cash: 500, personal: 100, endingBalance: 600 })]]),
+        contributionRows: [contributionRow({ contributionId: 1, amount: itemized })],
+      });
+    // Personal money absent from rows: totals right, breakdowns short -> note.
+    expect(build(500)).toMatchObject({ status: "aggregated", directCoverageNote: SOUTH_CAROLINA_DIRECT_COVERAGE_NOTE });
+    // Personal money partially itemized: still aggregated, still noted.
+    expect(build(550)).toMatchObject({ status: "aggregated", directCoverageNote: SOUTH_CAROLINA_DIRECT_COVERAGE_NOTE });
+    // Above the full direct total: unexplained, fail closed.
+    expect(build(650)).toMatchObject({ status: "failed" });
+  });
+
+  it("fails closed when the Campaign Funds ending balance disagrees with the report-index row", () => {
+    const result = aggregateSouthCarolinaDirectFinance({
+      candidateFilerId: 54395,
+      electionYear: 2026,
+      reports: [reportRow({ reportId: 10, contributions: 100, balance: 100 })],
+      detailsByReportId: new Map([[10, details({ cash: 100, endingBalance: 55 })]]),
+      contributionRows: [contributionRow({ contributionId: 1, amount: 100 })],
+    });
+    expect(result).toMatchObject({ status: "failed" });
+    if (result.status === "failed") {
+      expect(result.diagnostics[0]).toMatch(/Campaign Funds ending balance/);
+    }
   });
 
   it("fails closed when detail totals disagree with the report-index row", () => {
@@ -351,7 +414,7 @@ describe("aggregateSouthCarolinaDirectFinance", () => {
       candidateFilerId: 54395,
       electionYear: 2026,
       reports: [reportRow({ reportId: 10, contributions: 300, balance: 300 })],
-      detailsByReportId: new Map([[10, details({ cash: 300 })]]),
+      detailsByReportId: new Map([[10, details({ cash: 300, endingBalance: 300 })]]),
       contributionRows: [
         contributionRow({ contributionId: 1, amount: 100, contributorName: "A Person", contributorOccupation: "Retired" }),
         contributionRow({ contributionId: 2, amount: 100, contributorName: "B Person", contributorOccupation: "N/A" }),
