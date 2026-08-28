@@ -76,6 +76,7 @@ import { loadIndianaCandidateFinanceSummariesByCandidateElection } from "../indi
 import { loadOklahomaCandidateFinanceSummariesByCandidateElection } from "../oklahomaFinance/oklahomaBallotLookupFinanceLoader.js";
 import { loadNebraskaCandidateFinanceSummariesByCandidateElection } from "../nebraskaFinance/nebraskaBallotLookupFinanceLoader.js";
 import { loadConnecticutCandidateFinanceSummariesByCandidateElection } from "../connecticutFinance/connecticutBallotLookupFinanceLoader.js";
+import { loadDelawareCandidateFinanceSummariesByCandidateElection } from "../delawareFinance/delawareBallotLookupFinanceLoader.js";
 import { loadColoradoCandidateFinanceSummariesByCandidateElection } from "../coloradoFinance/coloradoBallotLookupFinanceLoader.js";
 import { loadDenverCandidateFinanceSummariesByCandidateElection } from "../denverFinance/denverBallotLookupFinanceLoader.js";
 import { loadCaliforniaCandidateFinanceSummariesByCandidateElection } from "../californiaFinance/californiaBallotLookupFinanceLoader.js";
@@ -1074,6 +1075,7 @@ const STATE_FINANCE_LOOKUP_ADAPTERS: readonly StateFinanceLookupAdapter[] = [
   { state: "NM", load: loadNewMexicoCandidateFinanceSummariesByCandidateElection },
   { state: "NY", load: loadCombinedNewYorkCandidateFinanceSummariesByCandidateElection },
   { state: "CT", load: loadConnecticutCandidateFinanceSummariesByCandidateElection },
+  { state: "DE", load: loadDelawareCandidateFinanceSummariesByCandidateElection },
   { state: "CO", load: loadColoradoCandidateFinanceSummariesByCandidateElection },
   // Denver municipal filers are not in TRACER, so the two CO adapters can
   // never both return a summary for one candidate/election (the CA pattern,

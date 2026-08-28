@@ -402,6 +402,8 @@
     "massachusetts-candidates:finance:live-probe": "tsx src/scripts/probeMassachusettsCandidateFinance.ts",
     "missouri-candidates:finance:probe": "tsx src/scripts/probeMissouriCandidateFinance.ts",
     "delaware-candidates:finance:probe": "tsx src/scripts/probeDelawareCandidateFinance.ts",
+    "delaware-candidates:finance:auto-link": "tsx src/scripts/autoLinkDelawareCandidateFinance.ts",
+    "delaware-candidates:finance:sync-due": "tsx src/scripts/syncDueDelawareCandidateFinance.ts",
     "nevada-candidates:finance:auto-link": "tsx src/scripts/autoLinkNevadaCandidateFinance.ts",
     "nevada-candidates:finance:import": "tsx src/scripts/importNevadaCandidateFinance.ts",
     "new-hampshire-candidates:finance:phase-zero": "tsx src/scripts/probeNewHampshireCampaignFinance.ts",

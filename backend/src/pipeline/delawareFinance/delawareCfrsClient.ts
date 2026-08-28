@@ -51,6 +51,13 @@ export const DELAWARE_CFRS_PAGES = {
   committeeSearchPost: "/Public/Search",
   /** Committee registry grid JSON (form-encoded POST: page/size/orderBy/groupBy/filter). */
   committeeGridJson: "/Public/_ViewCommittees",
+  /**
+   * Office-dropdown cascade (verified live 2026-08-28): POST OfficeType(+
+   * CountyCode) -> the ddlOfficeSought <select> HTML for that office type.
+   */
+  bindOffice: "/Public/BindOffice",
+  /** District-dropdown cascade: POST OfficeType+CountyCode+Office -> ddljurisdiction <select> HTML. */
+  getDistricts: "/Public/GetDistricts",
   /** Filed-reports search form (GET warms the session; POST runs the search). */
   filedReportsSearch: "/Public/ViewFiledReports",
   /** Filed-reports grid JSON for the session's stored search (GET with ajax=True). */
