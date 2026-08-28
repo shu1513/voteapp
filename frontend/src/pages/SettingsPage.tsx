@@ -65,7 +65,7 @@ function MembershipProfileLine({ me }: { me: Me }) {
   }
   return (
     <p className="mt-1 text-sm">
-      <Link to="/mission" className="font-medium underline hover:text-ink">
+      <Link to="/support/member" className="font-medium underline hover:text-ink">
         Become a member
       </Link>
     </p>

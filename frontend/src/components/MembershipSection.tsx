@@ -2,13 +2,17 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest, APP_NAME } from "@voteapp/api-client";
-import type { MembershipKind, MembershipPayment, MembershipStatus } from "@voteapp/api-client";
+import type { MembershipKind, MembershipMembership, MembershipPayment, MembershipStatus } from "@voteapp/api-client";
 import { ErrorNotice } from "./Status";
 import { navigateExternal } from "../lib/externalNavigation";
 
-// "Support Elections Simplified" settings section: voluntary monthly or
-// one-time payments through Stripe Checkout (full-page redirect, no Stripe
-// SDK here). Hidden entirely when the backend reports Stripe unconfigured.
+// Membership payments through Stripe Checkout (full-page redirect, no Stripe
+// SDK here). Three surfaces share the pieces in this file:
+//   - MembershipSection: the full Settings box (both forms + history),
+//   - SupportCheckout: the single-kind checkout on /support/member and
+//     /support/once (the visitor already chose, so only that form shows),
+//   - MembershipThanks: the compact member acknowledgement on /mission.
+// Everything hides when the backend reports Stripe unconfigured.
 // Not a nonprofit: copy says the money runs the service and never implies
 // a candidate, campaign, or charity — see docs/plans/membership-contributions.md.
 
@@ -147,9 +151,9 @@ function PaymentHistory({ payments }: { payments: MembershipPayment[] }) {
   );
 }
 
-export function MembershipSection() {
-  // Checkout returns here with ?membership=success|canceled. Read once, then
-  // strip the param so a reload doesn't re-announce an old outcome.
+/** Checkout returns with ?membership=success|canceled. Read once, then strip
+ * the param so a reload doesn't re-announce an old outcome. */
+function useCheckoutOutcome(): string | null {
   const [searchParams, setSearchParams] = useSearchParams();
   const [outcome] = useState(() => searchParams.get("membership"));
   useEffect(() => {
@@ -163,16 +167,22 @@ export function MembershipSection() {
       );
     }
   }, [searchParams, setSearchParams]);
+  return outcome;
+}
 
-  // staleTime 0 (the app default is 60s): the webhook that records a payment
-  // can land after the return from Checkout, so every mount must ask again
-  // rather than reuse a pre-webhook snapshot — no polling, just no caching.
-  const status = useQuery({
+// staleTime 0 (the app default is 60s): the webhook that records a payment
+// can land after the return from Checkout, so every mount must ask again
+// rather than reuse a pre-webhook snapshot — no polling, just no caching.
+function useMembershipStatus() {
+  return useQuery({
     queryKey: ["me", "membership"],
     queryFn: () => apiRequest<MembershipStatus>("/api/me/membership"),
     staleTime: 0,
   });
-  const checkout = useMutation({
+}
+
+function useCheckoutMutation() {
+  return useMutation({
     mutationFn: (input: { kind: MembershipKind; amountCents: number }) =>
       apiRequest<{ url: string }>("/api/me/membership/checkout", {
         method: "POST",
@@ -182,12 +192,103 @@ export function MembershipSection() {
       navigateExternal(response.url);
     },
   });
-  const portal = useMutation({
+}
+
+function usePortalMutation() {
+  return useMutation({
     mutationFn: () => apiRequest<{ url: string }>("/api/me/membership/portal", { method: "POST", body: {} }),
     onSuccess: (response) => {
       navigateExternal(response.url);
     },
   });
+}
+
+function OutcomeBanners({ outcome }: { outcome: string | null }) {
+  return (
+    <>
+      {outcome === "success" ? (
+        <p role="status" className="mt-2 rounded-lg border border-green-700/40 bg-green-50 px-3 py-2 text-sm text-green-900">
+          Thank you for your support! Your payment may take a moment to appear in your Settings.
+        </p>
+      ) : null}
+      {outcome === "canceled" ? (
+        <p role="status" className="mt-2 rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink-soft">
+          Checkout was canceled. Nothing was charged.
+        </p>
+      ) : null}
+    </>
+  );
+}
+
+function Disclaimer() {
+  return (
+    <p className="mt-1 text-sm text-ink-soft">
+      {APP_NAME} is independently operated. Optional payments support operating the service, not any
+      candidate, campaign, committee, party, or charity. Payments are not eligible for a
+      charitable-contribution receipt.
+    </p>
+  );
+}
+
+/** The member branch: current plan, problem states, and the portal button.
+ * Any nonterminal subscription takes this branch, paid or not: the backend
+ * answers 409 to a monthly checkout while one exists, so a signup form would
+ * only fail. `incomplete` (first payment not confirmed yet) gets its own copy
+ * instead of "supporter". */
+function MemberPlan({
+  membership,
+  busy,
+  portalPending,
+  onPortal,
+}: {
+  membership: MembershipMembership;
+  busy: boolean;
+  portalPending: boolean;
+  onPortal: () => void;
+}) {
+  return (
+    <div className="mt-3 space-y-2 text-sm">
+      <p className="font-medium text-ink">
+        {membership.stripe_status === "incomplete"
+          ? `Monthly membership pending: ${formatCents(membership.monthly_amount_cents)}/month`
+          : `Monthly supporter: ${formatCents(membership.monthly_amount_cents)}/month since ${formatDate(membership.started_at)}`}
+      </p>
+      {membership.stripe_status === "incomplete" ? (
+        // Cards-only Checkout confirms the payment before the session
+        // completes, so `incomplete` here is the seconds-wide gap between the
+        // subscription.created poke and the activation poke. Refreshing is
+        // the whole remedy; nothing here promises the portal can pay the
+        // invoice, because that's unverified.
+        <p className="text-ink-soft">
+          Your first payment is still being confirmed. This usually takes a moment; refresh this page to
+          check again.
+        </p>
+      ) : membership.stripe_status === "past_due" || membership.stripe_status === "unpaid" ? (
+        <p className="rounded-lg border border-rausch/40 bg-rausch/5 px-3 py-2 text-rausch-dark">
+          Your last payment didn&apos;t go through. Update your card under Manage membership to keep your
+          membership.
+        </p>
+      ) : membership.stripe_status !== "active" ? (
+        <p className="text-ink-soft">Status: {membership.stripe_status.replace(/_/g, " ")}</p>
+      ) : null}
+      {membership.cancel_at_period_end && membership.current_period_end ? (
+        <p className="text-ink-soft">Your membership ends {formatDate(membership.current_period_end)}.</p>
+      ) : null}
+      <button type="button" disabled={busy} onClick={onPortal} className={secondaryButtonClass}>
+        {portalPending ? "Opening…" : "Manage membership"}
+      </button>
+      <p className="text-xs text-ink-soft">
+        Update your card or cancel anytime. To change the amount, cancel and start a new membership.
+      </p>
+    </div>
+  );
+}
+
+export function MembershipSection() {
+  const outcome = useCheckoutOutcome();
+  const status = useMembershipStatus();
+  const checkout = useCheckoutMutation();
+  const portal = usePortalMutation();
 
   if (status.isPending || (status.data && !status.data.enabled)) {
     return null;
@@ -206,16 +307,7 @@ export function MembershipSection() {
     // id: anchor target for the Profile box's "Manage membership" link.
     <section id="support" className="rounded-xl border border-line bg-white p-4">
       <h2 className="text-heading font-semibold">Support {APP_NAME}</h2>
-      {outcome === "success" ? (
-        <p role="status" className="mt-2 rounded-lg border border-green-700/40 bg-green-50 px-3 py-2 text-sm text-green-900">
-          Thank you for your support! Your payment may take a moment to appear below.
-        </p>
-      ) : null}
-      {outcome === "canceled" ? (
-        <p role="status" className="mt-2 rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink-soft">
-          Checkout was canceled — nothing was charged.
-        </p>
-      ) : null}
+      <OutcomeBanners outcome={outcome} />
       {status.isError ? (
         <div className="mt-2">
           <ErrorNotice error={status.error} />
@@ -223,67 +315,28 @@ export function MembershipSection() {
       ) : null}
       {status.data ? (
         <>
-          <p className="mt-1 text-sm text-ink-soft">
-            {APP_NAME} is independently operated. Optional payments support operating the service — not any
-            candidate, campaign, committee, party, or charity. Payments provide no additional content or influence
-            and are not eligible for a charitable-contribution receipt.
-          </p>
+          <Disclaimer />
 
           {status.data.membership ? (
-            // Any nonterminal subscription takes this branch, paid or not:
-            // the backend answers 409 to a monthly checkout while one exists,
-            // so the signup forms would only fail. `incomplete` (first payment
-            // not confirmed yet) gets its own copy instead of "supporter".
-            <div className="mt-3 space-y-2 text-sm">
-              <p className="font-medium text-ink">
-                {status.data.membership.stripe_status === "incomplete"
-                  ? `Monthly membership pending — ${formatCents(status.data.membership.monthly_amount_cents)}/month`
-                  : `Monthly supporter — ${formatCents(status.data.membership.monthly_amount_cents)}/month since ${formatDate(status.data.membership.started_at)}`}
-              </p>
-              {status.data.membership.stripe_status === "incomplete" ? (
-                // Cards-only Checkout confirms the payment before the session
-                // completes, so `incomplete` here is the seconds-wide gap
-                // between the subscription.created poke and the activation
-                // poke. Refreshing is the whole remedy; nothing here promises
-                // the portal can pay the invoice, because that's unverified.
-                <p className="text-ink-soft">
-                  Your first payment is still being confirmed. This usually takes a moment — refresh this page to
-                  check again.
-                </p>
-              ) : status.data.membership.stripe_status === "past_due" ||
-                status.data.membership.stripe_status === "unpaid" ? (
-                <p className="rounded-lg border border-rausch/40 bg-rausch/5 px-3 py-2 text-rausch-dark">
-                  Your last payment didn&apos;t go through. Update your card under Manage membership to keep your
-                  membership.
-                </p>
-              ) : status.data.membership.stripe_status !== "active" ? (
-                <p className="text-ink-soft">Status: {status.data.membership.stripe_status.replace(/_/g, " ")}</p>
-              ) : null}
-              {status.data.membership.cancel_at_period_end && status.data.membership.current_period_end ? (
-                <p className="text-ink-soft">
-                  Your membership ends {formatDate(status.data.membership.current_period_end)}.
-                </p>
-              ) : null}
-              <button type="button" disabled={busy} onClick={() => portal.mutate()} className={secondaryButtonClass}>
-                {portal.isPending ? "Opening…" : "Manage membership"}
-              </button>
-              <p className="text-xs text-ink-soft">
-                Update your card or cancel anytime. To change the amount, cancel and start a new membership.
-              </p>
-            </div>
+            <MemberPlan
+              membership={status.data.membership}
+              busy={busy}
+              portalPending={portal.isPending}
+              onPortal={() => portal.mutate()}
+            />
           ) : (
             <div className="mt-3 space-y-4">
               <AmountForm
                 kind="monthly"
-                label="Become a monthly supporter ($5/month minimum)"
+                label="Become a supporting member ($5/month minimum)"
                 buttonLabel="Support monthly"
-                initialDollars="5"
+                initialDollars="10"
                 disabled={busy}
                 onSubmit={(input) => checkout.mutate(input)}
               />
               <AmountForm
                 kind="one_time"
-                label="One-time support ($5 minimum)"
+                label="Make a one-time contribution ($5 minimum)"
                 buttonLabel="Support once"
                 initialDollars="10"
                 disabled={busy}
@@ -319,5 +372,121 @@ export function MembershipSection() {
         </>
       ) : null}
     </section>
+  );
+}
+
+/** Single-kind checkout for the dedicated support pages: the visitor already
+ * chose monthly or one-time on the way in, so only that form shows.
+ * - monthly: an existing member sees their plan (a second subscription would
+ *   only 409) instead of the form.
+ * - one_time: the form shows even for members — a one-time gift on top of a
+ *   membership is allowed. */
+export function SupportCheckout({ kind }: { kind: MembershipKind }) {
+  const outcome = useCheckoutOutcome();
+  const status = useMembershipStatus();
+  const checkout = useCheckoutMutation();
+  const portal = usePortalMutation();
+
+  if (status.isPending || (status.data && !status.data.enabled)) {
+    return null;
+  }
+
+  // Same double-charge guard as MembershipSection: locked until the browser
+  // actually leaves for Stripe, and after a success return until the webhook
+  // has had its moment.
+  const busy =
+    outcome === "success" || checkout.isPending || checkout.isSuccess || portal.isPending || portal.isSuccess;
+
+  return (
+    <section className="rounded-xl border border-line bg-white p-4">
+      <OutcomeBanners outcome={outcome} />
+      {status.isError ? (
+        <div className="mt-2">
+          <ErrorNotice error={status.error} />
+        </div>
+      ) : null}
+      {status.data ? (
+        <>
+          <Disclaimer />
+
+          {kind === "monthly" && status.data.membership ? (
+            <MemberPlan
+              membership={status.data.membership}
+              busy={busy}
+              portalPending={portal.isPending}
+              onPortal={() => portal.mutate()}
+            />
+          ) : (
+            <div className="mt-3 space-y-4">
+              <AmountForm
+                kind={kind}
+                label={
+                  kind === "monthly"
+                    ? "Monthly amount ($5/month minimum)"
+                    : "Contribution amount ($5 minimum)"
+                }
+                buttonLabel={kind === "monthly" ? "Become a member" : "Contribute"}
+                initialDollars="10"
+                disabled={busy}
+                onSubmit={(input) => checkout.mutate(input)}
+              />
+              <p className="text-xs text-ink-soft">
+                {kind === "monthly"
+                  ? "Monthly memberships renew until you cancel, which you can do anytime from your Settings. "
+                  : "You will be charged once. "}
+                See the{" "}
+                <Link to="/terms" className="underline hover:text-ink">
+                  Terms of Use
+                </Link>
+                .
+              </p>
+            </div>
+          )}
+
+          {checkout.isError ? (
+            <div className="mt-2">
+              <ErrorNotice error={checkout.error} />
+            </div>
+          ) : null}
+          {portal.isError ? (
+            <div className="mt-2">
+              <ErrorNotice error={portal.error} />
+            </div>
+          ) : null}
+        </>
+      ) : null}
+    </section>
+  );
+}
+
+// Compact member acknowledgement for the Mission page: renders only for an
+// existing member (any nonterminal subscription) so the pitch buttons above
+// aren't the page's last word to someone who already pays. Acquisition lives
+// on the /support pages; full management detail stays on Settings.
+export function MembershipThanks() {
+  const status = useMembershipStatus();
+  const portal = usePortalMutation();
+
+  if (!status.data?.enabled || !status.data.membership) {
+    return null;
+  }
+
+  return (
+    <div className="rounded-xl border border-line bg-white p-4 text-sm">
+      <p className="font-medium text-ink">You are a supporting member. Thank you!</p>
+      <button
+        type="button"
+        disabled={portal.isPending || portal.isSuccess}
+        onClick={() => portal.mutate()}
+        className={`${secondaryButtonClass} mt-2`}
+      >
+        {portal.isPending ? "Opening…" : "Manage membership"}
+      </button>
+      {portal.isError ? (
+        <div className="mt-2">
+          <ErrorNotice error={portal.error} />
+        </div>
+      ) : null}
+    </div>
   );
 }
