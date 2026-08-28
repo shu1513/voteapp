@@ -1,6 +1,6 @@
 # Montana campaign finance — build plan
 
-Status: rev 3 — PHASE 0 EXECUTED 2026-08-27 (results below); next = Phase 1 PR
+Status: rev 4 — Phase 1 BUILT 2026-08-27 (migration 261, montanaFinance module: client/parsers/cache/canonical selection/chain reconciliation, probe ALL GATES PASSED live incl. cent-exact chain link + 210/210 occupation); next = Phase 2a
 Source facts: `backend/docs/montana-campaign-finance.md` (endpoint recipe + gotchas; **commit it with Phase 1** — untracked files don't reach other checkouts)
 Template module: `backend/src/pipeline/missouriFinance/` (per-candidate portal harvest,
 sha256+manifest artifact cache, occupation breakdown, outside spending, due-list sync)

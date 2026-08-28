@@ -61,12 +61,11 @@ list kept returning the previous candidate's reports in a reused session).
    but entry granularity is filer behavior — validate before shipping contribution-size
    buckets.
 
-Sample (Bedey, SD-43, 2025–2026): 210 individual contributions $59,347.67 + committee
-$6,780.45 + $10k loan, recorded grand total $76,310.28; expenditures 162 rows
-$61,467.18. CAVEAT: the three listed components sum to $76,128.12 — $182.16 of the
-recorded total is unaccounted in these notes (likely the misc-receipts family or a
-transcription slip; raw Phase 0 state expired, so re-verify this candidate during the
-Phase 1 fixture re-harvest before treating the decomposition as cent-exact).
+Sample (Bedey, SD-43, 2025–2026, re-verified live 2026-08-27): 210 individual
+contributions $59,347.67 + committee $6,780.45 + $10k loan + $182.16 "Debts and
+Loans Not Yet Paid" = $76,310.28 (cent-exact); expenditures 162 rows $61,467.18.
+The debts row is a FOURTH line-item family in the CONTR export — debt tracking, not
+cash; it feeds neither directContributionTotal nor the cash-begin chain.
 
 ### Donor occupation: YES — best probed state so far
 
