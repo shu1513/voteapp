@@ -17,6 +17,7 @@ afterEach(() => {
 
 describe("nevadaBallotLookupFinanceLoader", () => {
   it("stays inert when disabled or the election office is out of scope", async () => {
+    vi.stubEnv("NEVADA_CAMPAIGN_FINANCE_ENABLED", "false");
     const query = vi.fn();
     const candidates = [{ candidate_id: CANDIDATE_ID, election_id: ELECTION_ID }];
 

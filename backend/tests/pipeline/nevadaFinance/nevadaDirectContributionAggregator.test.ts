@@ -78,5 +78,43 @@ describe("aggregateNevadaDirectContributions", () => {
     expect(result.directContributionTotalCents).toBe(10_00);
     expect(result.legalDefenseFundRowCount).toBe(1);
     expect(result.outOfWindowRowCount).toBe(1);
+    expect(result.foreignReportYearRowCount).toBe(0);
+  });
+
+  it("counts in-window rows whose report names cite only foreign years", () => {
+    const base = {
+      contributorName: "Someone",
+      transactionType: "Monetary Contribution" as const,
+      isLegalDefenseFund: false,
+      filerName: "A B",
+      filerKey: "A B",
+      date: "2026-05-01",
+      amountCents: 10_00,
+    };
+    const rows = [
+      { ...base, reportName: "2026 CE Report 2" },
+      // Same display name, different filer's cycle: hard collision evidence.
+      { ...base, reportName: "2024 CE Report 3" },
+      // No year token: no signal, passes.
+      { ...base, reportName: "Contribution Report" },
+    ];
+    const result = aggregateNevadaDirectContributions({
+      filerKey: "A B",
+      periodStart: "2026-01-01",
+      periodEnd: "2026-12-31",
+      contributionRows: rows,
+      allowedReportYears: [2025, 2026, 2027],
+    });
+    expect(result.foreignReportYearRowCount).toBe(1);
+    // Foreign rows stay aggregated so the caller's fatal check sees them.
+    expect(result.directContributionTotalCents).toBe(30_00);
+
+    const unguarded = aggregateNevadaDirectContributions({
+      filerKey: "A B",
+      periodStart: "2026-01-01",
+      periodEnd: "2026-12-31",
+      contributionRows: rows,
+    });
+    expect(unguarded.foreignReportYearRowCount).toBe(0);
   });
 });

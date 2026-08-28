@@ -150,6 +150,18 @@ function officeConfirmation(
     };
   }
   const candidateDistrict = nevadaDistrictNumberFromName(candidate.districtName);
+  if (candidate.officeScope !== "statewide" && candidateDistrict === null) {
+    // Fail closed: without a parsed district number the per-row district
+    // comparison below cannot run, and any same-office row (wrong district
+    // included) would confirm the candidacy.
+    return {
+      ok: false,
+      reason: "office_mismatch",
+      detail:
+        `VoteApp district ${JSON.stringify(candidate.districtName)} has no parseable district ` +
+        `number; refusing to confirm a ${candidate.officeScope} candidacy without one`,
+    };
+  }
   for (const row of electionYearRows) {
     const parsed = parseNevadaAuroraOffice(row.office);
     if (!parsed) continue;

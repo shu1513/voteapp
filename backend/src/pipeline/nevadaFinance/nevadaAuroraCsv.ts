@@ -73,7 +73,13 @@ export function parseNevadaCsvDate(value: string, context: string): string {
   const [, month, day, year] = match;
   const monthNum = Number(month);
   const dayNum = Number(day);
-  if (monthNum < 1 || monthNum > 12 || dayNum < 1 || dayNum > 31) {
+  // UTC round-trip rejects calendar-invalid dates (2/30, non-leap 2/29, ...).
+  const roundTrip = new Date(Date.UTC(Number(year), monthNum - 1, dayNum));
+  if (
+    roundTrip.getUTCFullYear() !== Number(year) ||
+    roundTrip.getUTCMonth() !== monthNum - 1 ||
+    roundTrip.getUTCDate() !== dayNum
+  ) {
     throw new Error(`Invalid Nevada AURORA date ${JSON.stringify(value)} (${context})`);
   }
   return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;

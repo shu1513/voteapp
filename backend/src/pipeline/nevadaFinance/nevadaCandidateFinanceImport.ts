@@ -16,10 +16,7 @@ import {
   type NevadaRosterEntry,
 } from "./nevadaCandidateFilerResolver.js";
 import { NEVADA_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./nevadaFinanceEligibleOffices.js";
-import {
-  replaceNevadaCandidateFinanceSnapshot,
-  upsertNevadaFinanceLink,
-} from "./nevadaFinanceWriter.js";
+import { replaceNevadaCandidateFinanceSnapshot } from "./nevadaFinanceWriter.js";
 import {
   buildNevadaCycleSummary,
   parseNevadaCandidateReportSummary,
@@ -69,7 +66,7 @@ export type NevadaAutoLinkResult = {
 };
 
 export async function autoLinkNevadaCandidateFinance(input: {
-  db: Queryable;
+  db: ConnectableQueryable;
   artifactDir: string;
   electionDate: string;
   write: boolean;
@@ -120,7 +117,11 @@ export async function autoLinkNevadaCandidateFinance(input: {
   let linksWritten = 0;
   if (input.write) {
     for (const match of resolution.matches) {
-      await upsertNevadaFinanceLink({
+      // replaceSnapshot with a link only (no summary/breakdowns) upserts the
+      // link AND transactionally deactivates any other active aurora_search
+      // link for the candidate + election — an AURORA display-name change
+      // must supersede the old filer_key row, never leave two active links.
+      await replaceNevadaCandidateFinanceSnapshot({
         db: input.db,
         link: {
           candidateId: match.candidate.candidateId,
@@ -175,7 +176,8 @@ export type NevadaImportCandidateResult = {
   totalReceipts?: number;
   totalDisbursements?: number;
   cashOnHand?: number;
-  directContributionTotal?: number;
+  /** Itemized CSV sum — NOT the stored line-8 direct_contribution_total. */
+  itemizedContributionTotal?: number;
   breakdownCount?: number;
   warnings: string[];
   reason?: string;
@@ -300,8 +302,18 @@ export async function importNevadaCandidateFinance(input: {
         periodStart,
         periodEnd,
         contributionRows: contributions.rows,
+        // Annual filings are labeled election-year+1 but cover the prior year,
+        // so the cycle window can legitimately cite years -1 through +1.
+        allowedReportYears: [electionYear - 1, electionYear, electionYear + 1],
         sourceUrl: plan.link.source_url,
       });
+      if (aggregation.foreignReportYearRowCount > 0) {
+        throw new Error(
+          `${aggregation.foreignReportYearRowCount} in-window contribution row(s) cite report years ` +
+            `outside ${electionYear - 1}-${electionYear + 1}; likely a same-name filer collision ` +
+            `(the filer display name is the only CSV join key)`
+        );
+      }
       const contributionSumCents = aggregation.directContributionTotalCents;
       if (
         contributionSumCents < cycle.itemizedContributionFloorCents ||
@@ -338,7 +350,7 @@ export async function importNevadaCandidateFinance(input: {
         totalReceipts: cycle.totalReceiptsCents / 100,
         totalDisbursements: cycle.totalDisbursementsCents / 100,
         cashOnHand: cycle.cashOnHandCents / 100,
-        directContributionTotal: aggregation.directContributionTotalCents / 100,
+        itemizedContributionTotal: aggregation.directContributionTotalCents / 100,
         breakdownCount: aggregation.directBreakdowns.length,
         warnings,
       };

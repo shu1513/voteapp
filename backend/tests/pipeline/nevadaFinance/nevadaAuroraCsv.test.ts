@@ -65,6 +65,10 @@ describe("nevadaAuroraCsv", () => {
     expect(parseNevadaCurrencyCents("$1,000.00", "t")).toBe(100_000);
     expect(parseNevadaCurrencyCents("$ 5,700.50", "t")).toBe(570_050);
     expect(() => parseNevadaCsvDate("13/1/2026", "t")).toThrow(/Invalid Nevada AURORA date/);
+    expect(() => parseNevadaCsvDate("2/30/2026", "t")).toThrow(/Invalid Nevada AURORA date/);
+    expect(() => parseNevadaCsvDate("2/29/2026", "t")).toThrow(/Invalid Nevada AURORA date/);
+    expect(() => parseNevadaCsvDate("4/31/2026", "t")).toThrow(/Invalid Nevada AURORA date/);
+    expect(parseNevadaCsvDate("2/29/2024", "t")).toBe("2024-02-29");
     expect(parseNevadaCsvDate("4/5/2026", "t")).toBe("2026-04-05");
     expect(() =>
       parseNevadaContributionCsv(

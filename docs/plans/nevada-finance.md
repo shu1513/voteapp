@@ -104,7 +104,13 @@ script.
      `Recipient == linked filer name`, LDF rows dropped; buckets +
      entity-donor industry labels (existing classifier, `labelType:"donor"`);
      **skip breakdowns entirely for a candidate whose filer name is not unique
-     in the cycle's CSVs** (name is the only join key)
+     in the cycle's CSVs** (name is the only join key). Implemented as far as
+     the data allows: same-year duplicates explode at roster read (slug
+     collision), and in-window rows citing only report years outside
+     electionYear-1..+1 quarantine the candidate (cross-cycle same-name
+     collision). A same-cycle same-name filer outside the harvested roster is
+     undetectable from CSV data; residual exposure is breakdowns-only (totals
+     come from report covers) and bounded by the reconciliation ceiling
    - summary builder: raised/spent = Σ per-report "This Period" lines 8/12
      (candidate form) across the cycle window (Annual filings + CE#1–4),
      picking the latest effective version per covered period, LDF excluded;
@@ -174,8 +180,10 @@ run; CE#4/annual lands Jan 15, 2027 (post-election, optional).
 
 ## Validation gates (import refuses to write on failure)
 
-- per-candidate: Σ itemized CSV (non-LDF, monetary+in-kind) within $0.01 of
-  Σ report lines 1+5 for the same window; else quarantine the candidate
+- per-candidate: Σ itemized CSV (non-LDF, monetary+in-kind) within
+  [Σ lines 1+5, Σ lines 1+5+7] for the same window (filers may itemize ≤$100
+  money, so unitemized line 7 is the allowed slack); expenditure CSV sum
+  within [Σ lines 9+10, Σ lines 9+10+11]; else quarantine the candidate
 - every linked candidate: office + district + year matched exactly; name
   unique in AURORA roster
 - month coverage: contiguous month files spanning the cycle window, each

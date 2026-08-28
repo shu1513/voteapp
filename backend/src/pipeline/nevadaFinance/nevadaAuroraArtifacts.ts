@@ -199,6 +199,18 @@ async function readMonthlyKind<TRow>(
         `Nevada ${kind} artifacts for ${month} mix a full-month file with split files (${files.join(", ")}); that would double count`
       );
     }
+    if (!hasPlain) {
+      // Split files must be a contiguous -a, -b, ... run of at least two: a
+      // lone -a (the cap fired, so a sibling must exist) or a gap means part
+      // of the month's export was never saved and would silently undercount.
+      const expected = files.map((_, index) => `${month}-${String.fromCharCode(97 + index)}.csv`);
+      if (files.length < 2 || files.some((file, index) => file !== expected[index])) {
+        throw new Error(
+          `Nevada ${kind} artifacts for ${month} are an incomplete split set (${files.join(", ")}); ` +
+            `expected ${month}.csv or a contiguous ${month}-a.csv, ${month}-b.csv, ... run`
+        );
+      }
+    }
     for (const file of files) {
       rows.push(...parse(await readFile(join(dir, file), "utf8")));
       fileCount += 1;

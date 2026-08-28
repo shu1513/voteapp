@@ -113,6 +113,14 @@ describe("resolveNevadaCandidateFilers", () => {
     });
     expect(noRows.skips[0].reason).toBe("no_election_year_reports");
 
+    const unparseableDistrict = resolveNevadaCandidateFilers({
+      candidates: [candidate({ districtName: "Nevada" })],
+      rosterEntries: [roster("Alexis M Hansen", [reportRow("State Assembly, District 32")])],
+    });
+    expect(unparseableDistrict.matches).toHaveLength(0);
+    expect(unparseableDistrict.skips[0].reason).toBe("office_mismatch");
+    expect(unparseableDistrict.skips[0].detail).toMatch(/no parseable district/);
+
     const ambiguous = resolveNevadaCandidateFilers({
       candidates: [candidate({ candidateName: "Alexis Hansen" })],
       rosterEntries: [
