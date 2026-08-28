@@ -14,7 +14,7 @@ Writer: `createStandardStateFinanceSnapshotWriter` (`pipeline/finance/standardSt
 | Primary/General split | YES, native | `Election Type` / `amountTypeDescr` |
 | Official cover totals | **NO** — public view renders cash-summary cells EMPTY; report-list JSON has only `primCashBeg`/`genCashBeg` + unitemized lumps | control = cash-begin chain (below) |
 | Donor occupation + employer | YES, 100% fill on sample | CSV export + `financeRepDetailList` JSON only |
-| Contribution sizes | MAYBE — gated on Phase 0 Q1 | entry-level rows, real dates in report JSON |
+| Contribution sizes | YES — Q1 PASS (entry-level rows, real dates) | `financeRepDetailList` JSON only — CSV dates synthetic |
 | Outside target | YES (free text `candidateIssue`, JSON rows only) | NOT in CSV export |
 | Outside stance | stance-aware: bare name → support (rule); explicit "Oppose X" rows exist at scale → oppose | rule below |
 | Outside funders | independent/party committees: YES (org donors); incidental: v1 SKIP | committee CONTR flow |
@@ -51,7 +51,7 @@ listed ... as a supported candidate". Therefore:
 - Never infer stance beyond the leading verb; narrative purpose text stays diagnostics.
 - Exclude `electioneeringInd='Y'` rows and ballot-issue rows from candidate totals.
 - **UI note (ships WITH Phase 2b, small):** both cards hardcode "supporting/opposing"
-  ([frontend/src/components/FinanceSummaryCard.tsx:161](frontend/src/components/FinanceSummaryCard.tsx:161), mobile ~:262) — fine as-is. DO add
+  ([FinanceSummaryCard.tsx:161](../../frontend/src/components/FinanceSummaryCard.tsx), mobile ~:262) — fine as-is. DO add
   a one-line Montana footnote in the outside section: "Montana support totals include
   spending that benefits a candidate by opposing an opponent; opposition is shown only
   where the filer declared it." Gate: MT outside data does not go live before the
@@ -92,10 +92,11 @@ due-list / batch / ballot-lookup loader / index). Scripts: `montana-candidates:f
 - `directContributionTotal` = Individual + Committee + Candidate-personal
   contributions + derived unitemized lump. Excludes loans, debt, and the misc-receipts
   family (below). Loader shows this as "Raised"
-  ([standardStateFinanceBallotLookupLoader.ts:704](backend/src/pipeline/finance/standardStateFinanceBallotLookupLoader.ts:704) prefers it over totalReceipts) —
+  ([standardStateFinanceBallotLookupLoader.ts:704](../../backend/src/pipeline/finance/standardStateFinanceBallotLookupLoader.ts) prefers it over totalReceipts) —
   individuals-only would undercount.
-- Loans: excluded from `directContributionTotal`; inside `totalReceipts` only if the
-  chain check demands it (Phase 0 Q6). No separate loan field in v1.
+- Loans: excluded from `directContributionTotal`; cash loan proceeds DO count in
+  chain receipts (they hit the bank — see the residual term definitions). No separate
+  loan field in v1.
 - Misc receipts: the `refunds` + `fundraisers` detail lists share one line-item family
   ("Interest, Rebates, Refunds, Fundraisers, and Other Miscellaneous Receipts") and
   hold POSITIVE receipts (Eddy: a $241k returned expenditure back into the bank).
@@ -108,7 +109,13 @@ due-list / batch / ballot-lookup loader / index). Scripts: `montana-candidates:f
   are ALWAYS 0 in the public flow (Phase 0: all 24 harvested C-5s, incl. candidates
   with obvious small-donor money) — dead fields, do not use. **Derive the unitemized
   amount per period from the chain residual**: `lump(N) = begin(N+1) − (begin(N) +
-  itemized_cash_receipts(N) − cash_expenditures(N))`. Sign convention (load-bearing):
+  itemized_cash_receipts(N) − cash_expenditures(N))`. Term definitions (load-bearing —
+  wider than `directContributionTotal`): `itemized_cash_receipts` = ALL itemized cash
+  inflows — contributions (individual + committee + candidate-personal) + cash loan
+  proceeds + the misc-receipts family (refunds/fundraisers/interest); in-kind portions
+  never counted. `cash_expenditures` = cash portions of all disbursement lists.
+  Omitting loans or misc receipts here would misclassify them as unitemized
+  contributions or fail the gate. Sign convention (load-bearing):
   hidden receipts make the actual next-begin HIGHER than the itemized-derived ending,
   so under this formula the lump is POSITIVE. Gate: `lump ≥ 0` and small relative to
   itemized receipts; negative (itemized flows overshoot actual cash) or large → fail
@@ -126,9 +133,9 @@ due-list / batch / ballot-lookup loader / index). Scripts: `montana-candidates:f
 - Direct `occupation`: dollars by filed Occupation, Individual Contributions rows only,
   from the CONTR CSV export (100% fill verified); in-kind counts as dollars; filed
   values only, never inferred; `Retired`/`Self-employed` preserved.
-- Direct `contribution_size`: OFF until Phase 0 Q1 proves entry granularity
-  (CSV export `Date Paid` = period start — synthetic; real `datePaid` lives in
-  `financeRepDetailList` JSON; rows are entry-level but filer habits unproven).
+- Direct `contribution_size`: GO (Q1 PASS 2026-08-27) — build from
+  `financeRepDetailList` JSON `datePaid` rows, NEVER from the CSV export
+  (its `Date Paid` = period start — synthetic).
 - Outside groups: IE committee sweep per year (`independentExpendSearch=true`) →
   per-committee JSON rows → dedupe by `transId` → resolve `candidateIssue` by parsed
   name + office/district token (`(SD-9)`) + year. Two-stage resolution, measured
@@ -265,9 +272,11 @@ Gate: backend `npm run typecheck` + `npm test`.
 
 ### Phase 2a — direct money PR
 
-Resolver, auto-link (manual-link protection), direct aggregator (occupation; sizes if
-Q1 passed), writer wrapper, sync/due-list/batch/scheduler scripts, ballot-lookup
-loader registered in [ballotLookup.ts](backend/src/pipeline/address/ballotLookup.ts) (per-state loader import block ~line 59) +
+Resolver, auto-link (manual-link protection), direct aggregator (occupation +
+contribution sizes — Q1 passed; report-detail JSON source), writer wrapper, sync/due-list/batch/scheduler scripts, ballot-lookup
+loader registered in [ballotLookup.ts](../../backend/src/pipeline/address/ballotLookup.ts) — BOTH the per-state import
+(block ~line 59) AND an `{ state: "MT", load: ... }` entry in
+`STATE_FINANCE_LOOKUP_ADAPTERS` (~line 1030; import alone leaves the loader dead) +
 `FINANCE_SOURCE_HOME_URLS` entry in `packages/api-client/src/finance.ts`
 (`https://politicalpractices.mt.gov/`), loader/registry/format tests + web/mobile
 card tests. Fail-closed everywhere: reconciliation, ambiguity, schema drift, bad

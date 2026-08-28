@@ -41,7 +41,7 @@ list kept returning the previous candidate's reports in a reused session).
    variant of the form hides dates; sending both made validation silently bounce back
    to the search page — response `<title>` says `(search)` instead of `(searchResults)`).
 2. `POST searchResults/viewFinancialEntities` `{candidateId:<id>, committeeId:0}` (or
-   committeeId for committees) → `{resultCount, totalContrLessThan35, primaryTotal, generalTotal}`
+   committeeId for committees) → `{resultCount, totalContrLessThan35 (always 0 publicly), primaryTotal, generalTotal}`
 3. `GET searchResults/listViewFinancialEntityResults?...` (same DataTables params) →
    full transaction JSON: `transTypeDesr` (Individual Contributions / Independent
    Committee Contributions / Loans / Independent Expenditure / ...), `cashAmt`,
@@ -62,7 +62,11 @@ list kept returning the previous candidate's reports in a reused session).
    buckets.
 
 Sample (Bedey, SD-43, 2025–2026): 210 individual contributions $59,347.67 + committee
-$6,780.45 + $10k loan = $76,310.28; expenditures 162 rows $61,467.18. Cent-exact sums.
+$6,780.45 + $10k loan, recorded grand total $76,310.28; expenditures 162 rows
+$61,467.18. CAVEAT: the three listed components sum to $76,128.12 — $182.16 of the
+recorded total is unaccounted in these notes (likely the misc-receipts family or a
+transcription slip; raw Phase 0 state expired, so re-verify this candidate during the
+Phase 1 fixture re-harvest before treating the decomposition as cent-exact).
 
 ### Donor occupation: YES — best probed state so far
 
@@ -78,7 +82,8 @@ $6,780.45 + $10k loan = $76,310.28; expenditures 162 rows $61,467.18. Cent-exact
   → 302 → `GET publicReportList` → `GET publicReportList/listFinanceReports?...`
   (DataTables JSON): one row per filed report — `reportId`, `formTypeCode`
   (C5/C4/C7/C7E), period, status (Filed/Amended), `primCashBeg`, `genCashBeg`,
-  and unitemized lumps `totalContrLessThan35` / `grandTotalLessThan35{,Primary,General}`.
+  and unitemized lumps `totalContrLessThan35` / `grandTotalLessThan35{,Primary,General}`
+  (lump fields always 0 publicly — dead, do not use).
   Committee variant: `retrieveCommitteeReports` `{committeeId, ...}`.
 - Report detail: `POST viewFinanceReport/retrieveReport` `{candidateId|committeeId,
   reportId, searchPage:public}` → `POST viewFinanceReport/financeRepDetailList`
@@ -90,7 +95,10 @@ $6,780.45 + $10k loan = $76,310.28; expenditures 162 rows $61,467.18. Cent-exact
   Official control = the cash-begin chain: begin(N) + receipts(N) - disbursements(N)
   must equal begin(N+1) (`primCashBeg`/`genCashBeg`, primary and general separately);
   detail sums define the totals. Itemization threshold is $50 cumulative; smaller
-  money sits in the per-report `...LessThan35` lump fields (legacy name).
+  money is NOT exposed anywhere: the per-report `...LessThan35` lump fields (legacy
+  name) render always-zero in the public flow (Phase 0: all 24 harvested C-5s) — dead
+  fields; derive the unitemized amount from the cash-begin chain residual instead
+  (see the plan's derived-lump rule).
 
 ### Outside spending (independent expenditures)
 
