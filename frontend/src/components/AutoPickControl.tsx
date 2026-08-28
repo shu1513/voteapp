@@ -17,7 +17,8 @@ import type { AutoPickCandidateReport, AutoPickElectionResult } from "@voteapp/a
 //
 // Mirrors the server's UX floor (MIN_AUTO_PICK_ISSUES): below 3 ranked
 // issues the button explains what to do instead of calling the API. Guests
-// get a sign-in prompt — issue preferences are account-only.
+// see nothing at all — issue preferences are account-only, and a control a
+// new visitor can't use is pure noise on an already-dense election page.
 export const MIN_AUTO_PICK_ISSUES = 3;
 
 type AutoPickControlProps = {
@@ -43,18 +44,22 @@ export function AutoPickControl({ electionId, seatsToFill, compact = false }: Au
   const { preferences, isLoading: preferencesLoading, isError: preferencesError } = useMyResearchAreas();
   const autoPick = useAutoPick();
   const saving = useElectionChoiceSaving();
-  const [prompt, setPrompt] = useState<"sign_in" | "rank_issues" | null>(null);
+  const [prompt, setPrompt] = useState<"rank_issues" | null>(null);
   const [result, setResult] = useState<AutoPickElectionResult | null>(null);
 
   const areaNames = new Map(preferences.map((preference) => [preference.research_area_id, preference.name]));
   const areaName = (researchAreaId: string) => areaNames.get(researchAreaId) ?? "one of your issues";
 
+  // Signed-out (null) and still-resolving (undefined) sessions render
+  // nothing: guests can't rank issues, so the button would only add clutter
+  // for brand-new visitors, and rendering during the resolve would flash it
+  // at them. Signed-in users get it once the session loads.
+  if (me == null) {
+    return null;
+  }
+
   function onClick() {
     setResult(null);
-    if (me === null) {
-      setPrompt("sign_in");
-      return;
-    }
     // The issue-floor prompt only fires on a LOADED list: a failed fetch
     // returns the same empty array, and telling a user with five ranked
     // issues to go rank issues would be wrong — on error the backend's
@@ -88,18 +93,6 @@ export function AutoPickControl({ electionId, seatsToFill, compact = false }: Au
           {autoPick.isPending ? "Picking…" : "Auto-pick by my issues"}
         </button>
       </span>
-      {prompt === "sign_in" ? (
-        <p role="status" className="w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink-mid">
-          Sign up for free to see which candidates align with the issues important to me.{" "}
-          <Link to="/register" className="font-medium underline decoration-dotted underline-offset-2 hover:text-ink">
-            Sign up
-          </Link>{" "}
-          or{" "}
-          <Link to="/login" className="font-medium underline decoration-dotted underline-offset-2 hover:text-ink">
-            sign in
-          </Link>
-        </p>
-      ) : null}
       {prompt === "rank_issues" ? (
         <p role="status" className="w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink-mid">
           Rank at least {MIN_AUTO_PICK_ISSUES} issues first, so the pick reflects what matters to you.{" "}
