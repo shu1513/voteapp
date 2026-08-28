@@ -334,6 +334,92 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       /^senate rules$/,
     ],
   },
+  // California 2025-2026 Regular Session (LegiScan 2172). Vocabulary
+  // measured from the full dataset survey 2026-08-26: 5,057 bills, 19,942
+  // roll calls, 160 people (81 Assembly + 40 Senate districts + 39
+  // committee pseudo-people, which carry no district).
+  //
+  // What the survey established:
+  // - California prints the bill number and its author INSIDE the desc, so
+  //   almost every desc string is unique (`SB 586 Jones Senate Third
+  //   Reading By Jeff Gonzalez`). The question is a phrase within the desc,
+  //   never the whole of it — hence unanchored patterns in the Assembly,
+  //   where the desc STARTS with the measure, and `^` anchors in the
+  //   Senate, where it starts with the question.
+  // - The two chambers word the same question differently: the Assembly
+  //   writes `Third Reading` and `Concurrence in Senate Amendments`, the
+  //   Senate writes `3rd Reading` and `Unfinished Business … Concurrence`.
+  //   Both spellings are kept for both chambers; each is measured.
+  // - Committee votes are worded as RECOMMENDATIONS that name the same
+  //   destinations (`Do pass. To consent calendar`, `Be adopted. Ordered to
+  //   third reading`, `Placed on suspense file`), which is why the kept
+  //   patterns require the chamber word or the `^` anchor. As written,
+  //   every one of the 5,291 kept-type matches is floor-sized and no
+  //   committee-sized roll matches any kept pattern (measured).
+  // - Urgency bills (a 2/3 vote) get their own wording in both chambers —
+  //   `Third Reading Urgency` with no chamber word, and `Concurrence -
+  //   Urgency Added` — so both need their own alternative.
+  // - CA 2172 has NO conference-report and NO veto-override roll calls
+  //   (zero descs mention either), so those classes go unused here.
+  // - Feed health: 0 duplicate roll_call_id identity groups (the Texas 9.4%
+  //   collapse is a verified no-op in California), 0 summary-only rolls, 0
+  //   tally or member-list mismatches.
+  CA: {
+    jurisdiction: "CA",
+    sessionId: 2172,
+    // The Assembly is the lower chamber; LegiScan prints its rolls as
+    // chamber `A`, which parseLegiscanRollCall maps to `house`.
+    chamberSizes: { house: 80, senate: 40 },
+    keptQuestions: [
+      // Assembly floor passage: `AB 111 Gabriel Assembly Third Reading`,
+      // `SB 586 Jones Senate Third Reading By Jeff Gonzalez` (an Assembly
+      // vote on a Senate bill), `AB 40 Bonta Third Reading Urgency`.
+      { pattern: /(?:assembly|senate) third reading|third reading urgency/, questionClass: "passage" },
+      // Senate floor passage: `Senate 3rd Reading SB680 Rubio`, `Assembly
+      // 3rd Reading AB123 BUDGET (Gabriel) By Wiener`.
+      { pattern: /^(?:senate|assembly) 3rd reading\b/, questionClass: "passage" },
+      // Consent calendars are floor passage of measures no member objected
+      // to; the Assembly says `Consent Calendar Second Day Regular
+      // Session`, the Senate `Consent Calendar 2nd` / `Special Consent`.
+      { pattern: /consent calendar (?:first|second) day/, questionClass: "passage" },
+      { pattern: /^consent calendar\b/, questionClass: "passage" },
+      { pattern: /^special consent\b/, questionClass: "passage" },
+      // `W/O Ref. To File SB48 Gonzalez`: the file-section label on a
+      // SUBSTANTIVE vote taken up without reference to file — the waiver
+      // itself is granted by unanimous consent and has NO roll call (the
+      // history prints `Consent granted to take up without reference to
+      // file` with no tally). The recorded roll matches the substantive
+      // action's tally exactly: SB 48's 27-5 is `Assembly amendments
+      // concurred in. (Ayes 27. Noes 5.)`, SB 166's 29-9 and SB 694's 25-6
+      // likewise. Of the 36 kept-type instances, 32 are the Senate's
+      // concurrence in Assembly amendments — including every divided one —
+      // so the class is concurrence; the remaining 4 are near-unanimous
+      // second-chamber ACA passages, for which this label is nominal (the
+      // class is report metadata only, and the judge reads the bill
+      // history before writing a description either way).
+      { pattern: /^w\/o ref\. to file\b/, questionClass: "concurrence" },
+      { pattern: /concurrence in (?:senate|assembly) amendments|concurrence - urgency added/, questionClass: "concurrence" },
+      { pattern: /^unfinished business\b.*\bconcurrence\b/, questionClass: "concurrence" },
+    ],
+    excludedQuestions: [
+      // Second reading in California is where amendments are taken up; the
+      // urgency-clause votes held there are not passage.
+      /\b2nd reading\b/,
+      /\bsecond reading\b/,
+      // Procedural motions that reuse a kept question's wording. A desc
+      // ending in a bare ` Reconsider` is the vote GRANTING reconsideration,
+      // not the question itself: SB 627's `Unfinished Business … Concurrence
+      // Reconsider` 30-10 is the "Reconsideration granted" line of the bill
+      // history, sitting between the 27-10 concurrence it undid and the
+      // operative 28-11 concurrence that followed. 15 floor rolls, all
+      // Senate; the 91 committee `reconsideration granted` rolls were
+      // already below the tally line. Anchored at the end so it does not
+      // also swallow the committee `Reconsideration granted` families,
+      // which the tally cut already rejects before the queue.
+      /\breconsider$/,
+      /motion to lay on the table/,
+    ],
+  },
 };
 
 export const LEGISCAN_STATE_JURISDICTIONS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);

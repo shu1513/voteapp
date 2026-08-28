@@ -228,8 +228,14 @@ export function parseLegiscanRollCall(raw: Record<string, unknown>): LegiscanRol
     throw new Error(`${where}: date is not YYYY-MM-DD: ${date}`);
   }
   const chamberRaw = readString(raw, "chamber", where);
-  if (chamberRaw !== "H" && chamberRaw !== "S") {
-    throw new Error(`${where}: chamber is not H or S: ${chamberRaw}`);
+  // LegiScan prints the chamber as the state's own abbreviation for it, so
+  // the lower chamber is `H` in most states and `A` where it is called the
+  // Assembly (California, measured 2026-08-26: all 9,948 of CA 2172's lower
+  // chamber rolls carry `A`; also NV/NJ/NY/WI). Both map to `house`, our
+  // single lower-chamber key — the state's own name for the body is a
+  // display fact, never a data one. A third letter must still fail loudly.
+  if (chamberRaw !== "H" && chamberRaw !== "A" && chamberRaw !== "S") {
+    throw new Error(`${where}: chamber is not H, A or S: ${chamberRaw}`);
   }
   if (raw.passed !== 0 && raw.passed !== 1 && raw.passed !== true && raw.passed !== false) {
     throw new Error(`${where}: passed is not a 0/1 flag`);
@@ -272,7 +278,7 @@ export function parseLegiscanRollCall(raw: Record<string, unknown>): LegiscanRol
     absent: readNonNegativeInt(raw, "absent", where),
     total: readNonNegativeInt(raw, "total", where),
     passed: raw.passed === 1 || raw.passed === true,
-    chamber: chamberRaw === "H" ? "house" : "senate",
+    chamber: chamberRaw === "S" ? "senate" : "house",
     votes,
   };
   // An EMPTY member list beside non-zero tallies is a real publication
