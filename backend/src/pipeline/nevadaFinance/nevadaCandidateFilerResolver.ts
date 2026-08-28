@@ -15,6 +15,10 @@ import type { NevadaReportListRow } from "./nevadaReportSummary.js";
 export function normalizeNevadaPersonName(value: string): string {
   return value
     .toLocaleUpperCase("en-US")
+    // AURORA stores names without diacritics ("Fabian Donate"); VoteApp keeps
+    // them ("Fabian Doñate") - fold both to the unaccented form.
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
     .replace(/[.,'’-]/g, " ")
     .replace(/\b(JR|SR|II|III|IV)\b/g, " ")
     .replace(/\s+/g, " ")
@@ -56,39 +60,49 @@ export type NevadaParsedOffice = {
 export function parseNevadaAuroraOffice(officeText: string): NevadaParsedOffice | null {
   const text = officeText.trim().replace(/\s+/g, " ");
   if (!text) return null;
+  const low = text.toLocaleLowerCase("en-US");
 
-  const senate = text.match(/^State Senate, District (\d+)/i);
-  if (senate) {
-    return {
-      officeScope: "state_upper",
-      officeCanonicalName: "State Senator",
-      districtNumber: Number(senate[1]),
-    };
+  // Report-row Office strings are filer-typed free text on county-jurisdiction
+  // filers ("Nevada State Assembly District 6", "Assemblywoman, Nevada State
+  // Assembly District 41", "Treasurer, State of Nevada"), canonical on NV SOS
+  // rows ("State Assembly, District 32"). Reject anything scoped outside the
+  // SOS jurisdiction first, then match chamber/statewide tolerantly;
+  // ambiguous text (e.g. "legislature district 27") stays null (fail closed).
+  if (
+    /\b(county|city|ward|town(?:ship)?|school|regent|university|congress(?:ional)?|united states|district attorney|public administrator|constable|sheriff|mayor|council|commission|justice of the peace)/.test(
+      low
+    ) ||
+    /\bu\.?s\.?\s/.test(low)
+  ) {
+    return null;
   }
-  const assembly = text.match(/^State Assembly, District (\d+)/i);
-  if (assembly) {
-    return {
-      officeScope: "state_lower",
-      officeCanonicalName: "State Lower Chamber Legislator",
-      districtNumber: Number(assembly[1]),
-    };
-  }
-  if (/\b(justice|judge)\b/i.test(text)) {
+  if (/\b(justice|judge)\b/.test(low)) {
     return { officeScope: "statewide", officeCanonicalName: "State Level Judge", districtNumber: null };
   }
-  const statewide: Record<string, string> = {
-    governor: "Governor",
-    "lieutenant governor": "Lieutenant Governor",
-    "attorney general": "Attorney General",
-    "secretary of state": "Secretary of State",
-    "state treasurer": "State Treasurer",
-    treasurer: "State Treasurer",
-    "state controller": "Comptroller",
-    controller: "Comptroller",
-  };
-  const canonical = statewide[text.toLocaleLowerCase("en-US")];
-  if (canonical) {
-    return { officeScope: "statewide", officeCanonicalName: canonical, districtNumber: null };
+  const district = low.match(/\bdistrict\s*(?:no\.?\s*)?(\d+)\b/);
+  const districtNumber = district ? Number(district[1]) : null;
+  const isAssembly = /\bassembly(?:man|woman|member)?\b/.test(low);
+  const isSenate = /\bsenat(?:e|or)\b/.test(low);
+  if (isAssembly && !isSenate) {
+    return { officeScope: "state_lower", officeCanonicalName: "State Lower Chamber Legislator", districtNumber };
+  }
+  if (isSenate && !isAssembly) {
+    return { officeScope: "state_upper", officeCanonicalName: "State Senator", districtNumber };
+  }
+  if (isAssembly && isSenate) return null;
+
+  const statewide: readonly [RegExp, string][] = [
+    [/\blieutenant governor\b/, "Lieutenant Governor"],
+    [/\bgovernor\b/, "Governor"],
+    [/\battorney general\b/, "Attorney General"],
+    [/\bsecretary of state\b/, "Secretary of State"],
+    [/\btreasurer\b/, "State Treasurer"],
+    [/\b(?:controller|comptroller)\b/, "Comptroller"],
+  ];
+  for (const [pattern, canonical] of statewide) {
+    if (pattern.test(low)) {
+      return { officeScope: "statewide", officeCanonicalName: canonical, districtNumber: null };
+    }
   }
   return null;
 }

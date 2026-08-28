@@ -234,6 +234,24 @@ describe("buildNevadaCycleSummary", () => {
     );
   });
 
+  it("adds loan lines to the ceiling and clamps negative unitemized slack", () => {
+    const mk = (over: Record<number, number>) => {
+      const lines: Record<number, { periodCents: number; cumulativeCents: number | null }> = {};
+      for (let n = 1; n <= 12; n += 1) lines[n] = { periodCents: over[n] ?? 0, cumulativeCents: null };
+      return { lines, endingFundBalanceCents: 0, filedOn: null };
+    };
+    const report = (end: string) =>
+      ({ reportName: "r", year: 2026, fileDate: "2026-07-15", office: "o", syn: end,
+         name: { baseName: "r", isAmended: false, isLegalDefenseFund: false },
+         period: { start: "2026-01-01", end } }) as never;
+    const cycle = buildNevadaCycleSummary([
+      { report: report("2026-03-31"), summary: mk({ 1: 100_00, 2: 50_00, 5: 10_00, 7: -20_00, 8: 140_00 }) },
+    ]);
+    // negative line 7 lowers the floor (reversals may be itemized), loans widen the ceiling
+    expect(cycle.itemizedContributionFloorCents).toBe(90_00);
+    expect(cycle.itemizedContributionCeilingCents).toBe(160_00);
+  });
+
   it("refuses duplicate periods", () => {
     const ce2 = summary({
       line1: 0,

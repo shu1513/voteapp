@@ -25,7 +25,11 @@ export type NevadaContributionCsvRow = {
   contributorName: string;
   date: string; // ISO yyyy-mm-dd
   amountCents: number;
-  transactionType: "Monetary Contribution" | "In Kind Contribution";
+  transactionType:
+    | "Monetary Contribution"
+    | "In Kind Contribution"
+    | "Written Commitment"
+    | "In Kind Written Commitment";
   filerName: string;
   filerKey: string;
   reportName: string;
@@ -53,7 +57,13 @@ export function isNevadaLegalDefenseFundReportName(reportName: string): boolean 
 }
 
 export function parseNevadaCurrencyCents(value: string, context: string): number {
-  const match = value.trim().match(/^\$\s?(\d{1,3}(?:,\d{3})*|\d+)(?:\.(\d{2}))?$/);
+  // Accounting-style parentheses mark reversals (rejected deposits, refunds):
+  // "($2,500.00)" is a negative row that filers net against their totals
+  // (live-hit 2026-08-27: 70 such rows across the statewide 2025-2026 CSVs).
+  const trimmed = value.trim();
+  const negativeMatch = trimmed.match(/^\((.*)\)$/);
+  const magnitudeText = (negativeMatch ? negativeMatch[1] : trimmed).trim();
+  const match = magnitudeText.match(/^\$\s?(\d{1,3}(?:,\d{3})*|\d+)(?:\.(\d{2}))?$/);
   if (!match) {
     throw new Error(`Invalid Nevada AURORA amount ${JSON.stringify(value)} (${context})`);
   }
@@ -62,7 +72,7 @@ export function parseNevadaCurrencyCents(value: string, context: string): number
   if (!Number.isSafeInteger(cents)) {
     throw new Error(`Nevada AURORA amount out of range ${JSON.stringify(value)} (${context})`);
   }
-  return cents;
+  return negativeMatch ? -cents : cents;
 }
 
 export function parseNevadaCsvDate(value: string, context: string): string {
@@ -85,7 +95,15 @@ export function parseNevadaCsvDate(value: string, context: string): string {
   return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
 }
 
-const CONTRIBUTION_TYPES = new Set(["Monetary Contribution", "In Kind Contribution"]);
+// Written commitments are promised-but-unreceived money reported on their own
+// summary lines (outside lines 1/5/7); the aggregator nets them out of the
+// reconciliation window (14 such rows live-hit in the 2025-2026 statewide CSVs).
+const CONTRIBUTION_TYPES = new Set([
+  "Monetary Contribution",
+  "In Kind Contribution",
+  "Written Commitment",
+  "In Kind Written Commitment",
+]);
 const EXPENDITURE_TYPES = new Set(["Monetary Expense", "In Kind Expense"]);
 
 function requireCell(row: Record<string, string>, column: string, context: string): string {

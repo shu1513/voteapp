@@ -42,6 +42,8 @@ export type NevadaDirectContributionAggregationResult = {
   outOfWindowRowCount: number;
   /** In-window rows whose report names cite only years outside allowedReportYears. */
   foreignReportYearRowCount: number;
+  /** In-window Written Commitment rows (excluded from totals and breakdowns). */
+  writtenCommitmentRowCount: number;
 };
 
 type Aggregate = {
@@ -119,6 +121,7 @@ export function aggregateNevadaDirectContributions(
   let legalDefenseFundRowCount = 0;
   let outOfWindowRowCount = 0;
   let foreignReportYearRowCount = 0;
+  let writtenCommitmentRowCount = 0;
 
   for (const row of input.contributionRows) {
     if (row.filerKey !== input.filerKey) continue;
@@ -128,6 +131,13 @@ export function aggregateNevadaDirectContributions(
     }
     if (row.date < input.periodStart || row.date > input.periodEnd) {
       outOfWindowRowCount += 1;
+      continue;
+    }
+    if (row.transactionType.includes("Written Commitment")) {
+      // Promised-but-unreceived money: reported on its own summary lines, so
+      // it sits outside the lines 1+5(+7) reconciliation window and is not a
+      // received gift for the breakdowns.
+      writtenCommitmentRowCount += 1;
       continue;
     }
     if (allowedReportYears) {
@@ -140,6 +150,10 @@ export function aggregateNevadaDirectContributions(
     }
     directContributionRowCount += 1;
     directContributionTotalCents += row.amountCents;
+    // Reversal rows (parenthesized negatives) net against the total but are
+    // not gifts: keep them out of the size buckets and industry chart, whose
+    // amounts must stay nonnegative.
+    if (row.amountCents <= 0) continue;
     addAggregate(aggregates, "contribution_size", contributionSizeBucket(row.amountCents), row.amountCents);
 
     const industry = classifyFinanceLabel({
@@ -158,5 +172,6 @@ export function aggregateNevadaDirectContributions(
     legalDefenseFundRowCount,
     outOfWindowRowCount,
     foreignReportYearRowCount,
+    writtenCommitmentRowCount,
   };
 }
