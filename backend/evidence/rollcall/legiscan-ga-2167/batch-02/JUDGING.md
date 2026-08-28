@@ -115,6 +115,43 @@ rewrites, 0 notified, 207 distinct candidates**, reconciled three ways against t
 
 A re-run dry run reports all 1,035 `unchanged`.
 
+## Review fixes (2026-08-27): 331 records rewritten in place
+
+External review caught two content errors, both fixed in `judgments.json` and rewritten through
+judge → import (row count unchanged at 28,932):
+
+- **SB 40 (139 records): the surcharge actor was inverted.** The description said the Act
+  "allowed a privately operated … facility to charge" the $1 per ton surcharge. The enrolled
+  page (rendered, per the strikethrough rule above) shows "the host local government is
+  authorized and required to impose … paid to the host local government" as pre-existing
+  statute, with only the shredder-waste category underlined as new. The Act therefore *added
+  shredder waste to a mandatory government-imposed surcharge* — wrong actor, wrong modality,
+  wrong payee in the old wording. The error came from trusting HBRO's "allows a municipal solid
+  waste disposal facility … to impose a surcharge" — this batch's own hazard #1, recommitted.
+- **SB 244 (192 records): eligibility was overstated.** The description implied proving
+  innocence by a preponderance suffices. Enrolled 17-22-5(a)(3) also requires a formal outcome —
+  reversal or vacatur followed by dismissal, acquittal, or an eligible Alford/nolo plea, or an
+  innocence pardon. The descriptions now say "and whose conviction was reversed, vacated, or
+  pardoned on the basis of innocence."
+
+**⚠ The importer re-stamps `origin_run_id` on rewrite** (the TX batch-02 mechanic), so batch-02
+is now two stamps and a single-stamp predicate undercounts:
+
+```sql
+SELECT count(*) FROM candidate_records
+WHERE origin_run_id LIKE 'rollcall:GA:%:2026-08-28T00:48:23.837Z'   -- 704 untouched
+   OR origin_run_id LIKE 'rollcall:GA:%:2026-08-28T01:03:09.462Z';  -- 331 rewritten
+```
+
+A post-rewrite dry run again reports all 1,035 `unchanged`.
+
+The same review asked for every description to be split into ≤45-word sentences, citing
+`candidateRecordPlainLanguageLint.ts`. **Declined**: that lint is warn-only by contract
+("warnings never block a write"), is wired only into the manual record writers rather than this
+pipeline, and the one-sentence enumeration is the established shape of the ~22,000 live
+roll-call records across the federal, Ohio, Texas, and GA batch-01 imports. Restyling one batch
+would break cross-batch consistency; restyling the pipeline is a campaign-level decision.
+
 **207 of 208 crosswalk-mapped candidates**, the same as batch-01: Speaker Jon Burns casts no
 recorded vote.
 
