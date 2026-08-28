@@ -667,7 +667,7 @@ export function ElectionPage() {
             <h2 className="text-heading font-semibold">About this office</h2>
             {officeSummary ? (
               <>
-                {officeSummary.hook ? <p className="mt-2 text-sm text-ink">{officeSummary.hook}</p> : null}
+                {officeSummary.hook ? <p className="mt-2 text-body text-ink">{officeSummary.hook}</p> : null}
                 {officeSummary.affects.length > 0 ? (
                   <>
                     {/* Legacy duty lists have no hook; a "This office affects:"
@@ -675,7 +675,7 @@ export function ElectionPage() {
                     {officeSummary.hook ? (
                       <p className="mt-3 text-sm font-medium text-ink">This office affects:</p>
                     ) : null}
-                    <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-ink">
+                    <ul className="mt-1 list-disc space-y-1 pl-5 text-body text-ink">
                       {officeSummary.affects.map((line, i) => (
                         <li key={i}>{line}</li>
                       ))}
@@ -969,7 +969,7 @@ export function ElectionPage() {
                           "Jordan VoterAdvanced"), and the wrapper is a div
                           because a heading is flow content, invalid in a span. */}
                       <div className="flex items-center gap-2">
-                        <h3 className="font-semibold">
+                        <h3 className="text-subheading font-semibold">
                           <Link
                             to={`/candidates/${candidate.candidate_id}`}
                             state={candidateNavState}
