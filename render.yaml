@@ -205,6 +205,8 @@ services:
         value: "true"
       - key: NEBRASKA_CAMPAIGN_FINANCE_ENABLED
         value: "true"
+      - key: NEVADA_CAMPAIGN_FINANCE_ENABLED
+        value: "true"
       - key: NEW_JERSEY_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED
