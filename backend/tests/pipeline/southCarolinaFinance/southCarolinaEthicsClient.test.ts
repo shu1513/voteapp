@@ -148,15 +148,18 @@ describe("South Carolina ethics client", () => {
     expect(fetchImpl).not.toHaveBeenCalled();
   });
 
-  it("accepts two-character surnames and drops exact-duplicate filer rows", async () => {
+  it("accepts two-character surnames and keeps one row per candidateFilerId", async () => {
     const wuRow = {
       candidate: "Wu, Hao",
       candidateFilerId: 31444,
       officeName: "District 6 Senate",
       lastCampaignDisclosureReport: "04/27/2021",
     };
-    // The live API repeats filer 31444 (duplicate address records, identical parsed fields).
-    const fetchImpl = mockFetch(jsonResponse({ result: [wuRow, { ...wuRow }], count: 2 }));
+    // The live API repeats filer 31444 (duplicate address records share the id);
+    // metadata drift between the duplicates must not produce a second identity.
+    const fetchImpl = mockFetch(
+      jsonResponse({ result: [wuRow, { ...wuRow, lastCampaignDisclosureReport: "04/28/2021" }], count: 2 })
+    );
 
     const rows = await searchSouthCarolinaFilersByName("Wu", { fetchImpl });
 
@@ -165,6 +168,25 @@ describe("South Carolina ethics client", () => {
       expect.objectContaining({ method: "POST", body: JSON.stringify("Wu") })
     );
     expect(rows).toEqual([wuRow]);
+  });
+
+  it("keeps distinct SEI-only filers that all share candidateFilerId 0", async () => {
+    const seiRow = (candidate: string) => ({
+      candidate,
+      candidateFilerId: 0,
+      officeName: "",
+      lastCampaignDisclosureReport: "",
+    });
+    const fetchImpl = mockFetch(
+      jsonResponse({
+        result: [seiRow("Wuori, Daniel F."), seiRow("Wulf, Ann"), seiRow("Wuori, Daniel F.")],
+        count: 3,
+      })
+    );
+
+    const rows = await searchSouthCarolinaFilersByName("Wu", { fetchImpl });
+
+    expect(rows.map((row) => row.candidate)).toEqual(["Wuori, Daniel F.", "Wulf, Ann"]);
   });
 
   it("parses candidate report rows including run identity from reportWithDates", async () => {

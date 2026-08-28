@@ -362,10 +362,12 @@ export async function searchSouthCarolinaFilersByName(
   const envelope = objectValue(parsed, "filer-search response");
   const rows = arrayValue(envelope.result, "filer-search result").map(parseFilerSearchRow);
   // The server can list the same filer twice (duplicate address records share one
-  // candidateFilerId); drop rows whose parsed fields are exact duplicates.
+  // candidateFilerId); keep one row per filer id so callers see one row per source
+  // identity. Id 0 is shared by all SEI-only filers — distinct people — so those
+  // rows dedupe on their full parsed content instead.
   const seen = new Set<string>();
   return rows.filter((row) => {
-    const key = JSON.stringify(row);
+    const key = row.candidateFilerId > 0 ? `id:${row.candidateFilerId}` : JSON.stringify(row);
     if (seen.has(key)) {
       return false;
     }
