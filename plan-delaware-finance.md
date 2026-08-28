@@ -126,9 +126,11 @@ Decisions pinned during implementation:
 - **County offices deferred**: the CFRS county vocabulary (Clerk of Peace, Levy Court Commissioner, County Council) does not map cleanly onto VoteApp's DE county office keys (Clerk of Court, County Supervisor/Commissioner) — v1 eligible offices are statewide + General Assembly only; county needs its own mapping research before joining the cohort.
 - **Acquisition layer = Phase 2**: the sync is strictly cache-only (`delawareCfrsArtifactCache` bundles: CSVs + filed-reports grid + report PDFs + manifest with stored-search totals); the batch sync records a per-candidate failure for any due candidate without a cached bundle. The acquisition component must re-POST a search whose page renders the transient `total:0` (portal quirk, seen three times live).
 
-### Phase 2 — local live run + enablement
+### Phase 2 — local live run + enablement — **acquisition layer IMPLEMENTED 2026-08-28**
 
 Acquisition run for the Nov-2026 cohort (statewide + General Assembly + county), reconciliation-gated sync, `.env` flags on locally, operator checklist. Prod promotion stays a separate explicit operator action per house rule. Separate PR only if code changes fall out of the run.
+
+Acquisition implementation (`delawareCfrsArtifactAcquisition.ts`): one fresh session per committee runs registry lookup (type-01 committee search with `txtCommitteeID` as a hint, identity decided by a client-side CF_ID filter over the paged grid — correctness never depends on the portal honoring that field) → receipts search + full CSV export → expenses search + export → filed-reports grid (ALL versions, `Grid-size=500`, incomplete slice fails closed) → every report PDF (content-type checked, `MemberID` cross-checked) → atomic cache-bundle store. Every search re-POSTs up to 3× on the transient `total:0` quirk, and the CSV row count must equal the final rendered total before anything is cached; a failed acquisition leaves any previous bundle untouched. Wired into the batch sync (per due row, deduped by CF_ID, gated on the raw-data-refresh flag / `--force`, skipped on dry runs, per-candidate failure isolation) plus a no-DB operator CLI `npm run delaware-candidates:finance:refresh-artifacts -- --cf-id ID [...]`. Remaining Phase 2 work: rosters for the Nov-2026 generals (AG/Treasurer general rosters still empty pre-primary), then the live run itself.
 
 ### Outside phase — nonexistent until the edge exists
 

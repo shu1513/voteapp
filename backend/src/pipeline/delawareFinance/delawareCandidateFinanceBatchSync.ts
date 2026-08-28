@@ -1,12 +1,15 @@
 // Delaware finance batch sync: optional auto-link pass, then the due list,
-// then a CACHE-ONLY sync per due candidate. Live artifact acquisition is a
-// Phase 2 component — until it exists a due candidate with no cached bundle
-// records a per-candidate failure and the batch continues (fail-visible,
-// never fail-silent). Every step is injectable for tests.
+// then per due candidate an artifact-acquisition pass (live, flag-gated,
+// deduped by CF_ID) followed by the CACHE-ONLY sync. When live fetches are
+// not allowed the sync runs against whatever the cache holds, and a due
+// candidate with no cached bundle records a per-candidate failure — the
+// batch continues (fail-visible, never fail-silent). Every step is
+// injectable for tests.
 
 import type { Pool, PoolClient } from "pg";
 
 import { isDelawareCampaignFinanceRawDataRefreshEnabled } from "../../config/featureFlags.js";
+import { acquireDelawareCfrsCommitteeArtifacts } from "./delawareCfrsArtifactAcquisition.js";
 import {
   autoLinkMissingDelawareCandidateFinanceLinks,
   type DelawareFinanceAutoLinkResult,
@@ -38,15 +41,17 @@ export type DelawareCandidateFinanceBatchSyncInput = {
   dryRun?: boolean;
   autoLinkMissingLinks?: boolean;
   /**
-   * The auto-link pass contacts the live CFRS portal, so it additionally
-   * requires DELAWARE_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED (or this
-   * per-run force, the flag's established escape hatch).
+   * The auto-link and artifact-acquisition passes contact the live CFRS
+   * portal, so they additionally require
+   * DELAWARE_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED (or this per-run
+   * force, the flag's established escape hatch).
    */
   forceRawDataRefresh?: boolean;
   cacheDir?: string;
   log?: (message: string) => void;
   autoLinkFn?: typeof autoLinkMissingDelawareCandidateFinanceLinks;
   listDueRowsFn?: typeof listDueDelawareCandidateFinanceSyncRows;
+  acquireArtifactsFn?: typeof acquireDelawareCfrsCommitteeArtifacts;
   syncCandidateFn?: typeof syncDelawareCandidateFinance;
 };
 
@@ -78,13 +83,14 @@ export async function syncDueDelawareCandidateFinance(
   const dryRun = input.dryRun === true;
 
   let autoLinkResults: DelawareFinanceAutoLinkResult[] = [];
-  const liveAutoLinkAllowed = isDelawareCampaignFinanceRawDataRefreshEnabled(input.forceRawDataRefresh === true);
-  if (!dryRun && input.autoLinkMissingLinks !== false && !liveAutoLinkAllowed) {
+  const liveCfrsAllowed = isDelawareCampaignFinanceRawDataRefreshEnabled(input.forceRawDataRefresh === true);
+  if (!dryRun && !liveCfrsAllowed) {
     log(
-      "Delaware auto-link pass skipped: live CFRS fetches require DELAWARE_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED (or a per-run force)"
+      "Delaware live CFRS passes (auto-link, artifact acquisition) skipped: they require " +
+        "DELAWARE_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED (or a per-run force) — syncing cache-only"
     );
   }
-  if (!dryRun && input.autoLinkMissingLinks !== false && liveAutoLinkAllowed) {
+  if (!dryRun && input.autoLinkMissingLinks !== false && liveCfrsAllowed) {
     const autoLink = input.autoLinkFn ?? autoLinkMissingDelawareCandidateFinanceLinks;
     try {
       autoLinkResults = await autoLink({
@@ -110,11 +116,20 @@ export async function syncDueDelawareCandidateFinance(
     electionLookaheadDays,
   });
 
+  const acquireArtifacts = input.acquireArtifactsFn ?? acquireDelawareCfrsCommitteeArtifacts;
   const syncCandidate = input.syncCandidateFn ?? syncDelawareCandidateFinance;
   const candidates: DelawareCandidateFinanceBatchSyncResult["candidates"] = [];
+  // One live acquisition attempt per CF_ID per run — a failed fetch is not
+  // re-hammered when two due rows share a committee; the second row then
+  // syncs against whatever the cache holds and fails visibly on its own.
+  const acquisitionAttempted = new Set<string>();
   let succeeded = 0;
   for (const row of due.rows) {
     try {
+      if (!dryRun && liveCfrsAllowed && !acquisitionAttempted.has(row.cfId)) {
+        acquisitionAttempted.add(row.cfId);
+        await acquireArtifacts({ cfId: row.cfId, cacheDir: input.cacheDir, log });
+      }
       const result = await syncCandidate({
         db: input.db,
         candidateId: row.candidateId,
