@@ -70,5 +70,10 @@ export function parseSouthCarolinaFinancePositiveIntegerFlag(
   if (!/^[1-9]\d*$/.test(raw)) {
     throw new Error(`Invalid ${name} value: ${raw}`);
   }
-  return Number(raw);
+  // Digit-only values above 2^53 - 1 would be silently rounded by Number().
+  const parsed = Number(raw);
+  if (!Number.isSafeInteger(parsed)) {
+    throw new Error(`Invalid ${name} value: ${raw}`);
+  }
+  return parsed;
 }
