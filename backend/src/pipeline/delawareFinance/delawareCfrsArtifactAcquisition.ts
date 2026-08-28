@@ -2,8 +2,8 @@
 //
 // The one component that touches the live portal for money data: it runs the
 // probe-proven choreography for a single committee and lands the result as an
-// atomic artifact-cache bundle (manifest written last). The sync stays
-// strictly cache-only — anything this layer cannot prove it fetched
+// atomic artifact-cache bundle (staged in full, then swapped in). The sync
+// stays strictly cache-only — anything this layer cannot prove it fetched
 // completely is thrown away, never cached.
 //
 // Flow, one fresh session per committee (searches are session-bound server
@@ -95,6 +95,7 @@ async function resolveCommitteeRegistration(
     buildDelawareCommitteeSearchFields({ CommitteeType: "01", txtCommitteeID: cfId })
   );
   const byMember = new Map<number, DelawareCommitteeGridRow>();
+  let registryExhausted = false;
   for (let page = 1; page <= MAX_GRID_PAGES; page += 1) {
     const gridResponse = await session.postForm(
       buildDelawareCfrsUrl(DELAWARE_CFRS_PAGES.committeeGridJson, { ...DELAWARE_CFRS_THEME_QUERY }),
@@ -108,8 +109,16 @@ async function resolveCommitteeRegistration(
       }
     }
     if (parsed.rows.length < GRID_PAGE_SIZE) {
+      registryExhausted = true;
       break;
     }
+  }
+  // A full final page means the cap ended the sweep, not the data — a later
+  // page could still carry the (or a conflicting) CF_ID row.
+  if (!registryExhausted) {
+    throw new Error(
+      `committee registry sweep hit the ${MAX_GRID_PAGES}-page cap without exhausting the grid — not resolving CF_ID ${cfId}`
+    );
   }
   if (byMember.size === 0) {
     throw new Error(`no CFRS type-01 registry row carries CF_ID ${cfId}`);
@@ -214,9 +223,14 @@ async function fetchFiledReports(
       log(`[filed-reports] grid rendered ${rows.length} rows (total=${total}) — re-POSTing the search`);
     }
   }
+  // The grid config always carries a numeric total live; a missing one is
+  // layout drift, and without it a truncated slice would pass silently.
+  if (total === null) {
+    throw new Error("filed-reports grid rendered no total — layout drift, not acquiring");
+  }
   // Grid-size renders the whole slice for any real candidate committee
   // (2 reports/year); a bigger result would be silent truncation.
-  if (total !== null && rows.length !== total) {
+  if (rows.length !== total) {
     throw new Error(`filed-reports grid incomplete: ${rows.length} rows rendered vs total ${total} — not acquiring`);
   }
   return { html, rows };
@@ -229,8 +243,13 @@ async function fetchReportPdfs(
 ): Promise<DelawareCfrsReportPdfInput[]> {
   const byFileName = new Map<string, { filingCalendarId: number }>();
   for (const row of rows) {
+    // The sync unconditionally rejects a bundle whose report rows lack a
+    // document (covers are unverifiable) — caching one could only replace a
+    // syncable bundle with a guaranteed-failing one, so gate here instead.
     if (row.document === null) {
-      continue;
+      throw new Error(
+        `filed report [${row.filingPeriodName}] has no document link — covers unverifiable, not acquiring`
+      );
     }
     if (row.document.memberId !== memberId) {
       throw new Error(
@@ -266,8 +285,9 @@ async function fetchReportPdfs(
 
 /**
  * Fetches one committee's complete artifact set from the live portal and
- * commits it to the artifact cache. Every gate throws BEFORE the store call —
- * a failed acquisition leaves the previous bundle (if any) untouched.
+ * commits it to the artifact cache. Every gate throws before the store call,
+ * and the store itself stages then swaps — a failed acquisition always
+ * leaves the previous bundle (if any) untouched.
  */
 export async function acquireDelawareCfrsCommitteeArtifacts(
   input: DelawareCfrsAcquisitionInput

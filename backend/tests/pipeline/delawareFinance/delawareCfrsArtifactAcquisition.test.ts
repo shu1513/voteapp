@@ -208,6 +208,42 @@ describe("acquireDelawareCfrsCommitteeArtifacts", () => {
     );
   });
 
+  it("fails closed when the filed-reports grid renders no total or a document-less row", async () => {
+    const noTotal = happyScript();
+    noTotal[11] = {
+      match: (url) => url.includes("/Public/_ViewFiledReports"),
+      response: () => html(FILED_REPORTS_HTML.replace(", total:1", "")),
+    };
+    await expect(acquire(scriptedFetch(noTotal).fetchImpl)).rejects.toThrow(/filed-reports grid rendered no total/);
+
+    const noDocument = happyScript().slice(0, 12);
+    noDocument[11] = {
+      match: (url) => url.includes("/Public/_ViewFiledReports"),
+      response: () =>
+        html(FILED_REPORTS_HTML.replace(/<a onclick=downloadReport[^<]*<\/a>/, "Original Financial Statement")),
+    };
+    await expect(acquire(scriptedFetch(noDocument).fetchImpl)).rejects.toThrow(/has no document link/);
+  });
+
+  it("fails loudly when the registry page cap ends the sweep with a full last page", async () => {
+    const fullPage = {
+      data: Array.from({ length: 500 }, (_, index) => ({
+        ...registryJson("01000001").data[0]!,
+        MemberID: 700000 + index,
+      })),
+      total: 99_999,
+    };
+    const script: Scripted[] = [
+      { match: (url, body) => url.includes("/Public/ViewCommittees") && body === undefined, response: () => html("<html>form</html>") },
+      { match: (url) => url.includes("/Public/Search"), response: () => html("<html>results</html>") },
+      ...Array.from({ length: 40 }, (): Scripted => ({
+        match: (url) => url.includes("/Public/_ViewCommittees"),
+        response: () => json(fullPage),
+      })),
+    ];
+    await expect(acquire(scriptedFetch(script).fetchImpl)).rejects.toThrow(/40-page cap without exhausting/);
+  });
+
   it("rejects a mis-scoped receipts export before caching", async () => {
     const script = happyScript();
     script[5] = {
