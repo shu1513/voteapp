@@ -86,7 +86,11 @@ export function DetailPager({
     >
       {/* Back first on narrow screens (it matches "where you came from"
           reading order and stops Next floating alone above it); sm:order-2
-          restores the middle column. */}
+          restores the middle column. Deliberate trade-off: the two
+          breakpoints have different visual orders, so one DOM order can't
+          match both — DOM follows the mobile layout (this bar's main
+          audience; lg+ swaps in the rail), leaving sm-to-lg tab order
+          Back -> Prev -> Next. Three links, meaning preserved. */}
       <div className="mb-1 min-w-0 sm:order-2 sm:mb-0">{backSlot}</div>
       {/* One flex row for the siblings on narrow screens; sm:contents
           promotes the two cells into the grid so the same markup serves
