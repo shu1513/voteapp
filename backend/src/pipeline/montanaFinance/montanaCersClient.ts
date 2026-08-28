@@ -214,6 +214,11 @@ export function createMontanaCersSession(options: MontanaCersSessionOptions = {}
       }
     }
 
+    // Reject a declared oversize before buffering; the post-read check below
+    // still covers responses without a Content-Length. (Streaming with a
+    // running count is deliberately skipped — this is a single-flight client
+    // against one known host, and the limit is drift detection, not DoS
+    // defense; same decision as the Missouri MEC client.)
     const declaredLength = Number.parseInt(response.headers.get("content-length") ?? "", 10);
     if (Number.isSafeInteger(declaredLength) && declaredLength > maxResponseBytes) {
       throw new MontanaCersClientError(

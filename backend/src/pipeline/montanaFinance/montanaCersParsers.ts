@@ -167,7 +167,10 @@ export function montanaCersJsonAmountToCents(value: unknown, field: string): num
     throw new MontanaCersParseError(`Non-numeric Montana CERS amount in ${field}: ${JSON.stringify(value)}`);
   }
   const cents = Math.round(value * 100);
-  if (!Number.isSafeInteger(cents) || Math.abs(value * 100 - cents) > 0.01) {
+  // Tolerance covers double representation error only (~2e-7 even at $10M);
+  // a genuinely fractional-cent value (12.34009) is upstream precision
+  // drift and must fail closed, never silently truncate.
+  if (!Number.isSafeInteger(cents) || Math.abs(value * 100 - cents) > 1e-6) {
     throw new MontanaCersParseError(`Montana CERS amount is not a cent value in ${field}: ${value}`);
   }
   return cents;

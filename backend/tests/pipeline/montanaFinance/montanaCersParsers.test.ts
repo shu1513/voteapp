@@ -36,6 +36,10 @@ describe("montanaCersParsers money", () => {
     expect(() => montanaCersJsonAmountToCents("12.34", "cashAmt")).toThrow("Non-numeric");
     expect(() => montanaCersJsonAmountToCents(Number.NaN, "cashAmt")).toThrow("Non-numeric");
     expect(() => montanaCersJsonAmountToCents(12.345, "cashAmt")).toThrow("not a cent value");
+    // Sub-cent upstream precision drift must fail closed, not round away.
+    expect(() => montanaCersJsonAmountToCents(12.34009, "cashAmt")).toThrow("not a cent value");
+    // Real chain anchors survive the representation-only tolerance.
+    expect(montanaCersJsonAmountToCents(9_999_999.99, "primCashBeg")).toBe(999_999_999);
   });
 });
 
