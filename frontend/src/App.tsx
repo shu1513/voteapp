@@ -106,14 +106,14 @@ function AccountMenu({ firstName }: { firstName: string }) {
           onClick={() => setOpen(false)}
           className="absolute right-0 top-full z-10 mt-2 flex w-44 flex-col rounded-lg border border-line bg-white py-1 shadow-md"
         >
-          <Link to="/mission" className="px-4 py-2 text-ink-soft hover:bg-surface hover:text-ink">
-            Mission
-          </Link>
           <Link to="/me/ballot" className="px-4 py-2 text-ink-soft hover:bg-surface hover:text-ink">
             My Elections
           </Link>
           <Link to="/me/follows" className="px-4 py-2 text-ink-soft hover:bg-surface hover:text-ink">
             My Candidates
+          </Link>
+          <Link to="/mission" className="px-4 py-2 text-ink-soft hover:bg-surface hover:text-ink">
+            Mission
           </Link>
           <Link to="/me/settings" className="px-4 py-2 text-ink-soft hover:bg-surface hover:text-ink">
             Settings
