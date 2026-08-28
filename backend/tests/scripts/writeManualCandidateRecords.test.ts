@@ -382,6 +382,40 @@ describe("annotateDroppedRecordsWithStoredRows", () => {
     expect(annotated).toEqual(newRow);
   });
 
+  it("overrides focusedResearchPass with a no-research instruction for a live stored match", () => {
+    const [annotated] = annotateDroppedRecordsWithStoredRows(
+      [droppedStoredResubmission],
+      [{ recordIdentityKey: storedKey, id: "rec-1", retiredAt: null }]
+    );
+    const gap = droppedRecordToGap(annotated!, 0);
+
+    expect(gap.outcome).toBe("needs_repair");
+    expect(gap.focusedResearchPass).toContain("No research needed");
+    expect(gap.focusedResearchPass).toContain("candidate_records.id rec-1 (live)");
+    expect(gap.focusedResearchPass).toContain("realign the labels file record_index values");
+    expect(gap.focusedResearchPass).toContain("manual:records:retire");
+    expect(gap.focusedResearchPass).not.toContain("Replace bad URLs");
+  });
+
+  it("overrides focusedResearchPass with the stale-export instruction for a retired stored match", () => {
+    const [annotated] = annotateDroppedRecordsWithStoredRows(
+      [droppedStoredResubmission],
+      [{ recordIdentityKey: storedKey, id: "rec-1", retiredAt: "2026-08-26" }]
+    );
+    const gap = droppedRecordToGap(annotated!, 0);
+
+    expect(gap.focusedResearchPass).toContain("No research needed");
+    expect(gap.focusedResearchPass).toContain("already retired 2026-08-26");
+    expect(gap.focusedResearchPass).toContain("stale export");
+    expect(gap.focusedResearchPass).not.toContain("manual:records:retire");
+  });
+
+  it("keeps the per-kind research instruction when no stored match exists", () => {
+    const gap = droppedRecordToGap(droppedStoredResubmission, 0);
+
+    expect(gap.focusedResearchPass).toContain("source/schema repair pass");
+  });
+
   it("matches through identity normalization (trailing slash, case), like the upsert would", () => {
     const slashVariant: CandidateRecordDroppedRecord = {
       ...droppedStoredResubmission,

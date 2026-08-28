@@ -155,10 +155,19 @@ export type StoredDroppedRecordMatch = {
 // Matching is exact-identity only: the re-submission workflow copies stored
 // rows byte-for-byte, and a looser match would mislabel genuinely new rows
 // as re-submissions.
+// The match rides on the record as a structured field, not only inside the
+// reason text: droppedRecordToGap keys the machine-readable
+// focusedResearchPass instruction off it, and a free-text note alone left
+// that field still telling automation to research a replacement URL for a
+// row whose correct fix is deletion.
+export type AnnotatedDroppedRecord = CandidateRecordDroppedRecord & {
+  storedMatch?: StoredDroppedRecordMatch;
+};
+
 export function annotateDroppedRecordsWithStoredRows(
   droppedRecords: readonly CandidateRecordDroppedRecord[],
   storedRows: readonly StoredDroppedRecordMatch[]
-): CandidateRecordDroppedRecord[] {
+): AnnotatedDroppedRecord[] {
   const storedByIdentityKey = new Map(storedRows.map((row) => [row.recordIdentityKey, row]));
   return droppedRecords.map((dropped) => {
     const match = storedByIdentityKey.get(
@@ -174,7 +183,7 @@ export function annotateDroppedRecordsWithStoredRows(
     const guidance = match.retiredAt
       ? `NOTE: this exact row is already stored AND retired (candidate_records.id ${match.id}, retired ${match.retiredAt}) — the payload row came from a stale export; drop it from the records file`
       : `NOTE: this exact row is already stored (candidate_records.id ${match.id}, live) — this writer never re-validates or modifies stored rows, so drop it from the records file (the stored row stays as-is) and retire it via manual:records:retire if it should stop being shown`;
-    return { ...dropped, reason: `${dropped.reason}; ${guidance}` };
+    return { ...dropped, reason: `${dropped.reason}; ${guidance}`, storedMatch: match };
   });
 }
 
@@ -218,7 +227,7 @@ export function applyConfirmedGaps(
 }
 
 export function droppedRecordToGap(
-  dropped: CandidateRecordDroppedRecord,
+  dropped: AnnotatedDroppedRecord,
   index: number
 ): ManualResearchRepairGap {
   const sourceUrl = dropped.record.source_url || undefined;
@@ -234,6 +243,19 @@ export function droppedRecordToGap(
     failureType: dropped.failureType,
     reason: dropped.reason,
   };
+  // A byte-identical re-submission of a stored row overrides the per-kind
+  // research instructions: research would only rediscover a row that is
+  // already stored. The payload still needs editing, so needs_repair stands.
+  if (dropped.storedMatch) {
+    const { id, retiredAt } = dropped.storedMatch;
+    return {
+      ...base,
+      promptFile: "src/ai/providers/candidateRecordSourceRepairPrompt.ts",
+      focusedResearchPass: retiredAt
+        ? `No research needed: this payload row is a byte-identical re-submission of stored candidate_records.id ${id}, which was already retired ${retiredAt} (the payload came from a stale export). Remove the row from the records file and realign the labels file record_index values.`
+        : `No research needed: this payload row is a byte-identical re-submission of stored candidate_records.id ${id} (live). Remove the row from the records file and realign the labels file record_index values; the stored row stays as-is, so retire it via manual:records:retire if it should stop being shown.`,
+    };
+  }
   if (dropped.failureKind === "quality_gap") {
     return {
       ...base,
@@ -613,27 +635,37 @@ async function main(): Promise<void> {
         )
       ),
     ];
-    const droppedLookupPool = new Pool({ connectionString: earlyDatabaseUrl });
+    // Best-effort: this lookup only improves the message. If it fails, the
+    // original dropped-row explanation and the repair report must still land,
+    // so warn and continue with no matches instead of letting a secondary
+    // diagnostic replace the primary failure.
     let storedMatches: StoredDroppedRecordMatch[] = [];
     try {
-      const storedResult = await droppedLookupPool.query<{
-        id: string;
-        record_identity_key: string;
-        retired_at: string | null;
-      }>(
-        `SELECT id, record_identity_key, retired_at::date::text AS retired_at
-           FROM public.candidate_records
-          WHERE candidate_id = $1
-            AND record_identity_key = ANY($2)`,
-        [candidateId, droppedIdentityKeys]
+      const droppedLookupPool = new Pool({ connectionString: earlyDatabaseUrl });
+      try {
+        const storedResult = await droppedLookupPool.query<{
+          id: string;
+          record_identity_key: string;
+          retired_at: string | null;
+        }>(
+          `SELECT id, record_identity_key, retired_at::date::text AS retired_at
+             FROM public.candidate_records
+            WHERE candidate_id = $1
+              AND record_identity_key = ANY($2)`,
+          [candidateId, droppedIdentityKeys]
+        );
+        storedMatches = storedResult.rows.map((row) => ({
+          recordIdentityKey: row.record_identity_key,
+          id: row.id,
+          retiredAt: row.retired_at,
+        }));
+      } finally {
+        await droppedLookupPool.end();
+      }
+    } catch (error) {
+      console.warn(
+        `stored-row annotation lookup failed (continuing without it): ${error instanceof Error ? error.message : String(error)}`
       );
-      storedMatches = storedResult.rows.map((row) => ({
-        recordIdentityKey: row.record_identity_key,
-        id: row.id,
-        retiredAt: row.retired_at,
-      }));
-    } finally {
-      await droppedLookupPool.end();
     }
     const annotatedDropped = annotateDroppedRecordsWithStoredRows(
       validatedRecords.droppedRecords,
