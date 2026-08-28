@@ -19,10 +19,15 @@
 //      STATEMENT OF ACCOUNT BALANCE whose cash identity holds (the extractor
 //      enforces beginning + receipts − expenditures = ending).
 //   6. Amendment semantics (the plan's #1 question): the receipts/expenses
-//      CSV sums are compared against the summed CURRENT covers. Equal ->
-//      the transaction search returns current-version rows only (Nevada
-//      behavior); greater -> original+amended rows coexist (Missouri
-//      behavior). The gate passes only on a definitive verdict.
+//      CSV sums are compared against the CURRENT covers PER FILING PERIOD
+//      (not one grand total, where cross-period differences could cancel).
+//      Every period matching to the cent -> the transaction search returns
+//      current-version rows only (Nevada behavior); any period over ->
+//      original+amended rows coexist (Missouri behavior). The gate passes
+//      only on a definitive verdict. As direct evidence, the receipts grid
+//      JSON is paged for the stored search and the FileAmendedVersion
+//      distribution of the amended periods' rows is reported (advisory —
+//      the endpoint's shape is not a pinned contract).
 //   7. TP registration stance: ShowReview (clean URL) parses the pinned
 //      multi-affiliation table (CNDW) and the pinned empty table (DLGA).
 //   8. Registry sweep: type-01 committee search pages through the grid JSON;
@@ -30,9 +35,15 @@
 //      OfficeSought vocabulary is captured for delawareFinanceEligibleOffices.
 //   9. Occupation non-blank rate: statewide 2024 receipts measure the legacy
 //      Employer Name / Employer Occupation fill rate (hard-fact-1 baseline).
+//      The export must reconcile against the grid total within a small bound
+//      (the statewide-scale count quirk) before the rate counts as evidence.
 //  10. Cycle-window evidence: Meyer's receipts split by filing-period year
 //      must show both the 2022 (county-era) and 2024 (governor) money —
 //      the § 8002(11) windowing input.
+//  11. Office evidence for the resolver: registry rows carry no OfficeSought,
+//      so the per-committee office source is the filed-report grid's Office
+//      column and the receipts CSV's Office column — both must be populated
+//      on every gold-committee row.
 //
 // Artifacts: set DELAWARE_CFRS_PROBE_ARTIFACT_DIR to save every fetched body.
 // PII: receipt exports carry contributor street addresses — the artifact dir
@@ -107,7 +118,10 @@ function saveArtifact(name: string, body: string | Buffer): void {
   if (artifactDir === null) {
     return;
   }
-  const path = join(artifactDir, name);
+  // Artifact names can embed portal-derived strings (report file names) —
+  // neutralize path separators and friends so a hostile or drifted portal
+  // value can never escape artifactDir.
+  const path = join(artifactDir, name.replace(/[^A-Za-z0-9._-]/g, "_"));
   writeFileSync(path, body, { mode: 0o600 });
 }
 
@@ -409,24 +423,156 @@ async function main(): Promise<void> {
     detail: `periods=${canonical.length}, ambiguous=${ambiguousPeriods}, chain breaks=${chainBreaks}`,
   });
 
-  // --- Gate 6: amendment semantics — CSV sums vs summed canonical covers. ---
+  // --- Gate 6: amendment semantics — CSV vs canonical covers PER FILING
+  // PERIOD. A grand-total-only comparison could hide cross-period
+  // cancellation (stale rows in one period offset by adjustments in
+  // another), so every period must reconcile to the cent on its own. ---
+  // The three artifacts render the SAME filing period under different names
+  // (receipts CSV "2024 2024  General Election 11/05/2024 30 Day", filed-
+  // report grid "2024 30 Day 2024 General Election 11/05/2024", expenses CSV
+  // "2024 30 Day General"; annuals differ only in whitespace) — verified by
+  // the 1:1 amount pairing on the 2026-08-27 run. Normalize to
+  // (year, report kind, election kind) before matching.
+  const periodKeyOf = (name: string): string => {
+    const year = /\b(?:19|20)\d{2}\b/.exec(name)?.[0] ?? "?";
+    const day = /\b(30|8)\s*Day\b/i.exec(name);
+    const kind = /annual/i.test(name) ? "Annual" : day === null ? "?" : `${day[1]} Day`;
+    const election = /general/i.test(name)
+      ? " General"
+      : /primary/i.test(name)
+        ? " Primary"
+        : /special/i.test(name)
+          ? " Special"
+          : "";
+    return `${year} ${kind}${election}`;
+  };
+  const coverByPeriodName = new Map<string, CoverRecord>();
+  let duplicateCoverKeys = 0;
+  for (const record of canonical) {
+    const key = periodKeyOf(record.row.filingPeriodName);
+    if (coverByPeriodName.has(key)) {
+      duplicateCoverKeys += 1;
+    }
+    coverByPeriodName.set(key, record);
+  }
+  const sumByPeriod = (rows: readonly Record<string, string>[], amountColumn: string): Map<string, number> => {
+    const sums = new Map<string, number>();
+    for (const row of rows) {
+      const period = periodKeyOf(row["Filing Period"] ?? "");
+      sums.set(period, (sums.get(period) ?? 0) + parseDelawareAmountCents(row[amountColumn] ?? ""));
+    }
+    return sums;
+  };
+  const csvReceiptsByPeriod = sumByPeriod(firstRun.rows, "Contribution Amount");
+  const csvExpensesByPeriod = sumByPeriod(expensesParsed.rows, "Amount($)");
+  const periodNames = [
+    ...new Set([...coverByPeriodName.keys(), ...csvReceiptsByPeriod.keys(), ...csvExpensesByPeriod.keys()]),
+  ].sort();
+  let periodMismatches = duplicateCoverKeys;
+  for (const period of periodNames) {
+    const cover = coverByPeriodName.get(period);
+    const csvReceipts = csvReceiptsByPeriod.get(period) ?? 0;
+    const csvExpenses = csvExpensesByPeriod.get(period) ?? 0;
+    const receiptsOk = cover !== undefined && cover.cover.receiptsCents === csvReceipts;
+    const expensesOk = cover !== undefined && cover.cover.expendituresCents === csvExpenses;
+    if (!receiptsOk || !expensesOk) {
+      periodMismatches += 1;
+    }
+    console.log(
+      `  period [${period}] receipts ${usd(csvReceipts)} vs cover ${cover === undefined ? "NO COVER" : usd(cover.cover.receiptsCents)} (${receiptsOk ? "match" : "MISMATCH"}); ` +
+        `expenses ${usd(csvExpenses)} vs cover ${cover === undefined ? "NO COVER" : usd(cover.cover.expendituresCents)} (${expensesOk ? "match" : "MISMATCH"})`
+    );
+  }
   const receiptsMatch = firstSum === coverReceiptsCents;
   const expensesMatch = expensesSum === coverExpendituresCents;
   const verdict =
-    receiptsMatch && expensesMatch
-      ? "CURRENT-ONLY (search returns current-version rows; sums reconcile to canonical covers)"
-      : firstSum > coverReceiptsCents || expensesSum > coverExpendituresCents
-        ? "COEXISTING VERSIONS or coverage gap (CSV exceeds canonical covers — needs lineage dedup)"
+    receiptsMatch && expensesMatch && periodMismatches === 0
+      ? "CURRENT-ONLY (search returns current-version rows; every filing period reconciles to its canonical cover)"
+      : firstSum > coverReceiptsCents || expensesSum > coverExpendituresCents || periodMismatches > 0
+        ? "COEXISTING VERSIONS or coverage gap (CSV disagrees with canonical covers — needs lineage dedup)"
         : "CSV BELOW COVERS (missing itemization or unparsed covers — investigate)";
   console.log(
-    `amendment semantics: CSV receipts=${usd(firstSum)} vs covers=${usd(coverReceiptsCents)}; CSV expenses=${usd(expensesSum)} vs covers=${usd(coverExpendituresCents)}`
+    `amendment semantics: CSV receipts=${usd(firstSum)} vs covers=${usd(coverReceiptsCents)}; CSV expenses=${usd(expensesSum)} vs covers=${usd(coverExpendituresCents)}; period mismatches=${periodMismatches}/${periodNames.length}`
   );
   console.log(`verdict: ${verdict}`);
   gates.push({
-    name: "amendment semantics: cent reconciliation delivers a definitive verdict",
-    pass: coversFailed === 0 && receiptsMatch && expensesMatch,
-    detail: `receipts ${usd(firstSum)} vs ${usd(coverReceiptsCents)} (${receiptsMatch ? "MATCH" : "DIFF"}); expenses ${usd(expensesSum)} vs ${usd(coverExpendituresCents)} (${expensesMatch ? "MATCH" : "DIFF"})`,
+    name: "amendment semantics: per-period cent reconciliation delivers a definitive verdict",
+    pass: coversFailed === 0 && receiptsMatch && expensesMatch && periodMismatches === 0,
+    detail: `receipts ${usd(firstSum)} vs ${usd(coverReceiptsCents)} (${receiptsMatch ? "MATCH" : "DIFF"}); expenses ${usd(expensesSum)} vs ${usd(coverExpendituresCents)} (${expensesMatch ? "MATCH" : "DIFF"}); per-period mismatches=${periodMismatches}/${periodNames.length} (duplicate cover keys=${duplicateCoverKeys})`,
   });
+
+  // Advisory direct evidence: page the receipts grid JSON for the session's
+  // stored Meyer search and report the FileAmendedVersion distribution of
+  // rows inside the amended filing periods. The endpoint's row shape is not
+  // a pinned contract (the CSV is the source of truth), so failures here are
+  // reported, never fatal — the per-period reconciliation above is the gate.
+  try {
+    // Telerik ajax mode: the results page's selectUrl is a GET with Grid-*
+    // params (a bare form POST answers an empty data array — observed
+    // 2026-08-27).
+    const fetchJsonPage = async (page: number): Promise<Record<string, unknown>[]> => {
+      const response = await session.get(
+        buildDelawareCfrsUrl(DELAWARE_CFRS_PAGES.receiptsGridJson, {
+          ajax: "True",
+          "Grid-page": String(page),
+          "Grid-orderBy": "~",
+          "Grid-groupBy": "~",
+          "Grid-filter": "~",
+          "Grid-size": "500",
+          theme: "vista",
+        }),
+        { xhr: true }
+      );
+      const envelope = JSON.parse(response.text()) as { data?: unknown };
+      if (!Array.isArray(envelope.data)) {
+        throw new Error("grid JSON response has no data array");
+      }
+      return envelope.data as Record<string, unknown>[];
+    };
+    const jsonRows: Record<string, unknown>[] = [];
+    for (let page = 1; page <= 40; page += 1) {
+      const pageRows = await fetchJsonPage(page);
+      jsonRows.push(...pageRows);
+      if (pageRows.length < 500) {
+        break;
+      }
+    }
+    if (jsonRows.length !== firstRun.rows.length) {
+      console.log(`  [advisory] receipts grid JSON rows=${jsonRows.length} vs CSV rows=${firstRun.rows.length} (MISMATCH)`);
+    }
+    const sample = jsonRows[0] ?? {};
+    const periodKey = ["FilingPeriodName", "FilingPeriod", "Filing_Period"].find((key) => key in sample);
+    const versionKey = ["FileAmendedVersion", "FileAmendedversion"].find((key) => key in sample);
+    if (periodKey === undefined || versionKey === undefined) {
+      console.log(`  [advisory] grid JSON rows lack period/version keys; keys seen: ${Object.keys(sample).join(", ")}`);
+    } else {
+      const amendedNames = new Set(amendedPeriods.map(([name]) => periodKeyOf(name)));
+      const distributions = new Map<string, Map<string, number>>();
+      for (const row of jsonRows) {
+        const period = periodKeyOf(String(row[periodKey] ?? ""));
+        if (!amendedNames.has(period)) {
+          continue;
+        }
+        const distribution = distributions.get(period) ?? new Map<string, number>();
+        const version = String(row[versionKey] ?? "");
+        distribution.set(version, (distribution.get(version) ?? 0) + 1);
+        distributions.set(period, distribution);
+      }
+      if (distributions.size === 0) {
+        console.log("  [advisory] no receipts grid JSON rows landed in an amended filing period");
+      }
+      for (const [period, distribution] of distributions) {
+        console.log(
+          `  [advisory] amended period [${period}] FileAmendedVersion distribution: ` +
+            [...distribution.entries()].map(([version, count]) => `"${version}"×${count}`).join(", ")
+        );
+      }
+    }
+  } catch (error) {
+    console.log(
+      `  [advisory] receipts grid JSON inspection unavailable: ${error instanceof Error ? error.message : String(error)}`
+    );
+  }
 
   // --- Gate 7: TP registration stance (clean URLs, no portal-link spaces).
   // ShowReview requires committee-search session context: without a prior
@@ -549,10 +695,30 @@ async function main(): Promise<void> {
   console.log(
     `occupation baseline ${OCCUPATION_SAMPLE_YEAR}: rows=${statewide.rows.length} (grid total=${statewide.total}, delta=${statewideDelta}), individuals=${statewideIndividuals.length}, with occupation=${withOccupation}, with employer=${withEmployer}`
   );
+  // Completeness controls: exact count reconciliation fails at statewide
+  // scale (the known count quirk — and the year-only search page sometimes
+  // renders total:0 while the export still streams the full year, observed
+  // 2026-08-27). Two controls, either satisfies the gate:
+  //   a) the grid total exists (>0) and the export's delta stays within
+  //      0.5% — a truncated export blows through that bound; or
+  //   b) the grid total is unusable, and the export covers every month of
+  //      the sample year — a truncation would chop the tail months off.
+  const statewideDeltaBounded =
+    statewide.total !== null &&
+    statewide.total > 0 &&
+    statewideDelta !== null &&
+    Math.abs(statewideDelta) <= Math.ceil(statewide.total * 0.005);
+  const monthsCovered = new Set(
+    statewide.rows
+      .map((row) => /^(\d{1,2})\//.exec(row["Contribution Date"])?.[1] ?? "")
+      .filter((month) => month !== "")
+      .map((month) => Number.parseInt(month, 10))
+  );
+  const fullYearCovered = monthsCovered.size === 12;
   gates.push({
-    name: "occupation baseline: statewide export parses; non-blank rate measured",
-    pass: statewide.rows.length > 10_000 && statewide.malformed === 0,
-    detail: `individuals=${statewideIndividuals.length}, occupation=${withOccupation} (${((withOccupation / Math.max(1, statewideIndividuals.length)) * 100).toFixed(2)}%), employer=${withEmployer}; grid-total delta=${statewideDelta} (statewide-scale count quirk — per-committee exports match exactly)`,
+    name: "occupation baseline: statewide export passes a completeness control; non-blank rate measured",
+    pass: statewide.rows.length > 10_000 && statewide.malformed === 0 && (statewideDeltaBounded || fullYearCovered),
+    detail: `individuals=${statewideIndividuals.length}, occupation=${withOccupation} (${((withOccupation / Math.max(1, statewideIndividuals.length)) * 100).toFixed(2)}%), employer=${withEmployer}; grid-total delta=${statewideDelta} (bound ±0.5%${statewideDeltaBounded ? ", satisfied" : ", unusable/exceeded"}), months covered=${monthsCovered.size}/12`,
   });
 
   // --- Gate 10: cycle-window evidence from Meyer's filing-period years. ---
@@ -568,9 +734,26 @@ async function main(): Promise<void> {
     console.log(`  filing-period year ${year}: ${entry.rows} rows, ${usd(entry.cents)}`);
   }
   gates.push({
-    name: "cycle-window evidence: the gold committee holds money from more than one filing-period year",
-    pass: byYear.size > 1,
+    name: "cycle-window evidence: the gold committee holds both 2022 (county-era) and 2024 (governor) money",
+    pass: byYear.has("2022") && byYear.has("2024"),
     detail: `years: ${[...byYear.keys()].sort().join(", ")}`,
+  });
+
+  // --- Gate 11: office evidence for the resolver. The registry sweep's
+  // OfficeSought/DistrictName are empty, so the per-committee office source
+  // is the filed-report grid's Office column + the receipts CSV's Office
+  // column — every gold-committee row must carry one. ---
+  const reportOffices = [...new Set(allReports.map((row) => row.office))].sort();
+  const csvOffices = [...new Set(firstRun.rows.map((row) => row.Office))].sort();
+  const reportOfficeBlanks = allReports.filter((row) => row.office.trim() === "").length;
+  const csvOfficeBlanks = firstRun.rows.filter((row) => row.Office.trim() === "").length;
+  console.log(
+    `office evidence: filed-report Office values [${reportOffices.join(" | ")}] (blank=${reportOfficeBlanks}); receipts CSV Office values [${csvOffices.join(" | ")}] (blank=${csvOfficeBlanks})`
+  );
+  gates.push({
+    name: "office evidence: filed-report + receipts-CSV Office populated on every gold-committee row (registry OfficeSought is empty)",
+    pass: allReports.length > 0 && reportOfficeBlanks === 0 && csvOfficeBlanks === 0,
+    detail: `filed-report offices=[${reportOffices.join(" | ")}], CSV offices=[${csvOffices.join(" | ")}], blanks=${reportOfficeBlanks}/${csvOfficeBlanks}`,
   });
 
   // --- Summary. ---

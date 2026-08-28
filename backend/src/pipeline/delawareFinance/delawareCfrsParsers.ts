@@ -177,9 +177,16 @@ export function parseDelawareAmountCents(value: string): number {
   return sign === "-" ? -cents : cents;
 }
 
-/** "$243,160.00" / "($12.34)" on report-PDF pages -> signed integer cents; null when not currency. */
+/**
+ * "$243,160.00" / "($12.34)" on report-PDF pages -> signed integer cents;
+ * null when not currency. Strict on shape — parentheses must balance and
+ * comma groups must be real thousands groups — so a layout drift that mashes
+ * tokens together ("$12.34)", "$1,,2.00") is never counted as an amount.
+ */
 export function parseDelawareCurrencyCents(value: string): number | null {
-  const match = /^\(?-?\$[\d,]+\.\d{2}\)?$/.exec(value.trim());
+  const match = /^(?:-?\$(?:\d{1,3}(?:,\d{3})*|\d+)\.\d{2}|\(-?\$(?:\d{1,3}(?:,\d{3})*|\d+)\.\d{2}\))$/.exec(
+    value.trim()
+  );
   if (match === null) {
     return null;
   }

@@ -32,6 +32,13 @@ export const DELAWARE_CFRS_PAGES = {
   receiptsSearch: "/Public/ViewReceipts",
   /** Receipts CSV export of the session's stored receipts search. */
   receiptsExportCsv: "/Public/ExportCSVNew",
+  /**
+   * Receipts grid JSON of the stored search (form-encoded POST: page/size/
+   * orderBy/groupBy/filter). Its `total` is unstable and its row shape is
+   * NOT a pinned contract — probe-advisory evidence only (rows carry
+   * Transaction_id + FileAmendedVersion, which the CSV lacks).
+   */
+  receiptsGridJson: "/Public/_ViewReceiptsCustom",
   /** Expenses search form (GET only — the search POSTs elsewhere, see below). */
   expensesSearch: "/Public/ViewExpenses",
   /** Expenses search POST target. POSTing to ViewExpenses itself 302s to HandleUnknown. */

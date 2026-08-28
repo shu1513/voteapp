@@ -16,7 +16,10 @@ stance: committee-level structured, transaction-level MISSING** — see below.
   Classic ASP.NET MVC + Telerik grids. No auth, no CAPTCHA, curl-friendly.
 - Flow is session-based: POST the search form (cookie jar required), then GET
   the CSV export, which streams the **full result set** of the stored search.
-- Data back to ~2003. 2024 receipts statewide: 36,718 rows.
+- Data back to ~2003. 2024 receipts statewide: 36,718 rows per the search
+  grid's `total:`; the full-year CSV export returned 36,605 rows (delta 113 —
+  a statewide-scale count quirk; per-committee exports match their totals
+  exactly, and per-committee is the adapter's access pattern).
 
 ## Endpoints (all verified 2026-08-26)
 
@@ -52,9 +55,13 @@ stance: committee-level structured, transaction-level MISSING** — see below.
   page size and repeats). Use the CSV export as source of truth — its row count
   matched the search page's `total:` exactly (7,425 for Meyer).
 - Grid JSON rows DO expose a stable internal `Transaction_id` (receipts) /
-  `Transaction_Id` (expenses); the CSV export does not. If row identity
-  matters, join CSV rows to grid JSON or fingerprint
-  (date+name+address+amount+type) with collisions resolved by report version.
+  `Transaction_Id` (expenses); the CSV export does not. Row identity is never
+  invented from field values: provenance = artifact SHA-256 + row ordinal
+  (plan hard fact 4). A non-address fingerprint (date+name+amount+type) is a
+  diagnostics/version-comparison aid only — addresses never participate
+  (§ 8032 removal requests make them unstable across harvests) and two
+  legitimate identical contributions can share every field. If true row
+  identity ever matters, join to the grid JSON's `Transaction_id`.
 
 ## Totals raised / spent — YES (cent-exact, PROVEN against covers 2026-08-26)
 
@@ -70,7 +77,10 @@ the single most recent report (not per-period). CSV exports are NOT RFC CSV
 
 Delaware filings itemize everything, including aggregate rows
 (`Contributor Type = "Total of Contributions not exceeding $100"`), so summing
-the receipts CSV = complete total raised; same on the expense side.
+the receipts CSV = complete **total receipts**; same on the expense side.
+(The published `total_raised` is narrower: it comes from
+`direct_contribution_total`, which excludes Candidate Loan and Other Income
+rows — those stay inside `total_receipts`. See plan hard fact 2.)
 Verified on Meyer for Delaware (Gov 2024, CF_ID 01005311):
 
 - Receipts: 7,425 rows, **$3,961,664.59** (6,939 Individual; also Corporation,
@@ -142,10 +152,14 @@ Verified on Meyer for Delaware (Gov 2024, CF_ID 01005311):
 
 ## Adapter sketch (if built)
 
-1. Committee registry sweep (type 01, active) → auto-link by OfficeSought/
-   DistrictName + candidate name.
+1. Committee registry sweep (type 01, active) → auto-link by candidate name +
+   per-committee office evidence from the filed-report grid / receipts CSV
+   Office columns (bulk registry rows leave OfficeSought/DistrictName EMPTY —
+   Phase 0 finding).
 2. Per committee: POST receipts search by MemberId (no date filter) → CSV →
    sum + subtype buckets by Contributor Type; same for expenses.
 3. Amount filters (`txtAmountRangeFrom/To`) returned total:0 even for valid
    ranges — avoid them; filter client-side.
-4. Skip occupation aggregates and structured IE stance (see above).
+4. Publish occupation breakdowns from disclosed (non-blank) values only, with
+   the coverage note (see the occupation section); skip structured IE stance
+   (see above).

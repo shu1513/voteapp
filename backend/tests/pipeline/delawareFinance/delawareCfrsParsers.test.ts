@@ -98,8 +98,15 @@ describe("delawareCfrsParsers", () => {
     expect(parseDelawareCurrencyCents("$243,160.00")).toBe(24_316_000);
     expect(parseDelawareCurrencyCents("$0.00")).toBe(0);
     expect(parseDelawareCurrencyCents("($12.34)")).toBe(-1_234);
+    expect(parseDelawareCurrencyCents("-$12.34")).toBe(-1_234);
+    expect(parseDelawareCurrencyCents("$1234.56")).toBe(123_456);
     expect(parseDelawareCurrencyCents("N/A")).toBeNull();
     expect(parseDelawareCurrencyCents("04006103")).toBeNull();
+    // Malformed shapes a layout drift could produce must not count as amounts.
+    expect(parseDelawareCurrencyCents("$12.34)")).toBeNull();
+    expect(parseDelawareCurrencyCents("($12.34")).toBeNull();
+    expect(parseDelawareCurrencyCents("$1,,2.00")).toBeNull();
+    expect(parseDelawareCurrencyCents("$12,34.00")).toBeNull();
   });
 
   it("extracts the stored-search total from the results page grid config", () => {
