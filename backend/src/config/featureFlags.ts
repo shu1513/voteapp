@@ -270,6 +270,17 @@ export function isDelawareCampaignFinanceRawDataRefreshEnabled(force = false): b
   );
 }
 
+export function isSouthCarolinaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("SOUTH_CAROLINA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isSouthCarolinaCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isSouthCarolinaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("SOUTH_CAROLINA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
 export function isNewHampshireCfsRawDataRefreshEnabled(force = false): boolean {
   return (
     isNewHampshireCampaignFinanceEnabled() &&

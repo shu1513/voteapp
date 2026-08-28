@@ -86,6 +86,14 @@ describe("finance source provenance and coverage notes", () => {
     expect(firstFinanceSourceUrl(summary)).toBe("https://cfs.sos.nh.gov/");
   });
 
+  it("falls back to the Nevada AURORA portal when no breakdown URL exists", () => {
+    const summary = emptySummary();
+    summary.source = "NEVADA_AURORA";
+    expect(firstFinanceSourceUrl(summary)).toBe(
+      "https://www.nvsos.gov/SOSCandidateServices/AnonymousAccess/CEFDSearchUU/Search.aspx"
+    );
+  });
+
   it("shows Missouri's totals note for disclosed zeroes without changing breakdown-only notes", () => {
     const missouri = emptySummary();
     missouri.source = "MISSOURI_MEC";

@@ -79,6 +79,41 @@ describe("delawareCfrsArtifactCache", () => {
     ).rejects.toThrow();
   });
 
+  it("replaces an existing bundle cleanly, leaving no staging or previous directories", async () => {
+    await storeDelawareCfrsCommitteeArtifacts(storeInput());
+    await storeDelawareCfrsCommitteeArtifacts({
+      ...storeInput(),
+      reportPdfs: [{ publicReportFileName: "report1.pdf", filingCalendarId: 900, body: Buffer.from("%PDF-v2") }],
+    });
+    const bundle = await readDelawareCfrsCommitteeArtifacts({ cacheDir, cfId: CF_ID });
+    expect(bundle.reportPdfs[0]?.body.toString()).toBe("%PDF-v2");
+    const { readdir } = await import("node:fs/promises");
+    expect(await readdir(cacheDir)).toEqual([CF_ID]);
+  });
+
+  it("leaves the previous bundle byte-identical when a re-store fails mid-write", async () => {
+    await storeDelawareCfrsCommitteeArtifacts(storeInput());
+    const before = await readFile(join(cacheDir, CF_ID, "receipts.csv"), "utf8");
+
+    // Duplicate PDF file names throw AFTER the first PDF is staged — the
+    // staging directory must be discarded and the live bundle untouched.
+    const duplicate = { publicReportFileName: "report1.pdf", filingCalendarId: 900, body: Buffer.from("%PDF-v2") };
+    await expect(
+      storeDelawareCfrsCommitteeArtifacts({
+        ...storeInput(),
+        receiptsCsv: `${RECEIPTS_CSV}\r\n${RECEIPTS_CSV.split("\r\n")[1]}`,
+        receiptsSearchTotal: 2,
+        reportPdfs: [duplicate, duplicate],
+      })
+    ).rejects.toThrow(/duplicate report PDF/);
+
+    const bundle = await readDelawareCfrsCommitteeArtifacts({ cacheDir, cfId: CF_ID });
+    expect(bundle.receiptRows).toHaveLength(1);
+    expect(await readFile(join(cacheDir, CF_ID, "receipts.csv"), "utf8")).toBe(before);
+    const { readdir } = await import("node:fs/promises");
+    expect((await readdir(cacheDir)).filter((name) => name.includes("staging"))).toEqual([]);
+  });
+
   it("fails on missing bundles and parser-version drift", async () => {
     await expect(readDelawareCfrsCommitteeArtifacts({ cacheDir, cfId: CF_ID })).rejects.toThrow(
       /No Delaware CFRS artifact bundle cached/

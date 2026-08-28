@@ -140,6 +140,7 @@ Flags — split repo contract from operator rollout (this worktree has no `backe
 ## Phase 6: ballot-loader integration, labels, tests
 
 - Add `SOUTH_CAROLINA_CAMPAIGN_FINANCE` to the source TS union **and** `FINANCE_SUMMARY_SOURCES` in `backend/src/pipeline/address/ballotLookupFinanceShared.ts`; register through the standard-table loader with the flag, eligibility predicate, `sc_*` table names, and fallback source URL `https://ethicsfiling.sc.gov/public`.
+- Declare `SOUTH_CAROLINA_DIRECT_COVERAGE_NOTE` (exported by the aggregator) as the loader's static `directCoverageNote` — the standard family persists no per-candidate note, so the source-wide static note is the display path (Missouri/New Hampshire pattern); the aggregator's conditional per-candidate note is a Phase 5 sync diagnostic only.
 - API-client label: `SOUTH_CAROLINA_CAMPAIGN_FINANCE`: `South Carolina State Ethics Commission` in `packages/api-client/src/format.ts` (alphabetical) plus the `financeSourceLabel` test in `format.test.ts`.
 - Existing web/mobile finance cards need no SC-specific component; verify null outside totals render as absent, not $0.
 

@@ -263,6 +263,7 @@ const FINANCE_SOURCE_LABELS: Record<string, string> = {
   DELAWARE_CFRS: "Delaware Campaign Finance Reporting System",
   INDIANA_CAMPAIGN_FINANCE: "Indiana Campaign Finance",
   NEBRASKA_NADC: "Nebraska NADC",
+  NEVADA_AURORA: "Nevada Secretary of State",
   NEW_HAMPSHIRE_CFS: "New Hampshire Campaign Finance System",
   NEW_JERSEY_ELEC: "New Jersey ELEC",
   NEW_MEXICO_CFIS: "New Mexico CFIS",

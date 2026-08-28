@@ -15,13 +15,13 @@ function usage(): string {
     "Usage:",
     "  npm run delaware-candidates:finance:sync-due -- [--max N] [--stale-days N] [--cache-dir DIR] [--no-auto-link] [--write] [--force]",
     "",
-    "Syncs due Delaware candidates from the CFRS artifact cache (cache-only;",
-    "artifact acquisition is a separate Phase 2 step). Dry-run is the",
-    "default. --write replaces snapshots in a local database and requires",
+    "Syncs due Delaware candidates from the CFRS artifact cache. Dry-run is",
+    "the default. --write replaces snapshots in a local database and requires",
     "DELAWARE_CAMPAIGN_FINANCE_ENABLED + DELAWARE_CAMPAIGN_FINANCE_SYNC_ENABLED",
-    "(--force stands in for the sync flag, per-run). The auto-link pass hits",
-    "the live portal, so it additionally needs the raw-data-refresh flag or",
-    "--force.",
+    "(--force stands in for the sync flag, per-run). The auto-link and",
+    "artifact-acquisition passes hit the live portal, so they additionally",
+    "need the raw-data-refresh flag or --force; without it the sync runs",
+    "cache-only.",
   ].join("\n");
 }
 

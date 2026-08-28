@@ -9,14 +9,17 @@
 //   <cacheDir>/<CF_ID>/expenses.csv          full expenses export
 //   <cacheDir>/<CF_ID>/filed_reports.html    rendered filed-reports grid
 //   <cacheDir>/<CF_ID>/reports/<sha16>.pdf   one per report document
-//   <cacheDir>/<CF_ID>/manifest.json         written LAST — the commit marker
+//   <cacheDir>/<CF_ID>/manifest.json         the commit marker
 //
+// A store builds the ENTIRE bundle (manifest included) in a staging
+// directory beside the final one and swaps it in only when complete — a
+// failure mid-store leaves the previous bundle byte-identical, never a
+// mixed-vintage directory whose old manifest points at overwritten files.
 // The manifest records SHA-256 + byte size for every file, the parser
 // version, the portal's stored-search totals (the sync's count==total gate
 // re-checks them), the acquisition MemberID, and one retrievedAt for the
-// whole bundle — a bundle is atomic by construction, so there is no
-// mixed-vintage state to detect. Reads recompute every hash and re-run the
-// parsers; any disagreement throws.
+// whole bundle. Reads recompute every hash and re-run the parsers; any
+// disagreement throws.
 //
 // PII: receipts artifacts carry contributor street addresses — directories
 // are 0700, files 0600, and the cache directory must never enter git.
@@ -121,45 +124,80 @@ export async function storeDelawareCfrsCommitteeArtifacts(input: {
 
   const cacheDir = input.cacheDir ?? DEFAULT_DELAWARE_CFRS_CACHE_DIR;
   const committeeDir = join(cacheDir, cfId);
-  const entry = async (relativePath: string, body: Buffer): Promise<ManifestFileEntry> => {
-    await writeRestricted(join(committeeDir, relativePath), body);
-    return { path: relativePath, sha256: sha256(body), byteSize: body.byteLength };
-  };
+  // Stage beside the final directory (same filesystem, so the rename below
+  // is a plain directory move) and swap only once the bundle is complete —
+  // a failure anywhere in here must leave the previous bundle untouched.
+  const stagingDir = join(cacheDir, `${cfId}.staging-${process.pid}`);
+  try {
+    const entry = async (relativePath: string, body: Buffer): Promise<ManifestFileEntry> => {
+      await writeRestricted(join(stagingDir, relativePath), body);
+      return { path: relativePath, sha256: sha256(body), byteSize: body.byteLength };
+    };
 
-  const seenPdfPaths = new Set<string>();
-  const reportPdfs: DelawareCfrsCommitteeArtifactManifest["files"]["reportPdfs"] = [];
-  for (const pdf of input.reportPdfs) {
-    const relativePath = pdfRelativePath(pdf.publicReportFileName);
-    if (seenPdfPaths.has(relativePath)) {
-      throw new Error(`duplicate report PDF in bundle: ${pdf.publicReportFileName}`);
+    const seenPdfPaths = new Set<string>();
+    const reportPdfs: DelawareCfrsCommitteeArtifactManifest["files"]["reportPdfs"] = [];
+    for (const pdf of input.reportPdfs) {
+      const relativePath = pdfRelativePath(pdf.publicReportFileName);
+      if (seenPdfPaths.has(relativePath)) {
+        throw new Error(`duplicate report PDF in bundle: ${pdf.publicReportFileName}`);
+      }
+      seenPdfPaths.add(relativePath);
+      reportPdfs.push({
+        ...(await entry(relativePath, pdf.body)),
+        publicReportFileName: pdf.publicReportFileName,
+        filingCalendarId: pdf.filingCalendarId,
+      });
     }
-    seenPdfPaths.add(relativePath);
-    reportPdfs.push({
-      ...(await entry(relativePath, pdf.body)),
-      publicReportFileName: pdf.publicReportFileName,
-      filingCalendarId: pdf.filingCalendarId,
-    });
-  }
 
-  const manifest: DelawareCfrsCommitteeArtifactManifest = {
-    version: DELAWARE_CFRS_ARTIFACT_SCHEMA_VERSION,
-    parserVersion: DELAWARE_CFRS_PARSER_VERSION,
-    cfId,
-    memberId: input.memberId,
-    sourceUrl: input.sourceUrl,
-    retrievedAt: (input.retrievedAt ?? new Date()).toISOString(),
-    receiptsSearchTotal: input.receiptsSearchTotal,
-    expensesSearchTotal: input.expensesSearchTotal,
-    files: {
-      receiptsCsv: await entry("receipts.csv", Buffer.from(input.receiptsCsv, "utf8")),
-      expensesCsv: await entry("expenses.csv", Buffer.from(input.expensesCsv, "utf8")),
-      filedReportsHtml: await entry("filed_reports.html", Buffer.from(input.filedReportsHtml, "utf8")),
-      reportPdfs,
-    },
-  };
-  // Manifest last: its presence marks a complete bundle.
-  await writeRestricted(join(committeeDir, "manifest.json"), JSON.stringify(manifest, null, 1));
-  return manifest;
+    const manifest: DelawareCfrsCommitteeArtifactManifest = {
+      version: DELAWARE_CFRS_ARTIFACT_SCHEMA_VERSION,
+      parserVersion: DELAWARE_CFRS_PARSER_VERSION,
+      cfId,
+      memberId: input.memberId,
+      sourceUrl: input.sourceUrl,
+      retrievedAt: (input.retrievedAt ?? new Date()).toISOString(),
+      receiptsSearchTotal: input.receiptsSearchTotal,
+      expensesSearchTotal: input.expensesSearchTotal,
+      files: {
+        receiptsCsv: await entry("receipts.csv", Buffer.from(input.receiptsCsv, "utf8")),
+        expensesCsv: await entry("expenses.csv", Buffer.from(input.expensesCsv, "utf8")),
+        filedReportsHtml: await entry("filed_reports.html", Buffer.from(input.filedReportsHtml, "utf8")),
+        reportPdfs,
+      },
+    };
+    await writeRestricted(join(stagingDir, "manifest.json"), JSON.stringify(manifest, null, 1));
+
+    // Swap via move-aside: the previous bundle is never deleted until the
+    // new one is installed. A failed install renames it back; a crash
+    // mid-swap leaves it on disk under the .previous name (a read then says
+    // "no bundle cached" — fail-closed, and the data remains recoverable).
+    const previousDir = join(cacheDir, `${cfId}.previous-${process.pid}`);
+    await rm(previousDir, { recursive: true, force: true });
+    let hadPrevious = true;
+    try {
+      await rename(committeeDir, previousDir);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+        throw error;
+      }
+      hadPrevious = false;
+    }
+    try {
+      await rename(stagingDir, committeeDir);
+    } catch (error) {
+      if (hadPrevious) {
+        await rename(previousDir, committeeDir).catch(() => {});
+      }
+      throw error;
+    }
+    if (hadPrevious) {
+      await rm(previousDir, { recursive: true, force: true });
+    }
+    return manifest;
+  } catch (error) {
+    await rm(stagingDir, { recursive: true, force: true });
+    throw error;
+  }
 }
 
 export type DelawareCfrsCommitteeArtifacts = {
