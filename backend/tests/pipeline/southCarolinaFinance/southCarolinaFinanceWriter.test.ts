@@ -1,0 +1,243 @@
+import { describe, expect, it, vi } from "vitest";
+
+import {
+  replaceSouthCarolinaCandidateFinanceSnapshot,
+  upsertSouthCarolinaFinanceLink,
+} from "../../../src/pipeline/southCarolinaFinance/southCarolinaFinanceWriter.js";
+
+const CANDIDATE_ID = "11111111-1111-4111-8111-111111111111";
+const ELECTION_ID = "22222222-2222-4222-8222-222222222222";
+const LINK_ID = "33333333-3333-4333-8333-333333333333";
+const SOURCE_URL = "https://ethicsfiling.sc.gov/public";
+const VERIFIED_AT = new Date("2026-08-27T00:00:00.000Z");
+
+function baseLink() {
+  return {
+    candidateId: CANDIDATE_ID,
+    electionId: ELECTION_ID,
+    electionYear: 2026,
+    candidateNameNormalized: "PAMELA EVETTE",
+    officeName: "Governor",
+    district: null,
+    candidateFilerId: 54395,
+    filerName: "Evette, Pamela S",
+    linkSource: "ethics_filer_search" as const,
+    sourceUrl: SOURCE_URL,
+    lastVerifiedAt: VERIFIED_AT,
+  };
+}
+
+function successfulQuery(sql: unknown) {
+  if (String(sql).includes("INSERT INTO public.sc_candidate_finance_links")) {
+    return Promise.resolve({ rows: [{ id: LINK_ID }], rowCount: 1 });
+  }
+  return Promise.resolve({ rows: [], rowCount: 0 });
+}
+
+describe("southCarolinaFinanceWriter", () => {
+  it("writes candidate-filer link identity and protects manual links", async () => {
+    const db = { query: vi.fn(successfulQuery) };
+
+    await expect(upsertSouthCarolinaFinanceLink({ db, link: baseLink() })).resolves.toEqual({
+      linkId: LINK_ID,
+    });
+
+    expect(db.query).toHaveBeenCalledTimes(2);
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("link_source='manual'");
+    const insert = db.query.mock.calls[1];
+    expect(String(insert?.[0])).toContain("candidate_filer_id");
+    expect(String(insert?.[0])).toContain("candidate_filer_name");
+    expect(insert?.[1]).toEqual([
+      CANDIDATE_ID,
+      ELECTION_ID,
+      2026,
+      "PAMELA EVETTE",
+      "Governor",
+      null,
+      "54395",
+      "Evette, Pamela S",
+      "active",
+      "ethics_filer_search",
+      SOURCE_URL,
+      VERIFIED_AT.toISOString(),
+    ]);
+  });
+
+  it("replaces a filed snapshot transactionally with the outside-null contract", async () => {
+    const client = { query: vi.fn(successfulQuery), release: vi.fn() };
+    const db = { query: vi.fn(), connect: vi.fn().mockResolvedValue(client) };
+
+    await expect(
+      replaceSouthCarolinaCandidateFinanceSnapshot({
+        db,
+        link: baseLink(),
+        syncedAt: new Date("2026-08-27T00:00:00.000Z"),
+        summary: {
+          totalReceipts: 6_195_452.22,
+          directContributionTotal: 4_943_600.56,
+          totalDisbursements: 2_944_738.53,
+          cashOnHand: 552_415.77,
+          sourceUrl: SOURCE_URL,
+        },
+        directBreakdowns: [
+          { categoryType: "occupation", categoryName: "Attorney", amount: 6_000 },
+          { categoryType: "contribution_size", categoryName: "$100-$249", amount: 4_000 },
+        ],
+      })
+    ).resolves.toEqual({
+      linkId: LINK_ID,
+      summaryWritten: true,
+      directBreakdownsWritten: 2,
+      outsideGroupsWritten: 0,
+      outsideGroupBreakdownsWritten: 0,
+    });
+
+    expect(client.query.mock.calls[0]?.[0]).toBe("BEGIN");
+    expect(client.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
+    expect(client.release).toHaveBeenCalledOnce();
+
+    const calls = client.query.mock.calls;
+    const summary = calls.find((call) => String(call[0]).includes("sc_candidate_finance_summaries"));
+    const summarySql = String(summary?.[0]);
+    // Direct totals preserve stored values on NULL; outside totals replace
+    // unconditionally so a stray historical value can never survive a sync.
+    expect(summarySql).toContain(
+      "total_receipts = COALESCE(EXCLUDED.total_receipts, sc_candidate_finance_summaries.total_receipts)"
+    );
+    expect(summarySql).toContain("outside_support_total = EXCLUDED.outside_support_total");
+    expect(summarySql).toContain("outside_oppose_total = EXCLUDED.outside_oppose_total");
+    // Outside totals forced to NULL at the write chokepoint.
+    expect(summary?.[1]?.slice(2, 9)).toEqual([
+      6_195_452.22,
+      4_943_600.56,
+      2_944_738.53,
+      552_415.77,
+      null,
+      null,
+      SOURCE_URL,
+    ]);
+
+    const directInserts = calls.filter((call) =>
+      String(call[0]).includes("INSERT INTO public.sc_candidate_finance_direct_breakdowns")
+    );
+    expect(directInserts.map((call) => call[1]?.[2])).toEqual(["occupation", "contribution_size"]);
+
+    // The hardcoded empty outside arrays clear any stray rows every snapshot.
+    expect(
+      calls.some((call) => String(call[0]).includes("INSERT INTO public.sc_candidate_finance_outside_groups"))
+    ).toBe(false);
+    expect(
+      calls.some((call) => String(call[0]).includes("DELETE FROM public.sc_candidate_finance_outside_groups"))
+    ).toBe(true);
+    expect(
+      calls.some((call) =>
+        String(call[0]).includes("DELETE FROM public.sc_candidate_finance_outside_group_breakdowns")
+      )
+    ).toBe(true);
+
+    const supersede = calls.find(
+      (call) =>
+        String(call[0]).includes("UPDATE public.sc_candidate_finance_links") &&
+        String(call[0]).includes("id <>")
+    );
+    expect(String(supersede?.[0])).toContain("link_source = 'ethics_filer_search'");
+  });
+
+  it("accepts a negative cash-on-hand balance (signed ending balance)", async () => {
+    const client = { query: vi.fn(successfulQuery), release: vi.fn() };
+    const db = { query: vi.fn(), connect: vi.fn().mockResolvedValue(client) };
+
+    await replaceSouthCarolinaCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      summary: {
+        totalReceipts: 1_000,
+        directContributionTotal: 1_000,
+        totalDisbursements: 1_500,
+        cashOnHand: -500,
+        sourceUrl: SOURCE_URL,
+      },
+    });
+
+    const summary = client.query.mock.calls.find((call) =>
+      String(call[0]).includes("sc_candidate_finance_summaries")
+    );
+    expect(summary?.[1]?.[5]).toBe(-500);
+  });
+
+  it("writes zeros and clears stale direct rows after a filed-zero run", async () => {
+    const client = { query: vi.fn(successfulQuery), release: vi.fn() };
+    const db = { query: vi.fn(), connect: vi.fn().mockResolvedValue(client) };
+
+    await replaceSouthCarolinaCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      summary: {
+        totalReceipts: 0,
+        directContributionTotal: 0,
+        totalDisbursements: 0,
+        cashOnHand: 0,
+        sourceUrl: SOURCE_URL,
+      },
+      directBreakdowns: [],
+    });
+
+    const calls = client.query.mock.calls;
+    const summary = calls.find((call) => String(call[0]).includes("sc_candidate_finance_summaries"));
+    expect(summary?.[1]?.slice(2, 9)).toEqual([0, 0, 0, 0, null, null, SOURCE_URL]);
+    expect(
+      calls.some((call) =>
+        String(call[0]).includes("DELETE FROM public.sc_candidate_finance_direct_breakdowns")
+      )
+    ).toBe(true);
+  });
+
+  it("rejects non-positive and non-integer candidate filer IDs before database writes", async () => {
+    const db = { query: vi.fn(), connect: vi.fn() };
+
+    await expect(
+      replaceSouthCarolinaCandidateFinanceSnapshot({
+        db: db as never,
+        link: { ...baseLink(), candidateFilerId: 0 },
+      })
+    ).rejects.toThrow("Invalid South Carolina candidate filer ID: 0");
+    await expect(
+      replaceSouthCarolinaCandidateFinanceSnapshot({
+        db: db as never,
+        link: { ...baseLink(), candidateFilerId: 1.5 },
+      })
+    ).rejects.toThrow("Invalid South Carolina candidate filer ID: 1.5");
+    expect(db.connect).not.toHaveBeenCalled();
+  });
+
+  it("rolls back and releases the client when a snapshot query fails", async () => {
+    const client = {
+      query: vi.fn((sql: unknown) => {
+        if (String(sql).includes("sc_candidate_finance_summaries")) {
+          return Promise.reject(new Error("summary failed"));
+        }
+        return successfulQuery(sql);
+      }),
+      release: vi.fn(),
+    };
+    const db = { query: vi.fn(), connect: vi.fn().mockResolvedValue(client) };
+
+    await expect(
+      replaceSouthCarolinaCandidateFinanceSnapshot({
+        db,
+        link: baseLink(),
+        summary: {
+          totalReceipts: 1,
+          directContributionTotal: 1,
+          totalDisbursements: 0,
+          cashOnHand: 1,
+          sourceUrl: SOURCE_URL,
+        },
+      })
+    ).rejects.toThrow("summary failed");
+
+    expect(client.query.mock.calls.at(-1)?.[0]).toBe("ROLLBACK");
+    expect(client.query.mock.calls.some((call) => call[0] === "COMMIT")).toBe(false);
+    expect(client.release).toHaveBeenCalledOnce();
+  });
+});
