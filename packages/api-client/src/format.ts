@@ -276,6 +276,7 @@ const FINANCE_SOURCE_LABELS: Record<string, string> = {
   GEORGIA_ETHICS: "Georgia Ethics Commission",
   MISSOURI_MEC: "Missouri Ethics Commission",
   MISSISSIPPI_SOS: "Mississippi Secretary of State",
+  MONTANA_COPP: "Montana Commissioner of Political Practices",
   PHOENIX_CITY_CLERK: "City of Phoenix City Clerk Department",
   SAN_DIEGO_CITY_CLERK: "City of San Diego Office of the City Clerk",
   SAN_FRANCISCO_ETHICS: "San Francisco Ethics Commission",

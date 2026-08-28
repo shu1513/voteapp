@@ -203,6 +203,8 @@ services:
         value: "true"
       - key: MINNESOTA_CAMPAIGN_FINANCE_ENABLED
         value: "true"
+      - key: MONTANA_CAMPAIGN_FINANCE_ENABLED
+        value: "false"
       - key: NEBRASKA_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: NEW_JERSEY_CAMPAIGN_FINANCE_ENABLED

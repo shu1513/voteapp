@@ -401,6 +401,7 @@
     "michigan-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerMichiganCandidateFinanceSync.ts",
     "massachusetts-candidates:finance:live-probe": "tsx src/scripts/probeMassachusettsCandidateFinance.ts",
     "missouri-candidates:finance:probe": "tsx src/scripts/probeMissouriCandidateFinance.ts",
+    "montana-candidates:finance:probe": "tsx src/scripts/probeMontanaCandidateFinance.ts",
     "delaware-candidates:finance:probe": "tsx src/scripts/probeDelawareCandidateFinance.ts",
     "delaware-candidates:finance:auto-link": "tsx src/scripts/autoLinkDelawareCandidateFinance.ts",
     "delaware-candidates:finance:sync-due": "tsx src/scripts/syncDueDelawareCandidateFinance.ts",

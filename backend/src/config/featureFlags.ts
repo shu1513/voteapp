@@ -306,6 +306,24 @@ export function isMissouriCampaignFinanceRawDataRefreshEnabled(force = false): b
   );
 }
 
+export function isMontanaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("MONTANA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isMontanaCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isMontanaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("MONTANA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isMontanaCampaignFinanceRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isMontanaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("MONTANA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
+
 export function isMarylandCfsRawDataRefreshEnabled(force = false): boolean {
   return (
     isMarylandCampaignFinanceEnabled() &&
