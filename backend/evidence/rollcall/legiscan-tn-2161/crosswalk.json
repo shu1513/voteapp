@@ -9,13 +9,13 @@
     },
     {
       "people_id": 7178,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-3 has no candidates on file"
+      "candidate_id": "f02afcf3-f1c8-4805-afd3-09be329a8557",
+      "note": null
     },
     {
       "people_id": 7186,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-5 has no candidates on file"
+      "candidate_id": "cc0d52ce-4b8a-4e33-8153-bc473c366770",
+      "note": null
     },
     {
       "people_id": 7188,
@@ -34,13 +34,13 @@
     },
     {
       "people_id": 7205,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-62 has no candidates on file"
+      "candidate_id": "f1540643-4ab3-4f3c-9409-f905a38ddadc",
+      "note": null
     },
     {
       "people_id": 7214,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-57 has no candidates on file"
+      "candidate_id": "337163cd-42e5-4eab-880c-2ee25299c168",
+      "note": null
     },
     {
       "people_id": 7240,
@@ -49,18 +49,18 @@
     },
     {
       "people_id": 7242,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-87 has no candidates on file"
+      "candidate_id": "6d96cf26-9b1d-4087-8ac5-b18214030fd0",
+      "note": null
     },
     {
       "people_id": 7259,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-88 has no candidates on file"
+      "candidate_id": "92e341a1-b0e6-4e32-8218-50c4568c8923",
+      "note": null
     },
     {
       "people_id": 7265,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-84 has no candidates on file"
+      "candidate_id": "8747b28a-1aa6-4b1e-8604-047ea66ff03b",
+      "note": null
     },
     {
       "people_id": 7269,
@@ -104,18 +104,18 @@
     },
     {
       "people_id": 10934,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-25 has no candidates on file"
+      "candidate_id": "747e2958-79a1-4e53-9010-abed0353fe62",
+      "note": null
     },
     {
       "people_id": 12069,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-38 has no candidates on file"
+      "candidate_id": "c780791e-d4e2-4520-ad4b-a53d39516086",
+      "note": null
     },
     {
       "people_id": 12100,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-49 has no candidates on file"
+      "candidate_id": "f07a8e08-f526-43dc-acec-591846dba429",
+      "note": null
     },
     {
       "people_id": 12112,
@@ -124,8 +124,8 @@
     },
     {
       "people_id": 12113,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-42 has no candidates on file"
+      "candidate_id": "4330c120-8187-4438-bde8-05c3ea6efec1",
+      "note": null
     },
     {
       "people_id": 12227,
@@ -144,8 +144,8 @@
     },
     {
       "people_id": 12345,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-98 has no candidates on file"
+      "candidate_id": "63be2992-2667-4d05-b5eb-f3879fdd04d9",
+      "note": null
     },
     {
       "people_id": 12656,
@@ -159,8 +159,8 @@
     },
     {
       "people_id": 14455,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-44 has no candidates on file"
+      "candidate_id": "7576b3cf-f79f-4485-9a18-e8eda0462fe3",
+      "note": null
     },
     {
       "people_id": 14457,
@@ -174,13 +174,13 @@
     },
     {
       "people_id": 14809,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-90 has no candidates on file"
+      "candidate_id": "bab2080c-fcf2-4872-85df-8b529660b8ec",
+      "note": null
     },
     {
       "people_id": 15127,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-17 has no candidates on file"
+      "candidate_id": "64b0ad69-7dca-481a-ab89-951a042506c8",
+      "note": null
     },
     {
       "people_id": 15129,
@@ -234,8 +234,8 @@
     },
     {
       "people_id": 16859,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-22 has no candidates on file"
+      "candidate_id": "4167be0b-efcb-4349-bdc6-16221949d02c",
+      "note": null
     },
     {
       "people_id": 16860,
@@ -244,13 +244,13 @@
     },
     {
       "people_id": 16861,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-66 has no candidates on file"
+      "candidate_id": "b3d1ee98-583b-43cc-97c1-20875b6c8b9c",
+      "note": null
     },
     {
       "people_id": 16862,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-74 has no candidates on file"
+      "candidate_id": "cb61bef6-3fa5-4e03-a427-5e82a849f6c2",
+      "note": null
     },
     {
       "people_id": 16865,
@@ -274,13 +274,13 @@
     },
     {
       "people_id": 17751,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-14 has no candidates on file"
+      "candidate_id": "dcfd8c0b-138d-45f0-8e4f-75ad0b6fd566",
+      "note": null
     },
     {
       "people_id": 17807,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-9 has no candidates on file"
+      "candidate_id": "98ec2f0f-c4a6-4f0f-9eab-b6d69b87a6bb",
+      "note": null
     },
     {
       "people_id": 17913,
@@ -299,18 +299,18 @@
     },
     {
       "people_id": 18644,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-94 has no candidates on file"
+      "candidate_id": "e7c3c9f9-f31c-46e3-aec3-a6deeb1e6a34",
+      "note": null
     },
     {
       "people_id": 18646,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-34 has no candidates on file"
+      "candidate_id": "08d5171b-b9f2-4727-8484-52e690f60635",
+      "note": null
     },
     {
       "people_id": 18647,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-43 has no candidates on file"
+      "candidate_id": "59ff7302-95d5-42b7-8cab-a385fd4b9d77",
+      "note": null
     },
     {
       "people_id": 19504,
@@ -319,13 +319,13 @@
     },
     {
       "people_id": 19505,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-95 has no candidates on file"
+      "candidate_id": "c91e08b7-26f6-46c3-8513-34dcdd7ac5fa",
+      "note": null
     },
     {
       "people_id": 19515,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-46 has no candidates on file"
+      "candidate_id": "23db07da-f0be-4b84-9da6-f867a6533713",
+      "note": null
     },
     {
       "people_id": 19609,
@@ -339,8 +339,8 @@
     },
     {
       "people_id": 20161,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-64 has no candidates on file"
+      "candidate_id": "cc519c3a-5a3d-40db-be06-8a7d4506a69b",
+      "note": null
     },
     {
       "people_id": 20192,
@@ -349,13 +349,13 @@
     },
     {
       "people_id": 20335,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-37 has no candidates on file"
+      "candidate_id": "94885787-0bce-42ef-b0f9-436d73afe2c4",
+      "note": null
     },
     {
       "people_id": 20336,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-47 has no candidates on file"
+      "candidate_id": "3982c628-dce4-4827-a73e-a2a52054659c",
+      "note": null
     },
     {
       "people_id": 20337,
@@ -364,8 +364,8 @@
     },
     {
       "people_id": 20338,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-23 has no candidates on file"
+      "candidate_id": "7b8fa1e0-54cc-4a77-89ea-54adb24f805c",
+      "note": null
     },
     {
       "people_id": 20339,
@@ -374,8 +374,8 @@
     },
     {
       "people_id": 20340,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-70 has no candidates on file"
+      "candidate_id": "7519a1df-0234-443b-b44f-beed918d55e7",
+      "note": null
     },
     {
       "people_id": 20341,
@@ -384,58 +384,58 @@
     },
     {
       "people_id": 20343,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-28 has no candidates on file"
+      "candidate_id": "b2881d3b-1839-4bd1-99ce-98920108de61",
+      "note": null
     },
     {
       "people_id": 20345,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-72 has no candidates on file"
+      "candidate_id": "794f28fd-0009-4bb7-8300-37b51c9c732b",
+      "note": null
     },
     {
       "people_id": 20346,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-30 has no candidates on file"
+      "candidate_id": "e368842a-8c0d-44b6-bb88-d50d7180260c",
+      "note": null
     },
     {
       "people_id": 20348,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-82 has no candidates on file"
+      "candidate_id": "406c4497-11a9-4bc6-b41c-85815ada2219",
+      "note": null
     },
     {
       "people_id": 20349,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-89 has no candidates on file"
+      "candidate_id": "f1be71d5-04e6-4d33-9661-0b67c7f3fcc1",
+      "note": null
     },
     {
       "people_id": 20350,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-99 has no candidates on file"
+      "candidate_id": "67f0e324-75b1-49ae-8c7b-12c01d7b6462",
+      "note": null
     },
     {
       "people_id": 20352,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-39 has no candidates on file"
+      "candidate_id": "56953ed8-8710-4864-a46c-39707a92e8ff",
+      "note": null
     },
     {
       "people_id": 20353,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-21 has no candidates on file"
+      "candidate_id": "676f9f9a-0247-45fc-8ebe-b75646cc1188",
+      "note": null
     },
     {
       "people_id": 20354,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-73 has no candidates on file"
+      "candidate_id": "befb73e0-f3ca-4de2-978d-32fbd75070f3",
+      "note": null
     },
     {
       "people_id": 20355,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-19 has no candidates on file"
+      "candidate_id": "0764113e-69c9-4dbf-99dc-d9afe82eefe8",
+      "note": null
     },
     {
       "people_id": 20594,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-10 has no candidates on file"
+      "candidate_id": "fde9767d-9a14-4d5c-9ce0-2a8cbec72815",
+      "note": null
     },
     {
       "people_id": 21328,
@@ -449,28 +449,28 @@
     },
     {
       "people_id": 21500,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-77 has no candidates on file"
+      "candidate_id": "809014f5-dbc0-4471-be68-db7f5a671812",
+      "note": null
     },
     {
       "people_id": 21697,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-76 has no candidates on file"
+      "candidate_id": "8a2d0c59-fe85-49ea-999c-b64f8ea75697",
+      "note": null
     },
     {
       "people_id": 21715,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-97 has no candidates on file"
+      "candidate_id": "058b62e5-32e8-4c9e-9d24-2c1e1838a636",
+      "note": null
     },
     {
       "people_id": 21716,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-92 has no candidates on file"
+      "candidate_id": "f3d8bd8a-f9c6-426c-9356-5b2b2f2339e6",
+      "note": null
     },
     {
       "people_id": 21757,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-16 has no candidates on file"
+      "candidate_id": "34b8d701-35ae-4742-b42d-b9b1b0615aab",
+      "note": null
     },
     {
       "people_id": 21777,
@@ -479,8 +479,8 @@
     },
     {
       "people_id": 22242,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-91 has no candidates on file"
+      "candidate_id": "92e86347-187d-458a-a940-fed91bb153b6",
+      "note": null
     },
     {
       "people_id": 22266,
@@ -489,33 +489,33 @@
     },
     {
       "people_id": 22446,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-15 has no candidates on file"
+      "candidate_id": "5dbd7db1-f072-4f9f-a960-3b0afaa0460f",
+      "note": null
     },
     {
       "people_id": 22447,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-6 has no candidates on file"
+      "candidate_id": "e327eddb-c2a3-4b4e-923b-679290b21359",
+      "note": null
     },
     {
       "people_id": 22856,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-7 has no candidates on file"
+      "candidate_id": "48276582-b370-4a1c-a4a7-bb5c67026007",
+      "note": null
     },
     {
       "people_id": 22960,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-29 has no candidates on file"
+      "candidate_id": "4311bc97-f859-42c8-995f-e747397d63c6",
+      "note": null
     },
     {
       "people_id": 23124,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-26 has no candidates on file"
+      "candidate_id": "dd0cb2ab-2c17-4877-a666-69901261e117",
+      "note": null
     },
     {
       "people_id": 23185,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-71 has no candidates on file"
+      "candidate_id": "7bc7ef99-befc-4b66-838c-63d260c273a0",
+      "note": null
     },
     {
       "people_id": 23186,
@@ -524,13 +524,13 @@
     },
     {
       "people_id": 23187,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-63 has no candidates on file"
+      "candidate_id": "dc8c8125-184a-47b4-bc2e-e0fef257c003",
+      "note": null
     },
     {
       "people_id": 23188,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-24 has no candidates on file"
+      "candidate_id": "7b9fea80-010c-43c0-943a-9c35b8ca24c6",
+      "note": null
     },
     {
       "people_id": 23362,
@@ -539,13 +539,13 @@
     },
     {
       "people_id": 23378,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-41 has no candidates on file"
+      "candidate_id": "a32c5498-9145-4d8d-a853-27ada3b01bb0",
+      "note": null
     },
     {
       "people_id": 23616,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-35 has no candidates on file"
+      "candidate_id": "ed10c07f-2707-49fa-9254-2e3bda7edd89",
+      "note": null
     },
     {
       "people_id": 23880,
@@ -564,8 +564,8 @@
     },
     {
       "people_id": 24115,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-69 has no candidates on file"
+      "candidate_id": "2ee4e2a8-a8d5-488d-baaa-9427306f3ac8",
+      "note": null
     },
     {
       "people_id": 24116,
@@ -574,23 +574,23 @@
     },
     {
       "people_id": 24117,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-18 has no candidates on file"
+      "candidate_id": "057fe105-cce8-4b5c-a1ca-1544a02a2bc2",
+      "note": null
     },
     {
       "people_id": 24118,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-67 has no candidates on file"
+      "candidate_id": "25818aaa-004a-4afd-ba84-008afb4c8a2a",
+      "note": null
     },
     {
       "people_id": 24119,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-13 has no candidates on file"
+      "candidate_id": "322474e9-82eb-4c45-bc96-1bd46bc036a0",
+      "note": null
     },
     {
       "people_id": 24186,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-79 has no candidates on file"
+      "candidate_id": "6f087dff-b856-4aa7-9b0c-e2e5c3290b30",
+      "note": null
     },
     {
       "people_id": 24390,
@@ -619,8 +619,8 @@
     },
     {
       "people_id": 25238,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-12 has no candidates on file"
+      "candidate_id": "006e85f8-1bf8-4117-adfb-04c50d1bf4c7",
+      "note": null
     },
     {
       "people_id": 25239,
@@ -629,23 +629,23 @@
     },
     {
       "people_id": 25240,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-4 has no candidates on file"
+      "candidate_id": "96e36eee-b9e3-403e-ae0d-cfdb7c31dffa",
+      "note": null
     },
     {
       "people_id": 25241,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-68 has no candidates on file"
+      "candidate_id": "d4a8e2c4-2a16-4c17-913d-3af18313670b",
+      "note": null
     },
     {
       "people_id": 25242,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-65 has no candidates on file"
+      "candidate_id": "41913265-5c26-4f8e-b922-979b9cc93386",
+      "note": null
     },
     {
       "people_id": 25243,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-27 has no candidates on file"
+      "candidate_id": "6c5b0fed-f069-4d61-ab81-3b4c9d10d43b",
+      "note": null
     },
     {
       "people_id": 25244,
@@ -679,8 +679,8 @@
     },
     {
       "people_id": 26540,
-      "candidate_id": null,
-      "note": "no 2026 candidacy on file; house-75 has no candidates on file"
+      "candidate_id": "4212ead6-ad26-40ae-a231-a8f3a0fb6c01",
+      "note": null
     }
   ]
 }

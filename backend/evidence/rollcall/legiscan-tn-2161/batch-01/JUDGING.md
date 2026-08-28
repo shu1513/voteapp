@@ -111,6 +111,12 @@ Reconciled three ways:
 The dry run's own stamp (`2026-08-27T01:48:33.021Z`) matches **zero** rows, which is
 positive proof `--dry-run` is inert. Production was never touched.
 
+**Roster re-import (2026-08-28):** after the complete TN House general-election roster
+and crosswalk review, a fresh dry run planned **627 inserts + 199 unchanged**. The
+local live run imported all 14 rolls with exactly those actions; its committed
+`import-report.json` records the result. A final dry re-run planned **826 unchanged**,
+including every one of the original 199 rows. Production was never touched.
+
 **Report provenance:** `import-report.json` uses a fixed filename, so the idempotency
 re-run **overwrote** the initial run's report (`insert: 199`) with its own
 (`unchanged: 199`) before the trimmed copy was committed. The committed files are
