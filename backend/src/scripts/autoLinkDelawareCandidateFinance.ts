@@ -3,6 +3,7 @@ import { pathToFileURL } from "node:url";
 import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
+import { isDelawareCampaignFinanceRawDataRefreshEnabled } from "../config/featureFlags.js";
 import {
   autoLinkMissingDelawareCandidateFinanceLinks,
   listDelawareCandidateElectionsMissingFinanceLinks,
@@ -15,11 +16,13 @@ const SCRIPT_LABEL = "delaware-candidates:finance:auto-link";
 function usage(): string {
   return [
     "Usage:",
-    "  npm run delaware-candidates:finance:auto-link -- [--max N] [--lookback-days N] [--lookahead-days N] [--write]",
+    "  npm run delaware-candidates:finance:auto-link -- [--max N] [--lookback-days N] [--lookahead-days N] [--write] [--force]",
     "",
     "Resolves VoteApp Delaware candidates to CFRS committees via the live",
-    "office-filtered committee search. Dry-run (list only) is the default;",
-    "--write upserts exact matches into a local database as cfrs_portal links.",
+    "office-filtered committee search. Dry-run (DB listing only, no portal",
+    "traffic) is the default; --write fetches live and upserts exact matches",
+    "as cfrs_portal links, and requires DELAWARE_CAMPAIGN_FINANCE_ENABLED +",
+    "DELAWARE_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED (or --force, per-run).",
   ].join("\n");
 }
 
@@ -28,21 +31,28 @@ export function parseDelawareAutoLinkArgs(argv: readonly string[]): {
   electionLookbackDays: number;
   electionLookaheadDays: number;
   write: boolean;
+  force: boolean;
 } {
   assertKnownCliFlags(SCRIPT_LABEL, argv, [
     { name: "--max", value: "space" },
     { name: "--lookback-days", value: "space" },
     { name: "--lookahead-days", value: "space" },
     { name: "--write", value: "none" },
+    { name: "--force", value: "none" },
   ]);
   let maxCandidates = 25;
   let electionLookbackDays = 60;
   let electionLookaheadDays = 730;
   let write = false;
+  let force = false;
   for (let index = 0; index < argv.length; index += 1) {
     const token = argv[index];
     if (token === "--write") {
       write = true;
+      continue;
+    }
+    if (token === "--force") {
+      force = true;
       continue;
     }
     if (token === "--max" || token === "--lookback-days" || token === "--lookahead-days") {
@@ -56,7 +66,7 @@ export function parseDelawareAutoLinkArgs(argv: readonly string[]): {
       index += 1;
     }
   }
-  return { maxCandidates, electionLookbackDays, electionLookaheadDays, write };
+  return { maxCandidates, electionLookbackDays, electionLookaheadDays, write, force };
 }
 
 export async function runAutoLinkDelawareCandidateFinance(argv: readonly string[]): Promise<void> {
@@ -68,6 +78,12 @@ export async function runAutoLinkDelawareCandidateFinance(argv: readonly string[
   }
   if (args.write) {
     requireLocalDatabaseTarget(databaseUrl);
+    if (!isDelawareCampaignFinanceRawDataRefreshEnabled(args.force)) {
+      throw new Error(
+        "Delaware auto-link fetches the live CFRS portal: set DELAWARE_CAMPAIGN_FINANCE_ENABLED=true plus " +
+          "DELAWARE_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED=true (or pass --force for this run)"
+      );
+    }
   }
   const pool = new Pool({ connectionString: databaseUrl });
   try {

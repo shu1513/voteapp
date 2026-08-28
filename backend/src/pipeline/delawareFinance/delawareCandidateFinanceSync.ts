@@ -25,7 +25,7 @@ import {
   aggregateDelawareDirectFinance,
   type DelawareDirectFinanceAggregationResult,
 } from "./delawareDirectContributionAggregator.js";
-import { isDelawareFinanceEligibleOffice } from "./delawareFinanceEligibleOffices.js";
+import { isDelawareFinanceEligibleOffice, toDelawareCfrsOfficeSearch } from "./delawareFinanceEligibleOffices.js";
 import {
   normalizeDelawareCfId,
   replaceDelawareCandidateFinanceSnapshot,
@@ -144,6 +144,29 @@ export async function syncDelawareCandidateFinance(input: {
     if (row.document !== null && row.document.memberId !== artifacts.manifest.memberId) {
       throw new DelawareCandidateFinanceSyncError(
         `filed-report document MemberID ${row.document.memberId} does not match bundle MemberID ${artifacts.manifest.memberId}`
+      );
+    }
+  }
+
+  // --- Office gate. The filed-report Office column reflects the
+  // committee's CURRENT registration on every historical row (live-proven:
+  // all 20 Meyer reports render "State Office - Governor", county-era rows
+  // included), so report-era office history is NOT recoverable from the
+  // artifacts. This gate verifies the current registration matches the
+  // target office — defense in depth on top of the resolver's
+  // office-filtered search; old-era money is excluded by the window rule. ---
+  const officeSearch = toDelawareCfrsOfficeSearch({ officeScope, officeName, district: input.district });
+  if (officeSearch === null) {
+    throw new DelawareCandidateFinanceSyncError(
+      `cannot derive the CFRS office for ${officeScope}::${officeName} (district ${input.district ?? "none"})`
+    );
+  }
+  const officeNeedle = officeSearch.officeLabel.toLowerCase();
+  for (const row of artifacts.filedReportRows) {
+    if (!row.office.toLowerCase().includes(officeNeedle)) {
+      throw new DelawareCandidateFinanceSyncError(
+        `filed-report row [${row.filingPeriodName}] carries office "${row.office}", ` +
+          `which does not match the target office "${officeSearch.officeLabel}" — committee registration mismatch`
       );
     }
   }

@@ -199,6 +199,16 @@ export type DelawareElectionPeriodWindow = {
  * to date. Fails closed when any canonical report STRADDLES the window
  * start (a report that mixes prior-period and current-period money cannot
  * be split — plan: ambiguous window -> no publication).
+ *
+ * Known limitation, deliberate: report-era office history is NOT
+ * recoverable from CFRS artifacts — the filed-report and CSV Office
+ * columns render the committee's CURRENT registration on every historical
+ * row (verified live: all 20 Meyer reports, county-era included, show
+ * "State Office - Governor"). So a per-report office filter is impossible;
+ * this date rule is the conservative mechanical form (money raised for the
+ * current race before the prior election's reports closed is excluded),
+ * and current-registration office evidence is enforced by the resolver's
+ * office-filtered search plus the sync's office gate.
  */
 export function resolveDelawareElectionPeriodWindow(input: {
   electionDate: string;

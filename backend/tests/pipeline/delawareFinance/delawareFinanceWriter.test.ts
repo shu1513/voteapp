@@ -128,19 +128,27 @@ describe("delawareFinanceWriter", () => {
     expect(client.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
     expect(client.release).toHaveBeenCalledTimes(1);
     const calls = client.query.mock.calls;
-    const summarySql = String(
-      calls.find((call) => String(call[0]).includes("INSERT INTO public.de_candidate_finance_summaries"))?.[0]
+    const summaryCall = calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.de_candidate_finance_summaries")
     );
-    // Outside totals are never written for Delaware; the preserveWhenNull
-    // policy must keep any stored values untouched.
-    expect(summarySql).toContain("outside_support_total = COALESCE(EXCLUDED.outside_support_total");
-    expect(summarySql).toContain("outside_oppose_total = COALESCE(EXCLUDED.outside_oppose_total");
+    const summarySql = String(summaryCall?.[0]);
+    // Outside totals are ALWAYS null for Delaware: the replace policy plus
+    // the wrapper-forced nulls push the columns back to NULL on every sync,
+    // so a stray historical value can never survive.
+    expect(summarySql).toContain("outside_support_total = EXCLUDED.outside_support_total");
+    expect(summarySql).toContain("outside_oppose_total = EXCLUDED.outside_oppose_total");
+    expect(summarySql).not.toContain("COALESCE(EXCLUDED.outside_support_total");
+    expect(summaryCall?.[1]?.[6]).toBeNull();
+    expect(summaryCall?.[1]?.[7]).toBeNull();
     const supersede = calls.find(
       (call) => String(call[0]).includes("UPDATE public.de_candidate_finance_links") && String(call[0]).includes("id <>")
     );
     expect(String(supersede?.[0])).toContain("link_source = 'cfrs_portal'");
     expect(supersede?.[1]).toEqual([CANDIDATE_ID, ELECTION_ID, LINK_ID]);
-    expect(calls.some((call) => String(call[0]).includes("de_candidate_finance_outside_groups"))).toBe(false);
+    // No outside rows are ever inserted, and any stray stored rows are
+    // deleted inside the snapshot transaction (empty keep lists).
+    expect(calls.some((call) => String(call[0]).includes("INSERT INTO public.de_candidate_finance_outside_groups"))).toBe(false);
+    expect(calls.some((call) => String(call[0]).includes("DELETE FROM public.de_candidate_finance_outside_groups"))).toBe(true);
   });
 
   it("rejects out-of-scope years and malformed CF_IDs before DB writes", async () => {

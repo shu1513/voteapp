@@ -3,6 +3,7 @@ import { pathToFileURL } from "node:url";
 import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
+import { isDelawareCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
 import { syncDueDelawareCandidateFinance } from "../pipeline/delawareFinance/delawareCandidateFinanceBatchSync.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
@@ -12,11 +13,15 @@ const SCRIPT_LABEL = "delaware-candidates:finance:sync-due";
 function usage(): string {
   return [
     "Usage:",
-    "  npm run delaware-candidates:finance:sync-due -- [--max N] [--stale-days N] [--cache-dir DIR] [--no-auto-link] [--write]",
+    "  npm run delaware-candidates:finance:sync-due -- [--max N] [--stale-days N] [--cache-dir DIR] [--no-auto-link] [--write] [--force]",
     "",
     "Syncs due Delaware candidates from the CFRS artifact cache (cache-only;",
     "artifact acquisition is a separate Phase 2 step). Dry-run is the",
-    "default; --write replaces snapshots in a local database.",
+    "default. --write replaces snapshots in a local database and requires",
+    "DELAWARE_CAMPAIGN_FINANCE_ENABLED + DELAWARE_CAMPAIGN_FINANCE_SYNC_ENABLED",
+    "(--force stands in for the sync flag, per-run). The auto-link pass hits",
+    "the live portal, so it additionally needs the raw-data-refresh flag or",
+    "--force.",
   ].join("\n");
 }
 
@@ -26,6 +31,7 @@ export function parseDelawareSyncDueArgs(argv: readonly string[]): {
   cacheDir: string | undefined;
   autoLinkMissingLinks: boolean;
   write: boolean;
+  force: boolean;
 } {
   assertKnownCliFlags(SCRIPT_LABEL, argv, [
     { name: "--max", value: "space" },
@@ -33,16 +39,22 @@ export function parseDelawareSyncDueArgs(argv: readonly string[]): {
     { name: "--cache-dir", value: "space" },
     { name: "--no-auto-link", value: "none" },
     { name: "--write", value: "none" },
+    { name: "--force", value: "none" },
   ]);
   let maxCandidates = 10;
   let staleAfterDays: number | undefined;
   let cacheDir: string | undefined;
   let autoLinkMissingLinks = true;
   let write = false;
+  let force = false;
   for (let index = 0; index < argv.length; index += 1) {
     const token = argv[index];
     if (token === "--write") {
       write = true;
+      continue;
+    }
+    if (token === "--force") {
+      force = true;
       continue;
     }
     if (token === "--no-auto-link") {
@@ -68,7 +80,7 @@ export function parseDelawareSyncDueArgs(argv: readonly string[]): {
       index += 1;
     }
   }
-  return { maxCandidates, staleAfterDays, cacheDir, autoLinkMissingLinks, write };
+  return { maxCandidates, staleAfterDays, cacheDir, autoLinkMissingLinks, write, force };
 }
 
 export async function runSyncDueDelawareCandidateFinance(argv: readonly string[]): Promise<void> {
@@ -80,6 +92,12 @@ export async function runSyncDueDelawareCandidateFinance(argv: readonly string[]
   }
   if (args.write) {
     requireLocalDatabaseTarget(databaseUrl);
+    if (!isDelawareCampaignFinanceSyncEnabled(args.force)) {
+      throw new Error(
+        "Delaware finance sync writes are disabled: set DELAWARE_CAMPAIGN_FINANCE_ENABLED=true plus " +
+          "DELAWARE_CAMPAIGN_FINANCE_SYNC_ENABLED=true (or pass --force for this run)"
+      );
+    }
   }
   const pool = new Pool({ connectionString: databaseUrl });
   try {
@@ -89,6 +107,7 @@ export async function runSyncDueDelawareCandidateFinance(argv: readonly string[]
       staleAfterDays: args.staleAfterDays,
       cacheDir: args.cacheDir,
       autoLinkMissingLinks: args.autoLinkMissingLinks,
+      forceRawDataRefresh: args.force,
       dryRun: !args.write,
     });
     console.log(JSON.stringify(result, null, 2));

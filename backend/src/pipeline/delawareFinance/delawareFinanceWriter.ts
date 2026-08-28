@@ -61,10 +61,12 @@ const writer = createStandardStateFinanceSnapshotWriter({
     direct_contribution_total: "replace",
     total_disbursements: "replace",
     cash_on_hand: "replace",
-    // Outside totals are never written for Delaware (published as null with
-    // a coverage note); preserveWhenNull keeps the columns untouched.
-    outside_support_total: "preserveWhenNull",
-    outside_oppose_total: "preserveWhenNull",
+    // Outside totals are ALWAYS null for Delaware (hard fact 7 — no
+    // expenditure -> candidate edge exists, so unavailable, never $0).
+    // "replace" makes every snapshot force the columns back to NULL, so a
+    // stray historical value can never survive a sync.
+    outside_support_total: "replace",
+    outside_oppose_total: "replace",
     source_url: "replace",
   },
   normalizeCommitteeId: normalizeDelawareCfId,
@@ -89,5 +91,16 @@ export async function upsertDelawareFinanceLink(input: {
 export async function replaceDelawareCandidateFinanceSnapshot(
   input: DelawareFinanceSnapshotInput
 ): Promise<DelawareFinanceSnapshotWriteResult> {
-  return writer.replaceSnapshot(input);
+  // Enforce the hard-fact-7 contract at the single write chokepoint: outside
+  // totals are forced to NULL, and the empty outside arrays make the shared
+  // writer delete any stray outside rows during the snapshot transaction.
+  return writer.replaceSnapshot({
+    ...input,
+    summary:
+      input.summary === undefined
+        ? undefined
+        : { ...input.summary, outsideSupportTotal: null, outsideOpposeTotal: null },
+    outsideGroups: [],
+    outsideGroupBreakdowns: [],
+  });
 }

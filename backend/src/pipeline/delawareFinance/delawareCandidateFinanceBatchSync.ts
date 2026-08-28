@@ -6,6 +6,7 @@
 
 import type { Pool, PoolClient } from "pg";
 
+import { isDelawareCampaignFinanceRawDataRefreshEnabled } from "../../config/featureFlags.js";
 import {
   autoLinkMissingDelawareCandidateFinanceLinks,
   type DelawareFinanceAutoLinkResult,
@@ -36,6 +37,12 @@ export type DelawareCandidateFinanceBatchSyncInput = {
   electionLookaheadDays?: number;
   dryRun?: boolean;
   autoLinkMissingLinks?: boolean;
+  /**
+   * The auto-link pass contacts the live CFRS portal, so it additionally
+   * requires DELAWARE_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED (or this
+   * per-run force, the flag's established escape hatch).
+   */
+  forceRawDataRefresh?: boolean;
   cacheDir?: string;
   log?: (message: string) => void;
   autoLinkFn?: typeof autoLinkMissingDelawareCandidateFinanceLinks;
@@ -71,7 +78,13 @@ export async function syncDueDelawareCandidateFinance(
   const dryRun = input.dryRun === true;
 
   let autoLinkResults: DelawareFinanceAutoLinkResult[] = [];
-  if (!dryRun && input.autoLinkMissingLinks !== false) {
+  const liveAutoLinkAllowed = isDelawareCampaignFinanceRawDataRefreshEnabled(input.forceRawDataRefresh === true);
+  if (!dryRun && input.autoLinkMissingLinks !== false && !liveAutoLinkAllowed) {
+    log(
+      "Delaware auto-link pass skipped: live CFRS fetches require DELAWARE_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED (or a per-run force)"
+    );
+  }
+  if (!dryRun && input.autoLinkMissingLinks !== false && liveAutoLinkAllowed) {
     const autoLink = input.autoLinkFn ?? autoLinkMissingDelawareCandidateFinanceLinks;
     try {
       autoLinkResults = await autoLink({

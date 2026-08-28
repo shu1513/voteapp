@@ -164,7 +164,18 @@ describe("syncDelawareCandidateFinance", () => {
       String(call[0]).includes("INSERT INTO public.de_candidate_finance_summaries")
     );
     expect(summaryCall?.[1]).toContain(700);
-    expect(client.query.mock.calls.some((call) => String(call[0]).includes("de_candidate_finance_outside_groups"))).toBe(false);
+    expect(
+      client.query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO public.de_candidate_finance_outside_groups"))
+    ).toBe(false);
+  });
+
+  it("fails closed when the committee's filed reports carry a different office", async () => {
+    const db = { query: vi.fn(), connect: vi.fn() };
+    const wrongOffice = artifacts();
+    wrongOffice.filedReportRows = [{ ...FILED_REPORT, office: "State Office - Governor" }];
+    await expect(
+      syncDelawareCandidateFinance({ ...baseInput(db), artifacts: wrongOffice, dryRun: true })
+    ).rejects.toThrow(/committee registration mismatch/);
   });
 
   it("fails closed on committee-identity and count drift", async () => {
