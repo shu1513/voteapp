@@ -47,7 +47,14 @@ export type SouthCarolinaFinanceLinkInput = {
   lastVerifiedAt?: Date | null;
 };
 
-/** NULL amounts preserve stored data; zero means a filed-zero snapshot. */
+// NULL amounts preserve stored data; zero means a filed-zero snapshot.
+//
+// The aggregator's per-candidate directCoverageNote is deliberately not
+// persisted: the standard table family carries no note column, and display
+// uses a static source-wide directCoverageNote declared in the Phase 6
+// ballot-lookup loader (the Missouri/New Hampshire pattern — the SC note copy
+// is worded to hold for every candidate). The per-candidate note remains a
+// Phase 5 sync diagnostic only.
 export type SouthCarolinaFinanceSummaryInput = {
   totalReceipts: number | null;
   directContributionTotal: number | null;
