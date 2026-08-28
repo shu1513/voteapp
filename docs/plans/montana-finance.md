@@ -108,9 +108,12 @@ due-list / batch / ballot-lookup loader / index). Scripts: `montana-candidates:f
   are ALWAYS 0 in the public flow (Phase 0: all 24 harvested C-5s, incl. candidates
   with obvious small-donor money) — dead fields, do not use. **Derive the unitemized
   amount per period from the chain residual**: `lump(N) = begin(N+1) − (begin(N) +
-  itemized_cash_receipts(N) − cash_expenditures(N))`. Residual must be ≥ 0 and small
-  relative to itemized receipts; negative or large → fail closed. Latest period's lump
-  is unknowable until the next report files (accepted small understatement).
+  itemized_cash_receipts(N) − cash_expenditures(N))`. Sign convention (load-bearing):
+  hidden receipts make the actual next-begin HIGHER than the itemized-derived ending,
+  so under this formula the lump is POSITIVE. Gate: `lump ≥ 0` and small relative to
+  itemized receipts; negative (itemized flows overshoot actual cash) or large → fail
+  closed. Latest period's lump is unknowable until the next report files (accepted
+  small understatement).
 - Loans can be IN-KIND (Phase 0: Ahner's filing-fee check from a personal account =
   loan with `cashAmt` 0, amount in `inKindAmt`/`debtAmt`) — in-kind loans never touch
   the bank; chain math uses cash portions only.
@@ -163,7 +166,7 @@ due-list / batch / ballot-lookup loader / index). Scripts: `montana-candidates:f
 
 Code defaults `false` in `featureFlags.ts`. PR adds all three to tracked
 `backend/.env.example` + the read flag to `render.yaml`; locally set ON in
-`backend/.env` (free read-side flags stay ON — [[voteapp-feature-flags-policy]]):
+`backend/.env` (house policy: free read-side flags stay ON):
 
 ```
 MONTANA_CAMPAIGN_FINANCE_ENABLED
@@ -180,7 +183,9 @@ Raw-refresh false ⇒ sync consumes cached artifacts only (MO semantics).
 Harvest: full report-detail JSON for Eddy (SupCt#4), Wilson (SupCt#4), Bedey (SD-43),
 Ahner (county attorney), Adams (sub-$500 JP); CONTR CSV exports; full 2025–26 IE sweep
 (46 committees, 1,367 deduped IE rows, $5.43M); AFP C-4 schedules. Raw state:
-scratchpad `mt_phase0/state/` (this session). Answers:
+scratchpad `mt_phase0/state/` — **EXPIRED** (session scratchpad cleaned; verified
+gone 2026-08-27). Phase 1 re-harvests the fixture entities itself (client is cheap:
+no WAF, ~1 req/s, sequential). Answers:
 
 - **Q1 PASS** — entry-level transactions with real dates (Eddy: 2,908 individual rows,
   387 distinct dates; exact-duplicate keys rare). `contribution_size` is GO, built
@@ -188,11 +193,13 @@ scratchpad `mt_phase0/state/` (this session). Answers:
 - **Q2: current-only.** One row per (period, form); amended replaces original; no
   history endpoint. Snapshot on every sync; keep artifacts as the only history.
 - **Q3 PASS with derived-lump design** — chain closes exactly on several periods;
-  all other residuals are small negatives (Bedey −$49, −$45; Wilson −$255…−$2,056;
-  Eddy up to −$3,480) = hidden unitemized small-donor money (public lump fields are
-  dead-zero). Residual IS the unitemized lump; gate = residual ≥ 0 and < threshold.
-  One Ahner anomaly (amended + in-kind loan reorder, ±$335.80) → the fail-closed flag
-  works as intended.
+  everywhere else actual next-begin sat slightly ABOVE the itemized-derived ending =
+  hidden unitemized small-donor money (public lump fields are dead-zero). Derived
+  lumps: Bedey $49, $45; Wilson $255…$2,056; Eddy up to $3,480. (The Phase 0 run log
+  recorded these with the opposite sign — `calculated − actual`, hence "small
+  negatives"; same measurements, convention now unified on the formula above.)
+  Residual IS the unitemized lump; gate = lump ≥ 0 and < threshold. One Ahner anomaly
+  (amended + in-kind loan reorder, ±$335.80) → the fail-closed flag works as intended.
 - **Q4 FAIL vs 90% — outside spending re-scoped.** Auto-attributable = 35.9% of IE
   dollars (bare 21.6% + Support 6.0% + Oppose 8.4%). Structurally unreachable ceiling:
   "see attached" = 30.9% ($1.68M, 16 rows — $1.75M incl. blanks from Conservatives4MT
@@ -216,8 +223,9 @@ scratchpad `mt_phase0/state/` (this session). Answers:
 - Bonus: the Supreme Court #03 "candidate" is `TEST, Acct` — CERS contains test data;
   registration list is not a ballot list (roster-driven linking only).
 
-Sanitized fixtures (NH precedent) get built from the harvested raw state during the
-Phase 1 PR, alongside the parsers they test.
+Sanitized fixtures (NH precedent) get built during the Phase 1 PR from a fresh
+harvest of the same fixture entities (raw Phase 0 state expired), alongside the
+parsers they test.
 
 #### Original spike design (for reference)
 
@@ -265,11 +273,15 @@ loader registered in [ballotLookup.ts](backend/src/pipeline/address/ballotLookup
 card tests. Fail-closed everywhere: reconciliation, ambiguity, schema drift, bad
 artifact → keep last good snapshot + diagnostic.
 
-### Phase 2b — outside spending PR (only if Q4 gate passed)
+### Phase 2b — outside spending PR (re-scoped per Q4: resolved rows only)
 
-IE sweep + resolution + quarantine queue + support totals (oppose NULL) + the
-Montana footnote in web + mobile outside sections (hard gate for enabling MT
-outside data).
+IE sweep + two-stage resolution + per-committee quarantine reporting. Totals per the
+stance rule above: bare-name and leading-`Support` rows → `outsideSupportTotal`;
+leading-`Oppose` rows → `outsideOpposeTotal` (NULL only when a candidate has no
+explicit oppose rows — never 0). Unresolved/attach/blank/multi rows stay quarantined,
+never published. Plus the Montana footnote in web + mobile outside sections (hard
+gate for enabling MT outside data). Attachment-recovery campaign (Conservatives4MT
+first) is a follow-on data task, not a code gate.
 
 ### Phase 2c — outside funders PR (optional, only if coverage proves useful)
 
@@ -285,7 +297,7 @@ industry-label run.
 
 ### Phase 4 — prod
 
-Standard runbook ([[voteapp-finance-sync-runbook]], [[voteapp-new-state-finance-checklist]]):
+Standard new-state finance runbook:
 prod migration, render.yaml flags (manual Approve), data promotion, deploy by SHA,
 spot checks. Cadence: scheduler daily Sep–Nov (candidate filings 20th, committee
 30th, C-7/C-7E windows), weekly before.
