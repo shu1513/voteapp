@@ -86,7 +86,7 @@ function toDirectBreakdowns(
   const result: NevadaFinanceDirectBreakdown[] = [];
   for (const categoryType of categoryOrder) {
     for (const aggregate of values
-      .filter((value) => value.categoryType === categoryType)
+      .filter((value) => value.categoryType === categoryType && value.amountCents > 0)
       .sort(
         (left, right) =>
           right.amountCents - left.amountCents || left.categoryName.localeCompare(right.categoryName)
@@ -150,18 +150,21 @@ export function aggregateNevadaDirectContributions(
     }
     directContributionRowCount += 1;
     directContributionTotalCents += row.amountCents;
-    // Reversal rows (parenthesized negatives) net against the total but are
-    // not gifts: keep them out of the size buckets and industry chart, whose
-    // amounts must stay nonnegative.
-    if (row.amountCents <= 0) continue;
-    addAggregate(aggregates, "contribution_size", contributionSizeBucket(row.amountCents), row.amountCents);
-
-    const industry = classifyFinanceLabel({
-      rawLabel: row.contributorName,
-      labelType: "donor",
-    }).industrySlug;
-    if (industry !== null) {
-      addAggregate(aggregates, "industry", industry, row.amountCents);
+    // Reversal rows (parenthesized negatives) are not gifts, so they stay out
+    // of the size buckets — but they DO net against the donor's industry:
+    // a +$100k gift plus its -$100k rejection must not chart as $100k of
+    // industry support. Aggregates that net to <= 0 are dropped on output.
+    if (row.amountCents > 0) {
+      addAggregate(aggregates, "contribution_size", contributionSizeBucket(row.amountCents), row.amountCents);
+    }
+    if (row.amountCents !== 0) {
+      const industry = classifyFinanceLabel({
+        rawLabel: row.contributorName,
+        labelType: "donor",
+      }).industrySlug;
+      if (industry !== null) {
+        addAggregate(aggregates, "industry", industry, row.amountCents);
+      }
     }
   }
 

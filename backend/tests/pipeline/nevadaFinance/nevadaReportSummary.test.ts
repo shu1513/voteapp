@@ -250,6 +250,10 @@ describe("buildNevadaCycleSummary", () => {
     // negative line 7 lowers the floor (reversals may be itemized), loans widen the ceiling
     expect(cycle.itemizedContributionFloorCents).toBe(90_00);
     expect(cycle.itemizedContributionCeilingCents).toBe(160_00);
+    // donor money = lines 1+5+7 only; loans reported separately
+    expect(cycle.donorContributionCents).toBe(90_00);
+    expect(cycle.loanContributionCents).toBe(50_00);
+    expect(cycle.totalReceiptsCents).toBe(140_00);
   });
 
   it("refuses duplicate periods", () => {

@@ -261,6 +261,15 @@ export function parseNevadaCandidateReportSummary(html: string, context: string)
 
 export type NevadaCycleSummary = {
   totalReceiptsCents: number;
+  /**
+   * Received donor money: lines 1+5+7 only. Excludes loan lines 2/3 and
+   * written-commitment lines 4/6, which sit inside line 8 — the shared
+   * ballot-lookup contract displays direct_contribution_total as
+   * total_raised, which "stays donor money only".
+   */
+  donorContributionCents: number;
+  /** Loan lines 2+3. Loan rows are unflagged in the itemized CSV. */
+  loanContributionCents: number;
   totalDisbursementsCents: number;
   cashOnHandCents: number;
   /**
@@ -289,6 +298,7 @@ export function buildNevadaCycleSummary(
     throw new Error("Nevada cycle summary requires at least one selected report");
   }
   let totalReceiptsCents = 0;
+  let donorContributionCents = 0;
   let totalDisbursementsCents = 0;
   let itemizedContributionFloorCents = 0;
   let loanContributionCents = 0;
@@ -304,6 +314,10 @@ export function buildNevadaCycleSummary(
     }
     seenPeriodEnds.add(periodEnd);
     totalReceiptsCents += entry.summary.lines[8].periodCents;
+    donorContributionCents +=
+      entry.summary.lines[1].periodCents +
+      entry.summary.lines[5].periodCents +
+      entry.summary.lines[7].periodCents;
     totalDisbursementsCents += entry.summary.lines[12].periodCents;
     itemizedContributionFloorCents +=
       entry.summary.lines[1].periodCents + entry.summary.lines[5].periodCents;
@@ -320,6 +334,8 @@ export function buildNevadaCycleSummary(
   }
   return {
     totalReceiptsCents,
+    donorContributionCents,
+    loanContributionCents,
     totalDisbursementsCents,
     cashOnHandCents: latest.summary.endingFundBalanceCents,
     // Line-7/11 money (<=$100 aggregate) may or may not be itemized, in
