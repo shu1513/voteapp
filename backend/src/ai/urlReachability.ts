@@ -859,10 +859,23 @@ export async function verifyHttpUrlReachability(
       return { ok: false, reason: `citation fetch returned status ${response.status}` };
     }
 
+    // Reaching here with a non-2xx means the status was allowlisted (403
+    // anti-bot): reachability is accepted, but nothing verified that the
+    // final hop serves the cited resource. If the chain also MOVED the
+    // resource, canonicalizing finalUrl onto that unverified target would
+    // store a WAF's /blocked interstitial as the citation — the same
+    // laundering the redirect confirmation above exists to prevent, arriving
+    // through the allowlist instead. Keep the input URL: it is what the
+    // citation claims, and it still redirects for human readers. Only a 2xx
+    // earns finalUrl canonicalization across a resource-changing redirect.
+    const verifiedFinalUrl =
+      !response.ok && isResourceChangingRedirect(normalizedInputUrl, finalUrl)
+        ? normalizedInputUrl
+        : finalUrl;
     return {
       ok: true,
       normalizedUrl: normalizedInputUrl,
-      finalUrl,
+      finalUrl: verifiedFinalUrl,
       status: response.status,
       ...(response.contentType ? { contentType: response.contentType } : {}),
       ...(response.contentLength !== null ? { contentLength: response.contentLength } : {}),

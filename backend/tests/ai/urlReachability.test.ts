@@ -594,6 +594,31 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
 
     expect(calls.map((call) => call.method)).toEqual(["HEAD", "HEAD"]);
     expect(result.ok).toBe(true);
+    // The 403 proved reachability, not content: the /blocked target is
+    // unverified and must not be handed to callers for storage — the input
+    // URL is the citation.
+    expect(result.ok && result.finalUrl).toBe("https://example.gov/wafd");
+  });
+
+  it("keeps the input URL when the rescuing GET ends on an allowlisted 403 behind a redirect", async () => {
+    // HEAD 404 triggers the GET rescue; the GET chain lands on a WAF page
+    // answering an allowlisted 403. Same rule as the HEAD path: an
+    // unverified redirect target is not stored.
+    const { calls } = stubFetch((method, url) => {
+      if (method === "HEAD") {
+        return { status: 404 };
+      }
+      if (url === "https://example.gov/doc.pdf") {
+        return { status: 302, location: "https://example.gov/access-denied" };
+      }
+      return { status: 403 };
+    });
+
+    const result = await verifyHttpUrlReachability("https://example.gov/doc.pdf");
+
+    expect(calls.map((call) => call.method)).toEqual(["HEAD", "GET", "GET"]);
+    expect(result.ok).toBe(true);
+    expect(result.ok && result.finalUrl).toBe("https://example.gov/doc.pdf");
   });
 
   it("resolves a redirect whose Location header arrived as mis-decoded UTF-8", async () => {
