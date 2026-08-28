@@ -124,8 +124,35 @@ class as Texas SB 2972. All four verified against the chaptered text and fixed:
 rewrites / 179 unchanged; the real run rewrote all 119 (one transient `citation URL fetch timed
 out` on roll 1602473 made the first attempt report 19 imported / 1 error with all 119 rewrites
 already applied; the immediate re-run was 20 `imported` / 298 `unchanged` / 0 errors). Row count
-unchanged at 298 / 33 candidates. **The batch now spans two stamps** (a rewrite re-stamps
-`origin_run_id`, the TX batch-02 mechanic): 179 rows at `2026-08-27T01:50:49.334Z` + 119 at
-`2026-08-27T21:12:30.294Z` — batch predicates must group both. Verified per-fix record counts:
+unchanged at 298 / 33 candidates. That run split the batch across two `origin_run_id` stamps (a
+rewrite re-stamps, the TX batch-02 mechanic); the second review pass below then rewrote all 298
+rows and collapsed the batch back to ONE stamp, so this run's ledger was superseded before it was
+ever committed. Verified per-fix record counts:
 SB 627 = 30, AB 495 = 32, AB 692 = 26, SB 704 = 31 (sum 119).
 
+## Review response 2 (2026-08-28, on the re-targeted PR) — plain language, audit ledgers
+
+Four more findings, all accepted:
+
+1. **16 of 20 rolls (32 of 40 descriptions) broke the repository's plain-language line** —
+   `PLAIN_LANGUAGE_MAX_SENTENCE_WORDS = 45` in `candidateRecordPlainLanguageLint.ts`, a warn-only
+   lint the importer does not run. Worst sentences were 75 and 79 words (SB 704). Every body is now
+   rewritten as short sentences — lead sentence, one qualification per sentence, closing tally
+   sentence — with every enacted qualification kept. The repo lint now reports **0 warnings over
+   all 40 judgment descriptions**, and a direct sweep of the 298 live records shows 0 sentences
+   over 45 words (longest now 41).
+2. **AB 692's audit note claimed five exception classes while the description named four.** Fixed
+   in the description (residential-property contracts added, verified in the chaptered text's
+   exception (E)), so the note above is now accurate as written.
+3. **The rewrite runs were not machine-verifiable from the repo.** This directory now commits the
+   full chain: `import-report.json` (original 298 inserts), `import-rewrite-report.json` (this
+   pass's rewrite of all 298 rows, stamp `2026-08-28T00:34:44.806Z`), and
+   `import-rerun-report.json` (the idempotency check: 298 `unchanged`, 0 errors). Because this
+   pass rewrote every row, the batch is back to a SINGLE stamp — the batch predicate is
+   `origin_run_id LIKE 'rollcall:CA:%:2172:%:2026-08-28T00:34:44.806Z'`, which returns 298 rows
+   across 33 candidates.
+4. Trailing blank line at EOF removed (`git diff --check` clean).
+
+Run chain for this pass: judge dry 20 `dry_run` → judge 20 `updated` → import dry 298 planned
+rewrites → import real 20 `imported` / 298 `rewrite` / 0 errors → dry re-run 298 `unchanged`.
+Row count unchanged at 298 / 33 candidates. Prod untouched.
