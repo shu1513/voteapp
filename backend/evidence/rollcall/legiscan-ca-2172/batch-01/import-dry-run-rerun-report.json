@@ -1,9 +1,9 @@
 {
   "importerVersion": "rollcall-legiscan-import-v1",
-  "dryRun": false,
+  "dryRun": true,
   "skipExisting": false,
-  "startedAt": "2026-08-28T02:20:12.960Z",
-  "finishedAt": "2026-08-28T02:20:16.928Z",
+  "startedAt": "2026-08-28T02:19:21.497Z",
+  "finishedAt": "2026-08-28T02:19:25.786Z",
   "jurisdiction": "CA",
   "sessionId": 2172,
   "evidenceDir": "/Users/shu/.codex/worktrees/b26f/voteApp/backend/evidence/rollcall/legiscan-ca-2172/batch-01",
@@ -14,7 +14,7 @@
   "peopleMembers": 121,
   "files": 20,
   "outcomes": {
-    "imported": 20
+    "dry_run": 20
   },
   "actions": {
     "insert": 431,
@@ -28,7 +28,7 @@
       "chamber": "house",
       "sessionId": 2172,
       "roll": 1601306,
-      "outcome": "imported",
+      "outcome": "dry_run",
       "legislativeVoteId": "15583c6b-f46c-4cbb-96a6-07a9589b3f02",
       "reviewStatus": "approved",
       "bill": "AB1415",
@@ -36,7 +36,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1415",
       "question": "AB 1415 Bonta Concurrence in Senate Amendments",
-      "originRunId": "rollcall:CA:house:2172:1601306:2026-08-28T02:20:12.960Z",
+      "originRunId": "rollcall:CA:house:2172:1601306:2026-08-28T02:19:21.497Z",
       "members": 70,
       "notVoting": 0,
       "absent": 10,
@@ -57,7 +57,7 @@
           "memberName": "Ash Kalra",
           "side": "yea",
           "action": "insert",
-          "recordId": "b7b988f5-5ffc-4b4a-86b9-fb15f1adec0a",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -69,7 +69,7 @@
           "memberName": "Cecilia Aguiar-Curry",
           "side": "yea",
           "action": "insert",
-          "recordId": "aaefc39a-30d6-4673-83f5-311d884c7ee5",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -81,7 +81,7 @@
           "memberName": "Marc Berman",
           "side": "yea",
           "action": "insert",
-          "recordId": "5ff90584-5c1d-43ca-a615-c22aa25cabd5",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -105,7 +105,7 @@
           "memberName": "Rebecca Bauer-Kahan",
           "side": "yea",
           "action": "insert",
-          "recordId": "b695d8c3-4a9a-44ae-a31f-f2d10e24836f",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -129,7 +129,7 @@
           "memberName": "Robert Rivas",
           "side": "yea",
           "action": "insert",
-          "recordId": "559d7bf8-5d49-4459-a24a-48ebab0a998e",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -141,7 +141,7 @@
           "memberName": "Buffy Wicks",
           "side": "yea",
           "action": "insert",
-          "recordId": "f4ef0e4d-6b4b-43e6-a651-7a3e79a555c3",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -153,7 +153,7 @@
           "memberName": "Steve Bennett",
           "side": "yea",
           "action": "insert",
-          "recordId": "b368e829-4335-4a61-a6f9-a8ac02340de5",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -165,7 +165,7 @@
           "memberName": "Alex Lee",
           "side": "yea",
           "action": "insert",
-          "recordId": "5f27839a-97a4-4bb0-b476-a73a0c53833b",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -189,7 +189,7 @@
           "memberName": "Lisa Calderon",
           "side": "yea",
           "action": "insert",
-          "recordId": "bfdb2511-9bfe-46f0-a676-93ee18cdcb16",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -201,7 +201,7 @@
           "memberName": "Isaac Bryan",
           "side": "yea",
           "action": "insert",
-          "recordId": "a34764d8-0bd9-4017-8ad2-a80bca681d12",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -213,7 +213,7 @@
           "memberName": "Mia Bonta",
           "side": "yea",
           "action": "insert",
-          "recordId": "26de26f6-d91b-4b0e-a236-0197f41db3a2",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -225,7 +225,7 @@
           "memberName": "Mike Fong",
           "side": "yea",
           "action": "insert",
-          "recordId": "9a147f50-1599-4200-91a7-65e9bc9b12ce",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -273,7 +273,7 @@
           "memberName": "Tina McKinnor",
           "side": "yea",
           "action": "insert",
-          "recordId": "5785106f-17b6-4575-b915-6a90c62a1b0c",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -285,7 +285,7 @@
           "memberName": "Dawn Addis",
           "side": "yea",
           "action": "insert",
-          "recordId": "83e6178d-48b1-479d-ba64-dab92fc73c86",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -321,7 +321,7 @@
           "memberName": "Josh Lowenthal",
           "side": "yea",
           "action": "insert",
-          "recordId": "e3901a16-3516-40bb-ae63-9a1969964c3f",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -333,7 +333,7 @@
           "memberName": "Liz Ortega",
           "side": "yea",
           "action": "insert",
-          "recordId": "044a1c1f-3574-4955-aa0f-58981713737d",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -345,7 +345,7 @@
           "memberName": "Diane Papan",
           "side": "yea",
           "action": "insert",
-          "recordId": "58196f34-2d75-42ba-a7ba-ee63643c98fc",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -357,7 +357,7 @@
           "memberName": "Gail Pellerin",
           "side": "yea",
           "action": "insert",
-          "recordId": "16f4cf19-6b20-4c0d-b592-5cc9c3389851",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -369,7 +369,7 @@
           "memberName": "Pilar Schiavo",
           "side": "yea",
           "action": "insert",
-          "recordId": "c4f949db-6762-4690-bf28-69f847d67819",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -405,7 +405,7 @@
           "memberName": "Rick Zbur",
           "side": "yea",
           "action": "insert",
-          "recordId": "549abb82-ba7a-4868-aa75-198abc21d2df",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -417,7 +417,7 @@
           "memberName": "Patrick Ahrens",
           "side": "yea",
           "action": "insert",
-          "recordId": "d14c6759-59ac-4b17-a10d-2cda58fc5e26",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -441,7 +441,7 @@
           "memberName": "Robert Garcia",
           "side": "yea",
           "action": "insert",
-          "recordId": "7a6c2589-3915-4df3-9f94-fd61aa7a70d8",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -465,7 +465,7 @@
           "memberName": "John Harabedian",
           "side": "yea",
           "action": "insert",
-          "recordId": "2dc6a8c6-c838-4bee-8410-2d5f72ddd12d",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -477,7 +477,7 @@
           "memberName": "Maggy Krell",
           "side": "yea",
           "action": "insert",
-          "recordId": "55923453-0fb1-4259-904c-513aa6ad1bdb",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -501,7 +501,7 @@
           "memberName": "Rhodesia Ransom",
           "side": "yea",
           "action": "insert",
-          "recordId": "42fb673e-871b-4b56-9b41-d7f211a36e71",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -513,7 +513,7 @@
           "memberName": "Celeste Rodriguez",
           "side": "yea",
           "action": "insert",
-          "recordId": "c148dee0-132a-4f67-b712-2915260383de",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -525,7 +525,7 @@
           "memberName": "Chris Rogers",
           "side": "yea",
           "action": "insert",
-          "recordId": "ecf7b0ec-bd3e-4678-8b0e-2c7faf9db8c9",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -537,7 +537,7 @@
           "memberName": "LaShae Sharp-Collins",
           "side": "yea",
           "action": "insert",
-          "recordId": "dfc31768-a9e7-4f4c-a881-5b68afdfd601",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -561,7 +561,7 @@
           "memberName": "Catherine Stefani",
           "side": "yea",
           "action": "insert",
-          "recordId": "6fd3dcba-d5d8-47dc-9c5d-8d44afbd0ffd",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -573,7 +573,7 @@
           "memberName": "Sade Elhawary",
           "side": "yea",
           "action": "insert",
-          "recordId": "22f97d4d-f559-4478-ac5c-421a340e03d2",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -585,7 +585,7 @@
           "memberName": "Phillip Chen",
           "side": "nay",
           "action": "insert",
-          "recordId": "b353ba2a-41fa-405a-85a5-8760e2ffe627",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -609,7 +609,7 @@
           "memberName": "Juan Alanis",
           "side": "nay",
           "action": "insert",
-          "recordId": "b284ea58-4baf-4368-9128-1ed231f2bf4d",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -633,7 +633,7 @@
           "memberName": "Joe Patterson",
           "side": "nay",
           "action": "insert",
-          "recordId": "1aefa8bb-5265-4f10-a384-00dd66be3f23",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -645,7 +645,7 @@
           "memberName": "Kate Sanchez",
           "side": "nay",
           "action": "insert",
-          "recordId": "99bfc990-eb07-4de0-8244-c266e28821d9",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -693,7 +693,7 @@
           "memberName": "Carl DeMaio",
           "side": "nay",
           "action": "insert",
-          "recordId": "6b086e6d-2937-49fc-af63-fef4581ee129",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -705,7 +705,7 @@
           "memberName": "Anamarie Farias",
           "side": "nay",
           "action": "insert",
-          "recordId": "1b473a49-b7aa-42ea-a92d-99096b06aec3",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -717,7 +717,7 @@
           "memberName": "Jeff Gonzalez",
           "side": "nay",
           "action": "insert",
-          "recordId": "c416562a-7b62-49ae-a4f6-e1a3805f5490",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -729,7 +729,7 @@
           "memberName": "Alexandra Macedo",
           "side": "nay",
           "action": "insert",
-          "recordId": "1c9c0be4-be55-4847-afd8-ef25a637d285",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -741,7 +741,7 @@
           "memberName": "David Tangipa",
           "side": "nay",
           "action": "insert",
-          "recordId": "7aa0ff70-080a-4e94-8af6-55f83e41cdf7",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -753,7 +753,7 @@
           "memberName": "Natasha Johnson",
           "side": "nay",
           "action": "insert",
-          "recordId": "da4d15e7-c9eb-45b9-b450-15222451928e",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -767,7 +767,7 @@
       "chamber": "house",
       "sessionId": 2172,
       "roll": 1601396,
-      "outcome": "imported",
+      "outcome": "dry_run",
       "legislativeVoteId": "3734e41e-5543-40e2-97b8-04d5d62271ed",
       "reviewStatus": "approved",
       "bill": "SB704",
@@ -775,7 +775,7 @@
       "officialVoteDate": null,
       "measureId": "SB 704",
       "question": "SB 704 Arreguín Senate Third Reading By Stefani",
-      "originRunId": "rollcall:CA:house:2172:1601396:2026-08-28T02:20:12.960Z",
+      "originRunId": "rollcall:CA:house:2172:1601396:2026-08-28T02:19:21.497Z",
       "members": 77,
       "notVoting": 0,
       "absent": 3,
@@ -796,7 +796,7 @@
           "memberName": "Ash Kalra",
           "side": "yea",
           "action": "insert",
-          "recordId": "69bc4845-6a0e-4e27-ac7d-a28c0c902c90",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -808,7 +808,7 @@
           "memberName": "Cecilia Aguiar-Curry",
           "side": "yea",
           "action": "insert",
-          "recordId": "9299f5e4-9b7b-45d0-95f2-38cdfee71075",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -820,7 +820,7 @@
           "memberName": "Marc Berman",
           "side": "yea",
           "action": "insert",
-          "recordId": "6115e3cb-306b-4651-84a5-5f66f375b6c7",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -856,7 +856,7 @@
           "memberName": "Rebecca Bauer-Kahan",
           "side": "yea",
           "action": "insert",
-          "recordId": "0b2d5c52-a528-41b9-bb0f-690b6b92f25a",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -880,7 +880,7 @@
           "memberName": "Cottie Petrie-Norris",
           "side": "yea",
           "action": "insert",
-          "recordId": "9769e597-f256-4107-8b27-6474407b889f",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -892,7 +892,7 @@
           "memberName": "James Ramos",
           "side": "yea",
           "action": "insert",
-          "recordId": "b6687676-8d48-47f7-bd7b-15da77328e20",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -904,7 +904,7 @@
           "memberName": "Robert Rivas",
           "side": "yea",
           "action": "insert",
-          "recordId": "2da60aa9-ee89-4a55-96f6-be1f5454dae3",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -916,7 +916,7 @@
           "memberName": "Buffy Wicks",
           "side": "yea",
           "action": "insert",
-          "recordId": "0eac1997-36ca-42ba-82f7-846d71ebb3d3",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -928,7 +928,7 @@
           "memberName": "Steve Bennett",
           "side": "yea",
           "action": "insert",
-          "recordId": "c245b860-b3bf-4d50-97a9-ff84dcecd8e8",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -940,7 +940,7 @@
           "memberName": "Alex Lee",
           "side": "yea",
           "action": "insert",
-          "recordId": "92c3ccf6-9f35-4e4a-a6bd-be0e672b1c02",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -964,7 +964,7 @@
           "memberName": "Lisa Calderon",
           "side": "yea",
           "action": "insert",
-          "recordId": "002d9c9f-64f4-4540-ba4d-811e634ef217",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -976,7 +976,7 @@
           "memberName": "Isaac Bryan",
           "side": "yea",
           "action": "insert",
-          "recordId": "b6d21fad-effb-43b9-8926-487d4943a2b1",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -988,7 +988,7 @@
           "memberName": "Mia Bonta",
           "side": "yea",
           "action": "insert",
-          "recordId": "45e53cd8-01fd-4e81-b3b4-64cc744dc062",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1000,7 +1000,7 @@
           "memberName": "Mike Fong",
           "side": "yea",
           "action": "insert",
-          "recordId": "f98c9c36-3107-4a71-9f42-eb9d503f0e3b",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1048,7 +1048,7 @@
           "memberName": "Tina McKinnor",
           "side": "yea",
           "action": "insert",
-          "recordId": "98b423c4-9106-4a89-8ec5-1f124e40d1c1",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1060,7 +1060,7 @@
           "memberName": "Dawn Addis",
           "side": "yea",
           "action": "insert",
-          "recordId": "75b0b323-6daa-4c1b-b8bd-12626b21b32c",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1084,7 +1084,7 @@
           "memberName": "Gregg Hart",
           "side": "yea",
           "action": "insert",
-          "recordId": "7add306b-aaae-4492-866d-f90d093cab6e",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1108,7 +1108,7 @@
           "memberName": "Juan Carrillo",
           "side": "yea",
           "action": "insert",
-          "recordId": "0a614d04-b595-42de-b85c-15f7480a220c",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1120,7 +1120,7 @@
           "memberName": "Josh Lowenthal",
           "side": "yea",
           "action": "insert",
-          "recordId": "1805cbf5-61db-41f4-80d4-cf0883ae1974",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1132,7 +1132,7 @@
           "memberName": "Liz Ortega",
           "side": "yea",
           "action": "insert",
-          "recordId": "339e93d5-df28-4771-a8c8-4e3a2351fde0",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1156,7 +1156,7 @@
           "memberName": "Diane Papan",
           "side": "yea",
           "action": "insert",
-          "recordId": "420ffabc-7b9a-43fc-a17c-29f30e13b363",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1168,7 +1168,7 @@
           "memberName": "Gail Pellerin",
           "side": "yea",
           "action": "insert",
-          "recordId": "af13deb8-4b5e-4c86-9355-ffda5c91a0f2",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1180,7 +1180,7 @@
           "memberName": "Pilar Schiavo",
           "side": "yea",
           "action": "insert",
-          "recordId": "0d6520c8-defb-44ad-bb66-db861634879d",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1216,7 +1216,7 @@
           "memberName": "Rick Zbur",
           "side": "yea",
           "action": "insert",
-          "recordId": "160c94a4-0243-430d-80ba-cfa366ab0edd",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1228,7 +1228,7 @@
           "memberName": "Patrick Ahrens",
           "side": "yea",
           "action": "insert",
-          "recordId": "2864329e-2f02-4585-af93-76e1c58ed6eb",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1252,7 +1252,7 @@
           "memberName": "Anamarie Farias",
           "side": "yea",
           "action": "insert",
-          "recordId": "050db50f-d1e4-4554-b40f-13d164078eb1",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1264,7 +1264,7 @@
           "memberName": "Robert Garcia",
           "side": "yea",
           "action": "insert",
-          "recordId": "665a3361-7e17-41ac-9ef7-baf19df65aa8",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1288,7 +1288,7 @@
           "memberName": "John Harabedian",
           "side": "yea",
           "action": "insert",
-          "recordId": "5a7ed0b8-4bd5-4d6d-9acd-1af207b07c86",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1300,7 +1300,7 @@
           "memberName": "Maggy Krell",
           "side": "yea",
           "action": "insert",
-          "recordId": "0781191f-58ed-4b2e-9880-2391d828802a",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1324,7 +1324,7 @@
           "memberName": "Rhodesia Ransom",
           "side": "yea",
           "action": "insert",
-          "recordId": "ea2ad8db-a99a-49c2-9fc4-8441f3f22e07",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1336,7 +1336,7 @@
           "memberName": "Celeste Rodriguez",
           "side": "yea",
           "action": "insert",
-          "recordId": "d25888c2-05a4-483a-abd3-17cd38336066",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1348,7 +1348,7 @@
           "memberName": "Michelle Rodriguez",
           "side": "yea",
           "action": "insert",
-          "recordId": "3deda809-1e83-428f-b95b-e2c04ebe1ef7",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1360,7 +1360,7 @@
           "memberName": "Chris Rogers",
           "side": "yea",
           "action": "insert",
-          "recordId": "7397abd8-7a8c-4a35-b6fd-cc1aaa25d2db",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1372,7 +1372,7 @@
           "memberName": "LaShae Sharp-Collins",
           "side": "yea",
           "action": "insert",
-          "recordId": "7ebffdb9-fda4-45aa-a3a9-ca1f02f06959",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1396,7 +1396,7 @@
           "memberName": "Catherine Stefani",
           "side": "yea",
           "action": "insert",
-          "recordId": "0f112337-06d2-41cd-ad2a-15c498c50294",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1408,7 +1408,7 @@
           "memberName": "Sade Elhawary",
           "side": "yea",
           "action": "insert",
-          "recordId": "a1b435c1-9fa4-4004-8b3e-e78c5144b9c8",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1420,7 +1420,7 @@
           "memberName": "Phillip Chen",
           "side": "nay",
           "action": "insert",
-          "recordId": "f1378f06-bfa3-4248-affa-3a65cfa2fa87",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1432,7 +1432,7 @@
           "memberName": "Heath Flora",
           "side": "nay",
           "action": "insert",
-          "recordId": "3a19326b-c0a6-450c-b4d4-bbc6aaa830b4",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1456,7 +1456,7 @@
           "memberName": "Juan Alanis",
           "side": "nay",
           "action": "insert",
-          "recordId": "ba62d322-9c26-48e3-bb23-dcb4802cdb45",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1480,7 +1480,7 @@
           "memberName": "Joe Patterson",
           "side": "nay",
           "action": "insert",
-          "recordId": "cc5a702f-f130-4388-8340-f4272492892c",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1492,7 +1492,7 @@
           "memberName": "Kate Sanchez",
           "side": "nay",
           "action": "insert",
-          "recordId": "39d64307-57f6-43ac-8dce-fc94efb655fa",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1540,7 +1540,7 @@
           "memberName": "Carl DeMaio",
           "side": "nay",
           "action": "insert",
-          "recordId": "583b0275-9746-4857-a27b-473d0c00161c",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1552,7 +1552,7 @@
           "memberName": "Jeff Gonzalez",
           "side": "nay",
           "action": "insert",
-          "recordId": "76717cc1-d3f5-4ab8-96c6-d1fdd28f21ac",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1564,7 +1564,7 @@
           "memberName": "Heather Hadwick",
           "side": "nay",
           "action": "insert",
-          "recordId": "8ff4002f-f414-4d16-aaaa-521db063327e",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1576,7 +1576,7 @@
           "memberName": "Alexandra Macedo",
           "side": "nay",
           "action": "insert",
-          "recordId": "9cf87d25-3ded-42a2-aefd-76d0d2757576",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1588,7 +1588,7 @@
           "memberName": "David Tangipa",
           "side": "nay",
           "action": "insert",
-          "recordId": "1bb09db9-66e2-44b0-90c0-ca95294388fc",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1600,7 +1600,7 @@
           "memberName": "Natasha Johnson",
           "side": "nay",
           "action": "insert",
-          "recordId": "fb21adac-5736-4ce1-bf9f-1f18fdfe6ec4",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1614,7 +1614,7 @@
       "chamber": "house",
       "sessionId": 2172,
       "roll": 1601453,
-      "outcome": "imported",
+      "outcome": "dry_run",
       "legislativeVoteId": "b1fb5226-4c63-47db-9985-5ea564fb48e7",
       "reviewStatus": "approved",
       "bill": "SB580",
@@ -1622,7 +1622,7 @@
       "officialVoteDate": null,
       "measureId": "SB 580",
       "question": "SB 580 Durazo Senate Third Reading By Bryan",
-      "originRunId": "rollcall:CA:house:2172:1601453:2026-08-28T02:20:12.960Z",
+      "originRunId": "rollcall:CA:house:2172:1601453:2026-08-28T02:19:21.497Z",
       "members": 77,
       "notVoting": 0,
       "absent": 3,
@@ -1643,7 +1643,7 @@
           "memberName": "Ash Kalra",
           "side": "yea",
           "action": "insert",
-          "recordId": "b50b0eb3-36c0-4caf-96ca-28193164792b",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1655,7 +1655,7 @@
           "memberName": "Cecilia Aguiar-Curry",
           "side": "yea",
           "action": "insert",
-          "recordId": "6df22a13-fad2-4735-9739-4a20a42356ce",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1667,7 +1667,7 @@
           "memberName": "Marc Berman",
           "side": "yea",
           "action": "insert",
-          "recordId": "2fdd2c93-93e6-4abd-bf97-841c772f322e",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1703,7 +1703,7 @@
           "memberName": "Rebecca Bauer-Kahan",
           "side": "yea",
           "action": "insert",
-          "recordId": "7f26a9eb-4f43-4fb4-8104-eb1de9dfc251",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1727,7 +1727,7 @@
           "memberName": "Cottie Petrie-Norris",
           "side": "yea",
           "action": "insert",
-          "recordId": "3ea2ee1c-3ed5-44e6-9a09-82c4e670da56",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1739,7 +1739,7 @@
           "memberName": "James Ramos",
           "side": "yea",
           "action": "insert",
-          "recordId": "b18037ea-cdbf-49ee-8272-b322e471e0e3",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1751,7 +1751,7 @@
           "memberName": "Robert Rivas",
           "side": "yea",
           "action": "insert",
-          "recordId": "47416812-9775-4f03-98ee-2c101d81dbeb",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1763,7 +1763,7 @@
           "memberName": "Buffy Wicks",
           "side": "yea",
           "action": "insert",
-          "recordId": "43dc6318-30bf-44c3-ae31-5afa3eb79c5c",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1775,7 +1775,7 @@
           "memberName": "Steve Bennett",
           "side": "yea",
           "action": "insert",
-          "recordId": "2a2e01bf-9c15-47ea-8fcf-5e741910a6df",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1787,7 +1787,7 @@
           "memberName": "Alex Lee",
           "side": "yea",
           "action": "insert",
-          "recordId": "177959c0-8412-4212-aedf-faf3e2239e9b",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1811,7 +1811,7 @@
           "memberName": "Lisa Calderon",
           "side": "yea",
           "action": "insert",
-          "recordId": "8d3974a7-a797-44e4-bb1a-b8a575da68d3",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1823,7 +1823,7 @@
           "memberName": "Isaac Bryan",
           "side": "yea",
           "action": "insert",
-          "recordId": "3efd7c95-74b5-4a59-be05-f8c6589ca39d",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1835,7 +1835,7 @@
           "memberName": "Mia Bonta",
           "side": "yea",
           "action": "insert",
-          "recordId": "5d4adc13-1ed5-43cb-a1e0-356bb7669175",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1847,7 +1847,7 @@
           "memberName": "Mike Fong",
           "side": "yea",
           "action": "insert",
-          "recordId": "e164b190-034f-4747-8457-d8a1ce34ce5d",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1895,7 +1895,7 @@
           "memberName": "Tina McKinnor",
           "side": "yea",
           "action": "insert",
-          "recordId": "7793f2e3-d5c1-4e6f-96b4-c9ca57a01bc3",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1907,7 +1907,7 @@
           "memberName": "Dawn Addis",
           "side": "yea",
           "action": "insert",
-          "recordId": "a1ebcf99-fc09-4954-bf2a-3cb3668745b3",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1931,7 +1931,7 @@
           "memberName": "Gregg Hart",
           "side": "yea",
           "action": "insert",
-          "recordId": "7addc9a8-7566-4ffb-bd43-e39840dcff2e",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1955,7 +1955,7 @@
           "memberName": "Juan Carrillo",
           "side": "yea",
           "action": "insert",
-          "recordId": "1a652a9f-4d1c-4745-83c6-421901b24e2b",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1967,7 +1967,7 @@
           "memberName": "Josh Lowenthal",
           "side": "yea",
           "action": "insert",
-          "recordId": "2ee655d1-5e29-42b8-b5a2-ea463fbdeec3",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1979,7 +1979,7 @@
           "memberName": "Liz Ortega",
           "side": "yea",
           "action": "insert",
-          "recordId": "08c5a3c8-34f2-4c54-994b-c65f1034affd",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2003,7 +2003,7 @@
           "memberName": "Diane Papan",
           "side": "yea",
           "action": "insert",
-          "recordId": "f5d5969b-0525-4612-94aa-d749e45d0b5f",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2015,7 +2015,7 @@
           "memberName": "Gail Pellerin",
           "side": "yea",
           "action": "insert",
-          "recordId": "e1a2b131-d594-464e-b914-2503b02207b0",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2063,7 +2063,7 @@
           "memberName": "Rick Zbur",
           "side": "yea",
           "action": "insert",
-          "recordId": "94cb36a5-b7ac-457b-95c4-a1a6b7db5dfa",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2075,7 +2075,7 @@
           "memberName": "Patrick Ahrens",
           "side": "yea",
           "action": "insert",
-          "recordId": "983e0296-94c9-4a8b-a751-afe66bce958e",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2099,7 +2099,7 @@
           "memberName": "Anamarie Farias",
           "side": "yea",
           "action": "insert",
-          "recordId": "38f6a989-faff-45da-bb5d-b2680b6756f9",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2111,7 +2111,7 @@
           "memberName": "Robert Garcia",
           "side": "yea",
           "action": "insert",
-          "recordId": "0853cb57-ac19-4a12-9e27-d1823c60c12f",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2135,7 +2135,7 @@
           "memberName": "John Harabedian",
           "side": "yea",
           "action": "insert",
-          "recordId": "d8852c72-192d-4595-9cca-f8801fbade40",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2147,7 +2147,7 @@
           "memberName": "Maggy Krell",
           "side": "yea",
           "action": "insert",
-          "recordId": "67d0859b-cf4a-46df-9a8d-f9b571c05abd",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2171,7 +2171,7 @@
           "memberName": "Rhodesia Ransom",
           "side": "yea",
           "action": "insert",
-          "recordId": "cb380602-cae7-4ecc-bc0d-461d6881a3ec",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2183,7 +2183,7 @@
           "memberName": "Celeste Rodriguez",
           "side": "yea",
           "action": "insert",
-          "recordId": "da89cddb-0ec9-49ff-8bdc-e89baf9394af",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2195,7 +2195,7 @@
           "memberName": "Michelle Rodriguez",
           "side": "yea",
           "action": "insert",
-          "recordId": "7f941f51-fb92-4385-ae96-6ec7dff3a85b",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2207,7 +2207,7 @@
           "memberName": "Chris Rogers",
           "side": "yea",
           "action": "insert",
-          "recordId": "dd8dd903-7b5a-4d7d-95c5-cac341ce42d1",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2219,7 +2219,7 @@
           "memberName": "LaShae Sharp-Collins",
           "side": "yea",
           "action": "insert",
-          "recordId": "1271acbb-0f4c-4ce9-87ef-b5b5033f948b",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2243,7 +2243,7 @@
           "memberName": "Catherine Stefani",
           "side": "yea",
           "action": "insert",
-          "recordId": "c664c26e-0d07-460a-981f-89fa0114b2a1",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2255,7 +2255,7 @@
           "memberName": "Sade Elhawary",
           "side": "yea",
           "action": "insert",
-          "recordId": "913feaca-375a-4152-8674-36ab63228414",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2267,7 +2267,7 @@
           "memberName": "Phillip Chen",
           "side": "nay",
           "action": "insert",
-          "recordId": "739208ad-6bad-4a2a-bfcb-1c958584e827",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2279,7 +2279,7 @@
           "memberName": "Heath Flora",
           "side": "nay",
           "action": "insert",
-          "recordId": "caa82bfa-708a-4fb4-90cc-4bc7b133a02e",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2303,7 +2303,7 @@
           "memberName": "Juan Alanis",
           "side": "nay",
           "action": "insert",
-          "recordId": "47dc4643-ae15-428e-8998-1782a4e8c4c6",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2327,7 +2327,7 @@
           "memberName": "Joe Patterson",
           "side": "nay",
           "action": "insert",
-          "recordId": "811c65e5-77ff-41b6-9a1e-fbafdcfae6a1",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2339,7 +2339,7 @@
           "memberName": "Kate Sanchez",
           "side": "nay",
           "action": "insert",
-          "recordId": "e9d35fb1-710b-489a-820e-5d7e7fe42af0",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2387,7 +2387,7 @@
           "memberName": "Carl DeMaio",
           "side": "nay",
           "action": "insert",
-          "recordId": "9b64403b-b3de-47ad-8696-340db15d2db7",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2399,7 +2399,7 @@
           "memberName": "Jeff Gonzalez",
           "side": "nay",
           "action": "insert",
-          "recordId": "8ae0c455-b7aa-48b1-a36b-6871acc22901",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2411,7 +2411,7 @@
           "memberName": "Heather Hadwick",
           "side": "nay",
           "action": "insert",
-          "recordId": "0ce373d6-834b-4052-8d43-3176e11b6b17",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2423,7 +2423,7 @@
           "memberName": "Alexandra Macedo",
           "side": "nay",
           "action": "insert",
-          "recordId": "aa17d4de-76f0-4fec-8f2e-a62389b8cb84",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2435,7 +2435,7 @@
           "memberName": "David Tangipa",
           "side": "nay",
           "action": "insert",
-          "recordId": "9a00f28f-a464-4364-bdef-334be8e06fcc",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2447,7 +2447,7 @@
           "memberName": "Natasha Johnson",
           "side": "nay",
           "action": "insert",
-          "recordId": "c44d1b0d-3945-47fd-9ca3-adad2ca35a37",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2461,7 +2461,7 @@
       "chamber": "house",
       "sessionId": 2172,
       "roll": 1601634,
-      "outcome": "imported",
+      "outcome": "dry_run",
       "legislativeVoteId": "d3659513-ee66-4501-9c9c-3c004d961001",
       "reviewStatus": "approved",
       "bill": "SB627",
@@ -2469,7 +2469,7 @@
       "officialVoteDate": null,
       "measureId": "SB 627",
       "question": "SB 627 Wiener Senate Third Reading By Carrillo",
-      "originRunId": "rollcall:CA:house:2172:1601634:2026-08-28T02:20:12.960Z",
+      "originRunId": "rollcall:CA:house:2172:1601634:2026-08-28T02:19:21.497Z",
       "members": 68,
       "notVoting": 0,
       "absent": 12,
@@ -2490,7 +2490,7 @@
           "memberName": "Ash Kalra",
           "side": "yea",
           "action": "insert",
-          "recordId": "9e020b47-e27f-44ee-a97f-62be74474039",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2502,7 +2502,7 @@
           "memberName": "Cecilia Aguiar-Curry",
           "side": "yea",
           "action": "insert",
-          "recordId": "7c4694fc-7fa8-43e4-9144-8bb29737e845",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2514,7 +2514,7 @@
           "memberName": "Marc Berman",
           "side": "yea",
           "action": "insert",
-          "recordId": "066ca25d-a5f1-4c68-adb4-4e48339e9f94",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2550,7 +2550,7 @@
           "memberName": "Robert Rivas",
           "side": "yea",
           "action": "insert",
-          "recordId": "9c99ba6b-7742-4de3-8fac-529757e3fdce",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2562,7 +2562,7 @@
           "memberName": "Buffy Wicks",
           "side": "yea",
           "action": "insert",
-          "recordId": "39ff2b9f-aced-4449-9ca6-e8f9748047e7",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2574,7 +2574,7 @@
           "memberName": "Steve Bennett",
           "side": "yea",
           "action": "insert",
-          "recordId": "306f7db7-c01d-4334-8460-11ddc1477ede",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2586,7 +2586,7 @@
           "memberName": "Alex Lee",
           "side": "yea",
           "action": "insert",
-          "recordId": "945c3859-b521-4ddc-ad89-c4361b779114",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2610,7 +2610,7 @@
           "memberName": "Isaac Bryan",
           "side": "yea",
           "action": "insert",
-          "recordId": "4baf9568-f4e8-47b7-a83c-020ed2e7d58d",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2622,7 +2622,7 @@
           "memberName": "Mia Bonta",
           "side": "yea",
           "action": "insert",
-          "recordId": "6bb7bf2d-cbe5-4576-a249-dbbabb21d9eb",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2634,7 +2634,7 @@
           "memberName": "Mike Fong",
           "side": "yea",
           "action": "insert",
-          "recordId": "c257fdac-2d0c-4393-802a-f896aa996154",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2682,7 +2682,7 @@
           "memberName": "Tina McKinnor",
           "side": "yea",
           "action": "insert",
-          "recordId": "d30b7633-619a-4343-8c2a-ee1465518d43",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2694,7 +2694,7 @@
           "memberName": "Dawn Addis",
           "side": "yea",
           "action": "insert",
-          "recordId": "7afbb587-4482-4e18-8df7-f9ef6e16a634",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2718,7 +2718,7 @@
           "memberName": "Gregg Hart",
           "side": "yea",
           "action": "insert",
-          "recordId": "ccaee232-4ca6-4297-b56d-e1db91bd66cd",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2742,7 +2742,7 @@
           "memberName": "Juan Carrillo",
           "side": "yea",
           "action": "insert",
-          "recordId": "2e113d1e-076b-4b09-ae0c-d87234ba5c75",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2754,7 +2754,7 @@
           "memberName": "Josh Lowenthal",
           "side": "yea",
           "action": "insert",
-          "recordId": "f16b3619-0c3f-4b76-9bc9-740c425e6ddd",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2766,7 +2766,7 @@
           "memberName": "Liz Ortega",
           "side": "yea",
           "action": "insert",
-          "recordId": "1f9c1ae7-5764-4f29-82dd-ae0740c3cf12",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2778,7 +2778,7 @@
           "memberName": "Diane Papan",
           "side": "yea",
           "action": "insert",
-          "recordId": "689fefba-671a-4bc0-8b72-d590f0cb5ef7",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2790,7 +2790,7 @@
           "memberName": "Gail Pellerin",
           "side": "yea",
           "action": "insert",
-          "recordId": "744b7e40-0e2c-48de-b844-7606543aa944",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2802,7 +2802,7 @@
           "memberName": "Pilar Schiavo",
           "side": "yea",
           "action": "insert",
-          "recordId": "d7502268-bdcb-46ae-a790-70ebb0828843",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2826,7 +2826,7 @@
           "memberName": "Rick Zbur",
           "side": "yea",
           "action": "insert",
-          "recordId": "f68743fc-0330-4fa6-a500-2b2b07de504f",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2838,7 +2838,7 @@
           "memberName": "Patrick Ahrens",
           "side": "yea",
           "action": "insert",
-          "recordId": "b8ca896a-5362-4ab4-9c24-7074f456bbf5",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2862,7 +2862,7 @@
           "memberName": "Robert Garcia",
           "side": "yea",
           "action": "insert",
-          "recordId": "5e04bfe4-5083-424d-b444-d076a00e86ca",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2886,7 +2886,7 @@
           "memberName": "John Harabedian",
           "side": "yea",
           "action": "insert",
-          "recordId": "06ca746c-bed1-4988-9d2e-09a65190e8fb",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2910,7 +2910,7 @@
           "memberName": "Celeste Rodriguez",
           "side": "yea",
           "action": "insert",
-          "recordId": "48ace0d6-cbfb-4243-b54f-0e756b9c7654",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2922,7 +2922,7 @@
           "memberName": "Chris Rogers",
           "side": "yea",
           "action": "insert",
-          "recordId": "a79eb10c-3561-4773-a47e-1adc62b05ec8",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2934,7 +2934,7 @@
           "memberName": "LaShae Sharp-Collins",
           "side": "yea",
           "action": "insert",
-          "recordId": "3d411902-d110-4707-ad3d-91ade0be2100",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2958,7 +2958,7 @@
           "memberName": "Catherine Stefani",
           "side": "yea",
           "action": "insert",
-          "recordId": "f1554f8b-3a7e-4443-a325-41a776f3eafa",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2970,7 +2970,7 @@
           "memberName": "Sade Elhawary",
           "side": "yea",
           "action": "insert",
-          "recordId": "dee68092-c067-4054-b71e-e5ab5a806acb",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2982,7 +2982,7 @@
           "memberName": "Phillip Chen",
           "side": "nay",
           "action": "insert",
-          "recordId": "90b5bc56-dd08-424a-9d4d-fb5222674f66",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2994,7 +2994,7 @@
           "memberName": "Heath Flora",
           "side": "nay",
           "action": "insert",
-          "recordId": "17dd347d-89e2-4af6-891a-8e0c80ddf642",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3018,7 +3018,7 @@
           "memberName": "Juan Alanis",
           "side": "nay",
           "action": "insert",
-          "recordId": "558f87fe-71e3-498c-9b1a-31be297a46b3",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3042,7 +3042,7 @@
           "memberName": "Joe Patterson",
           "side": "nay",
           "action": "insert",
-          "recordId": "7fa2a232-77ee-47b5-8607-f3e77e705607",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3066,7 +3066,7 @@
           "memberName": "Kate Sanchez",
           "side": "nay",
           "action": "insert",
-          "recordId": "4e68267e-7c4e-4dc4-9204-004c6e9ed045",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3114,7 +3114,7 @@
           "memberName": "Carl DeMaio",
           "side": "nay",
           "action": "insert",
-          "recordId": "98e8b010-d511-43e7-9e6a-657e749953a7",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3126,7 +3126,7 @@
           "memberName": "Anamarie Farias",
           "side": "nay",
           "action": "insert",
-          "recordId": "08b504ae-468d-4d76-aa40-e56a1d2906ca",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3138,7 +3138,7 @@
           "memberName": "Jeff Gonzalez",
           "side": "nay",
           "action": "insert",
-          "recordId": "d1589f5e-6a80-49b4-aac0-0fff5bb2704b",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3150,7 +3150,7 @@
           "memberName": "Heather Hadwick",
           "side": "nay",
           "action": "insert",
-          "recordId": "1e13d132-3f0c-44eb-9f22-d1e55f306108",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3162,7 +3162,7 @@
           "memberName": "Alexandra Macedo",
           "side": "nay",
           "action": "insert",
-          "recordId": "0dee2d70-2509-4828-8df2-1f85b7721873",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3174,7 +3174,7 @@
           "memberName": "Michelle Rodriguez",
           "side": "nay",
           "action": "insert",
-          "recordId": "6f1f72d9-8389-4284-a463-61a967d01f04",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3186,7 +3186,7 @@
           "memberName": "David Tangipa",
           "side": "nay",
           "action": "insert",
-          "recordId": "60b35b24-ed3f-48d5-9006-0b28f4f5cf35",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3198,7 +3198,7 @@
           "memberName": "Natasha Johnson",
           "side": "nay",
           "action": "insert",
-          "recordId": "a0e00607-b36f-4631-868d-20dbbdd71a55",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3212,7 +3212,7 @@
       "chamber": "house",
       "sessionId": 2172,
       "roll": 1602272,
-      "outcome": "imported",
+      "outcome": "dry_run",
       "legislativeVoteId": "af165854-b209-4e4a-84f9-ebd66aabb268",
       "reviewStatus": "approved",
       "bill": "SB42",
@@ -3220,7 +3220,7 @@
       "officialVoteDate": null,
       "measureId": "SB 42",
       "question": "SB 42 Umberg Senate Third Reading By Lee",
-      "originRunId": "rollcall:CA:house:2172:1602272:2026-08-28T02:20:12.960Z",
+      "originRunId": "rollcall:CA:house:2172:1602272:2026-08-28T02:19:21.497Z",
       "members": 79,
       "notVoting": 0,
       "absent": 1,
@@ -3241,7 +3241,7 @@
           "memberName": "Ash Kalra",
           "side": "yea",
           "action": "insert",
-          "recordId": "c0045d8b-ce5a-428e-938b-0e88ae289887",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3253,7 +3253,7 @@
           "memberName": "Cecilia Aguiar-Curry",
           "side": "yea",
           "action": "insert",
-          "recordId": "232b16b4-f1ed-44c2-9887-fe1f8ac39798",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3265,7 +3265,7 @@
           "memberName": "Marc Berman",
           "side": "yea",
           "action": "insert",
-          "recordId": "0941ef09-ec6d-4b17-9526-02e91ba50037",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3301,7 +3301,7 @@
           "memberName": "Rebecca Bauer-Kahan",
           "side": "yea",
           "action": "insert",
-          "recordId": "ec3f9cb1-1ccc-4ddf-8749-9083b5a8eaf0",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3325,7 +3325,7 @@
           "memberName": "Cottie Petrie-Norris",
           "side": "yea",
           "action": "insert",
-          "recordId": "4522ef59-5019-4738-ac6d-1a21f0e7e7ce",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3337,7 +3337,7 @@
           "memberName": "Robert Rivas",
           "side": "yea",
           "action": "insert",
-          "recordId": "32937b35-2a85-4a9f-a25a-ce82682e7cff",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3349,7 +3349,7 @@
           "memberName": "Buffy Wicks",
           "side": "yea",
           "action": "insert",
-          "recordId": "45bd4d6a-d7dd-4429-94ae-429275c23a1a",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3361,7 +3361,7 @@
           "memberName": "Steve Bennett",
           "side": "yea",
           "action": "insert",
-          "recordId": "680c4dd6-ffb1-4fb5-ad3c-54919e3d2822",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3373,7 +3373,7 @@
           "memberName": "Alex Lee",
           "side": "yea",
           "action": "insert",
-          "recordId": "da8a5ce9-6d22-41da-9a57-025fc5b5076e",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3397,7 +3397,7 @@
           "memberName": "Lisa Calderon",
           "side": "yea",
           "action": "insert",
-          "recordId": "a4d5c48e-7c70-4a4a-96ca-0c307d4cc51f",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3409,7 +3409,7 @@
           "memberName": "Isaac Bryan",
           "side": "yea",
           "action": "insert",
-          "recordId": "a802bb50-b4ac-42b6-b059-e23b1edb4ef5",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3421,7 +3421,7 @@
           "memberName": "Mia Bonta",
           "side": "yea",
           "action": "insert",
-          "recordId": "f42684ef-6edb-4ca1-af07-4f952776d7fb",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3433,7 +3433,7 @@
           "memberName": "Mike Fong",
           "side": "yea",
           "action": "insert",
-          "recordId": "82763ad8-0212-46e2-86a9-702eae7506b2",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3481,7 +3481,7 @@
           "memberName": "Tina McKinnor",
           "side": "yea",
           "action": "insert",
-          "recordId": "4678da9b-a20d-4a08-bdf4-c6478fcf4689",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3493,7 +3493,7 @@
           "memberName": "Dawn Addis",
           "side": "yea",
           "action": "insert",
-          "recordId": "4035461e-ce0f-4a46-895b-4cd2e1ea336a",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3517,7 +3517,7 @@
           "memberName": "Gregg Hart",
           "side": "yea",
           "action": "insert",
-          "recordId": "29c7015d-5cfa-4729-a0b1-299803b3eb55",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3541,7 +3541,7 @@
           "memberName": "Juan Carrillo",
           "side": "yea",
           "action": "insert",
-          "recordId": "dac54967-10de-4323-b5ea-f57ff45c6a40",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3553,7 +3553,7 @@
           "memberName": "Josh Lowenthal",
           "side": "yea",
           "action": "insert",
-          "recordId": "8ef57085-796c-47ee-be5a-a9ff64784866",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3565,7 +3565,7 @@
           "memberName": "Liz Ortega",
           "side": "yea",
           "action": "insert",
-          "recordId": "343f654b-d375-4772-9853-96340162ab2f",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3589,7 +3589,7 @@
           "memberName": "Diane Papan",
           "side": "yea",
           "action": "insert",
-          "recordId": "07aa2da4-42b1-4051-9f24-692bde4e6494",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3601,7 +3601,7 @@
           "memberName": "Gail Pellerin",
           "side": "yea",
           "action": "insert",
-          "recordId": "e5d5954c-d293-44e8-b716-feccfbc08318",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3613,7 +3613,7 @@
           "memberName": "Pilar Schiavo",
           "side": "yea",
           "action": "insert",
-          "recordId": "7231bf99-8e2b-4df7-a03c-d5aecf26d402",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3661,7 +3661,7 @@
           "memberName": "Rick Zbur",
           "side": "yea",
           "action": "insert",
-          "recordId": "8a969cd7-23f5-4fe3-95eb-a76d1cb5fb69",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3673,7 +3673,7 @@
           "memberName": "Patrick Ahrens",
           "side": "yea",
           "action": "insert",
-          "recordId": "d167e677-cea5-42a0-85f9-897e5e0e550a",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3697,7 +3697,7 @@
           "memberName": "Anamarie Farias",
           "side": "yea",
           "action": "insert",
-          "recordId": "0c86a625-44e4-4586-a559-2f50ed81a934",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3709,7 +3709,7 @@
           "memberName": "Robert Garcia",
           "side": "yea",
           "action": "insert",
-          "recordId": "c3737cb2-e780-415e-abf4-8fdcfdceef8c",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3733,7 +3733,7 @@
           "memberName": "John Harabedian",
           "side": "yea",
           "action": "insert",
-          "recordId": "9848e566-9bf4-4026-bffa-3cfa6428545a",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3745,7 +3745,7 @@
           "memberName": "Maggy Krell",
           "side": "yea",
           "action": "insert",
-          "recordId": "4382b515-66b7-421b-a351-b2f8e89e905f",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3769,7 +3769,7 @@
           "memberName": "Rhodesia Ransom",
           "side": "yea",
           "action": "insert",
-          "recordId": "da006dad-23a3-44b4-b03a-2e36eb3cf5a2",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3781,7 +3781,7 @@
           "memberName": "Celeste Rodriguez",
           "side": "yea",
           "action": "insert",
-          "recordId": "e4160a3f-4762-4de3-851d-bd612410081a",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3793,7 +3793,7 @@
           "memberName": "Michelle Rodriguez",
           "side": "yea",
           "action": "insert",
-          "recordId": "4a532c6f-28fb-434d-95a7-de50fd82a1df",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3805,7 +3805,7 @@
           "memberName": "Chris Rogers",
           "side": "yea",
           "action": "insert",
-          "recordId": "aa599237-8e84-4aca-9d8f-1889c21b324e",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3817,7 +3817,7 @@
           "memberName": "LaShae Sharp-Collins",
           "side": "yea",
           "action": "insert",
-          "recordId": "09503527-9791-4f8b-8930-cdebcdbbc011",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3841,7 +3841,7 @@
           "memberName": "Catherine Stefani",
           "side": "yea",
           "action": "insert",
-          "recordId": "5230e798-09be-406a-a088-9a01c45985b7",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3853,7 +3853,7 @@
           "memberName": "Sade Elhawary",
           "side": "yea",
           "action": "insert",
-          "recordId": "697f4fe6-7c35-4a14-af45-f476a79f3d15",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3865,7 +3865,7 @@
           "memberName": "Phillip Chen",
           "side": "nay",
           "action": "insert",
-          "recordId": "ca80dcdb-23db-46b1-9f41-19f1aade5197",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3877,7 +3877,7 @@
           "memberName": "Heath Flora",
           "side": "nay",
           "action": "insert",
-          "recordId": "8582a395-245a-4352-9a6c-8809427c2804",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3901,7 +3901,7 @@
           "memberName": "Juan Alanis",
           "side": "nay",
           "action": "insert",
-          "recordId": "52e7a093-9cf1-4b7a-b37b-a25f352ded78",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3925,7 +3925,7 @@
           "memberName": "Joe Patterson",
           "side": "nay",
           "action": "insert",
-          "recordId": "9ee08210-541d-4930-bcb6-6735373af5c6",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3937,7 +3937,7 @@
           "memberName": "Kate Sanchez",
           "side": "nay",
           "action": "insert",
-          "recordId": "b6732270-9636-452f-8358-383a1b47e638",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3985,7 +3985,7 @@
           "memberName": "Carl DeMaio",
           "side": "nay",
           "action": "insert",
-          "recordId": "dee3dae0-2313-48d9-a6b5-e3eeb53facde",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3997,7 +3997,7 @@
           "memberName": "Jeff Gonzalez",
           "side": "nay",
           "action": "insert",
-          "recordId": "561f46eb-3b20-49af-b7fd-8c1002e9b23c",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4009,7 +4009,7 @@
           "memberName": "Heather Hadwick",
           "side": "nay",
           "action": "insert",
-          "recordId": "243a78b8-37f7-44cd-ac1f-d137e2974618",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4021,7 +4021,7 @@
           "memberName": "Alexandra Macedo",
           "side": "nay",
           "action": "insert",
-          "recordId": "c3dc38b5-efb7-4111-b802-21b5ceef2ed2",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4033,7 +4033,7 @@
           "memberName": "David Tangipa",
           "side": "nay",
           "action": "insert",
-          "recordId": "5f1fce6f-3a11-43ed-bd45-b661a3ec5c6e",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4045,7 +4045,7 @@
           "memberName": "Natasha Johnson",
           "side": "nay",
           "action": "insert",
-          "recordId": "9c1e7a4d-8857-4217-a9cc-b1a1283d8e83",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4059,7 +4059,7 @@
       "chamber": "house",
       "sessionId": 2172,
       "roll": 1602313,
-      "outcome": "imported",
+      "outcome": "dry_run",
       "legislativeVoteId": "ceff9bd1-d861-4d45-bc5f-3e97e55905aa",
       "reviewStatus": "approved",
       "bill": "AB325",
@@ -4067,7 +4067,7 @@
       "officialVoteDate": null,
       "measureId": "AB 325",
       "question": "AB 325 Aguiar-Curry Concurrence in Senate Amendments",
-      "originRunId": "rollcall:CA:house:2172:1602313:2026-08-28T02:20:12.960Z",
+      "originRunId": "rollcall:CA:house:2172:1602313:2026-08-28T02:19:21.497Z",
       "members": 72,
       "notVoting": 0,
       "absent": 8,
@@ -4088,7 +4088,7 @@
           "memberName": "Ash Kalra",
           "side": "yea",
           "action": "insert",
-          "recordId": "b1c13f6f-69c9-4196-9d61-b639a88d27ba",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4100,7 +4100,7 @@
           "memberName": "Cecilia Aguiar-Curry",
           "side": "yea",
           "action": "insert",
-          "recordId": "edbf3205-6c37-423e-8f36-48d9bfd772b5",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4112,7 +4112,7 @@
           "memberName": "Marc Berman",
           "side": "yea",
           "action": "insert",
-          "recordId": "3357f9a9-3777-4562-97e5-ae3b00dd5344",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4136,7 +4136,7 @@
           "memberName": "Rebecca Bauer-Kahan",
           "side": "yea",
           "action": "insert",
-          "recordId": "fbb1510b-17f4-4c69-bef6-747136d597ff",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4160,7 +4160,7 @@
           "memberName": "Robert Rivas",
           "side": "yea",
           "action": "insert",
-          "recordId": "216203c2-2759-4d39-9aca-ab29d340cd52",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4172,7 +4172,7 @@
           "memberName": "Buffy Wicks",
           "side": "yea",
           "action": "insert",
-          "recordId": "08137dad-0b87-48e4-ae1d-1097dc6a9a0f",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4184,7 +4184,7 @@
           "memberName": "Steve Bennett",
           "side": "yea",
           "action": "insert",
-          "recordId": "ea9d356d-d00d-4bbb-a4af-c2fa429afc11",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4196,7 +4196,7 @@
           "memberName": "Alex Lee",
           "side": "yea",
           "action": "insert",
-          "recordId": "c2ea9166-7a11-481d-bc12-b8a44112e700",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4220,7 +4220,7 @@
           "memberName": "Lisa Calderon",
           "side": "yea",
           "action": "insert",
-          "recordId": "60af6d75-1c2f-48ec-b4c4-65b3e9a37035",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4232,7 +4232,7 @@
           "memberName": "Isaac Bryan",
           "side": "yea",
           "action": "insert",
-          "recordId": "7bcadbd1-9f6e-47e9-b011-784405f123e4",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4244,7 +4244,7 @@
           "memberName": "Mia Bonta",
           "side": "yea",
           "action": "insert",
-          "recordId": "fbef487f-6be1-4e58-948b-7de63641abdf",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4256,7 +4256,7 @@
           "memberName": "Mike Fong",
           "side": "yea",
           "action": "insert",
-          "recordId": "301b0238-2dbf-46c0-8862-8d6a201310d3",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4304,7 +4304,7 @@
           "memberName": "Tina McKinnor",
           "side": "yea",
           "action": "insert",
-          "recordId": "001de42f-a49f-4a33-b376-bba827c3c0a9",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4316,7 +4316,7 @@
           "memberName": "Dawn Addis",
           "side": "yea",
           "action": "insert",
-          "recordId": "0334946e-a7a3-4b46-8f58-d30c7952f6b7",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4340,7 +4340,7 @@
           "memberName": "Gregg Hart",
           "side": "yea",
           "action": "insert",
-          "recordId": "72f2280f-90ee-48c3-856f-7e740faae289",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4364,7 +4364,7 @@
           "memberName": "Juan Carrillo",
           "side": "yea",
           "action": "insert",
-          "recordId": "d986a710-0c92-45e9-80b3-d64fb58575b3",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4376,7 +4376,7 @@
           "memberName": "Josh Lowenthal",
           "side": "yea",
           "action": "insert",
-          "recordId": "11ad2a90-e874-4429-a087-cbb35a121d96",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4388,7 +4388,7 @@
           "memberName": "Liz Ortega",
           "side": "yea",
           "action": "insert",
-          "recordId": "68e4c196-2a03-4399-9150-62fb78b5d879",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4400,7 +4400,7 @@
           "memberName": "Diane Papan",
           "side": "yea",
           "action": "insert",
-          "recordId": "02ce5f2f-f307-4c45-9cf7-f09869b84b7a",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4412,7 +4412,7 @@
           "memberName": "Gail Pellerin",
           "side": "yea",
           "action": "insert",
-          "recordId": "860997d1-c663-4918-b214-580f788646f1",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4424,7 +4424,7 @@
           "memberName": "Pilar Schiavo",
           "side": "yea",
           "action": "insert",
-          "recordId": "a55c0bff-825b-44e7-829b-008aced62180",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4460,7 +4460,7 @@
           "memberName": "Rick Zbur",
           "side": "yea",
           "action": "insert",
-          "recordId": "15b484fb-7769-4cb2-bae2-03dd2f2f4346",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4472,7 +4472,7 @@
           "memberName": "Patrick Ahrens",
           "side": "yea",
           "action": "insert",
-          "recordId": "4ab157c9-df4d-40b4-b70d-f2fe01703db4",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4496,7 +4496,7 @@
           "memberName": "Anamarie Farias",
           "side": "yea",
           "action": "insert",
-          "recordId": "93aec675-c0b8-4cf8-91fe-37e54ab0dae0",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4508,7 +4508,7 @@
           "memberName": "Robert Garcia",
           "side": "yea",
           "action": "insert",
-          "recordId": "336a0dd4-f20f-4e4f-8a5f-3aa8e6b3cf4b",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4532,7 +4532,7 @@
           "memberName": "John Harabedian",
           "side": "yea",
           "action": "insert",
-          "recordId": "d181855b-501c-4f20-b510-ed06d066524e",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4544,7 +4544,7 @@
           "memberName": "Maggy Krell",
           "side": "yea",
           "action": "insert",
-          "recordId": "4b197909-36ef-46ae-96fa-05390d91be67",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4568,7 +4568,7 @@
           "memberName": "Rhodesia Ransom",
           "side": "yea",
           "action": "insert",
-          "recordId": "97c3d925-3e42-45dd-aa22-303695e7bbde",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4580,7 +4580,7 @@
           "memberName": "Celeste Rodriguez",
           "side": "yea",
           "action": "insert",
-          "recordId": "b9887703-b23f-4097-8fcf-54fd207b73f1",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4592,7 +4592,7 @@
           "memberName": "Michelle Rodriguez",
           "side": "yea",
           "action": "insert",
-          "recordId": "259f788b-c9d2-47dd-8f45-a65c2c4990ee",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4604,7 +4604,7 @@
           "memberName": "Chris Rogers",
           "side": "yea",
           "action": "insert",
-          "recordId": "c6382096-3365-4145-be12-79c1687f0a8d",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4616,7 +4616,7 @@
           "memberName": "LaShae Sharp-Collins",
           "side": "yea",
           "action": "insert",
-          "recordId": "695b2693-3bcd-4411-a44e-4a1ba6daba86",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4640,7 +4640,7 @@
           "memberName": "Catherine Stefani",
           "side": "yea",
           "action": "insert",
-          "recordId": "e2688dfa-c808-49d9-bb10-4b9d93ffed34",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4652,7 +4652,7 @@
           "memberName": "Sade Elhawary",
           "side": "yea",
           "action": "insert",
-          "recordId": "32fd6ab1-2d0d-4a83-b741-d9944138a933",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4664,7 +4664,7 @@
           "memberName": "Phillip Chen",
           "side": "nay",
           "action": "insert",
-          "recordId": "6c31a7b3-ec3a-4413-8a41-b2306764039a",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4688,7 +4688,7 @@
           "memberName": "Juan Alanis",
           "side": "nay",
           "action": "insert",
-          "recordId": "94610166-b1be-4884-94d3-7740a9a88211",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4712,7 +4712,7 @@
           "memberName": "Joe Patterson",
           "side": "nay",
           "action": "insert",
-          "recordId": "69121a65-9edb-443a-9c53-35fb595ef792",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4724,7 +4724,7 @@
           "memberName": "Kate Sanchez",
           "side": "nay",
           "action": "insert",
-          "recordId": "b91d342c-0d6c-42e4-b4df-62051f4a7321",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4772,7 +4772,7 @@
           "memberName": "Carl DeMaio",
           "side": "nay",
           "action": "insert",
-          "recordId": "2d6e76ea-14ca-4d81-9700-90f58b25af61",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4784,7 +4784,7 @@
           "memberName": "Jeff Gonzalez",
           "side": "nay",
           "action": "insert",
-          "recordId": "d88f97b6-edb2-4914-945a-ffcdf2d20a98",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4796,7 +4796,7 @@
           "memberName": "Heather Hadwick",
           "side": "nay",
           "action": "insert",
-          "recordId": "11cadec9-8075-419d-af3d-c6b733a519ec",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4808,7 +4808,7 @@
           "memberName": "Alexandra Macedo",
           "side": "nay",
           "action": "insert",
-          "recordId": "f3a2f80f-d4df-403a-9ca3-1260be04eb15",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4820,7 +4820,7 @@
           "memberName": "David Tangipa",
           "side": "nay",
           "action": "insert",
-          "recordId": "a29d59c0-6150-4958-bf1b-33dde89f0ce3",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4832,7 +4832,7 @@
           "memberName": "Natasha Johnson",
           "side": "nay",
           "action": "insert",
-          "recordId": "1ab0d2c5-57da-47b1-9156-c5186fa9e44b",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4846,7 +4846,7 @@
       "chamber": "house",
       "sessionId": 2172,
       "roll": 1602370,
-      "outcome": "imported",
+      "outcome": "dry_run",
       "legislativeVoteId": "d852909a-db7e-4a98-a8c7-412f6d461621",
       "reviewStatus": "approved",
       "bill": "SB79",
@@ -4854,7 +4854,7 @@
       "officialVoteDate": null,
       "measureId": "SB 79",
       "question": "SB 79 Wiener Senate Third Reading By Quirk-Silva",
-      "originRunId": "rollcall:CA:house:2172:1602370:2026-08-28T02:20:12.960Z",
+      "originRunId": "rollcall:CA:house:2172:1602370:2026-08-28T02:19:21.497Z",
       "members": 62,
       "notVoting": 0,
       "absent": 18,
@@ -4875,7 +4875,7 @@
           "memberName": "Ash Kalra",
           "side": "yea",
           "action": "insert",
-          "recordId": "24afa71a-1f66-4db2-9956-dfd14465f82f",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4887,7 +4887,7 @@
           "memberName": "Phillip Chen",
           "side": "yea",
           "action": "insert",
-          "recordId": "1f1d5ed0-4857-44b0-ba98-627cbe7b6719",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4899,7 +4899,7 @@
           "memberName": "Heath Flora",
           "side": "yea",
           "action": "insert",
-          "recordId": "467d2811-c8ad-45f3-aa08-a78b882897e8",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4911,7 +4911,7 @@
           "memberName": "Marc Berman",
           "side": "yea",
           "action": "insert",
-          "recordId": "ca2ce5b7-7d36-4dae-a467-6f7dbb9e2f07",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4923,7 +4923,7 @@
           "memberName": "James Ramos",
           "side": "yea",
           "action": "insert",
-          "recordId": "ae1665fa-a68e-4948-80d6-8bff129a02d2",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4935,7 +4935,7 @@
           "memberName": "Robert Rivas",
           "side": "yea",
           "action": "insert",
-          "recordId": "9c62512e-3631-468f-b383-b84f41552c76",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4947,7 +4947,7 @@
           "memberName": "Buffy Wicks",
           "side": "yea",
           "action": "insert",
-          "recordId": "8bd4a202-a219-4b10-bc2c-95f371ec7bcf",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4959,7 +4959,7 @@
           "memberName": "Steve Bennett",
           "side": "yea",
           "action": "insert",
-          "recordId": "51e0ec39-de7a-4766-972f-e5f86eeee689",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4971,7 +4971,7 @@
           "memberName": "Alex Lee",
           "side": "yea",
           "action": "insert",
-          "recordId": "cd046029-284c-47d5-973b-7948ab80ebe0",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4995,7 +4995,7 @@
           "memberName": "Mia Bonta",
           "side": "yea",
           "action": "insert",
-          "recordId": "893fe8b7-d147-4b5c-802d-5c98c69798e5",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5007,7 +5007,7 @@
           "memberName": "Mike Fong",
           "side": "yea",
           "action": "insert",
-          "recordId": "32c450c0-771c-4611-86c9-d5bc5b481245",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5055,7 +5055,7 @@
           "memberName": "Juan Alanis",
           "side": "yea",
           "action": "insert",
-          "recordId": "291b54ab-873d-4b18-a430-d75d0f41dff7",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5091,7 +5091,7 @@
           "memberName": "Joe Patterson",
           "side": "yea",
           "action": "insert",
-          "recordId": "3a425366-aba5-40d6-b29f-a76e96544f6f",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5103,7 +5103,7 @@
           "memberName": "Juan Carrillo",
           "side": "yea",
           "action": "insert",
-          "recordId": "f2447c8f-3fc2-4065-84ac-a1a58e8fb2c6",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5115,7 +5115,7 @@
           "memberName": "Josh Lowenthal",
           "side": "yea",
           "action": "insert",
-          "recordId": "103d1fc6-3b2f-47ef-ac1d-8f8270aefdf2",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5163,7 +5163,7 @@
           "memberName": "Patrick Ahrens",
           "side": "yea",
           "action": "insert",
-          "recordId": "e993cae2-5eb3-4e9f-bb7f-c489689f1daa",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5187,7 +5187,7 @@
           "memberName": "Anamarie Farias",
           "side": "yea",
           "action": "insert",
-          "recordId": "62d90ce1-eb7a-4ec6-8a31-7bb7cdb68098",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5199,7 +5199,7 @@
           "memberName": "Robert Garcia",
           "side": "yea",
           "action": "insert",
-          "recordId": "fce595ac-2782-4991-8b84-c3c6e158dc29",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5223,7 +5223,7 @@
           "memberName": "Heather Hadwick",
           "side": "yea",
           "action": "insert",
-          "recordId": "318f88e6-5e01-401c-bf22-105cd9b093ca",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5235,7 +5235,7 @@
           "memberName": "John Harabedian",
           "side": "yea",
           "action": "insert",
-          "recordId": "65321d9e-cb10-46e8-ad4e-ec61e23ebf83",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5247,7 +5247,7 @@
           "memberName": "Maggy Krell",
           "side": "yea",
           "action": "insert",
-          "recordId": "5762d4f1-a1f1-4151-9584-cf5779b0ac89",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5271,7 +5271,7 @@
           "memberName": "Rhodesia Ransom",
           "side": "yea",
           "action": "insert",
-          "recordId": "b038be75-e6aa-480f-b655-2fc28c41487d",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5283,7 +5283,7 @@
           "memberName": "Chris Rogers",
           "side": "yea",
           "action": "insert",
-          "recordId": "da8b0732-9277-4591-bc0e-a6b7fad163a0",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5295,7 +5295,7 @@
           "memberName": "LaShae Sharp-Collins",
           "side": "yea",
           "action": "insert",
-          "recordId": "700635ff-87c5-422e-8920-8849fbc9358a",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5307,7 +5307,7 @@
           "memberName": "Catherine Stefani",
           "side": "yea",
           "action": "insert",
-          "recordId": "4c546619-85b2-4219-9e45-50180513aecb",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5319,7 +5319,7 @@
           "memberName": "David Tangipa",
           "side": "yea",
           "action": "insert",
-          "recordId": "9af65969-5c0b-49b1-aaa9-19d3abfd186c",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5331,7 +5331,7 @@
           "memberName": "Sade Elhawary",
           "side": "yea",
           "action": "insert",
-          "recordId": "7da0454d-be61-4a9d-baac-af48add4c2b4",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5355,7 +5355,7 @@
           "memberName": "Cottie Petrie-Norris",
           "side": "nay",
           "action": "insert",
-          "recordId": "16ea8b9e-5968-421d-b850-f0083fda6cc3",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5391,7 +5391,7 @@
           "memberName": "Gregg Hart",
           "side": "nay",
           "action": "insert",
-          "recordId": "efa1b51e-06c0-4def-90c4-970db4b447e9",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5415,7 +5415,7 @@
           "memberName": "Kate Sanchez",
           "side": "nay",
           "action": "insert",
-          "recordId": "2be80450-66b5-43aa-9d28-b7b7a5e396f2",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5439,7 +5439,7 @@
           "memberName": "Rick Zbur",
           "side": "nay",
           "action": "insert",
-          "recordId": "4ff216e0-7c65-4cbc-b337-a5e00f51997c",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5475,7 +5475,7 @@
           "memberName": "Carl DeMaio",
           "side": "nay",
           "action": "insert",
-          "recordId": "032ad974-847f-4377-8324-85584247fad3",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5487,7 +5487,7 @@
           "memberName": "Alexandra Macedo",
           "side": "nay",
           "action": "insert",
-          "recordId": "4b697f7a-ceff-4e07-9a99-1881d98cd323",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5511,7 +5511,7 @@
           "memberName": "Natasha Johnson",
           "side": "nay",
           "action": "insert",
-          "recordId": "a432dd11-df08-4314-a853-5bf70f355376",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5525,7 +5525,7 @@
       "chamber": "house",
       "sessionId": 2172,
       "roll": 1602457,
-      "outcome": "imported",
+      "outcome": "dry_run",
       "legislativeVoteId": "3f7afdfa-0ae4-41fd-816c-da52e41164be",
       "reviewStatus": "approved",
       "bill": "AB495",
@@ -5533,7 +5533,7 @@
       "officialVoteDate": null,
       "measureId": "AB 495",
       "question": "AB 495 Celeste Rodriguez Concurrence in Senate Amendments",
-      "originRunId": "rollcall:CA:house:2172:1602457:2026-08-28T02:20:12.960Z",
+      "originRunId": "rollcall:CA:house:2172:1602457:2026-08-28T02:19:21.497Z",
       "members": 80,
       "notVoting": 0,
       "absent": 0,
@@ -5554,7 +5554,7 @@
           "memberName": "Ash Kalra",
           "side": "yea",
           "action": "insert",
-          "recordId": "884ed544-a53a-4400-aedc-d8f1f73d190d",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5566,7 +5566,7 @@
           "memberName": "Cecilia Aguiar-Curry",
           "side": "yea",
           "action": "insert",
-          "recordId": "6b338472-5eba-462a-842d-60f3a3598e52",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5578,7 +5578,7 @@
           "memberName": "Marc Berman",
           "side": "yea",
           "action": "insert",
-          "recordId": "644c4d44-e86e-4876-91cb-3a71edda5893",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5614,7 +5614,7 @@
           "memberName": "Rebecca Bauer-Kahan",
           "side": "yea",
           "action": "insert",
-          "recordId": "96d17e03-dbcc-4468-a7e0-0e217ba9bd06",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5638,7 +5638,7 @@
           "memberName": "Cottie Petrie-Norris",
           "side": "yea",
           "action": "insert",
-          "recordId": "1dea2aba-d8f7-437c-935c-d4d9493a4b16",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5650,7 +5650,7 @@
           "memberName": "James Ramos",
           "side": "yea",
           "action": "insert",
-          "recordId": "abd20dd7-03c4-408e-b42e-4058c457ac17",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5662,7 +5662,7 @@
           "memberName": "Robert Rivas",
           "side": "yea",
           "action": "insert",
-          "recordId": "1d668538-801f-4794-ba1f-a1a14332d958",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5674,7 +5674,7 @@
           "memberName": "Buffy Wicks",
           "side": "yea",
           "action": "insert",
-          "recordId": "ea0c8857-271b-4a43-be44-67820ce53dd4",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5686,7 +5686,7 @@
           "memberName": "Steve Bennett",
           "side": "yea",
           "action": "insert",
-          "recordId": "023f0846-9655-4b7d-aceb-f88861aec994",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5698,7 +5698,7 @@
           "memberName": "Alex Lee",
           "side": "yea",
           "action": "insert",
-          "recordId": "1d27b5e3-dbfc-4073-a619-e32cbc4e1e8d",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5722,7 +5722,7 @@
           "memberName": "Lisa Calderon",
           "side": "yea",
           "action": "insert",
-          "recordId": "7aaa5765-2d7e-4251-8f2c-4c3f146654bc",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5734,7 +5734,7 @@
           "memberName": "Isaac Bryan",
           "side": "yea",
           "action": "insert",
-          "recordId": "750080eb-5a01-49a6-9390-7d00b132f488",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5746,7 +5746,7 @@
           "memberName": "Mia Bonta",
           "side": "yea",
           "action": "insert",
-          "recordId": "f04c09ab-0b89-4e11-a993-98c0d4a12856",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5758,7 +5758,7 @@
           "memberName": "Mike Fong",
           "side": "yea",
           "action": "insert",
-          "recordId": "4b0766b2-f890-4701-a341-f40737c600cc",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5806,7 +5806,7 @@
           "memberName": "Tina McKinnor",
           "side": "yea",
           "action": "insert",
-          "recordId": "22ecce3c-cd83-43bb-a231-dd08d0334224",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5818,7 +5818,7 @@
           "memberName": "Dawn Addis",
           "side": "yea",
           "action": "insert",
-          "recordId": "81fd3bb1-2786-43f8-9eab-65885a816234",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5842,7 +5842,7 @@
           "memberName": "Gregg Hart",
           "side": "yea",
           "action": "insert",
-          "recordId": "10f369ba-9896-47b8-ac36-b416041b86dd",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5866,7 +5866,7 @@
           "memberName": "Juan Carrillo",
           "side": "yea",
           "action": "insert",
-          "recordId": "198db29c-7c68-41f0-aa5f-46400c27383c",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5878,7 +5878,7 @@
           "memberName": "Josh Lowenthal",
           "side": "yea",
           "action": "insert",
-          "recordId": "908cca3e-8232-4214-a042-b9c717d0e747",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5890,7 +5890,7 @@
           "memberName": "Liz Ortega",
           "side": "yea",
           "action": "insert",
-          "recordId": "60582f93-6aef-4e13-9504-e961ab6233a5",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5914,7 +5914,7 @@
           "memberName": "Diane Papan",
           "side": "yea",
           "action": "insert",
-          "recordId": "82dee544-92ec-4754-aa56-143ba8cc5b29",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5926,7 +5926,7 @@
           "memberName": "Gail Pellerin",
           "side": "yea",
           "action": "insert",
-          "recordId": "93a8129d-4ec3-40c2-9efc-1f6a62447815",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5938,7 +5938,7 @@
           "memberName": "Pilar Schiavo",
           "side": "yea",
           "action": "insert",
-          "recordId": "70615aaa-0d14-4da5-b7f0-af618b9b0b6e",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5986,7 +5986,7 @@
           "memberName": "Rick Zbur",
           "side": "yea",
           "action": "insert",
-          "recordId": "721088a8-4cb0-43c7-84b1-f26e12b8acf4",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5998,7 +5998,7 @@
           "memberName": "Patrick Ahrens",
           "side": "yea",
           "action": "insert",
-          "recordId": "225c4486-76a3-4ccc-8696-79985e55015a",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6022,7 +6022,7 @@
           "memberName": "Anamarie Farias",
           "side": "yea",
           "action": "insert",
-          "recordId": "924f7cd9-ace1-4485-9d59-187b668b6038",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6034,7 +6034,7 @@
           "memberName": "Robert Garcia",
           "side": "yea",
           "action": "insert",
-          "recordId": "d178af90-1801-430b-a43d-7b1cec6083a9",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6058,7 +6058,7 @@
           "memberName": "John Harabedian",
           "side": "yea",
           "action": "insert",
-          "recordId": "95d5ec8f-6a60-4bf3-9a5a-098c48c72ded",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6070,7 +6070,7 @@
           "memberName": "Maggy Krell",
           "side": "yea",
           "action": "insert",
-          "recordId": "a2e840bf-a5a0-464a-9b9d-44419443da43",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6094,7 +6094,7 @@
           "memberName": "Rhodesia Ransom",
           "side": "yea",
           "action": "insert",
-          "recordId": "9938b453-304b-4f06-bd98-ca671e185e29",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6106,7 +6106,7 @@
           "memberName": "Celeste Rodriguez",
           "side": "yea",
           "action": "insert",
-          "recordId": "741a7077-7ffd-4e4b-868c-086a51997971",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6118,7 +6118,7 @@
           "memberName": "Michelle Rodriguez",
           "side": "yea",
           "action": "insert",
-          "recordId": "e2854128-8268-411a-8010-e30d15c7b3ff",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6130,7 +6130,7 @@
           "memberName": "Chris Rogers",
           "side": "yea",
           "action": "insert",
-          "recordId": "6b8fe34d-f918-41c0-bc39-cb91c5d0f9e5",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6142,7 +6142,7 @@
           "memberName": "LaShae Sharp-Collins",
           "side": "yea",
           "action": "insert",
-          "recordId": "9315e18c-1076-4d13-ab0c-8fa547c7e8f5",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6166,7 +6166,7 @@
           "memberName": "Catherine Stefani",
           "side": "yea",
           "action": "insert",
-          "recordId": "a647d80a-9fc2-4207-99b5-cdca3aa06215",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6178,7 +6178,7 @@
           "memberName": "Sade Elhawary",
           "side": "yea",
           "action": "insert",
-          "recordId": "1e9edc23-a7e4-4d75-9c1c-c68451e0e422",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6190,7 +6190,7 @@
           "memberName": "Phillip Chen",
           "side": "nay",
           "action": "insert",
-          "recordId": "96490c83-a887-45cf-9ada-34db37b2a9f4",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6202,7 +6202,7 @@
           "memberName": "Heath Flora",
           "side": "nay",
           "action": "insert",
-          "recordId": "13d7b278-3a88-4b45-b289-3b43f13defbf",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6226,7 +6226,7 @@
           "memberName": "Juan Alanis",
           "side": "nay",
           "action": "insert",
-          "recordId": "80c65c64-1de3-4d3e-9f59-998b9f517464",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6250,7 +6250,7 @@
           "memberName": "Joe Patterson",
           "side": "nay",
           "action": "insert",
-          "recordId": "bbfc8002-397a-417c-bde5-5041255efccb",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6262,7 +6262,7 @@
           "memberName": "Kate Sanchez",
           "side": "nay",
           "action": "insert",
-          "recordId": "261c0447-45e7-44e8-b113-5ca0034a0a24",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6310,7 +6310,7 @@
           "memberName": "Carl DeMaio",
           "side": "nay",
           "action": "insert",
-          "recordId": "7b9cd8d9-bfc7-4b1c-b010-65ff934f70ec",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6322,7 +6322,7 @@
           "memberName": "Jeff Gonzalez",
           "side": "nay",
           "action": "insert",
-          "recordId": "870a632e-3237-4f75-8d56-ab5a45b4ba44",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6334,7 +6334,7 @@
           "memberName": "Heather Hadwick",
           "side": "nay",
           "action": "insert",
-          "recordId": "7d3940d8-a92c-44b9-89c3-daba6f2ab02b",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6346,7 +6346,7 @@
           "memberName": "Alexandra Macedo",
           "side": "nay",
           "action": "insert",
-          "recordId": "49df2ff8-09a2-4429-9484-7918415cce84",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6358,7 +6358,7 @@
           "memberName": "David Tangipa",
           "side": "nay",
           "action": "insert",
-          "recordId": "1dfa1488-c361-4c18-9e8c-1cfcaaf8b230",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6370,7 +6370,7 @@
           "memberName": "Natasha Johnson",
           "side": "nay",
           "action": "insert",
-          "recordId": "30b66238-4622-458a-a1b0-280ef038e123",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6384,7 +6384,7 @@
       "chamber": "house",
       "sessionId": 2172,
       "roll": 1602473,
-      "outcome": "imported",
+      "outcome": "dry_run",
       "legislativeVoteId": "d6e30dd4-b609-4751-a44b-dbd2bb99ff0e",
       "reviewStatus": "approved",
       "bill": "AB1319",
@@ -6392,7 +6392,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1319",
       "question": "AB 1319 Schultz Concurrence in Senate Amendments",
-      "originRunId": "rollcall:CA:house:2172:1602473:2026-08-28T02:20:12.960Z",
+      "originRunId": "rollcall:CA:house:2172:1602473:2026-08-28T02:19:21.497Z",
       "members": 70,
       "notVoting": 0,
       "absent": 10,
@@ -6413,7 +6413,7 @@
           "memberName": "Ash Kalra",
           "side": "yea",
           "action": "insert",
-          "recordId": "e99bcb44-9747-4699-ac76-b3df1ddd1f27",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6425,7 +6425,7 @@
           "memberName": "Marc Berman",
           "side": "yea",
           "action": "insert",
-          "recordId": "66885135-9e4e-4bff-ac49-c854b29861da",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6449,7 +6449,7 @@
           "memberName": "Rebecca Bauer-Kahan",
           "side": "yea",
           "action": "insert",
-          "recordId": "038758f8-db09-4a44-8f78-10212046643b",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6473,7 +6473,7 @@
           "memberName": "Cottie Petrie-Norris",
           "side": "yea",
           "action": "insert",
-          "recordId": "89876d77-ca4c-4766-8fbe-99910225128f",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6485,7 +6485,7 @@
           "memberName": "James Ramos",
           "side": "yea",
           "action": "insert",
-          "recordId": "98652bd7-2480-432f-b51c-71a93de4d9d3",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6497,7 +6497,7 @@
           "memberName": "Robert Rivas",
           "side": "yea",
           "action": "insert",
-          "recordId": "130d7621-2efc-40b3-b12d-b98bed70d29f",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6509,7 +6509,7 @@
           "memberName": "Buffy Wicks",
           "side": "yea",
           "action": "insert",
-          "recordId": "8eed84e2-efab-4bac-9fe1-029867fddf7d",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6521,7 +6521,7 @@
           "memberName": "Steve Bennett",
           "side": "yea",
           "action": "insert",
-          "recordId": "37c8b838-a22d-44e8-850a-ba3ccb0071f8",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6533,7 +6533,7 @@
           "memberName": "Alex Lee",
           "side": "yea",
           "action": "insert",
-          "recordId": "d80a3ad4-6dae-4e0d-a305-6bd2a97d878c",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6557,7 +6557,7 @@
           "memberName": "Lisa Calderon",
           "side": "yea",
           "action": "insert",
-          "recordId": "09ab114c-8d7b-4909-8f50-f44c78d2af1e",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6569,7 +6569,7 @@
           "memberName": "Isaac Bryan",
           "side": "yea",
           "action": "insert",
-          "recordId": "e6cac817-c855-4b01-b2a4-65054675331a",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6581,7 +6581,7 @@
           "memberName": "Mia Bonta",
           "side": "yea",
           "action": "insert",
-          "recordId": "520361e8-4c28-48df-a4d3-e2f31be14894",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6593,7 +6593,7 @@
           "memberName": "Mike Fong",
           "side": "yea",
           "action": "insert",
-          "recordId": "a6598acd-c266-43b0-9881-4b5ade23d474",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6641,7 +6641,7 @@
           "memberName": "Tina McKinnor",
           "side": "yea",
           "action": "insert",
-          "recordId": "fa3800e9-e7c8-4f01-bd1e-84699a2c3d87",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6653,7 +6653,7 @@
           "memberName": "Dawn Addis",
           "side": "yea",
           "action": "insert",
-          "recordId": "c09972b3-ac15-47b1-9940-f384e2d8f373",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6677,7 +6677,7 @@
           "memberName": "Gregg Hart",
           "side": "yea",
           "action": "insert",
-          "recordId": "16e0b342-5a4c-4e63-be45-c84b8485d13f",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6701,7 +6701,7 @@
           "memberName": "Juan Carrillo",
           "side": "yea",
           "action": "insert",
-          "recordId": "48e56d6f-6693-400e-9866-dac9a3120747",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6713,7 +6713,7 @@
           "memberName": "Josh Lowenthal",
           "side": "yea",
           "action": "insert",
-          "recordId": "183e3636-8e96-4983-ab1e-ce513e3d6fe8",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6725,7 +6725,7 @@
           "memberName": "Liz Ortega",
           "side": "yea",
           "action": "insert",
-          "recordId": "7d9d8b1d-62fc-4951-b256-5dc608a7f6cb",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6737,7 +6737,7 @@
           "memberName": "Diane Papan",
           "side": "yea",
           "action": "insert",
-          "recordId": "2d9b7958-31ea-41cb-802d-299c6264a281",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6749,7 +6749,7 @@
           "memberName": "Gail Pellerin",
           "side": "yea",
           "action": "insert",
-          "recordId": "c13fe882-dd34-4ce2-b37f-ba907737f487",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6761,7 +6761,7 @@
           "memberName": "Pilar Schiavo",
           "side": "yea",
           "action": "insert",
-          "recordId": "9b933438-1f19-4e65-bef7-f9fd062a10ea",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6773,7 +6773,7 @@
           "memberName": "Rick Zbur",
           "side": "yea",
           "action": "insert",
-          "recordId": "0580d53b-11c6-4664-b67a-f0501321bc93",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6785,7 +6785,7 @@
           "memberName": "Patrick Ahrens",
           "side": "yea",
           "action": "insert",
-          "recordId": "9d2fa1e7-f0df-4165-914b-f039b7eda404",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6809,7 +6809,7 @@
           "memberName": "Anamarie Farias",
           "side": "yea",
           "action": "insert",
-          "recordId": "743eb359-ebe5-4849-8f41-84a42344a3aa",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6821,7 +6821,7 @@
           "memberName": "Robert Garcia",
           "side": "yea",
           "action": "insert",
-          "recordId": "1a0016f5-6f45-44a9-958c-1162adcdb1e5",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6845,7 +6845,7 @@
           "memberName": "John Harabedian",
           "side": "yea",
           "action": "insert",
-          "recordId": "de5b57a1-18a7-4ffa-9185-aa128f080cb1",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6857,7 +6857,7 @@
           "memberName": "Maggy Krell",
           "side": "yea",
           "action": "insert",
-          "recordId": "a38626ef-8318-4290-93e2-0be59ce457c0",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6881,7 +6881,7 @@
           "memberName": "Celeste Rodriguez",
           "side": "yea",
           "action": "insert",
-          "recordId": "50023a09-deb9-4c8c-8292-42b52ebdb6ad",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6893,7 +6893,7 @@
           "memberName": "Michelle Rodriguez",
           "side": "yea",
           "action": "insert",
-          "recordId": "762dd5bf-c9aa-4f22-8c9c-6c4abfb2bc8e",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6905,7 +6905,7 @@
           "memberName": "Chris Rogers",
           "side": "yea",
           "action": "insert",
-          "recordId": "5b33b142-1443-48f0-b351-66fd30ea6249",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6917,7 +6917,7 @@
           "memberName": "LaShae Sharp-Collins",
           "side": "yea",
           "action": "insert",
-          "recordId": "b3ca3724-e1e4-4c04-b9ae-60a26a042b04",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6941,7 +6941,7 @@
           "memberName": "Catherine Stefani",
           "side": "yea",
           "action": "insert",
-          "recordId": "12cd595f-28ce-480f-b213-cb3f87e4124d",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6953,7 +6953,7 @@
           "memberName": "Sade Elhawary",
           "side": "yea",
           "action": "insert",
-          "recordId": "dd9a2f7c-a33c-4d7b-be55-c24134189aa5",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6965,7 +6965,7 @@
           "memberName": "Heath Flora",
           "side": "nay",
           "action": "insert",
-          "recordId": "ec559d02-9600-4567-b343-79ca202f0082",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6989,7 +6989,7 @@
           "memberName": "Juan Alanis",
           "side": "nay",
           "action": "insert",
-          "recordId": "dcf694c3-9016-4ffe-b008-b22f78e8b621",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7013,7 +7013,7 @@
           "memberName": "Joe Patterson",
           "side": "nay",
           "action": "insert",
-          "recordId": "8fe3cc25-0fb0-47e0-8804-85c5ed69de28",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7025,7 +7025,7 @@
           "memberName": "Kate Sanchez",
           "side": "nay",
           "action": "insert",
-          "recordId": "4283ce03-cd4b-47a7-a6e8-f132bfe03010",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7073,7 +7073,7 @@
           "memberName": "Carl DeMaio",
           "side": "nay",
           "action": "insert",
-          "recordId": "96d1a79c-570d-46c8-b3c7-b44d5c350d0e",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7085,7 +7085,7 @@
           "memberName": "Jeff Gonzalez",
           "side": "nay",
           "action": "insert",
-          "recordId": "d2bfe1e0-7ca7-42af-ac03-3e2de29bf043",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7097,7 +7097,7 @@
           "memberName": "Heather Hadwick",
           "side": "nay",
           "action": "insert",
-          "recordId": "3a8691f7-020b-4730-ba3c-a1df93e40290",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7109,7 +7109,7 @@
           "memberName": "Alexandra Macedo",
           "side": "nay",
           "action": "insert",
-          "recordId": "ee1d1f0b-9f2c-4bfc-adc2-e4a510f40968",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7121,7 +7121,7 @@
           "memberName": "David Tangipa",
           "side": "nay",
           "action": "insert",
-          "recordId": "7dcdd7a8-3e99-4c58-8f53-38151eaa79b1",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7133,7 +7133,7 @@
           "memberName": "Natasha Johnson",
           "side": "nay",
           "action": "insert",
-          "recordId": "64b49b4a-28de-4bd0-9a98-9a50359ae7b6",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7147,7 +7147,7 @@
       "chamber": "house",
       "sessionId": 2172,
       "roll": 1602504,
-      "outcome": "imported",
+      "outcome": "dry_run",
       "legislativeVoteId": "169e4183-fb77-4506-9604-0a977fcadd80",
       "reviewStatus": "approved",
       "bill": "AB692",
@@ -7155,7 +7155,7 @@
       "officialVoteDate": null,
       "measureId": "AB 692",
       "question": "AB 692 Kalra Concurrence in Senate Amendments",
-      "originRunId": "rollcall:CA:house:2172:1602504:2026-08-28T02:20:12.960Z",
+      "originRunId": "rollcall:CA:house:2172:1602504:2026-08-28T02:19:21.497Z",
       "members": 66,
       "notVoting": 0,
       "absent": 14,
@@ -7176,7 +7176,7 @@
           "memberName": "Ash Kalra",
           "side": "yea",
           "action": "insert",
-          "recordId": "5fb1fdc6-ea74-49d3-bcd6-2b65eabad9ab",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7188,7 +7188,7 @@
           "memberName": "Cecilia Aguiar-Curry",
           "side": "yea",
           "action": "insert",
-          "recordId": "b65a126c-62c9-470e-ab5f-12e785b43c68",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7212,7 +7212,7 @@
           "memberName": "Cottie Petrie-Norris",
           "side": "yea",
           "action": "insert",
-          "recordId": "a8a86aad-047a-4fd2-b952-931318f78b07",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7224,7 +7224,7 @@
           "memberName": "Robert Rivas",
           "side": "yea",
           "action": "insert",
-          "recordId": "8f93b950-c61e-4325-b4ce-df378d464107",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7236,7 +7236,7 @@
           "memberName": "Buffy Wicks",
           "side": "yea",
           "action": "insert",
-          "recordId": "358a72e1-7767-48f4-803b-a5fb6772c4e2",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7248,7 +7248,7 @@
           "memberName": "Steve Bennett",
           "side": "yea",
           "action": "insert",
-          "recordId": "4401374c-f2d4-4ed4-b357-e324082bfae6",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7260,7 +7260,7 @@
           "memberName": "Alex Lee",
           "side": "yea",
           "action": "insert",
-          "recordId": "d44e5ee1-1ede-4869-97a6-0e39391b90df",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7284,7 +7284,7 @@
           "memberName": "Lisa Calderon",
           "side": "yea",
           "action": "insert",
-          "recordId": "75df60a0-32d8-4e8d-804a-e6f9f7162575",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7296,7 +7296,7 @@
           "memberName": "Isaac Bryan",
           "side": "yea",
           "action": "insert",
-          "recordId": "edad8dcc-f4c5-4fb5-8550-0b44e2f4dc1c",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7308,7 +7308,7 @@
           "memberName": "Mia Bonta",
           "side": "yea",
           "action": "insert",
-          "recordId": "32ee19b6-3b51-4cae-a403-4b5513ea8129",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7320,7 +7320,7 @@
           "memberName": "Mike Fong",
           "side": "yea",
           "action": "insert",
-          "recordId": "1d623b0f-e58c-4be3-998f-e8f84c5ab1a7",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7356,7 +7356,7 @@
           "memberName": "Tina McKinnor",
           "side": "yea",
           "action": "insert",
-          "recordId": "89d5db68-4b87-46e0-b498-545c17e663ec",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7368,7 +7368,7 @@
           "memberName": "Dawn Addis",
           "side": "yea",
           "action": "insert",
-          "recordId": "3fe69c77-6356-43df-a45b-395e372a08fc",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7404,7 +7404,7 @@
           "memberName": "Juan Carrillo",
           "side": "yea",
           "action": "insert",
-          "recordId": "4392f32e-5de9-4062-a907-c91e26e38ce8",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7416,7 +7416,7 @@
           "memberName": "Josh Lowenthal",
           "side": "yea",
           "action": "insert",
-          "recordId": "fb791902-ca20-4f02-92d5-9c3124c73223",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7428,7 +7428,7 @@
           "memberName": "Liz Ortega",
           "side": "yea",
           "action": "insert",
-          "recordId": "251ac3db-7e34-4379-80e6-6e13b5e8cf0d",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7440,7 +7440,7 @@
           "memberName": "Diane Papan",
           "side": "yea",
           "action": "insert",
-          "recordId": "6278dae3-decf-4cb3-a83d-52cf3273507c",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7452,7 +7452,7 @@
           "memberName": "Gail Pellerin",
           "side": "yea",
           "action": "insert",
-          "recordId": "1b9a7d2b-c648-42ab-9911-c795256f8b7a",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7464,7 +7464,7 @@
           "memberName": "Pilar Schiavo",
           "side": "yea",
           "action": "insert",
-          "recordId": "7b381d6e-b786-44ed-850e-7a4fad4f5197",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7488,7 +7488,7 @@
           "memberName": "Rick Zbur",
           "side": "yea",
           "action": "insert",
-          "recordId": "7ba1e45a-0be1-4d12-aaa0-6a4298b569b5",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7500,7 +7500,7 @@
           "memberName": "Patrick Ahrens",
           "side": "yea",
           "action": "insert",
-          "recordId": "5ba577dc-5aa3-45dc-888a-0ea43d62f084",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7524,7 +7524,7 @@
           "memberName": "Robert Garcia",
           "side": "yea",
           "action": "insert",
-          "recordId": "b106a9cd-9a79-42d4-9846-45ca26bcf03b",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7548,7 +7548,7 @@
           "memberName": "John Harabedian",
           "side": "yea",
           "action": "insert",
-          "recordId": "f0690fee-2af2-445f-87c5-e7b33a181cab",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7560,7 +7560,7 @@
           "memberName": "Maggy Krell",
           "side": "yea",
           "action": "insert",
-          "recordId": "86cf58d7-a131-40ea-9446-fa66c343dadf",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7584,7 +7584,7 @@
           "memberName": "Rhodesia Ransom",
           "side": "yea",
           "action": "insert",
-          "recordId": "b2e4f6d9-10bb-48d4-9ade-44eb0b585da2",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7596,7 +7596,7 @@
           "memberName": "Celeste Rodriguez",
           "side": "yea",
           "action": "insert",
-          "recordId": "b108abe2-7e59-4e23-8b23-fe870c645c41",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7608,7 +7608,7 @@
           "memberName": "Michelle Rodriguez",
           "side": "yea",
           "action": "insert",
-          "recordId": "9fd710d2-462b-4cec-ab45-cf43b9f45f9f",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7620,7 +7620,7 @@
           "memberName": "Chris Rogers",
           "side": "yea",
           "action": "insert",
-          "recordId": "3ad960fc-245a-45ea-abf3-b75b634738e1",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7632,7 +7632,7 @@
           "memberName": "LaShae Sharp-Collins",
           "side": "yea",
           "action": "insert",
-          "recordId": "f45b524a-6a41-437f-8ab2-cadc260e2b87",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7656,7 +7656,7 @@
           "memberName": "Catherine Stefani",
           "side": "yea",
           "action": "insert",
-          "recordId": "a2a8fdd6-5480-4a86-aa72-b705ef291946",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7668,7 +7668,7 @@
           "memberName": "Sade Elhawary",
           "side": "yea",
           "action": "insert",
-          "recordId": "3a816f37-34b6-42a4-a62f-4b8a6cc11e4a",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7680,7 +7680,7 @@
           "memberName": "Heath Flora",
           "side": "nay",
           "action": "insert",
-          "recordId": "517795d8-0e22-4ffe-b626-99033d3b5ee1",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7704,7 +7704,7 @@
           "memberName": "Juan Alanis",
           "side": "nay",
           "action": "insert",
-          "recordId": "007d7e4e-be69-48d9-b04e-c64143e1a9f0",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7728,7 +7728,7 @@
           "memberName": "Joe Patterson",
           "side": "nay",
           "action": "insert",
-          "recordId": "06bbf073-15bc-491c-9bc7-d827afafd627",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7740,7 +7740,7 @@
           "memberName": "Kate Sanchez",
           "side": "nay",
           "action": "insert",
-          "recordId": "13ed514d-bf2b-4854-b8ab-726954878813",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7788,7 +7788,7 @@
           "memberName": "Carl DeMaio",
           "side": "nay",
           "action": "insert",
-          "recordId": "e43117af-be1e-403c-9483-80d9114c99e0",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7800,7 +7800,7 @@
           "memberName": "Anamarie Farias",
           "side": "nay",
           "action": "insert",
-          "recordId": "d9b6ae77-d039-416e-9ebb-d5402dc39ef5",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7812,7 +7812,7 @@
           "memberName": "Jeff Gonzalez",
           "side": "nay",
           "action": "insert",
-          "recordId": "ec294298-58ee-492d-b2a3-9da5d1beb208",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7824,7 +7824,7 @@
           "memberName": "Heather Hadwick",
           "side": "nay",
           "action": "insert",
-          "recordId": "08097e91-da2b-4965-8420-fb97472f3cc7",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7836,7 +7836,7 @@
           "memberName": "Alexandra Macedo",
           "side": "nay",
           "action": "insert",
-          "recordId": "4b9a9246-7489-4313-89c2-60a05f5bfb2f",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7848,7 +7848,7 @@
           "memberName": "David Tangipa",
           "side": "nay",
           "action": "insert",
-          "recordId": "71298bb9-ff50-4389-b9be-523e0f8289c4",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7860,7 +7860,7 @@
           "memberName": "Natasha Johnson",
           "side": "nay",
           "action": "insert",
-          "recordId": "c996ab0a-eb82-4574-b756-115b48dada91",
+          "recordId": null,
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7874,7 +7874,7 @@
       "chamber": "senate",
       "sessionId": 2172,
       "roll": 1601163,
-      "outcome": "imported",
+      "outcome": "dry_run",
       "legislativeVoteId": "0ababac3-73b1-47d6-a9f4-230c4dae743e",
       "reviewStatus": "approved",
       "bill": "AB1415",
@@ -7882,7 +7882,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1415",
       "question": "Assembly 3rd Reading AB1415 Bonta et al. By Menjivar",
-      "originRunId": "rollcall:CA:senate:2172:1601163:2026-08-28T02:20:12.960Z",
+      "originRunId": "rollcall:CA:senate:2172:1601163:2026-08-28T02:19:21.497Z",
       "members": 36,
       "notVoting": 0,
       "absent": 4,
@@ -8036,7 +8036,7 @@
       "chamber": "senate",
       "sessionId": 2172,
       "roll": 1601640,
-      "outcome": "imported",
+      "outcome": "dry_run",
       "legislativeVoteId": "e4e44fd1-edd8-4d3f-a9d9-6c29b4da8660",
       "reviewStatus": "approved",
       "bill": "SB704",
@@ -8044,7 +8044,7 @@
       "officialVoteDate": null,
       "measureId": "SB 704",
       "question": "Unfinished Business SB704 Arreguín et al. Concurrence",
-      "originRunId": "rollcall:CA:senate:2172:1601640:2026-08-28T02:20:12.960Z",
+      "originRunId": "rollcall:CA:senate:2172:1601640:2026-08-28T02:19:21.497Z",
       "members": 39,
       "notVoting": 0,
       "absent": 1,
@@ -8186,7 +8186,7 @@
       "chamber": "senate",
       "sessionId": 2172,
       "roll": 1601758,
-      "outcome": "imported",
+      "outcome": "dry_run",
       "legislativeVoteId": "5c3b5462-2962-4a30-86a1-8500e730aff2",
       "reviewStatus": "approved",
       "bill": "AB1319",
@@ -8194,7 +8194,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1319",
       "question": "Assembly 3rd Reading AB1319 Schultz et al. By Limón",
-      "originRunId": "rollcall:CA:senate:2172:1601758:2026-08-28T02:20:12.960Z",
+      "originRunId": "rollcall:CA:senate:2172:1601758:2026-08-28T02:19:21.497Z",
       "members": 35,
       "notVoting": 0,
       "absent": 5,
@@ -8324,7 +8324,7 @@
       "chamber": "senate",
       "sessionId": 2172,
       "roll": 1601770,
-      "outcome": "imported",
+      "outcome": "dry_run",
       "legislativeVoteId": "4df30a5b-7a22-49eb-8577-06eb5e730f6b",
       "reviewStatus": "approved",
       "bill": "SB580",
@@ -8332,7 +8332,7 @@
       "officialVoteDate": null,
       "measureId": "SB 580",
       "question": "Unfinished Business SB580 Durazo Concurrence",
-      "originRunId": "rollcall:CA:senate:2172:1601770:2026-08-28T02:20:12.960Z",
+      "originRunId": "rollcall:CA:senate:2172:1601770:2026-08-28T02:19:21.497Z",
       "members": 40,
       "notVoting": 0,
       "absent": 0,
@@ -8486,7 +8486,7 @@
       "chamber": "senate",
       "sessionId": 2172,
       "roll": 1601772,
-      "outcome": "imported",
+      "outcome": "dry_run",
       "legislativeVoteId": "6b571275-8db3-4c2d-bbb3-fd9d39526a5a",
       "reviewStatus": "approved",
       "bill": "AB692",
@@ -8494,7 +8494,7 @@
       "officialVoteDate": null,
       "measureId": "AB 692",
       "question": "Assembly 3rd Reading AB692 Kalra et al. By Pérez",
-      "originRunId": "rollcall:CA:senate:2172:1601772:2026-08-28T02:20:12.960Z",
+      "originRunId": "rollcall:CA:senate:2172:1601772:2026-08-28T02:19:21.497Z",
       "members": 36,
       "notVoting": 0,
       "absent": 4,
@@ -8636,7 +8636,7 @@
       "chamber": "senate",
       "sessionId": 2172,
       "roll": 1601776,
-      "outcome": "imported",
+      "outcome": "dry_run",
       "legislativeVoteId": "e8506e8d-b7d0-4746-8b8a-c0306ac31cdb",
       "reviewStatus": "approved",
       "bill": "AB495",
@@ -8644,7 +8644,7 @@
       "officialVoteDate": null,
       "measureId": "AB 495",
       "question": "Assembly 3rd Reading AB495 Celeste Rodriguez By Arreguín",
-      "originRunId": "rollcall:CA:senate:2172:1601776:2026-08-28T02:20:12.960Z",
+      "originRunId": "rollcall:CA:senate:2172:1601776:2026-08-28T02:19:21.497Z",
       "members": 39,
       "notVoting": 0,
       "absent": 1,
@@ -8786,7 +8786,7 @@
       "chamber": "senate",
       "sessionId": 2172,
       "roll": 1601916,
-      "outcome": "imported",
+      "outcome": "dry_run",
       "legislativeVoteId": "b2a7f13c-3e65-469b-a47f-69c6a65362c1",
       "reviewStatus": "approved",
       "bill": "AB325",
@@ -8794,7 +8794,7 @@
       "officialVoteDate": null,
       "measureId": "AB 325",
       "question": "Assembly 3rd Reading AB325 Aguiar-Curry et al. By Umberg",
-      "originRunId": "rollcall:CA:senate:2172:1601916:2026-08-28T02:20:12.960Z",
+      "originRunId": "rollcall:CA:senate:2172:1601916:2026-08-28T02:19:21.497Z",
       "members": 38,
       "notVoting": 0,
       "absent": 2,
@@ -8948,7 +8948,7 @@
       "chamber": "senate",
       "sessionId": 2172,
       "roll": 1601939,
-      "outcome": "imported",
+      "outcome": "dry_run",
       "legislativeVoteId": "9eb4f3cd-0af9-4b6a-ac2b-136e5cfef10f",
       "reviewStatus": "approved",
       "bill": "SB627",
@@ -8956,7 +8956,7 @@
       "officialVoteDate": null,
       "measureId": "SB 627",
       "question": "Unfinished Business SB627 Wiener et al. Concurrence",
-      "originRunId": "rollcall:CA:senate:2172:1601939:2026-08-28T02:20:12.960Z",
+      "originRunId": "rollcall:CA:senate:2172:1601939:2026-08-28T02:19:21.497Z",
       "members": 39,
       "notVoting": 0,
       "absent": 1,
@@ -9110,7 +9110,7 @@
       "chamber": "senate",
       "sessionId": 2172,
       "roll": 1602275,
-      "outcome": "imported",
+      "outcome": "dry_run",
       "legislativeVoteId": "ef98f481-1f69-4578-860e-1349e19586b4",
       "reviewStatus": "approved",
       "bill": "SB79",
@@ -9118,7 +9118,7 @@
       "officialVoteDate": null,
       "measureId": "SB 79",
       "question": "Unfinished Business SB79 Wiener et al. Concurrence",
-      "originRunId": "rollcall:CA:senate:2172:1602275:2026-08-28T02:20:12.960Z",
+      "originRunId": "rollcall:CA:senate:2172:1602275:2026-08-28T02:19:21.497Z",
       "members": 29,
       "notVoting": 0,
       "absent": 11,
@@ -9224,7 +9224,7 @@
       "chamber": "senate",
       "sessionId": 2172,
       "roll": 1602930,
-      "outcome": "imported",
+      "outcome": "dry_run",
       "legislativeVoteId": "53a5b883-c7cb-4fe4-aee3-438a0bbd6fe6",
       "reviewStatus": "approved",
       "bill": "SB42",
@@ -9232,7 +9232,7 @@
       "officialVoteDate": null,
       "measureId": "SB 42",
       "question": "Unfinished Business SB42 Umberg et al. Concurrence",
-      "originRunId": "rollcall:CA:senate:2172:1602930:2026-08-28T02:20:12.960Z",
+      "originRunId": "rollcall:CA:senate:2172:1602930:2026-08-28T02:19:21.497Z",
       "members": 37,
       "notVoting": 0,
       "absent": 3,

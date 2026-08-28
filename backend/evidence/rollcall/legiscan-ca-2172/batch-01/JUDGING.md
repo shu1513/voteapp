@@ -156,3 +156,30 @@ Four more findings, all accepted:
 Run chain for this pass: judge dry 20 `dry_run` → judge 20 `updated` → import dry 298 planned
 rewrites → import real 20 `imported` / 298 `rewrite` / 0 errors → dry re-run 298 `unchanged`.
 Row count unchanged at 298 / 33 candidates. Prod untouched.
+
+## Roster-completion re-import (2026-08-28) — +47 members, 431 new records, batch now 729 / 80
+
+The Nov-2026 CA Assembly rosters were completed (80/80 districts) and the crosswalk extended from
+33 to **80 mapped / 41 explicit null** (`crosswalk-review-2026-08-28.md`; 47 new mappings, all
+exact or approved first-prefix with `seatAgrees: true`). This supersedes the run numbers above,
+which were correct for the 33-member crosswalk they ran under. In particular, **Speaker Robert
+Rivas is no longer a null** — AD-29 now has a Nov-2026 election on file, so he is one of the 80
+mapped and holds records like any other member.
+
+| step | result |
+| --- | --- |
+| `rollcall:legiscan:import --dry-run` | 20 rolls, **431 planned inserts / 298 unchanged**, 0 errors, 0 notified |
+| `rollcall:legiscan:import` | 20 `imported`, **431 inserts / 298 unchanged**, 0 errors, 0 notified |
+
+**Reconciled the same three ways.** `candidate_records` now holds **729 CA roll-call rows across
+80 distinct candidates**: 431 rows on the re-import's stamp
+(`origin_run_id LIKE 'rollcall:CA:%:2172:%:2026-08-28T02:20:12.960Z'`, 47 candidates — exactly the
+newly mapped members) plus the 298 pre-existing rows still on the review-2 stamp
+`2026-08-28T00:34:44.806Z` (33 candidates), untouched by the re-run. The dry-run's stamp
+(`02:19:21.497Z`) matches zero rows.
+
+Report files: `import-report.json` is now this re-import's report; the original 2026-08-27
+298-insert report referenced in Review response 2 above is preserved as
+`import-report-pre-roster-rerun.json`, and the dry-run as `import-dry-run-rerun-report.json`.
+
+Prod untouched.
