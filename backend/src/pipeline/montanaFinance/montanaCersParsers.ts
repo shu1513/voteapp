@@ -243,8 +243,13 @@ function parseJsonBody(body: string, label: string): unknown {
   try {
     return JSON.parse(body);
   } catch {
-    const head = body.slice(0, 120).replaceAll(/\s+/g, " ");
-    throw new MontanaCersParseError(`Montana CERS ${label} response is not JSON: ${head}`);
+    // Never echo raw JSON-ish bodies into errors — report-detail payloads
+    // carry donor names and street addresses. An HTML error page's head is
+    // safe and is the useful diagnostic (Tomcat error titles).
+    const head = body.trimStart().startsWith("<")
+      ? `: ${body.slice(0, 120).replaceAll(/\s+/g, " ")}`
+      : ` (${body.length} bytes withheld)`;
+    throw new MontanaCersParseError(`Montana CERS ${label} response is not JSON${head}`);
   }
 }
 
@@ -260,6 +265,18 @@ function requireDataTablesRows(body: string, label: string): Record<string, unkn
   const rows = parsed["aaData"];
   if (!Array.isArray(rows)) {
     throw new MontanaCersParseError(`Montana CERS ${label} has no aaData array`);
+  }
+  // Both DataTables endpoints carry the total counts (verified live
+  // 2026-08-27). A page smaller than the total means the iDisplayLength
+  // cap silently truncated the result — fail closed, never a partial read.
+  const total = parsed["iTotalDisplayRecords"] ?? parsed["iTotalRecords"];
+  if (typeof total !== "number" || !Number.isSafeInteger(total)) {
+    throw new MontanaCersParseError(`Montana CERS ${label} has no iTotalDisplayRecords/iTotalRecords count`);
+  }
+  if (rows.length !== total) {
+    throw new MontanaCersParseError(
+      `Montana CERS ${label} is truncated: ${rows.length} of ${total} rows (raise the display length)`
+    );
   }
   return rows.map((row) => requireRecord(row, `${label} row`));
 }
@@ -277,7 +294,7 @@ function parseExportLines(
   }
   const lines = body.split(/\r?\n/).filter((line) => line.trim() !== "");
   const headerLine = lines[0] ?? "";
-  if (headerLine.split("|").map((cell) => cell.trim()).join(" ") !== header.join(" ")) {
+  if (headerLine.split("|").map((cell) => cell.trim()).join("|") !== header.join("|")) {
     throw new MontanaCersParseError(`Unexpected Montana CERS ${label} export header: ${headerLine.slice(0, 200)}`);
   }
   return lines.slice(1).map((line, index) => {
@@ -368,8 +385,10 @@ export function parseMontanaCersFinanceRepDetailList(body: string): MontanaCersD
       datePaid: optionalEpochMs(row["datePaid"], "datePaid"),
       lineItemCompositeDescr: optionalString(row["lineItemCompositeDescr"]),
       purposeDescr: optionalString(row["purposeDescr"]),
-      electioneeringInd: requireYesNo(row["electioneeringInd"] ?? "N", "electioneeringInd"),
-      candidateContrInd: requireYesNo(row["candidateContrInd"] ?? "N", "candidateContrInd"),
+      // Explicit flags only: a missing classification flag is schema drift
+      // that could reclassify electioneering money — fail closed.
+      electioneeringInd: requireYesNo(row["electioneeringInd"], "electioneeringInd"),
+      candidateContrInd: requireYesNo(row["candidateContrInd"], "candidateContrInd"),
     };
   });
 }

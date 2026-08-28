@@ -79,10 +79,27 @@ function artifactKeyLabel(key: MontanaCersArtifactKey): string {
     : `${key.type} ${key.candidateId} ${key.year}`;
 }
 
+/**
+ * Parses AND identity-checks an artifact body against its cache key. CERS's
+ * documented stale-session behavior can serve the PREVIOUS entity's data,
+ * so every row that names its entity must name the key's candidate —
+ * otherwise money would be attributed to the wrong candidate. (Report
+ * detail rows carry no entity id; their identity is pinned transitively:
+ * the reportId is checked here and the report->candidate binding comes
+ * from the identity-checked inventory.)
+ */
 function validateBody(key: MontanaCersArtifactKey, body: string): number {
   switch (key.type) {
-    case "report_inventory":
-      return parseMontanaCersReportInventory(body).length;
+    case "report_inventory": {
+      const rows = parseMontanaCersReportInventory(body);
+      const foreign = rows.find((row) => row.entitySubId !== key.candidateId);
+      if (foreign !== undefined) {
+        throw new Error(
+          `Montana CERS report inventory row for entity ${foreign.entitySubId} under candidate ${key.candidateId} — stale-session cross-entity data`
+        );
+      }
+      return rows.length;
+    }
     case "report_detail": {
       const artifact = parseMontanaCersReportDetailArtifact(body);
       if (artifact.reportId !== key.reportId) {
@@ -93,9 +110,19 @@ function validateBody(key: MontanaCersArtifactKey, body: string): number {
       return Object.values(artifact.lists).reduce((sum, rows) => sum + rows.length, 0);
     }
     case "contributions_export":
-      return parseMontanaCersContributionExport(body).length;
-    case "expenditures_export":
-      return parseMontanaCersExpenditureExport(body).length;
+    case "expenditures_export": {
+      const rows =
+        key.type === "contributions_export"
+          ? parseMontanaCersContributionExport(body)
+          : parseMontanaCersExpenditureExport(body);
+      const foreign = rows.find((row) => row.candidateId !== key.candidateId);
+      if (foreign !== undefined) {
+        throw new Error(
+          `Montana CERS ${key.type} row for candidate ${foreign.candidateId} under candidate ${key.candidateId} — stale-session cross-entity data`
+        );
+      }
+      return rows.length;
+    }
   }
 }
 

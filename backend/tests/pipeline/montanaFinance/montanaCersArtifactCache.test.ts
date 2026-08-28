@@ -117,6 +117,29 @@ describe("montanaCersArtifactCache", () => {
     expect(bundle.expenditureRows).toHaveLength(2);
   });
 
+  it("rejects another candidate's data stored under the key (stale-session defense)", async () => {
+    const cacheDir = await mkdtemp(join(tmpdir(), "mt-cers-cache-"));
+    const inventory = await fixture("report-inventory-sanitized.json");
+    const contributions = await fixture("contributions-export-sanitized.csv");
+    // Bedey's (21020) data must not store under candidate 99999.
+    await expect(
+      storeMontanaCersArtifact({
+        cacheDir,
+        key: { type: "report_inventory", candidateId: 99999, year: 2026 },
+        sourceUrl: "https://example.test",
+        body: inventory,
+      })
+    ).rejects.toThrow("stale-session cross-entity");
+    await expect(
+      storeMontanaCersArtifact({
+        cacheDir,
+        key: { type: "contributions_export", candidateId: 99999, year: 2026 },
+        sourceUrl: "https://example.test",
+        body: contributions,
+      })
+    ).rejects.toThrow("stale-session cross-entity");
+  });
+
   it("rejects invalid keys", async () => {
     await expect(
       storeMontanaCersArtifact({

@@ -122,9 +122,46 @@ describe("montanaCersParsers report inventory", () => {
     expect(() => parseMontanaCersReportInventory("{}")).toThrow("no aaData");
     expect(() => parseMontanaCersReportInventory("")).toThrow("Empty Montana CERS");
   });
+
+  it("fails closed when the DataTables page is truncated or uncounted", async () => {
+    const body = JSON.parse(await fixture("report-inventory-sanitized.json")) as {
+      aaData: unknown[];
+      iTotalRecords: number;
+      iTotalDisplayRecords: number;
+    };
+    // A page smaller than the reported total = the display-length cap bit.
+    body.iTotalDisplayRecords = body.aaData.length + 90;
+    body.iTotalRecords = body.aaData.length + 90;
+    expect(() => parseMontanaCersReportInventory(JSON.stringify(body))).toThrow("truncated");
+    // Missing counts are drift, not license to trust the page.
+    expect(() => parseMontanaCersReportInventory(JSON.stringify({ aaData: [] }))).toThrow(
+      "no iTotalDisplayRecords"
+    );
+  });
 });
 
 describe("montanaCersParsers report detail", () => {
+  it("requires explicit classification flags", async () => {
+    const artifact = JSON.parse(await fixture("report-detail-sanitized.json")) as {
+      lists: Record<string, Record<string, unknown>[]>;
+    };
+    const row = { ...artifact.lists.individual![0]! };
+    delete row["electioneeringInd"];
+    // Schema drift dropping the flag must fail closed, never default to "N"
+    // (that would classify electioneering money as ordinary spending).
+    expect(() => parseMontanaCersFinanceRepDetailList(JSON.stringify([row]))).toThrow("electioneeringInd");
+  });
+
+  it("withholds JSON-ish bodies from parse errors but shows HTML error heads", () => {
+    expect(() => parseMontanaCersFinanceRepDetailList('{"entityName":"Doe, Jane","entityAddress":"1 Main St"')).toThrow(
+      /bytes withheld/
+    );
+    expect(() => parseMontanaCersFinanceRepDetailList('{"entityName":"Doe"')).not.toThrow(/Doe/);
+    expect(() => parseMontanaCersFinanceRepDetailList("<html><title>Tomcat error</title></html>")).toThrow(
+      /Tomcat error/
+    );
+  });
+
   it("distinguishes a legitimate empty list from an empty body", () => {
     expect(parseMontanaCersFinanceRepDetailList("[]")).toEqual([]);
     // CERS answers inapplicable listNames (e.g. expendIndependent on a
@@ -165,6 +202,8 @@ describe("montanaCersParsers report detail", () => {
 describe("montanaCersParsers candidate search", () => {
   it("parses DataTables candidate rows", () => {
     const body = JSON.stringify({
+      iTotalRecords: 1,
+      iTotalDisplayRecords: 1,
       aaData: [
         {
           candidateId: 21020,
