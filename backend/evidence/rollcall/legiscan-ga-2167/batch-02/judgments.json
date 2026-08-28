@@ -1,0 +1,157 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1531612,
+      "measure_id": "SB 69",
+      "vote_date": "2025-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the final version of SB 69, the 'Georgia Courts Access and Consumer Protection Act,' which required companies that finance other people's lawsuits to register with the Department of Banking and Finance, barred anyone with specified foreign affiliations from serving as a litigation financier, prohibited financiers from directing or making decisions in the cases they fund, from taking or paying referral commissions, from advertising falsely, and from recovering more than the plaintiff's share of the proceeds after legal costs, required written financing contracts with disclosure and cancellation terms, made litigation financing agreements discoverable in civil actions, provided that a financier putting up $25,000 or more may be jointly and severally liable for costs and sanctions in frivolous litigation, and made evidence of a plaintiff's use of a seat belt admissible in negligence cases. The Georgia House agreed 120-42 and the bill became law.",
+      "nay_description": "Voted against agreeing to the final version of SB 69, the 'Georgia Courts Access and Consumer Protection Act,' which required companies that finance other people's lawsuits to register with the Department of Banking and Finance, barred anyone with specified foreign affiliations from serving as a litigation financier, prohibited financiers from directing or making decisions in the cases they fund, from taking or paying referral commissions, from advertising falsely, and from recovering more than the plaintiff's share of the proceeds after legal costs, required written financing contracts with disclosure and cancellation terms, made litigation financing agreements discoverable in civil actions, provided that a financier putting up $25,000 or more may be jointly and severally liable for costs and sanctions in frivolous litigation, and made evidence of a plaintiff's use of a seat belt admissible in negligence cases. The Georgia House agreed 120-42 and the bill became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1647383,
+      "measure_id": "HB 1164",
+      "vote_date": "2026-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 1164, which required the State Board of Education to appoint an audit committee to request, receive, and review reports on local school systems and state charter schools designated high risk or moderate risk, added criteria for those designations by the Department of Audits and Accounts, required school systems and state charter schools to certify each year that they had met audit and reporting requirements and were not delinquent on required payments, required them to respond to the Department of Education about financial irregularities or budget deficits, expanded public notice of a system's financial condition, allowed the State Board of Education to amend or terminate a charter performance contract unilaterally in specified circumstances, and limited extensions of a superintendent's contract while the system is designated high risk. The Georgia House passed it 103-68 and the bill became law.",
+      "nay_description": "Voted against passing HB 1164, which required the State Board of Education to appoint an audit committee to request, receive, and review reports on local school systems and state charter schools designated high risk or moderate risk, added criteria for those designations by the Department of Audits and Accounts, required school systems and state charter schools to certify each year that they had met audit and reporting requirements and were not delinquent on required payments, required them to respond to the Department of Education about financial irregularities or budget deficits, expanded public notice of a system's financial condition, allowed the State Board of Education to amend or terminate a charter performance contract unilaterally in specified circumstances, and limited extensions of a superintendent's contract while the system is designated high risk. The Georgia House passed it 103-68 and the bill became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1674280,
+      "measure_id": "HB 1185",
+      "vote_date": "2026-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the final version of HB 1185, which let a corporation's bylaws or articles of incorporation require internal entity claims \u2014 including a shareholder's claim challenging the sufficiency of the company's disclosures and proceedings to inspect corporate records \u2014 to be heard only in the Georgia State-wide Business Court, provided for moving such claims to that court, and provided for awards of attorney's fees and costs with exemptions in specified situations. The Georgia House agreed 97-65 and the bill became law.",
+      "nay_description": "Voted against agreeing to the final version of HB 1185, which let a corporation's bylaws or articles of incorporation require internal entity claims \u2014 including a shareholder's claim challenging the sufficiency of the company's disclosures and proceedings to inspect corporate records \u2014 to be heard only in the Georgia State-wide Business Court, provided for moving such claims to that court, and provided for awards of attorney's fees and costs with exemptions in specified situations. The Georgia House agreed 97-65 and the bill became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1676416,
+      "measure_id": "HB 463",
+      "vote_date": "2026-04-02",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the final version of HB 463, which cut the state personal income tax rate from 5.19 percent to 4.99 percent beginning in 2026, raised the annual step-down from 0.10 to 0.125 percentage points and lowered the floor those step-downs run to from 4.99 percent to 3.99 percent, cut the corporate and partnership income tax rates, raised the dependent exemption from $4,000 to $5,000 and the standard deduction for a single filer from $12,000 to $15,000 with further annual increases, excluded up to $1,750 of qualified overtime pay and up to $1,750 of cash tips from state taxable income, increased the retirement income that people 65 or older may exclude, and repealed a list of income tax credits and sales tax exemptions, including credits for alternative fuel and zero-emission vehicles and exemptions for data center and high-technology computer equipment. The Georgia House agreed 104-71 and the bill became law.",
+      "nay_description": "Voted against agreeing to the final version of HB 463, which cut the state personal income tax rate from 5.19 percent to 4.99 percent beginning in 2026, raised the annual step-down from 0.10 to 0.125 percentage points and lowered the floor those step-downs run to from 4.99 percent to 3.99 percent, cut the corporate and partnership income tax rates, raised the dependent exemption from $4,000 to $5,000 and the standard deduction for a single filer from $12,000 to $15,000 with further annual increases, excluded up to $1,750 of qualified overtime pay and up to $1,750 of cash tips from state taxable income, increased the retirement income that people 65 or older may exclude, and repealed a list of income tax credits and sales tax exemptions, including credits for alternative fuel and zero-emission vehicles and exemptions for data center and high-technology computer equipment. The Georgia House agreed 104-71 and the bill became law.",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "senate",
+      "session": "2167",
+      "roll": 1676417,
+      "measure_id": "HB 463",
+      "vote_date": "2026-04-02",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the final version of HB 463, which cut the state personal income tax rate from 5.19 percent to 4.99 percent beginning in 2026, raised the annual step-down from 0.10 to 0.125 percentage points and lowered the floor those step-downs run to from 4.99 percent to 3.99 percent, cut the corporate and partnership income tax rates, raised the dependent exemption from $4,000 to $5,000 and the standard deduction for a single filer from $12,000 to $15,000 with further annual increases, excluded up to $1,750 of qualified overtime pay and up to $1,750 of cash tips from state taxable income, increased the retirement income that people 65 or older may exclude, and repealed a list of income tax credits and sales tax exemptions, including credits for alternative fuel and zero-emission vehicles and exemptions for data center and high-technology computer equipment. The Georgia Senate agreed 33-20 and the bill became law.",
+      "nay_description": "Voted against agreeing to the final version of HB 463, which cut the state personal income tax rate from 5.19 percent to 4.99 percent beginning in 2026, raised the annual step-down from 0.10 to 0.125 percentage points and lowered the floor those step-downs run to from 4.99 percent to 3.99 percent, cut the corporate and partnership income tax rates, raised the dependent exemption from $4,000 to $5,000 and the standard deduction for a single filer from $12,000 to $15,000 with further annual increases, excluded up to $1,750 of qualified overtime pay and up to $1,750 of cash tips from state taxable income, increased the retirement income that people 65 or older may exclude, and repealed a list of income tax credits and sales tax exemptions, including credits for alternative fuel and zero-emission vehicles and exemptions for data center and high-technology computer equipment. The Georgia Senate agreed 33-20 and the bill became law.",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "senate",
+      "session": "2167",
+      "roll": 1665920,
+      "measure_id": "SB 220",
+      "vote_date": "2026-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the final version of SB 220, the 'Putting Georgia's Patients First Act,' which expanded the forms of medical cannabis available to registered patients to include vaporization, oils, and raw plant material, removed the 5 percent cap on THC in medical cannabis products and set a 1,200 milligram per-package limit instead, added cancer other than skin cancer, inflammatory bowel disease, human immunodeficiency virus, and lupus to the qualifying conditions, expanded who may serve as a caregiver to include a patient-designated adult and a health care institution treating the patient, barred licensees from advertising or marketing medical cannabis to the public while allowing information to be given to physicians and health care providers, made ingestion by smoking or combustion illegal while allowing vaporization, and provided registration cards valid for five years, with electronic cards subject to appropriations. The Georgia Senate agreed 38-14 and the bill became law.",
+      "nay_description": "Voted against agreeing to the final version of SB 220, the 'Putting Georgia's Patients First Act,' which expanded the forms of medical cannabis available to registered patients to include vaporization, oils, and raw plant material, removed the 5 percent cap on THC in medical cannabis products and set a 1,200 milligram per-package limit instead, added cancer other than skin cancer, inflammatory bowel disease, human immunodeficiency virus, and lupus to the qualifying conditions, expanded who may serve as a caregiver to include a patient-designated adult and a health care institution treating the patient, barred licensees from advertising or marketing medical cannabis to the public while allowing information to be given to physicians and health care providers, made ingestion by smoking or combustion illegal while allowing vaporization, and provided registration cards valid for five years, with electronic cards subject to appropriations. The Georgia Senate agreed 38-14 and the bill became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1535260,
+      "measure_id": "SB 244",
+      "vote_date": "2025-04-02",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 244, which entitled a criminal defendant to reasonable attorney's fees and costs, paid from the county treasury, when a prosecuting attorney was disqualified for misconduct in the case and the case was then dismissed, and enacted the 'Wrongful Conviction and Incarceration Compensation Act,' letting a person who served time for a felony they did not commit file a claim with the Office of State Administrative Hearings and, on proof by a preponderance of the evidence, receive $75,000 for each year incarcerated plus $25,000 for each year spent awaiting a death sentence, attorney's fees, repayment of fines and restitution, and reintegration and health care costs, paid from a new state trust fund. The Georgia House passed it 103-61 and the bill became law.",
+      "nay_description": "Voted against passing SB 244, which entitled a criminal defendant to reasonable attorney's fees and costs, paid from the county treasury, when a prosecuting attorney was disqualified for misconduct in the case and the case was then dismissed, and enacted the 'Wrongful Conviction and Incarceration Compensation Act,' letting a person who served time for a felony they did not commit file a claim with the Office of State Administrative Hearings and, on proof by a preponderance of the evidence, receive $75,000 for each year incarcerated plus $25,000 for each year spent awaiting a death sentence, attorney's fees, repayment of fines and restitution, and reintegration and health care costs, paid from a new state trust fund. The Georgia House passed it 103-61 and the bill became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "senate",
+      "session": "2167",
+      "roll": 1537730,
+      "measure_id": "SB 244",
+      "vote_date": "2025-04-04",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the final version of SB 244, which entitled a criminal defendant to reasonable attorney's fees and costs, paid from the county treasury, when a prosecuting attorney was disqualified for misconduct in the case and the case was then dismissed, and enacted the 'Wrongful Conviction and Incarceration Compensation Act,' letting a person who served time for a felony they did not commit file a claim with the Office of State Administrative Hearings and, on proof by a preponderance of the evidence, receive $75,000 for each year incarcerated plus $25,000 for each year spent awaiting a death sentence, attorney's fees, repayment of fines and restitution, and reintegration and health care costs, paid from a new state trust fund. The Georgia Senate agreed 35-18 and the bill became law.",
+      "nay_description": "Voted against agreeing to the final version of SB 244, which entitled a criminal defendant to reasonable attorney's fees and costs, paid from the county treasury, when a prosecuting attorney was disqualified for misconduct in the case and the case was then dismissed, and enacted the 'Wrongful Conviction and Incarceration Compensation Act,' letting a person who served time for a felony they did not commit file a claim with the Office of State Administrative Hearings and, on proof by a preponderance of the evidence, receive $75,000 for each year incarcerated plus $25,000 for each year spent awaiting a death sentence, attorney's fees, repayment of fines and restitution, and reintegration and health care costs, paid from a new state trust fund. The Georgia Senate agreed 35-18 and the bill became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1535196,
+      "measure_id": "SB 40",
+      "vote_date": "2025-04-02",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the final version of SB 40, which barred a secondary metals recycler from paying a seller more than $100 in cash in any transaction or completing more than two transactions per seller per day at a location, barred cash payment altogether for used detached catalytic converters, coils, used utility wire, used communications copper, copper wire, and batteries, applied the article's rules to used detached catalytic converters, revised recycler registration, record-keeping, and reporting requirements, directed $100 of each $200 registration fee to the Georgia Sheriffs' Association and the other $100 to the county general fund while creating a Sheriffs' Association registry of recyclers, and allowed a privately operated municipal solid waste facility to charge a $1 per ton surcharge on nonmetallic waste from shredding vehicles or household appliances. The Georgia House agreed 91-63 and the bill became law.",
+      "nay_description": "Voted against agreeing to the final version of SB 40, which barred a secondary metals recycler from paying a seller more than $100 in cash in any transaction or completing more than two transactions per seller per day at a location, barred cash payment altogether for used detached catalytic converters, coils, used utility wire, used communications copper, copper wire, and batteries, applied the article's rules to used detached catalytic converters, revised recycler registration, record-keeping, and reporting requirements, directed $100 of each $200 registration fee to the Georgia Sheriffs' Association and the other $100 to the county general fund while creating a Sheriffs' Association registry of recyclers, and allowed a privately operated municipal solid waste facility to charge a $1 per ton surcharge on nonmetallic waste from shredding vehicles or household appliances. The Georgia House agreed 91-63 and the bill became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    }
+  ]
+}

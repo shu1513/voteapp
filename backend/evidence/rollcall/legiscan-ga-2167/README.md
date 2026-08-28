@@ -83,3 +83,11 @@ never committed; it lives with the dataset under `/Users/shu/legiscan-data/`.
 
 - `batch-01/` — 18 rolls / 10 marquee enacted measures / 1,725 records, imported to local
   `voteapp` 2026-08-26. See `batch-01/PLAN.md` and `batch-01/JUDGING.md`.
+- `batch-02/` — 9 rolls / 7 enacted measures / 1,035 records, imported to local `voteapp`
+  2026-08-27, from the tail batch-01 left. See `batch-02/PLAN.md` and `batch-02/JUDGING.md`;
+  its judging notes carry the Georgia-specific hazards (HBRO summaries that invert the enacted
+  effect, reading strikethrough out of the enrolled PDFs, and the ten vehicle bills whose
+  LegiScan titles do not match their Acts).
+
+**Georgia total: 27 approved rolls, 2,760 records across 207 candidates**, local only. PROD
+UNTOUCHED.
