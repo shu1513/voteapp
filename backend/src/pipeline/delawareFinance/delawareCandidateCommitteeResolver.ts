@@ -22,6 +22,10 @@ import {
   type DelawareCfrsSession,
   type DelawareCfrsSessionOptions,
 } from "./delawareCfrsClient.js";
+import {
+  committeeNameMiddleEvidenceRowNames,
+  hasMiddleNameConflict,
+} from "../finance/personNameMiddleEvidence.js";
 import { parseDelawareCommitteeGridJson, type DelawareCommitteeGridRow } from "./delawareCfrsParsers.js";
 import { toDelawareCfrsOfficeSearch, type DelawareCfrsOfficeSearch } from "./delawareFinanceEligibleOffices.js";
 
@@ -32,6 +36,19 @@ export function normalizeDelawareCandidateNameForStorage(value: string): string 
     .toUpperCase()
     .replace(/&/g, " AND ")
     .replace(/[^A-Z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/**
+ * Person-name form for the shared middle-evidence module: storage
+ * normalization plus generational-suffix stripping (the module reads
+ * suffixes from the RAW string itself and expects the normalizer to have
+ * removed them — the Missouri pattern).
+ */
+function normalizeDelawarePersonName(value: string): string {
+  return normalizeDelawareCandidateNameForStorage(value)
+    .replace(/\b(JR|SR|II|III|IV)\b/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -80,6 +97,26 @@ export type DelawareCandidateCommitteeSearchInput = {
 
 function committeeNameMatches(committeeName: string, token: string): boolean {
   return ` ${normalizeDelawareCandidateNameForStorage(committeeName)} `.includes(` ${token} `);
+}
+
+/**
+ * Row-name expansion for the middle-evidence veto. The shared helper splits
+ * on "for" ("Meyer for Delaware"); Delaware committees also bury the person
+ * name behind an "of" designator ("Friends of John B Smith"), so those
+ * segments are added too. Extra segments can only ADD aligned evidence,
+ * never block alignment that already existed (the module invariant).
+ */
+function delawareCommitteeEvidenceRowNames(committeeName: string): string[] {
+  const names = new Set(committeeNameMiddleEvidenceRowNames(committeeName));
+  for (const name of [...names]) {
+    for (const segment of name.split(/\bof\b/i)) {
+      const trimmed = segment.trim();
+      if (trimmed) {
+        names.add(trimmed);
+      }
+    }
+  }
+  return [...names];
 }
 
 async function resolveDistrictOptionValue(
@@ -177,7 +214,21 @@ export async function searchAndResolveDelawareCandidateCommittee(
     return { status: "unmatched", reason: "no_committee_for_office" };
   }
 
-  let matches = committees.filter((row) => committeeNameMatches(row.committeeName, nameTokens.last));
+  // Shared middle-evidence veto (finance/personNameMiddleEvidence): a
+  // committee whose embedded person name carries a CONTRADICTING middle
+  // name/initial or a different generational suffix ("John B. Smith" /
+  // "John Smith Sr." for candidate "John A. Smith Jr.") is another person's
+  // committee, not a weaker match — drop it before any counting so it can
+  // neither win nor force ambiguity.
+  let matches = committees.filter(
+    (row) =>
+      committeeNameMatches(row.committeeName, nameTokens.last) &&
+      !hasMiddleNameConflict({
+        candidateName: input.candidateName,
+        rowNames: delawareCommitteeEvidenceRowNames(row.committeeName),
+        normalizePersonName: normalizeDelawarePersonName,
+      })
+  );
   if (matches.length > 1) {
     const refined = matches.filter((row) => committeeNameMatches(row.committeeName, nameTokens.first));
     if (refined.length >= 1) {

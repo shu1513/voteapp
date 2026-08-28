@@ -128,6 +128,35 @@ describe("searchAndResolveDelawareCandidateCommittee", () => {
     expect(ambiguous).toMatchObject({ status: "ambiguous", reason: "multiple_matching_committees" });
   });
 
+  it("vetoes committees whose embedded name carries conflicting middle evidence", async () => {
+    const rows = [
+      gridRow(600007, "01003333", "Friends of John B Smith"),
+      gridRow(600008, "01004444", "John Smith Sr for Delaware"),
+    ];
+    const script = () => [
+      { match: (url: string) => url.includes("/Public/ViewCommittees"), response: () => html("<html>form</html>") },
+      { match: (url: string) => url.includes("/Public/Search"), response: () => html("<html>results</html>") },
+      { match: (url: string) => url.includes("/Public/_ViewCommittees"), response: () => json({ data: rows, total: 2 }) },
+    ];
+
+    // "John A. Smith Jr." conflicts with BOTH: a contradicting middle
+    // initial on one, a different generation on the other.
+    const vetoed = await searchAndResolveDelawareCandidateCommittee(
+      { candidateName: "John A. Smith Jr.", officeScope: "statewide", officeName: "Attorney General" },
+      { ...sessionOptions, fetchImpl: scriptedFetch(script()).fetchImpl }
+    );
+    expect(vetoed).toEqual({ status: "unmatched", reason: "no_candidate_committee_match" });
+
+    // Without middle/suffix evidence of his own, only the generational
+    // conflict is off the table — the middle-initial committee still
+    // carries no contradiction, so it matches uniquely.
+    const matched = await searchAndResolveDelawareCandidateCommittee(
+      { candidateName: "John Smith Jr.", officeScope: "statewide", officeName: "Attorney General" },
+      { ...sessionOptions, fetchImpl: scriptedFetch(script()).fetchImpl }
+    );
+    expect(matched).toMatchObject({ status: "matched", cfId: "01003333" });
+  });
+
   it("returns typed non-matches without touching the portal when inputs are unusable", async () => {
     const neverFetch: DelawareCfrsFetchFn = () => {
       throw new Error("must not fetch");

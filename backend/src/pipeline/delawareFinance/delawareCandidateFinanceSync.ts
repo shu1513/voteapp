@@ -252,6 +252,12 @@ export async function syncDelawareCandidateFinance(input: {
     );
   }
 
+  // cash_on_hand is the CURRENT cash position — the ending balance of the
+  // latest canonical cover (plan fact 2, verbatim), deliberately NOT
+  // window-scoped: pairing the election window's raised/spent totals with
+  // the latest known cash is the standard finance-summary semantic (FEC
+  // style). Pre-election the two coincide; after the election the window
+  // totals stay frozen while cash tracks the newest filed report.
   const cashOnHandCents = canonicalReports[canonicalReports.length - 1]!.endingBalanceCents;
   const totalReceipts = windowCoverReceiptsCents / 100;
   const directContributionTotal = aggregation.directContributionCents / 100;
