@@ -1,8 +1,10 @@
 # Nevada campaign finance — implementation plan
 
-Status: **Phases 0-2 DONE (Phase 2 run 2026-08-27: 95/108 candidates imported
+Status: **Phases 0-3 DONE (Phase 2 run 2026-08-27: 95/108 candidates imported
 into the local DB; harvest gotchas + unlinked list in the feasibility doc
-Addendum 5).** Phase 0: fixtures in
+Addendum 5. Phase 3 ship 2026-08-27: flag in `backend/.env` + `render.yaml`,
+NEVADA_AURORA display label + portal home URL in `packages/api-client`,
+ballot-page spot-check green — prod promotion tracked in the memory topic).** Phase 0: fixtures in
 `backend/tests/fixtures/nevadaFinance/` (5/5 reconciliation exact). Phase 1:
 migration 258, `backend/src/pipeline/nevadaFinance/` (CSV + report parsers,
 selection, cycle builder, aggregator, resolver, writer, loader), CLIs
