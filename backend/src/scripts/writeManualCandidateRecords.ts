@@ -137,6 +137,47 @@ function readPositiveIntegerEnv(name: string, fallback: number): number {
   return Number(raw);
 }
 
+export type StoredDroppedRecordMatch = {
+  recordIdentityKey: string;
+  id: string;
+  retiredAt: string | null;
+};
+
+// A dropped payload row that is byte-identical to an already-stored row is a
+// re-submission (the stamp/refresh workflow re-sends stored rows verbatim),
+// not new research that needs repair. The generic "needs focused repair"
+// message read as "nothing can be written for this candidate until this row
+// is fixed" — a live 2026-08 misdiagnosis reported the writer as blocking new
+// records over a stored campaign-site row, when validation never re-checks
+// stored rows at all. Say what the row is and what to actually do: remove it
+// from the payload (stored rows not in the payload are never modified), and
+// retire it via manual:records:retire when it should stop being shown.
+// Matching is exact-identity only: the re-submission workflow copies stored
+// rows byte-for-byte, and a looser match would mislabel genuinely new rows
+// as re-submissions.
+export function annotateDroppedRecordsWithStoredRows(
+  droppedRecords: readonly CandidateRecordDroppedRecord[],
+  storedRows: readonly StoredDroppedRecordMatch[]
+): CandidateRecordDroppedRecord[] {
+  const storedByIdentityKey = new Map(storedRows.map((row) => [row.recordIdentityKey, row]));
+  return droppedRecords.map((dropped) => {
+    const match = storedByIdentityKey.get(
+      buildCandidateRecordIdentityKey({
+        description: dropped.record.description,
+        sourceUrl: dropped.record.source_url,
+        eventDate: dropped.record.event_date,
+      })
+    );
+    if (!match) {
+      return dropped;
+    }
+    const guidance = match.retiredAt
+      ? `NOTE: this exact row is already stored AND retired (candidate_records.id ${match.id}, retired ${match.retiredAt}) — the payload row came from a stale export; drop it from the records file`
+      : `NOTE: this exact row is already stored (candidate_records.id ${match.id}, live) — this writer never re-validates or modifies stored rows, so drop it from the records file (the stored row stays as-is) and retire it via manual:records:retire if it should stop being shown`;
+    return { ...dropped, reason: `${dropped.reason}; ${guidance}` };
+  });
+}
+
 function summarizeDroppedRecords(droppedRecords: readonly CandidateRecordDroppedRecord[]): string {
   const preview = droppedRecords
     .slice(0, 5)
@@ -558,7 +599,47 @@ async function main(): Promise<void> {
   // misleading "labels contains invalid row" error. The operator must repair or
   // remove the dropped row so record and label indices describe the same list.
   if (validatedRecords.droppedRecords.length > 0) {
-    const gaps = validatedRecords.droppedRecords.map(droppedRecordToGap);
+    // Failure path only: annotate drops that are byte-identical to stored
+    // rows (see annotateDroppedRecordsWithStoredRows). (candidate_id,
+    // record_identity_key) is unique, so each key matches at most one row.
+    const droppedIdentityKeys = [
+      ...new Set(
+        validatedRecords.droppedRecords.map((dropped) =>
+          buildCandidateRecordIdentityKey({
+            description: dropped.record.description,
+            sourceUrl: dropped.record.source_url,
+            eventDate: dropped.record.event_date,
+          })
+        )
+      ),
+    ];
+    const droppedLookupPool = new Pool({ connectionString: earlyDatabaseUrl });
+    let storedMatches: StoredDroppedRecordMatch[] = [];
+    try {
+      const storedResult = await droppedLookupPool.query<{
+        id: string;
+        record_identity_key: string;
+        retired_at: string | null;
+      }>(
+        `SELECT id, record_identity_key, retired_at::date::text AS retired_at
+           FROM public.candidate_records
+          WHERE candidate_id = $1
+            AND record_identity_key = ANY($2)`,
+        [candidateId, droppedIdentityKeys]
+      );
+      storedMatches = storedResult.rows.map((row) => ({
+        recordIdentityKey: row.record_identity_key,
+        id: row.id,
+        retiredAt: row.retired_at,
+      }));
+    } finally {
+      await droppedLookupPool.end();
+    }
+    const annotatedDropped = annotateDroppedRecordsWithStoredRows(
+      validatedRecords.droppedRecords,
+      storedMatches
+    );
+    const gaps = annotatedDropped.map(droppedRecordToGap);
     await writeRecordsRepairReport({
       reportFile: repairReportFile,
       manualKey,
@@ -569,7 +650,7 @@ async function main(): Promise<void> {
       candidateDisplayName: null,
       gaps,
     });
-    const qualityDropped = validatedRecords.droppedRecords.filter(
+    const qualityDropped = annotatedDropped.filter(
       (record) => record.failureKind === "quality_gap"
     );
     const hint =
@@ -577,7 +658,7 @@ async function main(): Promise<void> {
         ? " Quality-gate drops must be repaired or removed from the records file so label record_index values stay aligned with the records actually imported."
         : "";
     throw new Error(
-      `Candidate records payload needs focused repair before import; dropped=${validatedRecords.droppedRecords.length}; ${summarizeDroppedRecords(validatedRecords.droppedRecords)}.${hint}`
+      `Candidate records payload needs focused repair before import; dropped=${annotatedDropped.length}; ${summarizeDroppedRecords(annotatedDropped)}.${hint}`
     );
   }
   // Within-payload merge guard: two payload rows sharing an event date and
