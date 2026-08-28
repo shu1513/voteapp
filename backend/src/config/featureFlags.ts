@@ -248,6 +248,10 @@ export function isNewHampshireCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("NEW_HAMPSHIRE_CAMPAIGN_FINANCE_ENABLED", false);
 }
 
+export function isNevadaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("NEVADA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
 export function isNewHampshireCfsRawDataRefreshEnabled(force = false): boolean {
   return (
     isNewHampshireCampaignFinanceEnabled() &&

@@ -1,0 +1,29 @@
+{
+ "_provenance": "Date-only (no name filter) CSV exports, window 6/1/2026-6/30/2026, run live 2026-08-26. Covers ALL jurisdictions and filer types (candidates, PACs, county/city filers).",
+ "contributions": {
+  "rows": 4322,
+  "sum": 19463778.06,
+  "bytes": 464234,
+  "sha256": "9e3f37f8bc21911a7900ffbc8246fc6f821395cc2e30a9428479edffdecb3e7e",
+  "distinct_recipients": 417,
+  "ldf_rows": 36,
+  "in_kind_rows": 129
+ },
+ "expenditures": {
+  "rows": 4207,
+  "sum": 13324706.56,
+  "bytes": 420222,
+  "sha256": "c4b501330cf9394a25ee3919c6b9ab40bd6b46364631df8e50dd0fb4b52071ad",
+  "distinct_payers": 495,
+  "ldf_rows": 16,
+  "in_kind_rows": 59
+ },
+ "notes": [
+  "Apr-Jun 2026 in one export = 'too many results' (cap binds in CSV mode; somewhere above ~4.3k rows)",
+  "Payee names can contain escaped quotes (\"\"Anedot\"\") - use a real CSV parser",
+  "legit duplicate rows exist (same payee/date/amount twice in one report)",
+  "refunds appear as expenses with '(REFUND)' in the payee text",
+  "'Accrued Account Interest' appears as a contributor name",
+  "recipients include the filer themselves for self in-kind rows"
+ ]
+}
