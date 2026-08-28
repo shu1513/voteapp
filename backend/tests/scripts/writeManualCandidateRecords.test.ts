@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 
 import type { CandidateRecordDroppedRecord } from "../../src/ai/enrichCandidateRecords.js";
+import { buildCandidateRecordIdentityKey } from "../../src/pipeline/candidates/candidateRecordStore.js";
 import {
+  annotateDroppedRecordsWithStoredRows,
   applyConfirmedGaps,
   buildCandidateRecordQualityGaps,
   decideDeltaZeroRecordConfirmation,
@@ -321,5 +323,113 @@ describe("writeManualCandidateRecords delta (--since-date) helpers", () => {
         expect(decision.reason).not.toContain("never closed");
       }
     }
+  });
+});
+
+describe("annotateDroppedRecordsWithStoredRows", () => {
+  const droppedStoredResubmission: CandidateRecordDroppedRecord = {
+    record: {
+      description: "Opposed spending taxpayer funds on a second police helicopter.",
+      source_url: "https://www.millerformayor.example/latest-news",
+      event_date: "2025-04-08",
+    },
+    reason:
+      "source domain 'www.millerformayor.example' appears to be the candidate's own campaign or personal site; self-promotion is not acceptable record evidence — cite an independent publisher",
+    failureType: "permanent",
+    failureKind: "source_url",
+  };
+  const storedKey = buildCandidateRecordIdentityKey({
+    description: droppedStoredResubmission.record.description,
+    sourceUrl: droppedStoredResubmission.record.source_url,
+    eventDate: droppedStoredResubmission.record.event_date,
+  });
+
+  it("tells the operator a live stored re-submission is not a repair job", () => {
+    const [annotated] = annotateDroppedRecordsWithStoredRows(
+      [droppedStoredResubmission],
+      [{ recordIdentityKey: storedKey, id: "rec-1", retiredAt: null }]
+    );
+
+    expect(annotated!.reason).toContain("already stored (candidate_records.id rec-1, live)");
+    expect(annotated!.reason).toContain("never re-validates or modifies stored rows");
+    expect(annotated!.reason).toContain("manual:records:retire");
+    // The original rejection stays first so the operator still sees WHY it dropped.
+    expect(annotated!.reason.startsWith("source domain")).toBe(true);
+  });
+
+  it("marks a retired stored match as a stale-export row, without the retire directive", () => {
+    const [annotated] = annotateDroppedRecordsWithStoredRows(
+      [droppedStoredResubmission],
+      [{ recordIdentityKey: storedKey, id: "rec-1", retiredAt: "2026-08-26" }]
+    );
+
+    expect(annotated!.reason).toContain("already stored AND retired (candidate_records.id rec-1, retired 2026-08-26)");
+    expect(annotated!.reason).toContain("stale export");
+    expect(annotated!.reason).not.toContain("manual:records:retire");
+  });
+
+  it("leaves genuinely new dropped rows untouched", () => {
+    const newRow: CandidateRecordDroppedRecord = {
+      ...droppedStoredResubmission,
+      record: { ...droppedStoredResubmission.record, description: "A different new claim entirely." },
+    };
+
+    const [annotated] = annotateDroppedRecordsWithStoredRows(
+      [newRow],
+      [{ recordIdentityKey: storedKey, id: "rec-1", retiredAt: null }]
+    );
+
+    expect(annotated).toEqual(newRow);
+  });
+
+  it("overrides focusedResearchPass with a no-research instruction for a live stored match", () => {
+    const [annotated] = annotateDroppedRecordsWithStoredRows(
+      [droppedStoredResubmission],
+      [{ recordIdentityKey: storedKey, id: "rec-1", retiredAt: null }]
+    );
+    const gap = droppedRecordToGap(annotated!, 0);
+
+    expect(gap.outcome).toBe("needs_repair");
+    expect(gap.focusedResearchPass).toContain("No research needed");
+    expect(gap.focusedResearchPass).toContain("candidate_records.id rec-1 (live)");
+    expect(gap.focusedResearchPass).toContain("realign the labels file record_index values");
+    expect(gap.focusedResearchPass).toContain("manual:records:retire");
+    expect(gap.focusedResearchPass).not.toContain("Replace bad URLs");
+  });
+
+  it("overrides focusedResearchPass with the stale-export instruction for a retired stored match", () => {
+    const [annotated] = annotateDroppedRecordsWithStoredRows(
+      [droppedStoredResubmission],
+      [{ recordIdentityKey: storedKey, id: "rec-1", retiredAt: "2026-08-26" }]
+    );
+    const gap = droppedRecordToGap(annotated!, 0);
+
+    expect(gap.focusedResearchPass).toContain("No research needed");
+    expect(gap.focusedResearchPass).toContain("already retired 2026-08-26");
+    expect(gap.focusedResearchPass).toContain("stale export");
+    expect(gap.focusedResearchPass).not.toContain("manual:records:retire");
+  });
+
+  it("keeps the per-kind research instruction when no stored match exists", () => {
+    const gap = droppedRecordToGap(droppedStoredResubmission, 0);
+
+    expect(gap.focusedResearchPass).toContain("source/schema repair pass");
+  });
+
+  it("matches through identity normalization (trailing slash, case), like the upsert would", () => {
+    const slashVariant: CandidateRecordDroppedRecord = {
+      ...droppedStoredResubmission,
+      record: {
+        ...droppedStoredResubmission.record,
+        source_url: "HTTPS://WWW.millerformayor.example/latest-news/",
+      },
+    };
+
+    const [annotated] = annotateDroppedRecordsWithStoredRows(
+      [slashVariant],
+      [{ recordIdentityKey: storedKey, id: "rec-1", retiredAt: null }]
+    );
+
+    expect(annotated!.reason).toContain("candidate_records.id rec-1");
   });
 });

@@ -6,6 +6,13 @@ module.exports = {
     extend: {
       // Mirror of the web theme tokens in frontend/src/index.css @theme.
       // Keep the two files in sync until a shared token source exists.
+      // Same 14px -> 15px raise as web's --text-sm (index.css): the whole
+      // chrome tier (card meta, form labels, summaries) sits on text-sm and
+      // 14px read too small on phones. Line height is absolute because RN
+      // has no unitless line-height; 22px ~= web's 1.45.
+      fontSize: {
+        sm: ["15px", { lineHeight: "22px" }],
+      },
       colors: {
         rausch: "#ff385c",
         "rausch-dark": "#e31c5f",

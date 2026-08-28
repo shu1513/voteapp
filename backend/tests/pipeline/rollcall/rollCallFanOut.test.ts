@@ -229,17 +229,36 @@ describe("database writes", () => {
         { candidate_id: "c2", id: "r3", description: "d", source_url: "u", record_identity_key: "k3", retired_at: null },
       ],
     });
-    const loaded = await loadExistingRecordsForDate({ query }, ["c1", "c2", "c3"], "2025-05-22");
-    expect(query.mock.calls[0]?.[1]).toEqual([["c1", "c2", "c3"], "2025-05-22"]);
+    const loaded = await loadExistingRecordsForDate(
+      { query },
+      ["c1", "c2", "c3"],
+      ["2025-05-22", "2025-05-21"],
+      "rollcall:US:house:119-1:145:"
+    );
+    expect(query.mock.calls[0]?.[1]).toEqual([["c1", "c2", "c3"], ["2025-05-22", "2025-05-21"], "rollcall:US:house:119-1:145:"]);
     expect([...loaded.keys()]).toEqual(["c1", "c2"]);
     expect(loaded.get("c1")?.map((record) => record.id)).toEqual(["r1", "r2"]);
     const columns = migrationTableColumns("candidate_records");
     const sql = query.mock.calls[0]?.[0] as string;
-    for (const column of ["candidate_id", "id", "description", "source_url", "record_identity_key", "retired_at", "event_date"]) {
+    for (const column of [
+      "candidate_id",
+      "id",
+      "description",
+      "source_url",
+      "record_identity_key",
+      "retired_at",
+      "event_date",
+      "origin",
+      "origin_run_id",
+    ]) {
       expect(sql).toContain(column);
       expect(columns.has(column), column).toBe(true);
     }
-    expect(await loadExistingRecordsForDate({ query }, [], "2025-05-22")).toEqual(new Map());
+    // The run-id prefix net: a changed or cleared official-date override
+    // leaves this pipeline's rows on a date outside the scan window, and
+    // they must still be found so the plan rewrites instead of inserting.
+    expect(sql).toMatch(/event_date = ANY\(\$2::date\[\]\)\s+OR \(origin = 'rollcall_import' AND starts_with\(origin_run_id, \$3\)\)/);
+    expect(await loadExistingRecordsForDate({ query }, [], ["2025-05-22"], "rollcall:US:house:119-1:145:")).toEqual(new Map());
     expect(query).toHaveBeenCalledTimes(1);
   });
 
@@ -260,8 +279,19 @@ describe("database writes", () => {
     expect(updateSql).toMatch(/UPDATE public\.candidate_records/);
     expect(updateSql).toMatch(/origin = 'rollcall_import'/);
     expect(updateSql).toMatch(/WHERE id = \$1\s+AND record_identity_key = \$2\s+AND retired_at IS NULL/);
-    expect(updateSql).not.toMatch(/event_date/);
-    expect(updateParams).toEqual(["old-id", "v3_old", content.description, content.sourceUrl, "v3_new", content.originRunId]);
+    // The date moves with the content: identity keys embed event_date, so a
+    // row found on the raw source date after an official-date override lands
+    // on the official date.
+    expect(updateSql).toMatch(/event_date = \$5::date/);
+    expect(updateParams).toEqual([
+      "old-id",
+      "v3_old",
+      content.description,
+      content.sourceUrl,
+      "2025-05-22",
+      "v3_new",
+      content.originRunId,
+    ]);
     const [transitionSql, transitionParams] = query.mock.calls[1]!;
     expect(transitionSql).toMatch(/candidate_record_identity_transitions/);
     expect(transitionParams).toEqual(["cand-1", "v3_old", "v3_new", "rollcall_normalization"]);

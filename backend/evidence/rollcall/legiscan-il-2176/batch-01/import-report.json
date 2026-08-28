@@ -1,0 +1,663 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": false,
+  "skipExisting": false,
+  "startedAt": "2026-08-27T01:40:23.513Z",
+  "finishedAt": "2026-08-27T01:40:28.788Z",
+  "jurisdiction": "IL",
+  "sessionId": 2176,
+  "evidenceDir": "/Users/shu/legiscan-data/il-2176-evidence/batch-01",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "/Users/shu/legiscan-data/il-2176-evidence/crosswalk.json",
+  "crosswalkEntries": 181,
+  "peopleFile": "/Users/shu/legiscan-data/il-2176-evidence/fetch/legiscan-people-il-2176.json",
+  "peopleMembers": 181,
+  "files": 22,
+  "outcomes": {
+    "imported": 22
+  },
+  "actions": {
+    "insert": 1364
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-il-house-2176-roll1539817.json",
+      "state": "IL",
+      "chamber": "house",
+      "sessionId": 2176,
+      "roll": 1539817,
+      "outcome": "imported",
+      "legislativeVoteId": "b2384e5a-67b7-4608-9860-4201abb39d48",
+      "reviewStatus": "approved",
+      "bill": "HB3489",
+      "voteDate": "2025-04-08",
+      "measureId": "HB 3489",
+      "question": "Third Reading in House",
+      "originRunId": "rollcall:IL:house:2176:1539817:2026-08-27T01:40:23.513Z",
+      "members": 113,
+      "notVoting": 2,
+      "absent": 0,
+      "resolution": {
+        "matched": 94,
+        "unmatched_reviewed": 19
+      },
+      "actions": {
+        "insert": 94
+      },
+      "notified": 0,
+      "candidates": 94,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-il-house-2176-roll1540287.json",
+      "state": "IL",
+      "chamber": "house",
+      "sessionId": 2176,
+      "roll": 1540287,
+      "outcome": "imported",
+      "legislativeVoteId": "a5827241-2d6a-40c8-9b7f-4c15b8d7269a",
+      "reviewStatus": "approved",
+      "bill": "HB1373",
+      "voteDate": "2025-04-08",
+      "measureId": "HB 1373",
+      "question": "Third Reading in House",
+      "originRunId": "rollcall:IL:house:2176:1540287:2026-08-27T01:40:23.513Z",
+      "members": 115,
+      "notVoting": 1,
+      "absent": 0,
+      "resolution": {
+        "matched": 95,
+        "unmatched_reviewed": 20
+      },
+      "actions": {
+        "insert": 95
+      },
+      "notified": 0,
+      "candidates": 95,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-il-house-2176-roll1580413.json",
+      "state": "IL",
+      "chamber": "house",
+      "sessionId": 2176,
+      "roll": 1580413,
+      "outcome": "imported",
+      "legislativeVoteId": "2a9953da-1a31-4dd9-a129-9b0f90220399",
+      "reviewStatus": "approved",
+      "bill": "SB0008",
+      "voteDate": "2025-05-28",
+      "measureId": "SB 8",
+      "question": "Third Reading in House",
+      "originRunId": "rollcall:IL:house:2176:1580413:2026-08-27T01:40:23.513Z",
+      "members": 109,
+      "notVoting": 6,
+      "absent": 1,
+      "resolution": {
+        "matched": 88,
+        "unmatched_reviewed": 21
+      },
+      "actions": {
+        "insert": 88
+      },
+      "notified": 0,
+      "candidates": 88,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-il-house-2176-roll1582212.json",
+      "state": "IL",
+      "chamber": "house",
+      "sessionId": 2176,
+      "roll": 1582212,
+      "outcome": "imported",
+      "legislativeVoteId": "adbc363b-0101-4511-b57b-6ed0162a8055",
+      "reviewStatus": "approved",
+      "bill": "SB1976",
+      "voteDate": "2025-05-30",
+      "measureId": "SB 1976",
+      "question": "Third Reading in House",
+      "originRunId": "rollcall:IL:house:2176:1582212:2026-08-27T01:40:23.513Z",
+      "members": 112,
+      "notVoting": 4,
+      "absent": 0,
+      "resolution": {
+        "matched": 92,
+        "unmatched_reviewed": 20
+      },
+      "actions": {
+        "insert": 92
+      },
+      "notified": 0,
+      "candidates": 92,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-il-house-2176-roll1582511.json",
+      "state": "IL",
+      "chamber": "house",
+      "sessionId": 2176,
+      "roll": 1582511,
+      "outcome": "imported",
+      "legislativeVoteId": "c204876a-91e2-4236-9658-4ab22a233cda",
+      "reviewStatus": "approved",
+      "bill": "SB2339",
+      "voteDate": "2025-05-31",
+      "measureId": "SB 2339",
+      "question": "Third Reading in House",
+      "originRunId": "rollcall:IL:house:2176:1582511:2026-08-27T01:40:23.513Z",
+      "members": 117,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 96,
+        "unmatched_reviewed": 21
+      },
+      "actions": {
+        "insert": 96
+      },
+      "notified": 0,
+      "candidates": 96,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-il-house-2176-roll1717533.json",
+      "state": "IL",
+      "chamber": "house",
+      "sessionId": 2176,
+      "roll": 1717533,
+      "outcome": "imported",
+      "legislativeVoteId": "5cbfc831-2cc9-4c4c-85f3-e1ac8e25e60f",
+      "reviewStatus": "approved",
+      "bill": "SB3341",
+      "voteDate": "2026-05-27",
+      "measureId": "SB 3341",
+      "question": "House Third Reading",
+      "originRunId": "rollcall:IL:house:2176:1717533:2026-08-27T01:40:23.513Z",
+      "members": 111,
+      "notVoting": 2,
+      "absent": 0,
+      "resolution": {
+        "matched": 92,
+        "unmatched_reviewed": 19
+      },
+      "actions": {
+        "insert": 92
+      },
+      "notified": 0,
+      "candidates": 92,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-il-house-2176-roll1718026.json",
+      "state": "IL",
+      "chamber": "house",
+      "sessionId": 2176,
+      "roll": 1718026,
+      "outcome": "imported",
+      "legislativeVoteId": "2fe63751-dffa-4487-9f29-747956cd1f6f",
+      "reviewStatus": "approved",
+      "bill": "SB3772",
+      "voteDate": "2026-05-30",
+      "measureId": "SB 3772",
+      "question": "House Third Reading",
+      "originRunId": "rollcall:IL:house:2176:1718026:2026-08-27T01:40:23.513Z",
+      "members": 112,
+      "notVoting": 4,
+      "absent": 0,
+      "resolution": {
+        "matched": 93,
+        "unmatched_reviewed": 19
+      },
+      "actions": {
+        "insert": 93
+      },
+      "notified": 0,
+      "candidates": 93,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-il-house-2176-roll1718089.json",
+      "state": "IL",
+      "chamber": "house",
+      "sessionId": 2176,
+      "roll": 1718089,
+      "outcome": "imported",
+      "legislativeVoteId": "9daf01c1-6264-43d5-aafd-c9444fca76a8",
+      "reviewStatus": "approved",
+      "bill": "HB4339",
+      "voteDate": "2026-04-08",
+      "measureId": "HB 4339",
+      "question": "House Third Reading",
+      "originRunId": "rollcall:IL:house:2176:1718089:2026-08-27T01:40:23.513Z",
+      "members": 101,
+      "notVoting": 9,
+      "absent": 0,
+      "resolution": {
+        "matched": 84,
+        "unmatched_reviewed": 17
+      },
+      "actions": {
+        "insert": 84
+      },
+      "notified": 0,
+      "candidates": 84,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-il-house-2176-roll1719534.json",
+      "state": "IL",
+      "chamber": "house",
+      "sessionId": 2176,
+      "roll": 1719534,
+      "outcome": "imported",
+      "legislativeVoteId": "9049221b-5cb9-4996-afec-95506b0b93bb",
+      "reviewStatus": "approved",
+      "bill": "HB5095",
+      "voteDate": "2026-04-14",
+      "measureId": "HB 5095",
+      "question": "House Third Reading",
+      "originRunId": "rollcall:IL:house:2176:1719534:2026-08-27T01:40:23.513Z",
+      "members": 109,
+      "notVoting": 1,
+      "absent": 0,
+      "resolution": {
+        "matched": 94,
+        "unmatched_reviewed": 15
+      },
+      "actions": {
+        "insert": 94
+      },
+      "notified": 0,
+      "candidates": 94,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-il-house-2176-roll1721227.json",
+      "state": "IL",
+      "chamber": "house",
+      "sessionId": 2176,
+      "roll": 1721227,
+      "outcome": "imported",
+      "legislativeVoteId": "1de57c9c-7291-435b-bf5b-1bba52f42158",
+      "reviewStatus": "approved",
+      "bill": "SB3777",
+      "voteDate": "2026-05-31",
+      "measureId": "SB 3777",
+      "question": "House Third Reading",
+      "originRunId": "rollcall:IL:house:2176:1721227:2026-08-27T01:40:23.513Z",
+      "members": 110,
+      "notVoting": 6,
+      "absent": 0,
+      "resolution": {
+        "matched": 91,
+        "unmatched_reviewed": 19
+      },
+      "actions": {
+        "insert": 91
+      },
+      "notified": 0,
+      "candidates": 91,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-il-house-2176-roll1721610.json",
+      "state": "IL",
+      "chamber": "house",
+      "sessionId": 2176,
+      "roll": 1721610,
+      "outcome": "imported",
+      "legislativeVoteId": "fe96c054-5b6c-4201-8a6f-39a4e9b253ac",
+      "reviewStatus": "approved",
+      "bill": "HB5295",
+      "voteDate": "2026-04-16",
+      "measureId": "HB 5295",
+      "question": "House Third Reading",
+      "originRunId": "rollcall:IL:house:2176:1721610:2026-08-27T01:40:23.513Z",
+      "members": 107,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 93,
+        "unmatched_reviewed": 14
+      },
+      "actions": {
+        "insert": 93
+      },
+      "notified": 0,
+      "candidates": 93,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-il-senate-2176-roll1544480.json",
+      "state": "IL",
+      "chamber": "senate",
+      "sessionId": 2176,
+      "roll": 1544480,
+      "outcome": "imported",
+      "legislativeVoteId": "76a46b90-20f6-4345-9e11-fdfebab8f33e",
+      "reviewStatus": "approved",
+      "bill": "SB2339",
+      "voteDate": "2025-04-10",
+      "measureId": "SB 2339",
+      "question": "Third Reading in Senate",
+      "originRunId": "rollcall:IL:senate:2176:1544480:2026-08-27T01:40:23.513Z",
+      "members": 56,
+      "notVoting": 3,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 25,
+        "matched": 31
+      },
+      "actions": {
+        "insert": 31
+      },
+      "notified": 0,
+      "candidates": 31,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-il-senate-2176-roll1545154.json",
+      "state": "IL",
+      "chamber": "senate",
+      "sessionId": 2176,
+      "roll": 1545154,
+      "outcome": "imported",
+      "legislativeVoteId": "ab151298-50ef-4cf1-8bee-abee65aa3b43",
+      "reviewStatus": "approved",
+      "bill": "SB0008",
+      "voteDate": "2025-04-10",
+      "measureId": "SB 8",
+      "question": "Third Reading in Senate",
+      "originRunId": "rollcall:IL:senate:2176:1545154:2026-08-27T01:40:23.513Z",
+      "members": 52,
+      "notVoting": 7,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 23,
+        "matched": 29
+      },
+      "actions": {
+        "insert": 29
+      },
+      "notified": 0,
+      "candidates": 29,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-il-senate-2176-roll1575572.json",
+      "state": "IL",
+      "chamber": "senate",
+      "sessionId": 2176,
+      "roll": 1575572,
+      "outcome": "imported",
+      "legislativeVoteId": "c97a1e33-9e9a-41d5-bc9f-a24f55911d53",
+      "reviewStatus": "approved",
+      "bill": "SB1976",
+      "voteDate": "2025-05-21",
+      "measureId": "SB 1976",
+      "question": "Third Reading in Senate",
+      "originRunId": "rollcall:IL:senate:2176:1575572:2026-08-27T01:40:23.513Z",
+      "members": 57,
+      "notVoting": 2,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 24,
+        "matched": 33
+      },
+      "actions": {
+        "insert": 33
+      },
+      "notified": 0,
+      "candidates": 33,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-il-senate-2176-roll1576151.json",
+      "state": "IL",
+      "chamber": "senate",
+      "sessionId": 2176,
+      "roll": 1576151,
+      "outcome": "imported",
+      "legislativeVoteId": "9680e6b7-ae67-40a5-9562-e205046226f4",
+      "reviewStatus": "approved",
+      "bill": "HB3489",
+      "voteDate": "2025-05-22",
+      "measureId": "HB 3489",
+      "question": "Third Reading in Senate",
+      "originRunId": "rollcall:IL:senate:2176:1576151:2026-08-27T01:40:23.513Z",
+      "members": 57,
+      "notVoting": 2,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 23,
+        "matched": 34
+      },
+      "actions": {
+        "insert": 34
+      },
+      "notified": 0,
+      "candidates": 34,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-il-senate-2176-roll1582371.json",
+      "state": "IL",
+      "chamber": "senate",
+      "sessionId": 2176,
+      "roll": 1582371,
+      "outcome": "imported",
+      "legislativeVoteId": "f6406223-6c9a-430e-b021-c4fc50107002",
+      "reviewStatus": "approved",
+      "bill": "HB1373",
+      "voteDate": "2025-05-31",
+      "measureId": "HB 1373",
+      "question": "Third Reading in Senate",
+      "originRunId": "rollcall:IL:senate:2176:1582371:2026-08-27T01:40:23.513Z",
+      "members": 54,
+      "notVoting": 5,
+      "absent": 0,
+      "resolution": {
+        "matched": 31,
+        "unmatched_reviewed": 23
+      },
+      "actions": {
+        "insert": 31
+      },
+      "notified": 0,
+      "candidates": 31,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-il-senate-2176-roll1717532.json",
+      "state": "IL",
+      "chamber": "senate",
+      "sessionId": 2176,
+      "roll": 1717532,
+      "outcome": "imported",
+      "legislativeVoteId": "a316ea4d-503c-4026-aa8a-018a090e14dc",
+      "reviewStatus": "approved",
+      "bill": "SB3341",
+      "voteDate": "2026-05-20",
+      "measureId": "SB 3341",
+      "question": "Senate Third Reading",
+      "originRunId": "rollcall:IL:senate:2176:1717532:2026-08-27T01:40:23.513Z",
+      "members": 56,
+      "notVoting": 3,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 24,
+        "matched": 32
+      },
+      "actions": {
+        "insert": 32
+      },
+      "notified": 0,
+      "candidates": 32,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-il-senate-2176-roll1718025.json",
+      "state": "IL",
+      "chamber": "senate",
+      "sessionId": 2176,
+      "roll": 1718025,
+      "outcome": "imported",
+      "legislativeVoteId": "e9dbfc9e-a665-4127-a1a0-1662f51b4bf7",
+      "reviewStatus": "approved",
+      "bill": "SB3772",
+      "voteDate": "2026-04-29",
+      "measureId": "SB 3772",
+      "question": "Senate Third Reading",
+      "originRunId": "rollcall:IL:senate:2176:1718025:2026-08-27T01:40:23.513Z",
+      "members": 54,
+      "notVoting": 5,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 22,
+        "matched": 32
+      },
+      "actions": {
+        "insert": 32
+      },
+      "notified": 0,
+      "candidates": 32,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-il-senate-2176-roll1718090.json",
+      "state": "IL",
+      "chamber": "senate",
+      "sessionId": 2176,
+      "roll": 1718090,
+      "outcome": "imported",
+      "legislativeVoteId": "71e072c0-dd1d-49b6-b4a8-37f7a4b3b552",
+      "reviewStatus": "approved",
+      "bill": "HB4339",
+      "voteDate": "2026-05-29",
+      "measureId": "HB 4339",
+      "question": "Senate Third Reading",
+      "originRunId": "rollcall:IL:senate:2176:1718090:2026-08-27T01:40:23.513Z",
+      "members": 53,
+      "notVoting": 6,
+      "absent": 0,
+      "resolution": {
+        "matched": 30,
+        "unmatched_reviewed": 23
+      },
+      "actions": {
+        "insert": 30
+      },
+      "notified": 0,
+      "candidates": 30,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-il-senate-2176-roll1719535.json",
+      "state": "IL",
+      "chamber": "senate",
+      "sessionId": 2176,
+      "roll": 1719535,
+      "outcome": "imported",
+      "legislativeVoteId": "a6b7077d-3b5a-488a-87e4-78f201a27b91",
+      "reviewStatus": "approved",
+      "bill": "HB5095",
+      "voteDate": "2026-05-21",
+      "measureId": "HB 5095",
+      "question": "Senate Third Reading",
+      "originRunId": "rollcall:IL:senate:2176:1719535:2026-08-27T01:40:23.513Z",
+      "members": 57,
+      "notVoting": 2,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 24,
+        "matched": 33
+      },
+      "actions": {
+        "insert": 33
+      },
+      "notified": 0,
+      "candidates": 33,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-il-senate-2176-roll1721226.json",
+      "state": "IL",
+      "chamber": "senate",
+      "sessionId": 2176,
+      "roll": 1721226,
+      "outcome": "imported",
+      "legislativeVoteId": "510f6c1f-1f00-432d-bee3-96583b703f4c",
+      "reviewStatus": "approved",
+      "bill": "SB3777",
+      "voteDate": "2026-05-20",
+      "measureId": "SB 3777",
+      "question": "Senate Third Reading",
+      "originRunId": "rollcall:IL:senate:2176:1721226:2026-08-27T01:40:23.513Z",
+      "members": 58,
+      "notVoting": 1,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 25,
+        "matched": 33
+      },
+      "actions": {
+        "insert": 33
+      },
+      "notified": 0,
+      "candidates": 33,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-il-senate-2176-roll1721611.json",
+      "state": "IL",
+      "chamber": "senate",
+      "sessionId": 2176,
+      "roll": 1721611,
+      "outcome": "imported",
+      "legislativeVoteId": "9b07e628-bb5d-484c-98c0-1c74f476ed72",
+      "reviewStatus": "approved",
+      "bill": "HB5295",
+      "voteDate": "2026-05-30",
+      "measureId": "HB 5295",
+      "question": "Senate Third Reading",
+      "originRunId": "rollcall:IL:senate:2176:1721611:2026-08-27T01:40:23.513Z",
+      "members": 57,
+      "notVoting": 2,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 23,
+        "matched": 34
+      },
+      "actions": {
+        "insert": 34
+      },
+      "notified": 0,
+      "candidates": 34,
+      "error": null,
+      "related": 0
+    }
+  ]
+}

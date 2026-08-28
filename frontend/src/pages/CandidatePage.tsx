@@ -431,7 +431,7 @@ function RecordItem({
   return (
     <li className="rounded-xl border border-line bg-white p-3">
       <p className="text-body text-ink">{record.description}</p>
-      <p className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-ink-soft">
+      <p className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-ink-soft">
         <span>{formatElectionDate(record.event_date)}</span>
         {stanceTag ? (
           <StanceChip

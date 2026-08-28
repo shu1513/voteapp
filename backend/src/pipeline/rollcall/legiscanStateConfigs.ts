@@ -119,6 +119,128 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       /^point of order/,
     ],
   },
+  // Illinois 104th General Assembly (2025-2026, both years in one dataset).
+  // Vocabulary measured from the full dataset survey 2026-08-26: 12,073 bills,
+  // 9,077 roll calls, 181 people (121 distinct HD + 60 distinct SD holders over
+  // the biennium; the chambers seat 118 + 59).
+  //
+  // What the survey established:
+  // - Illinois passes bills on THIRD READING and prints the plainest desc
+  //   vocabulary of any state surveyed so far: 104 distinct descs, no per-roll
+  //   id suffix (Texas), no ` : House Vote #<n>` suffix (Georgia).
+  // - **Every committee desc ends in the literal word `Committee`** — including
+  //   the mis-typed `House Police & Fire Committee Committee` — so committee
+  //   votes are excluded by RULE here, not left to the tally heuristic alone.
+  // - **Each floor family is printed in TWO SPELLINGS, split by date and never
+  //   overlapping**: `Third Reading in House` (2025-04..2025-05) became
+  //   `House Third Reading` (2025-10..2026-05) when LegiScan changed its
+  //   formatting mid-dataset; same for Concurrence and Motion. Both spellings
+  //   are required. Verified they never describe the same physical vote: over
+  //   all 9,077 rolls there is no (chamber, bill, date, tally, member-list)
+  //   group carrying more than one desc, so keeping both cannot double-count.
+  // - Deliberately NOT excluded, so they stay surfaced for a human: the
+  //   `Motion in House/Senate` + `House/Senate Motion` family (213 rolls). It
+  //   is a garbage bucket — it holds genuine third-reading passages, motions to
+  //   reconsider, Note Act motions AND the amendatory-veto votes (Illinois's
+  //   distinctive override question), and the desc alone cannot separate them.
+  //   `Agreed Bill List` (2) and `House Amendments` (1) are surfaced for the
+  //   same reason; the latter is the only JRCA floor roll in the dataset
+  //   (HJRCA 28, House 74-38, never voted by the Senate, so no constitutional
+  //   amendment from this GA reached the ballot).
+  // - Resolution ADOPTION motions (`Senate Motion To Adopt`, `Motion To Adopt
+  //   in Senate`, 31 rolls) attach only to JR/R measures. Illinois joint
+  //   resolutions are never presented to the governor, so they can never clear
+  //   the campaign's became-law filter; excluded by rule to keep the surfaced
+  //   queue readable.
+  IL: {
+    jurisdiction: "IL",
+    sessionId: 2176,
+    chamberSizes: { house: 118, senate: 59 },
+    keptQuestions: [
+      { pattern: /^(?:third reading in (?:house|senate)|(?:house|senate) third reading)$/, questionClass: "passage" },
+      { pattern: /^(?:concurrence in (?:house|senate)|(?:house|senate) concurrence)$/, questionClass: "concurrence" },
+    ],
+    excludedQuestions: [/committee$/, /^(?:senate motion to adopt|motion to adopt in senate)$/],
+  },
+  // Tennessee 114th General Assembly (2025 + 2026 regular sessions are one
+  // LegiScan dataset). Vocabulary measured from the full dataset survey
+  // 2026-08-27: 9,159 bills, 15,468 roll calls, 136 people (= 99 House +
+  // 33 Senate + 4 members who resigned or were replaced mid-term).
+  //
+  // What the survey established:
+  // - Tennessee is the first state whose feed LABELS floor votes: every
+  //   floor desc starts `FLOOR VOTE:` and every committee desc starts with
+  //   the committee's name (`HOUSE JUDICIARY COMMITTEE: Rec. for pass…`).
+  //   0 of the 6,111 non-`FLOOR VOTE:` rolls carry a floor-sized tally, so
+  //   the patterns anchor on that prefix and the tally check only
+  //   corroborates.
+  // - The House prints the CALENDAR and every motion that preceded the
+  //   question into one desc (`REGULAR CALENDAR MOTION TO ADOPT AMENDMENT
+  //   # 12 BY WILLIAMS PASSAGE ON THIRD CONSIDERATION`), so the trailing
+  //   `PASSAGE ON THIRD CONSIDERATION` is calendar context, NOT the
+  //   question — amendment and previous-question rolls carry it too. Both
+  //   families are excluded, and each of the 106 previous-question rolls
+  //   and all 296 amendment rolls was verified to sit beside a plain
+  //   passage roll on the same bill, chamber and day.
+  // - Ground truth: each bill's own history prints `Passed H., as am.,
+  //   Ayes 82, Nays 8` lines. HB0487 pins the reading — the plain roll is
+  //   82-8 (`Passed H.`), the previous-question roll beside it is 69-20.
+  // - The Senate passes on `Third Consideration` / `as Amended Third
+  //   Consideration`, and takes its CONSENT calendar and every resolution
+  //   as a bare `Motion to Adopt` (3,509 rolls, only 2 divided; SB0462's
+  //   32-0 `Motion to Adopt` is the Consent Calendar 2 vote its history
+  //   leaves untallied). That is a real final question, so it is kept as
+  //   passage; the House spells the same thing `CONSENT CALENDAR PASSAGE
+  //   ON THIRD CONSIDERATION`.
+  // - Minority conference reports (4 rolls) are excluded: they are the
+  //   losing alternative to the conference report, never the measure.
+  // - 2 rolls stay unknown by design (one desc that is only the bare
+  //   `FLOOR VOTE:` prefix with nothing after it — a real, non-empty
+  //   string that parses fine — and one bare `REGULAR CALENDAR 2`), so
+  //   they surface instead of being guessed.
+  TN: {
+    jurisdiction: "TN",
+    sessionId: 2161,
+    chamberSizes: { house: 99, senate: 33 },
+    keptQuestions: [
+      // House final passage, under any calendar (regular, consent 1-4,
+      // appropriations, message, unfinished business).
+      { pattern: /^floor vote: .*passage on third consideration$/, questionClass: "passage" },
+      // Senate final passage.
+      { pattern: /^floor vote: (?:as amended )?third consideration$/, questionClass: "passage" },
+      // Adoption of a resolution, and the Senate consent calendar.
+      {
+        pattern: /^floor vote: .*motion to adopt(?: as amended)?(?: third consideration| third and final reading)?$/,
+        questionClass: "passage",
+      },
+      // `Motion to Concur House Amendment # 1`, `MESSAGE CALENDAR CONCUR IN
+      // SENATE AMENDMENT # 1`, `REGULAR CALENDAR AS AMENDED MOTION TO
+      // CONCUR`. Tennessee never prints a refusal-to-concur question.
+      { pattern: /^floor vote: .*concur/, questionClass: "concurrence" },
+      { pattern: /^floor vote: .*conference committee report(?: \d+)?$/, questionClass: "conference_report" },
+    ],
+    excludedQuestions: [
+      // The motion for the previous question (debate cutoff), which the
+      // House and Senate both print with the pending question's calendar
+      // text appended.
+      /^floor vote: .*previous question/,
+      // Floor amendment votes: `MOTION TO ADOPT AMENDMENT # 4 BY WILLIAMS`,
+      // `MOTION TO CONSIDER AMENDMENT # 10 BY HARDAWAY`, the bare
+      // `AMENDMENT # 2 BY JONES J` spelling, and the Senate's `amend# 2 by
+      // senator yarbro`. The lookahead keeps concurrence descs, which name
+      // the amendment being concurred in, out of this rule.
+      /^floor vote: (?!.*concur).*amend(?:ment)?\s*#\s*\d+/,
+      /^floor vote: .*lay on the table/,
+      /^floor vote: .*motion to (?:table|defer|adjourn|recall|reconsider|amend|suspend the rules)/,
+      /^floor vote: .*minority conf/,
+      /^floor vote: .*re-?refer to committee/,
+      /^floor vote: .*refer to committee$/,
+      /^floor vote: .*division of question/,
+      /^floor vote: .*appoint conference committee/,
+      /^floor vote: test motion entry$/,
+      /^floor vote: motion$/,
+    ],
+  },
   // Texas 89th Legislature, Regular Session (sine die). Vocabulary measured
   // from the full dataset survey 2026-08-24: 11,503 bills, 9,726 roll
   // calls, 181 people (= 150 House + 31 Senate). Registry pins the regular
@@ -165,6 +287,137 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       /vote recorded in journal/,
       /^laid out/,
       /^point of order/,
+    ],
+  },
+  // Florida 2025 Regular Session (sine die 2025-06-16, after the budget
+  // extension). Vocabulary measured from the full dataset survey
+  // 2026-08-26: 1,960 bills, 3,003 roll calls, 219 people (the chambers
+  // seat 120 + 40; the surplus are mid-session replacements and members
+  // who appear only on committee rolls).
+  //
+  // What the survey established:
+  // - Florida's floor vocabulary is the cleanest measured so far: EXACTLY
+  //   two desc shapes, `House: Third Reading RCS#<n>` (401 rolls) and
+  //   `Senate: Third Reading RCS#<n>` (382). Every other desc in the feed
+  //   is a literal committee name. The feed carries no concurrence,
+  //   conference-report or veto-override desc at all, so `passage` is the
+  //   only question class Florida can produce.
+  // - The House stamps a unique RCS number on every vote (401 distinct
+  //   descs for 401 votes); the Senate recycles RCS#1..61 across days.
+  //   Patterns tolerate the suffix, as in Texas.
+  // - Tallies separate cleanly: floor rolls total 119-120 of 120 (House)
+  //   and 38-39 of 40 (Senate), while every House committee tops out at
+  //   30 (25%). The one exception is `Senate Rules`, a 25-member committee
+  //   = 62% of the chamber, which clears the committee-tally cut and would
+  //   otherwise sit in the surfaced-null queue for all 154 of its rolls.
+  //   It is excluded by NAME because its tally cannot distinguish it.
+  // - Unlike Texas, every Florida roll carries a member list (0
+  //   summary-only tallies), and no roll_call_id is reused for a second
+  //   identical floor action (102 duplicate-identity groups exist, all
+  //   committee, all rejected before the queue).
+  // - Constitutional amendments ride JOINT RESOLUTIONS here (bill_type JR,
+  //   27 in session), already a kept type — Florida needs no second
+  //   passage pattern the way Texas did.
+  // - Florida also prints FAILED floor votes under the same desc (HB 1205
+  //   lost a Senate vote 10-26 and a House vote 27-82 before passing), so
+  //   selection must pick the decisive roll per chamber; classification
+  //   neither can nor tries to.
+  FL: {
+    jurisdiction: "FL",
+    sessionId: 2135,
+    chamberSizes: { house: 120, senate: 40 },
+    keptQuestions: [{ pattern: /^(?:house|senate): third reading(?: rcs#\d+)?$/, questionClass: "passage" }],
+    excludedQuestions: [
+      // The Senate Rules COMMITTEE (always exactly 25 of 40 senators), not
+      // a floor motion: too big for the committee-tally cut, so it has to
+      // be named. No House committee comes close to that cut.
+      /^senate rules$/,
+    ],
+  },
+  // California 2025-2026 Regular Session (LegiScan 2172). Vocabulary
+  // measured from the full dataset survey 2026-08-26: 5,057 bills, 19,942
+  // roll calls, 160 people (81 Assembly + 40 Senate districts + 39
+  // committee pseudo-people, which carry no district).
+  //
+  // What the survey established:
+  // - California prints the bill number and its author INSIDE the desc, so
+  //   almost every desc string is unique (`SB 586 Jones Senate Third
+  //   Reading By Jeff Gonzalez`). The question is a phrase within the desc,
+  //   never the whole of it — hence unanchored patterns in the Assembly,
+  //   where the desc STARTS with the measure, and `^` anchors in the
+  //   Senate, where it starts with the question.
+  // - The two chambers word the same question differently: the Assembly
+  //   writes `Third Reading` and `Concurrence in Senate Amendments`, the
+  //   Senate writes `3rd Reading` and `Unfinished Business … Concurrence`.
+  //   Both spellings are kept for both chambers; each is measured.
+  // - Committee votes are worded as RECOMMENDATIONS that name the same
+  //   destinations (`Do pass. To consent calendar`, `Be adopted. Ordered to
+  //   third reading`, `Placed on suspense file`), which is why the kept
+  //   patterns require the chamber word or the `^` anchor. As written,
+  //   every one of the 5,291 kept-type matches is floor-sized and no
+  //   committee-sized roll matches any kept pattern (measured).
+  // - Urgency bills (a 2/3 vote) get their own wording in both chambers —
+  //   `Third Reading Urgency` with no chamber word, and `Concurrence -
+  //   Urgency Added` — so both need their own alternative.
+  // - CA 2172 has NO conference-report and NO veto-override roll calls
+  //   (zero descs mention either), so those classes go unused here.
+  // - Feed health: 0 duplicate roll_call_id identity groups (the Texas 9.4%
+  //   collapse is a verified no-op in California), 0 summary-only rolls, 0
+  //   tally or member-list mismatches.
+  CA: {
+    jurisdiction: "CA",
+    sessionId: 2172,
+    // The Assembly is the lower chamber; LegiScan prints its rolls as
+    // chamber `A`, which parseLegiscanRollCall maps to `house`.
+    chamberSizes: { house: 80, senate: 40 },
+    keptQuestions: [
+      // Assembly floor passage: `AB 111 Gabriel Assembly Third Reading`,
+      // `SB 586 Jones Senate Third Reading By Jeff Gonzalez` (an Assembly
+      // vote on a Senate bill), `AB 40 Bonta Third Reading Urgency`.
+      { pattern: /(?:assembly|senate) third reading|third reading urgency/, questionClass: "passage" },
+      // Senate floor passage: `Senate 3rd Reading SB680 Rubio`, `Assembly
+      // 3rd Reading AB123 BUDGET (Gabriel) By Wiener`.
+      { pattern: /^(?:senate|assembly) 3rd reading\b/, questionClass: "passage" },
+      // Consent calendars are floor passage of measures no member objected
+      // to; the Assembly says `Consent Calendar Second Day Regular
+      // Session`, the Senate `Consent Calendar 2nd` / `Special Consent`.
+      { pattern: /consent calendar (?:first|second) day/, questionClass: "passage" },
+      { pattern: /^consent calendar\b/, questionClass: "passage" },
+      { pattern: /^special consent\b/, questionClass: "passage" },
+      // `W/O Ref. To File SB48 Gonzalez`: the file-section label on a
+      // SUBSTANTIVE vote taken up without reference to file — the waiver
+      // itself is granted by unanimous consent and has NO roll call (the
+      // history prints `Consent granted to take up without reference to
+      // file` with no tally). The recorded roll matches the substantive
+      // action's tally exactly: SB 48's 27-5 is `Assembly amendments
+      // concurred in. (Ayes 27. Noes 5.)`, SB 166's 29-9 and SB 694's 25-6
+      // likewise. Of the 36 kept-type instances, 32 are the Senate's
+      // concurrence in Assembly amendments — including every divided one —
+      // so the class is concurrence; the remaining 4 are near-unanimous
+      // second-chamber ACA passages, for which this label is nominal (the
+      // class is report metadata only, and the judge reads the bill
+      // history before writing a description either way).
+      { pattern: /^w\/o ref\. to file\b/, questionClass: "concurrence" },
+      { pattern: /concurrence in (?:senate|assembly) amendments|concurrence - urgency added/, questionClass: "concurrence" },
+      { pattern: /^unfinished business\b.*\bconcurrence\b/, questionClass: "concurrence" },
+    ],
+    excludedQuestions: [
+      // Second reading in California is where amendments are taken up; the
+      // urgency-clause votes held there are not passage.
+      /\b2nd reading\b/,
+      /\bsecond reading\b/,
+      // Procedural motions that reuse a kept question's wording. A desc
+      // ending in a bare ` Reconsider` is the vote GRANTING reconsideration,
+      // not the question itself: SB 627's `Unfinished Business … Concurrence
+      // Reconsider` 30-10 is the "Reconsideration granted" line of the bill
+      // history, sitting between the 27-10 concurrence it undid and the
+      // operative 28-11 concurrence that followed. 15 floor rolls, all
+      // Senate; the 91 committee `reconsideration granted` rolls were
+      // already below the tally line. Anchored at the end so it does not
+      // also swallow the committee `Reconsideration granted` families,
+      // which the tally cut already rejects before the queue.
+      /\breconsider$/,
+      /motion to lay on the table/,
     ],
   },
 };
