@@ -167,6 +167,8 @@ services:
         value: "true"
       - key: CONNECTICUT_CAMPAIGN_FINANCE_ENABLED
         value: "true"
+      - key: DELAWARE_CAMPAIGN_FINANCE_ENABLED
+        value: "false"
       - key: DENVER_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_ENABLED

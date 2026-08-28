@@ -114,9 +114,17 @@ Status against the original hard-gate list below: **settled** — gate 1 (Meyer 
 7. **Registry sweep**: OfficeSought/DistrictName vocabulary → `delawareFinanceEligibleOffices.ts` (outcome: registry fields EMPTY — the office vocabulary comes from the filed-report/CSV Office columns instead, gate 11); count active 2026 statewide + legislative committees vs rosters.
 8. **Occupation non-blank rate** measured statewide (the fact-1 diagnostic baseline).
 
-### Phase 1 — direct-finance path PR (schema through loader, defaults off)
+### Phase 1 — direct-finance path PR (schema through loader, defaults off) — **IMPLEMENTED 2026-08-28**
 
-Migration `NNN_add_delaware_campaign_finance_tables.sql` (next free number at merge time): the five canonical `de_` tables only — **no TP tables**. Writer + resolver + auto-link + due list + sync + aggregator + cover reconciliation + loader, all behind `false` defaults. Flags + source label checklist items. Tests: writer transactional snapshot, manual-link guard, parser contracts off sanitized Phase-0 fixtures, reconciliation gates off fixture covers.
+Migration `259_add_delaware_campaign_finance_tables.sql`: the five canonical `de_` tables only — **no TP tables**. Writer + resolver + auto-link + due list + sync + aggregator + cover reconciliation + loader, all behind `false` defaults. Flags + source label checklist items. Tests: writer transactional snapshot, manual-link guard, parser contracts off sanitized Phase-0 fixtures, reconciliation gates off fixture covers.
+
+Decisions pinned during implementation:
+
+- **Money model (fact 2, settled)**: per-period reconciliation proved the CSV rows ARE the cover 2E content, so in-kind counts inside `direct_contribution_total` (the cover counts it there); Candidate Loan and Other Income rows are excluded from direct and tracked separately; refunds/negative rows subtract from totals and never enter buckets; buckets = positive itemized monetary rows only; occupation chart = disclosed-only rows (no "Unknown" bucket).
+- **Window derivation (fact 5, mechanical form)**: windowEnd = election date; windowStart = Jan 1 after the year of the committee's most recent PRIOR 30/8-Day election report (the elected-incumbent rule, which also keeps an office-spanning committee's old-era money out — the Meyer case), else the committee's first report period start (challenger/fresh-committee case). A report straddling windowStart, a chain break, or any per-period mismatch fails closed. `cash_on_hand` = latest canonical cover's ending balance.
+- **Resolver evidence**: live office-filtered type-01 committee search (ddlOfficeSought codes pinned from the portal's own BindOffice cascade 2026-08-28: AGEN/AACC/GOV/INCOM/LGOV/STTRE/STSEN/STREP; district option values are opaque numbers resolved live by their "District NN" labels) + conservative whole-word surname match with first-name refinement; any ambiguity skips; manual links always win via writer protection.
+- **County offices deferred**: the CFRS county vocabulary (Clerk of Peace, Levy Court Commissioner, County Council) does not map cleanly onto VoteApp's DE county office keys (Clerk of Court, County Supervisor/Commissioner) — v1 eligible offices are statewide + General Assembly only; county needs its own mapping research before joining the cohort.
+- **Acquisition layer = Phase 2**: the sync is strictly cache-only (`delawareCfrsArtifactCache` bundles: CSVs + filed-reports grid + report PDFs + manifest with stored-search totals); the batch sync records a per-candidate failure for any due candidate without a cached bundle. The acquisition component must re-POST a search whose page renders the transient `total:0` (portal quirk, seen three times live).
 
 ### Phase 2 — local live run + enablement
 
