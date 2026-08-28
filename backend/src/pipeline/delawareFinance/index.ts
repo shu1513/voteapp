@@ -1,6 +1,7 @@
 export * from "./delawareCfrsClient.js";
 export * from "./delawareCfrsParsers.js";
 export * from "./delawareCfrsArtifactCache.js";
+export * from "./delawareCfrsArtifactAcquisition.js";
 export * from "./delawareReportInventory.js";
 export * from "./delawareCoverReconciliation.js";
 export * from "./delawareDirectContributionAggregator.js";
