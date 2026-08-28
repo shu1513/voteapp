@@ -9,9 +9,11 @@ ballot-page spot-check green — prod promotion tracked in the memory topic).** 
 migration 258, `backend/src/pipeline/nevadaFinance/` (CSV + report parsers,
 selection, cycle builder, aggregator, resolver, writer, loader), CLIs
 `nevada-candidates:finance:auto-link` / `:import`, 26 tests. Note: the shared
-loader publishes `direct_contribution_total` as the displayed total_raised, so
-the import stores the official line-8 sum there; the itemized CSV sum stays
-internal to the reconciliation gate. Next: Phase 2 harvest + local run.
+loader publishes `direct_contribution_total` as the displayed total_raised;
+since PR #912 the import stores donor money (lines 1+5+7) there and the
+official line-8 gross in `total_receipts`; the itemized CSV sum stays
+internal to the reconciliation gate. Next: prod promotion (runbook steps in
+the memory topic), then Phase 4 Oct refresh.
 Feasibility detail in `backend/docs/nevada-campaign-finance.md`.
 
 ## Scope and non-goals
