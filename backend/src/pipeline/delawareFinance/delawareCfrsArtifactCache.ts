@@ -167,11 +167,32 @@ export async function storeDelawareCfrsCommitteeArtifacts(input: {
     };
     await writeRestricted(join(stagingDir, "manifest.json"), JSON.stringify(manifest, null, 1));
 
-    // Swap. Between the rm and the rename there is briefly NO bundle — a
-    // concurrent read fails "no bundle cached" (fail-closed), never a
-    // mixed-vintage one.
-    await rm(committeeDir, { recursive: true, force: true });
-    await rename(stagingDir, committeeDir);
+    // Swap via move-aside: the previous bundle is never deleted until the
+    // new one is installed. A failed install renames it back; a crash
+    // mid-swap leaves it on disk under the .previous name (a read then says
+    // "no bundle cached" — fail-closed, and the data remains recoverable).
+    const previousDir = join(cacheDir, `${cfId}.previous-${process.pid}`);
+    await rm(previousDir, { recursive: true, force: true });
+    let hadPrevious = true;
+    try {
+      await rename(committeeDir, previousDir);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+        throw error;
+      }
+      hadPrevious = false;
+    }
+    try {
+      await rename(stagingDir, committeeDir);
+    } catch (error) {
+      if (hadPrevious) {
+        await rename(previousDir, committeeDir).catch(() => {});
+      }
+      throw error;
+    }
+    if (hadPrevious) {
+      await rm(previousDir, { recursive: true, force: true });
+    }
     return manifest;
   } catch (error) {
     await rm(stagingDir, { recursive: true, force: true });

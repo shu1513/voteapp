@@ -79,6 +79,18 @@ describe("delawareCfrsArtifactCache", () => {
     ).rejects.toThrow();
   });
 
+  it("replaces an existing bundle cleanly, leaving no staging or previous directories", async () => {
+    await storeDelawareCfrsCommitteeArtifacts(storeInput());
+    await storeDelawareCfrsCommitteeArtifacts({
+      ...storeInput(),
+      reportPdfs: [{ publicReportFileName: "report1.pdf", filingCalendarId: 900, body: Buffer.from("%PDF-v2") }],
+    });
+    const bundle = await readDelawareCfrsCommitteeArtifacts({ cacheDir, cfId: CF_ID });
+    expect(bundle.reportPdfs[0]?.body.toString()).toBe("%PDF-v2");
+    const { readdir } = await import("node:fs/promises");
+    expect(await readdir(cacheDir)).toEqual([CF_ID]);
+  });
+
   it("leaves the previous bundle byte-identical when a re-store fails mid-write", async () => {
     await storeDelawareCfrsCommitteeArtifacts(storeInput());
     const before = await readFile(join(cacheDir, CF_ID, "receipts.csv"), "utf8");
