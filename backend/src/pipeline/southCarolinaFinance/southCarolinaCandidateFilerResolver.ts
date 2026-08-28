@@ -142,6 +142,20 @@ export function filterSouthCarolinaFilersByExactSurname(
   });
 }
 
+// The exact full-name test the resolver's auto-link tier uses, exported so
+// callers can ask "could this filer have been a full match?" for a filer
+// whose reports could not be fetched.
+export function southCarolinaFilerNameFullyMatchesCandidate(
+  candidateName: string,
+  filerName: string
+): boolean {
+  return personNamesMatchWithMiddleEvidence({
+    candidateName,
+    rowNames: [filerName],
+    normalizePersonName,
+  });
+}
+
 function reportElectionYear(electionDate: string): number {
   // Client-validated M/D/YYYY.
   return Number.parseInt(electionDate.slice(-4), 10);

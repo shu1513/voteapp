@@ -25,10 +25,11 @@ type ConnectableQueryable = Queryable & { connect: () => Promise<PoolClient> };
 
 const DEFAULT_MAX_CANDIDATES = 10;
 const DEFAULT_STALE_AFTER_DAYS = 7;
-// The post-general filing lands with the Quarter 4 report due January 10
-// (Nov 3 -> Jan 10 = 68 days), so the lookback keeps a just-finished
+// The post-general filing lands with the Quarter 4 report due January 10.
+// The earliest statutory general is November 2 (first Monday November 1),
+// and Nov 2 -> Jan 10 = 69 days, so the lookback keeps a just-finished
 // election in scope until that report has been picked up.
-const SOUTH_CAROLINA_POST_ELECTION_REPORT_DUE_DAYS = 68;
+const SOUTH_CAROLINA_POST_ELECTION_REPORT_DUE_DAYS = 69;
 const DEFAULT_ELECTION_LOOKAHEAD_DAYS = 730;
 
 export type SouthCarolinaCandidateFinanceBatchSyncInput = {

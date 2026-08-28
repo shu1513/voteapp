@@ -102,8 +102,9 @@ describe("autoLinkSouthCarolinaCandidateFinanceForCandidateElection", () => {
       now: new Date("2026-08-27T00:00:00.000Z"),
       loadFilerReportSets: async () => ({
         filerReportSets: [{ filer: filerRow({}), reports: [reportRow({})] }],
-        skippedFilerIds: [],
+        skippedFilers: [],
       }),
+      fetchContributions: vi.fn().mockResolvedValue([]),
     });
 
     expect(result).toMatchObject({
@@ -143,7 +144,7 @@ describe("autoLinkSouthCarolinaCandidateFinanceForCandidateElection", () => {
             reports: [reportRow({ candidateFilerId: 54344, campaignId: 77574 })],
           },
         ],
-        skippedFilerIds: [31444],
+        skippedFilers: [filerRow({ candidate: "Wilson, Amy F.", candidateFilerId: 31444 })],
       }),
     });
 
@@ -170,7 +171,7 @@ describe("autoLinkSouthCarolinaCandidateFinanceForCandidateElection", () => {
             reports: [reportRow({ candidateFilerId: 70002, campaignId: 2 })],
           },
         ],
-        skippedFilerIds: [],
+        skippedFilers: [],
       }),
     });
     expect(ambiguous.status).toBe("ambiguous");
@@ -179,10 +180,71 @@ describe("autoLinkSouthCarolinaCandidateFinanceForCandidateElection", () => {
       db,
       candidateElection: candidateElection(),
       now: new Date("2026-08-27T00:00:00.000Z"),
-      loadFilerReportSets: async () => ({ filerReportSets: [], skippedFilerIds: [] }),
+      loadFilerReportSets: async () => ({ filerReportSets: [], skippedFilers: [] }),
     });
     expect(unmatched).toMatchObject({ status: "unmatched", reason: "no_matching_filer" });
     expect(db.query).not.toHaveBeenCalled();
+  });
+
+  it("refuses to link when a possibly-matching filer's report fetch failed", async () => {
+    const db = linkWritingDb();
+    const result = await autoLinkSouthCarolinaCandidateFinanceForCandidateElection({
+      db,
+      candidateElection: candidateElection(),
+      now: new Date("2026-08-27T00:00:00.000Z"),
+      loadFilerReportSets: async () => ({
+        filerReportSets: [{ filer: filerRow({}), reports: [reportRow({})] }],
+        // Same full name as the candidate — its unreadable reports could
+        // have made this resolution ambiguous.
+        skippedFilers: [filerRow({ candidate: "Evette, Pamela", candidateFilerId: 99999 })],
+      }),
+      fetchContributions: vi.fn().mockResolvedValue([]),
+    });
+
+    expect(result).toMatchObject({
+      status: "error",
+      reason: "skipped_filer_may_match",
+      skippedFilerIds: [99999],
+    });
+    expect(db.query).not.toHaveBeenCalled();
+  });
+
+  it("demotes a match to manual confirmation when run office evidence contradicts the race", async () => {
+    const db = linkWritingDb();
+    const fetchContributions = vi.fn().mockResolvedValue([
+      {
+        contributionId: 1,
+        candidateId: 54395,
+        officeRunId: 77609,
+        candidateName: "Evette, Pamela S",
+        officeName: "SC House of Representatives District 23",
+        electionDate: "2026-11-03T05:00:00",
+        date: "2026-03-01T00:00:00",
+        amount: 100,
+        contributorName: "Jane Donor",
+        contributorOccupation: "Attorney",
+        group: "No",
+        description: null,
+      },
+    ]);
+
+    const result = await autoLinkSouthCarolinaCandidateFinanceForCandidateElection({
+      db,
+      // Statewide candidate, but the matched filer's run rows say SC House.
+      candidateElection: candidateElection(),
+      now: new Date("2026-08-27T00:00:00.000Z"),
+      loadFilerReportSets: async () => ({
+        filerReportSets: [{ filer: filerRow({}), reports: [reportRow({})] }],
+        skippedFilers: [],
+      }),
+      fetchContributions,
+    });
+
+    expect(result.status).toBe("manual_confirm_required");
+    expect(result.reason).toContain("office_evidence_conflict");
+    expect(result.reason).toContain("SC House of Representatives District 23");
+    expect(db.query).not.toHaveBeenCalled();
+    expect(fetchContributions).toHaveBeenCalledWith({ candidate: "Evette", contributionYear: 2026 }, undefined);
   });
 });
 
@@ -197,6 +259,7 @@ describe("autoLinkMissingSouthCarolinaCandidateFinanceLinks", () => {
       maxCandidates: 10,
       electionLookbackDays: 76,
       electionLookaheadDays: 730,
+      fetchContributions: vi.fn().mockResolvedValue([]),
       candidateElections: [failing, fine],
       loadFilerReportSets: async (input) => {
         if (input.candidateName === "Boom Error") {
@@ -204,7 +267,7 @@ describe("autoLinkMissingSouthCarolinaCandidateFinanceLinks", () => {
         }
         return {
           filerReportSets: [{ filer: filerRow({}), reports: [reportRow({})] }],
-          skippedFilerIds: [],
+          skippedFilers: [],
         };
       },
     });

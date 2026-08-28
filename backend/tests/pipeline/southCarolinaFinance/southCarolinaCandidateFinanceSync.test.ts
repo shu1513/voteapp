@@ -244,6 +244,24 @@ describe("syncSouthCarolinaCandidateFinance", () => {
     expect(client.query).not.toHaveBeenCalled();
   });
 
+  it("fails closed when run office evidence contradicts the linked race", async () => {
+    const { db, client } = writingDb();
+    await expect(
+      syncSouthCarolinaCandidateFinance({
+        ...baseSyncInput(db),
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "State Senate District 7 (2024); South Carolina",
+        fetchCandidateReports: vi.fn().mockResolvedValue([reportRow({})]),
+        fetchReportDetails: vi.fn().mockResolvedValue(details({ cash: 100, expTotal: 40, endingBalance: 60 })),
+        fetchContributions: vi
+          .fn()
+          .mockResolvedValue([contributionRow({ officeName: "SC House of Representatives District 23" })]),
+      })
+    ).rejects.toThrow(/run office evidence contradicts the linked race/);
+    expect(client.query).not.toHaveBeenCalled();
+  });
+
   it("rejects ineligible offices and invalid filer ids before any fetch", async () => {
     const { db } = writingDb();
     const fetchCandidateReports = vi.fn();

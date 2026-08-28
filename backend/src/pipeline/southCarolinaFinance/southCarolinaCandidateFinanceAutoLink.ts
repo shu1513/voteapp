@@ -11,6 +11,7 @@ import type { Pool, PoolClient } from "pg";
 
 import {
   getSouthCarolinaCandidateReports,
+  searchSouthCarolinaContributions,
   searchSouthCarolinaFilersByName,
   SouthCarolinaEthicsClientError,
   type SouthCarolinaEthicsClientOptions,
@@ -19,10 +20,17 @@ import {
 import {
   filterSouthCarolinaFilersByExactSurname,
   resolveSouthCarolinaCandidateFiler,
+  southCarolinaFilerNameFullyMatchesCandidate,
   southCarolinaFilerSearchTerm,
   type SouthCarolinaCandidateFilerMatch,
   type SouthCarolinaFilerReportSet,
 } from "./southCarolinaCandidateFilerResolver.js";
+import {
+  selectSouthCarolinaAcceptedRuns,
+  southCarolinaContributionYearsForRuns,
+} from "./southCarolinaDirectContributionAggregator.js";
+import { southCarolinaAcceptedElectionDates } from "./southCarolinaElectionCalendar.js";
+import { southCarolinaConflictingOfficeLabels } from "./southCarolinaOfficeEvidence.js";
 import { SOUTH_CAROLINA_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./southCarolinaFinanceEligibleOffices.js";
 import { upsertSouthCarolinaFinanceLink } from "./southCarolinaFinanceWriter.js";
 
@@ -177,19 +185,19 @@ export type SouthCarolinaCandidateFilerReportSetLoader = (input: {
   candidateName: string;
   electionYear: number;
   clientOptions?: SouthCarolinaEthicsClientOptions;
-}) => Promise<{ filerReportSets: SouthCarolinaFilerReportSet[]; skippedFilerIds: number[] }>;
+}) => Promise<{ filerReportSets: SouthCarolinaFilerReportSet[]; skippedFilers: SouthCarolinaFilerSearchRow[] }>;
 
 export const loadSouthCarolinaFilerReportSets: SouthCarolinaCandidateFilerReportSetLoader = async (
   input
 ) => {
   const term = southCarolinaFilerSearchTerm(input.candidateName);
   if (term === null) {
-    return { filerReportSets: [], skippedFilerIds: [] };
+    return { filerReportSets: [], skippedFilers: [] };
   }
   const searchRows = await searchSouthCarolinaFilersByName(term, input.clientOptions);
   const filers = filterSouthCarolinaFilersByExactSurname(input.candidateName, searchRows);
   const filerReportSets: SouthCarolinaFilerReportSet[] = [];
-  const skippedFilerIds: number[] = [];
+  const skippedFilers: SouthCarolinaFilerSearchRow[] = [];
   for (const filer of filers) {
     if (!southCarolinaFilerNeedsReportFetch(filer, input.electionYear)) {
       continue;
@@ -199,31 +207,88 @@ export const loadSouthCarolinaFilerReportSets: SouthCarolinaCandidateFilerReport
       filerReportSets.push({ filer, reports });
     } catch (error) {
       // The reports endpoint 500s for some stale filer ids (live-proven).
-      // Skip that filer visibly rather than failing the whole candidate.
+      // Skip that filer visibly rather than failing the whole candidate; the
+      // link step refuses to trust uniqueness when a skipped filer's name
+      // could itself have been a full match.
       if (error instanceof SouthCarolinaEthicsClientError && error.code === "http_error") {
-        skippedFilerIds.push(filer.candidateFilerId);
+        skippedFilers.push(filer);
         continue;
       }
       throw error;
     }
   }
-  return { filerReportSets, skippedFilerIds };
+  return { filerReportSets, skippedFilers };
 };
+
+// Office-evidence gathering for a matched filer: contribution rows carry the
+// office label of their RUN (real and district-scoped for legislative runs,
+// the broken literal "4" for current statewide runs), so labels among the
+// linked race's accepted runs are the only reliable office signal the source
+// offers. Veto-only — no rows or uninterpretable labels never block.
+async function conflictingOfficeLabelsForMatchedFiler(input: {
+  candidate: SouthCarolinaFinanceAutoLinkCandidateElection;
+  matchedSet: SouthCarolinaFilerReportSet;
+  fetchContributions: typeof searchSouthCarolinaContributions;
+  clientOptions?: SouthCarolinaEthicsClientOptions;
+}): Promise<string[]> {
+  const acceptedElectionDates = southCarolinaAcceptedElectionDates(
+    input.candidate.electionYear,
+    input.candidate.electionDate
+  );
+  const runIds = new Set(
+    selectSouthCarolinaAcceptedRuns(
+      input.matchedSet.reports,
+      input.candidate.electionYear,
+      acceptedElectionDates
+    ).map((run) => run.campaignId)
+  );
+  if (runIds.size === 0) {
+    return [];
+  }
+  const term = southCarolinaFilerSearchTerm(input.matchedSet.filer.candidate);
+  if (term === null) {
+    return [];
+  }
+  const years = southCarolinaContributionYearsForRuns(
+    input.matchedSet.reports,
+    input.candidate.electionYear,
+    acceptedElectionDates
+  );
+  const labels: string[] = [];
+  for (const year of years) {
+    const rows = await input.fetchContributions(
+      { candidate: term, contributionYear: year },
+      input.clientOptions
+    );
+    for (const row of rows) {
+      if (row.candidateId === input.matchedSet.filer.candidateFilerId && runIds.has(row.officeRunId)) {
+        labels.push(row.officeName);
+      }
+    }
+  }
+  return southCarolinaConflictingOfficeLabels({
+    officeScope: input.candidate.officeScope,
+    district: input.candidate.district,
+    rowOfficeLabels: labels,
+  });
+}
 
 export async function autoLinkSouthCarolinaCandidateFinanceForCandidateElection(input: {
   db: Queryable;
   candidateElection: SouthCarolinaFinanceAutoLinkCandidateElection;
   now: Date;
   loadFilerReportSets?: SouthCarolinaCandidateFilerReportSetLoader;
+  fetchContributions?: typeof searchSouthCarolinaContributions;
   clientOptions?: SouthCarolinaEthicsClientOptions;
 }): Promise<SouthCarolinaFinanceAutoLinkResult> {
   const candidate = input.candidateElection;
   const load = input.loadFilerReportSets ?? loadSouthCarolinaFilerReportSets;
-  const { filerReportSets, skippedFilerIds } = await load({
+  const { filerReportSets, skippedFilers } = await load({
     candidateName: candidate.candidateName,
     electionYear: candidate.electionYear,
     clientOptions: input.clientOptions,
   });
+  const skippedFilerIds = skippedFilers.map((filer) => filer.candidateFilerId);
   const skipped = skippedFilerIds.length > 0 ? { skippedFilerIds } : {};
   const resolution = resolveSouthCarolinaCandidateFiler({
     candidateName: candidate.candidateName,
@@ -258,6 +323,46 @@ export async function autoLinkSouthCarolinaCandidateFinanceForCandidateElection(
       ...skipped,
     };
   }
+  // A skipped filer whose NAME could itself be a full match might have made
+  // this resolution ambiguous — its reports were simply unreadable. Never
+  // trust that uniqueness; retry later or confirm manually.
+  const blockingSkippedIds = skippedFilers
+    .filter((filer) => southCarolinaFilerNameFullyMatchesCandidate(candidate.candidateName, filer.candidate))
+    .map((filer) => filer.candidateFilerId);
+  if (blockingSkippedIds.length > 0) {
+    return {
+      candidateId: candidate.candidateId,
+      electionId: candidate.electionId,
+      status: "error",
+      reason: "skipped_filer_may_match",
+      error: `report fetch failed for possibly-matching filer(s) ${blockingSkippedIds.join(", ")}`,
+      ...skipped,
+    };
+  }
+
+  const matchedSet = filerReportSets.find(
+    (set) => set.filer.candidateFilerId === resolution.candidateFilerId
+  );
+  if (matchedSet !== undefined) {
+    const conflictingLabels = await conflictingOfficeLabelsForMatchedFiler({
+      candidate,
+      matchedSet,
+      fetchContributions: input.fetchContributions ?? searchSouthCarolinaContributions,
+      clientOptions: input.clientOptions,
+    });
+    if (conflictingLabels.length > 0) {
+      const { status: _status, ...match } = resolution;
+      return {
+        candidateId: candidate.candidateId,
+        electionId: candidate.electionId,
+        status: "manual_confirm_required",
+        reason: `office_evidence_conflict: ${conflictingLabels.join(", ")}`,
+        candidates: [match],
+        ...skipped,
+      };
+    }
+  }
+
   await upsertSouthCarolinaFinanceLink({
     db: input.db,
     link: {
@@ -293,6 +398,7 @@ export async function autoLinkMissingSouthCarolinaCandidateFinanceLinks(input: {
   electionLookaheadDays: number;
   candidateElections?: readonly SouthCarolinaFinanceAutoLinkCandidateElection[];
   loadFilerReportSets?: SouthCarolinaCandidateFilerReportSetLoader;
+  fetchContributions?: typeof searchSouthCarolinaContributions;
   clientOptions?: SouthCarolinaEthicsClientOptions;
 }): Promise<SouthCarolinaFinanceAutoLinkResult[]> {
   const candidates =
@@ -312,6 +418,7 @@ export async function autoLinkMissingSouthCarolinaCandidateFinanceLinks(input: {
           candidateElection: candidate,
           now: input.now,
           loadFilerReportSets: input.loadFilerReportSets,
+          fetchContributions: input.fetchContributions,
           clientOptions: input.clientOptions,
         })
       );

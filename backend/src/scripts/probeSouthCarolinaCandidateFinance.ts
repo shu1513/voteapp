@@ -72,10 +72,11 @@ async function main(): Promise<void> {
   if (args.filerId !== undefined) {
     filer = { candidateFilerId: args.filerId, filerName: args.candidateName };
   } else {
-    const { filerReportSets, skippedFilerIds } = await loadSouthCarolinaFilerReportSets({
+    const { filerReportSets, skippedFilers } = await loadSouthCarolinaFilerReportSets({
       candidateName: args.candidateName,
       electionYear,
     });
+    const skippedFilerIds = skippedFilers.map((filer) => filer.candidateFilerId);
     const resolved = resolveSouthCarolinaCandidateFiler({
       candidateName: args.candidateName,
       electionDate: args.electionDate,

@@ -50,7 +50,7 @@ describe("syncDueSouthCarolinaCandidateFinance", () => {
     });
 
     expect(autoLinkFn).toHaveBeenCalledWith(
-      expect.objectContaining({ db, maxCandidates: 2, electionLookbackDays: 76, electionLookaheadDays: 730 })
+      expect.objectContaining({ db, maxCandidates: 2, electionLookbackDays: 77, electionLookaheadDays: 730 })
     );
     expect(listDueRowsFn).toHaveBeenCalledWith(
       db,
