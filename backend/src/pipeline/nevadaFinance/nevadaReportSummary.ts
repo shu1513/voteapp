@@ -174,13 +174,15 @@ function decodeHtmlText(fragment: string): string {
 }
 
 function parseSummaryAmountCents(cell: string, context: string): number | null {
-  const match = cell.match(/^\$\s?(\d{1,3}(?:,\d{3})*|\d+)(?:\.(\d{2}))?$/);
+  // Summary lines can go negative (net small-money refunds: live-hit line 7
+  // "$ -2,375.00" on Hafen CE#2-2026), so accept a minus after the dollar sign.
+  const match = cell.match(/^\$\s?(-)?\s?(\d{1,3}(?:,\d{3})*|\d+)(?:\.(\d{2}))?$/);
   if (!match) return null;
-  const cents = Number(match[1].replace(/,/g, "")) * 100 + (match[2] ? Number(match[2]) : 0);
+  const cents = Number(match[2].replace(/,/g, "")) * 100 + (match[3] ? Number(match[3]) : 0);
   if (!Number.isSafeInteger(cents)) {
     throw new Error(`Nevada report summary amount out of range ${JSON.stringify(cell)} (${context})`);
   }
-  return cents;
+  return match[1] ? -cents : cents;
 }
 
 const FILED_ON_PATTERN = /FILED\s+([A-Z][a-z]{2}) (\d{1,2}) (\d{4})/;
@@ -259,9 +261,22 @@ export function parseNevadaCandidateReportSummary(html: string, context: string)
 
 export type NevadaCycleSummary = {
   totalReceiptsCents: number;
+  /**
+   * Received donor money: lines 1+5+7 only. Excludes loan lines 2/3 and
+   * written-commitment lines 4/6, which sit inside line 8 — the shared
+   * ballot-lookup contract displays direct_contribution_total as
+   * total_raised, which "stays donor money only".
+   */
+  donorContributionCents: number;
+  /** Loan lines 2+3. Loan rows are unflagged in the itemized CSV. */
+  loanContributionCents: number;
   totalDisbursementsCents: number;
   cashOnHandCents: number;
-  /** Bounds for reconciling itemized CSV sums (filers may itemize <=$100 money). */
+  /**
+   * Bounds for reconciling itemized CSV sums. Floor = lines 1+5; ceiling adds
+   * loan lines 2+3 (loan rows are unflagged CSV rows) and any positive
+   * unitemized line 7 (filers may itemize <=$100 money).
+   */
   itemizedContributionFloorCents: number;
   itemizedContributionCeilingCents: number;
   itemizedExpenseFloorCents: number;
@@ -283,8 +298,10 @@ export function buildNevadaCycleSummary(
     throw new Error("Nevada cycle summary requires at least one selected report");
   }
   let totalReceiptsCents = 0;
+  let donorContributionCents = 0;
   let totalDisbursementsCents = 0;
   let itemizedContributionFloorCents = 0;
+  let loanContributionCents = 0;
   let unitemizedContributionCents = 0;
   let itemizedExpenseFloorCents = 0;
   let unitemizedExpenseCents = 0;
@@ -297,9 +314,18 @@ export function buildNevadaCycleSummary(
     }
     seenPeriodEnds.add(periodEnd);
     totalReceiptsCents += entry.summary.lines[8].periodCents;
+    donorContributionCents +=
+      entry.summary.lines[1].periodCents +
+      entry.summary.lines[5].periodCents +
+      entry.summary.lines[7].periodCents;
     totalDisbursementsCents += entry.summary.lines[12].periodCents;
     itemizedContributionFloorCents +=
       entry.summary.lines[1].periodCents + entry.summary.lines[5].periodCents;
+    // Loans (lines 2/3) appear in the itemized CSV as ordinary monetary rows
+    // with no flag (proven live: Gomez CSV == lines 1+5+2 cent-exact), so the
+    // reconciliation ceiling must admit them.
+    loanContributionCents +=
+      entry.summary.lines[2].periodCents + entry.summary.lines[3].periodCents;
     unitemizedContributionCents += entry.summary.lines[7].periodCents;
     itemizedExpenseFloorCents +=
       entry.summary.lines[9].periodCents + entry.summary.lines[10].periodCents;
@@ -308,12 +334,22 @@ export function buildNevadaCycleSummary(
   }
   return {
     totalReceiptsCents,
+    donorContributionCents,
+    loanContributionCents,
     totalDisbursementsCents,
     cashOnHandCents: latest.summary.endingFundBalanceCents,
-    itemizedContributionFloorCents,
-    itemizedContributionCeilingCents: itemizedContributionFloorCents + unitemizedContributionCents,
-    itemizedExpenseFloorCents,
-    itemizedExpenseCeilingCents: itemizedExpenseFloorCents + unitemizedExpenseCents,
+    // Line-7/11 money (<=$100 aggregate) may or may not be itemized, in
+    // EITHER sign (Hafen nets line 7 to -$2,375 and itemizes the reversals),
+    // so a negative aggregate lowers the floor and a positive one raises the
+    // ceiling - the slack never inverts the bounds.
+    itemizedContributionFloorCents:
+      itemizedContributionFloorCents + Math.min(0, unitemizedContributionCents),
+    itemizedContributionCeilingCents:
+      itemizedContributionFloorCents +
+      loanContributionCents +
+      Math.max(0, unitemizedContributionCents),
+    itemizedExpenseFloorCents: itemizedExpenseFloorCents + Math.min(0, unitemizedExpenseCents),
+    itemizedExpenseCeilingCents: itemizedExpenseFloorCents + Math.max(0, unitemizedExpenseCents),
     latestPeriodEnd: latest.report.period.end,
   };
 }

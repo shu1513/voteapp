@@ -315,13 +315,21 @@ export async function importNevadaCandidateFinance(input: {
         );
       }
       const contributionSumCents = aggregation.directContributionTotalCents;
+      // 1% tolerance on both bounds: filers misdate rows out of the cycle
+      // window (floor shortfalls) and file schedules that exceed their own
+      // summaries by tens of dollars (ceiling overruns) - live-hit at
+      // -$250 / +$650 on $250k-$400k filers. Totals stay official line-8
+      // sums; the tolerance only widens the breakdown-coverage gate.
+      const tolerance = (cents: number) => Math.ceil(Math.max(0, cents) * 0.01);
       if (
-        contributionSumCents < cycle.itemizedContributionFloorCents ||
-        contributionSumCents > cycle.itemizedContributionCeilingCents
+        contributionSumCents <
+          cycle.itemizedContributionFloorCents - tolerance(cycle.itemizedContributionFloorCents) ||
+        contributionSumCents >
+          cycle.itemizedContributionCeilingCents + tolerance(cycle.itemizedContributionCeilingCents)
       ) {
         throw new Error(
           `contribution reconciliation failed: CSV sum ${contributionSumCents} outside ` +
-            `[${cycle.itemizedContributionFloorCents}, ${cycle.itemizedContributionCeilingCents}] cents`
+            `[${cycle.itemizedContributionFloorCents}, ${cycle.itemizedContributionCeilingCents}] cents (1% tolerance)`
         );
       }
       let expenditureSumCents = 0;
@@ -331,18 +339,30 @@ export async function importNevadaCandidateFinance(input: {
         expenditureSumCents += row.amountCents;
       }
       if (
-        expenditureSumCents < cycle.itemizedExpenseFloorCents ||
-        expenditureSumCents > cycle.itemizedExpenseCeilingCents
+        expenditureSumCents <
+          cycle.itemizedExpenseFloorCents - tolerance(cycle.itemizedExpenseFloorCents) ||
+        expenditureSumCents >
+          cycle.itemizedExpenseCeilingCents + tolerance(cycle.itemizedExpenseCeilingCents)
       ) {
         throw new Error(
           `expenditure reconciliation failed: CSV sum ${expenditureSumCents} outside ` +
-            `[${cycle.itemizedExpenseFloorCents}, ${cycle.itemizedExpenseCeilingCents}] cents`
+            `[${cycle.itemizedExpenseFloorCents}, ${cycle.itemizedExpenseCeilingCents}] cents (1% tolerance)`
         );
       }
       if (cycle.cashOnHandCents < 0) {
         throw new Error(`negative ending fund balance ${cycle.cashOnHandCents} cents is not storable`);
       }
 
+      // Loan rows carry no marker in the itemized CSV, so when the cycle has
+      // loan money (lines 2/3) the donor charts cannot be separated from it:
+      // publish totals only and suppress the breakdowns for that filer.
+      const suppressBreakdowns = cycle.loanContributionCents !== 0;
+      if (suppressBreakdowns) {
+        warnings.push(
+          `loan lines 2/3 total ${cycle.loanContributionCents} cents; ` +
+            `breakdowns suppressed (loan rows are unflagged in the CSV)`
+        );
+      }
       const candidateResult: NevadaImportCandidateResult = {
         filerName: plan.link.filer_name,
         status: input.write ? "imported" : "dry_run_ok",
@@ -351,7 +371,7 @@ export async function importNevadaCandidateFinance(input: {
         totalDisbursements: cycle.totalDisbursementsCents / 100,
         cashOnHand: cycle.cashOnHandCents / 100,
         itemizedContributionTotal: aggregation.directContributionTotalCents / 100,
-        breakdownCount: aggregation.directBreakdowns.length,
+        breakdownCount: suppressBreakdowns ? 0 : aggregation.directBreakdowns.length,
         warnings,
       };
       if (input.write) {
@@ -369,23 +389,26 @@ export async function importNevadaCandidateFinance(input: {
             sourceUrl: plan.link.source_url,
           },
           summary: {
+            // Official line-8 gross (includes loan lines 2/3 and commitment
+            // lines 4/6) stays in total_receipts; the shared loader publishes
+            // direct_contribution_total as the displayed total_raised, which
+            // the contract keeps to DONOR MONEY ONLY — lines 1+5+7. The
+            // itemized CSV sum stays internal to the reconciliation gate.
             totalReceipts: cycle.totalReceiptsCents / 100,
-            // The shared loader publishes direct_contribution_total as the
-            // displayed total_raised, so it carries the official line-8 sum
-            // (all contributions, unitemized included); the itemized CSV sum
-            // stays internal to the reconciliation gate and breakdowns.
-            directContributionTotal: cycle.totalReceiptsCents / 100,
+            directContributionTotal: cycle.donorContributionCents / 100,
             totalDisbursements: cycle.totalDisbursementsCents / 100,
             cashOnHand: cycle.cashOnHandCents / 100,
             sourceUrl: plan.link.source_url,
           },
-          directBreakdowns: aggregation.directBreakdowns.map((breakdown) => ({
-            categoryType: breakdown.categoryType,
-            categoryName: breakdown.categoryName,
-            amount: breakdown.amount,
-            contributorCount: breakdown.contributorCount,
-            sourceUrl: breakdown.sourceUrl,
-          })),
+          directBreakdowns: suppressBreakdowns
+            ? []
+            : aggregation.directBreakdowns.map((breakdown) => ({
+                categoryType: breakdown.categoryType,
+                categoryName: breakdown.categoryName,
+                amount: breakdown.amount,
+                contributorCount: breakdown.contributorCount,
+                sourceUrl: breakdown.sourceUrl,
+              })),
         });
         importedCount += 1;
       }

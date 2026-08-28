@@ -81,6 +81,38 @@ describe("aggregateNevadaDirectContributions", () => {
     expect(result.foreignReportYearRowCount).toBe(0);
   });
 
+  it("nets reversals against industries but keeps them out of size buckets", () => {
+    const base = {
+      transactionType: "Monetary Contribution" as const,
+      reportName: "2026 CE Report 2",
+      isLegalDefenseFund: false,
+      filerName: "A B",
+      filerKey: "A B",
+      date: "2026-05-01",
+    };
+    const rows = [
+      { ...base, contributorName: "MGM Resorts International", amountCents: 100_000_00 },
+      { ...base, contributorName: "MGM Resorts International", amountCents: -100_000_00 },
+      { ...base, contributorName: "Someone Human", amountCents: 500_00 },
+    ];
+    const result = aggregateNevadaDirectContributions({
+      filerKey: "A B",
+      periodStart: "2026-01-01",
+      periodEnd: "2026-12-31",
+      contributionRows: rows,
+    });
+    // total nets to the surviving gift
+    expect(result.directContributionTotalCents).toBe(500_00);
+    // the rejected $100k must not chart as industry support
+    expect(result.directBreakdowns.filter((b) => b.categoryType === "industry")).toEqual([]);
+    // size buckets ignore the reversal but keep the real gifts
+    const buckets = result.directBreakdowns.filter((b) => b.categoryType === "contribution_size");
+    expect(buckets.map((b) => [b.categoryName, b.amount])).toEqual([
+      ["$5,000+", 100_000],
+      ["$500-$999", 500],
+    ]);
+  });
+
   it("counts in-window rows whose report names cite only foreign years", () => {
     const base = {
       contributorName: "Someone",

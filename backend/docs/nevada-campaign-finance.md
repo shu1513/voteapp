@@ -342,3 +342,56 @@ corrected where it was stale. Verified outcomes:
   environment." The design has no deployed fetcher — artifacts are harvested
   in an interactive browser session and imported by a local CLI; nothing in
   production ever fetches nvsos.gov.
+
+## Addendum 5 — Phase 2 harvest + local run (2026-08-27)
+
+Full-cycle harvest (roster 287 filers, 218 reports.json, 270 ViewCCEReport
+pages, 36+ month-sliced CSVs 2025-01..2026-06) and local import: **95 of 108
+eligible Nov-2026 candidates imported** (97 auto-linked, 2 quarantined).
+New live facts, all handled in code or artifacts:
+
+- **The CSV export SILENTLY truncates at 5,000 rows.** A capped export returns
+  exactly 5,000 rows with NO error (proven: 2026-04 full-month = 5,000 vs
+  2,321+2,994 split; 2026-05 = 5,000 vs 6,352 split). The louder "too many
+  results" error fires only at some higher threshold (~8k). Harvests must
+  treat rows >= 5,000 as capped and split the range.
+- **Jurisdiction filter misses filers.** ddlJurisdiction=36 (y2026: 196 rows)
+  covers mostly statewide/judicial filers; sitting legislators register under
+  their COUNTY (Cannizzaro = CLARK COUNTY) and challengers under UNKNOWN.
+  Roster harvest = jurisdiction-36 sweep PLUS last-name searches (all
+  jurisdictions) for unmatched candidates; 91 supplemental entries added.
+- **Candidate `o=` and report `syn=` tokens contain literal %xx sequences**
+  (canonical value is the single-encoded-looking string). Grid hrefs carry
+  them double-encoded; requests must send the double-encoded form. Sending
+  the single-decoded form renders a DIFFERENT page or an empty profile —
+  verify lblCandidateName on every fetched detail page.
+- Report-row Office strings are filer-typed free text off jurisdiction 36
+  ("Nevada State Assembly District 6", "Treasurer, State of Nevada",
+  "legislature district 27"); the resolver's parser accepts the variants and
+  fails closed on chamber-ambiguous or out-of-jurisdiction text.
+- **Negative amounts**: itemized rows use accounting parentheses
+  ("($2,500.00)" = rejected deposit/refund; 70 rows in the cycle CSVs), and
+  summary lines can net negative ("$ -2,375.00" on line 7). Parsers accept
+  both; reversal rows net into totals but stay out of breakdowns.
+- **Written commitments** appear as CSV Types "Written Commitment" /
+  "In Kind Written Commitment" (14 rows; summary lines 4/6) — excluded from
+  received-money sums and breakdowns.
+- **Loans sit in the CSV as unflagged Monetary rows** (Gomez: CSV == lines
+  1+5+2 cent-exact). Reconciliation bounds are now
+  [lines 1+5 + min(0, 7),  lines 1+2+3+5 + max(0, 7)] with a 1% tolerance
+  (filers misdate rows across cycle bounds and file schedules that exceed
+  their own summaries by tens of dollars). **Loan gate: 2 of 97 linked filers
+  carry line-2 loans (Duncan $2,000, Gomez $13,195)** — material only to
+  their own small totals; totalReceipts stays the official line 8.
+- **Same-day duplicate amendments exist** (Jovan Jackson filed CE#1 and CE#2
+  amendments twice on the same date). The transaction-search rows identify
+  the effective document (CE#2: $60,015 doc matches, $120,030 doc is a
+  superseded double-count); the artifact keeps one row per logical report
+  with a tie_note.
+- Unlinked/quarantined (13 of 108, documented fail-closed): Jauregui (2026
+  AURORA rows still carry her Assembly seat, VoteApp candidacy is Lt. Gov),
+  Pickering (goes by middle name), Torres-Fossett (married name vs AURORA
+  maiden name), Davila (compound surname), Willett + Vaughan (no 2026
+  filings), Cortes/Eady/Fuentes/C.Miller/Sandoval (no chamber+district in
+  free-text office rows), Barnhill (negative ending balance -$4,000; schema
+  keeps cash_on_hand >= 0), Carvalho (reports all zero but search rows exist).

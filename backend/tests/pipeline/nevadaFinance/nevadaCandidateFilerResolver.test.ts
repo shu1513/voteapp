@@ -38,6 +38,9 @@ describe("nevadaCandidateNamesMatch", () => {
     expect(nevadaCandidateNamesMatch("Nicole Cannizzaro", "Nicole Jeanette Cannizzaro")).toBe(true);
     expect(nevadaCandidateNamesMatch("Douglas Herndon", "Douglas W Herndon")).toBe(true);
     expect(nevadaCandidateNamesMatch("Aaron Ford", "Aaron Darnell Ford")).toBe(true);
+    expect(nevadaCandidateNamesMatch("Fabian Doñate", "Fabian Donate")).toBe(true);
+    expect(nevadaCandidateNamesMatch("Cecelia González", "Cecelia Gonzalez")).toBe(true);
+    expect(nevadaCandidateNamesMatch("Cisco Aguilar", "Francisco Aguilar")).toBe(true);
   });
 
   it("rejects different people", () => {
@@ -58,6 +61,41 @@ describe("parseNevadaAuroraOffice", () => {
       officeScope: "state_lower",
       officeCanonicalName: "State Lower Chamber Legislator",
       districtNumber: 32,
+    });
+    expect(parseNevadaAuroraOffice("State Assembly District 40")).toEqual({
+      officeScope: "state_lower",
+      officeCanonicalName: "State Lower Chamber Legislator",
+      districtNumber: 40,
+    });
+    expect(parseNevadaAuroraOffice("State Senate District 14")).toMatchObject({ districtNumber: 14 });
+    // Filer-typed free-text variants seen live on county-jurisdiction filers.
+    expect(parseNevadaAuroraOffice("Nevada State Assembly District 6")).toMatchObject({
+      officeScope: "state_lower",
+      districtNumber: 6,
+    });
+    expect(
+      parseNevadaAuroraOffice("Assemblywoman, Nevada State Assembly District 41, Nevada State Legislature")
+    ).toMatchObject({ officeScope: "state_lower", districtNumber: 41 });
+    expect(
+      parseNevadaAuroraOffice("Candidate for Nevada State Assembly, District 22 - State of Nevada")
+    ).toMatchObject({ officeScope: "state_lower", districtNumber: 22 });
+    expect(parseNevadaAuroraOffice("Treasurer, State of Nevada")).toMatchObject({
+      officeCanonicalName: "State Treasurer",
+    });
+    expect(parseNevadaAuroraOffice("State Controller, Nevada")).toMatchObject({
+      officeCanonicalName: "Comptroller",
+    });
+    // Chamber-ambiguous and out-of-jurisdiction text fails closed.
+    expect(parseNevadaAuroraOffice("legislature district 27")).toBeNull();
+    expect(parseNevadaAuroraOffice("Office Not Specified")).toBeNull();
+    expect(parseNevadaAuroraOffice("Las Vegas City Council Ward 5")).toBeNull();
+    expect(parseNevadaAuroraOffice("Nye County Treasurer")).toBeNull();
+    expect(parseNevadaAuroraOffice("U.S. Senate")).toBeNull();
+    // Chamber without a district parses with a null district (row is then
+    // unusable for legislative confirmation).
+    expect(parseNevadaAuroraOffice("Nevada State Assembly")).toMatchObject({
+      officeScope: "state_lower",
+      districtNumber: null,
     });
     expect(parseNevadaAuroraOffice("Governor")).toMatchObject({ officeCanonicalName: "Governor" });
     expect(parseNevadaAuroraOffice("State Controller")).toMatchObject({

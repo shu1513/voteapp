@@ -1,6 +1,8 @@
 # Nevada campaign finance — implementation plan
 
-Status: **Phases 0 + 1 DONE 2026-08-26.** Phase 0: fixtures in
+Status: **Phases 0-2 DONE (Phase 2 run 2026-08-27: 95/108 candidates imported
+into the local DB; harvest gotchas + unlinked list in the feasibility doc
+Addendum 5).** Phase 0: fixtures in
 `backend/tests/fixtures/nevadaFinance/` (5/5 reconciliation exact). Phase 1:
 migration 258, `backend/src/pipeline/nevadaFinance/` (CSV + report parsers,
 selection, cycle builder, aggregator, resolver, writer, loader), CLIs
