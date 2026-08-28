@@ -105,7 +105,7 @@ describe("App account nav", () => {
     // a link that unmounts with the panel, it returns to the trigger
     // instead of dropping to <body>.
     await userEvent.tab();
-    expect(header.getByRole("link", { name: "Mission" })).toHaveFocus();
+    expect(header.getByRole("link", { name: "My Elections" })).toHaveFocus();
     await userEvent.keyboard("{Escape}");
     expect(screen.queryByRole("link", { name: "My Elections" })).not.toBeInTheDocument();
     expect(trigger).toHaveFocus();
