@@ -252,6 +252,24 @@ export function isNevadaCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("NEVADA_CAMPAIGN_FINANCE_ENABLED", false);
 }
 
+export function isDelawareCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("DELAWARE_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isDelawareCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isDelawareCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("DELAWARE_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isDelawareCampaignFinanceRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isDelawareCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("DELAWARE_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
+
 export function isNewHampshireCfsRawDataRefreshEnabled(force = false): boolean {
   return (
     isNewHampshireCampaignFinanceEnabled() &&

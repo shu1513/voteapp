@@ -260,6 +260,7 @@ const FINANCE_SOURCE_LABELS: Record<string, string> = {
   COLORADO_TRACER: "Colorado TRACER",
   DENVER_CLERK_RECORDER: "Denver Office of the Clerk and Recorder",
   CONNECTICUT_ECRIS: "Connecticut eCRIS",
+  DELAWARE_CFRS: "Delaware Campaign Finance Reporting System",
   INDIANA_CAMPAIGN_FINANCE: "Indiana Campaign Finance",
   NEBRASKA_NADC: "Nebraska NADC",
   NEW_HAMPSHIRE_CFS: "New Hampshire Campaign Finance System",
