@@ -328,7 +328,15 @@ export function parseDelawareFiledReportsHtml(html: string): {
   if (gridStart === -1) {
     throw new DelawareCfrsParseError("filed-reports page has no #Grid config (layout drift?)");
   }
-  const body = /<tbody>([\s\S]*?)<\/tbody>/.exec(html);
+  // Scope the row search to the grid's own markup: the live page renders the
+  // Telerik wrapper <div class="t-widget t-grid" id="Grid"> around the grid
+  // table (verified 2026-08-27; the #Grid script config sits in the head,
+  // far before the table), so a layout table's tbody earlier in the page can
+  // never be mistaken for the report rows. When the wrapper is absent
+  // (sanitized fixtures), fall back to the whole page — the fixed cell-count
+  // and total checks below still guard that path.
+  const gridWrapper = /<div[^>]*\bid="Grid"[^>]*>/.exec(html);
+  const body = /<tbody>([\s\S]*?)<\/tbody>/.exec(gridWrapper === null ? html : html.slice(gridWrapper.index));
   if (body === null) {
     // A zero-result search renders no tbody; trust the grid total for that.
     if (total === 0) {

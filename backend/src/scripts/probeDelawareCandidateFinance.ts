@@ -148,11 +148,23 @@ async function runReceiptsFlow(
   const searchUrl = buildDelawareCfrsUrl(DELAWARE_CFRS_PAGES.receiptsSearch, { ...DELAWARE_CFRS_THEME_QUERY });
   const warmupUrl = buildDelawareCfrsUrl(DELAWARE_CFRS_PAGES.receiptsSearch);
   await session.get(warmupUrl);
-  const searchResponse = await session.postForm(searchUrl, buildDelawareReceiptsSearchFields(overrides), {
-    referer: warmupUrl,
-  });
-  const total = extractDelawareGridTotal(searchResponse.text());
-  saveArtifact(`${label}_search.html`, searchResponse.body);
+  // The results page sometimes renders total:0 transiently even though the
+  // stored search is intact and the export streams the full result set
+  // (observed live 2026-08-27, twice across different searches) — re-POST
+  // the search when that happens so the count==total gate checks a real
+  // total, not the flake.
+  let total: number | null = null;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    const searchResponse = await session.postForm(searchUrl, buildDelawareReceiptsSearchFields(overrides), {
+      referer: warmupUrl,
+    });
+    total = extractDelawareGridTotal(searchResponse.text());
+    saveArtifact(`${label}_search.html`, searchResponse.body);
+    if (total !== null && total > 0) {
+      break;
+    }
+    console.log(`  [${label}] search page rendered total=${total} (transient portal quirk) — retrying the search`);
+  }
   const exportResponse = await session.get(
     buildDelawareCfrsUrl(DELAWARE_CFRS_PAGES.receiptsExportCsv, { ...DELAWARE_CFRS_EXPORT_QUERY }),
     { referer: searchUrl }
@@ -229,11 +241,18 @@ async function main(): Promise<void> {
     ...DELAWARE_CFRS_THEME_QUERY,
   });
   await session.get(buildDelawareCfrsUrl(DELAWARE_CFRS_PAGES.expensesSearch));
-  const expensesSearch = await session.postForm(
-    expensesSearchUrl,
-    buildDelawareExpensesSearchFields({ txtRegistrant: GOLD.meyer.name, MemberId: String(GOLD.meyer.memberId) })
-  );
-  const expensesTotal = extractDelawareGridTotal(expensesSearch.text());
+  let expensesTotal: number | null = null;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    const expensesSearch = await session.postForm(
+      expensesSearchUrl,
+      buildDelawareExpensesSearchFields({ txtRegistrant: GOLD.meyer.name, MemberId: String(GOLD.meyer.memberId) })
+    );
+    expensesTotal = extractDelawareGridTotal(expensesSearch.text());
+    if (expensesTotal !== null && expensesTotal > 0) {
+      break;
+    }
+    console.log(`  [expenses] search page rendered total=${expensesTotal} (transient portal quirk) — retrying the search`);
+  }
   const expensesExport = await session.get(
     buildDelawareCfrsUrl(DELAWARE_CFRS_PAGES.expensesExportCsv, { ...DELAWARE_CFRS_EXPORT_QUERY }),
     { referer: expensesSearchUrl }

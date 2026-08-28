@@ -169,6 +169,21 @@ describe("delawareCfrsParsers", () => {
     expect(() => parseDelawareFiledReportsHtml("<html>no grid</html>")).toThrow(DelawareCfrsParseError);
   });
 
+  it("scopes filed-report rows to the #Grid wrapper, ignoring earlier tbodys", () => {
+    // The live page renders the search form and layout tables before the
+    // Telerik wrapper <div id="Grid"> — a tbody up there must never be
+    // parsed as the filing inventory.
+    const html = `<script>jQuery('#Grid').tGrid({columns:[], pageSize:15, total:1});</script>
+<table id="layout"><tbody><tr><td>nav</td><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td></tr></tbody></table>
+<div id="GridResults"><div class="t-widget t-grid" id="Grid"><table><thead><tr><th>Filing Period</th></tr></thead><tbody>
+<tr><td>2025 Annual</td><td>Original Financial Statement</td><td>01005311</td><td>Meyer for Delaware</td><td>Candidate Committee</td><td>01/02/2026</td><td>2025</td><td>(Governor)</td><td>Active</td></tr>
+</tbody></table></div></div>`;
+    const parsed = parseDelawareFiledReportsHtml(html);
+    expect(parsed.rows).toHaveLength(1);
+    expect(parsed.rows[0]!.filingPeriodName).toBe("2025 Annual");
+    expect(parsed.rows[0]!.cfId).toBe("01005311");
+  });
+
   it("parses /Date()/ values and registrant suggestions", () => {
     expect(parseDelawareJsonDateMs("/Date(1704171600000)/")).toBe(1_704_171_600_000);
     expect(parseDelawareJsonDateMs("2024-01-02")).toBeNull();
