@@ -11,7 +11,7 @@ Verdict: **BUILDABLE** for candidate-side money (totals, itemized donors with oc
 
 | Purpose | Endpoint | Body |
 |---|---|---|
-| Filer search (last-name prefix) | `POST Ethics/Get/Public/Search/By/Filer/Name/` | bare JSON string, e.g. `"Wilson"` |
+| Filer search (name contains/fuzzy) | `POST Ethics/Get/Public/Search/By/Filer/Name/` | bare JSON string, e.g. `"Wilson"` |
 | Report list + running totals | `POST Ethics/Get/Public/Candidate/Reports` | `{"candidateFilerId":N}` |
 | Itemized contributions | `POST Candidate/Contribution/Search/` | `{"candidate":"...","officeRun":"...","contributionYear":"2026",...}` (all optional) |
 | Itemized expenditures | `POST Candidate/Expenditure/Public/Get/All/Campaign/Expenditures` | `{"candidate":"...","expenditureYear":"2026",...}` |
@@ -19,7 +19,7 @@ Verdict: **BUILDABLE** for candidate-side money (totals, itemized donors with oc
 | Public report detail (period + cycle summary, all itemized rows, versions) | `GET Ethics/Get/Public/Candidate/Report/Details/{reportId}` | — (open; POST `Candidate/Report/Get/*` variants are 401) |
 | All offices/positions lookup | `Ethics/Get/Public/All/Offices/Positions` | — |
 
-- **Totals**: report list rows carry `contributions` / `expenses` / `balance` **cumulative campaign-to-date** per submitted report (Initial, Quarterly, Pre-Election). Latest report = total raised / total spent. Verified cent-exact: Alan Wilson governor campaign itemized 2025+2026 sum $4,859,328.27 == Q2-2026 report `contributions`.
+- **Totals**: report list rows carry `contributions` / `expenses` / `balance` **cumulative per election run** (they reset when a new run starts — see addendum). Campaign total raised/spent = sum of each run's final cumulative report; balances carry across runs. Verified cent-exact: Alan Wilson governor campaign (single run so far) itemized 2025+2026 sum $4,859,328.27 == Q2-2026 report `contributions`.
 - **Contribution rows**: `contributionId, officeRunId, candidateId, date, amount, candidateName, officeName, electionDate, contributorName, contributorOccupation, group (Yes/No), contributorAddress, description`. Occupation fill rate 100% on individual rows sampled (blank for `group=Yes` rows, i.e. PAC/entity donors).
 - **Expenditure rows**: `expId, campaignId, expDate, vendorName, amount, address, expDesc`.
 - `Candidate/Report/Get/Report/Summary` is filer-side only (401). `Candidate/Report/Public/Campaign/Get/Reports` ignores its filter and dumps the full statewide report index (usable for enumeration).
@@ -28,7 +28,7 @@ Verdict: **BUILDABLE** for candidate-side money (totals, itemized donors with oc
 
 - **2026-cycle statewide office labels are broken**: `officeName` comes back as the literal string `"4"` for the 2026 governor race, so office-text search (`officeRun:"Governor"`) misses the whole 2026 field. Filter by candidate name / `officeRunId` / `contributionYear` instead.
 - **Alan Wilson files as "Wilson, Michael A"** (legal first name Michael). Governor run: `candidateFilerId 54344`, `officeRunId 77574`, election 2026-06-09 (officeRun rows are per election event — primary and general are separate officeRunIds).
-- Filer-name search matches last-name prefix only; `"Wilson, Alan"` returns 0.
+- Filer-name search is contains/fuzzy on the stored name (see addendum: `"Wilson"` also returns `Johnson-Wilson`), so callers must exact-filter surnames locally. Full `"Last, First"` strings can still return 0 (`"Wilson, Alan"` misses `Wilson, Michael A`). Two-character surnames work (`"Wu"` returns real filers); an empty string dumps the full filer index. The same filer can appear twice with one `candidateFilerId` (duplicate address records, e.g. filer 31444) — dedupe by filer id.
 - Year filters are plain strings (`"contributionYear":"2026"`); object-shaped values 400. Omitting filters returns everything (Governor all-time = 174k rows / 65 MB in one response — API has no paging and no apparent size cap).
 - Election dates on multi-cycle candidates repeat June primary dates; a candidate's runs are keyed by `officeRunId`, not office text.
 

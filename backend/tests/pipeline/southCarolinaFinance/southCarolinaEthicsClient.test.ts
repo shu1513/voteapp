@@ -140,12 +140,31 @@ describe("South Carolina ethics client", () => {
     ]);
   });
 
-  it("rejects filer searches shorter than the portal minimum without fetching", async () => {
+  it("rejects filer searches shorter than two characters without fetching", async () => {
     const fetchImpl = mockFetch(jsonResponse({ result: [] }));
-    await expect(searchSouthCarolinaFilersByName("  Wi ", { fetchImpl })).rejects.toMatchObject({
+    await expect(searchSouthCarolinaFilersByName("  W ", { fetchImpl })).rejects.toMatchObject({
       code: "invalid_request",
     });
     expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
+  it("accepts two-character surnames and drops exact-duplicate filer rows", async () => {
+    const wuRow = {
+      candidate: "Wu, Hao",
+      candidateFilerId: 31444,
+      officeName: "District 6 Senate",
+      lastCampaignDisclosureReport: "04/27/2021",
+    };
+    // The live API repeats filer 31444 (duplicate address records, identical parsed fields).
+    const fetchImpl = mockFetch(jsonResponse({ result: [wuRow, { ...wuRow }], count: 2 }));
+
+    const rows = await searchSouthCarolinaFilersByName("Wu", { fetchImpl });
+
+    expect(fetchImpl).toHaveBeenCalledWith(
+      `${SOUTH_CAROLINA_ETHICS_API_BASE_URL}/Ethics/Get/Public/Search/By/Filer/Name/`,
+      expect.objectContaining({ method: "POST", body: JSON.stringify("Wu") })
+    );
+    expect(rows).toEqual([wuRow]);
   });
 
   it("parses candidate report rows including run identity from reportWithDates", async () => {

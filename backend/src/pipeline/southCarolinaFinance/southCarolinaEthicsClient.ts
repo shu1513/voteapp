@@ -110,7 +110,10 @@ export type SouthCarolinaContributionSearchRow = {
 
 export const SOUTH_CAROLINA_ETHICS_FETCH_TIMEOUT_MS = 120_000;
 const MAX_JSON_RESPONSE_BYTES = 64 * 1024 * 1024;
-const MIN_FILER_SEARCH_LENGTH = 3;
+// Two-character surnames are real SC filers (verified live: "Wu" returns House and
+// Senate filers). The server accepts even shorter text, but an empty search dumps
+// the full statewide filer index, so keep a floor of 2.
+const MIN_FILER_SEARCH_LENGTH = 2;
 
 function invalid(message: string): never {
   throw new SouthCarolinaEthicsClientError("invalid_request", message);
@@ -223,7 +226,16 @@ async function request(input: {
     );
   }
 
-  const bytes = new Uint8Array(await response.arrayBuffer());
+  let bytes: Uint8Array;
+  try {
+    bytes = new Uint8Array(await response.arrayBuffer());
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new SouthCarolinaEthicsClientError(
+      "network_error",
+      `South Carolina ethics response read failed: ${message}`
+    );
+  }
   if (bytes.byteLength > MAX_JSON_RESPONSE_BYTES) {
     badResponse(`South Carolina ethics ${input.endpointPath} exceeded ${MAX_JSON_RESPONSE_BYTES} bytes`);
   }
@@ -348,7 +360,18 @@ export async function searchSouthCarolinaFilersByName(
     options,
   });
   const envelope = objectValue(parsed, "filer-search response");
-  return arrayValue(envelope.result, "filer-search result").map(parseFilerSearchRow);
+  const rows = arrayValue(envelope.result, "filer-search result").map(parseFilerSearchRow);
+  // The server can list the same filer twice (duplicate address records share one
+  // candidateFilerId); drop rows whose parsed fields are exact duplicates.
+  const seen = new Set<string>();
+  return rows.filter((row) => {
+    const key = JSON.stringify(row);
+    if (seen.has(key)) {
+      return false;
+    }
+    seen.add(key);
+    return true;
+  });
 }
 
 export async function getSouthCarolinaCandidateReports(
