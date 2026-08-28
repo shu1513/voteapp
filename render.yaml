@@ -233,6 +233,8 @@ services:
         value: "true"
       - key: SAN_JOSE_CAMPAIGN_FINANCE_ENABLED
         value: "true"
+      - key: SOUTH_CAROLINA_CAMPAIGN_FINANCE_ENABLED
+        value: "true"
       - key: TENNESSEE_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: TEXAS_CAMPAIGN_FINANCE_ENABLED
