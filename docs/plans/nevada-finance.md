@@ -2,7 +2,7 @@
 
 Status: **Phases 0 + 1 DONE 2026-08-26.** Phase 0: fixtures in
 `backend/tests/fixtures/nevadaFinance/` (5/5 reconciliation exact). Phase 1:
-migration 257, `backend/src/pipeline/nevadaFinance/` (CSV + report parsers,
+migration 258, `backend/src/pipeline/nevadaFinance/` (CSV + report parsers,
 selection, cycle builder, aggregator, resolver, writer, loader), CLIs
 `nevada-candidates:finance:auto-link` / `:import`, 26 tests. Note: the shared
 loader publishes `direct_contribution_total` as the displayed total_raised, so
