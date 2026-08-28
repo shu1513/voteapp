@@ -42,9 +42,12 @@ near-unique string; Assembly patterns are unanchored, Senate patterns anchor at 
 **972 divided floor votes** (`LEAST(yeas,nays) >= GREATEST(yeas,nays)/4`), 442 of them on measures
 that became law, across 227 measures.
 
-## Crosswalk — 121 entries, 33 mapped, 88 explicit null
+## Crosswalk — 121 entries, 80 mapped, 41 explicit null
 
-`crosswalk.json`. All 33 proposals were accepted. Six needed eyes:
+`crosswalk.json`, built in two passes.
+
+**First pass (2026-08-27): 33 mapped, 88 explicit null**, against the then-partial Assembly rosters.
+All 33 proposals were accepted. Six needed eyes:
 
 - **3 `seatAgrees:false`** are sitting Assembly members running for the Senate, each confirmed off
   `current_office`: Damon Connolly (AD-12 → SD-2), Esmeralda Soria (AD-27 → SD-14), Avelino Valencia
@@ -58,18 +61,23 @@ member is running for a non-legislative California office** in our Nov-2026 data
 Resolution over all 5,328 rolls: matched 84,648 / unmatched_reviewed 218,740 / `no_crosswalk` 0 /
 `out_of_scope` 0 / 0 file errors.
 
-## ⚠ Fan-out is small, and that is OUR roster coverage, not California
+**Second pass (2026-08-28): +47 mapped → 80 mapped, 41 null**, after the Nov-2026 Assembly rosters
+were completed (80/80 districts). All 47 new proposals were exact or approved first-prefix matches
+with `seatAgrees: true`; the three `seatAgrees:false` Senate-runners above remain valid. Speaker
+Robert Rivas (AD-29), a null in the first pass, is now mapped. The 41 remaining nulls are members
+with no Nov-2026 candidacy on file. Review notes: `batch-01/crosswalk-review-2026-08-28.md`.
 
-**Median matched members per roll: 21 in the Assembly (max 22), 11 in the Senate (max 11)** —
-against Texas 114/13 and Georgia 149/42.
+## Fan-out — was small at first import, resolved 2026-08-28 by roster completion
 
-Our database holds Nov-2026 state-legislative elections for only **26 of 80 Assembly districts**
-(48 candidates) and for 20 Senate districts (40 candidates — the Senate is staggered, so 20 of 40
-seats is the whole ballot). Only **33 of the session's 121 sitting members** are on a Nov-2026 ballot
-we hold. A judged California vote therefore writes ~21 records in the Assembly and ~11 in the Senate.
+At the first import (2026-08-27) our database held Nov-2026 elections for only **26 of 80 Assembly
+districts**, so a judged vote wrote a median of 21 records in the Assembly and 11 in the Senate
+(vs Texas 114/13, Georgia 149/42) — only 33 of the session's 121 sitting members were on a ballot
+we held.
 
-Re-running the import once the Assembly rosters fill in adds the new members idempotently (the Ohio
-precedent: extending the crosswalk and re-importing adds members without touching existing rows).
+The Assembly rosters were then completed (**80/80 districts**; the Senate's 20 up-in-2026 districts
+were already covered), the crosswalk extended to 80 mapped, and the import re-run on 2026-08-28.
+The re-run behaved exactly per the Ohio precedent: 431 new records for the 47 newly mapped members,
+298 existing rows `unchanged`, batch-01 now **729 records / 80 candidates**.
 
 ## Judging source
 
@@ -84,7 +92,8 @@ so every vote in this batch was cast on the enrolled text and no description nee
 
 ## Batches
 
-- `batch-01/` — 20 rolls / 10 measures / **298 records**, imported 2026-08-27. See its `PLAN.md` and
-  `JUDGING.md`.
+- `batch-01/` — 20 rolls / 10 measures / **729 records** (298 imported 2026-08-27 at 33-member
+  crosswalk coverage, +431 on the 2026-08-28 re-import after roster completion). See its `PLAN.md`
+  and `JUDGING.md`.
 
 **Next:** 422 divided-and-enacted rolls on ~217 measures remain.
