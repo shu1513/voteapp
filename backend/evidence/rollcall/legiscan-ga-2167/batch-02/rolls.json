@@ -1,0 +1,133 @@
+{
+  "jurisdiction": "GA",
+  "sessionId": 2167,
+  "batch": "batch-02",
+  "rolls": [
+    {
+      "measure_id": "SB 69",
+      "chamber": "house",
+      "roll": 1531612,
+      "vote_date": "2025-03-31",
+      "yeas": 120,
+      "nays": 42,
+      "question": "concurrence",
+      "version_check": "House concurrence taken instead of the divided House passage vote (98-69, 2025-03-27): the House substitute the House passed did not yet contain the Title 40 seat-belt evidence section or the exclusion for banks and institutional investors, and made financier liability 'shall be' rather than 'may be' joint and several. This roll is on the enrolled text.",
+      "label": {
+        "slug": "corporate_accountability",
+        "yea": "for"
+      }
+    },
+    {
+      "measure_id": "HB 1164",
+      "chamber": "house",
+      "roll": 1647383,
+      "vote_date": "2026-02-26",
+      "yeas": 103,
+      "nays": 68,
+      "question": "passage",
+      "version_check": "House committee substitute voted 2026-02-26; identical to the enrolled Act after normalization.",
+      "label": {
+        "slug": "public_education_quality",
+        "yea": "for"
+      }
+    },
+    {
+      "measure_id": "HB 1185",
+      "chamber": "house",
+      "roll": 1674280,
+      "vote_date": "2026-03-31",
+      "yeas": 97,
+      "nays": 65,
+      "question": "concurrence",
+      "version_check": "House concurrence taken instead of the divided House passage vote (104-66, 2026-02-25): the Senate narrowed the disclosure-claim provision to claims brought by a shareholder or member, added 'reasonably expected', and changed a court's records-inspection order from mandatory to discretionary. This roll is on the enrolled text.",
+      "label": {
+        "slug": "corporate_accountability",
+        "yea": "against"
+      }
+    },
+    {
+      "measure_id": "HB 463",
+      "chamber": "house",
+      "roll": 1676416,
+      "vote_date": "2026-04-02",
+      "yeas": 104,
+      "nays": 71,
+      "question": "concurrence",
+      "version_check": "Final text. The Senate substitute of 2026-02-09 carried only the rate cut and standard deduction; the overtime and tips exclusions, the retirement income increase, and the credit and exemption repeals were added before this vote.",
+      "label": {
+        "slug": "personal_income_tax_reduction",
+        "yea": "for"
+      }
+    },
+    {
+      "measure_id": "HB 463",
+      "chamber": "senate",
+      "roll": 1676417,
+      "vote_date": "2026-04-02",
+      "yeas": 33,
+      "nays": 20,
+      "question": "concurrence",
+      "version_check": "Senate concurrence taken instead of the divided Senate passage vote (32-14, 2026-02-12), which was on the narrower Senate substitute. This roll is on the enrolled text.",
+      "label": {
+        "slug": "personal_income_tax_reduction",
+        "yea": "for"
+      }
+    },
+    {
+      "measure_id": "SB 220",
+      "chamber": "senate",
+      "roll": 1665920,
+      "vote_date": "2026-03-18",
+      "yeas": 38,
+      "nays": 14,
+      "question": "concurrence",
+      "version_check": "Senate concurrence taken instead of the divided 2025 Senate passage vote (39-17, 2025-03-06), which was on the 2025 engrossed text. The House substitute of 2026-02-10 differs from the enrolled Act only by dropping severe arthritis and severe insomnia from the qualifying conditions and making electronic registration cards subject to appropriations \u2014 the amendment this vote agreed to.",
+      "label": {
+        "slug": "healthcare_affordability",
+        "yea": "for"
+      }
+    },
+    {
+      "measure_id": "SB 244",
+      "chamber": "house",
+      "roll": 1535260,
+      "vote_date": "2025-04-02",
+      "yeas": 103,
+      "nays": 61,
+      "question": "passage",
+      "version_check": "House committee substitute voted 2025-04-02; identical to the enrolled Act after normalization.",
+      "label": {
+        "slug": "public_safety_and_crime_control",
+        "yea": "for"
+      }
+    },
+    {
+      "measure_id": "SB 244",
+      "chamber": "senate",
+      "roll": 1537730,
+      "vote_date": "2025-04-04",
+      "yeas": 35,
+      "nays": 18,
+      "question": "concurrence",
+      "version_check": "Senate concurrence in the House substitute; the Senate's own passage vote (55-0, 2025-03-06) was not divided. This roll is on the enrolled text.",
+      "label": {
+        "slug": "public_safety_and_crime_control",
+        "yea": "for"
+      }
+    },
+    {
+      "measure_id": "SB 40",
+      "chamber": "house",
+      "roll": 1535196,
+      "vote_date": "2025-04-02",
+      "yeas": 91,
+      "nays": 63,
+      "question": "concurrence",
+      "version_check": "House vote on the Senate amendment to the House substitute \u2014 the final text. The House's own passage vote (159-3, 2025-03-27) was not divided and predated the Title 12 solid-waste surcharge section.",
+      "label": {
+        "slug": "public_safety_and_crime_control",
+        "yea": "for"
+      }
+    }
+  ]
+}
