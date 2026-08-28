@@ -1,0 +1,252 @@
+// Delaware filed-report inventory: canonical per-period selection and
+// election-period window resolution (plan-delaware-finance.md facts 3 + 5).
+//
+// Amendment rule (fact 3, proven live 2026-08-26/27): the canonical version
+// per filing period is the HIGHEST PDF-footer `Version:` per
+// FilingCalendarID. The portal's "View Current Report" control is not
+// per-period (it returns only the single most recent report) and filed-date
+// sorting cannot break same-period ties, so version selection comes from
+// the PDFs themselves. Everything here fails closed: ambiguous versions,
+// unparseable dates, chain breaks, or window misalignment throw instead of
+// producing a partial inventory.
+
+import type { DelawareFiledReportRow, DelawareReportCover } from "./delawareCfrsParsers.js";
+
+export class DelawareReportInventoryError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "DelawareReportInventoryError";
+  }
+}
+
+/**
+ * The three CFRS artifacts render the SAME filing period under different
+ * names (receipts CSV "2024 2024  General Election 11/05/2024 30 Day",
+ * filed-report grid "2024 30 Day 2024 General Election 11/05/2024",
+ * expenses CSV "2024 30 Day General"; annuals differ in whitespace only —
+ * verified by 1:1 amount pairing on the 2026-08-27 probe run). Normalize to
+ * "(year) (Annual | 30 Day | 8 Day)( General | Primary | Special)" before
+ * any cross-artifact match. Unrecognizable names throw — an unknown period
+ * shape is drift, not data.
+ */
+export function delawareFilingPeriodKey(name: string): string {
+  const year = /\b(?:19|20)\d{2}\b/.exec(name)?.[0];
+  const day = /\b(30|8)\s*Day\b/i.exec(name);
+  const kind = /annual/i.test(name) ? "Annual" : day === null ? null : `${day[1]} Day`;
+  if (year === undefined || kind === null) {
+    throw new DelawareReportInventoryError(`unrecognizable Delaware filing-period name: "${name}"`);
+  }
+  const election = /general/i.test(name)
+    ? " General"
+    : /primary/i.test(name)
+      ? " Primary"
+      : /special/i.test(name)
+        ? " Special"
+        : "";
+  if (kind !== "Annual" && election === "") {
+    throw new DelawareReportInventoryError(
+      `Delaware election-report period name carries no election kind: "${name}"`
+    );
+  }
+  return `${year} ${kind}${election}`;
+}
+
+/** MM/DD/YYYY (as printed on report covers) -> YYYY-MM-DD; throws otherwise. */
+export function delawareCoverDateToIso(value: string | null): string {
+  const match = value === null ? null : /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(value);
+  if (match === null) {
+    throw new DelawareReportInventoryError(`unparseable Delaware cover date: "${value}"`);
+  }
+  return `${match[3]}-${match[1]}-${match[2]}`;
+}
+
+export type DelawareCanonicalReport = {
+  filingPeriodName: string;
+  periodKey: string;
+  filingCalendarId: number;
+  documentVersion: number;
+  /** ISO reporting-period bounds from the canonical cover. */
+  periodFrom: string;
+  periodTo: string;
+  beginningBalanceCents: number;
+  receiptsCents: number;
+  expendituresCents: number;
+  endingBalanceCents: number;
+};
+
+/**
+ * Selects the canonical (max-version) report per FilingCalendarID and
+ * validates the whole inventory: unambiguous versions, parseable periods,
+ * one period key per calendar entry, sequential non-overlapping periods,
+ * and a fully continuous balance chain (each beginning balance equals the
+ * prior canonical ending balance). Returns the canonical reports sorted by
+ * period start.
+ */
+export function buildDelawareCanonicalReportInventory(
+  reports: readonly { row: DelawareFiledReportRow; cover: DelawareReportCover }[]
+): DelawareCanonicalReport[] {
+  if (reports.length === 0) {
+    throw new DelawareReportInventoryError("no filed reports to build an inventory from");
+  }
+  const byCalendar = new Map<number, { row: DelawareFiledReportRow; cover: DelawareReportCover }[]>();
+  for (const report of reports) {
+    if (report.row.document === null) {
+      throw new DelawareReportInventoryError(
+        `filed report [${report.row.filingPeriodName}] has no document — cannot participate in cover selection`
+      );
+    }
+    const key = report.row.document.filingCalendarId;
+    const list = byCalendar.get(key) ?? [];
+    list.push(report);
+    byCalendar.set(key, list);
+  }
+
+  const canonical: DelawareCanonicalReport[] = [];
+  for (const [filingCalendarId, entries] of byCalendar) {
+    for (const entry of entries) {
+      if (entry.cover.documentVersion === null) {
+        throw new DelawareReportInventoryError(
+          `report [${entry.row.filingPeriodName}] (calendar ${filingCalendarId}) has no PDF footer version`
+        );
+      }
+    }
+    const maxVersion = Math.max(...entries.map((entry) => entry.cover.documentVersion!));
+    const winners = entries.filter((entry) => entry.cover.documentVersion === maxVersion);
+    if (winners.length !== 1) {
+      throw new DelawareReportInventoryError(
+        `ambiguous canonical version for filing calendar ${filingCalendarId}: ${winners.length} reports carry version ${maxVersion}`
+      );
+    }
+    const winner = winners[0]!;
+    canonical.push({
+      filingPeriodName: winner.row.filingPeriodName,
+      periodKey: delawareFilingPeriodKey(winner.row.filingPeriodName),
+      filingCalendarId,
+      documentVersion: maxVersion,
+      periodFrom: delawareCoverDateToIso(winner.cover.reportingPeriodFrom),
+      periodTo: delawareCoverDateToIso(winner.cover.reportingPeriodTo),
+      beginningBalanceCents: winner.cover.beginningBalanceCents,
+      receiptsCents: winner.cover.receiptsCents,
+      expendituresCents: winner.cover.expendituresCents,
+      endingBalanceCents: winner.cover.endingBalanceCents,
+    });
+  }
+
+  canonical.sort((left, right) => left.periodFrom.localeCompare(right.periodFrom));
+
+  const periodKeys = new Set<string>();
+  for (const report of canonical) {
+    if (periodKeys.has(report.periodKey)) {
+      throw new DelawareReportInventoryError(
+        `two canonical reports share the filing period key "${report.periodKey}"`
+      );
+    }
+    periodKeys.add(report.periodKey);
+  }
+  for (let index = 0; index < canonical.length; index += 1) {
+    const report = canonical[index]!;
+    if (report.periodTo < report.periodFrom) {
+      throw new DelawareReportInventoryError(
+        `report [${report.filingPeriodName}] period runs backwards (${report.periodFrom}..${report.periodTo})`
+      );
+    }
+    if (index > 0) {
+      const previous = canonical[index - 1]!;
+      if (report.periodFrom <= previous.periodTo) {
+        throw new DelawareReportInventoryError(
+          `reports [${previous.filingPeriodName}] and [${report.filingPeriodName}] overlap ` +
+            `(${previous.periodFrom}..${previous.periodTo} vs ${report.periodFrom}..${report.periodTo})`
+        );
+      }
+      if (report.beginningBalanceCents !== previous.endingBalanceCents) {
+        throw new DelawareReportInventoryError(
+          `balance chain break between [${previous.filingPeriodName}] (ending ${previous.endingBalanceCents}c) ` +
+            `and [${report.filingPeriodName}] (beginning ${report.beginningBalanceCents}c)`
+        );
+      }
+    }
+  }
+  return canonical;
+}
+
+export type DelawareElectionPeriodWindow = {
+  /** ISO date the window opens (inclusive). */
+  windowStart: string;
+  /** ISO election date the window closes (inclusive). */
+  windowEnd: string;
+  /** Canonical reports fully inside the window, in period order. */
+  reports: DelawareCanonicalReport[];
+  /** Which statutory case produced windowStart. */
+  basis: "post_prior_election" | "committee_first_report";
+};
+
+/**
+ * Resolves the § 8002(11) election-period window from the canonical
+ * inventory alone:
+ *
+ * - If the committee filed 30-Day/8-Day election reports for a PRIOR
+ *   election (period ending before Jan 1 of the election year), the current
+ *   period starts Jan 1 after that prior election's year — the statute's
+ *   elected-incumbent rule, and the same boundary that keeps an
+ *   office-spanning committee's old-era money out (Meyer's 2022
+ *   county-executive money stays out of a 2024 window).
+ * - Otherwise the committee's whole history is this candidacy (the
+ *   challenger case: the period opens with the first contribution, which is
+ *   where the first report starts).
+ *
+ * The primary and general are separate statutory periods; the published
+ * window spans both so a general-election page shows the candidacy's money
+ * to date. Fails closed when any canonical report STRADDLES the window
+ * start (a report that mixes prior-period and current-period money cannot
+ * be split — plan: ambiguous window -> no publication).
+ */
+export function resolveDelawareElectionPeriodWindow(input: {
+  electionDate: string;
+  canonicalReports: readonly DelawareCanonicalReport[];
+}): DelawareElectionPeriodWindow {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(input.electionDate)) {
+    throw new DelawareReportInventoryError(`invalid election date: "${input.electionDate}"`);
+  }
+  if (input.canonicalReports.length === 0) {
+    throw new DelawareReportInventoryError("cannot resolve a window from an empty inventory");
+  }
+  const electionYear = Number.parseInt(input.electionDate.slice(0, 4), 10);
+  const janFirstOfElectionYear = `${electionYear}-01-01`;
+  const priorElectionReports = input.canonicalReports.filter(
+    (report) => report.periodKey.includes("Day") && report.periodTo < janFirstOfElectionYear
+  );
+  let windowStart: string;
+  let basis: DelawareElectionPeriodWindow["basis"];
+  if (priorElectionReports.length > 0) {
+    const lastPrior = priorElectionReports[priorElectionReports.length - 1]!;
+    const priorYear = Number.parseInt(lastPrior.periodTo.slice(0, 4), 10);
+    windowStart = `${priorYear + 1}-01-01`;
+    basis = "post_prior_election";
+  } else {
+    windowStart = input.canonicalReports[0]!.periodFrom;
+    basis = "committee_first_report";
+  }
+
+  const reports: DelawareCanonicalReport[] = [];
+  for (const report of input.canonicalReports) {
+    if (report.periodTo < windowStart) {
+      continue;
+    }
+    if (report.periodFrom < windowStart) {
+      throw new DelawareReportInventoryError(
+        `report [${report.filingPeriodName}] straddles the window start ${windowStart} ` +
+          `(${report.periodFrom}..${report.periodTo}) — ambiguous window, not publishable`
+      );
+    }
+    if (report.periodTo > input.electionDate) {
+      continue;
+    }
+    reports.push(report);
+  }
+  if (reports.length === 0) {
+    throw new DelawareReportInventoryError(
+      `no canonical report lies inside the window ${windowStart}..${input.electionDate}`
+    );
+  }
+  return { windowStart, windowEnd: input.electionDate, reports, basis };
+}
