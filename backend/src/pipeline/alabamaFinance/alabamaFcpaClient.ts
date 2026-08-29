@@ -307,34 +307,62 @@ export type AlabamaExtractDownload = {
   zipByteCount: number;
 };
 
-export async function downloadAlabamaExtract(
-  downloadId: number,
-  options: AlabamaFcpaClientOptions = {}
-): Promise<AlabamaExtractDownload> {
-  const response = await requestRaw(
-    "/page.request.do",
-    { page: "getTransactionData", id: String(downloadId) },
-    options
-  );
-  const bytes = new Uint8Array(await response.arrayBuffer());
+/**
+ * Unzip one extract archive to its single CSV. Throws on non-zip bytes (the
+ * portal serves error/login pages as HTTP-200 HTML), empty archives, and
+ * multi-entry archives; `label` names the artifact in error messages.
+ */
+export function unzipAlabamaExtract(
+  bytes: Uint8Array,
+  label: string
+): { fileName: string; csvText: string } {
+  // Zip local-file signature "PK": anything else is not an archive — most
+  // commonly an HTML error page.
+  if (bytes.length < 4 || bytes[0] !== 0x50 || bytes[1] !== 0x4b) {
+    throw new AlabamaFcpaClientError(
+      "bad_response",
+      `Alabama extract ${label} is not a zip archive (HTML error page?)`
+    );
+  }
   let entries: Record<string, Uint8Array>;
   try {
     entries = unzipSync(bytes);
   } catch {
-    throw new AlabamaFcpaClientError("bad_response", `Extract download ${downloadId} is not a zip archive`);
+    throw new AlabamaFcpaClientError("bad_response", `Alabama extract ${label} is not a zip archive`);
   }
   const names = Object.keys(entries).filter((name) => name.toLowerCase().endsWith(".csv"));
   if (names.length !== 1) {
     throw new AlabamaFcpaClientError(
       "bad_response",
-      `Extract download ${downloadId} contains ${names.length} CSV entries; expected exactly 1`
+      `Alabama extract ${label} contains ${names.length} CSV entries; expected exactly 1`
     );
   }
   return {
     fileName: names[0]!,
     csvText: Buffer.from(entries[names[0]!]!).toString("utf8"),
-    zipByteCount: bytes.byteLength,
   };
+}
+
+/** Raw zip bytes of one catalog download — the artifact the cache stores. */
+export async function downloadAlabamaExtractZipBytes(
+  downloadId: number,
+  options: AlabamaFcpaClientOptions = {}
+): Promise<Uint8Array> {
+  const response = await requestRaw(
+    "/page.request.do",
+    { page: "getTransactionData", id: String(downloadId) },
+    options
+  );
+  return new Uint8Array(await response.arrayBuffer());
+}
+
+export async function downloadAlabamaExtract(
+  downloadId: number,
+  options: AlabamaFcpaClientOptions = {}
+): Promise<AlabamaExtractDownload> {
+  const bytes = await downloadAlabamaExtractZipBytes(downloadId, options);
+  const { fileName, csvText } = unzipAlabamaExtract(bytes, `download ${downloadId}`);
+  return { fileName, csvText, zipByteCount: bytes.byteLength };
 }
 
 // ---------------------------------------------------------------------------
