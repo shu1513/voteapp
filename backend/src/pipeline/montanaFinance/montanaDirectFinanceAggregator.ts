@@ -334,15 +334,29 @@ export function aggregateMontanaDirectFinance(input: {
   for (const [key, entry] of csvSmallRows) {
     unmatchedCsvSmallCents += Math.max(0, entry.count - (jsonSmallRows.get(key)?.count ?? 0)) * entry.cents;
   }
+  // A completely empty CONTR export next to JSON contribution money is
+  // never a lump choice or amendment staleness — it is a broken export
+  // (e.g. prepareDownloadFile answering without a fileName for an entity
+  // that has rows). Always fail closed, before any warning demotion.
+  if (input.contributionRows.length === 0 && individualCents + committeeCents > 0) {
+    throw new MontanaDirectFinanceAggregationError(
+      `Montana CONTR export is empty while the report details carry ${individualCents + committeeCents}c of contributions — broken export`
+    );
+  }
+
   // A mismatch past the tolerance is real cross-surface drift. Live Phase 3
   // showed the drift lives on the CSV side (a $450 row dropped outright; a
   // federal PAC's $470 absent; stale pre-amendment donor amounts) while the
-  // JSON flows reconcile to the cent against real cash anchors. So: with a
-  // real-anchored chain the mismatch is recorded and the JSON publishes;
-  // without one the CSV is the only verification left — fail closed.
+  // JSON flows reconcile to the cent against real cash anchors. So: when at
+  // least one chain link actually LANDED on a real anchor — a conservation
+  // check against an official figure; a link into a carried anchor closes
+  // by construction and verifies nothing — the mismatch is recorded and
+  // the JSON publishes; otherwise the CSV is the only verification left
+  // and the mismatch fails closed.
+  const hasAnchoredLink = chain.links.some((link) => !link.carriedAnchor);
   const csvCrossCheckWarnings: string[] = [];
   const reportOrThrow = (message: string) => {
-    if (chain.hasRealAnchor) {
+    if (hasAnchoredLink) {
       csvCrossCheckWarnings.push(message);
     } else {
       throw new MontanaDirectFinanceAggregationError(message);

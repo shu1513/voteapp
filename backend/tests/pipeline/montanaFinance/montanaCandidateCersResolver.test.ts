@@ -178,6 +178,8 @@ describe("resolveMontanaCersCandidate", () => {
       status: "matched",
       cersCandidateId: 21925,
       cersCandidateName: "Cohenour, Joseph",
+      // Audit label: this link only holds through the nickname expansion.
+      confidence: "name_office_year_nickname",
     });
   });
 

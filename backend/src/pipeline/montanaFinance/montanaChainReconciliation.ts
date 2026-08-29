@@ -131,10 +131,13 @@ export type MontanaChainReconciliation = {
   /** True only when every checkable link on both sides passed. */
   ok: boolean;
   /**
-   * True when at least one report carries REAL begin balances on both sides
-   * — the chain's conservation checks then verify the JSON flows against
-   * official figures. False for an all-carried (all-null) chain, whose
-   * links close tautologically.
+   * True when at least one report carries REAL begin balances on both
+   * sides, i.e. an official figure exists to ROOT the ending-balance
+   * derivation (a single-report filer qualifies). This is existence, not
+   * verification: whether conservation was ever actually CHECKED against a
+   * real figure is a property of the links — a link with carriedAnchor
+   * false landed on a real anchor; one into a carried anchor closes by
+   * construction. False only for an all-carried (all-null) chain.
    */
   hasRealAnchor: boolean;
   links: MontanaChainLinkResult[];

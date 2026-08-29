@@ -50,7 +50,8 @@ export type MontanaCersCandidateMatch = {
   /** CERS display name, stored as the link's committee_name. */
   cersCandidateName: string;
   officeTitle: string | null;
-  confidence: "name_office_year_exact";
+  /** "nickname" marks matches that needed the one-sided first-name expansion. */
+  confidence: "name_office_year_exact" | "name_office_year_nickname";
   source: "cers_portal";
   sourceUrl: string;
 };
@@ -217,12 +218,15 @@ function rosterFirstNameMatchesCers(candidateFirst: string, rowFirst: string): b
   return candidateFirst === rowFirst || firstNameVariants(candidateFirst).includes(rowFirst);
 }
 
-function toMatch(row: MontanaCersCandidateSearchRow): MontanaCersCandidateMatch {
+function toMatch(
+  row: MontanaCersCandidateSearchRow,
+  confidence: MontanaCersCandidateMatch["confidence"]
+): MontanaCersCandidateMatch {
   return {
     cersCandidateId: row.candidateId,
     cersCandidateName: montanaCersCandidateDisplayName(row),
     officeTitle: row.officeTitle,
-    confidence: "name_office_year_exact",
+    confidence,
     source: "cers_portal",
     sourceUrl: MONTANA_CERS_DASHBOARD_URL,
   };
@@ -238,7 +242,7 @@ export function resolveMontanaCersCandidate(input: MontanaCersResolverInput): Mo
     return { status: "unmatched", reason: expectation.unmatchedReason };
   }
 
-  const matchesById = new Map<number, MontanaCersCandidateSearchRow>();
+  const matchesById = new Map<number, MontanaCersCandidateMatch>();
   for (const row of input.rows) {
     if (row.electionYear !== input.electionYear) {
       continue;
@@ -257,12 +261,20 @@ export function resolveMontanaCersCandidate(input: MontanaCersResolverInput): Mo
     ) {
       continue;
     }
-    matchesById.set(row.candidateId, row);
+    // Audit honesty: a match that only holds through the nickname expansion
+    // is labeled as such (strict equality is re-checked to tell them apart).
+    const strictMatch = personNamesMatchWithMiddleEvidence({
+      candidateName,
+      rowNames: [cersFullName],
+      normalizePersonName,
+    });
+    matchesById.set(
+      row.candidateId,
+      toMatch(row, strictMatch ? "name_office_year_exact" : "name_office_year_nickname")
+    );
   }
 
-  const matches = [...matchesById.values()]
-    .map(toMatch)
-    .sort((left, right) => left.cersCandidateId - right.cersCandidateId);
+  const matches = [...matchesById.values()].sort((left, right) => left.cersCandidateId - right.cersCandidateId);
   if (matches.length === 1) {
     return { status: "matched", ...matches[0]! };
   }

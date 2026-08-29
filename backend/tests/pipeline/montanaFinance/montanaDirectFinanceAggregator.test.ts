@@ -169,16 +169,33 @@ describe("aggregateMontanaDirectFinance", () => {
     expect(() => aggregateMontanaDirectFinance(expenditureDrift)).toThrow("expenditure totals disagree");
   });
 
-  it("fails closed on contribution drift when the chain has no real anchor", () => {
+  it("fails closed on contribution drift when no link ever landed on a real anchor", () => {
     // An all-null chain closes tautologically: the CSV is the only
     // verification left, so drift beyond the tolerance still throws.
-    const input = fixture();
-    for (const report of input.canonicalReports) {
+    const allNull = fixture();
+    for (const report of allNull.canonicalReports) {
       report.inventory.primCashBegCents = null;
       report.inventory.genCashBegCents = null;
     }
-    input.contributionRows[0]!.amountCents = 4_000;
-    expect(() => aggregateMontanaDirectFinance(input)).toThrow("beyond the itemization threshold");
+    allNull.contributionRows[0]!.amountCents = 4_000;
+    expect(() => aggregateMontanaDirectFinance(allNull)).toThrow("beyond the itemization threshold");
+
+    // A real FIRST anchor with a carried second is existence, not
+    // verification — the only link closes by construction, so demotion
+    // must stay off and the same drift still throws.
+    const carriedTail = fixture();
+    carriedTail.canonicalReports[1]!.inventory.primCashBegCents = null;
+    carriedTail.canonicalReports[1]!.inventory.genCashBegCents = null;
+    carriedTail.contributionRows[0]!.amountCents = 4_000;
+    expect(() => aggregateMontanaDirectFinance(carriedTail)).toThrow("beyond the itemization threshold");
+  });
+
+  it("rejects an empty CONTR export next to JSON contribution money — regardless of anchors", () => {
+    // The broken-export shape a spurious no-fileName prepareDownloadFile
+    // response would produce; never demotable to a warning.
+    const input = fixture();
+    input.contributionRows = [];
+    expect(() => aggregateMontanaDirectFinance(input)).toThrow("broken export");
   });
 
   it("tolerates a CSV shortfall explained by sub-threshold rows (Eddy shape)", () => {
