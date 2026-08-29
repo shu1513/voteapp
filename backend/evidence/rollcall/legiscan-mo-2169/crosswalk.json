@@ -1,0 +1,993 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "MO",
+  "session_id": 2169,
+  "note": "people_id -> VoteApp candidate id for the MO 2025 Regular Session (LegiScan 2169). 89 proposer matches (all accepted), 5 hand-added, 103 explicit nulls. Seat comes from `district`, never `role`.",
+  "entries": [
+    {
+      "people_id": 7655,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Stephen Webber (SD-019)"
+    },
+    {
+      "people_id": 12942,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Mike Bernskoetter (SD-006)"
+    },
+    {
+      "people_id": 12944,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Rick Brattin (SD-031)"
+    },
+    {
+      "people_id": 12947,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Mike Cierpiot (SD-008)"
+    },
+    {
+      "people_id": 12949,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Sandy Crawford (SD-028)"
+    },
+    {
+      "people_id": 12968,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Karla May (SD-004)"
+    },
+    {
+      "people_id": 13002,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Lincoln Hough (SD-030)"
+    },
+    {
+      "people_id": 13872,
+      "candidate_id": "3a0a7929-c938-4da8-b7cf-ae0d2f6a3d3f",
+      "note": "proposer: first_and_last, senate SD-024 -> state_upper: State Senate District 24 (2024); Missouri"
+    },
+    {
+      "people_id": 16177,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Mike Moon (SD-029)"
+    },
+    {
+      "people_id": 17512,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Travis Fitzwater (SD-010)"
+    },
+    {
+      "people_id": 18054,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Nick Schroer (SD-002)"
+    },
+    {
+      "people_id": 18055,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Mike Henderson (SD-003)"
+    },
+    {
+      "people_id": 18097,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Doug Beck (SD-001)"
+    },
+    {
+      "people_id": 18243,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Steven Roberts (SD-005)"
+    },
+    {
+      "people_id": 18819,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: David Gregory (SD-015)"
+    },
+    {
+      "people_id": 18824,
+      "candidate_id": "eb93a8d0-7383-43b2-995b-970a7b25985a",
+      "note": "proposer: first_and_last, house HD-107 -> state_lower: State House District 107 (2024); Missouri"
+    },
+    {
+      "people_id": 18833,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Curtis Trent (SD-020)"
+    },
+    {
+      "people_id": 19250,
+      "candidate_id": "f7b3a251-02da-4008-a1a4-be8572a680fc",
+      "note": "proposer: first_and_last, senate SD-012 -> state_upper: State Senate District 12 (2024); Missouri"
+    },
+    {
+      "people_id": 19466,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Barbara Washington (SD-009)"
+    },
+    {
+      "people_id": 19593,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Jeff Knight (HD-142)"
+    },
+    {
+      "people_id": 19633,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Peggy McGaugh (HD-007)"
+    },
+    {
+      "people_id": 19714,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Cindy O'Laughlin (SD-018)"
+    },
+    {
+      "people_id": 19715,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Tony Luetkemeyer (SD-034)"
+    },
+    {
+      "people_id": 19735,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Ann Kelley (HD-127)"
+    },
+    {
+      "people_id": 19736,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Jim Murphy (HD-094)"
+    },
+    {
+      "people_id": 19920,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Ben Baker (HD-160)"
+    },
+    {
+      "people_id": 19939,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Adam Schnelting (SD-023)"
+    },
+    {
+      "people_id": 19941,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Mike McGirl (HD-118)"
+    },
+    {
+      "people_id": 19956,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Mary Coleman (SD-022)"
+    },
+    {
+      "people_id": 19962,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Robert Bromley (HD-162)"
+    },
+    {
+      "people_id": 19966,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Raychel Proudie (HD-073)"
+    },
+    {
+      "people_id": 20162,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Brenda Shields (HD-011)"
+    },
+    {
+      "people_id": 20403,
+      "candidate_id": "2633cd24-ed84-4f47-beda-a8b2565433a2",
+      "note": "hand-added: sitting state senator (SD-014) running for a St. Louis County office in Nov-2026; outside the state-legislative pool by design"
+    },
+    {
+      "people_id": 20430,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Dave Griffith (HD-060)"
+    },
+    {
+      "people_id": 20695,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Ladonna Appelbaum (HD-071)"
+    },
+    {
+      "people_id": 20696,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Hardy Billington (HD-152)"
+    },
+    {
+      "people_id": 20697,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: John Black (HD-129)"
+    },
+    {
+      "people_id": 20699,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Lakeysha Bosley (HD-079)"
+    },
+    {
+      "people_id": 20701,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Danny Busick (HD-003)"
+    },
+    {
+      "people_id": 20702,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Steve Butz (HD-081)"
+    },
+    {
+      "people_id": 20703,
+      "candidate_id": "b814cbe5-d0c7-4e73-8fb9-f5b18228108c",
+      "note": "hand-added: sitting state representative (HD-072) running for a St. Louis County office in Nov-2026; outside the state-legislative pool by design"
+    },
+    {
+      "people_id": 20704,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Jeff Coleman (HD-032)"
+    },
+    {
+      "people_id": 20705,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Dirk Deaton (HD-159)"
+    },
+    {
+      "people_id": 20708,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Bill Falkner (HD-010)"
+    },
+    {
+      "people_id": 20710,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Kent Haden (HD-043)"
+    },
+    {
+      "people_id": 20711,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Barry Hovis (HD-146)"
+    },
+    {
+      "people_id": 20712,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Brad Hudson (SD-033)"
+    },
+    {
+      "people_id": 20713,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Keri Ingle (HD-035)"
+    },
+    {
+      "people_id": 20714,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Ian Mackey (HD-099)"
+    },
+    {
+      "people_id": 20715,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Don Mayhew (HD-124)"
+    },
+    {
+      "people_id": 20716,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Michael O'Donnell (HD-095)"
+    },
+    {
+      "people_id": 20717,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Jonathan Patterson (HD-030)"
+    },
+    {
+      "people_id": 20718,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Bradley Pollitt (HD-052)"
+    },
+    {
+      "people_id": 20722,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Rodger Reedy (HD-057)"
+    },
+    {
+      "people_id": 20724,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Louis Riggs (HD-005)"
+    },
+    {
+      "people_id": 20725,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Lane Roberts (HD-161)"
+    },
+    {
+      "people_id": 20729,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Gregory Sharpe (HD-004)"
+    },
+    {
+      "people_id": 20731,
+      "candidate_id": "24119091-fb2f-4609-884f-10c9c620606a",
+      "note": "proposer: first_and_last, house HD-109 -> state_lower: State House District 109 (2024); Missouri"
+    },
+    {
+      "people_id": 20732,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Rudy Veit (HD-059)"
+    },
+    {
+      "people_id": 20733,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Dale Wright (HD-116)"
+    },
+    {
+      "people_id": 21155,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Justin Brown (SD-016)"
+    },
+    {
+      "people_id": 21428,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Mark Sharp (HD-037)"
+    },
+    {
+      "people_id": 21430,
+      "candidate_id": "bb9c19c3-4092-459a-b8a7-b55a45da99f1",
+      "note": "proposer: first_and_last, house HD-022 -> state_lower: State House District 22 (2024); Missouri"
+    },
+    {
+      "people_id": 21533,
+      "candidate_id": "d0e34a2a-e187-4a20-836a-75d89e70cde7",
+      "note": "proposer: first_and_last, house HD-158 -> state_lower: State House District 158 (2024); Missouri"
+    },
+    {
+      "people_id": 21703,
+      "candidate_id": "62c5d13a-9c89-40f9-a9c0-e9b440367c28",
+      "note": "proposer: first_and_last, house HD-093 -> state_lower: State House District 93 (2024); Missouri"
+    },
+    {
+      "people_id": 21704,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Bill Hardwick (HD-121)"
+    },
+    {
+      "people_id": 21705,
+      "candidate_id": "2031e4cc-1997-45a8-9e71-3f2f86a08538",
+      "note": "proposer: first_and_last, house HD-040 -> state_lower: State House District 40 (2024); Missouri"
+    },
+    {
+      "people_id": 21706,
+      "candidate_id": "b3ac8d82-02d1-4eb5-8b8e-f3c04ee43630",
+      "note": "proposer: first_and_last, house HD-130 -> state_lower: State House District 130 (2024); Missouri"
+    },
+    {
+      "people_id": 21707,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Marlene Terry (HD-066)"
+    },
+    {
+      "people_id": 21708,
+      "candidate_id": "5c84bd2e-7d63-435b-ac44-17d2d9fa6b8a",
+      "note": "proposer: first_and_last, house HD-053 -> state_lower: State House District 53 (2024); Missouri"
+    },
+    {
+      "people_id": 21709,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Ed Lewis (HD-006)"
+    },
+    {
+      "people_id": 21710,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Patty Lewis (SD-007)"
+    },
+    {
+      "people_id": 21712,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Jason Bean (SD-025)"
+    },
+    {
+      "people_id": 21714,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Angela Mosley (SD-013)"
+    },
+    {
+      "people_id": 21738,
+      "candidate_id": "aa3f3c3d-d3e1-485c-8c82-0b173752e8bc",
+      "note": "proposer: first_and_last, house HD-048 -> state_lower: State House District 48 (2024); Missouri"
+    },
+    {
+      "people_id": 21759,
+      "candidate_id": "a729d891-57b4-498d-8a48-c594708dfbb0",
+      "note": "proposer: first_and_last, house HD-126 -> state_lower: State House District 126 (2024); Missouri"
+    },
+    {
+      "people_id": 21764,
+      "candidate_id": "8940a730-7a8c-4880-9352-0fd00c78cbf6",
+      "note": "proposer: first_and_last, house HD-008 -> state_lower: State House District 8 (2024); Missouri"
+    },
+    {
+      "people_id": 21785,
+      "candidate_id": "f203d678-b867-4235-a02a-76aeef28d237",
+      "note": "proposer: first_and_last, house HD-131 -> state_lower: State House District 131 (2024); Missouri"
+    },
+    {
+      "people_id": 21891,
+      "candidate_id": "c42be6d8-768f-4b7a-9f37-aab7ba1aac9c",
+      "note": "proposer: first_and_last, house HD-134 -> state_lower: State House District 134 (2024); Missouri"
+    },
+    {
+      "people_id": 21913,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Kurtis Gregory (SD-021)"
+    },
+    {
+      "people_id": 22085,
+      "candidate_id": "b7d61cfa-9e77-4145-8b56-3eb872d91ef4",
+      "note": "proposer: first_and_last, house HD-091 -> state_lower: State House District 91 (2024); Missouri"
+    },
+    {
+      "people_id": 22086,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Michael Davis (HD-056)"
+    },
+    {
+      "people_id": 22132,
+      "candidate_id": "659a6453-7ced-4b44-9e77-d585384d4156",
+      "note": "proposer: first_and_last, house HD-077 -> state_lower: State House District 77 (2024); Missouri"
+    },
+    {
+      "people_id": 22280,
+      "candidate_id": "134b6728-697a-49c1-bfa3-6908f39f1ca2",
+      "note": "proposer: first_and_last, house HD-076 -> state_lower: State House District 76 (2024); Missouri"
+    },
+    {
+      "people_id": 22281,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Michael Johnson (HD-023)"
+    },
+    {
+      "people_id": 22384,
+      "candidate_id": "a1639cf5-e5e5-4d9a-a05b-43e3d5560171",
+      "note": "proposer: first_and_last, house HD-014 -> state_lower: State House District 14 (2024); Missouri"
+    },
+    {
+      "people_id": 22385,
+      "candidate_id": "72b68f13-605d-4510-9a6a-787def8f4cd0",
+      "note": "proposer: first_and_last, house HD-157 -> state_lower: State House District 157 (2024); Missouri"
+    },
+    {
+      "people_id": 22386,
+      "candidate_id": "55cbddd6-62b1-499b-b437-a8e646f5fe50",
+      "note": "proposer: first_and_last, house HD-016 -> state_lower: State House District 16 (2024); Missouri"
+    },
+    {
+      "people_id": 22388,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Jamie Burger (SD-027)"
+    },
+    {
+      "people_id": 22389,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Michael Burton (HD-092)"
+    },
+    {
+      "people_id": 22390,
+      "candidate_id": "41c63295-eff5-4520-a9c1-6b39d9375968",
+      "note": "proposer: first_and_last, house HD-143 -> state_lower: State House District 143 (2024); Missouri"
+    },
+    {
+      "people_id": 22392,
+      "candidate_id": "342a1282-618e-4868-ab70-3b1931ec40e5",
+      "note": "proposer: first_and_last, house HD-135 -> state_upper: State Senate District 30 (2024); Missouri (seat differs: sitting representative running for the state senate; HD-133 and HD-135 both lie inside SD-030, Greene County)"
+    },
+    {
+      "people_id": 22393,
+      "candidate_id": "c9445f2e-d962-471d-87ec-c3e8b5f0db79",
+      "note": "proposer: first_and_last, house HD-058 -> state_lower: State House District 58 (2024); Missouri"
+    },
+    {
+      "people_id": 22394,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Maggie Nurrenbern (SD-017)"
+    },
+    {
+      "people_id": 22396,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Sean Pouche (HD-013)"
+    },
+    {
+      "people_id": 22397,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Bruce Sassmann (HD-061)"
+    },
+    {
+      "people_id": 22398,
+      "candidate_id": "007341d6-7796-4978-aa31-39390bb18624",
+      "note": "proposer: first_and_last, house HD-156 -> state_lower: State House District 156 (2024); Missouri"
+    },
+    {
+      "people_id": 22401,
+      "candidate_id": "c467ded8-7848-4089-b7ef-74aae8c090a2",
+      "note": "hand-added: surname spacing variant: LegiScan Van Schoiack vs candidate VanSchoiack, HD-009, seat agrees"
+    },
+    {
+      "people_id": 22403,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Emily Weber (HD-024)"
+    },
+    {
+      "people_id": 22404,
+      "candidate_id": "bf6ce14e-91f6-4b89-8857-011047603480",
+      "note": "proposer: first_and_last, house HD-102 -> state_lower: State House District 102 (2024); Missouri"
+    },
+    {
+      "people_id": 22922,
+      "candidate_id": "94986024-00a6-483b-996e-93ef5791041b",
+      "note": "proposer: first_and_last, house HD-046 -> state_lower: State House District 46 (2024); Missouri"
+    },
+    {
+      "people_id": 23193,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Mazzie Christensen (HD-002)"
+    },
+    {
+      "people_id": 23194,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Aaron Crossley (HD-029)"
+    },
+    {
+      "people_id": 23195,
+      "candidate_id": "dace297c-85aa-451b-9dea-f2b67c18a3c4",
+      "note": "proposer: first_and_last, house HD-042 -> state_lower: State House District 42 (2024); Missouri"
+    },
+    {
+      "people_id": 23196,
+      "candidate_id": "ef87f92c-82f2-4d62-b5d7-98287dbffd83",
+      "note": "proposer: first_and_last, house HD-047 -> state_lower: State House District 47 (2024); Missouri"
+    },
+    {
+      "people_id": 23197,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Justin Sparks (HD-110)"
+    },
+    {
+      "people_id": 23198,
+      "candidate_id": "d7781fe8-154c-4dfc-93df-2f3a270b1db6",
+      "note": "proposer: first_and_last, house HD-133 -> state_upper: State Senate District 30 (2024); Missouri (seat differs: sitting representative running for the state senate; HD-133 and HD-135 both lie inside SD-030, Greene County)"
+    },
+    {
+      "people_id": 23199,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Bob Titus (HD-139)"
+    },
+    {
+      "people_id": 23200,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Jill Carter (SD-032)"
+    },
+    {
+      "people_id": 23316,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Donnie Brown (HD-149)"
+    },
+    {
+      "people_id": 23387,
+      "candidate_id": "0d8e55ae-5194-4646-b327-5bd0298353bf",
+      "note": "proposer: first_and_last, house HD-119 -> state_lower: State House District 119 (2024); Missouri"
+    },
+    {
+      "people_id": 23608,
+      "candidate_id": "c19cfe33-df4b-4bd3-97fc-61bd365eb7fd",
+      "note": "proposer: first_and_last, house HD-096 -> state_lower: State House District 96 (2024); Missouri"
+    },
+    {
+      "people_id": 23609,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Bill Allen (HD-017)"
+    },
+    {
+      "people_id": 23610,
+      "candidate_id": "55de2bdc-22b0-4c36-a19e-7e60e95dbe65",
+      "note": "proposer: first_and_last, house HD-034 -> state_lower: State House District 34 (2024); Missouri"
+    },
+    {
+      "people_id": 23611,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Ben Keathley (HD-101)"
+    },
+    {
+      "people_id": 23747,
+      "candidate_id": "5ebd6d5a-8720-4620-b5e6-78d16639324f",
+      "note": "proposer: first_and_last, house HD-113 -> state_lower: State House District 113 (2024); Missouri"
+    },
+    {
+      "people_id": 23748,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Travis Wilson (HD-106)"
+    },
+    {
+      "people_id": 23978,
+      "candidate_id": "b12499ce-7e19-46d1-a8db-3d6d6b838fc0",
+      "note": "proposer: first_and_last, house HD-018 -> state_lower: State House District 18 (2024); Missouri"
+    },
+    {
+      "people_id": 23979,
+      "candidate_id": "f381e154-af6d-4be1-b389-0dbc61d5b6e3",
+      "note": "proposer: first_and_last, house HD-136 -> state_lower: State House District 136 (2024); Missouri"
+    },
+    {
+      "people_id": 24095,
+      "candidate_id": "b1085818-027b-4d23-9535-c87d3e4a8513",
+      "note": "proposer: first_and_last, senate SD-026 -> state_upper: State Senate District 26 (2024); Missouri"
+    },
+    {
+      "people_id": 24127,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Tricia Byrnes (HD-063)"
+    },
+    {
+      "people_id": 24128,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: David Casteel (HD-097)"
+    },
+    {
+      "people_id": 24129,
+      "candidate_id": "ccd5054d-3405-44be-8caf-5f00a22d8a67",
+      "note": "proposer: first_and_last, house HD-137 -> state_lower: State House District 137 (2024); Missouri"
+    },
+    {
+      "people_id": 24130,
+      "candidate_id": "10e486f0-4f17-4e97-bad4-8077e1e46ca2",
+      "note": "proposer: first_and_last, house HD-125 -> state_lower: State House District 125 (2024); Missouri"
+    },
+    {
+      "people_id": 24131,
+      "candidate_id": "feb72606-2635-4e72-96e9-c313685fa3ee",
+      "note": "proposer: first_and_last, house HD-036 -> state_lower: State House District 36 (2024); Missouri"
+    },
+    {
+      "people_id": 24132,
+      "candidate_id": "7b74b3f4-6921-4ac3-add9-64e0d0f41cb6",
+      "note": "proposer: first_and_last, house HD-001 -> state_lower: State House District 1 (2024); Missouri"
+    },
+    {
+      "people_id": 24133,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Yolonda Fountain Henderson (HD-085)"
+    },
+    {
+      "people_id": 24134,
+      "candidate_id": "1a12c702-366f-4c24-9589-1b41b9fac1df",
+      "note": "proposer: first_and_last, house HD-062 -> state_lower: State House District 62 (2024); Missouri"
+    },
+    {
+      "people_id": 24135,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Jamie Gragg (HD-140)"
+    },
+    {
+      "people_id": 24136,
+      "candidate_id": "5758b0c4-f4c5-44f2-9e3d-10f6cbfd06b9",
+      "note": "proposer: first_and_last, house HD-065 -> state_lower: State House District 65 (2024); Missouri"
+    },
+    {
+      "people_id": 24137,
+      "candidate_id": "2a8c4a4b-030d-403e-b4c0-f02480029bc0",
+      "note": "hand-added: LegiScan first_name is the legal name David (nickname Dave); candidate files as Dave Hinman, HD-103, seat agrees"
+    },
+    {
+      "people_id": 24139,
+      "candidate_id": "ef22306e-90dc-4cc9-947e-ce19c6573e5b",
+      "note": "proposer: first_and_last, house HD-088 -> state_lower: State House District 88 (2024); Missouri"
+    },
+    {
+      "people_id": 24141,
+      "candidate_id": "d2eae25b-2e21-4ea2-b6d8-dcbda1a4a785",
+      "note": "proposer: first_and_last, house HD-100 -> state_lower: State House District 100 (2024); Missouri"
+    },
+    {
+      "people_id": 24142,
+      "candidate_id": "a3475e2b-e55e-4e07-9ff1-9caad462539b",
+      "note": "proposer: first_and_last, house HD-150 -> state_lower: State House District 150 (2024); Missouri"
+    },
+    {
+      "people_id": 24143,
+      "candidate_id": "9cdb88f5-ef97-4a89-9924-3e0ef0180199",
+      "note": "proposer: first_and_last, house HD-122 -> state_lower: State House District 122 (2024); Missouri"
+    },
+    {
+      "people_id": 24144,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Renee Reuter (HD-112)"
+    },
+    {
+      "people_id": 24145,
+      "candidate_id": "6733ba98-67e8-4078-9ffd-4b76b340d98c",
+      "note": "proposer: first_and_last, house HD-049 -> state_lower: State House District 49 (2024); Missouri"
+    },
+    {
+      "people_id": 24146,
+      "candidate_id": "142ff31e-e60e-47ee-a0b0-ae97d17db06f",
+      "note": "proposer: first_and_last, house HD-045 -> state_lower: State House District 45 (2024); Missouri"
+    },
+    {
+      "people_id": 24147,
+      "candidate_id": "dc2b20d5-1b11-49ae-a0e4-d5c7fa27b004",
+      "note": "proposer: first_and_last, house HD-084 -> state_lower: State House District 84 (2024); Missouri"
+    },
+    {
+      "people_id": 24148,
+      "candidate_id": "2012b1a5-3505-42c2-b357-33ac24bf2c00",
+      "note": "proposer: first_and_last, house HD-147 -> state_lower: State House District 147 (2024); Missouri"
+    },
+    {
+      "people_id": 24149,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Ken Waller (HD-114)"
+    },
+    {
+      "people_id": 24547,
+      "candidate_id": "d3d29ed6-cb04-4cd0-80bb-63a5e97f00cf",
+      "note": "proposer: first_and_last, house HD-041 -> state_lower: State House District 41 (2024); Missouri"
+    },
+    {
+      "people_id": 25251,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Donna Barnes (HD-028)"
+    },
+    {
+      "people_id": 25252,
+      "candidate_id": "39f0354a-84d5-4c5f-a444-249ec6b5b0de",
+      "note": "proposer: first_and_last, house HD-070 -> state_lower: State House District 70 (2024); Missouri"
+    },
+    {
+      "people_id": 25253,
+      "candidate_id": "bd2bb022-ea54-4947-91aa-b0899ce16073",
+      "note": "proposer: first_and_last, house HD-090 -> state_lower: State House District 90 (2024); Missouri"
+    },
+    {
+      "people_id": 25254,
+      "candidate_id": "05d57c38-68d3-449f-85fd-04d14f8ceb96",
+      "note": "proposer: first_and_last, house HD-050 -> state_lower: State House District 50 (2024); Missouri"
+    },
+    {
+      "people_id": 25255,
+      "candidate_id": "aaed0ae1-871a-4041-85d5-2997c8139a02",
+      "note": "proposer: first_and_last, house HD-033 -> state_lower: State House District 33 (2024); Missouri"
+    },
+    {
+      "people_id": 25256,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Mike Costlow (HD-108)"
+    },
+    {
+      "people_id": 25257,
+      "candidate_id": "a0032e43-8c97-46a4-bd4a-bf0b4af2830e",
+      "note": "proposer: first_and_last, house HD-132 -> state_lower: State House District 132 (2024); Missouri"
+    },
+    {
+      "people_id": 25258,
+      "candidate_id": "f941aefa-841d-406a-8585-347460b24c51",
+      "note": "proposer: first_and_last, house HD-148 -> state_lower: State House District 148 (2024); Missouri"
+    },
+    {
+      "people_id": 25259,
+      "candidate_id": "562931ea-78f1-432e-9681-c7b54ba4fc06",
+      "note": "proposer: first_and_last, house HD-027 -> state_lower: State House District 27 (2024); Missouri"
+    },
+    {
+      "people_id": 25260,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Lisa Durnell (HD-154)"
+    },
+    {
+      "people_id": 25261,
+      "candidate_id": "639465ab-588a-4feb-86f0-16516981bbac",
+      "note": "proposer: first_and_last, house HD-153 -> state_lower: State House District 153 (2024); Missouri"
+    },
+    {
+      "people_id": 25262,
+      "candidate_id": "6629316f-b9b4-4e74-bf5b-d9fe8f145e2f",
+      "note": "proposer: first_and_last, house HD-031 -> state_lower: State House District 31 (2024); Missouri"
+    },
+    {
+      "people_id": 25263,
+      "candidate_id": "a57ec299-7c6d-4086-b650-b7ca067a3382",
+      "note": "proposer: first_and_last, house HD-080 -> state_lower: State House District 80 (2024); Missouri"
+    },
+    {
+      "people_id": 25264,
+      "candidate_id": "420d580d-fb9e-481d-b2a0-f66d324da808",
+      "note": "proposer: first_and_last, house HD-086 -> state_lower: State House District 86 (2024); Missouri"
+    },
+    {
+      "people_id": 25265,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Tony Harbison (HD-144)"
+    },
+    {
+      "people_id": 25266,
+      "candidate_id": "aabeb64a-fa1f-4baa-aff4-8c3722d0d36c",
+      "note": "proposer: first_and_last, house HD-120 -> state_lower: State House District 120 (2024); Missouri"
+    },
+    {
+      "people_id": 25267,
+      "candidate_id": "39dfb37e-bf8f-4eba-996e-305ffdabce96",
+      "note": "proposer: first_and_last, house HD-089 -> state_lower: State House District 89 (2024); Missouri"
+    },
+    {
+      "people_id": 25268,
+      "candidate_id": "b6b7799e-be4b-4381-84fa-636325f7036f",
+      "note": "proposer: first_and_last, house HD-055 -> state_lower: State House District 55 (2024); Missouri"
+    },
+    {
+      "people_id": 25269,
+      "candidate_id": "57b4a831-342b-4e02-b9c1-8ee9522530f6",
+      "note": "proposer: first_and_last, house HD-038 -> state_lower: State House District 38 (2024); Missouri"
+    },
+    {
+      "people_id": 25270,
+      "candidate_id": "d9dacc9f-b929-40e7-a7b2-281276c425b7",
+      "note": "proposer: first_and_last, house HD-015 -> state_lower: State House District 15 (2024); Missouri"
+    },
+    {
+      "people_id": 25271,
+      "candidate_id": "309fc4ea-499f-40ba-bcbc-8ca63cd6cc10",
+      "note": "proposer: first_and_last, house HD-021 -> state_lower: State House District 21 (2024); Missouri"
+    },
+    {
+      "people_id": 25272,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Mike Jones (HD-012)"
+    },
+    {
+      "people_id": 25273,
+      "candidate_id": "9547d177-9ac8-45d5-bd43-b8f3f1f5b3b2",
+      "note": "proposer: first_and_last, house HD-151 -> state_lower: State House District 151 (2024); Missouri"
+    },
+    {
+      "people_id": 25274,
+      "candidate_id": "4b02fec9-91ec-49a5-8500-db099e3cb1e3",
+      "note": "proposer: first_and_last, house HD-082 -> state_lower: State House District 82 (2024); Missouri"
+    },
+    {
+      "people_id": 25275,
+      "candidate_id": "bde7e245-8385-44e5-b15d-0bdc607741bd",
+      "note": "proposer: first_and_last, house HD-117 -> state_lower: State House District 117 (2024); Missouri"
+    },
+    {
+      "people_id": 25276,
+      "candidate_id": "f4b40bb7-e92e-407f-a98b-1b267f6b985c",
+      "note": "proposer: first_and_last, house HD-163 -> state_lower: State House District 163 (2024); Missouri"
+    },
+    {
+      "people_id": 25277,
+      "candidate_id": "58d80b78-fd81-4158-b88d-6e720967cf14",
+      "note": "proposer: first_and_last, house HD-115 -> state_lower: State House District 115 (2024); Missouri"
+    },
+    {
+      "people_id": 25278,
+      "candidate_id": "91bfe558-ba46-4792-a6e8-b17dd1b20c24",
+      "note": "proposer: first_and_last, house HD-025 -> state_lower: State House District 25 (2024); Missouri"
+    },
+    {
+      "people_id": 25279,
+      "candidate_id": "7cdb188e-cd0b-43d2-8cbb-c3079e7548be",
+      "note": "proposer: first_and_last, house HD-044 -> state_lower: State House District 44 (2024); Missouri"
+    },
+    {
+      "people_id": 25280,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Mark Meirath (HD-039)"
+    },
+    {
+      "people_id": 25281,
+      "candidate_id": "f9e20530-f626-435c-a70b-7c4d27591d0f",
+      "note": "proposer: first_and_last, house HD-069 -> state_lower: State House District 69 (2024); Missouri"
+    },
+    {
+      "people_id": 25282,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Chanel Mosley (HD-075)"
+    },
+    {
+      "people_id": 25283,
+      "candidate_id": "faaf2c94-4f1c-49e9-b4e5-43f445aeca29",
+      "note": "proposer: first_and_last, house HD-078 -> state_lower: State House District 78 (2024); Missouri"
+    },
+    {
+      "people_id": 25284,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Mark Nolte (HD-051)"
+    },
+    {
+      "people_id": 25285,
+      "candidate_id": "d1c5890f-d8c9-47ac-8daf-061d2ca9e5c6",
+      "note": "proposer: first_and_last, house HD-155 -> state_lower: State House District 155 (2024); Missouri"
+    },
+    {
+      "people_id": 25286,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Brandon Phelps (HD-054)"
+    },
+    {
+      "people_id": 25287,
+      "candidate_id": "a5b2fb4f-194e-4e23-a88f-4a460366cd18",
+      "note": "proposer: first_and_last, house HD-026 -> state_lower: State House District 26 (2024); Missouri"
+    },
+    {
+      "people_id": 25288,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Ray Reed (HD-083)"
+    },
+    {
+      "people_id": 25289,
+      "candidate_id": "f4114164-4824-4688-98ea-fb51ba7d2b87",
+      "note": "proposer: first_and_last, house HD-067 -> state_lower: State House District 67 (2024); Missouri"
+    },
+    {
+      "people_id": 25290,
+      "candidate_id": "bc9db49c-0979-4db5-8236-f692d1cf10db",
+      "note": "proposer: first_and_last, house HD-141 -> state_lower: State House District 141 (2024); Missouri"
+    },
+    {
+      "people_id": 25291,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Deanna Self (HD-064)"
+    },
+    {
+      "people_id": 25292,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Kem Smith (HD-068)"
+    },
+    {
+      "people_id": 25293,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Marla Smith (HD-074)"
+    },
+    {
+      "people_id": 25294,
+      "candidate_id": "b597defe-38f0-41be-94da-2f4890d5bb64",
+      "note": "proposer: first_and_last, house HD-087 -> state_lower: State House District 87 (2024); Missouri"
+    },
+    {
+      "people_id": 25295,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Mike Steinmeyer (HD-020)"
+    },
+    {
+      "people_id": 25296,
+      "candidate_id": "5ccc4814-a568-4974-a7b4-ec8286acf812",
+      "note": "hand-added: LegiScan first_name is the legal name Nicholas (nickname Wick); candidate files as Wick Thomas, HD-019, seat agrees"
+    },
+    {
+      "people_id": 25297,
+      "candidate_id": "06e3dcc7-71b5-4dab-96e3-b31bc55e05f8",
+      "note": "proposer: first_and_last, house HD-123 -> state_lower: State House District 123 (2024); Missouri"
+    },
+    {
+      "people_id": 25298,
+      "candidate_id": "c375c67c-204f-4b20-8588-922d936f091e",
+      "note": "proposer: first_and_last, house HD-104 -> state_lower: State House District 104 (2024); Missouri"
+    },
+    {
+      "people_id": 25299,
+      "candidate_id": "a46a9017-9070-4a52-8655-aa4c74ceee6c",
+      "note": "proposer: first_and_last, house HD-128 -> state_lower: State House District 128 (2024); Missouri"
+    },
+    {
+      "people_id": 25300,
+      "candidate_id": "7ea691d8-6df2-4dff-8de8-1ddfd9121f08",
+      "note": "proposer: first_and_last, house HD-105 -> state_lower: State House District 105 (2024); Missouri"
+    },
+    {
+      "people_id": 25301,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Burt Whaley (HD-138)"
+    },
+    {
+      "people_id": 25302,
+      "candidate_id": "6878d886-fed7-449f-b43d-7127c7d2c663",
+      "note": "proposer: first_and_last, house HD-111 -> state_lower: State House District 111 (2024); Missouri"
+    },
+    {
+      "people_id": 25303,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Bryant Wolfin (HD-145)"
+    },
+    {
+      "people_id": 25304,
+      "candidate_id": "7d9ba4af-879b-4883-a0b9-c0a17b52269d",
+      "note": "proposer: first_and_last, house HD-098 -> state_lower: State House District 98 (2024); Missouri"
+    },
+    {
+      "people_id": 25360,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidate row: Joe Nicola (SD-011)"
+    }
+  ]
+}
