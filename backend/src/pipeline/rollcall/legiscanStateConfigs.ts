@@ -420,6 +420,85 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       /motion to lay on the table/,
     ],
   },
+  // Missouri 103rd General Assembly, 2025 Regular Session (LegiScan session
+  // 2169; the two 2025 special sessions, 2216 and 2226, are separate
+  // datasets and would need their own entries). Vocabulary measured from
+  // the full dataset survey 2026-08-29: 2,673 bills, 557 roll calls, 197
+  // people (163 House + 34 Senate seats plus mid-session turnover).
+  //
+  // What the survey established:
+  // - The two chambers write their descs in COMPLETELY different styles.
+  //   The Senate prints the bare question and nothing else — only five
+  //   spellings exist in the whole session. The House prints its CALENDAR
+  //   HEADING followed by the bill's substitute chain, so every House desc
+  //   is unique (`House: HBs WITH SENATE AMENDMENTS SS SCS HB 225, A.A.,
+  //   E.C.`); 275 raw House descs fold to 16 calendar families. House
+  //   patterns therefore match the heading and let the chain trail.
+  // - `Senate: Third Reading` (172 rolls) is BOTH the first-round third
+  //   reading and the Truly Agreed To And Finally Passed vote — Missouri
+  //   prints no separate TAFP wording — so the second chamber's vote on
+  //   the enacted text lands in this family too.
+  // - MISSOURI PERFECTION IS NOT PASSAGE. `HBs FOR PERFECTION` /
+  //   `HBs PERFECTION - INFORMAL` / `HJRs FOR PERFECTION` (36 rolls) are
+  //   the House's amend-and-engross stage, the second-reading analog that
+  //   Texas and California also exclude; third reading is the passage
+  //   question and every perfected bill gets one.
+  // - `Senate: Adopt Substitute` (13) is the floor adoption of an SS/SCS
+  //   (nine of them on SB 98 in a single day) and `Senate: Emergency
+  //   Clause` (8) is the separate vote on whether the act takes effect at
+  //   once — neither is a vote on the measure, so both are excluded.
+  // - `Senate: Adoption` (10) is DELIBERATELY LEFT UNMATCHED so it
+  //   surfaces: nine of the ten are ceremonial concurrent/simple
+  //   resolutions (rejected earlier as excluded measure types) but the
+  //   tenth is the Senate adopting the HB 595 conference committee report
+  //   (22-11). One desc, two questions, so it is reviewed rather than
+  //   guessed.
+  // - The dataset carries NO committee votes at all: every tally is a
+  //   whole-chamber tally (House 161-163, Senate 31-34).
+  // - Only the calendar headings measured in this session are listed. A
+  //   heading this session never printed (an `SJRs FOR THIRD READING`, a
+  //   Senate concurrence wording) surfaces as unknown rather than being
+  //   guessed from another state.
+  // - Feed health: 0 repeated roll_call_ids (the Texas 9.4% collapse is a
+  //   verified no-op here), 0 summary-only rolls, 0 tally mismatches, 0
+  //   file errors; 49 rolls are identity duplicates that the shared
+  //   identity key collapses.
+  MO: {
+    jurisdiction: "MO",
+    sessionId: 2169,
+    chamberSizes: { house: 163, senate: 34 },
+    keptQuestions: [
+      // House third reading, under any of its calendars: the regular
+      // `HBs FOR THIRD READING` / `SBs FOR THIRD READING`, the informal
+      // calendar (`HBs 3rd READ - INFORMAL`), the consent calendar
+      // (`HBs 3rd READING - CONSENT`), the constitutional-amendment
+      // calendar (`HJRs FOR THIRD READING`) and the appropriations
+      // calendar (`HABs FOR THIRD READING`). The trailing space is
+      // required so the heading is never matched without its bill chain.
+      {
+        pattern: /^house: (?:hbs|sbs|hjrs|habs) (?:for third reading|3rd read - informal|3rd reading - consent) /,
+        questionClass: "passage",
+      },
+      // The House taking up its own bill as returned with Senate
+      // amendments — Missouri's concurrence question.
+      { pattern: /^house: (?:hbs|hjrs) with senate amendments /, questionClass: "concurrence" },
+      // `House: BILLS IN CONFERENCE CCS HCS SS SCS SBS 81 & 174, E.C`.
+      { pattern: /^house: bills in conference /, questionClass: "conference_report" },
+      // The Senate's two substantive spellings.
+      { pattern: /^senate: third reading$/, questionClass: "passage" },
+      { pattern: /^senate: conference committee report adoption$/, questionClass: "conference_report" },
+    ],
+    excludedQuestions: [
+      // Perfection: the House's amend-and-engross stage, not passage.
+      /^house: (?:hbs|hjrs) (?:for perfection|perfection - informal) /,
+      // The motion for the previous question (debate cutoff).
+      /^house: general pq$/,
+      // Floor adoption of a Senate substitute, and the separate vote on a
+      // bill's emergency clause.
+      /^senate: adopt substitute$/,
+      /^senate: emergency clause$/,
+    ],
+  },
 };
 
 export const LEGISCAN_STATE_JURISDICTIONS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);
