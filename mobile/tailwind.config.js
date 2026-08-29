@@ -26,6 +26,13 @@ module.exports = {
         // pick decision — never reuse for other CTAs.
         pick: "#ffd814",
         "pick-hover": "#f7ca00",
+        // Auto-pick orange (web --color-autopick*): the "pick by my issues"
+        // engine's own color — the border draws the boundary (the fill is
+        // only ~2:1 on white), -ink is its text. Never rausch here.
+        autopick: "#ffa41c",
+        "autopick-dark": "#fa8900",
+        "autopick-ink": "#0f1111",
+        "autopick-border": "#c45500",
         // Address-nudge greens (web --color-nudge*): the pick gate's
         // "enter your address" line.
         nudge: "#e8f5e9",
