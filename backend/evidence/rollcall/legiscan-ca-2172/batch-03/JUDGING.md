@@ -51,9 +51,11 @@ set the precedent with three `corporate_accountability` measures.
 - **AB 1127's penalties escalate** — up to $1,000, then up to $5,000 with possible licence loss,
   then a misdemeanor with revocation. All three are maxima, stated as "up to" (the SB 763 lesson
   from batch-02's review, where fixed amounts misstated statutory maxima).
-- **AB 246 does not forgive rent.** It stays the eviction; the tenant must pay everything past due,
-  or agree a payment plan, within 14 days of benefits resuming. Saying only "tenants can raise a
-  defense" would have been the flattering half of the provision.
+- **AB 246 does not forgive rent, and the stay is capped.** Civil Code 1946.3(d) ends the stay at
+  the EARLIER of 14 days after benefits are restored or six months after it issues — the first pass
+  omitted the six-month maximum, implying indefinite protection if benefits never resume (fixed on
+  review, see below). The tenant must pay everything past due, or agree a payment plan, within 14
+  days of benefits resuming.
 - **SB 518 is contingent on an appropriation** — the bureau exists on paper until the Legislature
   funds it, which the descriptions state.
 - **AB 1056 is about inheriting permits**, not about banning gill nets. The fishery was already
@@ -82,3 +84,31 @@ candidates; and the DRY RUN's stamp `2026-08-29T05:37:26.038Z` matches **zero** 
 California now holds **2,233 roll-call records across 80 candidates** (batch-01 729 + batch-02 859 +
 batch-03 645). No `citation URL fetch timed out` flake this time — all three runs were clean first
 time. Prod untouched.
+
+## Review response (2026-08-29) — AB 246 stay cap; a cross-pipeline collision surfaced
+
+**The finding (P2, true).** Civil Code 1946.3(d) stays the eviction "until the earlier of" 14 days
+after benefits are restored OR **six months after the stay is issued**; the first-pass descriptions
+carried only the benefits-resume half, implying indefinite protection when benefits never resume.
+Both descriptions now carry the cap. Judge: 2 `updated` / 16 `unchanged`; import rewrote AB 246's
+67 records (57 Assembly + 10 Senate); re-run 2,233 `unchanged` / 0 errors; lint still 0 warnings.
+Row count unchanged at 2,233 / 80 candidates.
+
+**⚠ The same import run also rewrote 75 records whose judgments had NOT changed** — and the
+investigation matters more than the fix. A **plain-language backfill sweep**
+(`plainLanguageBackfill.ts`, transition reason `plain_language_rewrite`) ran earlier the same day
+and rewrote 952 candidate-record descriptions in place in cursor order, including roll-call records
+in NINE jurisdictions (GA 525, TX 65, PA 58, US 27, OH 16, IL 7, ME 6, FL 3, TN 2 surviving, plus
+78 CA). The roll-call importer treats `judgments.json` as canonical and reverts any drift, so this
+run **reverted the 78 CA records the sweep had reached** (proven by joining the sweep's
+`new_record_identity_key` to this run's `old_record_identity_key`: 78 matches). The sweep's texts
+are not recoverable — identity transitions store key hashes, not prior text.
+
+The two pipelines have incompatible ownership models: the backfill rewrites descriptions in place
+(AI rewrite + independent-provider verify, identity key recomputed); the importer enforces
+byte-identity with the approved, sha-pinned judgments. Every future re-import of ANY LegiScan/OH/US
+jurisdiction will revert whatever the sweep has rewritten there, and the sweep will re-rewrite on
+its next pass — a permanent fight unless one side yields. Resolving that (skip
+`origin='rollcall_import'` in the backfill, or fold the backfill's style into judgments) is an
+operator decision recorded here for the roll-call side; this batch takes no position beyond
+restoring judgment text, which is what the importer is built to do.
