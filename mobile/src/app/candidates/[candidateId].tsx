@@ -3,6 +3,7 @@ import type {
   CandidateElection,
   CandidateRecord,
   FinanceSummary,
+  RecordAreaStance,
   ResearchAreaPreference,
 } from "@voteapp/api-client";
 import { partyColorClass, profilePartyLabel } from "@voteapp/api-client";
@@ -10,6 +11,7 @@ import {
   ApiError,
   apiRequest,
   candidateProfileLinks,
+  classifyStanceSummary,
   formatDistrictName,
   formatElectionDate,
   hasFinanceContent,
@@ -192,6 +194,74 @@ function PastElectionFinance({
   );
 }
 
+// Port of the web CandidatePage's page-top stance summary (classification
+// rules live in @voteapp/api-client classifyStanceSummary): green what the
+// record supports, red what it opposes, amber where it splits — same box
+// idiom as the measure screen's "A YES vote means" pair, stacked vertically
+// on a phone. Only the border, fill, and heading carry the color; the area
+// list itself is plain ink. Renders nothing when no area classifies, so a
+// record-less or judicial-only profile gets no empty shell.
+function StanceSummary({
+  candidateName,
+  records,
+  preferences,
+}: {
+  candidateName: string;
+  records: CandidateRecord[];
+  preferences: readonly ResearchAreaPreference[];
+}) {
+  const { supports, opposes, mixed } = classifyStanceSummary(records, preferences);
+  if (supports.length === 0 && opposes.length === 0 && mixed.length === 0) {
+    return null;
+  }
+  // The viewer's saved areas render semibold so their issues stand out from
+  // the rest of the list, mirroring the front-of-list ordering.
+  const savedAreaIds = new Set(preferences.map((preference) => preference.research_area_id));
+  // Comma-separated text, not boxed chips (boxes read as buttons — same
+  // rule as the web summary and the roster rows).
+  const areaList = (areas: RecordAreaStance[], label: (area: RecordAreaStance) => string) =>
+    areas.map((area, index) => (
+      <Text
+        key={area.research_area_id}
+        className={savedAreaIds.has(area.research_area_id) ? "font-semibold" : undefined}
+      >
+        {index > 0 ? ", " : ""}
+        {label(area)}
+      </Text>
+    ));
+  const countLabel = (area: RecordAreaStance) => {
+    const count = area.for_count + area.against_count;
+    return `${area.name} (${count} record${count === 1 ? "" : "s"})`;
+  };
+  return (
+    <View className="mt-4" accessibilityLabel={`Where ${candidateName} stands, based on their records`}>
+      <Text className="text-sm text-ink-soft">Where they stand, based on their records:</Text>
+      {supports.length > 0 ? (
+        <View className="mt-2 rounded border border-green-200 bg-green-50 p-3">
+          <Text className="text-sm font-semibold text-green-900">Supports</Text>
+          <Text className="mt-1 text-sm text-ink">{areaList(supports, countLabel)}</Text>
+        </View>
+      ) : null}
+      {opposes.length > 0 ? (
+        <View className="mt-2 rounded border border-red-200 bg-red-50 p-3">
+          <Text className="text-sm font-semibold text-red-900">Opposes</Text>
+          <Text className="mt-1 text-sm text-ink">{areaList(opposes, countLabel)}</Text>
+        </View>
+      ) : null}
+      {mixed.length > 0 ? (
+        <View className="mt-2 rounded border border-amber-200 bg-amber-50 p-3">
+          <Text className="text-sm font-semibold text-amber-900">Mixed record</Text>
+          {/* Same "N support · N oppose" phrasing as the web summary and the
+              record group headers, so the surfaces can't drift apart. */}
+          <Text className="mt-1 text-sm text-ink">
+            {areaList(mixed, (area) => `${area.name} (${area.for_count} support · ${area.against_count} oppose)`)}
+          </Text>
+        </View>
+      ) : null}
+    </View>
+  );
+}
+
 /**
  * Port of the web CandidatePage. SSR loader becomes plain useQuery;
  * follow/report controls arrive with the auth chunk.
@@ -309,6 +379,15 @@ export default function CandidateScreen() {
         </View>
       ) : null}
       {candidate.summary ? <Text className="mt-3 text-ink">{candidate.summary}</Text> : null}
+
+      {/* Directly after the summary, same slot as the web page. */}
+      <StanceSummary
+        candidateName={candidate.display_name}
+        records={candidate.records}
+        // Personalized order/emphasis only in the "my issues first" view,
+        // so the summary always matches the record groups below it.
+        preferences={recordView === "my_issues" ? preferences : []}
+      />
 
       {ongoingElections.map((election) => (
         <OngoingElectionFinance
