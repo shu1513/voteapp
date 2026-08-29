@@ -8,12 +8,14 @@ monitored before launch.
 terms-of-use.md 1.2 added the support-payments section
 (docs/plans/membership-contributions.md), and this version string must match
 CURRENT_TERMS_VERSION.
+1.2 → 1.3 (2026-08-28): no content change. The bundle version moved because
+terms-of-use.md 1.3 added Section 14.5 (member communications).
 -->
 
 # Elections Simplified AI Research and Election Information Disclaimer
 
-**Last updated:** August 21, 2026
-**Version:** 1.2
+**Last updated:** August 28, 2026
+**Version:** 1.3
 
 ## 1. Informational purposes only
 

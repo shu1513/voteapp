@@ -662,6 +662,8 @@ export type EmailPreferences = {
   email_election_reminders: boolean;
   email_new_election_alerts: boolean;
   email_issue_updates: boolean;
+  /** Member-only newsletters (Terms 14.5); meaningful for active members. */
+  email_member_newsletter: boolean;
 };
 
 // GET /api/me/membership. `enabled: false` = Stripe not configured on this

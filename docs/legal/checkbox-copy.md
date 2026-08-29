@@ -74,7 +74,7 @@ Freedom Financial Network):
   string still appears in this file.
 -->
 
-# Checkbox and notice copy — Version 1.2
+# Checkbox and notice copy — Version 1.3
 
 ## Pre-search terms dialog (anonymous address search)
 

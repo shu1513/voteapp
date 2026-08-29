@@ -16,6 +16,7 @@ const PREFS = {
   email_election_reminders: false,
   email_new_election_alerts: true,
   email_issue_updates: true,
+  email_member_newsletter: true,
 };
 
 describe("userEmailPreferences", () => {
@@ -50,11 +51,12 @@ describe("userEmailPreferences", () => {
       email_election_reminders: true,
       email_new_election_alerts: false,
       email_issue_updates: false,
+      email_member_newsletter: true,
     };
     const query = vi.fn().mockResolvedValue({ rows: [updated], rowCount: 1 });
 
     await expect(setUserEmailPreferences({ query } as never, USER_ID, updated)).resolves.toEqual(updated);
-    expect(query.mock.calls[0][1]).toEqual([USER_ID, false, true, false, false]);
+    expect(query.mock.calls[0][1]).toEqual([USER_ID, false, true, false, false, true]);
   });
 
   it("disableUserEmailDigest flips only the digest flag and is idempotent-friendly", async () => {

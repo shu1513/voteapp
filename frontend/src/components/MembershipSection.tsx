@@ -224,8 +224,8 @@ function Disclaimer() {
   return (
     <p className="mt-1 text-sm text-ink-soft">
       {APP_NAME} is independently operated. Optional payments support operating the service, not any
-      candidate, campaign, committee, party, or charity. Payments provide no additional content or
-      influence and are not eligible for a charitable-contribution receipt.
+      candidate, campaign, committee, party, or charity. Payments provide no influence over our
+      content and are not eligible for a charitable-contribution receipt.
     </p>
   );
 }

@@ -24,12 +24,19 @@ off stale web tabs and any old mobile build at registration, search, and
 re-acceptance). This version must be LIVE before STRIPE_SECRET_KEY is ever set in
 production. Cancellation copy matches the plan: portal cancel is
 end-of-period; account deletion cancels immediately.
+Section 14.5 (member communications) added 2026-08-28 (1.2 -> 1.3): monthly
+members may receive member-only newsletters/analysis reports, so 14.1's
+"no additional content, features, or influence" carve-out now excepts 14.5
+while keeping the no-influence shield absolute. Substance change - the
+bundle bumps to 1.3 (disclaimer.md, CURRENT_TERMS_VERSION, TERMS_VERSION),
+GRACE_TERMS_VERSIONS ships listing "1.2", and signed-in users re-accept
+once. Must be LIVE before the first member-only communication is sent.
 -->
 
 # Elections Simplified Terms of Use
 
-**Last updated:** August 21, 2026
-**Version:** 1.2
+**Last updated:** August 28, 2026
+**Version:** 1.3
 
 ## 1. Acceptance of these Terms
 
@@ -121,13 +128,15 @@ If any provision of these Terms is held unenforceable, the remainder stays in ef
 
 ## 14. Support payments and memberships
 
-**14.1 What payments are — and are not.** You may choose to support the Service with a one-time payment or a recurring monthly membership. Payments are entirely optional and fund the operation of the Service. They are **not** contributions to, and do not benefit, any candidate, campaign, political committee, party, or charity; they provide no additional content, features, or influence over the Service's information; and they are not charitable contributions — do not treat them as deductible.
+**14.1 What payments are — and are not.** You may choose to support the Service with a one-time payment or a recurring monthly membership. Payments are entirely optional and fund the operation of the Service. They are **not** contributions to, and do not benefit, any candidate, campaign, political committee, party, or charity; except for the member communications described in Section 14.5, they provide no additional content or features, and they never provide influence over the Service's information; and they are not charitable contributions — do not treat them as deductible.
 
 **14.2 Billing.** Payments are processed by Stripe, and you must provide accurate payment information. A monthly membership charges the amount you selected (at or above the posted minimum) to your payment method each month, starting when you subscribe and continuing until canceled. Amounts are in U.S. dollars and exclude any taxes that may apply. We may change posted minimums prospectively; your existing membership amount does not change unless you change it.
 
 **14.3 Cancellation.** You can cancel your membership at any time from account settings (via the Stripe billing portal). Cancellation takes effect at the end of the current billing period; you will not be charged again after cancellation, and no partial-month refund is owed. Deleting your account cancels any active membership immediately. If a recurring charge fails, we may treat the membership as lapsed after Stripe's retries are exhausted.
 
 **14.4 Refunds.** Except where required by law, payments are non-refundable; we may issue refunds in our discretion (for example, for duplicate or mistaken charges). Contact contact@electionssimplified.com for billing questions.
+
+**14.5 Member communications.** Monthly members may receive member-only communications from us at the email address on their account, such as newsletters or analysis reports. These communications are informational only and are part of the Service: the Disclaimer applies to them, and they reflect our independent editorial judgment. No payment gives any person influence over the Service's information or over what these communications say. We choose their content, format, and frequency, and we may change or discontinue them at any time; their availability, timing, or discontinuation does not create a right to a refund beyond Section 14.4.
 
 ## 15. Contact
 

@@ -387,7 +387,7 @@ function buildDigestSubjectLine(totalEventCount: number): string {
  * the URL so existing digest links keep their exact shape.
  */
 export function buildUnsubscribeUrlBuilderFromEnv(
-  preference: "digest" | "new_election_alerts" | "election_reminders" | "issue_updates" = "digest"
+  preference: "digest" | "new_election_alerts" | "election_reminders" | "issue_updates" | "member_newsletter" = "digest"
 ): ((userId: string) => string) | null {
   const baseUrl = readOptionalEnv("NOTIFICATIONS_UNSUBSCRIBE_URL");
   const secret = readOptionalEnv("NOTIFICATIONS_UNSUBSCRIBE_SECRET");

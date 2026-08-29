@@ -102,6 +102,7 @@ import {
   disableUserEmailDigest,
   disableUserEmailElectionReminders,
   disableUserEmailIssueUpdates,
+  disableUserEmailMemberNewsletter,
   disableUserEmailNewElectionAlerts,
   getUserEmailPreferences,
   setUserEmailPreferences,
@@ -802,7 +803,7 @@ async function main(): Promise<void> {
           unsubscribeFromEmailNotifications: async (
             token: string,
             mode: "confirm" | "execute",
-            preference: "digest" | "new_election_alerts" | "election_reminders" | "issue_updates"
+            preference: "digest" | "new_election_alerts" | "election_reminders" | "issue_updates" | "member_newsletter"
           ) => {
             const userId = verifyEmailUnsubscribeToken(token, unsubscribeSecret);
             if (!userId) {
@@ -818,6 +819,8 @@ async function main(): Promise<void> {
                 await disableUserEmailElectionReminders(pool, userId);
               } else if (preference === "issue_updates") {
                 await disableUserEmailIssueUpdates(pool, userId);
+              } else if (preference === "member_newsletter") {
+                await disableUserEmailMemberNewsletter(pool, userId);
               } else {
                 await disableUserEmailDigest(pool, userId);
               }

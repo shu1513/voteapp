@@ -3,7 +3,7 @@
 // must track docs/legal/disclaimer.md and the backend's
 // CURRENT_TERMS_VERSION in lockstep.
 
-export const TERMS_VERSION = "1.2";
+export const TERMS_VERSION = "1.3";
 
 // The pre-search clickwrap is split in two: a one-sentence label that names
 // every document and the arbitration clause, plus a dialog holding the detail

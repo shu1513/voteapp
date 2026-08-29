@@ -99,7 +99,7 @@ export const STRIPE_WEBHOOK_PATH = "/api/stripe/webhook";
 // humans, POST for RFC 8058 one-click mailbox buttons. No session auth. The
 // optional pref query param picks which opt-in the link disables.
 export const EMAIL_UNSUBSCRIBE_PATH = "/api/email/unsubscribe";
-export const EMAIL_UNSUBSCRIBE_PREFERENCES = ["digest", "new_election_alerts", "election_reminders", "issue_updates"] as const;
+export const EMAIL_UNSUBSCRIBE_PREFERENCES = ["digest", "new_election_alerts", "election_reminders", "issue_updates", "member_newsletter"] as const;
 export type EmailUnsubscribePreference = (typeof EMAIL_UNSUBSCRIBE_PREFERENCES)[number];
 
 /** Missing param defaults to digest; an unrecognized value is null (400). */
@@ -843,7 +843,7 @@ export function parseEmailPreferencesBodyValue(parsed: unknown): UserEmailPrefer
   }
 
   const record = parsed as Record<string, unknown>;
-  for (const field of ["email_digest", "email_election_reminders", "email_new_election_alerts", "email_issue_updates"] as const) {
+  for (const field of ["email_digest", "email_election_reminders", "email_new_election_alerts", "email_issue_updates", "email_member_newsletter"] as const) {
     if (typeof record[field] !== "boolean") {
       throw new TypeError(`Body field ${field} must be a boolean`);
     }
@@ -854,6 +854,7 @@ export function parseEmailPreferencesBodyValue(parsed: unknown): UserEmailPrefer
     email_election_reminders: record.email_election_reminders as boolean,
     email_new_election_alerts: record.email_new_election_alerts as boolean,
     email_issue_updates: record.email_issue_updates as boolean,
+    email_member_newsletter: record.email_member_newsletter as boolean,
   };
 }
 
