@@ -1,8 +1,8 @@
 # Mobile feature parity — stance summary, picks, auto-pick, auth
 
 Status: planned 2026-08-28, revised same day after review. Phase 1
-implemented in PR #925 (this plan's own PR); Phase 2 implemented 2026-08-28
-(branch claude/mobile-phase2-pick-core); phases 3–6 not started.
+implemented in PR #925 (this plan's own PR); Phase 2 implemented in
+PR #928 (2026-08-28); phases 3–6 not started.
 
 ## Context
 
