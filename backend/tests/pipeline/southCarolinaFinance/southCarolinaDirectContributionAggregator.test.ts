@@ -124,6 +124,26 @@ describe("selectSouthCarolinaAcceptedRuns", () => {
     const runs = selectSouthCarolinaAcceptedRuns([preElection, quarterTwo], 2026);
     expect(runs).toHaveLength(1);
     expect(runs[0]!.finalReport.reportId).toBe(426225);
+    // Both reports sit in the same election-date phase, so the run has one.
+    expect(runs[0]!.phaseFinals.map((report) => report.reportId)).toEqual([426225]);
+  });
+
+  it("splits one campaignId into election-date phases (Dianne Mitchell 2026 shape)", () => {
+    // Live shape, filer 57316 run 79388: the primary phase's reports and the
+    // general-phase Quarter 2 report share ONE campaignId, and the cumulative
+    // restarts at the boundary.
+    const reports = [
+      reportRow({ reportId: 429745, campaignId: 79388, electionDate: "6/9/2026", filingEndDate: "2026-03-31T00:00:00" }),
+      reportRow({ reportId: 427606, campaignId: 79388, electionDate: "6/9/2026", filingEndDate: "2026-05-20T00:00:00" }),
+      reportRow({ reportId: 426434, campaignId: 79388, electionDate: "11/3/2026", filingEndDate: "2026-06-30T00:00:00" }),
+    ];
+    const runs = selectSouthCarolinaAcceptedRuns(reports, 2026, ["6/9/2026", "11/3/2026"]);
+    expect(runs).toHaveLength(1);
+    // One final per phase, oldest first — the primary's last report survives
+    // instead of being shadowed by the general's.
+    expect(runs[0]!.phaseFinals.map((report) => report.reportId)).toEqual([427606, 426434]);
+    // Cash on hand still comes from the chronologically newest report.
+    expect(runs[0]!.finalReport.reportId).toBe(426434);
   });
 });
 
@@ -148,6 +168,59 @@ describe("aggregateSouthCarolinaDirectFinance", () => {
       contributionRows: [],
     });
     expect(result).toEqual({ status: "no_filed_reports" });
+  });
+
+  it("sums both election-date phases of one run (Dianne Mitchell live numbers)", () => {
+    // Filer 57316, run 79388: the primary phase ends at the Pre-Election
+    // report and the general phase restarts at Quarter 2. Reading only the
+    // newest report would report $9,450 raised against $24,839.99 of itemized
+    // rows — the fail-closed error this shape used to produce.
+    const primaryPhaseFinal = reportRow({
+      reportId: 427606,
+      campaignId: 79388,
+      electionDate: "6/9/2026",
+      contributions: 108639.99,
+      expenses: 95232.76,
+      balance: 13407.23,
+      filingEndDate: "2026-05-20T00:00:00",
+    });
+    const generalPhaseFinal = reportRow({
+      reportId: 426434,
+      campaignId: 79388,
+      electionDate: "11/3/2026",
+      contributions: 14450,
+      expenses: 24922.22,
+      balance: 2935.01,
+      filingEndDate: "2026-06-30T00:00:00",
+    });
+    const result = aggregateSouthCarolinaDirectFinance({
+      candidateFilerId: 57316,
+      electionYear: 2026,
+      reports: [primaryPhaseFinal, generalPhaseFinal],
+      detailsByReportId: new Map([
+        [427606, details({ cash: 15310.81, inKind: 79.18, loans: 93250, expTotal: 95232.76, endingBalance: 13407.23 })],
+        [426434, details({ cash: 9450, loans: 5000, expTotal: 24922.22, endingBalance: 2935.01 })],
+      ]),
+      contributionRows: [
+        contributionRow({ contributionId: 1, candidateId: 57316, officeRunId: 79388, amount: 15389.99, contributorName: "Primary Donors" }),
+        contributionRow({ contributionId: 2, candidateId: 57316, officeRunId: 79388, amount: 9450, contributorName: "General Donors" }),
+      ],
+      acceptedElectionDates: ["6/9/2026", "11/3/2026"],
+    });
+
+    expect(result).toMatchObject({
+      status: "aggregated",
+      runCount: 1,
+      // Both phases' cumulatives, loans excluded from the direct total.
+      totalReceipts: 123089.99,
+      directContributionTotal: 24839.99,
+      totalDisbursements: 120154.98,
+      // Newest phase's balance, not the sum.
+      cashOnHand: 2935.01,
+      // Itemized rows reach the full direct total across both phases.
+      directCoverageNote: null,
+      includedContributionRowCount: 2,
+    });
   });
 
   it("sums totals across runs, excludes loans and credits from the direct total, and takes cash on hand from the latest report", () => {

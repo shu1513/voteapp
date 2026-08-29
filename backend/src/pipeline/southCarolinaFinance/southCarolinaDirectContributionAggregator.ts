@@ -50,9 +50,26 @@ export type SouthCarolinaAcceptedRun = {
   campaignId: number;
   electionDate: string;
   // The run's newest filing period (the index already points at the newest
-  // version of each period). Its detail carries the run's cycle totals.
+  // version of each period). Its balance is the run's cash on hand.
   finalReport: SouthCarolinaCandidateReportRow;
+  // One final report per election date the run spans, oldest first. Cycle
+  // totals RESET when a run crosses from the primary to the general (the
+  // source keeps one campaignId but restarts the cumulative), so the run's
+  // money is the SUM across phases — the last report alone is only the last
+  // phase. Single-phase runs hold exactly [finalReport].
+  phaseFinals: readonly SouthCarolinaCandidateReportRow[];
 };
+
+// Newest filing period wins; equal periods resolve to the higher report id
+// (the source's newest version of that period).
+function laterReport(
+  left: SouthCarolinaCandidateReportRow,
+  right: SouthCarolinaCandidateReportRow
+): SouthCarolinaCandidateReportRow {
+  if (right.filingEndDate > left.filingEndDate) return right;
+  if (right.filingEndDate < left.filingEndDate) return left;
+  return right.reportId > left.reportId ? right : left;
+}
 
 export type SouthCarolinaFinanceDirectBreakdown = {
   categoryType: "occupation" | "contribution_size";
@@ -140,12 +157,23 @@ export function selectSouthCarolinaAcceptedRuns(
   }
   const runs: SouthCarolinaAcceptedRun[] = [];
   for (const [campaignId, rows] of byRun) {
-    const finalReport = rows.reduce((best, row) => {
-      if (row.filingEndDate > best.filingEndDate) return row;
-      if (row.filingEndDate < best.filingEndDate) return best;
-      return row.reportId > best.reportId ? row : best;
-    });
-    runs.push({ campaignId, electionDate: finalReport.electionDate, finalReport });
+    // Split the run into election-date phases before picking finals: a run
+    // that crosses the primary/general boundary restarts its cumulative
+    // totals there, so each phase carries its own cycle totals.
+    const byPhase = new Map<string, SouthCarolinaCandidateReportRow[]>();
+    for (const row of rows) {
+      const phaseRows = byPhase.get(row.electionDate) ?? [];
+      phaseRows.push(row);
+      byPhase.set(row.electionDate, phaseRows);
+    }
+    const phaseFinals = [...byPhase.values()]
+      .map((phaseRows) => phaseRows.reduce(laterReport))
+      .sort(
+        (left, right) =>
+          left.filingEndDate.localeCompare(right.filingEndDate) || left.reportId - right.reportId
+      );
+    const finalReport = phaseFinals[phaseFinals.length - 1]!;
+    runs.push({ campaignId, electionDate: finalReport.electionDate, finalReport, phaseFinals });
   }
   return runs.sort(
     (left, right) =>
@@ -186,14 +214,20 @@ type RunCycleTotals = {
   disbursementsCents: number;
 };
 
-function cycleTotalsFromDetails(run: SouthCarolinaAcceptedRun, details: SouthCarolinaReportDetails): RunCycleTotals {
+// Totals for ONE election-date phase of a run, read off that phase's final
+// report. A run's money is the sum of its phases (see phaseFinals).
+function cycleTotalsFromDetails(
+  campaignId: number,
+  phaseFinal: SouthCarolinaCandidateReportRow,
+  details: SouthCarolinaReportDetails
+): RunCycleTotals {
   let directCents = 0;
   let cashInKindCents = 0;
   let personalCents = 0;
   let totalReceiptsCents: number | null = null;
   for (const line of details.income) {
     const type = keyText(line.type);
-    const cents = toCents(line.electionCycleTotal, `run ${run.campaignId} income "${line.type}"`);
+    const cents = toCents(line.electionCycleTotal, `run ${campaignId} income "${line.type}"`);
     if (type === TOTAL_LINE_TYPE) {
       totalReceiptsCents = cents;
     } else if (DIRECT_INCOME_TYPES.has(type)) {
@@ -206,48 +240,48 @@ function cycleTotalsFromDetails(run: SouthCarolinaAcceptedRun, details: SouthCar
     } else if (!EXCLUDED_INCOME_TYPES.has(type)) {
       if (cents !== 0) {
         throw new AggregationFailure(
-          `South Carolina finance run ${run.campaignId} has unrecognized income type "${line.type}" with nonzero cycle total`
+          `South Carolina finance run ${campaignId} has unrecognized income type "${line.type}" with nonzero cycle total`
         );
       }
     }
   }
   if (totalReceiptsCents === null) {
-    throw new AggregationFailure(`South Carolina finance run ${run.campaignId} detail has no income Total line`);
+    throw new AggregationFailure(`South Carolina finance run ${campaignId} detail has no income Total line`);
   }
 
   let disbursementsCents: number | null = null;
   for (const line of details.expenditures) {
     if (keyText(line.type) === TOTAL_LINE_TYPE) {
-      disbursementsCents = toCents(line.electionCycleTotal, `run ${run.campaignId} expenditure Total`);
+      disbursementsCents = toCents(line.electionCycleTotal, `run ${campaignId} expenditure Total`);
     }
   }
   if (disbursementsCents === null) {
-    throw new AggregationFailure(`South Carolina finance run ${run.campaignId} detail has no expenditure Total line`);
+    throw new AggregationFailure(`South Carolina finance run ${campaignId} detail has no expenditure Total line`);
   }
 
   // The report-index row and the detail describe the same report; their run
   // cumulatives are cent-identical in the source (verified live). A mismatch
   // means the wrong detail was fetched or the source contract moved.
-  const indexContributionsCents = toCents(run.finalReport.contributions, `run ${run.campaignId} index contributions`);
-  const indexExpensesCents = toCents(run.finalReport.expenses, `run ${run.campaignId} index expenses`);
+  const indexContributionsCents = toCents(phaseFinal.contributions, `run ${campaignId} index contributions`);
+  const indexExpensesCents = toCents(phaseFinal.expenses, `run ${campaignId} index expenses`);
   if (indexContributionsCents !== totalReceiptsCents || indexExpensesCents !== disbursementsCents) {
     throw new AggregationFailure(
-      `South Carolina finance run ${run.campaignId} detail totals disagree with report ${run.finalReport.reportId} index row`
+      `South Carolina finance run ${campaignId} detail totals disagree with report ${phaseFinal.reportId} index row`
     );
   }
   const campaignFundsLines = details.totals.filter((line) => keyText(line.totalType) === "CAMPAIGN FUNDS");
   if (campaignFundsLines.length !== 1) {
     throw new AggregationFailure(
-      `South Carolina finance run ${run.campaignId} detail has ${campaignFundsLines.length} Campaign Funds balance lines`
+      `South Carolina finance run ${campaignId} detail has ${campaignFundsLines.length} Campaign Funds balance lines`
     );
   }
   const endingBalanceCents = toCents(
     campaignFundsLines[0]!.endingBalance,
-    `run ${run.campaignId} Campaign Funds ending balance`
+    `run ${campaignId} Campaign Funds ending balance`
   );
-  if (endingBalanceCents !== toCents(run.finalReport.balance, `run ${run.campaignId} index balance`)) {
+  if (endingBalanceCents !== toCents(phaseFinal.balance, `run ${campaignId} index balance`)) {
     throw new AggregationFailure(
-      `South Carolina finance run ${run.campaignId} Campaign Funds ending balance disagrees with report ${run.finalReport.reportId} index row`
+      `South Carolina finance run ${campaignId} Campaign Funds ending balance disagrees with report ${phaseFinal.reportId} index row`
     );
   }
 
@@ -318,17 +352,26 @@ export function aggregateSouthCarolinaDirectFinance(input: {
     let disbursementsCents = 0;
     const runTargets = new Map<number, { cashInKindCents: number; personalCents: number }>();
     for (const run of runs) {
-      const details = input.detailsByReportId.get(run.finalReport.reportId);
-      if (!details) {
-        throw new Error(`Missing South Carolina report details for report ${run.finalReport.reportId}`);
+      // Sum the run's election-date phases: a primary→general run restarts its
+      // cumulative at the boundary, so the last phase alone would drop every
+      // dollar raised before it.
+      let runCashInKindCents = 0;
+      let runPersonalCents = 0;
+      for (const phaseFinal of run.phaseFinals) {
+        const details = input.detailsByReportId.get(phaseFinal.reportId);
+        if (!details) {
+          throw new Error(`Missing South Carolina report details for report ${phaseFinal.reportId}`);
+        }
+        const totals = cycleTotalsFromDetails(run.campaignId, phaseFinal, details);
+        totalReceiptsCents += totals.totalReceiptsCents;
+        directCents += totals.directCents;
+        disbursementsCents += totals.disbursementsCents;
+        runCashInKindCents += totals.cashInKindCents;
+        runPersonalCents += totals.personalCents;
       }
-      const totals = cycleTotalsFromDetails(run, details);
-      totalReceiptsCents += totals.totalReceiptsCents;
-      directCents += totals.directCents;
-      disbursementsCents += totals.disbursementsCents;
       runTargets.set(run.campaignId, {
-        cashInKindCents: totals.cashInKindCents,
-        personalCents: totals.personalCents,
+        cashInKindCents: runCashInKindCents,
+        personalCents: runPersonalCents,
       });
     }
 
