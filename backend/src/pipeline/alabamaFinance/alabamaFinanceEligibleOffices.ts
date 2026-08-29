@@ -43,6 +43,18 @@ export function isAlabamaFinanceEligibleOffice(input: {
   return key !== null && ALABAMA_FINANCE_ELIGIBLE_OFFICE_KEY_SET.has(key);
 }
 
+/**
+ * Term length in years, which sets the bucket-extract window: Alabama
+ * appellate judges (the State Level Judge bundle) serve six-year terms;
+ * every other v1 office serves four.
+ */
+export function alabamaOfficeTermYears(input: {
+  officeScope: string | null | undefined;
+  officeCanonicalName: string | null | undefined;
+}): number {
+  return toAlabamaFinanceOfficeKey(input) === "statewide::State Level Judge" ? 6 : 4;
+}
+
 // FCPA race-search office dropdown labels, pinned from the live portal
 // 2026-08-28 (the raw option text HTML-decodes "&amp;" to "&"; the client's
 // dropdown parser does not decode, so lookups normalize first — see

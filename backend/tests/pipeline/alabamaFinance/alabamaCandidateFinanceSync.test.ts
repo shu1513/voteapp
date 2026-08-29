@@ -98,9 +98,11 @@ function baseInput(db: { query: unknown; connect: unknown }) {
 }
 
 describe("alabamaBucketExtractYears", () => {
-  it("spans the four-year cycle, clamped to the first extract year", () => {
-    expect(alabamaBucketExtractYears(2026)).toEqual([2023, 2024, 2025, 2026]);
-    expect(alabamaBucketExtractYears(2014)).toEqual([2013, 2014]);
+  it("spans the term-length cycle, clamped to the first extract year", () => {
+    expect(alabamaBucketExtractYears(2026, 4)).toEqual([2023, 2024, 2025, 2026]);
+    // Alabama appellate judges serve six-year terms.
+    expect(alabamaBucketExtractYears(2026, 6)).toEqual([2021, 2022, 2023, 2024, 2025, 2026]);
+    expect(alabamaBucketExtractYears(2014, 4)).toEqual([2013, 2014]);
   });
 });
 
@@ -176,6 +178,47 @@ describe("syncAlabamaCandidateFinance", () => {
       bucketDiagnostics: ["fcpa_committee_number_missing"],
     });
     expect(loadCashRows).not.toHaveBeenCalled();
+  });
+
+  it("self-heals a NULL FCPA number from the committee-search join and persists it", async () => {
+    const { db } = writingDb();
+    const base = baseInput(db);
+    const result = await syncAlabamaCandidateFinance({
+      ...base,
+      link: { ...base.link, fcpaCommitteeNumber: null },
+      loadOfficeRaceContext: vi.fn(async () => ({
+        raceRows: [raceRow({})],
+        committeeRowsByInternalId: new Map([
+          [7962, { id: 7962, committeeId: "32837" } as never],
+        ]),
+      })),
+      loadCashRows: cashLoader({ 2026: [cashRow({})] }),
+    });
+    expect(result).toMatchObject({
+      fcpaCommitteeNumber: "32837",
+      bucketDiagnostics: [],
+      bucketsWritten: 1,
+    });
+    const backfill = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("SET fcpa_committee_number")
+    );
+    expect(backfill?.[1]).toEqual(["candidate-1", "election-1", "7962", "32837"]);
+  });
+
+  it("uses the six-year window for appellate-court candidates", async () => {
+    const { db } = writingDb();
+    const loadCashRows = cashLoader({ 2026: [cashRow({})] });
+    const base = baseInput(db);
+    const result = await syncAlabamaCandidateFinance({
+      ...base,
+      officeName: "State Level Judge",
+      ballotTitle: "Associate Justice of the Alabama Supreme Court, Place 7",
+      dryRun: true,
+      loadOfficeRaceContext: officeContext([raceRow({})]),
+      loadCashRows,
+    });
+    expect(result.bucketExtractYears).toEqual([2021, 2022, 2023, 2024, 2025, 2026]);
+    expect(loadCashRows).toHaveBeenCalledTimes(6);
   });
 
   it("gates buckets off when a window artifact is unreadable, keeping the summary", async () => {

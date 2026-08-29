@@ -86,7 +86,7 @@ describe("autoLinkMissingAlabamaCandidateFinanceLinks", () => {
     const backfill = db.query.mock.calls.find((call) =>
       String(call[0]).includes("SET fcpa_committee_number")
     );
-    expect(backfill?.[1]).toEqual([LINK_ID, "32837"]);
+    expect(backfill?.[1]).toEqual(["candidate-1", "election-1", "7962", "32837"]);
   });
 
   it("reports an unmappable office without touching the portal", async () => {

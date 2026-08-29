@@ -97,7 +97,44 @@ describe("resolveAlabamaCandidateRace", () => {
     expect(resolution).toEqual({ status: "unmatched", reason: "no_matching_race_row" });
   });
 
-  it("reports statewide same-name ambiguity instead of guessing", () => {
+  it("tie-breaks to the single Active committee when every other row is a zero-money registration", () => {
+    const resolution = resolveAlabamaCandidateRace({
+      candidateName: "Doug Jones",
+      raceRows: [
+        raceRow({}),
+        raceRow({
+          COMMITTEEID: 9001,
+          CANDIDATESTATUS: "Dissolved",
+          MONETARYCONTRIB: 0,
+          MONETARYEXP: 0,
+          NONMONETARYCONTRIB: 0,
+          OTHERSOURCES: 0,
+          BEGINNINGFUNDS: 0,
+          ENDINGFUNDS: 0,
+        }),
+      ],
+      committeeRowsByInternalId: byId([]),
+      district: null,
+    });
+    expect(resolution).toMatchObject({ status: "matched", internalCommitteeId: 7962 });
+  });
+
+  it("refuses the Active tie-break when a dissolved committee carries real money (Mendheim case)", () => {
+    // Live 2026: Brad Mendheim's dissolved Supreme Court committee raised
+    // $23,500 this cycle — auto-picking the Active row would undercount.
+    const resolution = resolveAlabamaCandidateRace({
+      candidateName: "Doug Jones",
+      raceRows: [
+        raceRow({}),
+        raceRow({ COMMITTEEID: 9001, CANDIDATESTATUS: "Dissolved", MONETARYCONTRIB: 23_500, ENDINGFUNDS: 0 }),
+      ],
+      committeeRowsByInternalId: byId([]),
+      district: null,
+    });
+    expect(resolution.status).toBe("ambiguous");
+  });
+
+  it("reports statewide same-name ambiguity when more than one committee is Active", () => {
     const resolution = resolveAlabamaCandidateRace({
       candidateName: "Doug Jones",
       raceRows: [raceRow({}), raceRow({ COMMITTEEID: 9001 })],

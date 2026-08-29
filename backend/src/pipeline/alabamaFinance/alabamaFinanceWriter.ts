@@ -130,19 +130,30 @@ export async function upsertAlabamaFinanceLink(input: {
 /**
  * Backfill the extract-side FCPA committee number onto an existing link. The
  * standard writer's fixed column list cannot carry it, so this is the one
- * place the column is written.
+ * place the column is written. Keyed by the link's natural identity so both
+ * the auto-link (right after its upsert) and the sync (self-healing a NULL
+ * left by a crashed backfill or a manual link) can call it.
  */
 export async function updateAlabamaFinanceLinkFcpaCommitteeNumber(input: {
   db: Queryable;
-  linkId: string;
+  candidateId: string;
+  electionId: string;
+  internalCommitteeId: number;
   fcpaCommitteeNumber: string;
 }): Promise<void> {
   if (!/^[1-9]\d*$/.test(input.fcpaCommitteeNumber)) {
     throw new Error(`Invalid Alabama FCPA committee number: ${input.fcpaCommitteeNumber}`);
   }
   await input.db.query(
-    `UPDATE public.al_candidate_finance_links SET fcpa_committee_number = $2 WHERE id = $1::uuid`,
-    [input.linkId, input.fcpaCommitteeNumber]
+    `UPDATE public.al_candidate_finance_links
+     SET fcpa_committee_number = $4
+     WHERE candidate_id = $1::uuid AND election_id = $2::uuid AND committee_id = $3`,
+    [
+      input.candidateId,
+      input.electionId,
+      normalizeInternalCommitteeId(input.internalCommitteeId),
+      input.fcpaCommitteeNumber,
+    ]
   );
 }
 

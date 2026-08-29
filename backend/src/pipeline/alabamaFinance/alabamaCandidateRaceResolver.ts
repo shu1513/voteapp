@@ -22,6 +22,7 @@ export type AlabamaCandidateRaceMatch = {
   /** Committee-search committeeId — the FCPA number the extracts carry. */
   fcpaCommitteeNumber: string | null;
   raceCandidateName: string;
+  candidateStatus: string | null;
   committeeName: string | null;
   jurisdiction: string | null;
 };
@@ -129,9 +130,45 @@ function toMatch(
     internalCommitteeId: row.COMMITTEEID,
     fcpaCommitteeNumber: committee?.committeeId?.trim() || null,
     raceCandidateName: row.CANDIDATE,
+    candidateStatus: row.CANDIDATESTATUS?.trim() || null,
     committeeName: committeeName || null,
     jurisdiction: committee?.jurisdiction?.trim() || null,
   };
+}
+
+// Same-name rows within one office are usually ONE person's committee
+// history, not two people: Alabama candidates re-register, and the race
+// query keeps the predecessor (live 2026: Brad Mendheim appears Active AND
+// Dissolved under Supreme Court Associate Justice). Auto-link may pick the
+// Active row ONLY when that cannot drop money: exactly one row is Active
+// and every other row carries zero cycle money (a dead registration). A
+// predecessor with real money — Mendheim's dissolved committee raised
+// $23,500 and spent $81,660.96 this cycle — goes to manual review instead,
+// because linking the Active row alone would silently undercount and no
+// summation policy exists yet (transfers between the committees would
+// double-count naively).
+function zeroMoney(row: AlabamaRaceRow): boolean {
+  return (
+    row.MONETARYCONTRIB === 0 &&
+    row.NONMONETARYCONTRIB === 0 &&
+    row.OTHERSOURCES === 0 &&
+    row.MONETARYEXP === 0 &&
+    row.BEGINNINGFUNDS === 0 &&
+    row.ENDINGFUNDS === 0
+  );
+}
+
+function activeStatusTieBreak(
+  entries: readonly { row: AlabamaRaceRow; match: AlabamaCandidateRaceMatch }[]
+): AlabamaCandidateRaceMatch | null {
+  const active = entries.filter(
+    (entry) => (entry.row.CANDIDATESTATUS ?? "").trim().toUpperCase() === "ACTIVE"
+  );
+  if (active.length !== 1) {
+    return null;
+  }
+  const rest = entries.filter((entry) => entry !== active[0]);
+  return rest.every((entry) => zeroMoney(entry.row)) ? active[0]!.match : null;
 }
 
 export function resolveAlabamaCandidateRace(input: {
@@ -179,6 +216,10 @@ export function resolveAlabamaCandidateRace(input: {
   const district = input.district ?? null;
   if (district === null) {
     if (nameMatches.length > 1) {
+      const tieBreak = activeStatusTieBreak(nameMatches);
+      if (tieBreak !== null) {
+        return { status: "matched", ...tieBreak };
+      }
       return {
         status: "ambiguous",
         reason: "multiple_matching_race_rows",
@@ -193,7 +234,7 @@ export function resolveAlabamaCandidateRace(input: {
   // with no committee row or no parseable jurisdiction can never be
   // auto-confirmed — same-named candidates in different districts are routine
   // in a 105-district chamber.
-  const confirmed: AlabamaCandidateRaceMatch[] = [];
+  const confirmed: { row: AlabamaRaceRow; match: AlabamaCandidateRaceMatch }[] = [];
   const unconfirmed: { reason: "missing_committee_row" | "missing_jurisdiction"; match: AlabamaCandidateRaceMatch }[] = [];
   let sawDistrictMismatch = false;
   for (const entry of nameMatches) {
@@ -208,7 +249,7 @@ export function resolveAlabamaCandidateRace(input: {
       continue;
     }
     if (jurisdiction.chamber === district.chamber && jurisdiction.district === district.district) {
-      confirmed.push(entry.match);
+      confirmed.push(entry);
     } else {
       sawDistrictMismatch = true;
     }
@@ -220,13 +261,23 @@ export function resolveAlabamaCandidateRace(input: {
       return {
         status: "manual_confirm_required",
         reason: unconfirmed[0]!.reason,
-        candidates: [...confirmed, ...unconfirmed.map((entry) => entry.match)],
+        candidates: [confirmed[0]!.match, ...unconfirmed.map((entry) => entry.match)],
       };
     }
-    return { status: "matched", ...confirmed[0]! };
+    return { status: "matched", ...confirmed[0]!.match };
   }
   if (confirmed.length > 1) {
-    return { status: "ambiguous", reason: "multiple_matching_race_rows", matches: confirmed };
+    if (unconfirmed.length === 0) {
+      const tieBreak = activeStatusTieBreak(confirmed);
+      if (tieBreak !== null) {
+        return { status: "matched", ...tieBreak };
+      }
+    }
+    return {
+      status: "ambiguous",
+      reason: "multiple_matching_race_rows",
+      matches: confirmed.map((entry) => entry.match),
+    };
   }
   if (unconfirmed.length > 0) {
     return {

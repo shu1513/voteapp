@@ -32,10 +32,12 @@ import {
 } from "./alabamaDirectFinanceAggregator.js";
 import {
   alabamaFcpaOfficeLabelForRace,
+  alabamaOfficeTermYears,
   isAlabamaFinanceEligibleOffice,
 } from "./alabamaFinanceEligibleOffices.js";
 import {
   replaceAlabamaCandidateFinanceSnapshot,
+  updateAlabamaFinanceLinkFcpaCommitteeNumber,
   type AlabamaFinanceLinkSource,
 } from "./alabamaFinanceWriter.js";
 
@@ -51,14 +53,18 @@ export class AlabamaCandidateFinanceSyncError extends Error {
 
 /**
  * Transaction-date years whose cash extracts feed the bucket window: the
- * cycle since the previous general for these offices (all four-year terms),
- * clamped to the portal's first extract year. Phase 0 found 2024-dated rows
- * for 2025-registered committees, so the window is transaction-date years,
- * not registration years.
+ * term-length cycle ending in the election year (four years for most v1
+ * offices, six for the appellate courts — alabamaOfficeTermYears), clamped
+ * to the portal's first extract year. Phase 0 found 2024-dated rows for
+ * 2025-registered committees, so the window is transaction-date years, not
+ * registration years.
  */
-export function alabamaBucketExtractYears(electionYear: number): number[] {
+export function alabamaBucketExtractYears(electionYear: number, termYears: number): number[] {
+  if (!Number.isInteger(termYears) || termYears < 1) {
+    throw new AlabamaCandidateFinanceSyncError(`invalid term years: ${termYears}`);
+  }
   const years: number[] = [];
-  for (let year = Math.max(2013, electionYear - 3); year <= electionYear; year += 1) {
+  for (let year = Math.max(2013, electionYear - (termYears - 1)); year <= electionYear; year += 1) {
     years.push(year);
   }
   return years;
@@ -194,13 +200,39 @@ export async function syncAlabamaCandidateFinance(input: {
   const totalDisbursements = roundToCents(raceRow.MONETARYEXP);
   const cashOnHand = roundToCents(raceRow.ENDINGFUNDS);
 
+  // Self-heal a NULL fcpa_committee_number (a crashed auto-link backfill, or
+  // a manual link created without it) from the committee-search join already
+  // loaded in the office context. The healed value is used this run and
+  // persisted so the next run starts whole.
+  let fcpaCommitteeNumber = input.link.fcpaCommitteeNumber;
+  if (fcpaCommitteeNumber === null) {
+    const derived = context.committeeRowsByInternalId
+      .get(input.link.internalCommitteeId)
+      ?.committeeId?.trim();
+    if (derived && /^[1-9]\d*$/.test(derived)) {
+      fcpaCommitteeNumber = derived;
+      if (!dryRun) {
+        await updateAlabamaFinanceLinkFcpaCommitteeNumber({
+          db: input.db,
+          candidateId: input.candidateId,
+          electionId: input.electionId,
+          internalCommitteeId: input.link.internalCommitteeId,
+          fcpaCommitteeNumber: derived,
+        });
+      }
+    }
+  }
+
   // Buckets: cached extracts only. Any gate failure clears stored buckets —
   // buckets must always correspond to the summary being written.
-  const bucketExtractYears = alabamaBucketExtractYears(input.electionYear);
+  const bucketExtractYears = alabamaBucketExtractYears(
+    input.electionYear,
+    alabamaOfficeTermYears({ officeScope: input.officeScope, officeCanonicalName: input.officeName })
+  );
   const bucketDiagnostics: string[] = [];
   let aggregation: AlabamaDirectFinanceAggregationResult | null = null;
   let quarantinedRowCount = 0;
-  if (input.link.fcpaCommitteeNumber === null) {
+  if (fcpaCommitteeNumber === null) {
     bucketDiagnostics.push("fcpa_committee_number_missing");
   } else {
     const loadCashRows = input.loadCashRows ?? createAlabamaCashRowsLoader(input.cacheDir);
@@ -219,7 +251,7 @@ export async function syncAlabamaCandidateFinance(input: {
     if (bucketDiagnostics.length === 0) {
       aggregation = aggregateAlabamaDirectFinance({
         cashRows,
-        fcpaCommitteeNumber: input.link.fcpaCommitteeNumber,
+        fcpaCommitteeNumber,
         raceMonetaryContrib: raceRow.MONETARYCONTRIB,
       });
       bucketDiagnostics.push(...aggregation.bucketDiagnostics);
@@ -272,7 +304,7 @@ export async function syncAlabamaCandidateFinance(input: {
     dryRun,
     status: "synced",
     internalCommitteeId: input.link.internalCommitteeId,
-    fcpaCommitteeNumber: input.link.fcpaCommitteeNumber,
+    fcpaCommitteeNumber,
     totalReceipts,
     directContributionTotal,
     totalDisbursements,

@@ -4,6 +4,7 @@ import {
   alabamaFcpaElectionCycleIdForYear,
   alabamaFcpaOfficeIdForLabel,
   alabamaFcpaOfficeLabelForRace,
+  alabamaOfficeTermYears,
   isAlabamaFinanceEligibleOffice,
 } from "../../../src/pipeline/alabamaFinance/alabamaFinanceEligibleOffices.js";
 
@@ -72,6 +73,19 @@ describe("Alabama finance eligible offices", () => {
     expect(judge("Alabama Court of Criminal Appeals, Place 5")).toBe("Court of Criminal Appeals Judge");
     expect(judge("Alabama Circuit Court, Place 2")).toBeNull();
     expect(judge("")).toBeNull();
+  });
+
+  it("gives appellate judges a six-year term and everyone else four", () => {
+    expect(
+      alabamaOfficeTermYears({ officeScope: "statewide", officeCanonicalName: "State Level Judge" })
+    ).toBe(6);
+    expect(alabamaOfficeTermYears({ officeScope: "statewide", officeCanonicalName: "Governor" })).toBe(4);
+    expect(
+      alabamaOfficeTermYears({
+        officeScope: "state_lower",
+        officeCanonicalName: "State Lower Chamber Legislator",
+      })
+    ).toBe(4);
   });
 
   it("resolves dropdown ids, decoding the escaped ampersand", () => {
