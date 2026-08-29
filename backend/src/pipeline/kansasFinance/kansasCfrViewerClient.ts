@@ -139,6 +139,14 @@ function parseSetCookieHeader(header: string): { name: string; value: string } |
   return { name: pair.slice(0, separator).trim(), value: pair.slice(separator + 1).trim() };
 }
 
+// Retries deliberately cover POSTs too: every POST here (category select,
+// search, grid-row postback, export) is a read-only, deterministic navigation
+// — a replay re-executes the same request against an app with no writes, and
+// the resubmitted hidden fields are byte-identical to attempt 1 (no page was
+// fetched in between), so __EVENTVALIDATION still matches its rendering page.
+// The non-retryable 500 "Runtime Error" arises from WRONG postback state, not
+// from replaying identical state; if a replay ever did 500, it surfaces as a
+// visible http_error rather than silent bad data.
 const RETRYABLE_STATUSES = new Set([429, 502, 503, 504]);
 
 export function createKansasCfrSession(options: KansasCfrSessionOptions = {}): KansasCfrSession {

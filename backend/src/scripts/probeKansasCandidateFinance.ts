@@ -139,10 +139,12 @@ export function parseKansasPhaseZeroArgs(args: readonly string[]): KansasPhaseZe
     };
     // NaN here is not harmless: setTimeout(…, NaN) fires immediately (every
     // fetch aborts) and `spacingMs > 0` goes false (request spacing off).
+    // Number(), not parseInt(): "500ms" / "1.5" / "10junk" must reject, not
+    // silently truncate to their numeric prefix.
     const nextNonNegativeInt = () => {
       const raw = next();
-      const value = Number.parseInt(raw, 10);
-      if (!Number.isFinite(value) || value < 0) throw new Error(`Invalid value for ${arg}: ${raw}`);
+      const value = Number(raw);
+      if (!Number.isInteger(value) || value < 0) throw new Error(`Invalid value for ${arg}: ${raw}`);
       return value;
     };
     switch (arg) {

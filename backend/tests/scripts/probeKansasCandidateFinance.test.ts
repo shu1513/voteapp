@@ -31,12 +31,22 @@ describe("parseKansasPhaseZeroArgs", () => {
     expect(() => parseKansasPhaseZeroArgs(["--nope"])).toThrow("Unknown argument");
   });
 
-  it("rejects non-numeric and negative numeric values", () => {
+  it("rejects non-numeric, negative, and numeric-prefixed values", () => {
     expect(() => parseKansasPhaseZeroArgs(["--timeout-ms", "abc"])).toThrow(
       "Invalid value for --timeout-ms: abc"
     );
     expect(() => parseKansasPhaseZeroArgs(["--spacing-ms", "-5"])).toThrow(
       "Invalid value for --spacing-ms: -5"
+    );
+    // parseInt would silently truncate these to 500 / 1 / 10.
+    expect(() => parseKansasPhaseZeroArgs(["--timeout-ms", "500ms"])).toThrow(
+      "Invalid value for --timeout-ms: 500ms"
+    );
+    expect(() => parseKansasPhaseZeroArgs(["--spacing-ms", "1.5"])).toThrow(
+      "Invalid value for --spacing-ms: 1.5"
+    );
+    expect(() => parseKansasPhaseZeroArgs(["--spacing-ms", "10junk"])).toThrow(
+      "Invalid value for --spacing-ms: 10junk"
     );
   });
 });
