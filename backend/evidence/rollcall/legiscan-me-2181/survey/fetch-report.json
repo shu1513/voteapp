@@ -1,0 +1,24 @@
+{
+ "note": "Initial fetch, followed by the reclassification re-fetch after the bare-Recede review fix (12 rows updated pending, approved rows untouched).",
+ "initialFetch": {
+  "runId": "rollcall-legiscan-fetch-me-20260829T050903Z",
+  "startedAt": "2026-08-29T05:09:03.652Z",
+  "floorVotes": 945,
+  "surfaced": 19,
+  "duplicateVotes": 1,
+  "counts": {
+   "inserted": 1579
+  }
+ },
+ "recedeReclassifyFetch": {
+  "runId": "rollcall-legiscan-fetch-me-20260829T053102Z",
+  "startedAt": "2026-08-29T05:31:02.026Z",
+  "floorVotes": 933,
+  "surfaced": 31,
+  "duplicateVotes": 1,
+  "counts": {
+   "unchanged": 1567,
+   "updated": 12
+  }
+ }
+}

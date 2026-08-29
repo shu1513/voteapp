@@ -5,12 +5,14 @@ import {
   BALLOT_SORT_DESCRIPTIONS,
   BALLOT_SORTS,
   deriveBallotFilters,
+  myDraftLabel,
   useElectionChoices,
+  useMe,
   useMyResearchAreas,
 } from "@voteapp/api-client";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "expo-router";
-import { useEffect, useRef, useState } from "react";
+import { useNavigation, useRouter } from "expo-router";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { AccountGate } from "../../components/AccountGate";
 import { BallotFiltersControl } from "../../components/BallotFiltersControl";
@@ -22,6 +24,7 @@ import { EmptyNotice, ErrorNotice, LoadingNotice } from "../../components/Status
 import { VerifyPrompt } from "../../components/VerifyPrompt";
 import { clearPendingDistrictIds, readPendingDistrictIds } from "../../lib/pendingDistricts";
 import { registerForPushRequestingPermission } from "../../lib/pushNotifications";
+import { useMyPicksProgress } from "../../lib/useMyPicksProgress";
 
 type SavedBallot = BallotSummary & { matched_address?: string };
 
@@ -338,7 +341,37 @@ function SavedBallotBody({ email }: { email: string }) {
   );
 }
 
+// Header entry to the My Draft screen (no fifth tab; tab real estate is
+// scarce). The label carries live progress over the nearest election day —
+// "My Draft" → "My Draft 4/13" → "My Picks ✓" — from the shared hook, the
+// same vocabulary as the web header nav. Hidden while logged out or the
+// session is still loading: a draft link for a viewer with no draft is
+// noise (mobile has no guest draft).
+function DraftHeaderLink() {
+  const router = useRouter();
+  const progress = useMyPicksProgress();
+  return (
+    <Pressable
+      onPress={() => router.push("/my-draft")}
+      accessibilityRole="link"
+      className="mr-4 rounded-full border border-line bg-white px-3 py-1.5 active:border-ink"
+    >
+      <Text className="text-sm font-medium text-ink">{myDraftLabel(progress)}</Text>
+    </Pressable>
+  );
+}
+
 export default function MyBallotScreen() {
+  // navigation.setOptions, not a <Tabs.Screen options> element: the
+  // dynamic-options composition API is only documented for Stack routes;
+  // setOptions is the navigator-agnostic contract. DraftHeaderLink carries
+  // its own hooks, so once mounted it live-updates without re-setting.
+  const navigation = useNavigation();
+  const { me } = useMe();
+  const signedIn = me != null;
+  useLayoutEffect(() => {
+    navigation.setOptions({ headerRight: signedIn ? () => <DraftHeaderLink /> : undefined });
+  }, [navigation, signedIn]);
   return (
     <AccountGate signedOutText="Log in to see your saved ballot.">
       {(me) => <SavedBallotBody email={me.email} />}

@@ -7,9 +7,13 @@ import { Platform, Pressable, Share, Text } from "react-native";
 // The shared link always points at the WEBSITE, not a deep link: recipients
 // mostly don't have the app, and the web page carries the og:* tags that make
 // the link render as a rich card in messengers (see frontend pageMeta.ts).
-// SITE_ORIGIN matches SITE_ORIGIN in frontend/src/lib/pageMeta.ts and
-// render.yaml.
-const SITE_ORIGIN = "https://electionssimplified.com";
+// The default matches SITE_ORIGIN in frontend/src/lib/pageMeta.ts and
+// render.yaml. Exported for screens that display the public URL itself
+// (the pick-card share link) next to this button. The env override exists
+// for dev/staging: minted share tokens live in whichever backend
+// EXPO_PUBLIC_API_URL points at, so against a local backend the production
+// URL would 404 — point this at the matching web frontend instead.
+export const SITE_ORIGIN = process.env.EXPO_PUBLIC_SITE_ORIGIN ?? "https://electionssimplified.com";
 
 type ShareButtonProps = {
   /** Path with a leading slash on the public site, e.g. "/candidates/abc". */

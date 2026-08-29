@@ -92,8 +92,15 @@ so every vote in this batch was cast on the enrolled text and no description nee
 
 ## Batches
 
-- `batch-01/` — 20 rolls / 10 measures / **729 records** (298 imported 2026-08-27 at 33-member
-  crosswalk coverage, +431 on the 2026-08-28 re-import after roster completion). See its `PLAN.md`
-  and `JUDGING.md`.
+- `batch-01/` — 20 rolls / 10 measures. Imported 2026-08-27 at 298 records against a 33-member
+  crosswalk; re-imported to **729 records** after the roster completion above.
+- `batch-02/` — 24 rolls / 12 measures / **859 records**, imported 2026-08-29 on the full 80-member
+  crosswalk. First California coverage for `civil_rights` (AB 1071) and `election_integrity`
+  (SB 73). See its `PLAN.md` and `JUDGING.md`.
 
-**Next:** 422 divided-and-enacted rolls on ~217 measures remain.
+California total: **1,588 roll-call records across 80 candidates.**
+
+**Next:** 387 divided-and-enacted rolls on ~205 measures remain. Beyond those, 430 divided rolls on
+419 measures were still awaiting the governor when this dataset was cut (2026-08-23) — a re-download
+in the autumn, after the session closes at the end of August, should convert a large share of them
+into batch-03 material.

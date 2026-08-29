@@ -280,6 +280,13 @@ export function ElectionPage() {
   // outcome's own signal proves the race decided — live in
   // deriveCandidateResultBadges.
   const resultBadges = deriveCandidateResultBadges(data.results, data.candidates, data.seats_to_fill ?? null);
+  // Same fork as StrandedPicksNotice: signed-in picks carry candidacy_status,
+  // guest draft rows are always "active" so absence from the roster is the
+  // only signal.
+  const rosterCandidateIds = new Set(data.candidates.map((candidate) => candidate.candidate_id));
+  const hasStrandedPicks = (myChoice?.picks ?? []).some((pick) =>
+    isGuest ? !rosterCandidateIds.has(pick.candidate_id) : pick.candidacy_status === "withdrawn"
+  );
   // Full set, uncapped — the list card previews these; the detail page is
   // where they all fit. Measure elections skip this row: the measure section
   // already shows the same areas with their for/against stance. The ??
@@ -853,7 +860,10 @@ export function ElectionPage() {
           </section>
         ) : null}
 
-        {data.candidates.length > 0 ? (
+        {/* hasStrandedPicks keeps this section alive when EVERY candidacy
+            withdrew: the payload then lists no candidates, but the stranded
+            notice below is the page's only removal control. */}
+        {data.candidates.length > 0 || (showChoiceControls && hasStrandedPicks) ? (
           <section className="mt-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <h2 className="text-heading font-semibold">Candidates</h2>
@@ -883,8 +893,11 @@ export function ElectionPage() {
                 buttons' visibility gate. key: this route element stays
                 mounted across sibling rail walks, so without a remount the
                 previous election's panel (or an in-flight run's result)
-                would surface under the next election. */}
-            {showChoiceControls && data.race_type !== "ballot_measure" ? (
+                would surface under the next election. length: in the
+                stranded-only state (section open, every candidacy
+                withdrawn) the engine has nobody to pick — the button could
+                only answer "No pick". */}
+            {data.candidates.length > 0 && showChoiceControls && data.race_type !== "ballot_measure" ? (
               <div className="mt-3">
                 <AutoPickControl key={data.id} electionId={data.id} seatsToFill={data.seats_to_fill ?? null} />
               </div>
@@ -900,9 +913,7 @@ export function ElectionPage() {
                 raceTitle={data.official_ballot_title}
                 electionDate={data.election_date}
                 seatsToFill={data.seats_to_fill ?? null}
-                rosterCandidateIds={
-                  new Set(data.candidates.map((candidate) => candidate.candidate_id))
-                }
+                rosterCandidateIds={rosterCandidateIds}
               />
             ) : null}
             {/* Districts unknown: the nudge takes the controls' slot at the

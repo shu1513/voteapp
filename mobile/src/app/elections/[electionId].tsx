@@ -33,6 +33,7 @@ import {
   CandidatePickButton,
   LogInToPlanLine,
   MeasureChoiceButtons,
+  StrandedPicksNotice,
 } from "../../components/ElectionChoiceControls";
 import { FinanceSummaryCard } from "../../components/FinanceSummaryCard";
 import { FollowButton } from "../../components/FollowButton";
@@ -213,6 +214,8 @@ export default function ElectionScreen() {
   // outcome's own signal proves the race decided — live in
   // deriveCandidateResultBadges. Mirrors the web election page.
   const resultBadges = deriveCandidateResultBadges(data.results, data.candidates, data.seats_to_fill ?? null);
+  // Same predicate as StrandedPicksNotice: a pick whose candidacy withdrew.
+  const hasStrandedPicks = (myChoice?.picks ?? []).some((pick) => pick.candidacy_status === "withdrawn");
 
   return (
     // Root View + footer sibling (not an absolute overlay): RN has no
@@ -333,7 +336,10 @@ export default function ElectionScreen() {
         </View>
       ) : null}
 
-      {data.candidates.length > 0 ? (
+      {/* hasStrandedPicks keeps this section alive when EVERY candidacy
+          withdrew: the payload then lists no candidates, but the stranded
+          notice below is the screen's only removal control. */}
+      {data.candidates.length > 0 || (showChoiceControls && hasStrandedPicks) ? (
         <View className="mt-6">
           <Text className="text-lg font-semibold text-ink">Candidates</Text>
           {/* Multi-seat hint, same copy as the web page header. */}
@@ -342,6 +348,11 @@ export default function ElectionScreen() {
               This election fills {data.seats_to_fill} seats — pick up to {data.seats_to_fill} candidates.
             </Text>
           ) : null}
+          {/* Stranded picks have no candidate card below (withdrawn
+              candidacies are filtered out of the payload), yet still count
+              toward the seat cap and disable the remaining buttons —
+              surface them here with their removal control, like the web. */}
+          {showChoiceControls ? <StrandedPicksNotice electionId={data.id} choice={myChoice} /> : null}
           {/* Districts unknown: the nudge takes the controls' slot at the
               top of the candidate list; guests get the login line there. */}
           {showAddressNudge && data.race_type !== "ballot_measure" ? (

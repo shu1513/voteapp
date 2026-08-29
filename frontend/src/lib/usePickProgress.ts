@@ -1,26 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import { apiRequest, useElectionChoices, useMe } from "@voteapp/api-client";
-import type { BallotSummary } from "@voteapp/api-client";
-import { draftPickCount, draftProgress, isDecidedChoice, useBallotDraft } from "./ballotDraft";
+import { apiRequest, myDraftLabel, nearestDayPickProgress, useElectionChoices, useMe } from "@voteapp/api-client";
+import type { BallotSummary, PickProgress } from "@voteapp/api-client";
+import { draftPickCount, draftProgress, useBallotDraft } from "./ballotDraft";
 import { usLatestLocalDate } from "./usLatestLocalDate";
 
-export type PickProgress = { picked: number; total: number; complete: boolean };
-
-/**
- * The signed-in draft link's label, shared by the header nav and the
- * candidate page's post-pick actions so the two never drift: plain until
- * the first pick (no homework-flavored "0/8", and no counter while the
- * queries haven't settled — a counter that flashes in later is fine, a
- * wrong one is not), then counting up, then the earned name "My Picks ✓"
- * when every race on the nearest election day is decided.
- */
-export function myDraftLabel(progress: PickProgress | null): string {
-  return progress && progress.picked > 0
-    ? progress.complete
-      ? "My Picks ✓"
-      : `My Draft ${progress.picked}/${progress.total}`
-    : "My Draft";
-}
+// Label rules and the date grouping live in @voteapp/api-client
+// (pickProgress.ts), shared with the mobile app; re-exported so this stays
+// the web's one import site for pick-progress vocabulary.
+export { myDraftLabel };
+export type { PickProgress };
 
 /**
  * The signed-in header's pick counter ("My Picks 4/13" → "My Picks ✓"):
@@ -48,21 +36,10 @@ export function useMyPicksProgress(): PickProgress | null {
     staleTime: 60_000,
   });
   const { choiceByElectionId } = useElectionChoices();
-  if (!verified || !ballot.data || choiceByElectionId === undefined) {
+  if (!verified) {
     return null;
   }
-  const today = usLatestLocalDate();
-  const upcoming = ballot.data.elections.filter((election) => election.election_date >= today);
-  if (upcoming.length === 0) {
-    return null;
-  }
-  const date = upcoming.reduce(
-    (min, election) => (election.election_date < min ? election.election_date : min),
-    upcoming[0].election_date
-  );
-  const group = upcoming.filter((election) => election.election_date === date);
-  const picked = group.filter((election) => isDecidedChoice(choiceByElectionId.get(election.id))).length;
-  return { picked, total: group.length, complete: picked === group.length };
+  return nearestDayPickProgress(ballot.data?.elections, choiceByElectionId, usLatestLocalDate());
 }
 
 /**

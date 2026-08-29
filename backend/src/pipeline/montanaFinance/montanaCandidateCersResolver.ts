@@ -13,6 +13,7 @@
 //   "Supreme Court Justice No. 03"/"No. 04" (zero-padded seat numbers),
 //   "Public Service Commission District No. 1".
 
+import { firstNameVariants } from "../finance/personFirstNameNicknames.js";
 import {
   personNamesMatchWithMiddleEvidence,
 } from "../finance/personNameMiddleEvidence.js";
@@ -49,7 +50,8 @@ export type MontanaCersCandidateMatch = {
   /** CERS display name, stored as the link's committee_name. */
   cersCandidateName: string;
   officeTitle: string | null;
-  confidence: "name_office_year_exact";
+  /** "nickname" marks matches that needed the one-sided first-name expansion. */
+  confidence: "name_office_year_exact" | "name_office_year_nickname";
   source: "cers_portal";
   sourceUrl: string;
 };
@@ -207,12 +209,24 @@ export function montanaCersCandidateDisplayName(row: MontanaCersCandidateSearchR
   return given ? `${row.lastName}, ${given}` : row.lastName;
 }
 
-function toMatch(row: MontanaCersCandidateSearchRow): MontanaCersCandidateMatch {
+// One-sided nickname expansion (roster side only, per the shared module's
+// rule): CERS registers formal names ("Benjamin", "Kimberly") while the
+// roster carries campaign names ("Ben", "Kim"). Surname, office, district,
+// and year still must agree exactly, and a second same-family filer in the
+// pool resolves as ambiguous, never linked.
+function rosterFirstNameMatchesCers(candidateFirst: string, rowFirst: string): boolean {
+  return candidateFirst === rowFirst || firstNameVariants(candidateFirst).includes(rowFirst);
+}
+
+function toMatch(
+  row: MontanaCersCandidateSearchRow,
+  confidence: MontanaCersCandidateMatch["confidence"]
+): MontanaCersCandidateMatch {
   return {
     cersCandidateId: row.candidateId,
     cersCandidateName: montanaCersCandidateDisplayName(row),
     officeTitle: row.officeTitle,
-    confidence: "name_office_year_exact",
+    confidence,
     source: "cers_portal",
     sourceUrl: MONTANA_CERS_DASHBOARD_URL,
   };
@@ -228,7 +242,7 @@ export function resolveMontanaCersCandidate(input: MontanaCersResolverInput): Mo
     return { status: "unmatched", reason: expectation.unmatchedReason };
   }
 
-  const matchesById = new Map<number, MontanaCersCandidateSearchRow>();
+  const matchesById = new Map<number, MontanaCersCandidateMatch>();
   for (const row of input.rows) {
     if (row.electionYear !== input.electionYear) {
       continue;
@@ -242,16 +256,25 @@ export function resolveMontanaCersCandidate(input: MontanaCersResolverInput): Mo
         candidateName,
         rowNames: [cersFullName],
         normalizePersonName,
+        firstNamesEquivalent: rosterFirstNameMatchesCers,
       })
     ) {
       continue;
     }
-    matchesById.set(row.candidateId, row);
+    // Audit honesty: a match that only holds through the nickname expansion
+    // is labeled as such (strict equality is re-checked to tell them apart).
+    const strictMatch = personNamesMatchWithMiddleEvidence({
+      candidateName,
+      rowNames: [cersFullName],
+      normalizePersonName,
+    });
+    matchesById.set(
+      row.candidateId,
+      toMatch(row, strictMatch ? "name_office_year_exact" : "name_office_year_nickname")
+    );
   }
 
-  const matches = [...matchesById.values()]
-    .map(toMatch)
-    .sort((left, right) => left.cersCandidateId - right.cersCandidateId);
+  const matches = [...matchesById.values()].sort((left, right) => left.cersCandidateId - right.cersCandidateId);
   if (matches.length === 1) {
     return { status: "matched", ...matches[0]! };
   }

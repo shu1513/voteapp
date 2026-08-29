@@ -214,6 +214,83 @@ export function CandidatePickRow({
   );
 }
 
+type RemoveStrandedPickButtonProps = {
+  electionId: string;
+  candidateId: string;
+  /** Carried in the accessible label — the visible "Remove pick" alone
+   * can't tell a screen's N remove buttons apart. */
+  candidateName: string;
+};
+
+/**
+ * Removes a STRANDED pick — one whose candidacy withdrew after the pick was
+ * made. Withdrawn candidacies are filtered out of election payloads and
+ * never get a CandidatePickButton, so without this control the pick holds
+ * one of a multi-seat race's slots forever. Port of the web control minus
+ * its guest-draft branch. Upcoming elections only, same as every choice
+ * control — the backend rejects writes to past ones (callers date-gate).
+ */
+export function RemoveStrandedPickButton({ electionId, candidateId, candidateName }: RemoveStrandedPickButtonProps) {
+  const setChoice = useSetElectionChoice();
+  const saving = useElectionChoiceSaving();
+  return (
+    <View className="flex-row flex-wrap items-center gap-2">
+      <Pressable
+        disabled={saving}
+        accessibilityRole="button"
+        accessibilityState={{ disabled: saving }}
+        accessibilityLabel={`Remove pick: ${candidateName}`}
+        onPress={() => setChoice.mutate({ election_id: electionId, candidate_id: candidateId, chosen: false })}
+        className={`self-start rounded-full border border-line bg-white px-2.5 py-1 active:border-ink${saving ? " opacity-50" : ""}`}
+      >
+        <Text className="text-xs font-medium text-ink">{setChoice.isPending ? "…" : "Remove pick"}</Text>
+      </Pressable>
+      {setChoice.isError && !setChoice.isPending ? <SaveError error={setChoice.error} /> : null}
+    </View>
+  );
+}
+
+type StrandedPicksNoticeProps = {
+  electionId: string;
+  choice: ElectionChoice | undefined;
+};
+
+/**
+ * Election-screen surface for stranded picks, port of the web
+ * StrandedPicksNotice minus its guest branch (mobile guests have no pick
+ * controls). Withdrawn candidacies are filtered out of the election payload,
+ * so the pick has no candidate card — yet it still counts toward the seat
+ * cap and disables the remaining buttons ("remove a pick first"). Without
+ * this notice the only removal control lives on My Draft, which nothing
+ * points the user at. Callers gate on showChoiceControls (upcoming + own
+ * district or decided choice), same as the web page.
+ */
+export function StrandedPicksNotice({ electionId, choice }: StrandedPicksNoticeProps) {
+  const stranded = (choice?.picks ?? []).filter((pick) => pick.candidacy_status === "withdrawn");
+  if (stranded.length === 0) {
+    return null;
+  }
+  return (
+    <View className="mt-2 rounded-md border border-line bg-surface px-3 py-2">
+      <View className="gap-2">
+        {stranded.map((pick) => (
+          <View key={pick.candidate_id} className="gap-1">
+            <Text className="text-sm text-ink">
+              Your pick <Text className="font-semibold">{pick.display_name}</Text> withdrew from this race —
+              it still counts toward your picks until you remove it.
+            </Text>
+            <RemoveStrandedPickButton
+              electionId={electionId}
+              candidateId={pick.candidate_id}
+              candidateName={pick.display_name}
+            />
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
+
 type MeasureChoiceButtonsProps = {
   electionId: string;
   choice: ElectionChoice | undefined;
