@@ -13,6 +13,7 @@ import type { LegislativeVoteChamber } from "../pipeline/rollcall/legislativeVot
 import {
   classifyLegiscanDatasetFile,
   classifyLegiscanRollCall,
+  isLegiscanCommitteeChamberRollCall,
   legiscanEvidenceFileName,
   legiscanRollCallPageUrl,
   legiscanRollCallSha256,
@@ -142,17 +143,26 @@ export function surveyLegiscanDataset(dataset: LegiscanDataset): {
   rows: LegiscanSurveyRow[];
   billTypeCounts: Record<string, number>;
   sessionIds: Record<string, number>;
+  committeeChamberVotes: number;
   voteParseErrors: { file: string; error: string }[];
 } {
   const rows = new Map<string, LegiscanSurveyRow & { billTypeSet: Set<string> }>();
   const billTypeCounts: Record<string, number> = {};
   const sessionIds: Record<string, number> = {};
+  let committeeChamberVotes = 0;
   const voteParseErrors: { file: string; error: string }[] = [];
   for (const bill of dataset.billsById.values()) {
     billTypeCounts[bill.billType] = (billTypeCounts[bill.billType] ?? 0) + 1;
     sessionIds[String(bill.sessionId)] = (sessionIds[String(bill.sessionId)] ?? 0) + 1;
   }
   for (const vote of dataset.votes) {
+    // A joint/committee body's tally (Connecticut prints `J`): counted so
+    // the survey shows how much of the feed is committee work, but kept out
+    // of the desc histogram, which exists to name the FLOOR vocabulary.
+    if (isLegiscanCommitteeChamberRollCall(vote.rollCall)) {
+      committeeChamberVotes += 1;
+      continue;
+    }
     let rollCall;
     try {
       rollCall = parseLegiscanRollCall(vote.rollCall);
@@ -193,6 +203,7 @@ export function surveyLegiscanDataset(dataset: LegiscanDataset): {
       .sort((a, b) => b.count - a.count || a.chamber.localeCompare(b.chamber) || a.desc.localeCompare(b.desc)),
     billTypeCounts,
     sessionIds,
+    committeeChamberVotes,
     voteParseErrors,
   };
 }
@@ -370,6 +381,15 @@ async function main(): Promise<void> {
       .map((vote) => ({ ...vote, sortKey: typeof vote.rollCall.roll_call_id === "number" ? vote.rollCall.roll_call_id : 0 }))
       .sort((a, b) => a.sortKey - b.sortKey);
     for (const vote of votes) {
+      // Committee bodies that are not a chamber (Connecticut's joint
+      // standing committees, chamber `J`) are rejected before the queue —
+      // the same disposition an unknown-desc committee-sized tally gets,
+      // decided on the chamber code because such a roll has no chamber to
+      // size against.
+      if (isLegiscanCommitteeChamberRollCall(vote.rollCall)) {
+        committeeVotes += 1;
+        continue;
+      }
       const row: LegiscanRollCallFetchReportRow = {
         bill: "",
         chamber: null,
