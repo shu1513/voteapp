@@ -500,6 +500,148 @@ export type MontanaCersReportDetailArtifact = {
   lists: Record<MontanaCersCandidateDetailListName, MontanaCersDetailRow[]>;
 };
 
+// --- Independent-expenditure sweep surfaces (Phase 2b) ---------------------
+//
+// The IE committee search (searchFinancials EXPEND/COMMITTEE with
+// independentExpendSearch=true) matches COMMITTEES for an election year, but
+// each committee's transaction list then returns that committee's FULL
+// IE history across every cycle (verified live 2026-08-28: the 2026 search
+// surfaced $14.4M of rows back to 2020, and row-level `electionYear` is
+// always null). Cycle scoping therefore happens downstream by `datePaid`.
+// Transaction rows carry NO committee identity fields (committeeId,
+// committeeName, candidateId are all null) — like report-detail lists, their
+// committee binding is transitive: the session's viewFinancialEntities POST
+// selects the entity, and the sweep artifact records that binding along
+// with the response's `resultCount` cross-check.
+
+export type MontanaCersIeCommitteeRow = {
+  committeeId: number;
+  committeeName: string;
+  committeeTypeCode: string | null;
+  committeeTypeDescr: string | null;
+  electionYear: number | null;
+};
+
+export function parseMontanaCersIeCommitteeResults(body: string): MontanaCersIeCommitteeRow[] {
+  return requireDataTablesRows(body, "IE committee results").map((row) => {
+    const electionYearText = optionalString(row["electionYear"]);
+    const electionYear = electionYearText === null ? null : Number(electionYearText);
+    if (electionYear !== null && !Number.isSafeInteger(electionYear)) {
+      throw new MontanaCersParseError(`Bad Montana CERS committee election year: ${JSON.stringify(row["electionYear"])}`);
+    }
+    return {
+      committeeId: requireSafeInteger(row["committeeId"], "committeeId"),
+      committeeName: requireString(row["committeeName"], "committeeName"),
+      committeeTypeCode: optionalString(row["committeeTypeCode"]),
+      committeeTypeDescr: optionalString(row["committeeTypeDescr"]),
+      electionYear,
+    };
+  });
+}
+
+export type MontanaCersIeTransactionRow = {
+  transId: number;
+  /** `transTypeDesr` in the source JSON (sic). */
+  transTypeDescr: string;
+  /** Null only on all-zero placeholder rows, like detail rows. */
+  amountTypeDescr: "Primary" | "General" | null;
+  cashAmtCents: number;
+  inKindAmtCents: number;
+  totalAmtCents: number;
+  /** Epoch milliseconds; real transaction date — the only cycle anchor. */
+  datePaid: number;
+  /** Free-text IE target; the stance-aware parser's input. */
+  candidateIssue: string | null;
+  purposeDescr: string | null;
+  electioneeringInd: "Y" | "N";
+};
+
+export function parseMontanaCersIeTransactionRows(body: string): MontanaCersIeTransactionRow[] {
+  return requireDataTablesRows(body, "IE transaction results").map((row) => {
+    const cashAmtCents = montanaCersJsonAmountToCents(row["cashAmt"], "cashAmt");
+    const inKindAmtCents = montanaCersJsonAmountToCents(row["inKindAmt"], "inKindAmt");
+    const totalAmtCents = montanaCersJsonAmountToCents(row["totalAmt"], "totalAmt");
+    // Money integrity: the total must be exactly cash + in-kind (holds on
+    // the full 2,147-row live corpus). A drifted composition could silently
+    // change what an "IE dollar" means — fail closed.
+    if (totalAmtCents !== cashAmtCents + inKindAmtCents) {
+      throw new MontanaCersParseError(
+        `Montana CERS IE transaction ${JSON.stringify(row["transId"])} total ${totalAmtCents}c != cash ${cashAmtCents}c + in-kind ${inKindAmtCents}c`
+      );
+    }
+    const rawSide = row["amountTypeDescr"];
+    const amountTypeDescr =
+      rawSide === "" && totalAmtCents === 0 ? null : requireElectionSide(rawSide, "amountTypeDescr");
+    return {
+      transId: requireSafeInteger(row["transId"], "transId"),
+      transTypeDescr: requireString(row["transTypeDesr"], "transTypeDesr"),
+      amountTypeDescr,
+      cashAmtCents,
+      inKindAmtCents,
+      totalAmtCents,
+      // A dateless row cannot be cycle-scoped; that is drift, not data.
+      datePaid: requireSafeInteger(row["datePaid"], "datePaid"),
+      candidateIssue: optionalString(row["candidateIssue"]),
+      purposeDescr: optionalString(row["purposeDescr"]),
+      electioneeringInd: requireYesNo(row["electioneeringInd"], "electioneeringInd"),
+    };
+  });
+}
+
+/**
+ * The synthetic yearly sweep artifact this module stores: the raw IE
+ * committee-search response plus each committee's raw transaction-list
+ * response and its viewFinancialEntities `resultCount`. Committee sets must
+ * match exactly and every list must carry exactly `resultCount` rows — a
+ * mismatch means a truncated or crossed harvest.
+ */
+export type MontanaCersIeSweepArtifact = {
+  year: number;
+  committees: MontanaCersIeCommitteeRow[];
+  transactionsByCommitteeId: Map<number, MontanaCersIeTransactionRow[]>;
+};
+
+export function parseMontanaCersIeSweepArtifact(body: string): MontanaCersIeSweepArtifact {
+  const parsed = requireRecord(parseJsonBody(body, "IE sweep artifact"), "IE sweep artifact");
+  const year = requireSafeInteger(parsed["year"], "year");
+  const committees = parseMontanaCersIeCommitteeResults(JSON.stringify(parsed["committeeSearch"]));
+  const entries = parsed["committeeTransactions"];
+  if (!Array.isArray(entries)) {
+    throw new MontanaCersParseError("Montana CERS IE sweep artifact has no committeeTransactions array");
+  }
+  const transactionsByCommitteeId = new Map<number, MontanaCersIeTransactionRow[]>();
+  for (const value of entries) {
+    const entry = requireRecord(value, "IE sweep committee entry");
+    const committeeId = requireSafeInteger(entry["committeeId"], "committeeId");
+    const resultCount = requireSafeInteger(entry["resultCount"], "resultCount");
+    if (transactionsByCommitteeId.has(committeeId)) {
+      throw new MontanaCersParseError(`Montana CERS IE sweep artifact repeats committee ${committeeId}`);
+    }
+    const rows = parseMontanaCersIeTransactionRows(JSON.stringify(entry["list"]));
+    if (rows.length !== resultCount) {
+      throw new MontanaCersParseError(
+        `Montana CERS IE sweep committee ${committeeId} has ${rows.length} rows, viewFinancialEntities said ${resultCount}`
+      );
+    }
+    transactionsByCommitteeId.set(committeeId, rows);
+  }
+  const expected = new Set(committees.map((committee) => committee.committeeId));
+  if (expected.size !== committees.length) {
+    throw new MontanaCersParseError("Montana CERS IE sweep committee search repeats a committee id");
+  }
+  for (const committeeId of expected) {
+    if (!transactionsByCommitteeId.has(committeeId)) {
+      throw new MontanaCersParseError(`Montana CERS IE sweep artifact is missing committee ${committeeId}`);
+    }
+  }
+  for (const committeeId of transactionsByCommitteeId.keys()) {
+    if (!expected.has(committeeId)) {
+      throw new MontanaCersParseError(`Montana CERS IE sweep artifact has unknown committee ${committeeId}`);
+    }
+  }
+  return { year, committees, transactionsByCommitteeId };
+}
+
 /**
  * Parses the combined report-detail artifact this module stores: one JSON
  * object bundling every fetched detail list for a report. Every known list

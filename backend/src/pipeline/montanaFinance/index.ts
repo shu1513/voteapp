@@ -12,4 +12,6 @@ export * from "./montanaChainReconciliation.js";
 export * from "./montanaDirectFinanceAggregator.js";
 export * from "./montanaFinanceEligibleOffices.js";
 export * from "./montanaFinanceWriter.js";
+export * from "./montanaOutsideSpendingAcquisition.js";
+export * from "./montanaOutsideSpendingAggregator.js";
 export * from "./montanaReportInventory.js";

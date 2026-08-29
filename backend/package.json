@@ -405,6 +405,7 @@
     "montana-candidates:finance:probe": "tsx src/scripts/probeMontanaCandidateFinance.ts",
     "montana-candidates:finance:auto-link": "tsx src/scripts/autoLinkMontanaCandidateFinance.ts",
     "montana-candidates:finance:sync-due": "tsx src/scripts/syncDueMontanaCandidateFinance.ts",
+    "montana-candidates:finance:outside-report": "tsx src/scripts/reportMontanaOutsideSpending.ts",
     "montana-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertMontanaCandidateFinanceSyncScheduler.ts",
     "montana-candidates:finance:scheduler:worker": "tsx src/scripts/runMontanaCandidateFinanceSyncSchedulerWorker.ts",
     "montana-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerMontanaCandidateFinanceSync.ts",

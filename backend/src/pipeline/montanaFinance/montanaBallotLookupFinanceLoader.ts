@@ -20,6 +20,17 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 const MONTANA_DIRECT_COVERAGE_NOTE =
   "Totals are summed from itemized Montana CERS filings and cross-checked across the state's disclosure surfaces; where consecutive reports exist they are verified against the official cash-balance chain, which also supplies derived unitemized small-donor amounts.";
 
+// The plan's Phase 2b hard gate: Montana outside data must not go live
+// without this footnote (web and mobile both render outside_coverage_note).
+// Two claims, both load-bearing: (1) only filer-disclosed targets that could
+// be verified are counted — a large share of Montana IE money names no
+// verifiable target ("see attached", blanks, multi-candidate rows) and is
+// excluded; (2) Montana's benefit-reporting convention means support totals
+// can include attack spending against an opponent, and opposition appears
+// only where the filer declared it (never inferred).
+const MONTANA_OUTSIDE_COVERAGE_NOTE =
+  "Counts only independent expenditures whose disclosed target could be verified; many Montana filings name no verifiable candidate and are excluded. Montana support totals can include spending that benefits a candidate by opposing an opponent; opposition is shown only where the filer declared it.";
+
 export async function loadMontanaCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
   candidateRows: readonly StateFinanceRequestCandidateRow[],
@@ -37,6 +48,7 @@ export async function loadMontanaCandidateFinanceSummariesByCandidateElection(
     // Phase 2b outside funders are organizational donors only (MO pattern).
     evidenceLabelTypes: ["donor"],
     directCoverageNote: MONTANA_DIRECT_COVERAGE_NOTE,
+    outsideCoverageNote: MONTANA_OUTSIDE_COVERAGE_NOTE,
     tables: {
       links: "mt_candidate_finance_links",
       summaries: "mt_candidate_finance_summaries",

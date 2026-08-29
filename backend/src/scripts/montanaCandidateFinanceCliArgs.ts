@@ -1,9 +1,10 @@
-const MONTANA_FINANCE_BOOLEAN_FLAGS = new Set(["--dry-run", "--force", "--no-auto-link"]);
+const MONTANA_FINANCE_BOOLEAN_FLAGS = new Set(["--dry-run", "--force", "--no-auto-link", "--refresh"]);
 const MONTANA_FINANCE_VALUE_FLAGS = new Set([
   "--max-candidates",
   "--stale-after-days",
   "--lookback-days",
   "--lookahead-days",
+  "--year",
 ]);
 
 export function assertNoUnknownMontanaFinanceFlags(args: readonly string[]): void {

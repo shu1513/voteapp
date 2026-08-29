@@ -1,0 +1,25 @@
+{
+  "sEcho": 1,
+  "iTotalRecords": 2,
+  "iTotalDisplayRecords": 2,
+  "aaData": [
+    {
+      "committeeId": 100,
+      "entId": 800100,
+      "committeeName": "Sanitized Prosperity PAC",
+      "committeeTypeCode": "IN",
+      "committeeTypeDescr": "Independent",
+      "electionYear": null,
+      "committeeStatusDescr": "Active"
+    },
+    {
+      "committeeId": 200,
+      "entId": 800200,
+      "committeeName": "Sanitized Incidental Committee ",
+      "committeeTypeCode": "IC",
+      "committeeTypeDescr": "Incidental",
+      "electionYear": "2026",
+      "committeeStatusDescr": "Active"
+    }
+  ]
+}

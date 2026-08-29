@@ -120,7 +120,7 @@ describe("FinanceSummaryCard", () => {
     expect(screen.getByText(summary.direct_campaign.direct_coverage_note)).toBeInTheDocument();
   });
 
-  it("renders the Montana source label, coverage note, and COPP provenance fallback", () => {
+  it("renders the Montana source label, coverage notes, and COPP provenance fallback", () => {
     const summary = emptyFinanceSummary();
     summary.source = "MONTANA_COPP";
     summary.direct_campaign.total_raised = 66517.57;
@@ -129,11 +129,20 @@ describe("FinanceSummaryCard", () => {
     summary.direct_campaign.top_occupations = [
       { category_name: "Retired", amount: 20000, contributor_count: 42, source_url: null },
     ];
+    // The Phase 2b hard gate: Montana outside data ships with this footnote.
+    summary.outside_spending.support_total = 1234.56;
+    summary.outside_spending.outside_coverage_note =
+      "Counts only independent expenditures whose disclosed target could be verified; many Montana filings name no verifiable candidate and are excluded. Montana support totals can include spending that benefits a candidate by opposing an opponent; opposition is shown only where the filer declared it.";
+    summary.outside_spending.top_supporting_groups = [
+      { committee_id: "100", committee_name: "Good PAC", support_oppose: "support", amount: 1234.56, source_url: null },
+    ];
 
     render(<FinanceSummaryCard summary={summary} />);
 
     expect(screen.getByText(/Source: Montana Commissioner of Political Practices/)).toBeInTheDocument();
     expect(screen.getByText(summary.direct_campaign.direct_coverage_note)).toBeInTheDocument();
+    expect(screen.getByText(summary.outside_spending.outside_coverage_note)).toBeInTheDocument();
+    expect(screen.getByText(/Outside money spent supporting this candidate/)).toBeInTheDocument();
     // No row carries a source URL, so the footer link falls back to the COPP
     // home page (CERS deep links are POST/session driven).
     expect(screen.getByRole("link", { name: "politicalpractices.mt.gov" })).toHaveAttribute(

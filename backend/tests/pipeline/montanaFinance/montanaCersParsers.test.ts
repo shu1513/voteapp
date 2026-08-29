@@ -9,6 +9,9 @@ import {
   parseMontanaCersCsvAmountCents,
   parseMontanaCersExpenditureExport,
   parseMontanaCersFinanceRepDetailList,
+  parseMontanaCersIeCommitteeResults,
+  parseMontanaCersIeSweepArtifact,
+  parseMontanaCersIeTransactionRows,
   parseMontanaCersReportDetailArtifact,
   parseMontanaCersReportInventory,
 } from "../../../src/pipeline/montanaFinance/montanaCersParsers.js";
@@ -264,5 +267,82 @@ describe("montanaCersParsers candidate search", () => {
       electionYear: 2026,
       officeTitle: "Senate District No. 43",
     });
+  });
+});
+
+describe("montanaCersParsers IE sweep surfaces", () => {
+  it("parses IE committee results and trims names", async () => {
+    const rows = parseMontanaCersIeCommitteeResults(await fixture("ie-committee-results-sanitized.json"));
+    expect(rows).toEqual([
+      expect.objectContaining({ committeeId: 100, committeeName: "Sanitized Prosperity PAC", committeeTypeDescr: "Independent", electionYear: null }),
+      expect.objectContaining({ committeeId: 200, committeeName: "Sanitized Incidental Committee", electionYear: 2026 }),
+    ]);
+  });
+
+  it("parses IE transaction rows, allowing a sideless all-zero placeholder only", async () => {
+    const rows = parseMontanaCersIeTransactionRows(await fixture("ie-transactions-sanitized.json"));
+    expect(rows).toHaveLength(3);
+    expect(rows[0]).toMatchObject({
+      transId: 1999001,
+      transTypeDescr: "Independent Expenditure",
+      amountTypeDescr: "Primary",
+      cashAmtCents: 11_500,
+      totalAmtCents: 11_500,
+      candidateIssue: "SANITIZED NAME (SD-9)",
+      electioneeringInd: "N",
+    });
+    expect(rows[1]).toMatchObject({ inKindAmtCents: 4_050, totalAmtCents: 4_050 });
+    expect(rows[2]).toMatchObject({ amountTypeDescr: null, totalAmtCents: 0, candidateIssue: null });
+  });
+
+  it("fails closed on money-composition drift and on a sideless row carrying money", async () => {
+    const body = JSON.parse(await fixture("ie-transactions-sanitized.json")) as {
+      aaData: Record<string, unknown>[];
+    };
+    const drifted = structuredClone(body);
+    drifted.aaData[0]!["totalAmt"] = 100.0;
+    expect(() => parseMontanaCersIeTransactionRows(JSON.stringify(drifted))).toThrow("total");
+    const sideless = structuredClone(body);
+    sideless.aaData[2]!["cashAmt"] = 1.0;
+    sideless.aaData[2]!["totalAmt"] = 1.0;
+    expect(() => parseMontanaCersIeTransactionRows(JSON.stringify(sideless))).toThrow("amountTypeDescr");
+  });
+
+  it("validates the synthetic sweep artifact's identity invariants", async () => {
+    const committeeSearch = JSON.parse(await fixture("ie-committee-results-sanitized.json")) as {
+      aaData: unknown[];
+    };
+    const transactions = JSON.parse(await fixture("ie-transactions-sanitized.json")) as unknown;
+    const empty = { sEcho: 1, iTotalRecords: 0, iTotalDisplayRecords: 0, aaData: [] };
+    const good = {
+      year: 2026,
+      committeeSearch,
+      committeeTransactions: [
+        { committeeId: 100, resultCount: 3, list: transactions },
+        { committeeId: 200, resultCount: 0, list: empty },
+      ],
+    };
+    const sweep = parseMontanaCersIeSweepArtifact(JSON.stringify(good));
+    expect(sweep.year).toBe(2026);
+    expect(sweep.committees).toHaveLength(2);
+    expect(sweep.transactionsByCommitteeId.get(100)).toHaveLength(3);
+    expect(sweep.transactionsByCommitteeId.get(200)).toEqual([]);
+
+    // resultCount is the viewFinancialEntities cross-check.
+    const miscounted = structuredClone(good);
+    miscounted.committeeTransactions[0]!.resultCount = 2;
+    expect(() => parseMontanaCersIeSweepArtifact(JSON.stringify(miscounted))).toThrow("viewFinancialEntities said 2");
+
+    const missing = structuredClone(good);
+    missing.committeeTransactions.pop();
+    expect(() => parseMontanaCersIeSweepArtifact(JSON.stringify(missing))).toThrow("missing committee 200");
+
+    const unknown = structuredClone(good);
+    unknown.committeeTransactions.push({ committeeId: 300, resultCount: 0, list: empty });
+    expect(() => parseMontanaCersIeSweepArtifact(JSON.stringify(unknown))).toThrow("unknown committee 300");
+
+    const repeated = structuredClone(good);
+    repeated.committeeTransactions.push({ committeeId: 100, resultCount: 3, list: transactions });
+    expect(() => parseMontanaCersIeSweepArtifact(JSON.stringify(repeated))).toThrow("repeats committee 100");
   });
 });

@@ -205,6 +205,8 @@ export async function runMontanaCandidateFinanceSyncJob(
       attempted: 0,
       succeeded: 0,
       failed: 0,
+      outsideSweepYearCount: 0,
+      failedOutsideSweepYearCount: 0,
       candidates: [],
     };
   }

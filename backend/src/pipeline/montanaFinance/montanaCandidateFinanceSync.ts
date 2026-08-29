@@ -14,13 +14,16 @@ import type { Pool, PoolClient } from "pg";
 
 import {
   readMontanaCersArtifact,
+  readMontanaCersOutsideSpendingArtifacts,
 } from "./montanaCersArtifactCache.js";
 import {
   parseMontanaCersContributionExport,
   parseMontanaCersExpenditureExport,
   parseMontanaCersReportDetailArtifact,
   parseMontanaCersReportInventory,
+  type MontanaCersCandidateSearchRow,
   type MontanaCersExportRow,
+  type MontanaCersIeSweepArtifact,
   type MontanaCersReportDetailArtifact,
   type MontanaCersReportInventoryRow,
 } from "./montanaCersParsers.js";
@@ -28,6 +31,11 @@ import {
   aggregateMontanaDirectFinance,
   type MontanaDirectFinanceAggregationResult,
 } from "./montanaDirectFinanceAggregator.js";
+import {
+  aggregateMontanaOutsideSpendingForCandidate,
+  classifyMontanaOutsideSpendingRows,
+  type MontanaOutsideSpendingAggregationResult,
+} from "./montanaOutsideSpendingAggregator.js";
 import { normalizeMontanaCandidateNameForStorage } from "./montanaCandidateCersResolver.js";
 import { isMontanaFinanceEligibleOffice } from "./montanaFinanceEligibleOffices.js";
 import { selectMontanaCanonicalReports } from "./montanaReportInventory.js";
@@ -56,6 +64,12 @@ export type MontanaCandidateFinanceArtifacts = {
   sourceUrl: string | null;
 };
 
+export type MontanaOutsideSpendingArtifacts = {
+  sweep: MontanaCersIeSweepArtifact;
+  registrationRows: readonly MontanaCersCandidateSearchRow[];
+  sourceUrl: string | null;
+};
+
 export type MontanaCandidateFinanceSyncResult = {
   dryRun: boolean;
   status: "synced" | "no_filed_reports";
@@ -68,6 +82,9 @@ export type MontanaCandidateFinanceSyncResult = {
   directBreakdownsWritten: number;
   /** True when a no_filed_reports pass stamped its checked-at rotation row. */
   checkedAtStamped: boolean;
+  outsideSpending: MontanaOutsideSpendingAggregationResult | null;
+  outsideSpendingSkippedReason: string | null;
+  outsideGroupsWritten: number;
 };
 
 async function readCachedArtifacts(input: {
@@ -123,9 +140,16 @@ export async function syncMontanaCandidateFinance(input: {
   };
   cacheDir?: string;
   artifacts?: MontanaCandidateFinanceArtifacts;
+  /**
+   * Yearly IE sweep bundle: undefined = read from the cache; null = the
+   * batch already knows it is unavailable (skip the outside leg and
+   * preserve any prior outside snapshot).
+   */
+  outsideArtifacts?: MontanaOutsideSpendingArtifacts | null;
   now?: Date;
   dryRun?: boolean;
   maxOccupationBreakdowns?: number;
+  maxOutsideGroups?: number;
 }): Promise<MontanaCandidateFinanceSyncResult> {
   const candidateName = input.candidateName.trim();
   const committeeName = input.committee.committeeName.trim();
@@ -213,6 +237,13 @@ export async function syncMontanaCandidateFinance(input: {
       summaryWritten: false,
       directBreakdownsWritten: 0,
       checkedAtStamped,
+      // Documented v1 boundary: outside money is only published alongside a
+      // filed direct snapshot. IE rows targeting a no-filing registrant stay
+      // in the sweep's quarantine report rather than becoming a summary row
+      // whose money columns would defeat the checked-at stamp's guard.
+      outsideSpending: null,
+      outsideSpendingSkippedReason: "no_filed_reports",
+      outsideGroupsWritten: 0,
     };
   }
 
@@ -256,8 +287,45 @@ export async function syncMontanaCandidateFinance(input: {
     maxOccupationBreakdowns: input.maxOccupationBreakdowns,
   });
 
+  // Outside leg (Phase 2b). A missing or stale sweep bundle skips the leg
+  // rather than failing the direct sync: the writer's preserveWhenNull
+  // policy plus an undefined outsideGroups input keeps any prior outside
+  // snapshot intact. When the bundle IS present, its aggregation is
+  // authoritative for this candidate — including an empty result, which
+  // clears stale groups (totals stay null, never a fabricated zero).
+  let outsideArtifacts = input.outsideArtifacts;
+  let outsideSpendingSkippedReason: string | null = null;
+  if (outsideArtifacts === null) {
+    outsideSpendingSkippedReason = "yearly outside-spending artifacts unavailable";
+  } else if (outsideArtifacts === undefined) {
+    try {
+      outsideArtifacts = await readMontanaCersOutsideSpendingArtifacts({
+        cacheDir: input.cacheDir,
+        year: input.electionYear,
+      });
+    } catch (error) {
+      outsideArtifacts = null;
+      outsideSpendingSkippedReason = error instanceof Error ? error.message : String(error);
+    }
+  }
+  let outsideSpending: MontanaOutsideSpendingAggregationResult | null = null;
+  if (outsideArtifacts) {
+    const classifiedRows = classifyMontanaOutsideSpendingRows({
+      sweep: outsideArtifacts.sweep,
+      registrationRows: outsideArtifacts.registrationRows,
+      electionYear: input.electionYear,
+    });
+    outsideSpending = aggregateMontanaOutsideSpendingForCandidate({
+      classifiedRows,
+      cersCandidateId,
+      sourceUrl: outsideArtifacts.sourceUrl ?? sourceUrl,
+      maxGroups: input.maxOutsideGroups,
+    });
+  }
+
   let summaryWritten = false;
   let directBreakdownsWritten = 0;
+  let outsideGroupsWritten = 0;
   if (!dryRun) {
     const writeResult = await replaceMontanaCandidateFinanceSnapshot({
       db: input.db,
@@ -281,14 +349,16 @@ export async function syncMontanaCandidateFinance(input: {
         directContributionTotal: aggregation.directContributionTotal,
         totalDisbursements: aggregation.totalDisbursements,
         cashOnHand: aggregation.cashOnHand,
-        outsideSupportTotal: null,
-        outsideOpposeTotal: null,
+        outsideSupportTotal: outsideSpending?.supportTotal ?? null,
+        outsideOpposeTotal: outsideSpending?.opposeTotal ?? null,
         sourceUrl,
       },
       directBreakdowns: aggregation.directBreakdowns,
+      outsideGroups: outsideSpending?.outsideGroups,
     });
     summaryWritten = writeResult.summaryWritten;
     directBreakdownsWritten = writeResult.directBreakdownsWritten;
+    outsideGroupsWritten = writeResult.outsideGroupsWritten;
   }
 
   return {
@@ -302,5 +372,8 @@ export async function syncMontanaCandidateFinance(input: {
     summaryWritten,
     directBreakdownsWritten,
     checkedAtStamped: false,
+    outsideSpending,
+    outsideSpendingSkippedReason,
+    outsideGroupsWritten,
   };
 }

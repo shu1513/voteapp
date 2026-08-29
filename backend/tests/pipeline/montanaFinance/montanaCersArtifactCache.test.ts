@@ -6,6 +6,7 @@ import { describe, expect, it } from "vitest";
 import {
   readMontanaCersArtifact,
   readMontanaCersCandidateFinanceArtifacts,
+  readMontanaCersOutsideSpendingArtifacts,
   storeMontanaCersArtifact,
 } from "../../../src/pipeline/montanaFinance/montanaCersArtifactCache.js";
 
@@ -155,5 +156,93 @@ describe("montanaCersArtifactCache", () => {
         body: "[]",
       })
     ).rejects.toThrow("year");
+  });
+});
+
+describe("montanaCersArtifactCache outside-spending bundle", () => {
+  function registrationBody(year: string): string {
+    return JSON.stringify({
+      sEcho: 1,
+      iTotalRecords: 1,
+      iTotalDisplayRecords: 1,
+      aaData: [
+        {
+          candidateId: 21020,
+          personDTO: { lastName: "Bedey", firstName: "David", middleInitial: "F." },
+          electionYear: year,
+          officeTitle: "Senate District No. 43",
+          officeCode: "236",
+          partyDescr: "Republican",
+          candidateStatusDescr: "Active",
+          resCountyDescr: "Ravalli",
+        },
+      ],
+    });
+  }
+
+  async function sweepBody(): Promise<string> {
+    return JSON.stringify({
+      year: 2026,
+      committeeSearch: JSON.parse(await fixture("ie-committee-results-sanitized.json")),
+      committeeTransactions: [
+        { committeeId: 100, resultCount: 3, list: JSON.parse(await fixture("ie-transactions-sanitized.json")) },
+        { committeeId: 200, resultCount: 0, list: { sEcho: 1, iTotalRecords: 0, iTotalDisplayRecords: 0, aaData: [] } },
+      ],
+    });
+  }
+
+  it("stores and reads the same-vintage sweep bundle", async () => {
+    const cacheDir = await mkdtemp(join(tmpdir(), "mt-cers-cache-"));
+    const retrievedAt = new Date("2026-08-28T00:00:00Z");
+    const sweepManifest = await storeMontanaCersArtifact({
+      cacheDir,
+      key: { type: "ie_sweep", year: 2026 },
+      sourceUrl: "https://cers-ext.mt.gov/CampaignTracker/public/searchResults/listViewFinancialEntityResults",
+      body: await sweepBody(),
+      retrievedAt,
+    });
+    expect(sweepManifest.rowCount).toBe(3);
+    await storeMontanaCersArtifact({
+      cacheDir,
+      key: { type: "ie_registration_list", year: 2026 },
+      sourceUrl: "https://cers-ext.mt.gov/CampaignTracker/public/searchResults/listCandidateResults",
+      body: registrationBody("2026"),
+      retrievedAt,
+    });
+    const bundle = await readMontanaCersOutsideSpendingArtifacts({ cacheDir, year: 2026 });
+    expect(bundle.sweep.committees).toHaveLength(2);
+    expect(bundle.registrationRows).toHaveLength(1);
+    expect(bundle.retrievedAt).toBe(retrievedAt.toISOString());
+  });
+
+  it("rejects mixed vintages and cross-year registration data", async () => {
+    const cacheDir = await mkdtemp(join(tmpdir(), "mt-cers-cache-"));
+    await storeMontanaCersArtifact({
+      cacheDir,
+      key: { type: "ie_sweep", year: 2026 },
+      sourceUrl: "https://cers-ext.mt.gov/",
+      body: await sweepBody(),
+      retrievedAt: new Date("2026-08-28T00:00:00Z"),
+    });
+    await storeMontanaCersArtifact({
+      cacheDir,
+      key: { type: "ie_registration_list", year: 2026 },
+      sourceUrl: "https://cers-ext.mt.gov/",
+      body: registrationBody("2026"),
+      retrievedAt: new Date("2026-08-29T00:00:00Z"),
+    });
+    await expect(readMontanaCersOutsideSpendingArtifacts({ cacheDir, year: 2026 })).rejects.toThrow(
+      "Mixed-vintage Montana CERS outside-spending artifact bundle"
+    );
+    // A registration list carrying another year's rows is cross-year data.
+    await expect(
+      storeMontanaCersArtifact({
+        cacheDir,
+        key: { type: "ie_registration_list", year: 2026 },
+        sourceUrl: "https://cers-ext.mt.gov/",
+        body: registrationBody("2024"),
+        retrievedAt: new Date("2026-08-28T00:00:00Z"),
+      })
+    ).rejects.toThrow("cross-year data");
   });
 });
