@@ -8,8 +8,9 @@ import { Platform, Pressable, Share, Text } from "react-native";
 // mostly don't have the app, and the web page carries the og:* tags that make
 // the link render as a rich card in messengers (see frontend pageMeta.ts).
 // SITE_ORIGIN matches SITE_ORIGIN in frontend/src/lib/pageMeta.ts and
-// render.yaml.
-const SITE_ORIGIN = "https://electionssimplified.com";
+// render.yaml. Exported for screens that display the public URL itself
+// (the pick-card share link) next to this button.
+export const SITE_ORIGIN = "https://electionssimplified.com";
 
 type ShareButtonProps = {
   /** Path with a leading slash on the public site, e.g. "/candidates/abc". */

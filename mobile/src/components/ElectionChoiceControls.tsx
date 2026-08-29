@@ -214,6 +214,42 @@ export function CandidatePickRow({
   );
 }
 
+type RemoveStrandedPickButtonProps = {
+  electionId: string;
+  candidateId: string;
+  /** Carried in the accessible label — the visible "Remove pick" alone
+   * can't tell a screen's N remove buttons apart. */
+  candidateName: string;
+};
+
+/**
+ * Removes a STRANDED pick — one whose candidacy withdrew after the pick was
+ * made. Withdrawn candidacies are filtered out of election payloads and
+ * never get a CandidatePickButton, so without this control the pick holds
+ * one of a multi-seat race's slots forever. Port of the web control minus
+ * its guest-draft branch. Upcoming elections only, same as every choice
+ * control — the backend rejects writes to past ones (callers date-gate).
+ */
+export function RemoveStrandedPickButton({ electionId, candidateId, candidateName }: RemoveStrandedPickButtonProps) {
+  const setChoice = useSetElectionChoice();
+  const saving = useElectionChoiceSaving();
+  return (
+    <View className="flex-row flex-wrap items-center gap-2">
+      <Pressable
+        disabled={saving}
+        accessibilityRole="button"
+        accessibilityState={{ disabled: saving }}
+        accessibilityLabel={`Remove pick: ${candidateName}`}
+        onPress={() => setChoice.mutate({ election_id: electionId, candidate_id: candidateId, chosen: false })}
+        className={`self-start rounded-full border border-line bg-white px-2.5 py-1 active:border-ink${saving ? " opacity-50" : ""}`}
+      >
+        <Text className="text-xs font-medium text-ink">{setChoice.isPending ? "…" : "Remove pick"}</Text>
+      </Pressable>
+      {setChoice.isError && !setChoice.isPending ? <SaveError error={setChoice.error} /> : null}
+    </View>
+  );
+}
+
 type MeasureChoiceButtonsProps = {
   electionId: string;
   choice: ElectionChoice | undefined;
