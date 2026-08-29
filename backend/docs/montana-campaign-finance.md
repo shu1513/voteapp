@@ -176,7 +176,10 @@ cash; it feeds neither directContributionTotal nor the cash-begin chain.
   her `primCashBeg` drops to 0 next report) and Bedey "Transfer of Primary
   funds to General Funds" $249.04. They are real cash flows for the chain
   but NOT campaign spending: the aggregator partitions them out of "spent"
-  on BOTH surfaces by purpose text (`transfer` + `primary|general`); the
+  on BOTH surfaces by the exact filer idiom `transfer of (primary|general)
+  funds` (deliberately precision-over-recall — an ordinary payment
+  mentioning "transfer" must never be dropped, since the identical filter
+  runs on both surfaces and the cross-check could not catch it); the
   EXPEND CSV includes them (Bedey verified), so the docs' earlier "162 rows
   $61,467.18" figure includes his $249.04 transfer — published spent is
   $61,218.14.

@@ -182,9 +182,20 @@ export function reconcileMontanaCashBeginChain(reports: readonly MontanaChainRep
       continue;
     }
     // Side-rollover fallback: reclassification between sides breaks the
-    // per-side equations while conserving money. Accept the link only when
-    // the COMBINED equation closes within the same lump gate; otherwise keep
-    // the per-side failures as the diagnostics.
+    // per-side equations while conserving money. Guarded narrowly: it
+    // applies ONLY at the observed rollover signature — the primary side
+    // collapsing to zero after the primary election (Eddy: primCashBeg
+    // 241,307.00 -> 0 with the balance re-homed under genCashBeg). An
+    // arbitrary pair of offsetting per-side failures must NOT be absorbed
+    // here, and combined math must not soften the per-side ratio gate
+    // outside that boundary — everything else keeps its per-side failures
+    // as the diagnostics and fails closed.
+    const primaryCollapsed =
+      beginCents(current.inventory, "primary")! > 0 && beginCents(next.inventory, "primary") === 0;
+    if (!primaryCollapsed) {
+      links.push(...sideLinks);
+      continue;
+    }
     const beginCombined =
       beginCents(current.inventory, "primary")! + beginCents(current.inventory, "general")!;
     const nextBeginCombined = beginCents(next.inventory, "primary")! + beginCents(next.inventory, "general")!;

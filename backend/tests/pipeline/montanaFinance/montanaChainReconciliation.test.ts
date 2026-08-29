@@ -209,6 +209,19 @@ describe("reconcileMontanaCashBeginChain", () => {
     expect(result.derivedEndingBalanceCents).toBe(212_700);
   });
 
+  it("never lets offsetting per-side failures pass as combined outside a primary collapse", () => {
+    // Primary is short $600 while general is over $600: money is conserved
+    // combined, but the primary side did NOT collapse to zero, so this is
+    // inconsistent source data — not a rollover — and must fail closed.
+    const result = reconcileMontanaCashBeginChain([
+      report({ reportId: 1, primBeginCents: 100_000, genBeginCents: 50_000 }),
+      report({ reportId: 2, primBeginCents: 40_000, genBeginCents: 110_000 }),
+    ]);
+    expect(result.ok).toBe(false);
+    expect(result.links.some((link) => link.side === "combined")).toBe(false);
+    expect(result.links.filter((link) => !link.ok)).toHaveLength(2);
+  });
+
   it("still fails closed when a rollover does not conserve money", () => {
     const result = reconcileMontanaCashBeginChain([
       report({ reportId: 1, primBeginCents: 240_000, genBeginCents: 3_900 }),

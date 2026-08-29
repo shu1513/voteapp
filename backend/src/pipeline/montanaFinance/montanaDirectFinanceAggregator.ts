@@ -41,17 +41,22 @@ const SMALL_CONTRIBUTION_ROW_CENTS = 5_000;
 
 /**
  * Inter-side fund transfers are booked as ordinary expenditures (verified
- * live 2026-08-28, Eddy / Supreme Court: an expendOther Primary row
- * "Transfer of primary funds to general, no primary" paid to her bank, with
- * the near-matching amount arriving in `refunds` on the General side). They
- * are real cash flows for the chain but NOT campaign spending, so both
- * surfaces partition them out of "spent" by this purpose test. A transfer
- * worded outside this pattern would count as spending on BOTH surfaces
- * (cross-checks still pass; totals overstate) — the Phase 3 spot check
- * covers that residual risk.
+ * live 2026-08-28 on BOTH probed filers: Eddy "Transfer of primary funds to
+ * general, no primary" and Bedey "Transfer of Primary funds to General
+ * Funds", each with the near-matching amount arriving in `refunds` on the
+ * receiving side). They are real cash flows for the chain but NOT campaign
+ * spending, so both surfaces partition them out of "spent" by this purpose
+ * test. The pattern is deliberately the exact filer idiom — precision over
+ * recall: a vendor payment whose purpose merely mentions "transfer" and an
+ * election side (e.g. "wire transfer for general election mailers") must
+ * NEVER be silently dropped from spending, because the identical filter
+ * runs on both surfaces and the cross-check could not catch it. A transfer
+ * worded outside this idiom just stays counted as spending on both
+ * surfaces (totals overstate, the pre-partition behavior) — visible to the
+ * Phase 3 cent-exact spot check.
  */
 export function isMontanaSideTransferPurpose(purpose: string | null): boolean {
-  return purpose !== null && /\btransfer\b/i.test(purpose) && /\b(?:primary|general)\b/i.test(purpose);
+  return purpose !== null && /\btransfer\s+of\s+(?:primary|general)\s+funds\b/i.test(purpose);
 }
 
 export type MontanaCanonicalReportWithDetail = {

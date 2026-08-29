@@ -208,6 +208,20 @@ describe("aggregateMontanaDirectFinance", () => {
     expect(() => aggregateMontanaDirectFinance(input)).toThrow("side-transfer totals disagree");
   });
 
+  it("never drops an ordinary expense whose purpose merely mentions a transfer", () => {
+    const input = fixture();
+    const purpose = "Wire transfer for general election mailers";
+    input.canonicalReports[0]!.artifact.lists.expendOther.push(
+      detailRow({ cashAmtCents: 5_000, totalAmtCents: 5_000, purposeDescr: purpose, entityName: "Print Shop" })
+    );
+    input.expenditureRows.push(csvRow({ amountCents: 5_000, purpose, lineItem: "All Other Expenditures" }));
+    // Keep the chain closing over the extra outflow.
+    input.canonicalReports[1]!.inventory.primCashBegCents! -= 5_000;
+    const result = aggregateMontanaDirectFinance(input);
+    expect(result.totalDisbursements).toBe(130);
+    expect(result.sideTransferTotal).toBe(0);
+  });
+
   it("fails closed on electioneering rows in a candidate report", () => {
     const input = fixture();
     input.canonicalReports[0]!.artifact.lists.individual.push(
