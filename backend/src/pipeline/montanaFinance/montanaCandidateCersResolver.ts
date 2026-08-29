@@ -39,6 +39,7 @@ export type MontanaCersResolverInput = {
   officeName: string;
   districtName: string | null;
   legislativeDistrict?: string | null;
+  ballotTitle?: string | null;
   rows: readonly MontanaCersCandidateSearchRow[];
 };
 
@@ -108,6 +109,7 @@ export function toMontanaCersOfficeExpectation(input: {
   officeName: string;
   districtName: string | null;
   legislativeDistrict?: string | null;
+  ballotTitle?: string | null;
 }): MontanaCersOfficeExpectation | { unmatchedReason: "unsupported_office" | "missing_district_number" } {
   if (input.officeScope === "state_upper" && input.officeName === "State Senator") {
     const districtNumber = parseDistrictNumber(input.legislativeDistrict);
@@ -129,7 +131,12 @@ export function toMontanaCersOfficeExpectation(input: {
     return { kind: "supreme_court" };
   }
   if (input.officeScope === "statewide" && input.officeName === "Public Service Commissioner") {
-    const districtNumber = parseDistrictNumber(input.districtName);
+    // Statewide-scope elections sit on the "Montana" district (no number),
+    // so the PSC seat number normally lives in the ballot title
+    // ("Public Service Commissioner, District 1"). Still fail-closed: no
+    // number anywhere means no link.
+    const districtNumber =
+      parseDistrictNumber(input.districtName) ?? parseDistrictNumber(input.ballotTitle);
     return districtNumber === null
       ? { unmatchedReason: "missing_district_number" }
       : { kind: "psc", districtNumber };

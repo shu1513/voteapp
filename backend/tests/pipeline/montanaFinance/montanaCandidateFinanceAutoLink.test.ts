@@ -39,6 +39,7 @@ function candidateElection(
     officeName: "State Senator",
     district: "State Senate District 43 (2024); Montana",
     legislativeDistrict: "43",
+    ballotTitle: "State Senator, District 43",
     ...overrides,
   };
 }
@@ -68,6 +69,8 @@ describe("listMontanaCandidateElectionsMissingFinanceLinks", () => {
     expect(String(sql)).toContain("election.election_stage = 'general'");
     expect(String(sql)).toContain("mt_candidate_finance_links");
     expect(String(sql)).toContain("geoid_compact");
+    // PSC seat numbers live in the ballot title, not the district name.
+    expect(String(sql)).toContain("official_ballot_title");
     expect(params?.[4]).toEqual([...MONTANA_FINANCE_ELIGIBLE_OFFICE_KEYS]);
   });
 });

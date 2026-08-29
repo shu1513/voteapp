@@ -60,6 +60,24 @@ describe("toMontanaCersOfficeExpectation", () => {
         districtName: "Public Service Commission District 5",
       })
     ).toEqual({ kind: "psc", districtNumber: 5 });
+    // Statewide-scope PSC elections sit on the numberless "Montana"
+    // district; the seat number comes from the ballot title.
+    expect(
+      toMontanaCersOfficeExpectation({
+        officeScope: "statewide",
+        officeName: "Public Service Commissioner",
+        districtName: "Montana",
+        ballotTitle: "Public Service Commissioner, District 1",
+      })
+    ).toEqual({ kind: "psc", districtNumber: 1 });
+    expect(
+      toMontanaCersOfficeExpectation({
+        officeScope: "statewide",
+        officeName: "Public Service Commissioner",
+        districtName: "Montana",
+        ballotTitle: "Public Service Commissioner",
+      })
+    ).toEqual({ unmatchedReason: "missing_district_number" });
     // Missing district numbers fail closed instead of matching any district.
     expect(
       toMontanaCersOfficeExpectation({ ...SD43, legislativeDistrict: null })

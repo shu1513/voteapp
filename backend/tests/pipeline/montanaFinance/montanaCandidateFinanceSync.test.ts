@@ -103,16 +103,14 @@ function artifacts(): MontanaCandidateFinanceArtifacts {
 }
 
 function writingDb() {
-  const client = {
-    query: vi.fn((sql: unknown) => {
-      if (String(sql).includes("INSERT INTO public.mt_candidate_finance_links")) {
-        return Promise.resolve({ rows: [{ id: LINK_ID }], rowCount: 1 });
-      }
-      return Promise.resolve({ rows: [], rowCount: 0 });
-    }),
-    release: vi.fn(),
+  const answer = (sql: unknown) => {
+    if (String(sql).includes("INSERT INTO public.mt_candidate_finance_links")) {
+      return Promise.resolve({ rows: [{ id: LINK_ID }], rowCount: 1 });
+    }
+    return Promise.resolve({ rows: [], rowCount: 1 });
   };
-  const db = { query: vi.fn(), connect: vi.fn().mockResolvedValue(client) };
+  const client = { query: vi.fn(answer), release: vi.fn() };
+  const db = { query: vi.fn(answer), connect: vi.fn().mockResolvedValue(client) };
   return { db, client };
 }
 
@@ -151,7 +149,7 @@ describe("syncMontanaCandidateFinance", () => {
     expect(linkInsert?.[1]).toContain("DAVID BEDEY");
   });
 
-  it("reports no_filed_reports and writes nothing when no canonical C5 exists", async () => {
+  it("reports no_filed_reports, writes no money, and stamps the checked-at rotation row", async () => {
     const { db, client } = writingDb();
     const input = artifacts();
     const result = await syncMontanaCandidateFinance({
@@ -167,6 +165,32 @@ describe("syncMontanaCandidateFinance", () => {
     });
     expect(result.status).toBe("no_filed_reports");
     expect(result.summaryWritten).toBe(false);
+    expect(result.checkedAtStamped).toBe(true);
+    // The snapshot writer is never invoked...
+    expect(client.query).not.toHaveBeenCalled();
+    // ...but the guarded checked-at stamp lands, so the due list rotates
+    // past sub-$500 no-filers instead of starving real filers. The guard
+    // must refuse to touch a summary that carries any money.
+    const stamp = db.query.mock.calls.find(([sql]) =>
+      String(sql).includes("INSERT INTO public.mt_candidate_finance_summaries")
+    );
+    expect(String(stamp?.[0])).toContain("ON CONFLICT (link_id, election_year) DO UPDATE");
+    expect(String(stamp?.[0])).toContain("total_receipts IS NULL");
+    expect(String(stamp?.[0])).toContain("direct_contribution_total IS NULL");
+    expect(stamp?.[1]).toEqual([LINK_ID, 2026, new Date("2026-08-28T00:00:00.000Z")]);
+  });
+
+  it("does not stamp checked-at during a no_filed_reports dry run", async () => {
+    const { db, client } = writingDb();
+    const input = artifacts();
+    const result = await syncMontanaCandidateFinance({
+      ...baseInput(db),
+      dryRun: true,
+      artifacts: { ...input, inventory: [], detailArtifactsByReportId: new Map() },
+    });
+    expect(result.status).toBe("no_filed_reports");
+    expect(result.checkedAtStamped).toBe(false);
+    expect(db.query).not.toHaveBeenCalled();
     expect(client.query).not.toHaveBeenCalled();
   });
 

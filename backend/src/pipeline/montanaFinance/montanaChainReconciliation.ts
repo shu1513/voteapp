@@ -136,6 +136,13 @@ function lumpGateFailure(
  * Reconciles consecutive canonical C5 reports (caller passes the output of
  * selectMontanaCanonicalReports, in order, paired with each report's detail
  * flows). Missing begin anchors break the chain — fail closed.
+ *
+ * Degenerate case: a single report has zero checkable links and returns
+ * ok with a zero unitemized total — nothing is chain-verified, exactly as
+ * every candidate's final period is never chain-verified (its lump is
+ * unknowable until the next report files). Callers publish such totals on
+ * the strength of the cross-surface CSV checks, and the user-facing
+ * coverage note scopes the chain claim to consecutive reports.
  */
 export function reconcileMontanaCashBeginChain(reports: readonly MontanaChainReport[]): MontanaChainReconciliation {
   const links: MontanaChainLinkResult[] = [];

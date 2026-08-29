@@ -33,6 +33,8 @@ export type MontanaFinanceAutoLinkCandidateElection = {
   officeName: string;
   district: string | null;
   legislativeDistrict: string | null;
+  /** PSC seat numbers live here — statewide elections use the "Montana" district. */
+  ballotTitle: string | null;
 };
 
 export type MontanaFinanceAutoLinkResult = {
@@ -56,6 +58,7 @@ type CandidateElectionQueryRow = {
   office_name: string;
   district_name: string | null;
   legislative_district: string | null;
+  ballot_title: string | null;
 };
 
 function toIsoDate(value: string | Date): string {
@@ -87,6 +90,7 @@ export async function listMontanaCandidateElectionsMissingFinanceLinks(
         office.scope AS office_scope,
         office.canonical_name AS office_name,
         district.name AS district_name,
+        election.official_ballot_title AS ballot_title,
         CASE
           WHEN district.district_type IN ('state_upper', 'state_lower') THEN
             NULLIF(
@@ -145,6 +149,7 @@ export async function listMontanaCandidateElectionsMissingFinanceLinks(
     officeName: row.office_name,
     district: row.district_name,
     legislativeDistrict: row.legislative_district,
+    ballotTitle: row.ballot_title,
   }));
 }
 
@@ -167,6 +172,7 @@ export async function autoLinkMontanaCandidateFinanceForCandidateElection(input:
     officeName: candidate.officeName,
     districtName: candidate.district,
     legislativeDistrict: candidate.legislativeDistrict,
+    ballotTitle: candidate.ballotTitle,
     rows: input.cersRows,
   });
   if (resolution.status === "unmatched") {

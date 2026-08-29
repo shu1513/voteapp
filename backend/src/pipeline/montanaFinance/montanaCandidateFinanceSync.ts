@@ -33,6 +33,7 @@ import { isMontanaFinanceEligibleOffice } from "./montanaFinanceEligibleOffices.
 import { selectMontanaCanonicalReports } from "./montanaReportInventory.js";
 import {
   normalizeMontanaCersEntityId,
+  recordMontanaCandidateFinanceNoFiledReports,
   replaceMontanaCandidateFinanceSnapshot,
   type MontanaFinanceLinkSource,
 } from "./montanaFinanceWriter.js";
@@ -65,6 +66,8 @@ export type MontanaCandidateFinanceSyncResult = {
   aggregation: MontanaDirectFinanceAggregationResult | null;
   summaryWritten: boolean;
   directBreakdownsWritten: number;
+  /** True when a no_filed_reports pass stamped its checked-at rotation row. */
+  checkedAtStamped: boolean;
 };
 
 async function readCachedArtifacts(input: {
@@ -174,6 +177,31 @@ export async function syncMontanaCandidateFinance(input: {
     throw new MontanaCandidateFinanceSyncError("Montana canonical report periods overlap");
   }
   if (selection.reports.length === 0) {
+    // Absence is not a zero: no money is written. But the check itself is
+    // recorded (guarded, all-NULL summary) so the due list rotates past the
+    // sub-$500 registrations instead of re-selecting them every batch.
+    let checkedAtStamped = false;
+    if (!dryRun) {
+      const stamp = await recordMontanaCandidateFinanceNoFiledReports({
+        db: input.db,
+        link: {
+          candidateId: input.candidateId,
+          electionId: input.electionId,
+          electionYear: input.electionYear,
+          candidateNameNormalized: normalizeMontanaCandidateNameForStorage(candidateName),
+          officeName: input.officeName,
+          district: input.district ?? null,
+          committeeId: String(cersCandidateId),
+          committeeName,
+          linkStatus: "active",
+          linkSource: input.committee.linkSource,
+          sourceUrl: input.committee.sourceUrl ?? null,
+          lastVerifiedAt: now,
+        },
+        syncedAt: now,
+      });
+      checkedAtStamped = stamp.checkedAtStamped;
+    }
     return {
       dryRun,
       status: "no_filed_reports",
@@ -184,6 +212,7 @@ export async function syncMontanaCandidateFinance(input: {
       aggregation: null,
       summaryWritten: false,
       directBreakdownsWritten: 0,
+      checkedAtStamped,
     };
   }
 
@@ -272,5 +301,6 @@ export async function syncMontanaCandidateFinance(input: {
     aggregation,
     summaryWritten,
     directBreakdownsWritten,
+    checkedAtStamped: false,
   };
 }

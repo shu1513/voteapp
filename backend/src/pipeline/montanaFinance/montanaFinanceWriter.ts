@@ -93,6 +93,39 @@ export async function upsertMontanaFinanceLink(input: {
   return writer.upsertLink(input);
 }
 
+/**
+ * Stamps a "checked, nothing filed" state for a linked candidate: upserts
+ * the link and writes/refreshes an all-NULL summary row whose
+ * last_synced_at rotates the candidate out of the due list. Without this,
+ * the hundreds of sub-$500 registrations that never file a C-5 would sort
+ * NULLS-FIRST forever and starve real filers out of every batch. The stamp
+ * never touches a summary carrying data — if CERS suddenly reports no
+ * filings for a candidate with a stored snapshot, the snapshot is
+ * preserved and the anomaly stays visibly due. An all-NULL summary renders
+ * nothing (null money means "not reported", and the cards hide it).
+ */
+export async function recordMontanaCandidateFinanceNoFiledReports(input: {
+  db: Queryable;
+  link: MontanaFinanceLinkInput;
+  syncedAt: Date;
+}): Promise<{ linkId: string; checkedAtStamped: boolean }> {
+  const { linkId } = await writer.upsertLink({ db: input.db, link: input.link });
+  const result = await input.db.query(
+    `INSERT INTO public.mt_candidate_finance_summaries (link_id, election_year, last_synced_at)
+     VALUES ($1, $2, $3)
+     ON CONFLICT (link_id, election_year) DO UPDATE
+       SET last_synced_at = EXCLUDED.last_synced_at
+     WHERE mt_candidate_finance_summaries.total_receipts IS NULL
+       AND mt_candidate_finance_summaries.direct_contribution_total IS NULL
+       AND mt_candidate_finance_summaries.total_disbursements IS NULL
+       AND mt_candidate_finance_summaries.cash_on_hand IS NULL
+       AND mt_candidate_finance_summaries.outside_support_total IS NULL
+       AND mt_candidate_finance_summaries.outside_oppose_total IS NULL`,
+    [linkId, input.link.electionYear, input.syncedAt]
+  );
+  return { linkId, checkedAtStamped: (result.rowCount ?? 0) > 0 };
+}
+
 export async function replaceMontanaCandidateFinanceSnapshot(
   input: MontanaFinanceSnapshotInput
 ): Promise<MontanaFinanceSnapshotWriteResult> {
