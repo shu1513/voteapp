@@ -22,6 +22,15 @@ module.exports = {
         surface: "#f7f7f7",
         "dem-blue": "#0015bc",
         "gop-red": "#cc0000",
+        // Reserved pick yellow (web --color-pick): only ever marks an UNDONE
+        // pick decision — never reuse for other CTAs.
+        pick: "#ffd814",
+        "pick-hover": "#f7ca00",
+        // Address-nudge greens (web --color-nudge*): the pick gate's
+        // "enter your address" line.
+        nudge: "#e8f5e9",
+        "nudge-line": "#a5d6a7",
+        "nudge-deep": "#166534",
       },
     },
   },

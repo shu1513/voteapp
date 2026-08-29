@@ -5,6 +5,7 @@ import {
   BALLOT_SORT_DESCRIPTIONS,
   BALLOT_SORTS,
   deriveBallotFilters,
+  useElectionChoices,
   useMyResearchAreas,
 } from "@voteapp/api-client";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -141,6 +142,10 @@ function SavedBallotBody({ email }: { email: string }) {
     staleTime: 60_000,
   });
   const { savedAreaIds, hasSaved } = useMyResearchAreas();
+  // The viewer's picks, for the cards' "My pick" chips — progress at a
+  // glance down the saved-ballot list. Cards render without waiting for
+  // this: a late chip appearing beats blocking the ballot on it.
+  const { choiceByElectionId } = useElectionChoices();
   // Filters: local state like the anonymous ballot's sort — the tab stays
   // mounted under a stack push, so the choices survive navigating into an
   // election and back. Deliberately NOT account preferences — hiding races
@@ -182,6 +187,10 @@ function SavedBallotBody({ email }: { email: string }) {
         await clearPendingDistrictIds();
         setHandoffState("done");
         void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
+        // The pick gate's district set (useMyAccountDistricts) was just
+        // initialized — refetch it or stale ids keep gating pick buttons.
+        // Not needed in the 400 branch: a rejected payload changes nothing.
+        void queryClient.invalidateQueries({ queryKey: ["me", "districts"] });
         // The anonymous search just became a saved ballot — same prompt
         // moment as the explicit address save below.
         void registerForPushRequestingPermission();
@@ -301,7 +310,12 @@ function SavedBallotBody({ email }: { email: string }) {
         // Show all" line above explains the empty view.
         <View className="mt-4 gap-3">
           {filtersView.visibleElections.map((election) => (
-            <ElectionCard key={election.id} election={election} savedAreaIds={savedAreaIds} />
+            <ElectionCard
+              key={election.id}
+              election={election}
+              savedAreaIds={savedAreaIds}
+              myChoice={choiceByElectionId?.get(election.id)}
+            />
           ))}
         </View>
       )}
