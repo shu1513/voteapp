@@ -18,6 +18,7 @@ export * from "./partyLabel";
 export * from "./pickProgress";
 export * from "./profileLinks";
 export * from "./railSort";
+export * from "./rankedResearchAreas";
 export * from "./researchAreaPriority";
 export * from "./researchAreaScoring";
 export * from "./resultBadges";
