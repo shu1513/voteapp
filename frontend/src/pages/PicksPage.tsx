@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { apiRequest, formatElectionDate, useElectionChoices, useMe } from "@voteapp/api-client";
-import type { AutoPickElectionResult, BallotSummary, ElectionChoice, ElectionSummary, PickCardShare } from "@voteapp/api-client";
+import { useQuery } from "@tanstack/react-query";
+import { apiRequest, formatElectionDate, useElectionChoices, useMe, useMintPickCardShare } from "@voteapp/api-client";
+import type { AutoPickElectionResult, BallotSummary, ElectionChoice, ElectionSummary } from "@voteapp/api-client";
 import { AutoPickFillControl, reasonLabel } from "../components/AutoPickFillControl";
 import { RemoveStrandedPickButton } from "../components/ElectionChoiceControls";
 import { BallotPreviewSheets, BallotViewToggle } from "../components/BallotPreview";
@@ -201,13 +201,7 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
   // in the name itself. Same label on both control shapes (mint button,
   // then ShareButton) so the control keeps one identity across the swap.
   const shareLabel = `Share my ${formatElectionDate(electionDate)} picks`;
-  const mint = useMutation({
-    mutationFn: () =>
-      apiRequest<{ share: PickCardShare }>("/api/me/pick-card-shares", {
-        method: "POST",
-        body: { election_date: electionDate },
-      }),
-  });
+  const mint = useMintPickCardShare();
 
   if (mint.isSuccess) {
     const path = `/picks/${mint.data.share.token}`;
@@ -254,7 +248,7 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
       <button
         type="button"
         disabled={mint.isPending}
-        onClick={() => mint.mutate()}
+        onClick={() => mint.mutate(electionDate)}
         aria-label={shareLabel}
         className="rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink transition hover:border-ink disabled:opacity-50"
       >
