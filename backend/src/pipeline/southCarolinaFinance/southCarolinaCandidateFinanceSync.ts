@@ -138,9 +138,10 @@ export async function syncSouthCarolinaCandidateFinance(input: {
     };
   }
 
-  // One detail per election-date phase of each run: a run that crosses the
-  // primary/general boundary restarts its cumulative totals there, so the
-  // aggregator needs every phase's final report, not just the newest.
+  // One detail per election-date phase of each run: across the
+  // primary/general boundary a run's cumulative totals either reset or
+  // continue (filer-dependent), so the aggregator needs every phase's final
+  // report to classify the boundary and combine correctly.
   const detailsByReportId = new Map<number, SouthCarolinaReportDetails>();
   for (const run of runs) {
     for (const phaseFinal of run.phaseFinals) {

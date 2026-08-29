@@ -52,11 +52,12 @@ export type SouthCarolinaAcceptedRun = {
   // The run's newest filing period (the index already points at the newest
   // version of each period). Its balance is the run's cash on hand.
   finalReport: SouthCarolinaCandidateReportRow;
-  // One final report per election date the run spans, oldest first. Cycle
-  // totals RESET when a run crosses from the primary to the general (the
-  // source keeps one campaignId but restarts the cumulative), so the run's
-  // money is the SUM across phases — the last report alone is only the last
-  // phase. Single-phase runs hold exactly [finalReport].
+  // One final report per election date the run spans, oldest first. When a
+  // run crosses the primary/general boundary the source keeps one campaignId
+  // but the cycle totals either RESET or CONTINUE there, varying by filer —
+  // the aggregator classifies each boundary from the reported balances, so it
+  // needs every phase's final, not just the newest. Single-phase runs hold
+  // exactly [finalReport].
   phaseFinals: readonly SouthCarolinaCandidateReportRow[];
 };
 
@@ -158,8 +159,9 @@ export function selectSouthCarolinaAcceptedRuns(
   const runs: SouthCarolinaAcceptedRun[] = [];
   for (const [campaignId, rows] of byRun) {
     // Split the run into election-date phases before picking finals: a run
-    // that crosses the primary/general boundary restarts its cumulative
-    // totals there, so each phase carries its own cycle totals.
+    // that crosses the primary/general boundary may restart its cumulative
+    // totals there (filer-dependent), so the aggregator needs each phase's
+    // own final to classify and combine.
     const byPhase = new Map<string, SouthCarolinaCandidateReportRow[]>();
     for (const row of rows) {
       const phaseRows = byPhase.get(row.electionDate) ?? [];
@@ -352,26 +354,83 @@ export function aggregateSouthCarolinaDirectFinance(input: {
     let disbursementsCents = 0;
     const runTargets = new Map<number, { cashInKindCents: number; personalCents: number }>();
     for (const run of runs) {
-      // Sum the run's election-date phases: a primary→general run restarts its
-      // cumulative at the boundary, so the last phase alone would drop every
-      // dollar raised before it.
-      let runCashInKindCents = 0;
-      let runPersonalCents = 0;
-      for (const phaseFinal of run.phaseFinals) {
+      // A run spanning more than one election date behaves TWO ways in the
+      // source, varying by filer (both live-proven 2026-08-29):
+      // - reset: the later phase's cycle totals restart at the boundary
+      //   (Mitchell 57316: general detail period == cycle == $14,450), so the
+      //   run's money is the SUM of its phases;
+      // - continuation: the later phase's cycle totals still include the
+      //   earlier phase (Forrest 11869: general detail period $19,993.10,
+      //   cycle $39,019.12 = primary $19,026.02 + period), so the later
+      //   phase SUBSUMES the earlier one and summing double-counts.
+      // Balances carry across the boundary in both models, so the index rows
+      // decide which one holds: exactly one model reproduces the later
+      // phase's balance from the earlier one. Ambiguous or unexplained
+      // boundaries fail closed.
+      const phases = run.phaseFinals.map((phaseFinal) => {
         const details = input.detailsByReportId.get(phaseFinal.reportId);
         if (!details) {
           throw new Error(`Missing South Carolina report details for report ${phaseFinal.reportId}`);
         }
-        const totals = cycleTotalsFromDetails(run.campaignId, phaseFinal, details);
-        totalReceiptsCents += totals.totalReceiptsCents;
-        directCents += totals.directCents;
-        disbursementsCents += totals.disbursementsCents;
-        runCashInKindCents += totals.cashInKindCents;
-        runPersonalCents += totals.personalCents;
+        return {
+          balanceCents: toCents(phaseFinal.balance, `run ${run.campaignId} report ${phaseFinal.reportId} balance`),
+          totals: cycleTotalsFromDetails(run.campaignId, phaseFinal, details),
+        };
+      });
+      // Closed segments (ended by a reset) accumulate; `current` is the phase
+      // whose cycle totals cover everything since the last reset.
+      let closed: RunCycleTotals = {
+        totalReceiptsCents: 0,
+        directCents: 0,
+        cashInKindCents: 0,
+        personalCents: 0,
+        disbursementsCents: 0,
+      };
+      let current = phases[0]!;
+      for (const next of phases.slice(1)) {
+        const resetHolds =
+          current.balanceCents + next.totals.totalReceiptsCents - next.totals.disbursementsCents ===
+          next.balanceCents;
+        const continuationHolds =
+          current.balanceCents +
+            (next.totals.totalReceiptsCents - current.totals.totalReceiptsCents) -
+            (next.totals.disbursementsCents - current.totals.disbursementsCents) ===
+          next.balanceCents;
+        if (resetHolds && continuationHolds) {
+          // Both hold exactly when the earlier phase's receipts equal its
+          // spending. All-zero is degenerate — the two models give identical
+          // totals — so treat it as continuation; nonzero is truly ambiguous.
+          if (current.totals.totalReceiptsCents !== 0 || current.totals.disbursementsCents !== 0) {
+            throw new AggregationFailure(
+              `South Carolina finance run ${run.campaignId} phase boundary is ambiguous: earlier-phase receipts equal spending, so balances cannot distinguish cumulative reset from continuation`
+            );
+          }
+          current = next;
+          continue;
+        }
+        if (resetHolds) {
+          closed = {
+            totalReceiptsCents: closed.totalReceiptsCents + current.totals.totalReceiptsCents,
+            directCents: closed.directCents + current.totals.directCents,
+            cashInKindCents: closed.cashInKindCents + current.totals.cashInKindCents,
+            personalCents: closed.personalCents + current.totals.personalCents,
+            disbursementsCents: closed.disbursementsCents + current.totals.disbursementsCents,
+          };
+          current = next;
+        } else if (continuationHolds) {
+          current = next;
+        } else {
+          throw new AggregationFailure(
+            `South Carolina finance run ${run.campaignId} phase boundary matches neither cumulative reset nor continuation against the reported balances`
+          );
+        }
       }
+      totalReceiptsCents += closed.totalReceiptsCents + current.totals.totalReceiptsCents;
+      directCents += closed.directCents + current.totals.directCents;
+      disbursementsCents += closed.disbursementsCents + current.totals.disbursementsCents;
       runTargets.set(run.campaignId, {
-        cashInKindCents: runCashInKindCents,
-        personalCents: runPersonalCents,
+        cashInKindCents: closed.cashInKindCents + current.totals.cashInKindCents,
+        personalCents: closed.personalCents + current.totals.personalCents,
       });
     }
 

@@ -223,6 +223,91 @@ describe("aggregateSouthCarolinaDirectFinance", () => {
     });
   });
 
+  it("does not double-count a run whose cumulative CONTINUES across the boundary (Cally Forrest live numbers)", () => {
+    // Filer 11869, run 79677: the general-phase Quarter 2 report's cycle total
+    // already includes the primary phase — live detail shows period $19,993.10
+    // but cycle $39,019.12 = primary $19,026.02 + period. The balances prove
+    // continuation (17,834.90 + 19,993.10 − 10,184.77 = 27,643.23), so the
+    // run's money is the LAST phase's cycle totals alone, never the sum.
+    const primaryPhaseFinal = reportRow({
+      reportId: 425594,
+      campaignId: 79677,
+      electionDate: "6/9/2026",
+      contributions: 19026.02,
+      expenses: 20974.69,
+      balance: 17834.9,
+      filingEndDate: "2026-05-20T00:00:00",
+    });
+    const generalPhaseFinal = reportRow({
+      reportId: 423469,
+      campaignId: 79677,
+      electionDate: "11/3/2026",
+      contributions: 39019.12,
+      expenses: 31159.46,
+      balance: 27643.23,
+      filingEndDate: "2026-06-30T00:00:00",
+    });
+    const result = aggregateSouthCarolinaDirectFinance({
+      candidateFilerId: 11869,
+      electionYear: 2026,
+      reports: [primaryPhaseFinal, generalPhaseFinal],
+      detailsByReportId: new Map([
+        [425594, details({ cash: 19026.02, expTotal: 20974.69, endingBalance: 17834.9 })],
+        [423469, details({ cash: 39019.12, expTotal: 31159.46, endingBalance: 27643.23 })],
+      ]),
+      contributionRows: [
+        contributionRow({ contributionId: 1, candidateId: 11869, officeRunId: 79677, amount: 30000, contributorName: "Run Donors" }),
+      ],
+      acceptedElectionDates: ["6/9/2026", "11/3/2026"],
+    });
+
+    expect(result).toMatchObject({
+      status: "aggregated",
+      runCount: 1,
+      // The general phase subsumes the primary: $39,019.12, NOT $58,045.14.
+      totalReceipts: 39019.12,
+      directContributionTotal: 39019.12,
+      totalDisbursements: 31159.46,
+      cashOnHand: 27643.23,
+    });
+  });
+
+  it("fails closed when a phase boundary cannot be classified from the balances", () => {
+    // Earlier-phase receipts equal its spending (both nonzero): the reset and
+    // continuation models predict the same balance but different run totals.
+    const primaryPhaseFinal = reportRow({
+      reportId: 1,
+      campaignId: 100,
+      electionDate: "6/9/2026",
+      contributions: 5000,
+      expenses: 5000,
+      balance: 0,
+      filingEndDate: "2026-05-20T00:00:00",
+    });
+    const generalPhaseFinal = reportRow({
+      reportId: 2,
+      campaignId: 100,
+      electionDate: "11/3/2026",
+      contributions: 1000,
+      expenses: 200,
+      balance: 800,
+      filingEndDate: "2026-06-30T00:00:00",
+    });
+    const result = aggregateSouthCarolinaDirectFinance({
+      candidateFilerId: 54395,
+      electionYear: 2026,
+      reports: [primaryPhaseFinal, generalPhaseFinal],
+      detailsByReportId: new Map([
+        [1, details({ cash: 5000, expTotal: 5000, endingBalance: 0 })],
+        [2, details({ cash: 1000, expTotal: 200, endingBalance: 800 })],
+      ]),
+      contributionRows: [],
+      acceptedElectionDates: ["6/9/2026", "11/3/2026"],
+    });
+    expect(result.status).toBe("failed");
+    expect((result as { diagnostics: string[] }).diagnostics[0]).toContain("ambiguous");
+  });
+
   it("sums totals across runs, excludes loans and credits from the direct total, and takes cash on hand from the latest report", () => {
     const primaryFinal = reportRow({
       reportId: 10,
