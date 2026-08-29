@@ -28,10 +28,12 @@ itself, which is exactly that claim. The distinction is the area description, no
 
 ## Traps caught while reading, and how the descriptions answer them
 
-- **AB 572's duty is not absolute.** It does not apply if the family member is under custodial
-  interrogation, or if delay would lose or destroy evidence or pose an imminent threat to public
-  safety. Both exceptions are stated — the SB 627 / SB 2972 lesson that a qualified duty must carry
-  its qualification.
+- **AB 572's duty is not absolute, and the digest misstates the exception.** The chaptered
+  digest says the advisements do not apply to a family member "under custodial interrogation"; the
+  enacted text (Gov. Code 7287(c)(2)) instead excepts a family member who has already received
+  **substantially equivalent or Miranda advisements**. The descriptions follow the statute, carry
+  the evidence/imminent-threat exception too, state that the duties run through a mandatory agency
+  policy due 2027-01-01, and include the separate flat ban on threats or deception (7287(b)).
 - **AB 1037 removes a training requirement.** Expanding naloxone access and dropping the training
   precondition are the same provision's two halves, and the descriptions say both rather than only
   the appealing half.
@@ -42,8 +44,10 @@ itself, which is exactly that claim. The distinction is the area description, no
   structure in a listed district and an individually listed landmark are still excluded, local
   agencies may still adopt objective standards for district character, and a lot split still may not
   require demolishing the named structures.
-- **SB 30 has three exemption routes** (federal emissions tier, equivalent emissions, engine
-  removed), all stated; it is not a flat ban on transferring rail equipment.
+- **SB 30's exemption is conjunctive.** A transfer needs BOTH a qualifying condition (federal
+  emissions tier, equivalent emissions, or engine removed) AND authorization at a public hearing
+  (Pub. Util. Code 99153.5(c) requires "both of the following criteria"). It also binds any "public
+  entity" that owns the equipment, not only transit agencies. Both fixed on review, see below.
 - **SB 596 is an enforcement-mechanics bill**, not a new ratio. The descriptions say what changed:
   the on-call list definition, what does not count as exhausting it, and separate days as separate
   violations.
@@ -87,3 +91,40 @@ run is what `import-rerun-report.json` holds. **A single `citation URL fetch tim
 flake, not a data problem: re-run before investigating.**
 
 Prod untouched.
+
+## Review response (2026-08-29) — 5 descriptions corrected, 358 records rewritten in place
+
+External review on PR #933 raised five findings. Four verified fully true, one partially; every
+defect was re-verified against the chaptered text before fixing. 10 rolls re-judged, **358 records
+rewritten** (SB 30 = 76, SB 73 = 76, AB 572 = 64, AB 858 = 68, SB 763 = 74), re-run 1,588
+`unchanged` / 0 errors. Row count unchanged at 1,588 / 80 candidates; the batch's other 14 rolls
+kept their `2026-08-29T05:00:09.638Z` stamp, the rewritten 10 now carry
+`2026-08-29T05:22:44.691Z`. `import-rewrite-report.json` and the refreshed
+`import-rerun-report.json` are the machine ledgers.
+
+1. **SB 30** (P1, true): the exemption requires a qualifying condition AND a public hearing —
+   §99153.5(c) says "both of the following criteria" — and binds any public entity. The first pass
+   presented qualifying equipment as automatically exempt and said "public transit agency".
+2. **SB 73** (P1, partially true): two real defects fixed — the voting-fraud exception belongs only
+   to the rosters/voter-lists rule (§15553), not to certified voting technology (§19230(b), court
+   order only), and both rules carry a written-agreement carve-out for logistical, transportation,
+   or security support that the first pass omitted. **The reviewer's third sub-claim did not
+   verify**: nothing in chaptered SB 73 creates a separate federal-agency rule or requires a
+   *federal* court order — both sections say "a court order", and federal agencies appear only in
+   the shared definition of "law enforcement agency". The descriptions state the two rules
+   separately and add the carve-out; they say nothing about federal courts.
+3. **AB 572** (P1, true): the enacted exception is "substantially equivalent or Miranda
+   advisements", not "custodial interrogation" — the first pass copied the CHAPTERED DIGEST's loose
+   paraphrase, which is a new hazard for the state file: **even the digest attached to the chaptered
+   text can misstate an operative clause; exceptions must be read from the statute**. The omitted
+   §7287(b) threats-and-deception ban and the agency-policy mechanism (due 2027-01-01) are now in.
+4. **AB 858** (P2, true): the recall law covers specified enterprises — hotels, private clubs,
+   event centers, airport hospitality and service providers, building services for commercial
+   buildings — and pandemic-related layoffs of employees with six months' service. The first pass
+   read as if it covered all employers.
+5. **SB 763** (P2, true): every amount is a maximum — corporate fine "not more than" $6 million,
+   individual "not more than" $1 million (each with a gain/loss alternative if greater), and the
+   civil penalty "not more than" $1 million per violation, assessed in an action by the Attorney
+   General or a district attorney (§16755.1). The first pass stated fixed amounts.
+
+Plain-language lint re-run after the fixes: **0 warnings across all 48 descriptions**.
