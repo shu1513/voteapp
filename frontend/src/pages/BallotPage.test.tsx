@@ -687,6 +687,25 @@ describe("BallotPage", () => {
       expect(screen.queryByRole("link", { name: "Request your ballot online" })).not.toBeInTheDocument();
     });
 
+    it("closes from the panel's close button and returns focus to the trigger", async () => {
+      stubApiRoutes({
+        ...ANONYMOUS,
+        "/api/ballot": { body: ballotSummary([electionSummary()]) },
+        "/api/state-resources": { body: { state_resources: AK_RESOURCES } },
+      });
+      const user = userEvent.setup();
+      renderBallot("/ballot?d=d-1");
+
+      const toggle = await screen.findByRole("button", { name: "How to vote in AK" });
+      await user.click(toggle);
+      expect(await screen.findByRole("link", { name: "Find your polling place" })).toBeInTheDocument();
+
+      await user.click(screen.getByRole("button", { name: "Close" }));
+      expect(screen.queryByRole("link", { name: "Find your polling place" })).not.toBeInTheDocument();
+      expect(toggle).toHaveAttribute("aria-expanded", "false");
+      expect(toggle).toHaveFocus();
+    });
+
     it("fetches the resources lazily, only when the disclosure opens", async () => {
       const fetchMock = stubApiRoutes({
         ...ANONYMOUS,
