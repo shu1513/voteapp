@@ -19,13 +19,20 @@ describe("refreshAlabamaCampaignFinanceRawData script", () => {
       cacheDir: "/cache",
       timeoutMs: 5000,
       force: true,
+      acceptEmpty: false,
     });
     expect(parseArgs(["--artifact-kind=expenditures"])).toMatchObject({
       years: [new Date().getUTCFullYear()],
       artifactKind: "expenditure",
       timeoutMs: undefined,
       force: false,
+      acceptEmpty: false,
     });
+  });
+
+  it("keeps gate bypass and empty-extract acceptance separate", () => {
+    expect(parseArgs(["--force"])).toMatchObject({ force: true, acceptEmpty: false });
+    expect(parseArgs(["--accept-empty"])).toMatchObject({ force: false, acceptEmpty: true });
   });
 
   it("dedupes repeated years preserving order", () => {

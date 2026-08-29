@@ -21,11 +21,18 @@ export type RefreshAlabamaCampaignFinanceRawDataScriptOptions = {
   years: number[];
   artifactKind: AlabamaExtractKind;
   cacheDir: string;
+  /** Bypasses only the refresh feature sub-gate, never cache safety. */
   force: boolean;
+  /**
+   * Forwarded as the cache's force: lets a 0-row extract displace a
+   * populated artifact. Deliberately separate from --force so routine
+   * gate-bypass runs keep the last-good-artifact guarantee.
+   */
+  acceptEmpty: boolean;
   timeoutMs: number | undefined;
 };
 
-const BOOLEAN_FLAGS = new Set(["--force"]);
+const BOOLEAN_FLAGS = new Set(["--force", "--accept-empty"]);
 const VALUE_FLAGS = new Set(["--year", "--artifact-kind", "--cache-dir", "--timeout-ms"]);
 
 function readValueFlags(args: readonly string[], name: string): string[] {
@@ -82,6 +89,7 @@ export function parseRefreshAlabamaCampaignFinanceRawDataScriptArgs(
         (process.env.ALABAMA_FCPA_RAW_DATA_CACHE_DIR?.trim() || DEFAULT_ALABAMA_FCPA_CACHE_DIR)
     ),
     force: args.includes("--force"),
+    acceptEmpty: args.includes("--accept-empty"),
     timeoutMs: timeoutValue === undefined ? undefined : Number(timeoutValue),
   };
 }
@@ -104,7 +112,7 @@ export async function runRefreshAlabamaCampaignFinanceRawDataScript(input: {
       year,
       cacheDir: input.options.cacheDir,
       catalog,
-      force: input.options.force,
+      force: input.options.acceptEmpty,
       clientOptions,
     });
     artifacts.push({
