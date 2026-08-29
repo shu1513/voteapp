@@ -385,8 +385,19 @@ async function main(): Promise<void> {
       // standing committees, chamber `J`) are rejected before the queue —
       // the same disposition an unknown-desc committee-sized tally gets,
       // decided on the chamber code because such a roll has no chamber to
-      // size against.
+      // size against. The check runs before parsing (which rightly refuses
+      // a chamber-less roll), so a --bills run must apply its filter here
+      // too, off the raw bill_id — otherwise this counter alone would stay
+      // session-wide while every other disposition is scoped to the run.
       if (isLegiscanCommitteeChamberRollCall(vote.rollCall)) {
+        if (billFilter !== null) {
+          const billId = vote.rollCall.bill_id;
+          const bill = typeof billId === "number" ? dataset.billsById.get(billId) : undefined;
+          if (!bill || !billFilter.has(bill.measureId)) {
+            billFilterMisses += 1;
+            continue;
+          }
+        }
         committeeVotes += 1;
         continue;
       }
