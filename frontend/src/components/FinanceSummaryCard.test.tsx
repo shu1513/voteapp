@@ -120,6 +120,28 @@ describe("FinanceSummaryCard", () => {
     expect(screen.getByText(summary.direct_campaign.direct_coverage_note)).toBeInTheDocument();
   });
 
+  it("renders the Montana source label, coverage note, and COPP provenance fallback", () => {
+    const summary = emptyFinanceSummary();
+    summary.source = "MONTANA_COPP";
+    summary.direct_campaign.total_raised = 66517.57;
+    summary.direct_campaign.direct_coverage_note =
+      "Totals are summed from itemized Montana CERS filings and cross-checked across the state's disclosure surfaces; where consecutive reports exist they are verified against the official cash-balance chain, which also supplies derived unitemized small-donor amounts.";
+    summary.direct_campaign.top_occupations = [
+      { category_name: "Retired", amount: 20000, contributor_count: 42, source_url: null },
+    ];
+
+    render(<FinanceSummaryCard summary={summary} />);
+
+    expect(screen.getByText(/Source: Montana Commissioner of Political Practices/)).toBeInTheDocument();
+    expect(screen.getByText(summary.direct_campaign.direct_coverage_note)).toBeInTheDocument();
+    // No row carries a source URL, so the footer link falls back to the COPP
+    // home page (CERS deep links are POST/session driven).
+    expect(screen.getByRole("link", { name: "politicalpractices.mt.gov" })).toHaveAttribute(
+      "href",
+      "https://politicalpractices.mt.gov/"
+    );
+  });
+
   it("renders Missouri occupations, coverage notes, and source provenance", () => {
     const summary = financeSummary();
     summary.source = "MISSOURI_MEC";

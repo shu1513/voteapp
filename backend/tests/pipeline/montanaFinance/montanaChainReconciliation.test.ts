@@ -190,6 +190,49 @@ describe("reconcileMontanaCashBeginChain", () => {
     expect(result.derivedEndingBalanceCents).toBe(137_000);
   });
 
+  it("accepts a side rollover via the combined equation (Eddy / Supreme Court shape)", () => {
+    // CERS moved the whole balance to the general side after the primary:
+    // prim 2,400 -> 0, gen 39 -> 2,127 while money is conserved (spent 312).
+    const result = reconcileMontanaCashBeginChain([
+      report({
+        reportId: 77699,
+        primBeginCents: 240_000,
+        genBeginCents: 3_900,
+        primaryOutCents: 31_200,
+      }),
+      report({ reportId: 79155, primBeginCents: 0, genBeginCents: 212_700 }),
+    ]);
+    expect(result.ok).toBe(true);
+    expect(result.links).toEqual([
+      expect.objectContaining({ side: "combined", lumpCents: 0, ok: true }),
+    ]);
+    expect(result.derivedEndingBalanceCents).toBe(212_700);
+  });
+
+  it("never lets offsetting per-side failures pass as combined outside a primary collapse", () => {
+    // Primary is short $600 while general is over $600: money is conserved
+    // combined, but the primary side did NOT collapse to zero, so this is
+    // inconsistent source data — not a rollover — and must fail closed.
+    const result = reconcileMontanaCashBeginChain([
+      report({ reportId: 1, primBeginCents: 100_000, genBeginCents: 50_000 }),
+      report({ reportId: 2, primBeginCents: 40_000, genBeginCents: 110_000 }),
+    ]);
+    expect(result.ok).toBe(false);
+    expect(result.links.some((link) => link.side === "combined")).toBe(false);
+    expect(result.links.filter((link) => !link.ok)).toHaveLength(2);
+  });
+
+  it("still fails closed when a rollover does not conserve money", () => {
+    const result = reconcileMontanaCashBeginChain([
+      report({ reportId: 1, primBeginCents: 240_000, genBeginCents: 3_900 }),
+      // Combined balance shrank by more than any lump could explain.
+      report({ reportId: 2, primBeginCents: 0, genBeginCents: 100_000 }),
+    ]);
+    expect(result.ok).toBe(false);
+    // The per-side failures remain the diagnostics.
+    expect(result.links.some((link) => link.side === "combined")).toBe(false);
+  });
+
   it("reconciles a single report chain with no checkable links", () => {
     const result = reconcileMontanaCashBeginChain([
       report({ reportId: 1, primBeginCents: 100, primaryInCents: 50 }),

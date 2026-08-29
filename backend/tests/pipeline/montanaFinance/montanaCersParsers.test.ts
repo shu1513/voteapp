@@ -93,6 +93,20 @@ describe("montanaCersParsers CSV exports", () => {
     expect(() => parseMontanaCersContributionExport(`${good}extra|cells\n`)).toThrow("columns");
   });
 
+  it("reassembles a logical row split by an embedded newline (unquoted export)", async () => {
+    const good = await fixture("contributions-export-sanitized.csv");
+    const lines = good.trimEnd().split("\n");
+    const last = lines.pop()!;
+    const cells = last.split("|");
+    const expectedCents = parseMontanaCersCsvAmountCents(cells[14]!);
+    // Break the contributor-address field (column 7) across two physical
+    // lines — the shape observed live on an Eddy contributor row.
+    cells[6] = `${cells[6]} Line One\nLine Two`;
+    const rows = parseMontanaCersContributionExport(`${[...lines, cells.join("|")].join("\n")}\n`);
+    expect(rows).toHaveLength(5);
+    expect(rows.at(-1)!.amountCents).toBe(expectedCents);
+  });
+
   it("keeps the pinned header at exactly 18 columns", () => {
     expect(MONTANA_CERS_CONTRIBUTION_EXPORT_HEADER).toHaveLength(18);
   });
@@ -164,6 +178,27 @@ describe("montanaCersParsers report detail", () => {
     expect(() => parseMontanaCersFinanceRepDetailList("<html><title>Tomcat error</title></html>")).toThrow(
       /Tomcat error/
     );
+  });
+
+  it("accepts an untyped election side only on zero-amount placeholder rows", async () => {
+    const artifact = JSON.parse(await fixture("report-detail-sanitized.json")) as {
+      lists: Record<string, Record<string, unknown>[]>;
+    };
+    // Observed live (Eddy / Supreme Court): an all-zero Loans row with
+    // amountTypeDescr "".
+    const zeroRow = {
+      ...artifact.lists.individual![0]!,
+      amountTypeDescr: "",
+      cashAmt: 0,
+      inKindAmt: 0,
+      totalAmt: 0,
+      debtAmt: 0,
+    };
+    const [parsed] = parseMontanaCersFinanceRepDetailList(JSON.stringify([zeroRow]));
+    expect(parsed!.amountTypeDescr).toBeNull();
+    // Money without a side could land on the wrong side of the chain.
+    const moneyRow = { ...zeroRow, cashAmt: 1, totalAmt: 1 };
+    expect(() => parseMontanaCersFinanceRepDetailList(JSON.stringify([moneyRow]))).toThrow("amountTypeDescr");
   });
 
   it("distinguishes a legitimate empty list from an empty body", () => {

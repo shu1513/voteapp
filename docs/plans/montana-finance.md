@@ -1,6 +1,6 @@
 # Montana campaign finance — build plan
 
-Status: rev 4 — Phase 1 BUILT 2026-08-27 (migration 261, montanaFinance module: client/parsers/cache/canonical selection/chain reconciliation, probe ALL GATES PASSED live incl. cent-exact chain link + 210/210 occupation); next = Phase 2a
+Status: rev 5 — Phase 2a BUILT 2026-08-28 (resolver/auto-link/aggregator/writer/sync/due-list/batch/scheduler/scripts/loader registered; live-verified: payment list = debt repayment so "spent" = expendOther+pettyCash, CSV↔JSON cross-checks cent-exact, empty-lastName financial search, full Bedey 8-report chain closes, end-to-end dry-run smoke on Bedey+Eddy); next = Phase 2b (outside) or Phase 3 (local live run)
 Source facts: `backend/docs/montana-campaign-finance.md` (endpoint recipe + gotchas; **commit it with Phase 1** — untracked files don't reach other checkouts)
 Template module: `backend/src/pipeline/missouriFinance/` (per-candidate portal harvest,
 sha256+manifest artifact cache, occupation breakdown, outside spending, due-list sync)
@@ -270,7 +270,17 @@ legit-zero artifacts: schema-valid zero rows with zero controls = legitimate; em
 body / HTML error page / truncation = failure). Commit `backend/docs/montana-campaign-finance.md`.
 Gate: backend `npm run typecheck` + `npm test`.
 
-### Phase 2a — direct money PR
+### Phase 2a — direct money PR — BUILT 2026-08-28
+
+Discoveries (details in `backend/docs/montana-campaign-finance.md`): the
+`payment` detail list is debt/loan REPAYMENT (chain outflow, but excluded
+from the published "spent" = expendOther + pettyCash, matching the state's
+own EXPEND export); CSV↔JSON individual/committee/expenditure totals proven
+cent-exact and enforced as fail-closed cross-checks; financial search works
+with an empty lastName so acquisition needs only candidateId + year; the
+resolver matches against the full one-page year registration list (name +
+office-title + year exact, one fetch per batch).
+
 
 Resolver, auto-link (manual-link protection), direct aggregator (occupation +
 contribution sizes — Q1 passed; report-detail JSON source), writer wrapper, sync/due-list/batch/scheduler scripts, ballot-lookup

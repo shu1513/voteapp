@@ -141,6 +141,61 @@ cash; it feeds neither directContributionTotal nor the cash-begin chain.
 - Electioneering: rows carry `electioneeringInd`; C-7E/electioneering money must be
   kept out of support totals (MCA 13-1-101 electioneering = no advocacy).
 
+## Phase 2a facts (verified live 2026-08-28, full Bedey cycle: 8 canonical C5s)
+
+- **`payment` detail list = payments on debts and loans**, not campaign
+  spending: Bedey's `payment` total equals his `debtLoan` total to the cent
+  ($10,182.16 = the $10k loan + $182.16 debt, both repaid). The EXPEND CSV
+  export EXCLUDES it (only line item observed: "All Other Expenditures",
+  cent-exact equal to the `expendOther` list). So: chain outflow = payment +
+  expendOther + pettyCash cash (money leaving the bank), but the published
+  "spent" total = expendOther + pettyCash only (matches the state's own
+  export presentation).
+- Cross-checks enforced fail-closed by the aggregator: committee CSV == JSON
+  to the cent; EXPEND CSV == JSON `expendOther` + `pettyCash` (after the
+  side-transfer partition below). **The CONTR CSV is a threshold-filtered
+  public view**: it drops or rolls sub-threshold entries into a
+  "Contributions Less Than $35 Each" family (MCA 13-37-229's $50 cumulative
+  rule; Eddy's CSV runs $12,916.81 short of her fully-itemized JSON, all
+  explained by sub-$50 rows; Bedey's is complete). Gate: CSV individual
+  (+ less-than-35 family) may only be ≤ JSON, and the shortfall must fit
+  inside the sum of the JSON's sub-$50 rows. Totals ALWAYS come from the
+  JSON; the CSV feeds only the occupation breakdown.
+- The unquoted CSV can split one logical row across physical lines (a field
+  with an embedded newline — observed on an Eddy contributor row); the
+  parser reassembles short lines until the 18-column width lands exactly.
+- `searchFinancials` works with an **empty lastName** (CONTR and EXPEND):
+  `prepareDownloadFile`'s `candidateId` selects the entity, so acquisition
+  needs no name. The `(searchResults)` title assertion still gates the flow.
+- Full-cycle chain closes across all 8 canonical C5s; residual lumps are
+  small positives (Bedey total $389.45 unitemized), Incorporated C7s excluded.
+- **Inter-side fund transfers are booked as ordinary expenditures** with the
+  receiving side booking a matching misc receipt (`refunds` list). Observed
+  on BOTH probed filers: Eddy "Transfer of primary funds to general, no
+  primary" $241,307.00 (arriving as $241,169.05 — a $137.95 fee absorbed;
+  her `primCashBeg` drops to 0 next report) and Bedey "Transfer of Primary
+  funds to General Funds" $249.04. They are real cash flows for the chain
+  but NOT campaign spending: the aggregator partitions them out of "spent"
+  on BOTH surfaces by the exact filer idiom `transfer of (primary|general)
+  funds` (deliberately precision-over-recall — an ordinary payment
+  mentioning "transfer" must never be dropped, since the identical filter
+  runs on both surfaces and the cross-check could not catch it); the
+  EXPEND CSV includes them (Bedey verified), so the docs' earlier "162 rows
+  $61,467.18" figure includes his $249.04 transfer — published spent is
+  $61,218.14.
+- Should a rollover ever appear WITHOUT booked transfer flows (per-side
+  equations cannot close), chain reconciliation falls back to the COMBINED
+  conservation equation for that link (same lump gate; link
+  `side: "combined"`). Both probed filers close per-side.
+- Detail rows can be zero-amount placeholders with `amountTypeDescr: ""`
+  (observed: an all-zero `Loans` row on Eddy's first report). The parser
+  accepts the empty side ONLY when every amount field is zero.
+- Candidate-search `officeTitle` shapes (full 1,089-row 2026 list):
+  `Senate District No. 43`, `House District No. 12`, `Supreme Court Justice
+  No. 03`/`No. 04` (zero-padded seats), `Public Service Commission District
+  No. 1`, `District Judge, District 4 Dept. 2`. The full year list is a
+  single DataTables page (~3 MB) — one fetch serves a whole auto-link batch.
+
 ## Build notes
 
 - Adapter shape: per-candidate CONTR + EXPEND export (cent-exact, occupation included)
