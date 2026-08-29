@@ -4,6 +4,7 @@ import type { CandidateRecord } from "./types";
 import {
   aggregateRecordAreaStances,
   buildResearchAreaWeights,
+  classifyStanceSummary,
   researchAreaWeightForRank,
   scoreStanceRelevance,
   UNRANKED_RESEARCH_AREA_RANK,
@@ -142,5 +143,73 @@ describe("scoreStanceRelevance", () => {
       record("r1", [{ area: AREA_ETHICS, slug: "ethics", stance: "for" }]),
     ]);
     expect(scoreStanceRelevance(unsavedOnly, weights)).toEqual({ score: 0, recordCount: 0 });
+  });
+});
+
+describe("classifyStanceSummary", () => {
+  const AREA_GUN = "dddddddd-dddd-4ddd-8ddd-dddddddddddd";
+  const preference = (areaId: string, rank: number | null) => ({
+    research_area_id: areaId,
+    slug: "any",
+    name: "Any",
+    description: null,
+    rank,
+    direction: "support" as const,
+    hard_veto: false,
+  });
+
+  it("splits areas into supports, opposes, and mixed with no majority collapse", () => {
+    const result = classifyStanceSummary(
+      [
+        record("r1", [{ area: AREA_HOUSING, slug: "housing_affordability", stance: "for" }]),
+        record("r2", [{ area: AREA_HOUSING, slug: "housing_affordability", stance: "for" }]),
+        record("r3", [{ area: AREA_SAFETY, slug: "public_safety_and_crime_control", stance: "against" }]),
+        // 4 for / 1 against still lands in mixed, never in supports.
+        record("r4", [{ area: AREA_GUN, slug: "gun_control", stance: "for" }]),
+        record("r5", [{ area: AREA_GUN, slug: "gun_control", stance: "for" }]),
+        record("r6", [{ area: AREA_GUN, slug: "gun_control", stance: "for" }]),
+        record("r7", [{ area: AREA_GUN, slug: "gun_control", stance: "for" }]),
+        record("r8", [{ area: AREA_GUN, slug: "gun_control", stance: "against" }]),
+      ],
+      []
+    );
+    expect(result.supports.map((area) => area.research_area_id)).toEqual([AREA_HOUSING]);
+    expect(result.opposes.map((area) => area.research_area_id)).toEqual([AREA_SAFETY]);
+    expect(result.mixed.map((area) => area.research_area_id)).toEqual([AREA_GUN]);
+    expect(result.mixed[0]).toMatchObject({ for_count: 4, against_count: 1 });
+  });
+
+  it("excludes evaluative areas and returns all-empty without stance-bearing records", () => {
+    const evaluativeOnly = classifyStanceSummary(
+      [
+        record("r1", [{ area: AREA_SAFETY, slug: "legal_competence", stance: "for" }]),
+        record("r2", [{ area: AREA_ETHICS, slug: "impartiality", stance: "against" }]),
+        // Relevance-only tag: the aggregator drops null stances already.
+        record("r3", [{ area: AREA_HOUSING, slug: "housing_affordability", stance: null }]),
+      ],
+      []
+    );
+    expect(evaluativeOnly).toEqual({ supports: [], opposes: [], mixed: [] });
+  });
+
+  it("orders by public salience with no preferences, saved rank first with them", () => {
+    const records = [
+      record("r1", [{ area: AREA_GUN, slug: "gun_control", stance: "for" }]),
+      record("r2", [{ area: AREA_HOUSING, slug: "housing_affordability", stance: "for" }]),
+      record("r3", [{ area: AREA_SAFETY, slug: "healthcare_affordability", stance: "for" }]),
+    ];
+    // Salience order: healthcare > housing > gun control.
+    expect(classifyStanceSummary(records, []).supports.map((area) => area.research_area_id)).toEqual([
+      AREA_SAFETY,
+      AREA_HOUSING,
+      AREA_GUN,
+    ]);
+    // Saved areas jump to the front by their own rank; the rest keep
+    // salience order behind them. An unranked save still beats unsaved.
+    expect(
+      classifyStanceSummary(records, [preference(AREA_GUN, 1), preference(AREA_HOUSING, null)]).supports.map(
+        (area) => area.research_area_id
+      )
+    ).toEqual([AREA_GUN, AREA_HOUSING, AREA_SAFETY]);
   });
 });

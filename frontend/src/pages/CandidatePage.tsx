@@ -9,7 +9,7 @@ import type {
   RecordAreaStance,
   ResearchAreaPreference,
 } from "@voteapp/api-client";
-import { aggregateRecordAreaStances } from "@voteapp/api-client";
+import { classifyStanceSummary, EVALUATIVE_AREA_SLUGS } from "@voteapp/api-client";
 import {
   CANDIDATE_RAIL_SORTS,
   candidateRailSortsOffered,
@@ -234,13 +234,6 @@ function groupStanceCounts(group: RecordGroup): { forCount: number; againstCount
   return { forCount, againstCount };
 }
 
-// Judicial evaluative areas, where a for/against tag grades the EVIDENCE
-// (favorable/unfavorable), not the candidate's advocacy — the label contract
-// requires a stance on every non-neutral area, these two included. Advocacy
-// verbs there would state an intent the data never claimed ("Opposes Legal
-// Competence"), so they get evidence wording instead.
-const EVALUATIVE_AREA_SLUGS = new Set(["legal_competence", "impartiality"]);
-
 // The stance phrase names its topic ("Supports Gun Control", never a bare
 // "For") because cards get read without their group heading — quoted,
 // screenshotted, or far down an open group — and next to a "Voted no ..."
@@ -262,46 +255,6 @@ function StanceChip({ stance, label }: { stance: "for" | "against"; label: strin
       {label}
     </span>
   );
-}
-
-// Page-top stance summary: every area classifies on the same counts the
-// election roster rows color by (aggregateRecordAreaStances) — all-for is
-// Supports, all-against is Opposes, any split is Mixed. Deliberately no
-// majority rule: one against-record among five for-records makes the area
-// Mixed, because collapsing it to "Supports" would assert a position the
-// evidence doesn't hold. Evaluative areas are excluded — their for/against
-// grades the evidence, not advocacy (see EVALUATIVE_AREA_SLUGS), so they
-// have no place in a supports/opposes box; null-stance areas (general,
-// integrity_and_ethics) never leave the aggregator. Order matches the record
-// groups below: the viewer's saved areas first by their own rank (passed
-// only in the "my issues first" view — empty otherwise), everything else by
-// public salience.
-function classifyStanceSummary(
-  records: readonly CandidateRecord[],
-  preferences: readonly ResearchAreaPreference[]
-): {
-  supports: RecordAreaStance[];
-  opposes: RecordAreaStance[];
-  mixed: RecordAreaStance[];
-} {
-  const rankByAreaId = new Map(
-    preferences.map((preference) => [preference.research_area_id, preference.rank ?? UNRANKED_RESEARCH_AREA_RANK])
-  );
-  const areas = aggregateRecordAreaStances(records)
-    .filter((area) => !EVALUATIVE_AREA_SLUGS.has(area.slug))
-    .sort(
-      (a, b) =>
-        (rankByAreaId.get(a.research_area_id) ?? Number.POSITIVE_INFINITY) -
-          (rankByAreaId.get(b.research_area_id) ?? Number.POSITIVE_INFINITY) ||
-        compareByResearchAreaPriority(a, b)
-    );
-  return {
-    // Every aggregated area has for_count + against_count >= 1, so a zero on
-    // one side means the record is unanimous the other way.
-    supports: areas.filter((area) => area.against_count === 0),
-    opposes: areas.filter((area) => area.for_count === 0),
-    mixed: areas.filter((area) => area.for_count > 0 && area.against_count > 0),
-  };
 }
 
 // The candidate-page counterpart of the measure page's "A YES vote means" /
