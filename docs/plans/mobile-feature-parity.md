@@ -1,7 +1,8 @@
 # Mobile feature parity — stance summary, picks, auto-pick, auth
 
 Status: planned 2026-08-28, revised same day after review. Phase 1
-implemented in PR #925 (this plan's own PR); phases 2–6 not started.
+implemented in PR #925 (this plan's own PR); Phase 2 implemented 2026-08-28
+(branch claude/mobile-phase2-pick-core); phases 3–6 not started.
 
 ## Context
 
@@ -102,7 +103,7 @@ No backend work is needed for phases 1–5; the auth epic may need none either
 Closes the "mobile parity = follow-up" note from web PR #709. First because it
 is the smallest end-to-end win and exercises the extract-to-shared workflow.
 
-## Phase 2 — pick core (one PR)
+## Phase 2 — pick core (one PR) — DONE (2026-08-28)
 
 The "add to cart" primitive: pick a candidate, pick Yes/No on a measure, see
 and undo the pick.
