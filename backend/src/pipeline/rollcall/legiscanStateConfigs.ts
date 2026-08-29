@@ -420,6 +420,106 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       /motion to lay on the table/,
     ],
   },
+  // Pennsylvania General Assembly, 2025-2026 Regular Session (LegiScan
+  // 2192). Vocabulary measured from the full dataset survey 2026-08-29:
+  // 4,935 bills, 5,038 roll calls, 260 people (203 House + 50 Senate seats
+  // plus mid-biennium turnover). The session is still LIVE (sine_die 0,
+  // dataset_date 2026-08-23), so this dataset grows.
+  //
+  // What the survey established:
+  // - Pennsylvania NAMES THE VENUE in every desc. A floor vote reads
+  //   `House Floor: HB 1431 PN 1746, FINAL PASSAGE`; a committee vote reads
+  //   `House Judiciary: Report Bill As Committed` / `Senate Appropriations:
+  //   Re-Reported as Committed`. Every one of the 1,660 floor-sized rolls
+  //   carries the literal `Floor:`, and no committee-sized roll does, so
+  //   every kept pattern anchors on that token (the Tennessee `FLOOR VOTE:`
+  //   shape). The chamber WORD in the desc is not reliable — four Senate
+  //   rolls are captioned `House Floor: PN1030, Concur in House Amendments`
+  //   — so no pattern reads it.
+  // - The desc puts the measure and its PRINTER'S NUMBER between the venue
+  //   and the question (`SB 246 PN 1009`, sometimes just `PN1225`, and
+  //   sometimes an amendment number too), which makes 3,881 of the 5,038
+  //   descs distinct. The question is always the comma-delimited TAIL, so
+  //   patterns match `floor:.*,` then anchor the question at `$`.
+  // - Passage is worded `FINAL PASSAGE`. Reconsidered passage votes are
+  //   spelled four different ways (`Final Passage - Reconsideration`,
+  //   `Final Passage-Reconsidered`, `Final Passage Reconsidered`,
+  //   `Reconsideration - Final Passage`, 9 rolls) and one two-thirds vote is
+  //   `Final Passage Constitutional 2/3 Vote`; all are genuine passage
+  //   votes on the bill. `Motion to Reconsider bill on final passage` also
+  //   ENDS in `final passage` but is the motion, not the question — it is
+  //   excluded by rule below, which is why the exclusions must run first.
+  // - Second-chamber agreement is `CONCURRENCE` in the House and
+  //   `Concur in House Amendments` (plus `Concurrence in House Amendments as
+  //   Amended` and `Concur in House Amendments to Senate Amendments`) in the
+  //   Senate. 50 rolls in all.
+  // - PA 2192 has NO conference-report and NO veto-override roll calls
+  //   (zero descs mention either), so those classes go unused here.
+  // - Amendment votes are the biggest floor family (373 House, ~90 Senate).
+  //   The House prints the amendment number as the whole tail
+  //   (`, 2025 A1363`) or glues it to the printer's number
+  //   (`PN1936 A02188`); the Senate names the offering senator
+  //   (`Brooks Amendment No. A-1422`). All are excluded by rule, along with
+  //   every `Motion to ...`, `Uncontested Calendar`, `Second Consideration`,
+  //   `CONSTITUTIONALITY` (a PA-specific point-of-order vote) and
+  //   `Re-referred`/`Recommit` roll. Without those exclusions ~795 floor
+  //   rolls would land in the surfaced queue.
+  // - With this entry the whole dataset classifies with NOTHING surfaced:
+  //   861 kept (811 passage / 50 concurrence, all bill type B), 795
+  //   excluded, 3,134 committee-sized, and 248 floor-sized rolls that are
+  //   all type `R` resolutions, dropped by the shared kept-types list before
+  //   this config is consulted.
+  // - Feed health: 0 duplicate roll_call_ids (the Texas 9.4% collapse is a
+  //   verified no-op here), 0 summary-only rolls, 0 tally mismatches; 7
+  //   identity-duplicate extras, which the shared identity key collapses.
+  PA: {
+    jurisdiction: "PA",
+    sessionId: 2192,
+    chamberSizes: { house: 203, senate: 50 },
+    keptQuestions: [
+      // `House Floor: HB 1431 PN 1746, FINAL PASSAGE`,
+      // `Senate Floor: PN1936 A02188, Final Passage`.
+      { pattern: /floor:.*,\s*final passage$/, questionClass: "passage" },
+      // The four reconsidered-passage spellings and the 2/3 vote.
+      { pattern: /floor:.*,\s*final passage\s*-?\s*reconsider(?:ation|ed)$/, questionClass: "passage" },
+      { pattern: /floor:.*,\s*reconsideration\s*-\s*final passage$/, questionClass: "passage" },
+      { pattern: /floor:.*,\s*final passage constitutional 2\/3 vote$/, questionClass: "passage" },
+      // House second-chamber agreement.
+      { pattern: /floor:.*,\s*concurrence$/, questionClass: "concurrence" },
+      // Senate second-chamber agreement, all three spellings.
+      {
+        pattern: /floor:.*,\s*concur(?:rence)? in house amendments(?: to senate amendments| as amended)?$/,
+        questionClass: "concurrence",
+      },
+    ],
+    excludedQuestions: [
+      // Every procedural motion: table, suspend rules, appeal the ruling of
+      // the chair, proceed, postpone, previous question, and the
+      // `Motion to Reconsider bill on final passage` that would otherwise
+      // match the passage pattern's `$` anchor.
+      /\bmotion\b/,
+      // Senate amendment votes name the offering senator.
+      /\bamendment no\./,
+      // House amendment votes: `, 2025 A1363` as the tail, or the amendment
+      // number glued to the printer's number (`PN1936 A02188`).
+      /,\s*(?:19|20)\d{2}\s+a\d+$/,
+      /\ba\d{3,}$/,
+      // A PA point of order on whether the bill is constitutional, taken
+      // before passage; not a vote on the measure.
+      /,\s*constitutionality$/,
+      // Consent-calendar and pre-passage stages.
+      /\buncontested calendar\b/,
+      /\bsecond consideration\b/,
+      /\b2nd consideration\b/,
+      /,\s*third consideration as amended$/,
+      // Committal and housekeeping motions worded without the word "motion".
+      /\bre-referred\b/,
+      /\brecommit\b/,
+      /\breconsideration of request to go over$/,
+      /\btabled$/,
+      /,\s*reconsidered$/,
+    ],
+  },
 };
 
 export const LEGISCAN_STATE_JURISDICTIONS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);
