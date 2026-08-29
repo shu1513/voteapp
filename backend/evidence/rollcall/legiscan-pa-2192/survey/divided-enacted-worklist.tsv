@@ -1,0 +1,36 @@
+bill	roll	chamber	date	tally	question_class	disposition	reason
+HB103	1567196	house	2025-05-07	148-55	passage	batch-01	environment_and_public_health/for; House voted PN1113, Senate refined definitions into Act 28 of 2025
+HB1333	1584625	house	2025-06-04	155-47	passage	pending:appropriations	fund-the-government vote; no honest research area (federal + GA precedent)
+HB1334	1584720	house	2025-06-04	160-42	passage	pending:appropriations	fund-the-government vote; no honest research area (federal + GA precedent)
+HB1336	1585259	house	2025-06-04	157-45	passage	pending:appropriations	fund-the-government vote; no honest research area (federal + GA precedent)
+HB1337	1584650	house	2025-06-04	157-45	passage	pending:appropriations	fund-the-government vote; no honest research area (federal + GA precedent)
+HB1338	1584697	house	2025-06-04	154-48	passage	pending:appropriations	fund-the-government vote; no honest research area (federal + GA precedent)
+HB1339	1586705	house	2025-06-09	148-54	passage	pending:appropriations	fund-the-government vote; no honest research area (federal + GA precedent)
+HB1340	1584985	house	2025-06-04	102-100	passage	pending:appropriations	fund-the-government vote; no honest research area (federal + GA precedent)
+HB1420	1584712	house	2025-06-04	157-45	passage	pending:appropriations	fund-the-government vote; no honest research area (federal + GA precedent)
+HB1421	1609206	house	2025-11-12	151-52	passage	pending:appropriations	fund-the-government vote; no honest research area (federal + GA precedent)
+HB1425	1610608	house	2025-12-16	147-56	concurrence	batch-01	environment_and_public_health/for + cost_of_living_reduction/against; PN2675 is the enacted text of Act 57 of 2025
+HB1431	1588939	house	2025-06-11	131-72	passage	pending:no-defensible-stance	Sunday hunting repeal plus new hunting-trespass penalties; no research area carries a direction, and access-vs-landowner strands run opposite ways
+HB1431	1595475	senate	2025-06-26	34-16	passage	pending:no-defensible-stance	Sunday hunting repeal plus new hunting-trespass penalties; no research area carries a direction, and access-vs-landowner strands run opposite ways
+HB1431	1596553	house	2025-06-30	142-61	concurrence	pending:no-defensible-stance	Sunday hunting repeal plus new hunting-trespass penalties; no research area carries a direction, and access-vs-landowner strands run opposite ways
+HB1646	1598144	house	2025-07-09	115-88	passage	pending:trivia	changes the quorum of the State Board of Barber Examiners from six members to a majority of those serving
+HB2400	1681906	house	2026-04-14	107-94	passage	pending:appropriations	fund-the-government vote; no honest research area (federal + GA precedent)
+HB2409	1690040	house	2026-04-27	130-70	passage	pending:appropriations	fund-the-government vote; no honest research area (federal + GA precedent)
+HB2411	1689978	house	2026-04-27	102-98	passage	pending:appropriations	fund-the-government vote; no honest research area (federal + GA precedent)
+HB2411	1708759	house	2026-06-10	155-47	concurrence	pending:appropriations	fund-the-government vote; no honest research area (federal + GA precedent)
+HB2412	1713348	house	2026-07-01	155-47	passage	pending:appropriations	fund-the-government vote; no honest research area (federal + GA precedent)
+HB2559	1712266	house	2026-06-29	154-48	passage	pending:local-narrow	omnibus of individual land conveyances to named municipalities and nonprofits
+HB2559	1715710	house	2026-07-12	105-97	concurrence	pending:local-narrow	omnibus of individual land conveyances to named municipalities and nonprofits
+HB274	1610720	house	2025-12-17	157-46	concurrence	pending:mixed-direction	unemployment compensation: tightens requalification and job-search duties, but also adds domestic-violence eligibility and delays the benefit-cut solvency trigger — no honest single direction
+HB324	1478694	house	2025-02-03	161-41	passage	pending:no-defensible-stance	Poultry Technician Licensure Law: occupational-licensing streamlining that reads as efficiency and as weaker independent sampling
+HB331	1618244	house	2026-01-28	147-52	passage	pending:no-defensible-stance	magisterial district court fee plumbing (Access to Justice Account, Judicial Computer System account, judges association registration fee)
+HB799	1555176	house	2025-04-23	134-69	passage	pending:no-defensible-stance	veterans benefits workplace posting for employers over 50; no research area covers veterans services
+HB858	1583943	house	2025-06-03	132-71	passage	batch-01	corporate_accountability/for; PN1806 is the enacted text of Act 29 of 2026
+SB160	1599326	senate	2025-08-12	27-22	passage	pending:appropriations	fund-the-government vote; no honest research area (federal + GA precedent)
+SB160	1603777	house	2025-10-08	105-98	passage	pending:appropriations	fund-the-government vote; no honest research area (federal + GA precedent)
+SB160	1604028	senate	2025-10-21	27-23	concurrence	pending:appropriations	fund-the-government vote; no honest research area (federal + GA precedent)
+SB160	1609187	house	2025-11-12	156-47	concurrence	pending:appropriations	fund-the-government vote; no honest research area (federal + GA precedent)
+SB315	1603747	house	2025-10-08	105-98	passage	pending:school-choice-financing	Public School Code omnibus; centerpiece is cyber charter tuition reform = school-choice financing (TX SB 2 / GA SB 82 precedent), and the divided House roll is PN1226, two amendments before enacted PN1310
+SB375	1689892	house	2026-04-27	141-59	passage	batch-01	environment_and_public_health/for; PN1539 is the enacted text of Act 17 of 2026
+SB467	1603678	house	2025-10-07	102-101	passage	pending:local-narrow	Project 70 restriction swap on specific West Mifflin borough parcels
+SB95	1596825	house	2025-06-30	126-77	passage	batch-01	healthcare_affordability/for; PN1019 is the enacted text of Act 34 of 2025
