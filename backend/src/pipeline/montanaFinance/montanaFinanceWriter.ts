@@ -63,9 +63,10 @@ export function normalizeMontanaCersEntityId(value: string): string {
 const writer = createStandardStateFinanceSnapshotWriter({
   label: "Montana",
   minElectionYear: 2024,
-  // Live-hit Phase 3: two 2026 filers carry chain-verified negative ending
-  // balances (spent ahead of receipts). Migration 264 relaxes the DB check.
-  allowNegativeCashOnHand: true,
+  // Negative cash on hand is deliberately NOT allowed here: Montana's
+  // balance is DERIVED (chain math), not source-reported, and every
+  // derived ending is a lower bound. The aggregator publishes null for a
+  // negative derivation, so a negative reaching this writer is a bug.
   summaryUpdatePolicy: {
     total_receipts: "replace",
     direct_contribution_total: "replace",

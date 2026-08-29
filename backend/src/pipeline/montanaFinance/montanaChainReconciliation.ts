@@ -130,6 +130,13 @@ export type MontanaChainLinkResult = {
 export type MontanaChainReconciliation = {
   /** True only when every checkable link on both sides passed. */
   ok: boolean;
+  /**
+   * True when at least one report carries REAL begin balances on both sides
+   * — the chain's conservation checks then verify the JSON flows against
+   * official figures. False for an all-carried (all-null) chain, whose
+   * links close tautologically.
+   */
+  hasRealAnchor: boolean;
   links: MontanaChainLinkResult[];
   /**
    * Derived ending balance of the LAST report (begin + inflow − outflow,
@@ -278,10 +285,18 @@ export function reconcileMontanaCashBeginChain(reports: readonly MontanaChainRep
 
   const ok = links.every((link) => link.ok);
 
+  // An ending balance is only ever derivable FROM a real balance anchor: a
+  // chain whose every begin is carried (a live all-null filer) reconciles
+  // its links tautologically, and its "ending" would be pure derivation
+  // from an assumed empty start that no source figure ever checks. The
+  // itemized totals still publish on the CSV/JSON cross-checks; the
+  // balance stays null ("not reported").
+  const hasRealAnchor = effective.some((entry) => !entry.carried.primary && !entry.carried.general);
+
   let derivedEndingBalanceCents: number | null = null;
   const last = reports.at(-1);
   const lastEffective = effective.at(-1);
-  if (ok && last !== undefined && lastEffective !== undefined) {
+  if (ok && hasRealAnchor && last !== undefined && lastEffective !== undefined) {
     derivedEndingBalanceCents =
       lastEffective.cents.primary +
       lastEffective.cents.general +
@@ -293,6 +308,7 @@ export function reconcileMontanaCashBeginChain(reports: readonly MontanaChainRep
 
   return {
     ok,
+    hasRealAnchor,
     links,
     derivedEndingBalanceCents,
     // Positive lumps only: a tolerated negative lump is unitemized spending

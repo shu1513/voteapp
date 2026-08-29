@@ -228,11 +228,12 @@ describe("reconcileMontanaCashBeginChain", () => {
     });
   });
 
-  it("reconciles an all-null chain as unverified but derivable", () => {
+  it("reconciles an all-null chain but refuses to derive a balance from it", () => {
     // A filer whose every C5 lists null begins (observed live) has no
-    // anchors to contradict conservation: every link closes by carry, the
-    // snapshot rests on the CSV/JSON cross-checks, and the ending balance
-    // is the flow sum from an empty start.
+    // anchors at all: every link closes by carry and the itemized totals
+    // rest on the CSV/JSON cross-checks, but an "ending balance" would be
+    // pure derivation from an assumed empty start that no source figure
+    // ever checks — it stays null (published as "not reported").
     const reports = [
       report({ reportId: 1, primBeginCents: 0, primaryInCents: 40_000, primaryOutCents: 10_000 }),
       report({ reportId: 2, primBeginCents: 0, primaryInCents: 5_000 }),
@@ -244,7 +245,8 @@ describe("reconcileMontanaCashBeginChain", () => {
     const result = reconcileMontanaCashBeginChain(reports);
     expect(result.ok).toBe(true);
     expect(result.links.every((link) => link.carriedAnchor)).toBe(true);
-    expect(result.derivedEndingBalanceCents).toBe(35_000);
+    expect(result.derivedEndingBalanceCents).toBeNull();
+    expect(result.derivedUnitemizedTotalCents).toBe(0);
   });
 
   it("a wrongly-empty first anchor surfaces as an excessive lump at the next real anchor", () => {

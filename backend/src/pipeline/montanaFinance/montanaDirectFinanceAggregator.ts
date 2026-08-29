@@ -94,8 +94,16 @@ export type MontanaDirectFinanceAggregationResult = {
   directContributionTotal: number;
   /** Dollars. expendOther + pettyCash lists (campaign spending). */
   totalDisbursements: number;
-  /** Dollars. Chain-derived ending balance of the latest canonical report. */
-  cashOnHand: number;
+  /**
+   * Dollars. Chain-derived ending balance of the latest canonical report.
+   * Null when unpublishable: no real balance anchor exists anywhere in the
+   * chain (an all-null filer — the derivation would rest on an assumed
+   * empty start no source figure checks), or the derived value is negative
+   * (every derived ending is a LOWER bound — the final period's unitemized
+   * receipts are unknowable — so a small negative may be an artifact;
+   * "not reported" is honest, a possibly-false "in the red" is not).
+   */
+  cashOnHand: number | null;
   /** Dollars. Chain-residual unitemized small-donor money. */
   derivedUnitemizedTotal: number;
   /** Dollars. Debt/loan repayments (the `payment` list) — diagnostic only. */
@@ -104,6 +112,17 @@ export type MontanaDirectFinanceAggregationResult = {
   sideTransferTotal: number;
   /** Dollars. Cash loan proceeds — diagnostic only, excluded from raised. */
   loanProceedsTotal: number;
+  /**
+   * CSV cross-check discrepancies that did NOT block the snapshot: live
+   * Phase 3 proved the CONTR export is a lossy secondary surface (rows
+   * dropped outright, stale pre-amendment amounts), so when the cash-begin
+   * chain closes over REAL anchors — independently verifying the JSON
+   * flows against official balances — a residual contribution mismatch is
+   * recorded here instead of quarantining the candidate. Caveat: in-kind
+   * amounts never touch the chain, so their cross-check really is weakened
+   * by this demotion. Without a real anchor the same mismatch still throws.
+   */
+  csvCrossCheckWarnings: string[];
   directBreakdowns: MontanaFinanceDirectBreakdown[];
   canonicalReportCount: number;
   individualRowCount: number;
@@ -194,7 +213,7 @@ export function aggregateMontanaDirectFinance(input: {
       flows: computeMontanaReportCashFlows(report.artifact),
     }))
   );
-  if (!chain.ok || chain.derivedEndingBalanceCents === null || chain.derivedUnitemizedTotalCents === null) {
+  if (!chain.ok || chain.derivedUnitemizedTotalCents === null) {
     const broken = chain.links.filter((link) => !link.ok);
     throw new MontanaDirectFinanceAggregationError(
       `Montana cash-begin chain failed: ${
@@ -270,44 +289,81 @@ export function aggregateMontanaDirectFinance(input: {
   // live Phase 3 — Eddy: CSV short $12,916.81, fully explained by sub-$50
   // rows; Ben Davis: CSV $90 LARGER, exactly three ≤$50 rows the canonical
   // JSON lumps). A disagreement is tolerable only while it fits inside the
-  // ≤$50 rows of whichever surface reported MORE.
+  // UNMATCHED ≤$50 rows of whichever surface reported more — matched small
+  // rows (same donor, same cents, on both surfaces) explain nothing, and
+  // counting them would let a big small-donor pool mask large-row drift.
+  // The nameless "Less Than $35" roll-up rows are aggregations of
+  // sub-threshold money by definition and count fully toward the CSV side.
+  const smallRowKey = (name: string | null, cents: number) =>
+    `${keyText(name).replace(/[^A-Z0-9]+/g, " ").trim()}|${cents}`;
+  const jsonSmallRows = new Map<string, { count: number; cents: number }>();
+  for (const report of input.canonicalReports) {
+    for (const row of report.artifact.lists.individual) {
+      if (row.totalAmtCents > 0 && row.totalAmtCents <= SMALL_CONTRIBUTION_ROW_CENTS) {
+        const key = smallRowKey(row.entityName, row.totalAmtCents);
+        const entry = jsonSmallRows.get(key) ?? { count: 0, cents: row.totalAmtCents };
+        entry.count += 1;
+        jsonSmallRows.set(key, entry);
+      }
+    }
+  }
   let csvIndividualCents = 0;
   let csvCommitteeCents = 0;
-  let csvSmallIndividualRowBudgetCents = 0;
+  let csvSmallRollupCents = 0;
+  const csvSmallRows = new Map<string, { count: number; cents: number }>();
   for (const row of input.contributionRows) {
     if (row.lineItem === CSV_INDIVIDUAL_LINE_ITEM || row.lineItem === CSV_SMALL_CONTRIBUTION_LINE_ITEM) {
       csvIndividualCents += row.amountCents;
-      if (row.amountCents > 0 && row.amountCents <= SMALL_CONTRIBUTION_ROW_CENTS) {
-        csvSmallIndividualRowBudgetCents += row.amountCents;
+      if (row.lineItem === CSV_SMALL_CONTRIBUTION_LINE_ITEM) {
+        csvSmallRollupCents += Math.max(0, row.amountCents);
+      } else if (row.amountCents > 0 && row.amountCents <= SMALL_CONTRIBUTION_ROW_CENTS) {
+        const key = smallRowKey(row.entityName, row.amountCents);
+        const entry = csvSmallRows.get(key) ?? { count: 0, cents: row.amountCents };
+        entry.count += 1;
+        csvSmallRows.set(key, entry);
       }
     } else if (CSV_COMMITTEE_LINE_ITEMS.includes(row.lineItem)) {
       csvCommitteeCents += row.amountCents;
     }
   }
-  const smallIndividualRowBudgetCents = input.canonicalReports.reduce(
-    (sum, report) =>
-      sum +
-      report.artifact.lists.individual.reduce(
-        (listSum, row) =>
-          row.totalAmtCents > 0 && row.totalAmtCents <= SMALL_CONTRIBUTION_ROW_CENTS
-            ? listSum + row.totalAmtCents
-            : listSum,
-        0
-      ),
-    0
-  );
+  let unmatchedJsonSmallCents = 0;
+  for (const [key, entry] of jsonSmallRows) {
+    unmatchedJsonSmallCents += Math.max(0, entry.count - (csvSmallRows.get(key)?.count ?? 0)) * entry.cents;
+  }
+  let unmatchedCsvSmallCents = csvSmallRollupCents;
+  for (const [key, entry] of csvSmallRows) {
+    unmatchedCsvSmallCents += Math.max(0, entry.count - (jsonSmallRows.get(key)?.count ?? 0)) * entry.cents;
+  }
+  // A mismatch past the tolerance is real cross-surface drift. Live Phase 3
+  // showed the drift lives on the CSV side (a $450 row dropped outright; a
+  // federal PAC's $470 absent; stale pre-amendment donor amounts) while the
+  // JSON flows reconcile to the cent against real cash anchors. So: with a
+  // real-anchored chain the mismatch is recorded and the JSON publishes;
+  // without one the CSV is the only verification left — fail closed.
+  const csvCrossCheckWarnings: string[] = [];
+  const reportOrThrow = (message: string) => {
+    if (chain.hasRealAnchor) {
+      csvCrossCheckWarnings.push(message);
+    } else {
+      throw new MontanaDirectFinanceAggregationError(message);
+    }
+  };
   const individualShortfallCents = individualCents - csvIndividualCents;
   if (
-    individualShortfallCents > smallIndividualRowBudgetCents ||
-    -individualShortfallCents > csvSmallIndividualRowBudgetCents
+    individualShortfallCents > unmatchedJsonSmallCents ||
+    -individualShortfallCents > unmatchedCsvSmallCents
   ) {
-    throw new MontanaDirectFinanceAggregationError(
+    reportOrThrow(
       `Montana CSV/JSON individual-contribution totals disagree beyond the itemization threshold: ` +
         `CSV ${csvIndividualCents}c vs report-detail ${individualCents}c ` +
-        `(shortfall ${individualShortfallCents}c, small-row budgets json ${smallIndividualRowBudgetCents}c / csv ${csvSmallIndividualRowBudgetCents}c)`
+        `(shortfall ${individualShortfallCents}c, unmatched small-row budgets json ${unmatchedJsonSmallCents}c / csv ${unmatchedCsvSmallCents}c)`
     );
   }
-  requireCentAgreement("committee-contribution", csvCommitteeCents, committeeCents);
+  if (csvCommitteeCents !== committeeCents) {
+    reportOrThrow(
+      `Montana CSV/JSON committee-contribution totals disagree: CSV ${csvCommitteeCents}c vs report-detail ${committeeCents}c — mixed harvest or definitional drift`
+    );
+  }
   // Expenditure cross-check with the same transfer partition on both
   // surfaces: campaign spending must agree to the cent, and any transfer
   // rows the CSV carries must equal the JSON transfer rows (a CSV without
@@ -368,11 +424,15 @@ export function aggregateMontanaDirectFinance(input: {
     directContributionTotal:
       (individualCents + committeeCents + candidateCents + chain.derivedUnitemizedTotalCents) / 100,
     totalDisbursements: spendingCents / 100,
-    cashOnHand: chain.derivedEndingBalanceCents / 100,
+    cashOnHand:
+      chain.derivedEndingBalanceCents === null || chain.derivedEndingBalanceCents < 0
+        ? null
+        : chain.derivedEndingBalanceCents / 100,
     derivedUnitemizedTotal: chain.derivedUnitemizedTotalCents / 100,
     debtRepaymentTotal: debtRepaymentCents / 100,
     sideTransferTotal: sideTransferCents / 100,
     loanProceedsTotal: loanProceedsCents / 100,
+    csvCrossCheckWarnings,
     directBreakdowns,
     canonicalReportCount: input.canonicalReports.length,
     individualRowCount,
