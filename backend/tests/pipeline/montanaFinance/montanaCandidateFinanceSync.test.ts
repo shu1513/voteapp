@@ -207,11 +207,13 @@ describe("syncMontanaCandidateFinance", () => {
     const { db, client } = writingDb();
     const input = artifacts();
     const inventory = [...input.inventory];
+    // $601 above the derived ending: past the absolute lump floor and far
+    // past the 25% ratio for the fixture's $100 of receipts.
     inventory[1] = inventoryRow({
       reportId: 2,
       fromDateStr: "03/16/2026",
       toDateStr: "04/15/2026",
-      primCashBegCents: 5_000,
+      primCashBegCents: 70_100,
       receivedDate: 2_000,
     });
     await expect(

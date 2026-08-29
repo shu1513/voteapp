@@ -17,6 +17,11 @@ describe("firstNameVariants", () => {
     expect(firstNameVariants("KIM")).toContain("KIMBERLY");
     expect(firstNameVariants("MANDY")).toContain("AMANDA");
     expect(firstNameVariants("BRAD")).toContain("BRADLEY");
+    // Montana Phase 3 roster-link additions (2026-08-28): live registrations
+    // filed as Randall Chamberlin / Russel Miner / Teresa Fahlgren.
+    expect(firstNameVariants("RANDY")).toEqual(expect.arrayContaining(["RANDALL", "RANDOLPH"]));
+    expect(firstNameVariants("RUSS")).toEqual(expect.arrayContaining(["RUSSELL", "RUSSEL"]));
+    expect(firstNameVariants("TESS")).toEqual(expect.arrayContaining(["TERESA", "THERESA"]));
   });
 
   it("returns the union of groups for shared nicknames", () => {

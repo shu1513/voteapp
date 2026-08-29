@@ -104,6 +104,9 @@ describe("montanaBallotLookupFinanceLoader", () => {
       },
     });
     expect(summary?.direct_campaign.direct_coverage_note).toMatch(/cash-balance chain/);
+    // The export file is lossy (dropped rows, stale amendments, sub-$50
+    // omissions), and occupations come only from it — the note says so.
+    expect(summary?.direct_campaign.direct_coverage_note).toMatch(/omit small or amended contributions/);
     expect(summary?.outside_spending.outside_coverage_note).toMatch(/opposing an opponent/);
     expect(summary?.direct_campaign.top_occupations?.[0]).toMatchObject({
       category_name: "Retired",
