@@ -57,9 +57,28 @@ describe("buildKansasKpdcUrl", () => {
     expect(buildKansasKpdcUrl("http://www.kansas.gov/ethics/CFAScanned/x.pdf")).toBe(
       "https://www.kansas.gov/ethics/CFAScanned/x.pdf"
     );
-    expect(() => buildKansasKpdcUrl("https://evil.example.com/x.pdf")).toThrow("not a kansas.gov URL");
-    expect(() => buildKansasKpdcUrl("https://ethics.ks.gov/other/x.pdf")).toThrow("not a kansas.gov URL");
-    expect(() => buildKansasKpdcUrl("ftp://www.kansas.gov/ethics/x.pdf")).toThrow("not a kansas.gov URL");
+    expect(() => buildKansasKpdcUrl("https://evil.example.com/x.pdf")).toThrow("not a KPDC CFAScanned URL");
+    expect(() => buildKansasKpdcUrl("https://ethics.ks.gov/other/x.pdf")).toThrow("not a KPDC CFAScanned URL");
+    expect(() => buildKansasKpdcUrl("ftp://www.kansas.gov/ethics/x.pdf")).toThrow("not a KPDC CFAScanned URL");
+  });
+
+  it("pins the archive boundary: no path escapes, no ports, no credentials", () => {
+    // URL resolution normalizes "..", so a traversal lands outside the
+    // /ethics/CFAScanned/ prefix and is refused.
+    expect(() => buildKansasKpdcUrl("../outside.pdf")).toThrow("not a KPDC CFAScanned URL");
+    expect(() => buildKansasKpdcUrl("https://www.kansas.gov/other/x.pdf")).toThrow(
+      "not a KPDC CFAScanned URL"
+    );
+    expect(() => buildKansasKpdcUrl("https://www.kansas.gov:8443/ethics/CFAScanned/x.pdf")).toThrow(
+      "not a KPDC CFAScanned URL"
+    );
+    expect(() => buildKansasKpdcUrl("https://user:pw@www.kansas.gov/ethics/CFAScanned/x.pdf")).toThrow(
+      "not a KPDC CFAScanned URL"
+    );
+    // Interior dot segments that STAY inside the archive are fine.
+    expect(buildKansasKpdcUrl("House/../House/2026ElecCycle/x.pdf")).toBe(
+      "https://www.kansas.gov/ethics/CFAScanned/House/2026ElecCycle/x.pdf"
+    );
   });
 });
 

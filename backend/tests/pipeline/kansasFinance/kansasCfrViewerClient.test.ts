@@ -11,8 +11,17 @@ import { parseKansasHiddenFields } from "../../../src/pipeline/kansasFinance/kan
 const GRID = "grdviewCfrResults";
 const RESULTS_URL = buildKansasCfrUrl("cfr_examiner_search_results.aspx");
 
-/** Minimal live-shaped results page: record count, viewstate, grid rows. */
-function gridPageHtml(names: readonly string[], recordCount: number, viewState: string): string {
+/**
+ * Minimal live-shaped results page: record count, viewstate, grid rows, and
+ * (for multi-page grids) the pager row — the current page as a bare
+ * `<td><span>N</span></td>` among `Page$M` links, as rendered live.
+ */
+function gridPageHtml(
+  names: readonly string[],
+  recordCount: number,
+  viewState: string,
+  pager?: { current: number; pageCount: number }
+): string {
   const rows = names
     .map(
       (name, index) =>
@@ -20,10 +29,21 @@ function gridPageHtml(names: readonly string[], recordCount: number, viewState: 
         `<a id="${GRID}_lnkbtnLastName_${index}" href="javascript:__doPostBack(&#39;${GRID}$ctl0${index + 2}$lnkbtnLastName&#39;,&#39;&#39;)">${name}</a>`
     )
     .join("\n");
+  const pagerCells = pager
+    ? Array.from({ length: pager.pageCount }, (_, i) => i + 1)
+        .map((page) =>
+          page === pager.current
+            ? `<td><span>${page}</span></td>`
+            : `<td><a href="javascript:__doPostBack(&#39;${GRID}&#39;,&#39;Page$${page}&#39;)">${page}</a></td>`
+        )
+        .join("")
+    : "";
+  const pagerRow = pager ? `<tr><td colspan="5"><table><tr>${pagerCells}</tr></table></td></tr>` : "";
   return `<span id="lblRecordCount">${recordCount}</span>
 <input type="hidden" name="__VIEWSTATE" value="${viewState}" />
 <input type="hidden" name="__EVENTVALIDATION" value="ev-${viewState}" />
-${rows}`;
+${rows}
+${pagerRow}`;
 }
 
 function pageFromHtml(html: string): KansasCfrPage {
@@ -46,9 +66,9 @@ function pagingSession(pagesByArgument: Record<string, string>, log: URLSearchPa
 
 describe("collectKansasCfrGridPages", () => {
   it("walks the pager sequentially, chaining each page's own hidden fields", async () => {
-    const page1 = gridPageHtml(["ALPHA", "BRAVO"], 5, "vs-1");
-    const page2 = gridPageHtml(["CHARLIE", "DELTA"], 5, "vs-2");
-    const page3 = gridPageHtml(["ECHO"], 5, "vs-3");
+    const page1 = gridPageHtml(["ALPHA", "BRAVO"], 5, "vs-1", { current: 1, pageCount: 3 });
+    const page2 = gridPageHtml(["CHARLIE", "DELTA"], 5, "vs-2", { current: 2, pageCount: 3 });
+    const page3 = gridPageHtml(["ECHO"], 5, "vs-3", { current: 3, pageCount: 3 });
     const log: URLSearchParams[] = [];
     const session = pagingSession({ Page$2: page2, Page$3: page3 }, log);
 
@@ -77,12 +97,33 @@ describe("collectKansasCfrGridPages", () => {
   });
 
   it("fails closed when a page renders no rows instead of looping", async () => {
-    const page1 = gridPageHtml(["ALPHA", "BRAVO"], 5, "vs-1");
-    const empty = gridPageHtml([], 5, "vs-2");
+    const page1 = gridPageHtml(["ALPHA", "BRAVO"], 5, "vs-1", { current: 1, pageCount: 3 });
+    const empty = gridPageHtml([], 5, "vs-2", { current: 2, pageCount: 3 });
     const session = pagingSession({ Page$2: empty }, []);
 
     await expect(collectKansasCfrGridPages(session, pageFromHtml(page1), GRID)).rejects.toThrow(
       "page 2 rendered no rows"
+    );
+  });
+
+  it("fails closed when a stale postback re-renders the same page instead of advancing", async () => {
+    // A 40-record grid whose Page$2 postback answers page 1 again: without
+    // the pager check, two copies of page 1 would pass total === recordCount.
+    const names = Array.from({ length: 20 }, (_, i) => `ROW${i}`);
+    const page1 = gridPageHtml(names, 40, "vs-1", { current: 1, pageCount: 2 });
+    const session = pagingSession({ Page$2: page1 }, []);
+
+    await expect(collectKansasCfrGridPages(session, pageFromHtml(page1), GRID)).rejects.toThrow(
+      "pager shows page 1, expected 2"
+    );
+  });
+
+  it("fails closed when a multi-page grid renders no pager at all", async () => {
+    const page1 = gridPageHtml(["ALPHA", "BRAVO"], 5, "vs-1");
+    const session = pagingSession({}, []);
+
+    await expect(collectKansasCfrGridPages(session, pageFromHtml(page1), GRID)).rejects.toThrow(
+      "pager shows page none, expected 1"
     );
   });
 

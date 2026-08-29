@@ -47,7 +47,12 @@ export type KansasFinanceArtifactManifest = {
   retrievedAt: string;
   sha256: string;
   byteSize: number;
-  /** sha256 of the version this one replaced, null for the first version. */
+  /**
+   * sha256 of the version that was latest when these bytes were FIRST
+   * stored (null for a key's first version). Manifests are immutable, so
+   * after a reversion to older bytes this records first-occurrence
+   * lineage, not the current pointer — `latest.json` holds currency.
+   */
   supersedes: string | null;
 };
 
@@ -110,10 +115,14 @@ async function readLatestSha(dir: string): Promise<string | null> {
 
 /**
  * Store one fetched artifact. Byte-identical to the current version →
- * nothing is written and `changed` is false. Otherwise a new immutable
- * version is written (`supersedes` = the previous sha) and `latest.json`
- * repointed. Bytes govern identity — a re-fetch with identical bytes keeps
- * the ORIGINAL version's manifest (and its retrievedAt).
+ * nothing is written and `changed` is false. New bytes → a new immutable
+ * version is written (`supersedes` = the sha that was latest at that
+ * moment) and `latest.json` repointed. Bytes govern identity: a version's
+ * files are written exactly ONCE — if the source REVERTS to bytes seen
+ * before (A→B→A), only `latest.json` is repointed and A keeps its original
+ * manifest (first-occurrence retrievedAt and supersedes), so history never
+ * cycles. `changed` is true whenever the latest pointer moved, which is
+ * what triggers renormalization downstream.
  */
 export async function storeKansasFinanceArtifact(input: {
   cacheDir?: string;
@@ -140,6 +149,14 @@ export async function storeKansasFinanceArtifact(input: {
     const existing = await readKansasFinanceArtifact({ cacheDir: input.cacheDir, key });
     return { manifest: existing.manifest, changed: false };
   }
+  // A reversion to previously-seen bytes reuses that version untouched —
+  // rewriting its manifest would destroy its original timestamp and make
+  // the supersession record cyclic.
+  const previous = await tryReadVersion(dir, key, sha256);
+  if (previous !== null) {
+    await atomicWrite(resolve(dir, "latest.json"), `${JSON.stringify({ sha256 }, null, 2)}\n`, 0o600);
+    return { manifest: previous.manifest, changed: true };
+  }
   const manifest: KansasFinanceArtifactManifest = {
     version: KANSAS_FINANCE_ARTIFACT_SCHEMA_VERSION,
     key,
@@ -155,11 +172,11 @@ export async function storeKansasFinanceArtifact(input: {
   return { manifest, changed: true };
 }
 
-async function readVersion(
+async function tryReadVersion(
   dir: string,
   key: KansasFinanceArtifactKey,
   sha256: string
-): Promise<{ body: Buffer; manifest: KansasFinanceArtifactManifest }> {
+): Promise<{ body: Buffer; manifest: KansasFinanceArtifactManifest } | null> {
   let body: Buffer;
   let manifest: KansasFinanceArtifactManifest;
   try {
@@ -170,9 +187,7 @@ async function readVersion(
       ),
     ]);
   } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === "ENOENT") {
-      throw new Error(`Missing Kansas finance artifact version: ${key.kind} ${key.id} ${sha256}`);
-    }
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return null;
     throw error;
   }
   if (
@@ -186,6 +201,18 @@ async function readVersion(
     throw new Error(`Corrupt Kansas finance artifact: ${key.kind} ${key.id} ${sha256}`);
   }
   return { body, manifest };
+}
+
+async function readVersion(
+  dir: string,
+  key: KansasFinanceArtifactKey,
+  sha256: string
+): Promise<{ body: Buffer; manifest: KansasFinanceArtifactManifest }> {
+  const version = await tryReadVersion(dir, key, sha256);
+  if (version === null) {
+    throw new Error(`Missing Kansas finance artifact version: ${key.kind} ${key.id} ${sha256}`);
+  }
+  return version;
 }
 
 /** Read the latest version of an artifact; sha256 is verified byte-for-byte. */

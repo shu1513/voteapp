@@ -91,6 +91,37 @@ describe("kansasFinanceArtifactCache", () => {
     expect(prior.manifest.supersedes).toBeNull();
   });
 
+  it("keeps history acyclic on a content reversion (A -> B -> A)", async () => {
+    const store = (body: string, retrievedAt: string) =>
+      storeKansasFinanceArtifact({
+        cacheDir,
+        key: KEY,
+        sourceUrl: "https://www.kansas.gov/x.pdf",
+        body,
+        retrievedAt: new Date(retrievedAt),
+      });
+    const a1 = await store("content A", "2026-08-28T12:00:00Z");
+    const b = await store("content B", "2026-08-29T12:00:00Z");
+    const a2 = await store("content A", "2026-08-30T12:00:00Z");
+
+    // The reversion repoints latest but MUST NOT rewrite A's manifest:
+    // no new timestamp, no supersedes-cycle (A->B->A).
+    expect(a2.changed).toBe(true);
+    expect(a2.manifest).toEqual(a1.manifest);
+    expect(a2.manifest.retrievedAt).toBe("2026-08-28T12:00:00.000Z");
+    expect(a2.manifest.supersedes).toBeNull();
+    expect(b.manifest.supersedes).toBe(a1.manifest.sha256);
+
+    const latest = await readKansasFinanceArtifact({ cacheDir, key: KEY });
+    expect(latest.body.toString("utf8")).toBe("content A");
+    const bVersion = await readKansasFinanceArtifactVersion({
+      cacheDir,
+      key: KEY,
+      sha256: b.manifest.sha256,
+    });
+    expect(bVersion.body.toString("utf8")).toBe("content B");
+  });
+
   it("fails closed on tampered bytes", async () => {
     const stored = await storeKansasFinanceArtifact({
       cacheDir,

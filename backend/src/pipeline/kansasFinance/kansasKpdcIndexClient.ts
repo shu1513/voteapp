@@ -43,17 +43,25 @@ export type KansasKpdcFetchOptions = {
   fetchImpl?: typeof fetch;
 };
 
-/** Resolve a path against the CFAScanned base and pin it to www.kansas.gov. */
+/**
+ * Resolve a path against the CFAScanned base and pin it to the archive:
+ * https, default port, no credentials, www.kansas.gov, and a path under
+ * /ethics/CFAScanned/ (URL resolution normalizes `..`, so a
+ * traversal-shaped path fails the prefix check rather than escaping it).
+ */
 export function buildKansasKpdcUrl(pathOrUrl: string): string {
   const url = new URL(pathOrUrl, KANSAS_KPDC_SCAN_BASE_URL);
-  if (url.protocol !== "https:" && url.protocol !== "http:") {
-    throw new KansasCfrClientError("invalid_request", `not a kansas.gov URL: ${pathOrUrl}`);
-  }
+  const refuse = (): never => {
+    throw new KansasCfrClientError("invalid_request", `not a KPDC CFAScanned URL: ${pathOrUrl}`);
+  };
+  if (url.protocol !== "https:" && url.protocol !== "http:") refuse();
+  if (url.port !== "" || url.username !== "" || url.password !== "") refuse();
   if (KANSAS_KPDC_DEAD_HOSTS.has(url.hostname) && url.pathname.startsWith("/CFAScanned/")) {
     url.pathname = `/ethics${url.pathname}`;
   } else if (!KANSAS_KPDC_HOSTS.has(url.hostname)) {
-    throw new KansasCfrClientError("invalid_request", `not a kansas.gov URL: ${pathOrUrl}`);
+    refuse();
   }
+  if (!url.pathname.startsWith("/ethics/CFAScanned/")) refuse();
   url.protocol = "https:";
   url.hostname = "www.kansas.gov";
   return url.toString();
@@ -89,8 +97,11 @@ async function fetchKansasKpdcResource(
       throw new KansasCfrClientError("http_error", `GET ${url} answered ${response.status}`, response.status);
     }
     const landed = new URL(response.url || url);
-    if (!KANSAS_KPDC_HOSTS.has(landed.hostname)) {
-      throw new KansasCfrClientError("bad_response", `GET ${url} redirected off-site to ${response.url}`);
+    if (!KANSAS_KPDC_HOSTS.has(landed.hostname) || !landed.pathname.startsWith("/ethics/CFAScanned/")) {
+      throw new KansasCfrClientError(
+        "bad_response",
+        `GET ${url} redirected outside the archive to ${response.url}`
+      );
     }
     const declaredLength = Number(response.headers.get("content-length") ?? Number.NaN);
     if (Number.isFinite(declaredLength) && declaredLength > maxResponseBytes) {

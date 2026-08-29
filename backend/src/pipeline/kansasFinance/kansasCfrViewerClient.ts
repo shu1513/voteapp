@@ -20,6 +20,7 @@
 //   state), not a transient fault: it is never retried.
 
 import {
+  parseKansasCfrGridCurrentPage,
   parseKansasCfrGridRows,
   parseKansasHiddenFields,
   parseKansasRecordCount,
@@ -411,8 +412,11 @@ export type KansasCfrGridPage = {
  * - Row indexes restart at 0 on every page, and a row's postback target is
  *   only valid against ITS page's hidden state — hence pages are returned
  *   whole, not flattened.
- * The walk fails closed: the total row count must equal the page's own
- * `lblRecordCount`, and a page that adds no rows aborts rather than loops.
+ * The walk fails closed: every landed page's PAGER must show the expected
+ * page number (a stale postback re-renders a wrong page with a 200, so
+ * repeated rows would otherwise count as progress), the total row count
+ * must equal the page's own `lblRecordCount`, and a page that adds no rows
+ * aborts rather than loops.
  */
 export async function collectKansasCfrGridPages(
   session: KansasCfrSession,
@@ -423,12 +427,22 @@ export async function collectKansasCfrGridPages(
   if (recordCount === null) {
     throw new KansasCfrClientError("bad_response", `no lblRecordCount on ${resultsPage.url}`);
   }
+  const requireCurrentPage = (html: string, expected: number): void => {
+    const current = parseKansasCfrGridCurrentPage(html, gridId);
+    if (current !== expected) {
+      throw new KansasCfrClientError(
+        "bad_response",
+        `grid ${gridId}: pager shows page ${current ?? "none"}, expected ${expected} — stale postback did not advance`
+      );
+    }
+  };
   const pages: KansasCfrGridPage[] = [
     { pageNumber: 1, page: resultsPage, rows: parseKansasCfrGridRows(resultsPage.html, gridId) },
   ];
   let total = pages[0]!.rows.length;
   // Page size = page 1's row count; the last page may be shorter.
   const maxPages = total > 0 ? Math.ceil(recordCount / total) : 1;
+  if (total < recordCount) requireCurrentPage(resultsPage.html, 1);
   while (total < recordCount) {
     const previous = pages[pages.length - 1]!;
     const pageNumber = previous.pageNumber + 1;
@@ -439,6 +453,7 @@ export async function collectKansasCfrGridPages(
       );
     }
     const page = await postbackAndFollow(session, previous.page, gridId, `Page$${pageNumber}`);
+    requireCurrentPage(page.html, pageNumber);
     const rows = parseKansasCfrGridRows(page.html, gridId);
     if (rows.length === 0) {
       throw new KansasCfrClientError(

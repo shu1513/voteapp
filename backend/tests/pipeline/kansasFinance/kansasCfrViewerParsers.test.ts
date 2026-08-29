@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  parseKansasCfrGridCurrentPage,
   parseKansasCfrGridRows,
   parseKansasContributionExportRows,
   parseKansasHiddenFields,
@@ -237,5 +238,41 @@ describe("parseKansasCfrGridRows", () => {
       channel: "paper",
       postbackTarget: "grdviewCfrResults$ctl03$LinkButton1",
     });
+  });
+});
+
+describe("parseKansasCfrGridCurrentPage", () => {
+  // Live pager markup 2026-08-28: the current page is the only bare
+  // <td><span>N</span></td>; every other page is a Page$N postback link.
+  const pagerRow = (cells: string) =>
+    `<tr><td colspan="5"><table><tr>${cells}</tr></table></td></tr>`;
+  const link = (page: number) =>
+    `<td><a href="javascript:__doPostBack(&#39;grdviewCfrResults&#39;,&#39;Page$${page}&#39;)">${page}</a></td>`;
+
+  it("reads the current page from live-shaped pager rows", () => {
+    const page1 = pagerRow(`<td><span>1</span></td>${link(2)}${link(3)}${link(11)}`);
+    expect(parseKansasCfrGridCurrentPage(page1, "grdviewCfrResults")).toBe(1);
+    const page2 = pagerRow(`${link(1)}<td><span>2</span></td>${link(3)}`);
+    expect(parseKansasCfrGridCurrentPage(page2, "grdviewCfrResults")).toBe(2);
+  });
+
+  it("returns null when no pager is rendered (single-page results)", () => {
+    expect(
+      parseKansasCfrGridCurrentPage('<span id="grdviewCfrResults_lblDate_0">07/27/2026</span>', "grdviewCfrResults")
+    ).toBeNull();
+  });
+
+  it("returns null on an ambiguous pager instead of guessing", () => {
+    const ambiguous = pagerRow(`<td><span>1</span></td><td><span>2</span></td>${link(3)}`);
+    expect(parseKansasCfrGridCurrentPage(ambiguous, "grdviewCfrResults")).toBeNull();
+  });
+
+  it("ignores another grid's pager", () => {
+    const other = pagerRow(`<td><span>4</span></td>${link(5)}`).replaceAll(
+      "grdviewCfrResults",
+      "gvIndividualEntity"
+    );
+    expect(parseKansasCfrGridCurrentPage(other, "gvIndividualEntity")).toBe(4);
+    expect(parseKansasCfrGridCurrentPage(other, "grdviewCfrResults")).toBeNull();
   });
 });
