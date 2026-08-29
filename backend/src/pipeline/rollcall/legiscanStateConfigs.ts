@@ -152,6 +152,79 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   //   resolutions are never presented to the governor, so they can never clear
   //   the campaign's became-law filter; excluded by rule to keep the surfaced
   //   queue readable.
+  // Connecticut General Assembly, 2025 session. Connecticut files ONE
+  // LegiScan dataset per calendar year (unlike Georgia/Illinois/Tennessee,
+  // whose two-year assemblies come in a single file), so session 2174 holds
+  // the 2025 regular session AND the special sessions that ran under it —
+  // including the November 2025 housing session (HB 8002, HB 8003). The
+  // 2026 session is a separate dataset (2244), not yet surveyed.
+  //
+  // Vocabulary measured from the full dataset survey 2026-08-29: 4,073
+  // bills, 2,625 roll calls, 211 people (151 House + 36 Senate seats plus
+  // turnover). What the survey established:
+  // - **1,774 of the 2,625 roll calls are JOINT COMMITTEE tallies printed
+  //   with chamber `J`** (all chamber_id 108, all `… Vote Tally Sheet
+  //   (Joint Favorable…)`). Connecticut is the joint-committee legislature:
+  //   its standing committees seat both chambers, so a committee vote
+  //   belongs to no chamber. They are rejected before the queue on the
+  //   chamber code (LEGISCAN_COMMITTEE_CHAMBER_CODES in legiscanRollCall.ts)
+  //   — nothing in this entry can reach them. The remaining 851 rolls are
+  //   ALL floor votes: House totals 150-151, Senate 36. Five Senate rolls
+  //   list only the members present (21, 21, 22, 25, 27); the two at 21
+  //   fall under the 0.6 floor ratio and surface for a human rather than
+  //   being silently kept.
+  // - Every desc carries the chamber's own sequential vote number
+  //   (`House Roll Call Vote 54 AS AMENDED`, `Senate Roll Call Vote 268 `,
+  //   note the trailing space), so every pattern has to tolerate it. That
+  //   number is also the `Sequence Number` on the state's own vote-record
+  //   PDF (cga.ct.gov/2025/VOTE/<H|S>/PDF/2025<H|S>V-<nnnnn>-R00<BILL>-<H|S>V.PDF).
+  // - The House NAMES its question: a bare vote is passage, ` AS AMENDED`
+  //   is passage of the amended bill, ` CONSENT CALENDAR` is passage on the
+  //   consent calendar, ` EMERGENCY CERTIFICATION` is passage of a bill that
+  //   skipped committee, and ` HOUSE AMD <letter>` is a vote on that
+  //   amendment. The amendment suffix can follow either of the others
+  //   (`… AS AMENDED HOUSE AMD E`, `… EMERGENCY CERTIFICATION HOUSE AMD A`)
+  //   and the QUESTION IS ALWAYS THE AMENDMENT — verified against the bill
+  //   history for SB 7's roll 225, which the desc calls "AS AMENDED HOUSE
+  //   AMD E" and the House journal records as rejecting Amendment Schedule
+  //   E 48-99. Excluded patterns run before kept ones, so the amendment
+  //   rule wins wherever both would match; that ordering is load-bearing.
+  // - Consent-calendar rolls are NOT Georgia's en-bloc calendars: no roll
+  //   call in the dataset is attached to more than one bill (checked over
+  //   all 2,625), all 29 are on joint resolutions, and none is divided.
+  // - **⚠ THE SENATE DESC DOES NOT NAME THE QUESTION.** All 438 Senate
+  //   rolls read `Senate Roll Call Vote <n>` and nothing else, whether the
+  //   question was passage or a floor amendment (HB 7042 alone carries 18
+  //   rejected Senate amendments, every one of them 11-25 and therefore
+  //   "divided"). The class below is this pipeline's DEFAULT, not
+  //   Connecticut's claim — the same caveat Florida's entry carries. Ground
+  //   truth is the bill-status page's ordered action trail
+  //   (cga.ct.gov/asp/cgabillstatus/cgabillstatus.asp?selBillType=Bill&bill_num=<BILL>&which_year=2025),
+  //   which names every `Senate Rejected Senate Amendment Schedule <X>` and
+  //   the single `Senate Passed …`; the vote PDF gives only the tally.
+  //   BATCH SELECTION MUST READ THAT TRAIL for every Senate roll it keeps.
+  //   The feed's `passed` flag narrows the problem but does not solve it:
+  //   81 Senate rolls are `passed:0` (failed amendments), and 17 bills carry
+  //   two `passed:1` Senate rolls, so an adopted amendment still looks like
+  //   a passage here.
+  CT: {
+    jurisdiction: "CT",
+    sessionId: 2174,
+    chamberSizes: { house: 151, senate: 36 },
+    keptQuestions: [
+      {
+        pattern: /^house roll call vote \d+(?: as amended| consent calendar| emergency certification)?$/,
+        questionClass: "passage",
+      },
+      { pattern: /^senate roll call vote \d+$/, questionClass: "passage" },
+    ],
+    excludedQuestions: [
+      // Floor amendment votes. Matched anywhere in the desc so the
+      // concatenated spellings (`… AS AMENDED HOUSE AMD E`, `… EMERGENCY
+      // CERTIFICATION HOUSE AMD A`) are excluded too — see the note above.
+      /\bhouse amd [a-z]\b/,
+    ],
+  },
   IL: {
     jurisdiction: "IL",
     sessionId: 2176,
