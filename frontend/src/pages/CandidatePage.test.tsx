@@ -296,7 +296,7 @@ describe("CandidatePage", () => {
           records: [
             // Relevance-only tag (null stance) and an untagged record: no
             // position is claimed anywhere, so no boxes and no lead-in.
-            record("r-1", [{ areaId: "a-ie", slug: "integrity_and_ethics", name: "Integrity and Ethics", stance: null }]),
+            record("r-1", [{ areaId: "a-ie", slug: "integrity_and_ethics", name: "Candidate Ethics", stance: null }]),
             record("r-2", []),
           ],
         })

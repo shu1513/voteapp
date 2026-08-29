@@ -194,7 +194,7 @@ function SortableAreaRow({
   // Direction-neutral on purpose: with Oppose selected, the veto fires on
   // records that SUPPORT the goal, so "who opposes this" would read backwards.
   const vetoLabel = isEthics
-    ? "Skip candidates with any integrity or ethics record"
+    ? "Skip candidates with any documented ethics or conviction record"
     : "Must: never pick a candidate or measure that goes against my position on this";
   return (
     <li
@@ -254,7 +254,7 @@ function SortableAreaRow({
               : "border-line text-ink-soft hover:border-rausch-dark"
           }`}
         >
-          {isEthics ? "Skip if ethics record" : "Must"}
+          {isEthics ? "Skip if negative record" : "Must"}
         </button>
         <button
           type="button"

@@ -112,8 +112,8 @@ VALUES
   ),
   (
     'integrity_and_ethics',
-    'Integrity and Ethics',
-    'Documented criminal convictions, official ethics findings, sanctions, disciplinary actions, court judgments, enforcement actions, or other verified public accountability records.'
+    'Candidate Ethics',
+    'The candidate has documented convictions, ethics findings, sanctions, or other verified accountability records.'
   ),
   (
     'legal_competence',
