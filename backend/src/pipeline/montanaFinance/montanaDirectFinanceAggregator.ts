@@ -33,10 +33,26 @@ import {
 export const MONTANA_UNKNOWN_OCCUPATION_LABEL = "Unknown";
 
 const CSV_INDIVIDUAL_LINE_ITEM = "Individual Contributions";
-const CSV_COMMITTEE_LINE_ITEM = "Independent Committee Contributions";
+/**
+ * The CSV splits committee money by committee class; the report-detail JSON
+ * `committee` list holds all three (verified cent-exact across five Phase 3
+ * live filers once summed — the Phase 1 fixtures only ever carried the
+ * independent class). Full observed CONTR line-item census 2026-08-28:
+ * these three + Individual + Less-Than-$35 + Loans + Debts-Not-Yet-Paid.
+ */
+const CSV_COMMITTEE_LINE_ITEMS: readonly string[] = [
+  "Independent Committee Contributions",
+  "Political Party Committee Contributions",
+  "Incidental Committee Contributions",
+];
 /** CSV roll-up family for small itemized contributions (observed on Eddy). */
 const CSV_SMALL_CONTRIBUTION_LINE_ITEM = "Contributions Less Than $35 Each";
-/** Montana's cumulative itemization threshold (MCA 13-37-229: $50). */
+/**
+ * Montana's cumulative itemization threshold (MCA 13-37-229: itemization is
+ * required "in excess of" $50, so a row of exactly $50.00 is itemizable on
+ * one surface and lumpable on the other — the bound is INCLUSIVE. Verified
+ * live Phase 3: a $450 CSV shortfall that was exactly nine $50.00 rows.
+ */
 const SMALL_CONTRIBUTION_ROW_CENTS = 5_000;
 
 /**
@@ -247,20 +263,24 @@ export function aggregateMontanaDirectFinance(input: {
     }
   }
 
-  // CSV cross-checks. Committee totals agree to the cent on both probed
-  // filers. Individual totals need a threshold-aware bound: the public CSV
-  // applies Montana's cumulative itemization threshold, so sub-threshold
-  // entries that the report-detail JSON itemizes are dropped or rolled into
-  // the "Contributions Less Than $35 Each" family (verified live 2026-08-28,
-  // Eddy: CSV short by $12,916.81, fully explained by her sub-$50 rows;
-  // Bedey's CSV is complete and the difference is zero). The CSV may only
-  // ever be SMALLER, and only by money attributable to small rows.
+  // CSV cross-checks. Committee totals agree to the cent once the CSV's
+  // three committee-class line items are summed. Individual totals need a
+  // threshold-aware bound: each surface makes its own itemize-or-lump call
+  // for rows at or under the $50 threshold, IN BOTH DIRECTIONS (verified
+  // live Phase 3 — Eddy: CSV short $12,916.81, fully explained by sub-$50
+  // rows; Ben Davis: CSV $90 LARGER, exactly three ≤$50 rows the canonical
+  // JSON lumps). A disagreement is tolerable only while it fits inside the
+  // ≤$50 rows of whichever surface reported MORE.
   let csvIndividualCents = 0;
   let csvCommitteeCents = 0;
+  let csvSmallIndividualRowBudgetCents = 0;
   for (const row of input.contributionRows) {
     if (row.lineItem === CSV_INDIVIDUAL_LINE_ITEM || row.lineItem === CSV_SMALL_CONTRIBUTION_LINE_ITEM) {
       csvIndividualCents += row.amountCents;
-    } else if (row.lineItem === CSV_COMMITTEE_LINE_ITEM) {
+      if (row.amountCents > 0 && row.amountCents <= SMALL_CONTRIBUTION_ROW_CENTS) {
+        csvSmallIndividualRowBudgetCents += row.amountCents;
+      }
+    } else if (CSV_COMMITTEE_LINE_ITEMS.includes(row.lineItem)) {
       csvCommitteeCents += row.amountCents;
     }
   }
@@ -269,7 +289,7 @@ export function aggregateMontanaDirectFinance(input: {
       sum +
       report.artifact.lists.individual.reduce(
         (listSum, row) =>
-          row.totalAmtCents > 0 && row.totalAmtCents < SMALL_CONTRIBUTION_ROW_CENTS
+          row.totalAmtCents > 0 && row.totalAmtCents <= SMALL_CONTRIBUTION_ROW_CENTS
             ? listSum + row.totalAmtCents
             : listSum,
         0
@@ -277,11 +297,14 @@ export function aggregateMontanaDirectFinance(input: {
     0
   );
   const individualShortfallCents = individualCents - csvIndividualCents;
-  if (individualShortfallCents < 0 || individualShortfallCents > smallIndividualRowBudgetCents) {
+  if (
+    individualShortfallCents > smallIndividualRowBudgetCents ||
+    -individualShortfallCents > csvSmallIndividualRowBudgetCents
+  ) {
     throw new MontanaDirectFinanceAggregationError(
       `Montana CSV/JSON individual-contribution totals disagree beyond the itemization threshold: ` +
         `CSV ${csvIndividualCents}c vs report-detail ${individualCents}c ` +
-        `(shortfall ${individualShortfallCents}c, small-row budget ${smallIndividualRowBudgetCents}c)`
+        `(shortfall ${individualShortfallCents}c, small-row budgets json ${smallIndividualRowBudgetCents}c / csv ${csvSmallIndividualRowBudgetCents}c)`
     );
   }
   requireCentAgreement("committee-contribution", csvCommitteeCents, committeeCents);

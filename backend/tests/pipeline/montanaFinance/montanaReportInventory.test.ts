@@ -54,6 +54,16 @@ describe("selectMontanaCanonicalReports", () => {
     expect(selectMontanaCanonicalReports([twinA, twinB]).reports.map((report) => report.reportId)).toEqual([15]);
   });
 
+  it("keeps Pending-Amended reports canonical (the filed version stays operative)", () => {
+    // Live Phase 3: excluding PENDA dropped whole periods — the CSV export
+    // still carried their rows while the JSON side lost $3,380.
+    const pending = row({ reportId: 40, statusCode: "PENDA", statusDescr: "Pending-Amended" });
+    const filed = row({ reportId: 41, fromDateStr: "03/16/2026", toDateStr: "04/15/2026" });
+    const selection = selectMontanaCanonicalReports([pending, filed]);
+    expect(selection.reports.map((report) => report.reportId)).toEqual([40, 41]);
+    expect(selection.diagnostics).toEqual([]);
+  });
+
   it("excludes non-chain forms and unexpected statuses with diagnostics", () => {
     const c7 = row({ reportId: 20, formTypeCode: "C7", fromDateStr: "05/21/2026", toDateStr: "05/21/2026" });
     const weird = row({ reportId: 21, statusCode: "DRAFT", statusDescr: "Draft" });

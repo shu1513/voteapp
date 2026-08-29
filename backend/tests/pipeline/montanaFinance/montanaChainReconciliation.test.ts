@@ -8,6 +8,7 @@ import type {
 import { MONTANA_CERS_ALL_CANDIDATE_DETAIL_LISTS } from "../../../src/pipeline/montanaFinance/montanaCersParsers.js";
 import {
   MONTANA_CHAIN_LUMP_ABSOLUTE_FLOOR_CENTS,
+  MONTANA_CHAIN_LUMP_NEGATIVE_FLOOR_CENTS,
   computeMontanaReportCashFlows,
   reconcileMontanaCashBeginChain,
   type MontanaChainReport,
@@ -131,7 +132,7 @@ describe("reconcileMontanaCashBeginChain", () => {
     expect(result.derivedUnitemizedTotalCents).toBe(4_900);
   });
 
-  it("fails closed on a negative residual", () => {
+  it("fails closed on a negative residual beyond the tolerance floor", () => {
     const result = reconcileMontanaCashBeginChain([
       report({ reportId: 1, primBeginCents: 0, primaryInCents: 100_000 }),
       report({ reportId: 2, primBeginCents: 66_420 }),
@@ -143,6 +144,34 @@ describe("reconcileMontanaCashBeginChain", () => {
     });
     expect(result.derivedEndingBalanceCents).toBeNull();
     expect(result.derivedUnitemizedTotalCents).toBeNull();
+  });
+
+  it("tolerates a small negative residual without counting it as unitemized money", () => {
+    // The Phase 3 live class: begin 88.13 -> 79.00 with zero itemized flows
+    // (a bank service fee the filer never itemizes). The chain passes, but
+    // the -$9.13 must not shrink the unitemized CONTRIBUTION total.
+    const result = reconcileMontanaCashBeginChain([
+      report({ reportId: 78325, primBeginCents: 8_813 }),
+      report({ reportId: 79197, primBeginCents: 7_900, primaryInCents: 30_000 }),
+      report({ reportId: 80388, primBeginCents: 40_000 }),
+    ]);
+    expect(result.ok).toBe(true);
+    expect(result.links.find((link) => link.reportId === 78325 && link.side === "primary")!.lumpCents).toBe(-913);
+    // Second link carries a +$21 positive lump; only IT counts.
+    expect(result.derivedUnitemizedTotalCents).toBe(2_100);
+    // Exactly the floor passes; one cent beyond fails.
+    expect(
+      reconcileMontanaCashBeginChain([
+        report({ reportId: 1, primBeginCents: MONTANA_CHAIN_LUMP_NEGATIVE_FLOOR_CENTS }),
+        report({ reportId: 2, primBeginCents: 0 }),
+      ]).ok
+    ).toBe(true);
+    expect(
+      reconcileMontanaCashBeginChain([
+        report({ reportId: 1, primBeginCents: MONTANA_CHAIN_LUMP_NEGATIVE_FLOOR_CENTS + 1 }),
+        report({ reportId: 2, primBeginCents: 0 }),
+      ]).ok
+    ).toBe(false);
   });
 
   it("fails closed on a residual too large for the receipts", () => {
@@ -164,11 +193,69 @@ describe("reconcileMontanaCashBeginChain", () => {
     expect(result.ok).toBe(true);
   });
 
-  it("fails closed when a begin anchor is missing", () => {
-    const broken = report({ reportId: 1, primBeginCents: 0 });
-    broken.inventory.genCashBegCents = null;
-    const result = reconcileMontanaCashBeginChain([broken, report({ reportId: 2, primBeginCents: 0 })]);
+  it("carries a null begin anchor forward and settles the span at the next real anchor", () => {
+    // The Phase 3 live mirror signature: under a null≡0 reading the two
+    // links fail as -X then +X; carrying the derived ending into the null
+    // anchor closes both exactly (the span conserves money).
+    const middle = report({ reportId: 78339, primBeginCents: 0, primaryInCents: 20_000 });
+    middle.inventory.primCashBegCents = null;
+    const result = reconcileMontanaCashBeginChain([
+      report({ reportId: 77525, primBeginCents: 0, primaryInCents: 92_670 }),
+      middle,
+      report({ reportId: 79387, primBeginCents: 112_670 }),
+    ]);
+    expect(result.ok).toBe(true);
+    const primaryLinks = result.links.filter((link) => link.side === "primary");
+    expect(primaryLinks[0]).toMatchObject({ lumpCents: 0, carriedAnchor: true });
+    expect(primaryLinks[1]).toMatchObject({ lumpCents: 0, carriedAnchor: false });
+    expect(result.derivedUnitemizedTotalCents).toBe(0);
+  });
+
+  it("span residuals land on the first real anchor and face the normal gate", () => {
+    // Money missing across the whole null span (beyond the negative floor)
+    // still fails closed when the next real anchor contradicts it.
+    const middle = report({ reportId: 2, primBeginCents: 0 });
+    middle.inventory.primCashBegCents = null;
+    const result = reconcileMontanaCashBeginChain([
+      report({ reportId: 1, primBeginCents: 0, primaryInCents: 100_000 }),
+      middle,
+      report({ reportId: 3, primBeginCents: 50_000 }),
+    ]);
     expect(result.ok).toBe(false);
+    expect(result.links.find((link) => link.reportId === 2 && link.side === "primary")).toMatchObject({
+      lumpCents: -50_000,
+      failure: "negative_residual",
+    });
+  });
+
+  it("reconciles an all-null chain as unverified but derivable", () => {
+    // A filer whose every C5 lists null begins (observed live) has no
+    // anchors to contradict conservation: every link closes by carry, the
+    // snapshot rests on the CSV/JSON cross-checks, and the ending balance
+    // is the flow sum from an empty start.
+    const reports = [
+      report({ reportId: 1, primBeginCents: 0, primaryInCents: 40_000, primaryOutCents: 10_000 }),
+      report({ reportId: 2, primBeginCents: 0, primaryInCents: 5_000 }),
+    ];
+    for (const item of reports) {
+      item.inventory.primCashBegCents = null;
+      item.inventory.genCashBegCents = null;
+    }
+    const result = reconcileMontanaCashBeginChain(reports);
+    expect(result.ok).toBe(true);
+    expect(result.links.every((link) => link.carriedAnchor)).toBe(true);
+    expect(result.derivedEndingBalanceCents).toBe(35_000);
+  });
+
+  it("a wrongly-empty first anchor surfaces as an excessive lump at the next real anchor", () => {
+    // First-report null begins are read as 0 (campaign accounts open
+    // empty); if the account actually held prior money, the next real
+    // anchor sits far above the derivation and the ratio gate rejects it.
+    const first = report({ reportId: 1, primBeginCents: 0, primaryInCents: 1_000 });
+    first.inventory.primCashBegCents = null;
+    const result = reconcileMontanaCashBeginChain([first, report({ reportId: 2, primBeginCents: 500_000 })]);
+    expect(result.ok).toBe(false);
+    expect(result.links.find((link) => link.side === "primary")!.failure).toBe("excessive_residual");
   });
 
   it("derives the latest ending balance from the last report, both sides", () => {

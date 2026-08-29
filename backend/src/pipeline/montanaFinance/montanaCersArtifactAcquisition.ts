@@ -25,6 +25,8 @@ import {
 import { storeMontanaCersArtifact } from "./montanaCersArtifactCache.js";
 import {
   MONTANA_CERS_ALL_CANDIDATE_DETAIL_LISTS,
+  MONTANA_CERS_CONTRIBUTION_EXPORT_HEADER,
+  MONTANA_CERS_EXPENDITURE_EXPORT_HEADER,
   parseMontanaCersContributionExport,
   parseMontanaCersExpenditureExport,
   parseMontanaCersFinanceRepDetailList,
@@ -133,7 +135,15 @@ async function fetchFinancialExportBody(input: {
     throw new Error(`Montana CERS prepareDownloadFile did not answer JSON for ${input.mode}`);
   }
   if (typeof fileName !== "string" || fileName === "") {
-    throw new Error(`Montana CERS prepareDownloadFile returned no fileName for ${input.mode}`);
+    // A candidate with zero rows of this class has nothing to export and
+    // CERS prepares no file (verified live Phase 3: a filer with zero
+    // expenditures, another with zero contributions of any kind). Store a
+    // header-only export. Fail-closed guard: if CERS ever answered no
+    // fileName spuriously for a candidate WITH money, the sync's CSV/JSON
+    // cent cross-checks reject the snapshot.
+    const header =
+      input.mode === "CONTR" ? MONTANA_CERS_CONTRIBUTION_EXPORT_HEADER : MONTANA_CERS_EXPENDITURE_EXPORT_HEADER;
+    return `${header.join("|")}\n`;
   }
   const download = await session.get(buildMontanaCersUrl("searchResults/downloadFile", { fileName }));
   return download.text();
