@@ -116,7 +116,8 @@ export type BallotLookupFinanceSummary = {
     | "MISSOURI_MEC"
     | "MONTANA_COPP"
     | "MISSISSIPPI_SOS"
-    | "RHODE_ISLAND_ERTS";
+    | "RHODE_ISLAND_ERTS"
+    | "SOUTH_CAROLINA_CAMPAIGN_FINANCE";
   cycle: number;
   fec_candidate_id: string | null;
   controlled_committee_id?: string | null;
@@ -235,6 +236,7 @@ export const FINANCE_SUMMARY_SOURCES = [
   "MONTANA_COPP",
   "MISSISSIPPI_SOS",
   "RHODE_ISLAND_ERTS",
+  "SOUTH_CAROLINA_CAMPAIGN_FINANCE",
 ] as const satisfies readonly BallotLookupFinanceSummary["source"][];
 
 // Compile-time exhaustiveness: never = a union member is missing above.

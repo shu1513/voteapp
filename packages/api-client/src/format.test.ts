@@ -157,6 +157,7 @@ describe("financeSourceLabel", () => {
     expect(financeSourceLabel("NEW_HAMPSHIRE_CFS")).toBe("New Hampshire Campaign Finance System");
     expect(financeSourceLabel("MISSISSIPPI_SOS")).toBe("Mississippi Secretary of State");
     expect(financeSourceLabel("RHODE_ISLAND_ERTS")).toBe("Rhode Island Board of Elections");
+    expect(financeSourceLabel("SOUTH_CAROLINA_CAMPAIGN_FINANCE")).toBe("South Carolina State Ethics Commission");
     expect(financeSourceLabel("SAN_FRANCISCO_ETHICS")).toBe("San Francisco Ethics Commission");
     expect(financeSourceLabel("PHOENIX_CITY_CLERK")).toBe("City of Phoenix City Clerk Department");
     expect(financeSourceLabel("SAN_DIEGO_CITY_CLERK")).toBe("City of San Diego Office of the City Clerk");

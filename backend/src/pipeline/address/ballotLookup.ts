@@ -85,6 +85,7 @@ import { loadPhoenixCandidateFinanceSummariesByCandidateElection } from "../phoe
 import { loadSanDiegoCityCandidateFinanceSummariesByCandidateElection } from "../sanDiegoCityFinance/sanDiegoCityBallotLookupFinanceLoader.js";
 import { loadSanFranciscoCandidateFinanceSummariesByCandidateElection } from "../sanFranciscoFinance/sanFranciscoBallotLookupFinanceLoader.js";
 import { loadSanJoseCandidateFinanceSummariesByCandidateElection } from "../sanJoseFinance/sanJoseBallotLookupFinanceLoader.js";
+import { loadSouthCarolinaCandidateFinanceSummariesByCandidateElection } from "../southCarolinaFinance/southCarolinaBallotLookupFinanceLoader.js";
 import {
 } from "../../config/featureFlags.js";
 
@@ -1092,6 +1093,7 @@ const STATE_FINANCE_LOOKUP_ADAPTERS: readonly StateFinanceLookupAdapter[] = [
   { state: "MO", load: loadMissouriCandidateFinanceSummariesByCandidateElection },
   { state: "MS", load: loadManualCandidateFinanceSummariesByCandidateElection },
   { state: "RI", load: loadRhodeIslandCandidateFinanceSummariesByCandidateElection },
+  { state: "SC", load: loadSouthCarolinaCandidateFinanceSummariesByCandidateElection },
 ];
 
 // Fault-isolated sources swallow errors that previously reached the API

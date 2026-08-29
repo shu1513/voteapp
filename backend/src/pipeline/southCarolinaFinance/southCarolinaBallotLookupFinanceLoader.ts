@@ -1,0 +1,52 @@
+// South Carolina ballot-lookup finance loader: thin config wrapper over the
+// standard loader. Outside totals are never stored (committee filings expose
+// no independent-expenditure flag, candidate target, or support/oppose), so
+// they surface as null with the coverage note — never $0. The direct note is
+// the source-wide static one from the aggregator; the standard family
+// persists no per-candidate note (that variant is a sync diagnostic only).
+
+import type { Pool, PoolClient } from "pg";
+
+import { isSouthCarolinaCampaignFinanceEnabled } from "../../config/featureFlags.js";
+import {
+  officeInputFromElectionRow,
+  type BallotLookupFinanceSummary,
+  type StateFinanceRequestCandidateRow,
+  type StateFinanceRequestElectionRow,
+} from "../address/ballotLookupFinanceShared.js";
+import { loadStandardStateFinanceSummariesByCandidateElection } from "../finance/standardStateFinanceBallotLookupLoader.js";
+import { SOUTH_CAROLINA_DIRECT_COVERAGE_NOTE } from "./southCarolinaDirectContributionAggregator.js";
+import { isSouthCarolinaFinanceEligibleOffice } from "./southCarolinaFinanceEligibleOffices.js";
+
+type Queryable = Pick<Pool | PoolClient, "query">;
+
+const SOUTH_CAROLINA_ETHICS_SOURCE_URL = "https://ethicsfiling.sc.gov/public";
+const SOUTH_CAROLINA_OUTSIDE_COVERAGE_NOTE =
+  "South Carolina committee filings do not identify independent expenditures by candidate or position, so outside spending totals are unavailable rather than zero.";
+
+export async function loadSouthCarolinaCandidateFinanceSummariesByCandidateElection(
+  db: Queryable,
+  candidateRows: readonly StateFinanceRequestCandidateRow[],
+  electionRows: readonly StateFinanceRequestElectionRow[]
+): Promise<Map<string, BallotLookupFinanceSummary>> {
+  return loadStandardStateFinanceSummariesByCandidateElection({
+    db,
+    candidateRows,
+    electionRows,
+    state: "SC",
+    source: "SOUTH_CAROLINA_CAMPAIGN_FINANCE",
+    sourceUrl: SOUTH_CAROLINA_ETHICS_SOURCE_URL,
+    enabled: isSouthCarolinaCampaignFinanceEnabled,
+    isEligibleElection: (row) => isSouthCarolinaFinanceEligibleOffice(officeInputFromElectionRow(row)),
+    linkIdentityColumn: "candidate_filer_id",
+    directCoverageNote: SOUTH_CAROLINA_DIRECT_COVERAGE_NOTE,
+    outsideCoverageNote: SOUTH_CAROLINA_OUTSIDE_COVERAGE_NOTE,
+    tables: {
+      links: "sc_candidate_finance_links",
+      summaries: "sc_candidate_finance_summaries",
+      directBreakdowns: "sc_candidate_finance_direct_breakdowns",
+      outsideGroups: "sc_candidate_finance_outside_groups",
+      outsideGroupBreakdowns: "sc_candidate_finance_outside_group_breakdowns",
+    },
+  });
+}
