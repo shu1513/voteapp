@@ -36,6 +36,7 @@ import {
   INTEGRITY_AND_ETHICS_RESEARCH_AREA_SLUG,
 } from "../candidates/candidateRecordResearchAreaPolicy.js";
 import { loadKentuckyCandidateFinanceSummariesByCandidateElection } from "../kentuckyFinance/kentuckyBallotLookupFinanceLoader.js";
+import { loadAlabamaCandidateFinanceSummariesByCandidateElection } from "../alabamaFinance/alabamaBallotLookupFinanceLoader.js";
 import { loadAlaskaCandidateFinanceSummariesByCandidateElection } from "../alaskaFinance/alaskaCandidateFinanceBallotLookup.js";
 import { loadArizonaCandidateFinanceSummariesByCandidateElection } from "../arizonaFinance/arizonaFinanceBallotLookup.js";
 import { loadFloridaCandidateFinanceSummariesByCandidateElection } from "../floridaFinance/floridaFinanceBallotSummary.js";
@@ -1096,6 +1097,7 @@ const STATE_FINANCE_LOOKUP_ADAPTERS: readonly StateFinanceLookupAdapter[] = [
   { state: "MS", load: loadManualCandidateFinanceSummariesByCandidateElection },
   { state: "RI", load: loadRhodeIslandCandidateFinanceSummariesByCandidateElection },
   { state: "SC", load: loadSouthCarolinaCandidateFinanceSummariesByCandidateElection },
+  { state: "AL", load: loadAlabamaCandidateFinanceSummariesByCandidateElection },
 ];
 
 // Fault-isolated sources swallow errors that previously reached the API
