@@ -23,6 +23,7 @@ const EMAIL_PREFERENCES = {
   email_election_reminders: false,
   email_new_election_alerts: true,
   email_issue_updates: false,
+  email_member_newsletter: true,
 };
 
 function renderMission() {
