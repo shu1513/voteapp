@@ -409,11 +409,21 @@ export function classifyMontanaOutsideSpendingRows(input: {
         continue;
       }
       // Attachment recovery: a filed PDF breakdown replaces the lump row,
-      // but only when it reconciles to that row's amount. Each entry is a
+      // but only when it is the same disclosure it was harvested from:
+      // same committee, a row whose candidateIssue still points at an
+      // attachment (an amended row that now names its own target is newer
+      // official data and must never be overridden by a stored breakdown),
+      // and entries reconciling to the row's amount. Each entry is a
       // canonical candidateIssue string, so it goes through the SAME parse
       // + stance + resolution path as a filer-typed target.
       const recovery = montanaIeAttachmentRecoveryFor(row.transId);
-      if (recovery !== null) {
+      const rowParse = recovery !== null ? parseMontanaCandidateIssue(row.candidateIssue) : null;
+      if (
+        recovery !== null &&
+        recovery.committeeId === committee.committeeId &&
+        rowParse?.kind === "quarantine" &&
+        rowParse.reason === "attachment_reference"
+      ) {
         const recoveredTotal = recovery.entries.reduce((sum, entry) => sum + entry.amountCents, 0);
         if (Math.abs(recoveredTotal - row.totalAmtCents) <= MONTANA_IE_RECOVERY_TOLERANCE_CENTS) {
           for (const entry of recovery.entries) {

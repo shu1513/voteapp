@@ -167,7 +167,9 @@ export type MontanaChainReconciliation = {
   /**
    * Sum of POSITIVE derived lumps across passing links, both sides — the
    * unitemized contribution total. Tolerated negative lumps are unitemized
-   * outflows (bank fees), not negative raising, and contribute zero.
+   * outflows (bank fees), not negative raising, and contribute zero. Under
+   * cumulative acceptance the failing links are netted together first
+   * (restatement pairs cancel), then contribute their net only if positive.
    */
   derivedUnitemizedTotalCents: number | null;
 };
@@ -252,10 +254,11 @@ function computeEffectiveBegins(reports: readonly MontanaChainReport[]): Montana
  * every purpose the chain serves, while a real gap still fails.
  *
  * Returns null when fewer than two reports carry real begins on both sides
- * (nothing to check against). The lump is the span's whole residual, which
- * is why callers must use it INSTEAD of summing per-link lumps here:
- * summing positives across a restatement pair would count the +$1,000 half
- * of an offsetting pair as unitemized contributions.
+ * (nothing to check against). This function only ACCEPTS the span; the
+ * unitemized attribution stays per-link, with the failing links netted
+ * (see derivedUnitemizedTotalCents) — the span lump nets passing links'
+ * residuals too, which would let a tolerated fee residual shrink another
+ * period's genuine contributions.
  */
 function reconcileCumulativeSpan(
   reports: readonly MontanaChainReport[]
@@ -403,11 +406,16 @@ export function reconcileMontanaCashBeginChain(reports: readonly MontanaChainRep
     // Positive ROOTED lumps only: a tolerated negative lump is unitemized
     // spending (bank fees) and must not shrink the unitemized CONTRIBUTION
     // total, and an unrooted lump is unknown-start residue, not money
-    // raised — counting it would mint phantom contributions.
+    // raised — counting it would mint phantom contributions. Under
+    // cumulative acceptance only the FAILING links (the restatement noise
+    // the span check absorbs) are netted against each other — summing
+    // their positives alone would count the +$1,000 half of an offsetting
+    // pair; netting them against PASSING links would let a passing fee
+    // residual shrink another period's genuine contributions. A failing
+    // link is always rooted (unrooted links never gate-fail).
     derivedUnitemizedTotalCents: !ok
       ? null
-      : reconciledCumulatively
-        ? Math.max(0, cumulative!.lumpCents)
-        : links.reduce((sum, link) => sum + (link.rooted ? Math.max(0, link.lumpCents) : 0), 0),
+      : links.reduce((sum, link) => sum + (link.ok && link.rooted ? Math.max(0, link.lumpCents) : 0), 0) +
+        Math.max(0, links.reduce((sum, link) => sum + (link.ok ? 0 : link.lumpCents), 0)),
   };
 }

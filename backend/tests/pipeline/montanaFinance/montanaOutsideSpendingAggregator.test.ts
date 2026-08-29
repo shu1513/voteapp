@@ -266,6 +266,36 @@ describe("attachment recovery", () => {
     expect(classified[0]!.recoveredAmountCents).toBeUndefined();
   });
 
+  it("never applies a recovery to another committee's row with the same transId", () => {
+    // transId alone is not identity: the recovery is pinned to the
+    // committee it was harvested from.
+    const classified = classifyMontanaOutsideSpendingRows({
+      sweep: sweep([
+        [999, "Some Other PAC", [ieRow({ transId: C4MT_TRANS_ID, totalAmtCents: C4MT_TOTAL_CENTS, candidateIssue: "See attached" })]],
+      ]),
+      registrationRows: REGISTRATIONS,
+      electionYear: 2026,
+    });
+    expect(classified).toHaveLength(1);
+    expect(classified[0]!.outcome).toEqual({ kind: "quarantined", reason: "attachment_reference" });
+    expect(classified[0]!.recoveredAmountCents).toBeUndefined();
+  });
+
+  it("lets an amended row that names its own target beat the stored recovery", () => {
+    // If the filer amends the row to an explicit target, the row is newer
+    // official data — the stored breakdown must not override it.
+    const classified = classifyMontanaOutsideSpendingRows({
+      sweep: sweep([
+        [10641, "Conservatives4MT", [ieRow({ transId: C4MT_TRANS_ID, totalAmtCents: C4MT_TOTAL_CENTS, candidateIssue: "Oppose David Bedey" })]],
+      ]),
+      registrationRows: REGISTRATIONS,
+      electionYear: 2026,
+    });
+    expect(classified).toHaveLength(1);
+    expect(classified[0]!.recoveredAmountCents).toBeUndefined();
+    expect(classified[0]!.outcome).toMatchObject({ kind: "resolved", stance: "oppose", cersCandidateId: 21020 });
+  });
+
   it("keeps the stored recovery reconciled to its documented transaction", () => {
     // Guards future edits to the table: the entries must keep summing to
     // the transaction amount recorded in the module comment.

@@ -357,6 +357,24 @@ describe("reconcileMontanaCashBeginChain", () => {
     expect(result.derivedUnitemizedTotalCents).toBe(0);
   });
 
+  it("keeps passing links' residuals out of the cumulative net", () => {
+    // A genuine +$450 unitemized lump and a tolerated -$50 fee residual sit
+    // on individually-PASSING links, while a $1,000 restatement pair forces
+    // cumulative acceptance. The fee must not net against the $450 (it is
+    // unitemized spending, not negative raising), and the offsetting pair
+    // must contribute nothing — so the total is $450, not the $400 span net.
+    const result = reconcileMontanaCashBeginChain([
+      report({ reportId: 1, primBeginCents: 0 }),
+      report({ reportId: 2, primBeginCents: 45_000 }), // +$450 lump, passes
+      report({ reportId: 3, primBeginCents: 40_000 }), // -$50 fee, passes
+      report({ reportId: 4, primBeginCents: 140_000 }), // +$1,000, fails
+      report({ reportId: 5, primBeginCents: 40_000 }), // -$1,000, fails
+    ]);
+    expect(result).toMatchObject({ ok: true, reconciledCumulatively: true });
+    expect(result.links.filter((link) => !link.ok)).toHaveLength(2);
+    expect(result.derivedUnitemizedTotalCents).toBe(45_000);
+  });
+
   it("still fails closed when the span itself loses money", () => {
     // Same restatement shape, but $2,000 never comes back: a real gap.
     const result = reconcileMontanaCashBeginChain([
