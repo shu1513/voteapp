@@ -5,7 +5,7 @@
  * frontend cannot record acceptance of superseded terms; the git history of
  * docs/legal/ is the authoritative archive of what each version said.
  */
-export const CURRENT_TERMS_VERSION = "1.2";
+export const CURRENT_TERMS_VERSION = "1.3";
 
 /**
  * Previous bundle versions still accepted while a version bump rolls out.
@@ -20,7 +20,7 @@ export const CURRENT_TERMS_VERSION = "1.2";
  * bundles refreshed, no distributed mobile build on the old version), and
  * repopulate it with the outgoing version at the next bump.
  */
-export const GRACE_TERMS_VERSIONS: readonly string[] = ["1.1"];
+export const GRACE_TERMS_VERSIONS: readonly string[] = ["1.2"];
 
 /** A terms version a client may accept right now: current, or a listed
  * still-rolling-out previous version. */

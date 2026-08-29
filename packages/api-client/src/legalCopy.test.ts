@@ -102,8 +102,13 @@ const PINNED_DOCUMENTS = [
     // Substance change — bundle bumps to 1.2 (CURRENT_TERMS_VERSION,
     // TERMS_VERSION, disclaimer.md) and signed-in users re-accept once.
     // Required BEFORE STRIPE_SECRET_KEY in prod.
-    version: "1.2",
-    sha256: "a54f13b8ab788310b64f099210c009f153e32a8dc635bcc4d9412a4ee2f4d312",
+    // 1.2 → 1.3 (2026-08-28): Section 14.5 member communications (member-only
+    // newsletters/analysis reports); 14.1 carve-out excepts 14.5 while the
+    // no-influence shield stays absolute. Substance change — bundle bumps to
+    // 1.3, GRACE_TERMS_VERSIONS ships ["1.2"], signed-in users re-accept
+    // once. Required BEFORE the first member-only communication is sent.
+    version: "1.3",
+    sha256: "98ffe184c3eeb470908a0f67f0efda4ca3597141268e59ce1f860f43776f5097",
   },
   {
     filename: "privacy-policy.md",
@@ -124,8 +129,10 @@ const PINNED_DOCUMENTS = [
     filename: "disclaimer.md",
     // 1.1 → 1.2 (2026-08-21): no content change; version string tracks
     // CURRENT_TERMS_VERSION, which moved for the Terms 1.2 payments section.
-    version: "1.2",
-    sha256: "eb4c9d3f0e6a0ef48068ec62e4ac1bc0f82ca00cc49669a5c6453cf5abdf2b46",
+    // 1.2 → 1.3 (2026-08-28): no content change; tracks the Terms 1.3 bump
+    // (Section 14.5 member communications).
+    version: "1.3",
+    sha256: "630bbf2e6e55f86ac47228a9167b00323a71b23fbaf25882eb5e9ba852575d14",
   },
 ] as const;
 
