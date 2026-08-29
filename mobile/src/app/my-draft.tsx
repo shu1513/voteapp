@@ -402,13 +402,24 @@ function MyDraftBody({ me }: { me: Me }) {
       <ScrollView className="flex-1 bg-white" contentContainerClassName="pb-10">
         <VerifyPrompt email={me.email} />
         <View className="px-4">
-          <UpcomingUncardedPicks
-            title="Your upcoming picks"
-            choices={choices ?? []}
-            today={today}
-            cardedElectionIds={nothingCarded}
-          />
-          <PastPicks choices={choices ?? []} today={today} cardedElectionIds={nothingCarded} />
+          {choicesLoading && !choicesError ? <LoadingNotice text="Loading your picks…" /> : null}
+          {choicesError ? (
+            // Without this, a failed fetch is indistinguishable from an
+            // empty pick history under the verify prompt.
+            <Text className="mt-4 rounded-lg border border-rausch/40 bg-rausch/5 px-3 py-2 text-sm text-rausch-dark">
+              Could not load your picks — try again shortly.
+            </Text>
+          ) : (
+            <>
+              <UpcomingUncardedPicks
+                title="Your upcoming picks"
+                choices={choices ?? []}
+                today={today}
+                cardedElectionIds={nothingCarded}
+              />
+              <PastPicks choices={choices ?? []} today={today} cardedElectionIds={nothingCarded} />
+            </>
+          )}
         </View>
       </ScrollView>
     );
@@ -434,6 +445,11 @@ function MyDraftBody({ me }: { me: Me }) {
   // visible error beats confidently wrong "0 of N decided" cards.
   const choicesReady = choiceByElectionId !== undefined;
   const picksSettled = ballot.isSuccess && choicesReady;
+  // Ballot failed but choices loaded: the choice-only sections (upcoming,
+  // past) need nothing from the ballot, so they must survive the failure —
+  // an error line plus the whole saved history beats an error line alone.
+  // Nothing is carded then, so every decided choice lists as uncarded.
+  const choiceListsReady = choicesReady && (ballot.isSuccess || ballot.isError);
 
   return (
     <ScrollView className="flex-1 bg-white" contentContainerClassName="px-4 py-8">
@@ -476,20 +492,24 @@ function MyDraftBody({ me }: { me: Me }) {
         )
       ) : null}
       {picksSettled ? (
+        <View className="mt-4 gap-4">
+          {dates.map((date) => (
+            <PickDateCard
+              key={date}
+              date={date}
+              elections={byDate.get(date) ?? []}
+              choiceByElectionId={choiceByElectionId}
+              today={today}
+            />
+          ))}
+        </View>
+      ) : null}
+      {choiceListsReady ? (
         <>
-          <View className="mt-4 gap-4">
-            {dates.map((date) => (
-              <PickDateCard
-                key={date}
-                date={date}
-                elections={byDate.get(date) ?? []}
-                choiceByElectionId={choiceByElectionId}
-                today={today}
-              />
-            ))}
-          </View>
           <UpcomingUncardedPicks
-            title="Other upcoming picks"
+            // With no cards above (ballot failed), "Other" would point at
+            // nothing — these ARE the upcoming picks.
+            title={ballot.isSuccess ? "Other upcoming picks" : "Your upcoming picks"}
             choices={choices ?? []}
             today={today}
             cardedElectionIds={cardedElectionIds}

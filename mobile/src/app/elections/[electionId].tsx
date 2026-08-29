@@ -33,6 +33,7 @@ import {
   CandidatePickButton,
   LogInToPlanLine,
   MeasureChoiceButtons,
+  StrandedPicksNotice,
 } from "../../components/ElectionChoiceControls";
 import { FinanceSummaryCard } from "../../components/FinanceSummaryCard";
 import { FollowButton } from "../../components/FollowButton";
@@ -342,6 +343,11 @@ export default function ElectionScreen() {
               This election fills {data.seats_to_fill} seats — pick up to {data.seats_to_fill} candidates.
             </Text>
           ) : null}
+          {/* Stranded picks have no candidate card below (withdrawn
+              candidacies are filtered out of the payload), yet still count
+              toward the seat cap and disable the remaining buttons —
+              surface them here with their removal control, like the web. */}
+          {showChoiceControls ? <StrandedPicksNotice electionId={data.id} choice={myChoice} /> : null}
           {/* Districts unknown: the nudge takes the controls' slot at the
               top of the candidate list; guests get the login line there. */}
           {showAddressNudge && data.race_type !== "ballot_measure" ? (
