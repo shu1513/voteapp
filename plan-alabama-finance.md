@@ -87,7 +87,6 @@ Stop rule: if (2) fails outside tolerance on any committee, do not proceed — f
 - `alabamaFcpaClient.ts` — race search, dropdown-id scrape, extract catalog + download, committee search (fallback), filing detail + filings-list fetch (`committeeelectronicfilingsresults&committeeId=<internal id>`). Every list endpoint paginates via `totalRecords` (never assume one page). Concurrency 1–2, bounded timeouts, pinned CA.
 - `alabamaFcpaArtifactCache.ts` — raw zip bytes keyed by (dataType, year) with retrieval time, source URL, checksum; reject HTML bodies/empty archives/changed headers; keep last good artifact on failure (pattern: `newHampshireCfsArtifactCache.ts`).
 - `alabamaFcpaCsv.ts` — tolerant cash-extract parser per the rules above, with skipped-line accounting surfaced in the sync report.
-- `alabamaFinanceTypes.ts`.
 
 Tests: fixture zips (small hand-built CSVs incl. ragged lines, in-kind rows, Amended=Y, returned contributions); race/committee search JSON fixtures; no live calls.
 

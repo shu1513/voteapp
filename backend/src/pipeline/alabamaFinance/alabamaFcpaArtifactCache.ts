@@ -3,11 +3,14 @@
 // with integrity metadata alongside (pattern: newHampshireCfsArtifactCache.ts).
 // Catalog download ids are unstable rows, so every refresh resolves the id
 // from a fresh catalog read (plan-alabama-finance.md, gotcha 2). A failed or
-// rejected download never disturbs the last good artifact.
+// rejected download never disturbs the last good artifact: zip files are
+// content-addressed (`STEM.<csvSha prefix>.zip`) and the metadata file is the
+// atomic commit pointer, so a crash between the two writes leaves the old
+// pair fully intact; stale zip versions are swept after a successful commit.
 
 import { createHash } from "node:crypto";
-import { chmod, mkdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { basename, resolve } from "node:path";
+import { chmod, mkdir, readdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
 
 import {
   downloadAlabamaExtractZipBytes,
@@ -89,15 +92,20 @@ export function getAlabamaFcpaArtifactCachePaths(input: {
   cacheDir: string;
   kind: AlabamaExtractKind;
   year: number;
-}): { cacheDir: string; filePath: string; metadataPath: string } {
+}): { cacheDir: string; stem: string; metadataPath: string } {
   const year = normalizeAlabamaExtractYear(input.year);
   const cacheDir = resolve(input.cacheDir);
   const stem = `${input.kind === "cash" ? "CASH" : "EXP"}_${year}`;
   return {
     cacheDir,
-    filePath: resolve(cacheDir, `${stem}.zip`),
+    stem,
     metadataPath: resolve(cacheDir, `${stem}.metadata.json`),
   };
+}
+
+/** Content-addressed zip path; the metadata file is what commits it. */
+function alabamaFcpaArtifactZipPath(cacheDir: string, stem: string, csvSha256: string): string {
+  return resolve(cacheDir, `${stem}.${csvSha256.slice(0, 12)}.zip`);
 }
 
 export async function readAlabamaFcpaArtifactCacheMetadata(
@@ -177,7 +185,8 @@ function validateAlabamaExtractZip(
 
 async function cachedFileMatches(input: {
   artifact: AlabamaFcpaArtifactIdentity;
-  filePath: string;
+  cacheDir: string;
+  stem: string;
   metadataPath: string;
   metadata: AlabamaFcpaArtifactCacheMetadata | null;
 }): Promise<boolean> {
@@ -186,18 +195,20 @@ async function cachedFileMatches(input: {
     !metadata ||
     metadata.artifact.kind !== input.artifact.kind ||
     metadata.artifact.year !== input.artifact.year ||
-    metadata.filePath !== input.filePath ||
     metadata.metadataPath !== input.metadataPath ||
-    metadata.source.dataType !== ALABAMA_EXTRACT_KIND_DATATYPE[input.artifact.kind]
+    metadata.source.dataType !== ALABAMA_EXTRACT_KIND_DATATYPE[input.artifact.kind] ||
+    // The zip file is content-addressed and named by the metadata pointer;
+    // sanity-check the pointer stays inside the cache under this stem.
+    metadata.filePath !== alabamaFcpaArtifactZipPath(input.cacheDir, input.stem, metadata.csvSha256)
   ) {
     return false;
   }
   try {
-    const fileStat = await stat(input.filePath);
+    const fileStat = await stat(metadata.filePath);
     return (
       fileStat.isFile() &&
       fileStat.size === metadata.zipBytes &&
-      sha256(await readFile(input.filePath)) === metadata.zipSha256
+      sha256(await readFile(metadata.filePath)) === metadata.zipSha256
     );
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === "ENOENT") return false;
@@ -240,16 +251,11 @@ export async function refreshAlabamaFcpaArtifactCache(input: {
   await mkdir(paths.cacheDir, { recursive: true, mode: CACHE_DIRECTORY_MODE });
   // mkdir's mode is ignored when the directory already exists.
   await chmod(paths.cacheDir, CACHE_DIRECTORY_MODE);
-  await chmodIfExists(paths.filePath, CACHE_FILE_MODE);
   await chmodIfExists(paths.metadataPath, CACHE_FILE_MODE);
 
   const previous = await readAlabamaFcpaArtifactCacheMetadata(paths.metadataPath);
-  const previousFileValid = await cachedFileMatches({
-    artifact,
-    filePath: paths.filePath,
-    metadataPath: paths.metadataPath,
-    metadata: previous,
-  });
+  if (previous) await chmodIfExists(previous.filePath, CACHE_FILE_MODE);
+  const previousFileValid = await cachedFileMatches({ ...paths, artifact, metadata: previous });
 
   const dataType = ALABAMA_EXTRACT_KIND_DATATYPE[artifact.kind];
   const catalog = input.catalog ?? (await getAlabamaExtractCatalog(input.clientOptions));
@@ -264,14 +270,25 @@ export async function refreshAlabamaFcpaArtifactCache(input: {
   // Zips recompress on the portal's daily regeneration; identical CSV content
   // means the cached artifact is still current even when zip bytes differ.
   if (!input.force && previous && previousFileValid && previous.csvSha256 === validated.csvSha256) {
-    return { status: "unchanged", ...paths, previous, current: previous };
+    return {
+      status: "unchanged",
+      cacheDir: paths.cacheDir,
+      filePath: previous.filePath,
+      metadataPath: paths.metadataPath,
+      previous,
+      current: previous,
+    };
   }
 
-  await writeFileAtomically(paths.filePath, bytes);
+  // Two-step commit: the content-addressed zip lands first, then the metadata
+  // pointer commits it atomically. A crash between the writes leaves the old
+  // zip + metadata pair fully intact.
+  const zipPath = alabamaFcpaArtifactZipPath(paths.cacheDir, paths.stem, validated.csvSha256);
+  await writeFileAtomically(zipPath, bytes);
   const current: AlabamaFcpaArtifactCacheMetadata = {
     version: 1,
     artifact,
-    filePath: paths.filePath,
+    filePath: zipPath,
     metadataPath: paths.metadataPath,
     downloadedAt: downloadedAt.toISOString(),
     source: {
@@ -288,7 +305,29 @@ export async function refreshAlabamaFcpaArtifactCache(input: {
   };
   await writeFileAtomically(paths.metadataPath, `${JSON.stringify(current, null, 2)}\n`);
 
-  return { status: "downloaded", ...paths, previous, current };
+  // Best-effort sweep of superseded zip versions (and pre-versioning names).
+  try {
+    for (const name of await readdir(paths.cacheDir)) {
+      if (
+        name.startsWith(`${paths.stem}.`) &&
+        name.endsWith(".zip") &&
+        name !== basename(zipPath)
+      ) {
+        await rm(resolve(paths.cacheDir, name), { force: true });
+      }
+    }
+  } catch {
+    // Stale versions are harmless; the next successful refresh sweeps again.
+  }
+
+  return {
+    status: "downloaded",
+    cacheDir: paths.cacheDir,
+    filePath: zipPath,
+    metadataPath: paths.metadataPath,
+    previous,
+    current,
+  };
 }
 
 /**
@@ -313,9 +352,9 @@ export async function readAlabamaFcpaArtifact(input: {
     throw new Error(`Alabama FCPA artifact ${label} has no cached metadata at ${paths.metadataPath}`);
   }
   if (!(await cachedFileMatches({ ...paths, artifact, metadata }))) {
-    throw new Error(`Alabama FCPA artifact ${label} is missing or corrupt at ${paths.filePath}`);
+    throw new Error(`Alabama FCPA artifact ${label} is missing or corrupt at ${metadata.filePath}`);
   }
-  const { csvText } = unzipAlabamaExtract(await readFile(paths.filePath), label);
+  const { csvText } = unzipAlabamaExtract(await readFile(metadata.filePath), label);
   if (sha256(csvText) !== metadata.csvSha256) {
     throw new Error(`Alabama FCPA artifact ${label} CSV content does not match its metadata checksum`);
   }

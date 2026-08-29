@@ -101,8 +101,9 @@ describe("refreshAlabamaFcpaArtifactCache", () => {
     const bytes = cashZip(cashCsvA);
     const result = await refresh({ cacheDir, bytes });
 
+    const csvShaA = createHash("sha256").update(cashCsvA).digest("hex");
     expect(result.status).toBe("downloaded");
-    expect(result.filePath).toBe(join(cacheDir, "CASH_2026.zip"));
+    expect(result.filePath).toBe(join(cacheDir, `CASH_2026.${csvShaA.slice(0, 12)}.zip`));
     expect(result.metadataPath).toBe(join(cacheDir, "CASH_2026.metadata.json"));
     expect(Buffer.from(await readFile(result.filePath)).equals(Buffer.from(bytes))).toBe(true);
     expect((await stat(cacheDir)).mode & 0o777).toBe(0o700);
@@ -139,14 +140,31 @@ describe("refreshAlabamaFcpaArtifactCache", () => {
     expect(forced.status).toBe("downloaded");
   });
 
-  it("replaces the artifact when the CSV content changes", async () => {
+  it("replaces the artifact when the CSV content changes and sweeps the superseded zip", async () => {
     const cacheDir = await tempDir();
-    await refresh({ cacheDir, bytes: cashZip(cashCsvA) });
+    const first = await refresh({ cacheDir, bytes: cashZip(cashCsvA) });
     const result = await refresh({ cacheDir, bytes: cashZip(cashCsvB) });
     expect(result.status).toBe("downloaded");
+    expect(result.filePath).not.toBe(first.filePath);
     expect(result.previous?.csvSha256).not.toBe(result.current.csvSha256);
     const read = await readAlabamaFcpaArtifact({ kind: "cash", year: 2026, cacheDir });
     expect(read.csvText).toBe(cashCsvB);
+    await expect(stat(first.filePath)).rejects.toMatchObject({ code: "ENOENT" });
+  });
+
+  it("keeps the last good pair readable when a crash lands a zip without its metadata commit", async () => {
+    const cacheDir = await tempDir();
+    await refresh({ cacheDir, bytes: cashZip(cashCsvA) });
+    // Simulate a refresh that wrote the new content-addressed zip and died
+    // before the metadata pointer committed it.
+    const csvShaB = createHash("sha256").update(cashCsvB).digest("hex");
+    await writeFile(join(cacheDir, `CASH_2026.${csvShaB.slice(0, 12)}.zip`), cashZip(cashCsvB));
+    const read = await readAlabamaFcpaArtifact({ kind: "cash", year: 2026, cacheDir });
+    expect(read.csvText).toBe(cashCsvA);
+    // And the next successful refresh still converges on the new content.
+    const next = await refresh({ cacheDir, bytes: cashZip(cashCsvB) });
+    expect(next.status).toBe("downloaded");
+    expect((await readAlabamaFcpaArtifact({ kind: "cash", year: 2026, cacheDir })).csvText).toBe(cashCsvB);
   });
 
   it("rejects an HTML body and keeps the last good artifact", async () => {
@@ -204,7 +222,6 @@ describe("readAlabamaFcpaArtifact", () => {
     const result = await refresh({ cacheDir, bytes: cashZip(cashCsvA) });
     const paths = getAlabamaFcpaArtifactCachePaths({ cacheDir, kind: "expenditure", year: 2026 });
     await writeFile(paths.metadataPath, JSON.stringify(result.current));
-    await writeFile(paths.filePath, await readFile(result.filePath));
     await expect(
       readAlabamaFcpaArtifact({ kind: "expenditure", year: 2026, cacheDir })
     ).rejects.toThrow(/missing or corrupt/);
