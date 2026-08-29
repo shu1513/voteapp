@@ -72,9 +72,7 @@ export default function MissionPage() {
             <span className="font-semibold">Become an honorary member:</span>
             <p className="mt-1">
               For a small monthly contribution, less than a cup of coffee, you can become an
-              honorary member and help us keep bringing you higher-quality content. As an honorary
-              member, you will get our private analysis reports on the important issues that could
-              affect you.
+              honorary member and help us keep bringing you higher-quality content.
             </p>
             <p className="mt-2">
               <Link to="/support/member" className={ctaClass}>

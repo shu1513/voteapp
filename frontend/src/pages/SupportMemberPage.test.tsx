@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import SupportMemberPage from "./SupportMemberPage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
@@ -97,17 +97,14 @@ describe("SupportMemberPage", () => {
     expect(screen.getByRole("button", { name: "Become a member" })).toBeDisabled();
   });
 
-  it("shows no dead form when Stripe is not configured", async () => {
+  it("shows an unavailable notice instead of a dead form when Stripe is not configured", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
       "/api/me/membership": { body: { enabled: false } },
     });
-    const { queryClient } = renderPage();
+    renderPage();
 
-    expect(
-      await screen.findByRole("heading", { name: "Become an honorary member" })
-    ).toBeInTheDocument();
-    await waitFor(() => expect(queryClient.getQueryState(["me", "membership"])?.status).toBe("success"));
+    expect(await screen.findByText(/Payments are temporarily unavailable/)).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Become a member" })).not.toBeInTheDocument();
   });
 });

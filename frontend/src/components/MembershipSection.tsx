@@ -387,8 +387,17 @@ export function SupportCheckout({ kind }: { kind: MembershipKind }) {
   const checkout = useCheckoutMutation();
   const portal = usePortalMutation();
 
-  if (status.isPending || (status.data && !status.data.enabled)) {
+  if (status.isPending) {
     return null;
+  }
+  // Unlike the Settings box (which just disappears), this page's copy tells
+  // the visitor to pick an amount below — silence here reads as broken.
+  if (status.data && !status.data.enabled) {
+    return (
+      <p className="rounded-xl border border-line bg-surface p-4 text-sm text-ink-soft">
+        Payments are temporarily unavailable. Please check back later.
+      </p>
+    );
   }
 
   // Same double-charge guard as MembershipSection: locked until the browser
@@ -467,7 +476,10 @@ export function MembershipThanks() {
   const status = useMembershipStatus();
   const portal = usePortalMutation();
 
-  if (!status.data?.enabled || !status.data.membership) {
+  // Only a paid-up membership earns the thanks (matches the Settings profile
+  // line): pending/past-due states would make this line a lie, and the pitch
+  // buttons above already lead to the page that explains the real state.
+  if (!status.data?.enabled || status.data.membership?.stripe_status !== "active") {
     return null;
   }
 

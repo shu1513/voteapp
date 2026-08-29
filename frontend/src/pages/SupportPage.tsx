@@ -23,8 +23,7 @@ export default function SupportPage() {
         <h1 className="text-title font-bold">Support {APP_NAME}</h1>
         <p>
           For a small monthly contribution, less than a cup of coffee, you can become an honorary
-          member and help us keep bringing you higher-quality content. As an honorary member, you
-          will get our private analysis reports on the important issues that could affect you.
+          member and help us keep bringing you higher-quality content.
         </p>
         <p>
           <Link to="/support/member" className={ctaClass}>

@@ -113,6 +113,20 @@ describe("MissionPage", () => {
     expect(screen.getByRole("button", { name: "Manage membership" })).toBeEnabled();
   });
 
+  it("does not thank a member whose subscription is not active", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/membership": {
+        body: { ...ACTIVE_MEMBER, membership: { ...ACTIVE_MEMBER.membership, stripe_status: "incomplete" } },
+      },
+      "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
+    });
+    const { queryClient } = renderMission();
+
+    await waitFor(() => expect(queryClient.getQueryState(["me", "membership"])?.status).toBe("success"));
+    expect(screen.queryByText("You are a supporting member. Thank you!")).not.toBeInTheDocument();
+  });
+
   it("keeps the pitch but no member widget when Stripe is not configured", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
