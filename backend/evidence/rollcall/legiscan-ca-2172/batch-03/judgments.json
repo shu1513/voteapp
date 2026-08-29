@@ -1,0 +1,310 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602341,
+      "measure_id": "AB 1127",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's amendments to AB 1127, which bars a licensed firearms dealer, from July 1, 2026, from selling or otherwise transferring a semiautomatic machinegun-convertible pistol. The law defines that as a pistol with a cruciform trigger bar that can be readily converted to fire automatically by attaching a pistol converter to the rear of the slide. A first violation draws a fine of up to $1,000, a second up to $5,000 and possible loss of the dealer's license, and a third is a misdemeanor that revokes it. Exempt are guns delivered to the dealer before January 1, 2026, sales to law enforcement, state agencies and the military, private-party transfers run through a dealer, and transfers to gunsmiths, other dealers, and forensic laboratories. The California State Assembly agreed to the amendments 54-16, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Senate's amendments to AB 1127, which bars a licensed firearms dealer, from July 1, 2026, from selling or otherwise transferring a semiautomatic machinegun-convertible pistol. The law defines that as a pistol with a cruciform trigger bar that can be readily converted to fire automatically by attaching a pistol converter to the rear of the slide. A first violation draws a fine of up to $1,000, a second up to $5,000 and possible loss of the dealer's license, and a third is a misdemeanor that revokes it. Exempt are guns delivered to the dealer before January 1, 2026, sales to law enforcement, state agencies and the military, private-party transfers run through a dealer, and transfers to gunsmiths, other dealers, and forensic laboratories. The California State Assembly agreed to the amendments 54-16, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1602340,
+      "measure_id": "AB 1127",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass AB 1127, which bars a licensed firearms dealer, from July 1, 2026, from selling or otherwise transferring a semiautomatic machinegun-convertible pistol. The law defines that as a pistol with a cruciform trigger bar that can be readily converted to fire automatically by attaching a pistol converter to the rear of the slide. A first violation draws a fine of up to $1,000, a second up to $5,000 and possible loss of the dealer's license, and a third is a misdemeanor that revokes it. Exempt are guns delivered to the dealer before January 1, 2026, sales to law enforcement, state agencies and the military, private-party transfers run through a dealer, and transfers to gunsmiths, other dealers, and forensic laboratories. It passed the California State Senate 29-9 and became law.",
+      "nay_description": "Voted against passing AB 1127, which bars a licensed firearms dealer, from July 1, 2026, from selling or otherwise transferring a semiautomatic machinegun-convertible pistol. The law defines that as a pistol with a cruciform trigger bar that can be readily converted to fire automatically by attaching a pistol converter to the rear of the slide. A first violation draws a fine of up to $1,000, a second up to $5,000 and possible loss of the dealer's license, and a third is a misdemeanor that revokes it. Exempt are guns delivered to the dealer before January 1, 2026, sales to law enforcement, state agencies and the military, private-party transfers run through a dealer, and transfers to gunsmiths, other dealers, and forensic laboratories. It passed the California State Senate 29-9 and became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601381,
+      "measure_id": "SB 524",
+      "vote_date": "2025-09-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 524, which requires every law enforcement agency to adopt a policy for official reports written with artificial intelligence. Such a report must carry a disclosure statement and the signature of the officer or agency member who prepared it, and the first AI-generated draft must be kept as long as the report itself. A draft is not the officer's statement, and the agency must keep an audit trail naming who used the tool and what video or audio it drew on. A contracted vendor may not share, sell, or otherwise use the agency's information except for that agency's purposes or under a court order, though it may access the data to troubleshoot or improve accuracy. It passed the California State Assembly 50-17 and became law.",
+      "nay_description": "Voted against passing SB 524, which requires every law enforcement agency to adopt a policy for official reports written with artificial intelligence. Such a report must carry a disclosure statement and the signature of the officer or agency member who prepared it, and the first AI-generated draft must be kept as long as the report itself. A draft is not the officer's statement, and the agency must keep an audit trail naming who used the tool and what video or audio it drew on. A contracted vendor may not share, sell, or otherwise use the agency's information except for that agency's purposes or under a court order, though it may access the data to troubleshoot or improve accuracy. It passed the California State Assembly 50-17 and became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601734,
+      "measure_id": "SB 524",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Assembly's amendments to SB 524, which requires every law enforcement agency to adopt a policy for official reports written with artificial intelligence. Such a report must carry a disclosure statement and the signature of the officer or agency member who prepared it, and the first AI-generated draft must be kept as long as the report itself. A draft is not the officer's statement, and the agency must keep an audit trail naming who used the tool and what video or audio it drew on. A contracted vendor may not share, sell, or otherwise use the agency's information except for that agency's purposes or under a court order, though it may access the data to troubleshoot or improve accuracy. The California State Senate agreed to the amendments 28-10, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Assembly's amendments to SB 524, which requires every law enforcement agency to adopt a policy for official reports written with artificial intelligence. Such a report must carry a disclosure statement and the signature of the officer or agency member who prepared it, and the first AI-generated draft must be kept as long as the report itself. A draft is not the officer's statement, and the agency must keep an audit trail naming who used the tool and what video or audio it drew on. A contracted vendor may not share, sell, or otherwise use the agency's information except for that agency's purposes or under a court order, though it may access the data to troubleshoot or improve accuracy. The California State Senate agreed to the amendments 28-10, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602349,
+      "measure_id": "AB 1036",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's amendments to AB 1036, which widens access to evidence after a conviction, extending the right to postconviction discovery from serious or violent felonies carrying 15 years or more to any felony with a state prison sentence. Discovery materials now include material from any prosecutor who tried or worked on the case that tends to negate guilt or reduce the sentence or offense. A prosecutor who wants to withhold jury selection notes must first make a foundational showing of how the information bears on their case. The California State Assembly agreed to the amendments 54-18, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Senate's amendments to AB 1036, which widens access to evidence after a conviction, extending the right to postconviction discovery from serious or violent felonies carrying 15 years or more to any felony with a state prison sentence. Discovery materials now include material from any prosecutor who tried or worked on the case that tends to negate guilt or reduce the sentence or offense. A prosecutor who wants to withhold jury selection notes must first make a foundational showing of how the information bears on their case. The California State Assembly agreed to the amendments 54-18, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1602348,
+      "measure_id": "AB 1036",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass AB 1036, which widens access to evidence after a conviction, extending the right to postconviction discovery from serious or violent felonies carrying 15 years or more to any felony with a state prison sentence. Discovery materials now include material from any prosecutor who tried or worked on the case that tends to negate guilt or reduce the sentence or offense. A prosecutor who wants to withhold jury selection notes must first make a foundational showing of how the information bears on their case. It passed the California State Senate 28-9 and became law.",
+      "nay_description": "Voted against passing AB 1036, which widens access to evidence after a conviction, extending the right to postconviction discovery from serious or violent felonies carrying 15 years or more to any felony with a state prison sentence. Discovery materials now include material from any prosecutor who tried or worked on the case that tends to negate guilt or reduce the sentence or offense. A prosecutor who wants to withhold jury selection notes must first make a foundational showing of how the information bears on their case. It passed the California State Senate 28-9 and became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601569,
+      "measure_id": "SB 518",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 518, which creates the Bureau for Descendants of American Slavery inside the Civil Rights Department, led by a deputy director the governor appoints and the Senate confirms. The bureau runs a Genealogy Division that verifies whether a person is a descendant, and that verification becomes a qualifying criterion for state benefits for descendants. It also runs education, outreach, and legal affairs divisions, and must follow rules on collecting, storing, and disclosing personal and genetic information. The bureau operates only if the Legislature appropriates money for it. It passed the California State Assembly 60-17 and became law.",
+      "nay_description": "Voted against passing SB 518, which creates the Bureau for Descendants of American Slavery inside the Civil Rights Department, led by a deputy director the governor appoints and the Senate confirms. The bureau runs a Genealogy Division that verifies whether a person is a descendant, and that verification becomes a qualifying criterion for state benefits for descendants. It also runs education, outreach, and legal affairs divisions, and must follow rules on collecting, storing, and disclosing personal and genetic information. The bureau operates only if the Legislature appropriates money for it. It passed the California State Assembly 60-17 and became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601798,
+      "measure_id": "SB 518",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Assembly's amendments to SB 518, which creates the Bureau for Descendants of American Slavery inside the Civil Rights Department, led by a deputy director the governor appoints and the Senate confirms. The bureau runs a Genealogy Division that verifies whether a person is a descendant, and that verification becomes a qualifying criterion for state benefits for descendants. It also runs education, outreach, and legal affairs divisions, and must follow rules on collecting, storing, and disclosing personal and genetic information. The bureau operates only if the Legislature appropriates money for it. The California State Senate agreed to the amendments 30-10, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Assembly's amendments to SB 518, which creates the Bureau for Descendants of American Slavery inside the Civil Rights Department, led by a deputy director the governor appoints and the Senate confirms. The bureau runs a Genealogy Division that verifies whether a person is a descendant, and that verification becomes a qualifying criterion for state benefits for descendants. It also runs education, outreach, and legal affairs divisions, and must follow rules on collecting, storing, and disclosing personal and genetic information. The bureau operates only if the Legislature appropriates money for it. The California State Senate agreed to the amendments 30-10, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602464,
+      "measure_id": "AB 246",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's amendments to AB 246, the Social Security Tenant Protection Act of 2025, which lets a tenant facing eviction for unpaid rent raise Social Security hardship as a defense until January 20, 2029. Social Security hardship means losing income because federal action or inaction interrupted, delayed, or reduced the benefits the household normally receives. A tenant who satisfies the court with evidence of that hardship, and that it prevented paying rent, gets the eviction case stayed. The rent is still owed: within 14 days of benefits resuming, the tenant must pay what is past due or agree to a payment plan with the landlord. The California State Assembly agreed to the amendments 50-17, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Senate's amendments to AB 246, the Social Security Tenant Protection Act of 2025, which lets a tenant facing eviction for unpaid rent raise Social Security hardship as a defense until January 20, 2029. Social Security hardship means losing income because federal action or inaction interrupted, delayed, or reduced the benefits the household normally receives. A tenant who satisfies the court with evidence of that hardship, and that it prevented paying rent, gets the eviction case stayed. The rent is still owed: within 14 days of benefits resuming, the tenant must pay what is past due or agree to a payment plan with the landlord. The California State Assembly agreed to the amendments 50-17, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601478,
+      "measure_id": "AB 246",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass AB 246, the Social Security Tenant Protection Act of 2025, which lets a tenant facing eviction for unpaid rent raise Social Security hardship as a defense until January 20, 2029. Social Security hardship means losing income because federal action or inaction interrupted, delayed, or reduced the benefits the household normally receives. A tenant who satisfies the court with evidence of that hardship, and that it prevented paying rent, gets the eviction case stayed. The rent is still owed: within 14 days of benefits resuming, the tenant must pay what is past due or agree to a payment plan with the landlord. It passed the California State Senate 27-11 and became law.",
+      "nay_description": "Voted against passing AB 246, the Social Security Tenant Protection Act of 2025, which lets a tenant facing eviction for unpaid rent raise Social Security hardship as a defense until January 20, 2029. Social Security hardship means losing income because federal action or inaction interrupted, delayed, or reduced the benefits the household normally receives. A tenant who satisfies the court with evidence of that hardship, and that it prevented paying rent, gets the eviction case stayed. The rent is still owed: within 14 days of benefits resuming, the tenant must pay what is past due or agree to a payment plan with the landlord. It passed the California State Senate 27-11 and became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601602,
+      "measure_id": "SB 634",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 634, which bars a city, county, or special district from enforcing or adopting an ordinance against people who help the homeless. No local ordinance may stop a person or organization from providing support services to a homeless person, or from assisting with acts related to basic survival. Basic survival covers help with eating and drinking, sleeping, shelter from the elements, and immediate health and hygiene, including giving out food, water, blankets, and pillows. It does not cover handing out plywood or other heavy construction materials. The rule is declared a matter of statewide concern, so it reaches charter cities too. It passed the California State Assembly 55-20 and became law.",
+      "nay_description": "Voted against passing SB 634, which bars a city, county, or special district from enforcing or adopting an ordinance against people who help the homeless. No local ordinance may stop a person or organization from providing support services to a homeless person, or from assisting with acts related to basic survival. Basic survival covers help with eating and drinking, sleeping, shelter from the elements, and immediate health and hygiene, including giving out food, water, blankets, and pillows. It does not cover handing out plywood or other heavy construction materials. The rule is declared a matter of statewide concern, so it reaches charter cities too. It passed the California State Assembly 55-20 and became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601796,
+      "measure_id": "SB 634",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Assembly's amendments to SB 634, which bars a city, county, or special district from enforcing or adopting an ordinance against people who help the homeless. No local ordinance may stop a person or organization from providing support services to a homeless person, or from assisting with acts related to basic survival. Basic survival covers help with eating and drinking, sleeping, shelter from the elements, and immediate health and hygiene, including giving out food, water, blankets, and pillows. It does not cover handing out plywood or other heavy construction materials. The rule is declared a matter of statewide concern, so it reaches charter cities too. The California State Senate agreed to the amendments 22-16, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Assembly's amendments to SB 634, which bars a city, county, or special district from enforcing or adopting an ordinance against people who help the homeless. No local ordinance may stop a person or organization from providing support services to a homeless person, or from assisting with acts related to basic survival. Basic survival covers help with eating and drinking, sleeping, shelter from the elements, and immediate health and hygiene, including giving out food, water, blankets, and pillows. It does not cover handing out plywood or other heavy construction materials. The rule is declared a matter of statewide concern, so it reaches charter cities too. The California State Senate agreed to the amendments 22-16, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602523,
+      "measure_id": "AB 628",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's amendments to AB 628, which adds a working stove and refrigerator to the things a rental home must have to be legally habitable, for leases signed, amended, or extended on or after January 1, 2026. A landlord must repair or replace a stove or refrigerator subject to a manufacturer or government recall within 30 days of being notified. A tenant and landlord may agree at signing that the tenant will supply and maintain their own refrigerator, on conditions the law sets. Certain dwellings, including permanent supportive housing, are excluded, and the recall duty does not take away a tenant's existing repair-and-deduct or move-out remedies. The California State Assembly agreed to the amendments 49-17, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Senate's amendments to AB 628, which adds a working stove and refrigerator to the things a rental home must have to be legally habitable, for leases signed, amended, or extended on or after January 1, 2026. A landlord must repair or replace a stove or refrigerator subject to a manufacturer or government recall within 30 days of being notified. A tenant and landlord may agree at signing that the tenant will supply and maintain their own refrigerator, on conditions the law sets. Certain dwellings, including permanent supportive housing, are excluded, and the recall duty does not take away a tenant's existing repair-and-deduct or move-out remedies. The California State Assembly agreed to the amendments 49-17, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601730,
+      "measure_id": "AB 628",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass AB 628, which adds a working stove and refrigerator to the things a rental home must have to be legally habitable, for leases signed, amended, or extended on or after January 1, 2026. A landlord must repair or replace a stove or refrigerator subject to a manufacturer or government recall within 30 days of being notified. A tenant and landlord may agree at signing that the tenant will supply and maintain their own refrigerator, on conditions the law sets. Certain dwellings, including permanent supportive housing, are excluded, and the recall duty does not take away a tenant's existing repair-and-deduct or move-out remedies. It passed the California State Senate 25-11 and became law.",
+      "nay_description": "Voted against passing AB 628, which adds a working stove and refrigerator to the things a rental home must have to be legally habitable, for leases signed, amended, or extended on or after January 1, 2026. A landlord must repair or replace a stove or refrigerator subject to a manufacturer or government recall within 30 days of being notified. A tenant and landlord may agree at signing that the tenant will supply and maintain their own refrigerator, on conditions the law sets. Certain dwellings, including permanent supportive housing, are excluded, and the recall duty does not take away a tenant's existing repair-and-deduct or move-out remedies. It passed the California State Senate 25-11 and became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1579285,
+      "measure_id": "AB 1056",
+      "vote_date": "2025-05-27",
+      "review_status": "approved",
+      "yea_description": "Voted to pass AB 1056, which tightens who may inherit a commercial gill net or trammel net permit, in a fishery the state already closed to new permits. It removes the rule letting a permit pass to another qualified person when the holder dies or becomes disabled. From January 1, 2027 a long-time permitholder may transfer a permit only to a family member, and once transferred that permit may not be passed on again. It passed the California State Assembly 51-17 and became law.",
+      "nay_description": "Voted against passing AB 1056, which tightens who may inherit a commercial gill net or trammel net permit, in a fishery the state already closed to new permits. It removes the rule letting a permit pass to another qualified person when the holder dies or becomes disabled. From January 1, 2027 a long-time permitholder may transfer a permit only to a family member, and once transferred that permit may not be passed on again. It passed the California State Assembly 51-17 and became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601893,
+      "measure_id": "AB 1056",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass AB 1056, which tightens who may inherit a commercial gill net or trammel net permit, in a fishery the state already closed to new permits. It removes the rule letting a permit pass to another qualified person when the holder dies or becomes disabled. From January 1, 2027 a long-time permitholder may transfer a permit only to a family member, and once transferred that permit may not be passed on again. It passed the California State Senate 29-10 and became law.",
+      "nay_description": "Voted against passing AB 1056, which tightens who may inherit a commercial gill net or trammel net permit, in a fishery the state already closed to new permits. It removes the rule letting a permit pass to another qualified person when the holder dies or becomes disabled. From January 1, 2027 a long-time permitholder may transfer a permit only to a family member, and once transferred that permit may not be passed on again. It passed the California State Senate 29-10 and became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602551,
+      "measure_id": "SB 825",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 825, which confirms that the Commissioner of Financial Protection and Innovation may enforce California's ban on deceptive or abusive consumer financial practices against licensed escrow agents and finance lenders. Those licensees are otherwise exempt from the consumer financial protection law, and the bill states that the exemption does not block enforcement of that ban. It passed the California State Assembly 59-19 and became law.",
+      "nay_description": "Voted against passing SB 825, which confirms that the Commissioner of Financial Protection and Innovation may enforce California's ban on deceptive or abusive consumer financial practices against licensed escrow agents and finance lenders. Those licensees are otherwise exempt from the consumer financial protection law, and the bill states that the exemption does not block enforcement of that ban. It passed the California State Assembly 59-19 and became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1584292,
+      "measure_id": "SB 825",
+      "vote_date": "2025-06-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 825, which confirms that the Commissioner of Financial Protection and Innovation may enforce California's ban on deceptive or abusive consumer financial practices against licensed escrow agents and finance lenders. Those licensees are otherwise exempt from the consumer financial protection law, and the bill states that the exemption does not block enforcement of that ban. It passed the California State Senate 28-10 and became law.",
+      "nay_description": "Voted against passing SB 825, which confirms that the Commissioner of Financial Protection and Innovation may enforce California's ban on deceptive or abusive consumer financial practices against licensed escrow agents and finance lenders. Those licensees are otherwise exempt from the consumer financial protection law, and the bill states that the exemption does not block enforcement of that ban. It passed the California State Senate 28-10 and became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    }
+  ]
+}
