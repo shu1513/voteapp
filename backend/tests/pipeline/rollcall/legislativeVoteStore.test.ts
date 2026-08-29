@@ -302,6 +302,11 @@ describe("applyLegislativeVoteJudgment", () => {
     expect(approved.query.mock.calls[0]?.[0]).toMatch(/FOR UPDATE/);
     expect(approved.query.mock.calls[0]?.[1]).toEqual(["US", "house", "119-1", 145]);
     expect(approved.query.mock.calls[1]?.[0]).toMatch(/is_floor_vote = true/);
+    // An overnight peer raw-dated earlier but officially on/after this
+    // vote's date must still be scanned.
+    expect(approved.query.mock.calls[1]?.[0]).toMatch(
+      /vote_date >= \$4::date OR COALESCE\(official_vote_date, vote_date\) >= \$4::date/
+    );
     // A federal bill lives across both calendar sessions of its Congress.
     expect(approved.query.mock.calls[1]?.[1]).toEqual(["US", "house", ["119-1", "119-2"], "2025-05-22", "row-1"]);
     const [sql, params] = approved.query.mock.calls[2]!;

@@ -556,7 +556,11 @@ export async function applyLegislativeVoteJudgment(
             AND chamber = $2
             AND session = ANY($3::text[])
             AND is_floor_vote = true
-            AND vote_date >= $4::date
+            -- The OR admits a peer whose source stamped the legislative
+            -- day: an overnight vote raw-dated 6/30 with official date
+            -- 7/1 must still block a 7/1 roll call. It only ever widens
+            -- the scan; the boundary stays this row's raw vote_date.
+            AND (vote_date >= $4::date OR COALESCE(official_vote_date, vote_date) >= $4::date)
             AND measure_id IS NOT NULL
             AND id <> $5`,
         [judgment.jurisdiction, judgment.chamber, sessions, row.vote_date, row.id]
