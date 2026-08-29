@@ -12,6 +12,7 @@ import {
   apiRequest,
   candidateProfileLinks,
   classifyStanceSummary,
+  compareByResearchAreaPriority,
   formatDistrictName,
   formatElectionDate,
   hasFinanceContent,
@@ -37,19 +38,26 @@ type RecordView = "by_issue" | "my_issues" | "newest";
 type RecordGroup = {
   /** null for the untagged "Other records" pseudo-group. */
   areaId: string | null;
+  areaSlug: string | null;
   areaName: string;
   records: CandidateRecord[];
 };
 
 // Records grouped by research area (a record with several tags appears under
 // each; untagged records fall into "Other records"). Same logic as the web
-// CandidatePage.
+// CandidatePage: groups order by public salience (the same ranking the
+// stance summary above uses, so the two surfaces agree), not alphabetically;
+// "Other records" stays last.
 function groupRecords(records: CandidateRecord[]): RecordGroup[] {
   const groups = new Map<string | null, RecordGroup>();
   for (const record of records) {
     const areas = record.research_area_tags.length
-      ? record.research_area_tags.map((tag) => ({ areaId: tag.research_area_id, areaName: tag.name }))
-      : [{ areaId: null, areaName: "Other records" }];
+      ? record.research_area_tags.map((tag) => ({
+          areaId: tag.research_area_id,
+          areaSlug: tag.slug,
+          areaName: tag.name,
+        }))
+      : [{ areaId: null, areaSlug: null, areaName: "Other records" }];
     for (const area of areas) {
       const group = groups.get(area.areaId) ?? { ...area, records: [] };
       group.records.push(record);
@@ -57,13 +65,20 @@ function groupRecords(records: CandidateRecord[]): RecordGroup[] {
     }
   }
   return [...groups.values()].sort((a, b) =>
-    a.areaId === null ? 1 : b.areaId === null ? -1 : a.areaName.localeCompare(b.areaName)
+    a.areaId === null || a.areaSlug === null
+      ? 1
+      : b.areaId === null || b.areaSlug === null
+        ? -1
+        : compareByResearchAreaPriority(
+            { slug: a.areaSlug, name: a.areaName },
+            { slug: b.areaSlug, name: b.areaName }
+          )
   );
 }
 
 // "My issues first": saved-area groups move to the front ordered by the
 // user's rank (unranked saved areas after ranked ones), everything else
-// keeps the alphabetical order groupRecords produced.
+// keeps the public-salience order groupRecords produced.
 function orderGroupsByPreference(
   groups: RecordGroup[],
   preferences: readonly ResearchAreaPreference[]

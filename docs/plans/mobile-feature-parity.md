@@ -1,6 +1,7 @@
 # Mobile feature parity — stance summary, picks, auto-pick, auth
 
-Status: planned 2026-08-28, revised same day after review. No code yet.
+Status: planned 2026-08-28, revised same day after review. Phase 1
+implemented in PR #925 (this plan's own PR); phases 2–6 not started.
 
 ## Context
 
@@ -18,8 +19,8 @@ app never received. Audit (2026-08-28) compared `mobile/src` against
 
 **Missing on mobile:** election choices ("my pick"), the My Draft / My Picks
 page, pick-card sharing, auto-pick, issue direction + hard-veto editing,
-candidate stance summary, Google Sign-In, guest ballot draft, chatbot,
-ballot facsimile, membership.
+Google Sign-In, guest ballot draft, chatbot, ballot facsimile, membership.
+(The candidate stance summary was on this list; Phase 1 shipped it.)
 
 **What is and is not shared today.** `@voteapp/api-client` exports the core
 choice hooks and every choice/auto-pick type: `useElectionChoices`,
@@ -37,7 +38,7 @@ needed by these phases:
   `PicksPage.tsx:187`).
 - Auto-pick fill + date-scoped clear mutations (inline in
   `AutoPickFillControl.tsx:106,124`).
-- `classifyStanceSummary` (`frontend/src/pages/CandidatePage.tsx:267`).
+- ~~`classifyStanceSummary`~~ — moved to `researchAreaScoring.ts` in Phase 1.
 
 No backend work is needed for phases 1–5; the auth epic may need none either
 (see phase 6).
@@ -57,8 +58,9 @@ No backend work is needed for phases 1–5; the auth epic may need none either
   Paid membership is never sold inside the app — no in-app purchase, no
   in-app Stripe checkout, ever. This avoids the app stores' 30% cut and
   IAP-rule exposure entirely. The mobile build ships at most a small
-  settings row, rendered only when `GET /api/membership` says
-  `enabled: true`: for members it shows honorary-member status with
+  settings row, rendered only when `GET /api/me/membership` says
+  `enabled: true` (`GET /api/me/membership`): for members it shows
+  honorary-member status with
   "manage your membership on the website"; for non-members, a short
   "become an honorary member on our website" line (web PR #920's
   vocabulary; the web destination is `/support`, and the shared
@@ -87,7 +89,7 @@ No backend work is needed for phases 1–5; the auth epic may need none either
   into `@voteapp/api-client`, where vitest covers it. Accepted risk: mobile
   screen wiring is verified by hand in Expo Go.
 
-## Phase 1 — candidate stance summary (one PR, small, independent)
+## Phase 1 — candidate stance summary (one PR, small, independent) — DONE, PR #925
 
 1. Extract `classifyStanceSummary` from `CandidatePage.tsx:267` into
    `@voteapp/api-client` — it depends only on already-shared helpers — moving
