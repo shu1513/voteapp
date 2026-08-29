@@ -1,23 +1,35 @@
-const MONTANA_FINANCE_BOOLEAN_FLAGS = new Set(["--dry-run", "--force", "--no-auto-link", "--refresh"]);
-const MONTANA_FINANCE_VALUE_FLAGS = new Set([
-  "--max-candidates",
-  "--stale-after-days",
-  "--lookback-days",
-  "--lookahead-days",
-  "--year",
-]);
+export type MontanaFinanceAllowedFlags = {
+  booleanFlags: readonly string[];
+  valueFlags: readonly string[];
+};
 
-export function assertNoUnknownMontanaFinanceFlags(args: readonly string[]): void {
+/**
+ * Strict per-script flag validation. Each script passes exactly the flags it
+ * consumes — a shared union would let a report-only flag like `--year` pass
+ * on the due-sync command while silently doing nothing. Boolean flags reject
+ * the `--flag=value` form outright: the parsers read them via
+ * `args.includes("--flag")`, so an `=` form would validate and then be
+ * silently ignored.
+ */
+export function assertNoUnknownMontanaFinanceFlags(
+  args: readonly string[],
+  allowed: MontanaFinanceAllowedFlags
+): void {
+  const booleanFlags = new Set(allowed.booleanFlags);
+  const valueFlags = new Set(allowed.valueFlags);
   for (let index = 0; index < args.length; index += 1) {
     const arg = args[index]!;
     if (!arg.startsWith("--")) {
       throw new Error(`Unexpected positional argument: ${arg}`);
     }
     const flag = arg.split("=", 1)[0] ?? arg;
-    if (MONTANA_FINANCE_BOOLEAN_FLAGS.has(flag)) {
+    if (booleanFlags.has(flag)) {
+      if (arg.includes("=")) {
+        throw new Error(`${flag} takes no value`);
+      }
       continue;
     }
-    if (MONTANA_FINANCE_VALUE_FLAGS.has(flag)) {
+    if (valueFlags.has(flag)) {
       if (!arg.includes("=")) {
         index += 1;
       }

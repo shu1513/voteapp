@@ -299,8 +299,17 @@ describe("syncMontanaCandidateFinance outside leg", () => {
           resCountyDescr: null,
         },
       ],
-      sourceUrl: "https://cers-ext.mt.gov/CampaignTracker/dashboard",
+      // Deliberately the session-scoped harvest endpoint: display must
+      // override it with the stable dashboard URL.
+      sourceUrl:
+        "https://cers-ext.mt.gov/CampaignTracker/public/searchResults/listViewFinancialEntityResults",
     };
+  }
+
+  function staleClearCall(holder: { query: { mock: { calls: unknown[][] } } }) {
+    return holder.query.mock.calls.find(([sql]) =>
+      String(sql).includes("SET outside_support_total = CASE")
+    ) as [string, unknown[]] | undefined;
   }
 
   it("writes resolved outside totals and groups alongside the direct snapshot", async () => {
@@ -323,6 +332,12 @@ describe("syncMontanaCandidateFinance outside leg", () => {
     expect(groupInsert?.[1]).toContain("100");
     expect(groupInsert?.[1]).toContain("Good PAC");
     expect(groupInsert?.[1]).toContain("support");
+    // Display provenance is the stable dashboard, never the session-scoped
+    // harvest endpoint the bundle manifest records.
+    expect(groupInsert?.[1]).toContain("https://cers-ext.mt.gov/CampaignTracker/dashboard");
+    // The sweep resolved support but no oppose: the authoritative pass
+    // clears only a stale oppose total.
+    expect(staleClearCall(db)?.[1]).toEqual([LINK_ID, 2026, false, true]);
   });
 
   it("skips the outside leg and preserves the prior snapshot when the bundle is unavailable", async () => {
@@ -341,6 +356,8 @@ describe("syncMontanaCandidateFinance outside leg", () => {
       String(sql).includes("mt_candidate_finance_outside_groups")
     );
     expect(touchesGroups).toBe(false);
+    // And with no authoritative sweep, stale totals are preserved, not cleared.
+    expect(staleClearCall(db)).toBeUndefined();
   });
 
   it("clears stale groups when a present sweep resolves nothing for the candidate", async () => {
@@ -358,5 +375,10 @@ describe("syncMontanaCandidateFinance outside leg", () => {
       String(sql).includes("DELETE FROM public.mt_candidate_finance_outside_groups")
     );
     expect(deletesGroups).toBe(true);
+    // And BOTH stale totals are cleared: preserveWhenNull alone would keep an
+    // old dollar figure alive next to zero groups.
+    const clear = staleClearCall(db);
+    expect(clear?.[1]).toEqual([LINK_ID, 2026, true, true]);
+    expect(String(clear?.[0])).toContain("outside_support_total IS NOT NULL");
   });
 });

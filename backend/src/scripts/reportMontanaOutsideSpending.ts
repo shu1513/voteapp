@@ -34,7 +34,7 @@ export type ReportMontanaOutsideSpendingScriptOptions = {
 export function parseReportMontanaOutsideSpendingScriptArgs(
   args: readonly string[]
 ): ReportMontanaOutsideSpendingScriptOptions {
-  assertNoUnknownMontanaFinanceFlags(args);
+  assertNoUnknownMontanaFinanceFlags(args, { booleanFlags: ["--refresh"], valueFlags: ["--year"] });
   const year = parseMontanaFinancePositiveIntegerFlag(args, "--year");
   if (year === undefined) {
     throw new Error("--year is required (e.g. --year 2026)");

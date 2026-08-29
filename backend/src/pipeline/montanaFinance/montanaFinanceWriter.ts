@@ -131,3 +131,36 @@ export async function replaceMontanaCandidateFinanceSnapshot(
 ): Promise<MontanaFinanceSnapshotWriteResult> {
   return writer.replaceSnapshot(input);
 }
+
+/**
+ * Clears an outside total that a fresh, AUTHORITATIVE IE sweep no longer
+ * supports. The summary write itself cannot do this: outside columns use
+ * preserveWhenNull (so a direct-only sync without sweep data never erases a
+ * good outside snapshot), which also means a null computed from a present
+ * sweep would silently preserve a stale dollar figure while the same sync's
+ * empty outsideGroups array deletes its groups — a total with no groups.
+ * Callers invoke this ONLY when the sweep bundle was present, per stance
+ * that resolved nothing. Runs after replaceSnapshot; a crash in between
+ * leaves today's stale-preserve state, which the next sync repairs.
+ */
+export async function clearMontanaCandidateFinanceStaleOutsideTotals(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  clearSupport: boolean;
+  clearOppose: boolean;
+}): Promise<{ cleared: boolean }> {
+  if (!input.clearSupport && !input.clearOppose) {
+    return { cleared: false };
+  }
+  const result = await input.db.query(
+    `UPDATE public.mt_candidate_finance_summaries
+     SET outside_support_total = CASE WHEN $3 THEN NULL ELSE outside_support_total END,
+         outside_oppose_total = CASE WHEN $4 THEN NULL ELSE outside_oppose_total END
+     WHERE link_id = $1
+       AND election_year = $2
+       AND (($3 AND outside_support_total IS NOT NULL) OR ($4 AND outside_oppose_total IS NOT NULL))`,
+    [input.linkId, input.electionYear, input.clearSupport, input.clearOppose]
+  );
+  return { cleared: (result.rowCount ?? 0) > 0 };
+}

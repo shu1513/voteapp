@@ -249,8 +249,13 @@ cash; it feeds neither directContributionTotal nor the cash-begin chain.
   oppose = explicit `Oppose` rows; totals NULL (never 0) when a stance has
   no resolved rows. Outside data rides the regular sync (writer
   `preserveWhenNull` keeps prior outside snapshots when the sweep bundle is
-  missing); the batch refreshes the sweep once per election year. The
-  ballot-lookup loader ships the Montana outside footnote
+  missing); when the sweep IS present it is authoritative, and a follow-up
+  guarded UPDATE clears any stale total for a stance that resolved nothing
+  (preserveWhenNull alone would keep an old dollar figure alive next to the
+  emptied groups). The batch refreshes the sweep once per election year.
+  Outside group/display source URLs are always the stable dashboard URL —
+  the DataTables harvest endpoints are session-scoped and answer empty to a
+  plain GET. The ballot-lookup loader ships the Montana outside footnote
   (`outside_coverage_note`, rendered by web + mobile) — the plan's hard gate.
 - Quarantine report: `npm run montana-candidates:finance:outside-report --
   --year 2026 [--refresh]` — per-committee resolved/quarantined dollars by

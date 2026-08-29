@@ -39,7 +39,9 @@ import {
 import { normalizeMontanaCandidateNameForStorage } from "./montanaCandidateCersResolver.js";
 import { isMontanaFinanceEligibleOffice } from "./montanaFinanceEligibleOffices.js";
 import { selectMontanaCanonicalReports } from "./montanaReportInventory.js";
+import { MONTANA_CERS_DASHBOARD_URL } from "./montanaCersClient.js";
 import {
+  clearMontanaCandidateFinanceStaleOutsideTotals,
   normalizeMontanaCersEntityId,
   recordMontanaCandidateFinanceNoFiledReports,
   replaceMontanaCandidateFinanceSnapshot,
@@ -318,7 +320,11 @@ export async function syncMontanaCandidateFinance(input: {
     outsideSpending = aggregateMontanaOutsideSpendingForCandidate({
       classifiedRows,
       cersCandidateId,
-      sourceUrl: outsideArtifacts.sourceUrl ?? sourceUrl,
+      // Display provenance is the stable dashboard, never the harvest
+      // endpoint the artifact manifests record: the DataTables list URL is
+      // session-scoped and answers an empty result to a plain GET (plan
+      // "DB" section — deep links are POST/session driven).
+      sourceUrl: MONTANA_CERS_DASHBOARD_URL,
       maxGroups: input.maxOutsideGroups,
     });
   }
@@ -359,6 +365,18 @@ export async function syncMontanaCandidateFinance(input: {
     summaryWritten = writeResult.summaryWritten;
     directBreakdownsWritten = writeResult.directBreakdownsWritten;
     outsideGroupsWritten = writeResult.outsideGroupsWritten;
+    if (outsideSpending !== null) {
+      // The sweep is authoritative: a stance with no resolved rows must not
+      // keep an older total alive (preserveWhenNull would) while the empty
+      // groups array just deleted its groups.
+      await clearMontanaCandidateFinanceStaleOutsideTotals({
+        db: input.db,
+        linkId: writeResult.linkId,
+        electionYear: input.electionYear,
+        clearSupport: outsideSpending.supportTotal === null,
+        clearOppose: outsideSpending.opposeTotal === null,
+      });
+    }
   }
 
   return {

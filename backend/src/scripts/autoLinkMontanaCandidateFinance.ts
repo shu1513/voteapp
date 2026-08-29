@@ -28,7 +28,10 @@ export type AutoLinkMontanaCandidateFinanceScriptOptions = {
 export function parseAutoLinkMontanaCandidateFinanceScriptArgs(
   args: readonly string[]
 ): AutoLinkMontanaCandidateFinanceScriptOptions {
-  assertNoUnknownMontanaFinanceFlags(args);
+  assertNoUnknownMontanaFinanceFlags(args, {
+    booleanFlags: ["--dry-run", "--force"],
+    valueFlags: ["--max-candidates", "--lookback-days", "--lookahead-days"],
+  });
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),
