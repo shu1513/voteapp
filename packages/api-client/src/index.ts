@@ -25,4 +25,5 @@ export * from "./useCandidateSearch";
 export * from "./useElectionChoices";
 export * from "./useFollows";
 export * from "./useMe";
+export * from "./useMyAccountDistricts";
 export * from "./useMyResearchAreas";

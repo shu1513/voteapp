@@ -16,14 +16,25 @@ import {
   formatDistrictName,
   formatElectionDate,
   hasFinanceContent,
+  isDecidedChoice,
   UNRANKED_RESEARCH_AREA_RANK,
+  useElectionChoices,
   useFollows,
+  useMe,
+  useMyAccountDistricts,
   useMyResearchAreas,
 } from "@voteapp/api-client";
 import { useQuery } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { AddressNudge } from "../../components/AddressNudge";
+import {
+  CandidatePickButton,
+  CandidatePickRow,
+  LogInToPlanLine,
+} from "../../components/ElectionChoiceControls";
 import { FinanceSummaryCard } from "../../components/FinanceSummaryCard";
 import { FollowButton } from "../../components/FollowButton";
 import { NotFoundNotice } from "../../components/NotFoundNotice";
@@ -32,6 +43,7 @@ import { SortChips } from "../../components/SortChips";
 import { SourceLine } from "../../components/SourceLine";
 import { ErrorNotice, LoadingNotice } from "../../components/Status";
 import { openExternalUrl } from "../../lib/openExternalUrl";
+import { usLatestLocalDate } from "../../lib/usLatestLocalDate";
 
 type RecordView = "by_issue" | "my_issues" | "newest";
 
@@ -104,15 +116,6 @@ function orderGroupsByPreference(
 function candidateShareText(candidate: { display_name: string; party: string; state: string }): string {
   const context = [profilePartyLabel(candidate.party), candidate.state].filter(Boolean).join(", ");
   return context ? `${candidate.display_name} (${context})` : candidate.display_name;
-}
-
-// Election dates are YYYY-MM-DD calendar strings; "today" is the last US
-// clock still on a given date — Pacific/Honolulu, UTC-10, no DST — mirroring
-// the backend's US_LATEST_LOCAL_DATE_SQL: an election counts as past only
-// once the entire United States has finished that day. en-CA formats as
-// YYYY-MM-DD. Same logic as the web CandidatePage.
-function usLatestLocalDate(): string {
-  return new Intl.DateTimeFormat("en-CA", { timeZone: "Pacific/Honolulu" }).format(new Date());
 }
 
 // Narrow per-candidate finance endpoint (mirrors the web CandidatePage):
@@ -283,7 +286,15 @@ function StanceSummary({
  */
 export default function CandidateScreen() {
   const { candidateId } = useLocalSearchParams<{ candidateId: string }>();
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { hasSaved, preferences } = useMyResearchAreas();
+  // "My choice" state, all loaded before any control renders (no-flash rule,
+  // like FollowButton). me is undefined while the session loads — the guest
+  // login line must not flash for a viewer who turns out to be signed in.
+  const { me } = useMe();
+  const { choiceByElectionId, canChoose } = useElectionChoices();
+  const { districtIds, isLoading: districtsLoading } = useMyAccountDistricts();
   // Follow state comes from the follows list (only fetched for verified
   // users); the button renders only once that list has loaded — before then
   // a followed candidate would briefly show as unfollowed. Same as the web.
@@ -343,6 +354,49 @@ export default function CandidateScreen() {
   const activeOngoingElections = ongoingElections.filter((election) => !isExitedCandidacy(election));
   const exitedOngoingElections = ongoingElections.filter(isExitedCandidacy);
   const pastElections = candidate.elections.filter((election) => election.election_date < today);
+  // "My choice" rows: one per ongoing OFFICE candidacy the candidate hasn't
+  // withdrawn or lost — a candidate can be in several races at once (and
+  // have past ones), so each row names its election and only pickable
+  // candidacies get a button. Gates copied from the web CandidatePage;
+  // district gate + decided-choice safety valve as on the election screen.
+  const isGuest = me === null;
+  const choiceForElection = (electionId: string) => choiceByElectionId?.get(electionId);
+  const choicesSettled = canChoose && choiceByElectionId !== undefined;
+  const officeCandidacies = ongoingElections.filter(
+    (election) => election.race_type === "office" && election.status !== "withdrawn" && election.status !== "lost"
+  );
+  const pickableElections =
+    choicesSettled && !districtsLoading
+      ? officeCandidacies.filter(
+          (election) =>
+            districtIds?.has(election.district.id) === true ||
+            isDecidedChoice(choiceForElection(election.election_id))
+        )
+      : [];
+  // State 3 of the gate: districts unknown (settled) with an UNDECIDED race
+  // on the screen — a conversion nudge replaces the controls. Decided races
+  // keep their controls via the safety valve and get no nudge.
+  const showAddressNudge =
+    choicesSettled &&
+    !districtsLoading &&
+    districtIds === undefined &&
+    officeCandidacies.some((election) => !isDecidedChoice(choiceForElection(election.election_id)));
+  // Logged out with an ongoing office candidacy on the screen: one quiet
+  // login line where the rows would sit — mobile has no guest ballot draft.
+  const showGuestLoginLine = isGuest && officeCandidacies.length > 0;
+  // The screen's primary action, in the footer card — only when the
+  // candidate is in exactly one pickable race: the card's button names no
+  // race, so with several races the screen relies on the self-describing
+  // inline rows instead.
+  const primaryPickElection = pickableElections.length === 1 ? pickableElections[0] : null;
+  // Whether THIS candidate holds (one of) the pick(s) for the card's race —
+  // gates the card's post-pick back link. True on arrival too, not only
+  // right after tapping.
+  const isPrimaryPicked =
+    primaryPickElection !== null &&
+    (choiceForElection(primaryPickElection.election_id)?.picks ?? []).some(
+      (pick) => pick.candidate_id === candidate.candidate_id
+    );
   const viewOptions = [
     { value: "by_issue" as const, label: "By issue" },
     ...(hasSaved ? [{ value: "my_issues" as const, label: "My issues first" }] : []),
@@ -350,7 +404,11 @@ export default function CandidateScreen() {
   ];
 
   return (
-    <ScrollView className="flex-1 bg-white" contentContainerClassName="px-4 py-8">
+    // Root View + footer sibling (not an absolute overlay): RN has no
+    // position:sticky, and a plain flex sibling below the ScrollView can
+    // never cover content.
+    <View className="flex-1 bg-white">
+      <ScrollView className="flex-1" contentContainerClassName="px-4 py-8">
       <Stack.Screen options={{ title: candidate.display_name }} />
       <View className="flex-row flex-wrap items-center justify-between gap-3">
         <Text className="flex-1 text-2xl font-bold text-ink">{candidate.display_name}</Text>
@@ -403,6 +461,42 @@ export default function CandidateScreen() {
         // so the summary always matches the record groups below it.
         preferences={recordView === "my_issues" ? preferences : []}
       />
+
+      {/* Districts unknown: the address nudge takes the pick controls'
+          in-body slot (single-race screens get it here too — a passive
+          sentence doesn't earn the footer card's pinning). Guests get the
+          login line in the same slot. */}
+      {showAddressNudge ? (
+        <View className="mt-4">
+          <AddressNudge />
+        </View>
+      ) : null}
+      {showGuestLoginLine ? (
+        <View className="mt-4">
+          <LogInToPlanLine />
+        </View>
+      ) : null}
+
+      {/* In-body rows only when the footer card can't act: with several
+          concurrent races the card's bare "Make my pick" can't say which
+          race it would pick, so each race keeps its self-describing row.
+          Single-race screens leave picking to the footer card alone. */}
+      {primaryPickElection === null && pickableElections.length > 0 ? (
+        <View className="mt-4 gap-2">
+          {pickableElections.map((election) => (
+            <CandidatePickRow
+              key={election.candidate_election_id}
+              electionId={election.election_id}
+              candidateId={candidate.candidate_id}
+              candidateName={candidate.display_name}
+              raceName={election.official_ballot_title}
+              dateLabel={formatElectionDate(election.election_date)}
+              choice={choiceForElection(election.election_id)}
+              seatsToFill={election.seats_to_fill ?? null}
+            />
+          ))}
+        </View>
+      ) : null}
 
       {ongoingElections.map((election) => (
         <OngoingElectionFinance
@@ -497,7 +591,41 @@ export default function CandidateScreen() {
           Profile last researched {formatElectionDate(candidate.last_researched.slice(0, 10))}.
         </Text>
       ) : null}
-    </ScrollView>
+      </ScrollView>
+      {/* The screen's primary action ("Add to cart"): the footer pick card,
+          only when the candidate is in exactly one pickable race (see
+          primaryPickElection). No caption naming the race: the screen itself
+          is the context. Safe-area-aware sibling below the scroll area — the
+          web pins the same card with sticky. */}
+      {primaryPickElection ? (
+        <View
+          className="border-t border-line bg-white px-4 pt-3"
+          style={{ paddingBottom: Math.max(insets.bottom, 12) }}
+        >
+          <CandidatePickButton
+            electionId={primaryPickElection.election_id}
+            candidateId={candidate.candidate_id}
+            candidateName={candidate.display_name}
+            choice={choiceForElection(primaryPickElection.election_id)}
+            seatsToFill={primaryPickElection.seats_to_fill ?? null}
+            fullWidth
+          />
+          {/* Post-pick continuation: back to where this candidate came from
+              (election roster or ballot list). Only once THIS candidate
+              holds a pick, and only when there is somewhere to go back to
+              (deep links have no stack). */}
+          {isPrimaryPicked && router.canGoBack() ? (
+            <Text
+              className="mt-2 text-center text-sm text-ink-soft underline"
+              accessibilityRole="link"
+              onPress={() => router.back()}
+            >
+              Back
+            </Text>
+          ) : null}
+        </View>
+      ) : null}
+    </View>
   );
 }
 

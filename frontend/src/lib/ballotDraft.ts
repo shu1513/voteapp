@@ -1,6 +1,10 @@
 import { useSyncExternalStore } from "react";
-import { ApiError, apiRequest } from "@voteapp/api-client";
+import { ApiError, apiRequest, isDecidedChoice } from "@voteapp/api-client";
 import type { ElectionChoice } from "@voteapp/api-client";
+
+// Moved to @voteapp/api-client so mobile shares the one "decided" rule;
+// re-exported here so this module stays the web's import site for it.
+export { isDecidedChoice };
 
 // Guest ballot draft: planned votes for visitors with no account, kept in
 // localStorage so the draft survives restarts and flushes into
@@ -209,12 +213,6 @@ export function clearBallotDraft(): void {
     // Ignore.
   }
   emit();
-}
-
-/** A race counts as decided with at least one candidate pick or a measure
- * position — the same rule as PicksPage's hasRenderablePick. */
-export function isDecidedChoice(choice: ElectionChoice | undefined): boolean {
-  return choice !== undefined && (choice.picks.length > 0 || choice.measure_position !== null);
 }
 
 export function draftChoicesByElectionId(draft: BallotDraft): Map<string, ElectionChoice> {

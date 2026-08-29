@@ -270,6 +270,10 @@ export function SavedBallotPage() {
         clearPendingDistrictIds();
         setHandoffState("done");
         void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
+        // The pick gate's district set (useMyDistricts) was just initialized
+        // — refetch it or stale ids keep gating pick buttons. Not needed in
+        // the 400 branch below: a rejected payload changes nothing.
+        void queryClient.invalidateQueries({ queryKey: ["me", "districts"] });
       } catch (error) {
         if (error instanceof ApiError && error.status === 400) {
           clearPendingDistrictIds();

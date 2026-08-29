@@ -27,6 +27,10 @@ export function SavedAddressForm({ label }: { label: string }) {
       // applies saved sort preferences and followed-candidate ordering —
       // refetch the canonical version instead of caching the PUT body.
       void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
+      // The pick gate's district set (useMyAccountDistricts) just changed
+      // with the saved districts — refetch it or stale ids keep gating pick
+      // buttons after a move. Same pairing as the web SavedAddressForm.
+      void queryClient.invalidateQueries({ queryKey: ["me", "districts"] });
       // Clear only the text that was submitted: anything typed while the
       // save was in flight is the user's next address, not ours to erase.
       setAddress((current) => (current.trim() === submitted ? "" : current));

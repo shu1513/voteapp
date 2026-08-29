@@ -42,7 +42,14 @@ const CATALOG: AlabamaExtractCatalogRow[] = [
 ];
 
 function cashZip(csv: string, level: 0 | 9 = 9): Uint8Array {
-  return zipSync({ "CashContributionsExtract_2026.csv": strToU8(csv) }, { level });
+  // mtime pinned: zipSync otherwise stamps each entry with the CURRENT time
+  // (2-second DOS granularity), so two cashZip calls straddling a second
+  // boundary produce different bytes — the "unchanged" test regenerates the
+  // first zip to compare stored bytes, and flaked on slow CI runners.
+  return zipSync(
+    { "CashContributionsExtract_2026.csv": strToU8(csv) },
+    { level, mtime: new Date("2026-08-28T00:00:00Z") }
+  );
 }
 
 function zipResponse(bytes: Uint8Array): Response {

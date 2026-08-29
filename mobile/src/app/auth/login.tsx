@@ -22,9 +22,16 @@ export default function LoginScreen() {
       { email: email.trim(), password },
       {
         onSuccess: () => {
-          // The saved-ballot screen lands with the account chunk; until then
-          // return to where the user came from (home shows signed-in state).
-          router.dismissTo("/");
+          // Return to the screen that asked for the login (an election's
+          // "Log in to plan your ballot" line, a tab's account gate) — its
+          // gated controls render now that the session exists. Deep links
+          // and replace-chains with no history fall back to home, which
+          // shows the signed-in state.
+          if (router.canGoBack()) {
+            router.back();
+          } else {
+            router.dismissTo("/");
+          }
         },
       }
     );
