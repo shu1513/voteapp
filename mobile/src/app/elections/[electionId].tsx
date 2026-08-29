@@ -214,6 +214,8 @@ export default function ElectionScreen() {
   // outcome's own signal proves the race decided — live in
   // deriveCandidateResultBadges. Mirrors the web election page.
   const resultBadges = deriveCandidateResultBadges(data.results, data.candidates, data.seats_to_fill ?? null);
+  // Same predicate as StrandedPicksNotice: a pick whose candidacy withdrew.
+  const hasStrandedPicks = (myChoice?.picks ?? []).some((pick) => pick.candidacy_status === "withdrawn");
 
   return (
     // Root View + footer sibling (not an absolute overlay): RN has no
@@ -334,7 +336,10 @@ export default function ElectionScreen() {
         </View>
       ) : null}
 
-      {data.candidates.length > 0 ? (
+      {/* hasStrandedPicks keeps this section alive when EVERY candidacy
+          withdrew: the payload then lists no candidates, but the stranded
+          notice below is the screen's only removal control. */}
+      {data.candidates.length > 0 || (showChoiceControls && hasStrandedPicks) ? (
         <View className="mt-6">
           <Text className="text-lg font-semibold text-ink">Candidates</Text>
           {/* Multi-seat hint, same copy as the web page header. */}
