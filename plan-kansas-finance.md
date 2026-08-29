@@ -119,7 +119,7 @@ CLI scripts follow house convention: `kansas-candidates:finance:probe`, `kansas-
 
 Implemented: `backend/src/pipeline/kansasFinance/` (`kansasCfrViewerClient`, `kansasCfrViewerParsers`, `kansasFinancePdfText`, `kansasPhaseZero`) + `backend/src/scripts/probeKansasCandidateFinance.ts`, npm script `kansas-candidates:finance:phase-zero`, 39 unit tests. Live results:
 
-- **Exports**: Holscher contributions 4,285 rows = page count, $389,246.47 itemized, occupation dollar-share 85.5%; Schmidt (Insurance Comm.) 759 rows / $277,517.89 / 80.6%. **Expenditure flow works** (form fields `txtEntity/txtCandidateName/txtCity/ddlStates/ddlExpenditureType/txtAmount/txtStartDate/txtEndDate`, results page `cfr_examiner_expenditure_results.aspx`; Holscher 311 rows $527,362.41).
+- **Exports**: Holscher contributions 4,285 rows = page count, $389,246.47 itemized, occupation dollar-share 85.5%; Schmidt (Insurance Comm.) 759 rows / $269,517.89 / 80.1% (includes two `($4,000.00)` credit-card refund rows — amounts can be accounting-style negatives; the probe fails on any unparsed amount). **Expenditure flow works** (form fields `txtEntity/txtCandidateName/txtCity/ddlStates/ddlExpenditureType/txtAmount/txtStartDate/txtEndDate`, results page `cfr_examiner_expenditure_results.aspx`; Holscher 311 rows $527,362.41).
 - **Cap test**: all-statewide 1/1–7/23/26 search = 15,876 records, export returned all 15,876 (25.8 MB, 23 candidates). No cap observed at that size.
 - **Enumeration**: House 354 R&E filings; grid shows 20 rows/page (pagination via `__doPostBack('grdviewCfrResults','Page$N')` — page-1-only in Phase 0, **Phase 1 client must page**). Senate: 9 filings (specials confirmed in viewer), 7 e-file / 2 paper. Paper rows carry `<img id="…_paper_N" title="Paper Filing">`; e-file rows carry `lblDate_N` + name postbacks.
 - **Helwig walk**: cover arithmetic + Schedule A/C totals cent-exact. Schedules are plain GETs (`reports/schedule_{a,b,c,d}_report.aspx`) once the report is in session; the cover's schedule postbacks 500 but are unnecessary.
@@ -171,7 +171,7 @@ Full sync across scope; spot-audit 10 candidates cent-exact against covers; veri
 
 ### Phase 7 — flags, labels, prod (per new-state checklist)
 
-- Flags: code defaults false in `backend/src/config/featureFlags.ts`; add BOTH `KANSAS_CAMPAIGN_FINANCE_ENABLED=true` and `KANSAS_CAMPAIGN_FINANCE_SYNC_ENABLED=true` to `backend/.env` (alphabetical), read flag to `render.yaml`.
+- Flags: code defaults false in `backend/src/config/featureFlags.ts`; document BOTH `KANSAS_CAMPAIGN_FINANCE_ENABLED` and `KANSAS_CAMPAIGN_FINANCE_SYNC_ENABLED` (`=false`) in the tracked `backend/.env.example` (alphabetical, next to the other state finance flags), set them `=true` in the operator's local untracked `backend/.env`, read flag to `render.yaml`.
 - Source label: new source in `backend/src/pipeline/address/ballotLookupFinanceShared.ts` AND `KANSAS_SOS: "Kansas Secretary of State / KPDC"` in `FINANCE_SOURCE_LABELS` (`packages/api-client/src/format.ts`, keeping key style consistent with `MISSOURI_MEC`/`OHIO_SOS`) plus the `financeSourceLabel` test in `format.test.ts`.
 - Loader registered in the ballot-lookup finance dispatch alongside the other states; typecheck + vitest green in backend and frontend/api-client.
 - Prod: apply migration, promote data per finance sync runbook; Render deploys are manual (POST full SHA).

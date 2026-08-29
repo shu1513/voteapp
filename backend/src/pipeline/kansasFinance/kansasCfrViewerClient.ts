@@ -178,19 +178,40 @@ export function createKansasCfrSession(options: KansasCfrSessionOptions = {}): K
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     let response: Response;
+    let bytes: Buffer;
+    // The timer must stay armed through body consumption: headers can arrive
+    // and the body then stall, which would otherwise leave session.get()
+    // pending forever and block the serialized session queue.
     try {
-      response = await fetchImpl(url, {
-        method,
-        headers,
-        body,
-        redirect: "manual",
-        signal: controller.signal,
-      });
-    } catch (error) {
-      throw new KansasCfrClientError(
-        "network_error",
-        `${method} ${url} failed: ${error instanceof Error ? error.message : String(error)}`
-      );
+      try {
+        response = await fetchImpl(url, {
+          method,
+          headers,
+          body,
+          redirect: "manual",
+          signal: controller.signal,
+        });
+      } catch (error) {
+        throw new KansasCfrClientError(
+          "network_error",
+          `${method} ${url} failed: ${error instanceof Error ? error.message : String(error)}`
+        );
+      }
+      const declaredLength = Number(response.headers.get("content-length") ?? Number.NaN);
+      if (Number.isFinite(declaredLength) && declaredLength > maxResponseBytes) {
+        throw new KansasCfrClientError(
+          "bad_response",
+          `${method} ${url} declared ${declaredLength} bytes (limit ${maxResponseBytes})`
+        );
+      }
+      try {
+        bytes = Buffer.from(await response.arrayBuffer());
+      } catch (error) {
+        throw new KansasCfrClientError(
+          "network_error",
+          `${method} ${url} body read failed: ${error instanceof Error ? error.message : String(error)}`
+        );
+      }
     } finally {
       clearTimeout(timer);
     }
@@ -200,7 +221,6 @@ export function createKansasCfrSession(options: KansasCfrSessionOptions = {}): K
       if (cookie) cookies.set(cookie.name, cookie.value);
     }
 
-    const bytes = Buffer.from(await response.arrayBuffer());
     if (bytes.byteLength > maxResponseBytes) {
       throw new KansasCfrClientError(
         "bad_response",

@@ -137,6 +137,14 @@ export function parseKansasPhaseZeroArgs(args: readonly string[]): KansasPhaseZe
       index += 1;
       return value;
     };
+    // NaN here is not harmless: setTimeout(…, NaN) fires immediately (every
+    // fetch aborts) and `spacingMs > 0` goes false (request spacing off).
+    const nextNonNegativeInt = () => {
+      const raw = next();
+      const value = Number.parseInt(raw, 10);
+      if (!Number.isFinite(value) || value < 0) throw new Error(`Invalid value for ${arg}: ${raw}`);
+      return value;
+    };
     switch (arg) {
       case "--candidates":
         result.candidates = next().split(",").map((name) => name.trim()).filter(Boolean);
@@ -154,10 +162,10 @@ export function parseKansasPhaseZeroArgs(args: readonly string[]): KansasPhaseZe
         result.filedEndDate = next();
         break;
       case "--timeout-ms":
-        result.timeoutMs = Number.parseInt(next(), 10);
+        result.timeoutMs = nextNonNegativeInt();
         break;
       case "--spacing-ms":
-        result.spacingMs = Number.parseInt(next(), 10);
+        result.spacingMs = nextNonNegativeInt();
         break;
       case "--skip-cap":
         result.skipCapTest = true;
@@ -200,8 +208,10 @@ async function fetchKpdcPdf(path: string, timeoutMs: number): Promise<Uint8Array
 export function ocrTextContainsAmountCents(text: string, cents: number): boolean {
   const whole = Math.floor(cents / 100).toLocaleString("en-US");
   const fraction = String(cents % 100).padStart(2, "0");
+  // Digit-boundary guards: without them "$21,544.08" contains "1,544.08" and a
+  // transcribed amount reads as present when the document states a larger one.
   const pattern = new RegExp(
-    `${whole.replace(/,/g, "[,. ]{1,3}")}\\s*[,.]\\s*${fraction}`
+    `(?<![\\d,.])${whole.replace(/,/g, "[,. ]{1,3}")}\\s*[,.]\\s*${fraction}(?!\\d)`
   );
   return pattern.test(text);
 }
@@ -315,6 +325,12 @@ export async function runKansasPhaseZeroProbe(args: KansasPhaseZeroArgs) {
         result.recordCount !== null && result.rows.length === result.recordCount,
         `${category} export for ${candidate}: parsed ${result.rows.length} rows but page reported ${result.recordCount}`
       );
+      // Row-count equality alone would let a structurally-parsed row with an
+      // unparseable amount undercount totals silently — fail-closed instead.
+      note(
+        summary.unparsedAmountRowCount === 0,
+        `${category} export for ${candidate}: ${summary.unparsedAmountRowCount} rows with unparsed amounts`
+      );
       exports.push({
         candidate,
         category,
@@ -331,9 +347,14 @@ export async function runKansasPhaseZeroProbe(args: KansasPhaseZeroArgs) {
   if (!args.skipCapTest) {
     const session = createKansasCfrSession(sessionOptions);
     const result = await runItemizedExport(session, "Contribution", "", args.capStartDate, args.capEndDate);
+    const capSummary = summarizeKansasContributionExport(result.rows);
     note(
       result.recordCount !== null && result.rows.length === result.recordCount,
       `cap test: parsed ${result.rows.length} rows but page reported ${result.recordCount}`
+    );
+    note(
+      capSummary.unparsedAmountRowCount === 0,
+      `cap test: ${capSummary.unparsedAmountRowCount} rows with unparsed amounts`
     );
     capTest = {
       recordCount: result.recordCount,
@@ -402,9 +423,16 @@ export async function runKansasPhaseZeroProbe(args: KansasPhaseZeroArgs) {
         }
       })
     );
+    const succeeded = attempts.filter((attempt) => attempt.status === "fulfilled").length;
+    // This step exists to PROVE parallel sessions safe — a failed session must
+    // fail the probe, not just show up in the output.
+    note(
+      succeeded === attempts.length,
+      `concurrency: only ${succeeded}/${attempts.length} parallel sessions succeeded`
+    );
     concurrency = {
       parallelSessions: attempts.length,
-      succeeded: attempts.filter((attempt) => attempt.status === "fulfilled").length,
+      succeeded,
       errors: attempts.flatMap((attempt) =>
         attempt.status === "rejected" ? [String(attempt.reason)] : []
       ),

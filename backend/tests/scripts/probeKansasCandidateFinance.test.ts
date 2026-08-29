@@ -30,6 +30,15 @@ describe("parseKansasPhaseZeroArgs", () => {
   it("rejects unknown flags", () => {
     expect(() => parseKansasPhaseZeroArgs(["--nope"])).toThrow("Unknown argument");
   });
+
+  it("rejects non-numeric and negative numeric values", () => {
+    expect(() => parseKansasPhaseZeroArgs(["--timeout-ms", "abc"])).toThrow(
+      "Invalid value for --timeout-ms: abc"
+    );
+    expect(() => parseKansasPhaseZeroArgs(["--spacing-ms", "-5"])).toThrow(
+      "Invalid value for --spacing-ms: -5"
+    );
+  });
 });
 
 describe("ocrTextContainsAmountCents", () => {
@@ -41,5 +50,11 @@ describe("ocrTextContainsAmountCents", () => {
 
   it("does not match a different amount", () => {
     expect(ocrTextContainsAmountCents("$ 359,633.00", 35963301)).toBe(false);
+  });
+
+  it("does not match inside a longer number", () => {
+    expect(ocrTextContainsAmountCents("$21,544.08", 154408)).toBe(false);
+    expect(ocrTextContainsAmountCents("$1,544.089", 154408)).toBe(false);
+    expect(ocrTextContainsAmountCents("2,544.08", 54408)).toBe(false);
   });
 });

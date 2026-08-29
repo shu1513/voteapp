@@ -26,10 +26,11 @@ Verdict: **BUILDABLE.** All four targets available: totals raised, totals spent,
 
 ## Gotchas
 
-- K.S.A. 25-4154(d): contributor names may not be used for **commercial** purposes (class A misdemeanor). Voter-information use is non-commercial; keep donor names out of any monetized surface.
+- K.S.A. 25-4154(d): contributor names may not be used for **commercial** purposes (class A misdemeanor). Whether any VoteApp use counts as commercial is an **open legal question** (paid memberships exist) — no judgment is made here. Posture per `plan-kansas-finance.md`: contributor names stay in restricted raw staging only, never in published surfaces; counsel/KPDC review of the ingestion + publication pattern is required before any name-bearing feature.
 - KPDC file-name convention: `<officecode><initials>_<period>.pdf`, e.g. `SW01CH_202607`, `H001DH_202601`; `AT`=appointment of treasurer, `PLF`=last-minute (July), `Aff`=exemption affidavit. Codes are per-district+initials, not stable IDs.
 - Statewide 2026 cycle covers 1/1/23–12/31/26 (4-year); House cycles 2-year; Senate 4-year (next 2028 — no regular Senate races Nov 2026).
 - Amendments exist both as `amend` PDFs and Amendment Date column in the viewer; take latest.
+- Export amounts can be accounting-style negatives — `($4,000.00)` — for refunds/returned contributions (two live Schmidt 2026 credit-card rows). Parse as negative cents; dropping them overstates itemized sums.
 - `ethics.ks.gov` dead; `ethics.kansas.gov` redirects to kpdc.kansas.gov; PDF links 302 from `kansas.gov` → `www.kansas.gov` (curl needs `-L`).
 
 ## Suggested v1 shape
@@ -56,4 +57,4 @@ Cross-checked a second feasibility report against primary sources. Results:
 - It concluded "no current structured source; PDF-first, document-heavy connector" because it only found the stale legacy search and dismissed the SOS viewer as "internal report-viewer URLs, not a public API; do not build against a browser session." **The SOS CFR viewer (`sos.ks.gov/elections/cfr_viewer/`) is public, live, and current** — verified: Holscher contribution rows through 7/23/2026, IE filings listed through 8/20/2026, Candidate-filings search enumerating 354 House R&E reports filed Jul–Aug 2026, and native-HTML schedules for e-filers. Its `btnExport` returns the FULL search result set in one file (4,285 rows verified) and the whole postback chain works in curl with a browser UA. PDF-first is only needed for the paper-filing minority and IE statements; everything else has a structured/current path.
 - Its "12 IE filers" (Aug 2) is now 27 PDFs on the KPDC index + 316 filings visible in the viewer — the viewer is FRESHER than the scanned index (Aug filings not yet scanned to KPDC).
 
-**Policy adds worth keeping:** spouse-occupation caption; coverage-state enum on outside totals (explicit rows vs unresolved-direction vs unallocated vs none-found); don't infer direction from committee name/ideology; occupation coverage denominators (itemized-individual vs all-direct dollars); K.S.A. 25-4154(d) counsel review before publishing donor NAMES (occupation aggregates are the safe surface).
+**Policy adds worth keeping:** spouse-occupation caption; coverage-state enum on outside totals (explicit rows vs unresolved-direction vs unallocated vs none-found); don't infer direction from committee name/ideology; occupation coverage denominators (itemized-individual vs all-direct dollars); K.S.A. 25-4154(d) counsel review before publishing donor NAMES (occupation aggregates carry no names).

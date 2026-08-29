@@ -58,16 +58,24 @@ export function parseKansasHiddenFields(html: string): Record<string, string> {
 
 /**
  * Strict money parse to integer cents. Accepts the viewer's live variants:
- * "$3,077.59", "$ 4350.00", "$0", "$ 0", and the cover's bare "1600.00".
+ * "$3,077.59", "$ 4350.00", "$0", "$ 0", the cover's bare "1600.00", and
+ * accounting-style negatives — "($4,000.00)" is a live credit-card refund row
+ * (Schmidt 2026; dropping it overstated the itemized sum by $8,000).
  * Anything else (including blanks) is null.
  */
 export function parseKansasMoneyCents(raw: string): number | null {
-  const text = decodeKansasHtmlText(raw).trim();
+  let text = decodeKansasHtmlText(raw).trim();
+  let sign = 1;
+  const parenthesized = /^\((.*)\)$/.exec(text);
+  if (parenthesized) {
+    sign = -1;
+    text = parenthesized[1]!.trim();
+  }
   const match = /^\$?\s*(\d{1,3}(?:,\d{3})*|\d+)(?:\.(\d{2}))?$/.exec(text);
   if (!match) return null;
   const whole = Number.parseInt(match[1]!.replace(/,/g, ""), 10);
   const cents = match[2] === undefined ? 0 : Number.parseInt(match[2], 10);
-  return whole * 100 + cents;
+  return sign * (whole * 100 + cents);
 }
 
 export type KansasOcrMoney = { cents: number; uncertain: boolean };

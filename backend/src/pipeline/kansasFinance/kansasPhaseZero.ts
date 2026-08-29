@@ -160,8 +160,16 @@ export function recoverKansasOcrCoverFromText(text: string): KansasOcrCoverRecov
   return recoverKansasOcrCover(extractKansasOcrMoneyValues(text));
 }
 
+/**
+ * A long noisy document — especially one dense in $0.00 values, which satisfy
+ * the identities in bulk — can make the 5-tuple search combinatorial. Past
+ * this many money values the report goes to the manual queue instead.
+ */
+export const KANSAS_OCR_TUPLE_SEARCH_MAX_VALUES = 100;
+
 export function recoverKansasOcrCover(moneyValues: readonly KansasOcrMoney[]): KansasOcrCoverRecovery | null {
   const n = moneyValues.length;
+  if (n > KANSAS_OCR_TUPLE_SEARCH_MAX_VALUES) return null;
   const found = new Map<string, KansasOcrCoverRecovery>();
   for (let a = 0; a < n; a += 1) {
     for (let b = a + 1; b < n; b += 1) {
@@ -182,6 +190,8 @@ export function recoverKansasOcrCover(moneyValues: readonly KansasOcrMoney[]): K
               [tuple.beginCents, tuple.receiptsCents, tuple.availableCents, tuple.expendituresCents, tuple.closeCents].join("|"),
               tuple
             );
+            // A second distinct tuple already means ambiguity — stop searching.
+            if (found.size > 1) return null;
           }
         }
       }

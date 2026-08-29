@@ -138,6 +138,14 @@ describe("recoverKansasOcrCover", () => {
     const text = "$1.00 $2.00 $3.00 $1.00 $2.00 $10.00 $20.00 $30.00 $10.00 $20.00";
     expect(recoverKansasOcrCover(extractKansasOcrMoneyValues(text))).toBeNull();
   });
+
+  it("sends over-long money-value lists to the manual queue instead of searching", () => {
+    // A $0.00-dense document satisfies the identities combinatorially; the
+    // tuple search must refuse rather than grind through it.
+    const values = extractKansasOcrMoneyValues(Array(101).fill("$0.00").join(" "));
+    expect(values).toHaveLength(101);
+    expect(recoverKansasOcrCover(values)).toBeNull();
+  });
 });
 
 describe("reconcileKansasIeStatements", () => {

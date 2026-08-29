@@ -36,11 +36,14 @@ describe("parseKansasMoneyCents", () => {
     ["$ 0", 0],
     ["1600.00", 160000],
     ["$412,630.21", 41263021],
+    // Live Schmidt 2026 credit-card refund rows use accounting negatives.
+    ["($4,000.00)", -400000],
+    ["( $4,000.00 )", -400000],
   ])("parses %s", (raw, cents) => {
     expect(parseKansasMoneyCents(raw)).toBe(cents);
   });
 
-  it.each([[""], ["view/print"], ["$1,23.45"], ["$1.2"], ["$1,000.001"]])(
+  it.each([[""], ["view/print"], ["$1,23.45"], ["$1.2"], ["$1,000.001"], ["($1.2)"], ["()"]])(
     "rejects %s",
     (raw) => {
       expect(parseKansasMoneyCents(raw)).toBeNull();
