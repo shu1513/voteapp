@@ -195,8 +195,8 @@
       "measure_id": "H R 5118",
       "vote_date": "2022-07-29",
       "review_status": "approved",
-      "yea_description": "Voted for H.R. 5118, which funded wildfire mitigation, forest and watershed restoration, and preparation for drought, and raised pay for federal wildland firefighters. The House passed it 218-199.",
-      "nay_description": "Voted against H.R. 5118, the Wildfire Response and Drought Resiliency Act, which funded wildfire mitigation, forest and watershed restoration, and preparation for drought, and raised pay for federal wildland firefighters. The House passed it 218-199.",
+      "yea_description": "Voted for H.R. 5118, the Wildfire Response and Drought Resiliency Act, which funded wildfire mitigation, forest and watershed restoration, and drought planning, and raised pay for federal wildland firefighters. The House passed it 218-199.",
+      "nay_description": "Voted against H.R. 5118, the Wildfire Response and Drought Resiliency Act, which funded wildfire mitigation, forest and watershed restoration, and drought planning, and raised pay for federal wildland firefighters. The House passed it 218-199.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -250,7 +250,7 @@
       "measure_id": "H R 5376",
       "vote_date": "2022-08-12",
       "review_status": "approved",
-      "yea_description": "Voted for sending H.R. 5376, to the President, agreeing to the Senate version that let Medicare negotiate drug prices, capped insulin costs for seniors, funded clean energy tax credits, and set a 15 percent minimum tax on large corporations. The House passed it 220-207.",
+      "yea_description": "Voted to send H.R. 5376, the Inflation Reduction Act, to the President, agreeing to the Senate version that let Medicare negotiate drug prices, capped insulin costs for seniors, funded clean energy tax credits, and set a 15 percent minimum tax on large corporations. The House passed it 220-207.",
       "nay_description": "Voted against sending H.R. 5376, the Inflation Reduction Act, to the President, which let Medicare negotiate drug prices, capped insulin costs for seniors, funded clean energy tax credits, and set a 15 percent minimum tax on large corporations. The House passed it 220-207.",
       "labels": [
         {

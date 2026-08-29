@@ -25,8 +25,8 @@
       "measure_id": "S 146",
       "vote_date": "2025-04-28",
       "review_status": "approved",
-      "yea_description": "Voted for S. 146, which made it a federal crime to publish intimate images shared without permission, including computer-generated deepfakes, and required online platforms to remove them within 48 hours of a valid request. The House passed it 409-2, and it became law.",
-      "nay_description": "Voted against S. 146, the TAKE IT DOWN Act, which made it a federal crime to publish intimate images shared without permission, including computer-generated deepfakes, and required online platforms to remove them within 48 hours of a valid request. The House passed it 409-2, and it became law.",
+      "yea_description": "Voted for S. 146, the TAKE IT DOWN Act, which made it a federal crime to publish intimate images shared without permission, including computer-made deepfakes, and required online platforms to remove them within 48 hours of a valid request. The House passed it 409-2, and it became law.",
+      "nay_description": "Voted against S. 146, the TAKE IT DOWN Act, which made it a federal crime to publish intimate images shared without permission, including computer-made deepfakes, and required online platforms to remove them within 48 hours of a valid request. The House passed it 409-2, and it became law.",
       "labels": [
         {
           "slug": "data_privacy",
