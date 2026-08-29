@@ -72,6 +72,8 @@ export type AlabamaFcpaArtifactRefreshResult = {
 
 const CACHE_DIRECTORY_MODE = 0o700;
 const CACHE_FILE_MODE = 0o600;
+/** Superseded zips younger than this survive the sweep (concurrent-refresh guard). */
+export const SWEEP_MIN_AGE_MS = 60 * 60 * 1000;
 
 export function normalizeAlabamaExtractYear(year: number): number {
   // Extracts exist 2013 onward.
@@ -267,6 +269,22 @@ export async function refreshAlabamaFcpaArtifactCache(input: {
   const bytes = await downloadAlabamaExtractZipBytes(entry.DOWNLOAD, input.clientOptions);
   const validated = validateAlabamaExtractZip(bytes, artifact.kind, `${dataType} ${artifact.year}`);
 
+  // A well-formed header with zero data rows is a truncated portal artifact
+  // far more often than a genuinely empty year; never let it displace
+  // populated data (force overrides for a deliberate accept).
+  if (
+    !input.force &&
+    validated.recordCount === 0 &&
+    previous &&
+    previousFileValid &&
+    previous.recordCount > 0
+  ) {
+    throw new Error(
+      `Alabama FCPA ${dataType} ${artifact.year} extract returned 0 data rows; ` +
+        `keeping the last good artifact (${previous.recordCount} rows). Pass force to accept it.`
+    );
+  }
+
   // Zips recompress on the portal's daily regeneration; identical CSV content
   // means the cached artifact is still current even when zip bytes differ.
   if (!input.force && previous && previousFileValid && previous.csvSha256 === validated.csvSha256) {
@@ -306,14 +324,23 @@ export async function refreshAlabamaFcpaArtifactCache(input: {
   await writeFileAtomically(paths.metadataPath, `${JSON.stringify(current, null, 2)}\n`);
 
   // Best-effort sweep of superseded zip versions (and pre-versioning names).
+  // Only versions older than SWEEP_MIN_AGE_MS are removed: a zip written
+  // seconds ago may belong to a concurrent refresh whose metadata commit is
+  // about to land — deleting it would break that refresh's committed pair.
+  // Fresh orphans are harmless and get swept by a later refresh.
   try {
     for (const name of await readdir(paths.cacheDir)) {
       if (
-        name.startsWith(`${paths.stem}.`) &&
-        name.endsWith(".zip") &&
-        name !== basename(zipPath)
+        !name.startsWith(`${paths.stem}.`) ||
+        !name.endsWith(".zip") ||
+        name === basename(zipPath)
       ) {
-        await rm(resolve(paths.cacheDir, name), { force: true });
+        continue;
+      }
+      const stalePath = resolve(paths.cacheDir, name);
+      const staleStat = await stat(stalePath);
+      if (Date.now() - staleStat.mtimeMs >= SWEEP_MIN_AGE_MS) {
+        await rm(stalePath, { force: true });
       }
     }
   } catch {

@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, stat, utimes, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -14,6 +14,7 @@ import {
   readAlabamaFcpaArtifact,
   readAlabamaFcpaArtifactCacheMetadata,
   refreshAlabamaFcpaArtifactCache,
+  SWEEP_MIN_AGE_MS,
 } from "../../../src/pipeline/alabamaFinance/alabamaFcpaArtifactCache.js";
 
 const CASH_HEADER =
@@ -140,7 +141,7 @@ describe("refreshAlabamaFcpaArtifactCache", () => {
     expect(forced.status).toBe("downloaded");
   });
 
-  it("replaces the artifact when the CSV content changes and sweeps the superseded zip", async () => {
+  it("replaces the artifact when the CSV content changes, sweeping only aged-out zip versions", async () => {
     const cacheDir = await tempDir();
     const first = await refresh({ cacheDir, bytes: cashZip(cashCsvA) });
     const result = await refresh({ cacheDir, bytes: cashZip(cashCsvB) });
@@ -149,7 +150,40 @@ describe("refreshAlabamaFcpaArtifactCache", () => {
     expect(result.previous?.csvSha256).not.toBe(result.current.csvSha256);
     const read = await readAlabamaFcpaArtifact({ kind: "cash", year: 2026, cacheDir });
     expect(read.csvText).toBe(cashCsvB);
+    // The superseded zip is minutes old — a concurrent refresh could still
+    // reference it, so the sweep leaves it alone…
+    await expect(stat(first.filePath)).resolves.toBeDefined();
+    // …and removes it once it has aged past the sweep threshold.
+    const agedOut = new Date(Date.now() - SWEEP_MIN_AGE_MS - 60_000);
+    await utimes(first.filePath, agedOut, agedOut);
+    const cashCsvC = cashCsvB.replace("750.00", "900.00");
+    const third = await refresh({ cacheDir, bytes: cashZip(cashCsvC) });
+    expect(third.status).toBe("downloaded");
     await expect(stat(first.filePath)).rejects.toMatchObject({ code: "ENOENT" });
+  });
+
+  it("refuses to replace a populated artifact with a header-only extract unless forced", async () => {
+    const cacheDir = await tempDir();
+    await refresh({ cacheDir, bytes: cashZip(cashCsvA) });
+    const emptyCsv = `${CASH_HEADER}\n`;
+    await expect(refresh({ cacheDir, bytes: cashZip(emptyCsv) })).rejects.toThrow(
+      /returned 0 data rows; keeping the last good artifact \(1 rows\)/
+    );
+    const read = await readAlabamaFcpaArtifact({ kind: "cash", year: 2026, cacheDir });
+    expect(read.csvText).toBe(cashCsvA);
+
+    const forced = await refresh({ cacheDir, bytes: cashZip(emptyCsv), force: true });
+    expect(forced.status).toBe("downloaded");
+    expect(forced.current.recordCount).toBe(0);
+  });
+
+  it("accepts a header-only extract when there is no populated artifact to protect", async () => {
+    const cacheDir = await tempDir();
+    const emptyCsv = `${CASH_HEADER}\n`;
+    const result = await refresh({ cacheDir, bytes: cashZip(emptyCsv) });
+    expect(result.status).toBe("downloaded");
+    expect(result.current.recordCount).toBe(0);
+    expect((await readAlabamaFcpaArtifact({ kind: "cash", year: 2026, cacheDir })).csvText).toBe(emptyCsv);
   });
 
   it("keeps the last good pair readable when a crash lands a zip without its metadata commit", async () => {
