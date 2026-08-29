@@ -40,7 +40,14 @@ const CYCLE_ELECTION_LABEL = "2026 ELECTION CYCLE";
 // 2024 included: committees report contributions by transaction date, and
 // 2025-registered committees have reported 2024-dated rows (Boyd, $20.00).
 const EXTRACT_YEARS = [2024, 2025, 2026] as const;
-const OFFICE_NAMES = ["Governor", "Attorney General", "Secretary of State"] as const;
+const OFFICE_NAMES = [
+  "Governor",
+  "Attorney General",
+  "Secretary of State",
+  "State Representative",
+  "State Senator",
+  "Supreme Court Associate Justice",
+] as const;
 // Fixture committees from the 2026 Governor race: one with amended filings
 // (Jones), one large (Tuberville), one small (Boyd).
 const FIXTURE_CANDIDATE_KEYS = ["jones", "tuberville", "boyd"] as const;
@@ -78,6 +85,38 @@ async function main(): Promise<void> {
     );
     officeRows.set(officeName, rows);
     if (rows.length === 0) failures.push(`race_rows_empty:${officeName}`);
+  }
+
+  // Gate 1b: district-sensitive linking. Race rows carry no district column;
+  // the committee search supplies it (jurisdiction, e.g. "HOUSE DISTRICT 68").
+  // Every legislative race row must join by internal id, with jurisdiction set.
+  const repOffice = ids.offices.find((option) => option.label === "State Representative");
+  const repRows = officeRows.get("State Representative") ?? [];
+  let districtJoin: Record<string, unknown> | null = null;
+  if (repOffice && repRows.length > 0) {
+    const repCommittees = await searchAlabamaPrincipalCampaignCommittees(
+      { officeId: repOffice.id },
+      clientOptions
+    );
+    const byInternalId = new Map(repCommittees.map((row) => [row.id, row]));
+    const unjoined = repRows.filter((row) => !byInternalId.has(row.COMMITTEEID)).length;
+    const missingJurisdiction = repRows.filter((row) => {
+      const committee = byInternalId.get(row.COMMITTEEID);
+      return committee !== undefined && !committee.jurisdiction;
+    }).length;
+    if (unjoined > 0) failures.push(`district_join_unmatched:${unjoined}`);
+    // A few registrations genuinely lack jurisdiction (observed 1/193: Beech,
+    // registered 06/2026 with no jurisdiction or place). The resolver fails
+    // closed to manual review on missing district, so gate on prevalence.
+    if (missingJurisdiction > repRows.length * 0.05) {
+      failures.push(`district_join_missing_jurisdiction:${missingJurisdiction}`);
+    }
+    districtJoin = {
+      office: "State Representative",
+      race_row_count: repRows.length,
+      unjoined,
+      missing_jurisdiction: missingJurisdiction,
+    };
   }
 
   // Gate 2 setup: extracts.
@@ -183,6 +222,10 @@ async function main(): Promise<void> {
       if (result.authorityStatus === "mismatch") failures.push(`fixture_${component}_authority:${key}`);
       if (result.extractCoverage !== null && result.extractCoverage < MIN_EXTRACT_COVERAGE) {
         failures.push(`fixture_${component}_extract_coverage:${key}:${result.extractCoverage.toFixed(4)}`);
+      } else if (result.extractCoverage === null && result.extractCents !== 0) {
+        // Zero race total with nonzero extract rows: the ratio is undefined
+        // but the contradiction is real — never let it pass silently.
+        failures.push(`fixture_${component}_extract_nonzero_zero_race:${key}:${result.extractCents}`);
       }
     }
     fixtures.push({
@@ -207,6 +250,7 @@ async function main(): Promise<void> {
     failures,
     election: { id: election.id, label: election.label },
     offices: [...officeRows.entries()].map(([name, rows]) => ({ name, raceRowCount: rows.length })),
+    district_join: districtJoin,
     extracts: bundles.map((bundle) => ({
       data_type: bundle.dataType,
       year: bundle.year,

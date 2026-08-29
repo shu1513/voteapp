@@ -263,7 +263,11 @@ export type AlabamaComponentReconciliation = {
   /** race - covers; 0 when the authority contract holds. */
   authorityDeltaCents: number;
   authorityStatus: "exact" | "mismatch";
-  /** extract / race; 1 when the extracts contain every reported dollar. */
+  /**
+   * extract / race; 1 when the extracts contain every reported dollar.
+   * null when the race total is 0 (ratio undefined) — callers must treat a
+   * nonzero extractCents alongside null coverage as a mismatch, not a pass.
+   */
   extractCoverage: number | null;
 };
 
