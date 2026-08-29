@@ -57,7 +57,7 @@ describe("MembershipSection", () => {
 
     expect(await screen.findByRole("heading", { name: "Support Elections Simplified" })).toBeInTheDocument();
     expect(screen.getByText(/not any candidate, campaign, committee, party, or charity/)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Become a monthly supporter/)).toHaveValue(5);
+    expect(screen.getByLabelText(/Become a supporting member/)).toHaveValue(10);
     expect(screen.getByLabelText(/One-time support/)).toHaveValue(10);
     expect(screen.getByRole("button", { name: "Support monthly" })).toBeEnabled();
     expect(screen.getByRole("button", { name: "Support once" })).toBeEnabled();
@@ -71,7 +71,7 @@ describe("MembershipSection", () => {
     const fetchMock = stubApiRoutes({ "/api/me/membership": { body: NOT_MEMBER } });
     renderSection();
 
-    const input = await screen.findByLabelText(/Become a monthly supporter/);
+    const input = await screen.findByLabelText(/Become a supporting member/);
     await user.clear(input);
     await user.type(input, "4");
 
@@ -113,7 +113,7 @@ describe("MembershipSection", () => {
     });
     renderSection();
 
-    const input = await screen.findByLabelText(/Become a monthly supporter/);
+    const input = await screen.findByLabelText(/Become a supporting member/);
     await user.clear(input);
     await user.type(input, "12");
     await user.click(screen.getByRole("button", { name: "Support monthly" }));
@@ -150,7 +150,7 @@ describe("MembershipSection", () => {
     });
     renderSection();
 
-    expect(await screen.findByText(/Monthly supporter — \$5\.00\/month since August 15, 2026/)).toBeInTheDocument();
+    expect(await screen.findByText(/Monthly supporter: \$5\.00\/month since August 15, 2026/)).toBeInTheDocument();
     expect(screen.getByText(/Total support to date/)).toHaveTextContent("$15.00");
     expect(screen.getByText("Payment history")).toBeInTheDocument();
     expect(screen.getByText(/August 15, 2026 · Monthly/)).toBeInTheDocument();
@@ -221,7 +221,7 @@ describe("MembershipSection", () => {
     });
     renderSection();
 
-    expect(await screen.findByText("Monthly membership pending — $5.00/month")).toBeInTheDocument();
+    expect(await screen.findByText("Monthly membership pending: $5.00/month")).toBeInTheDocument();
     expect(screen.getByText(/Your first payment is still being confirmed/)).toBeInTheDocument();
     expect(screen.queryByText(/Monthly supporter/)).not.toBeInTheDocument();
     // The backend 409s a second monthly checkout while this row exists, so
@@ -234,6 +234,6 @@ describe("MembershipSection", () => {
     stubApiRoutes({ "/api/me/membership": { body: NOT_MEMBER } });
     renderSection("?membership=canceled");
 
-    expect(await screen.findByText("Checkout was canceled — nothing was charged.")).toBeInTheDocument();
+    expect(await screen.findByText("Checkout was canceled. Nothing was charged.")).toBeInTheDocument();
   });
 });

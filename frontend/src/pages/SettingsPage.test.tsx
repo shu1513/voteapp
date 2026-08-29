@@ -92,7 +92,7 @@ describe("SettingsPage", () => {
     expect(await screen.findByRole("heading", { name: "Support Elections Simplified" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Support monthly" })).toBeInTheDocument();
     // Non-member: the Profile box invites, pointing at the mission page.
-    expect(screen.getByRole("link", { name: "Become a member" })).toHaveAttribute("href", "/mission");
+    expect(screen.getByRole("link", { name: "Become a member" })).toHaveAttribute("href", "/support/member");
     expect(screen.queryByText(/Thank you for being a supporting member/)).not.toBeInTheDocument();
   });
 
@@ -149,7 +149,7 @@ describe("SettingsPage", () => {
     });
     renderSettings();
 
-    expect(await screen.findByText("Monthly membership pending — $5.00/month")).toBeInTheDocument();
+    expect(await screen.findByText("Monthly membership pending: $5.00/month")).toBeInTheDocument();
     expect(screen.queryByText(/Thank you for being a supporting member/)).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Become a member" })).not.toBeInTheDocument();
   });

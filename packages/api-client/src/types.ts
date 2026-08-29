@@ -677,19 +677,21 @@ export type MembershipPayment = {
   paid_at: string;
 };
 
+export type MembershipMembership = {
+  /** Raw Stripe subscription status, verbatim. */
+  stripe_status: string;
+  monthly_amount_cents: number;
+  cancel_at_period_end: boolean;
+  current_period_end: string | null;
+  started_at: string;
+};
+
 export type MembershipStatus =
   | { enabled: false }
   | {
       enabled: true;
       /** The one nonterminal subscription, or null when not a member. */
-      membership: {
-        /** Raw Stripe subscription status, verbatim. */
-        stripe_status: string;
-        monthly_amount_cents: number;
-        cancel_at_period_end: boolean;
-        current_period_end: string | null;
-        started_at: string;
-      } | null;
+      membership: MembershipMembership | null;
       /** Net of refunds, across both payment kinds. */
       total_net_cents: number;
       /** Latest 50, newest first. */

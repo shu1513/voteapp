@@ -213,8 +213,8 @@ describe("membership createCheckoutSession", () => {
       customer: STRIPE_CUSTOMER_ID,
       client_reference_id: BILLING_CUSTOMER_ID,
       payment_method_types: ["card"],
-      success_url: "https://site.test/me/settings?membership=success",
-      cancel_url: "https://site.test/me/settings?membership=canceled",
+      success_url: "https://site.test/support/once?membership=success",
+      cancel_url: "https://site.test/support/once?membership=canceled",
       payment_intent_data: { metadata: { billing_customer_id: BILLING_CUSTOMER_ID, kind: "one_time" } },
     });
     expect(params.line_items[0].price_data).toEqual({
@@ -236,6 +236,8 @@ describe("membership createCheckoutSession", () => {
 
     const params = stripe.checkout.sessions.create.mock.calls[0]?.[0];
     expect(params.mode).toBe("subscription");
+    expect(params.success_url).toBe("https://site.test/support/member?membership=success");
+    expect(params.cancel_url).toBe("https://site.test/support/member?membership=canceled");
     expect(params.line_items[0].price_data.recurring).toEqual({ interval: "month" });
     expect(params.subscription_data).toEqual({
       metadata: { billing_customer_id: BILLING_CUSTOMER_ID, kind: "monthly" },

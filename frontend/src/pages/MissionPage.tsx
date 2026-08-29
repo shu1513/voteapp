@@ -2,7 +2,7 @@ import type { MetaFunction } from "react-router";
 import { Link } from "react-router";
 import { APP_NAME, useMe } from "@voteapp/api-client";
 import { EmailPreferenceToggles } from "../components/EmailPreferenceToggles";
-import { MembershipSection } from "../components/MembershipSection";
+import { MembershipThanks } from "../components/MembershipSection";
 import { VerifyPrompt } from "../components/VerifyPrompt";
 import { pageMeta } from "../lib/pageMeta";
 
@@ -13,12 +13,14 @@ export const meta: MetaFunction = () =>
     path: "/mission",
   });
 
-// Public mission page: the pitch reads without an account; the payment forms
-// (MembershipSection) additionally need a verified login because the
-// membership endpoints are verified-only — logged-out readers get the
-// login/signup path instead, and unverified accounts a verify nudge.
-// Acquisition lives here; management stays on Settings, where the same
-// section shows a member their plan and the portal button.
+const ctaClass =
+  "inline-block rounded-lg bg-rausch px-4 py-2 text-sm font-semibold text-white transition hover:bg-rausch-dark";
+
+// Public mission page: the pitch reads without an account. Payment moved to
+// the kind-specific pages /support/member and /support/once; the buttons here
+// just link there, so guests can click too and those pages handle auth gating.
+// An existing member sees a compact thanks + portal button at the bottom
+// (MembershipThanks); full management detail stays on Settings.
 export default function MissionPage() {
   const { me } = useMe();
 
@@ -39,12 +41,12 @@ export default function MissionPage() {
           In a presidential election, unless we live in a key district in a swing state, our vote is
           one among more than 150 million. But in a city council or school board race, a few hundred
           votes can decide the outcome. Ironically, these local offices affect our daily lives far
-          more — our schools, our street safety, our water quality, our local taxes.
+          more: our schools, our street safety, our water quality, our local taxes.
         </p>
 
         <h2 className="pt-2 text-heading font-semibold">Who are these candidates?</h2>
         <p>
-          The bigger the election — think presidential — the more media coverage it gets. Smaller
+          The bigger the election (think presidential), the more media coverage it gets. Smaller
           elections, the local races where our vote is most powerful, usually get almost none. And
           what little information we do get is usually marketing written by the campaigns themselves.
         </p>
@@ -53,31 +55,46 @@ export default function MissionPage() {
         <p>
           The purpose of {APP_NAME} is to give real track records of candidates based on what they
           actually did, so we can see more clearly who these candidates are, and make a decision on
-          who to pick based on the issues that matter to us — not on their ads.
+          who to pick based on the issues that matter to us, not on their ads.
         </p>
 
         <h2 className="pt-2 text-heading font-semibold">How we do it</h2>
         <p>
           We use AI (from American companies only) to research public sources, validate everything
           against multiple methods before it’s written, and run quality passes with both humans and
-          AI. Keeping this information current — new elections, new candidates, new records — takes
+          AI. Keeping this information current (new elections, new candidates, new records) takes
           constant effort from our staff and money for AI usage.
         </p>
 
         <p>To literally keep us alive, you can help in three ways.</p>
-        <ol className="list-decimal space-y-2 pl-6">
+        <ol className="list-decimal space-y-4 pl-6">
           <li>
-            <span className="font-semibold">Become a supporting member</span> — a small monthly
-            contribution, less than a cup of coffee, helps us keep our operations going.
+            <span className="font-semibold">Become an honorary member:</span>
+            <p className="mt-1">
+              For a small monthly contribution, less than a cup of coffee, you can become an
+              honorary member and help us keep bringing you higher-quality content.
+            </p>
+            <p className="mt-2">
+              <Link to="/support/member" className={ctaClass}>
+                See how to become an honorary member
+              </Link>
+            </p>
           </li>
           <li>
-            <span className="font-semibold">Make a one-time contribution</span> — if you’d rather
-            help once.
+            <span className="font-semibold">Make a one-time contribution</span>
+            <p className="mt-1">If you’d rather make a one-time contribution.</p>
+            <p className="mt-2">
+              <Link to="/support/once" className={ctaClass}>
+                See how to contribute
+              </Link>
+            </p>
           </li>
           <li>
-            <span className="font-semibold">Subscribe to our emails</span> — free. We will keep you
-            updated on the elections and issues most important to you. Our emails are very
-            occasional, and we will never spam.
+            <span className="font-semibold">Subscribe to our emails</span>
+            <p className="mt-1">
+              Free. We will keep you updated on the elections and issues most important to you. Our
+              emails are very occasional, and we will never spam.
+            </p>
             {me?.email_verified ? (
               // The two subscription opt-ins this pitch is about, editable in
               // place (Settings still carries the full set). Verified-only,
@@ -94,15 +111,15 @@ export default function MissionPage() {
         </p>
 
         <p className="text-ink-soft">
-          Payments support operating the service — not any candidate, campaign, committee, party, or
+          Payments support operating the service, not any candidate, campaign, committee, party, or
           charity.
         </p>
       </section>
 
       {me?.email_verified ? (
-        // Renders nothing when the backend reports payments unconfigured, so
-        // the page never shows dead forms.
-        <MembershipSection />
+        // Renders nothing unless the visitor is already a member (and nothing
+        // when the backend reports payments unconfigured).
+        <MembershipThanks />
       ) : me ? (
         // The standard unverified interstitial: names the address and offers
         // a real resend (nothing else on this page can).
@@ -111,14 +128,14 @@ export default function MissionPage() {
         // Shown while /api/me is unresolved too, same tradeoff as the header
         // nav: a self-correcting logged-out CTA beats an invisible one, and
         // warm navigation has the session cached anyway.
-        // ?next brings the prospective supporter back here after auth
+        // ?next lands the prospective supporter on the payment page after auth
         // instead of into normal onboarding.
         <p className="text-sm">
-          <Link to="/login?next=%2Fmission" className="font-semibold underline hover:text-ink">
+          <Link to="/login?next=%2Fsupport" className="font-semibold underline hover:text-ink">
             Log in
           </Link>{" "}
           or{" "}
-          <Link to="/register?next=%2Fmission" className="font-semibold underline hover:text-ink">
+          <Link to="/register?next=%2Fsupport" className="font-semibold underline hover:text-ink">
             sign up
           </Link>{" "}
           to become a member or make a one-time contribution.

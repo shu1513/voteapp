@@ -167,6 +167,9 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
   const { db, stripe } = options;
   const publicBaseUrl = options.publicBaseUrl.replace(/\/+$/, "");
   const settingsUrl = `${publicBaseUrl}/me/settings`;
+  // Checkout starts on the kind-specific support page, so it returns there
+  // too; the portal still returns to Settings, where the full section manages
+  // the plan.
   const termsUrl = `${publicBaseUrl}/terms`;
 
   async function findBillingCustomerByUserId(userId: string): Promise<BillingCustomerRow | null> {
@@ -735,8 +738,8 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
             },
           },
         ],
-        success_url: `${settingsUrl}?membership=success`,
-        cancel_url: `${settingsUrl}?membership=canceled`,
+        success_url: `${publicBaseUrl}/support/${monthly ? "member" : "once"}?membership=success`,
+        cancel_url: `${publicBaseUrl}/support/${monthly ? "member" : "once"}?membership=canceled`,
         // Checkout's minimum expiry: a stale tab cannot complete a forgotten
         // session hours later.
         expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
