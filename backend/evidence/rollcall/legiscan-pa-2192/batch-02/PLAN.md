@@ -29,7 +29,7 @@ further".
 | corporate_accountability (for) | HB 111 |
 | reduce_wealth_gap (for) | HB 1549 |
 
-**Four of these are votes the measure LOST.** HB 1099 (undetectable firearms),
+**Three of these are votes the measure LOST.** HB 1099 (undetectable firearms),
 HB 1859 (extreme risk protection orders) and HB 1866 (machine gun conversion
 devices) each failed the House 101-102 on 2025-09-30 and 2025-10-01. A failed
 vote is still a recorded position, and a one-vote margin is the most

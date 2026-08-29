@@ -14,12 +14,12 @@ HB1089	1584783	house	2025-06-04	102-100	passed	passage	pending:batch-03	screened
 HB1093	1597787	house	2025-07-08	151-52	passed	passage	pending:batch-03	screened in: proposed public_safety_and_crime_control/for, analysis not yet verified
 HB1095	1593910	house	2025-06-23	105-98	passed	passage	pending:batch-03	screened in: proposed housing_affordability/for, analysis not yet verified
 HB1099	1603195	house	2025-09-30	101-102	failed	passage	batch-02	gun_control/for
-HB1100	1595333	house	2025-06-26	138-64	passed	passage	batch-02	healthcare_affordability/for
+HB1100	1595333	house	2025-06-26	138-64	passed	passage	batch-02	social_programs_and_welfare/for
 HB1104	1689869	house	2026-04-27	133-67	passed	passage	batch-02	healthcare_affordability/for
-HB111	1518370	house	2025-03-17	153-49	passed	passage	batch-02	healthcare_affordability/for
+HB111	1518370	house	2025-03-17	153-49	passed	passage	batch-02	corporate_accountability/for
 HB1127	1710973	house	2026-06-23	136-66	passed	passage	batch-02	healthcare_affordability/for
 HB1139	1681996	house	2026-04-14	102-99	passed	passage	pending:batch-03	screened in: proposed environment_and_public_health/for, analysis not yet verified
-HB1140	1583926	house	2025-06-03	116-87	passed	passage	batch-02	healthcare_affordability/for
+HB1140	1583926	house	2025-06-03	116-87	passed	passage	batch-02	womens_reproductive_rights/for
 HB118	1524694	house	2025-03-24	117-85	passed	passage	pending:batch-03	screened in: proposed corporate_accountability/for, analysis not yet verified
 HB1189	1587567	house	2025-06-10	102-101	passed	passage	pending:batch-03	screened in: proposed government_efficiency/for, analysis not yet verified
 HB1191	1669857	house	2026-03-25	120-79	passed	passage	pending:batch-03	screened in: proposed public_safety_and_crime_control/for, analysis not yet verified

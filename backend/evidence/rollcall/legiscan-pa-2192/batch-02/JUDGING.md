@@ -37,15 +37,16 @@ batch-01 does not arise here.
   carve-outs for rented rooms in a personal residence, landlord-occupied rooming
   houses and single-sex dormitory rooms, and the dress-and-grooming provision.
   Stating only the ban would flatten a qualified statute — the TX SB 2972 rule.
-- **HB 1445** — insurers could still refuse an unlicensed provider, one working
-  outside their scope, or a service not medically necessary. Named.
+- **HB 1445** — insurers could still refuse an unlicensed or out-of-scope provider,
+  a service not medically necessary or outside their administrative policies,
+  or one a school must already provide under an IEP or section 504 plan. Named.
 - **HB 583** — restores pre-September-2011 adult dental coverage, but the
   department may offer fewer services if funding falls short. Named.
 - **HB 1593** deletes an existing exemption rather than creating a new check:
   private sales of long guns currently escape the background check that
   handguns already require. The description says that.
-- **HB 1549** gives the actual county-class tiers ($15 Philadelphia, $12 larger
-  counties, $10 rising to $12 elsewhere) and the 60% tipped rate, not the
+- **HB 1549** gives the actual county-class tiers ($15 Philadelphia; $12 rising to
+  $15 by 2028 in the larger counties; $10 rising to $12 elsewhere) and the 60% tipped rate, not the
   headline number.
 - **HB 111** is not a health-coverage bill; it stops LIFE insurers penalising
   someone for filling a naloxone prescription, so it is labelled
@@ -76,8 +77,18 @@ sports restrictions, firearm preemption).
 Dry run: 32 files, 0 errors, **5,642 planned inserts**, 0 notified.
 Real run: 32 files all `imported`, 0 errors, **5,642 inserts**, 180 candidates.
 
-Batch stamp `origin_run_id LIKE 'rollcall:PA:%:2026-08-29T06:47:30.145Z'`
-returns 5,642 / 180. The dry run's own stamp `…T06:47:01.238Z` matches **zero**
+**Review fixes 2026-08-29 (six measures rewritten in place):** HB 535, HB 618
+and HB 755 gained their federal-trigger condition (and HB 535 its $10,000
+willful fine), HB 1445 its two missing exclusions, HB 1825 its narrow
+second-fine waiver, HB 1549 its full wage ladder. Re-judge updated 6 rows;
+re-import rewrote **1,053 records** (unchanged 4,589); convergence dry run =
+all 5,642 unchanged. A rewrite re-stamps `origin_run_id` (the TX batch-02
+mechanic), so the batch now spans two stamps: **4,589 @
+`2026-08-29T06:47:30.145Z` + 1,053 @ `2026-08-29T23:00:27.999Z`**.
+`import-report.json` stays the original insert ledger; the rewrite run is
+`import-rewrite-report.json`.
+
+Original batch stamp predicate before the rewrite returned 5,642 / 180. The dry run's own stamp `…T06:47:01.238Z` matches **zero**
 rows. Batch-01's stamp still returns exactly 882, proving the per-run stamp
 separates batches. PA totals: **6,524 records, 6,700 tags.** A dry re-run
 reports all 5,642 `unchanged` (`import-dry-run-rerun-report.json`);
