@@ -99,27 +99,35 @@ Dry run: 14 files, 0 errors, **199 planned inserts**, 0 notified.
 Real run 2026-08-27 on local `voteapp`: 14 `imported`, 0 errors, **199 inserts**, 0
 notified, **31 distinct candidates** (every mapped crosswalk entry).
 
-Reconciled three ways:
+Reconciled from the pre-reimport evidence:
 
-- initial-run report `actions` = `{"insert": 199}` (see the report-provenance note below)
 - `candidate_records` 67,973 → 68,172 = +199
 - grouped `origin_run_id` stamps (a rewrite re-stamps the rewriting run's `startedAt`,
   the batch-02 mechanic): **185 records @ `2026-08-27T01:49:40.074Z`** (the initial
   import) **+ 14 @ `2026-08-27T20:44:47.015Z`** (the HB 1093 description rewrite)
   = 199 records / 31 candidates. A single-stamp predicate no longer covers the batch.
+- `import-rerun-report.json` found all 199 rows unchanged before the description fix;
+  `import-rewrite-report.json` then recorded `rewrite: 14, unchanged: 185`.
 
 The dry run's own stamp (`2026-08-27T01:48:33.021Z`) matches **zero** rows, which is
 positive proof `--dry-run` is inert. Production was never touched.
 
-**Report provenance:** `import-report.json` uses a fixed filename, so the idempotency
-re-run **overwrote** the initial run's report (`insert: 199`) with its own
-(`unchanged: 199`) before the trimmed copy was committed. The committed files are
-therefore: `import-dry-run-report.json` (the pre-import plan, `insert: 199`),
-`import-rerun-report.json` (the idempotency re-run, `unchanged: 199` — previously
-mislabeled `import-report.json`), and `import-rewrite-report.json` (the HB 1093
-description fix, `rewrite: 14, unchanged: 185`). The initial run's full report was
-not preserved; its `insert: 199` result is evidenced by the dry-run plan it matched
-exactly and by the DB stamp census above.
+**Roster re-import (2026-08-28):** after the complete TN House general-election roster
+and crosswalk review, a fresh dry run planned **627 inserts + 199 unchanged**. The
+local live run imported all 14 rolls with exactly those actions; its committed
+`import-report.json` records the result. A final dry re-run planned **826 unchanged**,
+including every one of the original 199 rows. Production was never touched.
+
+**Report provenance:** `import-rerun-report.json` (`unchanged: 199`) and
+`import-rewrite-report.json` (`rewrite: 14, unchanged: 185`) are the retained
+2026-08-27 artifacts. The original live report was overwritten by the idempotency run
+before its trimmed copy was committed, and the original dry-run report was later
+replaced during the roster re-import. Its 199-row result remains evidenced by the DB
+delta and stamp census above.
+
+The 2026-08-28 roster re-import artifacts are `import-dry-run-report.json`
+(`insert: 627, unchanged: 199`), `import-report.json` (the matching live result), and
+`import-dry-run-rerun-report.json` (`unchanged: 826`).
 
 ## Related-record flags reviewed
 

@@ -43,8 +43,10 @@ senate 56. **289 of them on measures that became law, across 239 measures** —
 
 ## Crosswalk
 
-`crosswalk.json` — 136 entries: **31 mapped, 105 explicit null.** 29 came from the
-proposer (all accepted, no `seatAgrees` conflicts). 2 were hand-added:
+`crosswalk.json` — 136 entries: **99 mapped, 37 explicit null.** The current
+proposer made 90 unique suggestions; every suggestion was manually accepted after
+checking the physical House/Senate district (all `seatAgrees: true`, never the
+member's role). The remaining nine reviewed mappings predate this pass, including:
 
 - **Rusty Crowe (SD-003)** — the candidate files under his legal first name,
   `Dewey "Rusty" Crowe`, and LegiScan's `first_name` is the nickname, so neither
@@ -53,22 +55,19 @@ proposer (all accepted, no `seatAgrees` conflicts). 2 were hand-added:
   Governor**, outside the state-legislature candidate pool the proposer searches
   (the Texas Talarico class).
 
-Resolution over all 8,648 rolls: matched 121,873 / unmatched_reviewed 418,483 /
+Resolution over all 8,648 rolls: matched 405,601 / unmatched_reviewed 134,755 /
 **no_crosswalk 0 / out_of_scope 0**, 0 file errors. The full `resolve-report.json`
 is ~100 MB and stays out of the repo.
 
 **Scope note:** the crosswalk is built with `--scope-from 2026-08-01`, not the
-pipeline default of 2026-11-01. Tennessee's state primary is **August 6, 2026**, and
-the local database holds no TN Senate general-election rows at all; the November
-default gives a candidate pool of 12 and only 4 matches. The August scope gives a pool
-of 63 and the 31 matches above. This is the user's explicit call.
+pipeline default of 2026-11-01. Tennessee's state primary is **August 6, 2026**. After
+the TN House roster repair, the August scope gives a local candidate pool of 214 and
+the 99 mappings above. This is the user's explicit call.
 
-**Fan-out is small and roster-bound:** house median 13 matched candidates per roll
-(max 15), senate median 15 (max 16) — versus Texas 114/13 and Georgia 149/42. The
-limit is roster coverage, not the vote data: the local database has TN candidates in
-only 16 of 99 House districts (17 of 17 Senate districts up in 2026 are covered).
-Extending the crosswalk and re-importing adds members idempotently, so a later TN
-roster campaign can be followed by a re-import with nothing lost.
+**Fan-out is roster-bound and idempotent.** The 14 curated batch-01 rolls first
+covered 199 candidate records. After the House roster repair and crosswalk review, the
+same batch inserted 627 additional local records while retaining those 199; a final
+dry re-run planned **826 unchanged** records.
 
 ## Judging sources (probed before use)
 
