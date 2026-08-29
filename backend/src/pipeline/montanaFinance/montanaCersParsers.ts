@@ -103,7 +103,12 @@ export type MontanaCersReportInventoryRow = {
 };
 
 export type MontanaCersDetailRow = {
-  amountTypeDescr: "Primary" | "General";
+  /**
+   * Election side. Null only for zero-amount placeholder rows — observed
+   * live 2026-08-28 (Eddy, Supreme Court): an all-zero `Loans` row with
+   * `amountTypeDescr: ""`. Any row carrying money must declare its side.
+   */
+  amountTypeDescr: "Primary" | "General" | null;
   cashAmtCents: number;
   inKindAmtCents: number;
   totalAmtCents: number;
@@ -300,15 +305,46 @@ function parseExportLines(
   if (headerLine.split("|").map((cell) => cell.trim()).join("|") !== header.join("|")) {
     throw new MontanaCersParseError(`Unexpected Montana CERS ${label} export header: ${headerLine.slice(0, 200)}`);
   }
-  return lines.slice(1).map((line, index) => {
+  // The export is unquoted, so a field containing a newline splits one
+  // logical row across physical lines (observed live 2026-08-28: an Eddy
+  // contributor row broke at column 12). Reassemble: a short line opens a
+  // pending row and each following line's first cell continues its last
+  // field; the cell count must land exactly on the header width.
+  const rows: string[][] = [];
+  let pending: string[] | null = null;
+  for (const line of lines.slice(1)) {
     const cells = line.split("|");
-    if (cells.length !== header.length) {
-      throw new MontanaCersParseError(
-        `Montana CERS ${label} export row ${index + 1} has ${cells.length} columns, expected ${header.length}`
-      );
+    if (pending === null) {
+      if (cells.length === header.length) {
+        rows.push(cells);
+        continue;
+      }
+      if (cells.length < header.length) {
+        pending = cells;
+        continue;
+      }
+    } else {
+      pending[pending.length - 1] = `${pending[pending.length - 1]} ${cells[0] ?? ""}`.trim();
+      pending.push(...cells.slice(1));
+      if (pending.length === header.length) {
+        rows.push(pending);
+        pending = null;
+        continue;
+      }
+      if (pending.length < header.length) {
+        continue;
+      }
     }
-    return cells;
-  });
+    throw new MontanaCersParseError(
+      `Montana CERS ${label} export row ${rows.length + 1} has ${(pending ?? cells).length} columns, expected ${header.length}`
+    );
+  }
+  if (pending !== null) {
+    throw new MontanaCersParseError(
+      `Montana CERS ${label} export ends mid-row with ${pending.length} columns, expected ${header.length}`
+    );
+  }
+  return rows;
 }
 
 function parseExportRow(cells: string[], label: string, rowIndex: number): MontanaCersExportRow {
@@ -376,12 +412,26 @@ export function parseMontanaCersFinanceRepDetailList(body: string): MontanaCersD
   }
   return parsed.map((value) => {
     const row = requireRecord(value, "report detail row");
+    const cashAmtCents = montanaCersJsonAmountToCents(row["cashAmt"], "cashAmt");
+    const inKindAmtCents = montanaCersJsonAmountToCents(row["inKindAmt"], "inKindAmt");
+    const totalAmtCents = montanaCersJsonAmountToCents(row["totalAmt"], "totalAmt");
+    const debtAmtCents = montanaCersJsonAmountToCents(row["debtAmt"], "debtAmt");
+    // Zero-amount placeholder rows may omit the election side (observed on a
+    // judicial filing's empty Loans row); a row with any money must declare
+    // one — an untyped amount could land on the wrong side of the chain.
+    const rawSide = row["amountTypeDescr"];
+    const isZeroAmount =
+      cashAmtCents === 0 && inKindAmtCents === 0 && totalAmtCents === 0 && debtAmtCents === 0;
+    const amountTypeDescr =
+      rawSide === "" && isZeroAmount
+        ? null
+        : requireElectionSide(rawSide, "amountTypeDescr");
     return {
-      amountTypeDescr: requireElectionSide(row["amountTypeDescr"], "amountTypeDescr"),
-      cashAmtCents: montanaCersJsonAmountToCents(row["cashAmt"], "cashAmt"),
-      inKindAmtCents: montanaCersJsonAmountToCents(row["inKindAmt"], "inKindAmt"),
-      totalAmtCents: montanaCersJsonAmountToCents(row["totalAmt"], "totalAmt"),
-      debtAmtCents: montanaCersJsonAmountToCents(row["debtAmt"], "debtAmt"),
+      amountTypeDescr,
+      cashAmtCents,
+      inKindAmtCents,
+      totalAmtCents,
+      debtAmtCents,
       entityName: optionalString(row["entityName"]),
       occupationDescr: optionalString(row["occupationDescr"]),
       employerDescr: optionalString(row["employerDescr"]),

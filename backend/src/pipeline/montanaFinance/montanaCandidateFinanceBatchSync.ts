@@ -1,0 +1,184 @@
+// Montana finance batch sync: optional auto-link pass, then the due list,
+// then per-candidate acquisition + sync. Raw-refresh semantics follow
+// Missouri: when MONTANA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED is off,
+// the batch consumes cached artifacts only. Acquisition creates its own
+// FRESH CERS sessions per candidate (the stale-session gotcha forbids a
+// shared session across entities). Per-candidate failures are recorded and
+// the batch continues (fail-visible, never fail-silent).
+
+import type { Pool, PoolClient } from "pg";
+
+import { isMontanaCampaignFinanceRawDataRefreshEnabled } from "../../config/featureFlags.js";
+import {
+  autoLinkMissingMontanaCandidateFinanceLinks,
+  type MontanaFinanceAutoLinkResult,
+} from "./montanaCandidateFinanceAutoLink.js";
+import {
+  listDueMontanaCandidateFinanceSyncRows,
+  type MontanaCandidateFinanceDueRow,
+} from "./montanaCandidateFinanceDueList.js";
+import {
+  syncMontanaCandidateFinance,
+  type MontanaCandidateFinanceSyncResult,
+} from "./montanaCandidateFinanceSync.js";
+import { acquireMontanaCersCandidateFinanceArtifacts } from "./montanaCersArtifactAcquisition.js";
+
+type Queryable = Pick<Pool | PoolClient, "query">;
+type ConnectableQueryable = Queryable & { connect: () => Promise<PoolClient> };
+
+const DEFAULT_MAX_CANDIDATES = 10;
+const DEFAULT_STALE_AFTER_DAYS = 7;
+// Montana's post-general C-5 closing window: candidate reports are due the
+// 20th of the month; a November 3 general's final periodic report lands by
+// December 20 (47 days). One stale interval beyond that keeps the just-run
+// election in scope until the closing report has been picked up.
+const MONTANA_POST_ELECTION_REPORT_DUE_DAYS = 47;
+const DEFAULT_ELECTION_LOOKAHEAD_DAYS = 730;
+
+export type MontanaCandidateFinanceBatchSyncInput = {
+  db: ConnectableQueryable;
+  now?: Date;
+  dryRun?: boolean;
+  forceRawDataRefresh?: boolean;
+  maxCandidates?: number;
+  staleAfterDays?: number;
+  electionLookbackDays?: number;
+  electionLookaheadDays?: number;
+  autoLinkMissingLinks?: boolean;
+  cacheDir?: string;
+  log?: (message: string) => void;
+  autoLinkFn?: typeof autoLinkMissingMontanaCandidateFinanceLinks;
+  listDueRowsFn?: typeof listDueMontanaCandidateFinanceSyncRows;
+  acquireArtifactsFn?: typeof acquireMontanaCersCandidateFinanceArtifacts;
+  syncCandidateFn?: typeof syncMontanaCandidateFinance;
+};
+
+export type MontanaCandidateFinanceBatchSyncResult = {
+  dryRun: boolean;
+  rawDataRefreshEnabled: boolean;
+  autoLinkResults: MontanaFinanceAutoLinkResult[];
+  totalDueRows: number;
+  attempted: number;
+  succeeded: number;
+  failed: number;
+  candidates: {
+    row: MontanaCandidateFinanceDueRow;
+    ok: boolean;
+    result?: MontanaCandidateFinanceSyncResult;
+    error?: string;
+  }[];
+};
+
+function positiveInteger(value: number | undefined, fallback: number, label: string): number {
+  const normalized = value ?? fallback;
+  if (!Number.isSafeInteger(normalized) || normalized <= 0) {
+    throw new Error(`Invalid Montana finance batch ${label}: ${value}`);
+  }
+  return normalized;
+}
+
+export async function syncDueMontanaCandidateFinance(
+  input: MontanaCandidateFinanceBatchSyncInput
+): Promise<MontanaCandidateFinanceBatchSyncResult> {
+  const now = input.now ?? new Date();
+  if (Number.isNaN(now.getTime())) {
+    throw new Error("Invalid Montana finance batch timestamp");
+  }
+  const log = input.log ?? ((message: string) => console.log(message));
+  const maxCandidates = positiveInteger(input.maxCandidates, DEFAULT_MAX_CANDIDATES, "maxCandidates");
+  const staleAfterDays = positiveInteger(input.staleAfterDays, DEFAULT_STALE_AFTER_DAYS, "staleAfterDays");
+  const electionLookbackDays = positiveInteger(
+    input.electionLookbackDays,
+    MONTANA_POST_ELECTION_REPORT_DUE_DAYS + staleAfterDays + 1,
+    "electionLookbackDays"
+  );
+  const electionLookaheadDays = positiveInteger(
+    input.electionLookaheadDays,
+    DEFAULT_ELECTION_LOOKAHEAD_DAYS,
+    "electionLookaheadDays"
+  );
+  const dryRun = input.dryRun === true;
+  const rawDataRefreshEnabled = isMontanaCampaignFinanceRawDataRefreshEnabled(input.forceRawDataRefresh === true);
+
+  let autoLinkResults: MontanaFinanceAutoLinkResult[] = [];
+  if (!dryRun && input.autoLinkMissingLinks !== false) {
+    const autoLink = input.autoLinkFn ?? autoLinkMissingMontanaCandidateFinanceLinks;
+    try {
+      autoLinkResults = await autoLink({
+        db: input.db,
+        now,
+        maxCandidates,
+        electionLookbackDays,
+        electionLookaheadDays,
+      });
+    } catch (error) {
+      log(
+        `Montana auto-link pass failed (continuing with existing links): ${
+          error instanceof Error ? error.message : String(error)
+        }`
+      );
+    }
+  }
+
+  const listDueRows = input.listDueRowsFn ?? listDueMontanaCandidateFinanceSyncRows;
+  const due = await listDueRows(input.db, {
+    now,
+    staleAfterDays,
+    maxCandidates,
+    electionLookbackDays,
+    electionLookaheadDays,
+  });
+
+  const acquire = input.acquireArtifactsFn ?? acquireMontanaCersCandidateFinanceArtifacts;
+  const syncCandidate = input.syncCandidateFn ?? syncMontanaCandidateFinance;
+  const candidates: MontanaCandidateFinanceBatchSyncResult["candidates"] = [];
+  let succeeded = 0;
+  for (const row of due.rows) {
+    try {
+      if (rawDataRefreshEnabled) {
+        await acquire({
+          candidateId: Number(row.committeeId),
+          year: row.electionYear,
+          cacheDir: input.cacheDir,
+          now,
+        });
+      }
+      const result = await syncCandidate({
+        db: input.db,
+        candidateId: row.candidateId,
+        electionId: row.electionId,
+        candidateName: row.candidateName,
+        electionYear: row.electionYear,
+        officeScope: row.officeScope,
+        officeName: row.officeName,
+        district: row.district,
+        committee: {
+          committeeId: row.committeeId,
+          committeeName: row.committeeName,
+          linkSource: row.linkSource,
+          sourceUrl: row.sourceUrl,
+        },
+        cacheDir: input.cacheDir,
+        now,
+        dryRun,
+      });
+      succeeded += 1;
+      candidates.push({ row, ok: true, result });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      log(`Montana finance sync failed for ${row.candidateName} (CERS ${row.committeeId}): ${message}`);
+      candidates.push({ row, ok: false, error: message });
+    }
+  }
+
+  return {
+    dryRun,
+    rawDataRefreshEnabled,
+    autoLinkResults,
+    totalDueRows: due.totalDueRows,
+    attempted: due.rows.length,
+    succeeded,
+    failed: due.rows.length - succeeded,
+    candidates,
+  };
+}
