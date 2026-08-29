@@ -118,6 +118,63 @@ describe("PicksPage", () => {
     expect(section).not.toHaveTextContent("Governor");
   });
 
+  it("offers removal on a withdrawn upcoming pick and PUTs chosen: false", async () => {
+    // A withdrawn candidacy vanishes from election payloads, so no pick
+    // button anywhere can toggle it off — this page's remove control is the
+    // only way a multi-seat slot held by a withdrawn pick gets freed.
+    const puts: unknown[] = [];
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/election-choices": (_url: URL, init?: RequestInit) => {
+          if (init?.method === "PUT") {
+            puts.push(JSON.parse(String(init.body)));
+            return { status: 200, body: { choice: electionChoice({ picks: [] }) } };
+          }
+          return {
+            body: {
+              choices: [
+                electionChoice({
+                  picks: [{ candidate_id: "c-1", display_name: "Jane Smith", candidacy_status: "withdrawn" }],
+                }),
+              ],
+            },
+          };
+        },
+      })
+    );
+    renderPicks();
+
+    expect(await screen.findByText("(withdrew)")).toBeInTheDocument();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Remove pick: Jane Smith" }));
+    await waitFor(() =>
+      expect(puts).toEqual([{ election_id: "e-1", candidate_id: "c-1", chosen: false }])
+    );
+  });
+
+  it("offers no removal on a withdrawn pick from a past election", async () => {
+    // The backend rejects choice writes to past elections — a dead button
+    // whose only outcome is an error must not render.
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/election-choices": {
+          body: {
+            choices: [
+              electionChoice({
+                election_id: "e-past",
+                election_date: "2026-05-05",
+                picks: [{ candidate_id: "c-1", display_name: "Jane Smith", candidacy_status: "withdrawn" }],
+              }),
+            ],
+          },
+        },
+      })
+    );
+    renderPicks();
+
+    expect(await screen.findByText("(withdrew)")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Remove pick/ })).not.toBeInTheDocument();
+  });
+
   it("asks for an address when the empty ballot has no districts", async () => {
     stubApiRoutes(
       verifiedRoutes({

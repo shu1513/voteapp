@@ -33,7 +33,7 @@ import { pageMeta } from "../lib/pageMeta";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { AREA_TEXT_CLASS, SAVED_AREA_TEXT_CLASS } from "../components/ElectionCard";
 import { AutoPickControl } from "../components/AutoPickControl";
-import { CandidatePickButton, MeasureChoiceButtons } from "../components/ElectionChoiceControls";
+import { CandidatePickButton, MeasureChoiceButtons, StrandedPicksNotice } from "../components/ElectionChoiceControls";
 import { PostPickActions } from "../components/PostPickActions";
 import { draftChoicesByElectionId, isDecidedChoice, useBallotDraft } from "../lib/ballotDraft";
 import { useMyDistricts } from "../lib/useMyDistricts";
@@ -888,6 +888,22 @@ export function ElectionPage() {
               <div className="mt-3">
                 <AutoPickControl key={data.id} electionId={data.id} seatsToFill={data.seats_to_fill ?? null} />
               </div>
+            ) : null}
+            {/* Stranded picks have no candidate card below (ballotLookup
+                filters withdrawn candidacies out), yet still count toward
+                the seat cap — surface them here, with their removal
+                control. */}
+            {showChoiceControls ? (
+              <StrandedPicksNotice
+                electionId={data.id}
+                choice={myChoice}
+                raceTitle={data.official_ballot_title}
+                electionDate={data.election_date}
+                seatsToFill={data.seats_to_fill ?? null}
+                rosterCandidateIds={
+                  new Set(data.candidates.map((candidate) => candidate.candidate_id))
+                }
+              />
             ) : null}
             {/* Districts unknown: the nudge takes the controls' slot at the
                 top of the candidate list. */}

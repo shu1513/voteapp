@@ -4,6 +4,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest, formatElectionDate, useElectionChoices, useMe } from "@voteapp/api-client";
 import type { AutoPickElectionResult, BallotSummary, ElectionChoice, ElectionSummary, PickCardShare } from "@voteapp/api-client";
 import { AutoPickFillControl, reasonLabel } from "../components/AutoPickFillControl";
+import { RemoveStrandedPickButton } from "../components/ElectionChoiceControls";
 import { BallotPreviewSheets, BallotViewToggle } from "../components/BallotPreview";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import type { ElectionNavState } from "../lib/detailNavContext";
@@ -164,6 +165,24 @@ function PickedLine({ choice, election }: { choice: ElectionChoice; election?: E
           {pickStatusChip(pick.candidacy_status) ??
             pickResultChip(resultOutcome, resultWinners, pick.candidate_id)}
           {pick.origin === "auto" ? autoChip() : null}
+          {/* A withdrawn pick on an upcoming race is otherwise unremovable:
+              the election page's roster no longer lists the candidacy, yet
+              the pick still counts toward the seat cap. Date-gated because
+              the backend rejects writes to past elections, and guest-safe
+              by construction — draft rows never carry "withdrawn". */}
+          {pick.candidacy_status === "withdrawn" && choice.election_date >= usLatestLocalDate() ? (
+            <>
+              {" "}
+              <RemoveStrandedPickButton
+                electionId={choice.election_id}
+                candidateId={pick.candidate_id}
+                candidateName={pick.display_name}
+                raceTitle={choice.official_ballot_title}
+                electionDate={choice.election_date}
+                seatsToFill={choice.seats_to_fill}
+              />
+            </>
+          ) : null}
         </span>
       ))}
     </span>
