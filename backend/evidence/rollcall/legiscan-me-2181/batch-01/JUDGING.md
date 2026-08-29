@@ -10,7 +10,10 @@ committee amendment used as an index into it. No AI provider was called.
 - Dry-run plan 1,516 planned inserts → real run 1,516 inserts → 1,516 rows in
   the database at the run stamp. Reconciled three ways.
 - Real run stamp: `rollcall:ME:<chamber>:2181:<roll>:2026-08-29T05:24:26.277Z`
-  (one timestamp per run, shared by every roll — it is the batch key).
+  (one timestamp per run, shared by every roll — it is the batch key). After
+  the LD 1016 review rewrite the batch spans two stamps: 1,415 records at
+  `…T05:24:26.277Z` plus 101 at `…T06:30:26.398Z` (the rewrite re-stamps
+  `origin_run_id`, the TX batch-02 mechanic).
 - The dry run's own stamp `…T05:23:59.141Z` matches **zero** rows: positive
   proof `--dry-run` is inert.
 - Idempotency: a dry re-run reports **1,516 unchanged**
@@ -42,7 +45,16 @@ actually cast on using the `history[]` action trail:
   recede-and-concur.
 - **LD 1016** — enacted text is CA "A" (S-247) as amended by House Amendment
   "A" (H-639). The Senate's 6/5 report vote predates H-639, so the Senate roll
-  taken is its 6/11 recede-and-concur.
+  taken is its 6/11 recede-and-concur. **Review fix 2026-08-29:** the House's
+  roll 425 ALSO predates H-639 — Maine accepts the report first (history line
+  23), then reads the bill and takes amendments (H-639 adopted at line 26), so
+  the report vote was cast on the S-247 text. H-639 changed only
+  implementation details (affiliated-entity net worth, an attestation, the
+  start date, which official credits the fund), none of which the description
+  states, so the roll is KEPT and reframed: its descriptions now say the vote
+  accepted the committee report that advanced the bill, and note the House
+  amended implementation details afterwards. 101 records rewritten in place
+  (`import-rewrite-report.json`); convergence dry run = 1,516 unchanged.
 - **LD 1937** — House Amendment "A" (H-707) FAILED adoption; both chambers
   voted CA "A" (S-346), which is the enacted text.
 - **LD 1868** — the Senate enacted the bill, reconsidered, and enacted it
