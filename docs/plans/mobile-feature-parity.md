@@ -2,7 +2,8 @@
 
 Status: planned 2026-08-28, revised same day after review. Phase 1
 implemented in PR #925 (this plan's own PR); Phase 2 implemented in
-PR #928 (2026-08-28); phases 3–6 not started.
+PR #928 (2026-08-28); Phase 3 implemented (2026-08-28, this branch);
+phases 4–6 not started.
 
 ## Context
 
@@ -162,7 +163,7 @@ and undo the pick.
 
 Non-goals: no My Draft screen, no auto-pick, no sharing.
 
-## Phase 3 — My Draft screen (one PR)
+## Phase 3 — My Draft screen (one PR) — DONE (2026-08-28)
 
 Web vocabulary, not "My Picks": the surface is "My Draft n/m" until every
 race on the nearest election day is decided, then "My Picks ✓"

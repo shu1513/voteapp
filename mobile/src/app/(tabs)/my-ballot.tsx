@@ -11,8 +11,8 @@ import {
   useMyResearchAreas,
 } from "@voteapp/api-client";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Tabs, useRouter } from "expo-router";
-import { useEffect, useRef, useState } from "react";
+import { useNavigation, useRouter } from "expo-router";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { AccountGate } from "../../components/AccountGate";
 import { BallotFiltersControl } from "../../components/BallotFiltersControl";
@@ -362,13 +362,19 @@ function DraftHeaderLink() {
 }
 
 export default function MyBallotScreen() {
+  // navigation.setOptions, not a <Tabs.Screen options> element: the
+  // dynamic-options composition API is only documented for Stack routes;
+  // setOptions is the navigator-agnostic contract. DraftHeaderLink carries
+  // its own hooks, so once mounted it live-updates without re-setting.
+  const navigation = useNavigation();
   const { me } = useMe();
+  const signedIn = me != null;
+  useLayoutEffect(() => {
+    navigation.setOptions({ headerRight: signedIn ? () => <DraftHeaderLink /> : undefined });
+  }, [navigation, signedIn]);
   return (
-    <>
-      <Tabs.Screen options={{ headerRight: me ? () => <DraftHeaderLink /> : undefined }} />
-      <AccountGate signedOutText="Log in to see your saved ballot.">
-        {(me) => <SavedBallotBody email={me.email} />}
-      </AccountGate>
-    </>
+    <AccountGate signedOutText="Log in to see your saved ballot.">
+      {(me) => <SavedBallotBody email={me.email} />}
+    </AccountGate>
   );
 }
