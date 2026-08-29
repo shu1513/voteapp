@@ -128,3 +128,44 @@ kept their `2026-08-29T05:00:09.638Z` stamp, the rewritten 10 now carry
    General or a district attorney (§16755.1). The first pass stated fixed amounts.
 
 Plain-language lint re-run after the fixes: **0 warnings across all 48 descriptions**.
+
+## Plain-English rewrite (2026-08-29) — all 48 descriptions rewritten in place
+
+Measured after batch-03: the descriptions passed the repository's plain-language lint (no sentence
+over 45 words) but were **not written in plain English**. Across the 2,233 California records the
+word "amendments" appeared 1,092 times, "provisions" 222, "eligibility" 157, "licensee" 78,
+"ordinance" 76, "decommission" 76, "ministerial" 64, "urban lot split" 64, "antidisplacement" 61,
+"floor-area" 61. Four rounds of review had driven the text toward legal precision, and the lint —
+which only counts words per sentence — kept giving it a green light.
+
+All three batches were rewritten in ordinary English and re-imported. The rules applied:
+
+- **Bills are named in full** on first mention: "Senate Bill 79", not "SB 79".
+- **Concurrence votes read as what they are.** "Voted to accept the Senate's amendments to …"
+  became "Voted to agree to the Senate's changes to …", closing "The California State Assembly
+  agreed 50-17, sending the bill to the governor, and it became law."
+- **Terms of art are replaced by what they mean**: ministerial approval → "fast-track approval";
+  urban lot split → splitting a lot; antidisplacement standards → "protect tenants from being
+  forced out"; unlawful detainer → eviction; affirmative defense → "a defense"; ordinance → "local
+  law"; decommission → retire; licensee → the businesses named; administrative penalties → fines.
+- **Every qualification the earlier reviews forced in was kept.** All 23 were re-checked by string
+  after the rewrite: SB 627's agency-policy safe harbour, SB 30's public-hearing condition and
+  "public agency" scope, AB 572's Miranda exception and threats-and-deception ban, AB 858's covered
+  industries and pandemic-layoff limit, AB 692's five exceptions, SB 704's exemptions, SB 763's
+  maxima and who brings the civil action, SB 73's stricter machine rule and written-agreement
+  carve-out, AB 495's child-care duties, AB 246's six-month cap and rent-still-owed clause, SB 42's
+  voter-approval condition, AB 1319's sunset, AB 1127's exemptions, SB 518's appropriation
+  condition, SB 634's plywood carve-out, AB 628's exclusions, SB 524's vendor allowance.
+
+Result: **0 lint warnings across all 124 descriptions**, average sentence 23 words, and none of the
+16 jargon terms tracked above survives anywhere in the text.
+
+Runs: judge 62 `updated` across the three files; import **2,233 `rewrite`**, 0 errors, 0 notified;
+re-run **2,233 `unchanged`**. Row count unchanged at 2,233 records / 80 candidates — this rewrote
+text, it added and removed nothing. Stamp `2026-08-29T21:12:30.270Z`; the dry run's
+`2026-08-29T21:12:09.141Z` matches zero rows. Prod untouched.
+
+This also settles the pending question in batch-03's notes for the California side: the roll-call
+judgments now carry the plain register the backfill sweep was reaching for, so the two pipelines are
+no longer pulling the text in opposite directions here. The ownership question itself is unchanged —
+the sweep still rewrites `origin='rollcall_import'` rows in eight other jurisdictions.
