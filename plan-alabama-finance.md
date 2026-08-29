@@ -80,12 +80,13 @@ Stop rule: if (2) fails outside tolerance on any committee, do not proceed — f
 
 ## Phase 1: client, cache, parser
 
+**STATUS: DONE 2026-08-28.** Client, CSV parser, and TLS shipped with the Phase 0 PR; this phase added `alabamaFcpaArtifactCache.ts` (raw-zip artifact cache with integrity metadata, unchanged-detection on CSV checksum since zips recompress daily, verified read-back that fails closed on corruption) plus tests, and split the client's download into raw-zip-bytes + unzip so the cache stores exactly what the portal served. No separate `alabamaFinanceTypes.ts` — types live in the client/csv modules where they are used. Live-verified: 2024 cash extract cached (57,908 rows, 2 quarantined), second refresh reported `unchanged`.
+
 `backend/src/pipeline/alabamaFinance/`:
 
 - `alabamaFcpaClient.ts` — race search, dropdown-id scrape, extract catalog + download, committee search (fallback), filing detail + filings-list fetch (`committeeelectronicfilingsresults&committeeId=<internal id>`). Every list endpoint paginates via `totalRecords` (never assume one page). Concurrency 1–2, bounded timeouts, pinned CA.
 - `alabamaFcpaArtifactCache.ts` — raw zip bytes keyed by (dataType, year) with retrieval time, source URL, checksum; reject HTML bodies/empty archives/changed headers; keep last good artifact on failure (pattern: `newHampshireCfsArtifactCache.ts`).
 - `alabamaFcpaCsv.ts` — tolerant cash-extract parser per the rules above, with skipped-line accounting surfaced in the sync report.
-- `alabamaFinanceTypes.ts`.
 
 Tests: fixture zips (small hand-built CSVs incl. ragged lines, in-kind rows, Amended=Y, returned contributions); race/committee search JSON fixtures; no live calls.
 
