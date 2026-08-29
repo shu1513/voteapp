@@ -12,6 +12,7 @@ function choice(partial: Partial<ElectionChoice>): ElectionChoice {
     seats_to_fill: null,
     picks: [],
     measure_position: null,
+    updated_at: "2026-08-28T00:00:00Z",
     ...partial,
   };
 }
