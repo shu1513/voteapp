@@ -23,7 +23,7 @@ and are **not** in scope here; registering one would need its own survey and con
 | summary-only rolls (no member list) | 0 |
 | tally mismatches (`total != yea+nay+nv+absent`) | 0 |
 | file/parse errors | 0 |
-| identity duplicates collapsed by the shared identity key | 44 stored-eligible (49 across the raw feed) |
+| identity duplicates collapsed by the shared identity key | 44 stored-eligible (49 across the raw feed; not all are reprints of one action — see CODE-FINDINGS §5) |
 
 ## Desc vocabulary (measured, `survey/rollcall-legiscan-fetch-mo-20260829T050232Z-survey.json`)
 

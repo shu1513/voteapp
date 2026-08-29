@@ -76,3 +76,23 @@ The Nov-2026 pool holds 111 of 163 House districts (204 candidates) but only **5
 districts** (11 candidates). Fan-out is therefore house median 81 / senate median 3. Missouri's
 Senate is staggered (~17 seats up in 2026), so most of that gap is a roster gap, not the staggering
 — a Missouri **Senate roster campaign** would be worth more than any further roll-call batch.
+
+## 5. The identity collapse can merge two DISTINCT official actions
+
+The shared fetch-time identity key — (chamber, bill_id, date, desc, yea, nay, nv, absent, passed,
+member-list hash), built for LegiScan's re-issued Texas roll ids — folds Missouri rolls that are
+genuinely different official actions, because the House takes back-to-back votes with identical
+data: **HB 594's "House Adopts SS#2" (official roll 066.003, LegiScan 1567074) and its Truly Agreed
+To And Finally Passed vote minutes later (066.004, LegiScan 1567075) are both 102-41 with the same
+member list.** The lowest `roll_call_id` survives as the class representative; 1567075 was never
+stored, so it cannot be selected or cited.
+
+This is the right trade-off, not a defect to fix: no member position is lost (the lists are
+identical), the campaign imports one roll per measure per chamber regardless (filter 4), and
+disabling the collapse would be worse — the fan-out dedupes on `ls:<id>` URL keys, so two stored
+ids for one identical vote would let a double judgment write every member's record twice.
+
+**The obligation it creates sits on the judgment's wording**: a description must hold for the whole
+identity class, or the roll-call PDF must pin the specific action. Batch-01's HB 594 description
+originally said the House "gave it final approval" — strictly the 066.004 claim — and was reworded
+to "adopted the Senate's version", true of the stored 066.003 roll (review response, 2026-08-29).

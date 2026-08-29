@@ -36,7 +36,7 @@ under one identical desc, so every roll here was matched to its official roll-ca
 |---|---|---|---|---|---|---|
 | HJR 73 reproductive health constitutional amendment | 1551715 | house | 2025-04-17 | 103-51 | 056.006 | 2454H.05P = enrolled |
 | HJR 73 | 1578547 | senate | 2025-05-14 | 21-11 | — | truly agreed |
-| HB 594 taxation | 1567074 | house | 2025-05-07 | 102-41 | 066.003/066.004 | 1683S.04F = enrolled |
+| HB 594 taxation | 1567074 | house | 2025-05-07 | 102-41 | 066.003 (identity-collapsed with 066.004, the Truly Agreed vote — identical tally and member list) | 1683S.04F = enrolled |
 | HB 567 employee compensation | 1517204 | house | 2025-03-13 | 96-51 | 039.017 | 1616H.05P (= enrolled but for the failed emergency clause) |
 | HB 567 | 1571781 | senate | 2025-05-14 | 22-11 | — | truly agreed |
 | HB 145 sunshine law | 1569572 | house | 2025-05-12 | 107-50 | 069.009 | SS SCS as amended = enrolled |

@@ -118,6 +118,34 @@ schools; the word "charter" does not appear in the enrolled text.
   all 20 sentences of all 10 judgments **before** the import: 0 warnings. The importer does not run
   it — the California lesson.
 
+## Review response (2026-08-29)
+
+Two findings on this PR, both acted on:
+
+1. **HB 594's stored roll is the adoption vote, not the Truly Agreed vote.** LegiScan ids ascend in
+   the order taken, so 1567074 = official roll 066.003 ("House Adopts SS#2") and the Truly Agreed
+   vote is 066.004 = 1567075 — which the fetch-time identity collapse folded away (identical 102-41
+   tally, identical member list; see `../CODE-FINDINGS.md` §5, and swapping the evidence to 1567075
+   is therefore impossible — it was never stored). Member positions were always correct; the
+   wording "gave it final approval" was strictly the 066.004 claim. Fixed in judgments.json →
+   re-judge (1 updated) → real import: **79 HB 594 records rewritten in place** at stamp
+   `2026-08-29T20:45:06.588Z`; convergence dry run = all 583 `unchanged`. The batch now spans two
+   stamps: 501 records @ `05:33:20.744Z` + 82 @ `20:45:06.588Z`.
+2. **Crosswalk notes for Brian Williams and Doug Clemens** claimed November candidacies; their only
+   stored candidacies are the 2026-08-04 county primary. Notes corrected (runtime behavior was
+   already right — both resolve `out_of_scope`).
+
+The rewrite run also restored **3 HB 595 records** (Simmons, Cook, Banderman) that had been
+hand-edited in the shared local DB after the import — each carried a diverged identity key and the
+importer rewrote them back to canonical (the Florida Woodson pattern: plainer wording must go into
+judgments.json, never into per-record edits). That is why `import-rewrite-report.json` shows 82
+rewrites, not 79.
+
+Report provenance: `import-report.json` is the ORIGINAL insert ledger (`insert: 583`, preserved
+before the re-run — the Tennessee lesson); `import-rewrite-report.json` is the review-response run
+(82 rewrite / 501 unchanged); `import-dry-run-rerun-report.json` is the post-rewrite convergence
+run (583 unchanged).
+
 ## Roll dates
 
 No Missouri roll in this batch falls on a session-end day, and the 2025 Regular Session adjourned

@@ -167,7 +167,7 @@
     {
       "people_id": 20403,
       "candidate_id": "2633cd24-ed84-4f47-beda-a8b2565433a2",
-      "note": "hand-added: sitting state senator (SD-014) running for a St. Louis County office in Nov-2026; outside the state-legislative pool by design"
+      "note": "hand-added: sitting state senator (SD-014) running for St. Louis County Executive; the stored candidacy is the 2026-08-04 county primary with no November row yet, so resolution is out_of_scope under the pipeline's --scope-from 2026-11-01"
     },
     {
       "people_id": 20430,
@@ -207,7 +207,7 @@
     {
       "people_id": 20703,
       "candidate_id": "b814cbe5-d0c7-4e73-8fb9-f5b18228108c",
-      "note": "hand-added: sitting state representative (HD-072) running for a St. Louis County office in Nov-2026; outside the state-legislative pool by design"
+      "note": "hand-added: sitting state representative (HD-072) running for St. Louis County Assessor; the stored candidacy is the 2026-08-04 county primary with no November row yet, so resolution is out_of_scope under the pipeline's --scope-from 2026-11-01"
     },
     {
       "people_id": 20704,
