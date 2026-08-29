@@ -169,3 +169,13 @@ This also settles the pending question in batch-03's notes for the California si
 judgments now carry the plain register the backfill sweep was reaching for, so the two pipelines are
 no longer pulling the text in opposite directions here. The ownership question itself is unchanged —
 the sweep still rewrites `origin='rollcall_import'` rows in eight other jurisdictions.
+
+### Review follow-up — AB 1037 immunity (74 records)
+
+The plain rewrite had compressed the liability shield to "protected from being sued", which is
+three things wider than the statute. Health and Safety Code 1799.102, as applied by the enacted
+section, protects a person who administers an opioid antagonist **in good faith AND NOT FOR
+COMPENSATION** from **civil damages only**, and **not** for "gross negligence or willful or wanton
+misconduct". Suits can still be filed; criminal exposure is addressed separately. The descriptions
+now read "generally not liable for civil damages, trained or not, unless they were grossly
+negligent or acted wilfully", and name the not-for-payment condition.

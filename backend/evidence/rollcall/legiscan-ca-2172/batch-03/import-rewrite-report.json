@@ -2,8 +2,8 @@
   "importerVersion": "rollcall-legiscan-import-v1",
   "dryRun": false,
   "skipExisting": false,
-  "startedAt": "2026-08-29T21:12:30.270Z",
-  "finishedAt": "2026-08-29T21:12:46.598Z",
+  "startedAt": "2026-08-29T22:28:05.600Z",
+  "finishedAt": "2026-08-29T22:28:26.025Z",
   "jurisdiction": "CA",
   "sessionId": 2172,
   "evidenceDir": "/Users/shu/legiscan-data/ca-2172-evidence",
@@ -18,7 +18,8 @@
     "imported": 62
   },
   "actions": {
-    "rewrite": 2233
+    "rewrite": 143,
+    "unchanged": 2090
   },
   "notified": 0,
   "rolls": [
@@ -36,7 +37,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1056",
       "question": "AB 1056 Bennett Assembly Third Reading",
-      "originRunId": "rollcall:CA:house:2172:1579285:2026-08-29T21:12:30.270Z",
+      "originRunId": "rollcall:CA:house:2172:1579285:2026-08-29T22:28:05.600Z",
       "members": 68,
       "notVoting": 0,
       "absent": 11,
@@ -66,7 +67,7 @@
       "officialVoteDate": null,
       "measureId": "SB 524",
       "question": "SB 524 Arreguín Senate Third Reading By Schultz",
-      "originRunId": "rollcall:CA:house:2172:1601381:2026-08-29T21:12:30.270Z",
+      "originRunId": "rollcall:CA:house:2172:1601381:2026-08-29T22:28:05.600Z",
       "members": 67,
       "notVoting": 0,
       "absent": 13,
@@ -75,7 +76,7 @@
         "matched": 58
       },
       "actions": {
-        "rewrite": 58
+        "unchanged": 58
       },
       "notified": 0,
       "candidates": 58,
@@ -96,7 +97,7 @@
       "officialVoteDate": null,
       "measureId": "SB 518",
       "question": "SB 518 Weber Pierson Senate Third Reading By Jackson",
-      "originRunId": "rollcall:CA:house:2172:1601569:2026-08-29T21:12:30.270Z",
+      "originRunId": "rollcall:CA:house:2172:1601569:2026-08-29T22:28:05.600Z",
       "members": 77,
       "notVoting": 0,
       "absent": 3,
@@ -105,7 +106,7 @@
         "matched": 67
       },
       "actions": {
-        "rewrite": 67
+        "unchanged": 67
       },
       "notified": 0,
       "candidates": 67,
@@ -126,7 +127,7 @@
       "officialVoteDate": null,
       "measureId": "SB 634",
       "question": "SB 634 Pérez Senate Third Reading By Bryan",
-      "originRunId": "rollcall:CA:house:2172:1601602:2026-08-29T21:12:30.270Z",
+      "originRunId": "rollcall:CA:house:2172:1601602:2026-08-29T22:28:05.600Z",
       "members": 75,
       "notVoting": 0,
       "absent": 5,
@@ -135,7 +136,7 @@
         "matched": 65
       },
       "actions": {
-        "rewrite": 65
+        "unchanged": 65
       },
       "notified": 0,
       "candidates": 65,
@@ -156,7 +157,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1127",
       "question": "AB 1127 GABRIEL Concurrence in Senate Amendments",
-      "originRunId": "rollcall:CA:house:2172:1602341:2026-08-29T21:12:30.270Z",
+      "originRunId": "rollcall:CA:house:2172:1602341:2026-08-29T22:28:05.600Z",
       "members": 70,
       "notVoting": 0,
       "absent": 10,
@@ -165,7 +166,7 @@
         "matched": 60
       },
       "actions": {
-        "rewrite": 60
+        "unchanged": 60
       },
       "notified": 0,
       "candidates": 60,
@@ -186,7 +187,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1036",
       "question": "AB 1036 Schultz Concurrence in Senate Amendments",
-      "originRunId": "rollcall:CA:house:2172:1602349:2026-08-29T21:12:30.270Z",
+      "originRunId": "rollcall:CA:house:2172:1602349:2026-08-29T22:28:05.600Z",
       "members": 72,
       "notVoting": 0,
       "absent": 8,
@@ -195,7 +196,7 @@
         "matched": 63
       },
       "actions": {
-        "rewrite": 63
+        "unchanged": 63
       },
       "notified": 0,
       "candidates": 63,
@@ -216,7 +217,7 @@
       "officialVoteDate": null,
       "measureId": "AB 246",
       "question": "AB 246 Bryan Concurrence in Senate Amendments",
-      "originRunId": "rollcall:CA:house:2172:1602464:2026-08-29T21:12:30.270Z",
+      "originRunId": "rollcall:CA:house:2172:1602464:2026-08-29T22:28:05.600Z",
       "members": 67,
       "notVoting": 0,
       "absent": 13,
@@ -225,7 +226,7 @@
         "matched": 57
       },
       "actions": {
-        "rewrite": 57
+        "unchanged": 57
       },
       "notified": 0,
       "candidates": 57,
@@ -246,7 +247,7 @@
       "officialVoteDate": null,
       "measureId": "AB 628",
       "question": "AB 628 McKinnor Concurrence in Senate Amendments",
-      "originRunId": "rollcall:CA:house:2172:1602523:2026-08-29T21:12:30.270Z",
+      "originRunId": "rollcall:CA:house:2172:1602523:2026-08-29T22:28:05.600Z",
       "members": 66,
       "notVoting": 0,
       "absent": 14,
@@ -255,7 +256,7 @@
         "matched": 56
       },
       "actions": {
-        "rewrite": 56
+        "unchanged": 56
       },
       "notified": 0,
       "candidates": 56,
@@ -276,7 +277,7 @@
       "officialVoteDate": null,
       "measureId": "SB 825",
       "question": "SB 825 Limón Senate Third Reading By Schiavo",
-      "originRunId": "rollcall:CA:house:2172:1602551:2026-08-29T21:12:30.270Z",
+      "originRunId": "rollcall:CA:house:2172:1602551:2026-08-29T22:28:05.600Z",
       "members": 78,
       "notVoting": 0,
       "absent": 2,
@@ -285,7 +286,7 @@
         "matched": 68
       },
       "actions": {
-        "rewrite": 68
+        "unchanged": 68
       },
       "notified": 0,
       "candidates": 68,
@@ -306,7 +307,7 @@
       "officialVoteDate": null,
       "measureId": "SB 825",
       "question": "Senate 3rd Reading SB825 Limón et al",
-      "originRunId": "rollcall:CA:senate:2172:1584292:2026-08-29T21:12:30.270Z",
+      "originRunId": "rollcall:CA:senate:2172:1584292:2026-08-29T22:28:05.600Z",
       "members": 38,
       "notVoting": 0,
       "absent": 2,
@@ -315,7 +316,7 @@
         "matched": 10
       },
       "actions": {
-        "rewrite": 10
+        "unchanged": 10
       },
       "notified": 0,
       "candidates": 10,
@@ -336,7 +337,7 @@
       "officialVoteDate": null,
       "measureId": "AB 246",
       "question": "Assembly 3rd Reading AB246 Bryan et al. By Wahab",
-      "originRunId": "rollcall:CA:senate:2172:1601478:2026-08-29T21:12:30.270Z",
+      "originRunId": "rollcall:CA:senate:2172:1601478:2026-08-29T22:28:05.600Z",
       "members": 38,
       "notVoting": 0,
       "absent": 2,
@@ -345,7 +346,7 @@
         "matched": 10
       },
       "actions": {
-        "rewrite": 10
+        "unchanged": 10
       },
       "notified": 0,
       "candidates": 10,
@@ -366,7 +367,7 @@
       "officialVoteDate": null,
       "measureId": "AB 628",
       "question": "Assembly 3rd Reading AB628 McKinnor By Wiener",
-      "originRunId": "rollcall:CA:senate:2172:1601730:2026-08-29T21:12:30.270Z",
+      "originRunId": "rollcall:CA:senate:2172:1601730:2026-08-29T22:28:05.600Z",
       "members": 36,
       "notVoting": 0,
       "absent": 4,
@@ -375,7 +376,7 @@
         "matched": 9
       },
       "actions": {
-        "rewrite": 9
+        "unchanged": 9
       },
       "notified": 0,
       "candidates": 9,
@@ -396,7 +397,7 @@
       "officialVoteDate": null,
       "measureId": "SB 524",
       "question": "Unfinished Business SB524 Arreguín et al. Concurrence",
-      "originRunId": "rollcall:CA:senate:2172:1601734:2026-08-29T21:12:30.270Z",
+      "originRunId": "rollcall:CA:senate:2172:1601734:2026-08-29T22:28:05.600Z",
       "members": 38,
       "notVoting": 0,
       "absent": 2,
@@ -405,7 +406,7 @@
         "matched": 10
       },
       "actions": {
-        "rewrite": 10
+        "unchanged": 10
       },
       "notified": 0,
       "candidates": 10,
@@ -426,7 +427,7 @@
       "officialVoteDate": null,
       "measureId": "SB 634",
       "question": "Unfinished Business SB634 Pérez et al. Concurrence",
-      "originRunId": "rollcall:CA:senate:2172:1601796:2026-08-29T21:12:30.270Z",
+      "originRunId": "rollcall:CA:senate:2172:1601796:2026-08-29T22:28:05.600Z",
       "members": 38,
       "notVoting": 0,
       "absent": 2,
@@ -435,7 +436,7 @@
         "matched": 11
       },
       "actions": {
-        "rewrite": 11
+        "unchanged": 11
       },
       "notified": 0,
       "candidates": 11,
@@ -456,7 +457,7 @@
       "officialVoteDate": null,
       "measureId": "SB 518",
       "question": "Unfinished Business SB518 Weber Pierson et al. Concurrence",
-      "originRunId": "rollcall:CA:senate:2172:1601798:2026-08-29T21:12:30.270Z",
+      "originRunId": "rollcall:CA:senate:2172:1601798:2026-08-29T22:28:05.600Z",
       "members": 40,
       "notVoting": 0,
       "absent": 0,
@@ -465,7 +466,7 @@
         "matched": 11
       },
       "actions": {
-        "rewrite": 11
+        "unchanged": 11
       },
       "notified": 0,
       "candidates": 11,
@@ -486,7 +487,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1056",
       "question": "Assembly 3rd Reading AB1056 Bennett By Laird",
-      "originRunId": "rollcall:CA:senate:2172:1601893:2026-08-29T21:12:30.270Z",
+      "originRunId": "rollcall:CA:senate:2172:1601893:2026-08-29T22:28:05.600Z",
       "members": 39,
       "notVoting": 0,
       "absent": 1,
@@ -516,7 +517,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1127",
       "question": "Assembly 3rd Reading AB1127 Gabriel et al. By Blakespear",
-      "originRunId": "rollcall:CA:senate:2172:1602340:2026-08-29T21:12:30.270Z",
+      "originRunId": "rollcall:CA:senate:2172:1602340:2026-08-29T22:28:05.600Z",
       "members": 38,
       "notVoting": 0,
       "absent": 2,
@@ -525,7 +526,7 @@
         "matched": 11
       },
       "actions": {
-        "rewrite": 11
+        "unchanged": 11
       },
       "notified": 0,
       "candidates": 11,
@@ -546,7 +547,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1036",
       "question": "Assembly 3rd Reading AB1036 Schultz By Arreguín",
-      "originRunId": "rollcall:CA:senate:2172:1602348:2026-08-29T21:12:30.270Z",
+      "originRunId": "rollcall:CA:senate:2172:1602348:2026-08-29T22:28:05.600Z",
       "members": 37,
       "notVoting": 0,
       "absent": 3,
@@ -555,7 +556,7 @@
         "matched": 10
       },
       "actions": {
-        "rewrite": 10
+        "unchanged": 10
       },
       "notified": 0,
       "candidates": 10,

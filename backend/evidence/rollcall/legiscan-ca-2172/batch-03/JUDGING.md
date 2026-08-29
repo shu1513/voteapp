@@ -153,3 +153,10 @@ This also settles the pending question in batch-03's notes for the California si
 judgments now carry the plain register the backfill sweep was reaching for, so the two pipelines are
 no longer pulling the text in opposite directions here. The ownership question itself is unchanged —
 the sweep still rewrites `origin='rollcall_import'` rows in eight other jurisdictions.
+
+### Review follow-up — AB 1056 trammel nets (69 records)
+
+Fish and Game Code 8681.5 governs "a gill net **or trammel net** permit" throughout; the plain
+rewrite had dropped the trammel net, narrowing the bill's scope. Restored in both chambers. The
+pre-rewrite text had it right — this was collateral damage from shortening, and it is the reason
+the plain pass now ends with a scope diff against the previous wording, not only a jargon check.

@@ -224,3 +224,11 @@ This also settles the pending question in batch-03's notes for the California si
 judgments now carry the plain register the backfill sweep was reaching for, so the two pipelines are
 no longer pulling the text in opposite directions here. The ownership question itself is unchanged —
 the sweep still rewrites `origin='rollcall_import'` rows in eight other jurisdictions.
+
+### Review follow-up — what the plain pass cost
+
+Two of the 31 measures lost accuracy in the rewrite, both in batches 02 and 03 (AB 1037's
+liability shield over-widened; AB 1056's trammel nets dropped). Batch-01's ten measures came
+through unchanged. The lesson for the next state: **a register change is an edit, and edits need
+the same statute re-read as the first draft** — shortening is where scope quietly goes missing, and
+a jargon check will not catch it.
