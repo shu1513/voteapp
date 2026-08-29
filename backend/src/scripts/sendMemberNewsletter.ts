@@ -31,6 +31,11 @@ import {
 //
 // Terms 14.5 (member communications, bundle 1.3) must be LIVE before the
 // first real send.
+//
+// A newsletter id names ONE message: the dedupe log records ids, not
+// content, so a resumed run with an edited subject/body would deliver the
+// new wording only to the not-yet-sent remainder. Edited content = new
+// newsletter id.
 
 function readStringFlag(argv: readonly string[], flagName: string): string | null {
   const flagIndex = argv.indexOf(flagName);

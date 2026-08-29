@@ -15,7 +15,8 @@ ALTER TABLE public.users
 -- Dedupe log: one row per (newsletter, user) means "this member got this
 -- newsletter". newsletter_id is an operator-chosen slug (the message body
 -- lives outside the database), so a re-run of the same newsletter resumes
--- instead of double-sending. Rows are inserted after a successful send
+-- instead of double-sending; an id therefore names ONE message — edited
+-- content must get a new id. Rows are inserted after a successful send
 -- (at-least-once). Deliberately NOT in the notification prune: deleting a
 -- row re-arms the dedupe. One row per member per newsletter stays tiny.
 CREATE TABLE public.member_newsletter_sends (
