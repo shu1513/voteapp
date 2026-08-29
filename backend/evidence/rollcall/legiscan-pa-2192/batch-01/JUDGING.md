@@ -125,3 +125,49 @@ nothing was retired.
 candidate rows and members with an explicit `null` crosswalk entry. There
 is no Speaker gap here — unlike Texas (Burrows) and Georgia (Burns), the
 Pennsylvania Speaker votes on the floor and appears in the fan-out.
+
+## Plain-language rewrite (2026-08-29)
+
+Every description in this batch was rewritten in plain English, aimed at a
+reader with no legal or legislative background. No fact, number, date, tally,
+stance direction or label changed — a machine check compared every numeric
+token in the old and new text and found only one deliberate difference (see
+HB 1445 below). Mean sentence length across all 37 PA measures is 12.8 words,
+longest 37; the plain-language lint reports 0 warnings.
+
+What changed, in practice: terms of art were replaced with what they mean.
+"Medical Assistance" became Medicaid, "cost sharing" became copay or
+deductible, "postpartum" became after giving birth, "interscholastic
+athletics" became school sports, an "automated external defibrillator" is now
+introduced as the device that shocks a stopped heart, "extreme risk
+protection orders" as what are often called red flag orders, "assisted
+reproductive technology" as fertility treatment, "public accommodation" as
+public places such as stores and restaurants. British spellings that had crept
+in (sterilisation, programme, colour, misdemeanour) were corrected.
+
+**HB 1445 is the one deliberate factual simplification.** "Individualized
+education program or section 504 plan" became "already required by law to
+provide it for a student with a disability", which covers both instruments
+without naming a statute section a general reader cannot place.
+
+## Two gates from main's PR #950, met during the rewrite
+
+**Authored nay stances replace auto-inversion.** `rollcall:judge` now refuses a
+judgment that does not state the nay side, because a no vote on one bill is not
+automatically the opposite stance on a whole research area. Every PA label is
+recorded as `nay: null` — nay voters get no tag. That is the system's own
+default for rows judged before the field existed, and it is the honest reading
+here: voting against one insurance mandate is not evidence a member opposes
+affordable healthcare. Authoring a real nay stance per measure is a separate,
+deliberate decision, not something to smuggle into a wording change. PA tags
+fall from 6,700 to **4,081** as the old auto-inverted nay tags clear; the count
+reconciles exactly against the labels on each approved roll.
+
+**The superseded-stage gate caught a real defect in HB 103.** The House voted
+148-55 on printer's number 1113, then voted again on the Senate's final text
+and backed it 201-2 (roll 1596525, not divided, so it never entered the pool).
+A record citing only the 148-55 vote would read as a member's final position
+and would misrepresent the 55 no votes, most of which became yes. The
+description now names the 201-2 vote, and the later roll is listed in
+`acknowledge_later_rolls` so the approval is on purpose rather than by
+oversight.

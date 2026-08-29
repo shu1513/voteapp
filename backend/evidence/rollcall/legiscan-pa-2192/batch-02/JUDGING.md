@@ -104,3 +104,27 @@ Flood cites the same House Journal source but describes a different bill
 (HB 1442, Morgan Rose's Law). Distinct claim, kept. 0 `ambiguous`.
 
 **PROD UNTOUCHED.**
+
+## Plain-language rewrite (2026-08-29)
+
+Every description in this batch was rewritten in plain English, aimed at a
+reader with no legal or legislative background. No fact, number, date, tally,
+stance direction or label changed — a machine check compared every numeric
+token in the old and new text and found only one deliberate difference (see
+HB 1445 below). Mean sentence length across all 37 PA measures is 12.8 words,
+longest 37; the plain-language lint reports 0 warnings.
+
+What changed, in practice: terms of art were replaced with what they mean.
+"Medical Assistance" became Medicaid, "cost sharing" became copay or
+deductible, "postpartum" became after giving birth, "interscholastic
+athletics" became school sports, an "automated external defibrillator" is now
+introduced as the device that shocks a stopped heart, "extreme risk
+protection orders" as what are often called red flag orders, "assisted
+reproductive technology" as fertility treatment, "public accommodation" as
+public places such as stores and restaurants. British spellings that had crept
+in (sterilisation, programme, colour, misdemeanour) were corrected.
+
+**HB 1445 is the one deliberate factual simplification.** "Individualized
+education program or section 504 plan" became "already required by law to
+provide it for a student with a disability", which covers both instruments
+without naming a statute section a general reader cannot place.
