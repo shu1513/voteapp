@@ -12,8 +12,10 @@ import { dirname, resolve } from "node:path";
 
 import {
   MONTANA_CERS_PARSER_VERSION,
+  parseMontanaCersCandidateSearchResults,
   parseMontanaCersContributionExport,
   parseMontanaCersExpenditureExport,
+  parseMontanaCersIeSweepArtifact,
   parseMontanaCersReportDetailArtifact,
   parseMontanaCersReportInventory,
 } from "./montanaCersParsers.js";
@@ -25,11 +27,16 @@ export type MontanaCersArtifactType =
   | "report_inventory"
   | "report_detail"
   | "contributions_export"
-  | "expenditures_export";
+  | "expenditures_export"
+  | "ie_sweep"
+  | "ie_registration_list";
 
 export type MontanaCersArtifactKey =
   | { type: "report_inventory" | "contributions_export" | "expenditures_export"; candidateId: number; year: number }
-  | { type: "report_detail"; candidateId: number; year: number; reportId: number };
+  | { type: "report_detail"; candidateId: number; year: number; reportId: number }
+  // Year-scoped outside-spending sweep artifacts (Phase 2b): the combined
+  // IE committee sweep and the registration list its resolution runs on.
+  | { type: "ie_sweep" | "ie_registration_list"; year: number };
 
 export type MontanaCersArtifactManifest = {
   version: typeof MONTANA_CERS_ARTIFACT_SCHEMA_VERSION;
@@ -48,11 +55,20 @@ function requirePositiveInt(value: number, label: string): void {
   }
 }
 
+function isYearScopedKey(
+  key: MontanaCersArtifactKey
+): key is { type: "ie_sweep" | "ie_registration_list"; year: number } {
+  return key.type === "ie_sweep" || key.type === "ie_registration_list";
+}
+
 function normalizeKey(key: MontanaCersArtifactKey): MontanaCersArtifactKey {
-  requirePositiveInt(key.candidateId, "candidateId");
   if (!Number.isSafeInteger(key.year) || key.year < 2020 || key.year > 2100) {
     throw new Error(`Invalid Montana CERS artifact year: ${key.year}`);
   }
+  if (isYearScopedKey(key)) {
+    return key;
+  }
+  requirePositiveInt(key.candidateId, "candidateId");
   if (key.type === "report_detail") {
     requirePositiveInt(key.reportId, "reportId");
   }
@@ -61,6 +77,9 @@ function normalizeKey(key: MontanaCersArtifactKey): MontanaCersArtifactKey {
 
 function artifactRelativePath(key: MontanaCersArtifactKey): string {
   const normalized = normalizeKey(key);
+  if (isYearScopedKey(normalized)) {
+    return `ie/${normalized.year}/${normalized.type}.json`;
+  }
   if (normalized.type === "report_detail") {
     return `${normalized.candidateId}/${normalized.year}/report_detail_${normalized.reportId}.json`;
   }
@@ -74,6 +93,9 @@ function artifactPaths(cacheDir: string, key: MontanaCersArtifactKey): { file: s
 }
 
 function artifactKeyLabel(key: MontanaCersArtifactKey): string {
+  if (isYearScopedKey(key)) {
+    return `${key.type} ${key.year}`;
+  }
   return key.type === "report_detail"
     ? `${key.type} ${key.candidateId} ${key.year} report ${key.reportId}`
     : `${key.type} ${key.candidateId} ${key.year}`;
@@ -90,6 +112,28 @@ function artifactKeyLabel(key: MontanaCersArtifactKey): string {
  */
 function validateBody(key: MontanaCersArtifactKey, body: string): number {
   switch (key.type) {
+    case "ie_sweep": {
+      // The sweep parser enforces its internal identity invariants
+      // (committee sets match, per-committee row counts equal the recorded
+      // viewFinancialEntities resultCount). IE transaction rows carry no
+      // entity fields, so like report details their committee binding is
+      // transitive — pinned by the fresh-session acquisition flow.
+      const sweep = parseMontanaCersIeSweepArtifact(body);
+      if (sweep.year !== key.year) {
+        throw new Error(`Montana CERS IE sweep artifact is for year ${sweep.year}, expected ${key.year}`);
+      }
+      return [...sweep.transactionsByCommitteeId.values()].reduce((sum, rows) => sum + rows.length, 0);
+    }
+    case "ie_registration_list": {
+      const rows = parseMontanaCersCandidateSearchResults(body);
+      const foreign = rows.find((row) => row.electionYear !== null && row.electionYear !== key.year);
+      if (foreign !== undefined) {
+        throw new Error(
+          `Montana CERS registration list row for year ${foreign.electionYear} under year ${key.year} — cross-year data`
+        );
+      }
+      return rows.length;
+    }
     case "report_inventory": {
       const rows = parseMontanaCersReportInventory(body);
       const foreign = rows.find((row) => row.entitySubId !== key.candidateId);
@@ -173,7 +217,16 @@ export async function storeMontanaCersArtifact(input: {
 function sameKey(left: MontanaCersArtifactKey, right: MontanaCersArtifactKey): boolean {
   const a = normalizeKey(left);
   const b = normalizeKey(right);
-  if (a.type !== b.type || a.candidateId !== b.candidateId || a.year !== b.year) {
+  if (a.type !== b.type || a.year !== b.year) {
+    return false;
+  }
+  if (isYearScopedKey(a)) {
+    return true;
+  }
+  if (isYearScopedKey(b)) {
+    return false;
+  }
+  if (a.candidateId !== b.candidateId) {
     return false;
   }
   if (a.type === "report_detail") {
@@ -222,6 +275,37 @@ export async function readMontanaCersArtifact(input: {
  * separately, keyed by report id). All three must come from the same
  * harvest run — mixed vintages mean a partial refresh and fail closed.
  */
+/**
+ * Reads the yearly outside-spending bundle: the IE sweep plus the
+ * registration list resolution runs against. Both must come from the same
+ * sweep run — a sweep resolved against a different registration vintage
+ * could attribute rows to registrations that did not exist when the sweep
+ * was judged coherent.
+ */
+export async function readMontanaCersOutsideSpendingArtifacts(input: {
+  cacheDir?: string;
+  year: number;
+}): Promise<{
+  sweep: ReturnType<typeof parseMontanaCersIeSweepArtifact>;
+  registrationRows: ReturnType<typeof parseMontanaCersCandidateSearchResults>;
+  sourceUrl: string;
+  retrievedAt: string;
+}> {
+  const [sweepArtifact, registrationArtifact] = await Promise.all([
+    readMontanaCersArtifact({ cacheDir: input.cacheDir, key: { type: "ie_sweep", year: input.year } }),
+    readMontanaCersArtifact({ cacheDir: input.cacheDir, key: { type: "ie_registration_list", year: input.year } }),
+  ]);
+  if (sweepArtifact.manifest.retrievedAt !== registrationArtifact.manifest.retrievedAt) {
+    throw new Error(`Mixed-vintage Montana CERS outside-spending artifact bundle: ${input.year}`);
+  }
+  return {
+    sweep: parseMontanaCersIeSweepArtifact(sweepArtifact.body),
+    registrationRows: parseMontanaCersCandidateSearchResults(registrationArtifact.body),
+    sourceUrl: sweepArtifact.manifest.sourceUrl,
+    retrievedAt: sweepArtifact.manifest.retrievedAt,
+  };
+}
+
 export async function readMontanaCersCandidateFinanceArtifacts(input: {
   cacheDir?: string;
   candidateId: number;

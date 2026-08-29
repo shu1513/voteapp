@@ -50,6 +50,7 @@ describe("syncDueMontanaCandidateFinance", () => {
   it("acquires fresh artifacts per candidate when forced, and records failures without stopping", async () => {
     vi.stubEnv("MONTANA_CAMPAIGN_FINANCE_ENABLED", "true");
     const acquire = vi.fn().mockResolvedValue({});
+    const acquireOutside = vi.fn().mockResolvedValue({});
     const sync = vi
       .fn()
       .mockRejectedValueOnce(new Error("chain failed"))
@@ -64,15 +65,41 @@ describe("syncDueMontanaCandidateFinance", () => {
         totalDueRows: 2,
       }),
       acquireArtifactsFn: acquire,
+      acquireOutsideArtifactsFn: acquireOutside,
       syncCandidateFn: sync,
       log: () => {},
     });
     expect(result.rawDataRefreshEnabled).toBe(true);
     expect(acquire).toHaveBeenCalledTimes(2);
     expect(acquire).toHaveBeenCalledWith(expect.objectContaining({ candidateId: 21020, year: 2026 }));
+    // The year-scoped IE sweep runs ONCE for the whole batch, not per row.
+    expect(acquireOutside).toHaveBeenCalledTimes(1);
+    expect(acquireOutside).toHaveBeenCalledWith(expect.objectContaining({ year: 2026 }));
+    expect(result.outsideSweepYearCount).toBe(1);
+    // A successful sweep leaves outsideArtifacts undefined: sync reads cache.
+    expect(sync.mock.calls[0]![0]).not.toHaveProperty("outsideArtifacts");
     expect(result.succeeded).toBe(1);
     expect(result.failed).toBe(1);
     expect(result.candidates[0]).toMatchObject({ ok: false, error: "chain failed" });
+  });
+
+  it("skips the outside leg for the year when the IE sweep fails, without blocking direct syncs", async () => {
+    vi.stubEnv("MONTANA_CAMPAIGN_FINANCE_ENABLED", "true");
+    const sync = vi.fn().mockResolvedValue({ status: "synced" });
+    const result = await syncDueMontanaCandidateFinance({
+      db,
+      now: new Date("2026-08-28T00:00:00.000Z"),
+      forceRawDataRefresh: true,
+      autoLinkMissingLinks: false,
+      listDueRowsFn: vi.fn().mockResolvedValue({ rows: [dueRow({})], totalDueRows: 1 }),
+      acquireArtifactsFn: vi.fn().mockResolvedValue({}),
+      acquireOutsideArtifactsFn: vi.fn().mockRejectedValue(new Error("sweep down")),
+      syncCandidateFn: sync,
+      log: () => {},
+    });
+    expect(result.failedOutsideSweepYearCount).toBe(1);
+    expect(result.succeeded).toBe(1);
+    expect(sync.mock.calls[0]![0]).toMatchObject({ outsideArtifacts: null });
   });
 
   it("continues with existing links when the auto-link pass fails", async () => {

@@ -11,6 +11,9 @@ describe("firstNameVariants", () => {
     // Pairs added from the CT/TX unlinked harvests (2026-07-25).
     expect(firstNameVariants("NORM")).toContain("NORMAN");
     expect(firstNameVariants("GEOFF")).toContain("GEOFFREY");
+    // Montana IE corpus additions (2026-08-28): common spelling + biblical pair.
+    expect(firstNameVariants("ZACK")).toContain("ZACHARY");
+    expect(firstNameVariants("JED")).toContain("JEDEDIAH");
     expect(firstNameVariants("KIM")).toContain("KIMBERLY");
     expect(firstNameVariants("MANDY")).toContain("AMANDA");
     expect(firstNameVariants("BRAD")).toContain("BRADLEY");

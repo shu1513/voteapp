@@ -14,7 +14,10 @@ import {
 export function parseUpsertMontanaCandidateFinanceSyncSchedulerArgs(
   args: readonly string[]
 ): MontanaCandidateFinanceSyncJobData {
-  assertNoUnknownMontanaFinanceFlags(args);
+  assertNoUnknownMontanaFinanceFlags(args, {
+    booleanFlags: ["--dry-run", "--force"],
+    valueFlags: ["--max-candidates", "--stale-after-days", "--lookback-days", "--lookahead-days"],
+  });
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),

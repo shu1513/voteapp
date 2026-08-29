@@ -69,6 +69,7 @@ const FIRST_NAME_NICKNAME_GROUPS: readonly (readonly string[])[] = [
   ["HENRY", "HANK", "HARRY"],
   ["JACOB", "JAKE"],
   ["JACQUELINE", "JACKIE"],
+  ["JEDEDIAH", "JED"],
   ["JAMES", "JIM", "JIMMY"],
   ["JEFFERY", "JEFF"],
   ["JEFFREY", "JEFF"],
@@ -119,7 +120,7 @@ const FIRST_NAME_NICKNAME_GROUPS: readonly (readonly string[])[] = [
   ["VINCENT", "VINCE"],
   ["WALTER", "WALT"],
   ["WILLIAM", "BILL", "BILLY", "WILL"],
-  ["ZACHARY", "ZACH"],
+  ["ZACHARY", "ZACH", "ZACK"],
 ];
 
 // Formal spellings of the same name. These never bridge through expansion

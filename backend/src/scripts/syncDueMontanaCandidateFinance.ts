@@ -26,7 +26,10 @@ export type SyncDueMontanaCandidateFinanceScriptOptions = {
 export function parseSyncDueMontanaCandidateFinanceScriptArgs(
   args: readonly string[]
 ): SyncDueMontanaCandidateFinanceScriptOptions {
-  assertNoUnknownMontanaFinanceFlags(args);
+  assertNoUnknownMontanaFinanceFlags(args, {
+    booleanFlags: ["--dry-run", "--force", "--no-auto-link"],
+    valueFlags: ["--max-candidates", "--stale-after-days", "--lookback-days", "--lookahead-days"],
+  });
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),

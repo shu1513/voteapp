@@ -70,6 +70,11 @@ export type MontanaCersCandidateResolution =
       matches: MontanaCersCandidateMatch[];
     };
 
+/** Match-time person-name normalization (suffixes stripped; storage keeps them). */
+export function normalizeMontanaPersonNameForMatching(value: string): string {
+  return normalizePersonName(value);
+}
+
 function normalizePersonName(value: string): string {
   return value
     .normalize("NFKD")
@@ -148,30 +153,52 @@ function normalizeOfficeTitle(value: string): string {
   return value.toUpperCase().replace(/\s+/g, " ").trim();
 }
 
+export type MontanaCersParsedOfficeTitle =
+  | { kind: "legislative_upper" | "legislative_lower" | "psc"; districtNumber: number }
+  | { kind: "supreme_court" };
+
+/**
+ * Structured parse of a CERS registration `officeTitle` for the office
+ * classes this module models (shapes pinned live 2026-08-28). Returns null
+ * for every other office (county, judicial districts, JP, school, ...).
+ * Single source of the pinned title regexes — the resolver's exact matcher
+ * and the outside-spending target matcher both build on it.
+ */
+export function parseMontanaCersOfficeTitle(officeTitle: string | null): MontanaCersParsedOfficeTitle | null {
+  if (officeTitle === null) {
+    return null;
+  }
+  const title = normalizeOfficeTitle(officeTitle);
+  const senate = /^SENATE DISTRICT NO\.? 0*(\d+)$/.exec(title);
+  if (senate !== null) {
+    return { kind: "legislative_upper", districtNumber: Number.parseInt(senate[1]!, 10) };
+  }
+  const house = /^HOUSE DISTRICT NO\.? 0*(\d+)$/.exec(title);
+  if (house !== null) {
+    return { kind: "legislative_lower", districtNumber: Number.parseInt(house[1]!, 10) };
+  }
+  if (/^SUPREME COURT (?:CHIEF )?JUSTICE(?: NO\.? 0*\d+)?$/.test(title)) {
+    return { kind: "supreme_court" };
+  }
+  const psc = /^PUBLIC SERVICE COMMISSION(?:ER)? DISTRICT NO\.? 0*(\d+)$/.exec(title);
+  if (psc !== null) {
+    return { kind: "psc", districtNumber: Number.parseInt(psc[1]!, 10) };
+  }
+  return null;
+}
+
 export function montanaCersOfficeTitleMatches(
   expectation: MontanaCersOfficeExpectation,
   officeTitle: string | null
 ): boolean {
-  if (officeTitle === null) {
+  const parsed = parseMontanaCersOfficeTitle(officeTitle);
+  if (parsed === null || parsed.kind !== expectation.kind) {
     return false;
   }
-  const title = normalizeOfficeTitle(officeTitle);
-  switch (expectation.kind) {
-    case "legislative_upper": {
-      const match = /^SENATE DISTRICT NO\.? 0*(\d+)$/.exec(title);
-      return match !== null && Number.parseInt(match[1]!, 10) === expectation.districtNumber;
-    }
-    case "legislative_lower": {
-      const match = /^HOUSE DISTRICT NO\.? 0*(\d+)$/.exec(title);
-      return match !== null && Number.parseInt(match[1]!, 10) === expectation.districtNumber;
-    }
-    case "supreme_court":
-      return /^SUPREME COURT (?:CHIEF )?JUSTICE(?: NO\.? 0*\d+)?$/.test(title);
-    case "psc": {
-      const match = /^PUBLIC SERVICE COMMISSION(?:ER)? DISTRICT NO\.? 0*(\d+)$/.exec(title);
-      return match !== null && Number.parseInt(match[1]!, 10) === expectation.districtNumber;
-    }
+  if (parsed.kind === "supreme_court" || expectation.kind === "supreme_court") {
+    return true;
   }
+  return parsed.districtNumber === expectation.districtNumber;
 }
 
 /** CERS display name for storage: "Bedey, David F." */
@@ -240,10 +267,10 @@ export function resolveMontanaCersCandidate(input: MontanaCersResolverInput): Mo
  * per year serves a whole auto-link batch — resolution then happens locally,
  * which avoids depending on the portal's name-search semantics entirely.
  */
-export async function searchMontanaCersCandidatesByYear(
+export async function fetchMontanaCersCandidateSearchBodyByYear(
   electionYear: number,
   options: MontanaCersSessionOptions = {}
-): Promise<MontanaCersCandidateSearchRow[]> {
+): Promise<string> {
   if (!Number.isSafeInteger(electionYear) || electionYear < 2020 || electionYear > 2100) {
     throw new Error(`Invalid Montana CERS election year: ${electionYear}`);
   }
@@ -262,5 +289,12 @@ export async function searchMontanaCersCandidatesByYear(
   const response = await session.get(
     buildMontanaCersUrl("searchResults/listCandidateResults", buildMontanaCersDataTablesQuery(5_000))
   );
-  return parseMontanaCersCandidateSearchResults(response.text());
+  return response.text();
+}
+
+export async function searchMontanaCersCandidatesByYear(
+  electionYear: number,
+  options: MontanaCersSessionOptions = {}
+): Promise<MontanaCersCandidateSearchRow[]> {
+  return parseMontanaCersCandidateSearchResults(await fetchMontanaCersCandidateSearchBodyByYear(electionYear, options));
 }

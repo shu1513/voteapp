@@ -22,6 +22,7 @@ import {
   type MontanaCandidateFinanceSyncResult,
 } from "./montanaCandidateFinanceSync.js";
 import { acquireMontanaCersCandidateFinanceArtifacts } from "./montanaCersArtifactAcquisition.js";
+import { acquireMontanaCersOutsideSpendingArtifacts } from "./montanaOutsideSpendingAcquisition.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & { connect: () => Promise<PoolClient> };
@@ -50,6 +51,7 @@ export type MontanaCandidateFinanceBatchSyncInput = {
   autoLinkFn?: typeof autoLinkMissingMontanaCandidateFinanceLinks;
   listDueRowsFn?: typeof listDueMontanaCandidateFinanceSyncRows;
   acquireArtifactsFn?: typeof acquireMontanaCersCandidateFinanceArtifacts;
+  acquireOutsideArtifactsFn?: typeof acquireMontanaCersOutsideSpendingArtifacts;
   syncCandidateFn?: typeof syncMontanaCandidateFinance;
 };
 
@@ -61,6 +63,8 @@ export type MontanaCandidateFinanceBatchSyncResult = {
   attempted: number;
   succeeded: number;
   failed: number;
+  outsideSweepYearCount: number;
+  failedOutsideSweepYearCount: number;
   candidates: {
     row: MontanaCandidateFinanceDueRow;
     ok: boolean;
@@ -130,7 +134,31 @@ export async function syncDueMontanaCandidateFinance(
   });
 
   const acquire = input.acquireArtifactsFn ?? acquireMontanaCersCandidateFinanceArtifacts;
+  const acquireOutside = input.acquireOutsideArtifactsFn ?? acquireMontanaCersOutsideSpendingArtifacts;
   const syncCandidate = input.syncCandidateFn ?? syncMontanaCandidateFinance;
+
+  // One IE sweep per distinct election year per batch (MO pattern): the
+  // sweep is year-scoped, so refreshing it per candidate would repeat a
+  // ~50-committee harvest ten times. A failed sweep never blocks the direct
+  // leg — those candidates sync with outsideArtifacts: null, which
+  // preserves any prior outside snapshot.
+  const outsideSweepOkByYear = new Map<number, boolean>();
+  if (rawDataRefreshEnabled) {
+    for (const year of new Set(due.rows.map((row) => row.electionYear))) {
+      try {
+        await acquireOutside({ year, cacheDir: input.cacheDir, now });
+        outsideSweepOkByYear.set(year, true);
+      } catch (error) {
+        outsideSweepOkByYear.set(year, false);
+        log(
+          `Montana IE sweep failed for ${year} (direct sync continues, outside leg skipped): ${
+            error instanceof Error ? error.message : String(error)
+          }`
+        );
+      }
+    }
+  }
+
   const candidates: MontanaCandidateFinanceBatchSyncResult["candidates"] = [];
   let succeeded = 0;
   for (const row of due.rows) {
@@ -144,6 +172,7 @@ export async function syncDueMontanaCandidateFinance(
         });
       }
       const result = await syncCandidate({
+        ...(outsideSweepOkByYear.get(row.electionYear) === false ? { outsideArtifacts: null } : {}),
         db: input.db,
         candidateId: row.candidateId,
         electionId: row.electionId,
@@ -179,6 +208,8 @@ export async function syncDueMontanaCandidateFinance(
     attempted: due.rows.length,
     succeeded,
     failed: due.rows.length - succeeded,
+    outsideSweepYearCount: [...outsideSweepOkByYear.values()].filter(Boolean).length,
+    failedOutsideSweepYearCount: [...outsideSweepOkByYear.values()].filter((ok) => !ok).length,
     candidates,
   };
 }

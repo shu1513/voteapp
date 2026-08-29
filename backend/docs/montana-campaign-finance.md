@@ -196,6 +196,72 @@ cash; it feeds neither directContributionTotal nor the cash-begin chain.
   No. 1`, `District Judge, District 4 Dept. 2`. The full year list is a
   single DataTables page (~3 MB) — one fetch serves a whole auto-link batch.
 
+## Phase 2b facts (IE sweep pinned live 2026-08-28)
+
+- **Committee sweep flow**: the search page's `searchExpendituresForm` POSTs
+  to `searchResults/searchFinancials` with `financialSearchType=EXPEND`,
+  `expendSearchTypeCode=COMMITTEE`, `independentExpendSearch=true`,
+  `electioneeringCommSearch=false`, `electionYear`, and EMPTY name/date
+  fields (`expendCanLastName`, `expendCanFirstName`, `expendCommitteeName`,
+  `payeeLastName`, `payeeFirstName`, `expendSearchFromDate/ToDate`); title
+  marker `(searchResults)` gates the bounce. Committee list:
+  `GET searchResults/listFinancialCommitteeResults` (DataTables; 49
+  committees for 2026, `committeeId`/`committeeName`/`committeeTypeDescr`).
+  Per committee: `POST searchResults/viewFinancialEntities`
+  `{candidateId: 0, committeeId}` (capture `resultCount`), then
+  `GET searchResults/listViewFinancialEntityResults`.
+- **The year search does NOT scope transactions**: each committee's list is
+  its FULL IE history (the "2026" search surfaced $14.4M back to 2020) and
+  row-level `electionYear` is always null. Cycle scoping is by `datePaid`
+  against [Jan 1 year-1, Jan 1 year+1) — 1,380 rows / $5.50M in-window for
+  2026 at sweep time.
+- **IE transaction rows carry NO committee identity** (`committeeId`,
+  `committeeName`, `candidateId` all null; `entIdFrom` is the PAYEE entity).
+  Fresh session per committee is the binding; the sweep artifact records the
+  requested committeeId plus the `resultCount` cross-check. Row invariants
+  enforced: `transTypeDesr == "Independent Expenditure"` (filtered
+  otherwise), `totalAmt == cashAmt + inKindAmt` cent-exact (holds on all
+  2,147 live rows), real epoch `datePaid`, `electioneeringInd` present.
+- **candidateIssue grammar** (312 distinct in-window values): bare
+  `NAME (SD-9)` (AFP), `Support/Oppose <name>` (School Freedom Fund files
+  explicit oppose at scale), `Last SD43` / `Name HD 55` / `Name/SD 34` /
+  `SD 14; Name` token forms, `Name for PSC District 4`, `Name for Montana
+  Supreme Court`, chamber-only `Name for Montana State Senate`; plus
+  quarantine classes: attachments/addenda ("See attached", typo "se
+  attachment", "See Quantity field"), blanks, multi-candidate joins
+  (commas/semicolons/and/or/slash, dual-stance "Support X / Oppose Y"),
+  ballot issues (CI-126/CI-132, levies), municipal/federal targets.
+- **Resolution**: exact name (+ nickname expansion on the issue side only —
+  the shared `personFirstNameNicknames` groups; corpus files "Ken Walsh"
+  against "Walsh, Kenneth M") within the year's registration list,
+  office-token constrained. **CERS mints a NEW candidateId per race**, so a
+  race-switcher holds several same-year registrations (George Nikolakakos:
+  SD-11 Closed, HD-22 Closed, SD-12 Reopened) — multiple name matches
+  tie-break to the single live (not Closed/Withdrawn) registration, the
+  same row auto-link binds. "Closed" alone is NOT disqualifying (primary
+  losers close their registrations and still carry real IE money). A
+  contradicting office token quarantines ("KATHY LOVE (SD-9)" vs her SD-43
+  registration — filer typo), as do typo'd names ("Buttery" for Buttrey,
+  $170k — alias-table headroom). Measured resolution: **43.1% of in-window
+  2026 dollars** (vs 35.9% at Phase 0); the rest: attachments $1.69M,
+  blanks $543k, multi $477k, typos $321k.
+- Published data: resolved rows only. Support = bare + `Support` rows;
+  oppose = explicit `Oppose` rows; totals NULL (never 0) when a stance has
+  no resolved rows. Outside data rides the regular sync (writer
+  `preserveWhenNull` keeps prior outside snapshots when the sweep bundle is
+  missing); when the sweep IS present it is authoritative, and a follow-up
+  guarded UPDATE clears any stale total for a stance that resolved nothing
+  (preserveWhenNull alone would keep an old dollar figure alive next to the
+  emptied groups). The batch refreshes the sweep once per election year.
+  Outside group/display source URLs are always the stable dashboard URL —
+  the DataTables harvest endpoints are session-scoped and answer empty to a
+  plain GET. The ballot-lookup loader ships the Montana outside footnote
+  (`outside_coverage_note`, rendered by web + mobile) — the plan's hard gate.
+- Quarantine report: `npm run montana-candidates:finance:outside-report --
+  --year 2026 [--refresh]` — per-committee resolved/quarantined dollars by
+  reason; the input for attachment recovery (Conservatives4MT holds $1.55M
+  of attachment-referenced rows alone).
+
 ## Build notes
 
 - Adapter shape: per-candidate CONTR + EXPEND export (cent-exact, occupation included)

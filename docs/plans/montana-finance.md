@@ -1,6 +1,6 @@
 # Montana campaign finance — build plan
 
-Status: rev 5 — Phase 2a BUILT 2026-08-28 (resolver/auto-link/aggregator/writer/sync/due-list/batch/scheduler/scripts/loader registered; live-verified: payment list = debt repayment so "spent" = expendOther+pettyCash, CSV↔JSON cross-checks cent-exact, empty-lastName financial search, full Bedey 8-report chain closes, end-to-end dry-run smoke on Bedey+Eddy); next = Phase 2b (outside) or Phase 3 (local live run)
+Status: rev 6 — Phase 2b BUILT 2026-08-28 (IE sweep acquisition + stance-aware candidateIssue parser + two-stage resolution + quarantine report script + sync/batch wiring + Montana outside footnote in the loader payload; measured 43.1% of in-window 2026 IE dollars resolved vs Phase 0's 35.9% — nickname expansion + live-registration tie-break recovered the gap; details in `backend/docs/montana-campaign-finance.md` "Phase 2b facts"); next = Phase 3 (local live run) or Phase 2c (outside funders)
 Source facts: `backend/docs/montana-campaign-finance.md` (endpoint recipe + gotchas; **commit it with Phase 1** — untracked files don't reach other checkouts)
 Template module: `backend/src/pipeline/missouriFinance/` (per-candidate portal harvest,
 sha256+manifest artifact cache, occupation breakdown, outside spending, due-list sync)
@@ -292,7 +292,7 @@ loader registered in [ballotLookup.ts](../../backend/src/pipeline/address/ballot
 card tests. Fail-closed everywhere: reconciliation, ambiguity, schema drift, bad
 artifact → keep last good snapshot + diagnostic.
 
-### Phase 2b — outside spending PR (re-scoped per Q4: resolved rows only)
+### Phase 2b — outside spending PR (re-scoped per Q4: resolved rows only) — BUILT 2026-08-28
 
 IE sweep + two-stage resolution + per-committee quarantine reporting. Totals per the
 stance rule above: bare-name and leading-`Support` rows → `outsideSupportTotal`;
@@ -301,6 +301,22 @@ explicit oppose rows — never 0). Unresolved/attach/blank/multi rows stay quara
 never published. Plus the Montana footnote in web + mobile outside sections (hard
 gate for enabling MT outside data). Attachment-recovery campaign (Conservatives4MT
 first) is a follow-on data task, not a code gate.
+
+Build discoveries (full recipe in `backend/docs/montana-campaign-finance.md`):
+the year-scoped committee search returns each committee's FULL IE history
+(cycle scoping is by `datePaid` over [Jan 1 year−1, Jan 1 year+1)); IE rows
+carry no committee identity (fresh session per committee + `resultCount`
+cross-check is the binding); support totals are also NULL when nothing
+resolved (a fabricated $0 would misstate a 57%-quarantined corpus);
+resolution got nickname expansion (shared `personFirstNameNicknames`, one-
+sided) and a live-registration tie-break (CERS mints a new candidateId per
+race, so race-switchers carry multiple same-year registrations) → measured
+43.1% of in-window dollars resolved. The sweep rides the daily batch (once
+per election year); the footnote ships as the loader's
+`outside_coverage_note`, which web + mobile already render — gate satisfied
+without UI code changes. v1 boundary: outside money publishes only alongside
+a filed direct snapshot (`no_filed_reports` candidates keep their guarded
+all-NULL stamp; their IE rows stay visible in the quarantine report).
 
 ### Phase 2c — outside funders PR (optional, only if coverage proves useful)
 

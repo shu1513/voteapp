@@ -10,6 +10,7 @@ import { MONTANA_CERS_ALL_CANDIDATE_DETAIL_LISTS } from "../../../src/pipeline/m
 import {
   syncMontanaCandidateFinance,
   type MontanaCandidateFinanceArtifacts,
+  type MontanaOutsideSpendingArtifacts,
 } from "../../../src/pipeline/montanaFinance/montanaCandidateFinanceSync.js";
 
 const LINK_ID = "33333333-3333-4333-8333-333333333333";
@@ -247,5 +248,137 @@ describe("syncMontanaCandidateFinance", () => {
         artifacts: artifacts(),
       })
     ).rejects.toThrow("Invalid Montana CERS entity id");
+  });
+});
+
+describe("syncMontanaCandidateFinance outside leg", () => {
+  function outsideArtifacts(): MontanaOutsideSpendingArtifacts {
+    return {
+      sweep: {
+        year: 2026,
+        committees: [
+          {
+            committeeId: 100,
+            committeeName: "Good PAC",
+            committeeTypeCode: "IN",
+            committeeTypeDescr: "Independent",
+            electionYear: null,
+          },
+        ],
+        transactionsByCommitteeId: new Map([
+          [
+            100,
+            [
+              {
+                transId: 1,
+                transTypeDescr: "Independent Expenditure",
+                amountTypeDescr: "Primary" as const,
+                cashAmtCents: 12_345,
+                inKindAmtCents: 0,
+                totalAmtCents: 12_345,
+                datePaid: Date.UTC(2026, 4, 1),
+                candidateIssue: "David Bedey (SD-43)",
+                purposeDescr: "Mailers",
+                electioneeringInd: "N" as const,
+              },
+            ],
+          ],
+        ]),
+      },
+      registrationRows: [
+        {
+          candidateId: 21020,
+          lastName: "Bedey",
+          firstName: "David",
+          middleInitial: "F.",
+          electionYear: 2026,
+          officeTitle: "Senate District No. 43",
+          officeCode: "236",
+          partyDescr: "Republican",
+          candidateStatusDescr: "Active",
+          resCountyDescr: null,
+        },
+      ],
+      // Deliberately the session-scoped harvest endpoint: display must
+      // override it with the stable dashboard URL.
+      sourceUrl:
+        "https://cers-ext.mt.gov/CampaignTracker/public/searchResults/listViewFinancialEntityResults",
+    };
+  }
+
+  function staleClearCall(holder: { query: { mock: { calls: unknown[][] } } }) {
+    return holder.query.mock.calls.find(([sql]) =>
+      String(sql).includes("SET outside_support_total = CASE")
+    ) as [string, unknown[]] | undefined;
+  }
+
+  it("writes resolved outside totals and groups alongside the direct snapshot", async () => {
+    const { db, client } = writingDb();
+    const result = await syncMontanaCandidateFinance({
+      ...baseInput(db),
+      artifacts: artifacts(),
+      outsideArtifacts: outsideArtifacts(),
+    });
+    expect(result.outsideSpendingSkippedReason).toBeNull();
+    expect(result.outsideSpending).toMatchObject({ supportTotal: 123.45, opposeTotal: null });
+    expect(result.outsideGroupsWritten).toBe(1);
+    const summaryInsert = client.query.mock.calls.find(([sql]) =>
+      String(sql).includes("INSERT INTO public.mt_candidate_finance_summaries")
+    );
+    expect(summaryInsert?.[1]).toContain(123.45);
+    const groupInsert = client.query.mock.calls.find(([sql]) =>
+      String(sql).includes("INSERT INTO public.mt_candidate_finance_outside_groups")
+    );
+    expect(groupInsert?.[1]).toContain("100");
+    expect(groupInsert?.[1]).toContain("Good PAC");
+    expect(groupInsert?.[1]).toContain("support");
+    // Display provenance is the stable dashboard, never the session-scoped
+    // harvest endpoint the bundle manifest records.
+    expect(groupInsert?.[1]).toContain("https://cers-ext.mt.gov/CampaignTracker/dashboard");
+    // The sweep resolved support but no oppose: the authoritative pass
+    // clears only a stale oppose total.
+    expect(staleClearCall(db)?.[1]).toEqual([LINK_ID, 2026, false, true]);
+  });
+
+  it("skips the outside leg and preserves the prior snapshot when the bundle is unavailable", async () => {
+    const { db, client } = writingDb();
+    const result = await syncMontanaCandidateFinance({
+      ...baseInput(db),
+      artifacts: artifacts(),
+      outsideArtifacts: null,
+    });
+    expect(result.outsideSpending).toBeNull();
+    expect(result.outsideSpendingSkippedReason).toMatch(/unavailable/);
+    expect(result.outsideGroupsWritten).toBe(0);
+    // No outside-group statements at all: undefined input means the writer
+    // neither upserts nor stale-deletes, so a prior outside snapshot stays.
+    const touchesGroups = client.query.mock.calls.some(([sql]) =>
+      String(sql).includes("mt_candidate_finance_outside_groups")
+    );
+    expect(touchesGroups).toBe(false);
+    // And with no authoritative sweep, stale totals are preserved, not cleared.
+    expect(staleClearCall(db)).toBeUndefined();
+  });
+
+  it("clears stale groups when a present sweep resolves nothing for the candidate", async () => {
+    const { db, client } = writingDb();
+    const bundle = outsideArtifacts();
+    bundle.sweep.transactionsByCommitteeId.set(100, []);
+    const result = await syncMontanaCandidateFinance({
+      ...baseInput(db),
+      artifacts: artifacts(),
+      outsideArtifacts: bundle,
+    });
+    expect(result.outsideSpending).toMatchObject({ supportTotal: null, opposeTotal: null, outsideGroups: [] });
+    // An EMPTY groups array still runs the stale-delete pass.
+    const deletesGroups = client.query.mock.calls.some(([sql]) =>
+      String(sql).includes("DELETE FROM public.mt_candidate_finance_outside_groups")
+    );
+    expect(deletesGroups).toBe(true);
+    // And BOTH stale totals are cleared: preserveWhenNull alone would keep an
+    // old dollar figure alive next to zero groups.
+    const clear = staleClearCall(db);
+    expect(clear?.[1]).toEqual([LINK_ID, 2026, true, true]);
+    expect(String(clear?.[0])).toContain("outside_support_total IS NOT NULL");
   });
 });
