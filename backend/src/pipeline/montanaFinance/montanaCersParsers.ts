@@ -67,8 +67,12 @@ export type MontanaCersExportRow = {
   candidateId: number;
   candidateName: string;
   reportingDateRange: string;
-  /** Contributor name on CONTR exports, payee name on EXPEND exports. */
-  entityName: string;
+  /**
+   * Contributor name on CONTR exports, payee name on EXPEND exports. Null
+   * on live-observed nameless rows: candidate self-loans and payee-less
+   * bank-fee expenditures ("Paper statement fee & service charge").
+   */
+  entityName: string | null;
   occupation: string | null;
   employer: string | null;
   /** MM/DD/YYYY. On CONTR rows this is the report-period START (synthetic). */
@@ -78,7 +82,8 @@ export type MontanaCersExportRow = {
   lineItem: string;
   amountCents: number;
   electionType: "Primary" | "General";
-  amountSubtype: "Cash" | "In-Kind";
+  /** Null only on zero-amount memo rows (live: a ticketed event listed with an empty amount cell). */
+  amountSubtype: "Cash" | "In-Kind" | null;
   officeTitle: string;
 };
 
@@ -353,22 +358,31 @@ function parseExportRow(cells: string[], label: string, rowIndex: number): Monta
   if (!Number.isSafeInteger(candidateId) || candidateId <= 0) {
     throw new MontanaCersParseError(`Bad candidate id in Montana CERS ${context}: ${cells[0]}`);
   }
-  const amountSubtype = cells[16]!.trim();
-  if (amountSubtype !== "Cash" && amountSubtype !== "In-Kind") {
-    throw new MontanaCersParseError(`Unexpected Montana CERS amount subtype in ${context}: ${amountSubtype}`);
+  // Live-observed memo rows leave the amount cell empty (an event ticket
+  // listed with no dollar value); they read as $0 and are the only rows
+  // whose subtype may be blank. The 18-cell structure check above already
+  // rejects column-shift corruption, so a present-but-empty cell is source
+  // data, not truncation.
+  const rawAmount = cells[14]!.trim();
+  const amountCents = rawAmount === "" ? 0 : parseMontanaCersCsvAmountCents(rawAmount);
+  const rawSubtype = cells[16]!.trim();
+  const amountSubtype =
+    rawSubtype === "" && amountCents === 0 ? null : (rawSubtype as "Cash" | "In-Kind");
+  if (amountSubtype !== null && amountSubtype !== "Cash" && amountSubtype !== "In-Kind") {
+    throw new MontanaCersParseError(`Unexpected Montana CERS amount subtype in ${context}: ${rawSubtype}`);
   }
   return {
     candidateId,
     candidateName: requireString(cells[1], `${context} candidate name`),
     reportingDateRange: requireString(cells[4], `${context} reporting date range`),
-    entityName: requireString(cells[5], `${context} entity name`),
+    entityName: optionalString(cells[5]),
     occupation: optionalString(cells[8]),
     employer: optionalString(cells[9]),
     datePaid: requirePeriodDate(cells[10], `${context} date paid`),
     purpose: optionalString(cells[11]),
     description: optionalString(cells[12]),
     lineItem: requireString(cells[13], `${context} line item`),
-    amountCents: parseMontanaCersCsvAmountCents(cells[14]!),
+    amountCents,
     electionType: requireElectionSide(cells[15]!.trim(), `${context} election type`),
     amountSubtype,
     officeTitle: requireString(cells[17], `${context} office title`),
