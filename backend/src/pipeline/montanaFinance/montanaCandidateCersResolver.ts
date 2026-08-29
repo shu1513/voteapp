@@ -13,6 +13,7 @@
 //   "Supreme Court Justice No. 03"/"No. 04" (zero-padded seat numbers),
 //   "Public Service Commission District No. 1".
 
+import { firstNameVariants } from "../finance/personFirstNameNicknames.js";
 import {
   personNamesMatchWithMiddleEvidence,
 } from "../finance/personNameMiddleEvidence.js";
@@ -207,6 +208,15 @@ export function montanaCersCandidateDisplayName(row: MontanaCersCandidateSearchR
   return given ? `${row.lastName}, ${given}` : row.lastName;
 }
 
+// One-sided nickname expansion (roster side only, per the shared module's
+// rule): CERS registers formal names ("Benjamin", "Kimberly") while the
+// roster carries campaign names ("Ben", "Kim"). Surname, office, district,
+// and year still must agree exactly, and a second same-family filer in the
+// pool resolves as ambiguous, never linked.
+function rosterFirstNameMatchesCers(candidateFirst: string, rowFirst: string): boolean {
+  return candidateFirst === rowFirst || firstNameVariants(candidateFirst).includes(rowFirst);
+}
+
 function toMatch(row: MontanaCersCandidateSearchRow): MontanaCersCandidateMatch {
   return {
     cersCandidateId: row.candidateId,
@@ -242,6 +252,7 @@ export function resolveMontanaCersCandidate(input: MontanaCersResolverInput): Mo
         candidateName,
         rowNames: [cersFullName],
         normalizePersonName,
+        firstNamesEquivalent: rosterFirstNameMatchesCers,
       })
     ) {
       continue;

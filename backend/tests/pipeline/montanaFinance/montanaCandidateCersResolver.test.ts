@@ -158,6 +158,47 @@ describe("resolveMontanaCersCandidate", () => {
     expect(resolution).toMatchObject({ status: "ambiguous", reason: "multiple_matching_cers_candidates" });
   });
 
+  it("matches roster nicknames against CERS formal names, one-sided", () => {
+    // Live 2026 case: roster "Joe Cohenour" vs CERS "Joseph Cohenour", with
+    // Jill Cohenour registered for the SAME House district — the nickname
+    // expansion must select only the Joseph row.
+    const resolution = resolveMontanaCersCandidate({
+      candidateName: "Joe Cohenour",
+      electionYear: 2026,
+      officeScope: "state_lower",
+      officeName: "State Lower Chamber Legislator",
+      districtName: "State House District 83 (2024); Montana",
+      legislativeDistrict: "83",
+      rows: [
+        row({ candidateId: 21925, lastName: "Cohenour", firstName: "Joseph", middleInitial: null, officeTitle: "House District No. 83" }),
+        row({ candidateId: 21269, lastName: "Cohenour", firstName: "Jill", middleInitial: null, officeTitle: "House District No. 83" }),
+      ],
+    });
+    expect(resolution).toMatchObject({
+      status: "matched",
+      cersCandidateId: 21925,
+      cersCandidateName: "Cohenour, Joseph",
+    });
+  });
+
+  it("resolves as ambiguous when two same-family registrations share the district", () => {
+    // Nickname expansion never guesses: two Cohenours whose first names BOTH
+    // satisfy "Joe" stay unlinked.
+    const resolution = resolveMontanaCersCandidate({
+      candidateName: "Joe Cohenour",
+      electionYear: 2026,
+      officeScope: "state_lower",
+      officeName: "State Lower Chamber Legislator",
+      districtName: null,
+      legislativeDistrict: "83",
+      rows: [
+        row({ candidateId: 21925, lastName: "Cohenour", firstName: "Joseph", middleInitial: null, officeTitle: "House District No. 83" }),
+        row({ candidateId: 21926, lastName: "Cohenour", firstName: "Joey", middleInitial: null, officeTitle: "House District No. 83" }),
+      ],
+    });
+    expect(resolution).toMatchObject({ status: "ambiguous", reason: "multiple_matching_cers_candidates" });
+  });
+
   it("never fuzzy-matches a different surname", () => {
     // The LYN BENNET / LYN BENNETT drift class: one letter off is a
     // different person until proven otherwise.
