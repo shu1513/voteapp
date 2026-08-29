@@ -1,0 +1,412 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602196,
+      "measure_id": "AB 572",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's amendments to AB 572, which requires a peace officer or prosecutor, before the first formal interview of an immediate family member of someone killed or seriously injured by a peace officer, to identify themselves and, in person, show identification. The officer must also tell the family member the status of their relative, say that this is a formal interview for an investigation, and explain that they may choose whether to come to the station and may bring a trusted support person. The requirements do not apply if the family member is under custodial interrogation, or if the delay would lose or destroy evidence or pose an imminent threat to public safety. The California State Assembly agreed to the amendments 42-22, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Senate's amendments to AB 572, which requires a peace officer or prosecutor, before the first formal interview of an immediate family member of someone killed or seriously injured by a peace officer, to identify themselves and, in person, show identification. The officer must also tell the family member the status of their relative, say that this is a formal interview for an investigation, and explain that they may choose whether to come to the station and may bring a trusted support person. The requirements do not apply if the family member is under custodial interrogation, or if the delay would lose or destroy evidence or pose an imminent threat to public safety. The California State Assembly agreed to the amendments 42-22, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1602195,
+      "measure_id": "AB 572",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass AB 572, which requires a peace officer or prosecutor, before the first formal interview of an immediate family member of someone killed or seriously injured by a peace officer, to identify themselves and, in person, show identification. The officer must also tell the family member the status of their relative, say that this is a formal interview for an investigation, and explain that they may choose whether to come to the station and may bring a trusted support person. The requirements do not apply if the family member is under custodial interrogation, or if the delay would lose or destroy evidence or pose an imminent threat to public safety. It passed the California State Senate 22-10 and became law.",
+      "nay_description": "Voted against passing AB 572, which requires a peace officer or prosecutor, before the first formal interview of an immediate family member of someone killed or seriously injured by a peace officer, to identify themselves and, in person, show identification. The officer must also tell the family member the status of their relative, say that this is a formal interview for an investigation, and explain that they may choose whether to come to the station and may bring a trusted support person. The requirements do not apply if the family member is under custodial interrogation, or if the delay would lose or destroy evidence or pose an imminent threat to public safety. It passed the California State Senate 22-10 and became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602345,
+      "measure_id": "AB 1071",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's amendments to AB 1071, which lets a defendant claiming that the state sought or imposed a conviction or sentence based on race, ethnicity, or national origin move for disclosure of all relevant evidence about that potential violation. It also lets a court remedy such a violation with any remedy not prohibited by another law. The California State Assembly agreed to the amendments 42-21, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Senate's amendments to AB 1071, which lets a defendant claiming that the state sought or imposed a conviction or sentence based on race, ethnicity, or national origin move for disclosure of all relevant evidence about that potential violation. It also lets a court remedy such a violation with any remedy not prohibited by another law. The California State Assembly agreed to the amendments 42-21, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601943,
+      "measure_id": "AB 1071",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass AB 1071, which lets a defendant claiming that the state sought or imposed a conviction or sentence based on race, ethnicity, or national origin move for disclosure of all relevant evidence about that potential violation. It also lets a court remedy such a violation with any remedy not prohibited by another law. It passed the California State Senate 25-11 and became law.",
+      "nay_description": "Voted against passing AB 1071, which lets a defendant claiming that the state sought or imposed a conviction or sentence based on race, ethnicity, or national origin move for disclosure of all relevant evidence about that potential violation. It also lets a court remedy such a violation with any remedy not prohibited by another law. It passed the California State Senate 25-11 and became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1725474,
+      "measure_id": "AB 2624",
+      "vote_date": "2026-08-19",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's amendments to AB 2624, which extends California's address confidentiality program to people who provide immigration support services, along with their employees and volunteers, when they face threats of violence or harassment because of that work. The program, which starts on October 1, 2027, keeps a participant's home address out of responses to public records requests. The law also bars selling or trading their personal information or image online with intent to incite violence against them, and bars posting it with the specific intent that someone imminently commit a violent crime against them. The California State Assembly agreed to the amendments 59-19, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Senate's amendments to AB 2624, which extends California's address confidentiality program to people who provide immigration support services, along with their employees and volunteers, when they face threats of violence or harassment because of that work. The program, which starts on October 1, 2027, keeps a participant's home address out of responses to public records requests. The law also bars selling or trading their personal information or image online with intent to incite violence against them, and bars posting it with the specific intent that someone imminently commit a violent crime against them. The California State Assembly agreed to the amendments 59-19, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1725364,
+      "measure_id": "AB 2624",
+      "vote_date": "2026-08-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass AB 2624, which extends California's address confidentiality program to people who provide immigration support services, along with their employees and volunteers, when they face threats of violence or harassment because of that work. The program, which starts on October 1, 2027, keeps a participant's home address out of responses to public records requests. The law also bars selling or trading their personal information or image online with intent to incite violence against them, and bars posting it with the specific intent that someone imminently commit a violent crime against them. It passed the California State Senate 30-10 and became law.",
+      "nay_description": "Voted against passing AB 2624, which extends California's address confidentiality program to people who provide immigration support services, along with their employees and volunteers, when they face threats of violence or harassment because of that work. The program, which starts on October 1, 2027, keeps a participant's home address out of responses to public records requests. The law also bars selling or trading their personal information or image online with intent to incite violence against them, and bars posting it with the specific intent that someone imminently commit a violent crime against them. It passed the California State Senate 30-10 and became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601541,
+      "measure_id": "AB 1318",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's amendments to AB 1318, an urgency measure providing that where state law points to federal tax-exempt status to decide eligibility for a state grant, service contract, or disbursement of public funds, state tax-exempt status counts as well. It also widens the definition of a qualified nonprofit organization for state refugee and immigrant service programs, which fund immigration legal services, rapid-response assistance, and resettlement help for asylees, to include nonprofits that qualify for state tax exemption. The California State Assembly agreed to the amendments 60-19, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Senate's amendments to AB 1318, an urgency measure providing that where state law points to federal tax-exempt status to decide eligibility for a state grant, service contract, or disbursement of public funds, state tax-exempt status counts as well. It also widens the definition of a qualified nonprofit organization for state refugee and immigrant service programs, which fund immigration legal services, rapid-response assistance, and resettlement help for asylees, to include nonprofits that qualify for state tax exemption. The California State Assembly agreed to the amendments 60-19, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601264,
+      "measure_id": "AB 1318",
+      "vote_date": "2025-09-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass AB 1318, an urgency measure providing that where state law points to federal tax-exempt status to decide eligibility for a state grant, service contract, or disbursement of public funds, state tax-exempt status counts as well. It also widens the definition of a qualified nonprofit organization for state refugee and immigrant service programs, which fund immigration legal services, rapid-response assistance, and resettlement help for asylees, to include nonprofits that qualify for state tax exemption. It passed the California State Senate 29-10 and became law.",
+      "nay_description": "Voted against passing AB 1318, an urgency measure providing that where state law points to federal tax-exempt status to decide eligibility for a state grant, service contract, or disbursement of public funds, state tax-exempt status counts as well. It also widens the definition of a qualified nonprofit organization for state refugee and immigrant service programs, which fund immigration legal services, rapid-response assistance, and resettlement help for asylees, to include nonprofits that qualify for state tax exemption. It passed the California State Senate 29-10 and became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601531,
+      "measure_id": "SB 30",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 30, which bars a public transit agency that owns diesel-powered on-track rail equipment from selling, donating, or otherwise transferring it for continued use once the agency decommissions it. The ban does not apply if the equipment meets one of the federal locomotive emissions tiers named in the law, produces emissions equivalent to equipment in those tiers, or has had its diesel engine removed. It passed the California State Assembly 53-22 and became law.",
+      "nay_description": "Voted against passing SB 30, which bars a public transit agency that owns diesel-powered on-track rail equipment from selling, donating, or otherwise transferring it for continued use once the agency decommissions it. The ban does not apply if the equipment meets one of the federal locomotive emissions tiers named in the law, produces emissions equivalent to equipment in those tiers, or has had its diesel engine removed. It passed the California State Assembly 53-22 and became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601722,
+      "measure_id": "SB 30",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Assembly's amendments to SB 30, which bars a public transit agency that owns diesel-powered on-track rail equipment from selling, donating, or otherwise transferring it for continued use once the agency decommissions it. The ban does not apply if the equipment meets one of the federal locomotive emissions tiers named in the law, produces emissions equivalent to equipment in those tiers, or has had its diesel engine removed. The California State Senate agreed to the amendments 29-10, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Assembly's amendments to SB 30, which bars a public transit agency that owns diesel-powered on-track rail equipment from selling, donating, or otherwise transferring it for continued use once the agency decommissions it. The ban does not apply if the equipment meets one of the federal locomotive emissions tiers named in the law, produces emissions equivalent to equipment in those tiers, or has had its diesel engine removed. The California State Senate agreed to the amendments 29-10, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602510,
+      "measure_id": "AB 1037",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's amendments to AB 1037, which widens access to opioid antagonists such as naloxone. Standing orders and possession now cover any overdose, not only an opioid overdose, and anyone in a position to help a person at risk may possess one and pass it on. It removes the requirement that a person who receives or possesses an opioid antagonist be trained first. Anyone who administers one in good faith is shielded from civil damages whether or not they were trained. The California State Assembly agreed to the amendments 53-21, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Senate's amendments to AB 1037, which widens access to opioid antagonists such as naloxone. Standing orders and possession now cover any overdose, not only an opioid overdose, and anyone in a position to help a person at risk may possess one and pass it on. It removes the requirement that a person who receives or possesses an opioid antagonist be trained first. Anyone who administers one in good faith is shielded from civil damages whether or not they were trained. The California State Assembly agreed to the amendments 53-21, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601620,
+      "measure_id": "AB 1037",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass AB 1037, which widens access to opioid antagonists such as naloxone. Standing orders and possession now cover any overdose, not only an opioid overdose, and anyone in a position to help a person at risk may possess one and pass it on. It removes the requirement that a person who receives or possesses an opioid antagonist be trained first. Anyone who administers one in good faith is shielded from civil damages whether or not they were trained. It passed the California State Senate 30-10 and became law.",
+      "nay_description": "Voted against passing AB 1037, which widens access to opioid antagonists such as naloxone. Standing orders and possession now cover any overdose, not only an opioid overdose, and anyone in a position to help a person at risk may possess one and pass it on. It removes the requirement that a person who receives or possesses an opioid antagonist be trained first. Anyone who administers one in good faith is shielded from civil damages whether or not they were trained. It passed the California State Senate 30-10 and became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602541,
+      "measure_id": "AB 858",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's amendments to AB 858, which extends to January 1, 2027 the law requiring employers to tell laid-off employees about job openings they are qualified for and to offer those jobs by an order of preference. The same law bars an employer from firing a laid-off employee, cutting their pay, or otherwise retaliating against them for trying to enforce those rights. The California State Assembly agreed to the amendments 49-19, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Senate's amendments to AB 858, which extends to January 1, 2027 the law requiring employers to tell laid-off employees about job openings they are qualified for and to offer those jobs by an order of preference. The same law bars an employer from firing a laid-off employee, cutting their pay, or otherwise retaliating against them for trying to enforce those rights. The California State Assembly agreed to the amendments 49-19, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601757,
+      "measure_id": "AB 858",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass AB 858, which extends to January 1, 2027 the law requiring employers to tell laid-off employees about job openings they are qualified for and to offer those jobs by an order of preference. The same law bars an employer from firing a laid-off employee, cutting their pay, or otherwise retaliating against them for trying to enforce those rights. It passed the California State Senate 29-10 and became law.",
+      "nay_description": "Voted against passing AB 858, which extends to January 1, 2027 the law requiring employers to tell laid-off employees about job openings they are qualified for and to offer those jobs by an order of preference. The same law bars an employer from firing a laid-off employee, cutting their pay, or otherwise retaliating against them for trying to enforce those rights. It passed the California State Senate 29-10 and became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602306,
+      "measure_id": "SB 763",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 763, which raises the criminal fines for restraining trade under California's Cartwright Act from $1 million to $6 million for a corporation and from $250,000 to $1 million for an individual. It also adds a civil penalty of $1 million for a person, corporation, or business entity that violates the act. It passed the California State Assembly 53-20 and became law.",
+      "nay_description": "Voted against passing SB 763, which raises the criminal fines for restraining trade under California's Cartwright Act from $1 million to $6 million for a corporation and from $250,000 to $1 million for an individual. It also adds a civil penalty of $1 million for a person, corporation, or business entity that violates the act. It passed the California State Assembly 53-20 and became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1602893,
+      "measure_id": "SB 763",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Assembly's amendments to SB 763, which raises the criminal fines for restraining trade under California's Cartwright Act from $1 million to $6 million for a corporation and from $250,000 to $1 million for an individual. It also adds a civil penalty of $1 million for a person, corporation, or business entity that violates the act. The California State Senate agreed to the amendments 29-8, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Assembly's amendments to SB 763, which raises the criminal fines for restraining trade under California's Cartwright Act from $1 million to $6 million for a corporation and from $250,000 to $1 million for an individual. It also adds a civil penalty of $1 million for a person, corporation, or business entity that violates the act. The California State Senate agreed to the amendments 29-8, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601404,
+      "measure_id": "SB 82",
+      "vote_date": "2025-09-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 82, which limits the dispute-resolution terms of a consumer use agreement to disputes about the good, service, money, or credit that the agreement itself provides. A waiver of that limit is void and unenforceable, and the provisions are to be read liberally in favor of protecting consumers. The duties it creates add to, rather than replace, those imposed by other law. It passed the California State Assembly 55-18 and became law.",
+      "nay_description": "Voted against passing SB 82, which limits the dispute-resolution terms of a consumer use agreement to disputes about the good, service, money, or credit that the agreement itself provides. A waiver of that limit is void and unenforceable, and the provisions are to be read liberally in favor of protecting consumers. The duties it creates add to, rather than replace, those imposed by other law. It passed the California State Assembly 55-18 and became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1586421,
+      "measure_id": "SB 82",
+      "vote_date": "2025-06-02",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 82, which limits the dispute-resolution terms of a consumer use agreement to disputes about the good, service, money, or credit that the agreement itself provides. A waiver of that limit is void and unenforceable, and the provisions are to be read liberally in favor of protecting consumers. The duties it creates add to, rather than replace, those imposed by other law. It passed the California State Senate 28-10 and became law.",
+      "nay_description": "Voted against passing SB 82, which limits the dispute-resolution terms of a consumer use agreement to disputes about the good, service, money, or credit that the agreement itself provides. A waiver of that limit is void and unenforceable, and the provisions are to be read liberally in favor of protecting consumers. The duties it creates add to, rather than replace, those imposed by other law. It passed the California State Senate 28-10 and became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602572,
+      "measure_id": "SB 596",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 596, which tightens how the state penalizes hospitals that break nurse-to-patient staffing ratios. It defines the on-call list a hospital must exhaust before it can escape a penalty, and says that calling nurses who are neither scheduled on call nor in the float pool for that unit and shift does not count as exhausting it. It also requires the Department of Public Health to treat violations on separate days as separate violations. It passed the California State Assembly 48-19 and became law.",
+      "nay_description": "Voted against passing SB 596, which tightens how the state penalizes hospitals that break nurse-to-patient staffing ratios. It defines the on-call list a hospital must exhaust before it can escape a penalty, and says that calling nurses who are neither scheduled on call nor in the float pool for that unit and shift does not count as exhausting it. It also requires the Department of Public Health to treat violations on separate days as separate violations. It passed the California State Assembly 48-19 and became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1602214,
+      "measure_id": "SB 596",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Assembly's amendments to SB 596, which tightens how the state penalizes hospitals that break nurse-to-patient staffing ratios. It defines the on-call list a hospital must exhaust before it can escape a penalty, and says that calling nurses who are neither scheduled on call nor in the float pool for that unit and shift does not count as exhausting it. It also requires the Department of Public Health to treat violations on separate days as separate violations. The California State Senate agreed to the amendments 21-10, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Assembly's amendments to SB 596, which tightens how the state penalizes hospitals that break nurse-to-patient staffing ratios. It defines the on-call list a hospital must exhaust before it can escape a penalty, and says that calling nurses who are neither scheduled on call nor in the float pool for that unit and shift does not count as exhausting it. It also requires the Department of Public Health to treat violations on separate days as separate violations. The California State Senate agreed to the amendments 21-10, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601300,
+      "measure_id": "AB 1061",
+      "vote_date": "2025-09-08",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's amendments to AB 1061, which narrows the historic-property exclusion that keeps housing developments and urban lot splits from fast-track ministerial approval. Instead of excluding any site inside a listed historic district, the exclusion now reaches only a contributing structure within such a district or a property individually listed or designated as a landmark. A local agency may still adopt objective standards to maintain the historical value of a district listed in the California Register of Historical Resources, and a lot split must not require demolishing or altering the structures the law names. The California State Assembly agreed to the amendments 46-18, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Senate's amendments to AB 1061, which narrows the historic-property exclusion that keeps housing developments and urban lot splits from fast-track ministerial approval. Instead of excluding any site inside a listed historic district, the exclusion now reaches only a contributing structure within such a district or a property individually listed or designated as a landmark. A local agency may still adopt objective standards to maintain the historical value of a district listed in the California Register of Historical Resources, and a lot split must not require demolishing or altering the structures the law names. The California State Assembly agreed to the amendments 46-18, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1600931,
+      "measure_id": "AB 1061",
+      "vote_date": "2025-09-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass AB 1061, which narrows the historic-property exclusion that keeps housing developments and urban lot splits from fast-track ministerial approval. Instead of excluding any site inside a listed historic district, the exclusion now reaches only a contributing structure within such a district or a property individually listed or designated as a landmark. A local agency may still adopt objective standards to maintain the historical value of a district listed in the California Register of Historical Resources, and a lot split must not require demolishing or altering the structures the law names. It passed the California State Senate 24-10 and became law.",
+      "nay_description": "Voted against passing AB 1061, which narrows the historic-property exclusion that keeps housing developments and urban lot splits from fast-track ministerial approval. Instead of excluding any site inside a listed historic district, the exclusion now reaches only a contributing structure within such a district or a property individually listed or designated as a landmark. A local agency may still adopt objective standards to maintain the historical value of a district listed in the California Register of Historical Resources, and a lot split must not require demolishing or altering the structures the law names. It passed the California State Senate 24-10 and became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1701449,
+      "measure_id": "SB 73",
+      "vote_date": "2026-05-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 73, which bars peace officers from interfering with the administration of an election and lets specified people enforce that ban through a civil action. No one may let a law enforcement agent access, disrupt, modify, or take possession of voter rosters, voter lists, or certified voting technology without a court order, except to investigate certain voting fraud. The Attorney General must issue guidance on responding to law enforcement requests to enter areas where ballots are present. The law also makes taking a package of voted ballots out of an elections official's custody a crime, and bars a vote-by-mail observer from challenging a signature the voter has already verified. It passed the California State Assembly 57-19 and became law.",
+      "nay_description": "Voted against passing SB 73, which bars peace officers from interfering with the administration of an election and lets specified people enforce that ban through a civil action. No one may let a law enforcement agent access, disrupt, modify, or take possession of voter rosters, voter lists, or certified voting technology without a court order, except to investigate certain voting fraud. The Attorney General must issue guidance on responding to law enforcement requests to enter areas where ballots are present. The law also makes taking a package of voted ballots out of an elections official's custody a crime, and bars a vote-by-mail observer from challenging a signature the voter has already verified. It passed the California State Assembly 57-19 and became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1702119,
+      "measure_id": "SB 73",
+      "vote_date": "2026-05-26",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Assembly's amendments to SB 73, which bars peace officers from interfering with the administration of an election and lets specified people enforce that ban through a civil action. No one may let a law enforcement agent access, disrupt, modify, or take possession of voter rosters, voter lists, or certified voting technology without a court order, except to investigate certain voting fraud. The Attorney General must issue guidance on responding to law enforcement requests to enter areas where ballots are present. The law also makes taking a package of voted ballots out of an elections official's custody a crime, and bars a vote-by-mail observer from challenging a signature the voter has already verified. The California State Senate agreed to the amendments 29-8, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against accepting the Assembly's amendments to SB 73, which bars peace officers from interfering with the administration of an election and lets specified people enforce that ban through a civil action. No one may let a law enforcement agent access, disrupt, modify, or take possession of voter rosters, voter lists, or certified voting technology without a court order, except to investigate certain voting fraud. The Attorney General must issue guidance on responding to law enforcement requests to enter areas where ballots are present. The law also makes taking a package of voted ballots out of an elections official's custody a crime, and bars a vote-by-mail observer from challenging a signature the voter has already verified. The California State Senate agreed to the amendments 29-8, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for"
+        }
+      ]
+    }
+  ]
+}
