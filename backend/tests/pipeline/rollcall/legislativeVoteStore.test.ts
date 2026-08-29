@@ -367,6 +367,7 @@ describe("applyLegislativeVoteJudgment", () => {
 
   it("refuses to approve a stage superseded by a later kept floor vote unless acknowledged", async () => {
     const laterVote = {
+      session: "119-1",
       roll_number: 320,
       vote_date: "2025-06-30",
       measure_id: "H R 1",
@@ -382,7 +383,7 @@ describe("applyLegislativeVoteJudgment", () => {
       };
     }
     await expect(applyLegislativeVoteJudgment(dbWithLater(), judgment)).rejects.toThrow(
-      /final kept floor vote on H R 1: roll 320 on 2025-06-30 \(On Motion to Concur in the Senate Amendment\)/
+      /final kept floor vote on H R 1: 119-1 roll 320 on 2025-06-30 \(On Motion to Concur in the Senate Amendment\)/
     );
     // A SAME-DAY peer blocks too: a re-vote after a motion to reconsider
     // lands on the same date, and within a day the sources give no order.
@@ -393,7 +394,24 @@ describe("applyLegislativeVoteJudgment", () => {
         .mockResolvedValueOnce({ rows: [{ ...laterVote, roll_number: 146, vote_date: "2025-05-22" }] })
         .mockResolvedValue({ rows: [], rowCount: 1 }),
     };
-    await expect(applyLegislativeVoteJudgment(sameDay, judgment)).rejects.toThrow(/roll 146 on 2025-05-22/);
+    await expect(applyLegislativeVoteJudgment(sameDay, judgment)).rejects.toThrow(/119-1 roll 146 on 2025-05-22/);
+    // A next-calendar-session peer stays acknowledgeable by number — the
+    // error names its session, so the operator knows what the number covers.
+    const nextSession = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({ rows: [stored] })
+        .mockResolvedValueOnce({ rows: [{ ...laterVote, session: "119-2", vote_date: "2026-01-15" }] })
+        .mockResolvedValue({ rows: [], rowCount: 1 }),
+    };
+    await expect(
+      applyLegislativeVoteJudgment(nextSession, { ...judgment, acknowledgeLaterRolls: [320] })
+    ).resolves.toBe("updated");
+    // A malformed US session would derive scan keys matching nothing and
+    // skip the gate silently; it fails loud instead.
+    await expect(applyLegislativeVoteJudgment(db(stored), { ...judgment, session: "119" })).rejects.toThrow(
+      /US session '119' is not <congress>-<1\|2>/
+    );
     // Acknowledging the exact later roll approves the earlier stage on purpose.
     await expect(
       applyLegislativeVoteJudgment(dbWithLater(), { ...judgment, acknowledgeLaterRolls: [320] })

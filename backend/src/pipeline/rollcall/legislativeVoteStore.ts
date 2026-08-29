@@ -532,12 +532,25 @@ export async function applyLegislativeVoteJudgment(
     //    federal bill lives across both calendar sessions of its Congress,
     //    so US scans both; a state session key already spans the term.
     if (row.measure_id !== null) {
+      // A malformed US session key would derive scan keys that match
+      // nothing and silently skip the gate, so it fails loud instead
+      // (rollcall:judge always builds `<congress>-<1|2>`; this guards
+      // direct callers and malformed rows).
+      if (judgment.jurisdiction === "US" && !/^\d+-[12]$/.test(judgment.session)) {
+        throw new Error(`${name}: US session '${judgment.session}' is not <congress>-<1|2>`);
+      }
       const sessions =
         judgment.jurisdiction === "US"
           ? [1, 2].map((half) => `${judgment.session.split("-")[0]}-${half}`)
           : [judgment.session];
-      const later = await db.query<{ roll_number: number; vote_date: string; measure_id: string; exact_question: string }>(
-        `SELECT roll_number, vote_date::text AS vote_date, measure_id, exact_question
+      const later = await db.query<{
+        session: string;
+        roll_number: number;
+        vote_date: string;
+        measure_id: string;
+        exact_question: string;
+      }>(
+        `SELECT session, roll_number, vote_date::text AS vote_date, measure_id, exact_question
            FROM legislative_votes
           WHERE jurisdiction = $1
             AND chamber = $2
@@ -548,6 +561,11 @@ export async function applyLegislativeVoteJudgment(
             AND id <> $5`,
         [judgment.jurisdiction, judgment.chamber, sessions, row.vote_date, row.id]
       );
+      // An acknowledged number covers any session in the scan on purpose:
+      // the cross-session peer (a next-calendar-session concurrence) is
+      // half the reason US scans both, and the error below names every
+      // unacknowledged vote with its session, so the operator sees exactly
+      // what a number will cover before writing it.
       const superseding = later.rows.filter(
         (candidate) =>
           sameMeasure(candidate.measure_id, row.measure_id) &&
@@ -555,7 +573,7 @@ export async function applyLegislativeVoteJudgment(
       );
       if (superseding.length > 0) {
         const listed = superseding
-          .map((vote) => `roll ${vote.roll_number} on ${vote.vote_date} (${vote.exact_question})`)
+          .map((vote) => `${vote.session} roll ${vote.roll_number} on ${vote.vote_date} (${vote.exact_question})`)
           .join("; ");
         throw new Error(
           `${name} may not be this chamber's final kept floor vote on ${row.measure_id}: ${listed}. ` +
