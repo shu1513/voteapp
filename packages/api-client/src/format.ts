@@ -281,6 +281,7 @@ const FINANCE_SOURCE_LABELS: Record<string, string> = {
   SAN_DIEGO_CITY_CLERK: "City of San Diego Office of the City Clerk",
   SAN_FRANCISCO_ETHICS: "San Francisco Ethics Commission",
   SAN_JOSE_CITY_CLERK: "City of San José Office of the City Clerk",
+  SOUTH_CAROLINA_CAMPAIGN_FINANCE: "South Carolina State Ethics Commission",
   UTAH_DISCLOSURES: "Utah Financial Disclosures",
   HAWAII_CSC: "Hawaii Campaign Spending Commission",
   VIRGINIA_CFREPORTS: "Virginia CFReports",
