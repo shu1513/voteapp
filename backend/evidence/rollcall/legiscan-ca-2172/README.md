@@ -96,11 +96,14 @@ so every vote in this batch was cast on the enrolled text and no description nee
   crosswalk; re-imported to **729 records** after the roster completion above.
 - `batch-02/` — 24 rolls / 12 measures / **859 records**, imported 2026-08-29 on the full 80-member
   crosswalk. First California coverage for `civil_rights` (AB 1071) and `election_integrity`
-  (SB 73). See its `PLAN.md` and `JUDGING.md`.
+  (SB 73).
+- `batch-03/` — 18 rolls / 9 measures / **645 records**, imported 2026-08-29. First California
+  coverage for `social_programs_and_welfare` (AB 246, SB 634).
 
-California total: **1,588 roll-call records across 80 candidates.**
+California total: **2,233 roll-call records across 80 candidates.**
 
-**Next:** 387 divided-and-enacted rolls on ~205 measures remain. Beyond those, 430 divided rolls on
-419 measures were still awaiting the governor when this dataset was cut (2026-08-23) — a re-download
-in the autumn, after the session closes at the end of August, should convert a large share of them
-into batch-03 material.
+**Next:** 369 divided-and-enacted rolls on ~196 measures remain in this dataset. Beyond those, 430
+divided rolls on 419 measures were still awaiting the governor when it was cut (2026-08-23);
+LegiScan was still serving that same cut on 2026-08-29 (identical `dataset_hash`), so the trigger
+for batch-04 is a genuinely refreshed dataset in the autumn, after the session's end-of-August close
+and the signing period that follows.

@@ -322,17 +322,68 @@ describe("reconcileMontanaCashBeginChain", () => {
     expect(result.derivedEndingBalanceCents).toBe(212_700);
   });
 
-  it("never lets offsetting per-side failures pass as combined outside a primary collapse", () => {
-    // Primary is short $600 while general is over $600: money is conserved
-    // combined, but the primary side did NOT collapse to zero, so this is
-    // inconsistent source data — not a rollover — and must fail closed.
+  it("never emits a per-link combined result outside a primary collapse", () => {
+    // Primary is short $600 while general is over $600 without the primary
+    // side collapsing: the NARROW per-link rollover fallback must not fire,
+    // so both per-side failures survive as diagnostics. The chain is still
+    // accepted — but only through the cumulative span check below, which
+    // verifies combined conservation rather than softening the per-side
+    // gate. Live shape: candidate 22004, a $650 side reclassification.
     const result = reconcileMontanaCashBeginChain([
       report({ reportId: 1, primBeginCents: 100_000, genBeginCents: 50_000 }),
       report({ reportId: 2, primBeginCents: 40_000, genBeginCents: 110_000 }),
     ]);
-    expect(result.ok).toBe(false);
     expect(result.links.some((link) => link.side === "combined")).toBe(false);
     expect(result.links.filter((link) => !link.ok)).toHaveLength(2);
+    expect(result).toMatchObject({ ok: true, reconciledCumulatively: true });
+    // Side attribution is invisible in every published figure (card totals
+    // sum both sides; the balance is combined), and no phantom unitemized
+    // money is minted from the offsetting pair.
+    expect(result.derivedUnitemizedTotalCents).toBe(0);
+  });
+
+  it("accepts per-link failures whose residuals cancel across the span", () => {
+    // Live triage class (14 of 21 quarantined filers): a $1,000 restatement
+    // leaves one link short and a later link long. Money is conserved, so
+    // the span reconciles cumulatively and the unitemized total counts the
+    // NET residual — summing per-link positives would mint a phantom $1,000.
+    const result = reconcileMontanaCashBeginChain([
+      report({ reportId: 1, primBeginCents: 0, primaryInCents: 500_000 }),
+      report({ reportId: 2, primBeginCents: 400_000, primaryInCents: 300_000 }),
+      report({ reportId: 3, primBeginCents: 800_000 }),
+    ]);
+    expect(result).toMatchObject({ ok: true, reconciledCumulatively: true });
+    expect(result.links.filter((link) => !link.ok)).toHaveLength(2);
+    expect(result.derivedUnitemizedTotalCents).toBe(0);
+  });
+
+  it("keeps passing links' residuals out of the cumulative net", () => {
+    // A genuine +$450 unitemized lump and a tolerated -$50 fee residual sit
+    // on individually-PASSING links, while a $1,000 restatement pair forces
+    // cumulative acceptance. The fee must not net against the $450 (it is
+    // unitemized spending, not negative raising), and the offsetting pair
+    // must contribute nothing — so the total is $450, not the $400 span net.
+    const result = reconcileMontanaCashBeginChain([
+      report({ reportId: 1, primBeginCents: 0 }),
+      report({ reportId: 2, primBeginCents: 45_000 }), // +$450 lump, passes
+      report({ reportId: 3, primBeginCents: 40_000 }), // -$50 fee, passes
+      report({ reportId: 4, primBeginCents: 140_000 }), // +$1,000, fails
+      report({ reportId: 5, primBeginCents: 40_000 }), // -$1,000, fails
+    ]);
+    expect(result).toMatchObject({ ok: true, reconciledCumulatively: true });
+    expect(result.links.filter((link) => !link.ok)).toHaveLength(2);
+    expect(result.derivedUnitemizedTotalCents).toBe(45_000);
+  });
+
+  it("still fails closed when the span itself loses money", () => {
+    // Same restatement shape, but $2,000 never comes back: a real gap.
+    const result = reconcileMontanaCashBeginChain([
+      report({ reportId: 1, primBeginCents: 0, primaryInCents: 500_000 }),
+      report({ reportId: 2, primBeginCents: 400_000, primaryInCents: 300_000 }),
+      report({ reportId: 3, primBeginCents: 600_000 }),
+    ]);
+    expect(result).toMatchObject({ ok: false, reconciledCumulatively: false });
+    expect(result.derivedUnitemizedTotalCents).toBeNull();
   });
 
   it("still fails closed when a rollover does not conserve money", () => {

@@ -1,0 +1,941 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "CT",
+  "entries": [
+    {
+      "people_id": 5631,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Martin Looney, SD-011)."
+    },
+    {
+      "people_id": 5639,
+      "candidate_id": "613dabb7-eb84-4a95-b688-ef8f7d0070f7",
+      "note": null
+    },
+    {
+      "people_id": 5650,
+      "candidate_id": "49edb28f-1ae5-41b1-beef-3db292f3f1ff",
+      "note": null
+    },
+    {
+      "people_id": 5662,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Mary Mushinsky, HD-085)."
+    },
+    {
+      "people_id": 5664,
+      "candidate_id": "ade532d2-0325-4f02-be99-ab93bf7a044e",
+      "note": null
+    },
+    {
+      "people_id": 5667,
+      "candidate_id": "c63b5b26-dc3f-4c5b-afbd-acbe37bb69e9",
+      "note": null
+    },
+    {
+      "people_id": 5683,
+      "candidate_id": "ba375416-83ac-486c-b70a-13569e03fb9d",
+      "note": null
+    },
+    {
+      "people_id": 5686,
+      "candidate_id": "631c1e50-7bb8-41c6-b4a1-5804763e117f",
+      "note": "Hand-added: Robert/Bob: not a prefix pair."
+    },
+    {
+      "people_id": 5711,
+      "candidate_id": "43867a54-7ea8-4985-8be8-1bb6b1cf43d7",
+      "note": null
+    },
+    {
+      "people_id": 5721,
+      "candidate_id": "b9b6ab9b-ae6a-470c-9572-871402c2f5d6",
+      "note": null
+    },
+    {
+      "people_id": 5723,
+      "candidate_id": "9ea31e28-29d9-4905-8c4f-2dd701166b11",
+      "note": null
+    },
+    {
+      "people_id": 5726,
+      "candidate_id": "843fc613-e6d5-4020-a31b-e783c49d662f",
+      "note": null
+    },
+    {
+      "people_id": 5728,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Kevin Ryan, HD-139)."
+    },
+    {
+      "people_id": 5750,
+      "candidate_id": "4b329e37-342e-494b-889a-0d9b88e6efb4",
+      "note": null
+    },
+    {
+      "people_id": 5767,
+      "candidate_id": "f4563ac8-17fc-45c1-a82d-25a94143d075",
+      "note": null
+    },
+    {
+      "people_id": 5770,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Henry Genga, HD-010)."
+    },
+    {
+      "people_id": 5779,
+      "candidate_id": "a4f81d6a-aa87-4a84-b696-93322c04e15d",
+      "note": null
+    },
+    {
+      "people_id": 5785,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Douglas McCrory, SD-002)."
+    },
+    {
+      "people_id": 5789,
+      "candidate_id": "1d00ff11-71e3-4712-b82c-bd14c241e52f",
+      "note": null
+    },
+    {
+      "people_id": 5793,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Tony Hwang, SD-028)."
+    },
+    {
+      "people_id": 5802,
+      "candidate_id": "49508646-6b1a-473e-9a39-d6792d3ac2e4",
+      "note": null
+    },
+    {
+      "people_id": 5807,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Patricia Dillon, HD-092)."
+    },
+    {
+      "people_id": 5818,
+      "candidate_id": "009541ea-d547-441c-85e3-32bf57d795b0",
+      "note": null
+    },
+    {
+      "people_id": 5825,
+      "candidate_id": "91ad1cb6-1678-4d12-b680-688b83de9c3f",
+      "note": null
+    },
+    {
+      "people_id": 5829,
+      "candidate_id": "0c30791f-d228-4132-b5b4-212d444440cc",
+      "note": null
+    },
+    {
+      "people_id": 10806,
+      "candidate_id": "e8139186-4223-4be6-8885-a3eb1a335638",
+      "note": null
+    },
+    {
+      "people_id": 10807,
+      "candidate_id": "7f255f36-1a1b-47b3-ae69-b4a97bb2acce",
+      "note": null
+    },
+    {
+      "people_id": 10808,
+      "candidate_id": "376abd99-8390-4827-9864-26a5dfd11432",
+      "note": null
+    },
+    {
+      "people_id": 10812,
+      "candidate_id": "3b1988dd-dd34-4d81-974a-7689d9a136d9",
+      "note": null
+    },
+    {
+      "people_id": 10813,
+      "candidate_id": "544c9af4-4129-4c02-bb16-b29518833f28",
+      "note": null
+    },
+    {
+      "people_id": 10945,
+      "candidate_id": "ece53b23-53db-45f0-9473-cf108ef1f699",
+      "note": null
+    },
+    {
+      "people_id": 11150,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Jonathan Steinberg, HD-136)."
+    },
+    {
+      "people_id": 11373,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Timothy Ackert, HD-008)."
+    },
+    {
+      "people_id": 11374,
+      "candidate_id": "5cfa7e91-5263-4df9-a7aa-b8f270a82001",
+      "note": null
+    },
+    {
+      "people_id": 12903,
+      "candidate_id": null,
+      "note": "Not running in Nov 2026; the HD-025 candidates are Iris Sanchez (a different person) and Jamie Vaughan."
+    },
+    {
+      "people_id": 13879,
+      "candidate_id": "9ae5b07c-e96b-4fce-9688-cc4ae1a6e61e",
+      "note": null
+    },
+    {
+      "people_id": 14399,
+      "candidate_id": "b0cdd512-f6fe-4c8e-920c-a41380dc6fe2",
+      "note": null
+    },
+    {
+      "people_id": 14845,
+      "candidate_id": "9afe7e34-a1f4-4107-aaf9-92578ae827da",
+      "note": null
+    },
+    {
+      "people_id": 14846,
+      "candidate_id": "532804fa-c134-4a95-b291-4f6cef2adff8",
+      "note": null
+    },
+    {
+      "people_id": 14847,
+      "candidate_id": "43d362ae-95f9-40a1-aeed-5a915c7b892f",
+      "note": null
+    },
+    {
+      "people_id": 14848,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Catherine Osten, SD-019)."
+    },
+    {
+      "people_id": 15085,
+      "candidate_id": "426b64e2-fd58-455b-8439-65a8b32c109f",
+      "note": null
+    },
+    {
+      "people_id": 15087,
+      "candidate_id": "23e50469-6a1b-4dcb-a0ef-4cfa802e1d11",
+      "note": null
+    },
+    {
+      "people_id": 15088,
+      "candidate_id": "1123ecdd-5c36-4528-ad7e-e92fe4a345aa",
+      "note": null
+    },
+    {
+      "people_id": 15293,
+      "candidate_id": "9bd17eb3-324c-4d7f-8806-347415741d41",
+      "note": null
+    },
+    {
+      "people_id": 16245,
+      "candidate_id": "aaa8c7f3-90b4-4b47-8b32-de3dd6dd6737",
+      "note": null
+    },
+    {
+      "people_id": 16432,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Devin Carney, HD-023)."
+    },
+    {
+      "people_id": 16433,
+      "candidate_id": "f6affd77-4078-4f69-af2b-0d01cea290eb",
+      "note": null
+    },
+    {
+      "people_id": 16436,
+      "candidate_id": "cba31f1c-24ba-4b00-b20e-75cbd0376251",
+      "note": null
+    },
+    {
+      "people_id": 16527,
+      "candidate_id": "87644a0f-9257-413d-ac43-5540c78e4241",
+      "note": null
+    },
+    {
+      "people_id": 16650,
+      "candidate_id": "04b81f63-1d97-443e-8bf8-c9d77f808e04",
+      "note": null
+    },
+    {
+      "people_id": 16706,
+      "candidate_id": "d90a528b-67c8-4424-9e8e-4d824565e58b",
+      "note": "Hand-added: LegiScan first_name is the legal name Christine; she serves and files as Cara."
+    },
+    {
+      "people_id": 16790,
+      "candidate_id": "4f62a73d-9ae3-42ad-b446-4517ed84db15",
+      "note": null
+    },
+    {
+      "people_id": 16955,
+      "candidate_id": "2f0e8a9c-0d05-4842-90ea-cb1859c2b5e0",
+      "note": null
+    },
+    {
+      "people_id": 17222,
+      "candidate_id": "be242fb5-40f0-4455-a22d-88560446eba6",
+      "note": null
+    },
+    {
+      "people_id": 17224,
+      "candidate_id": "1cbbfa1f-959c-4018-a1b3-0022a0e7a287",
+      "note": null
+    },
+    {
+      "people_id": 17225,
+      "candidate_id": "dd13f2d0-061c-416b-aea8-12ca1d95e3d4",
+      "note": "Hand-added: Our roster drops the first half of the two-part surname McCarthy Vahey."
+    },
+    {
+      "people_id": 17688,
+      "candidate_id": "939e4c87-f5dd-4c47-8acf-04e740520992",
+      "note": null
+    },
+    {
+      "people_id": 17689,
+      "candidate_id": "f828bea8-eddb-404c-9a0f-d5f961bbbf98",
+      "note": null
+    },
+    {
+      "people_id": 17916,
+      "candidate_id": "56fb7083-a198-48f0-8b26-5564b643d758",
+      "note": "Hand-added: Joseph/Joe: `joe` is not a string prefix of `joseph`, so the proposer cannot reach it."
+    },
+    {
+      "people_id": 17939,
+      "candidate_id": "91a5a85b-979f-46cf-839e-c0baf783e1ce",
+      "note": null
+    },
+    {
+      "people_id": 18237,
+      "candidate_id": "19de2288-f562-4ec8-8c28-c50485301949",
+      "note": null
+    },
+    {
+      "people_id": 18256,
+      "candidate_id": "f158c829-957a-46fb-8fec-d10bee4947d2",
+      "note": "Sitting HD-097 representative running for SD-011 in Nov 2026 (the seat Martin Looney holds); the seat disagreement is real and confirmed against the candidate's only 2026 candidacy."
+    },
+    {
+      "people_id": 18260,
+      "candidate_id": "2d1b8477-63cc-46f8-9c94-e8cb3bf2d55e",
+      "note": null
+    },
+    {
+      "people_id": 18262,
+      "candidate_id": "67e12234-df06-438d-9474-d31d335fc5c0",
+      "note": null
+    },
+    {
+      "people_id": 18263,
+      "candidate_id": "3094d362-9abe-447a-b5e8-2b2ccf00ed03",
+      "note": null
+    },
+    {
+      "people_id": 18266,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Patrick Boyd, HD-050)."
+    },
+    {
+      "people_id": 18268,
+      "candidate_id": "fb81c705-5e1e-4f1a-9d52-3d23c674f0c3",
+      "note": null
+    },
+    {
+      "people_id": 18270,
+      "candidate_id": "d62f4a0b-0f0a-4b50-bd16-c394c41c32f8",
+      "note": null
+    },
+    {
+      "people_id": 18278,
+      "candidate_id": "4fb10689-629d-46be-a7d1-66b628b1a088",
+      "note": null
+    },
+    {
+      "people_id": 18279,
+      "candidate_id": "84e842fe-12ee-4788-aa9d-a35cafbd417a",
+      "note": null
+    },
+    {
+      "people_id": 18281,
+      "candidate_id": "77ac821e-9c5a-429e-b94c-4fd1f8be05a6",
+      "note": null
+    },
+    {
+      "people_id": 18667,
+      "candidate_id": "d419e1c2-4b7c-476a-b285-e3e119f1ee51",
+      "note": "Hand-added: Our roster drops the middle surname Bond."
+    },
+    {
+      "people_id": 19372,
+      "candidate_id": "ac000cb2-6995-46a2-8f8d-4af3b401c0ae",
+      "note": null
+    },
+    {
+      "people_id": 19373,
+      "candidate_id": "7f0d2478-df0c-42de-8274-3256cdfb2afb",
+      "note": null
+    },
+    {
+      "people_id": 19557,
+      "candidate_id": "c01f0acc-ce8e-428e-a067-17dd582e907e",
+      "note": null
+    },
+    {
+      "people_id": 19662,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Julio Concepcion, HD-004)."
+    },
+    {
+      "people_id": 20272,
+      "candidate_id": "a031dea8-87dd-4201-a701-46f8cc28942d",
+      "note": null
+    },
+    {
+      "people_id": 20273,
+      "candidate_id": "81a62354-efcb-4341-9cce-302c6d672061",
+      "note": null
+    },
+    {
+      "people_id": 20277,
+      "candidate_id": "e442c5d7-ceca-480a-904c-d008aae2aa6c",
+      "note": null
+    },
+    {
+      "people_id": 20278,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Irene Haines, HD-034)."
+    },
+    {
+      "people_id": 20279,
+      "candidate_id": "494bab60-8658-41ef-a9df-0dbe4649ad29",
+      "note": null
+    },
+    {
+      "people_id": 20280,
+      "candidate_id": "8a5684b2-e0e9-4f3a-95c3-a77143e9bbbc",
+      "note": "Hand-added: sitting HD-018 representative running for the U.S. House in CD-1, so she is outside the state-legislative pool the proposer draws from (current_office confirms the seat)."
+    },
+    {
+      "people_id": 20281,
+      "candidate_id": "c68f0c5a-a94b-4505-8af8-848e5a3a1080",
+      "note": null
+    },
+    {
+      "people_id": 20282,
+      "candidate_id": "67ebcf5b-9c34-49ea-8473-a374c0c5617b",
+      "note": null
+    },
+    {
+      "people_id": 20284,
+      "candidate_id": "cd6c0467-025e-4bca-95fa-f09e8b7ed279",
+      "note": null
+    },
+    {
+      "people_id": 20285,
+      "candidate_id": "8060d804-dc3d-4911-a4f5-9b732ddb1946",
+      "note": null
+    },
+    {
+      "people_id": 20286,
+      "candidate_id": "a18a36b2-b3da-40d3-ac01-9a92b57c49fd",
+      "note": "Hand-added: Legal first name Lucia; she serves and files as Lucy."
+    },
+    {
+      "people_id": 20288,
+      "candidate_id": "36269493-6cf3-46f5-b303-f0b4224a835f",
+      "note": null
+    },
+    {
+      "people_id": 20289,
+      "candidate_id": "4899aab4-5713-417e-8306-cc86f4802591",
+      "note": null
+    },
+    {
+      "people_id": 20290,
+      "candidate_id": "c3810ec9-9e93-4d53-a03b-b9b39bb1fe3e",
+      "note": null
+    },
+    {
+      "people_id": 20291,
+      "candidate_id": "45a7acf7-9ef3-4f6e-919b-502a5427fa8b",
+      "note": null
+    },
+    {
+      "people_id": 20468,
+      "candidate_id": "f5585c44-eccf-4337-a213-b301694fed53",
+      "note": null
+    },
+    {
+      "people_id": 20469,
+      "candidate_id": "d2e4eca1-1c6f-4b78-b261-09ccb003aa99",
+      "note": null
+    },
+    {
+      "people_id": 20825,
+      "candidate_id": "1bd36299-b4a2-47b3-95c0-4634f2a8dc99",
+      "note": null
+    },
+    {
+      "people_id": 20913,
+      "candidate_id": "0237cdd6-4abc-4ef5-8012-f7bc78342817",
+      "note": null
+    },
+    {
+      "people_id": 20915,
+      "candidate_id": "1c202925-5709-45bb-bb64-a527b79c5343",
+      "note": "Hand-added: Stephen/Steve: not a prefix pair."
+    },
+    {
+      "people_id": 20959,
+      "candidate_id": "192d6100-cce1-45f8-83ed-bbb404946191",
+      "note": "Hand-added: Legal first name Kathleen; she serves and files as Kathy."
+    },
+    {
+      "people_id": 21021,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Travis Simms, HD-140)."
+    },
+    {
+      "people_id": 21033,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Jill Barry, HD-031)."
+    },
+    {
+      "people_id": 21034,
+      "candidate_id": "864d4a71-efe3-4956-93bb-3c378b010e9a",
+      "note": null
+    },
+    {
+      "people_id": 21290,
+      "candidate_id": "403797d4-6dd0-4648-8f6c-99f3352d1b1f",
+      "note": null
+    },
+    {
+      "people_id": 21319,
+      "candidate_id": "9dfc6801-64d3-450c-a00f-0e4ef52e9671",
+      "note": null
+    },
+    {
+      "people_id": 21321,
+      "candidate_id": "5eb71688-eec3-4410-8830-83d5a9e78709",
+      "note": null
+    },
+    {
+      "people_id": 21355,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Tammy Exum, HD-019)."
+    },
+    {
+      "people_id": 21361,
+      "candidate_id": "1a2fd639-4d25-414b-88c5-789b34a0b7b1",
+      "note": null
+    },
+    {
+      "people_id": 22089,
+      "candidate_id": "2c023dda-dc24-4a1f-92a2-e6c7de7402fd",
+      "note": null
+    },
+    {
+      "people_id": 22090,
+      "candidate_id": "12c230c1-78a1-49cf-9998-f16e2fe347aa",
+      "note": null
+    },
+    {
+      "people_id": 22091,
+      "candidate_id": "348966af-e64f-4826-be44-fb8c7edaa423",
+      "note": null
+    },
+    {
+      "people_id": 22092,
+      "candidate_id": "d7bbb30e-ebd4-45f6-88e7-33e5c0d9c412",
+      "note": null
+    },
+    {
+      "people_id": 22093,
+      "candidate_id": "798a13ed-1f2a-44d8-985d-efc52e83b9ae",
+      "note": null
+    },
+    {
+      "people_id": 22094,
+      "candidate_id": "f263b0e8-2218-4d82-8dc5-25bb1d9b0636",
+      "note": null
+    },
+    {
+      "people_id": 22096,
+      "candidate_id": "02910b0f-ebc8-41fa-8a42-92cdb2374718",
+      "note": null
+    },
+    {
+      "people_id": 22099,
+      "candidate_id": "dd6d2b3c-7233-4b3a-9eeb-12d0efd06a7f",
+      "note": null
+    },
+    {
+      "people_id": 22100,
+      "candidate_id": "df3e6bf4-ab6f-459a-ae0e-48f5c59a1a04",
+      "note": null
+    },
+    {
+      "people_id": 22101,
+      "candidate_id": "7ecf7f42-a729-4753-8f14-3d21ad382069",
+      "note": null
+    },
+    {
+      "people_id": 22102,
+      "candidate_id": "d353ebfc-dc1e-48dd-a183-a0ce9d388572",
+      "note": null
+    },
+    {
+      "people_id": 22103,
+      "candidate_id": "22695cd3-15bc-4f77-bc70-cd30e028f34f",
+      "note": null
+    },
+    {
+      "people_id": 22104,
+      "candidate_id": "cac27f5d-83b6-45f2-a71f-507c25a47c2f",
+      "note": null
+    },
+    {
+      "people_id": 22105,
+      "candidate_id": "89761dd4-c76d-4504-a34f-5d4df9052c09",
+      "note": null
+    },
+    {
+      "people_id": 22106,
+      "candidate_id": "a8c00031-8cb5-46c1-a958-f42fc253d880",
+      "note": "Hand-added: Legal first name Emmanuel; he serves and files as Manny."
+    },
+    {
+      "people_id": 22107,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Frank Smith, HD-118)."
+    },
+    {
+      "people_id": 22109,
+      "candidate_id": "21486f08-3533-4552-a466-6e7a2cee2d64",
+      "note": null
+    },
+    {
+      "people_id": 22110,
+      "candidate_id": "32be3205-9462-4a3b-883e-34ab07679f2e",
+      "note": null
+    },
+    {
+      "people_id": 22168,
+      "candidate_id": "dc9f99dc-7e9f-4919-b27a-ebf80ecc897e",
+      "note": null
+    },
+    {
+      "people_id": 22507,
+      "candidate_id": "632e8e3e-c2b0-4b89-aa60-6b9779288fdb",
+      "note": null
+    },
+    {
+      "people_id": 22919,
+      "candidate_id": "79d4414c-3f06-42eb-a0cf-312011f40adb",
+      "note": null
+    },
+    {
+      "people_id": 22925,
+      "candidate_id": "a037bfb4-45ce-4c05-b498-bc05ae761cce",
+      "note": null
+    },
+    {
+      "people_id": 22951,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Ryan Fazio, SD-036)."
+    },
+    {
+      "people_id": 23102,
+      "candidate_id": "f241ac68-566f-41bb-a007-ecd32b0b2716",
+      "note": null
+    },
+    {
+      "people_id": 23108,
+      "candidate_id": "f5936c5d-cb9e-411e-91af-3a63a05faf1e",
+      "note": null
+    },
+    {
+      "people_id": 23111,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (William Pizzuto, HD-071)."
+    },
+    {
+      "people_id": 23113,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Maryam Khan, HD-005)."
+    },
+    {
+      "people_id": 23567,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Cici Maher, SD-026)."
+    },
+    {
+      "people_id": 23568,
+      "candidate_id": "fa011076-3b67-4beb-ba1d-ca69052ef847",
+      "note": null
+    },
+    {
+      "people_id": 23569,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Jan Hochadel, SD-013)."
+    },
+    {
+      "people_id": 23570,
+      "candidate_id": "be6bd042-0686-41ae-b3a9-fd27c30dfa42",
+      "note": null
+    },
+    {
+      "people_id": 23572,
+      "candidate_id": "6e2ec0a7-432e-441e-b8d3-719ceadb0712",
+      "note": null
+    },
+    {
+      "people_id": 23573,
+      "candidate_id": "e3037c00-0897-4df7-944a-ff77d9618aa3",
+      "note": null
+    },
+    {
+      "people_id": 23574,
+      "candidate_id": "865a9322-c114-4118-b524-1f582a7b63b9",
+      "note": null
+    },
+    {
+      "people_id": 23648,
+      "candidate_id": "31733de2-df7b-468b-9567-c642592f677e",
+      "note": null
+    },
+    {
+      "people_id": 23649,
+      "candidate_id": "10c52d6c-25d9-4240-8375-d5aa96517bf9",
+      "note": null
+    },
+    {
+      "people_id": 23650,
+      "candidate_id": "01a034a0-3d83-496c-8f72-1358b99e5800",
+      "note": null
+    },
+    {
+      "people_id": 23651,
+      "candidate_id": "3a35eb8c-15b6-4a55-b1ee-43eb83386073",
+      "note": null
+    },
+    {
+      "people_id": 23652,
+      "candidate_id": "7490bcc6-04d1-43a3-8312-e95307f11660",
+      "note": null
+    },
+    {
+      "people_id": 23653,
+      "candidate_id": "c69135a7-bf64-490a-8a6c-a2804431ccd5",
+      "note": null
+    },
+    {
+      "people_id": 23762,
+      "candidate_id": "ccd39607-d23b-4a7b-84a6-d89fe02a1809",
+      "note": null
+    },
+    {
+      "people_id": 23831,
+      "candidate_id": "1761ec09-992e-4841-a2a5-f99d7f755695",
+      "note": null
+    },
+    {
+      "people_id": 23832,
+      "candidate_id": "6deaff60-dc48-4a3c-89b7-c4717a929014",
+      "note": null
+    },
+    {
+      "people_id": 23833,
+      "candidate_id": "db42d651-f9ce-412a-b9ce-6e9d923ccf17",
+      "note": null
+    },
+    {
+      "people_id": 23837,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Jonathan Fazzino, HD-083)."
+    },
+    {
+      "people_id": 23838,
+      "candidate_id": "691ee201-adb9-4a01-b7ff-2ba462c335ac",
+      "note": "Hand-added: Martin/Marty: not a prefix pair."
+    },
+    {
+      "people_id": 23839,
+      "candidate_id": "3d11e03c-eb7d-4076-b2fc-44d8c2dccd1e",
+      "note": null
+    },
+    {
+      "people_id": 23840,
+      "candidate_id": "3a681d11-5f9d-4637-a7b6-296706b6e43b",
+      "note": null
+    },
+    {
+      "people_id": 23841,
+      "candidate_id": "e2c97e27-aa85-44e4-8b24-e94925881fb2",
+      "note": null
+    },
+    {
+      "people_id": 23842,
+      "candidate_id": "d6f660b1-8d5d-478a-bedf-c84f28365112",
+      "note": null
+    },
+    {
+      "people_id": 23844,
+      "candidate_id": "a458e265-193b-4016-a4b6-11221c682d79",
+      "note": null
+    },
+    {
+      "people_id": 23845,
+      "candidate_id": "c91f8d0b-b551-4f85-9244-3af863b576dd",
+      "note": null
+    },
+    {
+      "people_id": 23846,
+      "candidate_id": "afd4ad8b-53fd-4b19-8576-7876dcd24cb2",
+      "note": "Hand-added: Legal first name Stephen; he serves and files as Steve."
+    },
+    {
+      "people_id": 24227,
+      "candidate_id": "b7c73e18-49ec-41dd-9ec2-1ff95d06a6d6",
+      "note": null
+    },
+    {
+      "people_id": 24520,
+      "candidate_id": "db0e436d-a663-4f12-952d-d736ced51e30",
+      "note": null
+    },
+    {
+      "people_id": 24912,
+      "candidate_id": "557ccf26-dbc4-4b46-8496-b0a4c57db3c9",
+      "note": null
+    },
+    {
+      "people_id": 24915,
+      "candidate_id": "ea24dc45-49dd-41c4-bd4f-75a5a8ff4161",
+      "note": null
+    },
+    {
+      "people_id": 25164,
+      "candidate_id": "2af3cda2-fe13-42ed-8385-35ad0d791f5b",
+      "note": null
+    },
+    {
+      "people_id": 25965,
+      "candidate_id": "687dc88d-c88d-41e7-87ae-2e53bca6ddec",
+      "note": null
+    },
+    {
+      "people_id": 25966,
+      "candidate_id": "6a880450-ebd2-47ac-9dcb-8abee765b719",
+      "note": null
+    },
+    {
+      "people_id": 25967,
+      "candidate_id": "f8140d4b-8c60-4ab6-baa2-becd3002df82",
+      "note": "Hand-added: Joseph/Joe: not a prefix pair."
+    },
+    {
+      "people_id": 25968,
+      "candidate_id": "de2ee4e0-8a36-4889-911a-f238ca0b8a95",
+      "note": null
+    },
+    {
+      "people_id": 25969,
+      "candidate_id": "ce07ca96-ed24-43e5-9e94-b66e6e36aaea",
+      "note": null
+    },
+    {
+      "people_id": 25970,
+      "candidate_id": "2cf643f3-519e-471e-ac4b-a125ecc10087",
+      "note": "Hand-added: Legal first name Katherine; she serves and files as Tina."
+    },
+    {
+      "people_id": 25971,
+      "candidate_id": "f2e2c6f5-fac1-455c-bd65-297f791e15de",
+      "note": null
+    },
+    {
+      "people_id": 25972,
+      "candidate_id": "a1faac04-a845-4d5d-a88e-611f76e504da",
+      "note": "Hand-added: Nicholas/Nick: `nick` is NOT a prefix of `nicholas` (n-i-c-k vs n-i-c-h)."
+    },
+    {
+      "people_id": 25973,
+      "candidate_id": "ebaa90e3-b991-4e62-8bdf-6d14bc5c3a04",
+      "note": null
+    },
+    {
+      "people_id": 25974,
+      "candidate_id": "53d056c5-ade6-4000-a500-a1f59e4ffb99",
+      "note": null
+    },
+    {
+      "people_id": 25975,
+      "candidate_id": "c05c2924-3183-4cca-8d91-a42fbff0fbcd",
+      "note": "Hand-added: Legal first name Mary; she serves and files as Renee, and our roster drops the LaMark half of the surname."
+    },
+    {
+      "people_id": 25976,
+      "candidate_id": "241decc4-e1b1-460e-a7fe-cc95df13ca52",
+      "note": null
+    },
+    {
+      "people_id": 25977,
+      "candidate_id": "fe1c6534-4291-42ac-b896-928aa9659db3",
+      "note": "Hand-added: Nicholas/Nick: not a prefix pair."
+    },
+    {
+      "people_id": 25978,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (John Santanella, HD-058)."
+    },
+    {
+      "people_id": 25979,
+      "candidate_id": "a021b44f-687a-48b9-bcba-9c0dfaee742f",
+      "note": null
+    },
+    {
+      "people_id": 25980,
+      "candidate_id": "b610636f-7f2c-47b9-aa93-0acfbebf8df1",
+      "note": "Hand-added: Legal first name Michael; he serves and files as MJ."
+    },
+    {
+      "people_id": 25981,
+      "candidate_id": "fdf98e94-34a0-4da4-aa64-061942a3fc5a",
+      "note": null
+    },
+    {
+      "people_id": 25982,
+      "candidate_id": "3a8899c4-c471-4e0b-a534-4cb670771480",
+      "note": null
+    },
+    {
+      "people_id": 25983,
+      "candidate_id": "fffbd96e-ce28-49d3-82cd-2358172dfe18",
+      "note": null
+    },
+    {
+      "people_id": 25984,
+      "candidate_id": "06e0ad7c-da69-418b-b0ee-69bdd34185c9",
+      "note": null
+    },
+    {
+      "people_id": 25985,
+      "candidate_id": "b2dd3579-b253-4665-b4e8-5996ef9cdd2b",
+      "note": null
+    },
+    {
+      "people_id": 26420,
+      "candidate_id": "acf90789-c62d-4b3c-b5f3-9281025107d5",
+      "note": null
+    },
+    {
+      "people_id": 26464,
+      "candidate_id": null,
+      "note": "No Nov-2026 candidate row for this member (Amy Romano, HD-113)."
+    }
+  ]
+}

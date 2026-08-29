@@ -29,6 +29,10 @@
 // UTC/Mountain boundary skew is immaterial at that width.
 
 import { firstNameVariants } from "../finance/personFirstNameNicknames.js";
+import {
+  MONTANA_IE_RECOVERY_TOLERANCE_CENTS,
+  montanaIeAttachmentRecoveryFor,
+} from "./montanaOutsideAttachmentRecovery.js";
 import { personNamesMatchWithMiddleEvidence } from "../finance/personNameMiddleEvidence.js";
 import {
   normalizeMontanaPersonNameForMatching,
@@ -317,11 +321,25 @@ export type MontanaIeClassifiedRow = {
   committeeId: number;
   committeeName: string;
   row: MontanaCersIeTransactionRow;
+  /**
+   * Amount to attribute for THIS entry. Present only on rows recovered from
+   * a filed attachment, where one transaction expands into several
+   * per-candidate entries; every consumer must prefer it over the
+   * transaction total so the lump is never counted once per entry.
+   */
+  recoveredAmountCents?: number;
+  /** Attachment id a recovered entry came from (audit trail). */
+  recoveredFromAttachmentId?: number;
   outcome:
     | { kind: "excluded"; reason: MontanaIeRowExclusionReason }
     | { kind: "quarantined"; reason: MontanaIeQuarantineReason }
     | { kind: "resolved"; stance: MontanaIeTargetStance; cersCandidateId: number; cersCandidateName: string };
 };
+
+/** The dollars a classified entry contributes (recovered split, else the row). */
+export function montanaIeClassifiedAmountCents(entry: MontanaIeClassifiedRow): number {
+  return entry.recoveredAmountCents ?? entry.row.totalAmtCents;
+}
 
 export function montanaIeCycleWindow(electionYear: number): { startMs: number; endMs: number } {
   return {
@@ -347,6 +365,21 @@ export function classifyMontanaOutsideSpendingRows(input: {
   const registrationRows = input.registrationRows.filter((row) => row.electionYear === input.electionYear);
   const seenTransIds = new Set<number>();
   const resolutionByIssue = new Map<string, MontanaIeClassifiedRow["outcome"]>();
+  const classifyIssueText = (issue: string | null): MontanaIeClassifiedRow["outcome"] => {
+    const parse = parseMontanaCandidateIssue(issue);
+    if (parse.kind === "quarantine") {
+      return { kind: "quarantined", reason: parse.reason };
+    }
+    const resolution = resolveMontanaIeTarget(parse, registrationRows);
+    return resolution.status === "resolved"
+      ? {
+          kind: "resolved",
+          stance: parse.stance,
+          cersCandidateId: resolution.cersCandidateId,
+          cersCandidateName: resolution.cersCandidateName,
+        }
+      : { kind: "quarantined", reason: resolution.reason };
+  };
   const classified: MontanaIeClassifiedRow[] = [];
   for (const committee of input.sweep.committees) {
     const rows = input.sweep.transactionsByCommitteeId.get(committee.committeeId) ?? [];
@@ -375,24 +408,39 @@ export function classifyMontanaOutsideSpendingRows(input: {
         exclude("non_positive_amount");
         continue;
       }
+      // Attachment recovery: a filed PDF breakdown replaces the lump row,
+      // but only when it is the same disclosure it was harvested from:
+      // same committee, a row whose candidateIssue still points at an
+      // attachment (an amended row that now names its own target is newer
+      // official data and must never be overridden by a stored breakdown),
+      // and entries reconciling to the row's amount. Each entry is a
+      // canonical candidateIssue string, so it goes through the SAME parse
+      // + stance + resolution path as a filer-typed target.
+      const recovery = montanaIeAttachmentRecoveryFor(row.transId);
+      const rowParse = recovery !== null ? parseMontanaCandidateIssue(row.candidateIssue) : null;
+      if (
+        recovery !== null &&
+        recovery.committeeId === committee.committeeId &&
+        rowParse?.kind === "quarantine" &&
+        rowParse.reason === "attachment_reference"
+      ) {
+        const recoveredTotal = recovery.entries.reduce((sum, entry) => sum + entry.amountCents, 0);
+        if (Math.abs(recoveredTotal - row.totalAmtCents) <= MONTANA_IE_RECOVERY_TOLERANCE_CENTS) {
+          for (const entry of recovery.entries) {
+            classified.push({
+              ...base,
+              recoveredAmountCents: entry.amountCents,
+              recoveredFromAttachmentId: recovery.attachmentId,
+              outcome: classifyIssueText(entry.issue),
+            });
+          }
+          continue;
+        }
+      }
       const issueKey = (row.candidateIssue ?? "").replace(/\s+/g, " ").trim();
       let outcome = resolutionByIssue.get(issueKey);
       if (outcome === undefined) {
-        const parse = parseMontanaCandidateIssue(row.candidateIssue);
-        if (parse.kind === "quarantine") {
-          outcome = { kind: "quarantined", reason: parse.reason };
-        } else {
-          const resolution = resolveMontanaIeTarget(parse, registrationRows);
-          outcome =
-            resolution.status === "resolved"
-              ? {
-                  kind: "resolved",
-                  stance: parse.stance,
-                  cersCandidateId: resolution.cersCandidateId,
-                  cersCandidateName: resolution.cersCandidateName,
-                }
-              : { kind: "quarantined", reason: resolution.reason };
-        }
+        outcome = classifyIssueText(row.candidateIssue);
         resolutionByIssue.set(issueKey, outcome);
       }
       classified.push({ ...base, outcome });
@@ -447,7 +495,7 @@ export function aggregateMontanaOutsideSpendingForCandidate(input: {
     if (entry.outcome.kind !== "resolved" || entry.outcome.cersCandidateId !== input.cersCandidateId) {
       continue;
     }
-    const cents = entry.row.totalAmtCents;
+    const cents = montanaIeClassifiedAmountCents(entry);
     attributedRowCount += 1;
     attributedCents += cents;
     if (entry.outcome.stance === "support") {
@@ -538,7 +586,7 @@ export function summarizeMontanaOutsideSpendingByCommittee(
       };
       byCommittee.set(entry.committeeId, summary);
     }
-    const cents = entry.row.totalAmtCents;
+    const cents = montanaIeClassifiedAmountCents(entry);
     summary.rowCount += 1;
     summary.totalCents += cents;
     if (entry.outcome.kind === "resolved") {

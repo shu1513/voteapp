@@ -138,8 +138,14 @@ export type MontanaChainLinkResult = {
 };
 
 export type MontanaChainReconciliation = {
-  /** True only when every checkable link on both sides passed. */
+  /** True when the chain reconciles per-link OR cumulatively (below). */
   ok: boolean;
+  /**
+   * True when per-link checks failed but the real-anchored span conserves
+   * money combined — CERS period-attribution noise, not a money gap. The
+   * failing links stay in `links` as diagnostics.
+   */
+  reconciledCumulatively: boolean;
   /**
    * True when at least one report carries REAL begin balances on both
    * sides, i.e. an official figure exists to ROOT the ending-balance
@@ -161,7 +167,9 @@ export type MontanaChainReconciliation = {
   /**
    * Sum of POSITIVE derived lumps across passing links, both sides — the
    * unitemized contribution total. Tolerated negative lumps are unitemized
-   * outflows (bank fees), not negative raising, and contribute zero.
+   * outflows (bank fees), not negative raising, and contribute zero. Under
+   * cumulative acceptance the failing links are netted together first
+   * (restatement pairs cancel), then contribute their net only if positive.
    */
   derivedUnitemizedTotalCents: number | null;
 };
@@ -227,6 +235,58 @@ function computeEffectiveBegins(reports: readonly MontanaChainReport[]): Montana
     effective.push(entry);
   }
   return effective;
+}
+
+/**
+ * Combined cumulative conservation across the REAL-anchored span: does the
+ * last real anchor equal the first real anchor plus every cash flow in
+ * between, both sides summed?
+ *
+ * This is the fallback for per-link failures, and it exists because CERS
+ * begin balances carry period-attribution noise that the itemized flows do
+ * not. Live Phase 3 triage of 21 failing filers: 14 fail one or two links
+ * with residuals that CANCEL EXACTLY across the span ($1,000 out then back;
+ * a filer entering a negative balance as positive, then correcting), while
+ * the remaining 7 show money genuinely appearing or vanishing. Nothing we
+ * publish depends on which PERIOD a dollar was booked in — the card totals
+ * are whole-cycle sums of itemized rows, and the balance is anchored on the
+ * last report's own begin — so a span that conserves money is verified for
+ * every purpose the chain serves, while a real gap still fails.
+ *
+ * Returns null when fewer than two reports carry real begins on both sides
+ * (nothing to check against). This function only ACCEPTS the span; the
+ * unitemized attribution stays per-link, with the failing links netted
+ * (see derivedUnitemizedTotalCents) — the span lump nets passing links'
+ * residuals too, which would let a tolerated fee residual shrink another
+ * period's genuine contributions.
+ */
+function reconcileCumulativeSpan(
+  reports: readonly MontanaChainReport[]
+): { ok: boolean; lumpCents: number } | null {
+  const anchors: number[] = [];
+  for (const [index, report] of reports.entries()) {
+    if (beginCents(report.inventory, "primary") !== null && beginCents(report.inventory, "general") !== null) {
+      anchors.push(index);
+    }
+  }
+  const first = anchors[0];
+  const last = anchors.at(-1);
+  if (first === undefined || last === undefined || first === last) {
+    return null;
+  }
+  let inflowCents = 0;
+  let outflowCents = 0;
+  for (let index = first; index < last; index += 1) {
+    const flows = reports[index]!.flows;
+    inflowCents += flows.inflowCashCents.primary + flows.inflowCashCents.general;
+    outflowCents += flows.outflowCashCents.primary + flows.outflowCashCents.general;
+  }
+  const beginCombined =
+    beginCents(reports[first]!.inventory, "primary")! + beginCents(reports[first]!.inventory, "general")!;
+  const endCombined =
+    beginCents(reports[last]!.inventory, "primary")! + beginCents(reports[last]!.inventory, "general")!;
+  const lumpCents = endCombined - (beginCombined + inflowCents - outflowCents);
+  return { ok: lumpGateFailure(lumpCents, inflowCents) === null, lumpCents };
 }
 
 /**
@@ -311,7 +371,10 @@ export function reconcileMontanaCashBeginChain(reports: readonly MontanaChainRep
     }
   }
 
-  const ok = links.every((link) => link.ok);
+  const perLinkOk = links.every((link) => link.ok);
+  const cumulative = perLinkOk ? null : reconcileCumulativeSpan(reports);
+  const reconciledCumulatively = cumulative?.ok === true;
+  const ok = perLinkOk || reconciledCumulatively;
 
   // An ending balance is only ever derivable FROM a real balance anchor: a
   // chain whose every begin is carried (a live all-null filer) reconciles
@@ -336,15 +399,23 @@ export function reconcileMontanaCashBeginChain(reports: readonly MontanaChainRep
 
   return {
     ok,
+    reconciledCumulatively,
     hasRealAnchor,
     links,
     derivedEndingBalanceCents,
     // Positive ROOTED lumps only: a tolerated negative lump is unitemized
     // spending (bank fees) and must not shrink the unitemized CONTRIBUTION
     // total, and an unrooted lump is unknown-start residue, not money
-    // raised — counting it would mint phantom contributions.
-    derivedUnitemizedTotalCents: ok
-      ? links.reduce((sum, link) => sum + (link.rooted ? Math.max(0, link.lumpCents) : 0), 0)
-      : null,
+    // raised — counting it would mint phantom contributions. Under
+    // cumulative acceptance only the FAILING links (the restatement noise
+    // the span check absorbs) are netted against each other — summing
+    // their positives alone would count the +$1,000 half of an offsetting
+    // pair; netting them against PASSING links would let a passing fee
+    // residual shrink another period's genuine contributions. A failing
+    // link is always rooted (unrooted links never gate-fail).
+    derivedUnitemizedTotalCents: !ok
+      ? null
+      : links.reduce((sum, link) => sum + (link.ok && link.rooted ? Math.max(0, link.lumpCents) : 0), 0) +
+        Math.max(0, links.reduce((sum, link) => sum + (link.ok ? 0 : link.lumpCents), 0)),
   };
 }

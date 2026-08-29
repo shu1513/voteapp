@@ -7,6 +7,7 @@ import {
   legiscanEvidenceFileName,
   legiscanMemberVotes,
   legiscanRollCallPageUrl,
+  isLegiscanCommitteeChamberRollCall,
   legiscanRollCallSha256,
   parseLegiscanBill,
   parseLegiscanRollCall,
@@ -293,7 +294,7 @@ describe("legiscanRollCallPageUrl", () => {
 
 describe("getLegiscanStateConfig", () => {
   it("serves only surveyed states; an unsurveyed state is refused by name", () => {
-    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual(["GA", "IL", "TN", "TX", "FL", "CA", "PA", "ME", "MO"]);
+    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual(["GA", "CT", "IL", "TN", "TX", "FL", "CA", "PA", "ME", "MO"]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
     expect(getLegiscanStateConfig("GA").sessionId).toBe(2167);
@@ -302,6 +303,7 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("CA").sessionId).toBe(2172);
     expect(getLegiscanStateConfig("PA").sessionId).toBe(2192);
     expect(getLegiscanStateConfig("ME").sessionId).toBe(2181);
+    expect(getLegiscanStateConfig("CT").sessionId).toBe(2174);
     expect(getLegiscanStateConfig("MO").sessionId).toBe(2169);
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("NY")).toThrow("no LegiScan state config for NY");
@@ -484,6 +486,55 @@ describe("getLegiscanStateConfig", () => {
     expect(tn("HOUSE JUDICIARY COMMITTEE: Rec. for pass; ref to Calendar & Rules Committee", 22).reason).toBe(
       "committee_tally:22/99"
     );
+  });
+
+  it("classifies Connecticut's real desc vocabulary as surveyed", () => {
+    const config = LEGISCAN_STATE_CONFIGS.CT!;
+    const ct = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
+      classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+    // Every desc carries the chamber's sequential vote number; the House
+    // names its question after it, the Senate names nothing at all (the
+    // trailing space on the Senate spelling is real feed text).
+    expect(ct("House Roll Call Vote 126", 151)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(ct("House Roll Call Vote 54 AS AMENDED", 151).questionClass).toBe("passage");
+    expect(ct("House Roll Call Vote 32 CONSENT CALENDAR", 150).questionClass).toBe("passage");
+    expect(ct("House Roll Call Vote 12 EMERGENCY CERTIFICATION", 148).questionClass).toBe("passage");
+    expect(ct("Senate Roll Call Vote 284 ", 36, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // Floor amendment votes, including the two concatenated spellings whose
+    // question is STILL the amendment (SB 7 roll 225 rejected Amendment
+    // Schedule E 48-99). Exclusions run first, so these never reach the
+    // kept patterns above.
+    for (const desc of [
+      "House Roll Call Vote 53 HOUSE AMD B",
+      "House Roll Call Vote 225 AS AMENDED HOUSE AMD E",
+      "House Roll Call Vote 61 EMERGENCY CERTIFICATION HOUSE AMD A",
+    ]) {
+      expect(ct(desc, 151).reason, desc).toBe("excluded_question");
+    }
+    // Five Senate rolls list only the members present (21, 21, 22, 25, 27);
+    // the two under the floor ratio surface rather than being kept unseen.
+    expect(ct("Senate Roll Call Vote 302 ", 21, "senate")).toMatchObject({
+      isFloorVote: null,
+      reason: "kept_small_tally:21/36",
+    });
+    expect(ct("Senate Roll Call Vote 136 ", 25, "senate").isFloorVote).toBe(true);
+  });
+
+  it("rejects Connecticut's joint-committee tallies on the chamber code", () => {
+    // Connecticut's standing committees seat both chambers, so LegiScan
+    // files their tallies under chamber `J` — no chamber, and so no tally
+    // denominator. They are recognized before parsing, which would (rightly)
+    // refuse a roll call with no chamber.
+    expect(isLegiscanCommitteeChamberRollCall({ chamber: "J" })).toBe(true);
+    expect(isLegiscanCommitteeChamberRollCall({ chamber: " j " })).toBe(true);
+    expect(isLegiscanCommitteeChamberRollCall({ chamber: "H" })).toBe(false);
+    expect(isLegiscanCommitteeChamberRollCall({ chamber: "A" })).toBe(false);
+    expect(isLegiscanCommitteeChamberRollCall({ chamber: "S" })).toBe(false);
+    expect(isLegiscanCommitteeChamberRollCall({})).toBe(false);
+    expect(() => parseLegiscanRollCall(rollCallElement({ chamber: "J" }))).toThrow("chamber is not H, A or S: J");
   });
 
   it("classifies Georgia's real desc vocabulary as surveyed", () => {
