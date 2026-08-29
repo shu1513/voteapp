@@ -5,11 +5,13 @@ import {
   BALLOT_SORT_DESCRIPTIONS,
   BALLOT_SORTS,
   deriveBallotFilters,
+  myDraftLabel,
   useElectionChoices,
+  useMe,
   useMyResearchAreas,
 } from "@voteapp/api-client";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "expo-router";
+import { Tabs, useRouter } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { AccountGate } from "../../components/AccountGate";
@@ -22,6 +24,7 @@ import { EmptyNotice, ErrorNotice, LoadingNotice } from "../../components/Status
 import { VerifyPrompt } from "../../components/VerifyPrompt";
 import { clearPendingDistrictIds, readPendingDistrictIds } from "../../lib/pendingDistricts";
 import { registerForPushRequestingPermission } from "../../lib/pushNotifications";
+import { useMyPicksProgress } from "../../lib/useMyPicksProgress";
 
 type SavedBallot = BallotSummary & { matched_address?: string };
 
@@ -338,10 +341,34 @@ function SavedBallotBody({ email }: { email: string }) {
   );
 }
 
-export default function MyBallotScreen() {
+// Header entry to the My Draft screen (no fifth tab; tab real estate is
+// scarce). The label carries live progress over the nearest election day —
+// "My Draft" → "My Draft 4/13" → "My Picks ✓" — from the shared hook, the
+// same vocabulary as the web header nav. Hidden while logged out or the
+// session is still loading: a draft link for a viewer with no draft is
+// noise (mobile has no guest draft).
+function DraftHeaderLink() {
+  const router = useRouter();
+  const progress = useMyPicksProgress();
   return (
-    <AccountGate signedOutText="Log in to see your saved ballot.">
-      {(me) => <SavedBallotBody email={me.email} />}
-    </AccountGate>
+    <Pressable
+      onPress={() => router.push("/my-draft")}
+      accessibilityRole="link"
+      className="mr-4 rounded-full border border-line bg-white px-3 py-1.5 active:border-ink"
+    >
+      <Text className="text-sm font-medium text-ink">{myDraftLabel(progress)}</Text>
+    </Pressable>
+  );
+}
+
+export default function MyBallotScreen() {
+  const { me } = useMe();
+  return (
+    <>
+      <Tabs.Screen options={{ headerRight: me ? () => <DraftHeaderLink /> : undefined }} />
+      <AccountGate signedOutText="Log in to see your saved ballot.">
+        {(me) => <SavedBallotBody email={me.email} />}
+      </AccountGate>
+    </>
   );
 }
