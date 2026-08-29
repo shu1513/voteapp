@@ -470,12 +470,13 @@ describe("getLegiscanStateConfig", () => {
     ]) {
       expect(ct(desc, 151).reason, desc).toBe("excluded_question");
     }
-    // The five Senate rolls that list only the members present surface on
-    // the small-tally rule rather than being kept unseen.
+    // Five Senate rolls list only the members present (21, 21, 22, 25, 27);
+    // the two under the floor ratio surface rather than being kept unseen.
     expect(ct("Senate Roll Call Vote 302 ", 21, "senate")).toMatchObject({
       isFloorVote: null,
       reason: "kept_small_tally:21/36",
     });
+    expect(ct("Senate Roll Call Vote 136 ", 25, "senate").isFloorVote).toBe(true);
   });
 
   it("rejects Connecticut's joint-committee tallies on the chamber code", () => {

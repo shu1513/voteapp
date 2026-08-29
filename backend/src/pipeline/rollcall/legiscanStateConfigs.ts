@@ -169,9 +169,10 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   //   belongs to no chamber. They are rejected before the queue on the
   //   chamber code (LEGISCAN_COMMITTEE_CHAMBER_CODES in legiscanRollCall.ts)
   //   — nothing in this entry can reach them. The remaining 851 rolls are
-  //   ALL floor votes: House totals 150-151, Senate 36 (five Senate rolls
-  //   list only the members present, 21-27, and land in the small-tally
-  //   surfaced bucket rather than being silently kept).
+  //   ALL floor votes: House totals 150-151, Senate 36. Five Senate rolls
+  //   list only the members present (21, 21, 22, 25, 27); the two at 21
+  //   fall under the 0.6 floor ratio and surface for a human rather than
+  //   being silently kept.
   // - Every desc carries the chamber's own sequential vote number
   //   (`House Roll Call Vote 54 AS AMENDED`, `Senate Roll Call Vote 268 `,
   //   note the trailing space), so every pattern has to tolerate it. That
