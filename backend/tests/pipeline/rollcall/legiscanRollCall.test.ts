@@ -640,7 +640,9 @@ describe("getLegiscanStateConfig", () => {
       expect(me(desc), desc).toMatchObject({ isFloorVote: true, questionClass: "passage" });
     }
     expect(me("Recede And Concur RC #144").questionClass).toBe("concurrence");
-    expect(me("Recede RC #9").questionClass).toBe("concurrence");
+    // A bare Recede is the chamber undoing its OWN earlier action, which is
+    // not always a step toward the other chamber's text — surfaced, not kept.
+    expect(me("Recede RC #9")).toMatchObject({ isFloorVote: null, reason: "unknown_question" });
     expect(me("Veto Override (2/3) RC #4", 35, "senate").questionClass).toBe("veto_override");
     expect(me("Reconsideration - Veto RC #66").questionClass).toBe("veto_override");
     // A vote to accept an ought-NOT-to-pass report kills the bill: excluded

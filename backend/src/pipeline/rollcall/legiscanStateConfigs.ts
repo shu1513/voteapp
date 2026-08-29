@@ -587,10 +587,20 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       // `Passage`, `Passage To Be Engrossed[ As Amended]`, `Passage Of
       // Emergency Measure`.
       { pattern: /^passage/, questionClass: "passage" },
-      // Adoption of a joint resolution. Anchored so it never reaches the
-      // amendment-adoption descs, which all begin `Adopt <designator>`.
+      // Adoption of a joint resolution — for a JR, adoption IS the final
+      // passage question. Verified over the dataset: all 8 bare-`Adoption`
+      // rolls sit on JR measures; amendment adoptions are never worded
+      // this way (they all begin `Adopt <designator>` — `Adopt Cah-1`,
+      // `Adopt Hah-963 To Cah-959` — and are excluded above), so the
+      // end-anchored bare word cannot reach an amendment vote.
       { pattern: /^adoption(?: rc ?#\d+)?$/, questionClass: "passage" },
-      { pattern: /^recede/, questionClass: "concurrence" },
+      // `Recede And Concur` — the chamber gives up its own position and
+      // takes the other chamber's. A BARE `Recede` is different: the
+      // chamber recedes from an earlier action of its OWN (LD 209's Senate
+      // `Recede`, 12-20, is supplemental-budget amendment machinery, not a
+      // concurrence), so the 12 bare-`Recede` rolls surface as unknown
+      // instead of being auto-kept.
+      { pattern: /^recede and concur/, questionClass: "concurrence" },
       { pattern: /^reconsideration ?- ?veto/, questionClass: "veto_override" },
       { pattern: /^veto override/, questionClass: "veto_override" },
     ],
