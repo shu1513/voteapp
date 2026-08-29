@@ -8,8 +8,8 @@
       "measure_id": "S J RES 13",
       "vote_date": "2025-05-20",
       "review_status": "approved",
-      "yea_description": "Voted to send S.J.Res. 13 to the President, using the Congressional Review Act to repeal the Comptroller of the Currency rule ending expedited automatic approvals and streamlined forms in bank merger reviews. It passed the House 220-207.",
-      "nay_description": "Voted against sending S.J.Res. 13 to the President, which used the Congressional Review Act to repeal the Comptroller of the Currency rule ending expedited automatic approvals and streamlined forms in bank merger reviews. It passed the House 220-207.",
+      "yea_description": "Voted for sending S.J.Res. 13 to the President to cancel the federal bank rule ending fast automatic approval and short-form applications for mergers. The House passed it 220-207.",
+      "nay_description": "Voted against sending S.J.Res. 13 to the President to cancel the federal bank rule ending fast automatic approval and short-form applications for mergers. The House passed it 220-207.",
       "labels": [
         {
           "slug": "corporate_accountability",
@@ -25,8 +25,8 @@
       "measure_id": "S J RES 31",
       "vote_date": "2025-05-22",
       "review_status": "approved",
-      "yea_description": "Voted to send S.J.Res. 31 to the President, using the Congressional Review Act to repeal the EPA rule requiring plants that reclassify from major sources to area sources to keep controlling persistent and bioaccumulative hazardous air pollutants. It passed the House 216-212.",
-      "nay_description": "Voted against sending S.J.Res. 31 to the President, which used the Congressional Review Act to repeal the EPA rule requiring plants that reclassify from major sources to area sources to keep controlling persistent and bioaccumulative hazardous air pollutants. It passed the House 216-212.",
+      "yea_description": "Voted for sending S.J.Res. 31 to the President to cancel the federal environmental agency rule requiring plants that lower their federal pollution category to keep controlling dangerous air pollutants that last and build up in living things. The House passed it 216-212.",
+      "nay_description": "Voted against sending S.J.Res. 31 to the President to cancel the federal environmental agency rule requiring plants that lower their federal pollution category to keep controlling dangerous air pollutants that last and build up in living things. The House passed it 216-212.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -42,8 +42,8 @@
       "measure_id": "H.J.Res. 88",
       "vote_date": "2025-05-22",
       "review_status": "approved",
-      "yea_description": "Voted to send H.J.Res. 88 to the President, revoking the Clean Air Act waiver that let California enforce its Advanced Clean Cars II rules requiring rising shares of low-emission and zero-emission new cars. It passed the Senate 51-44.",
-      "nay_description": "Voted against sending H.J.Res. 88 to the President, which revoked the Clean Air Act waiver that let California enforce its Advanced Clean Cars II rules requiring rising shares of low-emission and zero-emission new cars. It passed the Senate 51-44.",
+      "yea_description": "Voted for sending H.J.Res. 88 to the President, revoking the federal permission for California rules requiring more low- and zero-emission new cars. The Senate passed it 51-44.",
+      "nay_description": "Voted against sending H.J.Res. 88 to the President, which revoked the federal permission for California rules requiring more low- and zero-emission new cars. The Senate passed it 51-44.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -59,8 +59,8 @@
       "measure_id": "H.J.Res. 87",
       "vote_date": "2025-05-22",
       "review_status": "approved",
-      "yea_description": "Voted to send H.J.Res. 87 to the President, revoking the Clean Air Act waivers that let California enforce its heavy-duty vehicle emission warranty rules and its Advanced Clean Trucks and zero-emission fleet standards. It passed the Senate 51-45.",
-      "nay_description": "Voted against sending H.J.Res. 87 to the President, which revoked the Clean Air Act waivers that let California enforce its heavy-duty vehicle emission warranty rules and its Advanced Clean Trucks and zero-emission fleet standards. It passed the Senate 51-45.",
+      "yea_description": "Voted for sending H.J.Res. 87 to the President, revoking the federal permissions for California's truck-emission warranty rules and zero-emission truck and fleet rules. The Senate passed it 51-45.",
+      "nay_description": "Voted against sending H.J.Res. 87 to the President, which revoked the federal permissions for California's truck-emission warranty rules and zero-emission truck and fleet rules. The Senate passed it 51-45.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -76,8 +76,8 @@
       "measure_id": "H R 2483",
       "vote_date": "2025-06-04",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 2483, the SUPPORT for Patients and Communities Reauthorization Act of 2025, which renewed federal substance use disorder, overdose prevention, and mental health programs through 2030. It passed the House 366-57.",
-      "nay_description": "Voted against passing H.R. 2483, the SUPPORT for Patients and Communities Reauthorization Act of 2025, which renewed federal substance use disorder, overdose prevention, and mental health programs through 2030. It passed the House 366-57.",
+      "yea_description": "Voted for H.R. 2483, the SUPPORT for Patients and Communities Reauthorization Act of 2025, which renewed federal substance use disorder, overdose prevention, and mental health programs through 2030. The House passed it 366-57.",
+      "nay_description": "Voted against H.R. 2483, the SUPPORT for Patients and Communities Reauthorization Act of 2025, which renewed federal substance use disorder, overdose prevention, and mental health programs through 2030. The House passed it 366-57.",
       "labels": [
         {
           "slug": "healthcare_affordability",
@@ -93,8 +93,8 @@
       "measure_id": "H R 2931",
       "vote_date": "2025-06-05",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 2931, the Save SBA from Sanctuary Cities Act, which required the Small Business Administration to move any office located in a sanctuary jurisdiction out of that jurisdiction within 60 days. It passed the House 211-199.",
-      "nay_description": "Voted against passing H.R. 2931, the Save SBA from Sanctuary Cities Act, which required the Small Business Administration to move any office located in a sanctuary jurisdiction out of that jurisdiction within 60 days. It passed the House 211-199.",
+      "yea_description": "Voted for H.R. 2931, the Save SBA from Sanctuary Cities Act, which required the federal small-business agency to move any office located in a sanctuary area out of that area within 60 days. The House passed it 211-199.",
+      "nay_description": "Voted against H.R. 2931, the Save SBA from Sanctuary Cities Act, which required the federal small-business agency to move any office located in a sanctuary area out of that area within 60 days. The House passed it 211-199.",
       "labels": [
         {
           "slug": "immigration",
@@ -110,8 +110,8 @@
       "measure_id": "H R 2966",
       "vote_date": "2025-06-06",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 2966, the American Entrepreneurs First Act, which limited Small Business Administration 7(a) and 504 loans to citizens, nationals, and lawful permanent residents, making asylees and refugees ineligible. It passed the House 217-190.",
-      "nay_description": "Voted against passing H.R. 2966, the American Entrepreneurs First Act, which limited Small Business Administration 7(a) and 504 loans to citizens, nationals, and lawful permanent residents, making asylees and refugees ineligible. It passed the House 217-190.",
+      "yea_description": "Voted for H.R. 2966, which limited Small Business Administration 7(a) and 504 loans to citizens, nationals, and green card holders, making people granted asylum and refugees unable to qualify. The House passed it 217-190.",
+      "nay_description": "Voted against H.R. 2966, which limited Small Business Administration 7(a) and 504 loans to citizens, nationals, and green card holders, making people granted asylum and refugees unable to qualify. The House passed it 217-190.",
       "labels": [
         {
           "slug": "immigration",
@@ -127,8 +127,8 @@
       "measure_id": "H R 884",
       "vote_date": "2025-06-10",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 884, which barred non-citizens from voting in District of Columbia elections and repealed the 2022 DC law that had allowed noncitizen residents to vote in local races. It passed the House 266-148.",
-      "nay_description": "Voted against passing H.R. 884, which barred non-citizens from voting in District of Columbia elections and repealed the 2022 DC law that had allowed noncitizen residents to vote in local races. It passed the House 266-148.",
+      "yea_description": "Voted for H.R. 884, which barred noncitizens from voting in District of Columbia elections and repealed the 2022 DC law that had allowed noncitizen residents to vote in local races. The House passed it 266-148.",
+      "nay_description": "Voted against H.R. 884, which barred noncitizens from voting in District of Columbia elections and repealed the 2022 DC law that had allowed noncitizen residents to vote in local races. The House passed it 266-148.",
       "labels": [
         {
           "slug": "election_integrity",
@@ -144,8 +144,8 @@
       "measure_id": "S 331",
       "vote_date": "2025-06-12",
       "review_status": "approved",
-      "yea_description": "Voted to pass S. 331, the HALT Fentanyl Act, which permanently placed fentanyl-related substances as a class in Schedule I of the Controlled Substances Act and applied the same trafficking penalties to them. It passed the House 321-104 and was signed into law.",
-      "nay_description": "Voted against passing S. 331, the HALT Fentanyl Act, which permanently placed fentanyl-related substances as a class in Schedule I of the Controlled Substances Act and applied the same trafficking penalties to them. It passed the House 321-104 and was signed into law.",
+      "yea_description": "Voted for S. 331, the HALT Fentanyl Act, which permanently put fentanyl-related substances in the strictest federal drug category and gave them the same trafficking penalties as fentanyl. The House passed it 321-104, and it became law.",
+      "nay_description": "Voted against S. 331, the HALT Fentanyl Act, which permanently put fentanyl-related substances in the strictest federal drug category and gave them the same trafficking penalties as fentanyl. The House passed it 321-104, and it became law.",
       "labels": [
         {
           "slug": "public_safety_and_crime_control",
@@ -161,8 +161,8 @@
       "measure_id": "H R 2056",
       "vote_date": "2025-06-12",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 2056, the District of Columbia Federal Immigration Compliance Act, which barred the District from limiting how its agencies share immigration status information or cooperate with federal immigration enforcement. It passed the House 224-194.",
-      "nay_description": "Voted against passing H.R. 2056, the District of Columbia Federal Immigration Compliance Act, which barred the District from limiting how its agencies share immigration status information or cooperate with federal immigration enforcement. It passed the House 224-194.",
+      "yea_description": "Voted for H.R. 2056, the District of Columbia Federal Immigration Compliance Act, which barred the District from limiting how its agencies share immigration status information or cooperate with federal immigration enforcement. The House passed it 224-194.",
+      "nay_description": "Voted against H.R. 2056, the District of Columbia Federal Immigration Compliance Act, which barred the District from limiting how its agencies share immigration status information or cooperate with federal immigration enforcement. The House passed it 224-194.",
       "labels": [
         {
           "slug": "immigration",
@@ -178,8 +178,8 @@
       "measure_id": "H R 875",
       "vote_date": "2025-06-26",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 875, which made driving while intoxicated or impaired a ground for barring an immigrant from entering the United States and for deporting one already here. It passed the House 246-160.",
-      "nay_description": "Voted against passing H.R. 875, which made driving while intoxicated or impaired a ground for barring an immigrant from entering the United States and for deporting one already here. It passed the House 246-160.",
+      "yea_description": "Voted for H.R. 875, which made driving while intoxicated or impaired a ground for barring an immigrant from entering the United States and for deporting one already here. The House passed it 246-160.",
+      "nay_description": "Voted against H.R. 875, which made driving while intoxicated or impaired a ground for barring an immigrant from entering the United States and for deporting one already here. The House passed it 246-160.",
       "labels": [
         {
           "slug": "immigration",

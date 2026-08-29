@@ -8,8 +8,8 @@
       "measure_id": "S 1071",
       "vote_date": "2025-12-10",
       "review_status": "approved",
-      "yea_description": "Voted to pass S. 1071, the National Defense Authorization Act for Fiscal Year 2026, which set defense policy and authorized spending for the Department of Defense, military construction, and national security programs at the Energy Department and Coast Guard. It passed the House 312-112.",
-      "nay_description": "Voted against passing S. 1071, the National Defense Authorization Act for Fiscal Year 2026, which set defense policy and authorized spending for the Department of Defense, military construction, and national security programs at the Energy Department and Coast Guard. It passed the House 312-112.",
+      "yea_description": "Voted for S. 1071, the National Defense Authorization Act for Fiscal Year 2026, which set defense policy and approved spending for the Defense Department, military construction, and national security programs at the Energy Department and Coast Guard. The House passed it 312-112.",
+      "nay_description": "Voted against S. 1071, the National Defense Authorization Act for Fiscal Year 2026, which set defense policy and approved spending for the Defense Department, military construction, and national security programs at the Energy Department and Coast Guard. The House passed it 312-112.",
       "labels": [
         {
           "slug": "national_defense",
@@ -25,8 +25,8 @@
       "measure_id": "H R 3898",
       "vote_date": "2025-12-11",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 3898, the PERMIT Act, which narrowed the Clean Water Act by removing groundwater, waste treatment systems, prior converted cropland, and streams that flow only after rain from the definition of navigable waters. It passed the House 221-205.",
-      "nay_description": "Voted against passing H.R. 3898, the PERMIT Act, which narrowed the Clean Water Act by removing groundwater, waste treatment systems, prior converted cropland, and streams that flow only after rain from the definition of navigable waters. It passed the House 221-205.",
+      "yea_description": "Voted for H.R. 3898, which narrowed the Clean Water Act by removing groundwater, waste treatment systems, previously converted farmland, and streams that flow only after rain from the waters covered by the Clean Water Act. The House passed it 221-205.",
+      "nay_description": "Voted against H.R. 3898, which narrowed the Clean Water Act by removing groundwater, waste treatment systems, previously converted farmland, and streams that flow only after rain from the waters covered by the Clean Water Act. The House passed it 221-205.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -42,8 +42,8 @@
       "measure_id": "H R 3668",
       "vote_date": "2025-12-12",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 3668, the Improving Interagency Coordination for Pipeline Reviews Act, which sped up environmental review of natural gas pipelines and LNG terminals by making federal energy regulators the sole lead agency. It passed the House 213-184.",
-      "nay_description": "Voted against passing H.R. 3668, the Improving Interagency Coordination for Pipeline Reviews Act, which sped up environmental review of natural gas pipelines and LNG terminals by making federal energy regulators the sole lead agency. It passed the House 213-184.",
+      "yea_description": "Voted for H.R. 3668, which sped up environmental review of natural gas pipelines and liquefied natural gas terminals by making federal energy regulators the only agency in charge. The House passed it 213-184.",
+      "nay_description": "Voted against H.R. 3668, which sped up environmental review of natural gas pipelines and liquefied natural gas terminals by making federal energy regulators the only agency in charge. The House passed it 213-184.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -59,8 +59,8 @@
       "measure_id": "H R 4371",
       "vote_date": "2025-12-16",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 4371, the Kayla Hamilton Act, which required Health and Human Services to weigh criminal history and gang affiliation information when placing unaccompanied immigrant children with sponsors. It passed the House 225-201.",
-      "nay_description": "Voted against passing H.R. 4371, the Kayla Hamilton Act, which required Health and Human Services to weigh criminal history and gang affiliation information when placing unaccompanied immigrant children with sponsors. It passed the House 225-201.",
+      "yea_description": "Voted for H.R. 4371, the Kayla Hamilton Act, which required Health and Human Services to weigh criminal history and gang affiliation information when placing unaccompanied immigrant children with sponsors. The House passed it 225-201.",
+      "nay_description": "Voted against H.R. 4371, the Kayla Hamilton Act, which required Health and Human Services to weigh criminal history and gang affiliation information when placing unaccompanied immigrant children with sponsors. The House passed it 225-201.",
       "labels": [
         {
           "slug": "immigration",
@@ -80,8 +80,8 @@
       "measure_id": "H R 3492",
       "vote_date": "2025-12-17",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 3492, the Protect Children's Innocence Act, which made it a federal crime to provide gender-affirming medical care to anyone under 18. It passed the House 216-211.",
-      "nay_description": "Voted against passing H.R. 3492, the Protect Children's Innocence Act, which made it a federal crime to provide gender-affirming medical care to anyone under 18. It passed the House 216-211.",
+      "yea_description": "Voted for H.R. 3492, the Protect Children's Innocence Act, which made it a federal crime to provide gender-affirming medical care to anyone under 18. The House passed it 216-211.",
+      "nay_description": "Voted against H.R. 3492, the Protect Children's Innocence Act, which made it a federal crime to provide gender-affirming medical care to anyone under 18. The House passed it 216-211.",
       "labels": [
         {
           "slug": "civil_rights",
@@ -97,8 +97,8 @@
       "measure_id": "H R 4776",
       "vote_date": "2025-12-18",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 4776, the SPEED Act, which narrowed the National Environmental Policy Act by cutting the number of federal actions that trigger an environmental review and shortening the reviews that remain. It passed the House 221-196.",
-      "nay_description": "Voted against passing H.R. 4776, the SPEED Act, which narrowed the National Environmental Policy Act by cutting the number of federal actions that trigger an environmental review and shortening the reviews that remain. It passed the House 221-196.",
+      "yea_description": "Voted for H.R. 4776, the SPEED Act, which narrowed the main federal environmental review law by cutting the number of federal actions that trigger an environmental review and shortening the reviews that remain. The House passed it 221-196.",
+      "nay_description": "Voted against H.R. 4776, the SPEED Act, which narrowed the main federal environmental review law by cutting the number of federal actions that trigger an environmental review and shortening the reviews that remain. The House passed it 221-196.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -114,8 +114,8 @@
       "measure_id": "H R 1366",
       "vote_date": "2025-12-18",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 1366, the Mining Regulatory Clarity Act, which let mining operators use federal land for waste disposal and other support activities even where no valuable mineral deposit has been found. It passed the House 219-198.",
-      "nay_description": "Voted against passing H.R. 1366, the Mining Regulatory Clarity Act, which let mining operators use federal land for waste disposal and other support activities even where no valuable mineral deposit has been found. It passed the House 219-198.",
+      "yea_description": "Voted for H.R. 1366, the Mining Regulatory Clarity Act, which let mining operators use federal land for waste disposal and other support activities even where no valuable mineral deposit has been found. The House passed it 219-198.",
+      "nay_description": "Voted against H.R. 1366, the Mining Regulatory Clarity Act, which let mining operators use federal land for waste disposal and other support activities even where no valuable mineral deposit has been found. The House passed it 219-198.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -131,8 +131,8 @@
       "measure_id": "H R 845",
       "vote_date": "2025-12-18",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 845, the Pet and Livestock Protection Act, which directed the Interior Department to reissue the rule removing the gray wolf from the Endangered Species Act list and barred courts from reviewing it. It passed the House 211-204.",
-      "nay_description": "Voted against passing H.R. 845, the Pet and Livestock Protection Act, which directed the Interior Department to reissue the rule removing the gray wolf from the Endangered Species Act list and barred courts from reviewing it. It passed the House 211-204.",
+      "yea_description": "Voted for H.R. 845, the Pet and Livestock Protection Act, which directed the Interior Department to reissue the rule removing the gray wolf from the Endangered Species Act list and barred courts from reviewing it. The House passed it 211-204.",
+      "nay_description": "Voted against H.R. 845, the Pet and Livestock Protection Act, which directed the Interior Department to reissue the rule removing the gray wolf from the Endangered Species Act list and barred courts from reviewing it. The House passed it 211-204.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -148,8 +148,8 @@
       "measure_id": "H R 498",
       "vote_date": "2025-12-18",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 498, the Do No Harm in Medicaid Act, which barred federal Medicaid payment for gender transition procedures for anyone under 18. It passed the House 215-201.",
-      "nay_description": "Voted against passing H.R. 498, the Do No Harm in Medicaid Act, which barred federal Medicaid payment for gender transition procedures for anyone under 18. It passed the House 215-201.",
+      "yea_description": "Voted for H.R. 498, the Do No Harm in Medicaid Act, which barred federal Medicaid payment for gender transition procedures for anyone under 18. The House passed it 215-201.",
+      "nay_description": "Voted against H.R. 498, the Do No Harm in Medicaid Act, which barred federal Medicaid payment for gender transition procedures for anyone under 18. The House passed it 215-201.",
       "labels": [
         {
           "slug": "civil_rights",

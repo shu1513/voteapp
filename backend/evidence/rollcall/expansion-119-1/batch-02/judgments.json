@@ -8,8 +8,8 @@
       "measure_id": "S.J.Res. 3",
       "vote_date": "2025-03-04",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.J.Res. 3, which used the Congressional Review Act to repeal the IRS rule requiring people who run decentralized finance platforms to report their users' digital-asset sale proceeds to the IRS. It passed the Senate 70-27.",
-      "nay_description": "Voted against passing S.J.Res. 3, which used the Congressional Review Act to repeal the IRS rule requiring people who run decentralized finance platforms to report their users' digital-asset sale proceeds to the IRS. It passed the Senate 70-27.",
+      "yea_description": "Voted for S.J.Res. 3 to cancel the federal tax rule requiring digital-asset platforms without a central financial middleman to report users' sales to the agency. The Senate passed it 70-27.",
+      "nay_description": "Voted against S.J.Res. 3 to cancel the federal tax rule requiring digital-asset platforms without a central financial middleman to report users' sales to the agency. The Senate passed it 70-27.",
       "labels": [
         {
           "slug": "data_privacy",
@@ -25,8 +25,8 @@
       "measure_id": "H J RES 61",
       "vote_date": "2025-03-05",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.J.Res. 61, which used the Congressional Review Act to repeal the EPA emission standards for hazardous air pollutants released by rubber tire manufacturing plants. It passed the House 216-202.",
-      "nay_description": "Voted against passing H.J.Res. 61, which used the Congressional Review Act to repeal the EPA emission standards for hazardous air pollutants released by rubber tire manufacturing plants. It passed the House 216-202.",
+      "yea_description": "Voted for H.J.Res. 61 to cancel the federal environmental agency emission standards for hazardous air pollutants released by rubber tire manufacturing plants. The House passed it 216-202.",
+      "nay_description": "Voted against H.J.Res. 61 to cancel the federal environmental agency emission standards for hazardous air pollutants released by rubber tire manufacturing plants. The House passed it 216-202.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -42,8 +42,8 @@
       "measure_id": "H J RES 42",
       "vote_date": "2025-03-05",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.J.Res. 42, which used the Congressional Review Act to repeal the Department of Energy rule tightening certification, labeling, and enforcement requirements behind appliance energy-efficiency standards. It passed the House 222-203.",
-      "nay_description": "Voted against passing H.J.Res. 42, which used the Congressional Review Act to repeal the Department of Energy rule tightening certification, labeling, and enforcement requirements behind appliance energy-efficiency standards. It passed the House 222-203.",
+      "yea_description": "Voted for H.J.Res. 42 to cancel the Department of Energy rule tightening certification, labeling, and enforcement requirements behind appliance energy-efficiency standards. The House passed it 222-203.",
+      "nay_description": "Voted against H.J.Res. 42 to cancel the Department of Energy rule tightening certification, labeling, and enforcement requirements behind appliance energy-efficiency standards. The House passed it 222-203.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -59,8 +59,8 @@
       "measure_id": "S.J.Res. 28",
       "vote_date": "2025-03-05",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.J.Res. 28, which used the Congressional Review Act to repeal the Consumer Financial Protection Bureau rule placing the largest digital payment apps under the bureau's supervision. It passed the Senate 51-47.",
-      "nay_description": "Voted against passing S.J.Res. 28, which used the Congressional Review Act to repeal the Consumer Financial Protection Bureau rule placing the largest digital payment apps under the bureau's supervision. It passed the Senate 51-47.",
+      "yea_description": "Voted for S.J.Res. 28 to cancel the Consumer Financial Protection Bureau rule placing the largest digital payment apps under the bureau's supervision. The Senate passed it 51-47.",
+      "nay_description": "Voted against S.J.Res. 28 to cancel the Consumer Financial Protection Bureau rule placing the largest digital payment apps under the bureau's supervision. The Senate passed it 51-47.",
       "labels": [
         {
           "slug": "corporate_accountability",
@@ -76,8 +76,8 @@
       "measure_id": "S J RES 11",
       "vote_date": "2025-03-06",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.J.Res. 11, which used the Congressional Review Act to repeal the Bureau of Ocean Energy Management rule requiring companies to file an archaeological report with offshore oil and gas exploration and development plans. It passed the House 221-202.",
-      "nay_description": "Voted against passing S.J.Res. 11, which used the Congressional Review Act to repeal the Bureau of Ocean Energy Management rule requiring companies to file an archaeological report with offshore oil and gas exploration and development plans. It passed the House 221-202.",
+      "yea_description": "Voted for S.J.Res. 11 to cancel the federal ocean-energy agency rule requiring companies to file a report on possible historic sites with offshore oil and gas exploration and development plans. The House passed it 221-202.",
+      "nay_description": "Voted against S.J.Res. 11 to cancel the federal ocean-energy agency rule requiring companies to file a report on possible historic sites with offshore oil and gas exploration and development plans. The House passed it 221-202.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -93,8 +93,8 @@
       "measure_id": "H J RES 25",
       "vote_date": "2025-03-11",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.J.Res. 25, which used the Congressional Review Act to repeal the IRS rule requiring people who run decentralized finance platforms to report their users' digital-asset sale proceeds to the IRS. It passed the House 292-132.",
-      "nay_description": "Voted against passing H.J.Res. 25, which used the Congressional Review Act to repeal the IRS rule requiring people who run decentralized finance platforms to report their users' digital-asset sale proceeds to the IRS. It passed the House 292-132.",
+      "yea_description": "Voted for H.J.Res. 25 to cancel the federal tax rule requiring digital-asset platforms without a central financial middleman to report users' sales to the agency. The House passed it 292-132.",
+      "nay_description": "Voted against H.J.Res. 25 to cancel the federal tax rule requiring digital-asset platforms without a central financial middleman to report users' sales to the agency. The House passed it 292-132.",
       "labels": [
         {
           "slug": "data_privacy",
@@ -110,8 +110,8 @@
       "measure_id": "H.J.Res. 25",
       "vote_date": "2025-03-26",
       "review_status": "approved",
-      "yea_description": "Voted to send H.J.Res. 25 to the President, using the Congressional Review Act to repeal the IRS rule requiring people who run decentralized finance platforms to report their users' digital-asset sale proceeds to the IRS. It passed the Senate 70-28.",
-      "nay_description": "Voted against sending H.J.Res. 25 to the President, which used the Congressional Review Act to repeal the IRS rule requiring people who run decentralized finance platforms to report their users' digital-asset sale proceeds to the IRS. It passed the Senate 70-28.",
+      "yea_description": "Voted for sending H.J.Res. 25 to the President to cancel the federal tax rule requiring digital-asset platforms without a central financial middleman to report users' sales to the agency. The Senate passed it 70-28.",
+      "nay_description": "Voted against sending H.J.Res. 25 to the President to cancel the federal tax rule requiring digital-asset platforms without a central financial middleman to report users' sales to the agency. The Senate passed it 70-28.",
       "labels": [
         {
           "slug": "data_privacy",
@@ -127,8 +127,8 @@
       "measure_id": "H J RES 24",
       "vote_date": "2025-03-27",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.J.Res. 24, which used the Congressional Review Act to repeal the Department of Energy efficiency standards for walk-in coolers and walk-in freezers. It passed the House 203-182.",
-      "nay_description": "Voted against passing H.J.Res. 24, which used the Congressional Review Act to repeal the Department of Energy efficiency standards for walk-in coolers and walk-in freezers. It passed the House 203-182.",
+      "yea_description": "Voted for H.J.Res. 24 to cancel the Department of Energy efficiency standards for walk-in coolers and walk-in freezers. The House passed it 203-182.",
+      "nay_description": "Voted against H.J.Res. 24 to cancel the Department of Energy efficiency standards for walk-in coolers and walk-in freezers. The House passed it 203-182.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -144,8 +144,8 @@
       "measure_id": "H J RES 75",
       "vote_date": "2025-03-27",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.J.Res. 75, which used the Congressional Review Act to repeal the Department of Energy efficiency standards for commercial refrigerators, freezers, and refrigerator-freezers. It passed the House 214-193.",
-      "nay_description": "Voted against passing H.J.Res. 75, which used the Congressional Review Act to repeal the Department of Energy efficiency standards for commercial refrigerators, freezers, and refrigerator-freezers. It passed the House 214-193.",
+      "yea_description": "Voted for H.J.Res. 75 to cancel the Department of Energy efficiency standards for commercial refrigerators, freezers, and refrigerator-freezers. The House passed it 214-193.",
+      "nay_description": "Voted against H.J.Res. 75 to cancel the Department of Energy efficiency standards for commercial refrigerators, freezers, and refrigerator-freezers. The House passed it 214-193.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -161,8 +161,8 @@
       "measure_id": "S.J.Res. 18",
       "vote_date": "2025-03-27",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.J.Res. 18, which used the Congressional Review Act to repeal the Consumer Financial Protection Bureau rule capping overdraft fees at very large banks at $5 unless the bank justified a higher charge or treated the overdraft as credit. It passed the Senate 52-48.",
-      "nay_description": "Voted against passing S.J.Res. 18, which used the Congressional Review Act to repeal the Consumer Financial Protection Bureau rule capping overdraft fees at very large banks at $5 unless the bank justified a higher charge or treated the overdraft as credit. It passed the Senate 52-48.",
+      "yea_description": "Voted for S.J.Res. 18 to cancel the Consumer Financial Protection Bureau rule capping overdraft fees at very large banks at $5 unless the bank justified a higher charge or treated the overdraft as credit. The Senate passed it 52-48.",
+      "nay_description": "Voted against S.J.Res. 18 to cancel the Consumer Financial Protection Bureau rule capping overdraft fees at very large banks at $5 unless the bank justified a higher charge or treated the overdraft as credit. The Senate passed it 52-48.",
       "labels": [
         {
           "slug": "corporate_accountability",
@@ -182,8 +182,8 @@
       "measure_id": "S.J.Res. 37",
       "vote_date": "2025-04-02",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.J.Res. 37, which terminated the national emergency the President declared on February 1, 2025 to impose an added 25 percent tariff on most imports from Canada and 10 percent on Canadian energy. It passed the Senate 51-48.",
-      "nay_description": "Voted against passing S.J.Res. 37, which terminated the national emergency the President declared on February 1, 2025 to impose an added 25 percent tariff on most imports from Canada and 10 percent on Canadian energy. It passed the Senate 51-48.",
+      "yea_description": "Voted for S.J.Res. 37, which terminated the national emergency the President declared on February 1, 2025 to impose an added 25 percent tariff on most imports from Canada and 10 percent on Canadian energy. The Senate passed it 51-48.",
+      "nay_description": "Voted against S.J.Res. 37, which terminated the national emergency the President declared on February 1, 2025 to impose an added 25 percent tariff on most imports from Canada and 10 percent on Canadian energy. The Senate passed it 51-48.",
       "labels": [
         {
           "slug": "cost_of_living_reduction",
@@ -199,8 +199,8 @@
       "measure_id": "H.J.Res. 24",
       "vote_date": "2025-04-03",
       "review_status": "approved",
-      "yea_description": "Voted to send H.J.Res. 24 to the President, using the Congressional Review Act to repeal the Department of Energy efficiency standards for walk-in coolers and walk-in freezers. It passed the Senate 53-42.",
-      "nay_description": "Voted against sending H.J.Res. 24 to the President, which used the Congressional Review Act to repeal the Department of Energy efficiency standards for walk-in coolers and walk-in freezers. It passed the Senate 53-42.",
+      "yea_description": "Voted for sending H.J.Res. 24 to the President to cancel the Department of Energy efficiency standards for walk-in coolers and walk-in freezers. The Senate passed it 53-42.",
+      "nay_description": "Voted against sending H.J.Res. 24 to the President to cancel the Department of Energy efficiency standards for walk-in coolers and walk-in freezers. The Senate passed it 53-42.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -216,8 +216,8 @@
       "measure_id": "S J RES 28",
       "vote_date": "2025-04-09",
       "review_status": "approved",
-      "yea_description": "Voted to send S.J.Res. 28 to the President, using the Congressional Review Act to repeal the Consumer Financial Protection Bureau rule placing the largest digital payment apps under the bureau's supervision. It passed the House 219-211.",
-      "nay_description": "Voted against sending S.J.Res. 28 to the President, which used the Congressional Review Act to repeal the Consumer Financial Protection Bureau rule placing the largest digital payment apps under the bureau's supervision. It passed the House 219-211.",
+      "yea_description": "Voted for sending S.J.Res. 28 to the President to cancel the Consumer Financial Protection Bureau rule placing the largest digital payment apps under the bureau's supervision. The House passed it 219-211.",
+      "nay_description": "Voted against sending S.J.Res. 28 to the President to cancel the Consumer Financial Protection Bureau rule placing the largest digital payment apps under the bureau's supervision. The House passed it 219-211.",
       "labels": [
         {
           "slug": "corporate_accountability",
@@ -233,8 +233,8 @@
       "measure_id": "S J RES 18",
       "vote_date": "2025-04-09",
       "review_status": "approved",
-      "yea_description": "Voted to send S.J.Res. 18 to the President, using the Congressional Review Act to repeal the Consumer Financial Protection Bureau rule capping overdraft fees at very large banks at $5 unless the bank justified a higher charge or treated the overdraft as credit. It passed the House 217-211.",
-      "nay_description": "Voted against sending S.J.Res. 18 to the President, which used the Congressional Review Act to repeal the Consumer Financial Protection Bureau rule capping overdraft fees at very large banks at $5 unless the bank justified a higher charge or treated the overdraft as credit. It passed the House 217-211.",
+      "yea_description": "Voted for sending S.J.Res. 18 to the President to cancel the Consumer Financial Protection Bureau rule capping overdraft fees at very large banks at $5 unless the bank justified a higher charge or treated the overdraft as credit. The House passed it 217-211.",
+      "nay_description": "Voted against sending S.J.Res. 18 to the President to cancel the Consumer Financial Protection Bureau rule capping overdraft fees at very large banks at $5 unless the bank justified a higher charge or treated the overdraft as credit. The House passed it 217-211.",
       "labels": [
         {
           "slug": "corporate_accountability",

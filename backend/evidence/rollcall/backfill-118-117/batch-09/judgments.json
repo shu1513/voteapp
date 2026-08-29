@@ -8,8 +8,8 @@
       "measure_id": "H R 8070",
       "vote_date": "2024-06-14",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 8070, the National Defense Authorization Act for Fiscal Year 2025, which set defense policy, raised junior enlisted pay, and authorized Department of Defense programs and military construction. It passed the House 217-199.",
-      "nay_description": "Voted against passing H.R. 8070, the National Defense Authorization Act for Fiscal Year 2025, which set defense policy, raised junior enlisted pay, and authorized Department of Defense programs and military construction. It passed the House 217-199.",
+      "yea_description": "Voted for H.R. 8070, the National Defense Authorization Act for Fiscal Year 2025, which set defense policy, raised junior enlisted pay, and approved Defense Department programs and military construction. The House passed it 217-199.",
+      "nay_description": "Voted against H.R. 8070, the National Defense Authorization Act for Fiscal Year 2025, which set defense policy, raised junior enlisted pay, and approved Defense Department programs and military construction. The House passed it 217-199.",
       "labels": [
         {
           "slug": "national_defense",
@@ -25,8 +25,8 @@
       "measure_id": "H R 7637",
       "vote_date": "2024-07-09",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 7637, the Refrigerator Freedom Act, which barred the Department of Energy from setting efficiency standards for refrigerators and freezers unless it could show the standards were affordable and would not reduce performance. It passed the House 212-192.",
-      "nay_description": "Voted against passing H.R. 7637, the Refrigerator Freedom Act, which barred the Department of Energy from setting efficiency standards for refrigerators and freezers unless it could show the standards were affordable and would not reduce performance. It passed the House 212-192.",
+      "yea_description": "Voted for H.R. 7637, the Refrigerator Freedom Act, which barred the Department of Energy from setting efficiency standards for refrigerators and freezers unless it could show the standards were affordable and would not reduce performance. The House passed it 212-192.",
+      "nay_description": "Voted against H.R. 7637, the Refrigerator Freedom Act, which barred the Department of Energy from setting efficiency standards for refrigerators and freezers unless it could show the standards were affordable and would not reduce performance. The House passed it 212-192.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -42,8 +42,8 @@
       "measure_id": "H R 7700",
       "vote_date": "2024-07-09",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 7700, the Stop Unaffordable Dishwasher Standards Act, which barred the Department of Energy from setting dishwasher efficiency standards unless it could show they were affordable and would not reduce performance. It passed the House 214-192.",
-      "nay_description": "Voted against passing H.R. 7700, the Stop Unaffordable Dishwasher Standards Act, which barred the Department of Energy from setting dishwasher efficiency standards unless it could show they were affordable and would not reduce performance. It passed the House 214-192.",
+      "yea_description": "Voted for H.R. 7700, the Stop Unaffordable Dishwasher Standards Act, which barred the Department of Energy from setting dishwasher efficiency standards unless it could show they were affordable and would not reduce performance. The House passed it 214-192.",
+      "nay_description": "Voted against H.R. 7700, the Stop Unaffordable Dishwasher Standards Act, which barred the Department of Energy from setting dishwasher efficiency standards unless it could show they were affordable and would not reduce performance. The House passed it 214-192.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -59,8 +59,8 @@
       "measure_id": "H R 8281",
       "vote_date": "2024-07-10",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 8281, the SAVE Act, which required documentary proof of United States citizenship, such as a passport or birth certificate, to register to vote in federal elections. It passed the House 221-198.",
-      "nay_description": "Voted against passing H.R. 8281, the SAVE Act, which required documentary proof of United States citizenship, such as a passport or birth certificate, to register to vote in federal elections. It passed the House 221-198.",
+      "yea_description": "Voted for H.R. 8281, the SAVE Act, which required documents proving United States citizenship, such as a passport or birth certificate, to register to vote in federal elections. The House passed it 221-198.",
+      "nay_description": "Voted against H.R. 8281, the SAVE Act, which required documents proving United States citizenship, such as a passport or birth certificate, to register to vote in federal elections. The House passed it 221-198.",
       "labels": [
         {
           "slug": "election_integrity",
@@ -76,8 +76,8 @@
       "measure_id": "H J RES 165",
       "vote_date": "2024-07-11",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.J.Res. 165, which used the Congressional Review Act to repeal the Education Department's 2024 Title IX rule extending sex discrimination protections to gender identity and sexual orientation. It passed the House 210-205.",
-      "nay_description": "Voted against passing H.J.Res. 165, which used the Congressional Review Act to repeal the Education Department's 2024 Title IX rule extending sex discrimination protections to gender identity and sexual orientation. It passed the House 210-205.",
+      "yea_description": "Voted for H.J.Res. 165 to cancel the Education Department's 2024 Title IX rule extending sex discrimination protections to gender identity and sexual orientation. The House passed it 210-205.",
+      "nay_description": "Voted against H.J.Res. 165 to cancel the Education Department's 2024 Title IX rule extending sex discrimination protections to gender identity and sexual orientation. The House passed it 210-205.",
       "labels": [
         {
           "slug": "civil_rights",
@@ -93,8 +93,8 @@
       "measure_id": "H R 8314",
       "vote_date": "2024-09-17",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 8314, the No Foreign Election Interference Act, which barred tax-exempt organizations that accept money from foreign nationals from giving to political committees for eight years. Brought up under suspension of the rules, it fell short of the required two thirds, 218-181.",
-      "nay_description": "Voted against passing H.R. 8314, the No Foreign Election Interference Act, which barred tax-exempt organizations that accept money from foreign nationals from giving to political committees for eight years. Brought up under suspension of the rules, it fell short of the required two thirds, 218-181.",
+      "yea_description": "Voted for H.R. 8314, which barred tax-exempt organizations that accept money from people from other countries from giving to political committees for eight years. It failed 218-181 under a fast-track process needing two-thirds support, so it did not become law.",
+      "nay_description": "Voted against H.R. 8314, which barred tax-exempt organizations that accept money from people from other countries from giving to political committees for eight years. It failed 218-181 under a fast-track process needing two-thirds support, so it did not become law.",
       "labels": [
         {
           "slug": "election_integrity",
@@ -110,8 +110,8 @@
       "measure_id": "H R 7909",
       "vote_date": "2024-09-18",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 7909, the Violence Against Women by Illegal Aliens Act, which made immigrants inadmissible or deportable for stalking, child abuse, sex offenses, domestic violence, or violating a protection order. It passed the House 266-158.",
-      "nay_description": "Voted against passing H.R. 7909, the Violence Against Women by Illegal Aliens Act, which made immigrants inadmissible or deportable for stalking, child abuse, sex offenses, domestic violence, or violating a protection order. It passed the House 266-158.",
+      "yea_description": "Voted for H.R. 7909, which barred immigrants from entering or allowed their removal for stalking, child abuse, sex offenses, domestic violence, or violating a protection order. The House passed it 266-158.",
+      "nay_description": "Voted against H.R. 7909, which barred immigrants from entering or allowed their removal for stalking, child abuse, sex offenses, domestic violence, or violating a protection order. The House passed it 266-158.",
       "labels": [
         {
           "slug": "immigration",
@@ -131,8 +131,8 @@
       "measure_id": "H R 5717",
       "vote_date": "2024-09-20",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 5717, the No Bailout for Sanctuary Cities Act, which cut off federal funds that a state or locality intended to spend on services for immigrants without lawful status. It passed the House 219-186.",
-      "nay_description": "Voted against passing H.R. 5717, the No Bailout for Sanctuary Cities Act, which cut off federal funds that a state or locality intended to spend on services for immigrants without lawful status. It passed the House 219-186.",
+      "yea_description": "Voted for H.R. 5717, the No Bailout for Sanctuary Cities Act, which cut off federal funds that a state or locality intended to spend on services for immigrants without lawful status. The House passed it 219-186.",
+      "nay_description": "Voted against H.R. 5717, the No Bailout for Sanctuary Cities Act, which cut off federal funds that a state or locality intended to spend on services for immigrants without lawful status. The House passed it 219-186.",
       "labels": [
         {
           "slug": "immigration",
@@ -148,8 +148,8 @@
       "measure_id": "H J RES 136",
       "vote_date": "2024-09-20",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.J.Res. 136, which used the Congressional Review Act to repeal the EPA multi-pollutant tailpipe standards for model year 2027 and later light and medium duty vehicles. It passed the House 215-191.",
-      "nay_description": "Voted against passing H.J.Res. 136, which used the Congressional Review Act to repeal the EPA multi-pollutant tailpipe standards for model year 2027 and later light and medium duty vehicles. It passed the House 215-191.",
+      "yea_description": "Voted for H.J.Res. 136 to cancel the federal environmental agency multi-pollutant tailpipe standards for light and medium duty vehicles from 2027 onward. The House passed it 215-191.",
+      "nay_description": "Voted against H.J.Res. 136 to cancel the federal environmental agency multi-pollutant tailpipe standards for light and medium duty vehicles from 2027 onward. The House passed it 215-191.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -165,8 +165,8 @@
       "measure_id": "H R 8790",
       "vote_date": "2024-09-24",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 8790, the Fix Our Forests Act, which designated high-risk firesheds for federal wildfire work while exempting many forest management projects from environmental review and limiting court challenges to them. It passed the House 268-151.",
-      "nay_description": "Voted against passing H.R. 8790, the Fix Our Forests Act, which designated high-risk firesheds for federal wildfire work while exempting many forest management projects from environmental review and limiting court challenges to them. It passed the House 268-151.",
+      "yea_description": "Voted for H.R. 8790, the Fix Our Forests Act, which marked high-risk wildfire areas for federal work while exempting many forest management projects from environmental review and limiting court challenges to them. The House passed it 268-151.",
+      "nay_description": "Voted against H.R. 8790, the Fix Our Forests Act, which marked high-risk wildfire areas for federal work while exempting many forest management projects from environmental review and limiting court challenges to them. The House passed it 268-151.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -182,8 +182,8 @@
       "measure_id": "H R 7673",
       "vote_date": "2024-12-10",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 7673, the Liberty in Laundry Act, which barred the Department of Energy from setting clothes washer efficiency standards unless it could show they were affordable and would not reduce performance. It passed the House 215-200.",
-      "nay_description": "Voted against passing H.R. 7673, the Liberty in Laundry Act, which barred the Department of Energy from setting clothes washer efficiency standards unless it could show they were affordable and would not reduce performance. It passed the House 215-200.",
+      "yea_description": "Voted for H.R. 7673, the Liberty in Laundry Act, which barred the Department of Energy from setting clothes washer efficiency standards unless it could show they were affordable and would not reduce performance. The House passed it 215-200.",
+      "nay_description": "Voted against H.R. 7673, the Liberty in Laundry Act, which barred the Department of Energy from setting clothes washer efficiency standards unless it could show they were affordable and would not reduce performance. The House passed it 215-200.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -199,8 +199,8 @@
       "measure_id": "H.R. 82",
       "vote_date": "2024-12-21",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 82, the Social Security Fairness Act, which repealed the windfall elimination provision and the government pension offset, restoring full Social Security benefits to public employees with government pensions. It passed the Senate 76-20 and was signed into law.",
-      "nay_description": "Voted against passing H.R. 82, the Social Security Fairness Act, which repealed the windfall elimination provision and the government pension offset, restoring full Social Security benefits to public employees with government pensions. It passed the Senate 76-20 and was signed into law.",
+      "yea_description": "Voted for H.R. 82, the Social Security Fairness Act, which repealed two rules that reduced benefits for public workers with government pensions, restoring full Social Security benefits to public employees with government pensions. The Senate passed it 76-20, and it became law.",
+      "nay_description": "Voted against H.R. 82, the Social Security Fairness Act, which repealed two rules that reduced benefits for public workers with government pensions, restoring full Social Security benefits to public employees with government pensions. The Senate passed it 76-20, and it became law.",
       "labels": [
         {
           "slug": "social_programs_and_welfare",

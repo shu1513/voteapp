@@ -8,8 +8,8 @@
       "measure_id": "S J RES 24",
       "vote_date": "2023-07-27",
       "review_status": "approved",
-      "yea_description": "Voted to send S.J.Res. 24 to the President, using the Congressional Review Act to repeal the Fish and Wildlife Service rule listing the northern long-eared bat as endangered, removing its Endangered Species Act protection. It passed the House 220-209.",
-      "nay_description": "Voted against sending S.J.Res. 24 to the President, which used the Congressional Review Act to repeal the Fish and Wildlife Service rule listing the northern long-eared bat as endangered, removing its Endangered Species Act protection. It passed the House 220-209.",
+      "yea_description": "Voted for sending S.J.Res. 24 to the President to cancel the Fish and Wildlife Service rule listing the northern long-eared bat as endangered, removing its Endangered Species Act protection. The House passed it 220-209.",
+      "nay_description": "Voted against sending S.J.Res. 24 to the President to cancel the Fish and Wildlife Service rule listing the northern long-eared bat as endangered, removing its Endangered Species Act protection. The House passed it 220-209.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -25,8 +25,8 @@
       "measure_id": "H R 1435",
       "vote_date": "2023-09-14",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 1435, the Preserving Choice in Vehicle Purchases Act, which barred the EPA from granting California the Clean Air Act waiver it needs to require rising shares of zero-emission new vehicles. It passed the House 222-190.",
-      "nay_description": "Voted against passing H.R. 1435, the Preserving Choice in Vehicle Purchases Act, which barred the EPA from granting California the Clean Air Act waiver it needs to require rising shares of zero-emission new vehicles. It passed the House 222-190.",
+      "yea_description": "Voted for H.R. 1435, which barred the federal environmental agency from granting California the Clean Air Act permission it needs to require rising shares of zero-emission new vehicles. The House passed it 222-190.",
+      "nay_description": "Voted against H.R. 1435, which barred the federal environmental agency from granting California the Clean Air Act permission it needs to require rising shares of zero-emission new vehicles. The House passed it 222-190.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -42,8 +42,8 @@
       "measure_id": "S.J.Res. 32",
       "vote_date": "2023-10-18",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.J.Res. 32, which used the Congressional Review Act to repeal the Consumer Financial Protection Bureau rule requiring lenders to collect and report data on small business lending, including to women-owned and minority-owned firms. It passed the Senate 53-44.",
-      "nay_description": "Voted against passing S.J.Res. 32, which used the Congressional Review Act to repeal the Consumer Financial Protection Bureau rule requiring lenders to collect and report data on small business lending, including to women-owned and minority-owned firms. It passed the Senate 53-44.",
+      "yea_description": "Voted for S.J.Res. 32 to cancel the Consumer Financial Protection Bureau rule requiring lenders to collect and report data on small business lending, including to women-owned and minority-owned firms. The Senate passed it 53-44.",
+      "nay_description": "Voted against S.J.Res. 32 to cancel the Consumer Financial Protection Bureau rule requiring lenders to collect and report data on small business lending, including to women-owned and minority-owned firms. The Senate passed it 53-44.",
       "labels": [
         {
           "slug": "corporate_accountability",
@@ -59,8 +59,8 @@
       "measure_id": "S.J.Res. 42",
       "vote_date": "2023-10-26",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.J.Res. 42, which would have overturned the Agriculture Department policy barring discrimination based on gender identity or sexual orientation in federal food and nutrition programs. It failed in the Senate 47-50.",
-      "nay_description": "Voted against passing S.J.Res. 42, which would have overturned the Agriculture Department policy barring discrimination based on gender identity or sexual orientation in federal food and nutrition programs. It failed in the Senate 47-50.",
+      "yea_description": "Voted for S.J.Res. 42, which would overturn federal protections against sexual-orientation and gender-identity discrimination in food programs. The Senate rejected it 47-50, so it did not become law.",
+      "nay_description": "Voted against S.J.Res. 42, which would overturn federal protections against sexual-orientation and gender-identity discrimination in food programs. The Senate rejected it 47-50, so it did not become law.",
       "labels": [
         {
           "slug": "civil_rights",
@@ -76,8 +76,8 @@
       "measure_id": "S.J.Res. 43",
       "vote_date": "2023-11-15",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.J.Res. 43, which would have used the Congressional Review Act to repeal the Education Department's SAVE plan, the income-driven repayment rule that lowered monthly federal student loan payments. It failed in the Senate 49-50.",
-      "nay_description": "Voted against passing S.J.Res. 43, which would have used the Congressional Review Act to repeal the Education Department's SAVE plan, the income-driven repayment rule that lowered monthly federal student loan payments. It failed in the Senate 49-50.",
+      "yea_description": "Voted for S.J.Res. 43, which would cancel the Education Department's SAVE plan, the student loan plan that lowered payments based on income. The Senate rejected it 49-50, so it did not become law.",
+      "nay_description": "Voted against S.J.Res. 43, which would cancel the Education Department's SAVE plan, the student loan plan that lowered payments based on income. The Senate rejected it 49-50, so it did not become law.",
       "labels": [
         {
           "slug": "social_programs_and_welfare",
@@ -93,8 +93,8 @@
       "measure_id": "H R 5283",
       "vote_date": "2023-11-30",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 5283, which barred the federal government from using federally administered land to house immigrants who entered the country without authorization. It passed the House 224-203.",
-      "nay_description": "Voted against passing H.R. 5283, which barred the federal government from using federally administered land to house immigrants who entered the country without authorization. It passed the House 224-203.",
+      "yea_description": "Voted for H.R. 5283, which barred the federal government from using federal land to house immigrants who entered without legal permission. The House passed it 224-203.",
+      "nay_description": "Voted against H.R. 5283, which barred the federal government from using federal land to house immigrants who entered without legal permission. The House passed it 224-203.",
       "labels": [
         {
           "slug": "immigration",
@@ -110,8 +110,8 @@
       "measure_id": "S J RES 32",
       "vote_date": "2023-12-01",
       "review_status": "approved",
-      "yea_description": "Voted to send S.J.Res. 32 to the President, using the Congressional Review Act to repeal the Consumer Financial Protection Bureau rule requiring lenders to collect and report data on small business lending, including to women-owned and minority-owned firms. It passed the House 221-202.",
-      "nay_description": "Voted against sending S.J.Res. 32 to the President, which used the Congressional Review Act to repeal the Consumer Financial Protection Bureau rule requiring lenders to collect and report data on small business lending, including to women-owned and minority-owned firms. It passed the House 221-202.",
+      "yea_description": "Voted for sending S.J.Res. 32 to the President to cancel the Consumer Financial Protection Bureau rule requiring lenders to collect and report data on small business lending, including to women-owned and minority-owned firms. The House passed it 221-202.",
+      "nay_description": "Voted against sending S.J.Res. 32 to the President to cancel the Consumer Financial Protection Bureau rule requiring lenders to collect and report data on small business lending, including to women-owned and minority-owned firms. The House passed it 221-202.",
       "labels": [
         {
           "slug": "corporate_accountability",
@@ -127,8 +127,8 @@
       "measure_id": "H R 4468",
       "vote_date": "2023-12-06",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 4468, the Choice in Automobile Retail Sales Act, which barred the EPA from setting tailpipe emission standards that would push automakers toward mostly electric fleets. It passed the House 221-197.",
-      "nay_description": "Voted against passing H.R. 4468, the Choice in Automobile Retail Sales Act, which barred the EPA from setting tailpipe emission standards that would push automakers toward mostly electric fleets. It passed the House 221-197.",
+      "yea_description": "Voted for H.R. 4468, which barred the federal environmental agency from setting tailpipe emission standards that would push automakers toward mostly electric fleets. The House passed it 221-197.",
+      "nay_description": "Voted against H.R. 4468, which barred the federal environmental agency from setting tailpipe emission standards that would push automakers toward mostly electric fleets. The House passed it 221-197.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -144,8 +144,8 @@
       "measure_id": "H J RES 88",
       "vote_date": "2023-12-07",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.J.Res. 88, which used the Congressional Review Act to repeal the Education Department's SAVE plan, the income-driven repayment rule that lowered monthly federal student loan payments. It passed the House 210-189.",
-      "nay_description": "Voted against passing H.J.Res. 88, which used the Congressional Review Act to repeal the Education Department's SAVE plan, the income-driven repayment rule that lowered monthly federal student loan payments. It passed the House 210-189.",
+      "yea_description": "Voted for H.J.Res. 88 to cancel the Education Department's SAVE plan, the student loan plan that lowered payments based on income. The House passed it 210-189.",
+      "nay_description": "Voted against H.J.Res. 88 to cancel the Education Department's SAVE plan, the student loan plan that lowered payments based on income. The House passed it 210-189.",
       "labels": [
         {
           "slug": "social_programs_and_welfare",
@@ -161,8 +161,8 @@
       "measure_id": "H R 2670",
       "vote_date": "2023-12-14",
       "review_status": "approved",
-      "yea_description": "Voted for the conference report on H.R. 2670, the National Defense Authorization Act for Fiscal Year 2024, the final compromise setting defense policy and authorizing Department of Defense programs and military construction. It passed the House 310-118.",
-      "nay_description": "Voted against the conference report on H.R. 2670, the National Defense Authorization Act for Fiscal Year 2024, the final compromise setting defense policy and authorizing Department of Defense programs and military construction. It passed the House 310-118.",
+      "yea_description": "Voted yes for the final House-Senate deal on H.R. 2670 for fiscal year 2024, which set defense policy and approved Defense Department programs and military construction. The House passed it 310-118.",
+      "nay_description": "Voted no on the final House-Senate deal on H.R. 2670 for fiscal year 2024, which set defense policy and approved Defense Department programs and military construction. The House passed it 310-118.",
       "labels": [
         {
           "slug": "national_defense",
@@ -178,8 +178,8 @@
       "measure_id": "H J RES 98",
       "vote_date": "2024-01-12",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.J.Res. 98, which used the Congressional Review Act to repeal the National Labor Relations Board rule making it easier to treat two companies, such as a franchisor and its franchisee, as joint employers of the same workers. It passed the House 206-177.",
-      "nay_description": "Voted against passing H.J.Res. 98, which used the Congressional Review Act to repeal the National Labor Relations Board rule making it easier to treat two companies, such as a franchisor and its franchisee, as joint employers of the same workers. It passed the House 206-177.",
+      "yea_description": "Voted for H.J.Res. 98 to cancel the National Labor Relations Board rule making it easier to treat two companies, such as a franchisor and its franchisee, as joint employers of the same workers. The House passed it 206-177.",
+      "nay_description": "Voted against H.J.Res. 98 to cancel the National Labor Relations Board rule making it easier to treat two companies, such as a franchisor and its franchisee, as joint employers of the same workers. The House passed it 206-177.",
       "labels": [
         {
           "slug": "corporate_accountability",
@@ -195,8 +195,8 @@
       "measure_id": "H R 5585",
       "vote_date": "2024-01-30",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 5585, the Agent Raul Gonzalez Officer Safety Act, which created a federal crime carrying mandatory minimum sentences for fleeing Border Patrol by vehicle within 100 miles of the border and made immigrants convicted of it deportable. It passed the House 271-154.",
-      "nay_description": "Voted against passing H.R. 5585, the Agent Raul Gonzalez Officer Safety Act, which created a federal crime carrying mandatory minimum sentences for fleeing Border Patrol by vehicle within 100 miles of the border and made immigrants convicted of it deportable. It passed the House 271-154.",
+      "yea_description": "Voted for H.R. 5585, the Agent Raul Gonzalez Officer Safety Act, which set required prison terms for fleeing Border Patrol by vehicle within 100 miles of the border and made immigrants convicted of it subject to removal. The House passed it 271-154.",
+      "nay_description": "Voted against H.R. 5585, the Agent Raul Gonzalez Officer Safety Act, which set required prison terms for fleeing Border Patrol by vehicle within 100 miles of the border and made immigrants convicted of it subject to removal. The House passed it 271-154.",
       "labels": [
         {
           "slug": "public_safety_and_crime_control",
@@ -216,8 +216,8 @@
       "measure_id": "H R 6678",
       "vote_date": "2024-01-31",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 6678, the Consequences for Social Security Fraud Act, which made Social Security or identification document fraud a ground for barring an immigrant from entering the country and for deporting one already here. It passed the House 272-155.",
-      "nay_description": "Voted against passing H.R. 6678, the Consequences for Social Security Fraud Act, which made Social Security or identification document fraud a ground for barring an immigrant from entering the country and for deporting one already here. It passed the House 272-155.",
+      "yea_description": "Voted for H.R. 6678, the Consequences for Social Security Fraud Act, which made Social Security or identification document fraud a ground for barring an immigrant from entering the country and for deporting one already here. The House passed it 272-155.",
+      "nay_description": "Voted against H.R. 6678, the Consequences for Social Security Fraud Act, which made Social Security or identification document fraud a ground for barring an immigrant from entering the country and for deporting one already here. The House passed it 272-155.",
       "labels": [
         {
           "slug": "immigration",
@@ -233,8 +233,8 @@
       "measure_id": "H R 6976",
       "vote_date": "2024-02-01",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 6976, the Protect Our Communities from DUIs Act, which made driving while intoxicated or impaired a ground for barring an immigrant from entering the country and for deporting one already here. It passed the House 274-150.",
-      "nay_description": "Voted against passing H.R. 6976, the Protect Our Communities from DUIs Act, which made driving while intoxicated or impaired a ground for barring an immigrant from entering the country and for deporting one already here. It passed the House 274-150.",
+      "yea_description": "Voted for H.R. 6976, the Protect Our Communities from DUIs Act, which made driving while intoxicated or impaired a ground for barring an immigrant from entering the country and for deporting one already here. The House passed it 274-150.",
+      "nay_description": "Voted against H.R. 6976, the Protect Our Communities from DUIs Act, which made driving while intoxicated or impaired a ground for barring an immigrant from entering the country and for deporting one already here. The House passed it 274-150.",
       "labels": [
         {
           "slug": "immigration",
@@ -254,8 +254,8 @@
       "measure_id": "H R 7176",
       "vote_date": "2024-02-15",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 7176, the Unlocking our Domestic LNG Potential Act, which repealed the Department of Energy approval requirement for natural gas imports and exports and gave federal energy regulators sole authority over LNG terminals. It passed the House 224-200.",
-      "nay_description": "Voted against passing H.R. 7176, the Unlocking our Domestic LNG Potential Act, which repealed the Department of Energy approval requirement for natural gas imports and exports and gave federal energy regulators sole authority over LNG terminals. It passed the House 224-200.",
+      "yea_description": "Voted for H.R. 7176, the Unlocking our Domestic LNG Potential Act, which ended Energy Department reviews of natural gas imports and exports and put federal energy regulators alone in charge of liquefied natural gas terminals. The House passed it 224-200.",
+      "nay_description": "Voted against H.R. 7176, the Unlocking our Domestic LNG Potential Act, which ended Energy Department reviews of natural gas imports and exports and put federal energy regulators alone in charge of liquefied natural gas terminals. The House passed it 224-200.",
       "labels": [
         {
           "slug": "environment_and_public_health",
