@@ -1,0 +1,946 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "ME",
+  "entries": [
+    {
+      "people_id": 8786,
+      "candidate_id": "6bc06251-844a-4577-add4-eab61fa18b8f",
+      "note": null
+    },
+    {
+      "people_id": 8810,
+      "candidate_id": "3acf8672-1cfa-460b-b28b-d492f3f26052",
+      "note": null
+    },
+    {
+      "people_id": 8855,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Michel Lajoie (HD-096); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 8874,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Robert Nutting (HD-066); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 8894,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Margaret Rotundo (SD-021); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 10321,
+      "candidate_id": "dcf32637-cd67-4a01-b6fd-4cb1a689d1ce",
+      "note": "sitting senate SD-005 member; 2026 candidacy is state_lower (State House District 74 (2024)) \u2014 Maine term limits make chamber switches routine"
+    },
+    {
+      "people_id": 10331,
+      "candidate_id": "cb8727bf-546a-4191-ae3f-d57289796217",
+      "note": null
+    },
+    {
+      "people_id": 10338,
+      "candidate_id": "d8a56b1b-48f4-4c1d-887b-32b74ee4ba93",
+      "note": null
+    },
+    {
+      "people_id": 10340,
+      "candidate_id": "ce5abda2-8f22-47bb-871f-942ce75e787a",
+      "note": null
+    },
+    {
+      "people_id": 10341,
+      "candidate_id": "aa8c2bf0-5197-4e61-ae18-0d3e3cabc41a",
+      "note": "sitting senate SD-004 member; 2026 candidacy is state_lower (State House District 34 (2024)) \u2014 Maine term limits make chamber switches routine"
+    },
+    {
+      "people_id": 10366,
+      "candidate_id": "452d2412-3077-4add-88e4-3d89a49ab2e1",
+      "note": null
+    },
+    {
+      "people_id": 10372,
+      "candidate_id": "541a05d9-0d58-48e1-84ae-b06c5d00f4c6",
+      "note": "sitting senate SD-017 member; 2026 candidacy is state_lower (State House District 91 (2024)) \u2014 Maine term limits make chamber switches routine"
+    },
+    {
+      "people_id": 14714,
+      "candidate_id": "add64748-2a32-4f67-9dab-a2ce9a7ad6d2",
+      "note": "hand-added: LegiScan carries the maiden name inline ('Matthea Larsen Daughtry'); the candidate files as Matthea Daughtry, same SD-23"
+    },
+    {
+      "people_id": 14717,
+      "candidate_id": "158dd734-ba76-4a65-800c-ecbbcf73e5b6",
+      "note": null
+    },
+    {
+      "people_id": 14720,
+      "candidate_id": "865995a7-c45d-453c-8522-0707fa035bad",
+      "note": null
+    },
+    {
+      "people_id": 14726,
+      "candidate_id": "68428cb7-8ba1-4211-baf3-e900648dc23e",
+      "note": null
+    },
+    {
+      "people_id": 15729,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Anne-Marie Mastraccio (HD-142); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 15775,
+      "candidate_id": "a780476a-0425-4a4a-bf5e-5bd37d19cbff",
+      "note": null
+    },
+    {
+      "people_id": 16635,
+      "candidate_id": "149d0b54-a25a-4158-9525-c1f17ff965f2",
+      "note": null
+    },
+    {
+      "people_id": 16689,
+      "candidate_id": "1b6eac78-a1e9-4b72-a8c5-5a2d2265243a",
+      "note": null
+    },
+    {
+      "people_id": 16780,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Bradlee Farrin (SD-003); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 16781,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Robert Foley (HD-145); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 16786,
+      "candidate_id": "9c0c09af-9e8b-4552-8529-1efde7fbe25f",
+      "note": null
+    },
+    {
+      "people_id": 16787,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for David Woodsome (HD-139); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 17107,
+      "candidate_id": "e70dc3d7-4d59-49a4-8ce8-1d96aa63d892",
+      "note": null
+    },
+    {
+      "people_id": 17214,
+      "candidate_id": "fb68b415-9602-4fd0-a858-0cc7a97ec832",
+      "note": null
+    },
+    {
+      "people_id": 17216,
+      "candidate_id": "b1615b86-fd11-4a65-9d8c-2842d9dcc5eb",
+      "note": null
+    },
+    {
+      "people_id": 17340,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Nathan Wadsworth (HD-082); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 17667,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Pinny Beebe-Center (SD-012); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 17788,
+      "candidate_id": "172c44ba-868b-463d-8e68-856adffc2030",
+      "note": null
+    },
+    {
+      "people_id": 18174,
+      "candidate_id": "322babdd-ceac-40eb-9eab-57698828f37d",
+      "note": null
+    },
+    {
+      "people_id": 18176,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Richard Bradstreet (SD-015); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 18188,
+      "candidate_id": "b86e9ab2-6603-41a3-885e-b967c49efead",
+      "note": null
+    },
+    {
+      "people_id": 18192,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Mark Lawrence (SD-035); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 18204,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Abden Simmons (HD-045); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 18206,
+      "candidate_id": "70a54f93-1a0a-4aac-a4e1-24dc97b831cc",
+      "note": null
+    },
+    {
+      "people_id": 18210,
+      "candidate_id": "055809da-8ce0-48f6-a296-5c7c01754250",
+      "note": null
+    },
+    {
+      "people_id": 21167,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Marianne Moore (SD-006); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21189,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Amy Arata (HD-104); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21191,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Mark Blier (HD-138); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21192,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Michael Brennan (HD-115); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21194,
+      "candidate_id": "749f9c91-601d-4585-ae31-ce8a9e1a389f",
+      "note": null
+    },
+    {
+      "people_id": 21195,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Kristen Cloutier (HD-094); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21197,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Edward Crockett (HD-112); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21201,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Janice Dodge (HD-039); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21203,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Victoria Doudera (HD-041); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21204,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Gary Drinkwater (HD-027); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21205,
+      "candidate_id": "af052c37-b0d8-4f76-a3a3-e3a0e44b26db",
+      "note": "hand-added: LegiScan 'William R. Faulkingham', nickname 'Billy Bob'; our candidate row splits the name as first 'Billy' / last 'Bob Faulkingham', so no surname match was possible. Sitting HD-012 rep running for SD-06"
+    },
+    {
+      "people_id": 21208,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Steven Foster (HD-032); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21209,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Lori Gramlich (HD-131); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21210,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Abigail Griffin (HD-034); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21211,
+      "candidate_id": "0ae48bbc-c5a4-4ec0-bbcd-ff73b8e17357",
+      "note": null
+    },
+    {
+      "people_id": 21212,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Randall Hall (HD-074); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21214,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Allison Hepler (HD-049); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21217,
+      "candidate_id": "c43ad1ad-474b-4f17-a547-1da166b6f485",
+      "note": null
+    },
+    {
+      "people_id": 21218,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Kathy Javner (HD-029); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21219,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Christopher Kessler (HD-121); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21223,
+      "candidate_id": "0a96c2c9-90aa-4c98-ad93-dae728b7da4c",
+      "note": "sitting house HD-043 member; 2026 candidacy is state_upper (State Senate District 12 (2024)) \u2014 Maine term limits make chamber switches routine"
+    },
+    {
+      "people_id": 21226,
+      "candidate_id": "f154559e-8112-4687-b46f-d4e137deb55d",
+      "note": "sitting house HD-150 member; 2026 candidacy is state_upper (State Senate District 35 (2024)) \u2014 Maine term limits make chamber switches routine"
+    },
+    {
+      "people_id": 21228,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Joshua Morris (HD-091); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21230,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for William Pluecker (HD-044); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21232,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Tiffany Roberts-Lovell (HD-149); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21233,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Shelley Rudnicki (HD-067); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21235,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Holly Stover (HD-048); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21236,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Gregory Swallow (HD-007); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 21273,
+      "candidate_id": "5b23738c-6bef-4287-954a-3b36854c0104",
+      "note": "sitting house HD-097 member; 2026 candidacy is state_upper (State Senate District 17 (2024)) \u2014 Maine term limits make chamber switches routine"
+    },
+    {
+      "people_id": 22237,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Joseph Baldacci (SD-009); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 22238,
+      "candidate_id": "cc68bb16-362f-4af3-9436-adf640914e60",
+      "note": "hand-added: sitting SD-018 senator Richard 'Rick' Bennett, running STATEWIDE for Governor in 2026, so he is outside the state-legislative candidate pool the proposer searches. LegiScan lists him R (2025); the candidacy is Unaffiliated"
+    },
+    {
+      "people_id": 22239,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Stacy Brenner (SD-030); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 22240,
+      "candidate_id": "077500d1-4a46-44c1-8f58-435877fa2e30",
+      "note": null
+    },
+    {
+      "people_id": 22241,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Joseph Rafferty (SD-034); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 22294,
+      "candidate_id": "c2a129d2-3604-4673-b90c-a37cfc15c942",
+      "note": "sitting house HD-124 member; 2026 candidacy is state_upper (State Senate District 30 (2024)) \u2014 Maine term limits make chamber switches routine"
+    },
+    {
+      "people_id": 22348,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Joseph Underwood (HD-005); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 22693,
+      "candidate_id": "b5600de8-5490-42e8-a72f-3e0265cf6eef",
+      "note": null
+    },
+    {
+      "people_id": 22694,
+      "candidate_id": "4451520c-2eff-43b8-8501-80341e0ba9cf",
+      "note": "sitting house HD-023 member; 2026 candidacy is state_upper (State Senate District 9 (2024)) \u2014 Maine term limits make chamber switches routine"
+    },
+    {
+      "people_id": 22695,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Arthur Bell (HD-103); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 22698,
+      "candidate_id": "8ae3728e-5261-420f-834a-12e56d2b4030",
+      "note": null
+    },
+    {
+      "people_id": 22699,
+      "candidate_id": "fcde4657-8c21-4145-b04d-121f83703fc5",
+      "note": null
+    },
+    {
+      "people_id": 22700,
+      "candidate_id": "6c8eea4d-1574-42c1-8412-3a04a4fc02a3",
+      "note": null
+    },
+    {
+      "people_id": 22701,
+      "candidate_id": "5f4691f1-917c-48db-9aab-850882bf20a4",
+      "note": null
+    },
+    {
+      "people_id": 22703,
+      "candidate_id": "0aaf898b-40bc-4630-addd-58ea3b6c2383",
+      "note": null
+    },
+    {
+      "people_id": 22705,
+      "candidate_id": "302d032c-5ef9-4418-8c75-c53627e9ba80",
+      "note": null
+    },
+    {
+      "people_id": 22706,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Laurel Libby (HD-090); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 22707,
+      "candidate_id": "21720a79-2196-4e0e-9d11-80abaec56b49",
+      "note": null
+    },
+    {
+      "people_id": 22709,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Melanie Sachs (HD-102); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 22711,
+      "candidate_id": "023219cd-94ce-4eed-b1b6-949d6881b7cb",
+      "note": null
+    },
+    {
+      "people_id": 22712,
+      "candidate_id": "ea991e7b-d06c-4d64-ba1a-f8bbcda90e0f",
+      "note": null
+    },
+    {
+      "people_id": 22713,
+      "candidate_id": "4cb0cecf-f681-46c8-ab4f-1d0c2fa0b4ec",
+      "note": null
+    },
+    {
+      "people_id": 22715,
+      "candidate_id": "af939964-43bc-4e43-97ec-f636b78a35b0",
+      "note": null
+    },
+    {
+      "people_id": 22716,
+      "candidate_id": "d10cf893-1a21-42b7-9834-d9086dde9a08",
+      "note": "sitting senate SD-001 member; 2026 candidacy is state_lower (State House District 3 (2024)) \u2014 Maine term limits make chamber switches routine"
+    },
+    {
+      "people_id": 22717,
+      "candidate_id": "3dcfdb04-5713-42ac-b86f-12b1d96bf1c8",
+      "note": null
+    },
+    {
+      "people_id": 22718,
+      "candidate_id": "e676fc5b-8e49-479d-bbb4-382db48b0c80",
+      "note": null
+    },
+    {
+      "people_id": 22720,
+      "candidate_id": "3d081c76-f92e-4a7c-8b8b-046e092b5117",
+      "note": null
+    },
+    {
+      "people_id": 22750,
+      "candidate_id": "a96a258f-58f1-4569-86be-ab23eb399a83",
+      "note": null
+    },
+    {
+      "people_id": 22766,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Lydia Crafts (HD-046); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 22837,
+      "candidate_id": "a30196cf-23b0-4408-9336-7ecefe81bd44",
+      "note": null
+    },
+    {
+      "people_id": 22838,
+      "candidate_id": "8d2bbab4-141c-4b18-a97c-4fe2bbb2fc93",
+      "note": null
+    },
+    {
+      "people_id": 22867,
+      "candidate_id": "3ad5830f-d62b-4207-985d-e9d953454127",
+      "note": null
+    },
+    {
+      "people_id": 22868,
+      "candidate_id": "e397325f-a082-436e-82a4-8b278c6a068e",
+      "note": null
+    },
+    {
+      "people_id": 23234,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for James Libby (SD-022); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 23235,
+      "candidate_id": "e73bafa6-98d2-47a1-83ff-7d6358cfdf7a",
+      "note": null
+    },
+    {
+      "people_id": 23236,
+      "candidate_id": "63e4e7df-a74f-4e5b-a55f-8a4d132e02b1",
+      "note": null
+    },
+    {
+      "people_id": 23237,
+      "candidate_id": "4731b91f-c3e3-44df-98f0-291b92ee1a0b",
+      "note": null
+    },
+    {
+      "people_id": 23238,
+      "candidate_id": "a574f5f7-2060-46f4-a1d9-baa5f846c8f9",
+      "note": "hand-added: nickname \u2014 LegiScan 'Michael Tipping', candidate files as Mike Tipping, same SD-8"
+    },
+    {
+      "people_id": 23239,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Mana Abdi (HD-095); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 23240,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Jeffrey Adams (HD-144); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 23241,
+      "candidate_id": "00a50160-4da6-423a-81ec-0583fb87432a",
+      "note": null
+    },
+    {
+      "people_id": 23242,
+      "candidate_id": "c5a451b1-aa77-4688-8891-93d47195a72b",
+      "note": "proposer confidence first_prefix (roster 'Daniel Ankeles' vs candidate 'Dan Ankeles')"
+    },
+    {
+      "people_id": 23243,
+      "candidate_id": "303f1d8b-f99e-4fce-b72f-6f71348a096c",
+      "note": null
+    },
+    {
+      "people_id": 23244,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Mark Babin (HD-003); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 23245,
+      "candidate_id": "056602ae-3ded-474c-8559-f16d80cf1349",
+      "note": null
+    },
+    {
+      "people_id": 23246,
+      "candidate_id": "de250d62-7b16-489d-b8d2-fd930de99607",
+      "note": null
+    },
+    {
+      "people_id": 23247,
+      "candidate_id": "582a575e-eb04-45a8-ac2d-cf8b406977d9",
+      "note": null
+    },
+    {
+      "people_id": 23248,
+      "candidate_id": "e4e18dd2-7fc7-41a3-8bc4-7ee8bfcd742d",
+      "note": null
+    },
+    {
+      "people_id": 23251,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Deqa Dhalac (HD-120); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 23252,
+      "candidate_id": "85e8e45a-9151-4080-86c2-b8e4a16ed184",
+      "note": null
+    },
+    {
+      "people_id": 23253,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Ann Fredericks (HD-143); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 23255,
+      "candidate_id": "beaf8621-2aff-46fd-a88e-2dca30ff7b81",
+      "note": null
+    },
+    {
+      "people_id": 23256,
+      "candidate_id": "2f1d4602-b3d3-435d-a02d-df881414649d",
+      "note": null
+    },
+    {
+      "people_id": 23257,
+      "candidate_id": "7437d0db-f1de-4986-8604-1d35c4d6e1f5",
+      "note": null
+    },
+    {
+      "people_id": 23258,
+      "candidate_id": "a64e5bdb-ea49-4d5b-9a2f-813c6d2f74bb",
+      "note": null
+    },
+    {
+      "people_id": 23259,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Caldwell Jackson (HD-080); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 23261,
+      "candidate_id": "3623d2a5-3b26-4cf2-b326-3366100770dc",
+      "note": null
+    },
+    {
+      "people_id": 23262,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Lucas Lanigan (HD-141); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 23263,
+      "candidate_id": "a1c8fb7c-1ccd-45fa-b374-f8e1973b3eed",
+      "note": null
+    },
+    {
+      "people_id": 23264,
+      "candidate_id": "28283906-c36b-46ff-8375-1630d2d014ec",
+      "note": null
+    },
+    {
+      "people_id": 23265,
+      "candidate_id": "17e53682-1186-4e9f-8210-8e17bd85815e",
+      "note": null
+    },
+    {
+      "people_id": 23266,
+      "candidate_id": "971220e9-a424-4351-8f39-87efd45a8f75",
+      "note": null
+    },
+    {
+      "people_id": 23267,
+      "candidate_id": "bd11fbd5-526a-4ba8-99c8-c93a3c690156",
+      "note": null
+    },
+    {
+      "people_id": 23268,
+      "candidate_id": "ece2c906-ded4-4314-b271-4da14a0a02cd",
+      "note": null
+    },
+    {
+      "people_id": 23270,
+      "candidate_id": "908a3675-614c-4b36-9453-4752503415a1",
+      "note": null
+    },
+    {
+      "people_id": 23271,
+      "candidate_id": "4f00a95d-f8a0-4314-a0a1-8ed477929afe",
+      "note": "sitting house HD-031 member; 2026 candidacy is state_upper (State Senate District 4 (2024)) \u2014 Maine term limits make chamber switches routine"
+    },
+    {
+      "people_id": 23273,
+      "candidate_id": "ed384c14-1433-4cd5-b21e-71b0843a0dcb",
+      "note": "sitting house HD-085 member; 2026 candidacy is state_upper (State Senate District 22 (2024)) \u2014 Maine term limits make chamber switches routine"
+    },
+    {
+      "people_id": 23275,
+      "candidate_id": "98f77913-f7c0-4fcf-8815-f05888a19f51",
+      "note": null
+    },
+    {
+      "people_id": 23276,
+      "candidate_id": "629bd9e2-1e96-4da8-812c-63baaff68a5e",
+      "note": null
+    },
+    {
+      "people_id": 23278,
+      "candidate_id": "fcdda115-32ca-4748-a668-9148e51069fd",
+      "note": null
+    },
+    {
+      "people_id": 23279,
+      "candidate_id": "b348ccb5-ec30-404a-ae08-c8c6ebd1af3c",
+      "note": "sitting house HD-135 member; 2026 candidacy is state_upper (State Senate District 34 (2024)) \u2014 Maine term limits make chamber switches routine"
+    },
+    {
+      "people_id": 23280,
+      "candidate_id": "00ccd2c9-3942-47c4-8a16-7bff3f8db0de",
+      "note": null
+    },
+    {
+      "people_id": 23281,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Daniel Shagoury (HD-055); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 23283,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Charles Skold (HD-119); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 23284,
+      "candidate_id": "d8b7cb00-5869-41f3-b3d4-42e580f2ea13",
+      "note": null
+    },
+    {
+      "people_id": 23285,
+      "candidate_id": "e045afdc-c84f-45ae-bce9-c6c81ef2c8ea",
+      "note": null
+    },
+    {
+      "people_id": 23286,
+      "candidate_id": "45748c02-2be8-4346-a5d1-fd8a60cb7908",
+      "note": null
+    },
+    {
+      "people_id": 23288,
+      "candidate_id": "d5c2594c-1f30-4665-ac67-9de5d56fbed6",
+      "note": null
+    },
+    {
+      "people_id": 23289,
+      "candidate_id": "95ad6891-ac4a-47ea-aabb-0ab86847e33a",
+      "note": null
+    },
+    {
+      "people_id": 23290,
+      "candidate_id": "6d5cafb5-98f4-4e3c-89c7-ce2477c5b0f7",
+      "note": null
+    },
+    {
+      "people_id": 23889,
+      "candidate_id": "5b088da8-a634-4a21-9018-c5d7941e1034",
+      "note": "Passamaquoddy tribal representative (HD-TRIBE); casts NO recorded vote in the 132nd, so this entry never fans out"
+    },
+    {
+      "people_id": 24489,
+      "candidate_id": "01135858-a2b8-4c8b-ba9c-ec3ba84131a9",
+      "note": null
+    },
+    {
+      "people_id": 25000,
+      "candidate_id": "532f5f8d-7cab-4c41-ae11-8e67df46c990",
+      "note": null
+    },
+    {
+      "people_id": 25173,
+      "candidate_id": "04f548b6-ea97-484a-9cad-b2f7ced67bc6",
+      "note": null
+    },
+    {
+      "people_id": 25928,
+      "candidate_id": "a895bdcd-1484-4ff2-b397-ac5001f81436",
+      "note": null
+    },
+    {
+      "people_id": 25929,
+      "candidate_id": "0ae63b78-e5b1-4240-b578-90c95bc16166",
+      "note": null
+    },
+    {
+      "people_id": 25930,
+      "candidate_id": "7252ae3a-e5a2-4179-811a-95f0bb99ff91",
+      "note": null
+    },
+    {
+      "people_id": 25931,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Stephan Bunker (HD-075); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 25932,
+      "candidate_id": "e95ece3f-82ea-4365-b12f-ddba2e17e948",
+      "note": "sitting house HD-072 member; 2026 candidacy is state_upper (State Senate District 5 (2024)) \u2014 Maine term limits make chamber switches routine"
+    },
+    {
+      "people_id": 25933,
+      "candidate_id": "965ce036-f9f0-41ac-a6fa-4169a5ac0aa6",
+      "note": null
+    },
+    {
+      "people_id": 25934,
+      "candidate_id": "dc0e68a7-f2a7-4a56-9789-786c2d9a3e7c",
+      "note": null
+    },
+    {
+      "people_id": 25935,
+      "candidate_id": "7c96265c-d2f4-4adb-a5a6-37347cd66d0e",
+      "note": null
+    },
+    {
+      "people_id": 25936,
+      "candidate_id": "8e82ae50-ddcf-4cda-a069-787a55dfbe85",
+      "note": null
+    },
+    {
+      "people_id": 25937,
+      "candidate_id": "3034ed6d-00d5-44b9-9210-4a297fa25cac",
+      "note": "sitting house HD-001 member; 2026 candidacy is state_upper (State Senate District 1 (2024)) \u2014 Maine term limits make chamber switches routine"
+    },
+    {
+      "people_id": 25938,
+      "candidate_id": "92e46f66-72d8-4e83-868b-a4645d35a6ff",
+      "note": null
+    },
+    {
+      "people_id": 25939,
+      "candidate_id": "0ac5b182-9141-4c81-910a-ff21f048ffdc",
+      "note": null
+    },
+    {
+      "people_id": 25940,
+      "candidate_id": "51e99645-7e06-47eb-8335-b35bf07b0c4c",
+      "note": null
+    },
+    {
+      "people_id": 25941,
+      "candidate_id": "15198ea5-4550-4e1e-a943-cd85fc1f5e66",
+      "note": null
+    },
+    {
+      "people_id": 25942,
+      "candidate_id": "4dc533f6-5348-485e-a218-a6697ac5fbc7",
+      "note": null
+    },
+    {
+      "people_id": 25943,
+      "candidate_id": "5d642206-727e-43db-8368-0733f422c043",
+      "note": null
+    },
+    {
+      "people_id": 25944,
+      "candidate_id": "9a114f89-44e9-4565-8806-633c75686fb8",
+      "note": null
+    },
+    {
+      "people_id": 25945,
+      "candidate_id": "90b50bd4-7ebe-42de-8f3b-2b47f88796b2",
+      "note": null
+    },
+    {
+      "people_id": 25946,
+      "candidate_id": "329f84a1-819c-4ebe-9291-12bf08d148e1",
+      "note": null
+    },
+    {
+      "people_id": 25947,
+      "candidate_id": "c496bbd0-51f4-4cc0-94c1-9621e69470c5",
+      "note": null
+    },
+    {
+      "people_id": 25948,
+      "candidate_id": "32d2cff9-a6fa-4c9b-851e-74cdc22e3f0f",
+      "note": null
+    },
+    {
+      "people_id": 25949,
+      "candidate_id": "883a9ff0-cee5-41db-af1e-df98f1f98766",
+      "note": null
+    },
+    {
+      "people_id": 25950,
+      "candidate_id": "7cf81eef-af57-4bec-8032-3ea36ee7646c",
+      "note": null
+    },
+    {
+      "people_id": 25951,
+      "candidate_id": "40450a93-c2aa-407a-bfb1-5085ef14591d",
+      "note": null
+    },
+    {
+      "people_id": 25952,
+      "candidate_id": "bf42d124-76f8-4797-b707-17f2d2599e1c",
+      "note": null
+    },
+    {
+      "people_id": 25953,
+      "candidate_id": "d28ee64f-9f53-4070-988a-cd1e77972e2f",
+      "note": null
+    },
+    {
+      "people_id": 25954,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Dylan Pugh (HD-114); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 25955,
+      "candidate_id": "6399f593-c534-4f92-8c62-813c90a8c981",
+      "note": null
+    },
+    {
+      "people_id": 25956,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for David Rollins (HD-059); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 25957,
+      "candidate_id": null,
+      "note": "no Nov-2026 candidacy on file for Eleanor Sato (HD-109); reviewed 2026-08-29"
+    },
+    {
+      "people_id": 25958,
+      "candidate_id": "108a8024-b8c4-41e8-bba7-ce89e76b2371",
+      "note": null
+    },
+    {
+      "people_id": 25959,
+      "candidate_id": "f9e97958-9e85-494b-92d2-07ea1f2f2773",
+      "note": null
+    },
+    {
+      "people_id": 25960,
+      "candidate_id": "99485157-a57c-4825-9409-132cdb2e9081",
+      "note": null
+    },
+    {
+      "people_id": 25961,
+      "candidate_id": "ba2f46b4-abac-4430-bb8d-77421d0d3be8",
+      "note": null
+    },
+    {
+      "people_id": 25962,
+      "candidate_id": "0e44cb83-0a87-459c-8453-eed3ebc362d5",
+      "note": null
+    },
+    {
+      "people_id": 25963,
+      "candidate_id": "c725e6d6-e102-4dae-8986-23287a8dd75e",
+      "note": null
+    },
+    {
+      "people_id": 26432,
+      "candidate_id": "39efb925-f5d9-4333-885b-0b9db7223248",
+      "note": null
+    },
+    {
+      "people_id": 26634,
+      "candidate_id": "74edd72f-098a-47cc-bcb5-1cddd943762c",
+      "note": null
+    }
+  ]
+}

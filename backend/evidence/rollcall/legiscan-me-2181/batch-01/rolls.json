@@ -1,0 +1,415 @@
+{
+ "jurisdiction": "ME",
+ "session": "2181",
+ "batch": "batch-01",
+ "rolls": [
+  {
+   "measure_id": "LD 1016",
+   "roll": 1587988,
+   "chamber": "house",
+   "vote_date": "2025-06-10",
+   "question": "Acc Maj Otp As Amended Rep",
+   "question_class": "passage",
+   "yea": 75,
+   "nay": 65,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Establish the Manufactured Housing Community and Mobile Home Park Preservation and Assistance Fund",
+   "label": {
+    "slug": "housing_affordability",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 1016",
+   "roll": 1588941,
+   "chamber": "senate",
+   "vote_date": "2025-06-11",
+   "question": "Recede And Concur",
+   "question_class": "concurrence",
+   "yea": 18,
+   "nay": 15,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Establish the Manufactured Housing Community and Mobile Home Park Preservation and Assistance Fund",
+   "label": {
+    "slug": "housing_affordability",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 1126",
+   "roll": 1594835,
+   "chamber": "house",
+   "vote_date": "2025-06-25",
+   "question": "Recede And Concur",
+   "question_class": "concurrence",
+   "yea": 73,
+   "nay": 67,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act Requiring Serial Numbers on Firearms and Prohibiting Undetectable Firearms",
+   "label": {
+    "slug": "gun_control",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 1126",
+   "roll": 1595032,
+   "chamber": "senate",
+   "vote_date": "2025-06-25",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 17,
+   "nay": 16,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act Requiring Serial Numbers on Firearms and Prohibiting Undetectable Firearms",
+   "label": {
+    "slug": "gun_control",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 1868",
+   "roll": 1590978,
+   "chamber": "house",
+   "vote_date": "2025-06-16",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 77,
+   "nay": 68,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Advance a Clean Energy Economy by Updating Renewable and Clean Resource Procurement Laws",
+   "label": {
+    "slug": "environment_and_public_health",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 1868",
+   "roll": 1591936,
+   "chamber": "senate",
+   "vote_date": "2025-06-17",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 19,
+   "nay": 16,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Advance a Clean Energy Economy by Updating Renewable and Clean Resource Procurement Laws",
+   "label": {
+    "slug": "environment_and_public_health",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 1937",
+   "roll": 1589984,
+   "chamber": "senate",
+   "vote_date": "2025-06-12",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 21,
+   "nay": 14,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Require Hospitals and Hospital-affiliated Providers to Provide Financial Assistance Programs for Medical Care",
+   "label": {
+    "slug": "healthcare_affordability",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 1937",
+   "roll": 1591741,
+   "chamber": "house",
+   "vote_date": "2025-06-17",
+   "question": "Acc Maj Otp As Amended Rep",
+   "question_class": "passage",
+   "yea": 75,
+   "nay": 72,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Require Hospitals and Hospital-affiliated Providers to Provide Financial Assistance Programs for Medical Care",
+   "label": {
+    "slug": "healthcare_affordability",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 1971",
+   "roll": 1592017,
+   "chamber": "house",
+   "vote_date": "2025-06-18",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 75,
+   "nay": 73,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Protect Workers in This State by Clarifying the Relationship of State and Local Law Enforcement Agencies with Federal Immigration Authorities",
+   "label": {
+    "slug": "immigration",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 1971",
+   "roll": 1592547,
+   "chamber": "senate",
+   "vote_date": "2025-06-18",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 20,
+   "nay": 14,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Protect Workers in This State by Clarifying the Relationship of State and Local Law Enforcement Agencies with Federal Immigration Authorities",
+   "label": {
+    "slug": "immigration",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 2176",
+   "roll": 1678354,
+   "chamber": "senate",
+   "vote_date": "2026-04-07",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 20,
+   "nay": 14,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Safeguard Personal Information and Strengthen Tenant Rights in Maine",
+   "label": {
+    "slug": "data_privacy",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 2176",
+   "roll": 1678710,
+   "chamber": "house",
+   "vote_date": "2026-04-08",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 75,
+   "nay": 73,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Safeguard Personal Information and Strengthen Tenant Rights in Maine",
+   "label": {
+    "slug": "data_privacy",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 2231",
+   "roll": 1678714,
+   "chamber": "house",
+   "vote_date": "2026-04-08",
+   "question": "Acc Maj Otp-am By Ca \"a\"",
+   "question_class": "passage",
+   "yea": 78,
+   "nay": 67,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Support Owners of Manufactured Housing, Mobile Homes and Tiny Homes",
+   "label": {
+    "slug": "housing_affordability",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 2231",
+   "roll": 1679427,
+   "chamber": "senate",
+   "vote_date": "2026-04-08",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 20,
+   "nay": 14,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Support Owners of Manufactured Housing, Mobile Homes and Tiny Homes",
+   "label": {
+    "slug": "housing_affordability",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 517",
+   "roll": 1658072,
+   "chamber": "house",
+   "vote_date": "2026-03-10",
+   "question": "Acc Maj Otp As Amended Rep",
+   "question_class": "passage",
+   "yea": 73,
+   "nay": 65,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act Regarding Synthetic Media in Campaign Advertising",
+   "label": {
+    "slug": "election_integrity",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 517",
+   "roll": 1661402,
+   "chamber": "senate",
+   "vote_date": "2026-03-12",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 20,
+   "nay": 14,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act Regarding Synthetic Media in Campaign Advertising",
+   "label": {
+    "slug": "election_integrity",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 538",
+   "roll": 1574213,
+   "chamber": "house",
+   "vote_date": "2025-05-20",
+   "question": "Acc Maj Otp As Amended Rep",
+   "question_class": "passage",
+   "yea": 75,
+   "nay": 71,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Amend Maine's Prescription Drug Labeling Law by Allowing the Removal of the Name of a Prescriber of Mifepristone, Misoprostol and Their Generic Alternatives",
+   "label": {
+    "slug": "womens_reproductive_rights",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 538",
+   "roll": 1574972,
+   "chamber": "senate",
+   "vote_date": "2025-05-21",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 19,
+   "nay": 13,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Amend Maine's Prescription Drug Labeling Law by Allowing the Removal of the Name of a Prescriber of Mifepristone, Misoprostol and Their Generic Alternatives",
+   "label": {
+    "slug": "womens_reproductive_rights",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 556",
+   "roll": 1592313,
+   "chamber": "house",
+   "vote_date": "2025-06-18",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 78,
+   "nay": 67,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Preserve Heating and Energy Choice by Prohibiting a Municipality from Prohibiting a Particular Energy System or Energy Distributor",
+   "label": {
+    "slug": "environment_and_public_health",
+    "yea": "against"
+   }
+  },
+  {
+   "measure_id": "LD 556",
+   "roll": 1594826,
+   "chamber": "senate",
+   "vote_date": "2025-06-25",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 18,
+   "nay": 14,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Preserve Heating and Energy Choice by Prohibiting a Municipality from Prohibiting a Particular Energy System or Energy Distributor",
+   "label": {
+    "slug": "environment_and_public_health",
+    "yea": "against"
+   }
+  },
+  {
+   "measure_id": "LD 598",
+   "roll": 1587268,
+   "chamber": "house",
+   "vote_date": "2025-06-10",
+   "question": "Recede And Concur",
+   "question_class": "concurrence",
+   "yea": 76,
+   "nay": 69,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Require Minimum Pay for Reporting to Work",
+   "label": {
+    "slug": "corporate_accountability",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 598",
+   "roll": 1588827,
+   "chamber": "senate",
+   "vote_date": "2025-06-11",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 18,
+   "nay": 16,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Require Minimum Pay for Reporting to Work",
+   "label": {
+    "slug": "corporate_accountability",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 61",
+   "roll": 1579051,
+   "chamber": "house",
+   "vote_date": "2025-05-27",
+   "question": "Acc Maj Otp As Amended Rep",
+   "question_class": "passage",
+   "yea": 73,
+   "nay": 63,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Regulate Employer Surveillance to Protect Workers",
+   "label": {
+    "slug": "data_privacy",
+    "yea": "for"
+   }
+  },
+  {
+   "measure_id": "LD 61",
+   "roll": 1579868,
+   "chamber": "senate",
+   "vote_date": "2025-05-28",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 20,
+   "nay": 14,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Regulate Employer Surveillance to Protect Workers",
+   "label": {
+    "slug": "data_privacy",
+    "yea": "for"
+   }
+  }
+ ]
+}
