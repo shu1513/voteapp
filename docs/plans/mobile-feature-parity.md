@@ -129,6 +129,12 @@ and undo the pick.
    `CandidatePage.tsx:618-654`):
    - upcoming only (`election_date >= usLatestLocalDate()`);
    - office candidacies only while `status !== "withdrawn" && status !== "lost"`;
+   - **withdrawn-pick removal**: also port `WithdrawnPicksNotice` /
+     `RemoveWithdrawnPickButton` (web `ElectionChoiceControls.tsx`). A
+     withdrawn candidacy is filtered out of the election payload but its
+     stored pick still counts toward the seat cap, so without the notice a
+     multi-seat race can wedge with every remaining button disabled and
+     nothing visible to remove (`chosen: false` on the shared mutation);
    - measures only when the measure details payload exists (a TBD measure
      renders no pick UI of any kind);
    - district gate 3-state rule (docs/plans/pick-district-gate.md): in my
@@ -171,7 +177,10 @@ race on the nearest election day is decided, then "My Picks ✓"
    progress), `UpcomingUncardedPicks`, `PastPicks` (results survive the
    ballot's window via the choices payload alone), result chips — all
    optional result fields (`measure_result`, `current_result_*`) render as
-   "no result yet" when absent.
+   "no result yet" when absent. Include the withdrawn-pick "Remove pick"
+   button next to the "(withdrew)" flag on upcoming races (see
+   `PickedLine` in `PicksPage.tsx` — date-gated because the backend rejects
+   writes to past elections).
 4. **Unverified users keep their picks.** The choices API is deliberately not
    verification-gated; only the address-derived ballot is. Mirror
    `PicksPage.tsx:505-524`: unverified renders `VerifyPrompt` (mobile already

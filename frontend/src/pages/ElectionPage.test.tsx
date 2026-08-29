@@ -808,6 +808,57 @@ describe("ElectionPage", () => {
     expect(screen.queryByRole("link", { name: "Sign up" })).not.toBeInTheDocument();
   });
 
+  it("surfaces a withdrawn pick with a remove control and PUTs chosen: false", async () => {
+    // ballotLookup filters withdrawn candidacies out of the payload, so a
+    // withdrawn pick has no candidate card (and no pick button) here while
+    // still counting toward the seat cap — the notice is this page's only
+    // removal path.
+    const puts: unknown[] = [];
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/election-choices": (_url, init) => {
+        if (init?.method === "PUT") {
+          puts.push(JSON.parse(String(init.body)));
+          return { status: 200, body: { choice: null } };
+        }
+        return {
+          status: 200,
+          body: {
+            choices: [
+              {
+                election_id: "e-1",
+                race_type: "office",
+                official_ballot_title: "Governor",
+                election_date: "2026-11-03",
+                seats_to_fill: 2,
+                picks: [
+                  {
+                    candidate_id: "c-withdrawn",
+                    display_name: "Quinn Quitter",
+                    candidacy_status: "withdrawn",
+                  },
+                ],
+                measure_position: null,
+                updated_at: "2026-08-01T00:00:00.000Z",
+              },
+            ],
+          },
+        };
+      },
+    });
+    renderElection(() => electionDetail({ seats_to_fill: 2 }));
+
+    expect(
+      await screen.findByText(/withdrew from this race/)
+    ).toBeInTheDocument();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Remove pick: Quinn Quitter" }));
+    await waitFor(() =>
+      expect(puts).toEqual([{ election_id: "e-1", candidate_id: "c-withdrawn", chosen: false }])
+    );
+  });
+
   it("pulls pick buttons once the guest's ballot context says the race is foreign", async () => {
     // State 2 of the gate: districts known, race foreign — no controls, no
     // nudge. The flip (mine → foreign) makes the absence assertions sound:

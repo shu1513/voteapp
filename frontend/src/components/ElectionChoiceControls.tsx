@@ -261,6 +261,89 @@ export function CandidatePickRow({
   );
 }
 
+type RemoveWithdrawnPickButtonProps = {
+  electionId: string;
+  candidateId: string;
+  /** Carried in the accessible name — the visible label is a bare "Remove
+   * pick", which a screen-reader button list can't tell apart. */
+  candidateName: string;
+};
+
+/**
+ * Removes a pick whose candidate withdrew. Withdrawn candidacies are filtered
+ * out of election payloads and never get a CandidatePickButton, so without
+ * this control a withdrawn pick on a multi-seat race holds one of the seat
+ * slots forever — the backend's cap counts every stored pick, but the toggle
+ * that could clear it has no candidate row to live on. Signed-in writes only
+ * by construction: guest draft rows are always stored with candidacy_status
+ * "active" (lib/ballotDraft.ts), so callers keyed on "withdrawn" never
+ * render this for a guest. Upcoming elections only, same as every choice
+ * control — the backend rejects writes to past ones.
+ */
+export function RemoveWithdrawnPickButton({
+  electionId,
+  candidateId,
+  candidateName,
+}: RemoveWithdrawnPickButtonProps) {
+  const setChoice = useSetElectionChoice();
+  const saving = useElectionChoiceSaving();
+  return (
+    <span className="inline-flex flex-wrap items-center gap-2">
+      <button
+        type="button"
+        disabled={saving}
+        aria-label={`Remove pick: ${candidateName}`}
+        onClick={() =>
+          setChoice.mutate({ election_id: electionId, candidate_id: candidateId, chosen: false })
+        }
+        className="rounded-full border border-line bg-white px-2 py-0.5 text-xs font-medium text-ink transition hover:border-ink disabled:opacity-50"
+      >
+        {setChoice.isPending ? "…" : "Remove pick"}
+      </button>
+      {setChoice.isError && !setChoice.isPending ? <SaveError error={setChoice.error} /> : null}
+    </span>
+  );
+}
+
+/**
+ * Election-page banner for picks whose candidate withdrew. The race's
+ * candidate list no longer shows these candidacies at all, so on a
+ * multi-seat race the only visible symptom is every other button disabled
+ * with "remove a pick first" — this names the invisible pick and offers the
+ * removal the roster can't. Renders nothing when no pick is withdrawn.
+ */
+export function WithdrawnPicksNotice({
+  electionId,
+  choice,
+}: {
+  electionId: string;
+  choice: ElectionChoice | undefined;
+}) {
+  const withdrawn = (choice?.picks ?? []).filter((pick) => pick.candidacy_status === "withdrawn");
+  if (withdrawn.length === 0) {
+    return null;
+  }
+  return (
+    <div className="mt-3 rounded-md border border-line bg-surface px-3 py-2">
+      <ul className="space-y-1">
+        {withdrawn.map((pick) => (
+          <li key={pick.candidate_id} className="flex flex-wrap items-center gap-2 text-sm text-ink">
+            <span>
+              Your pick <span className="font-semibold">{pick.display_name}</span> withdrew from
+              this race — it still counts toward your picks until you remove it.
+            </span>
+            <RemoveWithdrawnPickButton
+              electionId={electionId}
+              candidateId={pick.candidate_id}
+              candidateName={pick.display_name}
+            />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 type MeasureChoiceButtonsProps = {
   electionId: string;
   /** The measure's official ballot title — stored on guest draft rows. */

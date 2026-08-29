@@ -2,7 +2,13 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ElectionChoice, Me } from "@voteapp/api-client";
-import { CandidatePickButton, CandidatePickRow, MeasureChoiceButtons } from "./ElectionChoiceControls";
+import {
+  CandidatePickButton,
+  CandidatePickRow,
+  MeasureChoiceButtons,
+  RemoveWithdrawnPickButton,
+  WithdrawnPicksNotice,
+} from "./ElectionChoiceControls";
 import { clearBallotDraft, readBallotDraft } from "../lib/ballotDraft";
 import { apiError, stubApiRoutes } from "../test/mockApi";
 import { renderRoutes } from "../test/render";
@@ -355,6 +361,76 @@ describe("MeasureChoiceButtons", () => {
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Couldn't save — check your connection and try again."
     );
+  });
+});
+
+describe("RemoveWithdrawnPickButton", () => {
+  it("PUTs chosen: false for the withdrawn candidate", async () => {
+    const fetchMock = stubApiRoutes({
+      "/api/me/election-choices": (_url, init) => {
+        expect(init?.method).toBe("PUT");
+        expect(JSON.parse(String(init?.body))).toEqual({
+          election_id: ELECTION_ID,
+          candidate_id: CANDIDATE_ID,
+          chosen: false,
+        });
+        return { status: 200, body: { choice: choice() } };
+      },
+    });
+
+    renderControl(
+      <RemoveWithdrawnPickButton electionId={ELECTION_ID} candidateId={CANDIDATE_ID} candidateName="Jane Doe" />
+    );
+
+    await userEvent.setup().click(screen.getByRole("button", { name: "Remove pick: Jane Doe" }));
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+  });
+
+  it("shows the API rejection under the button", async () => {
+    stubApiRoutes({
+      "/api/me/election-choices": () =>
+        apiError(400, "election_closed", "Choices can only be changed for upcoming elections"),
+    });
+
+    renderControl(
+      <RemoveWithdrawnPickButton electionId={ELECTION_ID} candidateId={CANDIDATE_ID} candidateName="Jane Doe" />
+    );
+
+    await userEvent.setup().click(screen.getByRole("button", { name: "Remove pick: Jane Doe" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Choices can only be changed for upcoming elections"
+    );
+  });
+});
+
+describe("WithdrawnPicksNotice", () => {
+  it("names each withdrawn pick with its own remove button, skipping active picks", () => {
+    renderControl(
+      <WithdrawnPicksNotice
+        electionId={ELECTION_ID}
+        choice={choice({
+          picks: [
+            { candidate_id: CANDIDATE_ID, display_name: "Jane Doe", candidacy_status: "withdrawn" },
+            { candidate_id: OTHER_CANDIDATE_ID, display_name: "John Roe", candidacy_status: "active" },
+          ],
+        })}
+      />
+    );
+
+    expect(screen.getByText(/Jane Doe/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Remove pick: Jane Doe" })).toBeInTheDocument();
+    expect(screen.queryByText(/John Roe/)).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Remove pick: John Roe" })).not.toBeInTheDocument();
+  });
+
+  it("renders nothing when no pick is withdrawn", () => {
+    const { container } = renderControl(
+      <WithdrawnPicksNotice
+        electionId={ELECTION_ID}
+        choice={choice({ picks: [pick(CANDIDATE_ID)] })}
+      />
+    );
+    expect(container).toBeEmptyDOMElement();
   });
 });
 
