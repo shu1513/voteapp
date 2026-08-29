@@ -421,6 +421,7 @@
     "nevada-candidates:finance:auto-link": "tsx src/scripts/autoLinkNevadaCandidateFinance.ts",
     "nevada-candidates:finance:import": "tsx src/scripts/importNevadaCandidateFinance.ts",
     "new-hampshire-candidates:finance:phase-zero": "tsx src/scripts/probeNewHampshireCampaignFinance.ts",
+    "kansas-candidates:finance:phase-zero": "tsx src/scripts/probeKansasCandidateFinance.ts",
     "new-hampshire-candidates:finance:raw:refresh": "tsx src/scripts/refreshNewHampshireCampaignFinanceRawData.ts",
     "alabama-candidates:finance:phase-zero": "tsx src/scripts/probeAlabamaCampaignFinance.ts",
     "alabama-candidates:finance:raw:refresh": "tsx src/scripts/refreshAlabamaCampaignFinanceRawData.ts",
