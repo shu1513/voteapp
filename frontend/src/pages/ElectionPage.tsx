@@ -893,8 +893,11 @@ export function ElectionPage() {
                 buttons' visibility gate. key: this route element stays
                 mounted across sibling rail walks, so without a remount the
                 previous election's panel (or an in-flight run's result)
-                would surface under the next election. */}
-            {showChoiceControls && data.race_type !== "ballot_measure" ? (
+                would surface under the next election. length: in the
+                stranded-only state (section open, every candidacy
+                withdrawn) the engine has nobody to pick — the button could
+                only answer "No pick". */}
+            {data.candidates.length > 0 && showChoiceControls && data.race_type !== "ballot_measure" ? (
               <div className="mt-3">
                 <AutoPickControl key={data.id} electionId={data.id} seatsToFill={data.seats_to_fill ?? null} />
               </div>
