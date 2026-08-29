@@ -1,5 +1,5 @@
 import type { MetaFunction } from "react-router";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { APP_NAME, useMe } from "@voteapp/api-client";
 import { SupportCheckout } from "../components/MembershipSection";
 import { VerifyPrompt } from "../components/VerifyPrompt";
@@ -19,6 +19,13 @@ export const meta: MetaFunction = () =>
 // membership endpoints; an existing member sees their plan and the portal.
 export default function SupportMemberPage() {
   const { me } = useMe();
+  // ?next preserves the FULL url, query included: a Stripe return
+  // (?membership=success) with an expired session must survive the login
+  // round-trip, or the success banner and the double-charge lock are lost.
+  // (The param-stripping effect lives in SupportCheckout, which does not
+  // mount for logged-out visitors, so the query is still here to preserve.)
+  const location = useLocation();
+  const next = encodeURIComponent(location.pathname + location.search);
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 px-4 py-8">
@@ -41,11 +48,11 @@ export default function SupportMemberPage() {
         // Shown while /api/me is unresolved too; ?next returns the
         // prospective member here after auth.
         <p className="text-sm">
-          <Link to="/login?next=%2Fsupport%2Fmember" className="font-semibold underline hover:text-ink">
+          <Link to={`/login?next=${next}`} className="font-semibold underline hover:text-ink">
             Log in
           </Link>{" "}
           or{" "}
-          <Link to="/register?next=%2Fsupport%2Fmember" className="font-semibold underline hover:text-ink">
+          <Link to={`/register?next=${next}`} className="font-semibold underline hover:text-ink">
             sign up
           </Link>{" "}
           to become a member.

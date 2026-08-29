@@ -50,6 +50,18 @@ describe("SupportMemberPage", () => {
     expect(screen.queryByRole("button", { name: "Become a member" })).not.toBeInTheDocument();
   });
 
+  it("carries a Stripe return outcome through the login round-trip", async () => {
+    stubApiRoutes({ "/api/me": apiError(401, "unauthorized", "Not logged in") });
+    renderPage("?membership=success");
+
+    // The success param must survive auth, or the returning supporter loses
+    // the banner and the double-charge lock.
+    expect(await screen.findByRole("link", { name: "Log in" })).toHaveAttribute(
+      "href",
+      "/login?next=%2Fsupport%2Fmember%3Fmembership%3Dsuccess"
+    );
+  });
+
   it("asks unverified accounts to verify instead of showing the form", async () => {
     stubApiRoutes({ "/api/me": { body: ME_UNVERIFIED } });
     renderPage();

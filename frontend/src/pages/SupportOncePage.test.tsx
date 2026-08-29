@@ -23,7 +23,7 @@ const ACTIVE_MEMBER = {
   payments: [],
 };
 
-function renderPage() {
+function renderPage(search = "") {
   return renderRoutes(
     [
       { path: "/support/once", element: <SupportOncePage /> },
@@ -31,7 +31,7 @@ function renderPage() {
       { path: "/register", element: <p /> },
       { path: "/terms", element: <p /> },
     ],
-    "/support/once"
+    { pathname: "/support/once", search }
   );
 }
 
@@ -52,6 +52,16 @@ describe("SupportOncePage", () => {
       "/login?next=%2Fsupport%2Fonce"
     );
     expect(screen.queryByRole("button", { name: "Contribute" })).not.toBeInTheDocument();
+  });
+
+  it("carries a Stripe return outcome through the login round-trip", async () => {
+    stubApiRoutes({ "/api/me": apiError(401, "unauthorized", "Not logged in") });
+    renderPage("?membership=success");
+
+    expect(await screen.findByRole("link", { name: "Log in" })).toHaveAttribute(
+      "href",
+      "/login?next=%2Fsupport%2Fonce%3Fmembership%3Dsuccess"
+    );
   });
 
   it("asks unverified accounts to verify instead of showing the form", async () => {
