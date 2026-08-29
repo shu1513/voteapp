@@ -129,12 +129,14 @@ and undo the pick.
    `CandidatePage.tsx:618-654`):
    - upcoming only (`election_date >= usLatestLocalDate()`);
    - office candidacies only while `status !== "withdrawn" && status !== "lost"`;
-   - **withdrawn-pick removal**: also port `WithdrawnPicksNotice` /
-     `RemoveWithdrawnPickButton` (web `ElectionChoiceControls.tsx`). A
+   - **stranded-pick removal**: also port `StrandedPicksNotice` /
+     `RemoveStrandedPickButton` (web `ElectionChoiceControls.tsx`). A
      withdrawn candidacy is filtered out of the election payload but its
      stored pick still counts toward the seat cap, so without the notice a
      multi-seat race can wedge with every remaining button disabled and
-     nothing visible to remove (`chosen: false` on the shared mutation);
+     nothing visible to remove (`chosen: false` on the shared mutation).
+     Mobile has no guest draft, so only the signed-in (withdrawn-status)
+     branch applies — the roster-absence branch exists for web guests;
    - measures only when the measure details payload exists (a TBD measure
      renders no pick UI of any kind);
    - district gate 3-state rule (docs/plans/pick-district-gate.md): in my

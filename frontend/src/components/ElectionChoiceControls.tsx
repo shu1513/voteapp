@@ -261,30 +261,41 @@ export function CandidatePickRow({
   );
 }
 
-type RemoveWithdrawnPickButtonProps = {
+type RemoveStrandedPickButtonProps = {
   electionId: string;
   candidateId: string;
   /** Carried in the accessible name — the visible label is a bare "Remove
    * pick", which a screen-reader button list can't tell apart. */
   candidateName: string;
+  /** The election's official ballot title — stored on guest draft rows. */
+  raceTitle: string;
+  /** ISO election date (YYYY-MM-DD) — stored on guest draft rows. */
+  electionDate: string;
+  /** elections.seats_to_fill — the guest draft write re-derives its cap. */
+  seatsToFill: number | null;
 };
 
 /**
- * Removes a pick whose candidate withdrew. Withdrawn candidacies are filtered
- * out of election payloads and never get a CandidatePickButton, so without
- * this control a withdrawn pick on a multi-seat race holds one of the seat
- * slots forever — the backend's cap counts every stored pick, but the toggle
- * that could clear it has no candidate row to live on. Signed-in writes only
- * by construction: guest draft rows are always stored with candidacy_status
- * "active" (lib/ballotDraft.ts), so callers keyed on "withdrawn" never
- * render this for a guest. Upcoming elections only, same as every choice
- * control — the backend rejects writes to past ones.
+ * Removes a STRANDED pick — one whose candidacy left the race after the pick
+ * was made (withdrawn for accounts, gone from the roster for guest drafts).
+ * Such candidacies are filtered out of election payloads and never get a
+ * CandidatePickButton, so without this control the pick holds one of a
+ * multi-seat race's slots forever — both the backend's seat cap and the
+ * guest draft's count every stored pick, but the toggle that could clear it
+ * has no candidate row to live on. Same session fork as CandidatePickButton:
+ * signed-in → PUT, guest → local draft. Upcoming elections only, same as
+ * every choice control — the backend rejects writes to past ones.
  */
-export function RemoveWithdrawnPickButton({
+export function RemoveStrandedPickButton({
   electionId,
   candidateId,
   candidateName,
-}: RemoveWithdrawnPickButtonProps) {
+  raceTitle,
+  electionDate,
+  seatsToFill,
+}: RemoveStrandedPickButtonProps) {
+  const { me } = useMe();
+  const isGuest = me === null;
   const setChoice = useSetElectionChoice();
   const saving = useElectionChoiceSaving();
   return (
@@ -294,7 +305,17 @@ export function RemoveWithdrawnPickButton({
         disabled={saving}
         aria-label={`Remove pick: ${candidateName}`}
         onClick={() =>
-          setChoice.mutate({ election_id: electionId, candidate_id: candidateId, chosen: false })
+          isGuest
+            ? setDraftCandidateChoice({
+                electionId,
+                raceTitle,
+                electionDate,
+                seatsToFill,
+                candidateId,
+                candidateName,
+                chosen: false,
+              })
+            : setChoice.mutate({ election_id: electionId, candidate_id: candidateId, chosen: false })
         }
         className="rounded-full border border-line bg-white px-2 py-0.5 text-xs font-medium text-ink transition hover:border-ink disabled:opacity-50"
       >
@@ -306,36 +327,62 @@ export function RemoveWithdrawnPickButton({
 }
 
 /**
- * Election-page banner for picks whose candidate withdrew. The race's
- * candidate list no longer shows these candidacies at all, so on a
- * multi-seat race the only visible symptom is every other button disabled
- * with "remove a pick first" — this names the invisible pick and offers the
- * removal the roster can't. Renders nothing when no pick is withdrawn.
+ * Election-page banner for stranded picks. The race's candidate list no
+ * longer shows these candidacies at all, so on a multi-seat race the only
+ * visible symptom is every other button disabled with "remove a pick first"
+ * — this names the invisible pick and offers the removal the roster can't.
+ * Renders nothing when no pick is stranded.
+ *
+ * Detection forks on the session: signed-in picks carry the authoritative
+ * candidacy_status, but guest draft rows are always stored "active"
+ * (lib/ballotDraft.ts), so for guests the only signal is the pick's absence
+ * from the payload roster. Both surfaces read the same candidate_elections
+ * rows, so a stored pick missing from the roster really did lose its
+ * candidacy — but the draft can't say HOW (withdrawal, or dropped in a
+ * roster re-research), hence the vaguer guest copy.
  */
-export function WithdrawnPicksNotice({
+export function StrandedPicksNotice({
   electionId,
   choice,
+  raceTitle,
+  electionDate,
+  seatsToFill,
+  rosterCandidateIds,
 }: {
   electionId: string;
   choice: ElectionChoice | undefined;
+  raceTitle: string;
+  electionDate: string;
+  seatsToFill: number | null;
+  /** candidate_ids the election payload still lists (the FULL roster, not a
+   * client-side filtered view — a party filter must not strand picks). */
+  rosterCandidateIds: ReadonlySet<string>;
 }) {
-  const withdrawn = (choice?.picks ?? []).filter((pick) => pick.candidacy_status === "withdrawn");
-  if (withdrawn.length === 0) {
+  const { me } = useMe();
+  const isGuest = me === null;
+  const stranded = (choice?.picks ?? []).filter((pick) =>
+    isGuest ? !rosterCandidateIds.has(pick.candidate_id) : pick.candidacy_status === "withdrawn"
+  );
+  if (stranded.length === 0) {
     return null;
   }
   return (
     <div className="mt-3 rounded-md border border-line bg-surface px-3 py-2">
       <ul className="space-y-1">
-        {withdrawn.map((pick) => (
+        {stranded.map((pick) => (
           <li key={pick.candidate_id} className="flex flex-wrap items-center gap-2 text-sm text-ink">
             <span>
-              Your pick <span className="font-semibold">{pick.display_name}</span> withdrew from
-              this race — it still counts toward your picks until you remove it.
+              Your pick <span className="font-semibold">{pick.display_name}</span>{" "}
+              {isGuest ? "is no longer listed in this race" : "withdrew from this race"} — it
+              still counts toward your picks until you remove it.
             </span>
-            <RemoveWithdrawnPickButton
+            <RemoveStrandedPickButton
               electionId={electionId}
               candidateId={pick.candidate_id}
               candidateName={pick.display_name}
+              raceTitle={raceTitle}
+              electionDate={electionDate}
+              seatsToFill={seatsToFill}
             />
           </li>
         ))}

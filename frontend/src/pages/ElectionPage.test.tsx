@@ -859,6 +859,49 @@ describe("ElectionPage", () => {
     );
   });
 
+  it("frees a guest's seat slot held by a draft pick that left the roster", async () => {
+    // Guest draft rows are always stored candidacy_status "active", so the
+    // withdrawn-status path can't fire — roster absence is the guest signal.
+    // With the cap full (ghost + Jordan on a 2-seat race), Riley's button is
+    // the trap's visible symptom: disabled until the ghost pick is removed.
+    clearBallotDraft();
+    setDraftBallotContext([DISTRICT.id], null);
+    setDraftCandidateChoice({
+      electionId: "e-1",
+      raceTitle: "Governor",
+      electionDate: "2026-11-03",
+      seatsToFill: 2,
+      candidateId: "c-gone",
+      candidateName: "Quinn Quitter",
+      chosen: true,
+    });
+    setDraftCandidateChoice({
+      electionId: "e-1",
+      raceTitle: "Governor",
+      electionDate: "2026-11-03",
+      seatsToFill: 2,
+      candidateId: "c-1",
+      candidateName: "Jordan Voter",
+      chosen: true,
+    });
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => electionDetail({ seats_to_fill: 2 }));
+
+    expect(await screen.findByText(/is no longer listed in this race/)).toBeInTheDocument();
+    // The still-rostered pick is not flagged, and the cap holds Riley shut.
+    expect(screen.getByRole("button", { name: "✓ My pick: Jordan Voter" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Make my pick: Riley Runner" })).toBeDisabled();
+
+    await userEvent.setup().click(screen.getByRole("button", { name: "Remove pick: Quinn Quitter" }));
+
+    // The removal is a local draft write: notice gone, seat freed.
+    await waitFor(() =>
+      expect(screen.queryByText(/is no longer listed in this race/)).not.toBeInTheDocument()
+    );
+    expect(readBallotDraft().choices["e-1"].picks.map((pick) => pick.candidate_id)).toEqual(["c-1"]);
+    expect(screen.getByRole("button", { name: "Make my pick: Riley Runner" })).toBeEnabled();
+  });
+
   it("pulls pick buttons once the guest's ballot context says the race is foreign", async () => {
     // State 2 of the gate: districts known, race foreign — no controls, no
     // nudge. The flip (mine → foreign) makes the absence assertions sound:

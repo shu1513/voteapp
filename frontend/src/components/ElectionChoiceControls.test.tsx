@@ -6,10 +6,10 @@ import {
   CandidatePickButton,
   CandidatePickRow,
   MeasureChoiceButtons,
-  RemoveWithdrawnPickButton,
-  WithdrawnPicksNotice,
+  RemoveStrandedPickButton,
+  StrandedPicksNotice,
 } from "./ElectionChoiceControls";
-import { clearBallotDraft, readBallotDraft } from "../lib/ballotDraft";
+import { clearBallotDraft, readBallotDraft, setDraftCandidateChoice } from "../lib/ballotDraft";
 import { apiError, stubApiRoutes } from "../test/mockApi";
 import { renderRoutes } from "../test/render";
 
@@ -364,8 +364,34 @@ describe("MeasureChoiceButtons", () => {
   });
 });
 
-describe("RemoveWithdrawnPickButton", () => {
-  it("PUTs chosen: false for the withdrawn candidate", async () => {
+function renderRemoveButton() {
+  return renderControl(
+    <RemoveStrandedPickButton
+      electionId={ELECTION_ID}
+      candidateId={CANDIDATE_ID}
+      candidateName="Jane Doe"
+      raceTitle="Governor"
+      electionDate="2026-11-03"
+      seatsToFill={2}
+    />
+  );
+}
+
+function renderNotice(picks: ElectionChoice["picks"], rosterIds: string[] = []) {
+  return renderControl(
+    <StrandedPicksNotice
+      electionId={ELECTION_ID}
+      choice={choice({ picks })}
+      raceTitle="Governor"
+      electionDate="2026-11-03"
+      seatsToFill={2}
+      rosterCandidateIds={new Set(rosterIds)}
+    />
+  );
+}
+
+describe("RemoveStrandedPickButton", () => {
+  it("PUTs chosen: false for the stranded candidate", async () => {
     const fetchMock = stubApiRoutes({
       "/api/me/election-choices": (_url, init) => {
         expect(init?.method).toBe("PUT");
@@ -378,9 +404,7 @@ describe("RemoveWithdrawnPickButton", () => {
       },
     });
 
-    renderControl(
-      <RemoveWithdrawnPickButton electionId={ELECTION_ID} candidateId={CANDIDATE_ID} candidateName="Jane Doe" />
-    );
+    renderRemoveButton();
 
     await userEvent.setup().click(screen.getByRole("button", { name: "Remove pick: Jane Doe" }));
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
@@ -392,43 +416,76 @@ describe("RemoveWithdrawnPickButton", () => {
         apiError(400, "election_closed", "Choices can only be changed for upcoming elections"),
     });
 
-    renderControl(
-      <RemoveWithdrawnPickButton electionId={ELECTION_ID} candidateId={CANDIDATE_ID} candidateName="Jane Doe" />
-    );
+    renderRemoveButton();
 
     await userEvent.setup().click(screen.getByRole("button", { name: "Remove pick: Jane Doe" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Choices can only be changed for upcoming elections"
     );
   });
+
+  it("removes a guest's pick from the local draft with no API call", async () => {
+    mockMe = null;
+    const fetchMock = stubApiRoutes({});
+    setDraftCandidateChoice({
+      electionId: ELECTION_ID,
+      raceTitle: "Governor",
+      electionDate: "2026-11-03",
+      seatsToFill: 2,
+      candidateId: CANDIDATE_ID,
+      candidateName: "Jane Doe",
+      chosen: true,
+    });
+
+    renderRemoveButton();
+
+    await userEvent.setup().click(screen.getByRole("button", { name: "Remove pick: Jane Doe" }));
+    expect(readBallotDraft().choices[ELECTION_ID]).toBeUndefined();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
 });
 
-describe("WithdrawnPicksNotice", () => {
+describe("StrandedPicksNotice", () => {
   it("names each withdrawn pick with its own remove button, skipping active picks", () => {
-    renderControl(
-      <WithdrawnPicksNotice
-        electionId={ELECTION_ID}
-        choice={choice({
-          picks: [
-            { candidate_id: CANDIDATE_ID, display_name: "Jane Doe", candidacy_status: "withdrawn" },
-            { candidate_id: OTHER_CANDIDATE_ID, display_name: "John Roe", candidacy_status: "active" },
-          ],
-        })}
-      />
-    );
+    renderNotice([
+      { candidate_id: CANDIDATE_ID, display_name: "Jane Doe", candidacy_status: "withdrawn" },
+      { candidate_id: OTHER_CANDIDATE_ID, display_name: "John Roe", candidacy_status: "active" },
+    ]);
 
     expect(screen.getByText(/Jane Doe/)).toBeInTheDocument();
+    expect(screen.getByText(/withdrew from this race/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Remove pick: Jane Doe" })).toBeInTheDocument();
     expect(screen.queryByText(/John Roe/)).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Remove pick: John Roe" })).not.toBeInTheDocument();
   });
 
   it("renders nothing when no pick is withdrawn", () => {
-    const { container } = renderControl(
-      <WithdrawnPicksNotice
-        electionId={ELECTION_ID}
-        choice={choice({ picks: [pick(CANDIDATE_ID)] })}
-      />
+    const { container } = renderNotice([pick(CANDIDATE_ID)]);
+    expect(container).toBeEmptyDOMElement();
+  });
+
+  it("flags a guest pick missing from the roster, ignoring status", () => {
+    // Guest draft rows are always stored "active", so status can't signal a
+    // candidacy that left the race — roster absence is the guest's signal.
+    mockMe = null;
+    renderNotice(
+      [
+        { candidate_id: CANDIDATE_ID, display_name: "Jane Doe", candidacy_status: "active" },
+        { candidate_id: OTHER_CANDIDATE_ID, display_name: "John Roe", candidacy_status: "active" },
+      ],
+      [OTHER_CANDIDATE_ID]
+    );
+
+    expect(screen.getByText(/is no longer listed in this race/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Remove pick: Jane Doe" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Remove pick: John Roe" })).not.toBeInTheDocument();
+  });
+
+  it("renders nothing for a guest whose picks are all still rostered", () => {
+    mockMe = null;
+    const { container } = renderNotice(
+      [{ candidate_id: CANDIDATE_ID, display_name: "Jane Doe", candidacy_status: "active" }],
+      [CANDIDATE_ID]
     );
     expect(container).toBeEmptyDOMElement();
   });

@@ -4,7 +4,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest, formatElectionDate, useElectionChoices, useMe } from "@voteapp/api-client";
 import type { AutoPickElectionResult, BallotSummary, ElectionChoice, ElectionSummary, PickCardShare } from "@voteapp/api-client";
 import { AutoPickFillControl, reasonLabel } from "../components/AutoPickFillControl";
-import { RemoveWithdrawnPickButton } from "../components/ElectionChoiceControls";
+import { RemoveStrandedPickButton } from "../components/ElectionChoiceControls";
 import { BallotPreviewSheets, BallotViewToggle } from "../components/BallotPreview";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import type { ElectionNavState } from "../lib/detailNavContext";
@@ -173,10 +173,13 @@ function PickedLine({ choice, election }: { choice: ElectionChoice; election?: E
           {pick.candidacy_status === "withdrawn" && choice.election_date >= usLatestLocalDate() ? (
             <>
               {" "}
-              <RemoveWithdrawnPickButton
+              <RemoveStrandedPickButton
                 electionId={choice.election_id}
                 candidateId={pick.candidate_id}
                 candidateName={pick.display_name}
+                raceTitle={choice.official_ballot_title}
+                electionDate={choice.election_date}
+                seatsToFill={choice.seats_to_fill}
               />
             </>
           ) : null}
