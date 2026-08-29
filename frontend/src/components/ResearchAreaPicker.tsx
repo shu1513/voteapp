@@ -16,7 +16,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { sortByResearchAreaPriority } from "@voteapp/api-client";
+import { INTEGRITY_ETHICS_SLUG, sortByResearchAreaPriority } from "@voteapp/api-client";
 import { newRankedResearchArea, type RankedResearchArea } from "../lib/rankedResearchAreas";
 
 // Controlled ranked-selection editor for research areas, shared by the
@@ -32,12 +32,6 @@ export type ResearchAreaOption = {
   name: string;
   description: string | null;
 };
-
-// An ethics record is a strike whatever the user "supports", so this area
-// has no direction control and its must reads as "skip anyone
-// with an ethics record" (mirrors candidateRecordResearchAreaPolicy: stance
-// is forbidden on this area, its tags only mark that a record exists).
-const INTEGRITY_ETHICS_SLUG = "integrity_and_ethics";
 
 type ResearchAreaPickerProps = {
   areas: ResearchAreaOption[];
