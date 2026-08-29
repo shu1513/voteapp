@@ -153,6 +153,8 @@ services:
       # The matching *_SYNC_ENABLED / *_RAW_DATA_REFRESH_ENABLED flags are
       # deliberately NOT here: those fetch from state disclosure sites and
       # can get us rate-limited or blocked, so they stay opt-in per run.
+      - key: ALABAMA_CAMPAIGN_FINANCE_ENABLED
+        value: "false"
       - key: ALASKA_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: ARIZONA_CAMPAIGN_FINANCE_ENABLED

@@ -1,6 +1,9 @@
 import type { FinanceSummary } from "./types";
 
 const FINANCE_SOURCE_HOME_URLS: Partial<Record<FinanceSummary["source"], string>> = {
+  // Alabama FCPA committee pages are POST/session driven, so the card's
+  // provenance fallback points at the portal home page instead.
+  ALABAMA_FCPA: "https://fcpa.alabamavotes.gov/",
   MISSOURI_MEC: "https://www.mec.mo.gov/MEC/Campaign_Finance/",
   // Montana CERS deep links are POST/session driven, so the card's
   // provenance fallback points at the COPP home page instead.
