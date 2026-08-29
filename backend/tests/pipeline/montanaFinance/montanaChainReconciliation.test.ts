@@ -249,15 +249,39 @@ describe("reconcileMontanaCashBeginChain", () => {
     expect(result.derivedUnitemizedTotalCents).toBe(0);
   });
 
-  it("a wrongly-empty first anchor surfaces as an excessive lump at the next real anchor", () => {
-    // First-report null begins are read as 0 (campaign accounts open
-    // empty); if the account actually held prior money, the next real
-    // anchor sits far above the derivation and the ratio gate rejects it.
-    const first = report({ reportId: 1, primBeginCents: 0, primaryInCents: 1_000 });
+  it("never mints unitemized money from an unrooted prefix", () => {
+    // Reviewer-surfaced case: with the first begin null, the $0 start is an
+    // ASSUMPTION. A next real anchor $20,000 above the derivation (within
+    // the 25% ratio gate for $100,000 of receipts) must not become derived
+    // contributions — the residual is dominated by the unknown true start.
+    const first = report({ reportId: 1, primBeginCents: 0, primaryInCents: 10_000_000 });
     first.inventory.primCashBegCents = null;
-    const result = reconcileMontanaCashBeginChain([first, report({ reportId: 2, primBeginCents: 500_000 })]);
-    expect(result.ok).toBe(false);
-    expect(result.links.find((link) => link.side === "primary")!.failure).toBe("excessive_residual");
+    const result = reconcileMontanaCashBeginChain([first, report({ reportId: 2, primBeginCents: 12_000_000 })]);
+    expect(result.ok).toBe(true);
+    const link = result.links.find((item) => item.side === "primary")!;
+    expect(link).toMatchObject({ lumpCents: 2_000_000, rooted: false, carriedAnchor: false });
+    expect(result.derivedUnitemizedTotalCents).toBe(0);
+
+    // The unrooted link is also exempt from the gate in BOTH directions —
+    // a prefix residual is not evidence about period money.
+    const negative = report({ reportId: 1, primBeginCents: 0, primaryInCents: 10_000_000 });
+    negative.inventory.primCashBegCents = null;
+    expect(
+      reconcileMontanaCashBeginChain([negative, report({ reportId: 2, primBeginCents: 1_000_000 })]).ok
+    ).toBe(true);
+
+    // From the first real anchor onward, links are rooted and gate-checked
+    // as before.
+    const rootedTail = reconcileMontanaCashBeginChain([
+      first,
+      report({ reportId: 2, primBeginCents: 12_000_000, primaryInCents: 1_000 }),
+      report({ reportId: 3, primBeginCents: 12_500_000 }),
+    ]);
+    expect(rootedTail.ok).toBe(false);
+    expect(rootedTail.links.find((item) => item.reportId === 2)!).toMatchObject({
+      rooted: true,
+      failure: "excessive_residual",
+    });
   });
 
   it("derives the latest ending balance from the last report, both sides", () => {

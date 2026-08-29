@@ -123,6 +123,16 @@ export type MontanaChainLinkResult = {
    * checked at the next real anchor instead.
    */
   carriedAnchor: boolean;
+  /**
+   * True when the link's SOURCE derivation is rooted in a real begin at or
+   * before its report (per side). A link into the first real anchor after
+   * an all-null prefix is unrooted: its residual mixes any unknown true
+   * starting balance with span money, so it is never gate-checked and
+   * never counts toward the unitemized total — otherwise an assumed-$0
+   * start below the ratio gate would MINT phantom contributions. Only a
+   * rooted link landing on a real anchor is a genuine conservation check.
+   */
+  rooted: boolean;
   ok: boolean;
   failure: "negative_residual" | "excessive_residual" | null;
 };
@@ -176,13 +186,19 @@ function lumpGateFailure(
 type MontanaEffectiveBegin = {
   cents: Record<MontanaElectionSide, number>;
   carried: Record<MontanaElectionSide, boolean>;
+  /** A real begin has appeared at or before this report on this side. */
+  rooted: Record<MontanaElectionSide, boolean>;
 };
 
 /**
  * Fills null begin anchors: the first report's null begin is 0 (campaign
- * accounts open empty — a wrong 0 surfaces as an excessive positive lump at
- * the next real anchor), and every later null carries the previous report's
- * derived ending forward, per side.
+ * accounts open empty under Montana's no-carryover surplus rules) and every
+ * later null carries the previous report's derived ending forward, per
+ * side. The `rooted` flag records whether a REAL begin has been seen yet —
+ * derivation before the first real anchor rests entirely on the assumed
+ * $0 start, so its residuals are uninterpretable (see the link `rooted`
+ * doc) while everything from the first real anchor onward resets to
+ * official figures.
  */
 function computeEffectiveBegins(reports: readonly MontanaChainReport[]): MontanaEffectiveBegin[] {
   const effective: MontanaEffectiveBegin[] = [];
@@ -190,15 +206,17 @@ function computeEffectiveBegins(reports: readonly MontanaChainReport[]): Montana
     const entry: MontanaEffectiveBegin = {
       cents: { primary: 0, general: 0 },
       carried: { primary: false, general: false },
+      rooted: { primary: false, general: false },
     };
     for (const side of ["primary", "general"] as const) {
       const actual = beginCents(reports[index]!.inventory, side);
+      const previous = index > 0 ? effective[index - 1]! : null;
+      entry.rooted[side] = actual !== null || (previous?.rooted[side] ?? false);
       if (actual !== null) {
         entry.cents[side] = actual;
-      } else if (index === 0) {
+      } else if (previous === null) {
         entry.carried[side] = true;
       } else {
-        const previous = effective[index - 1]!;
         entry.cents[side] =
           previous.cents[side] +
           reports[index - 1]!.flows.inflowCashCents[side] -
@@ -234,15 +252,19 @@ export function reconcileMontanaCashBeginChain(reports: readonly MontanaChainRep
     for (const side of ["primary", "general"] as const) {
       const begin = effective[index]!.cents[side];
       const nextBegin = effective[index + 1]!.cents[side];
+      const rooted = effective[index]!.rooted[side];
       const derivedEnding = begin + current.flows.inflowCashCents[side] - current.flows.outflowCashCents[side];
       const lumpCents = nextBegin - derivedEnding;
-      const failure = lumpGateFailure(lumpCents, current.flows.inflowCashCents[side]);
+      // Unrooted links never gate-fail: their residual is dominated by the
+      // unknown true starting balance, not by period money.
+      const failure = rooted ? lumpGateFailure(lumpCents, current.flows.inflowCashCents[side]) : null;
       sideLinks.push({
         reportId: current.inventory.reportId,
         nextReportId: next.inventory.reportId,
         side,
         lumpCents,
         carriedAnchor: effective[index + 1]!.carried[side],
+        rooted,
         ok: failure === null,
         failure,
       });
@@ -278,6 +300,9 @@ export function reconcileMontanaCashBeginChain(reports: readonly MontanaChainRep
         side: "combined",
         lumpCents: lumpCombined,
         carriedAnchor: effective[index + 1]!.carried.primary || effective[index + 1]!.carried.general,
+        // A per-side failure only exists on a rooted side, so a combined
+        // link is rooted whenever both sides' derivations are.
+        rooted: effective[index]!.rooted.primary && effective[index]!.rooted.general,
         ok: true,
         failure: null,
       });
@@ -314,8 +339,12 @@ export function reconcileMontanaCashBeginChain(reports: readonly MontanaChainRep
     hasRealAnchor,
     links,
     derivedEndingBalanceCents,
-    // Positive lumps only: a tolerated negative lump is unitemized spending
-    // (bank fees), and must not shrink the unitemized CONTRIBUTION total.
-    derivedUnitemizedTotalCents: ok ? links.reduce((sum, link) => sum + Math.max(0, link.lumpCents), 0) : null,
+    // Positive ROOTED lumps only: a tolerated negative lump is unitemized
+    // spending (bank fees) and must not shrink the unitemized CONTRIBUTION
+    // total, and an unrooted lump is unknown-start residue, not money
+    // raised — counting it would mint phantom contributions.
+    derivedUnitemizedTotalCents: ok
+      ? links.reduce((sum, link) => sum + (link.rooted ? Math.max(0, link.lumpCents) : 0), 0)
+      : null,
   };
 }

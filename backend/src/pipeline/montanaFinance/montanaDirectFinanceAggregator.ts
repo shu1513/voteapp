@@ -348,12 +348,13 @@ export function aggregateMontanaDirectFinance(input: {
   // showed the drift lives on the CSV side (a $450 row dropped outright; a
   // federal PAC's $470 absent; stale pre-amendment donor amounts) while the
   // JSON flows reconcile to the cent against real cash anchors. So: when at
-  // least one chain link actually LANDED on a real anchor — a conservation
-  // check against an official figure; a link into a carried anchor closes
-  // by construction and verifies nothing — the mismatch is recorded and
-  // the JSON publishes; otherwise the CSV is the only verification left
-  // and the mismatch fails closed.
-  const hasAnchoredLink = chain.links.some((link) => !link.carriedAnchor);
+  // least one ROOTED chain link actually LANDED on a real anchor — a
+  // conservation check against an official figure; a link into a carried
+  // anchor closes by construction, and an unrooted link only compares
+  // against the assumed empty start — the mismatch is recorded and the
+  // JSON publishes; otherwise the CSV is the only verification left and
+  // the mismatch fails closed.
+  const hasAnchoredLink = chain.links.some((link) => !link.carriedAnchor && link.rooted);
   const csvCrossCheckWarnings: string[] = [];
   const reportOrThrow = (message: string) => {
     if (hasAnchoredLink) {

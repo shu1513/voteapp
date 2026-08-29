@@ -188,6 +188,15 @@ describe("aggregateMontanaDirectFinance", () => {
     carriedTail.canonicalReports[1]!.inventory.genCashBegCents = null;
     carriedTail.contributionRows[0]!.amountCents = 4_000;
     expect(() => aggregateMontanaDirectFinance(carriedTail)).toThrow("beyond the itemization threshold");
+
+    // A null FIRST anchor with a real second: the only link lands on a real
+    // figure but its derivation is unrooted (assumed-$0 start), which
+    // verifies nothing — drift still throws.
+    const unrootedPrefix = fixture();
+    unrootedPrefix.canonicalReports[0]!.inventory.primCashBegCents = null;
+    unrootedPrefix.canonicalReports[0]!.inventory.genCashBegCents = null;
+    unrootedPrefix.contributionRows[0]!.amountCents = 4_000;
+    expect(() => aggregateMontanaDirectFinance(unrootedPrefix)).toThrow("beyond the itemization threshold");
   });
 
   it("rejects an empty CONTR export next to JSON contribution money — regardless of anchors", () => {
