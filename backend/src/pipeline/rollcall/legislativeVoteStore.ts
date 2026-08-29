@@ -507,32 +507,46 @@ export async function applyLegislativeVoteJudgment(
     //    a sentence written about a different stage of the same bill (PA
     //    HB 103: first-passage prose approved while the members' final
     //    position was the 201-2 concurrence) and plain mistyped tallies.
+    //    Boundary-anchored: a bare substring test would let 215-14 satisfy
+    //    a required 15-1.
     const tally = `${row.yeas}-${row.nays}`;
+    const tallyPattern = new RegExp(`(?<![\\d-])${row.yeas}-${row.nays}(?!\\d)`);
     for (const [field, text] of [
       ["yea_description", judgment.yeaDescription],
       ["nay_description", judgment.nayDescription],
     ] as const) {
-      if (!text.includes(tally)) {
+      if (!tallyPattern.test(text)) {
         throw new Error(`${name}: ${field} does not cite this roll call's tally ${tally}; describe the vote being approved`);
       }
     }
-    // 2. Superseded-stage gate: a later kept floor vote on the same measure
-    //    in the same chamber means this vote was not the chamber's final
-    //    action, and a record citing only the earlier stage reads as the
-    //    member's final position on the bill. Judge the later vote instead,
-    //    or list the later roll numbers in acknowledge_later_rolls to
-    //    approve this stage on purpose.
+    // 2. Superseded-stage gate: another kept floor vote on the same measure
+    //    in the same chamber, on or after this one's date, means this vote
+    //    may not be the chamber's final action, and a record citing only
+    //    the earlier stage reads as the member's final position on the
+    //    bill. Same-day peers count — re-votes after a motion to
+    //    reconsider land on the same date, and within a day the sources
+    //    give no reliable order. Judge the decisive vote instead, or list
+    //    the other roll numbers in acknowledge_later_rolls to approve this
+    //    one on purpose. Scoped to this bill's session: measure numbers
+    //    repeat across sessions (H.R. 1 exists in every Congress). A
+    //    federal bill lives across both calendar sessions of its Congress,
+    //    so US scans both; a state session key already spans the term.
     if (row.measure_id !== null) {
+      const sessions =
+        judgment.jurisdiction === "US"
+          ? [1, 2].map((half) => `${judgment.session.split("-")[0]}-${half}`)
+          : [judgment.session];
       const later = await db.query<{ roll_number: number; vote_date: string; measure_id: string; exact_question: string }>(
         `SELECT roll_number, vote_date::text AS vote_date, measure_id, exact_question
            FROM legislative_votes
           WHERE jurisdiction = $1
             AND chamber = $2
+            AND session = ANY($3::text[])
             AND is_floor_vote = true
-            AND vote_date > $3::date
+            AND vote_date >= $4::date
             AND measure_id IS NOT NULL
-            AND id <> $4`,
-        [judgment.jurisdiction, judgment.chamber, row.vote_date, row.id]
+            AND id <> $5`,
+        [judgment.jurisdiction, judgment.chamber, sessions, row.vote_date, row.id]
       );
       const superseding = later.rows.filter(
         (candidate) =>
@@ -544,8 +558,8 @@ export async function applyLegislativeVoteJudgment(
           .map((vote) => `roll ${vote.roll_number} on ${vote.vote_date} (${vote.exact_question})`)
           .join("; ");
         throw new Error(
-          `${name} is not this chamber's last kept floor vote on ${row.measure_id}: ${listed}. ` +
-            "Judge the later vote instead, or list its roll number in acknowledge_later_rolls to approve this stage anyway."
+          `${name} may not be this chamber's final kept floor vote on ${row.measure_id}: ${listed}. ` +
+            "Judge the decisive vote instead, or list the other roll numbers in acknowledge_later_rolls to approve this one anyway."
         );
       }
     }

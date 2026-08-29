@@ -521,9 +521,13 @@ ND SB 2377 committee-name subject):
   row's own `<yeas>-<nays>` (the closing tally sentence was already the §3
   template; now it is enforced). Catches sentences written about a different
   stage of the same bill and mistyped tallies.
-- **Superseded-stage gate.** A roll call cannot be approved while a LATER
+- **Superseded-stage gate.** A roll call cannot be approved while another
   kept floor vote (`is_floor_vote = true`) on the same measure in the same
-  chamber sits in `legislative_votes` (PA HB 103: first passage 148-55 was
+  chamber and session sits in `legislative_votes` on or after its date —
+  same-day peers count (reconsider-and-revote pairs share a date and the
+  sources give no within-day order), and the scan stays inside the bill's
+  session since measure numbers repeat across sessions (US scans both
+  calendar sessions of the Congress) (PA HB 103: first passage 148-55 was
   fanned out while the members' final position was the 201-2 concurrence
   that became Act 28). Judge the chamber's final action; to approve an
   earlier stage on purpose, list the later roll numbers under

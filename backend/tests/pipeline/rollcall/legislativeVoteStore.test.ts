@@ -302,7 +302,8 @@ describe("applyLegislativeVoteJudgment", () => {
     expect(approved.query.mock.calls[0]?.[0]).toMatch(/FOR UPDATE/);
     expect(approved.query.mock.calls[0]?.[1]).toEqual(["US", "house", "119-1", 145]);
     expect(approved.query.mock.calls[1]?.[0]).toMatch(/is_floor_vote = true/);
-    expect(approved.query.mock.calls[1]?.[1]).toEqual(["US", "house", "2025-05-22", "row-1"]);
+    // A federal bill lives across both calendar sessions of its Congress.
+    expect(approved.query.mock.calls[1]?.[1]).toEqual(["US", "house", ["119-1", "119-2"], "2025-05-22", "row-1"]);
     const [sql, params] = approved.query.mock.calls[2]!;
     expect(sql).toMatch(/reviewed_at = CASE WHEN \$6 = 'approved' THEN now\(\) ELSE NULL END/);
     expect(params).toEqual([
@@ -338,6 +339,22 @@ describe("applyLegislativeVoteJudgment", () => {
         nayDescription: "Voted against passing H.R. 1. It passed the House 148-55.",
       })
     ).rejects.toThrow(/nay_description does not cite this roll call's tally 215-214/);
+    // Substring containment is not citation: a 15-1 roll call is not
+    // satisfied by prose whose only match sits inside 215-14.
+    await expect(
+      applyLegislativeVoteJudgment(db({ ...stored, yeas: 15, nays: 1 }), {
+        ...judgment,
+        yeaDescription: "Voted to pass H.R. 1. It passed the House 215-14.",
+        nayDescription: "Voted against passing H.R. 1. It passed the House 215-14.",
+      })
+    ).rejects.toThrow(/does not cite this roll call's tally 15-1;/);
+    await expect(
+      applyLegislativeVoteJudgment(db({ ...stored, yeas: 15, nays: 1 }), {
+        ...judgment,
+        yeaDescription: "Voted to pass H.R. 1. It passed the House 15-1.",
+        nayDescription: "Voted against passing H.R. 1. It passed the House 15-1.",
+      })
+    ).resolves.toBe("updated");
     // A pending judgment is not gated; the tally check runs on approval only.
     await expect(
       applyLegislativeVoteJudgment(db(stored), {
@@ -365,8 +382,18 @@ describe("applyLegislativeVoteJudgment", () => {
       };
     }
     await expect(applyLegislativeVoteJudgment(dbWithLater(), judgment)).rejects.toThrow(
-      /not this chamber's last kept floor vote on H R 1: roll 320 on 2025-06-30 \(On Motion to Concur in the Senate Amendment\)/
+      /final kept floor vote on H R 1: roll 320 on 2025-06-30 \(On Motion to Concur in the Senate Amendment\)/
     );
+    // A SAME-DAY peer blocks too: a re-vote after a motion to reconsider
+    // lands on the same date, and within a day the sources give no order.
+    const sameDay = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({ rows: [stored] })
+        .mockResolvedValueOnce({ rows: [{ ...laterVote, roll_number: 146, vote_date: "2025-05-22" }] })
+        .mockResolvedValue({ rows: [], rowCount: 1 }),
+    };
+    await expect(applyLegislativeVoteJudgment(sameDay, judgment)).rejects.toThrow(/roll 146 on 2025-05-22/);
     // Acknowledging the exact later roll approves the earlier stage on purpose.
     await expect(
       applyLegislativeVoteJudgment(dbWithLater(), { ...judgment, acknowledgeLaterRolls: [320] })
@@ -380,6 +407,13 @@ describe("applyLegislativeVoteJudgment", () => {
         .mockResolvedValue({ rows: [], rowCount: 1 }),
     };
     await expect(applyLegislativeVoteJudgment(otherMeasure, judgment)).resolves.toBe("updated");
+    // A state entry scans exactly its own session key (the session already
+    // spans the whole term; bill numbers repeat across sessions).
+    const state = db(stored);
+    await expect(
+      applyLegislativeVoteJudgment(state, { ...judgment, jurisdiction: "OH", session: "136" })
+    ).resolves.toBe("updated");
+    expect(state.query.mock.calls[1]?.[1]).toEqual(["OH", "house", ["136"], "2025-05-22", "row-1"]);
   });
 
   it("is a no-op when the row already holds the same judgment and status", async () => {
