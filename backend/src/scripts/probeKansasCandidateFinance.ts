@@ -26,10 +26,10 @@ import {
   openKansasCfrCategory,
   postAndFollow,
   postbackAndFollow,
-  DEFAULT_KANSAS_CFR_USER_AGENT,
   type KansasCfrPage,
   type KansasCfrSession,
 } from "../pipeline/kansasFinance/kansasCfrViewerClient.js";
+import { fetchKansasKpdcPdf } from "../pipeline/kansasFinance/kansasKpdcIndexClient.js";
 import {
   parseKansasCfrGridRows,
   parseKansasContributionExportRows,
@@ -49,8 +49,6 @@ import {
   extractKansasPdfPages,
   kansasPdfFullText,
 } from "../pipeline/kansasFinance/kansasFinancePdfText.js";
-
-const KPDC_SCAN_BASE = "https://www.kansas.gov/ethics/CFAScanned/";
 
 /** Scanned KPDC artifacts for the OCR cover-recovery rate (2026 House 202607). */
 const DEFAULT_OCR_COVER_PDFS = [
@@ -183,27 +181,10 @@ export function parseKansasPhaseZeroArgs(args: readonly string[]): KansasPhaseZe
   return result;
 }
 
-// --- KPDC PDF fetch (plain fetch: kansas.gov 302s to www.kansas.gov). -----
+// --- KPDC PDF fetch (shared client; kansas.gov 302s to www.kansas.gov). ----
 
 async function fetchKpdcPdf(path: string, timeoutMs: number): Promise<Uint8Array> {
-  const url = `${KPDC_SCAN_BASE}${path}`;
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
-  try {
-    const response = await fetch(url, {
-      headers: { "User-Agent": DEFAULT_KANSAS_CFR_USER_AGENT },
-      redirect: "follow",
-      signal: controller.signal,
-    });
-    if (!response.ok) throw new Error(`GET ${url} answered ${response.status}`);
-    const bytes = new Uint8Array(await response.arrayBuffer());
-    if (bytes.length < 4 || String.fromCharCode(...bytes.slice(0, 4)) !== "%PDF") {
-      throw new Error(`GET ${url} did not answer a PDF`);
-    }
-    return bytes;
-  } finally {
-    clearTimeout(timer);
-  }
+  return (await fetchKansasKpdcPdf(path, { timeoutMs })).bytes;
 }
 
 /** True when the OCR text contains the amount, tolerant of OCR separators. */

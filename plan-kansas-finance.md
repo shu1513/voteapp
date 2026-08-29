@@ -145,9 +145,13 @@ Implemented: `backend/src/pipeline/kansasFinance/` (`kansasCfrViewerClient`, `ka
 
 Gate: covers reconcile exactly on every e-filed fixture; the Comeback number lands exactly; export completeness confirmed at scale. Paper-cover OCR reconcile below ~90% → paper filers become a bounded manual-transcription queue, not a lowered bar.
 
-### Phase 1 — clients + artifact cache
+### Phase 1 — clients + artifact cache — DONE 2026-08-28 (live smoke green)
 
-Timeouts long, retries 1, per-session concurrency 1, polite delay; parallelism only as proven in Phase 0.7. Immutable artifact versions (changed bytes at same URL → new version, rerun normalization).
+Implemented: grid paging (`collectKansasCfrGridPages`), `kansasKpdcIndexClient` (index trees, PDF fetch, filename grammar), `kansasFinanceArtifactCache` (immutable versions + supersession, `scratch/kansas-campaign-finance/` gitignored). Facts locked in live:
+
+- **Pager is a sliding window** (1–10 + "..."): a far page's link is not rendered, so the walk is sequential — each `Page$N+1` postback fires from page N's own hidden fields and answers 200 (not 302) with fresh state. Row indexes restart per page and a row's postback target is only valid against its page's hidden state, so pages are returned whole. Verified: House R&E 07/01–08/26/2026 = 18 pages / 354 rows exact (304 e-file / 50 paper), 18 distinct page-firsts. Grid has no period column — one candidate's same-day filings for two periods parse identically.
+- **KPDC trees carry dead-host links**: 91 of the House tree's 810 links (all `amend*`, all `Aff*`, a few reports) are absolute `http://ethics.ks.gov/CFAScanned/...` URLs; the artifacts are live at `www.kansas.gov/ethics/CFAScanned/...` (verified), so the client rewrites those hosts instead of dropping them. Filename grammar classified all 810 live House links with zero unknowns (AT 261+5 amend, report 377+78 amend, PLF 78, Aff 10, Term 1); IE tree = 27 links incl. Oct (`_2610`) filings.
+- **Cache**: byte-identical re-store is a no-op keeping the original manifest; changed bytes write a new immutable version with `supersedes` = prior sha; sha256 verified on every read; 0700/0600 modes (exports carry 25-4154(d) PII).
 
 ### Phase 2 — parsers + inventory
 

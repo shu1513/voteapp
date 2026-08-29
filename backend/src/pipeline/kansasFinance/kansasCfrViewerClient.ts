@@ -19,7 +19,13 @@
 // - A 500 "Runtime Error" page means a bad postback (wrong field or stale
 //   state), not a transient fault: it is never retried.
 
-import { parseKansasHiddenFields } from "./kansasCfrViewerParsers.js";
+import {
+  parseKansasCfrGridCurrentPage,
+  parseKansasCfrGridRows,
+  parseKansasHiddenFields,
+  parseKansasRecordCount,
+  type KansasCfrGridRow,
+} from "./kansasCfrViewerParsers.js";
 
 export const KANSAS_CFR_VIEWER_BASE_URL = "https://sos.ks.gov";
 export const KANSAS_CFR_VIEWER_PATH_PREFIX = "/elections/cfr_viewer/";
@@ -360,15 +366,16 @@ export async function openKansasCfrCategory(
   });
 }
 
-/** Fire a __doPostBack link (grid row, schedule link) and land on the target. */
+/** Fire a __doPostBack link (grid row, schedule link, pager) and land on the target. */
 export async function postbackAndFollow(
   session: KansasCfrSession,
   fromPage: KansasCfrPage,
-  eventTarget: string
+  eventTarget: string,
+  eventArgument = ""
 ): Promise<KansasCfrPage> {
   return postAndFollow(session, fromPage, {
     __EVENTTARGET: eventTarget,
-    __EVENTARGUMENT: "",
+    __EVENTARGUMENT: eventArgument,
   });
 }
 
@@ -384,6 +391,86 @@ export async function getKansasReportSchedule(
     D: KANSAS_CFR_VIEWER_PAGES.scheduleD,
   }[schedule];
   return getPage(session, page, buildKansasCfrUrl(KANSAS_CFR_VIEWER_PAGES.reportCover));
+}
+
+export type KansasCfrGridPage = {
+  /** 1-based pager position. */
+  pageNumber: number;
+  page: KansasCfrPage;
+  rows: KansasCfrGridRow[];
+};
+
+/**
+ * Walk every page of a paginated results grid (20 rows/page live). Facts
+ * verified live 2026-08-28:
+ * - The pager is a sliding window (1-10 plus "..."), so a far page's link is
+ *   not rendered on page 1 — the walk is SEQUENTIAL: each `Page$N+1`
+ *   postback is fired from page N's own hidden fields, on which that link
+ *   always exists.
+ * - A pager postback answers 200 with the re-rendered results page (not a
+ *   302), carrying fresh hidden fields for the next hop.
+ * - Row indexes restart at 0 on every page, and a row's postback target is
+ *   only valid against ITS page's hidden state — hence pages are returned
+ *   whole, not flattened.
+ * The walk fails closed: every landed page's PAGER must show the expected
+ * page number (a stale postback re-renders a wrong page with a 200, so
+ * repeated rows would otherwise count as progress), the total row count
+ * must equal the page's own `lblRecordCount`, and a page that adds no rows
+ * aborts rather than loops.
+ */
+export async function collectKansasCfrGridPages(
+  session: KansasCfrSession,
+  resultsPage: KansasCfrPage,
+  gridId: string
+): Promise<{ pages: KansasCfrGridPage[]; recordCount: number }> {
+  const recordCount = parseKansasRecordCount(resultsPage.html);
+  if (recordCount === null) {
+    throw new KansasCfrClientError("bad_response", `no lblRecordCount on ${resultsPage.url}`);
+  }
+  const requireCurrentPage = (html: string, expected: number): void => {
+    const current = parseKansasCfrGridCurrentPage(html, gridId);
+    if (current !== expected) {
+      throw new KansasCfrClientError(
+        "bad_response",
+        `grid ${gridId}: pager shows page ${current ?? "none"}, expected ${expected} — stale postback did not advance`
+      );
+    }
+  };
+  const pages: KansasCfrGridPage[] = [
+    { pageNumber: 1, page: resultsPage, rows: parseKansasCfrGridRows(resultsPage.html, gridId) },
+  ];
+  let total = pages[0]!.rows.length;
+  // Page size = page 1's row count; the last page may be shorter.
+  const maxPages = total > 0 ? Math.ceil(recordCount / total) : 1;
+  if (total < recordCount) requireCurrentPage(resultsPage.html, 1);
+  while (total < recordCount) {
+    const previous = pages[pages.length - 1]!;
+    const pageNumber = previous.pageNumber + 1;
+    if (pageNumber > maxPages) {
+      throw new KansasCfrClientError(
+        "bad_response",
+        `grid ${gridId}: ${total} rows after ${previous.pageNumber} pages but page reported ${recordCount}`
+      );
+    }
+    const page = await postbackAndFollow(session, previous.page, gridId, `Page$${pageNumber}`);
+    requireCurrentPage(page.html, pageNumber);
+    const rows = parseKansasCfrGridRows(page.html, gridId);
+    if (rows.length === 0) {
+      throw new KansasCfrClientError(
+        "bad_response",
+        `grid ${gridId}: page ${pageNumber} rendered no rows (${total}/${recordCount} collected)`
+      );
+    }
+    pages.push({ pageNumber, page, rows });
+    total += rows.length;
+  }
+  if (total !== recordCount) {
+    throw new KansasCfrClientError(
+      "bad_response",
+      `grid ${gridId}: collected ${total} rows but page reported ${recordCount}`
+    );
+  }
+  return { pages, recordCount };
 }
 
 /**

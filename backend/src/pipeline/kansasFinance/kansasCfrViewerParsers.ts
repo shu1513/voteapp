@@ -390,3 +390,24 @@ export function parseKansasCfrGridRows(html: string, gridId: string): KansasCfrG
       };
     });
 }
+
+/**
+ * The pager's rendered current-page number, or null when no pager exists
+ * (single-page results). Live markup: the pager row holds one `Page$N`
+ * postback link per other page and the CURRENT page as a bare
+ * `<td><span>N</span></td>` (no link, no id). A stale WebForms postback
+ * re-renders a page rather than navigating, so the paging walk asserts
+ * this value instead of trusting that a 200 answer advanced.
+ */
+export function parseKansasCfrGridCurrentPage(html: string, gridId: string): number | null {
+  const current = new Set<number>();
+  for (const chunk of html.split(/<tr[\s>]/i)) {
+    // A pager chunk names the grid in its __doPostBack links and pages via Page$N.
+    if (!chunk.includes(gridId) || !chunk.includes("Page$")) continue;
+    for (const match of chunk.matchAll(/<td>\s*<span>(\d+)<\/span>\s*<\/td>/g)) {
+      current.add(Number.parseInt(match[1]!, 10));
+    }
+  }
+  if (current.size !== 1) return null;
+  return [...current.values()][0]!;
+}
