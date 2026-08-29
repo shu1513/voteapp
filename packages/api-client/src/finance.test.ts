@@ -86,6 +86,12 @@ describe("finance source provenance and coverage notes", () => {
     expect(firstFinanceSourceUrl(summary)).toBe("https://cfs.sos.nh.gov/");
   });
 
+  it("falls back to the Alabama FCPA portal when no breakdown URL exists", () => {
+    const summary = emptySummary();
+    summary.source = "ALABAMA_FCPA";
+    expect(firstFinanceSourceUrl(summary)).toBe("https://fcpa.alabamavotes.gov/");
+  });
+
   it("falls back to the Montana COPP home page when no breakdown URL exists", () => {
     const summary = emptySummary();
     summary.source = "MONTANA_COPP";
