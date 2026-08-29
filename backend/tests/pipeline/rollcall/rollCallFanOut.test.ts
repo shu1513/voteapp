@@ -35,29 +35,57 @@ describe("memberVoteSide", () => {
 });
 
 describe("parseRollCallLabels / labelsForSide", () => {
-  it("accepts stance areas with a yea stance and non-stance areas with null, and flips for nay voters", () => {
+  it("takes the authored stance per side and never inverts yea for nay voters", () => {
     const labels = parseRollCallLabels(
       [
-        { slug: "immigration", yea: "for" },
-        { slug: "Gun_Control", yea: "against" },
+        { slug: "immigration", yea: "for", nay: "against" },
+        { slug: "Gun_Control", yea: "against", nay: null },
         { slug: "general" },
       ],
       SLUGS
     );
     expect(labels).toEqual([
-      { slug: "immigration", yea: "for" },
-      { slug: "gun_control", yea: "against" },
-      { slug: "general", yea: null },
+      { slug: "immigration", yea: "for", nay: "against" },
+      { slug: "gun_control", yea: "against", nay: null },
+      { slug: "general", yea: null, nay: null },
     ]);
     expect(labelsForSide(labels, "yea")).toEqual([
       { researchAreaSlug: "immigration", stance: "for" },
       { researchAreaSlug: "gun_control", stance: "against" },
       { researchAreaSlug: "general", stance: null },
     ]);
+    // The nay side takes only what the judgment stated: gun_control's nay
+    // is null, so nay voters get NO gun_control tag — not the inverse of
+    // yea. The non-stance area still tags both sides topically.
     expect(labelsForSide(labels, "nay")).toEqual([
       { researchAreaSlug: "immigration", stance: "against" },
-      { researchAreaSlug: "gun_control", stance: "for" },
       { researchAreaSlug: "general", stance: null },
+    ]);
+  });
+
+  it("reads a pre-nay stored label as an unstated nay side, never as the old inversion", () => {
+    const labels = parseRollCallLabels([{ slug: "immigration", yea: "for" }, { slug: "general" }], SLUGS);
+    expect(labels).toEqual([
+      { slug: "immigration", yea: "for", nay: null },
+      { slug: "general", yea: null, nay: null },
+    ]);
+    expect(labelsForSide(labels, "nay")).toEqual([{ researchAreaSlug: "general", stance: null }]);
+    // A judgment whose only label is a stance area leaves nay voters with
+    // no tags at all — an untagged record, not a flipped claim.
+    expect(labelsForSide(parseRollCallLabels([{ slug: "immigration", yea: "for" }], SLUGS), "nay")).toEqual([]);
+  });
+
+  it("requires an explicit nay decision on stance areas when the authoring gate asks for it", () => {
+    const explicit = { requireExplicitNay: true };
+    expect(() => parseRollCallLabels([{ slug: "immigration", yea: "for" }], SLUGS, explicit)).toThrow(
+      /\[0\]\.nay must be stated for immigration/
+    );
+    // Non-stance areas have no nay decision to state.
+    expect(
+      parseRollCallLabels([{ slug: "immigration", yea: "for", nay: null }, { slug: "general" }], SLUGS, explicit)
+    ).toEqual([
+      { slug: "immigration", yea: "for", nay: null },
+      { slug: "general", yea: null, nay: null },
     ]);
   });
 
@@ -67,6 +95,10 @@ describe("parseRollCallLabels / labelsForSide", () => {
     expect(() => parseRollCallLabels(["immigration"], SLUGS)).toThrow(/\[0\] is not an object/);
     expect(() => parseRollCallLabels([{ yea: "for" }], SLUGS)).toThrow(/\[0\]\.slug is not a string/);
     expect(() => parseRollCallLabels([{ slug: "immigration", yea: "yes" }], SLUGS)).toThrow(/\[0\]\.yea must be/);
+    expect(() => parseRollCallLabels([{ slug: "immigration", yea: "for", nay: "no" }], SLUGS)).toThrow(/\[0\]\.nay must be/);
+    expect(() => parseRollCallLabels([{ slug: "immigration", yea: "for", nay: "for" }], SLUGS)).toThrow(
+      /\[0\]\.nay restates yea/
+    );
     expect(() =>
       parseRollCallLabels(
         [
@@ -81,6 +113,9 @@ describe("parseRollCallLabels / labelsForSide", () => {
       /invalid for yea voters: .*requires stance/
     );
     expect(() => parseRollCallLabels([{ slug: "general", yea: "for" }], SLUGS)).toThrow(/must not include stance/);
+    expect(() => parseRollCallLabels([{ slug: "general", nay: "for" }], SLUGS)).toThrow(
+      /invalid for nay voters: .*must not include stance/
+    );
   });
 });
 

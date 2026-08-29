@@ -267,9 +267,10 @@ describe("applyLegislativeVoteJudgment", () => {
     measureId: "H.R. 1",
     voteDate: "2025-05-22",
     officialVoteDate: null,
-    yeaDescription: "Voted to pass H.R. 1.",
-    nayDescription: "Voted against passing H.R. 1.",
-    labels: [{ slug: "immigration", yea: "for" as const }],
+    yeaDescription: "Voted to pass H.R. 1. It passed the House 215-214.",
+    nayDescription: "Voted against passing H.R. 1. It passed the House 215-214.",
+    labels: [{ slug: "immigration", yea: "for" as const, nay: null }],
+    acknowledgeLaterRolls: [] as number[],
     reviewStatus: "approved" as const,
   };
   const stored = {
@@ -280,22 +281,35 @@ describe("applyLegislativeVoteJudgment", () => {
     vote_date: "2025-05-22",
     official_vote_date: null,
     review_status: "pending",
+    yeas: 215,
+    nays: 214,
     yea_description: null,
     nay_description: null,
     labels_json: null,
   };
 
   function db(row: Record<string, unknown> | null) {
-    return { query: vi.fn().mockResolvedValueOnce({ rows: row ? [row] : [] }).mockResolvedValue({ rowCount: 1 }) };
+    // The catch-all answers the approval gates' later-stage SELECT (no
+    // later floor votes) and the UPDATEs alike.
+    return { query: vi.fn().mockResolvedValueOnce({ rows: row ? [row] : [] }).mockResolvedValue({ rows: [], rowCount: 1 }) };
   }
 
   it("locks the row, writes the judgment, and stamps reviewed_at only when approving", async () => {
     const approved = db(stored);
     await expect(applyLegislativeVoteJudgment(approved, judgment)).resolves.toBe("updated");
-    expect(approved.query).toHaveBeenCalledTimes(2);
+    // select FOR UPDATE, the later-stage gate's select, the write.
+    expect(approved.query).toHaveBeenCalledTimes(3);
     expect(approved.query.mock.calls[0]?.[0]).toMatch(/FOR UPDATE/);
     expect(approved.query.mock.calls[0]?.[1]).toEqual(["US", "house", "119-1", 145]);
-    const [sql, params] = approved.query.mock.calls[1]!;
+    expect(approved.query.mock.calls[1]?.[0]).toMatch(/is_floor_vote = true/);
+    // An overnight peer raw-dated earlier but officially on/after this
+    // vote's date must still be scanned.
+    expect(approved.query.mock.calls[1]?.[0]).toMatch(
+      /vote_date >= \$4::date OR COALESCE\(official_vote_date, vote_date\) >= \$4::date/
+    );
+    // A federal bill lives across both calendar sessions of its Congress.
+    expect(approved.query.mock.calls[1]?.[1]).toEqual(["US", "house", ["119-1", "119-2"], "2025-05-22", "row-1"]);
+    const [sql, params] = approved.query.mock.calls[2]!;
     expect(sql).toMatch(/reviewed_at = CASE WHEN \$6 = 'approved' THEN now\(\) ELSE NULL END/);
     expect(params).toEqual([
       "row-1",
@@ -308,6 +322,7 @@ describe("applyLegislativeVoteJudgment", () => {
 
     const pending = db(stored);
     await expect(applyLegislativeVoteJudgment(pending, { ...judgment, reviewStatus: "pending" })).resolves.toBe("updated");
+    expect(pending.query).toHaveBeenCalledTimes(2);
     expect(pending.query.mock.calls[1]?.[1]?.[5]).toBe("pending");
   });
 
@@ -316,8 +331,112 @@ describe("applyLegislativeVoteJudgment", () => {
     await expect(applyLegislativeVoteJudgment(overridden, { ...judgment, officialVoteDate: "2025-05-23" })).resolves.toBe(
       "updated"
     );
-    expect(overridden.query.mock.calls[1]?.[0]).toMatch(/official_vote_date = \$5::date/);
-    expect(overridden.query.mock.calls[1]?.[1]?.[4]).toBe("2025-05-23");
+    expect(overridden.query.mock.calls[2]?.[0]).toMatch(/official_vote_date = \$5::date/);
+    expect(overridden.query.mock.calls[2]?.[1]?.[4]).toBe("2025-05-23");
+  });
+
+  it("refuses approval when a description does not cite this roll call's tally", async () => {
+    await expect(
+      applyLegislativeVoteJudgment(db(stored), {
+        ...judgment,
+        // Written about a different stage: PA HB 103's first-passage prose
+        // cited 148-55 while the approved roll call was another vote.
+        nayDescription: "Voted against passing H.R. 1. It passed the House 148-55.",
+      })
+    ).rejects.toThrow(/nay_description does not cite this roll call's tally 215-214/);
+    // Substring containment is not citation: a 15-1 roll call is not
+    // satisfied by prose whose only match sits inside 215-14.
+    await expect(
+      applyLegislativeVoteJudgment(db({ ...stored, yeas: 15, nays: 1 }), {
+        ...judgment,
+        yeaDescription: "Voted to pass H.R. 1. It passed the House 215-14.",
+        nayDescription: "Voted against passing H.R. 1. It passed the House 215-14.",
+      })
+    ).rejects.toThrow(/does not cite this roll call's tally 15-1;/);
+    await expect(
+      applyLegislativeVoteJudgment(db({ ...stored, yeas: 15, nays: 1 }), {
+        ...judgment,
+        yeaDescription: "Voted to pass H.R. 1. It passed the House 15-1.",
+        nayDescription: "Voted against passing H.R. 1. It passed the House 15-1.",
+      })
+    ).resolves.toBe("updated");
+    // A pending judgment is not gated; the tally check runs on approval only.
+    await expect(
+      applyLegislativeVoteJudgment(db(stored), {
+        ...judgment,
+        nayDescription: "Voted against passing H.R. 1. It passed the House 148-55.",
+        reviewStatus: "pending",
+      })
+    ).resolves.toBe("updated");
+  });
+
+  it("refuses to approve a stage superseded by a later kept floor vote unless acknowledged", async () => {
+    const laterVote = {
+      session: "119-1",
+      roll_number: 320,
+      vote_date: "2025-06-30",
+      measure_id: "H R 1",
+      exact_question: "On Motion to Concur in the Senate Amendment",
+    };
+    function dbWithLater() {
+      return {
+        query: vi
+          .fn()
+          .mockResolvedValueOnce({ rows: [stored] })
+          .mockResolvedValueOnce({ rows: [laterVote] })
+          .mockResolvedValue({ rows: [], rowCount: 1 }),
+      };
+    }
+    await expect(applyLegislativeVoteJudgment(dbWithLater(), judgment)).rejects.toThrow(
+      /final kept floor vote on H R 1: 119-1 roll 320 on 2025-06-30 \(On Motion to Concur in the Senate Amendment\)/
+    );
+    // A SAME-DAY peer blocks too: a re-vote after a motion to reconsider
+    // lands on the same date, and within a day the sources give no order.
+    const sameDay = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({ rows: [stored] })
+        .mockResolvedValueOnce({ rows: [{ ...laterVote, roll_number: 146, vote_date: "2025-05-22" }] })
+        .mockResolvedValue({ rows: [], rowCount: 1 }),
+    };
+    await expect(applyLegislativeVoteJudgment(sameDay, judgment)).rejects.toThrow(/119-1 roll 146 on 2025-05-22/);
+    // A next-calendar-session peer stays acknowledgeable by number — the
+    // error names its session, so the operator knows what the number covers.
+    const nextSession = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({ rows: [stored] })
+        .mockResolvedValueOnce({ rows: [{ ...laterVote, session: "119-2", vote_date: "2026-01-15" }] })
+        .mockResolvedValue({ rows: [], rowCount: 1 }),
+    };
+    await expect(
+      applyLegislativeVoteJudgment(nextSession, { ...judgment, acknowledgeLaterRolls: [320] })
+    ).resolves.toBe("updated");
+    // A malformed US session would derive scan keys matching nothing and
+    // skip the gate silently; it fails loud instead.
+    await expect(applyLegislativeVoteJudgment(db(stored), { ...judgment, session: "119" })).rejects.toThrow(
+      /US session '119' is not <congress>-<1\|2>/
+    );
+    // Acknowledging the exact later roll approves the earlier stage on purpose.
+    await expect(
+      applyLegislativeVoteJudgment(dbWithLater(), { ...judgment, acknowledgeLaterRolls: [320] })
+    ).resolves.toBe("updated");
+    // A later vote on ANOTHER measure never blocks.
+    const otherMeasure = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({ rows: [stored] })
+        .mockResolvedValueOnce({ rows: [{ ...laterVote, measure_id: "H R 2" }] })
+        .mockResolvedValue({ rows: [], rowCount: 1 }),
+    };
+    await expect(applyLegislativeVoteJudgment(otherMeasure, judgment)).resolves.toBe("updated");
+    // A state entry scans exactly its own session key (the session already
+    // spans the whole term; bill numbers repeat across sessions).
+    const state = db(stored);
+    await expect(
+      applyLegislativeVoteJudgment(state, { ...judgment, jurisdiction: "OH", session: "136" })
+    ).resolves.toBe("updated");
+    expect(state.query.mock.calls[1]?.[1]).toEqual(["OH", "house", ["136"], "2025-05-22", "row-1"]);
   });
 
   it("is a no-op when the row already holds the same judgment and status", async () => {
@@ -342,9 +461,10 @@ describe("applyLegislativeVoteJudgment", () => {
       labels_json: [{ slug: "immigration", yea: "for" }],
     });
     await expect(applyLegislativeVoteJudgment(reworded, judgment)).resolves.toBe("updated");
-    expect(reworded.query).toHaveBeenCalledTimes(3);
-    expect(reworded.query.mock.calls[1]?.[0]).toMatch(/SET review_status = 'pending',\s+reviewed_at = NULL/);
-    expect(reworded.query.mock.calls[2]?.[1]?.[5]).toBe("approved");
+    // select, the later-stage gate's select, pending-first, the write.
+    expect(reworded.query).toHaveBeenCalledTimes(4);
+    expect(reworded.query.mock.calls[2]?.[0]).toMatch(/SET review_status = 'pending',\s+reviewed_at = NULL/);
+    expect(reworded.query.mock.calls[3]?.[1]?.[5]).toBe("approved");
 
     // A changed override alone is a judgment change too: same pending-first
     // path, since the freeze trigger covers official_vote_date.
@@ -358,9 +478,9 @@ describe("applyLegislativeVoteJudgment", () => {
     await expect(applyLegislativeVoteJudgment(redated, { ...judgment, officialVoteDate: "2025-05-23" })).resolves.toBe(
       "updated"
     );
-    expect(redated.query).toHaveBeenCalledTimes(3);
-    expect(redated.query.mock.calls[1]?.[0]).toMatch(/SET review_status = 'pending',\s+reviewed_at = NULL/);
-    expect(redated.query.mock.calls[2]?.[1]?.[4]).toBe("2025-05-23");
+    expect(redated.query).toHaveBeenCalledTimes(4);
+    expect(redated.query.mock.calls[2]?.[0]).toMatch(/SET review_status = 'pending',\s+reviewed_at = NULL/);
+    expect(redated.query.mock.calls[3]?.[1]?.[4]).toBe("2025-05-23");
   });
 
   it("refuses a judgment written about a different measure or date than the row holds", async () => {

@@ -6,6 +6,7 @@ import {
   type CandidateRecordAreaLabelInput,
   type CandidateRecordAreaStance,
 } from "../candidates/candidateRecordAreaTagging.js";
+import { isNonStanceResearchAreaSlug } from "../candidates/candidateRecordResearchAreaPolicy.js";
 import { recordIdentityTransition } from "../candidates/candidateRecordStore.js";
 import type { FederalMeasure } from "./federalMeasures.js";
 import { citesAnyRollCall, citesSameRollCall, descriptionMentionsMeasure, looksLikeVoteClaim } from "./rollCallRecordUrls.js";
@@ -43,32 +44,49 @@ export function memberVoteSide(vote: string): RollCallVoteSide | null {
   return side;
 }
 
-// One element of legislative_votes.labels_json: the research area and
-// which stance a YEA vote takes on it (null only for the non-stance areas).
-export type RollCallLabel = { slug: string; yea: CandidateRecordAreaStance | null };
+// One element of legislative_votes.labels_json: the research area and the
+// stance each side's vote takes on it (null on `yea` only for the non-stance
+// areas). `nay` is authored, never inverted from `yea`: a no vote is not
+// automatically the opposite stance on the area's whole goal (a no on one
+// election bill is not "Opposes Election Integrity"), so on a stance area a
+// null/absent `nay` means nay voters get NO tag for that slug. Non-stance
+// areas carry null on both sides and tag both sides topically, as before.
+export type RollCallLabel = { slug: string; yea: CandidateRecordAreaStance | null; nay: CandidateRecordAreaStance | null };
 
 export type RollCallSideLabel = { researchAreaSlug: string; stance: CandidateRecordAreaStance | null };
 
-function flip(stance: CandidateRecordAreaStance | null): CandidateRecordAreaStance | null {
-  return stance === "for" ? "against" : stance === "against" ? "for" : null;
-}
-
-/** The tags a record on `side` gets: yea voters take the label as written, nay voters the opposite. */
+/**
+ * The tags a record on `side` gets: yea voters take every label as written;
+ * nay voters take a stance area only where the judgment stated a nay stance
+ * (an unstated nay side is silence, not the opposite claim), plus the
+ * non-stance areas topically.
+ */
 export function labelsForSide(labels: readonly RollCallLabel[], side: RollCallVoteSide): RollCallSideLabel[] {
-  return labels.map((label) => ({
-    researchAreaSlug: label.slug,
-    stance: side === "yea" ? label.yea : flip(label.yea),
-  }));
+  if (side === "yea") {
+    return labels.map((label) => ({ researchAreaSlug: label.slug, stance: label.yea }));
+  }
+  return labels
+    .filter((label) => label.nay !== null || isNonStanceResearchAreaSlug(label.slug))
+    .map((label) => ({ researchAreaSlug: label.slug, stance: label.nay }));
 }
 
 /**
  * Reads and checks labels_json. The DB only guarantees a non-empty array on
  * an approved row (migration 251); element shape — the slug exists, the
- * stance value is for/against/null, non-stance areas carry null and stance
- * areas do not — is checked here with the same rule the manual writer uses,
- * once for each side, since a bad label would replicate across every record.
+ * stance values are for/against/null, non-stance areas carry null and stance
+ * areas do not, and `nay` never restates `yea` — is checked here with the
+ * same rule the manual writer uses, once for each side, since a bad label
+ * would replicate across every record. Rows judged before `nay` existed
+ * carry no `nay` key: read as null (nay voters untagged, never the old
+ * auto-inversion). `requireExplicitNay` — the authoring gate in
+ * rollcall:judge — additionally refuses an absent `nay` on a stance area,
+ * so every NEW judgment states the nay side on purpose.
  */
-export function parseRollCallLabels(labelsJson: unknown, allowedSlugs: ReadonlySet<string>): RollCallLabel[] {
+export function parseRollCallLabels(
+  labelsJson: unknown,
+  allowedSlugs: ReadonlySet<string>,
+  options?: { requireExplicitNay?: boolean }
+): RollCallLabel[] {
   if (!Array.isArray(labelsJson) || labelsJson.length === 0) {
     throw new Error("labels_json is not a non-empty array");
   }
@@ -78,19 +96,30 @@ export function parseRollCallLabels(labelsJson: unknown, allowedSlugs: ReadonlyS
     if (typeof element !== "object" || element === null || Array.isArray(element)) {
       throw new Error(`labels_json[${index}] is not an object`);
     }
-    const { slug, yea } = element as { slug?: unknown; yea?: unknown };
+    const { slug, yea, nay } = element as { slug?: unknown; yea?: unknown; nay?: unknown };
     if (typeof slug !== "string" || slug.trim().length === 0) {
       throw new Error(`labels_json[${index}].slug is not a string`);
     }
     if (yea !== "for" && yea !== "against" && yea !== null && yea !== undefined) {
       throw new Error(`labels_json[${index}].yea must be "for", "against", or null`);
     }
+    if (nay !== "for" && nay !== "against" && nay !== null && nay !== undefined) {
+      throw new Error(`labels_json[${index}].nay must be "for", "against", or null`);
+    }
     const normalizedSlug = slug.trim().toLowerCase();
     if (seen.has(normalizedSlug)) {
       throw new Error(`labels_json names ${normalizedSlug} twice`);
     }
+    if (nay !== null && nay !== undefined && nay === yea) {
+      throw new Error(`labels_json[${index}].nay restates yea; one roll call cannot evidence the same stance for both sides`);
+    }
+    if (options?.requireExplicitNay && nay === undefined && !isNonStanceResearchAreaSlug(normalizedSlug)) {
+      throw new Error(
+        `labels_json[${index}].nay must be stated for ${normalizedSlug}: "for", "against", or null (null = nay voters get no tag)`
+      );
+    }
     seen.add(normalizedSlug);
-    labels.push({ slug: normalizedSlug, yea: yea ?? null });
+    labels.push({ slug: normalizedSlug, yea: yea ?? null, nay: nay ?? null });
   }
   for (const side of ["yea", "nay"] as const) {
     const validation = validateCandidateRecordAreaLabels(

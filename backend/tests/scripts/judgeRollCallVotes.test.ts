@@ -14,7 +14,7 @@ const ENTRY = {
   review_status: "approved",
   yea_description: "Voted to pass H.R. 1. It passed the House 215-214.",
   nay_description: "Voted against passing H.R. 1. It passed the House 215-214.",
-  labels: [{ slug: "immigration", yea: "for" }, { slug: "general" }],
+  labels: [{ slug: "immigration", yea: "for", nay: "against" }, { slug: "general" }],
 };
 
 describe("parseJudgmentsFile", () => {
@@ -43,12 +43,28 @@ describe("parseJudgmentsFile", () => {
         yeaDescription: ENTRY.yea_description,
         nayDescription: ENTRY.nay_description,
         labels: [
-          { slug: "immigration", yea: "for" },
-          { slug: "general", yea: null },
+          { slug: "immigration", yea: "for", nay: "against" },
+          { slug: "general", yea: null, nay: null },
         ],
+        acknowledgeLaterRolls: [],
         reviewStatus: "approved",
       },
     ]);
+  });
+
+  it("requires each stance label to state its nay side, and carries later-roll acknowledgments", () => {
+    expect(() =>
+      parseJudgmentsFile({ judgments: [{ ...ENTRY, labels: [{ slug: "immigration", yea: "for" }] }] }, SLUGS)
+    ).toThrow(/labels\[0\]\.nay must be stated for immigration/);
+    expect(
+      parseJudgmentsFile({ judgments: [{ ...ENTRY, acknowledge_later_rolls: [201] }] }, SLUGS)[0]?.acknowledgeLaterRolls
+    ).toEqual([201]);
+    expect(() => parseJudgmentsFile({ judgments: [{ ...ENTRY, acknowledge_later_rolls: [0] }] }, SLUGS)).toThrow(
+      /acknowledge_later_rolls must be an array of positive roll numbers/
+    );
+    expect(() => parseJudgmentsFile({ judgments: [{ ...ENTRY, acknowledge_later_rolls: "201" }] }, SLUGS)).toThrow(
+      /acknowledge_later_rolls must be an array of positive roll numbers/
+    );
   });
 
   it("rejects every malformed entry with its index, before anything is written", () => {
@@ -69,7 +85,7 @@ describe("parseJudgmentsFile", () => {
       [{ judgments: [{ ...ENTRY, nay_description: " " }] }, /nay_description must be a non-empty string/],
       [{ judgments: [{ ...ENTRY, nay_description: ENTRY.yea_description.toUpperCase() }] }, /same sentence/],
       [{ judgments: [{ ...ENTRY, labels: [] }] }, /judgments\[0\]: labels is not a non-empty array/],
-      [{ judgments: [{ ...ENTRY, labels: [{ slug: "housing", yea: "for" }] }] }, /'housing' is not allowed/],
+      [{ judgments: [{ ...ENTRY, labels: [{ slug: "housing", yea: "for", nay: null }] }] }, /'housing' is not allowed/],
       [{ judgments: [{ ...ENTRY, labels: [{ slug: "general", yea: "for" }] }] }, /must not include stance/],
       [{ judgments: [ENTRY, { ...ENTRY, review_status: "pending" }] }, /judgments\[1\]: US:house:119-1:145 appears more than once/],
     ];
