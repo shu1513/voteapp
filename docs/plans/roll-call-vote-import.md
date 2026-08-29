@@ -499,6 +499,56 @@ importer with different evidence (see "Governors" above for sources).
   sentence validation of the legiscan.com URL, zero records for an
   all-null crosswalk), then the row deleted and the temp config removed.
 
+## Decisions (2026-08-29, stance + review-gate fixes)
+
+Driven by defects the records-quality campaign found in fanned-out rows
+(GA SB 40 / PA HB 103 chip sweeps, GA HB 1247 title-vs-text cluster,
+ND SB 2377 committee-name subject):
+
+- **Nay stance is authored, never inverted.** `labels_json` elements are now
+  `{slug, yea, nay}`. The old fan-out inverted the yea stance for nay voters
+  (`flip()`), but a no vote on one bill is not the opposite stance on the
+  area's whole goal — it rendered as "Opposes <Area>" chips that two manual
+  sweeps had to remove. On a stance area, `nay: "for"|"against"` is the
+  stance a no vote actually evidences; `nay: null` means nay voters get NO
+  tag on that slug (silence, not the opposite claim; untagged records are an
+  accepted state). Non-stance areas tag both sides topically as before.
+  `rollcall:judge` refuses a new stance label without an explicit `nay`;
+  stored pre-`nay` rows read as `nay: null`, so the next `rollcall:import`
+  of such a roll call drops the flipped stance tags rather than re-minting
+  them — the deliberate repair path, run per roll call, never automatically.
+- **Tally gate.** Approving a judgment requires both sentences to cite the
+  row's own `<yeas>-<nays>` (the closing tally sentence was already the §3
+  template; now it is enforced). Catches sentences written about a different
+  stage of the same bill and mistyped tallies.
+- **Superseded-stage gate.** A roll call cannot be approved while a LATER
+  kept floor vote (`is_floor_vote = true`) on the same measure in the same
+  chamber sits in `legislative_votes` (PA HB 103: first passage 148-55 was
+  fanned out while the members' final position was the 201-2 concurrence
+  that became Act 28). Judge the chamber's final action; to approve an
+  earlier stage on purpose, list the later roll numbers under
+  `acknowledge_later_rolls`. Limit: the gate only sees fetched rows — fetch
+  the bill's full vote list before judging (LegiScan bulk gives it for
+  free; federal, walk the bill's actions).
+- **Authoring rules that stay human** (not mechanically checkable; the
+  materiality-regex experiment false-positived 50/54 rows, so no wording
+  pattern checks): (1) describe provisions from the text actually voted on
+  (the PN/engrossed/enrolled version in `exact_question`, or the enacted
+  act), never from the bill's TITLE — GA HB 1247's title read as a
+  permission ("may act as authorizing agencies") while the enacted text is
+  a mandate ("shall be required to participate"), replicated to 188 rows;
+  verify may/shall against the operative text before writing. (2) Never
+  infer a bill's subject from the COMMITTEE that handled it — ND SB 2377
+  sat in a human-services committee but amends the insurance code; the
+  subject comes from the bill text/analysis. (3) Existing rule restated:
+  the sentences describe THIS roll call's question, and multi-stage bills
+  get the final action.
+- Committed pre-gate `judgments.json` files no longer re-apply verbatim:
+  the file parse now demands explicit `nay` on every stance label. Add the
+  `nay` fields (usually `null`) to re-apply one; a judgment that then
+  matches the stored row byte-for-what-it-means is still `unchanged` (the
+  apply-time gates run only when something would change).
+
 ## Open questions
 
 - Register a free LegiScan API key (needed to download the phase-4 bulk

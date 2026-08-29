@@ -380,8 +380,13 @@ export type LegislativeVoteJudgment = {
   officialVoteDate: string | null;
   yeaDescription: string;
   nayDescription: string;
-  // Already shape-checked (see parseRollCallLabels); stored as given.
-  labels: readonly { slug: string; yea: "for" | "against" | null }[];
+  // Already shape-checked (see parseRollCallLabels); stored as given. `nay`
+  // is the authored nay-side stance (null = nay voters get no tag on that
+  // slug), never an inversion of `yea`.
+  labels: readonly { slug: string; yea: "for" | "against" | null; nay: "for" | "against" | null }[];
+  // Later kept floor votes on the same measure+chamber the operator has
+  // seen and still wants to approve past (see the superseded-stage gate).
+  acknowledgeLaterRolls: readonly number[];
   reviewStatus: "pending" | "approved";
 };
 
@@ -400,8 +405,8 @@ function canonicalLabels(value: unknown): string {
   }
   return JSON.stringify(
     value.map((element) => {
-      const { slug, yea } = (element ?? {}) as { slug?: unknown; yea?: unknown };
-      return [slug ?? null, yea ?? null];
+      const { slug, yea, nay } = (element ?? {}) as { slug?: unknown; yea?: unknown; nay?: unknown };
+      return [slug ?? null, yea ?? null, nay ?? null];
     })
   );
 }
@@ -439,11 +444,13 @@ export async function applyLegislativeVoteJudgment(
     vote_date: string;
     official_vote_date: string | null;
     review_status: LegislativeVoteReviewStatus;
+    yeas: number;
+    nays: number;
     yea_description: string | null;
     nay_description: string | null;
     labels_json: unknown;
   }>(
-    `SELECT id, is_floor_vote, measure_id, vote_date::text AS vote_date, official_vote_date::text AS official_vote_date, review_status, yea_description, nay_description, labels_json
+    `SELECT id, is_floor_vote, measure_id, vote_date::text AS vote_date, official_vote_date::text AS official_vote_date, review_status, yeas, nays, yea_description, nay_description, labels_json
        FROM legislative_votes
       WHERE jurisdiction = $1
         AND chamber = $2
@@ -490,6 +497,58 @@ export async function applyLegislativeVoteJudgment(
     canonicalLabels(row.labels_json) === canonicalLabels(judgment.labels);
   if (sameJudgment && row.review_status === judgment.reviewStatus) {
     return "unchanged";
+  }
+  // Approval gates for the two authoring failures the data actually showed
+  // (2026-08-29). Both run only when this apply would change something, so
+  // re-applying a committed pre-gate judgments file verbatim stays a no-op.
+  if (judgment.reviewStatus === "approved") {
+    // 1. Each sentence must cite THIS roll call's tally. The closing tally
+    //    sentence is already the template (plan §3); making it a gate stops
+    //    a sentence written about a different stage of the same bill (PA
+    //    HB 103: first-passage prose approved while the members' final
+    //    position was the 201-2 concurrence) and plain mistyped tallies.
+    const tally = `${row.yeas}-${row.nays}`;
+    for (const [field, text] of [
+      ["yea_description", judgment.yeaDescription],
+      ["nay_description", judgment.nayDescription],
+    ] as const) {
+      if (!text.includes(tally)) {
+        throw new Error(`${name}: ${field} does not cite this roll call's tally ${tally}; describe the vote being approved`);
+      }
+    }
+    // 2. Superseded-stage gate: a later kept floor vote on the same measure
+    //    in the same chamber means this vote was not the chamber's final
+    //    action, and a record citing only the earlier stage reads as the
+    //    member's final position on the bill. Judge the later vote instead,
+    //    or list the later roll numbers in acknowledge_later_rolls to
+    //    approve this stage on purpose.
+    if (row.measure_id !== null) {
+      const later = await db.query<{ roll_number: number; vote_date: string; measure_id: string; exact_question: string }>(
+        `SELECT roll_number, vote_date::text AS vote_date, measure_id, exact_question
+           FROM legislative_votes
+          WHERE jurisdiction = $1
+            AND chamber = $2
+            AND is_floor_vote = true
+            AND vote_date > $3::date
+            AND measure_id IS NOT NULL
+            AND id <> $4`,
+        [judgment.jurisdiction, judgment.chamber, row.vote_date, row.id]
+      );
+      const superseding = later.rows.filter(
+        (candidate) =>
+          sameMeasure(candidate.measure_id, row.measure_id) &&
+          !judgment.acknowledgeLaterRolls.includes(candidate.roll_number)
+      );
+      if (superseding.length > 0) {
+        const listed = superseding
+          .map((vote) => `roll ${vote.roll_number} on ${vote.vote_date} (${vote.exact_question})`)
+          .join("; ");
+        throw new Error(
+          `${name} is not this chamber's last kept floor vote on ${row.measure_id}: ${listed}. ` +
+            "Judge the later vote instead, or list its roll number in acknowledge_later_rolls to approve this stage anyway."
+        );
+      }
+    }
   }
   if (row.review_status === "approved" && !sameJudgment) {
     await db.query(

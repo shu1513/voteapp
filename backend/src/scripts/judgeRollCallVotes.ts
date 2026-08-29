@@ -43,17 +43,29 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
 //         "review_status": "approved",
 //         "yea_description": "Voted to pass H.R. 1, ... It passed the House 215-214.",
 //         "nay_description": "Voted against passing H.R. 1, ... It passed the House 215-214.",
-//         "labels": [{ "slug": "personal_income_tax_reduction", "yea": "for" }, { "slug": "general" }]
+//         "labels": [{ "slug": "personal_income_tax_reduction", "yea": "for", "nay": null }, { "slug": "general" }]
 //       },
 //       {
 //         "jurisdiction": "OH", "chamber": "house", "session": "136",
 //         "roll": 1744207254, "measure_id": "HB 96", "vote_date": "2025-04-09",
 //         "review_status": "approved",
 //         "yea_description": "...", "nay_description": "...",
-//         "labels": [{ "slug": "government_spending_reduction", "yea": "against" }]
+//         "labels": [{ "slug": "government_spending_reduction", "yea": "against", "nay": "for" }]
 //       }
 //     ]
 //   }
+//
+// Each stance label states BOTH sides: `yea` as before, and `nay` — the
+// stance a no vote actually evidences, or null when it evidences none (nay
+// voters then get no tag on that slug). `nay` is never inferred by
+// inverting `yea`. Approval is additionally gated at apply time: each
+// description must close with this roll call's own tally (`<yeas>-<nays>`),
+// and a roll call cannot be approved while a LATER kept floor vote on the
+// same measure in the same chamber sits in legislative_votes (judge the
+// final action instead — a first-passage record beside an unmentioned
+// concurrence reads as the member's final position on the bill). To approve
+// an earlier stage anyway, list the later roll numbers under
+// "acknowledge_later_rolls": [<roll>, ...].
 
 const FEDERAL_JURISDICTION = "US";
 // State entries name their jurisdiction explicitly; only sources with a
@@ -158,9 +170,16 @@ export function parseJudgmentsFile(raw: unknown, allowedSlugs: ReadonlySet<strin
     }
     let labels;
     try {
-      labels = parseRollCallLabels(entry.labels, allowedSlugs);
+      labels = parseRollCallLabels(entry.labels, allowedSlugs, { requireExplicitNay: true });
     } catch (error) {
       fail(index, (error instanceof Error ? error.message : String(error)).replace(/^labels_json/, "labels"));
+    }
+    const acknowledgeLaterRolls = entry.acknowledge_later_rolls ?? [];
+    if (
+      !Array.isArray(acknowledgeLaterRolls) ||
+      acknowledgeLaterRolls.some((roll) => typeof roll !== "number" || !Number.isSafeInteger(roll) || roll < 1)
+    ) {
+      fail(index, "acknowledge_later_rolls must be an array of positive roll numbers");
     }
     const key = `${jurisdiction}:${chamber}:${sessionKey}:${roll}`;
     if (seen.has(key)) {
@@ -178,6 +197,7 @@ export function parseJudgmentsFile(raw: unknown, allowedSlugs: ReadonlySet<strin
       yeaDescription,
       nayDescription,
       labels,
+      acknowledgeLaterRolls: acknowledgeLaterRolls as number[],
       reviewStatus: reviewStatus as "pending" | "approved",
     });
   }
