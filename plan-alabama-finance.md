@@ -18,7 +18,7 @@ Out of scope for v1 (revisit later): county candidates (enable after exact-ident
 
 System: Tyler entellitrak app at `https://fcpa.alabamavotes.gov/` ("AL Campaign Finance System"). No auth, no CAPTCHA, JSON responses. The pre-2025 `PublicSite` system is dead — any old URLs redirect to a login page.
 
-**TLS:** the server sends an incomplete certificate chain. The client must supply the missing intermediate CA (custom `ca` on the HTTPS agent, fetched once and committed as a PEM fixture). Never disable verification.
+**TLS:** the server sends an incomplete certificate chain. The client must supply the missing intermediate CA (custom `connect.ca` on an Undici `Agent` passed as `fetch(..., { dispatcher })` — a Node `https.Agent` would not affect Undici/global fetch; intermediate fetched once and committed as a PEM fixture, see `alabamaFcpaTls.ts`). Never disable verification.
 
 ### Primary: political race search (roster + totals)
 
@@ -35,7 +35,7 @@ System: Tyler entellitrak app at `https://fcpa.alabamavotes.gov/` ("AL Campaign 
 
 Catalog: `GET /page.request.do?page=com.acf.common.page.transactiondatadownloadsresults&pageSize=100&pageNumber=1&sortDirection=ASC&sortBy=state` → `{DATATYPE, YEAR, LASTUPDATED, DOWNLOAD:<id>}` per file (2013–2026, 4 types, regenerated daily ~02:32 AM CT). Download: `page=getTransactionData&id=<DOWNLOAD>` → zip with one CSV. **Ids are catalog rows, not stable — re-read the catalog every sync.**
 
-v1 needs only the Cash Contributions extract for the cycle years (2025 + 2026):
+v1 needs only the Cash Contributions extract, pulled for every transaction-date year in scope — not just 2025 + 2026: Phase 0 found a 2025-registered committee with a 2024-dated contribution living in the 2024 file, so the extract-year window is the transaction-date years (2024–2026 observed), not the committee's registration life:
 
 - Header: `CommitteeId,ContributionAmount,ContributionDate,LastName,FirstName,MI,Suffix,Address1,City,State,Zip,ContributionID,FiledDate,ContributionType,ContributorType,CommitteeType,CommitteeName,CandidateName,Amended`.
 - `CommitteeId` here is the FCPA committee number (e.g. 32837), NOT the race row's internal `COMMITTEEID` (e.g. 7962). The committee search response carries both (`committeeId` + `id`); the resolver must store both.
@@ -60,13 +60,15 @@ v1 needs only the Cash Contributions extract for the cycle years (2025 + 2026):
 | direct `contribution_size` rows | cash extract | itemized cash rows only — exclude in-kind rows, `Cash (Non-Itemized)`, and `ContributorType = Returned (Cash Only)` rows (Florida precedent: in-kind/refund/returned stay out of direct buckets); amounts are signed (negative rows exist — 1 in the 2026 file) and must be handled, never abs()'d |
 | `occupation` rows / outside rows | — | none written |
 
-Freshness note: race API is live; extracts lag to ~02:32 AM. A raised-total drift of one day's filings between the two is expected (observed: exactly $20,000 on Jones). Verification tolerance must account for it (compare against the previous day's expectation or re-pull the race row at reconcile time).
+Freshness/reconcile note: displayed totals carry **no dollar tolerance** — the Phase 0 authority contract validates race totals cent-exact against the committee's filed report covers (same source, no time window). Extracts are never an acceptance check on totals: they lag (~02:32 AM regeneration, one day's filings drift — observed exactly $20,000 on Jones) and can permanently omit filed rows, so extract-vs-race comparison is a **coverage ratio** for the size buckets (observed 0.989–1.0), reported in sync diagnostics under the rule in Phase 3.
 
 ## Phase 0: reconciliation probe (no schema, no flags)
 
 **STATUS: DONE 2026-08-26 — PASSED** (`npm run alabama-candidates:finance:phase-zero`, `ok: true`). Key outcome: the gate became the **authority contract** — race totals == Σ filed-report covers, cent-exact (verified 3 fixtures incl. 99-filing Tuberville and 10-amendment Boyd) — while extracts get a coverage ratio (observed 0.989–1.0; they can miss rows covers contain). Full findings in `backend/docs/alabama-campaign-finance.md` §Phase 0 results. Consequences for later phases: totals from race API, buckets from extracts with coverage reported; extract-year window = transaction-date years (2024 file needed); Major Contribution Report covers have a reduced layout; filing-detail fetches need retries.
 
-Script `npm run alabama:finance:phase0` (pattern: `newHampshirePhaseZero.ts`). Must demonstrate, against live data:
+The spec below is the original pre-run gate, kept for the record. Where it conflicts with the STATUS line above or the findings doc's §Phase 0 results (which replaced extract-sum reconciliation and the extracts-as-primary fallback with the covers authority contract), the findings doc wins.
+
+Script `npm run alabama-candidates:finance:phase-zero` (pattern: `newHampshirePhaseZero.ts`). Must demonstrate, against live data:
 
 1. Race rows for ≥3 offices (Governor + one legislative chamber + one judicial) enumerate correctly from scraped dropdown ids under election 160.
 2. For ≥3 committees spanning large/small: race `MONETARYCONTRIB + NONMONETARYCONTRIB` reconciles to cash-extract sums (2025+2026) within the one-day freshness tolerance, and `MONETARYEXP` reconciles to expenditure-extract sums + prior-year covers cent-exact.
@@ -90,15 +92,16 @@ Tests: fixture zips (small hand-built CSVs incl. ragged lines, in-kind rows, Ame
 ## Phase 2: schema, flags, source label (launch checklist — see voteapp-new-state-finance-checklist)
 
 - Migration `NNN_add_alabama_campaign_finance_tables.sql` — next free number at implementation time (≥257; check open finance PRs #885/#886/#887 for claimed numbers first; never renumber). All five standard tables so `standardStateFinanceSnapshotWriter` works unchanged: `al_candidate_finance_links`, `_summaries`, `_direct_breakdowns`, `_outside_groups`, `_outside_group_breakdowns` (outside tables stay empty by design). All identifiers ≤63 chars.
-- `featureFlags.ts`: `ALABAMA_CAMPAIGN_FINANCE_ENABLED`, `ALABAMA_CAMPAIGN_FINANCE_SYNC_ENABLED`, plus `ALABAMA_FCPA_RAW_DATA_REFRESH_ENABLED` gating the artifact-refresh command (NH pattern) with its `npm run alabama:finance:refresh-artifacts` script; code defaults false; add to `backend/.env` (alphabetical) and the read flag to `render.yaml`.
+- `featureFlags.ts`: `ALABAMA_CAMPAIGN_FINANCE_ENABLED`, `ALABAMA_CAMPAIGN_FINANCE_SYNC_ENABLED`, plus `ALABAMA_FCPA_RAW_DATA_REFRESH_ENABLED` gating the artifact-refresh command (NH pattern) with its `npm run alabama:finance:refresh-artifacts` script; code defaults false; document in `backend/.env.example` (tracked, alphabetical — NH pattern), set in local `backend/.env`, and add the read flag to `render.yaml` (prod values live in Render's environment).
 - Source enum `ALABAMA_FCPA` in `ballotLookupFinanceShared.ts`; `FINANCE_SOURCE_LABELS` entry "Alabama FCPA Reporting System" in `packages/api-client/src/format.ts` (alphabetical) + `format.test.ts` case; **`FINANCE_SOURCE_HOME_URLS` entry** (`https://fcpa.alabamavotes.gov/`) in `packages/api-client/src/finance.ts` + its test.
-- Commit `backend/docs/alabama-campaign-finance.md` (currently uncommitted) with this phase's PR.
+- Keep `backend/docs/alabama-campaign-finance.md` updated (committed with the Phase 0 PR).
 
 ## Phase 3: resolver, sync, loader
 
 - `alabamaFinanceEligibleOffices.ts` — explicit office allowlist (statewide + legislature + judicial), the only offices the resolver touches.
 - `alabamaCandidateResolver.ts` — VoteApp Nov-2026 candidates in allowlisted offices → race rows. Link requires normalized candidate name match + compatible office/district + election cycle; store internal `COMMITTEEID`, FCPA `committeeId`, and source URL. Ambiguity (two plausible rows, or race row absent for a ballot candidate) fails closed to manual review. Never link on name alone. Auto-link must never overwrite a `linkSource: manual` row.
-- `alabamaCandidateFinanceSync.ts` — per linked candidate: summary from live race row; `contribution_size` buckets from cached cash extracts filtered to the FCPA committeeId and cycle window; reconcile buckets+non-itemized vs `MONETARYCONTRIB` within tolerance; full-replacement write via `createStandardStateFinanceSnapshotWriter`; on any reconcile/parse/fetch failure keep the previous snapshot and report.
+- `alabamaCandidateFinanceSync.ts` — per linked candidate: summary from live race row; `contribution_size` buckets from cached cash extracts filtered to the FCPA committeeId and transaction-date-year window; cash coverage ratio = (itemized + non-itemized extract cash) ÷ race `MONETARYCONTRIB`, always reported, and treated as a reconcile failure outside [0.97, 1.01] (brackets the observed 0.989–1.0 with headroom for one day's filings drift; above 1.01 means a bad committee join, not freshness); full-replacement write via `createStandardStateFinanceSnapshotWriter`; on any reconcile/parse/fetch failure keep the previous snapshot and report.
+- Loader `directCoverageNote` (house pattern — GA/MO/RI/Denver/WA): tell voters the size buckets cover itemized cash contributions only, while the raised total also includes non-itemized cash, in-kind, and other receipts.
 - `alabamaBallotLookupFinanceLoader.ts` via `standardStateFinanceBallotLookupLoader`, registered alongside the other states; due-list mechanics per the finance sync runbook (link-gated).
 - Sync diagnostics per candidate: extract last-updated stamp, skipped-line counts, itemized vs non-itemized dollars, reconcile delta, explicit `occupation_unavailable` / `outside_unavailable` reasons.
 

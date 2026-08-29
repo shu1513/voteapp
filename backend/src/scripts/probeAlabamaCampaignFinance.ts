@@ -115,7 +115,10 @@ async function main(): Promise<void> {
     }
   }
   // Gates 2-4: fixture reconciliation.
-  const governorOffice = ids.offices.find((option) => option.label === "Governor")!;
+  const governorOffice = ids.offices.find((option) => option.label === "Governor");
+  if (!governorOffice) {
+    throw new Error("Alabama race search returned no Governor office option");
+  }
   const governorRows = officeRows.get("Governor") ?? [];
   // One office-scoped committee search maps internal ids to FCPA committee
   // numbers for every fixture (name criteria are untested portal behavior).

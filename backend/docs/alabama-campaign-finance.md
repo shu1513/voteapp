@@ -6,9 +6,9 @@ Probed 2026-08-26. Verdict: **BUILDABLE for totals (raised + spent). Donor occup
 
 - Alabama migrated off the old `fcpa.alabamavotes.gov/PublicSite` (PCC) system to a **Tyler Technologies entellitrak** app ("AL Campaign Finance System", internal name ACF) at `https://fcpa.alabamavotes.gov/`. Old PublicSite URLs redirect to a login page.
 - **TLS caveat:** the server sends an incomplete certificate chain — plain `curl` fails with `SSL certificate problem: unable to get local issuer certificate`. Probe used `-k`; a production adapter should pin/append the intermediate CA instead.
-- No auth, no API key, no CAPTCHA on any endpoint below. All JSON.
+- No auth, no API key, no CAPTCHA on any endpoint below. Search/list endpoints are JSON; dropdown-id maps, filing details, and the financial-summary page are HTML; extracts are zipped CSVs.
 
-## Bulk extracts (primary ingest path)
+## Bulk extracts (size-bucket ingest; superseded as totals source — see Addenda + Phase 0 results)
 
 Public "Download Data" page serves annual zipped CSVs, **2013–2026, 4 types, refreshed daily** (observed last-updated = same day at 02:32 AM).
 
@@ -53,7 +53,9 @@ Columns (verified against files; layout PDFs at `page=getResource&resource=cashC
 
 ## Suggested v1 scope
 
-Totals-only adapter: candidate committees via committee search (office/party/status), raised = cash + in-kind + other receipts from extracts (dedupe in-kind rows in cash file), spent = expenditures extract, verify against financialSummaryData covers; occupation null; outside null.
+**Superseded — final contract (per Addenda 2–3 + §Phase 0 results and `plan-alabama-finance.md`):** totals-only adapter; roster = VoteApp Nov-2026 candidates matched to political-race-search rows (committee search is metadata fallback only); totals authority = race API, validated cent-exact against filed report covers (`totalReceipts` = `MONETARYCONTRIB + NONMONETARYCONTRIB + OTHERSOURCES`; `directContributionTotal` excludes `OTHERSOURCES`; extracts can undercount and are never the totals source); size buckets from itemized cash extract rows with a reported coverage ratio; occupation null; outside null.
+
+Original suggestion (kept for the record, do not implement): candidate committees via committee search (office/party/status), raised = cash + in-kind + other receipts from extracts (dedupe in-kind rows in cash file), spent = expenditures extract, verify against financialSummaryData covers; occupation null; outside null.
 
 ## Addendum — cross-check vs external feasibility report (2026-08-26)
 
