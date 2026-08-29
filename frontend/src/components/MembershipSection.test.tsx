@@ -58,7 +58,7 @@ describe("MembershipSection", () => {
     expect(await screen.findByRole("heading", { name: "Support Elections Simplified" })).toBeInTheDocument();
     expect(screen.getByText(/not any candidate, campaign, committee, party, or charity/)).toBeInTheDocument();
     expect(screen.getByLabelText(/Become a supporting member/)).toHaveValue(10);
-    expect(screen.getByLabelText(/Make a one-time contribution/)).toHaveValue(10);
+    expect(screen.getByLabelText(/One-time support/)).toHaveValue(10);
     expect(screen.getByRole("button", { name: "Support monthly" })).toBeEnabled();
     expect(screen.getByRole("button", { name: "Support once" })).toBeEnabled();
     expect(screen.getByRole("link", { name: "Terms of Use" })).toHaveAttribute("href", "/terms");
@@ -88,7 +88,7 @@ describe("MembershipSection", () => {
     stubApiRoutes({ "/api/me/membership": { body: NOT_MEMBER } });
     renderSection();
 
-    const input = await screen.findByLabelText(/Make a one-time contribution/);
+    const input = await screen.findByLabelText(/One-time support/);
     await user.clear(input);
     await user.type(input, "1001");
 

@@ -51,7 +51,7 @@ describe("SupportOncePage", () => {
       "href",
       "/login?next=%2Fsupport%2Fonce"
     );
-    expect(screen.queryByRole("button", { name: "Contribute" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Support once" })).not.toBeInTheDocument();
   });
 
   it("carries a Stripe return outcome through the login round-trip", async () => {
@@ -69,7 +69,7 @@ describe("SupportOncePage", () => {
     renderPage();
 
     expect(await screen.findByRole("heading", { name: "Verify your email" })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Contribute" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Support once" })).not.toBeInTheDocument();
   });
 
   it("posts a one-time checkout with the $10 default and redirects to Stripe", async () => {
@@ -85,11 +85,11 @@ describe("SupportOncePage", () => {
     });
     renderPage();
 
-    expect(await screen.findByLabelText(/Contribution amount/)).toHaveValue(10);
+    expect(await screen.findByLabelText(/One-time support/)).toHaveValue(10);
     // The monthly form does not compete here — the visitor already chose.
     expect(screen.queryByLabelText(/Monthly amount/)).not.toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: "Contribute" }));
+    await user.click(screen.getByRole("button", { name: "Support once" }));
     await waitFor(() =>
       expect(navigateExternal).toHaveBeenCalledWith("https://checkout.stripe.com/c/pay/cs_test_456")
     );
@@ -104,8 +104,8 @@ describe("SupportOncePage", () => {
     renderPage();
 
     // A one-time gift on top of a membership is allowed, so no member branch here.
-    expect(await screen.findByLabelText(/Contribution amount/)).toHaveValue(10);
-    expect(screen.getByRole("button", { name: "Contribute" })).toBeEnabled();
+    expect(await screen.findByLabelText(/One-time support/)).toHaveValue(10);
+    expect(screen.getByRole("button", { name: "Support once" })).toBeEnabled();
     expect(screen.queryByText(/Monthly supporter/)).not.toBeInTheDocument();
   });
 });

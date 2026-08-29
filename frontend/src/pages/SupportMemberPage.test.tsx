@@ -80,7 +80,7 @@ describe("SupportMemberPage", () => {
     expect(await screen.findByLabelText(/Monthly amount/)).toHaveValue(10);
     expect(screen.getByRole("button", { name: "Become a member" })).toBeEnabled();
     // The one-time form does not compete here — the visitor already chose.
-    expect(screen.queryByLabelText(/Contribution amount/)).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(/One-time support/)).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Terms of Use" })).toHaveAttribute("href", "/terms");
   });
 

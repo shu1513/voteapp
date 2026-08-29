@@ -224,8 +224,8 @@ function Disclaimer() {
   return (
     <p className="mt-1 text-sm text-ink-soft">
       {APP_NAME} is independently operated. Optional payments support operating the service, not any
-      candidate, campaign, committee, party, or charity. Payments are not eligible for a
-      charitable-contribution receipt.
+      candidate, campaign, committee, party, or charity. Payments provide no additional content or
+      influence and are not eligible for a charitable-contribution receipt.
     </p>
   );
 }
@@ -336,7 +336,7 @@ export function MembershipSection() {
               />
               <AmountForm
                 kind="one_time"
-                label="Make a one-time contribution ($5 minimum)"
+                label="One-time support ($5 minimum)"
                 buttonLabel="Support once"
                 initialDollars="10"
                 disabled={busy}
@@ -432,9 +432,9 @@ export function SupportCheckout({ kind }: { kind: MembershipKind }) {
                 label={
                   kind === "monthly"
                     ? "Monthly amount ($5/month minimum)"
-                    : "Contribution amount ($5 minimum)"
+                    : "One-time support ($5 minimum)"
                 }
-                buttonLabel={kind === "monthly" ? "Become a member" : "Contribute"}
+                buttonLabel={kind === "monthly" ? "Become a member" : "Support once"}
                 initialDollars="10"
                 disabled={busy}
                 onSubmit={(input) => checkout.mutate(input)}
