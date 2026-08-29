@@ -520,6 +520,123 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       /,\s*reconsidered$/,
     ],
   },
+  // Maine 132nd Legislature, 2025-2026 Regular Session (both years, sine
+  // die). Vocabulary measured from the full dataset survey 2026-08-29:
+  // 2,454 bills, 1,580 roll calls, 188 people (151 House + 35 Senate seats
+  // plus mid-biennium turnover).
+  //
+  // What the survey established:
+  // - Maine decides most questions by an unrecorded division; a roll call
+  //   happens only when members demand one. The consequence is the
+  //   opposite of a coverage problem: 1,450 of the 1,580 recorded rolls
+  //   are DIVIDED, because the contested bills are exactly the ones that
+  //   get a roll. Nothing here is a consent calendar.
+  // - Every desc, in BOTH chambers, ends with a unique ` RC #<n>` (the
+  //   clerk's roll number), so no pattern may anchor on `$` without
+  //   tolerating it. 1,579 raw descs fold to 227 families.
+  // - MAINE PASSES A BILL BY ACCEPTING ITS COMMITTEE REPORT. The
+  //   substantive floor question is `Accept Majority Ought To Pass As
+  //   Amended Report` (Senate) / `Acc Maj Otp As Amended Rep` (House) and
+  //   ~40 further spellings of the same act (majority/minority, Report
+  //   "A"/"B"/"C", `Otp-am By Ca "a"`, `Acceptance Of The Otp-am
+  //   Report`). Enumerating them is hopeless; the rule instead keeps any
+  //   desc carrying an ought-to-pass token (`otp`, `otp-am`, `ought to
+  //   pass`), with the ought-NOT-to-pass tokens excluded FIRST so an
+  //   `Ontp` report acceptance can never fall through to it.
+  // - The later stages each have their own question: `Passage To Be
+  //   Engrossed`, then `Enactment` (Maine's true final passage, also
+  //   spelled `Enactment - Emer`, `Enactment - Bond Issue`, `Enact-Emer
+  //   2/3 Elect`, `Final Enactment`, `Final Passage`). All are passage.
+  // - `Recede And Concur` (and the bare `Recede`) is how a chamber gives
+  //   up its position and takes the other's — the concurrence analog.
+  // - Veto questions are `Veto Override (2/3)` in the Senate and
+  //   `Reconsideration - Veto` in the House ("shall the bill become law
+  //   notwithstanding the objections of the Governor"). The plain
+  //   `Reconsider` motion is a different question and is excluded, so the
+  //   exclusion carries a lookahead for the veto spelling.
+  // - OUGHT-NOT-TO-PASS ACCEPTANCES ARE EXCLUDED BY RULE (352 rolls, the
+  //   two largest families after OTP). They are votes to KILL a bill, so
+  //   the yea sentence would have to be inverted, and the measured value
+  //   is small: only 8 of them are divided votes on a measure that became
+  //   law anyway. Indefinite postponement, tabling, commitment,
+  //   reference, insistence, rule suspensions and the ~145 amendment
+  //   families (`Adopt Hah-963 To Cah-959`, `Indef Pp Hbh-3 To Cah-1`)
+  //   are excluded for the same procedural reason.
+  // - 19 rolls stay SURFACED on purpose: `Accept Report`, `Acceptance Of
+  //   Report` and `Acc Majority Report` do not say WHICH report, so
+  //   whether a yea passes or kills the bill cannot be read off the desc.
+  //   10 of the 16 `Accept Report` rolls are divided votes on enacted
+  //   measures, so they are worth a human's eyes, not a guess.
+  // - The dataset carries NO committee votes at all: every tally is a
+  //   full-chamber tally (House 149-151, Senate 35), and no roll is
+  //   summary-only, so nothing lands in the committee or unrecorded
+  //   buckets.
+  ME: {
+    jurisdiction: "ME",
+    sessionId: 2181,
+    chamberSizes: { house: 151, senate: 35 },
+    keptQuestions: [
+      // Acceptance of an ought-to-pass committee report, in all ~40 of the
+      // spellings the two chambers use. Ought-NOT-to-pass tokens are
+      // excluded above, so this token test cannot invert a question.
+      { pattern: /\botp\b|ought to pass/, questionClass: "passage" },
+      // `Enactment`, `Enactment - Emer`, `Enactment - Bond Issue`,
+      // `Enactment - Mandate`, `Enact-Emer 2/3 Elect`.
+      { pattern: /^enact/, questionClass: "passage" },
+      { pattern: /^final (?:enactment|passage)/, questionClass: "passage" },
+      // `Passage`, `Passage To Be Engrossed[ As Amended]`, `Passage Of
+      // Emergency Measure`.
+      { pattern: /^passage/, questionClass: "passage" },
+      // Adoption of a joint resolution. Anchored so it never reaches the
+      // amendment-adoption descs, which all begin `Adopt <designator>`.
+      { pattern: /^adoption(?: rc ?#\d+)?$/, questionClass: "passage" },
+      { pattern: /^recede/, questionClass: "concurrence" },
+      { pattern: /^reconsideration ?- ?veto/, questionClass: "veto_override" },
+      { pattern: /^veto override/, questionClass: "veto_override" },
+    ],
+    excludedQuestions: [
+      // A vote to accept an ought-not-to-pass report kills the bill; see
+      // the note above. Both the House abbreviation and the Senate's
+      // long form, in every report letter.
+      /\bontp\b/,
+      /ought not to pass/,
+      // Maine's other kill motion, and the amendment-scoped spelling
+      // (`Indefinitely Postpone Senate Amendment (sas-1)`, `Indef Pp
+      // Hbh-3 To Cah-1`, `Ipp Hah-489`, `Ha "a" Be Indef Pp`).
+      /^indef/,
+      /^ipp /,
+      /\bindef pp\b/,
+      // Floor and committee amendment adoptions: `Adopt Cah-1`, `Adopt
+      // Hah-963 To Cah-959`, `Adopt Senate Amendment (s-292) To Ld 1519`.
+      // The trailing space keeps the bare `Adoption` question out.
+      /^adopt /,
+      // The motion to reconsider a completed action, which is not the
+      // question it reopens. The lookahead preserves the House's veto
+      // question, spelled `Reconsideration - Veto`.
+      /^reconsider(?!ation ?- ?veto)/,
+      /^recon of /,
+      // Scheduling, referral and debate motions.
+      /^table/,
+      /^commit(?: rc ?#\d+)?$/,
+      /^reference/,
+      /^insist/,
+      /^suspen/,
+      /^dispens/,
+      /^move the previous question/,
+      /^appeal/,
+      /^committee of the whole/,
+      /^rule comm/,
+      /^forthwith/,
+      /^\d(?:st|nd|rd|th) reading/,
+      // Referral questions worded as report acceptances, which would
+      // otherwise be read as passage by the ought-to-pass token rule.
+      /^accept majority to refer/,
+      /^accept to reject report/,
+      // The motion to swap a committee report for a joint resolution: a
+      // question about what the chamber debates next, not its passage.
+      /^substitute joint res/,
+    ],
+  },
 };
 
 export const LEGISCAN_STATE_JURISDICTIONS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);

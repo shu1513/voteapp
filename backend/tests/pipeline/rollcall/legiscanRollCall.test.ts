@@ -293,7 +293,7 @@ describe("legiscanRollCallPageUrl", () => {
 
 describe("getLegiscanStateConfig", () => {
   it("serves only surveyed states; an unsurveyed state is refused by name", () => {
-    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual(["GA", "IL", "TN", "TX", "FL", "CA", "PA"]);
+    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual(["GA", "IL", "TN", "TX", "FL", "CA", "PA", "ME"]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
     expect(getLegiscanStateConfig("GA").sessionId).toBe(2167);
@@ -301,6 +301,7 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("FL").sessionId).toBe(2135);
     expect(getLegiscanStateConfig("CA").sessionId).toBe(2172);
     expect(getLegiscanStateConfig("PA").sessionId).toBe(2192);
+    expect(getLegiscanStateConfig("ME").sessionId).toBe(2181);
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("NY")).toThrow("no LegiScan state config for NY");
   });
@@ -609,6 +610,69 @@ describe("getLegiscanStateConfig", () => {
       "HR 4 Essayli Assembly Third Reading Motion To Lay On The Table By Aguiar-Curry",
     ]) {
       expect(ca(desc, 80).reason, desc).toBe("excluded_question");
+    }
+  });
+
+  it("classifies Maine's real desc vocabulary as surveyed", () => {
+    const config = LEGISCAN_STATE_CONFIGS.ME!;
+    const me = (desc: string, total = 151, chamber: "house" | "senate" = "house") =>
+      classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+    // Maine passes a bill by accepting its ought-to-pass committee report,
+    // and every desc ends with the clerk's roll number.
+    expect(me("Acc Maj Otp As Amended Rep RC #214")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(me("Accept Majority Ought To Pass As Amended Report RC #58", 35, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    for (const desc of [
+      'Acc Report "a" Otp-am By Ca "c" RC #12',
+      "Acc Otp-am Report RC #3",
+      "Acceptance Of The Otp-am Report RC #9",
+      "Otp-am By Ca \"a\" RC #77",
+      "Acc Min Otp As Amended Rep RC #40",
+      "Enactment - Emer RC #101",
+      "Enactment - Bond Issue RC #5",
+      "Final Passage - Con Res RC #2",
+      "Passage To Be Engrossed RC #61",
+      "Passage Of Emergency Measure RC #8",
+      "Adoption RC #17",
+    ]) {
+      expect(me(desc), desc).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    }
+    expect(me("Recede And Concur RC #144").questionClass).toBe("concurrence");
+    expect(me("Recede RC #9").questionClass).toBe("concurrence");
+    expect(me("Veto Override (2/3) RC #4", 35, "senate").questionClass).toBe("veto_override");
+    expect(me("Reconsideration - Veto RC #66").questionClass).toBe("veto_override");
+    // A vote to accept an ought-NOT-to-pass report kills the bill: excluded
+    // by rule so the ought-to-pass token test can never invert a question.
+    for (const desc of [
+      "Acc Maj Ought Not To Pass Rep RC #31",
+      "Accept Majority Ought Not To Pass Report RC #12",
+      'Acc Report "b" Ontp RC #7',
+      "Indefinitely Postpone RC #2",
+      "Indef Pp Hbh-3 To Cah-1 RC #19",
+      "Ipp Hah-489 RC #40",
+      'Ha "a" Be Indef Pp RC #5',
+      "Adopt Hah-963 To Cah-959 RC #22",
+      "Adopt Senate Amendment (s-292) To Ld 1519 RC #3",
+      "Reconsider RC #6",
+      "Recon Of Maj Rep Otp-am By Ca-a RC #1",
+      "Table Until Later RC #14",
+      "Commit RC #2",
+      "Reference To Judiciary RC #8",
+      "Insist RC #4",
+      "Suspend Rules (2/3) RC #6",
+      "1st Reading Without Reference RC #1",
+      "Accept Majority To Refer To Committee RC #3",
+      "Accept To Reject Report And Refer Bill To Committee RC #2",
+      "Substitute Joint Res For Committee Rpt RC #1",
+    ]) {
+      expect(me(desc).reason, desc).toBe("excluded_question");
+    }
+    // The report-kind-unstated families: a yea might pass or kill the bill,
+    // so they surface for a human instead of being guessed either way.
+    for (const desc of ["Accept Report RC #21", "Acceptance Of Report RC #2", "Acc Majority Report RC #1"]) {
+      expect(me(desc), desc).toMatchObject({ isFloorVote: null, reason: "unknown_question" });
     }
   });
 
