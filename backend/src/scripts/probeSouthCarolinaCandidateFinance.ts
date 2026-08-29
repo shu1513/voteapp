@@ -110,7 +110,9 @@ async function main(): Promise<void> {
   const runs = selectSouthCarolinaAcceptedRuns(reports, electionYear, acceptedElectionDates);
   const detailsByReportId = new Map<number, SouthCarolinaReportDetails>();
   for (const run of runs) {
-    detailsByReportId.set(run.finalReport.reportId, await getSouthCarolinaReportDetails(run.finalReport.reportId));
+    for (const phaseFinal of run.phaseFinals) {
+      detailsByReportId.set(phaseFinal.reportId, await getSouthCarolinaReportDetails(phaseFinal.reportId));
+    }
   }
   const searchTerm = southCarolinaFilerSearchTerm(filer.filerName);
   const contributionYears = southCarolinaContributionYearsForRuns(reports, electionYear, acceptedElectionDates);
