@@ -1,0 +1,3943 @@
+{
+  "runId": "rollcall-legiscan-fetch-md-20260830T065854Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "MD",
+  "startedAt": "2026-08-30T06:58:54.855Z",
+  "finishedAt": "2026-08-30T06:58:55.549Z",
+  "datasetDir": "/Users/shu/legiscan-data/md-2240",
+  "bills": 2675,
+  "votes": 2732,
+  "people": 217,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "Third Reading Passed",
+      "count": 1280,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB488",
+        "HB444",
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Third Reading Passed",
+      "count": 1142,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB17",
+        "SB245",
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Third Readings Passed with Amendments",
+      "count": 15,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532",
+        "HB154",
+        "HB680"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Third Reading Passed with Amendments",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB283",
+        "SB728",
+        "SB509"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion Limit Debate (Senator King) Adopted",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532",
+        "SB187",
+        "SB255"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Decision of the Chair upheld",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100",
+        "HB2101"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Rules Suspend Two Readings Same Day (Delegate Moon) Adopted",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB336",
+        "HB2101"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion Special Order until Next Session (Senator Ready) Rejected",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1530",
+        "HB956"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Committee Amendment (#69) Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB283"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Committee Amendment 173820/1 Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1191"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Committee Amendment Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB641"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Favorable with Amendments 923921/1 Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB323"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 113221/1 (Delegate Grammer) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 113223/1 (Delegate Grammer) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB444"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 113226/1 (Delegate Schmidt) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 113321/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 113420/1 (Delegate Wivell) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB774"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 113421/1 (Delegate Fisher) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 123028/1 (Delegate M. Morgan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB255"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 123521/1 (Delegate Hartman) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB437"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 153520/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB691"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 153525/1 (Delegate Arentz) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB774"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 163321/1 (Delegate Arikan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB626"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 163923/1 (Delegate Kipke) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 173029/1 (Delegate Hornberger) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB711"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 173629/1 (Delegate Grammer) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB500"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 173922/1 (Delegate Nkongolo) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 183527/1 (Delegate T. Morgan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 183623/1 (Delegate R. Long) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 183626/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB255"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 193221/1 (Delegate Chisholm) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB437"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 193324/1 (Delegate Arikan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB792"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 203423/1 (Delegate M. Morgan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB774"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 203925/1 (Delegate Miller) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB637"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 213320/1 (Delegate Hartman) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 213325/1 (Delegate Arikan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB145"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 213729/1 (Delegate Miller) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 223124/1 (Delegate M. Morgan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB229"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 223521/1 (Delegate Schmidt) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB937"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 233021/1 (Delegate Grammer) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB226"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 233222/1 (Delegate Wivell) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB774"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 233223/1 (Delegate Beauchamp) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 243228/1 (Delegate Rose) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB774"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 243326/1 (Delegate Griffith) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB822"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 243726/1 (Delegate Fisher) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB534"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 253421/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB351"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 253825/1 (Delegate Pippy) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1353"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 263227/1 (Delegate Griffith) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 263428/1 (Delegate Chisholm) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB283"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 263522/1 (Delegate Szeliga) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 273020/1 (Delegate Griffith) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB488"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 283420/1 (Delegate Rose) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB774"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 283424/1 (Delegate M. Morgan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 283429/1 (Delegate Schmidt) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 283823/1 (Delegate Nkongolo) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 293626/1 (Delegate Tomlinson) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB351"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 303024/1 (Delegate Howard) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 303422/1 (Delegate Szeliga) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB639"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 303926/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 313921/1 (Delegate M. Morgan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB488"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 323629/1 (Delegate Miller) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB45"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 323728/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB706"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 333722/1 (Delegate Grammer) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB351"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 343827/1 (Delegate Miller) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB45"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 363526/1 (Delegate McComas) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 363927/1 (Delegate Tomlinson) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 373029/1 (Delegate Adams) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1067"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 373526/1 (Delegate Hartman) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB895"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 383620/1 (Delegate Miller) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB626"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 403026/1 (Delegate Rose) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB444"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 403425/1 (Delegate Wivell) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 403525/1 (Delegate Rose) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1069"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 403924/1 (Delegate Griffith) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 403926/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 413129/1 (Delegate Griffith) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 423321/1 (Delegate Grammer) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 423426/1 (Delegate M. Morgan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 423729/1 (Delegate Fisher) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 423827/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 433525/1 (Delegate Miller) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB467"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 453128/1 (Delegate Pippy) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB577"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 453524/1 (Delegate Adams) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB299"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 463226/1 (Delegate Grammer) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB466"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 473426/1 (Delegate Chisholm) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB895"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 483221/1 (Delegate Pippy) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 483626/1 (Delegate Pippy) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB444"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 493222/1 (Delegate M. Morgan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 493422/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 493427/1 (Delegate Hornberger) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB255"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 503923/1 (Delegate Beauchamp) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB323"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 513823/1 (Delegate Chisholm) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 513920/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB255"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 523427/1 (Delegate Hornberger) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1018"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 523627/1 (Delegate Mangione) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1081"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 523628/1 (Delegate Griffith) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB444"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 533723/1 (Delegate Fisher) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB247"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 543022/1 (Delegate Grammer) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 543121/1 (Delegate Chisholm) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 543224/1 (Delegate Schmidt) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB488"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 553021/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB255"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 563421/1 (Delegate Griffith) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 573422/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB45"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 573525/1 (Delegate Griffith) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB502"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 573529/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB894"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 593222/1 (Delegate Fisher) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB283"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 603022/1 (Delegate Rose) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 603727/1 (Delegate Schmidt) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB774"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 613520/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB488"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 613826/1 (Delegate Pippy) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB299"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 623323/1 (Delegate Arikan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 623325/1 (Delegate Chisholm) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB437"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 623628/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 633026/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB386"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 633124/1 (Delegate Arikan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB282"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 633228/1 (Delegate Szeliga) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 643426/1 (Delegate Pippy) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1067"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 653723/1 (Delegate M. Morgan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1221"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 653724/1 (Delegate Szeliga) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB229"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 663122/1 (Delegate M. Morgan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB255"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 663227/1 (Delegate Miller) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB45"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 663426/1 (Delegate Miller) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB299"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 663523/1 (Delegate Hartman) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 663925/1 (Delegate Pippy) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB706"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 673026/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB45"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 683123/1 (Delegate Fisher) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 693028/1 (Delegate Hornberger) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 693221/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB444"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 693228/1 (Delegate T. Morgan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 693728/1 (Delegate Hornberger) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB649"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 693924/1 (Delegate R. Long) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB313"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 703023/1 (Delegate Miller) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB467"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 703123/1 (Delegate R. Long) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 703220/1 (Delegate Arikan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB792"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 703728/1 (Delegate Adams) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB774"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 713521/1 (Delegate Tomlinson) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 733221/1 (Delegate T. Morgan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB774"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 733920/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 743121/1 (Delegate Chisholm) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB437"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 743226/1 (Delegate Rose) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 743324/1 (Delegate Grammer) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB115"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 753025/1 (Delegate Arentz) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 753729/1 (Delegate Griffith) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1017"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 763627/1 (Delegate Tomlinson) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 773227/1 (Delegate M. Morgan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB250"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 773229/1 (Delegate Schmidt) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB323"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 773921/1 (Delegate Rose) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 783920/1 (Delegate Miller) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB45"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 793324/1 (Delegate M. Morgan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 793623/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 793626/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 813424/1 (Delegate Hornberger) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 823321/1 (Delegate Hornberger) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 823324/1 (Delegate Miller) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB45"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 823326/1 (Delegate Chisholm) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 823729/1 (Delegate Pippy) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 833327/1 (Delegate Fisher) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB247"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 843526/1 (Delegate Adams) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB523"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 843624/1 (Delegate Grammer) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB444"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 843724/1 (Delegate Chisholm) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB282"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 853927/1 (Delegate Hartman) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB282"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 863029/1 (Delegate Arikan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB637"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 863121/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 863124/1 (Delegate Nawrocki) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1351"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 863525/1 (Delegate Rose) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 863621/1 (Delegate Chisholm) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 863721/1 (Delegate Schmidt) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB577"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 893521/1 (Delegate Hartman) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB444"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 903027/1 (Delegate Szeliga) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB346"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 913223/1 (Delegate Arikan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB283"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 913226/1 (Delegate Adams) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB299"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 913729/1 (Delegate Arentz) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 923621/1 (Delegate Miller) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 933322/1 (Delegate Arikan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 933720/1 (Delegate Hutchinson) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB299"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 943025/1 (Delegate Pippy) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB323"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 943929/1 (Delegate R. Long) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB313"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 953221/1 (Delegate Pippy) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1113"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 963724/1 (Delegate Nawrocki) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 963924/1 (Delegate Fisher) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB311"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 983020/1 (Delegate Pippy) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 983428/1 (Delegate Buckel) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 983722/1 (Delegate Chisholm) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB283"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 993025/1 (Delegate Adams) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB250"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 993026/1 (Delegate Adams) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Floor Amendment 993923/1 (Delegate Mangione) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB627"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Not Allow Laid Over (Delegate Ruth) Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB323"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Recommit to Committee (Delegate Metzgar) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Rules Suspend for Late Introduction (Delegate Hill) Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1644"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Rules Suspend for Late Introduction (Delegate Howard) Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1645"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Rules Suspend for Late Introduction (Delegate J. Long) Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJ10"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Rules Suspend for Late Introduction (Delegate M. Morgan) Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1646"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Rules Suspend for Late Introduction (Delegate Turner) Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1643"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Rules Suspend Two Readings Same Day (Delegate Clippinger) Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB641"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Special Order until 03/12 (Delegate Fisher) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB306"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Special Order until 03/18 (Delegate Hartman) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB543"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Special Order until 03/31 (Delegate Szeliga) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Vote Previous Question (Delegate Stein) Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB255"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Overridden",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 141,
+      "maxTotal": 141,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB862"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Committee Amendment (#241) Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB283"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Committee Amendment (#30) Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB283"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Committee Amendment (#35) Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB283"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Committee Amendment (#46) Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB283"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Committee Amendment 513122/1 Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1222"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Conference Committee Report 583123/1 Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1532"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Conference Committee Report Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB282"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Favorable with Amendments Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 103520/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB828"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 133129/1 (Senator Corderman) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB282"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 153123/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB841"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 173121/1 (Senator Folden) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 173221/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 193022/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 203629/1 (Senator Muse) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB661"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 213220/1 (Senator Hershey) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 223827/1 (Senator West) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB841"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 223921/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB823"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 223926/1 (Senator McKay) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 243822/1 (Senator Salling) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 253829/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB346"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 263226/1 (Senator Hershey) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB841"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 283526/1 (Senator West) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 293321/1 (Senator Folden) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1222"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 303528/1 (Senator Corderman) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 343129/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB351"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 353624/1 (Senator McKay) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 393120/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 403621/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB165"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 403821/1 (Senator Hershey) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB841"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 423926/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB346"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 453320/1 (Senator Lam) Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB626"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 473622/1 (Senator Gallion) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 503428/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB245"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 513425/1 (Senator Corderman) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 543027/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1017"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 543628/1 (Senator Gallion) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB828"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 583328/1 (Senator Hershey) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB618"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 593722/1 (Senator Love) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB336"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 603425/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB828"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 613221/1 (Senator Sydnor) Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB245"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 633420/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 653025/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 673521/1 (Senator Hershey) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 673724/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB841"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 693326/1 (Senator Ellis) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB100"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 703923/1 (Senator McKay) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 703926/1 (Senator McKay) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 713423/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB165"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 713626/1 (Senator Simonaire) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 723726/1 (Senator McKay) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 733826/1 (Senator Kagan) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1430"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 743620/1 (Senator Mautz) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 763427/1 (Senator Salling) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 773025/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB841"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 773627/1 (Senator McKay) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 793028/1 (Senator Ready) Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB154"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 793424/1 (Senator Mautz) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 793920/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB323"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 813629/1 (Senator Jennings) Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB841"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 853125/1 (Senator Hershey) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB245"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 873025/1 (Senator Gallion) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 873027/1 (Senator West) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB841"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 873724/1 (Senator West) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 883420/1 (Senator Corderman) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 913427/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB240"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 943023/1 (Senator Folden) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB323"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 943226/1 (Senator West) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 953323/1 (Senator Carozza) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 963023/1 (Senator Gallion) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 963320/1 (Senator Ready) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB323"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 963723/1 (Senator Gallion) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB618"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 983221/1 (Senator Folden) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB323"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Floor Amendment 993227/1 (Senator McKay) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB661"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion Rules Suspend Two Readings Same Day Const/Rule 24 (Senator Feldman) Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion Rules Suspend Two Readings Same Day Const/Rule 24 (Senator Kagan) Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2101"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion Special Order until 3/5 (Senator Folden) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB323"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion Special Order until Next Session (Senator Hershey) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB791"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Postpone Indefinitely (Senator Hershey) Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB626"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Overridden",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB862"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 2660,
+    "JR": 15
+  },
+  "sessionIds": {
+    "2240": 2675
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}
