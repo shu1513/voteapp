@@ -185,3 +185,45 @@ Verified: CT tags 1,211 -> 1,162 (exactly the 49 HB 7042 nay-side tags), HB 7042
 yea side intact at 105, records unchanged at 1,457.
 `import-nay-repair-report.json` is the final repair run (all 1,457 `unchanged`,
 as a labels-only change reports).
+
+## Plain-English rewrite 2026-08-30
+
+All 17 judgments were rewritten for a reader with no legal background, and all **1,457 records were
+rewritten in place**. Batch-02 was written this way from the start; batch-01 was not, so it is
+brought up to the same standard here.
+
+**Wording only.** No fact, number, date, tally, stance or label changed. That was machine-checked
+rather than asserted: every number in every body is identical old to new, and the `labels`,
+`vote_date` and the closing tally sentence are byte-identical on all 17.
+
+Result: **lint 0 warnings over 34 descriptions, mean sentence 16.6 words, longest 33.**
+
+The lint only counts words per sentence, so the register was checked separately. Terms of art that
+are now gone: lookback period, adjudicated delinquent, summary review, variance, special permit,
+endowment, cultural competency training, managed residential communities, appropriations sections.
+Terms that remain are explained where they appear — an ombudsperson is "an official who helps
+families with complaints", the Northeast consumer price index is "a measure of inflation", and the
+two pesticide classes keep their names because those names are what the law regulates.
+
+### The check that mattered: what the first draft lost
+
+A register change is an edit, so the new text was diffed against the old for lost scope. Four
+things were pulled back:
+
+1. **Senate Bill 1444** — "less than half full on average" dropped the statute's **50%**. Restored.
+   The numeric diff caught this; it was the only real one.
+2. **Senate Bill 9** — "a strong class of rat poison" dropped the regulated category's name.
+   Restored as "a class of rat poisons called second-generation anticoagulants".
+3. **Senate Bill 1234** — "a very similar law" loosened the statutory trigger. Restored to
+   "substantially similar", which is the legal test the secretary of the state applies.
+4. **Senate Bill 1328** — "private companies" narrowed a ban that covers private ownership
+   generally. Restored to "private parties", which also covers individuals.
+
+Every one is the Pennsylvania failure shape: simplification quietly narrowing a scope. A jargon scan
+would have caught none of them.
+
+Verified: judge 17 updated; import 1,457 `rewrite`; a convergence dry run reports all 1,457
+`unchanged`; the row count stayed 2,040 and tags stayed 1,543, so nothing was inserted, deleted or
+retagged; 0 records still carry any of the old heavy terms.
+`import-plain-language-report.json` is this run's ledger. `import-report.json` remains the original
+insert ledger and was preserved before the run.
