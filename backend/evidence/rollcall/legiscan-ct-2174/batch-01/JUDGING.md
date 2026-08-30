@@ -98,3 +98,67 @@ repair, price gouging, auto-renewals) and **SB 1234** (publisher terms imposed o
 
 `cga.ct.gov` omits its intermediate certificate; append the GoDaddy G2 intermediate from the leaf's AIA
 URI to a CA bundle and pass `--cacert`. Verification is never disabled.
+
+## Authored nay stances — repair run 2026-08-29 (PR #950 contract)
+
+Batch-01 was first imported while `flip()` still inverted the yea stance for nay
+voters, so all 421 CT nay-side tags read as the mechanical opposite: a member who
+voted no on HB 7042 was tagged `gun_control: against`, no on SB 9 was
+`environment_and_public_health: against`, and so on. PR #950 replaced that with an
+AUTHORED `nay` per label, where null means nay voters get no tag — silence rather
+than the opposite claim.
+
+Each label's nay side was authored against one test: **is the bill's core mechanism
+the AREA's own mechanism, so that a no vote is a vote against that mechanism, with
+no other plausible strand to object to?**
+
+**`nay: "against"` — 5 measures, 187 tags kept.** Each is single-subject and lands
+squarely on its area's own mechanism: **HB 7042** (firearm commerce and permit
+disqualifiers; the area names licensing), **HB 5004** (statutory greenhouse gas
+reduction levels), **SB 3** (consumer protection, in the area description
+outright), **SB 1444** (the entire act is enabling housing supply), **HB 6913**
+(anti-discrimination enforcement in the area's literal words).
+
+**`nay: null` — 7 measures, 234 tags dropped.** Each has an obvious non-area reason
+to vote no: **HB 7066** is an omnibus where the no vote may be aimed at the drone
+restriction, athlete compensation, or the vetoed appropriations rather than the
+school-immigration procedures; **SB 9** is 32 sections including municipal mandates,
+coastal review of single-family homes, and transfer of development rights, so a no
+vote has non-environmental targets — the reason it is judged differently from the
+focused HB 5004; **SB 1** and **SB 1358** are spending commitments where a no vote
+reads as fiscal; **SB 1234** (library contract terms), **SB 1328** (a preventive ban
+in a state with no private prisons) and **SB 1542** (a policing-procedure limit) are
+narrow enough that a whole-area claim would be the overreach the contract exists to
+stop.
+
+Result, verified in `candidate_record_area_tags` and NOT in the import report — a
+labels-only change reports every record `unchanged`, because tag sync runs separately
+from the record compare: nay-side tags **421 → 187**, exactly the 234 predicted drops,
+with all 5 kept measures intact and all 7 null measures fully untagged on the nay side.
+The 1,024 yea-side tags are unchanged, all 9 areas still `for`. Records stayed 1,457
+(`import-nay-repair-report.json`, all `unchanged`); the original insert ledger in
+`import-report.json` was preserved first.
+
+### The superseded-stage gate needed three acknowledgements
+
+The same PR added a gate refusing approval while a later kept floor vote on the same
+measure and chamber sits in `legislative_votes`. It scans by DATE, and Connecticut's
+Senate takes its floor amendments on the passage day and prints them with the SAME
+desc as passage — so the amendment rolls are stored as kept floor votes and trip the
+gate on the very roll that is decisive.
+
+All 17 rolls were re-checked against the bill-status action trail. Three needed
+`acknowledge_later_rolls`, and **none is a genuine supersession** — every peer is
+EARLIER by printed vote number, which the gate cannot see because LegiScan issues CT
+`roll_call_id`s in reverse within a same-day Senate batch (CODE-FINDINGS §4):
+
+- **HB 6913** senate vote 217 (passage) over rolls 1576162/1576163 = the rejected
+  amendments B and A.
+- **HB 7066** senate vote 38 (passage after reconsideration) over 1498835 = vote 37,
+  the first passage that THIS roll superseded, and 1498836 = a rejected amendment.
+- **SB 3** senate vote 184 (passage) over 1572265 = vote 182, the ADOPTED amendment
+  that is also 25-10 on the same day (the CT lookalike trap), and 1572264 = a
+  rejected amendment.
+
+The other 14 rolls cleared the gate untouched, and all 17 cleared the tally-in-sentence
+gate with no edits — every description already closes with its own `<yeas>-<nays>`.
