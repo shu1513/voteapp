@@ -107,8 +107,13 @@ const PINNED_DOCUMENTS = [
     // no-influence shield stays absolute. Substance change — bundle bumps to
     // 1.3, GRACE_TERMS_VERSIONS ships ["1.2"], signed-in users re-accept
     // once. Required BEFORE the first member-only communication is sent.
-    version: "1.3",
-    sha256: "98ffe184c3eeb470908a0f67f0efda4ca3597141268e59ce1f860f43776f5097",
+    // 1.3 → 1.4 (2026-08-29): operator/contracting party is now Elections
+    // Simplified Inc., a Delaware corporation (previously impactperdollar).
+    // Party-identity change is material — bundle bumps to 1.4,
+    // GRACE_TERMS_VERSIONS ships ["1.3", "1.2"] (the 1.3 rollout was only a
+    // day old), signed-in users re-accept once.
+    version: "1.4",
+    sha256: "82f7321b2b2d4856e0a5e41b0dab39813e4fd763c596f2fec4a1b6ae70cc1fc5",
   },
   {
     filename: "privacy-policy.md",
@@ -122,8 +127,10 @@ const PINNED_DOCUMENTS = [
     // entry, payment data in Section 1, payment-record retention after
     // account deletion in Section 4). Ships with the Terms 1.2 bump.
     // Required BEFORE STRIPE_SECRET_KEY in prod.
-    version: "1.3",
-    sha256: "e49c8c1f273500f2a55a03ea3794f16a9888595d3c597c5fc5dd2409b7519e0d",
+    // 1.3 → 1.4 (2026-08-29): operator named as Elections Simplified Inc., a
+    // Delaware corporation. Ships with the Terms 1.4 bump.
+    version: "1.4",
+    sha256: "bf9f7f47b87d676282d19f65c525443dd39900e8ac0e0890ed20a2ac186f2098",
   },
   {
     filename: "disclaimer.md",
@@ -131,8 +138,10 @@ const PINNED_DOCUMENTS = [
     // CURRENT_TERMS_VERSION, which moved for the Terms 1.2 payments section.
     // 1.2 → 1.3 (2026-08-28): no content change; tracks the Terms 1.3 bump
     // (Section 14.5 member communications).
-    version: "1.3",
-    sha256: "630bbf2e6e55f86ac47228a9167b00323a71b23fbaf25882eb5e9ba852575d14",
+    // 1.3 → 1.4 (2026-08-29): operator named as Elections Simplified Inc., a
+    // Delaware corporation; tracks the Terms 1.4 bump.
+    version: "1.4",
+    sha256: "0af5f6adf2e3192d2a94fc3bb2de2e26e4418bae066c60c4d533e34253a9324c",
   },
 ] as const;
 

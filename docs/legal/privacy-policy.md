@@ -32,14 +32,17 @@ pseudonymous business records, not anonymous data — the public text below
 deliberately says "with the link to your deleted account removed" and never
 claims anonymization. Unlike 1.2, this change ships together with
 a Terms bump (payments section) — see terms-of-use.md.
+Operator change 2026-08-29 (1.3 → 1.4): operator named as Elections
+Simplified Inc., a Delaware corporation (previously impactperdollar).
+Ships with the Terms 1.4 bump — see terms-of-use.md.
 -->
 
 # Elections Simplified Privacy Policy
 
-**Last updated:** August 21, 2026
-**Version:** 1.3
+**Last updated:** August 29, 2026
+**Version:** 1.4
 
-This Privacy Policy describes how impactperdollar, the operator of the Elections Simplified service ("Elections Simplified," "we," "us"), collects, uses, and shares information when you use the Elections Simplified website and services (the "Service").
+This Privacy Policy describes how Elections Simplified Inc., a Delaware corporation and the operator of the Elections Simplified service ("Elections Simplified," "we," "us"), collects, uses, and shares information when you use the Elections Simplified website and services (the "Service").
 
 ## 1. Information we collect
 
@@ -105,4 +108,4 @@ We may update this Privacy Policy; the version and date above identify the curre
 
 ## 9. Contact
 
-Elections Simplified (operated by impactperdollar) — contact@electionssimplified.com
+Elections Simplified (operated by Elections Simplified Inc.) — contact@electionssimplified.com
