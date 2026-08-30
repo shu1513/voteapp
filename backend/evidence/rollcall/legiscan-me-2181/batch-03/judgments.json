@@ -1,0 +1,449 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1548445,
+   "measure_id": "LD 1185",
+   "vote_date": "2025-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 1185, a bill about the minimum age to marry. Maine no longer lets anyone under 18 marry. The old law had an exception that let some people under 18 marry. That exception is repealed, and a town clerk may not issue a marriage license to anyone under 18. The Maine House passed it 93-52 and it became law.",
+   "nay_description": "Voted no on LD 1185, a bill about the minimum age to marry. Maine no longer lets anyone under 18 marry. The old law had an exception that let some people under 18 marry. That exception is repealed, and a town clerk may not issue a marriage license to anyone under 18. The Maine House passed it 93-52 and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1555067,
+   "measure_id": "LD 1185",
+   "vote_date": "2025-04-23",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 1185, a bill about the minimum age to marry. Maine no longer lets anyone under 18 marry. The old law had an exception that let some people under 18 marry. That exception is repealed, and a town clerk may not issue a marriage license to anyone under 18. This was the final passage vote. The Maine Senate passed it 19-11 and it became law.",
+   "nay_description": "Voted no on LD 1185, a bill about the minimum age to marry. Maine no longer lets anyone under 18 marry. The old law had an exception that let some people under 18 marry. That exception is repealed, and a town clerk may not issue a marriage license to anyone under 18. This was the final passage vote. The Maine Senate passed it 19-11 and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1570256,
+   "measure_id": "LD 54",
+   "vote_date": "2025-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 54, a bill about telling job applicants what a job pays. An employer with 10 or more workers must list the pay range in any job posting. The pay range is what the employer expects to pay for that job. A job paid only on commission just has to say so. The employer must also tell a current worker the pay range for their own job if asked, and must keep a record of each worker's jobs and pay history. The Maine House passed it 73-69 and it became law.",
+   "nay_description": "Voted no on LD 54, a bill about telling job applicants what a job pays. An employer with 10 or more workers must list the pay range in any job posting. The pay range is what the employer expects to pay for that job. A job paid only on commission just has to say so. The employer must also tell a current worker the pay range for their own job if asked, and must keep a record of each worker's jobs and pay history. The Maine House passed it 73-69 and it became law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1571118,
+   "measure_id": "LD 54",
+   "vote_date": "2025-05-14",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 54, a bill about telling job applicants what a job pays. An employer with 10 or more workers must list the pay range in any job posting. The pay range is what the employer expects to pay for that job. A job paid only on commission just has to say so. The employer must also tell a current worker the pay range for their own job if asked, and must keep a record of each worker's jobs and pay history. The Maine Senate passed it 21-13 and it became law.",
+   "nay_description": "Voted no on LD 54, a bill about telling job applicants what a job pays. An employer with 10 or more workers must list the pay range in any job posting. The pay range is what the employer expects to pay for that job. A job paid only on commission just has to say so. The employer must also tell a current worker the pay range for their own job if asked, and must keep a record of each worker's jobs and pay history. The Maine Senate passed it 21-13 and it became law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1671273,
+   "measure_id": "LD 2051",
+   "vote_date": "2026-03-26",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 2051, a bill about food aid for immigrants. Maine will pay for food help for households that would qualify for SNAP but cannot get it because of their immigration status. SNAP is the federal program that helps people with low incomes buy groceries. The state benefit covers people who are lawfully in the country, such as refugees, asylum seekers, and people with Temporary Protected Status. It also covers people who were getting federal food help on July 3, 2025 and lost it under a federal law passed that year. The Maine House passed it 76-67 and it became law.",
+   "nay_description": "Voted no on LD 2051, a bill about food aid for immigrants. Maine will pay for food help for households that would qualify for SNAP but cannot get it because of their immigration status. SNAP is the federal program that helps people with low incomes buy groceries. The state benefit covers people who are lawfully in the country, such as refugees, asylum seekers, and people with Temporary Protected Status. It also covers people who were getting federal food help on July 3, 2025 and lost it under a federal law passed that year. The Maine House passed it 76-67 and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1672744,
+   "measure_id": "LD 2051",
+   "vote_date": "2026-03-30",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 2051, a bill about food aid for immigrants. Maine will pay for food help for households that would qualify for SNAP but cannot get it because of their immigration status. SNAP is the federal program that helps people with low incomes buy groceries. The state benefit covers people who are lawfully in the country, such as refugees, asylum seekers, and people with Temporary Protected Status. It also covers people who were getting federal food help on July 3, 2025 and lost it under a federal law passed that year. The Maine Senate passed it 20-12 and it became law.",
+   "nay_description": "Voted no on LD 2051, a bill about food aid for immigrants. Maine will pay for food help for households that would qualify for SNAP but cannot get it because of their immigration status. SNAP is the federal program that helps people with low incomes buy groceries. The state benefit covers people who are lawfully in the country, such as refugees, asylum seekers, and people with Temporary Protected Status. It also covers people who were getting federal food help on July 3, 2025 and lost it under a federal law passed that year. The Maine Senate passed it 20-12 and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1570088,
+   "measure_id": "LD 163",
+   "vote_date": "2025-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 163, a bill about insurance coverage for birth control. Health insurance sold in Maine must cover over-the-counter birth control pills and over-the-counter emergency contraception, with no copay or deductible. Over-the-counter means you can buy it without a prescription. To be covered, the person has to buy it at the pharmacy counter. The law does not apply to drugs meant to end a pregnancy. The Maine House passed it 73-69 and it became law.",
+   "nay_description": "Voted no on LD 163, a bill about insurance coverage for birth control. Health insurance sold in Maine must cover over-the-counter birth control pills and over-the-counter emergency contraception, with no copay or deductible. Over-the-counter means you can buy it without a prescription. To be covered, the person has to buy it at the pharmacy counter. The law does not apply to drugs meant to end a pregnancy. The Maine House passed it 73-69 and it became law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1571240,
+   "measure_id": "LD 163",
+   "vote_date": "2025-05-14",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 163, a bill about insurance coverage for birth control. Health insurance sold in Maine must cover over-the-counter birth control pills and over-the-counter emergency contraception, with no copay or deductible. Over-the-counter means you can buy it without a prescription. To be covered, the person has to buy it at the pharmacy counter. The law does not apply to drugs meant to end a pregnancy. The Maine Senate passed it 21-13 and it became law.",
+   "nay_description": "Voted no on LD 163, a bill about insurance coverage for birth control. Health insurance sold in Maine must cover over-the-counter birth control pills and over-the-counter emergency contraception, with no copay or deductible. Over-the-counter means you can buy it without a prescription. To be covered, the person has to buy it at the pharmacy counter. The law does not apply to drugs meant to end a pregnancy. The Maine Senate passed it 21-13 and it became law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1583352,
+   "measure_id": "LD 589",
+   "vote_date": "2025-06-02",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 589, a bill about pay for farm workers. Farm workers in Maine must be paid at least the state minimum wage. Starting January 1, 2026 that is $14.65 an hour, and it rises each year with the cost of living. Family members who live with the farm owner and depend on the owner are not covered. The Maine Senate passed it 22-12 and it became law.",
+   "nay_description": "Voted no on LD 589, a bill about pay for farm workers. Farm workers in Maine must be paid at least the state minimum wage. Starting January 1, 2026 that is $14.65 an hour, and it rises each year with the cost of living. Family members who live with the farm owner and depend on the owner are not covered. The Maine Senate passed it 22-12 and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1584033,
+   "measure_id": "LD 589",
+   "vote_date": "2025-06-03",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 589, a bill about pay for farm workers. Farm workers in Maine must be paid at least the state minimum wage. Starting January 1, 2026 that is $14.65 an hour, and it rises each year with the cost of living. Family members who live with the farm owner and depend on the owner are not covered. This was the final passage vote. The Maine House passed it 74-73 and it became law.",
+   "nay_description": "Voted no on LD 589, a bill about pay for farm workers. Farm workers in Maine must be paid at least the state minimum wage. Starting January 1, 2026 that is $14.65 an hour, and it rises each year with the cost of living. Family members who live with the farm owner and depend on the owner are not covered. This was the final passage vote. The Maine House passed it 74-73 and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1583726
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1580645,
+   "measure_id": "LD 493",
+   "vote_date": "2025-05-28",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 493, a bill about testing well water for forever chemicals. PFAS are long-lasting industrial chemicals, often called forever chemicals. The state's recommended list of things to test a private drinking water well for now includes them. A landlord whose rental building gets water from a private well must test for everything on that list, not just arsenic as before. The Maine House passed it 78-69 and it became law.",
+   "nay_description": "Voted no on LD 493, a bill about testing well water for forever chemicals. PFAS are long-lasting industrial chemicals, often called forever chemicals. The state's recommended list of things to test a private drinking water well for now includes them. A landlord whose rental building gets water from a private well must test for everything on that list, not just arsenic as before. The Maine House passed it 78-69 and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1682318,
+   "measure_id": "LD 493",
+   "vote_date": "2026-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 493, a bill about testing well water for forever chemicals. PFAS are long-lasting industrial chemicals, often called forever chemicals. The state's recommended list of things to test a private drinking water well for now includes them. A landlord whose rental building gets water from a private well must test for everything on that list, not just arsenic as before. This was the final passage vote. The Maine Senate passed it 21-13 and it became law.",
+   "nay_description": "Voted no on LD 493, a bill about testing well water for forever chemicals. PFAS are long-lasting industrial chemicals, often called forever chemicals. The state's recommended list of things to test a private drinking water well for now includes them. A landlord whose rental building gets water from a private well must test for everything on that list, not just arsenic as before. This was the final passage vote. The Maine Senate passed it 21-13 and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1594847,
+   "measure_id": "LD 166",
+   "vote_date": "2025-06-25",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 166, a bill about tobacco sales in pharmacies. A pharmacy, or a store with a pharmacy inside it, may no longer hold a license to sell tobacco. Selling or giving away tobacco anyway is a civil violation with a fine of up to $2,000, and each day counts as a separate offense. The law also ends a discount cigarette distributors got when buying tax stamps. The two chambers had passed different versions. This vote accepted the Senate's wording. The Maine House agreed 71-68 and the bill became law.",
+   "nay_description": "Voted no on LD 166, a bill about tobacco sales in pharmacies. A pharmacy, or a store with a pharmacy inside it, may no longer hold a license to sell tobacco. Selling or giving away tobacco anyway is a civil violation with a fine of up to $2,000, and each day counts as a separate offense. The law also ends a discount cigarette distributors got when buying tax stamps. The two chambers had passed different versions. This vote accepted the Senate's wording. The Maine House agreed 71-68 and the bill became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1595041,
+   "measure_id": "LD 166",
+   "vote_date": "2025-06-25",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 166, a bill about tobacco sales in pharmacies. A pharmacy, or a store with a pharmacy inside it, may no longer hold a license to sell tobacco. Selling or giving away tobacco anyway is a civil violation with a fine of up to $2,000, and each day counts as a separate offense. The law also ends a discount cigarette distributors got when buying tax stamps. This was the final passage vote. The Maine Senate passed it 17-16 and it became law.",
+   "nay_description": "Voted no on LD 166, a bill about tobacco sales in pharmacies. A pharmacy, or a store with a pharmacy inside it, may no longer hold a license to sell tobacco. Selling or giving away tobacco anyway is a civil violation with a fine of up to $2,000, and each day counts as a separate offense. The law also ends a discount cigarette distributors got when buying tax stamps. This was the final passage vote. The Maine Senate passed it 17-16 and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1590993,
+   "measure_id": "LD 670",
+   "vote_date": "2025-06-16",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 670, a bill about domestic abuse protection orders. Maine's domestic abuse law counts it as abuse to force someone to do something they have a right to refuse, or to stop doing something they have a right to do. Until now the law reached force, threat of force, and intimidation. The bill adds coercion to that list, which is the kind of pressure used in controlling relationships. The Maine House passed it 76-69 and it became law.",
+   "nay_description": "Voted no on LD 670, a bill about domestic abuse protection orders. Maine's domestic abuse law counts it as abuse to force someone to do something they have a right to refuse, or to stop doing something they have a right to do. Until now the law reached force, threat of force, and intimidation. The bill adds coercion to that list, which is the kind of pressure used in controlling relationships. The Maine House passed it 76-69 and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1591267,
+   "measure_id": "LD 670",
+   "vote_date": "2025-06-16",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 670, a bill about domestic abuse protection orders. Maine's domestic abuse law counts it as abuse to force someone to do something they have a right to refuse, or to stop doing something they have a right to do. Until now the law reached force, threat of force, and intimidation. The bill adds coercion to that list, which is the kind of pressure used in controlling relationships. The Maine Senate passed it 20-12 and it became law.",
+   "nay_description": "Voted no on LD 670, a bill about domestic abuse protection orders. Maine's domestic abuse law counts it as abuse to force someone to do something they have a right to refuse, or to stop doing something they have a right to do. Until now the law reached force, threat of force, and intimidation. The bill adds coercion to that list, which is the kind of pressure used in controlling relationships. The Maine Senate passed it 20-12 and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1591254,
+   "measure_id": "LD 1871",
+   "vote_date": "2025-06-16",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 1871, a bill about clearing criminal records. Someone who was a victim of sex trafficking or sexual exploitation may ask a court to seal a conviction, if the crime happened largely as a result of that trafficking. Sealing keeps the record from public view. The request may be filed at any time after the conviction. The law also sets rules for background-check companies. They may report only complete and up-to-date records, and must fix or delete records that are wrong or sealed. The Maine Senate passed it 22-12 and it became law.",
+   "nay_description": "Voted no on LD 1871, a bill about clearing criminal records. Someone who was a victim of sex trafficking or sexual exploitation may ask a court to seal a conviction, if the crime happened largely as a result of that trafficking. Sealing keeps the record from public view. The request may be filed at any time after the conviction. The law also sets rules for background-check companies. They may report only complete and up-to-date records, and must fix or delete records that are wrong or sealed. The Maine Senate passed it 22-12 and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1591534,
+   "measure_id": "LD 1871",
+   "vote_date": "2025-06-17",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 1871, a bill about clearing criminal records. Someone who was a victim of sex trafficking or sexual exploitation may ask a court to seal a conviction, if the crime happened largely as a result of that trafficking. Sealing keeps the record from public view. The request may be filed at any time after the conviction. The law also sets rules for background-check companies. They may report only complete and up-to-date records, and must fix or delete records that are wrong or sealed. This was the final passage vote. The Maine House passed it 89-58 and it became law.",
+   "nay_description": "Voted no on LD 1871, a bill about clearing criminal records. Someone who was a victim of sex trafficking or sexual exploitation may ask a court to seal a conviction, if the crime happened largely as a result of that trafficking. Sealing keeps the record from public view. The request may be filed at any time after the conviction. The law also sets rules for background-check companies. They may report only complete and up-to-date records, and must fix or delete records that are wrong or sealed. This was the final passage vote. The Maine House passed it 89-58 and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1585483,
+   "measure_id": "LD 1078",
+   "vote_date": "2025-06-05",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 1078, a bill about needle exchange programs. Needle exchange programs let people trade used syringes for clean ones, which cuts the spread of disease. Certified programs in Maine may now run mobile sites on rotating schedules and deliver syringes within their service area, instead of working only from a fixed location. The state health agency must approve the general terms first, and programs get no extra money for the added sites. The Maine House passed it 74-65 and it became law.",
+   "nay_description": "Voted no on LD 1078, a bill about needle exchange programs. Needle exchange programs let people trade used syringes for clean ones, which cuts the spread of disease. Certified programs in Maine may now run mobile sites on rotating schedules and deliver syringes within their service area, instead of working only from a fixed location. The state health agency must approve the general terms first, and programs get no extra money for the added sites. The Maine House passed it 74-65 and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1586829,
+   "measure_id": "LD 1078",
+   "vote_date": "2025-06-09",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 1078, a bill about needle exchange programs. Needle exchange programs let people trade used syringes for clean ones, which cuts the spread of disease. Certified programs in Maine may now run mobile sites on rotating schedules and deliver syringes within their service area, instead of working only from a fixed location. The state health agency must approve the general terms first, and programs get no extra money for the added sites. The Maine Senate passed it 20-11 and it became law.",
+   "nay_description": "Voted no on LD 1078, a bill about needle exchange programs. Needle exchange programs let people trade used syringes for clean ones, which cuts the spread of disease. Certified programs in Maine may now run mobile sites on rotating schedules and deliver syringes within their service area, instead of working only from a fixed location. The state health agency must approve the general terms first, and programs get no extra money for the added sites. The Maine Senate passed it 20-11 and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1589006,
+   "measure_id": "LD 913",
+   "vote_date": "2025-06-11",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 913, a bill about ticket resale fees. A ticket seller must show the full price up front, including every required fee, and show it more prominently than any other price. Selling a ticket the seller does not actually have is banned, along with using bots to grab tickets and using copycat web addresses. A resale marketplace may not charge more than 10 percent of the original ticket price for its service. The Attorney General enforces this, and breaking the rules counts as an unfair trade practice. The Maine Senate passed it 21-10 and it became law.",
+   "nay_description": "Voted no on LD 913, a bill about ticket resale fees. A ticket seller must show the full price up front, including every required fee, and show it more prominently than any other price. Selling a ticket the seller does not actually have is banned, along with using bots to grab tickets and using copycat web addresses. A resale marketplace may not charge more than 10 percent of the original ticket price for its service. The Attorney General enforces this, and breaking the rules counts as an unfair trade practice. The Maine Senate passed it 21-10 and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1589596,
+   "measure_id": "LD 913",
+   "vote_date": "2025-06-12",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 913, a bill about ticket resale fees. A ticket seller must show the full price up front, including every required fee, and show it more prominently than any other price. Selling a ticket the seller does not actually have is banned, along with using bots to grab tickets and using copycat web addresses. A resale marketplace may not charge more than 10 percent of the original ticket price for its service. The Attorney General enforces this, and breaking the rules counts as an unfair trade practice. The Maine House passed it 76-71 and it became law.",
+   "nay_description": "Voted no on LD 913, a bill about ticket resale fees. A ticket seller must show the full price up front, including every required fee, and show it more prominently than any other price. Selling a ticket the seller does not actually have is banned, along with using bots to grab tickets and using copycat web addresses. A resale marketplace may not charge more than 10 percent of the original ticket price for its service. The Attorney General enforces this, and breaking the rules counts as an unfair trade practice. The Maine House passed it 76-71 and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1584884,
+   "measure_id": "LD 1900",
+   "vote_date": "2025-06-04",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 1900, a bill about tribal authority. The Houlton Band of Maliseet Indians, the Mi'kmaq Nation, the Penobscot Nation, and the Passamaquoddy Tribe may form power districts on their land, with the same rights Maine towns already have. A power district can supply and distribute electricity. The law also lets the Penobscot Nation's and the Maliseet tribal courts use the same license-suspension tool the state uses against parents who fall behind on child support. The Maine House passed it 75-67 and it became law.",
+   "nay_description": "Voted no on LD 1900, a bill about tribal authority. The Houlton Band of Maliseet Indians, the Mi'kmaq Nation, the Penobscot Nation, and the Passamaquoddy Tribe may form power districts on their land, with the same rights Maine towns already have. A power district can supply and distribute electricity. The law also lets the Penobscot Nation's and the Maliseet tribal courts use the same license-suspension tool the state uses against parents who fall behind on child support. The Maine House passed it 75-67 and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1585711,
+   "measure_id": "LD 1900",
+   "vote_date": "2025-06-05",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 1900, a bill about tribal authority. The Houlton Band of Maliseet Indians, the Mi'kmaq Nation, the Penobscot Nation, and the Passamaquoddy Tribe may form power districts on their land, with the same rights Maine towns already have. A power district can supply and distribute electricity. The law also lets the Penobscot Nation's and the Maliseet tribal courts use the same license-suspension tool the state uses against parents who fall behind on child support. The Maine Senate passed it 20-12 and it became law.",
+   "nay_description": "Voted no on LD 1900, a bill about tribal authority. The Houlton Band of Maliseet Indians, the Mi'kmaq Nation, the Penobscot Nation, and the Passamaquoddy Tribe may form power districts on their land, with the same rights Maine towns already have. A power district can supply and distribute electricity. The law also lets the Penobscot Nation's and the Maliseet tribal courts use the same license-suspension tool the state uses against parents who fall behind on child support. The Maine Senate passed it 20-12 and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
