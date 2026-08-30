@@ -1,0 +1,2244 @@
+{
+ "note": "Trimmed resolve evidence for MO 2169. The proposal pass (no crosswalk file) and the validation pass (crosswalk over all 499 stored rolls). The validation run's full per-roll member resolution is 5.2 MB and is NOT committed (TX precedent); the totals below are it.",
+ "proposalRun": {
+  "importerVersion": "rollcall-legiscan-resolve-v1",
+  "startedAt": "2026-08-29T05:09:27.231Z",
+  "finishedAt": "2026-08-29T05:09:27.677Z",
+  "jurisdiction": "MO",
+  "sessionId": 2169,
+  "evidenceDir": "/Users/shu/legiscan-data/mo-2169-crosswalk",
+  "scopeFrom": "2026-11-01",
+  "peopleSource": "/Users/shu/legiscan-data/mo-2169",
+  "peopleMembers": 197,
+  "candidatePool": 215,
+  "crosswalkFile": null,
+  "crosswalkEntries": null,
+  "crosswalkPeopleNotInSnapshot": [],
+  "files": 0,
+  "fileErrors": 0,
+  "counts": {}
+ },
+ "proposals": [
+  {
+   "peopleId": 13872,
+   "rosterName": "Tracy McCreery",
+   "rosterSeat": "senate SD-024",
+   "candidateId": "3a0a7929-c938-4da8-b7cf-ae0d2f6a3d3f",
+   "candidateName": "Tracy McCreery",
+   "candidacy": "state_upper: State Senate District 24 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 18824,
+   "rosterName": "Mark Matthiesen",
+   "rosterSeat": "house HD-107",
+   "candidateId": "eb93a8d0-7383-43b2-995b-970a7b25985a",
+   "candidateName": "Mark Matthiesen",
+   "candidacy": "state_lower: State House District 107 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 19250,
+   "rosterName": "Rusty Black",
+   "rosterSeat": "senate SD-012",
+   "candidateId": "f7b3a251-02da-4008-a1a4-be8572a680fc",
+   "candidateName": "Rusty Black",
+   "candidacy": "state_upper: State Senate District 12 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20731,
+   "rosterName": "John Simmons",
+   "rosterSeat": "house HD-109",
+   "candidateId": "24119091-fb2f-4609-884f-10c9c620606a",
+   "candidateName": "John Simmons",
+   "candidacy": "state_lower: State House District 109 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 21430,
+   "rosterName": "Yolanda Young",
+   "rosterSeat": "house HD-022",
+   "candidateId": "bb9c19c3-4092-459a-b8a7-b55a45da99f1",
+   "candidateName": "Yolanda Young",
+   "candidacy": "state_lower: State House District 22 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 21533,
+   "rosterName": "Scott Cupps",
+   "rosterSeat": "house HD-158",
+   "candidateId": "d0e34a2a-e187-4a20-836a-75d89e70cde7",
+   "candidateName": "Scott Cupps",
+   "candidacy": "state_lower: State House District 158 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 21703,
+   "rosterName": "Bridget Walsh Moore",
+   "rosterSeat": "house HD-093",
+   "candidateId": "62c5d13a-9c89-40f9-a9c0-e9b440367c28",
+   "candidateName": "Bridget Walsh Moore",
+   "candidacy": "state_lower: State House District 93 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 21705,
+   "rosterName": "Chad Perkins",
+   "rosterSeat": "house HD-040",
+   "candidateId": "2031e4cc-1997-45a8-9e71-3f2f86a08538",
+   "candidateName": "Chad Perkins",
+   "candidacy": "state_lower: State House District 40 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 21706,
+   "rosterName": "Bishop Davidson",
+   "rosterSeat": "house HD-130",
+   "candidateId": "b3ac8d82-02d1-4eb5-8b8e-f3c04ee43630",
+   "candidateName": "Bishop Davidson",
+   "candidacy": "state_lower: State House District 130 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 21708,
+   "rosterName": "Terry Thompson",
+   "rosterSeat": "house HD-053",
+   "candidateId": "5c84bd2e-7d63-435b-ac44-17d2d9fa6b8a",
+   "candidateName": "Terry Thompson",
+   "candidacy": "state_lower: State House District 53 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 21738,
+   "rosterName": "Tim Taylor",
+   "rosterSeat": "house HD-048",
+   "candidateId": "aa3f3c3d-d3e1-485c-8c82-0b173752e8bc",
+   "candidateName": "Tim Taylor",
+   "candidacy": "state_lower: State House District 48 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 21759,
+   "rosterName": "Jim Kalberloh",
+   "rosterSeat": "house HD-126",
+   "candidateId": "a729d891-57b4-498d-8a48-c594708dfbb0",
+   "candidateName": "Jim Kalberloh",
+   "candidacy": "state_lower: State House District 126 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 21764,
+   "rosterName": "Josh Hurlbert",
+   "rosterSeat": "house HD-008",
+   "candidateId": "8940a730-7a8c-4880-9352-0fd00c78cbf6",
+   "candidateName": "Josh Hurlbert",
+   "candidacy": "state_lower: State House District 8 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 21785,
+   "rosterName": "Bill Owen",
+   "rosterSeat": "house HD-131",
+   "candidateId": "f203d678-b867-4235-a02a-76aeef28d237",
+   "candidateName": "Bill Owen",
+   "candidacy": "state_lower: State House District 131 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 21891,
+   "rosterName": "Alex Riley",
+   "rosterSeat": "house HD-134",
+   "candidateId": "c42be6d8-768f-4b7a-9f37-aab7ba1aac9c",
+   "candidateName": "Alex Riley",
+   "candidacy": "state_lower: State House District 134 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22085,
+   "rosterName": "Jo Doll",
+   "rosterSeat": "house HD-091",
+   "candidateId": "b7d61cfa-9e77-4145-8b56-3eb872d91ef4",
+   "candidateName": "Jo Doll",
+   "candidacy": "state_lower: State House District 91 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22132,
+   "rosterName": "Kimberly-Ann Collins",
+   "rosterSeat": "house HD-077",
+   "candidateId": "659a6453-7ced-4b44-9e77-d585384d4156",
+   "candidateName": "Kimberly-Ann Collins",
+   "candidacy": "state_lower: State House District 77 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22280,
+   "rosterName": "Marlon Anderson",
+   "rosterSeat": "house HD-076",
+   "candidateId": "134b6728-697a-49c1-bfa3-6908f39f1ca2",
+   "candidateName": "Marlon Anderson",
+   "candidacy": "state_lower: State House District 76 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22384,
+   "rosterName": "Ashley Aune",
+   "rosterSeat": "house HD-014",
+   "candidateId": "a1639cf5-e5e5-4d9a-a05b-43e3d5560171",
+   "candidateName": "Ashley Aune",
+   "candidacy": "state_lower: State House District 14 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22385,
+   "rosterName": "Mitch Boggs",
+   "rosterSeat": "house HD-157",
+   "candidateId": "72b68f13-605d-4510-9a6a-787def8f4cd0",
+   "candidateName": "Mitch Boggs",
+   "candidacy": "state_lower: State House District 157 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22386,
+   "rosterName": "Chris Brown",
+   "rosterSeat": "house HD-016",
+   "candidateId": "55cbddd6-62b1-499b-b437-a8e646f5fe50",
+   "candidateName": "Chris Brown",
+   "candidacy": "state_lower: State House District 16 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22390,
+   "rosterName": "Bennie Cook",
+   "rosterSeat": "house HD-143",
+   "candidateId": "41c63295-eff5-4520-a9c1-6b39d9375968",
+   "candidateName": "Bennie Cook",
+   "candidacy": "state_lower: State House District 143 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22392,
+   "rosterName": "Betsy Fogle",
+   "rosterSeat": "house HD-135",
+   "candidateId": "342a1282-618e-4868-ab70-3b1931ec40e5",
+   "candidateName": "Betsy Fogle",
+   "candidacy": "state_upper: State Senate District 30 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 22393,
+   "rosterName": "Willard Haley",
+   "rosterSeat": "house HD-058",
+   "candidateId": "c9445f2e-d962-471d-87ec-c3e8b5f0db79",
+   "candidateName": "Willard Haley",
+   "candidacy": "state_lower: State House District 58 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22398,
+   "rosterName": "Brian Seitz",
+   "rosterSeat": "house HD-156",
+   "candidateId": "007341d6-7796-4978-aa31-39390bb18624",
+   "candidateName": "Brian Seitz",
+   "candidacy": "state_lower: State House District 156 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22404,
+   "rosterName": "Richard West",
+   "rosterSeat": "house HD-102",
+   "candidateId": "bf6ce14e-91f6-4b89-8857-011047603480",
+   "candidateName": "Richard West",
+   "candidacy": "state_lower: State House District 102 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22922,
+   "rosterName": "David Smith",
+   "rosterSeat": "house HD-046",
+   "candidateId": "94986024-00a6-483b-996e-93ef5791041b",
+   "candidateName": "David T. Smith",
+   "candidacy": "state_lower: State House District 46 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23195,
+   "rosterName": "Jeff Myers",
+   "rosterSeat": "house HD-042",
+   "candidateId": "dace297c-85aa-451b-9dea-f2b67c18a3c4",
+   "candidateName": "Jeff Myers",
+   "candidacy": "state_lower: State House District 42 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23196,
+   "rosterName": "Adrian Plank",
+   "rosterSeat": "house HD-047",
+   "candidateId": "ef87f92c-82f2-4d62-b5d7-98287dbffd83",
+   "candidateName": "Adrian Plank",
+   "candidacy": "state_lower: State House District 47 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23198,
+   "rosterName": "Melanie Stinnett",
+   "rosterSeat": "house HD-133",
+   "candidateId": "d7781fe8-154c-4dfc-93df-2f3a270b1db6",
+   "candidateName": "Melanie Stinnett",
+   "candidacy": "state_upper: State Senate District 30 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23387,
+   "rosterName": "Brad Banderman",
+   "rosterSeat": "house HD-119",
+   "candidateId": "0d8e55ae-5194-4646-b327-5bd0298353bf",
+   "candidateName": "Brad Banderman",
+   "candidacy": "state_lower: State House District 119 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23608,
+   "rosterName": "Brad Christ",
+   "rosterSeat": "house HD-096",
+   "candidateId": "c19cfe33-df4b-4bd3-97fc-61bd365eb7fd",
+   "candidateName": "Brad Christ",
+   "candidacy": "state_lower: State House District 96 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23610,
+   "rosterName": "Kemp Strickler",
+   "rosterSeat": "house HD-034",
+   "candidateId": "55de2bdc-22b0-4c36-a19e-7e60e95dbe65",
+   "candidateName": "Kemp Strickler",
+   "candidacy": "state_lower: State House District 34 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23747,
+   "rosterName": "Phil Amato",
+   "rosterSeat": "house HD-113",
+   "candidateId": "5ebd6d5a-8720-4620-b5e6-78d16639324f",
+   "candidateName": "Phil Amato",
+   "candidacy": "state_lower: State House District 113 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23978,
+   "rosterName": "Eric Woods",
+   "rosterSeat": "house HD-018",
+   "candidateId": "b12499ce-7e19-46d1-a8db-3d6d6b838fc0",
+   "candidateName": "Eric Woods",
+   "candidacy": "state_lower: State House District 18 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23979,
+   "rosterName": "Stephanie Hein",
+   "rosterSeat": "house HD-136",
+   "candidateId": "f381e154-af6d-4be1-b389-0dbc61d5b6e3",
+   "candidateName": "Stephanie Hein",
+   "candidacy": "state_lower: State House District 136 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24095,
+   "rosterName": "Ben Brown",
+   "rosterSeat": "senate SD-026",
+   "candidateId": "b1085818-027b-4d23-9535-c87d3e4a8513",
+   "candidateName": "Ben Brown",
+   "candidacy": "state_upper: State Senate District 26 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24129,
+   "rosterName": "Darin Chappell",
+   "rosterSeat": "house HD-137",
+   "candidateId": "ccd5054d-3405-44be-8caf-5f00a22d8a67",
+   "candidateName": "Darin Chappell",
+   "candidacy": "state_lower: State House District 137 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24130,
+   "rosterName": "Dane Diehl",
+   "rosterSeat": "house HD-125",
+   "candidateId": "10e486f0-4f17-4e97-bad4-8077e1e46ca2",
+   "candidateName": "Dane Diehl",
+   "candidacy": "state_lower: State House District 125 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24131,
+   "rosterName": "Anthony Ealy",
+   "rosterSeat": "house HD-036",
+   "candidateId": "feb72606-2635-4e72-96e9-c313685fa3ee",
+   "candidateName": "Anthony Ealy",
+   "candidacy": "state_lower: State House District 36 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24132,
+   "rosterName": "Jeff Farnan",
+   "rosterSeat": "house HD-001",
+   "candidateId": "7b74b3f4-6921-4ac3-add9-64e0d0f41cb6",
+   "candidateName": "Jeff Farnan",
+   "candidacy": "state_lower: State House District 1 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24134,
+   "rosterName": "Sherri Gallick",
+   "rosterSeat": "house HD-062",
+   "candidateId": "1a12c702-366f-4c24-9589-1b41b9fac1df",
+   "candidateName": "Sherri Gallick",
+   "candidacy": "state_lower: State House District 62 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24136,
+   "rosterName": "Wendy Hausman",
+   "rosterSeat": "house HD-065",
+   "candidateId": "5758b0c4-f4c5-44f2-9e3d-10f6cbfd06b9",
+   "candidateName": "Wendy Hausman",
+   "candidacy": "state_lower: State House District 65 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24139,
+   "rosterName": "Holly Jones",
+   "rosterSeat": "house HD-088",
+   "candidateId": "ef22306e-90dc-4cc9-947e-ce19c6573e5b",
+   "candidateName": "Holly Jones",
+   "candidacy": "state_lower: State House District 88 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24141,
+   "rosterName": "Philip Oehlerking",
+   "rosterSeat": "house HD-100",
+   "candidateId": "d2eae25b-2e21-4ea2-b6d8-dcbda1a4a785",
+   "candidateName": "Philip Oehlerking",
+   "candidacy": "state_lower: State House District 100 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24142,
+   "rosterName": "Cameron Bunting Parker",
+   "rosterSeat": "house HD-150",
+   "candidateId": "a3475e2b-e55e-4e07-9ff1-9caad462539b",
+   "candidateName": "Cameron Bunting Parker",
+   "candidacy": "state_lower: State House District 150 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24143,
+   "rosterName": "Tara Peters",
+   "rosterSeat": "house HD-122",
+   "candidateId": "9cdb88f5-ef97-4a89-9924-3e0ef0180199",
+   "candidateName": "Tara Peters",
+   "candidacy": "state_lower: State House District 122 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24145,
+   "rosterName": "Jim Schulte",
+   "rosterSeat": "house HD-049",
+   "candidateId": "6733ba98-67e8-4078-9ffd-4b76b340d98c",
+   "candidateName": "Jim Schulte",
+   "candidacy": "state_lower: State House District 49 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24146,
+   "rosterName": "Kathy Steinhoff",
+   "rosterSeat": "house HD-045",
+   "candidateId": "142ff31e-e60e-47ee-a0b0-ae97d17db06f",
+   "candidateName": "Kathy Steinhoff",
+   "candidacy": "state_lower: State House District 45 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24147,
+   "rosterName": "Del Taylor",
+   "rosterSeat": "house HD-084",
+   "candidateId": "dc2b20d5-1b11-49ae-a0e4-d5c7fa27b004",
+   "candidateName": "Del Taylor",
+   "candidacy": "state_lower: State House District 84 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24148,
+   "rosterName": "John Voss",
+   "rosterSeat": "house HD-147",
+   "candidateId": "2012b1a5-3505-42c2-b357-33ac24bf2c00",
+   "candidateName": "John Voss",
+   "candidacy": "state_lower: State House District 147 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24547,
+   "rosterName": "Doyle Justus",
+   "rosterSeat": "house HD-041",
+   "candidateId": "d3d29ed6-cb04-4cd0-80bb-63a5e97f00cf",
+   "candidateName": "Doyle Justus",
+   "candidacy": "state_lower: State House District 41 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25252,
+   "rosterName": "Stephanie Boykin",
+   "rosterSeat": "house HD-070",
+   "candidateId": "39f0354a-84d5-4c5f-a444-249ec6b5b0de",
+   "candidateName": "Stephanie Boykin",
+   "candidacy": "state_lower: State House District 70 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25253,
+   "rosterName": "Mark Boyko",
+   "rosterSeat": "house HD-090",
+   "candidateId": "bd2bb022-ea54-4947-91aa-b0899ce16073",
+   "candidateName": "Mark Boyko",
+   "candidacy": "state_lower: State House District 90 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25254,
+   "rosterName": "Gregg Bush",
+   "rosterSeat": "house HD-050",
+   "candidateId": "05d57c38-68d3-449f-85fd-04d14f8ceb96",
+   "candidateName": "Gregg Bush",
+   "candidacy": "state_lower: State House District 50 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25255,
+   "rosterName": "Carolyn Caton",
+   "rosterSeat": "house HD-033",
+   "candidateId": "aaed0ae1-871a-4041-85d5-2997c8139a02",
+   "candidateName": "Carolyn Caton",
+   "candidacy": "state_lower: State House District 33 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25257,
+   "rosterName": "Jeremy Dean",
+   "rosterSeat": "house HD-132",
+   "candidateId": "a0032e43-8c97-46a4-bd4a-bf0b4af2830e",
+   "candidateName": "Jeremy Dean",
+   "candidacy": "state_lower: State House District 132 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25258,
+   "rosterName": "David Dolan",
+   "rosterSeat": "house HD-148",
+   "candidateId": "f941aefa-841d-406a-8585-347460b24c51",
+   "candidateName": "David A. Dolan",
+   "candidacy": "state_lower: State House District 148 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25259,
+   "rosterName": "Melissa Douglas",
+   "rosterSeat": "house HD-027",
+   "candidateId": "562931ea-78f1-432e-9681-c7b54ba4fc06",
+   "candidateName": "Melissa Douglas",
+   "candidacy": "state_lower: State House District 27 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25261,
+   "rosterName": "Keith Elliott",
+   "rosterSeat": "house HD-153",
+   "candidateId": "639465ab-588a-4feb-86f0-16516981bbac",
+   "candidateName": "Keith Elliott",
+   "candidacy": "state_lower: State House District 153 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25262,
+   "rosterName": "Ron Fowler",
+   "rosterSeat": "house HD-031",
+   "candidateId": "6629316f-b9b4-4e74-bf5b-d9fe8f145e2f",
+   "candidateName": "Ron Fowler",
+   "candidacy": "state_lower: State House District 31 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25263,
+   "rosterName": "Elizabeth Fuchs",
+   "rosterSeat": "house HD-080",
+   "candidateId": "a57ec299-7c6d-4086-b650-b7ca067a3382",
+   "candidateName": "Elizabeth Fuchs",
+   "candidacy": "state_lower: State House District 80 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25264,
+   "rosterName": "Jeff Hales",
+   "rosterSeat": "house HD-086",
+   "candidateId": "420d580d-fb9e-481d-b2a0-f66d324da808",
+   "candidateName": "Jeff Hales",
+   "candidacy": "state_lower: State House District 86 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25266,
+   "rosterName": "John Hewkin",
+   "rosterSeat": "house HD-120",
+   "candidateId": "aabeb64a-fa1f-4baa-aff4-8c3722d0d36c",
+   "candidateName": "John Hewkin",
+   "candidacy": "state_lower: State House District 120 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25267,
+   "rosterName": "George Hruza",
+   "rosterSeat": "house HD-089",
+   "candidateId": "39dfb37e-bf8f-4eba-996e-305ffdabce96",
+   "candidateName": "George Hruza",
+   "candidacy": "state_lower: State House District 89 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25268,
+   "rosterName": "Bill Irwin",
+   "rosterSeat": "house HD-055",
+   "candidateId": "b6b7799e-be4b-4381-84fa-636325f7036f",
+   "candidateName": "William Irwin",
+   "candidacy": "state_lower: State House District 55 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25269,
+   "rosterName": "Martin Jacobs",
+   "rosterSeat": "house HD-038",
+   "candidateId": "57b4a831-342b-4e02-b9c1-8ee9522530f6",
+   "candidateName": "Martin Jacobs",
+   "candidacy": "state_lower: State House District 38 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25270,
+   "rosterName": "Ken Jamison",
+   "rosterSeat": "house HD-015",
+   "candidateId": "d9dacc9f-b929-40e7-a7b2-281276c425b7",
+   "candidateName": "Kenneth Jamison",
+   "candidacy": "state_lower: State House District 15 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25271,
+   "rosterName": "Will Jobe",
+   "rosterSeat": "house HD-021",
+   "candidateId": "309fc4ea-499f-40ba-bcbc-8ca63cd6cc10",
+   "candidateName": "Will Jobe",
+   "candidacy": "state_lower: State House District 21 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25273,
+   "rosterName": "Steve Jordan",
+   "rosterSeat": "house HD-151",
+   "candidateId": "9547d177-9ac8-45d5-bd43-b8f3f1f5b3b2",
+   "candidateName": "Steven Jordan",
+   "candidacy": "state_lower: State House District 151 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25274,
+   "rosterName": "Nick Kimble",
+   "rosterSeat": "house HD-082",
+   "candidateId": "4b02fec9-91ec-49a5-8500-db099e3cb1e3",
+   "candidateName": "Nick Kimble",
+   "candidacy": "state_lower: State House District 82 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25275,
+   "rosterName": "Becky Laubinger",
+   "rosterSeat": "house HD-117",
+   "candidateId": "bde7e245-8385-44e5-b15d-0bdc607741bd",
+   "candidateName": "Becky Laubinger",
+   "candidacy": "state_lower: State House District 117 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25276,
+   "rosterName": "Cathy Loy",
+   "rosterSeat": "house HD-163",
+   "candidateId": "f4b40bb7-e92e-407f-a98b-1b267f6b985c",
+   "candidateName": "Cathy Loy",
+   "candidacy": "state_lower: State House District 163 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25277,
+   "rosterName": "Bill Lucas",
+   "rosterSeat": "house HD-115",
+   "candidateId": "58d80b78-fd81-4158-b88d-6e720967cf14",
+   "candidateName": "Bill Lucas",
+   "candidacy": "state_lower: State House District 115 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25278,
+   "rosterName": "Pattie Mansur",
+   "rosterSeat": "house HD-025",
+   "candidateId": "91bfe558-ba46-4792-a6e8-b17dd1b20c24",
+   "candidateName": "Patricia Mansur",
+   "candidacy": "state_lower: State House District 25 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25279,
+   "rosterName": "John Martin",
+   "rosterSeat": "house HD-044",
+   "candidateId": "7cdb188e-cd0b-43d2-8cbb-c3079e7548be",
+   "candidateName": "John Martin",
+   "candidacy": "state_lower: State House District 44 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25281,
+   "rosterName": "Scott Miller",
+   "rosterSeat": "house HD-069",
+   "candidateId": "f9e20530-f626-435c-a70b-7c4d27591d0f",
+   "candidateName": "Scott Miller",
+   "candidacy": "state_lower: State House District 69 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25283,
+   "rosterName": "Marty Murray",
+   "rosterSeat": "house HD-078",
+   "candidateId": "faaf2c94-4f1c-49e9-b4e5-43f445aeca29",
+   "candidateName": "Marty Joe Murray",
+   "candidacy": "state_lower: State House District 78 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25285,
+   "rosterName": "Matthew Overcast",
+   "rosterSeat": "house HD-155",
+   "candidateId": "d1c5890f-d8c9-47ac-8daf-061d2ca9e5c6",
+   "candidateName": "Matthew Overcast",
+   "candidacy": "state_lower: State House District 155 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25287,
+   "rosterName": "Tiffany Price",
+   "rosterSeat": "house HD-026",
+   "candidateId": "a5b2fb4f-194e-4e23-a88f-4a460366cd18",
+   "candidateName": "Tiffany Price",
+   "candidacy": "state_lower: State House District 26 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25289,
+   "rosterName": "Tonya Rush",
+   "rosterSeat": "house HD-067",
+   "candidateId": "f4114164-4824-4688-98ea-fb51ba7d2b87",
+   "candidateName": "Tonya Rush",
+   "candidacy": "state_lower: State House District 67 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25290,
+   "rosterName": "Melissa Schmidt",
+   "rosterSeat": "house HD-141",
+   "candidateId": "bc9db49c-0979-4db5-8236-f692d1cf10db",
+   "candidateName": "Melissa Schmidt",
+   "candidacy": "state_lower: State House District 141 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25294,
+   "rosterName": "Connie Steinmetz",
+   "rosterSeat": "house HD-087",
+   "candidateId": "b597defe-38f0-41be-94da-2f4890d5bb64",
+   "candidateName": "Connie Steinmetz",
+   "candidacy": "state_lower: State House District 87 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25297,
+   "rosterName": "Jeff Vernetti",
+   "rosterSeat": "house HD-123",
+   "candidateId": "06e3dcc7-71b5-4dab-96e3-b31bc55e05f8",
+   "candidateName": "Jeff Vernetti",
+   "candidacy": "state_lower: State House District 123 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25298,
+   "rosterName": "Terri Violet",
+   "rosterSeat": "house HD-104",
+   "candidateId": "c375c67c-204f-4b20-8588-922d936f091e",
+   "candidateName": "Terri Violet",
+   "candidacy": "state_lower: State House District 104 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25299,
+   "rosterName": "Christopher Warwick",
+   "rosterSeat": "house HD-128",
+   "candidateId": "a46a9017-9070-4a52-8655-aa4c74ceee6c",
+   "candidateName": "Christopher Warwick",
+   "candidacy": "state_lower: State House District 128 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25300,
+   "rosterName": "Colin Wellenkamp",
+   "rosterSeat": "house HD-105",
+   "candidateId": "7ea691d8-6df2-4dff-8de8-1ddfd9121f08",
+   "candidateName": "Colin Wellenkamp",
+   "candidacy": "state_lower: State House District 105 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25302,
+   "rosterName": "Cecelie Williams",
+   "rosterSeat": "house HD-111",
+   "candidateId": "6878d886-fed7-449f-b43d-7127c7d2c663",
+   "candidateName": "Cecelie Williams",
+   "candidacy": "state_lower: State House District 111 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25304,
+   "rosterName": "Jaclyn Zimmermann",
+   "rosterSeat": "house HD-098",
+   "candidateId": "7d9ba4af-879b-4883-a0b9-c0a17b52269d",
+   "candidateName": "Jaclyn Zimmermann",
+   "candidacy": "state_lower: State House District 98 (2024); Missouri",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  }
+ ],
+ "unmatchedPeople": [
+  {
+   "peopleId": 12942,
+   "name": "Mike Bernskoetter",
+   "seat": "senate SD-006"
+  },
+  {
+   "peopleId": 12944,
+   "name": "Rick Brattin",
+   "seat": "senate SD-031"
+  },
+  {
+   "peopleId": 12947,
+   "name": "Mike Cierpiot",
+   "seat": "senate SD-008"
+  },
+  {
+   "peopleId": 12949,
+   "name": "Sandy Crawford",
+   "seat": "senate SD-028"
+  },
+  {
+   "peopleId": 12968,
+   "name": "Karla May",
+   "seat": "senate SD-004"
+  },
+  {
+   "peopleId": 13002,
+   "name": "Lincoln Hough",
+   "seat": "senate SD-030"
+  },
+  {
+   "peopleId": 16177,
+   "name": "Mike Moon",
+   "seat": "senate SD-029"
+  },
+  {
+   "peopleId": 17512,
+   "name": "Travis Fitzwater",
+   "seat": "senate SD-010"
+  },
+  {
+   "peopleId": 18054,
+   "name": "Nick Schroer",
+   "seat": "senate SD-002"
+  },
+  {
+   "peopleId": 18055,
+   "name": "Mike Henderson",
+   "seat": "senate SD-003"
+  },
+  {
+   "peopleId": 18097,
+   "name": "Doug Beck",
+   "seat": "senate SD-001"
+  },
+  {
+   "peopleId": 18243,
+   "name": "Steven Roberts",
+   "seat": "senate SD-005"
+  },
+  {
+   "peopleId": 18819,
+   "name": "David Gregory",
+   "seat": "senate SD-015"
+  },
+  {
+   "peopleId": 18833,
+   "name": "Curtis Trent",
+   "seat": "senate SD-020"
+  },
+  {
+   "peopleId": 19466,
+   "name": "Barbara Washington",
+   "seat": "senate SD-009"
+  },
+  {
+   "peopleId": 19593,
+   "name": "Jeff Knight",
+   "seat": "house HD-142"
+  },
+  {
+   "peopleId": 19633,
+   "name": "Peggy McGaugh",
+   "seat": "house HD-007"
+  },
+  {
+   "peopleId": 19714,
+   "name": "Cindy O'Laughlin",
+   "seat": "senate SD-018"
+  },
+  {
+   "peopleId": 19715,
+   "name": "Tony Luetkemeyer",
+   "seat": "senate SD-034"
+  },
+  {
+   "peopleId": 19735,
+   "name": "Ann Kelley",
+   "seat": "house HD-127"
+  },
+  {
+   "peopleId": 19736,
+   "name": "Jim Murphy",
+   "seat": "house HD-094"
+  },
+  {
+   "peopleId": 19920,
+   "name": "Ben Baker",
+   "seat": "house HD-160"
+  },
+  {
+   "peopleId": 19939,
+   "name": "Adam Schnelting",
+   "seat": "senate SD-023"
+  },
+  {
+   "peopleId": 19941,
+   "name": "Mike McGirl",
+   "seat": "house HD-118"
+  },
+  {
+   "peopleId": 19956,
+   "name": "Mary Coleman",
+   "seat": "senate SD-022"
+  },
+  {
+   "peopleId": 19962,
+   "name": "Robert Bromley",
+   "seat": "house HD-162"
+  },
+  {
+   "peopleId": 19966,
+   "name": "Raychel Proudie",
+   "seat": "house HD-073"
+  },
+  {
+   "peopleId": 20162,
+   "name": "Brenda Shields",
+   "seat": "house HD-011"
+  },
+  {
+   "peopleId": 20403,
+   "name": "Brian Williams",
+   "seat": "senate SD-014"
+  },
+  {
+   "peopleId": 20430,
+   "name": "Dave Griffith",
+   "seat": "house HD-060"
+  },
+  {
+   "peopleId": 20695,
+   "name": "Ladonna Appelbaum",
+   "seat": "house HD-071"
+  },
+  {
+   "peopleId": 20696,
+   "name": "Hardy Billington",
+   "seat": "house HD-152"
+  },
+  {
+   "peopleId": 20697,
+   "name": "John Black",
+   "seat": "house HD-129"
+  },
+  {
+   "peopleId": 20699,
+   "name": "Lakeysha Bosley",
+   "seat": "house HD-079"
+  },
+  {
+   "peopleId": 20701,
+   "name": "Danny Busick",
+   "seat": "house HD-003"
+  },
+  {
+   "peopleId": 20702,
+   "name": "Steve Butz",
+   "seat": "house HD-081"
+  },
+  {
+   "peopleId": 20703,
+   "name": "Doug Clemens",
+   "seat": "house HD-072"
+  },
+  {
+   "peopleId": 20704,
+   "name": "Jeff Coleman",
+   "seat": "house HD-032"
+  },
+  {
+   "peopleId": 20705,
+   "name": "Dirk Deaton",
+   "seat": "house HD-159"
+  },
+  {
+   "peopleId": 20708,
+   "name": "Bill Falkner",
+   "seat": "house HD-010"
+  },
+  {
+   "peopleId": 20710,
+   "name": "Kent Haden",
+   "seat": "house HD-043"
+  },
+  {
+   "peopleId": 20711,
+   "name": "Barry Hovis",
+   "seat": "house HD-146"
+  },
+  {
+   "peopleId": 20712,
+   "name": "Brad Hudson",
+   "seat": "senate SD-033"
+  },
+  {
+   "peopleId": 20713,
+   "name": "Keri Ingle",
+   "seat": "house HD-035"
+  },
+  {
+   "peopleId": 20714,
+   "name": "Ian Mackey",
+   "seat": "house HD-099"
+  },
+  {
+   "peopleId": 20715,
+   "name": "Don Mayhew",
+   "seat": "house HD-124"
+  },
+  {
+   "peopleId": 20716,
+   "name": "Michael O'Donnell",
+   "seat": "house HD-095"
+  },
+  {
+   "peopleId": 20717,
+   "name": "Jonathan Patterson",
+   "seat": "house HD-030"
+  },
+  {
+   "peopleId": 20718,
+   "name": "Bradley Pollitt",
+   "seat": "house HD-052"
+  },
+  {
+   "peopleId": 20722,
+   "name": "Rodger Reedy",
+   "seat": "house HD-057"
+  },
+  {
+   "peopleId": 20724,
+   "name": "Louis Riggs",
+   "seat": "house HD-005"
+  },
+  {
+   "peopleId": 20725,
+   "name": "Lane Roberts",
+   "seat": "house HD-161"
+  },
+  {
+   "peopleId": 20729,
+   "name": "Gregory Sharpe",
+   "seat": "house HD-004"
+  },
+  {
+   "peopleId": 20732,
+   "name": "Rudy Veit",
+   "seat": "house HD-059"
+  },
+  {
+   "peopleId": 20733,
+   "name": "Dale Wright",
+   "seat": "house HD-116"
+  },
+  {
+   "peopleId": 21155,
+   "name": "Justin Brown",
+   "seat": "senate SD-016"
+  },
+  {
+   "peopleId": 21428,
+   "name": "Mark Sharp",
+   "seat": "house HD-037"
+  },
+  {
+   "peopleId": 21704,
+   "name": "Bill Hardwick",
+   "seat": "house HD-121"
+  },
+  {
+   "peopleId": 21707,
+   "name": "Marlene Terry",
+   "seat": "house HD-066"
+  },
+  {
+   "peopleId": 21709,
+   "name": "Ed Lewis",
+   "seat": "house HD-006"
+  },
+  {
+   "peopleId": 21710,
+   "name": "Patty Lewis",
+   "seat": "house SD-007"
+  },
+  {
+   "peopleId": 21712,
+   "name": "Jason Bean",
+   "seat": "senate SD-025"
+  },
+  {
+   "peopleId": 21714,
+   "name": "Angela Mosley",
+   "seat": "senate SD-013"
+  },
+  {
+   "peopleId": 21913,
+   "name": "Kurtis Gregory",
+   "seat": "senate SD-021"
+  },
+  {
+   "peopleId": 22086,
+   "name": "Michael Davis",
+   "seat": "house HD-056"
+  },
+  {
+   "peopleId": 22281,
+   "name": "Michael Johnson",
+   "seat": "house HD-023"
+  },
+  {
+   "peopleId": 22388,
+   "name": "Jamie Burger",
+   "seat": "senate SD-027"
+  },
+  {
+   "peopleId": 22389,
+   "name": "Michael Burton",
+   "seat": "house HD-092"
+  },
+  {
+   "peopleId": 22394,
+   "name": "Maggie Nurrenbern",
+   "seat": "senate SD-017"
+  },
+  {
+   "peopleId": 22396,
+   "name": "Sean Pouche",
+   "seat": "house HD-013"
+  },
+  {
+   "peopleId": 22397,
+   "name": "Bruce Sassmann",
+   "seat": "house HD-061"
+  },
+  {
+   "peopleId": 22401,
+   "name": "Dean Van Schoiack",
+   "seat": "house HD-009"
+  },
+  {
+   "peopleId": 22403,
+   "name": "Emily Weber",
+   "seat": "house HD-024"
+  },
+  {
+   "peopleId": 23193,
+   "name": "Mazzie Christensen",
+   "seat": "house HD-002"
+  },
+  {
+   "peopleId": 23194,
+   "name": "Aaron Crossley",
+   "seat": "house HD-029"
+  },
+  {
+   "peopleId": 23197,
+   "name": "Justin Sparks",
+   "seat": "house HD-110"
+  },
+  {
+   "peopleId": 23199,
+   "name": "Bob Titus",
+   "seat": "house HD-139"
+  },
+  {
+   "peopleId": 23200,
+   "name": "Jill Carter",
+   "seat": "senate SD-032"
+  },
+  {
+   "peopleId": 23316,
+   "name": "Donnie Brown",
+   "seat": "house HD-149"
+  },
+  {
+   "peopleId": 23609,
+   "name": "Bill Allen",
+   "seat": "house HD-017"
+  },
+  {
+   "peopleId": 23611,
+   "name": "Ben Keathley",
+   "seat": "house HD-101"
+  },
+  {
+   "peopleId": 23748,
+   "name": "Travis Wilson",
+   "seat": "house HD-106"
+  },
+  {
+   "peopleId": 24127,
+   "name": "Tricia Byrnes",
+   "seat": "house HD-063"
+  },
+  {
+   "peopleId": 24128,
+   "name": "David Casteel",
+   "seat": "house HD-097"
+  },
+  {
+   "peopleId": 24133,
+   "name": "Yolonda Fountain Henderson",
+   "seat": "house HD-085"
+  },
+  {
+   "peopleId": 24135,
+   "name": "Jamie Gragg",
+   "seat": "house HD-140"
+  },
+  {
+   "peopleId": 24137,
+   "name": "Dave Hinman",
+   "seat": "house HD-103"
+  },
+  {
+   "peopleId": 24144,
+   "name": "Renee Reuter",
+   "seat": "house HD-112"
+  },
+  {
+   "peopleId": 24149,
+   "name": "Ken Waller",
+   "seat": "house HD-114"
+  },
+  {
+   "peopleId": 25251,
+   "name": "Donna Barnes",
+   "seat": "house HD-028"
+  },
+  {
+   "peopleId": 25256,
+   "name": "Mike Costlow",
+   "seat": "house HD-108"
+  },
+  {
+   "peopleId": 25260,
+   "name": "Lisa Durnell",
+   "seat": "house HD-154"
+  },
+  {
+   "peopleId": 25265,
+   "name": "Tony Harbison",
+   "seat": "house HD-144"
+  },
+  {
+   "peopleId": 25272,
+   "name": "Mike Jones",
+   "seat": "house HD-012"
+  },
+  {
+   "peopleId": 25280,
+   "name": "Mark Meirath",
+   "seat": "house HD-039"
+  },
+  {
+   "peopleId": 25282,
+   "name": "Chanel Mosley",
+   "seat": "house HD-075"
+  },
+  {
+   "peopleId": 25284,
+   "name": "Mark Nolte",
+   "seat": "house HD-051"
+  },
+  {
+   "peopleId": 25286,
+   "name": "Brandon Phelps",
+   "seat": "house HD-054"
+  },
+  {
+   "peopleId": 25288,
+   "name": "Ray Reed",
+   "seat": "house HD-083"
+  },
+  {
+   "peopleId": 25291,
+   "name": "Deanna Self",
+   "seat": "house HD-064"
+  },
+  {
+   "peopleId": 25292,
+   "name": "Kem Smith",
+   "seat": "house HD-068"
+  },
+  {
+   "peopleId": 25293,
+   "name": "Marla Smith",
+   "seat": "house HD-074"
+  },
+  {
+   "peopleId": 25295,
+   "name": "Mike Steinmeyer",
+   "seat": "house HD-020"
+  },
+  {
+   "peopleId": 25296,
+   "name": "Wick Thomas",
+   "seat": "house HD-019"
+  },
+  {
+   "peopleId": 25301,
+   "name": "Burt Whaley",
+   "seat": "house HD-138"
+  },
+  {
+   "peopleId": 25303,
+   "name": "Bryant Wolfin",
+   "seat": "house HD-145"
+  },
+  {
+   "peopleId": 25360,
+   "name": "Joe Nicola",
+   "seat": "senate SD-011"
+  },
+  {
+   "peopleId": 7655,
+   "name": "Stephen Webber",
+   "seat": "senate SD-019"
+  }
+ ],
+ "unmatchedCandidates": [
+  {
+   "candidateId": "00cb00ed-089f-4dff-a4e8-cbfdfb2d1f96",
+   "name": "Amy DeClue",
+   "scope": "state_lower",
+   "districtName": "State House District 118 (2024); Missouri"
+  },
+  {
+   "candidateId": "97133af8-91fd-49fd-9d73-9fdb1262d5e5",
+   "name": "Amy Minich",
+   "scope": "state_lower",
+   "districtName": "State House District 8 (2024); Missouri"
+  },
+  {
+   "candidateId": "1bf60b0d-70db-4cfc-95a1-5e32aa3f6c2a",
+   "name": "Amy Pritchard",
+   "scope": "state_lower",
+   "districtName": "State House District 42 (2024); Missouri"
+  },
+  {
+   "candidateId": "d05fe8ba-be94-480c-bcbe-adef839ca421",
+   "name": "Amy Thompson",
+   "scope": "state_lower",
+   "districtName": "State House District 119 (2024); Missouri"
+  },
+  {
+   "candidateId": "405939e7-7033-479c-8d21-30c23500b9c4",
+   "name": "Ashley Cossins",
+   "scope": "state_lower",
+   "districtName": "State House District 131 (2024); Missouri"
+  },
+  {
+   "candidateId": "43b90f3b-9dfc-4804-9e6e-0202e9716a2c",
+   "name": "Ashley Drury",
+   "scope": "state_lower",
+   "districtName": "State House District 113 (2024); Missouri"
+  },
+  {
+   "candidateId": "7614370f-14a2-4f5b-ab5d-930efe91fcb6",
+   "name": "Beth Grubb",
+   "scope": "state_lower",
+   "districtName": "State House District 53 (2024); Missouri"
+  },
+  {
+   "candidateId": "aea7c6a4-01e0-42d5-a100-3e06b30ad31f",
+   "name": "Bob Mahacek",
+   "scope": "state_lower",
+   "districtName": "State House District 95 (2024); Missouri"
+  },
+  {
+   "candidateId": "3fe78e8c-42fc-468a-a33c-c7ef84f2981a",
+   "name": "Bradley Bos",
+   "scope": "state_lower",
+   "districtName": "State House District 157 (2024); Missouri"
+  },
+  {
+   "candidateId": "7328561a-40a2-4e20-ae02-28eb6bc1cb7f",
+   "name": "Brendan Webber",
+   "scope": "state_lower",
+   "districtName": "State House District 43 (2024); Missouri"
+  },
+  {
+   "candidateId": "a142a79c-9bbf-449c-9aad-a8cf26772598",
+   "name": "Brenna Barksdale",
+   "scope": "state_lower",
+   "districtName": "State House District 163 (2024); Missouri"
+  },
+  {
+   "candidateId": "0b9a6a1d-d546-440f-a64b-b55f7842ee56",
+   "name": "Bryan Troop",
+   "scope": "state_lower",
+   "districtName": "State House District 89 (2024); Missouri"
+  },
+  {
+   "candidateId": "ea1126f7-7904-4911-85ca-4cf51824505d",
+   "name": "Bryce Lockwood",
+   "scope": "state_lower",
+   "districtName": "State House District 137 (2024); Missouri"
+  },
+  {
+   "candidateId": "5d382f22-ef92-4772-9885-b5c4a1ec4956",
+   "name": "Casey Carlisle",
+   "scope": "state_lower",
+   "districtName": "State House District 148 (2024); Missouri"
+  },
+  {
+   "candidateId": "051acf47-3611-4cd0-87d7-09e35a6a6e92",
+   "name": "Caterina Clayton",
+   "scope": "state_lower",
+   "districtName": "State House District 105 (2024); Missouri"
+  },
+  {
+   "candidateId": "743bc027-4d18-4da6-8aea-acf7ae39ac12",
+   "name": "Cathy Summers",
+   "scope": "state_lower",
+   "districtName": "State House District 94 (2024); Missouri"
+  },
+  {
+   "candidateId": "2a089248-b894-4bf4-81b3-6c04133811ef",
+   "name": "Cecil Ince",
+   "scope": "state_upper",
+   "districtName": "State Senate District 30 (2024); Missouri"
+  },
+  {
+   "candidateId": "afe0eb5c-6af3-4796-a58a-59088c1202c2",
+   "name": "Chris Chapman",
+   "scope": "state_lower",
+   "districtName": "State House District 69 (2024); Missouri"
+  },
+  {
+   "candidateId": "11810e3e-a725-449c-b4de-6027268e5103",
+   "name": "Chris Foster",
+   "scope": "state_lower",
+   "districtName": "State House District 158 (2024); Missouri"
+  },
+  {
+   "candidateId": "939b4c3e-b765-45cf-aaa1-a416074b9f80",
+   "name": "Cody Hutcheson",
+   "scope": "state_lower",
+   "districtName": "State House District 123 (2024); Missouri"
+  },
+  {
+   "candidateId": "eae07aae-d73d-4042-bedf-61aab84b9ab8",
+   "name": "Dale Conoyer",
+   "scope": "state_lower",
+   "districtName": "State House District 65 (2024); Missouri"
+  },
+  {
+   "candidateId": "657f9d71-c0f0-49d3-9a38-7c3e213fe8b2",
+   "name": "Dalton Johnson",
+   "scope": "state_lower",
+   "districtName": "State House District 41 (2024); Missouri"
+  },
+  {
+   "candidateId": "a30e66aa-4e47-462b-929c-bb4e66971245",
+   "name": "Dan Hyatt",
+   "scope": "state_lower",
+   "districtName": "State House District 87 (2024); Missouri"
+  },
+  {
+   "candidateId": "f7a879dc-84d1-446d-8775-e4e8660b34e4",
+   "name": "Dan Victor",
+   "scope": "state_lower",
+   "districtName": "State House District 122 (2024); Missouri"
+  },
+  {
+   "candidateId": "1835335f-244b-4fea-9a4b-1977e6309fdb",
+   "name": "Daniel Kinate",
+   "scope": "state_lower",
+   "districtName": "State House District 16 (2024); Missouri"
+  },
+  {
+   "candidateId": "4b7c9137-d80c-4610-a178-1398971d5303",
+   "name": "Darrel Swofford",
+   "scope": "state_lower",
+   "districtName": "State House District 141 (2024); Missouri"
+  },
+  {
+   "candidateId": "2a8c4a4b-030d-403e-b4c0-f02480029bc0",
+   "name": "Dave Hinman",
+   "scope": "state_lower",
+   "districtName": "State House District 103 (2024); Missouri"
+  },
+  {
+   "candidateId": "93da3a34-8649-4d94-9750-d97c3944aab8",
+   "name": "Dave Rekosh",
+   "scope": "state_lower",
+   "districtName": "State House District 112 (2024); Missouri"
+  },
+  {
+   "candidateId": "fc177779-08f6-4b8e-bf0f-34bf511ceb2a",
+   "name": "Dave Thomas",
+   "scope": "state_lower",
+   "districtName": "State House District 36 (2024); Missouri"
+  },
+  {
+   "candidateId": "7b716403-7b33-47f1-af07-bdef813a4eb9",
+   "name": "David George",
+   "scope": "state_lower",
+   "districtName": "State House District 115 (2024); Missouri"
+  },
+  {
+   "candidateId": "ebbeb86d-e759-4f5f-bcc0-d12efe491dd6",
+   "name": "David Rogers",
+   "scope": "state_lower",
+   "districtName": "State House District 102 (2024); Missouri"
+  },
+  {
+   "candidateId": "c467ded8-7848-4089-b7ef-74aae8c090a2",
+   "name": "Dean VanSchoiack",
+   "scope": "state_lower",
+   "districtName": "State House District 9 (2024); Missouri"
+  },
+  {
+   "candidateId": "663ab80a-43e4-4a82-8ac8-13dc495c3931",
+   "name": "Don Crozier",
+   "scope": "state_lower",
+   "districtName": "State House District 103 (2024); Missouri"
+  },
+  {
+   "candidateId": "9c533d53-717b-4b74-8fb1-64f61d79773d",
+   "name": "Donald Looney",
+   "scope": "state_lower",
+   "districtName": "State House District 63 (2024); Missouri"
+  },
+  {
+   "candidateId": "e4069f53-e97a-41f1-9d3b-78f2378e1804",
+   "name": "Ed Callahan",
+   "scope": "state_lower",
+   "districtName": "State House District 112 (2024); Missouri"
+  },
+  {
+   "candidateId": "bf08e9e5-6416-441b-982c-e5ab41eff4a2",
+   "name": "Frank Pendleton",
+   "scope": "state_lower",
+   "districtName": "State House District 14 (2024); Missouri"
+  },
+  {
+   "candidateId": "e0a4496e-e4eb-4ece-89e7-21174eaa43cf",
+   "name": "Gary Wester",
+   "scope": "state_lower",
+   "districtName": "State House District 107 (2024); Missouri"
+  },
+  {
+   "candidateId": "ebed93fb-37f7-405c-b01f-eba68ac69859",
+   "name": "Gena Puckett",
+   "scope": "state_lower",
+   "districtName": "State House District 9 (2024); Missouri"
+  },
+  {
+   "candidateId": "c57bd85e-653e-40ff-80df-9732808efaa9",
+   "name": "Gerald Angelo",
+   "scope": "state_lower",
+   "districtName": "State House District 133 (2024); Missouri"
+  },
+  {
+   "candidateId": "9f80d501-9542-44e3-a095-7b8e0c4ccdab",
+   "name": "Greg Tlapek",
+   "scope": "state_lower",
+   "districtName": "State House District 147 (2024); Missouri"
+  },
+  {
+   "candidateId": "0fad1783-9c46-405b-a443-854592455424",
+   "name": "Hope Tinker",
+   "scope": "state_lower",
+   "districtName": "State House District 48 (2024); Missouri"
+  },
+  {
+   "candidateId": "cb88db18-11a8-49ab-9118-5ea40be2ff6d",
+   "name": "Jacey Buckles",
+   "scope": "state_lower",
+   "districtName": "State House District 136 (2024); Missouri"
+  },
+  {
+   "candidateId": "64036640-da74-46fe-bfbb-ecd3bf5384e1",
+   "name": "Jacoby Wynkoop",
+   "scope": "state_lower",
+   "districtName": "State House District 13 (2024); Missouri"
+  },
+  {
+   "candidateId": "0221f4ce-9d5e-4e4b-85c3-e2fae4ee42c8",
+   "name": "Jacquie Aziere Stenger",
+   "scope": "state_lower",
+   "districtName": "State House District 35 (2024); Missouri"
+  },
+  {
+   "candidateId": "a706eac2-85f4-492d-82cd-c13e76850fb5",
+   "name": "Jeff Abney",
+   "scope": "state_upper",
+   "districtName": "State Senate District 22 (2024); Missouri"
+  },
+  {
+   "candidateId": "c6db3da1-609b-4c80-8f25-4a7c325aaec5",
+   "name": "Jeffrey Jacks",
+   "scope": "state_lower",
+   "districtName": "State House District 72 (2024); Missouri"
+  },
+  {
+   "candidateId": "41e44b1b-2199-43ab-bbd8-d6df9472af88",
+   "name": "Jennie Drag",
+   "scope": "state_lower",
+   "districtName": "State House District 80 (2024); Missouri"
+  },
+  {
+   "candidateId": "30637f20-91c1-40f1-806f-807baa2de727",
+   "name": "Jennifer Cassidy",
+   "scope": "state_lower",
+   "districtName": "State House District 32 (2024); Missouri"
+  },
+  {
+   "candidateId": "49b105f2-d4cb-49e3-8684-2b8e8b219653",
+   "name": "Jennifer Trickey",
+   "scope": "state_lower",
+   "districtName": "State House District 88 (2024); Missouri"
+  },
+  {
+   "candidateId": "1bb8a57f-1a49-4511-863b-67aa42267bc7",
+   "name": "Jerry Hickey",
+   "scope": "state_lower",
+   "districtName": "State House District 12 (2024); Missouri"
+  },
+  {
+   "candidateId": "030b5bdc-aa7f-407a-adf8-9014a37de1dd",
+   "name": "Jessica Slisz",
+   "scope": "state_lower",
+   "districtName": "State House District 49 (2024); Missouri"
+  },
+  {
+   "candidateId": "38aba7c0-9cca-40d2-8b59-fb0dd23bc113",
+   "name": "Jim Avery",
+   "scope": "state_upper",
+   "districtName": "State Senate District 22 (2024); Missouri"
+  },
+  {
+   "candidateId": "042d50a7-a395-4357-a06a-9c6ce18e2af9",
+   "name": "John Armbruster",
+   "scope": "state_lower",
+   "districtName": "State House District 149 (2024); Missouri"
+  },
+  {
+   "candidateId": "ad04eecc-886a-4adf-9c2c-41718d3af555",
+   "name": "John Chiles",
+   "scope": "state_lower",
+   "districtName": "State House District 135 (2024); Missouri"
+  },
+  {
+   "candidateId": "f2fb351f-4e7e-4e7e-919d-ee1be80643bc",
+   "name": "John Davison",
+   "scope": "state_lower",
+   "districtName": "State House District 6 (2024); Missouri"
+  },
+  {
+   "candidateId": "befe20f6-7a55-4898-b900-8b06ff4a7233",
+   "name": "John Elliott",
+   "scope": "state_lower",
+   "districtName": "State House District 13 (2024); Missouri"
+  },
+  {
+   "candidateId": "c444190d-9e3a-4bad-9d98-d1c6dac17aad",
+   "name": "Jonathan Pennell",
+   "scope": "state_lower",
+   "districtName": "State House District 55 (2024); Missouri"
+  },
+  {
+   "candidateId": "db148eed-82cc-4e63-ae4c-a3d57cdafaf4",
+   "name": "Joshua Berzins",
+   "scope": "state_lower",
+   "districtName": "State House District 155 (2024); Missouri"
+  },
+  {
+   "candidateId": "8071234b-88f4-4069-bbfa-36c6e03449f3",
+   "name": "Judy McNeece",
+   "scope": "state_upper",
+   "districtName": "State Senate District 12 (2024); Missouri"
+  },
+  {
+   "candidateId": "8191835c-440a-4beb-95c1-253931a53bbc",
+   "name": "Justin Flowers",
+   "scope": "state_lower",
+   "districtName": "State House District 117 (2024); Missouri"
+  },
+  {
+   "candidateId": "781be115-3262-4194-b461-e8b989d4eb92",
+   "name": "Justin Geiser",
+   "scope": "state_lower",
+   "districtName": "State House District 31 (2024); Missouri"
+  },
+  {
+   "candidateId": "56707b36-b8b6-49ae-85a3-39d20e9a43ff",
+   "name": "K. Grant",
+   "scope": "state_lower",
+   "districtName": "State House District 134 (2024); Missouri"
+  },
+  {
+   "candidateId": "96ea9499-a21f-4704-bc33-de7f0c1cdd9f",
+   "name": "Karen Spalding",
+   "scope": "state_lower",
+   "districtName": "State House District 19 (2024); Missouri"
+  },
+  {
+   "candidateId": "6dcf8404-2f4e-423d-9733-b5191e3d5bce",
+   "name": "Karissa Varga",
+   "scope": "state_lower",
+   "districtName": "State House District 37 (2024); Missouri"
+  },
+  {
+   "candidateId": "efc6fcc6-09f7-46c2-a4f8-f0347e7e0bc6",
+   "name": "Katelyn Zach",
+   "scope": "state_lower",
+   "districtName": "State House District 133 (2024); Missouri"
+  },
+  {
+   "candidateId": "20cce1ba-9887-4950-b0fb-c22aaab2c2b1",
+   "name": "Keith Gudehus",
+   "scope": "state_lower",
+   "districtName": "State House District 4 (2024); Missouri"
+  },
+  {
+   "candidateId": "499f60a3-958d-4433-9b07-4fea104a0179",
+   "name": "Kelly Gatts",
+   "scope": "state_lower",
+   "districtName": "State House District 6 (2024); Missouri"
+  },
+  {
+   "candidateId": "86f0356f-4824-4126-9266-415bd87096e9",
+   "name": "Ken Newhouse",
+   "scope": "state_lower",
+   "districtName": "State House District 100 (2024); Missouri"
+  },
+  {
+   "candidateId": "f21cedfa-ecbc-496a-96d2-c7a41cc4c3d3",
+   "name": "Kevin Garner",
+   "scope": "state_lower",
+   "districtName": "State House District 24 (2024); Missouri"
+  },
+  {
+   "candidateId": "466c1dd1-e5cf-4243-9ee4-59d567d503bf",
+   "name": "LaVanna Wrobley",
+   "scope": "state_upper",
+   "districtName": "State Senate District 24 (2024); Missouri"
+  },
+  {
+   "candidateId": "cb6b2d88-8ee9-4685-8584-1d75ff7a83ad",
+   "name": "Les Majors",
+   "scope": "state_lower",
+   "districtName": "State House District 153 (2024); Missouri"
+  },
+  {
+   "candidateId": "135af07f-cf7f-44f0-9e51-f4810600ead0",
+   "name": "Leslie Jones",
+   "scope": "state_lower",
+   "districtName": "State House District 130 (2024); Missouri"
+  },
+  {
+   "candidateId": "0e4f900c-f7d6-4c51-bc70-556968cc46a1",
+   "name": "Liz Davenport",
+   "scope": "state_lower",
+   "districtName": "State House District 62 (2024); Missouri"
+  },
+  {
+   "candidateId": "0e169c99-d08b-4f29-81c9-100382951f57",
+   "name": "Lucas Green",
+   "scope": "state_lower",
+   "districtName": "State House District 146 (2024); Missouri"
+  },
+  {
+   "candidateId": "1a2abd9e-7a18-4c83-b528-65d591a36223",
+   "name": "Lynda Jones",
+   "scope": "state_lower",
+   "districtName": "State House District 125 (2024); Missouri"
+  },
+  {
+   "candidateId": "b4296b33-c64b-4c4c-af37-cc392a118fa3",
+   "name": "Marsha Snodgrass",
+   "scope": "state_lower",
+   "districtName": "State House District 143 (2024); Missouri"
+  },
+  {
+   "candidateId": "f06dce3d-f46e-46b1-ba49-aafd6dfd6752",
+   "name": "Mary Ann Perkins",
+   "scope": "state_lower",
+   "districtName": "State House District 100 (2024); Missouri"
+  },
+  {
+   "candidateId": "9e7dbd1d-edba-4f11-bbef-a5a675301943",
+   "name": "Mary Harriet Talbut",
+   "scope": "state_lower",
+   "districtName": "State House District 146 (2024); Missouri"
+  },
+  {
+   "candidateId": "7571dc36-55fb-4288-b3cb-65696c642f71",
+   "name": "Mary Hill",
+   "scope": "state_lower",
+   "districtName": "State House District 38 (2024); Missouri"
+  },
+  {
+   "candidateId": "f04a8e94-24e4-45a9-bf57-0cb8b4f636d1",
+   "name": "Maryellen Murphy",
+   "scope": "state_lower",
+   "districtName": "State House District 94 (2024); Missouri"
+  },
+  {
+   "candidateId": "26a6ffe0-18d7-44f7-82f9-6828d3bb3bfe",
+   "name": "Matt Vitale",
+   "scope": "state_lower",
+   "districtName": "State House District 96 (2024); Missouri"
+  },
+  {
+   "candidateId": "2e19b40c-794d-4021-86cd-746289d78b26",
+   "name": "Matthew Beger",
+   "scope": "state_lower",
+   "districtName": "State House District 41 (2024); Missouri"
+  },
+  {
+   "candidateId": "19984a0d-f2a1-4cb2-97ee-401c69bdf869",
+   "name": "Matthew Sergent",
+   "scope": "state_lower",
+   "districtName": "State House District 57 (2024); Missouri"
+  },
+  {
+   "candidateId": "d2f964d5-4f91-48bc-8386-c70641c57bda",
+   "name": "Melissa Perry",
+   "scope": "state_lower",
+   "districtName": "State House District 126 (2024); Missouri"
+  },
+  {
+   "candidateId": "f46e3672-be5b-4b83-9805-4ea8eb75ffa2",
+   "name": "Meredith Sumenek",
+   "scope": "state_lower",
+   "districtName": "State House District 95 (2024); Missouri"
+  },
+  {
+   "candidateId": "acc3c725-0ffc-4998-b63d-7576a24c1572",
+   "name": "Michael Corey",
+   "scope": "state_lower",
+   "districtName": "State House District 77 (2024); Missouri"
+  },
+  {
+   "candidateId": "c7587dfd-77e7-414a-b25a-fd9ab464b638",
+   "name": "Michael Hasty",
+   "scope": "state_lower",
+   "districtName": "State House District 135 (2024); Missouri"
+  },
+  {
+   "candidateId": "357e1f5d-2434-4c80-9eb1-2ce181e79fae",
+   "name": "Michael Martin",
+   "scope": "state_lower",
+   "districtName": "State House District 128 (2024); Missouri"
+  },
+  {
+   "candidateId": "859eba5b-3002-4649-8669-4e3a7fc5525d",
+   "name": "Michael Scott",
+   "scope": "state_lower",
+   "districtName": "State House District 35 (2024); Missouri"
+  },
+  {
+   "candidateId": "5f648158-e2d6-468e-bf00-7baade2bab5f",
+   "name": "Michael Todd",
+   "scope": "state_lower",
+   "districtName": "State House District 32 (2024); Missouri"
+  },
+  {
+   "candidateId": "151c0db3-6f73-4384-b173-ed6f2eb1998d",
+   "name": "Michael Walbom",
+   "scope": "state_lower",
+   "districtName": "State House District 57 (2024); Missouri"
+  },
+  {
+   "candidateId": "d38785e1-9c10-434a-bef8-d4d81c584e21",
+   "name": "Michael Young",
+   "scope": "state_lower",
+   "districtName": "State House District 21 (2024); Missouri"
+  },
+  {
+   "candidateId": "0e508657-f441-4022-8f91-432048c50b9e",
+   "name": "Nicole Greer",
+   "scope": "state_lower",
+   "districtName": "State House District 71 (2024); Missouri"
+  },
+  {
+   "candidateId": "58aae802-4b9c-4f26-9807-5abda16532aa",
+   "name": "Pam Proffitt-Rowland",
+   "scope": "state_lower",
+   "districtName": "State House District 151 (2024); Missouri"
+  },
+  {
+   "candidateId": "90bb2782-0f88-42cf-acec-ef2af5ce3922",
+   "name": "Patrick Wroblewski",
+   "scope": "state_lower",
+   "districtName": "State House District 72 (2024); Missouri"
+  },
+  {
+   "candidateId": "c2d3b6de-abf5-40a2-a128-99b72ff1fe52",
+   "name": "Ray Bruno",
+   "scope": "state_lower",
+   "districtName": "State House District 120 (2024); Missouri"
+  },
+  {
+   "candidateId": "ccffe048-589e-4317-8c78-ad01a1ea98d3",
+   "name": "Rebecca Brewer",
+   "scope": "state_lower",
+   "districtName": "State House District 44 (2024); Missouri"
+  },
+  {
+   "candidateId": "327da7dc-55c3-436f-88b7-32b6f5d56d58",
+   "name": "Rich Gold",
+   "scope": "state_lower",
+   "districtName": "State House District 43 (2024); Missouri"
+  },
+  {
+   "candidateId": "14f5ff87-5e03-4547-b2fd-1e5cb0a6c9a8",
+   "name": "Robert Bruette",
+   "scope": "state_lower",
+   "districtName": "State House District 29 (2024); Missouri"
+  },
+  {
+   "candidateId": "5059f466-3b9f-42d1-9fc9-2e5ae1405256",
+   "name": "Robert Johnson",
+   "scope": "state_lower",
+   "districtName": "State House District 6 (2024); Missouri"
+  },
+  {
+   "candidateId": "98a76957-230f-4d6c-a2ca-7da8b8f3e6f9",
+   "name": "Robert Vroman",
+   "scope": "state_lower",
+   "districtName": "State House District 84 (2024); Missouri"
+  },
+  {
+   "candidateId": "e1f72450-4e66-4bde-982b-3ee77a4e7262",
+   "name": "Roger Korenberg",
+   "scope": "state_lower",
+   "districtName": "State House District 58 (2024); Missouri"
+  },
+  {
+   "candidateId": "abd43840-ccd4-4a15-8566-494bc246b514",
+   "name": "Ron Fauss",
+   "scope": "state_lower",
+   "districtName": "State House District 51 (2024); Missouri"
+  },
+  {
+   "candidateId": "5835e478-77cf-4e50-9b87-b6d71b9ba4a7",
+   "name": "Russ Gos\u00adselin",
+   "scope": "state_lower",
+   "districtName": "State House District 132 (2024); Missouri"
+  },
+  {
+   "candidateId": "184698df-28e8-4494-90bd-c087fc0b046d",
+   "name": "Ryan Sheridan",
+   "scope": "state_lower",
+   "districtName": "State House District 90 (2024); Missouri"
+  },
+  {
+   "candidateId": "08e6c003-d759-4d75-b3ea-46376a4fd220",
+   "name": "Sarah Puckett",
+   "scope": "state_lower",
+   "districtName": "State House District 118 (2024); Missouri"
+  },
+  {
+   "candidateId": "89e24735-58cf-4b62-82ae-e94f62941c87",
+   "name": "Scott Crumpecker",
+   "scope": "state_lower",
+   "districtName": "State House District 149 (2024); Missouri"
+  },
+  {
+   "candidateId": "77cfa694-e8f0-45cd-b5f0-dc3bd82cdaca",
+   "name": "Sean Smith",
+   "scope": "state_lower",
+   "districtName": "State House District 34 (2024); Missouri"
+  },
+  {
+   "candidateId": "3722ec93-618c-4f0c-83d5-8471950b0974",
+   "name": "Shane Ferguson",
+   "scope": "state_lower",
+   "districtName": "State House District 96 (2024); Missouri"
+  },
+  {
+   "candidateId": "261fac42-fd67-4925-95e1-f0524b450ed4",
+   "name": "Sheri Jay",
+   "scope": "state_lower",
+   "districtName": "State House District 40 (2024); Missouri"
+  },
+  {
+   "candidateId": "1429db08-bea0-4aba-8b77-442752d7fd17",
+   "name": "Stacey Hagen",
+   "scope": "state_lower",
+   "districtName": "State House District 111 (2024); Missouri"
+  },
+  {
+   "candidateId": "54aae5f7-b958-44a2-9b01-4e924e1bedb0",
+   "name": "Stephanie Gooden",
+   "scope": "state_lower",
+   "districtName": "State House District 51 (2024); Missouri"
+  },
+  {
+   "candidateId": "1178e34d-5e7b-47da-88f1-4d5f618c9a5c",
+   "name": "Tara Murray",
+   "scope": "state_lower",
+   "districtName": "State House District 104 (2024); Missouri"
+  },
+  {
+   "candidateId": "e53a116d-11b5-4425-98b7-1e9b3d5cc9fc",
+   "name": "Tedi Rowland",
+   "scope": "state_lower",
+   "districtName": "State House District 29 (2024); Missouri"
+  },
+  {
+   "candidateId": "ae58d8cb-ef5f-44d0-8429-abc674fd0dc9",
+   "name": "Thomas McBeth",
+   "scope": "state_lower",
+   "districtName": "State House District 40 (2024); Missouri"
+  },
+  {
+   "candidateId": "afcbc05f-21b0-442f-9706-cbdd8ba7b28e",
+   "name": "Tim Bosch",
+   "scope": "state_lower",
+   "districtName": "State House District 98 (2024); Missouri"
+  },
+  {
+   "candidateId": "2d1845d8-6ca3-4120-9ca9-12350f18d566",
+   "name": "Tim Palmer",
+   "scope": "state_lower",
+   "districtName": "State House District 147 (2024); Missouri"
+  },
+  {
+   "candidateId": "1d5d3bcc-6d60-4317-830d-82df8b24f3f4",
+   "name": "Tony Lovasco",
+   "scope": "state_lower",
+   "districtName": "State House District 63 (2024); Missouri"
+  },
+  {
+   "candidateId": "a416f3bc-0d12-4374-8b4a-a086295cea05",
+   "name": "Tony Van Trece",
+   "scope": "state_lower",
+   "districtName": "State House District 23 (2024); Missouri"
+  },
+  {
+   "candidateId": "4e343af6-988e-4e47-8852-5c669fd2516a",
+   "name": "Tracey Steele",
+   "scope": "state_lower",
+   "districtName": "State House District 12 (2024); Missouri"
+  },
+  {
+   "candidateId": "13712dc0-8025-49e8-8257-dfd79faad0fa",
+   "name": "Trent Davis",
+   "scope": "state_lower",
+   "districtName": "State House District 156 (2024); Missouri"
+  },
+  {
+   "candidateId": "9be87771-eb10-46ba-91e4-4d8c62d33384",
+   "name": "Trent Leslie",
+   "scope": "state_lower",
+   "districtName": "State House District 109 (2024); Missouri"
+  },
+  {
+   "candidateId": "3ae954fc-dbd3-4392-84ab-ab799c73f274",
+   "name": "Tristan Sutton",
+   "scope": "state_lower",
+   "districtName": "State House District 4 (2024); Missouri"
+  },
+  {
+   "candidateId": "b98070e7-bddd-47ea-b2ee-d65d9052e245",
+   "name": "Troy Latterell",
+   "scope": "state_lower",
+   "districtName": "State House District 33 (2024); Missouri"
+  },
+  {
+   "candidateId": "fa1790b9-f845-494c-9006-ce7ee35ca2a5",
+   "name": "Victoria Wors",
+   "scope": "state_upper",
+   "districtName": "State Senate District 26 (2024); Missouri"
+  },
+  {
+   "candidateId": "5ccc4814-a568-4974-a7b4-ec8286acf812",
+   "name": "Wick Thomas",
+   "scope": "state_lower",
+   "districtName": "State House District 19 (2024); Missouri"
+  }
+ ],
+ "validationRun": {
+  "importerVersion": "rollcall-legiscan-resolve-v1",
+  "startedAt": "2026-08-29T05:11:46.037Z",
+  "finishedAt": "2026-08-29T05:11:46.216Z",
+  "jurisdiction": "MO",
+  "sessionId": 2169,
+  "evidenceDir": "/Users/shu/legiscan-data/mo-2169-evidence",
+  "scopeFrom": "2026-11-01",
+  "peopleSource": "/Users/shu/legiscan-data/mo-2169-crosswalk/legiscan-people-mo-2169.json",
+  "peopleMembers": 197,
+  "candidatePool": 215,
+  "crosswalkFile": "/Users/shu/legiscan-data/mo-2169-crosswalk/crosswalk.json",
+  "crosswalkEntries": 197,
+  "crosswalkPeopleNotInSnapshot": [],
+  "files": 499,
+  "fileErrors": 0,
+  "counts": {
+   "matched": 26979,
+   "unmatched_reviewed": 25904,
+   "out_of_scope": 418
+  }
+ },
+ "fanOut": {
+  "houseRolls": 330,
+  "houseMedianMatched": 81.0,
+  "houseMaxMatched": 89,
+  "senateRolls": 169,
+  "senateMedianMatched": 3,
+  "senateMaxMatched": 3,
+  "zeroMatchRolls": 0
+ }
+}
