@@ -1,0 +1,976 @@
+{
+  "judgments": [
+    {
+      "measure_id": "H R 5371",
+      "vote_date": "2025-11-12",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's version of H.R. 5371 and send the funding bill to the President. It ended the 43-day government shutdown. It funded most agencies through January 30, 2026, and funded agriculture, military construction and veterans affairs, and the legislative branch through September 2026. The House agreed 222-209, and it became Public Law 119-37 on November 12, 2025.",
+      "nay_description": "Voted against accepting the Senate's version of H.R. 5371, the bill to end the 43-day government shutdown. It funded most agencies through January 30, 2026, and funded agriculture, military construction and veterans affairs, and the legislative branch through September 2026. The House agreed anyway, 222-209, and it became Public Law 119-37 on November 12, 2025.",
+      "labels": [
+        {
+          "slug": "general"
+        }
+      ],
+      "chamber": "house",
+      "roll": 285,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "H R 4405",
+      "vote_date": "2025-11-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 4405, the Epstein Files Transparency Act, under a fast-track process needing two-thirds support. It ordered the Justice Department to publish its unclassified records on the Jeffrey Epstein investigation, including flight logs and names of officials in them. The House passed it 427-1. The Senate passed it the next day, and it became Public Law 119-38 on November 19, 2025.",
+      "nay_description": "Voted no on H.R. 4405, the Epstein Files Transparency Act. It ordered the Justice Department to publish its unclassified records on the Jeffrey Epstein investigation, including flight logs and names of officials in them. The House passed it 427-1 despite this vote. The Senate then agreed, and it became Public Law 119-38 on November 19, 2025.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "chamber": "house",
+      "roll": 289,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "H J RES 130",
+      "vote_date": "2025-11-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 130, which cancelled a Bureau of Land Management plan change. That change had ended new federal coal leasing in Wyoming's Powder River Basin. Cancelling it opens that coal to leasing again. The House passed it 214-212, the Senate agreed, and it became Public Law 119-51 on December 11, 2025.",
+      "nay_description": "Voted against H.J.Res. 130, which cancelled a Bureau of Land Management plan change. That change had ended new federal coal leasing in Wyoming's Powder River Basin. A no vote kept that coal-leasing ban in place. The House passed it 214-212 anyway, the Senate agreed, and it became Public Law 119-51 on December 11, 2025.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "house",
+      "roll": 294,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "H J RES 131",
+      "vote_date": "2025-11-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 131, which cancelled the 2024 federal decision on oil and gas leasing in the Arctic National Wildlife Refuge coastal plain. That decision had closed about 1.2 million acres to leasing. Cancelling it reopens the full program area, about 1.6 million acres, to drilling. The House passed it 217-209, the Senate agreed, and it became Public Law 119-52 on December 11, 2025.",
+      "nay_description": "Voted against H.J.Res. 131, which cancelled the 2024 federal decision on oil and gas leasing in the Arctic National Wildlife Refuge coastal plain. A no vote kept about 1.2 million acres closed to leasing. The House passed it 217-209 anyway, the Senate agreed, and it became Public Law 119-52 on December 11, 2025.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "house",
+      "roll": 295,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "S J RES 80",
+      "vote_date": "2025-11-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 80 and send it to the President. It cancelled the 2022 federal management plan for the National Petroleum Reserve in Alaska. That plan had closed about 48% of the 23-million-acre reserve to oil and gas leasing. The House passed it 216-209, and it became Public Law 119-47 on December 5, 2025.",
+      "nay_description": "Voted against S.J.Res. 80, the last step before it went to the President. It cancelled the 2022 federal plan that closed about 48% of the 23-million-acre National Petroleum Reserve in Alaska to oil and gas leasing. The House passed it 216-209 anyway, and it became Public Law 119-47 on December 5, 2025.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "house",
+      "roll": 296,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "H R 5214",
+      "vote_date": "2025-11-19",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 5214, the District of Columbia Cash Bail Reform Act. It would require jailing people before trial for violent and dangerous crimes in Washington, DC. It would also bar release before trial without money bail for other public-safety crimes. The House passed it 237-179, but the Senate has not acted, so it is not law.",
+      "nay_description": "Voted against H.R. 5214, the District of Columbia Cash Bail Reform Act. It would require jailing people before trial for violent and dangerous crimes in Washington, DC. It would also bar release before trial without money bail for other public-safety crimes. The House passed it 237-179, but the Senate has not acted, so it is not law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "chamber": "house",
+      "roll": 298,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "H R 1949",
+      "vote_date": "2025-11-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 1949, the Unlocking our Domestic LNG Potential Act. It would repeal the Energy Department's approval role for natural gas imports and exports. Federal energy regulators would alone decide on liquefied natural gas terminals, and would have to treat the exports as serving the public interest. The House passed it 217-188, but the Senate has not acted, so it is not law.",
+      "nay_description": "Voted against H.R. 1949, the Unlocking our Domestic LNG Potential Act. It would repeal the Energy Department's approval role for natural gas imports and exports. A no vote kept that public-interest review in place. The House passed it 217-188, but the Senate has not acted, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "house",
+      "roll": 304,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "S.J.Res. 43",
+      "vote_date": "2023-11-15",
+      "review_status": "approved",
+      "yea_description": "Voted for S.J.Res. 43, which would cancel the Education Department's SAVE plan, the student loan plan that lowered payments based on income. The Senate rejected it 49-50, so it did not become law.",
+      "nay_description": "Voted against S.J.Res. 43, which would cancel the Education Department's SAVE plan, the student loan plan that lowered payments based on income. The Senate rejected it 49-50, so it did not become law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "senate",
+      "roll": 310,
+      "congress": 118,
+      "session": 1
+    },
+    {
+      "measure_id": "H.R. 3684",
+      "vote_date": "2021-08-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 3684, the Infrastructure Investment and Jobs Act. The Senate replaced the House text with a bipartisan deal putting roughly $1 trillion into roads, bridges, rail, transit, broadband, ports, airports, water systems, and the power grid. The Senate passed it 69-30. The House later agreed, and it became Public Law 117-58 on November 15, 2021.",
+      "nay_description": "Voted against H.R. 3684, the Infrastructure Investment and Jobs Act, as rewritten by the Senate. That bipartisan version put roughly $1 trillion into roads, bridges, rail, transit, broadband, ports, airports, water systems, and the power grid. The Senate passed it 69-30. The House later agreed, and it became Public Law 117-58 on November 15, 2021.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "chamber": "senate",
+      "roll": 314,
+      "congress": 117,
+      "session": 1
+    },
+    {
+      "measure_id": "S. 1582",
+      "vote_date": "2025-06-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S. 1582, the GENIUS Act, which set the first federal rules for payment stablecoins, a digital money meant to hold a fixed value. Only approved banks and licensed firms may issue them, and each coin must be backed one-for-one by cash or similar safe assets. The Senate passed it 68-30, the House agreed, and it became Public Law 119-27 on July 18, 2025.",
+      "nay_description": "Voted against S. 1582, the GENIUS Act, which set the first federal rules for payment stablecoins, a digital money meant to hold a fixed value. A no vote opposed creating this licensing and reserve system for stablecoin issuers. The Senate passed it 68-30 anyway, the House agreed, and it became Public Law 119-27 on July 18, 2025.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "chamber": "senate",
+      "roll": 318,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "S 1071",
+      "vote_date": "2025-12-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass the National Defense Authorization Act for Fiscal Year 2026, whose text the House placed into S. 1071 as a full substitute. It set defense policy and authorized spending for the Defense Department, military construction, and national security programs at the Energy Department and Coast Guard. The House passed it 312-112, the Senate agreed, and it became Public Law 119-60 on December 18, 2025.",
+      "nay_description": "Voted against the National Defense Authorization Act for Fiscal Year 2026, whose text the House placed into S. 1071 as a full substitute. A no vote opposed that year's defense policy and spending authorization. The House passed it 312-112 anyway, the Senate agreed, and it became Public Law 119-60 on December 18, 2025.",
+      "labels": [
+        {
+          "slug": "national_defense",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "chamber": "house",
+      "roll": 320,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "H.R. 5376",
+      "vote_date": "2022-08-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 5376, the Inflation Reduction Act, which let Medicare negotiate some drug prices and capped insulin at $35 a month for Medicare patients. It also funded clean energy tax credits and set a 15 percent minimum tax on large corporations. The Senate split 50-50 and the Vice President broke the tie; it became Public Law 117-169 on August 16, 2022.",
+      "nay_description": "Voted against H.R. 5376, the Inflation Reduction Act, which let Medicare negotiate some drug prices and capped insulin at $35 a month for Medicare patients. A no vote opposed those drug price, clean energy, and corporate tax changes. The Senate split 50-50, the Vice President broke the tie for passage, and it became Public Law 117-169 on August 16, 2022.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "chamber": "senate",
+      "roll": 325,
+      "congress": 117,
+      "session": 2
+    },
+    {
+      "measure_id": "H R 3898",
+      "vote_date": "2025-12-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 3898, the PERMIT Act, a broad rewrite of Clean Water Act permitting rules. It would speed permits, limit state power to block projects over water quality, and drop groundwater, waste treatment ponds, older farmland, and rain-only streams from protected waters. The House passed it 221-205, but the Senate has not acted, so it is not law.",
+      "nay_description": "Voted against H.R. 3898, the PERMIT Act, which would have rewritten Clean Water Act permitting rules across more than twenty sections. A no vote opposed narrowing which waters the law protects and easing permit reviews. The House passed it 221-205, but the Senate has not acted, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "chamber": "house",
+      "roll": 330,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "H R 3668",
+      "vote_date": "2025-12-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 3668, the Improving Interagency Coordination for Pipeline Reviews Act. It would make federal energy regulators the sole lead agency for environmental review of gas pipelines and export terminals, and end the state water quality certificate requirement. The House passed it 213-184, but the Senate has not acted, so it is not law.",
+      "nay_description": "Voted against H.R. 3668, the Improving Interagency Coordination for Pipeline Reviews Act. A no vote opposed shortening pipeline environmental reviews and taking away the state water quality certificate step. The House passed it 213-184, but the Senate has not acted, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "chamber": "house",
+      "roll": 334,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "H.R. 82",
+      "vote_date": "2024-12-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 82, the Social Security Fairness Act, which repealed two rules that cut Social Security benefits for people with government pensions. Retired teachers, police officers, and other public workers gained full benefits. The Senate passed it 76-20 and it became Public Law 118-273 on January 5, 2025.",
+      "nay_description": "Voted against H.R. 82, the Social Security Fairness Act, which repealed two rules that cut Social Security benefits for people with government pensions. A no vote opposed removing those two benefit reductions. The Senate passed it 76-20 anyway, and it became Public Law 118-273 on January 5, 2025.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "chamber": "senate",
+      "roll": 338,
+      "congress": 118,
+      "session": 2
+    },
+    {
+      "measure_id": "H R 3941",
+      "vote_date": "2023-07-19",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 3941, the Schools Not Shelters Act. Public schools and colleges would have lost federal funding if they sheltered immigrants who entered the country without being admitted, apart from brief disaster shelter. The House passed it 222-201, but the Senate never acted and the bill died with the 118th Congress.",
+      "nay_description": "Voted against H.R. 3941, the Schools Not Shelters Act, which would have tied school federal funding to not sheltering immigrants who entered without being admitted. A no vote opposed that funding condition. The House passed it 222-201, but the Senate never acted and the bill died with the 118th Congress.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "chamber": "house",
+      "roll": 340,
+      "congress": 118,
+      "session": 1
+    },
+    {
+      "measure_id": "H R 4371",
+      "vote_date": "2025-12-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 4371, the Kayla Hamilton Act. It would require locked placement for immigrant children aged 12 and older who have gang tattoos or serious criminal records. It would also bar placing any such child with a sponsor who is not a citizen or lawful permanent resident. The House passed it 225-201, but the Senate has not acted, so it is not law.",
+      "nay_description": "Voted against H.R. 4371, the Kayla Hamilton Act, which would require locked placement for immigrant children aged 12 and older with gang markings or serious criminal records. A no vote opposed that and the ban on non-citizen sponsors. The House passed it 225-201, but the Senate has not acted, so it is not law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        },
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "chamber": "house",
+      "roll": 340,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "H R 7637",
+      "vote_date": "2024-07-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 7637, the Refrigerator Freedom Act. The Energy Department could not set or enforce efficiency standards for refrigerators and freezers unless it found them workable, worth the cost, and not costlier for consumers. The House passed it 212-192, but the Senate never acted and the bill died with the 118th Congress.",
+      "nay_description": "Voted against H.R. 7637, the Refrigerator Freedom Act, which would have added new tests the Energy Department must meet before setting refrigerator and freezer efficiency standards. A no vote opposed those limits. The House passed it 212-192, but the Senate never acted and the bill died with the 118th Congress.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "chamber": "house",
+      "roll": 341,
+      "congress": 118,
+      "session": 2
+    },
+    {
+      "measure_id": "H R 7700",
+      "vote_date": "2024-07-09",
+      "review_status": "approved",
+      "yea_description": "Voted yes on H.R. 7700, the Stop Unaffordable Dishwasher Standards Act. It would bar the Energy Department from setting or enforcing dishwasher efficiency rules that cost consumers more or save little energy. The House passed it 214-192, but the Senate never acted and the bill died at the end of the 118th Congress.",
+      "nay_description": "Voted no on H.R. 7700, the Stop Unaffordable Dishwasher Standards Act, opposing new limits on the Energy Department's dishwasher efficiency rules. The House passed it anyway, 214-192. The Senate never took it up, so the bill died at the end of the 118th Congress.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "house",
+      "roll": 343,
+      "congress": 118,
+      "session": 2
+    },
+    {
+      "measure_id": "H R 8281",
+      "vote_date": "2024-07-10",
+      "review_status": "approved",
+      "yea_description": "Voted yes on H.R. 8281, the SAVE Act. It would require people to show documents proving United States citizenship, such as a passport or birth certificate, when registering to vote in federal elections. The House passed it 221-198, but the Senate never voted and the bill died at the end of the 118th Congress.",
+      "nay_description": "Voted no on H.R. 8281, the SAVE Act, opposing a documentary proof-of-citizenship requirement for federal voter registration. The House passed it 221-198. The Senate never voted on it, and the bill died at the end of the 118th Congress.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "chamber": "house",
+      "roll": 345,
+      "congress": 118,
+      "session": 2
+    },
+    {
+      "measure_id": "H R 3492",
+      "vote_date": "2025-12-17",
+      "review_status": "approved",
+      "yea_description": "Voted yes on H.R. 3492, the Protect Children's Innocence Act. It would make it a federal crime to give gender-transition surgery or hormones to anyone under 18. The House passed it 216-211, and the bill went to a Senate committee and has not become law.",
+      "nay_description": "Voted no on H.R. 3492, the Protect Children's Innocence Act, opposing federal criminal penalties for providing gender-transition care to minors. The House passed it 216-211. The bill sits in a Senate committee and has not become law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "house",
+      "roll": 351,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "H J RES 165",
+      "vote_date": "2024-07-11",
+      "review_status": "approved",
+      "yea_description": "Voted yes on H.J. Res. 165. It would have wiped out the Education Department's 2024 Title IX rule, which extended sex discrimination protections to gender identity and sexual orientation. The House passed it 210-205, but the Senate never voted, so Congress did not repeal the rule.",
+      "nay_description": "Voted no on H.J. Res. 165, opposing repeal of the Education Department's 2024 Title IX rule covering gender identity and sexual orientation. The House passed it 210-205. The Senate never acted, and the resolution died at the end of the 118th Congress.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "house",
+      "roll": 354,
+      "congress": 118,
+      "session": 2
+    },
+    {
+      "measure_id": "H R 4776",
+      "vote_date": "2025-12-18",
+      "review_status": "approved",
+      "yea_description": "Voted yes on H.R. 4776, the SPEED Act. It would narrow the main federal environmental review law, cutting how many federal projects need a review and limiting court challenges. The House passed it 221-196, and the bill went to a Senate committee and has not become law.",
+      "nay_description": "Voted no on H.R. 4776, the SPEED Act, opposing cuts to federal environmental reviews and to court challenges against them. The House passed it 221-196. It is pending in a Senate committee and has not become law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "house",
+      "roll": 356,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "H R 1366",
+      "vote_date": "2025-12-18",
+      "review_status": "approved",
+      "yea_description": "Voted yes on H.R. 1366, the Mining Regulatory Clarity Act. It would let mining operators use federal land for waste rock disposal and other support work even where no valuable mineral deposit was proven. The House passed it 219-198; the bill sits on the Senate calendar and has not become law.",
+      "nay_description": "Voted no on H.R. 1366, the Mining Regulatory Clarity Act, opposing wider mining use of federal land where no valuable mineral deposit was proven. The House passed it 219-198. The Senate has not voted, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "house",
+      "roll": 358,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "H R 845",
+      "vote_date": "2025-12-18",
+      "review_status": "approved",
+      "yea_description": "Voted yes on H.R. 845, the Pet and Livestock Protection Act. It would order the Interior Department to reissue the 2020 rule taking the gray wolf off the endangered species list, and block courts from reviewing that. The House passed it 211-204; the bill is in a Senate committee and has not become law.",
+      "nay_description": "Voted no on H.R. 845, the Pet and Livestock Protection Act, opposing forced removal of gray wolf protections and the ban on court review. The House passed it 211-204. It has not become law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "house",
+      "roll": 360,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "H R 498",
+      "vote_date": "2025-12-18",
+      "review_status": "approved",
+      "yea_description": "Voted yes on H.R. 498, the Do No Harm in Medicaid Act. It would bar federal Medicaid money from paying for gender transition procedures for anyone under 18. The House passed it 215-201, and the bill went to a Senate committee and has not become law.",
+      "nay_description": "Voted no on H.R. 498, the Do No Harm in Medicaid Act, opposing a ban on federal Medicaid payment for gender transition care for minors. The House passed it 215-201. It is not law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "house",
+      "roll": 362,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "H.R. 8404",
+      "vote_date": "2022-11-29",
+      "review_status": "approved",
+      "yea_description": "Voted yes at Senate passage of H.R. 8404, the Respect for Marriage Act, 61-36, on a Senate rewrite of the House bill. It repealed the federal man-woman definition of marriage and made states honor valid out-of-state same-sex and interracial marriages. The House agreed on December 8, 2022, and it became Public Law 117-228 on December 13, 2022.",
+      "nay_description": "Voted no at Senate passage of H.R. 8404, the Respect for Marriage Act. The Senate passed it 61-36. It repealed the federal man-woman marriage definition and required states to honor valid out-of-state same-sex and interracial marriages. It became Public Law 117-228 on December 13, 2022.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ],
+      "chamber": "senate",
+      "roll": 362,
+      "congress": 117,
+      "session": 2
+    },
+    {
+      "measure_id": "H.R. 1",
+      "vote_date": "2025-07-01",
+      "review_status": "approved",
+      "yea_description": "Voted to pass the Senate's version of H.R. 1, extending the 2017 income tax cuts, cutting Medicaid and food aid, and raising the federal debt limit. Senators split 50-50 and the Vice President broke the tie. The House then agreed, and it became Public Law 119-21 on July 4, 2025.",
+      "nay_description": "Voted against the Senate's version of H.R. 1, which extended the 2017 income tax cuts, cut Medicaid and food aid, and raised the federal debt limit. The tally was 50-50, and the Vice President broke the tie in favor. It became Public Law 119-21 on July 4, 2025.",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "chamber": "senate",
+      "roll": 372,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "S J RES 9",
+      "vote_date": "2023-07-27",
+      "review_status": "approved",
+      "yea_description": "Voted to send S.J.Res. 9 to the President, which would have canceled the rule listing the lesser prairie-chicken as threatened and endangered. The House passed it 221-206. The President vetoed it on September 26, 2023, and the Senate override failed.",
+      "nay_description": "Voted against sending S.J.Res. 9 to the President, so the lesser prairie-chicken kept its threatened and endangered listing. It cleared the House 221-206 but was vetoed. The override attempt fell short, and the protections stayed in place.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "house",
+      "roll": 381,
+      "congress": 118,
+      "session": 1
+    },
+    {
+      "measure_id": "S J RES 24",
+      "vote_date": "2023-07-27",
+      "review_status": "approved",
+      "yea_description": "Voted to send S.J.Res. 24 to the President, which would have canceled the rule listing the northern long-eared bat as endangered. The House passed it 220-209. The President vetoed it on September 26, 2023, and the Senate override failed.",
+      "nay_description": "Voted against sending S.J.Res. 24 to the President, so the northern long-eared bat kept its endangered listing. The House approved it 220-209, but a veto stopped it. The override attempt fell short, and the protections stayed in place.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "house",
+      "roll": 382,
+      "congress": 118,
+      "session": 1
+    },
+    {
+      "measure_id": "H R 1435",
+      "vote_date": "2023-09-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 1435, which would stop any state from getting Clean Air Act permission for rules that limit sales of gas-powered vehicles. It would also cancel such permissions granted since January 2022. The House passed it 222-190, but the Senate never acted and the bill died.",
+      "nay_description": "Voted against H.R. 1435, which would have blocked and revoked Clean Air Act permissions for state rules limiting sales of gas-powered vehicles. It cleared the House 222-190. The Senate took no action, so the bill died and the waivers stand.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "house",
+      "roll": 391,
+      "congress": 118,
+      "session": 1
+    },
+    {
+      "measure_id": "H.R. 4",
+      "vote_date": "2025-07-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass the Senate's version of H.R. 4, canceling about $9 billion in unspent money for the State Department, USAID, and public broadcasting. The Senate version dropped a proposed cut to global HIV/AIDS programs. It passed 51-48 and became Public Law 119-28 on July 24, 2025.",
+      "nay_description": "Voted against the Senate's version of H.R. 4, which took back about $9 billion already approved for foreign aid and public broadcasting. The Senate approved it 51-48 and the House agreed. It became Public Law 119-28 on July 24, 2025.",
+      "labels": [
+        {
+          "slug": "government_spending_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "chamber": "senate",
+      "roll": 411,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "H R 8314",
+      "vote_date": "2024-09-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 8314, which would bar larger tax-exempt groups that accept money from foreign nationals from giving to political committees for eight years. Brought up under a fast-track process needing two-thirds, it failed 218-181 and never became law.",
+      "nay_description": "Voted against H.R. 8314, which would have stopped larger tax-exempt groups taking foreign money from giving to political committees for eight years. The 218-181 count fell short of the two-thirds needed, so the bill failed in the House.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "chamber": "house",
+      "roll": 418,
+      "congress": 118,
+      "session": 2
+    },
+    {
+      "measure_id": "H R 7909",
+      "vote_date": "2024-09-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 7909, which would make immigrants barred from entry or deportable for stalking, child abuse, sex offenses, domestic violence, or violating a protection order. It passed the House 266-158, but the Senate never acted and the bill died.",
+      "nay_description": "Voted against H.R. 7909, which would have added those crimes as new grounds to keep immigrants out of the country or deport them. The House approved it 266-158. The Senate took no action, so the bill died.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        },
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "chamber": "house",
+      "roll": 429,
+      "congress": 118,
+      "session": 2
+    },
+    {
+      "measure_id": "H R 5717",
+      "vote_date": "2024-09-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 5717, which would deny federal money meant to help immigrants without lawful status to states and localities that limit immigration information sharing or ignore federal detention requests. It passed the House 219-186, but the Senate never acted and the bill died.",
+      "nay_description": "Voted against H.R. 5717, which would have cut such federal money off from places that restrict cooperation with immigration enforcement. The House approved it 219-186. The Senate took no action, so the bill died.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "chamber": "house",
+      "roll": 437,
+      "congress": 118,
+      "session": 2
+    },
+    {
+      "measure_id": "H J RES 136",
+      "vote_date": "2024-09-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 136, which would cancel the federal environmental agency's tailpipe pollution standards for cars and trucks from model year 2027 onward. It passed the House 215-191, but the Senate never acted, so the standards stayed in effect.",
+      "nay_description": "Voted against H.J.Res. 136, which would have wiped out those 2027 and later tailpipe pollution limits on light and medium duty vehicles. The House approved it 215-191. The resolution died in the Senate and the rule remains.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "house",
+      "roll": 438,
+      "congress": 118,
+      "session": 2
+    },
+    {
+      "measure_id": "H R 8790",
+      "vote_date": "2024-09-24",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 8790, the Fix Our Forests Act, which would designate high-risk fireshed areas for faster federal wildfire work. It would exempt many forest projects from environmental review and limit court challenges to them. The House passed it 268-151, but the Senate never acted, so the bill died when the 118th Congress ended.",
+      "nay_description": "Voted against H.R. 8790, the Fix Our Forests Act, which would designate high-risk fireshed areas for faster federal wildfire work. It would exempt many forest projects from environmental review and limit court challenges to them. The House passed it 268-151 anyway, but the Senate never acted, so the bill died when the 118th Congress ended.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "chamber": "house",
+      "roll": 448,
+      "congress": 118,
+      "session": 2
+    },
+    {
+      "measure_id": "H R 7673",
+      "vote_date": "2024-12-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 7673, the Liberty in Laundry Act, which would bar the Energy Department from setting clothes washer efficiency rules unless it first found them workable and justified. It would also block rules likely to raise net costs for buyers. The House passed it 215-200, but the Senate never acted, so the bill died when the 118th Congress ended.",
+      "nay_description": "Voted against H.R. 7673, the Liberty in Laundry Act, which would bar the Energy Department from setting clothes washer efficiency rules unless it first found them workable and justified. It would also block rules likely to raise net costs for buyers. The House passed it 215-200 anyway, but the Senate never acted, so the bill died when the 118th Congress ended.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "chamber": "house",
+      "roll": 497,
+      "congress": 118,
+      "session": 2
+    },
+    {
+      "measure_id": "H.J.Res. 104",
+      "vote_date": "2025-10-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 104, which cancelled the Bureau of Land Management plan for the Miles City office in eastern Montana. That plan had put 1,745,040 acres off limits to coal leasing. The Senate passed it 52-47 and it became Public Law 119-48 on December 11, 2025, reopening those lands to coal leasing.",
+      "nay_description": "Voted against H.J.Res. 104, which cancelled the Bureau of Land Management plan for the Miles City office in eastern Montana. That plan had put 1,745,040 acres off limits to coal leasing. The Senate passed it 52-47 and it became Public Law 119-48 on December 11, 2025, reopening those lands to coal leasing.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "senate",
+      "roll": 549,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "S.J.Res. 71",
+      "vote_date": "2025-10-08",
+      "review_status": "approved",
+      "yea_description": "Voted for S.J.Res. 71, which would end the national energy emergency the President declared on January 20, 2025 in Executive Order 14156. That order tells agencies to use emergency powers to speed domestic energy projects. The Senate rejected it 47-51, so the emergency stayed in place and the measure did not become law.",
+      "nay_description": "Voted against S.J.Res. 71, which would end the national energy emergency the President declared on January 20, 2025 in Executive Order 14156. That order tells agencies to use emergency powers to speed domestic energy projects. The Senate rejected it 47-51, so the emergency stayed in place and the measure did not become law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": "against"
+        }
+      ],
+      "chamber": "senate",
+      "roll": 554,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "H.J.Res. 105",
+      "vote_date": "2025-10-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 105, which cancelled the Bureau of Land Management plan for its North Dakota office. That plan had limited oil and gas work in low-potential areas and kept new coal leasing within four miles of existing mines. The Senate passed it 50-45 and it became Public Law 119-49 on December 11, 2025.",
+      "nay_description": "Voted against H.J.Res. 105, which cancelled the Bureau of Land Management plan for its North Dakota office. That plan had limited oil and gas work in low-potential areas and kept new coal leasing within four miles of existing mines. The Senate passed it 50-45 and it became Public Law 119-49 on December 11, 2025.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "senate",
+      "roll": 556,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "H.J.Res. 106",
+      "vote_date": "2025-10-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 106, which cancelled the Bureau of Land Management plan for Alaska's Central Yukon area. That plan had set aside 21 specially protected areas covering about 3,611,000 acres. The Senate passed it 50-46 and it became Public Law 119-50 on December 11, 2025, undoing those protections.",
+      "nay_description": "Voted against H.J.Res. 106, which cancelled the Bureau of Land Management plan for Alaska's Central Yukon area. That plan had set aside 21 specially protected areas covering about 3,611,000 acres. The Senate passed it 50-46 and it became Public Law 119-50 on December 11, 2025, undoing those protections.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "senate",
+      "roll": 560,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "S. 2296",
+      "vote_date": "2025-10-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S. 2296, the National Defense Authorization Act for Fiscal Year 2026, as amended by the Senate. It would set defense policy and authorize funding for Defense Department programs, military construction, and Energy Department national security work. The Senate passed it 77-20, but the House held it at the desk without voting, so it has not become law.",
+      "nay_description": "Voted against S. 2296, the National Defense Authorization Act for Fiscal Year 2026, as amended by the Senate. It would set defense policy and authorize funding for Defense Department programs, military construction, and Energy Department national security work. The Senate passed it 77-20 anyway, but the House held it at the desk without voting, so it has not become law.",
+      "labels": [
+        {
+          "slug": "national_defense",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "chamber": "senate",
+      "roll": 570,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "S.J.Res. 81",
+      "vote_date": "2025-10-28",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 81, which would end the national emergency the President declared on July 30, 2025 to add a 40 percent tariff on many imports from Brazil. The Senate passed it 52-48, but the House never took it up, so the resolution did not become law and the tariff stayed in place.",
+      "nay_description": "Voted against S.J.Res. 81, which would end the national emergency the President declared on July 30, 2025 to add a 40 percent tariff on many imports from Brazil. The Senate passed it 52-48 anyway, but the House never took it up, so the resolution did not become law and the tariff stayed in place.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "chamber": "senate",
+      "roll": 594,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "S.J.Res. 77",
+      "vote_date": "2025-10-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 77, which would end the national emergency the President declared on February 1, 2025. That emergency added a 25 percent tariff on most imports from Canada and 10 percent on Canadian energy. The Senate passed it 50-46, but the House never took it up, so the resolution did not become law and the tariffs stayed in place.",
+      "nay_description": "Voted against S.J.Res. 77, which would end the national emergency the President declared on February 1, 2025. That emergency added a 25 percent tariff on most imports from Canada and 10 percent on Canadian energy. The Senate passed it 50-46 anyway, but the House never took it up, so the resolution did not become law and the tariffs stayed in place.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "chamber": "senate",
+      "roll": 598,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "S.J.Res. 80",
+      "vote_date": "2025-10-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 80, canceling the 2022 federal plan that closed about half of Alaska's 23-million-acre National Petroleum Reserve to oil and gas leasing. The Senate passed it 52-45, the House agreed 216-209, and it became law on December 5, 2025 (Public Law 119-47).",
+      "nay_description": "Voted against S.J.Res. 80, which canceled the 2022 federal plan that closed about half of Alaska's 23-million-acre National Petroleum Reserve to oil and gas leasing. It passed the Senate 52-45 anyway and became law on December 5, 2025 (Public Law 119-47).",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "senate",
+      "roll": 599,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "S.J.Res. 88",
+      "vote_date": "2025-10-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 88, which would end the national emergency the President declared on April 2, 2025 to impose broad import tariffs. The Senate passed it 51-47, but the House never took it up, so the tariffs stayed in place.",
+      "nay_description": "Voted against S.J.Res. 88, which would end the national emergency the President declared on April 2, 2025 to impose broad import tariffs. It passed the Senate 51-47, but the House never acted on it, so the tariffs stayed in place.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "chamber": "senate",
+      "roll": 600,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "H.R. 5371",
+      "vote_date": "2025-11-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 5371, the funding bill that ended the 43-day government shutdown. It paid for most agencies through January 30, 2026 and funded agriculture, military construction and veterans, and Congress for the full year. The Senate passed it 60-40 and it became law November 12, 2025 (Public Law 119-37).",
+      "nay_description": "Voted against H.R. 5371, the funding bill that ended the 43-day government shutdown, covering most agencies through January 30, 2026 and three areas for the full year. It passed the Senate 60-40, the House agreed 222-209, and it became law November 12, 2025 (Public Law 119-37).",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "chamber": "senate",
+      "roll": 618,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "H.J.Res. 130",
+      "vote_date": "2025-11-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 130, which canceled the 2024 federal plan change that had stopped new coal leasing in Wyoming's Powder River Basin. The Senate passed it 51-43, sending it to the President, and it became law December 11, 2025 (Public Law 119-51).",
+      "nay_description": "Voted against H.J.Res. 130, which canceled the 2024 federal plan change that had stopped new coal leasing in Wyoming's Powder River Basin. It passed the Senate 51-43 anyway and became law December 11, 2025 (Public Law 119-51), reopening that land to coal leasing.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "senate",
+      "roll": 623,
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "measure_id": "H R 5283",
+      "vote_date": "2023-11-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 5283, which would block federal money from housing certain immigrants on federal land and cancel New York City's lease of Floyd Bennett Field. The House passed it 224-203, but the Senate never acted and the bill died in the 118th Congress.",
+      "nay_description": "Voted against H.R. 5283, which would block federal money from housing certain immigrants on federal land and cancel New York City's lease of Floyd Bennett Field. It passed the House 224-203, but the Senate never acted and the bill died in the 118th Congress.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "house",
+      "roll": 689,
+      "congress": 118,
+      "session": 1
+    },
+    {
+      "measure_id": "S J RES 32",
+      "vote_date": "2023-12-01",
+      "review_status": "approved",
+      "yea_description": "Voted to send S.J.Res. 32 to the President to cancel the consumer bureau rule making lenders report small-business loan data, including loans to women-owned and minority-owned firms. The House passed it 221-202, but the President vetoed it and the Senate override failed, so the rule stayed.",
+      "nay_description": "Voted against sending S.J.Res. 32 to the President to cancel the consumer bureau rule making lenders report small-business loan data. It passed the House 221-202, but the President vetoed it on December 19, 2023 and the override failed 54-45, so the rule stayed.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "house",
+      "roll": 690,
+      "congress": 118,
+      "session": 1
+    },
+    {
+      "measure_id": "H R 4468",
+      "vote_date": "2023-12-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 4468, which would stop the EPA from carrying out its 2027-and-later vehicle emissions rule and limit tailpipe rules that reduce the choice of new vehicles. The House passed it 221-197, but the Senate never acted and the bill died.",
+      "nay_description": "Voted against H.R. 4468, which would stop the EPA from carrying out its 2027-and-later vehicle emissions rule and limit tailpipe rules that reduce the choice of new vehicles. It passed the House 221-197, but the Senate never acted and the bill died.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "chamber": "house",
+      "roll": 703,
+      "congress": 118,
+      "session": 1
+    },
+    {
+      "measure_id": "H R 2670",
+      "vote_date": "2023-12-14",
+      "review_status": "approved",
+      "yea_description": "Voted for the final House-Senate deal on H.R. 2670, the 2024 defense policy law, which set Defense Department policy and approved its programs and military construction. The House agreed 310-118 and it became law December 22, 2023 (Public Law 118-31).",
+      "nay_description": "Voted against the final House-Senate deal on H.R. 2670, the 2024 defense policy bill setting Defense Department policy, programs, and military construction. The House agreed 310-118 and it became law December 22, 2023 (Public Law 118-31).",
+      "labels": [
+        {
+          "slug": "national_defense",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "chamber": "house",
+      "roll": 723,
+      "congress": 118,
+      "session": 1
+    }
+  ]
+}
