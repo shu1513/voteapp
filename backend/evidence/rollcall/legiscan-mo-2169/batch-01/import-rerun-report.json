@@ -1,9 +1,9 @@
 {
   "importerVersion": "rollcall-legiscan-import-v1",
-  "dryRun": true,
+  "dryRun": false,
   "skipExisting": false,
-  "startedAt": "2026-08-30T02:20:48.304Z",
-  "finishedAt": "2026-08-30T02:20:50.105Z",
+  "startedAt": "2026-08-30T02:21:26.751Z",
+  "finishedAt": "2026-08-30T02:21:28.979Z",
   "jurisdiction": "MO",
   "sessionId": 2169,
   "evidenceDir": "/Users/shu/.codex/worktrees/d600/voteApp/backend/evidence/rollcall/legiscan-mo-2169/batch-01",
@@ -14,7 +14,7 @@
   "peopleMembers": 197,
   "files": 10,
   "outcomes": {
-    "dry_run": 10
+    "imported": 10
   },
   "actions": {
     "unchanged": 583,
@@ -28,7 +28,7 @@
       "chamber": "house",
       "sessionId": 2169,
       "roll": 1517204,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "af5cc99a-cb84-4221-ad83-450cb7809cd3",
       "reviewStatus": "approved",
       "bill": "HB567",
@@ -36,7 +36,7 @@
       "officialVoteDate": null,
       "measureId": "HB 567",
       "question": "House: HBs FOR THIRD READING HCS#2 HBS 567, 546, 758 & 958, E.C.",
-      "originRunId": "rollcall:MO:house:2169:1517204:2026-08-30T02:20:48.304Z",
+      "originRunId": "rollcall:MO:house:2169:1517204:2026-08-30T02:21:26.751Z",
       "members": 147,
       "notVoting": 0,
       "absent": 15,
@@ -189,7 +189,7 @@
           "memberName": "Bruce Sassmann",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "21484573-826f-40ef-ac6d-2f2cc30d5c99",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -261,7 +261,7 @@
           "memberName": "Bob Titus",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "52f93a91-b4a3-4ac1-a30e-481caf3716ce",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -297,7 +297,7 @@
           "memberName": "Ben Keathley",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "763ad934-32a6-40fc-ac2a-23633cc1611f",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -309,7 +309,7 @@
           "memberName": "Travis Wilson",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "1a1b04d2-14ca-434a-b696-e4d4b17dd7ef",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -369,7 +369,7 @@
           "memberName": "Jamie Gragg",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "2fa15bec-3f3f-4a84-b8bb-77dbc5210d75",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -489,7 +489,7 @@
           "memberName": "Mike Costlow",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "d50c4ecd-51aa-4ce7-b2f6-42ab95165fbe",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -513,7 +513,7 @@
           "memberName": "Lisa Durnell",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "b800070d-cb35-4603-aa88-4a5f60a79349",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -645,7 +645,7 @@
           "memberName": "Mark Meirath",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "0a97f2d8-2c26-4b7e-911f-53861e6bda06",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -681,7 +681,7 @@
           "memberName": "Brandon Phelps",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "6f85da31-2cfc-4c37-b53d-bf7e426f3d87",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -705,7 +705,7 @@
           "memberName": "Deanna Self",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "b3a4dcf8-d743-4470-a211-33dee8768509",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -717,7 +717,7 @@
           "memberName": "Mike Steinmeyer",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "9c00223a-90c9-437e-b4ad-3f4050af31a2",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -765,7 +765,7 @@
           "memberName": "Burt Whaley",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "f69cd172-414c-401c-82bb-aa1b9f73f880",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -789,7 +789,7 @@
           "memberName": "Bryant Wolfin",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "cffd6ba6-1af1-433c-b6c8-0e586451b923",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -825,7 +825,7 @@
           "memberName": "Marlene Terry",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "e64d5f97-f40e-4bc7-bd02-c139d650d602",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -897,7 +897,7 @@
           "memberName": "Michael Burton",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "7364e2e5-4db1-47d2-843d-675aa99ab565",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1005,7 +1005,7 @@
           "memberName": "Yolonda Fountain Henderson",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "93308592-254b-4f51-ad01-b27493a337ca",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1041,7 +1041,7 @@
           "memberName": "Donna Barnes",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "6c333f10-9b5c-4efa-835f-bedb450ccf59",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1197,7 +1197,7 @@
           "memberName": "Chanel Mosley",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "ccf67397-bc2b-4fc7-9ae1-6eb0d03210b7",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1233,7 +1233,7 @@
           "memberName": "Ray Reed",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "f829a5dd-0ddc-42ba-907c-3da6e2648857",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1245,7 +1245,7 @@
           "memberName": "Kem Smith",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "dec2500e-9a23-44e2-ae9e-ea8817939a5d",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1307,7 +1307,7 @@
       "chamber": "house",
       "sessionId": 2169,
       "roll": 1551715,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "b5215799-7712-4897-9c14-5ca17a9f1de6",
       "reviewStatus": "approved",
       "bill": "HJR73",
@@ -1315,7 +1315,7 @@
       "officialVoteDate": null,
       "measureId": "HJR 73",
       "question": "House: HJRs FOR THIRD READING HCS HJR 73",
-      "originRunId": "rollcall:MO:house:2169:1551715:2026-08-30T02:20:48.304Z",
+      "originRunId": "rollcall:MO:house:2169:1551715:2026-08-30T02:21:26.751Z",
       "members": 154,
       "notVoting": 0,
       "absent": 8,
@@ -1505,7 +1505,7 @@
           "memberName": "Bruce Sassmann",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "c33dc62f-0a2c-4335-b634-ee6f2472a4dc",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1577,7 +1577,7 @@
           "memberName": "Bob Titus",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "fcc60fce-5130-46dc-893e-2d946b01c09f",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1613,7 +1613,7 @@
           "memberName": "Ben Keathley",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "ac2605cb-030e-4b98-b3d8-1ab730281a97",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1637,7 +1637,7 @@
           "memberName": "Travis Wilson",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "c73b8866-571e-4fdf-aea7-9462ab43348d",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1697,7 +1697,7 @@
           "memberName": "Jamie Gragg",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "96391783-542c-49ee-8ea9-29436e2505dd",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1829,7 +1829,7 @@
           "memberName": "Mike Costlow",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "cb05a4d8-7c44-44b9-907e-964eb8b96b82",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1853,7 +1853,7 @@
           "memberName": "Lisa Durnell",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "ad25b0aa-7069-4e15-9297-1e349f4a85d9",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1985,7 +1985,7 @@
           "memberName": "Mark Meirath",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "350ce89f-a4ac-490a-94c8-435761552389",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2021,7 +2021,7 @@
           "memberName": "Brandon Phelps",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "655e01be-4cd7-428c-99cc-b722f4256c6a",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2045,7 +2045,7 @@
           "memberName": "Deanna Self",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "3c40eed0-0ea9-4246-98cd-96a7d0fbecde",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2057,7 +2057,7 @@
           "memberName": "Mike Steinmeyer",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "4497c254-6c1c-40f2-8823-9163ed3491f9",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2117,7 +2117,7 @@
           "memberName": "Bryant Wolfin",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "5a3d7b1c-9a55-42db-9963-c2d1a192d29f",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2153,7 +2153,7 @@
           "memberName": "Marlene Terry",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "eb822044-8329-4aa9-b3f5-3a96f6f55b0b",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2213,7 +2213,7 @@
           "memberName": "Michael Burton",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "cbd3795d-19a4-404c-aa13-5427f7f5bedd",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2297,7 +2297,7 @@
           "memberName": "Yolonda Fountain Henderson",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "0531bb6e-6cfc-49c3-8965-d8abe8ed1836",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2333,7 +2333,7 @@
           "memberName": "Donna Barnes",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "ac16075a-4749-4dab-8792-ba75efb50dfc",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2489,7 +2489,7 @@
           "memberName": "Chanel Mosley",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "fa0fcade-ce83-4e10-9d30-a767b37a14da",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2525,7 +2525,7 @@
           "memberName": "Ray Reed",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "3a7bf968-a226-4293-892b-24fc0818d2d4",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2549,7 +2549,7 @@
           "memberName": "Kem Smith",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "a835c9e8-eba0-4d02-b217-0eb85562f83a",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2561,7 +2561,7 @@
           "memberName": "Marla Smith",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "7d76da2e-2e20-4f20-a2b4-19fec4f1156d",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2611,7 +2611,7 @@
       "chamber": "house",
       "sessionId": 2169,
       "roll": 1563728,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "331d70fc-df90-4fcc-a8a9-486af3f1b33a",
       "reviewStatus": "approved",
       "bill": "SB71",
@@ -2619,7 +2619,7 @@
       "officialVoteDate": null,
       "measureId": "SB 71",
       "question": "House: SBs 3rd READ - INFORMAL HCS SS SCS SB 71, A.A., E.C.",
-      "originRunId": "rollcall:MO:house:2169:1563728:2026-08-30T02:20:48.304Z",
+      "originRunId": "rollcall:MO:house:2169:1563728:2026-08-30T02:21:26.751Z",
       "members": 145,
       "notVoting": 5,
       "absent": 12,
@@ -2664,7 +2664,7 @@
           "memberName": "Marlene Terry",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "04a2af6b-70fd-4c30-9314-5ba70ea97206",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2808,7 +2808,7 @@
           "memberName": "Michael Burton",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "ee85806c-e03d-4e11-b136-f0b55292cde0",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2856,7 +2856,7 @@
           "memberName": "Bruce Sassmann",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "6f4131aa-9f38-431a-b1c7-0eca172c23aa",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2928,7 +2928,7 @@
           "memberName": "Bill Allen",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "6704e387-634c-4a54-baed-7d36e9b9384a",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2964,7 +2964,7 @@
           "memberName": "Travis Wilson",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "ec5c258c-d589-4e6d-9c88-486b07909ed5",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3024,7 +3024,7 @@
           "memberName": "Yolonda Fountain Henderson",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "1203b71a-4a23-4192-b16f-cbdda19af7ac",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3156,7 +3156,7 @@
           "memberName": "Donna Barnes",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "96ff4e9d-3626-4fb7-afbc-cb716a51c2bf",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3204,7 +3204,7 @@
           "memberName": "Mike Costlow",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "3578a641-653c-4dd5-bf14-f988ead2be53",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3396,7 +3396,7 @@
           "memberName": "Mark Meirath",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "5f873bfa-3a9b-46ac-a1b1-dcd9dc3c62bd",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3408,7 +3408,7 @@
           "memberName": "Chanel Mosley",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "c173586a-699d-4bd4-a5d5-0b779d87ad3e",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3420,7 +3420,7 @@
           "memberName": "Brandon Phelps",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "2a476e61-c3f5-43e8-8539-aab7be95b1d6",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3432,7 +3432,7 @@
           "memberName": "Ray Reed",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "c1c00f60-53fc-40aa-8d2e-11897f14178e",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3468,7 +3468,7 @@
           "memberName": "Mike Steinmeyer",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "b503254e-4f21-41e2-a04f-effb9bc003cd",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3612,7 +3612,7 @@
           "memberName": "Bob Titus",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "65e45505-a8d2-47d2-bc6c-6c033d6fa51b",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3636,7 +3636,7 @@
           "memberName": "Jamie Gragg",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "4b640e8b-0ab3-4be8-88eb-b68ff6514185",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3768,7 +3768,7 @@
           "memberName": "Deanna Self",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "ecbfa029-e9dc-408c-be5d-1c0025dbfc55",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3780,7 +3780,7 @@
           "memberName": "Burt Whaley",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "f739dc30-8697-4546-9ea5-f40bb43d72c0",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3792,7 +3792,7 @@
           "memberName": "Bryant Wolfin",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "2c3d2bed-a854-4794-bae5-f808aad63ebe",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3806,7 +3806,7 @@
       "chamber": "house",
       "sessionId": 2169,
       "roll": 1565418,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "e8306538-fdb9-4d20-9c4c-308e71eb87f1",
       "reviewStatus": "approved",
       "bill": "HB595",
@@ -3814,7 +3814,7 @@
       "officialVoteDate": null,
       "measureId": "HB 595",
       "question": "House: BILLS IN CONFERENCE CCS SS HCS HBS 595 & 343",
-      "originRunId": "rollcall:MO:house:2169:1565418:2026-08-30T02:20:48.304Z",
+      "originRunId": "rollcall:MO:house:2169:1565418:2026-08-30T02:21:26.751Z",
       "members": 140,
       "notVoting": 5,
       "absent": 16,
@@ -3896,7 +3896,7 @@
           "memberName": "Marlene Terry",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "d00aabb7-d92b-43f7-aed0-42e3a1e847f1",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4004,7 +4004,7 @@
           "memberName": "Bruce Sassmann",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "7e2d2d4c-af88-4255-be77-5a33de374d8b",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4100,7 +4100,7 @@
           "memberName": "Bill Allen",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "f62a8072-24a0-473d-9682-249424165000",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4112,7 +4112,7 @@
           "memberName": "Ben Keathley",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "f829bb4c-2efd-4ec1-b172-bb6f5fff9e6f",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4136,7 +4136,7 @@
           "memberName": "Travis Wilson",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "306744a6-1bba-4778-b31c-79d2ef4d96e4",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4196,7 +4196,7 @@
           "memberName": "Jamie Gragg",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "d4c0b420-ea2d-40f8-a5e3-bd7c3e00f1b9",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4292,7 +4292,7 @@
           "memberName": "Mike Costlow",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "80f7e507-83c0-4a4f-af3c-081f84e4c25f",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4316,7 +4316,7 @@
           "memberName": "Lisa Durnell",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "fe61d370-cf4d-4ee4-b070-be4081542b9e",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4460,7 +4460,7 @@
           "memberName": "Mark Meirath",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "907190b1-02f8-41fc-a071-7646bd572e90",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4496,7 +4496,7 @@
           "memberName": "Brandon Phelps",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "f03cfbc1-6a21-44c9-a485-4de616d684ab",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4532,7 +4532,7 @@
           "memberName": "Deanna Self",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "c99289a0-0af6-4160-acb0-96f093aef56c",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4544,7 +4544,7 @@
           "memberName": "Mike Steinmeyer",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "ba5b5074-ef58-4f5b-a263-4c807bba8c4a",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4604,7 +4604,7 @@
           "memberName": "Burt Whaley",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "b8d6ab02-9894-4eb8-b3b3-800e231edf6b",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4736,7 +4736,7 @@
           "memberName": "Yolonda Fountain Henderson",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "f4a2c881-8487-4ae2-8e56-55f877a008ab",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4772,7 +4772,7 @@
           "memberName": "Donna Barnes",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "bd7cfe40-7e24-4d82-a8e3-88de73cbef42",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4916,7 +4916,7 @@
           "memberName": "Marla Smith",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "a9ba2453-6b7b-419e-b52c-1f6a4ad4f6a9",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4966,7 +4966,7 @@
       "chamber": "house",
       "sessionId": 2169,
       "roll": 1567074,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "c4c7af1e-ec7d-4d8c-96cc-285d8095c68b",
       "reviewStatus": "approved",
       "bill": "HB594",
@@ -4974,7 +4974,7 @@
       "officialVoteDate": null,
       "measureId": "HB 594",
       "question": "House: HBs WITH SENATE AMENDMENTS SS#2 HCS HBs 594 & 508",
-      "originRunId": "rollcall:MO:house:2169:1567074:2026-08-30T02:20:48.304Z",
+      "originRunId": "rollcall:MO:house:2169:1567074:2026-08-30T02:21:26.751Z",
       "members": 143,
       "notVoting": 10,
       "absent": 8,
@@ -5140,7 +5140,7 @@
           "memberName": "Bruce Sassmann",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "bfa2e8d9-636c-4c4c-91f8-42975a0ef219",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5212,7 +5212,7 @@
           "memberName": "Bob Titus",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "f1789d83-d487-4eb2-9213-ca01bd8ecdaa",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5248,7 +5248,7 @@
           "memberName": "Bill Allen",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "aebe3dbd-b033-4a3e-b562-caf913056f4b",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5272,7 +5272,7 @@
           "memberName": "Travis Wilson",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "b01797d9-cd53-47d6-92a2-1ba6a2719fa3",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5332,7 +5332,7 @@
           "memberName": "Jamie Gragg",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "2d7c88f2-33f7-4dc4-b6c1-4bfc2016ad49",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5452,7 +5452,7 @@
           "memberName": "Mike Costlow",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "23d09168-1f09-4ac4-9bd6-e2fa341900d0",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5476,7 +5476,7 @@
           "memberName": "Lisa Durnell",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "6921209f-5248-4a91-8fac-b012e22fd301",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5608,7 +5608,7 @@
           "memberName": "Mark Meirath",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "78370404-faa1-4554-acc4-3ace14c8d264",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5644,7 +5644,7 @@
           "memberName": "Brandon Phelps",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "5299316b-ca1b-4c5a-bde1-d83b60adeb44",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5668,7 +5668,7 @@
           "memberName": "Deanna Self",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "7a187485-caba-470c-a7ae-9c50f5d74762",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5680,7 +5680,7 @@
           "memberName": "Mike Steinmeyer",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "d39dc3bf-d48d-4054-8b34-7b7b46ee6d7f",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5740,7 +5740,7 @@
           "memberName": "Burt Whaley",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "b28f2538-2838-44e2-a75a-5aa4d73e6571",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5788,7 +5788,7 @@
           "memberName": "Marlene Terry",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "2d8d3ddf-312b-4a67-9a4b-29e63ffb164a",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5884,7 +5884,7 @@
           "memberName": "Yolonda Fountain Henderson",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "42bb3570-6a8a-450a-bff7-a7578826831f",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -5920,7 +5920,7 @@
           "memberName": "Donna Barnes",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "8873df5e-639c-4c75-aaee-b051dfed1e13",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6052,7 +6052,7 @@
           "memberName": "Chanel Mosley",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "35ee2c52-5147-4e7c-818f-9ec3e8abd1e2",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6088,7 +6088,7 @@
           "memberName": "Ray Reed",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "85acbc9d-68c9-4046-bda0-7675006dcb05",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6112,7 +6112,7 @@
           "memberName": "Kem Smith",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "f87d6e6b-2c93-47de-b547-ec9adf1d143b",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6124,7 +6124,7 @@
           "memberName": "Marla Smith",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "f0abbacf-f8df-46b1-b07d-c13bc70096f7",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6174,7 +6174,7 @@
       "chamber": "house",
       "sessionId": 2169,
       "roll": 1569572,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "2f2b2912-76da-431b-886d-ea3a26a7304e",
       "reviewStatus": "approved",
       "bill": "HB145",
@@ -6182,7 +6182,7 @@
       "officialVoteDate": null,
       "measureId": "HB 145",
       "question": "House: HBs WITH SENATE AMENDMENTS SS SCS HCS HBS 145 & 59, A.A.",
-      "originRunId": "rollcall:MO:house:2169:1569572:2026-08-30T02:20:48.304Z",
+      "originRunId": "rollcall:MO:house:2169:1569572:2026-08-30T02:21:26.751Z",
       "members": 157,
       "notVoting": 1,
       "absent": 3,
@@ -6240,7 +6240,7 @@
           "memberName": "Marlene Terry",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "59c24f7c-5141-429a-a8c0-6f746c16d15b",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6372,7 +6372,7 @@
           "memberName": "Michael Burton",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "f8ed89b7-f72e-4197-ba5d-d34efbb6ecd8",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6408,7 +6408,7 @@
           "memberName": "Bruce Sassmann",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "cc6895ab-27ad-4796-a71d-50d7876999dd",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6492,7 +6492,7 @@
           "memberName": "Bill Allen",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "9f70cc33-5805-4889-b26d-0a50c60bda08",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6528,7 +6528,7 @@
           "memberName": "Travis Wilson",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "237dc4e6-15d2-457b-b348-08b33ec697a9",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6600,7 +6600,7 @@
           "memberName": "Yolonda Fountain Henderson",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "7a7a92ed-6d4f-4288-a86f-d0185c632f23",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6696,7 +6696,7 @@
           "memberName": "Donna Barnes",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "e9d5bcf1-f54e-40ce-abbf-142593d0652c",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6744,7 +6744,7 @@
           "memberName": "Mike Costlow",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "b490faaf-3210-4131-9502-7bf8eb32dced",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6924,7 +6924,7 @@
           "memberName": "Chanel Mosley",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "16e3fdae-4d89-4b9a-a2a8-9026a0a65c99",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6948,7 +6948,7 @@
           "memberName": "Brandon Phelps",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "ef8e94ec-123f-4295-995a-b8d9571ccfcf",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6972,7 +6972,7 @@
           "memberName": "Ray Reed",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "110638fe-18d2-4863-960e-4d9695e703be",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6996,7 +6996,7 @@
           "memberName": "Kem Smith",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "e8887d72-0c46-4268-8ace-d3de585d2598",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7008,7 +7008,7 @@
           "memberName": "Marla Smith",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "acdd3bbb-7bb3-47e9-ad35-b83b765338d7",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7032,7 +7032,7 @@
           "memberName": "Mike Steinmeyer",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "f8fc9406-0b07-467e-818e-855f5a57bddb",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7188,7 +7188,7 @@
           "memberName": "Ben Keathley",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "0edf75ef-1156-4dc0-812c-6408bdafa69d",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7212,7 +7212,7 @@
           "memberName": "Jamie Gragg",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "d3c62a17-3694-4fae-a947-ebc7d017092f",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7296,7 +7296,7 @@
           "memberName": "Lisa Durnell",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "b3590981-ebda-48e8-9a87-bcc5d3979325",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7380,7 +7380,7 @@
           "memberName": "Mark Meirath",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "7ad78aed-1beb-44bd-b6ed-c217e3b34997",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7428,7 +7428,7 @@
           "memberName": "Deanna Self",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "de4976af-c959-4596-8dee-e1462ffdf644",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7476,7 +7476,7 @@
           "memberName": "Burt Whaley",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "655f7e31-2463-4b05-860c-45a486c8f715",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7500,7 +7500,7 @@
           "memberName": "Bryant Wolfin",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "63aa76ae-2d65-4093-8c86-3e0de9a8fd87",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7514,7 +7514,7 @@
       "chamber": "house",
       "sessionId": 2169,
       "roll": 1572256,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "a2307280-6bcb-40ea-b108-3dfb5ba093c3",
       "reviewStatus": "approved",
       "bill": "SB152",
@@ -7522,7 +7522,7 @@
       "officialVoteDate": null,
       "measureId": "SB 152",
       "question": "House: SBs 3rd READ - INFORMAL SS SB 152",
-      "originRunId": "rollcall:MO:house:2169:1572256:2026-08-30T02:20:48.304Z",
+      "originRunId": "rollcall:MO:house:2169:1572256:2026-08-30T02:21:26.751Z",
       "members": 141,
       "notVoting": 1,
       "absent": 19,
@@ -7688,7 +7688,7 @@
           "memberName": "Bruce Sassmann",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "6e92e1c5-86b9-458d-80b3-ea4bad982197",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7784,7 +7784,7 @@
           "memberName": "Bill Allen",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "f42ebcef-7e57-42c5-b9cf-a7e918c0dbbf",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7796,7 +7796,7 @@
           "memberName": "Ben Keathley",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "61b76dcf-0c70-4531-8668-d4ecdc693590",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7820,7 +7820,7 @@
           "memberName": "Travis Wilson",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "1e5cad05-6b9f-4fdb-936c-32f715c315c2",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7880,7 +7880,7 @@
           "memberName": "Jamie Gragg",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "1420d482-9de0-4ab2-8580-6482fba8c199",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7988,7 +7988,7 @@
           "memberName": "Mike Costlow",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "fbc520a5-5f11-4422-b1ae-60e6083a14b3",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -8012,7 +8012,7 @@
           "memberName": "Lisa Durnell",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "af0187c9-b038-4970-8d50-2f1217e80aee",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -8132,7 +8132,7 @@
           "memberName": "Mark Meirath",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "ab4c510e-561c-49f2-a4cb-724aa46cfed0",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -8156,7 +8156,7 @@
           "memberName": "Brandon Phelps",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "349a213a-63b9-4b27-8c2c-5ed850875d53",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -8180,7 +8180,7 @@
           "memberName": "Deanna Self",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "b6a21fd0-842f-469a-b3bc-37cb8cb5ab7b",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -8192,7 +8192,7 @@
           "memberName": "Mike Steinmeyer",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "c87467a1-0e5c-4749-9160-bbb1c6dd2b42",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -8252,7 +8252,7 @@
           "memberName": "Burt Whaley",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "3adb461c-898d-4d02-a4f6-92493c07b010",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -8276,7 +8276,7 @@
           "memberName": "Bryant Wolfin",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "97187886-c7be-436a-a370-afe9ff1e295e",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -8312,7 +8312,7 @@
           "memberName": "Marlene Terry",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "878c328e-e061-4df3-8025-1e021490683f",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -8456,7 +8456,7 @@
           "memberName": "Yolonda Fountain Henderson",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "461bff02-5019-4b4a-acab-01663bebc059",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -8480,7 +8480,7 @@
           "memberName": "Donna Barnes",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "fb25ff48-df01-4705-be4e-3fae39920a23",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -8636,7 +8636,7 @@
           "memberName": "Chanel Mosley",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "8ee4ef40-bdff-41a9-8871-aaedc20e5968",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -8672,7 +8672,7 @@
           "memberName": "Ray Reed",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "4ac0477b-8c26-4f15-942e-3eb8ae28b55d",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -8696,7 +8696,7 @@
           "memberName": "Kem Smith",
           "side": "nay",
           "action": "insert",
-          "recordId": null,
+          "recordId": "18b1ed24-2a56-491b-9639-4d5387076667",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -8734,7 +8734,7 @@
       "chamber": "senate",
       "sessionId": 2169,
       "roll": 1571781,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "8e391df5-18bc-4b1d-93c9-d29e755baeb7",
       "reviewStatus": "approved",
       "bill": "HB567",
@@ -8742,7 +8742,7 @@
       "officialVoteDate": null,
       "measureId": "HB 567",
       "question": "Senate: Third Reading",
-      "originRunId": "rollcall:MO:senate:2169:1571781:2026-08-30T02:20:48.304Z",
+      "originRunId": "rollcall:MO:senate:2169:1571781:2026-08-30T02:21:26.751Z",
       "members": 33,
       "notVoting": 0,
       "absent": 0,
@@ -8764,7 +8764,7 @@
           "memberName": "Nick Schroer",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "fdd704cd-7724-4073-b0d2-29807f2a0482",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -8814,7 +8814,7 @@
       "chamber": "senate",
       "sessionId": 2169,
       "roll": 1578547,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "5ef7608a-6cf6-4771-aa5c-ca9be0ec20a0",
       "reviewStatus": "approved",
       "bill": "HJR73",
@@ -8822,7 +8822,7 @@
       "officialVoteDate": null,
       "measureId": "HJR 73",
       "question": "Senate: Third Reading",
-      "originRunId": "rollcall:MO:senate:2169:1578547:2026-08-30T02:20:48.304Z",
+      "originRunId": "rollcall:MO:senate:2169:1578547:2026-08-30T02:21:26.751Z",
       "members": 32,
       "notVoting": 0,
       "absent": 0,
@@ -8844,7 +8844,7 @@
           "memberName": "Nick Schroer",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "9908f557-69ec-4181-a42e-e51c5fa44854",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -8894,7 +8894,7 @@
       "chamber": "senate",
       "sessionId": 2169,
       "roll": 1578662,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "6db1a07b-5d94-4190-aa02-57aad704e5e3",
       "reviewStatus": "approved",
       "bill": "HB595",
@@ -8902,7 +8902,7 @@
       "officialVoteDate": null,
       "measureId": "HB 595",
       "question": "Senate: Third Reading",
-      "originRunId": "rollcall:MO:senate:2169:1578662:2026-08-30T02:20:48.304Z",
+      "originRunId": "rollcall:MO:senate:2169:1578662:2026-08-30T02:21:26.751Z",
       "members": 33,
       "notVoting": 0,
       "absent": 0,
@@ -8924,7 +8924,7 @@
           "memberName": "Nick Schroer",
           "side": "yea",
           "action": "insert",
-          "recordId": null,
+          "recordId": "50bdc68f-77fd-4dee-ae87-d9c7aa12a588",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
