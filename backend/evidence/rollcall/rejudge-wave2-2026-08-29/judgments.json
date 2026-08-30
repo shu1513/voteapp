@@ -1,0 +1,1001 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1719024,
+      "measure_id": "HB 5090",
+      "vote_date": "2026-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted yes to accept the Senate's rewrite of House Bill 5090. The Illinois House agreed 83-28 and the bill became law as Public Act 104-0788. On the session's last night the Senate deleted the bill's construction-purchasing text. It put a rideshare labor act in its place. That law lets rideshare drivers organize and bargain as a group with the companies. The state labor board must certify one group to speak for all covered drivers. Covered companies must bargain with that group and follow new unfair-practice rules. Each rideshare trip starting in Illinois now carries a fee paid into a new driver support fund. The House had passed the earlier construction version 101-1 in April 2026.",
+      "nay_description": "Voted no on accepting the Senate's rewrite of House Bill 5090. The House agreed anyway, 83-28, and the bill became law as Public Act 104-0788. On the session's last night the Senate deleted the bill's construction-purchasing text. It put a rideshare labor act in its place. That law lets rideshare drivers organize and bargain as a group with the companies. The state labor board must certify one group to speak for all covered drivers. Covered companies must bargain with that group and follow new unfair-practice rules. Each rideshare trip starting in Illinois now carries a fee paid into a new driver support fund. The House had passed the earlier construction version 101-1 in April 2026.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "official_vote_date": "2026-06-01"
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1670665,
+      "measure_id": "SB 472",
+      "vote_date": "2026-03-25",
+      "review_status": "approved",
+      "yea_description": "Voted yes to pass Senate Bill 472, a school money-oversight bill. The Georgia House passed it 96-58 and it became law as Act 722. The law lets the State Board of Education ask the governor to suspend local school board members, with pay. That follows state auditor findings of money mismanagement or the worst level of state monitoring. In districts flagged as high risk, a superintendent's contract may not run longer than 12 months. Some auditor findings became grounds to fire a superintendent for cause. Early advances of state money are capped at half the district's state funds from the year before. State auditors must audit every local school system and state charter school each year.",
+      "nay_description": "Voted no on Senate Bill 472, a school money-oversight bill. The Georgia House passed it 96-58 anyway and it became law as Act 722. The law lets the State Board of Education ask the governor to suspend local school board members, with pay. That follows state auditor findings of money mismanagement or the worst level of state monitoring. In districts flagged as high risk, a superintendent's contract may not run longer than 12 months. Some auditor findings became grounds to fire a superintendent for cause. Early advances of state money are capped at half the district's state funds from the year before. State auditors must audit every local school system and state charter school each year.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "house",
+      "session": "2160",
+      "roll": 1581609,
+      "measure_id": "SB 17",
+      "vote_date": "2025-05-29",
+      "review_status": "approved",
+      "yea_description": "Voted yes on the final version of Senate Bill 17. The Texas House adopted the House-Senate compromise 85-57. The law bars governments, companies, and certain people tied to countries named as security threats from buying Texas property. U.S. citizens and green-card holders are exempt. A covered person who knowingly buys anyway commits a state jail felony, the lowest felony level in Texas. The attorney general may sue, and a court can have the property sold. The governor signed it and it took effect September 1, 2025.",
+      "nay_description": "Voted no on the final version of Senate Bill 17. The Texas House adopted the House-Senate compromise 85-57 anyway. The law bars governments, companies, and certain people tied to countries named as security threats from buying Texas property. U.S. citizens and green-card holders are exempt. A covered person who knowingly buys anyway commits a state jail felony, the lowest felony level in Texas. The attorney general may sue, and a court can have the property sold. The governor signed it and it took effect September 1, 2025.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OH",
+      "chamber": "house",
+      "session": "136",
+      "roll": 1763637329,
+      "measure_id": "SB 56",
+      "vote_date": "2025-11-19",
+      "review_status": "approved",
+      "yea_description": "Voted yes on the final compromise version of Senate Bill 56, Ohio's marijuana rewrite. The House agreed to the conference report 52-34 and it became law. The law moved the voter-approved adult-use marijuana rules into the state's medical marijuana chapter. Adults may grow up to six plants each, and twelve per home, only at their main residence in a secured space. Using marijuana in a public place is barred. No more than 400 licensed dispensaries may operate in the state at once. Adult-use retail sales carry a 10 percent tax. The governor signed it on December 19, 2025, struck out some parts, and it took effect March 20, 2026.",
+      "nay_description": "Voted no on the final compromise version of Senate Bill 56, Ohio's marijuana rewrite. The House agreed to the conference report 52-34 anyway and it became law. The law moved the voter-approved adult-use marijuana rules into the state's medical marijuana chapter. Adults may grow up to six plants each, and twelve per home, only at their main residence in a secured space. Using marijuana in a public place is barred. No more than 400 licensed dispensaries may operate in the state at once. Adult-use retail sales carry a 10 percent tax. The governor signed it on December 19, 2025, struck out some parts, and it took effect March 20, 2026.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "house",
+      "session": "2160",
+      "roll": 1582950,
+      "measure_id": "SB 2024",
+      "vote_date": "2025-06-01",
+      "review_status": "approved",
+      "yea_description": "Voted yes on the final version of Senate Bill 2024, a law on vapes marketed to children. The Texas House adopted the compromise 96-35. The law raised this crime from a Class B to a Class A misdemeanor. It bars selling or advertising a vape whose package shows cartoon characters, a celebrity name or image, or pictures of candy or other food. It also bars vapes shaped like school supplies, phones, watches, headphones, clothing, backpacks, cosmetics, or toys. It bars vapes made in, or advertised as made in, China or another country the United States names a foreign adversary. It bars vapes mixed with cannabinoids, alcohol, kratom, kava, mushrooms, or tianeptine. The governor signed it and it took effect September 1, 2025.",
+      "nay_description": "Voted no on the final version of Senate Bill 2024, a law on vapes marketed to children. The Texas House adopted the compromise 96-35 anyway. The law raised this crime from a Class B to a Class A misdemeanor. It bars selling or advertising a vape whose package shows cartoon characters, a celebrity name or image, or pictures of candy or other food. It also bars vapes shaped like school supplies, phones, watches, headphones, clothing, backpacks, cosmetics, or toys. It bars vapes made in, or advertised as made in, China or another country the United States names a foreign adversary. It bars vapes mixed with cannabinoids, alcohol, kratom, kava, mushrooms, or tianeptine. The governor signed it and it took effect September 1, 2025.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "senate",
+      "session": "2167",
+      "roll": 1524305,
+      "measure_id": "SB 68",
+      "vote_date": "2025-03-21",
+      "review_status": "approved",
+      "yea_description": "Voted yes to accept the House's version of Senate Bill 68, Georgia's lawsuit overhaul. The Senate agreed 34-21, the last step before the governor, and it became law as Act 9. Lawyers may no longer argue a dollar figure for pain and suffering. A judge must decide a motion to dismiss within 90 days after written arguments end. A plaintiff may drop a case alone only before the 60th day after the other side answers. Juries may now hear whether an injured person wore a seat belt. Property owners face a tougher test before they can be blamed for a crime on their land. Payment for medical care is limited to the reasonable value of the care actually needed. Some trials may be split, with fault decided before damages.",
+      "nay_description": "Voted no on accepting the House's version of Senate Bill 68, Georgia's lawsuit overhaul. The Senate agreed 34-21 anyway, and it became law as Act 9. Lawyers may no longer argue a dollar figure for pain and suffering. A judge must decide a motion to dismiss within 90 days after written arguments end. A plaintiff may drop a case alone only before the 60th day after the other side answers. Juries may now hear whether an injured person wore a seat belt. Property owners face a tougher test before they can be blamed for a crime on their land. Payment for medical care is limited to the reasonable value of the care actually needed. Some trials may be split, with fault decided before damages.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1524304
+      ]
+    },
+    {
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1594835,
+      "measure_id": "LD 1126",
+      "vote_date": "2025-06-25",
+      "review_status": "approved",
+      "yea_description": "Voted yes to accept the Senate's version of LD 1126, a gun serial-number bill. The Maine House agreed 73-67, then enacted the bill the same day. It became law without the governor's signature in January 2026, as Public Law Chapter 537. The law bars knowingly having, bringing into Maine, or transferring a gun, frame, or receiver with no serial number. Buying a serial-numbered frame or receiver requires a background check. Antique guns, collector items, permanently disabled guns, and guns made before 1968 are exempt. Making, selling, or knowingly having a gun that security screening cannot detect is also a crime. Penalties start January 1, 2027.",
+      "nay_description": "Voted no on accepting the Senate's version of LD 1126, a gun serial-number bill. The Maine House agreed 73-67 anyway and enacted the bill the same day. It became law without the governor's signature in January 2026, as Public Law Chapter 537. The law bars knowingly having, bringing into Maine, or transferring a gun, frame, or receiver with no serial number. Buying a serial-numbered frame or receiver requires a background check. Antique guns, collector items, permanently disabled guns, and guns made before 1968 are exempt. Making, selling, or knowingly having a gun that security screening cannot detect is also a crime. Penalties start January 1, 2027.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "FL",
+      "chamber": "house",
+      "session": "2135",
+      "roll": 1563815,
+      "measure_id": "H 1205",
+      "vote_date": "2025-05-01",
+      "review_status": "approved",
+      "yea_description": "Voted yes on the final version of House Bill 1205, which tightened Florida's citizen ballot-initiative rules. The House passed it 81-30 and the governor signed it the next day. Paid petition collectors must register with the state. They must be U.S. citizens and Florida residents, and may not have a felony conviction without voting rights restored. An unregistered person who holds more than 25 signed forms, beyond their own and close family's, commits a felony. Signed forms must be turned in within 10 days instead of 30, with fines up to $2,500 for each late form. Signers must add a Florida driver license number, state ID number, or the last four digits of their Social Security number. A sponsor may run only one proposed amendment at a time. State government may not spend public money on ads about proposed amendments.",
+      "nay_description": "Voted no on the final version of House Bill 1205, which tightened Florida's citizen ballot-initiative rules. The House passed it 81-30 anyway and the governor signed it the next day. Paid petition collectors must register with the state. They must be U.S. citizens and Florida residents, and may not have a felony conviction without voting rights restored. An unregistered person who holds more than 25 signed forms, beyond their own and close family's, commits a felony. Signed forms must be turned in within 10 days instead of 30, with fines up to $2,500 for each late form. Signers must add a Florida driver license number, state ID number, or the last four digits of their Social Security number. A sponsor may run only one proposed amendment at a time. State government may not spend public money on ads about proposed amendments.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1563814
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "senate",
+      "session": "2167",
+      "roll": 1531585,
+      "measure_id": "SB 1",
+      "vote_date": "2025-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted yes to accept the House's version of Senate Bill 1, the Riley Gaines Act of 2025. The Georgia Senate agreed 34-20 and it became law as Act 11. Schools, school systems, private schools that compete with them, and colleges must label each team male, female, or coed. Males may not play on a team labeled female. At school competitions, shared restrooms, changing areas, and sleeping quarters must be set aside by sex. Schools must offer another option to a student unwilling or unable to use the space for their sex. The law defines sex as biological sex. It does not let schools check a student's body to confirm sex, though medical records may be used.",
+      "nay_description": "Voted no on accepting the House's version of Senate Bill 1, the Riley Gaines Act of 2025. The Georgia Senate agreed 34-20 anyway and it became law as Act 11. Schools, school systems, private schools that compete with them, and colleges must label each team male, female, or coed. Males may not play on a team labeled female. At school competitions, shared restrooms, changing areas, and sleeping quarters must be set aside by sex. Schools must offer another option to a student unwilling or unable to use the space for their sex. The law defines sex as biological sex. It does not let schools check a student's body to confirm sex, though medical records may be used.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1531584
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1668391,
+      "measure_id": "SB 443",
+      "vote_date": "2026-03-23",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 443. It made purposely or recklessly blocking a highway or street a high and aggravated misdemeanor, a more serious grade of minor crime. Blocking a sidewalk or other public passage stayed a plain misdemeanor. The crime applies only when a person refuses to clear the way after an officer's order. A violator may also be sued for damages caused by the blockage. The Georgia House passed it 96-69, completing passage. It became law as Act 512, effective July 1, 2026.",
+      "nay_description": "Voted against passing Senate Bill 443. The bill raised blocking a highway or street to a high and aggravated misdemeanor, a more serious grade of minor crime. Blocking a sidewalk or other public passage stayed a plain misdemeanor. The offense applies only when a person refuses to clear the way after an officer's order. It also let people harmed sue the blocker for damages. The Georgia House passed it 96-69 anyway, and it became law as Act 512.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1674325,
+      "measure_id": "SB 552",
+      "vote_date": "2026-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 552, the True Patriotism and Universal Student Access (TPUSA) Act. It lets public school students form political clubs and hold political meetings on the same terms as other clubs unrelated to classes. A school that allows such clubs must give them the same use of rooms and the same chance to announce meetings. Schools may not treat a student group worse because of the political content of its speech. Students may wear political messages if the dress code allows other messages. Schools keep their power to maintain order, discipline, and attendance. The Georgia House passed this House version 95-68, the Senate agreed the same day, and it became law as Act 497.",
+      "nay_description": "Voted against passing Senate Bill 552, the True Patriotism and Universal Student Access (TPUSA) Act. The law lets public school students organize political clubs and meetings on the same terms as other non-class clubs. Schools that allow those clubs must give them equal use of rooms and equal chances to announce meetings. Schools may not discriminate based on the political content of student speech. Political clothing gets the same treatment as other messages under the dress code. The Georgia House passed it 95-68 and it became law as Act 497, effective July 1, 2026.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OH",
+      "chamber": "house",
+      "session": "136",
+      "roll": 1763617311,
+      "measure_id": "HB 492",
+      "vote_date": "2025-11-19",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Substitute House Bill 492 in the Ohio House. It widened the crime of interfering with an officer making an arrest, covering every state motor-vehicle law instead of a short list. It raised that penalty from a minor misdemeanor to a second-degree misdemeanor. It also made it a fourth-degree misdemeanor for a driver or passenger to refuse to give an officer their name, address, or birth date. That applies when the officer reasonably suspects a motor-vehicle violation. Nobody has to answer any other question. The House passed it 59-21, the Senate later passed it 24-9, and Governor Mike DeWine signed it on July 7, 2026.",
+      "nay_description": "Voted against Substitute House Bill 492 in the Ohio House. The bill widened the crime of interfering with an officer making an arrest to cover every state motor-vehicle law, and raised the penalty to a second-degree misdemeanor. It also made refusing to give an officer your name, address, or birth date a fourth-degree misdemeanor for drivers and passengers. That applies when the officer reasonably suspects a motor-vehicle violation. The House passed it 59-21 anyway, the Senate passed it 24-9, and the governor signed it in July 2026.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TN",
+      "chamber": "senate",
+      "session": "2161",
+      "roll": 1688578,
+      "measure_id": "SB 1915",
+      "vote_date": "2026-04-22",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House's version of Senate Bill 1915, the final Senate vote on the bill. The law makes counties, cities, and towns check that each benefit applicant age 18 or older is a citizen or lawfully present. Local forms and automated phone systems must carry that notice after their first update following July 1, 2026. An agency may not delay a benefit only because the check is still pending. It must stop a recurring benefit once a final check shows the person is not a citizen or a qualified immigrant. Agencies must also report people who are not lawfully present and receive benefits to a state immigration enforcement office. An employee who knowingly fails to report commits a Class A misdemeanor. The attorney general may investigate local governments and withhold their state funding. The Senate agreed 24-6 and it became law as Public Chapter 1106.",
+      "nay_description": "Voted against accepting the House's version of Senate Bill 1915, the final Senate vote on the bill. It extends Tennessee's citizenship checks for public benefits to counties, cities, and towns, for every applicant age 18 or older. Agencies must stop a recurring benefit once a final check shows the person is not a citizen or a qualified immigrant. They must report people who are not lawfully present and receive benefits to a state immigration enforcement office. An employee who knowingly fails to report commits a Class A misdemeanor. The attorney general may withhold state funding from local governments that do not comply. The Senate agreed 24-6 and it became law as Public Chapter 1106.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "FL",
+      "chamber": "senate",
+      "session": "2135",
+      "roll": 1564585,
+      "measure_id": "H 1205",
+      "vote_date": "2025-05-02",
+      "review_status": "approved",
+      "yea_description": "Voted for CS/HB 1205, accepting the last House change and completing passage. The law rewrote Florida's rules for citizen petitions to amend the state constitution. Every petition circulator, paid or volunteer, must register with the state and be a Florida resident and citizen. People with felony convictions may not circulate petitions unless their voting rights are restored. An unregistered person holding more than 25 signed forms commits a third-degree felony. Sponsors must deliver signed forms within 10 days instead of 30, with fines up to $2,500 for a late form. Signers must add a driver license number, state ID number, or the last four Social Security digits. Election officials mail each signer a notice, which the signer can use to cancel a forged signature. A sponsor may run only one amendment at a time. Petition fraud can be charged under Florida's racketeering law. The state may not spend public money on ads about proposed amendments. The Senate agreed 28-9 and the governor signed it as Chapter 2025-21.",
+      "nay_description": "Voted against CS/HB 1205 at the vote that completed its passage. The bill tightened Florida's citizen petition process for amending the state constitution. All petition circulators must register with the state and be Florida residents and citizens. An unregistered person holding more than 25 signed forms commits a third-degree felony. The deadline to turn in signed forms dropped from 30 days to 10, with fines up to $2,500 per late form. Signers must add a driver license number, state ID number, or the last four Social Security digits. A sponsor may run only one amendment at a time, and petition fraud can be charged as racketeering. The state may no longer pay for ads about proposed amendments. The Senate agreed 28-9 and it became law as Chapter 2025-21.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1582161,
+      "measure_id": "HB 460",
+      "vote_date": "2025-05-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 460 in the Illinois Senate, the vote that sent it to the governor. Illinois already gives state college aid to residents who cannot get federal aid. That group includes students without lawful permanent residence and transgender students blocked for not registering for selective service. This law extends the same eligibility to student aid offered by city and county governments. It also bars extra caps on those students' Monetary Award Program grants, the state's main college grant, beyond caps state law requires. Eligibility rules must be read to cover as many Illinois residents as the law allows. The Senate passed it 34-18 and it became Public Act 104-164, effective January 1, 2026.",
+      "nay_description": "Voted against House Bill 460 in the Illinois Senate. The bill widened a state law that gives college aid to Illinois residents who cannot get federal aid. That group includes students without lawful permanent residence and transgender students blocked for not registering for selective service. It added student aid offered by city and county governments to what those students may seek. It also barred extra caps on their Monetary Award Program grants, the state's main college grant. The Senate passed it 34-18 and it became Public Act 104-164, effective January 1, 2026.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1587268,
+      "measure_id": "LD 598",
+      "vote_date": "2025-06-10",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's version of LD 598, giving up a House amendment the Senate had refused. The law makes an employer with at least 10 regular workers pay a worker who reports for a shift the employer then cancels or cuts short. The pay is two hours at the worker's regular rate, or the scheduled shift's pay if that is less. An employer who made a documented good-faith try to reach the worker owes nothing. Bad weather, disasters, worker illness, and workplace injury are also excepted. Seasonal workers and union public employees are not covered. The House agreed 76-69, and the bill became law without the governor's signature as Public Law Chapter 418.",
+      "nay_description": "Voted against accepting the Senate's version of LD 598 and against dropping the House's own amendment. The bill makes an employer with at least 10 regular workers pay a worker who shows up for a shift the employer then cancels or cuts short. The pay is two hours at the regular rate, or the scheduled shift's pay if that is less. Bad weather, disasters, worker illness, and workplace injury are excepted, as is a documented good-faith try to reach the worker. The House agreed 76-69, and the bill became law without the governor's signature as Public Law Chapter 418.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1587988,
+      "measure_id": "LD 1016",
+      "vote_date": "2025-06-10",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the committee's ought-to-pass report on LD 1016, the step that moved the bill toward passage. The bill charges the buyer of a manufactured housing community or mobile home park $10,000 for each lot. The buyer pays when the deed is recorded, and the money goes to a new state fund. That fund helps homeowners, resident co-ops, and nonprofits buy these parks and keep them affordable. State and city housing authorities are exempt, as are co-ops of the home owners and buyers worth under $50 million. The version voted on here started the fee on January 1, 2026. The House then amended it to drop that start date and to require a sworn net-worth statement. The report was accepted 75-65 and the bill became law as Public Law Chapter 398.",
+      "nay_description": "Voted against accepting the committee's ought-to-pass report on LD 1016. The bill charges the buyer of a manufactured housing community or mobile home park $10,000 for each lot, paid when the deed is recorded. The money goes to a state fund that helps homeowners, resident co-ops, and nonprofits buy these parks and keep them affordable. Housing authorities, co-ops of the home owners, and buyers worth under $50 million do not pay. The version voted on here would have started the fee on January 1, 2026, a date the House later removed. The report was accepted 75-65 and the bill became law as Public Law Chapter 398.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1588941,
+      "measure_id": "LD 1016",
+      "vote_date": "2025-06-11",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House's final version of LD 1016, the last contested vote on the bill. It charges the buyer of a manufactured housing community or mobile home park $10,000 for each lot, paid when the deed is recorded. The money goes to a state fund that helps homeowners, resident co-ops, and nonprofits buy these parks and keep them affordable. State and city housing authorities are exempt, as are co-ops made up of the home owners. Buyers worth under $50 million are exempt too, counting related companies, and must file a sworn statement of net worth. The Senate agreed 18-15, and the governor signed it as Public Law Chapter 398.",
+      "nay_description": "Voted against accepting the House's final version of LD 1016. The bill charges the buyer of a manufactured housing community or mobile home park $10,000 for each lot when the deed is recorded. That money funds a state program helping homeowners, resident co-ops, and nonprofits buy these parks and keep them affordable. Housing authorities and co-ops of the home owners do not pay. Buyers worth under $50 million, counting related companies, are also exempt if they file a sworn statement of net worth. The Senate agreed 18-15, and the governor signed it as Public Law Chapter 398.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OH",
+      "chamber": "senate",
+      "session": "136",
+      "roll": 1743028529,
+      "measure_id": "SB 1",
+      "vote_date": "2025-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House's changes to Senate Bill 1, the Senate's last step on the bill. The law bars Ohio's public universities from keeping or opening diversity, equity, and inclusion offices. It also bans full-time faculty at those schools from striking, and adds reviews of tenured professors. The Ohio Senate agreed 20-11, and the governor signed it on March 28, 2025.",
+      "nay_description": "Voted against accepting the House's changes to Senate Bill 1 at the Senate's last step on the bill. The law bars Ohio's public universities from keeping or opening diversity, equity, and inclusion offices. It also bans full-time faculty at those schools from striking, and adds reviews of tenured professors. The Senate agreed 20-11 anyway, and the governor signed it on March 28, 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OH",
+      "chamber": "senate",
+      "session": "136",
+      "roll": 1763696144,
+      "measure_id": "SB 293",
+      "vote_date": "2025-11-19",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House's changes to Senate Bill 293, the Senate's last step on the bill. Mailed absentee ballots must now reach the county elections board by the close of polls on Election Day. That repealed the old four-day grace period for ballots postmarked earlier. The law also orders monthly checks of the voter list for registered voters who may not be U.S. citizens. The Senate agreed 23-10 and the governor signed it on December 19, 2025.",
+      "nay_description": "Voted against accepting the House's changes to Senate Bill 293 at the Senate's last step on the bill. The law makes mailed absentee ballots reach the county elections board by the close of polls on Election Day. That repealed the old four-day grace period for ballots postmarked earlier. It also orders monthly checks of the voter list for registered voters who may not be U.S. citizens. The Senate agreed 23-10 and the governor signed it on December 19, 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OH",
+      "chamber": "senate",
+      "session": "136",
+      "roll": 1781149605,
+      "measure_id": "HB 492",
+      "vote_date": "2026-06-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 492 in the Ohio Senate, the last vote needed to send it to the governor. The law widens the crime of interfering with an officer arresting someone for any motor-vehicle offense. Its penalty rose from a minor misdemeanor to a second-degree misdemeanor. It also makes it a crime to refuse to give an officer your name, address, or birth date. The Senate passed it 24-9 and the governor signed it on July 7, 2026.",
+      "nay_description": "Voted against passing House Bill 492 in the Ohio Senate on the vote that sent it to the governor. The law widens the crime of interfering with an officer arresting someone for any motor-vehicle offense. Its penalty rose from a minor misdemeanor to a second-degree misdemeanor. It also makes it a crime to refuse to give an officer your name, address, or birth date. The Senate passed it 24-9 and the governor signed it on July 7, 2026.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OH",
+      "chamber": "senate",
+      "session": "136",
+      "roll": 1781162536,
+      "measure_id": "HB 173",
+      "vote_date": "2026-06-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 173 in the Ohio Senate. The bill would have taken submetering companies out of Ohio's legal definition of a public utility. Submetering is when a landlord or vendor measures and bills each unit after power reaches the building's main meter. That would have freed those companies from full oversight by the Public Utilities Commission of Ohio. The bill set separate rules instead, including a tenant discount of at least three percent. The Senate passed it 24-9, the House agreed the next day, and the governor vetoed it on June 24, 2026.",
+      "nay_description": "Voted against passing House Bill 173 in the Ohio Senate. The bill would have taken submetering companies out of Ohio's legal definition of a public utility. Submetering is when a landlord or vendor measures and bills each unit after power reaches the building's main meter. That would have freed those companies from full oversight by the Public Utilities Commission of Ohio. The bill set separate rules instead, including a tenant discount of at least three percent. The Senate passed it 24-9, the House agreed the next day, and the governor vetoed it on June 24, 2026.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "house",
+      "session": "2160",
+      "roll": 1569381,
+      "measure_id": "SB 1257",
+      "vote_date": "2025-05-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1257 in the Texas House, the last vote before it went to the governor. Health plans that cover a gender transition procedure must also cover its side effects and any reversal. That includes yearly monitoring, and care for people who joined the plan after the procedure. Plans that large employers pay for themselves are not covered. The House passed it 87-58 and the law took effect September 1, 2025.",
+      "nay_description": "Voted against passing Senate Bill 1257 in the Texas House on the vote that sent it to the governor. Health plans that cover a gender transition procedure must also cover its side effects and any reversal. That includes yearly monitoring, and care for people who joined the plan after the procedure. Plans that large employers pay for themselves are not covered. The House passed it 87-58 and the law took effect September 1, 2025.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "house",
+      "session": "2160",
+      "roll": 1571090,
+      "measure_id": "HB 1586",
+      "vote_date": "2025-05-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1586 in the Texas House. The law makes the state health department post the school vaccine exemption form online for anyone to print. People can still request a blank form in writing, and cannot be asked for any information. It drops the copy-proof seal on the form and bars the state from keeping requesters' names. It did not change who qualifies for an exemption. The House passed it 83-54, the Senate agreed, and the law took effect September 1, 2025.",
+      "nay_description": "Voted against passing House Bill 1586 in the Texas House. The law makes the state health department post the school vaccine exemption form online for anyone to print. People can still request a blank form in writing, and cannot be asked for any information. It drops the copy-proof seal on the form and bars the state from keeping requesters' names. It did not change who qualifies for an exemption. The House passed it 83-54, the Senate agreed, and the law took effect September 1, 2025.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "house",
+      "session": "2160",
+      "roll": 1582919,
+      "measure_id": "SB 13",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to approve the final, negotiated version of Senate Bill 13, a school library law. Elected school boards must vote in an open meeting on every book a district adds to its libraries. Proposed titles must be open for public review for at least 30 days first. A parent can give the district a list of books their own child may not check out. When anyone challenges a book, the district must block students from it until it acts. The Texas House approved the report 81-48 and the law took effect September 1, 2025.",
+      "nay_description": "Voted against the final, negotiated version of Senate Bill 13, a school library law. Elected school boards must vote in an open meeting on every book a district adds to its libraries. Proposed titles must be open for public review for at least 30 days first. A parent can give the district a list of books their own child may not check out. When anyone challenges a book, the district must block students from it until it acts. The Texas House approved the report 81-48 and the law took effect September 1, 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "senate",
+      "session": "2160",
+      "roll": 1587476,
+      "measure_id": "HB 493",
+      "vote_date": "2025-06-01",
+      "review_status": "approved",
+      "yea_description": "Voted to approve the final, negotiated version of House Bill 493 in the Texas Senate. The law bars anyone finally convicted of a first- or second-degree felony from serving as a poll watcher. Those are the two most serious felony levels. A poll watcher is a person a party or candidate sends to observe voting. Texas already barred people convicted of an election-related felony. Appointees must now swear in writing that they have no such conviction. The Senate adopted the report 23-8 and the law took effect September 1, 2025.",
+      "nay_description": "Voted against the final, negotiated version of House Bill 493 in the Texas Senate. The law bars anyone finally convicted of a first- or second-degree felony from serving as a poll watcher. Those are the two most serious felony levels. A poll watcher is a person a party or candidate sends to observe voting. Texas already barred people convicted of an election-related felony. Appointees must now swear in writing that they have no such conviction. The Senate adopted the report 23-8 and the law took effect September 1, 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "roll": 6,
+      "measure_id": "H R 29",
+      "vote_date": "2025-01-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 29, the Laken Riley Act, in the House, 264-159. The bill would have made federal officers detain immigrants in the country unlawfully who are charged with burglary, theft, larceny, or shoplifting. It would also have let state attorneys general sue the federal government over immigration enforcement. H.R. 29 itself never became law. The Senate passed its own broader version, S. 5, adding assault on an officer and crimes causing death or serious injury. The House passed S. 5 on January 22, 2025, and it became law a week later.",
+      "nay_description": "Voted against H.R. 29, the Laken Riley Act, which the House passed 264-159. The bill would have made federal officers detain immigrants in the country unlawfully who are charged with burglary, theft, larceny, or shoplifting. It would also have let state attorneys general sue the federal government over immigration enforcement. H.R. 29 itself never became law. The Senate passed its own broader version, S. 5, adding assault on an officer and crimes causing death or serious injury. The House passed S. 5 on January 22, 2025, and it became law a week later.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "chamber": "house",
+      "roll": 7,
+      "measure_id": "H R 23",
+      "vote_date": "2025-01-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 23, the Illegitimate Court Counteraction Act, 243-140. It would have punished foreigners who help the International Criminal Court investigate or arrest Americans or allied citizens. The penalties would have been frozen U.S. assets and a ban on entering the country, reaching their close family too. It would also have cut off all U.S. money for the court. The Senate blocked it on January 28, 2025, so it never became law.",
+      "nay_description": "Voted against H.R. 23, the Illegitimate Court Counteraction Act, which the House passed 243-140. The bill would have frozen assets and banned U.S. entry for foreigners who aid court cases against Americans or allied citizens. It would also have ended all U.S. funding for the International Criminal Court. The Senate blocked it on January 28, 2025, so it never took effect.",
+      "labels": [
+        {
+          "slug": "peaceful_foreign_policy",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "chamber": "senate",
+      "roll": 7,
+      "measure_id": "S. 5",
+      "vote_date": "2025-01-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S. 5, the Laken Riley Act, 64-35 in the Senate. It requires the government to jail people who are in the country illegally and are arrested or charged with theft, burglary, larceny, or shoplifting. The same applies to assaulting a police officer or any crime causing death or serious injury. It also lets state attorneys general sue federal officials over immigration release decisions. The House agreed on January 22 and the president signed it into law on January 29, 2025.",
+      "nay_description": "Voted against S. 5, the Laken Riley Act, which the Senate passed 64-35. The law makes the government jail people in the country illegally who are arrested or charged with theft, burglary, larceny, or shoplifting. It also covers assaulting a police officer or any crime causing death or serious injury. It lets state attorneys general sue federal officials over release decisions. It became law on January 29, 2025.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "chamber": "house",
+      "roll": 10,
+      "measure_id": "H J RES 98",
+      "vote_date": "2024-01-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 98 by 206-177. It used the Congressional Review Act, a fast-track law for undoing agency rules, to cancel a National Labor Relations Board rule. That rule made it easier to treat two companies, such as a franchise chain and its local owner, as joint employers of the same workers. The Senate agreed 50-48, but the president vetoed it on May 3, 2024. The House override attempt failed 214-191, so the resolution never took effect.",
+      "nay_description": "Voted against H.J.Res. 98, which the House passed 206-177. The measure sought to cancel a National Labor Relations Board rule that made it easier to hold two companies responsible as joint employers. That covers pairs like a franchise chain and its local owner. The Senate agreed 50-48, the president vetoed it, and the override failed 214-191. The resolution never took effect.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "congress": 118,
+      "session": 2
+    },
+    {
+      "chamber": "house",
+      "roll": 12,
+      "measure_id": "H R 28",
+      "vote_date": "2025-01-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 28, the Protection of Women and Girls in Sports Act, 218-206. It would change Title IX, the school anti-discrimination law. Schools that take federal money could not let anyone male at birth play on a girls' or women's team. Sex would be set only by a person's biology and genetics at birth. The Senate has not passed it, so it is not law.",
+      "nay_description": "Voted against H.R. 28, the Protection of Women and Girls in Sports Act, which the House passed 218-206. The bill would bar federally funded schools from letting anyone male at birth play on a girls' or women's team. It would define sex by biology and genetics at birth under Title IX, the school anti-discrimination law. The Senate has not passed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "chamber": "house",
+      "roll": 17,
+      "measure_id": "H R 30",
+      "vote_date": "2025-01-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 30, the Preventing Violence Against Women by Illegal Aliens Act, 274-145. It would bar non-citizens from entering the United States, and allow deporting them, for sex offenses or domestic violence. The same would apply to stalking, child abuse, child neglect, or breaking a protection order. A conviction or an admission of having done the acts would count. The Senate has not passed it, so it is not law.",
+      "nay_description": "Voted against H.R. 30, the Preventing Violence Against Women by Illegal Aliens Act, which the House passed 274-145. The bill would make non-citizens barred from entry and deportable for sex offenses, domestic violence, stalking, child abuse, child neglect, or breaking a protection order. Admitting to the acts would count, not just a conviction. The Senate has not passed it.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "chamber": "house",
+      "roll": 23,
+      "measure_id": "S 5",
+      "vote_date": "2025-01-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S. 5, the Laken Riley Act, 263-156, sending it to the president. It requires the government to jail people in the country illegally who are arrested or charged with theft, burglary, larceny, or shoplifting. It also covers assaulting a police officer or any crime causing death or serious injury. State attorneys general can sue federal officials over immigration release decisions. It became law on January 29, 2025.",
+      "nay_description": "Voted against S. 5, the Laken Riley Act, which the House passed 263-156 and sent to the president. The law makes the government jail people in the country illegally who are arrested or charged with theft, burglary, larceny, or shoplifting. It also covers assaulting a police officer or any crime causing death or serious injury. It lets state attorneys general sue federal officials over release decisions. It took effect as law on January 29, 2025.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "chamber": "house",
+      "roll": 25,
+      "measure_id": "H R 471",
+      "vote_date": "2025-01-23",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 471, the Fix Our Forests Act, 279-141. It would mark high-risk wildfire zones, called firesheds, on federal land for faster tree-thinning and fuel-clearing work. Many of those projects would skip full environmental review. Agencies would not have to redo endangered-species checks on forest plans when a new species is listed. Courts could rarely halt the projects, and lawsuits would face a 120-day deadline. The Senate has not passed it.",
+      "nay_description": "Voted against H.R. 471, the Fix Our Forests Act, which the House passed 279-141. The bill would designate high-risk wildfire zones on federal land and exempt many forest projects there from full environmental review. It would end repeat endangered-species checks on forest plans and sharply limit court orders stopping the projects. Lawsuits would have to be filed within 120 days. The Senate has not passed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "chamber": "house",
+      "roll": 25,
+      "measure_id": "H R 5585",
+      "vote_date": "2024-01-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 5585, the Agent Raul Gonzalez Officer Safety Act, 271-154. It would create a federal crime for driving away from Border Patrol on purpose within 100 miles of the border. The basic penalty would be up to two years in prison. A required minimum of five years would apply if someone was badly hurt, and ten years if someone died. Non-citizens convicted would be deportable, barred from entry, and unable to get asylum. The bill died when that Congress ended.",
+      "nay_description": "Voted against H.R. 5585, the Agent Raul Gonzalez Officer Safety Act, which the House passed 271-154. The bill would make it a federal crime to flee Border Patrol by vehicle within 100 miles of the border. Penalties would run up to two years, with a required minimum of five years if someone was badly hurt and ten if someone died. Non-citizens convicted would be deportable and could not get asylum. It died when that Congress ended.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "congress": 118,
+      "session": 2
+    },
+    {
+      "chamber": "house",
+      "roll": 27,
+      "measure_id": "H R 21",
+      "vote_date": "2025-01-23",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 21, the Born-Alive Abortion Survivors Protection Act, 217-204. It would require health care workers present when a baby is born alive after an attempted abortion to give the same care any newborn would get. They would also have to get the baby admitted to a hospital. Breaking the rule could mean fines or up to five years in prison. The mother could not be prosecuted and could sue. The Senate has not passed it, so it is not law.",
+      "nay_description": "Voted against H.R. 21, the Born-Alive Abortion Survivors Protection Act, which the House passed 217-204. The bill would punish health care workers who did not give a baby born alive after an attempted abortion the same care as any newborn. Penalties would be fines or up to five years in prison. It would also require that the baby be taken to a hospital. The Senate has not passed it.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "chamber": "house",
+      "roll": 27,
+      "measure_id": "H R 6678",
+      "vote_date": "2024-01-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 6678, the Consequences for Social Security Fraud Act, 272-155 in the House. It would make Social Security fraud, fake-ID fraud, or COVID relief fraud grounds to bar or deport an immigrant. The Senate never acted, so it did not become law.",
+      "nay_description": "Voted against H.R. 6678, which would have made Social Security fraud, fake-ID fraud, or COVID relief fraud grounds to bar or deport an immigrant. The House passed it anyway, 272-155, but the Senate never acted and it never became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "congress": 118,
+      "session": 2
+    },
+    {
+      "chamber": "house",
+      "roll": 29,
+      "measure_id": "H R 26",
+      "vote_date": "2023-01-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 26, the Born-Alive Abortion Survivors Protection Act, 220-210 in the House. It would require any practitioner present to care for a child born alive after an attempted abortion. Failing to do so could bring fines or up to five years in prison. The Senate never took it up, so it did not become law.",
+      "nay_description": "Voted against H.R. 26, which would have created federal criminal penalties for practitioners who failed to treat a child born alive after an attempted abortion. The House passed it 220-210, but the Senate never took it up and it did not become law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "congress": 118,
+      "session": 1
+    },
+    {
+      "chamber": "house",
+      "roll": 31,
+      "measure_id": "H R 6976",
+      "vote_date": "2024-02-01",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 6976, the Protect Our Communities from DUIs Act, 274-150 in the House. It would make a drunk or drugged driving offense, even a misdemeanor, grounds to bar or deport an immigrant. The Senate never acted, so it did not become law.",
+      "nay_description": "Voted against H.R. 6976, which would have made any drunk or drugged driving offense grounds to bar or deport an immigrant. The House passed it 274-150, but it died in the Senate and never became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        },
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "congress": 118,
+      "session": 2
+    },
+    {
+      "chamber": "house",
+      "roll": 33,
+      "measure_id": "H R 27",
+      "vote_date": "2025-02-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 27, the HALT Fentanyl Act, 312-108 in the House. It permanently places fentanyl-like drugs as a group in Schedule I, the strictest drug class, and applies fentanyl's trafficking penalties. This House bill stalled in the Senate, but the same text became law in July 2025 through S. 331.",
+      "nay_description": "Voted against H.R. 27, which permanently classes fentanyl-like drugs in Schedule I, the strictest federal drug category, and applies fentanyl's trafficking penalties. The House passed it 312-108. The House bill itself stalled in the Senate, but identical text became law in July 2025.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "chamber": "house",
+      "roll": 35,
+      "measure_id": "H R 26",
+      "vote_date": "2025-02-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 26, the Protecting American Energy Production Act, 226-188 in the House. It would bar the President from declaring a halt to fracking unless Congress passed a law allowing it. It also said states should keep primary control of fracking rules. The Senate never acted, so it did not become law.",
+      "nay_description": "Voted against H.R. 26, which would have barred the President from halting fracking without an act of Congress and backed state control of fracking rules. The House passed it 226-188, but it died in the Senate and did not become law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "chamber": "house",
+      "roll": 42,
+      "measure_id": "H R 35",
+      "vote_date": "2025-02-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 35, the Agent Raul Gonzalez Officer Safety Act, 264-155 in the House. It would make fleeing Border Patrol by vehicle within 100 miles of the border a federal crime, punishable by up to two years. Minimum terms of 5 or 10 years would apply only if the chase caused serious injury or death. Immigrants convicted could be deported and denied asylum. The Senate never acted, so it did not become law.",
+      "nay_description": "Voted against H.R. 35, which would have created a federal crime for fleeing Border Patrol by vehicle near the border. Convicted immigrants could be deported and barred from asylum. The House passed it 264-155, but the Senate never acted and it did not become law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "chamber": "house",
+      "roll": 52,
+      "measure_id": "H J RES 35",
+      "vote_date": "2025-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 35, 220-206 in the House, using the law that lets Congress cancel new federal rules. It wiped out the EPA rule carrying out the charge on methane leaked by oil and gas facilities. The Senate agreed and the President signed it in March 2025.",
+      "nay_description": "Voted against H.J.Res. 35, which cancelled the EPA rule setting up the charge for methane released by oil and gas facilities. The House passed it 220-206, the Senate agreed, and it became law in March 2025.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "chamber": "house",
+      "roll": 52,
+      "measure_id": "H R 7176",
+      "vote_date": "2024-02-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 7176, the Unlocking our Domestic LNG Potential Act, 224-200 in the House. It would end Energy Department approval of natural gas imports and exports and give federal energy regulators sole say over LNG terminals. Such trade would be treated as automatically in the public interest. The Senate never acted, so it did not become law.",
+      "nay_description": "Voted against H.R. 7176, which would have stripped the Energy Department of its review of natural gas exports and imports and deemed that trade in the public interest. The House passed it 224-200, but it died without Senate action.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "congress": 118,
+      "session": 2
+    },
+    {
+      "chamber": "house",
+      "roll": 53,
+      "measure_id": "H J RES 20",
+      "vote_date": "2025-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 20, 221-198 in the House, using the law that lets Congress cancel new federal rules. It wiped out the Energy Department's efficiency standards for consumer gas-fired tankless water heaters. The Senate agreed in April and it became law on May 9, 2025.",
+      "nay_description": "Voted against H.J.Res. 20, which cancelled the Energy Department's energy efficiency standards for consumer gas-fired tankless water heaters. The House passed it 221-198, the Senate agreed, and it became law in May 2025.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "chamber": "house",
+      "roll": 58,
+      "measure_id": "H J RES 61",
+      "vote_date": "2025-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 61, canceling the EPA's 2024 limits on hazardous air pollution from rubber tire factories. The House passed it 216-202, and it became law.",
+      "nay_description": "Voted against H.J.Res. 61, which canceled the EPA's 2024 limits on hazardous air pollution from rubber tire factories. It passed the House 216-202 and became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "chamber": "house",
+      "roll": 59,
+      "measure_id": "H J RES 42",
+      "vote_date": "2025-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 42, canceling the Energy Department's new rule tightening testing, labeling, and enforcement for appliance efficiency standards. The House passed it 222-203, and it became law.",
+      "nay_description": "Voted against H.J.Res. 42, which canceled the Energy Department's new rule tightening testing, labeling, and enforcement for appliance efficiency standards. It passed the House 222-203 and became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "chamber": "house",
+      "roll": 61,
+      "measure_id": "S J RES 11",
+      "vote_date": "2025-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 11, canceling the new rule that made offshore oil and gas companies list possible shipwrecks and historic sites in their drilling plans. The House passed it 221-202, and it became law.",
+      "nay_description": "Voted against S.J.Res. 11, which canceled the rule requiring offshore oil and gas companies to list possible shipwrecks and historic sites in drilling plans. It passed the House 221-202 and became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "chamber": "house",
+      "roll": 66,
+      "measure_id": "H R 7511",
+      "vote_date": "2024-03-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 7511, the Laken Riley Act, requiring federal detention of people in the country illegally who are charged with theft or burglary. The House passed it 251-170, but the Senate never voted and the bill died.",
+      "nay_description": "Voted against H.R. 7511, the Laken Riley Act, which would have forced federal detention of people in the country illegally charged with theft or burglary. It passed the House 251-170 but died in the Senate.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "congress": 118,
+      "session": 2
+    },
+    {
+      "chamber": "house",
+      "roll": 71,
+      "measure_id": "H J RES 25",
+      "vote_date": "2025-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 25, canceling the IRS rule that made crypto trading services without a central operator report users' sale proceeds. The House passed it 292-132, and it became law.",
+      "nay_description": "Voted against H.J.Res. 25, which canceled the IRS rule requiring decentralized crypto trading services to report their users' sale proceeds to the tax agency. It passed the House 292-132 and became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "chamber": "senate",
+      "roll": 75,
+      "measure_id": "S. 3853",
+      "vote_date": "2024-03-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S. 3853, which would have extended and widened federal payments to people sickened by nuclear testing fallout, uranium mining, and Manhattan Project waste. The Senate passed it 69-30, but the House never voted and the bill died.",
+      "nay_description": "Voted against S. 3853, a bill to extend and widen federal payments for people sickened by nuclear testing fallout, uranium mining, and Manhattan Project waste. It passed the Senate 69-30 but died in the House.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": "against"
+        }
+      ],
+      "congress": 118,
+      "session": 2
+    },
+    {
+      "chamber": "house",
+      "roll": 77,
+      "measure_id": "H J RES 24",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 24, canceling the Energy Department's new, stricter efficiency standards for walk-in coolers and freezers, the refrigerated rooms stores and restaurants use. The House passed it 203-182, and it became law.",
+      "nay_description": "Voted against H.J.Res. 24, which canceled the Energy Department's new efficiency standards for walk-in coolers and freezers used by stores and restaurants. It passed the House 203-182 and became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "congress": 119,
+      "session": 1
+    },
+    {
+      "chamber": "senate",
+      "roll": 77,
+      "measure_id": "S. 316",
+      "vote_date": "2023-03-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S. 316, which would have repealed the 1991 and 2002 laws authorizing war against Iraq, ending the standing legal basis for military action there. The Senate passed it 66-30, but the House never voted and the bill died.",
+      "nay_description": "Voted against S. 316, a bill to repeal the 1991 and 2002 laws authorizing war against Iraq. It passed the Senate 66-30 but died in the House, so both laws stayed in force.",
+      "labels": [
+        {
+          "slug": "peaceful_foreign_policy",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "congress": 118,
+      "session": 1
+    },
+    {
+      "chamber": "house",
+      "roll": 78,
+      "measure_id": "H J RES 75",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.J.Res. 75, canceling the Energy Department's new, stricter efficiency standards for commercial refrigerators and freezers used in stores and restaurants. The House passed it 214-193, and it became law.",
+      "nay_description": "Voted against H.J.Res. 75, which canceled the Energy Department's new efficiency standards for commercial refrigerators and freezers. It passed the House 214-193 and became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "congress": 119,
+      "session": 1
+    }
+  ]
+}
