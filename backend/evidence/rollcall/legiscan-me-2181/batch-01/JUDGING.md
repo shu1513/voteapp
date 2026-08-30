@@ -209,3 +209,25 @@ deliberately if the campaign wants them, for all 46 rolls rather than four.
 Their labels also set `nay` to the inverted stance, which is why Maine's tag
 count fell from 1,578 to 1,529: the 49 `against` tags on LD 1126 house nay
 voters are gone, and every other tag is untouched.
+
+### Review fixes, 2026-08-30 (second pass)
+
+Three review findings on the plain-language pass, all real, all regressions
+that pass introduced by trading precision for simplicity:
+
+- **LD 1126** — "It is now a crime to have" was wrong. Enacted §2038(1):
+  first-offense POSSESSION is a civil violation, at most a $50 fine; a crime
+  only on repeat offenses. Importing, selling, or transferring is a crime from
+  the first offense (§2038(2)), and all penalties begin January 1, 2027.
+  The overwritten parallel-session text had the 2027 date; it is now restored.
+- **LD 598** — the rewrite dropped the statute's trigger that the worker
+  actually REPORTS to work (§639-A(2): "reports to work at the request of an
+  employer and the employer cancels"). The pre-rewrite description had it.
+  Now "shows up for a scheduled shift".
+- **LD 538** — "doctor"/"clinic" narrowed the statute's "practitioner" and
+  "health care facility"; nurse practitioners and other prescribers are
+  covered. Now "the prescriber, meaning the doctor, nurse practitioner, or
+  other provider who wrote the prescription".
+
+377 records rewritten in place (124 + 127 + 126), rows unchanged at 1,516,
+convergence all unchanged. Rewrite ledger stamp `2026-08-30T06:14:14.623Z`.

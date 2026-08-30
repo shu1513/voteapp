@@ -164,3 +164,22 @@ importer preserved the original insert ledger as `import-report.json` and wrote
 this run to `import-rerun-report.json` (stamp `2026-08-30T05:29:04.395Z`).
 Convergence dry run: all 1,392 `unchanged`. Tag count unchanged at 733 — the
 labels were already explicit `nay: null`.
+
+### Review fixes, 2026-08-30 (second pass)
+
+Three review findings on the plain-language pass, all real:
+
+- **LD 427 senate** — an antecedent bug: "The Maine Senate passed that version
+  19-16" followed a sentence about the SMALLER version, but the 19-16 vote was
+  on the broader committee version (as this file's own version-check section
+  says). Now "passed the broader version 19-16".
+- **LD 537** — "posts … online" narrowed the enacted definition of disclosure,
+  which covers "electronic or other means". Now "shares … whether online or
+  any other way".
+- **LD 1784** — "every police department" mis-scoped the statute's "law
+  enforcement agency", which includes sheriffs and the State Police. Now
+  "every Maine law enforcement agency, including town and city police, county
+  sheriffs, and the State Police".
+
+279 records rewritten in place (128 + 126 + 25), rows unchanged at 1,392,
+convergence all unchanged. Rewrite ledger stamp `2026-08-30T06:14:20.477Z`.
