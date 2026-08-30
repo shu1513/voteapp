@@ -8,8 +8,8 @@
    "measure_id": "HB 102",
    "vote_date": "2025-10-01",
    "review_status": "approved",
-   "yea_description": "Voted for House Bill 102. It would have made harassing a sports official a third-degree misdemeanor, when the harassment comes from the official's decisions or their role as an official. The Pennsylvania House passed it 137-66. As of August 2026 the Senate had not voted on it.",
-   "nay_description": "Voted against House Bill 102. It would have made harassing a sports official a third-degree misdemeanor, when the harassment comes from the official's decisions or their role as an official. The Pennsylvania House passed it 137-66. As of August 2026 the Senate had not voted on it.",
+   "yea_description": "Voted for House Bill 102. It would have made harassing a sports official a crime, at the lowest misdemeanor level. The rule applied when the harassment comes from the official's calls or their role as an official. The Pennsylvania House passed it 137-66. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 102. It would have made harassing a sports official a crime, at the lowest misdemeanor level. The rule applied when the harassment comes from the official's calls or their role as an official. The Pennsylvania House passed it 137-66. As of August 2026 the Senate had not voted on it.",
    "labels": [
     {
      "slug": "public_safety_and_crime_control",
@@ -26,8 +26,8 @@
    "measure_id": "HB 1042",
    "vote_date": "2026-07-23",
    "review_status": "approved",
-   "yea_description": "Voted for House Bill 1042. It would have let state prisoners earn credit toward a shorter minimum sentence by completing vocational training and education. It also set out sentencing and parole eligibility for second-degree murder, which now carries an automatic life sentence. The Pennsylvania House passed the final version 102-100. As of August 2026 the bill had not become law.",
-   "nay_description": "Voted against House Bill 1042. It would have let state prisoners earn credit toward a shorter minimum sentence by completing vocational training and education. It also set out sentencing and parole eligibility for second-degree murder, which now carries an automatic life sentence. The Pennsylvania House passed the final version 102-100. As of August 2026 the bill had not become law.",
+   "yea_description": "Voted for House Bill 1042. It would have let state prisoners earn credit toward a shorter minimum sentence by finishing job training and school programs. It also set out sentencing and parole rules for second-degree murder, which now carries an automatic life sentence. The Pennsylvania House passed the final version 102-100. As of August 2026 the bill had not become law.",
+   "nay_description": "Voted against House Bill 1042. It would have let state prisoners earn credit toward a shorter minimum sentence by finishing job training and school programs. It also set out sentencing and parole rules for second-degree murder, which now carries an automatic life sentence. The Pennsylvania House passed the final version 102-100. As of August 2026 the bill had not become law.",
    "labels": [
     {
      "slug": "public_safety_and_crime_control",
@@ -101,8 +101,8 @@
    "measure_id": "HB 1574",
    "vote_date": "2025-07-01",
    "review_status": "approved",
-   "yea_description": "Voted for House Bill 1574. It would have created a state loan fund letting a redevelopment authority or land bank borrow up to $500,000 in startup money from the state economic development department. The Pennsylvania House passed it 160-42. As of August 2026 the Senate had not voted on it.",
-   "nay_description": "Voted against House Bill 1574. It would have created a state loan fund letting a redevelopment authority or land bank borrow up to $500,000 in startup money from the state economic development department. The Pennsylvania House passed it 160-42. As of August 2026 the Senate had not voted on it.",
+   "yea_description": "Voted for House Bill 1574. It would have created a state loan fund. A redevelopment agency, or a land bank that takes over vacant property to get it back in use, could borrow up to $500,000 in startup money from the state. The Pennsylvania House passed it 160-42. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1574. It would have created a state loan fund. A redevelopment agency, or a land bank that takes over vacant property to get it back in use, could borrow up to $500,000 in startup money from the state. The Pennsylvania House passed it 160-42. As of August 2026 the Senate had not voted on it.",
    "labels": [
     {
      "slug": "housing_affordability",
@@ -119,8 +119,8 @@
    "measure_id": "HB 1706",
    "vote_date": "2026-04-15",
    "review_status": "approved",
-   "yea_description": "Voted for House Bill 1706. It would have required the education department, working with the health and human services departments, to publish guidance helping students, parents and coaches recognize the warning signs of mental health distress and illness. The Pennsylvania House passed it 107-94. As of August 2026 the Senate had not voted on it.",
-   "nay_description": "Voted against House Bill 1706. It would have required the education department, working with the health and human services departments, to publish guidance helping students, parents and coaches recognize the warning signs of mental health distress and illness. The Pennsylvania House passed it 107-94. As of August 2026 the Senate had not voted on it.",
+   "yea_description": "Voted for House Bill 1706. It would have made the education department publish guidance for students, parents and coaches on spotting the warning signs of mental health trouble. The health and human services departments would help write it. The Pennsylvania House passed it 107-94. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1706. It would have made the education department publish guidance for students, parents and coaches on spotting the warning signs of mental health trouble. The health and human services departments would help write it. The Pennsylvania House passed it 107-94. As of August 2026 the Senate had not voted on it.",
    "labels": [
     {
      "slug": "public_education_quality",
@@ -263,8 +263,8 @@
    "measure_id": "HB 846",
    "vote_date": "2025-06-09",
    "review_status": "approved",
-   "yea_description": "Voted for House Bill 846. It would have widened the prevailing wage law, which sets minimum pay on public construction, to cover HVAC duct cleaning and custom offsite fabrication. It would also have banned split rates, where workers are paid different amounts at different times on the same job. The Pennsylvania House passed it 126-76. As of August 2026 the Senate had not voted on it.",
-   "nay_description": "Voted against House Bill 846. It would have widened the prevailing wage law, which sets minimum pay on public construction, to cover HVAC duct cleaning and custom offsite fabrication. It would also have banned split rates, where workers are paid different amounts at different times on the same job. The Pennsylvania House passed it 126-76. As of August 2026 the Senate had not voted on it.",
+   "yea_description": "Voted for House Bill 846. The prevailing wage law sets minimum pay on public construction jobs. This bill would have widened it to cover HVAC duct cleaning and custom work built off site. It would also have banned split rates, where workers get different pay at different times on the same job. The Pennsylvania House passed it 126-76. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 846. The prevailing wage law sets minimum pay on public construction jobs. This bill would have widened it to cover HVAC duct cleaning and custom work built off site. It would also have banned split rates, where workers get different pay at different times on the same job. The Pennsylvania House passed it 126-76. As of August 2026 the Senate had not voted on it.",
    "labels": [
     {
      "slug": "corporate_accountability",
@@ -281,8 +281,8 @@
    "measure_id": "HB 1042",
    "vote_date": "2026-07-12",
    "review_status": "approved",
-   "yea_description": "Voted for House Bill 1042. It would have let state prisoners earn credit toward a shorter minimum sentence by completing vocational training and education. It also set out sentencing and parole eligibility for second-degree murder, which now carries an automatic life sentence. The Pennsylvania Senate passed it 30-20. As of August 2026 the bill had not become law.",
-   "nay_description": "Voted against House Bill 1042. It would have let state prisoners earn credit toward a shorter minimum sentence by completing vocational training and education. It also set out sentencing and parole eligibility for second-degree murder, which now carries an automatic life sentence. The Pennsylvania Senate passed it 30-20. As of August 2026 the bill had not become law.",
+   "yea_description": "Voted for House Bill 1042. It would have let state prisoners earn credit toward a shorter minimum sentence by finishing job training and school programs. It also set out sentencing and parole rules for second-degree murder, which now carries an automatic life sentence. The Pennsylvania Senate passed it 30-20. As of August 2026 the bill had not become law.",
+   "nay_description": "Voted against House Bill 1042. It would have let state prisoners earn credit toward a shorter minimum sentence by finishing job training and school programs. It also set out sentencing and parole rules for second-degree murder, which now carries an automatic life sentence. The Pennsylvania Senate passed it 30-20. As of August 2026 the bill had not become law.",
    "labels": [
     {
      "slug": "public_safety_and_crime_control",
@@ -341,8 +341,8 @@
    "measure_id": "SB 1400",
    "vote_date": "2026-06-25",
    "review_status": "approved",
-   "yea_description": "Voted for Senate Bill 1400. It would have ended the automatic life sentence for second-degree murder, also called felony murder, for defendants who were 18 or older. Courts would instead set a minimum prison term, opening the possibility of parole. The Pennsylvania Senate passed it 30-20. As of August 2026 the House had not voted on it.",
-   "nay_description": "Voted against Senate Bill 1400. It would have ended the automatic life sentence for second-degree murder, also called felony murder, for defendants who were 18 or older. Courts would instead set a minimum prison term, opening the possibility of parole. The Pennsylvania Senate passed it 30-20. As of August 2026 the House had not voted on it.",
+   "yea_description": "Voted for Senate Bill 1400. Under current law, second-degree murder carries an automatic life sentence. That covers a death during another serious crime. This bill would have ended the automatic life term for defendants who were 18 or older, letting courts set a minimum prison term instead, so parole becomes possible. The Pennsylvania Senate passed it 30-20. As of August 2026 the House had not voted on it.",
+   "nay_description": "Voted against Senate Bill 1400. Under current law, second-degree murder carries an automatic life sentence. That covers a death during another serious crime. This bill would have ended the automatic life term for defendants who were 18 or older, letting courts set a minimum prison term instead, so parole becomes possible. The Pennsylvania Senate passed it 30-20. As of August 2026 the House had not voted on it.",
    "labels": [
     {
      "slug": "public_safety_and_crime_control",
@@ -452,8 +452,8 @@
    "measure_id": "SB 490",
    "vote_date": "2025-03-31",
    "review_status": "approved",
-   "yea_description": "Voted for Senate Bill 490. It would have barred releasing a defendant found to pose a threat to public safety on their own recognizance or on unsecured bail. An arresting officer could not release such a person before taking them before a judge. The Pennsylvania Senate passed it 32-17. As of August 2026 the House had not voted on it.",
-   "nay_description": "Voted against Senate Bill 490. It would have barred releasing a defendant found to pose a threat to public safety on their own recognizance or on unsecured bail. An arresting officer could not release such a person before taking them before a judge. The Pennsylvania Senate passed it 32-17. As of August 2026 the House had not voted on it.",
+   "yea_description": "Voted for Senate Bill 490. It would have barred letting a defendant go free on a promise to appear, or on bail with no money down, once a judge finds the person is a threat to public safety. An arresting officer could not release such a person before taking them to a judge. The Pennsylvania Senate passed it 32-17. As of August 2026 the House had not voted on it.",
+   "nay_description": "Voted against Senate Bill 490. It would have barred letting a defendant go free on a promise to appear, or on bail with no money down, once a judge finds the person is a threat to public safety. An arresting officer could not release such a person before taking them to a judge. The Pennsylvania Senate passed it 32-17. As of August 2026 the House had not voted on it.",
    "labels": [
     {
      "slug": "public_safety_and_crime_control",
@@ -470,8 +470,8 @@
    "measure_id": "SB 686",
    "vote_date": "2025-06-04",
    "review_status": "approved",
-   "yea_description": "Voted for Senate Bill 686. It would have made it a third-degree felony to intentionally alter, destroy, conceal or remove a public record that someone has asked for under the state's open records law. The Pennsylvania Senate passed it 31-18. As of August 2026 the House had not voted on it.",
-   "nay_description": "Voted against Senate Bill 686. It would have made it a third-degree felony to intentionally alter, destroy, conceal or remove a public record that someone has asked for under the state's open records law. The Pennsylvania Senate passed it 31-18. As of August 2026 the House had not voted on it.",
+   "yea_description": "Voted for Senate Bill 686. It would have made it a serious crime, at the lowest felony level, to deliberately change, destroy, hide or remove a public record that someone has requested under the state's open records law. The Pennsylvania Senate passed it 31-18. As of August 2026 the House had not voted on it.",
+   "nay_description": "Voted against Senate Bill 686. It would have made it a serious crime, at the lowest felony level, to deliberately change, destroy, hide or remove a public record that someone has requested under the state's open records law. The Pennsylvania Senate passed it 31-18. As of August 2026 the House had not voted on it.",
    "labels": [
     {
      "slug": "anti_corruption",
@@ -506,8 +506,8 @@
    "measure_id": "SB 908",
    "vote_date": "2026-06-10",
    "review_status": "approved",
-   "yea_description": "Voted for Senate Bill 908. It would have narrowed the prevailing wage law, which sets minimum pay on public construction. Rehabilitating a home, school safety and security improvements, and HVAC duct cleaning would no longer count as public work covered by those wage rules. The Pennsylvania Senate passed it 37-13. As of August 2026 the House had not voted on it.",
-   "nay_description": "Voted against Senate Bill 908. It would have narrowed the prevailing wage law, which sets minimum pay on public construction. Rehabilitating a home, school safety and security improvements, and HVAC duct cleaning would no longer count as public work covered by those wage rules. The Pennsylvania Senate passed it 37-13. As of August 2026 the House had not voted on it.",
+   "yea_description": "Voted for Senate Bill 908. The prevailing wage law sets minimum pay on public construction jobs. This bill would have narrowed it, so fixing up a home, school safety and security work, and HVAC duct cleaning would no longer count as public work covered by those pay rules. The Pennsylvania Senate passed it 37-13. As of August 2026 the House had not voted on it.",
+   "nay_description": "Voted against Senate Bill 908. The prevailing wage law sets minimum pay on public construction jobs. This bill would have narrowed it, so fixing up a home, school safety and security work, and HVAC duct cleaning would no longer count as public work covered by those pay rules. The Pennsylvania Senate passed it 37-13. As of August 2026 the House had not voted on it.",
    "labels": [
     {
      "slug": "corporate_accountability",
