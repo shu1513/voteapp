@@ -236,34 +236,31 @@ mobile-first users would run auto-pick on defaults they never chose.
    Never rausch; never a `bg-auto` token name (collides with Tailwind's
    `background-size: auto`).
 
-## Phase 6 — auth epic (multiple PRs, independent, last)
+## Phase 6 — auth (one PR after all; redefined 2026-08-30)
 
-Not a simple "add Google" PR. Known constraints, to verify against current
-Expo/Google/Apple docs before building (per `mobile/AGENTS.md`, read the
-versioned docs first):
+**Decision (Shu, 2026-08-30): mobile auth is email-only — no Google, no
+Sign in with Apple.** That dissolves the epic this section used to plan:
+no development build (the dev-build requirement came only from the
+provider-native Google library; the app stays Expo Go-compatible), no
+guideline 4.8 obligation (it applies only when third-party login is
+offered), no OAuth client IDs or store capabilities, no backend `aud`
+questions. Email login/register/reset already exist on mobile. What
+remains — and shipped as this phase:
 
-1. **Development build is likely required.** Expo's current guidance is that
-   Google OAuth needs a development build with the provider-native library
-   (`@react-native-google-signin`); the old `expo-auth-session` proxy flow is
-   not a supported Expo Go path anymore. This project has so far stayed
-   Expo Go-compatible on purpose (see the gesture-handler pin) — **moving to
-   dev builds is a workflow decision for Shu, not a line item**. Get that
-   decision first; it gates the whole phase.
-2. **Google + Sign in with Apple together.** App Review guideline 4.8: an app
-   offering third-party login must offer a privacy-equivalent option, which
-   in practice means Sign in with Apple ships in the same release.
-3. **Backend may need no change.** `POST /api/auth/google` verifies the ID
-   token. Native Google flows can request the ID token with the *server's
-   web client ID* as audience, in which case the existing check passes.
-   Observe the real token's `aud` before touching any audience allowlist.
-4. **`me.has_password` handling ships first** (small, useful before any
-   OAuth): mobile's profile and security screens unconditionally require a
-   password today (`settings/profile.tsx:96`, `settings/security.tsx:26`).
-   Mirror the web split (`SettingsPage.tsx:455-463`): no password → "Add
-   password" section; change-email and delete-account hidden until a
-   password exists.
-5. Store configuration (OAuth client IDs for iOS/Android, Apple capability,
-   provider testing) is its own chunk of work; plan it as such.
+1. **`me.has_password` split**, mirroring the web settings page
+   (`SettingsPage.tsx:455-463`): a web-Google account has no password, so
+   the password-confirmed forms (change password, change email, delete
+   account) hide behind an "Add a password" section that routes to the
+   existing forgot-password flow (the reset email doubles as the
+   set-a-password flow).
+2. **Login-screen hint** for web-Google users: a static line pointing at
+   the reset flow. Static on purpose — the backend deliberately returns
+   the same "Invalid email or password" for password-less accounts
+   (anti-enumeration), so the client cannot react to the error.
+
+If third-party login is ever revisited, restore this section's old
+constraints from git history (dev build, guideline 4.8, `aud` audit,
+store config).
 
 ## Cross-cutting rules
 

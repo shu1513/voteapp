@@ -90,6 +90,14 @@ export default function LoginScreen() {
           >
             Forgot your password?
           </Text>
+          {/* Static on purpose: the app has no Google sign-in (email only),
+              and the login error is deliberately the same for password-less
+              accounts (anti-enumeration), so this standing line is the only
+              way to tell a web-Google user how to get in. The reset email
+              doubles as the set-a-password flow. */}
+          <Text className="text-sm text-ink-soft">
+            Signed up with Google on our website? Use the link above to set a password first.
+          </Text>
           <Text className="text-sm text-ink-soft">
             New here?{" "}
             <Text
