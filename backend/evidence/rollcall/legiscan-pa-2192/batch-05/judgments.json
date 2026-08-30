@@ -1,0 +1,40 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1567634,
+   "measure_id": "HB 1200",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1200. It would have legalized cannabis for adults 21 and over, who could buy, carry, use and share small amounts. Sales would run through state-run stores under the Liquor Control Board, the agency that runs state liquor stores, rather than private shops. Past cannabis convictions that carried no mandatory minimum sentence would be automatically cleared, and licenses would favor applicants from communities most affected by past drug enforcement. Carrying up to three times the personal limit would bring civil fines, but more than that would stay a crime, as would growing without a permit. For someone under 21, possession would become a fine and a diversion program instead of a criminal record. The Pennsylvania House passed it 102-101. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1200. It would have legalized cannabis for adults 21 and over, who could buy, carry, use and share small amounts. Sales would run through state-run stores under the Liquor Control Board, the agency that runs state liquor stores, rather than private shops. Past cannabis convictions that carried no mandatory minimum sentence would be automatically cleared, and licenses would favor applicants from communities most affected by past drug enforcement. Carrying up to three times the personal limit would bring civil fines, but more than that would stay a crime, as would growing without a permit. For someone under 21, possession would become a fine and a diversion program instead of a criminal record. The Pennsylvania House passed it 102-101. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "general",
+     "yea": null,
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "senate",
+   "session": "2192",
+   "roll": 1707969,
+   "measure_id": "SB 49",
+   "vote_date": "2026-06-10",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 49. It would have created a Cannabis Control Board, and a fund to pay for it, and moved permits and the dispensing of cannabis to patients and caregivers under that board. It did not legalize recreational cannabis. It also tightened the rules for hemp products: a product with more than 0.4 milligrams of total THC per container, or made with lab-synthesized cannabinoids, would no longer count as hemp and would fall under cannabis regulation. The Pennsylvania Senate defeated it 23-27, then voted 29-21 the same day to reconsider that vote, leaving the bill pending. As of August 2026 no new vote had been taken.",
+   "nay_description": "Voted against Senate Bill 49. It would have created a Cannabis Control Board, and a fund to pay for it, and moved permits and the dispensing of cannabis to patients and caregivers under that board. It did not legalize recreational cannabis. It also tightened the rules for hemp products: a product with more than 0.4 milligrams of total THC per container, or made with lab-synthesized cannabinoids, would no longer count as hemp and would fall under cannabis regulation. The Pennsylvania Senate defeated it 23-27, then voted 29-21 the same day to reconsider that vote, leaving the bill pending. As of August 2026 no new vote had been taken.",
+   "labels": [
+    {
+     "slug": "general",
+     "yea": null,
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

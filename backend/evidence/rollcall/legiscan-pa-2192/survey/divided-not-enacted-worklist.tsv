@@ -23,7 +23,7 @@ HB1140	1583926	house	2025-06-03	116-87	passed	passage	dropped	no defensible dire
 HB118	1524694	house	2025-03-24	117-85	passed	passage	batch-03	corporate_accountability/for
 HB1189	1587567	house	2025-06-10	102-101	passed	passage	batch-03	government_efficiency/for
 HB1191	1669857	house	2026-03-25	120-79	passed	passage	batch-03	public_safety_and_crime_control/for
-HB1200	1567634	house	2025-05-07	102-101	passed	passage	dropped	user direction call: adult-use cannabis legalisation, no research area carries an honest direction (Ohio HB 116 precedent)
+HB1200	1567634	house	2025-05-07	102-101	passed	passage	batch-05	general (no stance) on user direction 2026-08-30: legalisation is argued as criminal justice, public health and tax policy at once, so the vote is recorded topically with no direction
 HB1216	1593914	house	2025-06-23	108-95	passed	passage	batch-03	corporate_accountability/for
 HB1233	1609483	house	2025-11-18	111-91	passed	passage	batch-03	environment_and_public_health/for
 HB1234	1597017	house	2025-07-01	147-55	passed	passage	dropped	no defensible direction after reading the official analysis
@@ -232,7 +232,7 @@ SB471	1531153	senate	2025-03-31	31-18	passed	passage	batch-03	immigration/agains
 SB472	1533966	senate	2025-04-02	27-22	passed	passage	dropped	dropped: limits on acting department heads, a separation-of-powers question with no research area
 SB481	1567010	senate	2025-05-07	36-14	passed	passage	dropped	trivia: oversize permit during manufacture
 SB482	1711502	senate	2026-06-24	27-23	passed	passage	batch-04	social_programs_and_welfare/for
-SB49	1707969	senate	2026-06-10	23-27	failed	passage	dropped	user direction call: cannabis control board, the Senate companion to HB 1200 and the only failed Senate vote in the pool
+SB49	1707969	senate	2026-06-10	23-27	failed	passage	batch-05	general (no stance) on user direction 2026-08-30: creates a Cannabis Control Board over the medical marijuana system, not a recreational legalisation companion to HB 1200
 SB490	1531337	senate	2025-03-31	32-17	passed	passage	batch-04	public_safety_and_crime_control/for
 SB527	1593996	senate	2025-06-23	29-21	passed	passage	dropped	dropped: Philadelphia wage tax carve-out for certain nonresidents, narrow and local
 SB598	1692975	senate	2026-05-04	38-11	passed	passage	dropped	symbolic: display of the United States Constitution preamble in schools
