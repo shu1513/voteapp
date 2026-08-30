@@ -52,7 +52,10 @@ back to court, which is itself a justice-system argument. The reasoning per meas
 
 All four LegiScan titles match their enacted Act titles: **no vehicle-bill substitution**.
 
-Every roll is on the enacted text. In each measure the second chamber adopted the first chamber's
-amendment schedule and then passed it, so both rolls describe the same bill. Senate Bill 1187 has
-the widest gap between chambers — Senate 2025-05-07, House 2025-06-04, 28 days — and the House
-adopted Senate Amendment Schedule A before passing, so no text diverged.
+Every roll is on the enacted text, but the paths differ. In Senate Bill 1187, Senate Bill 1312 and
+Senate Bill 1367 the second chamber adopted the first chamber's amendment schedule and then passed
+it. **Senate Bill 1221 took no amendment at all**: the Senate rejected its own Amendment Schedule A
+and passed the bill as introduced, and the House then passed that same text in concurrence — so both
+rolls are on the enacted text trivially. Senate Bill 1187 has the widest gap between chambers —
+Senate 2025-05-07, House 2025-06-04, 28 days — and the House adopted Senate Amendment Schedule A
+before passing, so no text diverged.

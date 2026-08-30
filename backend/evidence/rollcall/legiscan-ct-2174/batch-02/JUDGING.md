@@ -90,3 +90,28 @@ heavier register ("summary review", "lookback period", "adjudicated a delinquent
 index"). They are accurate but harder to read than these. Rewriting them is worth a separate pass,
 the way Pennsylvania (#956) and California (#951) did theirs — not folded into this batch, because a
 register change is an edit and every measure has to be re-read against its source.
+
+## Review response (PR #968)
+
+**Senate Bill 1187's three-year clock was attached to the wrong starting point — fixed, 155
+records rewritten in place.** The descriptions said the authority could act "once the bill has gone
+unpaid for three years." The law measures three years **from when the lien was filed**, provided it
+remains unpaid. A bill can sit unpaid long before a lien is filed, so the old wording made the
+authority's power start earlier than the law allows. The corrected sentence: "It can also act once
+three years have passed since the lien was filed and it remains unpaid."
+
+Worth naming the failure shape: the machine check verified that "three years" appears in the OLR
+source, but a number check cannot see **what the number attaches to**. This is the same shape as
+Florida House Bill 1205's three-election limit, which attaches to the petition, not the committee.
+When a threshold is restated in plain English, the noun that owns it has to be re-read, not just the
+figure.
+
+Rewrite verified: judge 2 updated / 5 unchanged; import 155 `rewrite` + 428 `unchanged`; a
+convergence dry run reports all 583 `unchanged`; 155 records now carry the corrected sentence and 0
+carry the old one; the row count stayed 2,040. `import-rewrite-report.json` is the rewrite ledger —
+`import-report.json` remains the original insert ledger.
+
+Two documentation corrections from the same review: PLAN.md's version-check note wrongly said every
+second chamber adopted an amendment schedule (Senate Bill 1221 took no amendment at all — the Senate
+rejected its own and passed the bill as introduced), and the state README's layout section now lists
+`batch-02/`.
