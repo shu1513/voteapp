@@ -152,6 +152,79 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   //   resolutions are never presented to the governor, so they can never clear
   //   the campaign's became-law filter; excluded by rule to keep the surfaced
   //   queue readable.
+  // Connecticut General Assembly, 2025 session. Connecticut files ONE
+  // LegiScan dataset per calendar year (unlike Georgia/Illinois/Tennessee,
+  // whose two-year assemblies come in a single file), so session 2174 holds
+  // the 2025 regular session AND the special sessions that ran under it —
+  // including the November 2025 housing session (HB 8002, HB 8003). The
+  // 2026 session is a separate dataset (2244), not yet surveyed.
+  //
+  // Vocabulary measured from the full dataset survey 2026-08-29: 4,073
+  // bills, 2,625 roll calls, 211 people (151 House + 36 Senate seats plus
+  // turnover). What the survey established:
+  // - **1,774 of the 2,625 roll calls are JOINT COMMITTEE tallies printed
+  //   with chamber `J`** (all chamber_id 108, all `… Vote Tally Sheet
+  //   (Joint Favorable…)`). Connecticut is the joint-committee legislature:
+  //   its standing committees seat both chambers, so a committee vote
+  //   belongs to no chamber. They are rejected before the queue on the
+  //   chamber code (LEGISCAN_COMMITTEE_CHAMBER_CODES in legiscanRollCall.ts)
+  //   — nothing in this entry can reach them. The remaining 851 rolls are
+  //   ALL floor votes: House totals 150-151, Senate 36. Five Senate rolls
+  //   list only the members present (21, 21, 22, 25, 27); the two at 21
+  //   fall under the 0.6 floor ratio and surface for a human rather than
+  //   being silently kept.
+  // - Every desc carries the chamber's own sequential vote number
+  //   (`House Roll Call Vote 54 AS AMENDED`, `Senate Roll Call Vote 268 `,
+  //   note the trailing space), so every pattern has to tolerate it. That
+  //   number is also the `Sequence Number` on the state's own vote-record
+  //   PDF (cga.ct.gov/2025/VOTE/<H|S>/PDF/2025<H|S>V-<nnnnn>-R00<BILL>-<H|S>V.PDF).
+  // - The House NAMES its question: a bare vote is passage, ` AS AMENDED`
+  //   is passage of the amended bill, ` CONSENT CALENDAR` is passage on the
+  //   consent calendar, ` EMERGENCY CERTIFICATION` is passage of a bill that
+  //   skipped committee, and ` HOUSE AMD <letter>` is a vote on that
+  //   amendment. The amendment suffix can follow either of the others
+  //   (`… AS AMENDED HOUSE AMD E`, `… EMERGENCY CERTIFICATION HOUSE AMD A`)
+  //   and the QUESTION IS ALWAYS THE AMENDMENT — verified against the bill
+  //   history for SB 7's roll 225, which the desc calls "AS AMENDED HOUSE
+  //   AMD E" and the House journal records as rejecting Amendment Schedule
+  //   E 48-99. Excluded patterns run before kept ones, so the amendment
+  //   rule wins wherever both would match; that ordering is load-bearing.
+  // - Consent-calendar rolls are NOT Georgia's en-bloc calendars: no roll
+  //   call in the dataset is attached to more than one bill (checked over
+  //   all 2,625), all 29 are on joint resolutions, and none is divided.
+  // - **⚠ THE SENATE DESC DOES NOT NAME THE QUESTION.** All 438 Senate
+  //   rolls read `Senate Roll Call Vote <n>` and nothing else, whether the
+  //   question was passage or a floor amendment (HB 7042 alone carries 18
+  //   rejected Senate amendments, every one of them 11-25 and therefore
+  //   "divided"). The class below is this pipeline's DEFAULT, not
+  //   Connecticut's claim — the same caveat Florida's entry carries. Ground
+  //   truth is the bill-status page's ordered action trail
+  //   (cga.ct.gov/asp/cgabillstatus/cgabillstatus.asp?selBillType=Bill&bill_num=<BILL>&which_year=2025),
+  //   which names every `Senate Rejected Senate Amendment Schedule <X>` and
+  //   the single `Senate Passed …`; the vote PDF gives only the tally.
+  //   BATCH SELECTION MUST READ THAT TRAIL for every Senate roll it keeps.
+  //   The feed's `passed` flag narrows the problem but does not solve it:
+  //   81 Senate rolls are `passed:0` (failed amendments), and 17 bills carry
+  //   two `passed:1` Senate rolls, so an adopted amendment still looks like
+  //   a passage here.
+  CT: {
+    jurisdiction: "CT",
+    sessionId: 2174,
+    chamberSizes: { house: 151, senate: 36 },
+    keptQuestions: [
+      {
+        pattern: /^house roll call vote \d+(?: as amended| consent calendar| emergency certification)?$/,
+        questionClass: "passage",
+      },
+      { pattern: /^senate roll call vote \d+$/, questionClass: "passage" },
+    ],
+    excludedQuestions: [
+      // Floor amendment votes. Matched anywhere in the desc so the
+      // concatenated spellings (`… AS AMENDED HOUSE AMD E`, `… EMERGENCY
+      // CERTIFICATION HOUSE AMD A`) are excluded too — see the note above.
+      /\bhouse amd [a-z]\b/,
+    ],
+  },
   IL: {
     jurisdiction: "IL",
     sessionId: 2176,
@@ -418,6 +491,341 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       // which the tally cut already rejects before the queue.
       /\breconsider$/,
       /motion to lay on the table/,
+    ],
+  },
+  // Pennsylvania General Assembly, 2025-2026 Regular Session (LegiScan
+  // 2192). Vocabulary measured from the full dataset survey 2026-08-29:
+  // 4,935 bills, 5,038 roll calls, 260 people (203 House + 50 Senate seats
+  // plus mid-biennium turnover). The session is still LIVE (sine_die 0,
+  // dataset_date 2026-08-23), so this dataset grows.
+  //
+  // What the survey established:
+  // - Pennsylvania NAMES THE VENUE in every desc. A floor vote reads
+  //   `House Floor: HB 1431 PN 1746, FINAL PASSAGE`; a committee vote reads
+  //   `House Judiciary: Report Bill As Committed` / `Senate Appropriations:
+  //   Re-Reported as Committed`. Every one of the 1,660 floor-sized rolls
+  //   carries the literal `Floor:`, and no committee-sized roll does, so
+  //   every kept pattern anchors on that token (the Tennessee `FLOOR VOTE:`
+  //   shape). The chamber WORD in the desc is not reliable — four Senate
+  //   rolls are captioned `House Floor: PN1030, Concur in House Amendments`
+  //   — so no pattern reads it.
+  // - The desc puts the measure and its PRINTER'S NUMBER between the venue
+  //   and the question (`SB 246 PN 1009`, sometimes just `PN1225`, and
+  //   sometimes an amendment number too), which makes 3,881 of the 5,038
+  //   descs distinct. The question is always the comma-delimited TAIL, so
+  //   patterns match `floor:.*,` then anchor the question at `$`.
+  // - Passage is worded `FINAL PASSAGE`. Reconsidered passage votes are
+  //   spelled four different ways (`Final Passage - Reconsideration`,
+  //   `Final Passage-Reconsidered`, `Final Passage Reconsidered`,
+  //   `Reconsideration - Final Passage`, 9 rolls) and one two-thirds vote is
+  //   `Final Passage Constitutional 2/3 Vote`; all are genuine passage
+  //   votes on the bill. `Motion to Reconsider bill on final passage` also
+  //   ENDS in `final passage` but is the motion, not the question — it is
+  //   excluded by rule below, which is why the exclusions must run first.
+  // - Second-chamber agreement is `CONCURRENCE` in the House and
+  //   `Concur in House Amendments` (plus `Concurrence in House Amendments as
+  //   Amended` and `Concur in House Amendments to Senate Amendments`) in the
+  //   Senate. 50 rolls in all.
+  // - PA 2192 has NO conference-report and NO veto-override roll calls
+  //   (zero descs mention either), so those classes go unused here.
+  // - Amendment votes are the biggest floor family (373 House, ~90 Senate).
+  //   The House prints the amendment number as the whole tail
+  //   (`, 2025 A1363`) or glues it to the printer's number
+  //   (`PN1936 A02188`); the Senate names the offering senator
+  //   (`Brooks Amendment No. A-1422`). All are excluded by rule, along with
+  //   every `Motion to ...`, `Uncontested Calendar`, `Second Consideration`,
+  //   `CONSTITUTIONALITY` (a PA-specific point-of-order vote) and
+  //   `Re-referred`/`Recommit` roll. Without those exclusions ~795 floor
+  //   rolls would land in the surfaced queue.
+  // - With this entry the whole dataset classifies with NOTHING surfaced:
+  //   861 kept (811 passage / 50 concurrence, all bill type B), 795
+  //   excluded, 3,134 committee-sized, and 248 floor-sized rolls that are
+  //   all type `R` resolutions, dropped by the shared kept-types list before
+  //   this config is consulted.
+  // - Feed health: 0 duplicate roll_call_ids (the Texas 9.4% collapse is a
+  //   verified no-op here), 0 summary-only rolls, 0 tally mismatches; 7
+  //   identity-duplicate extras, which the shared identity key collapses.
+  PA: {
+    jurisdiction: "PA",
+    sessionId: 2192,
+    chamberSizes: { house: 203, senate: 50 },
+    keptQuestions: [
+      // `House Floor: HB 1431 PN 1746, FINAL PASSAGE`,
+      // `Senate Floor: PN1936 A02188, Final Passage`.
+      { pattern: /floor:.*,\s*final passage$/, questionClass: "passage" },
+      // The four reconsidered-passage spellings and the 2/3 vote.
+      { pattern: /floor:.*,\s*final passage\s*-?\s*reconsider(?:ation|ed)$/, questionClass: "passage" },
+      { pattern: /floor:.*,\s*reconsideration\s*-\s*final passage$/, questionClass: "passage" },
+      { pattern: /floor:.*,\s*final passage constitutional 2\/3 vote$/, questionClass: "passage" },
+      // House second-chamber agreement.
+      { pattern: /floor:.*,\s*concurrence$/, questionClass: "concurrence" },
+      // Senate second-chamber agreement, all three spellings.
+      {
+        pattern: /floor:.*,\s*concur(?:rence)? in house amendments(?: to senate amendments| as amended)?$/,
+        questionClass: "concurrence",
+      },
+    ],
+    excludedQuestions: [
+      // Every procedural motion: table, suspend rules, appeal the ruling of
+      // the chair, proceed, postpone, previous question, and the
+      // `Motion to Reconsider bill on final passage` that would otherwise
+      // match the passage pattern's `$` anchor.
+      /\bmotion\b/,
+      // Senate amendment votes name the offering senator.
+      /\bamendment no\./,
+      // House amendment votes: `, 2025 A1363` as the tail, or the amendment
+      // number glued to the printer's number (`PN1936 A02188`).
+      /,\s*(?:19|20)\d{2}\s+a\d+$/,
+      /\ba\d{3,}$/,
+      // A PA point of order on whether the bill is constitutional, taken
+      // before passage; not a vote on the measure.
+      /,\s*constitutionality$/,
+      // Consent-calendar and pre-passage stages.
+      /\buncontested calendar\b/,
+      /\bsecond consideration\b/,
+      /\b2nd consideration\b/,
+      /,\s*third consideration as amended$/,
+      // Committal and housekeeping motions worded without the word "motion".
+      /\bre-referred\b/,
+      /\brecommit\b/,
+      /\breconsideration of request to go over$/,
+      /\btabled$/,
+      /,\s*reconsidered$/,
+    ],
+  },
+  // Maine 132nd Legislature, 2025-2026 Regular Session (both years, sine
+  // die). Vocabulary measured from the full dataset survey 2026-08-29:
+  // 2,454 bills, 1,580 roll calls, 188 people (151 House + 35 Senate seats
+  // plus mid-biennium turnover).
+  //
+  // What the survey established:
+  // - Maine decides most questions by an unrecorded division; a roll call
+  //   happens only when members demand one. The consequence is the
+  //   opposite of a coverage problem: 1,450 of the 1,580 recorded rolls
+  //   are DIVIDED, because the contested bills are exactly the ones that
+  //   get a roll. Nothing here is a consent calendar.
+  // - Every desc, in BOTH chambers, ends with a unique ` RC #<n>` (the
+  //   clerk's roll number), so no pattern may anchor on `$` without
+  //   tolerating it. 1,579 raw descs fold to 227 families.
+  // - MAINE PASSES A BILL BY ACCEPTING ITS COMMITTEE REPORT. The
+  //   substantive floor question is `Accept Majority Ought To Pass As
+  //   Amended Report` (Senate) / `Acc Maj Otp As Amended Rep` (House) and
+  //   ~40 further spellings of the same act (majority/minority, Report
+  //   "A"/"B"/"C", `Otp-am By Ca "a"`, `Acceptance Of The Otp-am
+  //   Report`). Enumerating them is hopeless; the rule instead keeps any
+  //   desc carrying an ought-to-pass token (`otp`, `otp-am`, `ought to
+  //   pass`), with the ought-NOT-to-pass tokens excluded FIRST so an
+  //   `Ontp` report acceptance can never fall through to it.
+  // - The later stages each have their own question: `Passage To Be
+  //   Engrossed`, then `Enactment` (Maine's true final passage, also
+  //   spelled `Enactment - Emer`, `Enactment - Bond Issue`, `Enact-Emer
+  //   2/3 Elect`, `Final Enactment`, `Final Passage`). All are passage.
+  // - `Recede And Concur` (and the bare `Recede`) is how a chamber gives
+  //   up its position and takes the other's — the concurrence analog.
+  // - Veto questions are `Veto Override (2/3)` in the Senate and
+  //   `Reconsideration - Veto` in the House ("shall the bill become law
+  //   notwithstanding the objections of the Governor"). The plain
+  //   `Reconsider` motion is a different question and is excluded, so the
+  //   exclusion carries a lookahead for the veto spelling.
+  // - OUGHT-NOT-TO-PASS ACCEPTANCES ARE EXCLUDED BY RULE (352 rolls, the
+  //   two largest families after OTP). They are votes to KILL a bill, so
+  //   the yea sentence would have to be inverted, and the measured value
+  //   is small: only 8 of them are divided votes on a measure that became
+  //   law anyway. Indefinite postponement, tabling, commitment,
+  //   reference, insistence, rule suspensions and the ~145 amendment
+  //   families (`Adopt Hah-963 To Cah-959`, `Indef Pp Hbh-3 To Cah-1`)
+  //   are excluded for the same procedural reason.
+  // - 19 rolls stay SURFACED on purpose: `Accept Report`, `Acceptance Of
+  //   Report` and `Acc Majority Report` do not say WHICH report, so
+  //   whether a yea passes or kills the bill cannot be read off the desc.
+  //   10 of the 16 `Accept Report` rolls are divided votes on enacted
+  //   measures, so they are worth a human's eyes, not a guess.
+  // - The dataset carries NO committee votes at all: every tally is a
+  //   full-chamber tally (House 149-151, Senate 35), and no roll is
+  //   summary-only, so nothing lands in the committee or unrecorded
+  //   buckets.
+  ME: {
+    jurisdiction: "ME",
+    sessionId: 2181,
+    chamberSizes: { house: 151, senate: 35 },
+    keptQuestions: [
+      // Acceptance of an ought-to-pass committee report, in all ~40 of the
+      // spellings the two chambers use. Ought-NOT-to-pass tokens are
+      // excluded above, so this token test cannot invert a question.
+      { pattern: /\botp\b|ought to pass/, questionClass: "passage" },
+      // `Enactment`, `Enactment - Emer`, `Enactment - Bond Issue`,
+      // `Enactment - Mandate`, `Enact-Emer 2/3 Elect`.
+      { pattern: /^enact/, questionClass: "passage" },
+      { pattern: /^final (?:enactment|passage)/, questionClass: "passage" },
+      // `Passage`, `Passage To Be Engrossed[ As Amended]`, `Passage Of
+      // Emergency Measure`.
+      { pattern: /^passage/, questionClass: "passage" },
+      // Adoption of a joint resolution — for a JR, adoption IS the final
+      // passage question. Verified over the dataset: all 8 bare-`Adoption`
+      // rolls sit on JR measures; amendment adoptions are never worded
+      // this way (they all begin `Adopt <designator>` — `Adopt Cah-1`,
+      // `Adopt Hah-963 To Cah-959` — and are excluded above), so the
+      // end-anchored bare word cannot reach an amendment vote.
+      { pattern: /^adoption(?: rc ?#\d+)?$/, questionClass: "passage" },
+      // `Recede And Concur` — the chamber gives up its own position and
+      // takes the other chamber's. A BARE `Recede` is different: the
+      // chamber recedes from an earlier action of its OWN (LD 209's Senate
+      // `Recede`, 12-20, is supplemental-budget amendment machinery, not a
+      // concurrence), so the 12 bare-`Recede` rolls surface as unknown
+      // instead of being auto-kept.
+      { pattern: /^recede and concur/, questionClass: "concurrence" },
+      { pattern: /^reconsideration ?- ?veto/, questionClass: "veto_override" },
+      { pattern: /^veto override/, questionClass: "veto_override" },
+    ],
+    excludedQuestions: [
+      // A vote to accept an ought-not-to-pass report kills the bill; see
+      // the note above. Both the House abbreviation and the Senate's
+      // long form, in every report letter.
+      /\bontp\b/,
+      /ought not to pass/,
+      // Maine's other kill motion, and the amendment-scoped spelling
+      // (`Indefinitely Postpone Senate Amendment (sas-1)`, `Indef Pp
+      // Hbh-3 To Cah-1`, `Ipp Hah-489`, `Ha "a" Be Indef Pp`).
+      /^indef/,
+      /^ipp /,
+      /\bindef pp\b/,
+      // Floor and committee amendment adoptions: `Adopt Cah-1`, `Adopt
+      // Hah-963 To Cah-959`, `Adopt Senate Amendment (s-292) To Ld 1519`.
+      // The trailing space keeps the bare `Adoption` question out.
+      /^adopt /,
+      // The motion to reconsider a completed action, which is not the
+      // question it reopens. The lookahead preserves the House's veto
+      // question, spelled `Reconsideration - Veto`.
+      /^reconsider(?!ation ?- ?veto)/,
+      /^recon of /,
+      // Scheduling, referral and debate motions.
+      /^table/,
+      /^commit(?: rc ?#\d+)?$/,
+      /^reference/,
+      /^insist/,
+      /^suspen/,
+      /^dispens/,
+      /^move the previous question/,
+      /^appeal/,
+      /^committee of the whole/,
+      /^rule comm/,
+      /^forthwith/,
+      /^\d(?:st|nd|rd|th) reading/,
+      // Referral questions worded as report acceptances, which would
+      // otherwise be read as passage by the ought-to-pass token rule.
+      /^accept majority to refer/,
+      /^accept to reject report/,
+      // The motion to swap a committee report for a joint resolution: a
+      // question about what the chamber debates next, not its passage.
+      /^substitute joint res/,
+    ],
+  },
+  // Missouri 103rd General Assembly, 2025 Regular Session (LegiScan session
+  // 2169; the two 2025 special sessions, 2216 and 2226, are separate
+  // datasets and would need their own entries). Vocabulary measured from
+  // the full dataset survey 2026-08-29: 2,673 bills, 557 roll calls, 197
+  // people (163 House + 34 Senate seats plus mid-session turnover).
+  //
+  // What the survey established:
+  // - The two chambers write their descs in COMPLETELY different styles.
+  //   The Senate prints the bare question and nothing else — only five
+  //   spellings exist in the whole session. The House prints its CALENDAR
+  //   HEADING followed by the bill's substitute chain, so every House desc
+  //   is unique (`House: HBs WITH SENATE AMENDMENTS SS SCS HB 225, A.A.,
+  //   E.C.`); 275 raw House descs fold to 16 calendar families. House
+  //   patterns therefore match the heading and let the chain trail.
+  // - `Senate: Third Reading` (172 rolls) is BOTH the first-round third
+  //   reading and the Truly Agreed To And Finally Passed vote — Missouri
+  //   prints no separate TAFP wording — so the second chamber's vote on
+  //   the enacted text lands in this family too.
+  // - MISSOURI PERFECTION IS NOT PASSAGE. `HBs FOR PERFECTION` /
+  //   `HBs PERFECTION - INFORMAL` / `HJRs FOR PERFECTION` (36 rolls) are
+  //   the House's amend-and-engross stage, the second-reading analog that
+  //   Texas and California also exclude; third reading is the passage
+  //   question and every perfected bill gets one.
+  // - `Senate: Adopt Substitute` (13) is the floor adoption of an SS/SCS
+  //   (nine of them on SB 98 in a single day) and `Senate: Emergency
+  //   Clause` (8) is the separate vote on whether the act takes effect at
+  //   once — neither is a vote on the measure, so both are excluded.
+  // - `Senate: Adoption` (10) is DELIBERATELY LEFT UNMATCHED so it
+  //   surfaces: nine of the ten are ceremonial concurrent/simple
+  //   resolutions (rejected earlier as excluded measure types) but the
+  //   tenth is the Senate adopting the HB 595 conference committee report
+  //   (22-11). One desc, two questions, so it is reviewed rather than
+  //   guessed.
+  // - The dataset carries NO committee votes at all: every tally is a
+  //   whole-chamber tally (House 161-163, Senate 31-34).
+  // - A HOUSE DESC NAMES THE CALENDAR, NOT THE QUESTION. On one calendar
+  //   day the House prints the previous-question motion (the debate
+  //   cutoff), the concurrence ("House Adopts"), the Truly Agreed To And
+  //   Finally Passed vote and the emergency clause under the SAME desc —
+  //   HB 225 on 2025-05-08 is one string over 92-45 / 89-32 / 88-26 /
+  //   88-34, and only the last two are votes on the measure. Nothing in
+  //   the feed separates them, so the kept patterns classify the FAMILY
+  //   and `questionClass` here is report metadata, not ground truth. The
+  //   queue is a review queue — a stored roll fans out only after a human
+  //   judgment — and Missouri selection must match every roll to its
+  //   official House roll-call PDF (documents.house.mo.gov/billtracking/
+  //   bills251/rollcalls/<day>.<n>.pdf), whose header names any
+  //   non-passage question and stamps the LR number of the text on the
+  //   floor; see evidence/rollcall/legiscan-mo-2169/CODE-FINDINGS.md.
+  //   Classifying these headings as unknown instead would park ~293 House
+  //   rolls in the surfaced queue, where the approval CHECK can never
+  //   accept them, while relocating the same per-roll PDF check nowhere.
+  // - Only the calendar headings measured in this session are listed. A
+  //   heading this session never printed (an `SJRs FOR THIRD READING`, a
+  //   Senate concurrence wording) surfaces as unknown rather than being
+  //   guessed from another state.
+  // - Feed health: 0 repeated roll_call_ids (the Texas 9.4% collapse is a
+  //   verified no-op here), 0 summary-only rolls, 0 tally mismatches, 0
+  //   file errors. 49 rolls collapse under the shared identity key, and
+  //   in Missouri they are NOT all reprints of one action: back-to-back
+  //   DISTINCT actions can carry identical data — HB 594's "House Adopts
+  //   SS#2" (official roll 066.003) and its Truly Agreed To And Finally
+  //   Passed vote minutes later (066.004) are both 102-41 with the same
+  //   member list, so the key folds them and the lowest roll_call_id
+  //   survives as the class representative. No member position is lost
+  //   (the lists are identical, and the fan-out imports one roll per
+  //   measure per chamber regardless), but a judgment's description must
+  //   be worded to hold for the whole class unless the roll-call PDF pins
+  //   the specific action. Disabling the collapse would be worse: the
+  //   fan-out dedupes on ls:<id> URL keys, so two stored ids for one
+  //   identical vote would let a double judgment write every member's
+  //   record twice.
+  MO: {
+    jurisdiction: "MO",
+    sessionId: 2169,
+    chamberSizes: { house: 163, senate: 34 },
+    keptQuestions: [
+      // House third reading, under any of its calendars: the regular
+      // `HBs FOR THIRD READING` / `SBs FOR THIRD READING`, the informal
+      // calendar (`HBs 3rd READ - INFORMAL`), the consent calendar
+      // (`HBs 3rd READING - CONSENT`), the constitutional-amendment
+      // calendar (`HJRs FOR THIRD READING`) and the appropriations
+      // calendar (`HABs FOR THIRD READING`). The trailing space is
+      // required so the heading is never matched without its bill chain.
+      {
+        pattern: /^house: (?:hbs|sbs|hjrs|habs) (?:for third reading|3rd read - informal|3rd reading - consent) /,
+        questionClass: "passage",
+      },
+      // The House taking up its own bill as returned with Senate
+      // amendments — Missouri's concurrence question.
+      { pattern: /^house: (?:hbs|hjrs) with senate amendments /, questionClass: "concurrence" },
+      // `House: BILLS IN CONFERENCE CCS HCS SS SCS SBS 81 & 174, E.C`.
+      { pattern: /^house: bills in conference /, questionClass: "conference_report" },
+      // The Senate's two substantive spellings.
+      { pattern: /^senate: third reading$/, questionClass: "passage" },
+      { pattern: /^senate: conference committee report adoption$/, questionClass: "conference_report" },
+    ],
+    excludedQuestions: [
+      // Perfection: the House's amend-and-engross stage, not passage.
+      /^house: (?:hbs|hjrs) (?:for perfection|perfection - informal) /,
+      // The motion for the previous question (debate cutoff).
+      /^house: general pq$/,
+      // Floor adoption of a Senate substitute, and the separate vote on a
+      // bill's emergency clause.
+      /^senate: adopt substitute$/,
+      /^senate: emergency clause$/,
     ],
   },
 

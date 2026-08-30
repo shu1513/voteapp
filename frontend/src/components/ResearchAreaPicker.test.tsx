@@ -38,7 +38,7 @@ describe("ResearchAreaPicker", () => {
     const onChange = vi.fn();
     const areas = [
       area("a-health", "healthcare_affordability", "Healthcare Affordability"),
-      area("a-ethics", "integrity_and_ethics", "Integrity and Ethics"),
+      area("a-ethics", "integrity_and_ethics", "Candidate Ethics"),
     ];
     const { rerender } = render(<ResearchAreaPicker areas={areas} ranked={[]} disabled={false} onChange={onChange} />);
 
@@ -65,7 +65,7 @@ describe("ResearchAreaPicker", () => {
     // Ethics: no direction control (an ethics record is always a strike),
     // and the must reads as "skip anyone with such a record".
     expect(screen.getAllByRole("button", { name: "Support" })).toHaveLength(1);
-    await user.click(screen.getByRole("button", { name: /Skip candidates with any integrity or ethics record/ }));
+    await user.click(screen.getByRole("button", { name: /Skip candidates with any documented ethics or conviction record/ }));
     expect(onChange).toHaveBeenLastCalledWith([ranked[0], { ...ranked[1], hard_veto: true }]);
 
     await user.click(screen.getByRole("button", { name: "Remove Healthcare Affordability" }));

@@ -859,6 +859,45 @@ describe("ElectionPage", () => {
     );
   });
 
+  it("keeps the stranded-pick notice when every candidacy withdrew, without the auto-pick button", async () => {
+    // An all-withdrawn roster arrives as an empty candidates list; the
+    // section must still open (the notice is the only removal control for a
+    // pick that keeps counting toward the seat cap), but auto-pick has
+    // nobody left to pick and must not render its dead-end button.
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/election-choices": {
+        body: {
+          choices: [
+            {
+              election_id: "e-1",
+              race_type: "office",
+              official_ballot_title: "Governor",
+              election_date: "2026-11-03",
+              seats_to_fill: 2,
+              picks: [
+                {
+                  candidate_id: "c-withdrawn",
+                  display_name: "Quinn Quitter",
+                  candidacy_status: "withdrawn",
+                },
+              ],
+              measure_position: null,
+              updated_at: "2026-08-01T00:00:00.000Z",
+            },
+          ],
+        },
+      },
+    });
+    renderElection(() => electionDetail({ candidates: [], seats_to_fill: 2 }));
+
+    expect(await screen.findByText(/withdrew from this race/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Remove pick: Quinn Quitter" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Auto-pick by my issues" })).not.toBeInTheDocument();
+  });
+
   it("frees a guest's seat slot held by a draft pick that left the roster", async () => {
     // Guest draft rows are always stored candidacy_status "active", so the
     // withdrawn-status path can't fire — roster absence is the guest signal.

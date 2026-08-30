@@ -16,7 +16,13 @@ import type { MontanaCersReportInventoryRow } from "./montanaCersParsers.js";
 export const MONTANA_CHAIN_FORM_TYPE = "C5";
 export const MONTANA_INCORPORATED_STATUS_CODE = "INCRP";
 
-const CANONICAL_STATUS_CODES = new Set(["FILED", "AMEND"]);
+// PENDA ("Pending-Amended"): the filed report has an amendment in progress;
+// the FILED version is still the operative public filing — its detail rows
+// stay served and the CONTR/EXPEND exports include them. Excluding it drops
+// whole periods from the chain and totals (live Phase 3: a filer with two
+// PENDA periods lost $3,380 of contributions). Once the amendment lands the
+// row becomes AMEND with the new data (Q2: current-only, in place).
+const CANONICAL_STATUS_CODES = new Set(["FILED", "AMEND", "PENDA"]);
 
 export type MontanaReportSelectionDiagnostic = {
   reportId: number;

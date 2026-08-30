@@ -1,0 +1,3316 @@
+{
+ "note": "Maine desc families, folded on the trailing \" RC #<n>\" the clerk stamps on every desc in BOTH chambers. 1,579 raw descs fold to 227 families. Survey run 2026-08-29.",
+ "runId": "rollcall-legiscan-fetch-me-20260829T050232Z",
+ "bills": 2454,
+ "votes": 1580,
+ "people": 188,
+ "billTypeCounts": {
+  "JR": 209,
+  "B": 2245
+ },
+ "families": [
+  {
+   "chamber": "senate",
+   "descFamily": "Accept Majority Ought To Pass As Amended Report",
+   "count": 239,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD522",
+    "LD143",
+    "LD260"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Maj Otp As Amended Rep",
+   "count": 220,
+   "withoutMemberList": 0,
+   "minTotal": 149,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD995",
+    "LD837",
+    "LD6"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Accept Majority Ought Not To Pass Report",
+   "count": 165,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B",
+    "JR"
+   ],
+   "sampleBills": [
+    "LD69",
+    "LD488",
+    "LD495"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Maj Ought Not To Pass Rep",
+   "count": 163,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1263",
+    "LD499",
+    "LD535"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Recede And Concur",
+   "count": 67,
+   "withoutMemberList": 0,
+   "minTotal": 149,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD421",
+    "LD828",
+    "LD639"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Enactment",
+   "count": 53,
+   "withoutMemberList": 0,
+   "minTotal": 149,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD117",
+    "LD874",
+    "LD186"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Recede And Concur",
+   "count": 42,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B",
+    "JR"
+   ],
+   "sampleBills": [
+    "LD639",
+    "LD771",
+    "LD1063"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Maj Ought To Pass Rep",
+   "count": 34,
+   "withoutMemberList": 0,
+   "minTotal": 149,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD86",
+    "LD1576",
+    "LD771"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Enactment",
+   "count": 30,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1185",
+    "LD837",
+    "LD702"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Accept Majority Ought To Pass Report",
+   "count": 29,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD585",
+    "LD1185",
+    "LD708"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Accept Report 'a' Ought To Pass As Amended",
+   "count": 25,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD542",
+    "LD396",
+    "LD246"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Accept Minority Ought To Pass As Amended Report",
+   "count": 19,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B",
+    "JR"
+   ],
+   "sampleBills": [
+    "LD163",
+    "SP0010",
+    "LD115"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Indefinitely Postpone",
+   "count": 19,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B",
+    "JR"
+   ],
+   "sampleBills": [
+    "LD487",
+    "LD487",
+    "LD297"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Passage To Be Engrossed As Amended",
+   "count": 19,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1080",
+    "LD222",
+    "LD115"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Accept Report",
+   "count": 16,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209",
+    "LD1498",
+    "LD128"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Accept Minority Ought Not To Pass Report",
+   "count": 14,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD771",
+    "LD1884",
+    "LD1582"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Reference",
+   "count": 12,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B",
+    "JR"
+   ],
+   "sampleBills": [
+    "LD1821",
+    "SP0726",
+    "LD1743"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Report \"a\" Otp-am",
+   "count": 11,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD853",
+    "LD739",
+    "LD246"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Enactment - Emer",
+   "count": 11,
+   "withoutMemberList": 0,
+   "minTotal": 149,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1948",
+    "LD209",
+    "LD1022"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Passage To Be Engrossed",
+   "count": 11,
+   "withoutMemberList": 0,
+   "minTotal": 149,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD274",
+    "LD894",
+    "LD1668"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Min Ought Not To Pass Rep",
+   "count": 10,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD749",
+    "LD1013",
+    "LD530"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Accept Report 'b' Ought Not To Pass",
+   "count": 10,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD551",
+    "LD551",
+    "LD195"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Reconsider",
+   "count": 10,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B",
+    "JR"
+   ],
+   "sampleBills": [
+    "LD297",
+    "LD1164",
+    "LD1164"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Table Until Later",
+   "count": 10,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD771",
+    "LD1145",
+    "LD1062"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Otp-am By Ca \"a\"",
+   "count": 9,
+   "withoutMemberList": 0,
+   "minTotal": 149,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1822",
+    "LD2017",
+    "LD2102"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Insist",
+   "count": 9,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 151,
+   "billTypes": [
+    "B",
+    "JR"
+   ],
+   "sampleBills": [
+    "LD209",
+    "LD301",
+    "LD301"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Reconsider",
+   "count": 9,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209",
+    "LD639",
+    "LD16"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Passage",
+   "count": 9,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "JR"
+   ],
+   "sampleBills": [
+    "SP0097",
+    "SP0098",
+    "SP0791"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Report \"b\" Ontp",
+   "count": 8,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD551",
+    "LD195",
+    "LD59"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Table Until Later",
+   "count": 8,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD820",
+    "LD893",
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Commit",
+   "count": 8,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209",
+    "LD1988",
+    "LD1868"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Maj Otp-am By Ca \"a\"",
+   "count": 7,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD877",
+    "LD1908",
+    "LD2057"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Report \"a\" Ontp",
+   "count": 7,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD371",
+    "LD96",
+    "LD1731"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Report \"a\" Otp-am By Ca \"a\"",
+   "count": 7,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2157",
+    "LD1942",
+    "LD1962"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Recede",
+   "count": 6,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1776",
+    "LD297",
+    "LD1968"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Recede",
+   "count": 6,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209",
+    "LD613",
+    "LD1873"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Suspend Rules (2/3)",
+   "count": 6,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609",
+    "LD143",
+    "LD549"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Min Otp As Amended Rep",
+   "count": 5,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD163",
+    "LD1364",
+    "LD1897"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adoption",
+   "count": 5,
+   "withoutMemberList": 0,
+   "minTotal": 149,
+   "maxTotal": 151,
+   "billTypes": [
+    "JR"
+   ],
+   "sampleBills": [
+    "SP0382",
+    "HP1338",
+    "SP0901"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Accept Report 'a' Ought Not To Pass",
+   "count": 5,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1024",
+    "LD1461",
+    "LD96"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Ought To Pass As Amend Rep",
+   "count": 4,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD270",
+    "LD222",
+    "LD1655"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Insist",
+   "count": 4,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD213",
+    "LD544",
+    "LD209"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Insist/ask For Committee Of Conference",
+   "count": 4,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B",
+    "JR"
+   ],
+   "sampleBills": [
+    "LD16",
+    "LD209",
+    "LD1032"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Enactment - Bond Issue",
+   "count": 3,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2094",
+    "LD2094",
+    "LD299"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Final Passage",
+   "count": 3,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD723",
+    "LD820",
+    "LD2040"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Reconsideration - Veto",
+   "count": 3,
+   "withoutMemberList": 0,
+   "minTotal": 149,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD958",
+    "LD1328",
+    "LD1228"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Accept Minority Ought To Pass Report",
+   "count": 3,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD421",
+    "LD486",
+    "LD208"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Accept Report 'a' Ought To Pass",
+   "count": 3,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1462",
+    "LD894",
+    "LD68"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Accept Report 'c' Ought To Pass As Amended",
+   "count": 3,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1109",
+    "LD1940",
+    "LD1941"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adoption",
+   "count": 3,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "JR"
+   ],
+   "sampleBills": [
+    "SP0010",
+    "HP1338",
+    "HP1502"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Enactment-emergency",
+   "count": 3,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD895",
+    "LD1792",
+    "LD2156"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Veto Override (2/3)",
+   "count": 3,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1802",
+    "LD588",
+    "LD1731"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Min Otp-am By Ca-b",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1803",
+    "LD127"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Otp-am By Ca \"b\"",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 149,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1872",
+    "LD1955"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Final Passage - Emer",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1894",
+    "LD395"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indefinitely Postpone",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1948",
+    "LD1343"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Otp-am By Ca \"a\"",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 149,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1587",
+    "LD2059"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Otp-am",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209",
+    "LD48"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Report \"a\" Otp-am By Ca \"a\"",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2145",
+    "LD307"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Report A Otp-am By Ca-a",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD785",
+    "LD1847"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Acceptance Of Report",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD524",
+    "LD916"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Appeal",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "JR"
+   ],
+   "sampleBills": [
+    "SP0789",
+    "SP0790"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Forthwith",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609",
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Passage To Be Engrossed",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1948",
+    "LD771"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Reconsideration - Veto",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1228",
+    "LD1911"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Ac Otp-am By Ca \"a\"",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2066"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Maj Otp-am By Ca-a",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD208"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Maj Otp-am Report",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2200"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Majority Report",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 149,
+   "maxTotal": 149,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD335"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Min Report Otp-am By Ca \"b\"",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 149,
+   "maxTotal": 149,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1666"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Of Otp-am Report",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2151"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Otp-am By Ca \"a\" S-532",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2062"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Otp-am Report",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1893"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Rep \"a\" Otp-am By Ca \"a\"",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 149,
+   "maxTotal": 149,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1975"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Report 'a' Otp-am",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD666"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Report 'b' Ontp",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD542"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Report \"a\" Otp",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD68"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Report \"a\" Otp-am By Ca \"c\"",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD978"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Report \"a\" Ought To Pass",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1462"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Report \"b' Ontp",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD868"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Report \"b\" Otp",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1034"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Report \"b\" Otp-am By Ca \"a\"",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1941"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Report \"b\" Otp-am By Ca \"b\"",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2157"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Report \"c\" Otp-am By Ca \"b\"",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1941"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Report \"c\" Otp-am By Ca \"c\"",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD695"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acc Report C Otp-am By Ca-c",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1847"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Acceptance Of The Otp-am Report",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD14"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt C A As Am By Hrh-33",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Cah-1 As Amended By Hhh-9",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Cah-1",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Cah-716 As Amd By Hbh-906",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1822"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Cah-922 Am By Sas-602",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2094"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Hah-1053 To Cas-344",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD579"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Hah-126 To Cas-44",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD29"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Hah-127 To Cas-45",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD30"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Hah-293 To Cah-251",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD277"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Hah-640",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD508"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Hah-707 To Cas-346",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1937"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Hah-711 To Cah-684",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1763"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Hah-771 To Cah-746",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1270"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Hah-784 To Cah-632",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 149,
+   "maxTotal": 149,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1187"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Hah-788 To Cah-716",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 149,
+   "maxTotal": 149,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1822"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Hah-940 To Cah-926",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD882"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Hah-963 To Cah-959",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2159"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Hah-965 To Cas-553",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2155"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Hah-969 To Cah-881",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD307"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Hah-995 To Cah-922",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2094"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Hbh-1038 To Cah-976",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2054"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Hbh-906 To Cah-716",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1822"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Hrh-33 To Cah-13",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Sas-226",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD787"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Adopt Sas-602 To Cah-922",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2094"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Commit",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Dispense The Reading Of H\"d\"",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Enactment - Mandate",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD82"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Final Enactment",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1705"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Final Passage - Con Res",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD260"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Ha \"a\" Be Indef Pp",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1822"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hah-1007 To Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hah-15 To Cah-13",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hah-2 To Cah-1",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hah-34 To Sp 519",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "JR"
+   ],
+   "sampleBills": [
+    "SP0519"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hah-47",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1101"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hbh-1008 To Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hbh-16 To Cah-13",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hbh-3 To Cah-1",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hch-1009 To Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hch-17 To Cah-13",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hch-4 To Cah-1",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hdh-1010 To Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hdh-18 To Cah-13",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hdh-5 To Cah-1",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Heh-1011 To Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Heh-19 To Cah-13",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Heh-6 To Cah-1",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hfh-1012 To Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hfh-20 To Cah-13",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hfh-7 To Cah-1",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hgh-1013 To Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hgh-21 To Cah-13",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hgh-8 To Cah-1",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hhh-23 To Cah-13",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hih-1015 To Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hih-24 To Cah-13",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hjh-1016 To Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hkh-1017 To Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hkh-26 To Cah-13",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hlh-1018 To Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hlh-27 To Cah-13",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hmh-1019 To Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hmh-28 To Cah-13",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hnh-1020 To Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hoh-1021 To Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hoh-30 To Cah-13",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hph-1022 To Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hph-31 To Cah-13",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hqh-1023 To Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hqh-32 To Cah-13",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hrh-1024 To Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hrh-33 To Cah-13",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hsh-1026 To Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Hth-1027 To Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Indef Pp Huh-1028 To Cah-996",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2212"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Ipp Hah-489",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD894"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Ipp Hah-640",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD508"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Ipp Hbh-490",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD894"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Move The Previous Question",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD307"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Passage Of Emergency Measure",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Passage",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "JR"
+   ],
+   "sampleBills": [
+    "SP0519"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Recon Of Maj Rep Otp-am By Ca-a",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD127"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Reconsideration-veto",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD307"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Reference To Judiciary",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1254"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Report \"a\" Ontp",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1461"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Report \"a\" Ought To Pass",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD894"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Report \"b\" Ontp",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1131"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Rule Comm",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "JR"
+   ],
+   "sampleBills": [
+    "HP0130"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Suspend House Rule 515",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD127"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Suspend Rule 401 Part 11",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 151,
+   "maxTotal": 151,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Suspend Rules -",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1009"
+   ]
+  },
+  {
+   "chamber": "house",
+   "descFamily": "Suspension Of House Rule 515",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 150,
+   "maxTotal": 150,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD127"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "1st Reading",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "1st Reading Without Reference",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1988"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Accept Majority To Refer To Committee",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD335"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Accept Ought To Pass As Amended Report",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1840"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Accept Report 'b' Ought To Pass As Amended",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1847"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Accept Report 'b' Ought To Pass",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1034"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Accept To Reject Report And Refer Bill To Committee",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2182"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Cah-1",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Cah-660",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1126"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Cas-320",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1488"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Committee Amendment As Amended By House Amendment",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Committee Amendment As Amended By Senate Amendment",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD613"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt House Amendment R (h-33) To Commitee Amendment",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Sas-1",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Senate Amendment (s-292) To Ld 1519",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1519"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Senate Amendment (s-324) To Committee Amendment",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD297"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Senate Amendment (s-351) To Committee Amendment",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD913"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Senate Amendment (s-365) To Committee Amendment",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD613"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Senate Amendment (s-392) To Ld 297",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD297"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Senate Amendment (s-403) To Committee Amendment",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1126"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Senate Amendment (s-426) To Committee Amendment",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD93"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Senate Amendment (s-439) To Committee Amendment",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1777"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Senate Amendment (s-528) To Committee Amendment",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1822"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Senate Amendment (s-621) To Committee Amendment",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1942"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Senate Amendment (s-625) To Committee Amendment",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2200"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Senate Amendment (s-632) To Committee Amendment",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1908"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Senate Amendment (s-633) To Committee Amendment",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD2155"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Senate Amendment (s-709) To Committee Amendment",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD299"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Senate Amendment (s-717) To Committee Amendment",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD299"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Senate Amendment (sbs-468) To Committee Amendment",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1126"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Adopt Sfs-6",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Committee Of The Whole",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "JR"
+   ],
+   "sampleBills": [
+    "SP0790"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Dispensing Of The Reading",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD609"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Enact-emer 2/3 Elect",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD662"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Enactment-bond Issue",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD299"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Final Passage-emergency 2/3 Elected",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD271"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Indefinitely Postpone Senate Amendment (sas-1)",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Indefinitely Postpone Senate Amendment (sas-433)",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD210"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Indefinitely Postpone Senate Amendment (sbs-2)",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Indefinitely Postpone Senate Amendment (sbs-434)",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD210"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Indefinitely Postpone Senate Amendment (scs-3)",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Indefinitely Postpone Senate Amendment (scs-436)",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD210"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Indefinitely Postpone Senate Amendment (sds-4)",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Indefinitely Postpone Senate Amendment (ses-5)",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD209"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Substitute Joint Res For Committee Rpt",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "JR"
+   ],
+   "sampleBills": [
+    "SP0010"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "descFamily": "Suspend Rules",
+   "count": 1,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "LD1948"
+   ]
+  }
+ ]
+}

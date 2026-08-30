@@ -125,6 +125,7 @@ describe("aggregateMontanaDirectFinance", () => {
     expect(result.derivedUnitemizedTotal).toBe(2);
     expect(result.debtRepaymentTotal).toBe(30);
     expect(result.loanProceedsTotal).toBe(200);
+    expect(result.csvCrossCheckWarnings).toEqual([]);
     const occupations = result.directBreakdowns.filter((row) => row.categoryType === "occupation");
     expect(occupations).toEqual([
       expect.objectContaining({ categoryName: "Retired", amount: 100, contributorCount: 1 }),
@@ -144,24 +145,66 @@ describe("aggregateMontanaDirectFinance", () => {
     expect(() => aggregateMontanaDirectFinance(input)).toThrow("cash-begin chain failed");
   });
 
-  it("fails closed when the CSV and JSON surfaces disagree", () => {
+  it("records contribution drift as warnings when real anchors verify the JSON side", () => {
+    // Live Phase 3: the CONTR CSV drops rows and shows stale pre-amendment
+    // amounts. With the chain closed over real anchors the JSON publishes
+    // and the drift is surfaced, not quarantined.
     const individualDrift = fixture();
-    individualDrift.contributionRows[0]!.amountCents = 9_999;
-    // No sub-$50 JSON rows exist, so even a one-cent CSV shortfall is drift.
-    expect(() => aggregateMontanaDirectFinance(individualDrift)).toThrow("beyond the itemization threshold");
-
-    // The CSV must never exceed the JSON itemization.
-    const csvExcess = fixture();
-    csvExcess.contributionRows[0]!.amountCents = 10_001;
-    expect(() => aggregateMontanaDirectFinance(csvExcess)).toThrow("beyond the itemization threshold");
+    individualDrift.contributionRows[0]!.amountCents = 4_000;
+    const individualResult = aggregateMontanaDirectFinance(individualDrift);
+    expect(individualResult.directContributionTotal).toBe(177);
+    expect(individualResult.csvCrossCheckWarnings).toEqual([
+      expect.stringContaining("beyond the itemization threshold"),
+    ]);
 
     const committeeDrift = fixture();
     committeeDrift.contributionRows[2]!.amountCents = 2_400;
-    expect(() => aggregateMontanaDirectFinance(committeeDrift)).toThrow("committee-contribution totals disagree");
+    expect(aggregateMontanaDirectFinance(committeeDrift).csvCrossCheckWarnings).toEqual([
+      expect.stringContaining("committee-contribution totals disagree"),
+    ]);
 
+    // Expenditures stay strict — no live drift observed on that surface.
     const expenditureDrift = fixture();
     expenditureDrift.expenditureRows.push(csvRow({ amountCents: 1, lineItem: "All Other Expenditures" }));
     expect(() => aggregateMontanaDirectFinance(expenditureDrift)).toThrow("expenditure totals disagree");
+  });
+
+  it("fails closed on contribution drift when no link ever landed on a real anchor", () => {
+    // An all-null chain closes tautologically: the CSV is the only
+    // verification left, so drift beyond the tolerance still throws.
+    const allNull = fixture();
+    for (const report of allNull.canonicalReports) {
+      report.inventory.primCashBegCents = null;
+      report.inventory.genCashBegCents = null;
+    }
+    allNull.contributionRows[0]!.amountCents = 4_000;
+    expect(() => aggregateMontanaDirectFinance(allNull)).toThrow("beyond the itemization threshold");
+
+    // A real FIRST anchor with a carried second is existence, not
+    // verification — the only link closes by construction, so demotion
+    // must stay off and the same drift still throws.
+    const carriedTail = fixture();
+    carriedTail.canonicalReports[1]!.inventory.primCashBegCents = null;
+    carriedTail.canonicalReports[1]!.inventory.genCashBegCents = null;
+    carriedTail.contributionRows[0]!.amountCents = 4_000;
+    expect(() => aggregateMontanaDirectFinance(carriedTail)).toThrow("beyond the itemization threshold");
+
+    // A null FIRST anchor with a real second: the only link lands on a real
+    // figure but its derivation is unrooted (assumed-$0 start), which
+    // verifies nothing — drift still throws.
+    const unrootedPrefix = fixture();
+    unrootedPrefix.canonicalReports[0]!.inventory.primCashBegCents = null;
+    unrootedPrefix.canonicalReports[0]!.inventory.genCashBegCents = null;
+    unrootedPrefix.contributionRows[0]!.amountCents = 4_000;
+    expect(() => aggregateMontanaDirectFinance(unrootedPrefix)).toThrow("beyond the itemization threshold");
+  });
+
+  it("rejects an empty CONTR export next to JSON contribution money — regardless of anchors", () => {
+    // The broken-export shape a spurious no-fileName prepareDownloadFile
+    // response would produce; never demotable to a warning.
+    const input = fixture();
+    input.contributionRows = [];
+    expect(() => aggregateMontanaDirectFinance(input)).toThrow("broken export");
   });
 
   it("tolerates a CSV shortfall explained by sub-threshold rows (Eddy shape)", () => {
@@ -181,6 +224,79 @@ describe("aggregateMontanaDirectFinance", () => {
       csvRow({ amountCents: 2_000, lineItem: "Contributions Less Than $35 Each", occupation: null })
     );
     expect(aggregateMontanaDirectFinance(input).directContributionTotal).toBe(197);
+  });
+
+  it("matched small rows never widen the tolerance (large-row drift stays caught)", () => {
+    // Both surfaces carry the same $40 small row; the CSV is missing the
+    // $100 large donor. The matched small row explains nothing — under an
+    // aggregate small-row budget this drift would slip through silently;
+    // here it surfaces as a warning (the fixture chain has real anchors).
+    const input = fixture();
+    input.canonicalReports[0]!.artifact.lists.individual.push(
+      detailRow({ cashAmtCents: 4_000, totalAmtCents: 4_000, entityName: "Both, Sides" })
+    );
+    input.contributionRows.push(csvRow({ amountCents: 4_000, entityName: "Both, Sides" }));
+    input.canonicalReports[1]!.inventory.primCashBegCents! += 4_000;
+    input.contributionRows[0]!.amountCents = 0; // the $100 Doe row vanishes from the CSV
+    expect(aggregateMontanaDirectFinance(input).csvCrossCheckWarnings).toEqual([
+      expect.stringContaining("beyond the itemization threshold"),
+    ]);
+  });
+
+  it("publishes no cash balance when the derived ending is negative or unanchored", () => {
+    // Negative derivation: the last period spends past the derived balance
+    // (a real overdraft OR an unknowable-lump artifact — unpublishable).
+    const negative = fixture();
+    negative.canonicalReports[1]!.artifact.lists.expendOther.push(
+      detailRow({ cashAmtCents: 25_000, totalAmtCents: 25_000, entityName: "Big Vendor" })
+    );
+    negative.expenditureRows.push(
+      csvRow({ amountCents: 25_000, entityName: "Big Vendor", lineItem: "All Other Expenditures" })
+    );
+    const negativeResult = aggregateMontanaDirectFinance(negative);
+    expect(negativeResult.cashOnHand).toBeNull();
+    expect(negativeResult.directContributionTotal).toBe(177);
+
+    // All-null anchors: totals publish on the cross-checks, balance stays null.
+    const unanchored = fixture();
+    for (const report of unanchored.canonicalReports) {
+      report.inventory.primCashBegCents = null;
+      report.inventory.genCashBegCents = null;
+    }
+    const unanchoredResult = aggregateMontanaDirectFinance(unanchored);
+    expect(unanchoredResult.cashOnHand).toBeNull();
+    // No anchors -> no derivable lump; raised is the itemized money only.
+    expect(unanchoredResult.directContributionTotal).toBe(175);
+  });
+
+  it("sums the CSV's three committee line-item classes (live Phase 3 shape)", () => {
+    // The CSV splits committee money by class; the JSON committee list
+    // holds all of it. $10 + $10 + $5 must reconcile against the $25 JSON.
+    const input = fixture();
+    input.contributionRows[2]!.amountCents = 1_000;
+    input.contributionRows.push(
+      csvRow({ amountCents: 1_000, entityName: "Party Committee", lineItem: "Political Party Committee Contributions" }),
+      csvRow({ amountCents: 500, entityName: "Incidental Inc", lineItem: "Incidental Committee Contributions" })
+    );
+    expect(aggregateMontanaDirectFinance(input).directContributionTotal).toBe(177);
+  });
+
+  it("tolerates threshold-row disagreement in both directions (Davis / Griffith shapes)", () => {
+    // CSV itemizes a ≤$50 row the canonical JSON lumps — the CSV side is
+    // LARGER, bounded by its own small rows (live: Ben Davis, +$90).
+    const csvLarger = fixture();
+    csvLarger.contributionRows.push(csvRow({ amountCents: 4_000, entityName: "Extra, Small" }));
+    expect(aggregateMontanaDirectFinance(csvLarger).directContributionTotal).toBe(177);
+
+    // A row of exactly $50.00 is itemizable on one surface and lumpable on
+    // the other — MCA 13-37-229 requires itemization only "in excess of"
+    // $50 (live: Griffith, nine $50.00 rows = a $450 CSV shortfall).
+    const exactly50 = fixture();
+    exactly50.canonicalReports[0]!.artifact.lists.individual.push(
+      detailRow({ cashAmtCents: 5_000, totalAmtCents: 5_000, entityName: "Fifty, Frank" })
+    );
+    exactly50.canonicalReports[1]!.inventory.primCashBegCents! += 5_000;
+    expect(aggregateMontanaDirectFinance(exactly50).directContributionTotal).toBe(227);
   });
 
   it("excludes inter-side transfers from spending on both surfaces (Eddy shape)", () => {

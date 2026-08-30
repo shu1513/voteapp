@@ -1,0 +1,2842 @@
+{
+ "importerVersion": "rollcall-legiscan-resolve-v1",
+ "jurisdiction": "ME",
+ "sessionId": 2181,
+ "scopeFrom": "2026-11-01",
+ "peopleMembers": 188,
+ "candidatePool": 336,
+ "proposals": [
+  {
+   "peopleId": 8786,
+   "rosterName": "Bruce Bickford",
+   "rosterSeat": "senate SD-020",
+   "candidateId": "6bc06251-844a-4577-add4-eab61fa18b8f",
+   "candidateName": "Bruce Bickford",
+   "candidacy": "state_upper: State Senate District 20 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 8810,
+   "rosterName": "Dean Cray",
+   "rosterSeat": "house HD-069",
+   "candidateId": "3acf8672-1cfa-460b-b28b-d492f3f26052",
+   "candidateName": "Dean Cray",
+   "candidacy": "state_lower: State House District 69 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 10321,
+   "rosterName": "Russell Black",
+   "rosterSeat": "senate SD-005",
+   "candidateId": "dcf32637-cd67-4a01-b6fd-4cb1a689d1ce",
+   "candidateName": "Russell Black",
+   "candidacy": "state_lower: State House District 74 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 10331,
+   "rosterName": "James Dill",
+   "rosterSeat": "house HD-026",
+   "candidateId": "cb8727bf-546a-4191-ae3f-d57289796217",
+   "candidateName": "James Dill",
+   "candidacy": "state_lower: State House District 26 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 10338,
+   "rosterName": "Kenneth Fredette",
+   "rosterSeat": "house HD-033",
+   "candidateId": "d8a56b1b-48f4-4c1d-887b-32b74ee4ba93",
+   "candidateName": "Kenneth Fredette",
+   "candidacy": "state_lower: State House District 33 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 10340,
+   "rosterName": "Anne Graham",
+   "rosterSeat": "house HD-105",
+   "candidateId": "ce5abda2-8f22-47bb-871f-942ce75e787a",
+   "candidateName": "Anne Graham",
+   "candidacy": "state_lower: State House District 105 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 10341,
+   "rosterName": "Stacey Guerin",
+   "rosterSeat": "senate SD-004",
+   "candidateId": "aa8c2bf0-5197-4e61-ae18-0d3e3cabc41a",
+   "candidateName": "Stacey Guerin",
+   "candidacy": "state_lower: State House District 34 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 10366,
+   "rosterName": "Wayne Parry",
+   "rosterSeat": "house HD-140",
+   "candidateId": "452d2412-3077-4add-88e4-3d89a49ab2e1",
+   "candidateName": "Wayne Parry",
+   "candidacy": "state_lower: State House District 140 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 10372,
+   "rosterName": "Jeffrey Timberlake",
+   "rosterSeat": "senate SD-017",
+   "candidateId": "541a05d9-0d58-48e1-84ae-b06c5d00f4c6",
+   "candidateName": "Jeffrey Timberlake",
+   "candidacy": "state_lower: State House District 91 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 14717,
+   "rosterName": "Andrew Gattine",
+   "rosterSeat": "house HD-126",
+   "candidateId": "158dd734-ba76-4a65-800c-ecbbcf73e5b6",
+   "candidateName": "Andrew Gattine",
+   "candidacy": "state_lower: State House District 126 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 14720,
+   "rosterName": "Craig Hickman",
+   "rosterSeat": "senate SD-014",
+   "candidateId": "865995a7-c45d-453c-8522-0707fa035bad",
+   "candidateName": "Craig Hickman",
+   "candidacy": "state_upper: State Senate District 14 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 14726,
+   "rosterName": "Matthew Moonen",
+   "rosterSeat": "house HD-117",
+   "candidateId": "68428cb7-8ba1-4211-baf3-e900648dc23e",
+   "candidateName": "Matthew Moonen",
+   "candidacy": "state_lower: State House District 117 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 15775,
+   "rosterName": "Richard Campbell",
+   "rosterSeat": "house HD-019",
+   "candidateId": "a780476a-0425-4a4a-bf5e-5bd37d19cbff",
+   "candidateName": "Richard Campbell",
+   "candidacy": "state_lower: State House District 19 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 16635,
+   "rosterName": "Ryan Fecteau",
+   "rosterSeat": "house HD-132",
+   "candidateId": "149d0b54-a25a-4158-9525-c1f17ff965f2",
+   "candidateName": "Ryan Fecteau",
+   "candidacy": "state_lower: State House District 132 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 16689,
+   "rosterName": "Scott Cyrway",
+   "rosterSeat": "senate SD-016",
+   "candidateId": "1b6eac78-a1e9-4b72-a8c5-5a2d2265243a",
+   "candidateName": "Scott Cyrway",
+   "candidacy": "state_upper: State Senate District 16 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 16786,
+   "rosterName": "William Tuell",
+   "rosterSeat": "house HD-010",
+   "candidateId": "9c0c09af-9e8b-4552-8529-1efde7fbe25f",
+   "candidateName": "William Tuell",
+   "candidacy": "state_lower: State House District 10 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 17107,
+   "rosterName": "Denise Tepler",
+   "rosterSeat": "senate SD-024",
+   "candidateId": "e70dc3d7-4d59-49a4-8ce8-1d96aa63d892",
+   "candidateName": "Denise Tepler",
+   "candidacy": "state_upper: State Senate District 24 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 17214,
+   "rosterName": "Randall Greenwood",
+   "rosterSeat": "house HD-056",
+   "candidateId": "fb68b415-9602-4fd0-a858-0cc7a97ec832",
+   "candidateName": "Randall Greenwood",
+   "candidacy": "state_lower: State House District 56 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 17216,
+   "rosterName": "Teresa Pierce",
+   "rosterSeat": "senate SD-025",
+   "candidateId": "b1615b86-fd11-4a65-9d8c-2842d9dcc5eb",
+   "candidateName": "Teresa Pierce",
+   "candidacy": "state_upper: State Senate District 25 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 17788,
+   "rosterName": "Matthew Harrington",
+   "rosterSeat": "senate SD-033",
+   "candidateId": "172c44ba-868b-463d-8e68-856adffc2030",
+   "candidateName": "Matthew Harrington",
+   "candidacy": "state_upper: State Senate District 33 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 18174,
+   "rosterName": "Donna Bailey",
+   "rosterSeat": "senate SD-031",
+   "candidateId": "322babdd-ceac-40eb-9eab-57698828f37d",
+   "candidateName": "Donna Bailey",
+   "candidacy": "state_upper: State Senate District 31 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 18188,
+   "rosterName": "David Haggan",
+   "rosterSeat": "senate SD-010",
+   "candidateId": "b86e9ab2-6603-41a3-885e-b967c49efead",
+   "candidateName": "David G. Haggan",
+   "candidacy": "state_upper: State Senate District 10 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 18206,
+   "rosterName": "Harold Stewart",
+   "rosterSeat": "senate SD-002",
+   "candidateId": "70a54f93-1a0a-4aac-a4e1-24dc97b831cc",
+   "candidateName": "Harold Stewart",
+   "candidacy": "state_upper: State Senate District 2 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 18210,
+   "rosterName": "Rachel Talbot Ross",
+   "rosterSeat": "senate SD-028",
+   "candidateId": "055809da-8ce0-48f6-a296-5c7c01754250",
+   "candidateName": "Rachel Talbot Ross",
+   "candidacy": "state_upper: State Senate District 28 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 21194,
+   "rosterName": "Anne Carney",
+   "rosterSeat": "senate SD-029",
+   "candidateId": "749f9c91-601d-4585-ae31-ce8a9e1a389f",
+   "candidateName": "Anne Carney",
+   "candidacy": "state_upper: State Senate District 29 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 21211,
+   "rosterName": "Nicole Grohoski",
+   "rosterSeat": "senate SD-007",
+   "candidateId": "0ae48bbc-c5a4-4ec0-bbcd-ff73b8e17357",
+   "candidateName": "Nicole Grohoski",
+   "candidacy": "state_upper: State Senate District 7 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 21217,
+   "rosterName": "Henry Ingwersen",
+   "rosterSeat": "senate SD-032",
+   "candidateId": "c43ad1ad-474b-4f17-a547-1da166b6f485",
+   "candidateName": "Henry Ingwersen",
+   "candidacy": "state_upper: State Senate District 32 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 21223,
+   "rosterName": "Ann Matlack",
+   "rosterSeat": "house HD-043",
+   "candidateId": "0a96c2c9-90aa-4c98-ad93-dae728b7da4c",
+   "candidateName": "Ann Matlack",
+   "candidacy": "state_upper: State Senate District 12 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 21226,
+   "rosterName": "Michele Meyer",
+   "rosterSeat": "house HD-150",
+   "candidateId": "f154559e-8112-4687-b46f-d4e137deb55d",
+   "candidateName": "Michele Meyer",
+   "candidacy": "state_upper: State Senate District 35 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 21273,
+   "rosterName": "Richard Mason",
+   "rosterSeat": "house HD-097",
+   "candidateId": "5b23738c-6bef-4287-954a-3b36854c0104",
+   "candidateName": "Richard Mason",
+   "candidacy": "state_upper: State Senate District 17 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 22240,
+   "rosterName": "Glenn Curry",
+   "rosterSeat": "senate SD-011",
+   "candidateId": "077500d1-4a46-44c1-8f58-435877fa2e30",
+   "candidateName": "Glenn Curry",
+   "candidacy": "state_upper: State Senate District 11 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22294,
+   "rosterName": "Sophia Warren",
+   "rosterSeat": "house HD-124",
+   "candidateId": "c2a129d2-3604-4673-b90c-a37cfc15c942",
+   "candidateName": "Sophia Warren",
+   "candidacy": "state_upper: State Senate District 30 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 22693,
+   "rosterName": "Amanda Collamore",
+   "rosterSeat": "house HD-068",
+   "candidateId": "b5600de8-5490-42e8-a72f-3e0265cf6eef",
+   "candidateName": "Amanda Collamore",
+   "candidacy": "state_lower: State House District 68 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22694,
+   "rosterName": "Amy Roeder",
+   "rosterSeat": "house HD-023",
+   "candidateId": "4451520c-2eff-43b8-8501-80341e0ba9cf",
+   "candidateName": "Amy Roeder",
+   "candidacy": "state_upper: State Senate District 9 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 22698,
+   "rosterName": "Grayson Lookner",
+   "rosterSeat": "house HD-113",
+   "candidateId": "8ae3728e-5261-420f-834a-12e56d2b4030",
+   "candidateName": "Grayson Lookner",
+   "candidacy": "state_lower: State House District 113 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22699,
+   "rosterName": "James Thorne",
+   "rosterSeat": "house HD-035",
+   "candidateId": "fcde4657-8c21-4145-b04d-121f83703fc5",
+   "candidateName": "James Thorne",
+   "candidacy": "state_lower: State House District 35 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22700,
+   "rosterName": "Jennifer Poirier",
+   "rosterSeat": "house HD-070",
+   "candidateId": "6c8eea4d-1574-42c1-8412-3a04a4fc02a3",
+   "candidateName": "Jennifer Poirier",
+   "candidacy": "state_lower: State House District 70 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22701,
+   "rosterName": "John Ducharme",
+   "rosterSeat": "house HD-071",
+   "candidateId": "5f4691f1-917c-48db-9aab-850882bf20a4",
+   "candidateName": "John Ducharme",
+   "candidacy": "state_lower: State House District 71 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22703,
+   "rosterName": "Kristi Mathieson",
+   "rosterSeat": "house HD-151",
+   "candidateId": "0aaf898b-40bc-4630-addd-58ea3b6c2383",
+   "candidateName": "Kristi Mathieson",
+   "candidacy": "state_lower: State House District 151 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22705,
+   "rosterName": "Laura Supica",
+   "rosterSeat": "house HD-022",
+   "candidateId": "302d032c-5ef9-4418-8c75-c53627e9ba80",
+   "candidateName": "Laura Supica",
+   "candidacy": "state_lower: State House District 22 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22707,
+   "rosterName": "Laurie Osher",
+   "rosterSeat": "house HD-025",
+   "candidateId": "21720a79-2196-4e0e-9d11-80abaec56b49",
+   "candidateName": "Laurie Osher",
+   "candidacy": "state_lower: State House District 25 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22711,
+   "rosterName": "Morgan Rielly",
+   "rosterSeat": "house HD-127",
+   "candidateId": "023219cd-94ce-4eed-b1b6-949d6881b7cb",
+   "candidateName": "Morgan Rielly",
+   "candidacy": "state_lower: State House District 127 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22712,
+   "rosterName": "Nathan Carlow",
+   "rosterSeat": "house HD-137",
+   "candidateId": "ea991e7b-d06c-4d64-ba1a-f8bbcda90e0f",
+   "candidateName": "Nathan Carlow",
+   "candidacy": "state_lower: State House District 137 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22713,
+   "rosterName": "Poppy Arford",
+   "rosterSeat": "house HD-101",
+   "candidateId": "4cb0cecf-f681-46c8-ab4f-1d0c2fa0b4ec",
+   "candidateName": "Poppy Arford",
+   "candidacy": "state_lower: State House District 101 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22715,
+   "rosterName": "Samuel Zager",
+   "rosterSeat": "house HD-116",
+   "candidateId": "af939964-43bc-4e43-97ec-f636b78a35b0",
+   "candidateName": "Samuel Zager",
+   "candidacy": "state_lower: State House District 116 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22716,
+   "rosterName": "Susan Bernard",
+   "rosterSeat": "senate SD-001",
+   "candidateId": "d10cf893-1a21-42b7-9834-d9086dde9a08",
+   "candidateName": "Susan Y. Bernard",
+   "candidacy": "state_lower: State House District 3 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 22717,
+   "rosterName": "Suzanne Salisbury",
+   "rosterSeat": "house HD-128",
+   "candidateId": "3dcfdb04-5713-42ac-b86f-12b1d96bf1c8",
+   "candidateName": "Suzanne Salisbury",
+   "candidacy": "state_lower: State House District 128 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22718,
+   "rosterName": "Tavis Hasenfus",
+   "rosterSeat": "house HD-057",
+   "candidateId": "e676fc5b-8e49-479d-bbb4-382db48b0c80",
+   "candidateName": "Tavis Hasenfus",
+   "candidacy": "state_lower: State House District 57 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22720,
+   "rosterName": "Valli Geiger",
+   "rosterSeat": "house HD-042",
+   "candidateId": "3d081c76-f92e-4a7c-8b8b-046e092b5117",
+   "candidateName": "Valli Geiger",
+   "candidacy": "state_lower: State House District 42 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22750,
+   "rosterName": "Tracy Quint",
+   "rosterSeat": "house HD-008",
+   "candidateId": "a96a258f-58f1-4569-86be-ab23eb399a83",
+   "candidateName": "Tracy Quint",
+   "candidacy": "state_lower: State House District 8 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22837,
+   "rosterName": "Lynn Copeland",
+   "rosterSeat": "house HD-130",
+   "candidateId": "a30196cf-23b0-4408-9336-7ecefe81bd44",
+   "candidateName": "Lynn Copeland",
+   "candidacy": "state_lower: State House District 130 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22838,
+   "rosterName": "Sheila Lyman",
+   "rosterSeat": "house HD-076",
+   "candidateId": "8d2bbab4-141c-4b18-a97c-4fe2bbb2fc93",
+   "candidateName": "Sheila Lyman",
+   "candidacy": "state_lower: State House District 76 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22867,
+   "rosterName": "Traci Gere",
+   "rosterSeat": "house HD-134",
+   "candidateId": "3ad5830f-d62b-4207-985d-e9d953454127",
+   "candidateName": "Traci Gere",
+   "candidacy": "state_lower: State House District 134 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22868,
+   "rosterName": "Michael Lemelin",
+   "rosterSeat": "house HD-053",
+   "candidateId": "e397325f-a082-436e-82a4-8b278c6a068e",
+   "candidateName": "Michael Lemelin",
+   "candidacy": "state_lower: State House District 53 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23235,
+   "rosterName": "Timothy Nangle",
+   "rosterSeat": "senate SD-026",
+   "candidateId": "e73bafa6-98d2-47a1-83ff-7d6358cfdf7a",
+   "candidateName": "Timothy Nangle",
+   "candidacy": "state_upper: State Senate District 26 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23236,
+   "rosterName": "Cameron Reny",
+   "rosterSeat": "senate SD-013",
+   "candidateId": "63e4e7df-a74f-4e5b-a55f-8a4d132e02b1",
+   "candidateName": "Cameron Reny",
+   "candidacy": "state_upper: State Senate District 13 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23237,
+   "rosterName": "Jill Duson",
+   "rosterSeat": "senate SD-027",
+   "candidateId": "4731b91f-c3e3-44df-98f0-291b92ee1a0b",
+   "candidateName": "Jill Duson",
+   "candidacy": "state_upper: State Senate District 27 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23241,
+   "rosterName": "Roger Albert",
+   "rosterSeat": "house HD-002",
+   "candidateId": "00a50160-4da6-423a-81ec-0583fb87432a",
+   "candidateName": "Roger Albert",
+   "candidacy": "state_lower: State House District 2 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23242,
+   "rosterName": "Daniel Ankeles",
+   "rosterSeat": "house HD-100",
+   "candidateId": "c5a451b1-aa77-4688-8891-93d47195a72b",
+   "candidateName": "Dan Ankeles",
+   "candidacy": "state_lower: State House District 100 (2024); Maine",
+   "confidence": "first_prefix",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23243,
+   "rosterName": "Donald Ardell",
+   "rosterSeat": "house HD-006",
+   "candidateId": "303f1d8b-f99e-4fce-b72f-6f71348a096c",
+   "candidateName": "Donald Ardell",
+   "candidacy": "state_lower: State House District 6 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23245,
+   "rosterName": "Barbara Bagshaw",
+   "rosterSeat": "house HD-106",
+   "candidateId": "056602ae-3ded-474c-8559-f16d80cf1349",
+   "candidateName": "Barbara Bagshaw",
+   "candidacy": "state_lower: State House District 106 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23246,
+   "rosterName": "David Boyer",
+   "rosterSeat": "house HD-087",
+   "candidateId": "de250d62-7b16-489d-b8d2-fd930de99607",
+   "candidateName": "David Boyer",
+   "candidacy": "state_lower: State House District 87 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23247,
+   "rosterName": "William Bridgeo",
+   "rosterSeat": "house HD-060",
+   "candidateId": "582a575e-eb04-45a8-ac2d-cf8b406977d9",
+   "candidateName": "William Bridgeo",
+   "candidacy": "state_lower: State House District 60 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23248,
+   "rosterName": "Sally Cluchey",
+   "rosterSeat": "house HD-052",
+   "candidateId": "e4e18dd2-7fc7-41a3-8bc4-7ee8bfcd742d",
+   "candidateName": "Sally Cluchey",
+   "candidacy": "state_lower: State House District 52 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23252,
+   "rosterName": "Holly Eaton",
+   "rosterSeat": "house HD-015",
+   "candidateId": "85e8e45a-9151-4080-86c2-b8e4a16ed184",
+   "candidateName": "Holly Eaton",
+   "candidacy": "state_lower: State House District 15 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23255,
+   "rosterName": "Cheryl Golek",
+   "rosterSeat": "house HD-099",
+   "candidateId": "beaf8621-2aff-46fd-a88e-2dca30ff7b81",
+   "candidateName": "Cheryl Golek",
+   "candidacy": "state_lower: State House District 99 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23256,
+   "rosterName": "Timothy Guerrette",
+   "rosterSeat": "house HD-004",
+   "candidateId": "2f1d4602-b3d3-435d-a02d-df881414649d",
+   "candidateName": "Timothy Guerrette",
+   "candidacy": "state_lower: State House District 4 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23257,
+   "rosterName": "Rachel Henderson",
+   "rosterSeat": "house HD-078",
+   "candidateId": "7437d0db-f1de-4986-8604-1d35c4d6e1f5",
+   "candidateName": "Rachel Ann Henderson",
+   "candidacy": "state_lower: State House District 78 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23258,
+   "rosterName": "Benjamin Hymes",
+   "rosterSeat": "house HD-038",
+   "candidateId": "a64e5bdb-ea49-4d5b-9a2f-813c6d2f74bb",
+   "candidateName": "Benjamin Hymes",
+   "candidacy": "state_lower: State House District 38 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23261,
+   "rosterName": "Amy Kuhn",
+   "rosterSeat": "house HD-111",
+   "candidateId": "3623d2a5-3b26-4cf2-b326-3366100770dc",
+   "candidateName": "Amy Kuhn",
+   "candidacy": "state_lower: State House District 111 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23263,
+   "rosterName": "Thomas Lavigne",
+   "rosterSeat": "house HD-148",
+   "candidateId": "a1c8fb7c-1ccd-45fa-b374-f8e1973b3eed",
+   "candidateName": "Thomas Lavigne",
+   "candidacy": "state_lower: State House District 148 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23264,
+   "rosterName": "Adam Lee",
+   "rosterSeat": "house HD-089",
+   "candidateId": "28283906-c36b-46ff-8375-1630d2d014ec",
+   "candidateName": "Adam Lee",
+   "candidacy": "state_lower: State House District 89 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23265,
+   "rosterName": "Marc Malon",
+   "rosterSeat": "house HD-133",
+   "candidateId": "17e53682-1186-4e9f-8210-8e17bd85815e",
+   "candidateName": "Marc Malon",
+   "candidacy": "state_lower: State House District 133 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23266,
+   "rosterName": "Nina Milliken",
+   "rosterSeat": "house HD-016",
+   "candidateId": "971220e9-a424-4351-8f39-87efd45a8f75",
+   "candidateName": "Nina Milliken",
+   "candidacy": "state_lower: State House District 16 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23267,
+   "rosterName": "Karen Montell",
+   "rosterSeat": "house HD-054",
+   "candidateId": "bd11fbd5-526a-4ba8-99c8-c93a3c690156",
+   "candidateName": "Karen Montell",
+   "candidacy": "state_lower: State House District 54 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23268,
+   "rosterName": "Kelly Murphy",
+   "rosterSeat": "house HD-125",
+   "candidateId": "ece2c906-ded4-4314-b271-4da14a0a02cd",
+   "candidateName": "Kelly Noonan Murphy",
+   "candidacy": "state_lower: State House District 125 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23270,
+   "rosterName": "Reagan Paul",
+   "rosterSeat": "house HD-037",
+   "candidateId": "908a3675-614c-4b36-9453-4752503415a1",
+   "candidateName": "Reagan Paul",
+   "candidacy": "state_lower: State House District 37 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23271,
+   "rosterName": "Chad Perkins",
+   "rosterSeat": "house HD-031",
+   "candidateId": "4f00a95d-f8a0-4314-a0a1-8ed477929afe",
+   "candidateName": "Chad Perkins",
+   "candidacy": "state_upper: State Senate District 4 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23273,
+   "rosterName": "Kimberly Pomerleau",
+   "rosterSeat": "house HD-085",
+   "candidateId": "ed384c14-1433-4cd5-b21e-71b0843a0dcb",
+   "candidateName": "Kimberly Pomerleau",
+   "candidacy": "state_upper: State Senate District 22 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23275,
+   "rosterName": "Ambureen Rana",
+   "rosterSeat": "house HD-021",
+   "candidateId": "98f77913-f7c0-4fcf-8815-f05888a19f51",
+   "candidateName": "Ambureen Rana",
+   "candidacy": "state_lower: State House District 21 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23276,
+   "rosterName": "Walter Runte",
+   "rosterSeat": "house HD-146",
+   "candidateId": "629bd9e2-1e96-4da8-812c-63baaff68a5e",
+   "candidateName": "Walter Runte Jr.",
+   "candidacy": "state_lower: State House District 146 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23278,
+   "rosterName": "Holly Sargent",
+   "rosterSeat": "house HD-147",
+   "candidateId": "fcdda115-32ca-4748-a668-9148e51069fd",
+   "candidateName": "Holly Sargent",
+   "candidacy": "state_lower: State House District 147 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23279,
+   "rosterName": "Daniel Sayre",
+   "rosterSeat": "house HD-135",
+   "candidateId": "b348ccb5-ec30-404a-ae08-c8c6ebd1af3c",
+   "candidateName": "Daniel Sayre",
+   "candidacy": "state_upper: State Senate District 34 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23280,
+   "rosterName": "Tammy Schmersal-Burgess",
+   "rosterSeat": "house HD-077",
+   "candidateId": "00ccd2c9-3942-47c4-8a16-7bff3f8db0de",
+   "candidateName": "Tammy Schmersal-Burgess",
+   "candidacy": "state_lower: State House District 77 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23284,
+   "rosterName": "Katrina Smith",
+   "rosterSeat": "house HD-062",
+   "candidateId": "d8b7cb00-5869-41f3-b3d4-42e580f2ea13",
+   "candidateName": "Katrina Smith",
+   "candidacy": "state_lower: State House District 62 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23285,
+   "rosterName": "Michael Soboleski",
+   "rosterSeat": "house HD-073",
+   "candidateId": "e045afdc-c84f-45ae-bce9-c6c81ef2c8ea",
+   "candidateName": "Michael Soboleski",
+   "candidacy": "state_lower: State House District 73 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23286,
+   "rosterName": "Tiffany Strout",
+   "rosterSeat": "house HD-011",
+   "candidateId": "45748c02-2be8-4346-a5d1-fd8a60cb7908",
+   "candidateName": "Tiffany Strout",
+   "candidacy": "state_lower: State House District 11 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23288,
+   "rosterName": "Mark Walker",
+   "rosterSeat": "house HD-084",
+   "candidateId": "d5c2594c-1f30-4665-ac67-9de5d56fbed6",
+   "candidateName": "Mark Walker",
+   "candidacy": "state_lower: State House District 84 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23289,
+   "rosterName": "James White",
+   "rosterSeat": "house HD-030",
+   "candidateId": "95ad6891-ac4a-47ea-aabb-0ab86847e33a",
+   "candidateName": "James White",
+   "candidacy": "state_lower: State House District 30 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23290,
+   "rosterName": "Stephen Wood",
+   "rosterSeat": "house HD-092",
+   "candidateId": "6d5cafb5-98f4-4e3c-89c7-ce2477c5b0f7",
+   "candidateName": "Stephen Wood",
+   "candidacy": "state_lower: State House District 92 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23889,
+   "rosterName": "Aaron Dana",
+   "rosterSeat": "house HD-TRIBE",
+   "candidateId": "5b088da8-a634-4a21-9018-c5d7941e1034",
+   "candidateName": "Aaron Dana",
+   "candidacy": "state_upper: State Senate District 6 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": null
+  },
+  {
+   "peopleId": 24489,
+   "rosterName": "Irene Gifford",
+   "rosterSeat": "house HD-028",
+   "candidateId": "01135858-a2b8-4c8b-ba9c-ec3ba84131a9",
+   "candidateName": "Irene Gifford",
+   "candidacy": "state_lower: State House District 28 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25000,
+   "rosterName": "David Sinclair",
+   "rosterSeat": "house HD-050",
+   "candidateId": "532f5f8d-7cab-4c41-ae11-8e67df46c990",
+   "candidateName": "David Sinclair",
+   "candidacy": "state_lower: State House District 50 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25173,
+   "rosterName": "Matthew Beck",
+   "rosterSeat": "house HD-122",
+   "candidateId": "04f548b6-ea97-484a-9cad-b2f7ced67bc6",
+   "candidateName": "Matthew Beck",
+   "candidacy": "state_lower: State House District 122 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25928,
+   "rosterName": "Marshall Archer",
+   "rosterSeat": "house HD-129",
+   "candidateId": "a895bdcd-1484-4ff2-b397-ac5001f81436",
+   "candidateName": "Marshall Archer",
+   "candidacy": "state_lower: State House District 129 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25929,
+   "rosterName": "Steven Bishop",
+   "rosterSeat": "house HD-017",
+   "candidateId": "0ae63b78-e5b1-4240-b578-90c95bc16166",
+   "candidateName": "Steven Bishop",
+   "candidacy": "state_lower: State House District 17 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25930,
+   "rosterName": "Michelle Boyer",
+   "rosterSeat": "house HD-123",
+   "candidateId": "7252ae3a-e5a2-4179-811a-95f0bb99ff91",
+   "candidateName": "Michelle Boyer",
+   "candidacy": "state_lower: State House District 123 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25932,
+   "rosterName": "Elizabeth Caruso",
+   "rosterSeat": "house HD-072",
+   "candidateId": "e95ece3f-82ea-4365-b12f-ddba2e17e948",
+   "candidateName": "Elizabeth Caruso",
+   "candidacy": "state_upper: State Senate District 5 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 25933,
+   "rosterName": "Quentin Chapman",
+   "rosterSeat": "house HD-088",
+   "candidateId": "965ce036-f9f0-41ac-a6fa-4169a5ac0aa6",
+   "candidateName": "Quentin Chapman",
+   "candidacy": "state_lower: State House District 88 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25934,
+   "rosterName": "Marygrace Cimino",
+   "rosterSeat": "house HD-083",
+   "candidateId": "dc0e68a7-f2a7-4a56-9789-786c2d9a3e7c",
+   "candidateName": "Marygrace Cimino",
+   "candidacy": "state_lower: State House District 83 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25935,
+   "rosterName": "Alicia Collins",
+   "rosterSeat": "house HD-061",
+   "candidateId": "7c96265c-d2f4-4adb-a5a6-37347cd66d0e",
+   "candidateName": "Alicia Collins",
+   "candidacy": "state_lower: State House District 61 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25936,
+   "rosterName": "Mark Cooper",
+   "rosterSeat": "house HD-107",
+   "candidateId": "8e82ae50-ddcf-4cda-a069-787a55dfbe85",
+   "candidateName": "Mark Cooper",
+   "candidacy": "state_lower: State House District 107 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25937,
+   "rosterName": "Lucien Daigle",
+   "rosterSeat": "house HD-001",
+   "candidateId": "3034ed6d-00d5-44b9-9210-4a297fa25cac",
+   "candidateName": "Lucien Daigle",
+   "candidacy": "state_upper: State Senate District 1 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 25938,
+   "rosterName": "Flavia DeBrito",
+   "rosterSeat": "house HD-064",
+   "candidateId": "92e46f66-72d8-4e83-868b-a4645d35a6ff",
+   "candidateName": "Flavia DeBrito",
+   "candidacy": "state_lower: State House District 64 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25939,
+   "rosterName": "John Eder",
+   "rosterSeat": "house HD-136",
+   "candidateId": "0ac5b182-9141-4c81-910a-ff21f048ffdc",
+   "candidateName": "John Eder",
+   "candidacy": "state_lower: State House District 136 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25940,
+   "rosterName": "Wayne Farrin",
+   "rosterSeat": "house HD-047",
+   "candidateId": "51e99645-7e06-47eb-8335-b35bf07b0c4c",
+   "candidateName": "Wayne Farrin",
+   "candidacy": "state_lower: State House District 47 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25941,
+   "rosterName": "Paul Flynn",
+   "rosterSeat": "house HD-063",
+   "candidateId": "15198ea5-4550-4e1e-a943-cd85fc1f5e66",
+   "candidateName": "Paul Flynn",
+   "candidacy": "state_lower: State House District 63 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25942,
+   "rosterName": "Gary Friedmann",
+   "rosterSeat": "house HD-014",
+   "candidateId": "4dc533f6-5348-485e-a218-a6697ac5fbc7",
+   "candidateName": "Gary Friedmann",
+   "candidacy": "state_lower: State House District 14 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25943,
+   "rosterName": "Sharon Frost",
+   "rosterSeat": "house HD-058",
+   "candidateId": "5d642206-727e-43db-8368-0733f422c043",
+   "candidateName": "Sharon Frost",
+   "candidacy": "state_lower: State House District 58 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25944,
+   "rosterName": "Kimberly Haggan",
+   "rosterSeat": "house HD-036",
+   "candidateId": "9a114f89-44e9-4565-8806-633c75686fb8",
+   "candidateName": "Kimberly Haggan",
+   "candidacy": "state_lower: State House District 36 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25945,
+   "rosterName": "Cassie Julia",
+   "rosterSeat": "house HD-065",
+   "candidateId": "90b50bd4-7ebe-42de-8f3b-2b47f88796b2",
+   "candidateName": "Cassie Julia",
+   "candidacy": "state_lower: State House District 65 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25946,
+   "rosterName": "Michael Lance",
+   "rosterSeat": "house HD-079",
+   "candidateId": "329f84a1-819c-4ebe-9291-12bf08d148e1",
+   "candidateName": "Michael Lance",
+   "candidacy": "state_lower: State House District 79 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25947,
+   "rosterName": "Rafael Macias",
+   "rosterSeat": "house HD-051",
+   "candidateId": "c496bbd0-51f4-4cc0-94c1-9621e69470c5",
+   "candidateName": "Rafael Macias",
+   "candidacy": "state_lower: State House District 51 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25948,
+   "rosterName": "Julia McCabe",
+   "rosterSeat": "house HD-093",
+   "candidateId": "32d2cff9-a6fa-4c9b-851e-74cdc22e3f0f",
+   "candidateName": "Julia McCabe",
+   "candidacy": "state_lower: State House District 93 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25949,
+   "rosterName": "Mathew McIntyre",
+   "rosterSeat": "house HD-018",
+   "candidateId": "883a9ff0-cee5-41db-af1e-df98f1f98766",
+   "candidateName": "Mathew McIntyre",
+   "candidacy": "state_lower: State House District 18 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25950,
+   "rosterName": "Arthur Mingo",
+   "rosterSeat": "house HD-009",
+   "candidateId": "7cf81eef-af57-4bec-8032-3ea36ee7646c",
+   "candidateName": "Arthur Mingo",
+   "candidacy": "state_lower: State House District 9 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25951,
+   "rosterName": "Christina Mitchell",
+   "rosterSeat": "house HD-110",
+   "candidateId": "40450a93-c2aa-407a-bfb1-5085ef14591d",
+   "candidateName": "Christina Mitchell",
+   "candidacy": "state_lower: State House District 110 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25952,
+   "rosterName": "Dani O'Halloran",
+   "rosterSeat": "house HD-020",
+   "candidateId": "bf42d124-76f8-4797-b707-17f2d2599e1c",
+   "candidateName": "Dani O'Halloran",
+   "candidacy": "state_lower: State House District 20 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25953,
+   "rosterName": "Rolf Olsen",
+   "rosterSeat": "house HD-086",
+   "candidateId": "d28ee64f-9f53-4070-988a-cd1e77972e2f",
+   "candidateName": "Rolf Olsen Jr.",
+   "candidacy": "state_lower: State House District 86 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25955,
+   "rosterName": "D. Ray",
+   "rosterSeat": "house HD-040",
+   "candidateId": "6399f593-c534-4f92-8c62-813c90a8c981",
+   "candidateName": "D. Michael Ray",
+   "candidacy": "state_lower: State House District 40 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25958,
+   "rosterName": "Parnell Terry",
+   "rosterSeat": "house HD-108",
+   "candidateId": "108a8024-b8c4-41e8-bba7-ce89e76b2371",
+   "candidateName": "Parnell Terry",
+   "candidacy": "state_lower: State House District 108 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25959,
+   "rosterName": "Kilton Webb",
+   "rosterSeat": "house HD-098",
+   "candidateId": "f9e97958-9e85-494b-92d2-07ea1f2f2773",
+   "candidateName": "Kilton Webb",
+   "candidacy": "state_lower: State House District 98 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25960,
+   "rosterName": "Russell White",
+   "rosterSeat": "house HD-013",
+   "candidateId": "99485157-a57c-4825-9409-132cdb2e9081",
+   "candidateName": "Russell White",
+   "candidacy": "state_lower: State House District 13 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25961,
+   "rosterName": "Peter Wood",
+   "rosterSeat": "house HD-081",
+   "candidateId": "ba2f46b4-abac-4430-bb8d-77421d0d3be8",
+   "candidateName": "Peter Wood",
+   "candidacy": "state_lower: State House District 81 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25962,
+   "rosterName": "Yusuf Yusuf",
+   "rosterSeat": "house HD-118",
+   "candidateId": "0e44cb83-0a87-459c-8453-eed3ebc362d5",
+   "candidateName": "Yusuf Yusuf",
+   "candidacy": "state_lower: State House District 118 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25963,
+   "rosterName": "Joseph Martin",
+   "rosterSeat": "senate SD-019",
+   "candidateId": "c725e6d6-e102-4dae-8986-23287a8dd75e",
+   "candidateName": "Joseph E. Martin",
+   "candidacy": "state_upper: State Senate District 19 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26432,
+   "rosterName": "Sean Faircloth",
+   "rosterSeat": "house HD-024",
+   "candidateId": "39efb925-f5d9-4333-885b-0b9db7223248",
+   "candidateName": "Sean Faircloth",
+   "candidacy": "state_lower: State House District 24 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26634,
+   "rosterName": "Scott Harriman",
+   "rosterSeat": "house HD-094",
+   "candidateId": "74edd72f-098a-47cc-bcb5-1cddd943762c",
+   "candidateName": "Scott Harriman",
+   "candidacy": "state_lower: State House District 94 (2024); Maine",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  }
+ ],
+ "unmatchedPeople": [
+  {
+   "peopleId": 14714,
+   "name": "Matthea Larsen Daughtry",
+   "seat": "senate SD-023"
+  },
+  {
+   "peopleId": 15729,
+   "name": "Anne-Marie Mastraccio",
+   "seat": "house HD-142"
+  },
+  {
+   "peopleId": 16780,
+   "name": "Bradlee Farrin",
+   "seat": "senate SD-003"
+  },
+  {
+   "peopleId": 16781,
+   "name": "Robert Foley",
+   "seat": "house HD-145"
+  },
+  {
+   "peopleId": 16787,
+   "name": "David Woodsome",
+   "seat": "house HD-139"
+  },
+  {
+   "peopleId": 17340,
+   "name": "Nathan Wadsworth",
+   "seat": "house HD-082"
+  },
+  {
+   "peopleId": 17667,
+   "name": "Pinny Beebe-Center",
+   "seat": "senate SD-012"
+  },
+  {
+   "peopleId": 18176,
+   "name": "Richard Bradstreet",
+   "seat": "senate SD-015"
+  },
+  {
+   "peopleId": 18192,
+   "name": "Mark Lawrence",
+   "seat": "senate SD-035"
+  },
+  {
+   "peopleId": 18204,
+   "name": "Abden Simmons",
+   "seat": "house HD-045"
+  },
+  {
+   "peopleId": 21167,
+   "name": "Marianne Moore",
+   "seat": "senate SD-006"
+  },
+  {
+   "peopleId": 21189,
+   "name": "Amy Arata",
+   "seat": "house HD-104"
+  },
+  {
+   "peopleId": 21191,
+   "name": "Mark Blier",
+   "seat": "house HD-138"
+  },
+  {
+   "peopleId": 21192,
+   "name": "Michael Brennan",
+   "seat": "house HD-115"
+  },
+  {
+   "peopleId": 21195,
+   "name": "Kristen Cloutier",
+   "seat": "house HD-094"
+  },
+  {
+   "peopleId": 21197,
+   "name": "Edward Crockett",
+   "seat": "house HD-112"
+  },
+  {
+   "peopleId": 21201,
+   "name": "Janice Dodge",
+   "seat": "house HD-039"
+  },
+  {
+   "peopleId": 21203,
+   "name": "Victoria Doudera",
+   "seat": "house HD-041"
+  },
+  {
+   "peopleId": 21204,
+   "name": "Gary Drinkwater",
+   "seat": "house HD-027"
+  },
+  {
+   "peopleId": 21205,
+   "name": "William Faulkingham",
+   "seat": "house HD-012"
+  },
+  {
+   "peopleId": 21208,
+   "name": "Steven Foster",
+   "seat": "house HD-032"
+  },
+  {
+   "peopleId": 21209,
+   "name": "Lori Gramlich",
+   "seat": "house HD-131"
+  },
+  {
+   "peopleId": 21210,
+   "name": "Abigail Griffin",
+   "seat": "house HD-034"
+  },
+  {
+   "peopleId": 21212,
+   "name": "Randall Hall",
+   "seat": "house HD-074"
+  },
+  {
+   "peopleId": 21214,
+   "name": "Allison Hepler",
+   "seat": "house HD-049"
+  },
+  {
+   "peopleId": 21218,
+   "name": "Kathy Javner",
+   "seat": "house HD-029"
+  },
+  {
+   "peopleId": 21219,
+   "name": "Christopher Kessler",
+   "seat": "house HD-121"
+  },
+  {
+   "peopleId": 21228,
+   "name": "Joshua Morris",
+   "seat": "house HD-091"
+  },
+  {
+   "peopleId": 21230,
+   "name": "William Pluecker",
+   "seat": "house HD-044"
+  },
+  {
+   "peopleId": 21232,
+   "name": "Tiffany Roberts-Lovell",
+   "seat": "house HD-149"
+  },
+  {
+   "peopleId": 21233,
+   "name": "Shelley Rudnicki",
+   "seat": "house HD-067"
+  },
+  {
+   "peopleId": 21235,
+   "name": "Holly Stover",
+   "seat": "house HD-048"
+  },
+  {
+   "peopleId": 21236,
+   "name": "Gregory Swallow",
+   "seat": "house HD-007"
+  },
+  {
+   "peopleId": 22237,
+   "name": "Joseph Baldacci",
+   "seat": "senate SD-009"
+  },
+  {
+   "peopleId": 22238,
+   "name": "Richard Bennett",
+   "seat": "senate SD-018"
+  },
+  {
+   "peopleId": 22239,
+   "name": "Stacy Brenner",
+   "seat": "senate SD-030"
+  },
+  {
+   "peopleId": 22241,
+   "name": "Joseph Rafferty",
+   "seat": "senate SD-034"
+  },
+  {
+   "peopleId": 22348,
+   "name": "Joseph Underwood",
+   "seat": "house HD-005"
+  },
+  {
+   "peopleId": 22695,
+   "name": "Arthur Bell",
+   "seat": "house HD-103"
+  },
+  {
+   "peopleId": 22706,
+   "name": "Laurel Libby",
+   "seat": "house HD-090"
+  },
+  {
+   "peopleId": 22709,
+   "name": "Melanie Sachs",
+   "seat": "house HD-102"
+  },
+  {
+   "peopleId": 22766,
+   "name": "Lydia Crafts",
+   "seat": "house HD-046"
+  },
+  {
+   "peopleId": 23234,
+   "name": "James Libby",
+   "seat": "senate SD-022"
+  },
+  {
+   "peopleId": 23238,
+   "name": "Michael Tipping",
+   "seat": "senate SD-008"
+  },
+  {
+   "peopleId": 23239,
+   "name": "Mana Abdi",
+   "seat": "house HD-095"
+  },
+  {
+   "peopleId": 23240,
+   "name": "Jeffrey Adams",
+   "seat": "house HD-144"
+  },
+  {
+   "peopleId": 23244,
+   "name": "Mark Babin",
+   "seat": "house HD-003"
+  },
+  {
+   "peopleId": 23251,
+   "name": "Deqa Dhalac",
+   "seat": "house HD-120"
+  },
+  {
+   "peopleId": 23253,
+   "name": "Ann Fredericks",
+   "seat": "house HD-143"
+  },
+  {
+   "peopleId": 23259,
+   "name": "Caldwell Jackson",
+   "seat": "house HD-080"
+  },
+  {
+   "peopleId": 23262,
+   "name": "Lucas Lanigan",
+   "seat": "house HD-141"
+  },
+  {
+   "peopleId": 23281,
+   "name": "Daniel Shagoury",
+   "seat": "house HD-055"
+  },
+  {
+   "peopleId": 23283,
+   "name": "Charles Skold",
+   "seat": "house HD-119"
+  },
+  {
+   "peopleId": 25931,
+   "name": "Stephan Bunker",
+   "seat": "house HD-075"
+  },
+  {
+   "peopleId": 25954,
+   "name": "Dylan Pugh",
+   "seat": "house HD-114"
+  },
+  {
+   "peopleId": 25956,
+   "name": "David Rollins",
+   "seat": "house HD-059"
+  },
+  {
+   "peopleId": 25957,
+   "name": "Eleanor Sato",
+   "seat": "house HD-109"
+  },
+  {
+   "peopleId": 8855,
+   "name": "Michel Lajoie",
+   "seat": "house HD-096"
+  },
+  {
+   "peopleId": 8874,
+   "name": "Robert Nutting",
+   "seat": "house HD-066"
+  },
+  {
+   "peopleId": 8894,
+   "name": "Margaret Rotundo",
+   "seat": "senate SD-021"
+  }
+ ],
+ "unmatchedCandidates": [
+  {
+   "candidateId": "69037c5b-5ffe-454d-a88c-5dda20ec7e2a",
+   "name": "Abigail Geer",
+   "scope": "state_lower",
+   "districtName": "State House District 86 (2024); Maine"
+  },
+  {
+   "candidateId": "dddf0d85-dec3-40a7-9d0d-440a3b1a0c24",
+   "name": "Adam Shaw",
+   "scope": "state_lower",
+   "districtName": "State House District 26 (2024); Maine"
+  },
+  {
+   "candidateId": "dbb9c700-2a6d-40b0-aa63-2de3ed231520",
+   "name": "Adrienne Paul",
+   "scope": "state_lower",
+   "districtName": "State House District 85 (2024); Maine"
+  },
+  {
+   "candidateId": "123acb8a-012b-4010-8c63-b3ebb2763cc6",
+   "name": "Alan Orcutt",
+   "scope": "state_lower",
+   "districtName": "State House District 37 (2024); Maine"
+  },
+  {
+   "candidateId": "7cd42716-a903-49a7-8d7b-b2668ae19f95",
+   "name": "Alexandros Orestis",
+   "scope": "state_lower",
+   "districtName": "State House District 150 (2024); Maine"
+  },
+  {
+   "candidateId": "603e08f4-f8e0-483f-b353-9aba7224daac",
+   "name": "Allen Daggett",
+   "scope": "state_lower",
+   "districtName": "State House District 134 (2024); Maine"
+  },
+  {
+   "candidateId": "36723639-e52a-4272-8e59-b998b8709447",
+   "name": "Amanda Heath",
+   "scope": "state_upper",
+   "districtName": "State Senate District 15 (2024); Maine"
+  },
+  {
+   "candidateId": "4483aa0d-0568-4b72-b369-aa1b5e7366bf",
+   "name": "Andrew Torbett",
+   "scope": "state_lower",
+   "districtName": "State House District 31 (2024); Maine"
+  },
+  {
+   "candidateId": "4e2356af-dbab-4d65-b1b1-a104151fa03b",
+   "name": "Andrew Zarro",
+   "scope": "state_lower",
+   "districtName": "State House District 115 (2024); Maine"
+  },
+  {
+   "candidateId": "97907a16-d641-4b90-ad20-a55ba531d8a1",
+   "name": "Annalyse Sarvinas",
+   "scope": "state_lower",
+   "districtName": "State House District 51 (2024); Maine"
+  },
+  {
+   "candidateId": "1f237479-788b-4a19-8805-238bdc72b26e",
+   "name": "Anthony Weaver",
+   "scope": "state_lower",
+   "districtName": "State House District 25 (2024); Maine"
+  },
+  {
+   "candidateId": "9f78e276-6cce-401a-bbfe-1f20b0a95631",
+   "name": "April Fournier",
+   "scope": "state_lower",
+   "districtName": "State House District 114 (2024); Maine"
+  },
+  {
+   "candidateId": "34143a03-6f5c-4ec3-9dcf-0fe8fbd54904",
+   "name": "Arlie Hetrick Jr.",
+   "scope": "state_lower",
+   "districtName": "State House District 77 (2024); Maine"
+  },
+  {
+   "candidateId": "6eeb747c-57b9-4479-b455-2249cdb5c54a",
+   "name": "Austin Theriault",
+   "scope": "state_lower",
+   "districtName": "State House District 1 (2024); Maine"
+  },
+  {
+   "candidateId": "a44c0f36-4b7b-4cc5-8619-ffa2b7dd1afc",
+   "name": "Ayn Hanselmann",
+   "scope": "state_lower",
+   "districtName": "State House District 142 (2024); Maine"
+  },
+  {
+   "candidateId": "c9fa6c52-c129-41d8-aaf3-ae1dabcd1ff5",
+   "name": "Azalea Cormier",
+   "scope": "state_lower",
+   "districtName": "State House District 80 (2024); Maine"
+  },
+  {
+   "candidateId": "23d64ac5-b150-42ad-94a6-61ac9e18b545",
+   "name": "Bernard Porter",
+   "scope": "state_upper",
+   "districtName": "State Senate District 23 (2024); Maine"
+  },
+  {
+   "candidateId": "af052c37-b0d8-4f76-a3a3-e3a0e44b26db",
+   "name": "Billy Bob Faulkingham",
+   "scope": "state_upper",
+   "districtName": "State Senate District 6 (2024); Maine"
+  },
+  {
+   "candidateId": "2139931d-194d-444f-9104-a319cb7aee7e",
+   "name": "Bradley Moulton",
+   "scope": "state_lower",
+   "districtName": "State House District 146 (2024); Maine"
+  },
+  {
+   "candidateId": "d9b46bbf-7019-4a37-9e09-83e7a197d069",
+   "name": "Bradley Youngs",
+   "scope": "state_lower",
+   "districtName": "State House District 106 (2024); Maine"
+  },
+  {
+   "candidateId": "a29fe596-8553-4d8f-ad90-3df4b82bd938",
+   "name": "Braeden Webber",
+   "scope": "state_lower",
+   "districtName": "State House District 99 (2024); Maine"
+  },
+  {
+   "candidateId": "7084fa2a-abd1-47b4-b5ad-c3baf0e0a45f",
+   "name": "Bret Martel",
+   "scope": "state_lower",
+   "districtName": "State House District 95 (2024); Maine"
+  },
+  {
+   "candidateId": "b6f3f508-53cd-4774-8d8d-4b7b56b49196",
+   "name": "Brett Barrett",
+   "scope": "state_lower",
+   "districtName": "State House District 100 (2024); Maine"
+  },
+  {
+   "candidateId": "5e1511b3-67b8-4975-99cc-995e23fbf230",
+   "name": "Brian Ames",
+   "scope": "state_lower",
+   "districtName": "State House District 23 (2024); Maine"
+  },
+  {
+   "candidateId": "4d80ebdb-65c9-465b-9459-8b2873ca076a",
+   "name": "Brianna Lueck",
+   "scope": "state_lower",
+   "districtName": "State House District 79 (2024); Maine"
+  },
+  {
+   "candidateId": "68cb55de-950e-4475-a26c-7139b6a62682",
+   "name": "Caleb Chase",
+   "scope": "state_lower",
+   "districtName": "State House District 145 (2024); Maine"
+  },
+  {
+   "candidateId": "60116994-6ebf-4387-bcb3-4efbd3eb27fd",
+   "name": "Caleb Ness",
+   "scope": "state_lower",
+   "districtName": "State House District 82 (2024); Maine"
+  },
+  {
+   "candidateId": "062baee9-1011-4a31-9e4d-d5628914b52c",
+   "name": "Cassandra Dove",
+   "scope": "state_lower",
+   "districtName": "State House District 84 (2024); Maine"
+  },
+  {
+   "candidateId": "66d49c72-4140-48a3-882a-accde25d91d9",
+   "name": "Charles Hippler IV",
+   "scope": "state_lower",
+   "districtName": "State House District 55 (2024); Maine"
+  },
+  {
+   "candidateId": "f5cf380b-6e95-4dd5-856c-462d81028c84",
+   "name": "Charles Tilburg",
+   "scope": "state_lower",
+   "districtName": "State House District 137 (2024); Maine"
+  },
+  {
+   "candidateId": "d5be288d-4d64-4eaa-b72c-ef6ce9c02be0",
+   "name": "Charlotte Nutt",
+   "scope": "state_lower",
+   "districtName": "State House District 48 (2024); Maine"
+  },
+  {
+   "candidateId": "688dd9d0-9d06-475c-b088-f9e0b54392bf",
+   "name": "Cheryl Hewes",
+   "scope": "state_upper",
+   "districtName": "State Senate District 7 (2024); Maine"
+  },
+  {
+   "candidateId": "1f110c3e-d6ee-4104-9165-204f131dbedb",
+   "name": "Chester Grover III",
+   "scope": "state_lower",
+   "districtName": "State House District 47 (2024); Maine"
+  },
+  {
+   "candidateId": "5d97a15e-0695-4343-bd91-de505f759588",
+   "name": "Chris Lewey",
+   "scope": "state_lower",
+   "districtName": "State House District 82 (2024); Maine"
+  },
+  {
+   "candidateId": "b0870f7e-2f7f-4fd1-bab4-194e4c65f3a3",
+   "name": "Christopher Austin",
+   "scope": "state_lower",
+   "districtName": "State House District 43 (2024); Maine"
+  },
+  {
+   "candidateId": "d5c3f180-b9bd-4b7e-98f9-94a114e059b7",
+   "name": "Christopher Easton",
+   "scope": "state_lower",
+   "districtName": "State House District 81 (2024); Maine"
+  },
+  {
+   "candidateId": "7b8542a2-1ce8-4503-9f6f-72b51bd13e1b",
+   "name": "Clifford Noyes",
+   "scope": "state_lower",
+   "districtName": "State House District 15 (2024); Maine"
+  },
+  {
+   "candidateId": "f157d0b8-ff30-4551-8fe5-a26c435ee892",
+   "name": "Clifton Foster III",
+   "scope": "state_lower",
+   "districtName": "State House District 36 (2024); Maine"
+  },
+  {
+   "candidateId": "3e32e25c-56cc-4fb6-97cb-4b2939e8ecc5",
+   "name": "Clinton Collamore Sr.",
+   "scope": "state_lower",
+   "districtName": "State House District 45 (2024); Maine"
+  },
+  {
+   "candidateId": "83513973-e893-43d3-8033-212eb6f6fbac",
+   "name": "Colleen O'Neal",
+   "scope": "state_lower",
+   "districtName": "State House District 22 (2024); Maine"
+  },
+  {
+   "candidateId": "f3486912-8517-44c7-9442-143444e1a81a",
+   "name": "Corinna Cole",
+   "scope": "state_lower",
+   "districtName": "State House District 144 (2024); Maine"
+  },
+  {
+   "candidateId": "f69b6ce6-9397-42c2-afb1-6d6b6e847dda",
+   "name": "Cory Raymond",
+   "scope": "state_lower",
+   "districtName": "State House District 41 (2024); Maine"
+  },
+  {
+   "candidateId": "3a7b5723-ba50-407c-a9dc-003d1896ab54",
+   "name": "Cynthia Soma-Hernandez",
+   "scope": "state_lower",
+   "districtName": "State House District 72 (2024); Maine"
+  },
+  {
+   "candidateId": "09e90f92-ab64-4315-9863-adb109ee5639",
+   "name": "Dale Crafts",
+   "scope": "state_lower",
+   "districtName": "State House District 97 (2024); Maine"
+  },
+  {
+   "candidateId": "da6c3618-589d-4af3-b912-91931b712128",
+   "name": "Dana Staples",
+   "scope": "state_lower",
+   "districtName": "State House District 88 (2024); Maine"
+  },
+  {
+   "candidateId": "c04685a2-eb18-464f-9982-b6efd7b2b4fd",
+   "name": "Daniel Simonds",
+   "scope": "state_lower",
+   "districtName": "State House District 73 (2024); Maine"
+  },
+  {
+   "candidateId": "1cfa1df1-e702-458c-8067-db7b3eb0ecfb",
+   "name": "David A. Duguay",
+   "scope": "state_upper",
+   "districtName": "State Senate District 19 (2024); Maine"
+  },
+  {
+   "candidateId": "78b0e3bb-ee78-4f66-8b3f-df75aeeb9c0f",
+   "name": "David Giles",
+   "scope": "state_lower",
+   "districtName": "State House District 27 (2024); Maine"
+  },
+  {
+   "candidateId": "36df5028-8048-438d-8d75-0e6cfa10d7ad",
+   "name": "David Guilmette",
+   "scope": "state_lower",
+   "districtName": "State House District 52 (2024); Maine"
+  },
+  {
+   "candidateId": "9536c1af-006d-49e1-ae9f-a529992e657f",
+   "name": "David McCrea",
+   "scope": "state_lower",
+   "districtName": "State House District 3 (2024); Maine"
+  },
+  {
+   "candidateId": "7210c50f-f69f-49d2-a260-6f1e27062efa",
+   "name": "David Mongeau",
+   "scope": "state_lower",
+   "districtName": "State House District 141 (2024); Maine"
+  },
+  {
+   "candidateId": "7ee5208b-c444-464d-9607-2bdc8bbb437f",
+   "name": "David Potvin",
+   "scope": "state_lower",
+   "districtName": "State House District 57 (2024); Maine"
+  },
+  {
+   "candidateId": "eaa0295e-2e24-495e-811c-dd4a53d11072",
+   "name": "David Ulrich",
+   "scope": "state_lower",
+   "districtName": "State House District 19 (2024); Maine"
+  },
+  {
+   "candidateId": "f00cf8c2-3aa0-4464-a596-b5ce63de01c7",
+   "name": "Dean LePage",
+   "scope": "state_lower",
+   "districtName": "State House District 139 (2024); Maine"
+  },
+  {
+   "candidateId": "b72e5cd6-0f21-458f-a623-6c362ffe12d2",
+   "name": "Debora Farnham",
+   "scope": "state_lower",
+   "districtName": "State House District 35 (2024); Maine"
+  },
+  {
+   "candidateId": "f50da1c4-63fa-412e-bf8e-04dab96cfb87",
+   "name": "Devan Arnold",
+   "scope": "state_lower",
+   "districtName": "State House District 27 (2024); Maine"
+  },
+  {
+   "candidateId": "3b2a6cfb-5007-44ef-8487-d89cea8154c9",
+   "name": "Dexter Bridges Jr.",
+   "scope": "state_lower",
+   "districtName": "State House District 58 (2024); Maine"
+  },
+  {
+   "candidateId": "d4fcf5d6-1010-4783-833a-8f677fdecd71",
+   "name": "Diana Kushnar",
+   "scope": "state_lower",
+   "districtName": "State House District 109 (2024); Maine"
+  },
+  {
+   "candidateId": "e7e2c5b2-2001-4ab5-8db7-a44a181989ad",
+   "name": "Douglas Carlisle",
+   "scope": "state_lower",
+   "districtName": "State House District 5 (2024); Maine"
+  },
+  {
+   "candidateId": "d3574b9a-4182-479e-9130-b6e8d2abf84b",
+   "name": "Douglas Thomas",
+   "scope": "state_lower",
+   "districtName": "State House District 72 (2024); Maine"
+  },
+  {
+   "candidateId": "eb950e54-c1ad-4e85-af5e-2b48f7e53493",
+   "name": "Edwin Mitchell",
+   "scope": "state_upper",
+   "districtName": "State Senate District 13 (2024); Maine"
+  },
+  {
+   "candidateId": "726e29a1-bda7-4df1-8fe7-cfee980867c7",
+   "name": "Elizabeth Bosworth",
+   "scope": "state_upper",
+   "districtName": "State Senate District 18 (2024); Maine"
+  },
+  {
+   "candidateId": "b20a0de3-8cd5-4830-a631-9fd0ae27e1b4",
+   "name": "Eric Boothroyd",
+   "scope": "state_lower",
+   "districtName": "State House District 31 (2024); Maine"
+  },
+  {
+   "candidateId": "d1a76ab8-dfbe-4736-9a37-ff54c50d79f1",
+   "name": "Eric Nathanson",
+   "scope": "state_lower",
+   "districtName": "State House District 124 (2024); Maine"
+  },
+  {
+   "candidateId": "568846b8-c8a7-4ec9-b5e0-f8c53010d634",
+   "name": "Eric White",
+   "scope": "state_lower",
+   "districtName": "State House District 16 (2024); Maine"
+  },
+  {
+   "candidateId": "6ce5ffcf-8b7d-4d63-a13e-4d5ff6258792",
+   "name": "Erik Hobson",
+   "scope": "state_lower",
+   "districtName": "State House District 48 (2024); Maine"
+  },
+  {
+   "candidateId": "0121f0f2-7ec8-4620-8292-5f1eaf192338",
+   "name": "Ernest Fitts IV",
+   "scope": "state_lower",
+   "districtName": "State House District 80 (2024); Maine"
+  },
+  {
+   "candidateId": "e450dee6-06ab-469c-a181-deeb7a8c6310",
+   "name": "Eryne Soule",
+   "scope": "state_upper",
+   "districtName": "State Senate District 21 (2024); Maine"
+  },
+  {
+   "candidateId": "2c56cbf0-277e-4b8e-a7f4-2471ca334ded",
+   "name": "Ethan Mongue",
+   "scope": "state_lower",
+   "districtName": "State House District 126 (2024); Maine"
+  },
+  {
+   "candidateId": "db28bcf3-5303-4edc-a678-9ba61183038c",
+   "name": "Frank Casella",
+   "scope": "state_lower",
+   "districtName": "State House District 21 (2024); Maine"
+  },
+  {
+   "candidateId": "1815e85b-2fbc-4062-8909-03e01fc74f26",
+   "name": "Gary Plummer",
+   "scope": "state_upper",
+   "districtName": "State Senate District 31 (2024); Maine"
+  },
+  {
+   "candidateId": "bf9822ea-b32f-4d0b-9e3e-c059cd9fed11",
+   "name": "Genevieve Lemire",
+   "scope": "state_lower",
+   "districtName": "State House District 10 (2024); Maine"
+  },
+  {
+   "candidateId": "26b6086b-8ad8-48aa-b57c-843624a12204",
+   "name": "Gordon Street",
+   "scope": "state_lower",
+   "districtName": "State House District 28 (2024); Maine"
+  },
+  {
+   "candidateId": "e8be1fca-8780-47e4-949f-d7defec77c33",
+   "name": "H. Scott Landry Jr.",
+   "scope": "state_lower",
+   "districtName": "State House District 75 (2024); Maine"
+  },
+  {
+   "candidateId": "4981202c-297b-4208-8051-eeff6cae1bff",
+   "name": "Harold Hull",
+   "scope": "state_upper",
+   "districtName": "State Senate District 2 (2024); Maine"
+  },
+  {
+   "candidateId": "5c0aaab9-3272-466e-b2e4-8466b292e011",
+   "name": "Harry White",
+   "scope": "state_upper",
+   "districtName": "State Senate District 30 (2024); Maine"
+  },
+  {
+   "candidateId": "2d857a87-d03c-41eb-890c-ccf080e95ad4",
+   "name": "Henry Lawrence III",
+   "scope": "state_lower",
+   "districtName": "State House District 102 (2024); Maine"
+  },
+  {
+   "candidateId": "67538129-af09-4894-a51a-639f17a75a57",
+   "name": "Jacob Wakem",
+   "scope": "state_lower",
+   "districtName": "State House District 119 (2024); Maine"
+  },
+  {
+   "candidateId": "4dd870e0-56af-47e8-877d-3198bf9fc5cb",
+   "name": "James Berube",
+   "scope": "state_lower",
+   "districtName": "State House District 89 (2024); Maine"
+  },
+  {
+   "candidateId": "ce4216ee-b9d4-45bd-b1e3-28e7d84588e2",
+   "name": "James McClymer",
+   "scope": "state_lower",
+   "districtName": "State House District 34 (2024); Maine"
+  },
+  {
+   "candidateId": "554eabe5-a7e2-4247-997c-821572935e50",
+   "name": "James Sorcek",
+   "scope": "state_lower",
+   "districtName": "State House District 90 (2024); Maine"
+  },
+  {
+   "candidateId": "63d6748f-981a-45a6-bc0f-56f4d19e99fa",
+   "name": "Jamie Newton",
+   "scope": "state_lower",
+   "districtName": "State House District 139 (2024); Maine"
+  },
+  {
+   "candidateId": "fb6498e7-502b-4134-8f77-f7ac5a0b98b6",
+   "name": "Janet Beaudoin",
+   "scope": "state_lower",
+   "districtName": "State House District 94 (2024); Maine"
+  },
+  {
+   "candidateId": "b2a85f05-1b0b-4fd7-acdd-029893ae18ae",
+   "name": "Jantzen Craine",
+   "scope": "state_lower",
+   "districtName": "State House District 7 (2024); Maine"
+  },
+  {
+   "candidateId": "03c70b1b-dd7e-4f4b-99fd-f70b821305d5",
+   "name": "Jason Copp",
+   "scope": "state_lower",
+   "districtName": "State House District 110 (2024); Maine"
+  },
+  {
+   "candidateId": "49aefa3e-14d1-4c86-85ca-2c945d89c523",
+   "name": "Jason Litalien",
+   "scope": "state_upper",
+   "districtName": "State Senate District 32 (2024); Maine"
+  },
+  {
+   "candidateId": "7764e9a9-1251-4128-a52e-4b596921cff9",
+   "name": "Jason Shedlock",
+   "scope": "state_lower",
+   "districtName": "State House District 120 (2024); Maine"
+  },
+  {
+   "candidateId": "8e3fa28a-e2b5-4b2e-92bb-afbbcd75d1e6",
+   "name": "Jedediah Rice II",
+   "scope": "state_lower",
+   "districtName": "State House District 50 (2024); Maine"
+  },
+  {
+   "candidateId": "fc7ba557-9d9c-4f24-9e6f-7d20c305721e",
+   "name": "Jennifer Mayher",
+   "scope": "state_lower",
+   "districtName": "State House District 46 (2024); Maine"
+  },
+  {
+   "candidateId": "279c080e-d6cd-45f4-9151-7e76b58eafcd",
+   "name": "Jessica Blanchard",
+   "scope": "state_lower",
+   "districtName": "State House District 69 (2024); Maine"
+  },
+  {
+   "candidateId": "ce1909f1-09cf-4072-9f9c-82cebc14f895",
+   "name": "Jo-Jean Keller",
+   "scope": "state_upper",
+   "districtName": "State Senate District 17 (2024); Maine"
+  },
+  {
+   "candidateId": "ef8d3066-26d6-4461-8fdb-08c288245599",
+   "name": "Joel Stetkis",
+   "scope": "state_upper",
+   "districtName": "State Senate District 3 (2024); Maine"
+  },
+  {
+   "candidateId": "769156e8-c369-4c57-960d-d6129d8d7b43",
+   "name": "John Andrews",
+   "scope": "state_upper",
+   "districtName": "State Senate District 18 (2024); Maine"
+  },
+  {
+   "candidateId": "1e64472a-45e4-4961-9387-1d1b92ea22b8",
+   "name": "John Contreni Jr.",
+   "scope": "state_lower",
+   "districtName": "State House District 30 (2024); Maine"
+  },
+  {
+   "candidateId": "a8d7fceb-9dd3-4f0a-92ad-c3ab798715b5",
+   "name": "John Henkelman",
+   "scope": "state_lower",
+   "districtName": "State House District 143 (2024); Maine"
+  },
+  {
+   "candidateId": "1ca48b74-6311-4ccb-a891-f95080b10741",
+   "name": "John Reny",
+   "scope": "state_lower",
+   "districtName": "State House District 59 (2024); Maine"
+  },
+  {
+   "candidateId": "676b10ba-3b6c-4d23-b0b2-7470c96cc83c",
+   "name": "Jonathan C. Goble",
+   "scope": "state_lower",
+   "districtName": "State House District 18 (2024); Maine"
+  },
+  {
+   "candidateId": "ef4be10e-2cc1-4372-9fe9-86f5d74dae46",
+   "name": "Jonathan Fallon",
+   "scope": "state_upper",
+   "districtName": "State Senate District 34 (2024); Maine"
+  },
+  {
+   "candidateId": "2cd9e8af-aca0-4d99-b08f-787b63039aa0",
+   "name": "Jonathan Kinney",
+   "scope": "state_lower",
+   "districtName": "State House District 138 (2024); Maine"
+  },
+  {
+   "candidateId": "4d0ce098-42e5-48c1-bd5d-1d25edbfe02f",
+   "name": "Joseph Almand",
+   "scope": "state_lower",
+   "districtName": "State House District 70 (2024); Maine"
+  },
+  {
+   "candidateId": "de3c8e01-92ba-4f8c-a0af-563923bff929",
+   "name": "Joseph Campbell",
+   "scope": "state_lower",
+   "districtName": "State House District 107 (2024); Maine"
+  },
+  {
+   "candidateId": "b98cdfd4-460c-4d2d-9aa6-2f2d80c26b03",
+   "name": "Joseph McLaughlin",
+   "scope": "state_lower",
+   "districtName": "State House District 40 (2024); Maine"
+  },
+  {
+   "candidateId": "a3b7d45f-a549-4e80-810c-fab93ecbcc7a",
+   "name": "Joshua Gerritsen",
+   "scope": "state_lower",
+   "districtName": "State House District 41 (2024); Maine"
+  },
+  {
+   "candidateId": "db9a7401-6331-475c-841b-6e1c19660c63",
+   "name": "Julie N. Rakic",
+   "scope": "state_upper",
+   "districtName": "State Senate District 35 (2024); Maine"
+  },
+  {
+   "candidateId": "4911fcf4-5eba-44a2-bf73-4e9bad0369dc",
+   "name": "Karin Orenstein",
+   "scope": "state_lower",
+   "districtName": "State House District 103 (2024); Maine"
+  },
+  {
+   "candidateId": "1a8d191a-7046-49fd-bb24-fc05d4db6254",
+   "name": "Kati McCormick",
+   "scope": "state_upper",
+   "districtName": "State Senate District 15 (2024); Maine"
+  },
+  {
+   "candidateId": "646eaa2d-7b55-4cfe-927a-67205ae344db",
+   "name": "Katrina Couch Ray-Saulis",
+   "scope": "state_lower",
+   "districtName": "State House District 59 (2024); Maine"
+  },
+  {
+   "candidateId": "e053c25b-3d57-4f39-a26b-7089b4962bb1",
+   "name": "Kayla Miller",
+   "scope": "state_lower",
+   "districtName": "State House District 38 (2024); Maine"
+  },
+  {
+   "candidateId": "e2fc9b92-9c15-440f-9906-a319d4b6117e",
+   "name": "Keith Newman",
+   "scope": "state_lower",
+   "districtName": "State House District 11 (2024); Maine"
+  },
+  {
+   "candidateId": "b31f633b-1d8a-4671-8aa5-0e3e5b7b12f6",
+   "name": "Kelly Dearborn",
+   "scope": "state_lower",
+   "districtName": "State House District 108 (2024); Maine"
+  },
+  {
+   "candidateId": "39b6a6bd-e17d-45fb-bf0f-c3da17ee1d81",
+   "name": "Kenneth Blow",
+   "scope": "state_lower",
+   "districtName": "State House District 131 (2024); Maine"
+  },
+  {
+   "candidateId": "0e3d2316-fe3c-4fd1-b4b6-f32d0932b366",
+   "name": "Kenneth J. Cianchette",
+   "scope": "state_upper",
+   "districtName": "State Senate District 26 (2024); Maine"
+  },
+  {
+   "candidateId": "c912654b-79d0-4b81-bfdc-d1e1a01bc4b1",
+   "name": "Kerryl Clement",
+   "scope": "state_lower",
+   "districtName": "State House District 96 (2024); Maine"
+  },
+  {
+   "candidateId": "600a6d18-5c6b-4aa2-8764-d68e88de0d34",
+   "name": "Kevin O'Connell",
+   "scope": "state_upper",
+   "districtName": "State Senate District 10 (2024); Maine"
+  },
+  {
+   "candidateId": "1ca66f5e-2537-4084-8d1e-c452dcdc197f",
+   "name": "Kiernan Majerus-Collins",
+   "scope": "state_lower",
+   "districtName": "State House District 95 (2024); Maine"
+  },
+  {
+   "candidateId": "8a8a4db4-6f07-4ba5-a6b2-e463dc6debf1",
+   "name": "Kirstan Watson",
+   "scope": "state_lower",
+   "districtName": "State House District 140 (2024); Maine"
+  },
+  {
+   "candidateId": "b87bf945-bc5f-4aa3-a252-987fd3b6f626",
+   "name": "Kristin Davis",
+   "scope": "state_lower",
+   "districtName": "State House District 145 (2024); Maine"
+  },
+  {
+   "candidateId": "3149c2b1-87f1-4d4f-b3c7-ac647660e833",
+   "name": "Kristine Poland",
+   "scope": "state_lower",
+   "districtName": "State House District 46 (2024); Maine"
+  },
+  {
+   "candidateId": "be859b98-98a1-4e54-8eca-69b89361f2ea",
+   "name": "L. Pfeifle",
+   "scope": "state_lower",
+   "districtName": "State House District 104 (2024); Maine"
+  },
+  {
+   "candidateId": "6e95afd8-dc17-46c7-8a67-746f19563755",
+   "name": "Lauren Jones",
+   "scope": "state_lower",
+   "districtName": "State House District 112 (2024); Maine"
+  },
+  {
+   "candidateId": "6834cc35-9997-4ec8-885f-324d54c2531b",
+   "name": "Lawrence McWilliams",
+   "scope": "state_lower",
+   "districtName": "State House District 128 (2024); Maine"
+  },
+  {
+   "candidateId": "22405616-31f6-4e6b-8283-45c180df8d87",
+   "name": "Leo C. Kenney",
+   "scope": "state_upper",
+   "districtName": "State Senate District 8 (2024); Maine"
+  },
+  {
+   "candidateId": "3db8fdc9-2863-4f2a-b7bd-9ff62af2e150",
+   "name": "Lisa Kalp",
+   "scope": "state_upper",
+   "districtName": "State Senate District 4 (2024); Maine"
+  },
+  {
+   "candidateId": "f66f9a92-00f5-4c32-bec0-21341896ea42",
+   "name": "Lisa Pratt",
+   "scope": "state_lower",
+   "districtName": "State House District 135 (2024); Maine"
+  },
+  {
+   "candidateId": "e5eaf7dc-c0ba-4a34-aff1-56176bf0faf5",
+   "name": "Luke Jensen",
+   "scope": "state_lower",
+   "districtName": "State House District 96 (2024); Maine"
+  },
+  {
+   "candidateId": "d600c59e-ef44-4689-b938-de31eb5069e7",
+   "name": "Madison Cook",
+   "scope": "state_lower",
+   "districtName": "State House District 39 (2024); Maine"
+  },
+  {
+   "candidateId": "749c23db-86ab-4a99-af96-7ca46b184dc8",
+   "name": "Mallory Cook",
+   "scope": "state_lower",
+   "districtName": "State House District 149 (2024); Maine"
+  },
+  {
+   "candidateId": "db3d7983-abed-41ed-a9d6-80ffa87f4ba3",
+   "name": "Marc Boisse",
+   "scope": "state_lower",
+   "districtName": "State House District 141 (2024); Maine"
+  },
+  {
+   "candidateId": "c66f6c33-3495-4304-992f-7ea54c536779",
+   "name": "Marc Edwards",
+   "scope": "state_lower",
+   "districtName": "State House District 74 (2024); Maine"
+  },
+  {
+   "candidateId": "04e14d76-b287-462e-b78b-26d3cdd01a68",
+   "name": "Marc Lessard",
+   "scope": "state_lower",
+   "districtName": "State House District 133 (2024); Maine"
+  },
+  {
+   "candidateId": "db56179c-6fd2-4f14-80ad-f7c3947ed74b",
+   "name": "Mark Vigliotta",
+   "scope": "state_upper",
+   "districtName": "State Senate District 33 (2024); Maine"
+  },
+  {
+   "candidateId": "ea902b8c-ea83-42c5-b092-75482fa8b242",
+   "name": "Mark Zimmer",
+   "scope": "state_lower",
+   "districtName": "State House District 150 (2024); Maine"
+  },
+  {
+   "candidateId": "4ca30dba-f894-4331-b323-02084cc68064",
+   "name": "Mary Lindstrom",
+   "scope": "state_lower",
+   "districtName": "State House District 124 (2024); Maine"
+  },
+  {
+   "candidateId": "add64748-2a32-4f67-9dab-a2ce9a7ad6d2",
+   "name": "Matthea Daughtry",
+   "scope": "state_upper",
+   "districtName": "State Senate District 23 (2024); Maine"
+  },
+  {
+   "candidateId": "76572f27-9db6-4d4c-8ea5-0310bf7234b6",
+   "name": "Matthew J. Rush",
+   "scope": "state_lower",
+   "districtName": "State House District 7 (2024); Maine"
+  },
+  {
+   "candidateId": "fd462017-d403-4a65-a2d2-39ff9a68acd7",
+   "name": "Matthew Townsend",
+   "scope": "state_lower",
+   "districtName": "State House District 67 (2024); Maine"
+  },
+  {
+   "candidateId": "dbb6ac99-739c-4eda-82aa-dd6269eca17f",
+   "name": "Maura Pillsbury",
+   "scope": "state_lower",
+   "districtName": "State House District 102 (2024); Maine"
+  },
+  {
+   "candidateId": "295ca17e-58fb-4fc7-9e20-0d5f1fe0cacb",
+   "name": "Maureen AuCoin",
+   "scope": "state_lower",
+   "districtName": "State House District 55 (2024); Maine"
+  },
+  {
+   "candidateId": "0d788123-3933-4327-9047-734860c34d7a",
+   "name": "Meagan Smith",
+   "scope": "state_lower",
+   "districtName": "State House District 121 (2024); Maine"
+  },
+  {
+   "candidateId": "3ed4680b-8154-4d6a-81e1-09c3ed60af30",
+   "name": "Melanie Tompkins",
+   "scope": "state_lower",
+   "districtName": "State House District 6 (2024); Maine"
+  },
+  {
+   "candidateId": "be573b32-6aac-436f-b6a2-7b1c508c82a1",
+   "name": "Melissa Byer",
+   "scope": "state_lower",
+   "districtName": "State House District 42 (2024); Maine"
+  },
+  {
+   "candidateId": "5838bc87-f600-4f2e-8d76-d54399b3d7d4",
+   "name": "Michael Brayson",
+   "scope": "state_lower",
+   "districtName": "State House District 33 (2024); Maine"
+  },
+  {
+   "candidateId": "26103060-752e-494d-a44a-95f9ac403f48",
+   "name": "Michael Cunningham II",
+   "scope": "state_lower",
+   "districtName": "State House District 13 (2024); Maine"
+  },
+  {
+   "candidateId": "953f3b59-a71f-4558-a2ce-25f739adce53",
+   "name": "Michael D. Perkins",
+   "scope": "state_lower",
+   "districtName": "State House District 66 (2024); Maine"
+  },
+  {
+   "candidateId": "022887ef-2ad9-4464-a4dc-8796a55fca1a",
+   "name": "Michael Dixon",
+   "scope": "state_lower",
+   "districtName": "State House District 119 (2024); Maine"
+  },
+  {
+   "candidateId": "0745b197-2c54-436e-80e0-59f83a6a626d",
+   "name": "Michael Nicholson",
+   "scope": "state_lower",
+   "districtName": "State House District 39 (2024); Maine"
+  },
+  {
+   "candidateId": "25429b72-79cd-4fb1-ac34-cf8c5367647d",
+   "name": "Michael Scott",
+   "scope": "state_upper",
+   "districtName": "State Senate District 20 (2024); Maine"
+  },
+  {
+   "candidateId": "5f735582-561e-47fb-b551-707ef994ad9b",
+   "name": "Michelle Conners",
+   "scope": "state_lower",
+   "districtName": "State House District 136 (2024); Maine"
+  },
+  {
+   "candidateId": "3dfa167d-1e41-4701-98c3-f39f471b1372",
+   "name": "Michelle Tucker",
+   "scope": "state_lower",
+   "districtName": "State House District 54 (2024); Maine"
+  },
+  {
+   "candidateId": "a574f5f7-2060-46f4-a1d9-baa5f846c8f9",
+   "name": "Mike Tipping",
+   "scope": "state_upper",
+   "districtName": "State Senate District 8 (2024); Maine"
+  },
+  {
+   "candidateId": "2f4d82f1-21d6-4152-a306-44196ed95f25",
+   "name": "Nancy McDowell",
+   "scope": "state_lower",
+   "districtName": "State House District 29 (2024); Maine"
+  },
+  {
+   "candidateId": "28fe8dbf-847a-4644-aa24-87bcd4ec577b",
+   "name": "Nancy Theriault",
+   "scope": "state_lower",
+   "districtName": "State House District 29 (2024); Maine"
+  },
+  {
+   "candidateId": "1477948f-d81b-412f-9fbb-222ae2defbad",
+   "name": "Nathan Burnett",
+   "scope": "state_upper",
+   "districtName": "State Senate District 22 (2024); Maine"
+  },
+  {
+   "candidateId": "7d481a71-68f5-4188-b52f-a71d1f9fc3a9",
+   "name": "Nicole Kalloch",
+   "scope": "state_upper",
+   "districtName": "State Senate District 12 (2024); Maine"
+  },
+  {
+   "candidateId": "f65a3a3c-6934-4057-b6d8-bd8c5d772be3",
+   "name": "Nicole Richards",
+   "scope": "state_lower",
+   "districtName": "State House District 9 (2024); Maine"
+  },
+  {
+   "candidateId": "4fb93eef-b6f1-4068-ad7a-0fc8635bd762",
+   "name": "Noah Cobb",
+   "scope": "state_lower",
+   "districtName": "State House District 148 (2024); Maine"
+  },
+  {
+   "candidateId": "ccb5a36d-8c52-416a-8236-8e88d215d924",
+   "name": "Oliver McAvoy",
+   "scope": "state_lower",
+   "districtName": "State House District 138 (2024); Maine"
+  },
+  {
+   "candidateId": "d9ef81b6-980e-416e-9edc-d41281098ab2",
+   "name": "Pamela Hart",
+   "scope": "state_lower",
+   "districtName": "State House District 90 (2024); Maine"
+  },
+  {
+   "candidateId": "f7d69b5f-ab24-4d6c-b9b5-1360b5865cd0",
+   "name": "Pamela Swift",
+   "scope": "state_lower",
+   "districtName": "State House District 62 (2024); Maine"
+  },
+  {
+   "candidateId": "b4376656-c9d8-4a7b-9f2b-c6a0300461d1",
+   "name": "Patric Moore",
+   "scope": "state_upper",
+   "districtName": "State Senate District 16 (2024); Maine"
+  },
+  {
+   "candidateId": "ea5aa881-7e49-4c10-ad8a-636ebc88a9d1",
+   "name": "Patrick Jude",
+   "scope": "state_lower",
+   "districtName": "State House District 20 (2024); Maine"
+  },
+  {
+   "candidateId": "00c29f31-b55e-4619-8c83-18e6ab8fb153",
+   "name": "Paul Welch",
+   "scope": "state_lower",
+   "districtName": "State House District 85 (2024); Maine"
+  },
+  {
+   "candidateId": "717f13d8-4173-4a1e-ab71-be205f2cacfb",
+   "name": "Peter Southam",
+   "scope": "state_upper",
+   "districtName": "State Senate District 19 (2024); Maine"
+  },
+  {
+   "candidateId": "613aaec0-62d3-4c10-ac6c-3ffed587bc3b",
+   "name": "R. Winslow",
+   "scope": "state_lower",
+   "districtName": "State House District 104 (2024); Maine"
+  },
+  {
+   "candidateId": "b9ff7dbf-ee2e-4d43-bd2d-d7d7a2378186",
+   "name": "Randall Gauvin",
+   "scope": "state_lower",
+   "districtName": "State House District 75 (2024); Maine"
+  },
+  {
+   "candidateId": "2e52d453-7b15-4aed-9416-4c54743b9e8a",
+   "name": "Ravi Jackson",
+   "scope": "state_lower",
+   "districtName": "State House District 101 (2024); Maine"
+  },
+  {
+   "candidateId": "3f215bb5-28d6-4ff1-a706-0315a4ce40bd",
+   "name": "Ray Thombs Jr.",
+   "scope": "state_lower",
+   "districtName": "State House District 44 (2024); Maine"
+  },
+  {
+   "candidateId": "2e86df33-d3c2-4135-9345-6c2df1512da4",
+   "name": "Rebecca Flood Andrews",
+   "scope": "state_lower",
+   "districtName": "State House District 141 (2024); Maine"
+  },
+  {
+   "candidateId": "43b73f4b-a128-4236-83d3-007978b394d5",
+   "name": "Rebecca Stephens",
+   "scope": "state_lower",
+   "districtName": "State House District 45 (2024); Maine"
+  },
+  {
+   "candidateId": "960e99d7-2729-4d97-a32d-dc76e97851d3",
+   "name": "Rhiannon Hampson",
+   "scope": "state_lower",
+   "districtName": "State House District 43 (2024); Maine"
+  },
+  {
+   "candidateId": "f73adabd-b109-4a9e-9aff-08588898e2a2",
+   "name": "Richard Goldman",
+   "scope": "state_lower",
+   "districtName": "State House District 53 (2024); Maine"
+  },
+  {
+   "candidateId": "a68a69c1-8432-4bbe-b63f-ac30ad348f2b",
+   "name": "Robert Kelly",
+   "scope": "state_lower",
+   "districtName": "State House District 131 (2024); Maine"
+  },
+  {
+   "candidateId": "dfdac29e-ea56-417d-b9ef-fd36a8c45737",
+   "name": "Robert Sullebarger",
+   "scope": "state_upper",
+   "districtName": "State Senate District 5 (2024); Maine"
+  },
+  {
+   "candidateId": "52969a40-634a-42a3-ad7d-e2e6d15c773c",
+   "name": "Robin Crawley",
+   "scope": "state_lower",
+   "districtName": "State House District 61 (2024); Maine"
+  },
+  {
+   "candidateId": "1cddeb91-f2c3-4aeb-89e2-6fc029301aec",
+   "name": "Robin Upton-Sukeforth",
+   "scope": "state_lower",
+   "districtName": "State House District 56 (2024); Maine"
+  },
+  {
+   "candidateId": "b3a25706-04bf-4813-aff2-da5946d436e9",
+   "name": "Roland Martin",
+   "scope": "state_lower",
+   "districtName": "State House District 2 (2024); Maine"
+  },
+  {
+   "candidateId": "f8eee96f-e0c5-45c4-8394-332294fbe6ee",
+   "name": "Ronald B. Russell",
+   "scope": "state_lower",
+   "districtName": "State House District 17 (2024); Maine"
+  },
+  {
+   "candidateId": "ea2ca48e-cd8d-49e5-86cd-717ab5d9af1a",
+   "name": "Roy Gott",
+   "scope": "state_lower",
+   "districtName": "State House District 12 (2024); Maine"
+  },
+  {
+   "candidateId": "adf90ce0-80ad-4515-91e9-c40d46035200",
+   "name": "Ryan Otis",
+   "scope": "state_upper",
+   "districtName": "State Senate District 11 (2024); Maine"
+  },
+  {
+   "candidateId": "d1f3af6c-0541-4467-8d81-1704142a0a0b",
+   "name": "Scott Craig",
+   "scope": "state_lower",
+   "districtName": "State House District 135 (2024); Maine"
+  },
+  {
+   "candidateId": "1be81ceb-743a-4ace-adb4-04a25e505fe4",
+   "name": "Scott Doherty",
+   "scope": "state_lower",
+   "districtName": "State House District 124 (2024); Maine"
+  },
+  {
+   "candidateId": "e04381cd-2bd0-46d4-a2f2-579159e29d14",
+   "name": "Scott Girardin",
+   "scope": "state_lower",
+   "districtName": "State House District 92 (2024); Maine"
+  },
+  {
+   "candidateId": "a3cefecf-c0d4-4e05-a48c-a0526914ef46",
+   "name": "Sean Mahoney",
+   "scope": "state_lower",
+   "districtName": "State House District 112 (2024); Maine"
+  },
+  {
+   "candidateId": "6eb39546-c34a-4f11-8085-176263dd906f",
+   "name": "Seven Siegel",
+   "scope": "state_lower",
+   "districtName": "State House District 109 (2024); Maine"
+  },
+  {
+   "candidateId": "b53141ec-068d-40b4-a40d-566dcd5006a6",
+   "name": "Shanna Cox",
+   "scope": "state_upper",
+   "districtName": "State Senate District 21 (2024); Maine"
+  },
+  {
+   "candidateId": "9b7cb01f-f2a5-47f2-b071-b0fe3bf5c13c",
+   "name": "Shawn Dixon",
+   "scope": "state_lower",
+   "districtName": "State House District 67 (2024); Maine"
+  },
+  {
+   "candidateId": "56850a9d-e519-4fbb-96e3-26a53da09562",
+   "name": "Shawn Lancaster",
+   "scope": "state_lower",
+   "districtName": "State House District 32 (2024); Maine"
+  },
+  {
+   "candidateId": "f8d471b4-b003-4621-9c88-d98b9e2e2d18",
+   "name": "Shawn Packard",
+   "scope": "state_lower",
+   "districtName": "State House District 64 (2024); Maine"
+  },
+  {
+   "candidateId": "ac254585-c1f6-4d60-a410-8e74efea0f84",
+   "name": "Shawn Saindon",
+   "scope": "state_lower",
+   "districtName": "State House District 44 (2024); Maine"
+  },
+  {
+   "candidateId": "e727c50f-15ce-4f3a-a339-805a09978337",
+   "name": "Stanley Short",
+   "scope": "state_upper",
+   "districtName": "State Senate District 3 (2024); Maine"
+  },
+  {
+   "candidateId": "fc28d75d-2816-416b-a6d6-351b54a54715",
+   "name": "Stephen Carey",
+   "scope": "state_upper",
+   "districtName": "State Senate District 9 (2024); Maine"
+  },
+  {
+   "candidateId": "ff565c38-a469-49cb-aa74-39c883285c9a",
+   "name": "Steven McGee",
+   "scope": "state_upper",
+   "districtName": "State Senate District 14 (2024); Maine"
+  },
+  {
+   "candidateId": "b99a5bcc-63e0-4dfb-9456-dece96595129",
+   "name": "Suzanne Andresen",
+   "scope": "state_lower",
+   "districtName": "State House District 49 (2024); Maine"
+  },
+  {
+   "candidateId": "25c7826d-e4fb-42ac-b238-58d5bae48f8c",
+   "name": "Suzanne Johnson",
+   "scope": "state_lower",
+   "districtName": "State House District 151 (2024); Maine"
+  },
+  {
+   "candidateId": "7fcdf26c-fcce-4e25-b71a-b76925e96004",
+   "name": "Taylor West",
+   "scope": "state_lower",
+   "districtName": "State House District 63 (2024); Maine"
+  },
+  {
+   "candidateId": "f8e49555-f41f-4193-9a40-779df828ace5",
+   "name": "Thomas Hart Jr.",
+   "scope": "state_lower",
+   "districtName": "State House District 12 (2024); Maine"
+  },
+  {
+   "candidateId": "2a0b1772-07bd-4a2d-a6ff-6901f20fa1a2",
+   "name": "Timothy Becker",
+   "scope": "state_lower",
+   "districtName": "State House District 83 (2024); Maine"
+  },
+  {
+   "candidateId": "79e267cf-e1ba-476f-882a-14acfe2a63d9",
+   "name": "Timothy Towne",
+   "scope": "state_lower",
+   "districtName": "State House District 149 (2024); Maine"
+  },
+  {
+   "candidateId": "5c1c1b23-1e8a-4bdd-90f9-f281587287e6",
+   "name": "Todd Davis",
+   "scope": "state_lower",
+   "districtName": "State House District 130 (2024); Maine"
+  },
+  {
+   "candidateId": "a70587eb-51e5-4194-ae96-ae207f39fbcb",
+   "name": "Trent Vellella",
+   "scope": "state_lower",
+   "districtName": "State House District 49 (2024); Maine"
+  },
+  {
+   "candidateId": "c5de5c5e-f058-4bc3-a49d-9b75b64fba9c",
+   "name": "Trevor Doiron",
+   "scope": "state_lower",
+   "districtName": "State House District 76 (2024); Maine"
+  },
+  {
+   "candidateId": "27dd2870-62f9-426d-97bd-56b1c07e8655",
+   "name": "Vaughn McLaughlin",
+   "scope": "state_upper",
+   "districtName": "State Senate District 1 (2024); Maine"
+  },
+  {
+   "candidateId": "b0e52b92-fee6-4839-8baf-858389e505a7",
+   "name": "Victoria Kornfield",
+   "scope": "state_lower",
+   "districtName": "State House District 23 (2024); Maine"
+  },
+  {
+   "candidateId": "21338b5d-4df4-4937-a969-59dc2419c204",
+   "name": "Vincent Maietta",
+   "scope": "state_upper",
+   "districtName": "State Senate District 29 (2024); Maine"
+  },
+  {
+   "candidateId": "f746ace1-66e3-4ae3-86a5-f17e5481f5e0",
+   "name": "William St. Michel",
+   "scope": "state_lower",
+   "districtName": "State House District 98 (2024); Maine"
+  },
+  {
+   "candidateId": "e101e579-24e2-44ba-816c-d8db568e08ac",
+   "name": "Woodleigh Hughes",
+   "scope": "state_lower",
+   "districtName": "State House District 78 (2024); Maine"
+  },
+  {
+   "candidateId": "94dfddd3-a7e9-4188-9f2d-3e912f66b90c",
+   "name": "Wyatt Beaulieu",
+   "scope": "state_lower",
+   "districtName": "State House District 60 (2024); Maine"
+  },
+  {
+   "candidateId": "cca2c4ca-a3ad-4fb1-8915-953894a59db6",
+   "name": "Zachary Lejonhud",
+   "scope": "state_lower",
+   "districtName": "State House District 68 (2024); Maine"
+  }
+ ]
+}

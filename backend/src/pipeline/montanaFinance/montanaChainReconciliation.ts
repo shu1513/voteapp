@@ -16,11 +16,27 @@
 // The chain residual IS the derived unitemized lump (the public
 // `...LessThan35` fields are dead-zero): hidden small-donor receipts make
 // the actual next-begin HIGHER than the itemized-derived ending, so the
-// lump is POSITIVE. Gate: lump ≥ 0 and small (absolute floor OR share of
-// itemized receipts). Negative (itemized flows overshoot actual cash) or
-// large → fail closed. The latest period's lump is unknowable until the
-// next report files; the derived ending balance understates by exactly
-// that lump (accepted).
+// lump is POSITIVE. Gate: small positive (absolute floor OR share of
+// itemized receipts) passes; a small NEGATIVE residual also passes — the
+// Phase 3 live run surfaced real unitemized cash outflows (bank service
+// fees / petty-cash class: observed −$9.13, −$15.00 on filers with zero
+// itemized flows in the period) — but only down to a tight floor, and a
+// negative lump never counts toward the unitemized total (it is money
+// leaving, not raised). Anything beyond either bound → fail closed. The
+// latest period's lump is unknowable until the next report files; the
+// derived ending balance understates by exactly that lump (accepted).
+//
+// NULL begin anchors (Phase 3 live run: 40 of 151 C5 rows across the first
+// 24 harvested candidates — a routine CERS list shape, not bad data): a
+// null is MISSING information, not zero. Each null effective-begin is
+// carried forward from the previous report's derived ending (first report:
+// campaign accounts open empty, so 0). A link INTO a carried anchor closes
+// by construction (marked `carriedAnchor` — verified live: mirrored ±X
+// failure pairs under a null≡0 reading collapse to exact closure), and the
+// whole span's residual lands on the first link into a real anchor, where
+// the normal lump gate judges it — conservation is still checked between
+// every pair of true anchors, and a wrongly-zeroed first anchor surfaces
+// as an excessive positive lump at the next real anchor.
 //
 // Verified live 2026-08-27: Bedey report 76535 closes to the cent
 // (17,840.09 + 17,030.33 − 15,642.08 = 19,228.34; residual 0.00).
@@ -40,6 +56,11 @@ import type { MontanaCersReportInventoryRow } from "./montanaCersParsers.js";
 export const MONTANA_CHAIN_LUMP_ABSOLUTE_FLOOR_CENTS = 50_000;
 /** Above the floor, a lump must stay under this share of itemized cash receipts. */
 export const MONTANA_CHAIN_LUMP_MAX_RATIO = 0.25;
+/**
+ * Tolerated unitemized cash OUTFLOW per link (bank fees / petty cash — the
+ * Phase 3 live class sits under $25). A more negative residual fails closed.
+ */
+export const MONTANA_CHAIN_LUMP_NEGATIVE_FLOOR_CENTS = 10_000;
 
 export type MontanaElectionSide = "primary" | "general";
 
@@ -96,22 +117,60 @@ export type MontanaChainLinkResult = {
   side: MontanaElectionSide | "combined";
   /** Derived unitemized lump for this report period on this side. */
   lumpCents: number;
+  /**
+   * True when the link lands on a carried (null-in-source) begin anchor and
+   * therefore closes by construction — conservation for its period is
+   * checked at the next real anchor instead.
+   */
+  carriedAnchor: boolean;
+  /**
+   * True when the link's SOURCE derivation is rooted in a real begin at or
+   * before its report (per side). A link into the first real anchor after
+   * an all-null prefix is unrooted: its residual mixes any unknown true
+   * starting balance with span money, so it is never gate-checked and
+   * never counts toward the unitemized total — otherwise an assumed-$0
+   * start below the ratio gate would MINT phantom contributions. Only a
+   * rooted link landing on a real anchor is a genuine conservation check.
+   */
+  rooted: boolean;
   ok: boolean;
   failure: "negative_residual" | "excessive_residual" | null;
 };
 
 export type MontanaChainReconciliation = {
-  /** True only when every checkable link on both sides passed. */
+  /** True when the chain reconciles per-link OR cumulatively (below). */
   ok: boolean;
+  /**
+   * True when per-link checks failed but the real-anchored span conserves
+   * money combined — CERS period-attribution noise, not a money gap. The
+   * failing links stay in `links` as diagnostics.
+   */
+  reconciledCumulatively: boolean;
+  /**
+   * True when at least one report carries REAL begin balances on both
+   * sides, i.e. an official figure exists to ROOT the ending-balance
+   * derivation (a single-report filer qualifies). This is existence, not
+   * verification: whether conservation was ever actually CHECKED against a
+   * real figure is a property of the links — a link with carriedAnchor
+   * false landed on a real anchor; one into a carried anchor closes by
+   * construction. False only for an all-carried (all-null) chain.
+   */
+  hasRealAnchor: boolean;
   links: MontanaChainLinkResult[];
   /**
    * Derived ending balance of the LAST report (begin + inflow − outflow,
-   * both sides combined) — the plan's cashOnHand source. Understates by the
-   * last period's unknowable lump. Null when the chain is broken or a
-   * begin anchor is missing (fail closed).
+   * both sides combined, carried anchors filled in) — the plan's cashOnHand
+   * source. Understates by the last period's unknowable lump. Null when the
+   * chain is broken (fail closed).
    */
   derivedEndingBalanceCents: number | null;
-  /** Sum of derived lumps across passing links, both sides — the unitemized total. */
+  /**
+   * Sum of POSITIVE derived lumps across passing links, both sides — the
+   * unitemized contribution total. Tolerated negative lumps are unitemized
+   * outflows (bank fees), not negative raising, and contribute zero. Under
+   * cumulative acceptance the failing links are netted together first
+   * (restatement pairs cancel), then contribute their net only if positive.
+   */
   derivedUnitemizedTotalCents: number | null;
 };
 
@@ -123,13 +182,111 @@ function lumpGateFailure(
   lumpCents: number,
   inflowCents: number
 ): MontanaChainLinkResult["failure"] {
-  if (lumpCents < 0) {
+  if (lumpCents < -MONTANA_CHAIN_LUMP_NEGATIVE_FLOOR_CENTS) {
     return "negative_residual";
   }
   if (lumpCents <= MONTANA_CHAIN_LUMP_ABSOLUTE_FLOOR_CENTS) {
     return null;
   }
   return lumpCents <= inflowCents * MONTANA_CHAIN_LUMP_MAX_RATIO ? null : "excessive_residual";
+}
+
+type MontanaEffectiveBegin = {
+  cents: Record<MontanaElectionSide, number>;
+  carried: Record<MontanaElectionSide, boolean>;
+  /** A real begin has appeared at or before this report on this side. */
+  rooted: Record<MontanaElectionSide, boolean>;
+};
+
+/**
+ * Fills null begin anchors: the first report's null begin is 0 (campaign
+ * accounts open empty under Montana's no-carryover surplus rules) and every
+ * later null carries the previous report's derived ending forward, per
+ * side. The `rooted` flag records whether a REAL begin has been seen yet —
+ * derivation before the first real anchor rests entirely on the assumed
+ * $0 start, so its residuals are uninterpretable (see the link `rooted`
+ * doc) while everything from the first real anchor onward resets to
+ * official figures.
+ */
+function computeEffectiveBegins(reports: readonly MontanaChainReport[]): MontanaEffectiveBegin[] {
+  const effective: MontanaEffectiveBegin[] = [];
+  for (let index = 0; index < reports.length; index += 1) {
+    const entry: MontanaEffectiveBegin = {
+      cents: { primary: 0, general: 0 },
+      carried: { primary: false, general: false },
+      rooted: { primary: false, general: false },
+    };
+    for (const side of ["primary", "general"] as const) {
+      const actual = beginCents(reports[index]!.inventory, side);
+      const previous = index > 0 ? effective[index - 1]! : null;
+      entry.rooted[side] = actual !== null || (previous?.rooted[side] ?? false);
+      if (actual !== null) {
+        entry.cents[side] = actual;
+      } else if (previous === null) {
+        entry.carried[side] = true;
+      } else {
+        entry.cents[side] =
+          previous.cents[side] +
+          reports[index - 1]!.flows.inflowCashCents[side] -
+          reports[index - 1]!.flows.outflowCashCents[side];
+        entry.carried[side] = true;
+      }
+    }
+    effective.push(entry);
+  }
+  return effective;
+}
+
+/**
+ * Combined cumulative conservation across the REAL-anchored span: does the
+ * last real anchor equal the first real anchor plus every cash flow in
+ * between, both sides summed?
+ *
+ * This is the fallback for per-link failures, and it exists because CERS
+ * begin balances carry period-attribution noise that the itemized flows do
+ * not. Live Phase 3 triage of 21 failing filers: 14 fail one or two links
+ * with residuals that CANCEL EXACTLY across the span ($1,000 out then back;
+ * a filer entering a negative balance as positive, then correcting), while
+ * the remaining 7 show money genuinely appearing or vanishing. Nothing we
+ * publish depends on which PERIOD a dollar was booked in — the card totals
+ * are whole-cycle sums of itemized rows, and the balance is anchored on the
+ * last report's own begin — so a span that conserves money is verified for
+ * every purpose the chain serves, while a real gap still fails.
+ *
+ * Returns null when fewer than two reports carry real begins on both sides
+ * (nothing to check against). This function only ACCEPTS the span; the
+ * unitemized attribution stays per-link, with the failing links netted
+ * (see derivedUnitemizedTotalCents) — the span lump nets passing links'
+ * residuals too, which would let a tolerated fee residual shrink another
+ * period's genuine contributions.
+ */
+function reconcileCumulativeSpan(
+  reports: readonly MontanaChainReport[]
+): { ok: boolean; lumpCents: number } | null {
+  const anchors: number[] = [];
+  for (const [index, report] of reports.entries()) {
+    if (beginCents(report.inventory, "primary") !== null && beginCents(report.inventory, "general") !== null) {
+      anchors.push(index);
+    }
+  }
+  const first = anchors[0];
+  const last = anchors.at(-1);
+  if (first === undefined || last === undefined || first === last) {
+    return null;
+  }
+  let inflowCents = 0;
+  let outflowCents = 0;
+  for (let index = first; index < last; index += 1) {
+    const flows = reports[index]!.flows;
+    inflowCents += flows.inflowCashCents.primary + flows.inflowCashCents.general;
+    outflowCents += flows.outflowCashCents.primary + flows.outflowCashCents.general;
+  }
+  const beginCombined =
+    beginCents(reports[first]!.inventory, "primary")! + beginCents(reports[first]!.inventory, "general")!;
+  const endCombined =
+    beginCents(reports[last]!.inventory, "primary")! + beginCents(reports[last]!.inventory, "general")!;
+  const lumpCents = endCombined - (beginCombined + inflowCents - outflowCents);
+  return { ok: lumpGateFailure(lumpCents, inflowCents) === null, lumpCents };
 }
 
 /**
@@ -146,36 +303,31 @@ function lumpGateFailure(
  */
 export function reconcileMontanaCashBeginChain(reports: readonly MontanaChainReport[]): MontanaChainReconciliation {
   const links: MontanaChainLinkResult[] = [];
-  let anchorsMissing = false;
+  const effective = computeEffectiveBegins(reports);
 
   for (let index = 0; index + 1 < reports.length; index += 1) {
     const current = reports[index]!;
     const next = reports[index + 1]!;
     const sideLinks: MontanaChainLinkResult[] = [];
-    let sideAnchorsMissing = false;
     for (const side of ["primary", "general"] as const) {
-      const begin = beginCents(current.inventory, side);
-      const nextBegin = beginCents(next.inventory, side);
-      if (begin === null || nextBegin === null) {
-        sideAnchorsMissing = true;
-        continue;
-      }
+      const begin = effective[index]!.cents[side];
+      const nextBegin = effective[index + 1]!.cents[side];
+      const rooted = effective[index]!.rooted[side];
       const derivedEnding = begin + current.flows.inflowCashCents[side] - current.flows.outflowCashCents[side];
       const lumpCents = nextBegin - derivedEnding;
-      const failure = lumpGateFailure(lumpCents, current.flows.inflowCashCents[side]);
+      // Unrooted links never gate-fail: their residual is dominated by the
+      // unknown true starting balance, not by period money.
+      const failure = rooted ? lumpGateFailure(lumpCents, current.flows.inflowCashCents[side]) : null;
       sideLinks.push({
         reportId: current.inventory.reportId,
         nextReportId: next.inventory.reportId,
         side,
         lumpCents,
+        carriedAnchor: effective[index + 1]!.carried[side],
+        rooted,
         ok: failure === null,
         failure,
       });
-    }
-    if (sideAnchorsMissing) {
-      anchorsMissing = true;
-      links.push(...sideLinks);
-      continue;
     }
     if (sideLinks.every((link) => link.ok)) {
       links.push(...sideLinks);
@@ -190,15 +342,13 @@ export function reconcileMontanaCashBeginChain(reports: readonly MontanaChainRep
     // here, and combined math must not soften the per-side ratio gate
     // outside that boundary — everything else keeps its per-side failures
     // as the diagnostics and fails closed.
-    const primaryCollapsed =
-      beginCents(current.inventory, "primary")! > 0 && beginCents(next.inventory, "primary") === 0;
+    const primaryCollapsed = effective[index]!.cents.primary > 0 && effective[index + 1]!.cents.primary === 0;
     if (!primaryCollapsed) {
       links.push(...sideLinks);
       continue;
     }
-    const beginCombined =
-      beginCents(current.inventory, "primary")! + beginCents(current.inventory, "general")!;
-    const nextBeginCombined = beginCents(next.inventory, "primary")! + beginCents(next.inventory, "general")!;
+    const beginCombined = effective[index]!.cents.primary + effective[index]!.cents.general;
+    const nextBeginCombined = effective[index + 1]!.cents.primary + effective[index + 1]!.cents.general;
     const inflowCombined = current.flows.inflowCashCents.primary + current.flows.inflowCashCents.general;
     const outflowCombined = current.flows.outflowCashCents.primary + current.flows.outflowCashCents.general;
     const lumpCombined = nextBeginCombined - (beginCombined + inflowCombined - outflowCombined);
@@ -209,6 +359,10 @@ export function reconcileMontanaCashBeginChain(reports: readonly MontanaChainRep
         nextReportId: next.inventory.reportId,
         side: "combined",
         lumpCents: lumpCombined,
+        carriedAnchor: effective[index + 1]!.carried.primary || effective[index + 1]!.carried.general,
+        // A per-side failure only exists on a rooted side, so a combined
+        // link is rooted whenever both sides' derivations are.
+        rooted: effective[index]!.rooted.primary && effective[index]!.rooted.general,
         ok: true,
         failure: null,
       });
@@ -217,28 +371,51 @@ export function reconcileMontanaCashBeginChain(reports: readonly MontanaChainRep
     }
   }
 
-  const ok = !anchorsMissing && links.every((link) => link.ok);
+  const perLinkOk = links.every((link) => link.ok);
+  const cumulative = perLinkOk ? null : reconcileCumulativeSpan(reports);
+  const reconciledCumulatively = cumulative?.ok === true;
+  const ok = perLinkOk || reconciledCumulatively;
+
+  // An ending balance is only ever derivable FROM a real balance anchor: a
+  // chain whose every begin is carried (a live all-null filer) reconciles
+  // its links tautologically, and its "ending" would be pure derivation
+  // from an assumed empty start that no source figure ever checks. The
+  // itemized totals still publish on the CSV/JSON cross-checks; the
+  // balance stays null ("not reported").
+  const hasRealAnchor = effective.some((entry) => !entry.carried.primary && !entry.carried.general);
 
   let derivedEndingBalanceCents: number | null = null;
   const last = reports.at(-1);
-  if (ok && last !== undefined) {
-    const primaryBegin = beginCents(last.inventory, "primary");
-    const generalBegin = beginCents(last.inventory, "general");
-    if (primaryBegin !== null && generalBegin !== null) {
-      derivedEndingBalanceCents =
-        primaryBegin +
-        generalBegin +
-        last.flows.inflowCashCents.primary +
-        last.flows.inflowCashCents.general -
-        last.flows.outflowCashCents.primary -
-        last.flows.outflowCashCents.general;
-    }
+  const lastEffective = effective.at(-1);
+  if (ok && hasRealAnchor && last !== undefined && lastEffective !== undefined) {
+    derivedEndingBalanceCents =
+      lastEffective.cents.primary +
+      lastEffective.cents.general +
+      last.flows.inflowCashCents.primary +
+      last.flows.inflowCashCents.general -
+      last.flows.outflowCashCents.primary -
+      last.flows.outflowCashCents.general;
   }
 
   return {
     ok,
+    reconciledCumulatively,
+    hasRealAnchor,
     links,
     derivedEndingBalanceCents,
-    derivedUnitemizedTotalCents: ok ? links.reduce((sum, link) => sum + link.lumpCents, 0) : null,
+    // Positive ROOTED lumps only: a tolerated negative lump is unitemized
+    // spending (bank fees) and must not shrink the unitemized CONTRIBUTION
+    // total, and an unrooted lump is unknown-start residue, not money
+    // raised — counting it would mint phantom contributions. Under
+    // cumulative acceptance only the FAILING links (the restatement noise
+    // the span check absorbs) are netted against each other — summing
+    // their positives alone would count the +$1,000 half of an offsetting
+    // pair; netting them against PASSING links would let a passing fee
+    // residual shrink another period's genuine contributions. A failing
+    // link is always rooted (unrooted links never gate-fail).
+    derivedUnitemizedTotalCents: !ok
+      ? null
+      : links.reduce((sum, link) => sum + (link.ok && link.rooted ? Math.max(0, link.lumpCents) : 0), 0) +
+        Math.max(0, links.reduce((sum, link) => sum + (link.ok ? 0 : link.lumpCents), 0)),
   };
 }

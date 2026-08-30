@@ -138,12 +138,18 @@ export async function syncSouthCarolinaCandidateFinance(input: {
     };
   }
 
+  // One detail per election-date phase of each run: across the
+  // primary/general boundary a run's cumulative totals either reset or
+  // continue (filer-dependent), so the aggregator needs every phase's final
+  // report to classify the boundary and combine correctly.
   const detailsByReportId = new Map<number, SouthCarolinaReportDetails>();
   for (const run of runs) {
-    detailsByReportId.set(
-      run.finalReport.reportId,
-      await fetchDetails(run.finalReport.reportId, input.clientOptions)
-    );
+    for (const phaseFinal of run.phaseFinals) {
+      detailsByReportId.set(
+        phaseFinal.reportId,
+        await fetchDetails(phaseFinal.reportId, input.clientOptions)
+      );
+    }
   }
 
   // Itemized rows: the search endpoint filters by candidate TEXT + calendar

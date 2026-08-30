@@ -1,0 +1,3960 @@
+{
+  "runId": "rollcall-legiscan-fetch-mo-20260829T050232Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "MO",
+  "startedAt": "2026-08-29T05:02:32.805Z",
+  "finishedAt": "2026-08-29T05:02:33.161Z",
+  "datasetDir": "/Users/shu/legiscan-data/mo-2169",
+  "bills": 2673,
+  "votes": 557,
+  "people": 197,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading",
+      "count": 172,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 34,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB2",
+        "SB7",
+        "SB28"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Conference Committee Report Adoption",
+      "count": 19,
+      "withoutMemberList": 0,
+      "minTotal": 32,
+      "maxTotal": 34,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB754",
+        "HB20",
+        "HB3"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Adopt Substitute",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 32,
+      "maxTotal": 34,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB98",
+        "SB218",
+        "SB43"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Adoption",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 32,
+      "maxTotal": 34,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SCR1",
+        "SR19",
+        "HCR1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Emergency Clause",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 32,
+      "maxTotal": 34,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB50",
+        "SB22",
+        "HB495"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs WITH SENATE AMENDMENTS SS SCS HB 225, A.A., E.C.",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB225"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs FOR THIRD READING HCS SS SB 160, A.A., E.C.",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB160"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS#2 HBS 567, 546, 758 & 958, E.C.",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB567"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs WITH SENATE AMENDMENTS SS#2 HCS HBs 594 & 508",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB594"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs WITH SENATE AMENDMENTS SS#2 SCS HB 199, A.A.",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB199"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs WITH SENATE AMENDMENTS SS#2 SCS HCS#2 HB 495, A.A. E.C.",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB495"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs FOR THIRD READING HCS SS SB 43, A.A.",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB43"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs FOR THIRD READING SS#2 SCS SB 22, E.C.",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB22"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS HCS SS SCS SBS 81 & 174, E.C",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB81"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READ - INFORMAL HB 563",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB563"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READ - INFORMAL HCS HB 497, E.C.",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB497"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READ - INFORMAL HCS HB 711",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB711"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READ - INFORMAL HCS HB 798",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB798"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READING - CONSENT HB 313",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB313"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READING - CONSENT HCS HB 1116",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1116"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READING - CONSENT HCS HB 339, E.C.",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB339"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR PERFECTION HB 660, A.A.",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB660"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 134, E.C.",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB134"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 416",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB416"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 544",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB544"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 68",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB68"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 1175, A.A.",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1175"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 32",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB32"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 328",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB328"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS#2 HB 495",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB495"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs PERFECTION - INFORMAL *HCS HB 970, A.A.",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB970"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs WITH SENATE AMENDMENTS SCS HB 810",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB810"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs WITH SENATE AMENDMENTS SCS HCS HB 18",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB18"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs WITH SENATE AMENDMENTS SCS HCS HB 20",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB20"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs WITH SENATE AMENDMENTS SS HB 1041",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1041"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs WITH SENATE AMENDMENTS SS HCS HBs 974, 57, 1032 & 1141",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB974"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs WITH SENATE AMENDMENTS SS SCS HB 121",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB121"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs WITH SENATE AMENDMENTS SS SCS HB 754, A.A.",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB754"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs WITH SENATE AMENDMENTS SS SCS HCS HBS 145 & 59, A.A.",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB145"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs WITH SENATE AMENDMENTS SS SCS HCS HBS 516, 290 & 778",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB516"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs WITH SENATE AMENDMENTS SS#2 HB 419",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB419"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs WITH SENATE AMENDMENTS SS#2 HB 596",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB596"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs WITH SENATE AMENDMENTS SS#2 SCS HB 147",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB147"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HJRs FOR THIRD READING HCS HJR 73",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR73"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs 3rd READ - INFORMAL HCS SS SB 7, A.A.",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB7"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs 3rd READ - INFORMAL HCS SS SCS SB 60, A.A.",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB60"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs 3rd READ - INFORMAL HCS SS SCS SB 71, A.A., E.C.",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB71"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs 3rd READ - INFORMAL SS SB 152",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB152"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs 3rd READ - INFORMAL SS SCS SB 105",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB105"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs FOR THIRD READING HCS SB 189, A.A., E.C.",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB189"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs FOR THIRD READING HCS SS SB 50, A.A., E.C.",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs FOR THIRD READING HCS SS SB 63, A.A.",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB63"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs FOR THIRD READING HCS SS SCS SBS 81 & 174, A.A., E.C.",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB81"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs FOR THIRD READING HCS#2 SCS SB 348, A.A.",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB348"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs FOR THIRD READING SS#2 SB 4",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS HCS SS SB 150",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB150"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS HCS SS SB 160",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB160"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS HCS SS SB 63",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB63"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS HCS SS SCS SB 68",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB68"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS SCS HCS HB 13",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB13"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS SCS HCS HB 17",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB17"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS SCS HCS HB 3",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS SCS HCS HB 4",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS SCS HCS HB 5",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB5"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS SS HCS HBS 595 & 343",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB595"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS SS HCS HBS 737 & 486",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB737"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS SS SB 28",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB28"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS SS SCS HCS HB 10",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB10"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS SS SCS HCS HB 11",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB11"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS SS SCS HCS HB 12",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB12"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS SS SCS HCS HB 2",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS SS SCS HCS HB 6",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB6"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS SS SCS HCS HB 7",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB7"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS SS SCS HCS HB 8",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB8"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: BILLS IN CONFERENCE CCS SS SCS HCS HB 9",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB9"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: General PQ",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB834"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HABs FOR THIRD READING HCS HB 10",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB10"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HABs FOR THIRD READING HCS HB 11",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB11"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HABs FOR THIRD READING HCS HB 12",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB12"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HABs FOR THIRD READING HCS HB 13",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB13"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HABs FOR THIRD READING HCS HB 14",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB14"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HABs FOR THIRD READING HCS HB 17",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB17"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HABs FOR THIRD READING HCS HB 18",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB18"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HABs FOR THIRD READING HCS HB 19",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB19"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HABs FOR THIRD READING HCS HB 2",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HABs FOR THIRD READING HCS HB 20",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB20"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HABs FOR THIRD READING HCS HB 3",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HABs FOR THIRD READING HCS HB 4",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HABs FOR THIRD READING HCS HB 5",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB5"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HABs FOR THIRD READING HCS HB 6",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB6"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HABs FOR THIRD READING HCS HB 7",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB7"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HABs FOR THIRD READING HCS HB 8",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB8"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HABs FOR THIRD READING HCS HB 9",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB9"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READ - INFORMAL HB 1218",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1218"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READ - INFORMAL HB 183",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB183"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READ - INFORMAL HB 232",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB232"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READ - INFORMAL HB 262",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB262"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READ - INFORMAL HB 478",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB478"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READ - INFORMAL HB 660",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB660"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READ - INFORMAL HB 969, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB969"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READ - INFORMAL HCS HB 1464",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1464"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READ - INFORMAL HCS HB 344",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB344"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READ - INFORMAL HCS HB 572",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB572"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READ - INFORMAL HCS HB 607",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB607"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READ - INFORMAL HCS HB 937",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB937"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READ - INFORMAL HCS HBs 126 & 367",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB126"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READ - INFORMAL HCS HBs 493 & 635",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB493"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READING - CONSENT HB 369",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB369"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READING - CONSENT HB 388",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB388"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READING - CONSENT HB 596",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB596"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READING - CONSENT HCS HB 267",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB267"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs 3rd READING - CONSENT HCS HBs 513, 413 & 536",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB513"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR PERFECTION *HCS HB 1175, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1175"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR PERFECTION *HCS HBS 195 & 1119, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB195"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR PERFECTION HB 325, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB325"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR PERFECTION HB 416, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB416"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR PERFECTION HB 544",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB544"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR PERFECTION HB 742",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB742"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR PERFECTION HCS HB 1175, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1175"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR PERFECTION HCS HB 937, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB937"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR PERFECTION HCS HBS 1363, 1062 & 1254",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1363"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR PERFECTION HCS HBs 575 & 551",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB575"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR PERFECTION HCS HBS 862, 314 & 389, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB862"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR PERFECTION HCS#2 HB 495",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB495"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 1041",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1041"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 1049",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1049"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 1086",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1086"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 1122",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1122"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 121",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB121"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 122",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB122"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 1284",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1284"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 1298",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1298"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 138",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB138"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 147",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB147"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 199",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB199"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 200",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB200"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 205",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB205"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 207",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB207"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 225",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB225"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 233",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB233"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 269",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB269"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 325",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB325"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 352",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB352"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 37",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB37"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 397",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB397"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 419",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB419"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 42",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB42"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 437",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB437"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 49",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB49"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 499",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB499"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 520",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB520"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 543",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB543"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 56",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB56"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 58",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB58"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 608",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB608"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 618",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB618"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 629",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB629"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 707",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB707"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 709",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB709"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 742",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB742"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 754",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB754"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 757",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB757"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 765",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB765"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 770",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB770"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 780",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB780"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 810",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB810"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 816",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB816"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 825",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB825"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 834",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB834"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 837",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB837"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 875",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB875"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 903",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB903"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 939",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB939"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 952",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB952"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HB 992",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB992"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 1037",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1037"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 105",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB105"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 1259",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1259"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 1264",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1264"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 1346",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1346"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 169",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB169"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 176",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB176"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 202",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB202"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 247",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB247"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 268",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB268"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 326",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB326"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 33",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB33"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 331",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB331"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 378",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB378"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 489",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB489"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 507",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB507"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 538",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB538"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 565",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB565"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 606",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB606"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 615",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB615"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 643",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB643"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 661",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB661"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 73",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB73"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 736",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB736"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 75",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB75"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 794",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB794"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 828",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB828"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 835",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB835"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 87",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB87"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 918",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB918"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 927",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB927"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 943",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB943"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 970, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB970"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 991",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB991"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HB 999",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB999"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HBs 1363, 1062 & 1254",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1363"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HBs 145 & 59",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB145"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HBs 1524 & 1580",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1524"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HBs 177 & 469",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB177"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HBs 195 & 1119",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB195"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HBs 243 & 280",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB243"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HBS 296 & 438, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB296"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HBs 408, 306 & 854",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB408"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HBs 44 & 426",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB44"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HBs 516, 290 & 778",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB516"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HBs 575 & 551",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB575"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HBs 594 & 508",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB594"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HBs 595 & 343",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB595"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HBs 735 & 686",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB735"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HBs 737 & 486",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB737"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HBs 799, 334, 424 & 1069",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB799"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HBs 850, 53 & 482",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB850"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HBs 971, 293 & 978",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB971"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs FOR THIRD READING HCS HBs 974, 57, 1032 & 1141",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB974"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs PERFECTION - INFORMAL *HB 242",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB242"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs PERFECTION - INFORMAL HB 1041, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1041"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs PERFECTION - INFORMAL HB 207, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB207"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs PERFECTION - INFORMAL HB 437",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB437"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs PERFECTION - INFORMAL HB 49",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB49"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs PERFECTION - INFORMAL HB 780, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB780"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs PERFECTION - INFORMAL HCS HB 119, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB119"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs PERFECTION - INFORMAL HCS HB 1316",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1316"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs PERFECTION - INFORMAL HCS HB 169, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB169"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs PERFECTION - INFORMAL HCS HB 326, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB326"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs PERFECTION - INFORMAL HCS HB 328",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB328"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs PERFECTION - INFORMAL HCS HB 378, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB378"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs PERFECTION - INFORMAL HCS HB 489",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB489"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs PERFECTION - INFORMAL HCS HB 497, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB497"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs PERFECTION - INFORMAL HCS HB 507, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB507"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs PERFECTION - INFORMAL HCS HB 661, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB661"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs PERFECTION - INFORMAL HCS HB 794, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB794"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs PERFECTION - INFORMAL HCS HB 798, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB798"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs PERFECTION - INFORMAL HCS HBS 493 & 635, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB493"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs WITH SENATE AMENDMENTS HCS HBS 296 & 438, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB296"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs WITH SENATE AMENDMENTS HCS HBS 296 & 438, WITH SA 1 AND SA 2",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB296"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs WITH SENATE AMENDMENTS HCS HJRS 23 & 3, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR23"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HBs WITH SENATE AMENDMENTS HCS HJRS 23 & 3, WITH SA 1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR23"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HJRs FOR PERFECTION *HCS HJR 73",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR73"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HJRs FOR THIRD READING HCS HJR 4",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HJRs FOR THIRD READING HCS HJRs 23 & 3",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR23"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HOUSE RESOLUTIONS HCS HR 141",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR141"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: HOUSE RESOLUTIONS HCS HR 7, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 163,
+      "maxTotal": 163,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR7"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs 3rd READ - INFORMAL HCS SS SB 150, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB150"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs 3rd READ - INFORMAL HCS SS SB 218, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB218"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs 3rd READ - INFORMAL SB 2",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs 3rd READ - INFORMAL SS SB 1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs 3rd READ - INFORMAL SS SB 28, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB28"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs 3rd READ - INFORMAL SS SCS SB 80, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB80"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs 3rd READ - INFORMAL SS SCS SB 82",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB82"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs 3rd READ - INFORMAL SS SCS SB 97, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB97"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs 3rd READ - INFORMAL SS SCS SBs 49 & 118",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB49"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs 3rd READ - INFORMAL SS#2 SB 145",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB145"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs 3rd READ - INFORMAL SS#2 SB 79",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB79"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs 3rd READING - CONSENT SB 396",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB396"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs FOR THIRD READING HCS SS SB 61, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB61"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs FOR THIRD READING HCS SS SB 67, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB67"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs FOR THIRD READING HCS SS SCS SB 68, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB68"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs FOR THIRD READING HCS SS#2 SB 167, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB167"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs FOR THIRD READING SCS SB 3",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB3"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs FOR THIRD READING SS SB 221",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB221"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs FOR THIRD READING SS SCS SB 133",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB133"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs FOR THIRD READING SS SCS SB 271",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 161,
+      "maxTotal": 161,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB271"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs FOR THIRD READING SS SCS SB 47",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB47"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SBs FOR THIRD READING SS SCS SB 98, A.A.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB98"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SCRs FOR THIRD READING SS SCR 3",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 162,
+      "maxTotal": 162,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "SCR3"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 2426,
+    "CB": 1,
+    "CR": 30,
+    "JR": 166,
+    "R": 50
+  },
+  "sessionIds": {
+    "2169": 2673
+  },
+  "voteParseErrors": []
+}

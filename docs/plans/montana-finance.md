@@ -1,6 +1,6 @@
 # Montana campaign finance — build plan
 
-Status: rev 6 — Phase 2b BUILT 2026-08-28 (IE sweep acquisition + stance-aware candidateIssue parser + two-stage resolution + quarantine report script + sync/batch wiring + Montana outside footnote in the loader payload; measured 43.1% of in-window 2026 IE dollars resolved vs Phase 0's 35.9% — nickname expansion + live-registration tie-break recovered the gap; details in `backend/docs/montana-campaign-finance.md` "Phase 2b facts"); next = Phase 3 (local live run) or Phase 2c (outside funders)
+Status: rev 7 — Phase 3 EXECUTED 2026-08-29 (240 of 241 Nov-2026 candidates linked, 230 published locally with money; the live corpus forced six gate fixes plus a quarantine-triage rule change, and IE attachment recovery lifted outside resolution 43.1% -> 49.9% of in-window dollars; results + what the live data disproved are below and in `backend/docs/montana-campaign-finance.md`); next = Phase 4 (prod). Read flag is already ON in render.yaml (PR #957); prod holds NO Montana data yet.
 Source facts: `backend/docs/montana-campaign-finance.md` (endpoint recipe + gotchas; **commit it with Phase 1** — untracked files don't reach other checkouts)
 Template module: `backend/src/pipeline/missouriFinance/` (per-candidate portal harvest,
 sha256+manifest artifact cache, occupation breakdown, outside spending, due-list sync)
@@ -323,19 +323,82 @@ all-NULL stamp; their IE rows stay visible in the quarantine report).
 Independent/party committees, org donors only, industry labels. Incidental
 committees stay excluded unless Q9 found a real designation field.
 
-### Phase 3 — local live run
+### Phase 3 — local live run — EXECUTED 2026-08-29
 
-Auto-link Nov-2026 roster (eligible offices: statewide + judicial + PSC +
-legislative; county/local behind a second validated pass), full sync-due run,
-10-candidate cent-exact spot check vs CERS UI, IE sweep review, quarantine triage,
-industry-label run.
+Result: **240 of 241** eligible Nov-2026 candidate-elections linked, **230
+published** with money (plus 2 guarded "nothing filed" stamps). 39 carry
+outside totals, 9 of them opposition. Local only — prod holds no Montana data.
+
+Linking: the first auto-link pass left 22 unlinked, and **none** were resolver
+bugs. 16 were roster nicknames against CERS formal names (Ben/Benjamin,
+Kim/Kimberly, Joe/Joseph), fixed by wiring the shared one-sided
+`firstNameVariants` expansion into the resolver through the middle-evidence
+matcher's `firstNamesEquivalent` hook — surname, chamber+district and year
+still match exactly, and same-family pools resolve ambiguous (live: "Joe
+Cohenour" picks Joseph, not Jill, in the same district). 5 were structural
+quirks linked by hand as `manual` (J.C. -> John C Windmueller, `Weeks-ONeal`,
+`BogdenRIchards`, Tracey (Miller) Karcher, and Willis Curdy whom CERS spells
+"Willus"). 1 (Boeshore, HD-30) has no CERS registration at all.
+
+**The fixture-built gates failed ~85% of real filers.** Six shapes the Phase
+0/2a fixtures never carried, all fixed and all live-verified:
+
+- **Null begin anchors** are routine (40 of 151 C5 rows in the first 24
+  candidates), not corruption. Effective begins carry forward from the prior
+  derived ending; conservation is still checked at every real anchor.
+- **Small negative residuals** (-$9.13, -$15.00) are unitemized bank fees;
+  tolerated to a floor and never counted as contributions.
+- The CSV splits committee money across **three** line items (Independent /
+  Political Party / Incidental) — sum all three.
+- The **$50 itemization threshold is inclusive** (MCA 13-37-229 "in excess
+  of"), and each surface makes its own itemize-or-lump call for threshold
+  rows in BOTH directions.
+- `prepareDownloadFile` returns **no fileName for a zero-row export**; store
+  a header-only CSV rather than failing.
+- **PENDA (Pending-Amended) reports are canonical** — the filed version is
+  operative, and excluding them dropped whole periods ($3,380 on one filer).
+
+Also live-disproved: negative cash on hand looked real (two filers) but the
+balance is DERIVED and every derivation is a lower bound, so a negative may be
+an artifact — `cashOnHand` publishes NULL instead, and the negative-cash
+migration written for it was reverted. Same reasoning killed publishing a
+balance for an all-carried (all-null) chain, which reconciles tautologically.
+
+Quarantine triage of the 22 holdouts: **14 were our rule being too tight, 7
+are genuine CERS data gaps** (money appearing or vanishing — one balance
+climbs $30k across reports recording zero receipts). The 14 fail one or two
+links with residuals that cancel exactly across the span (a $1,000
+restatement; a filer entering a derived -$3,452.87 balance as +$3,452.87 then
+correcting it; a $650 shuffle between sides). Per-link checking polices which
+PERIOD a dollar was booked in, and nothing published depends on that, so a
+failing chain now falls back to combined cumulative conservation across the
+real-anchored span. 216 already-published candidates stayed unchanged to the
+cent.
+
+Spot check: 12 candidates verified cent-exact against an independent replay
+from raw artifacts, including Bedey's Phase 2a UI-verified figures.
+
+Industry-label run: **N/A in v1** — no funder breakdowns are published (that
+is Phase 2c), so there are no organization names to label.
+
+Still unpublished and correct: 8 filers on genuine anomalies, plus the
+candidates with no registration or no filings. Montana ships at 230/240.
 
 ### Phase 4 — prod
 
-Standard new-state finance runbook:
-prod migration, render.yaml flags (manual Approve), data promotion, deploy by SHA,
-spot checks. Cadence: scheduler daily Sep–Nov (candidate filings 20th, committee
-30th, C-7/C-7E windows), weekly before.
+Standard new-state finance runbook: prod migration (261 shipped with the
+2026-08-28 deploy — verify, do not re-apply), render.yaml read flag (DONE,
+PR #957 — still needs a manual blueprint **Approve**, and an env-var change
+alone does not restart the service), data promotion by `pg_dump` of the five
+`mt_candidate_finance_*` tables, deploy by FULL sha, spot checks against the
+CERS UI.
+
+Cadence caveat: the plan's "scheduler daily Sep–Nov" is **not reachable
+today**. No state sets `*_SYNC_ENABLED` in prod — the flag only ever lives on
+a dedicated cron service, and the one that exists (San Francisco) is
+commented out pending a paid Render plan. Until that changes, keeping Montana
+current means re-running the sync locally and re-promoting, the same loop the
+other states use.
 
 ## Explicitly rejected (with reasons)
 

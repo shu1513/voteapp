@@ -113,6 +113,31 @@ describe("montanaCersParsers CSV exports", () => {
   it("keeps the pinned header at exactly 18 columns", () => {
     expect(MONTANA_CERS_CONTRIBUTION_EXPORT_HEADER).toHaveLength(18);
   });
+
+  it("accepts live-observed nameless and zero-amount memo rows", async () => {
+    // Candidate self-loans and payee-less bank fees carry a blank entity
+    // name; a memo row (event ticket) leaves amount AND subtype empty.
+    // All three shapes were live-hit in the Phase 3 full run.
+    const good = await fixture("contributions-export-sanitized.csv");
+    const lines = good.trimEnd().split("\n");
+    const template = lines.at(-1)!.split("|");
+    const nameless = [...template];
+    nameless[5] = "";
+    const memo = [...template];
+    memo[5] = "BBER Economic Update";
+    memo[14] = "";
+    memo[16] = "";
+    const rows = parseMontanaCersContributionExport(`${[...lines, nameless.join("|"), memo.join("|")].join("\n")}\n`);
+    expect(rows.at(-2)!.entityName).toBeNull();
+    expect(rows.at(-1)).toMatchObject({ amountCents: 0, amountSubtype: null });
+
+    // An empty subtype on a row WITH money is still drift.
+    const badSubtype = [...template];
+    badSubtype[16] = "";
+    expect(() =>
+      parseMontanaCersContributionExport(`${[...lines, badSubtype.join("|")].join("\n")}\n`)
+    ).toThrow("amount subtype");
+  });
 });
 
 describe("montanaCersParsers report inventory", () => {

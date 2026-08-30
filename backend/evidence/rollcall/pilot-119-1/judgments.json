@@ -8,8 +8,8 @@
       "measure_id": "H R 29",
       "vote_date": "2025-01-07",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 29, the Laken Riley Act, which required federal detention of immigrants charged with burglary, theft, larceny, or shoplifting and let states sue the federal government over immigration enforcement. It passed the House 264-159.",
-      "nay_description": "Voted against passing H.R. 29, the Laken Riley Act, which required federal detention of immigrants charged with burglary, theft, larceny, or shoplifting and let states sue the federal government over immigration enforcement. It passed the House 264-159.",
+      "yea_description": "Voted for H.R. 29, the Laken Riley Act, which required federal detention of immigrants charged with burglary, theft, larceny, or shoplifting and let states sue the federal government over immigration enforcement. The House passed it 264-159.",
+      "nay_description": "Voted against H.R. 29, the Laken Riley Act, which required federal detention of immigrants charged with burglary, theft, larceny, or shoplifting and let states sue the federal government over immigration enforcement. The House passed it 264-159.",
       "labels": [
         {
           "slug": "immigration",
@@ -25,8 +25,8 @@
       "measure_id": "H R 28",
       "vote_date": "2025-01-14",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 28, the Protection of Women and Girls in Sports Act, which made it a Title IX violation for a federally funded school athletic program to let anyone of the male sex at birth play on a team designated for women or girls. It passed the House 218-206.",
-      "nay_description": "Voted against passing H.R. 28, the Protection of Women and Girls in Sports Act, which made it a Title IX violation for a federally funded school athletic program to let anyone of the male sex at birth play on a team designated for women or girls. It passed the House 218-206.",
+      "yea_description": "Voted for H.R. 28, the Protection of Women and Girls in Sports Act. It said schools with federal funds violated Title IX, a school civil rights law, by letting someone of the male sex at birth play on a women's or girls' team; the House passed it 218-206.",
+      "nay_description": "Voted against H.R. 28, the Protection of Women and Girls in Sports Act. It said schools with federal funds violated Title IX, a school civil rights law, by letting someone of the male sex at birth play on a women's or girls' team; the House passed it 218-206.",
       "labels": [
         {
           "slug": "civil_rights",
@@ -42,8 +42,8 @@
       "measure_id": "S 5",
       "vote_date": "2025-01-22",
       "review_status": "approved",
-      "yea_description": "Voted to pass S. 5, the Laken Riley Act, which required federal detention of immigrants charged with theft, burglary, assaulting a police officer, or a crime causing death or serious injury. It passed the House 263-156.",
-      "nay_description": "Voted against passing S. 5, the Laken Riley Act, which required federal detention of immigrants charged with theft, burglary, assaulting a police officer, or a crime causing death or serious injury. It passed the House 263-156.",
+      "yea_description": "Voted for S. 5, the Laken Riley Act, which required federal detention of immigrants charged with theft, burglary, assaulting a police officer, or a crime causing death or serious injury. The House passed it 263-156.",
+      "nay_description": "Voted against S. 5, the Laken Riley Act, which required federal detention of immigrants charged with theft, burglary, assaulting a police officer, or a crime causing death or serious injury. The House passed it 263-156.",
       "labels": [
         {
           "slug": "immigration",
@@ -59,8 +59,8 @@
       "measure_id": "H R 21",
       "vote_date": "2025-01-23",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 21, the Born-Alive Abortion Survivors Protection Act, which set criminal penalties for health care practitioners who did not give a child born after an attempted abortion the same care as any other newborn. It passed the House 217-204.",
-      "nay_description": "Voted against passing H.R. 21, the Born-Alive Abortion Survivors Protection Act, which set criminal penalties for health care practitioners who did not give a child born after an attempted abortion the same care as any other newborn. It passed the House 217-204.",
+      "yea_description": "Voted for H.R. 21, the Born-Alive Abortion Survivors Protection Act, which set criminal penalties for health care practitioners who did not give a child born after an attempted abortion the same care as any other newborn. The House passed it 217-204.",
+      "nay_description": "Voted against H.R. 21, the Born-Alive Abortion Survivors Protection Act, which set criminal penalties for health care practitioners who did not give a child born after an attempted abortion the same care as any other newborn. The House passed it 217-204.",
       "labels": [
         {
           "slug": "womens_reproductive_rights",
@@ -76,8 +76,8 @@
       "measure_id": "H R 27",
       "vote_date": "2025-02-06",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 27, the HALT Fentanyl Act, which permanently placed fentanyl-related substances as a class in Schedule I of the Controlled Substances Act, carrying the same penalties as fentanyl itself. It passed the House 312-108.",
-      "nay_description": "Voted against passing H.R. 27, the HALT Fentanyl Act, which permanently placed fentanyl-related substances as a class in Schedule I of the Controlled Substances Act, carrying the same penalties as fentanyl itself. It passed the House 312-108.",
+      "yea_description": "Voted for H.R. 27, the HALT Fentanyl Act, which permanently put fentanyl-related substances in the strictest federal drug category, with the same penalties as fentanyl. The House passed it 312-108.",
+      "nay_description": "Voted against H.R. 27, the HALT Fentanyl Act, which permanently put fentanyl-related substances in the strictest federal drug category, with the same penalties as fentanyl. The House passed it 312-108.",
       "labels": [
         {
           "slug": "public_safety_and_crime_control",
@@ -93,8 +93,8 @@
       "measure_id": "H R 22",
       "vote_date": "2025-04-10",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 22, the SAVE Act, which required documentary proof of U.S. citizenship, such as a passport or a REAL ID showing citizenship, to register to vote in a federal election. It passed the House 220-208.",
-      "nay_description": "Voted against passing H.R. 22, the SAVE Act, which required documentary proof of U.S. citizenship, such as a passport or a REAL ID showing citizenship, to register to vote in a federal election. It passed the House 220-208.",
+      "yea_description": "Voted for H.R. 22, the SAVE Act, which required documents proving U.S. citizenship, such as a passport or a REAL ID showing citizenship, to register to vote in a federal election. The House passed it 220-208.",
+      "nay_description": "Voted against H.R. 22, the SAVE Act, which required documents proving U.S. citizenship, such as a passport or a REAL ID showing citizenship, to register to vote in a federal election. The House passed it 220-208.",
       "labels": [
         {
           "slug": "election_integrity",
@@ -114,8 +114,8 @@
       "measure_id": "H R 1",
       "vote_date": "2025-05-22",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 1, the One Big Beautiful Bill Act, which extended the 2017 income tax cuts, cut Medicaid and food-assistance spending, and raised the statutory debt limit. It passed the House 215-214.",
-      "nay_description": "Voted against passing H.R. 1, the One Big Beautiful Bill Act, which extended the 2017 income tax cuts, cut Medicaid and food-assistance spending, and raised the statutory debt limit. It passed the House 215-214.",
+      "yea_description": "Voted for H.R. 1, the One Big Beautiful Bill Act, which extended the 2017 income tax cuts, cut Medicaid and food-assistance spending, and raised the federal debt limit. The House passed it 215-214.",
+      "nay_description": "Voted against H.R. 1, the One Big Beautiful Bill Act, which extended the 2017 income tax cuts, cut Medicaid and food-assistance spending, and raised the federal debt limit. The House passed it 215-214.",
       "labels": [
         {
           "slug": "personal_income_tax_reduction",
@@ -135,8 +135,8 @@
       "measure_id": "H R 4",
       "vote_date": "2025-06-12",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 4, the Rescissions Act of 2025, which canceled unobligated funds already approved for the State Department, USAID, and the Corporation for Public Broadcasting. It passed the House 214-212.",
-      "nay_description": "Voted against passing H.R. 4, the Rescissions Act of 2025, which canceled unobligated funds already approved for the State Department, USAID, and the Corporation for Public Broadcasting. It passed the House 214-212.",
+      "yea_description": "Voted for H.R. 4, the Rescissions Act of 2025, which canceled unspent money approved for the State Department, USAID, and the Corporation for Public Broadcasting. The House passed it 214-212.",
+      "nay_description": "Voted against H.R. 4, the Rescissions Act of 2025, which canceled unspent money approved for the State Department, USAID, and the Corporation for Public Broadcasting. The House passed it 214-212.",
       "labels": [
         {
           "slug": "government_spending_reduction",
@@ -156,8 +156,8 @@
       "measure_id": "H R 1",
       "vote_date": "2025-07-03",
       "review_status": "approved",
-      "yea_description": "Voted to concur in the Senate amendment to H.R. 1, the One Big Beautiful Bill Act, which extended the 2017 income tax cuts, cut Medicaid and food-assistance spending, and raised the statutory debt limit. The House agreed 218-214, sending it to the President.",
-      "nay_description": "Voted against concurring in the Senate amendment to H.R. 1, the One Big Beautiful Bill Act, which extended the 2017 income tax cuts, cut Medicaid and food-assistance spending, and raised the statutory debt limit. The House agreed 218-214, sending it to the President.",
+      "yea_description": "Voted yes for the Senate's changes to H.R. 1, which extended the 2017 income tax cuts, cut Medicaid and food-assistance spending, and raised the federal debt limit. The House approved it 218-214 and sent it to the president.",
+      "nay_description": "Voted no on the Senate's changes to H.R. 1, which extended the 2017 income tax cuts, cut Medicaid and food-assistance spending, and raised the federal debt limit. The House approved it 218-214 and sent it to the president.",
       "labels": [
         {
           "slug": "personal_income_tax_reduction",
@@ -177,8 +177,8 @@
       "measure_id": "S 1582",
       "vote_date": "2025-07-17",
       "review_status": "approved",
-      "yea_description": "Voted to pass S. 1582, the GENIUS Act, which created a federal licensing and reserve framework for payment stablecoins, limiting issuance to regulated banks and approved nonbank issuers. It passed the House 308-122.",
-      "nay_description": "Voted against passing S. 1582, the GENIUS Act, which created a federal licensing and reserve framework for payment stablecoins, limiting issuance to regulated banks and approved nonbank issuers. It passed the House 308-122.",
+      "yea_description": "Voted for S. 1582, the GENIUS Act, which created federal rules for payment stablecoins, a type of digital money, requiring approved issuers and financial reserves. The House passed it 308-122.",
+      "nay_description": "Voted against S. 1582, the GENIUS Act, which created federal rules for payment stablecoins, a type of digital money, requiring approved issuers and financial reserves. The House passed it 308-122.",
       "labels": [
         {
           "slug": "corporate_accountability",
@@ -194,8 +194,8 @@
       "measure_id": "H R 5371",
       "vote_date": "2025-11-12",
       "review_status": "approved",
-      "yea_description": "Voted to concur in the Senate amendment to H.R. 5371, the continuing appropriations act, which ended the 43-day government shutdown by funding most agencies through January 30, 2026 and funding agriculture, military construction and veterans affairs, and the legislative branch for the full year. The House agreed 222-209.",
-      "nay_description": "Voted against concurring in the Senate amendment to H.R. 5371, the continuing appropriations act, which ended the 43-day government shutdown by funding most agencies through January 30, 2026 and funding agriculture, military construction and veterans affairs, and the legislative branch for the full year. The House agreed 222-209.",
+      "yea_description": "Voted yes for the Senate's changes to H.R. 5371, a short-term funding bill, which ended the 43-day government shutdown by funding most agencies through January 30, 2026 and funding agriculture, military construction and veterans affairs, and the legislative branch for the full year. The House agreed 222-209.",
+      "nay_description": "Voted no on the Senate's changes to H.R. 5371, a short-term funding bill, which ended the 43-day government shutdown by funding most agencies through January 30, 2026 and funding agriculture, military construction and veterans affairs, and the legislative branch for the full year. The House agreed 222-209.",
       "labels": [
         {
           "slug": "government_efficiency",
@@ -211,8 +211,8 @@
       "measure_id": "H R 4405",
       "vote_date": "2025-11-18",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 4405, the Epstein Files Transparency Act, which ordered the Justice Department to publish its unclassified records on the Jeffrey Epstein investigation, including flight logs and the names of officials referenced in them. It passed the House 427-1.",
-      "nay_description": "Voted against passing H.R. 4405, the Epstein Files Transparency Act, which ordered the Justice Department to publish its unclassified records on the Jeffrey Epstein investigation, including flight logs and the names of officials referenced in them. It passed the House 427-1.",
+      "yea_description": "Voted for H.R. 4405, the Epstein Files Transparency Act, which ordered the Justice Department to publish its unclassified records on the Jeffrey Epstein investigation, including flight logs and the names of officials referenced in them. The House passed it 427-1.",
+      "nay_description": "Voted against H.R. 4405, the Epstein Files Transparency Act, which ordered the Justice Department to publish its unclassified records on the Jeffrey Epstein investigation, including flight logs and the names of officials referenced in them. The House passed it 427-1.",
       "labels": [
         {
           "slug": "anti_corruption",
@@ -228,8 +228,8 @@
       "measure_id": "S. 5",
       "vote_date": "2025-01-20",
       "review_status": "approved",
-      "yea_description": "Voted to pass S. 5, the Laken Riley Act, which required federal detention of immigrants charged with theft, burglary, assaulting a police officer, or a crime causing death or serious injury. It passed the Senate 64-35.",
-      "nay_description": "Voted against passing S. 5, the Laken Riley Act, which required federal detention of immigrants charged with theft, burglary, assaulting a police officer, or a crime causing death or serious injury. It passed the Senate 64-35.",
+      "yea_description": "Voted for S. 5, the Laken Riley Act, which required federal detention of immigrants charged with theft, burglary, assaulting a police officer, or a crime causing death or serious injury. The Senate passed it 64-35.",
+      "nay_description": "Voted against S. 5, the Laken Riley Act, which required federal detention of immigrants charged with theft, burglary, assaulting a police officer, or a crime causing death or serious injury. The Senate passed it 64-35.",
       "labels": [
         {
           "slug": "immigration",
@@ -245,8 +245,8 @@
       "measure_id": "S. 331",
       "vote_date": "2025-03-14",
       "review_status": "approved",
-      "yea_description": "Voted to pass S. 331, the HALT Fentanyl Act, which permanently placed fentanyl-related substances as a class in Schedule I of the Controlled Substances Act, carrying the same penalties as fentanyl itself. It passed the Senate 84-16.",
-      "nay_description": "Voted against passing S. 331, the HALT Fentanyl Act, which permanently placed fentanyl-related substances as a class in Schedule I of the Controlled Substances Act, carrying the same penalties as fentanyl itself. It passed the Senate 84-16.",
+      "yea_description": "Voted for S. 331, the HALT Fentanyl Act, which permanently put fentanyl-related substances in the strictest federal drug category, with the same penalties as fentanyl. The Senate passed it 84-16.",
+      "nay_description": "Voted against S. 331, the HALT Fentanyl Act, which permanently put fentanyl-related substances in the strictest federal drug category, with the same penalties as fentanyl. The Senate passed it 84-16.",
       "labels": [
         {
           "slug": "public_safety_and_crime_control",
@@ -262,8 +262,8 @@
       "measure_id": "H.R. 1968",
       "vote_date": "2025-03-14",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 1968, the Full-Year Continuing Appropriations and Extensions Act, which funded federal agencies for the rest of fiscal year 2025 and averted a government shutdown. It passed the Senate 54-46.",
-      "nay_description": "Voted against passing H.R. 1968, the Full-Year Continuing Appropriations and Extensions Act, which funded federal agencies for the rest of fiscal year 2025 and averted a government shutdown. It passed the Senate 54-46.",
+      "yea_description": "Voted for H.R. 1968, the Full-Year Continuing Appropriations and Extensions Act, which funded federal agencies for the rest of fiscal year 2025 and averted a government shutdown. The Senate passed it 54-46.",
+      "nay_description": "Voted against H.R. 1968, the Full-Year Continuing Appropriations and Extensions Act, which funded federal agencies for the rest of fiscal year 2025 and averted a government shutdown. The Senate passed it 54-46.",
       "labels": [
         {
           "slug": "government_efficiency",
@@ -279,8 +279,8 @@
       "measure_id": "H.J.Res. 89",
       "vote_date": "2025-05-22",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.J. Res. 89, which revoked the Clean Air Act waiver letting California enforce its own low-nitrogen-oxide emissions standards for new heavy-duty trucks and off-road diesel engines. It passed the Senate 49-46.",
-      "nay_description": "Voted against passing H.J. Res. 89, which revoked the Clean Air Act waiver letting California enforce its own low-nitrogen-oxide emissions standards for new heavy-duty trucks and off-road diesel engines. It passed the Senate 49-46.",
+      "yea_description": "Voted for H.J. Res. 89, which revoked the Clean Air Act permission letting California enforce its own low-nitrogen-oxide emissions standards for new heavy-duty trucks and off-road diesel engines. The Senate passed it 49-46.",
+      "nay_description": "Voted against H.J. Res. 89, which revoked the Clean Air Act permission letting California enforce its own low-nitrogen-oxide emissions standards for new heavy-duty trucks and off-road diesel engines. The Senate passed it 49-46.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -296,8 +296,8 @@
       "measure_id": "S. 1582",
       "vote_date": "2025-06-17",
       "review_status": "approved",
-      "yea_description": "Voted to pass S. 1582, the GENIUS Act, which created a federal licensing and reserve framework for payment stablecoins, limiting issuance to regulated banks and approved nonbank issuers. It passed the Senate 68-30.",
-      "nay_description": "Voted against passing S. 1582, the GENIUS Act, which created a federal licensing and reserve framework for payment stablecoins, limiting issuance to regulated banks and approved nonbank issuers. It passed the Senate 68-30.",
+      "yea_description": "Voted for S. 1582, the GENIUS Act, which created federal rules for payment stablecoins, a type of digital money, requiring approved issuers and financial reserves. The Senate passed it 68-30.",
+      "nay_description": "Voted against S. 1582, the GENIUS Act, which created federal rules for payment stablecoins, a type of digital money, requiring approved issuers and financial reserves. The Senate passed it 68-30.",
       "labels": [
         {
           "slug": "corporate_accountability",
@@ -313,8 +313,8 @@
       "measure_id": "H.R. 1",
       "vote_date": "2025-07-01",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 1, the One Big Beautiful Bill Act, which extended the 2017 income tax cuts, cut Medicaid and food-assistance spending, and raised the statutory debt limit. The Senate split 50-50 and the Vice President broke the tie in favor.",
-      "nay_description": "Voted against passing H.R. 1, the One Big Beautiful Bill Act, which extended the 2017 income tax cuts, cut Medicaid and food-assistance spending, and raised the statutory debt limit. The Senate split 50-50 and the Vice President broke the tie in favor.",
+      "yea_description": "Voted for H.R. 1, the One Big Beautiful Bill Act, which extended the 2017 income tax cuts, cut Medicaid and food-assistance spending, and raised the federal debt limit. It passed after a 50-50 Senate tie and the vice president's deciding vote.",
+      "nay_description": "Voted against H.R. 1, the One Big Beautiful Bill Act, which extended the 2017 income tax cuts, cut Medicaid and food-assistance spending, and raised the federal debt limit. It passed after a 50-50 Senate tie and the vice president's deciding vote.",
       "labels": [
         {
           "slug": "personal_income_tax_reduction",
@@ -334,8 +334,8 @@
       "measure_id": "H.R. 4",
       "vote_date": "2025-07-17",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 4, the Rescissions Act of 2025, which canceled unobligated funds already approved for the State Department, USAID, and the Corporation for Public Broadcasting. It passed the Senate 51-48.",
-      "nay_description": "Voted against passing H.R. 4, the Rescissions Act of 2025, which canceled unobligated funds already approved for the State Department, USAID, and the Corporation for Public Broadcasting. It passed the Senate 51-48.",
+      "yea_description": "Voted for H.R. 4, the Rescissions Act of 2025, which canceled unspent money approved for the State Department, USAID, and the Corporation for Public Broadcasting. The Senate passed it 51-48.",
+      "nay_description": "Voted against H.R. 4, the Rescissions Act of 2025, which canceled unspent money approved for the State Department, USAID, and the Corporation for Public Broadcasting. The Senate passed it 51-48.",
       "labels": [
         {
           "slug": "government_spending_reduction",
@@ -355,8 +355,8 @@
       "measure_id": "H.R. 5371",
       "vote_date": "2025-11-10",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 5371, the continuing appropriations act, which ended the 43-day government shutdown by funding most agencies through January 30, 2026 and funding agriculture, military construction and veterans affairs, and the legislative branch for the full year. It passed the Senate 60-40.",
-      "nay_description": "Voted against passing H.R. 5371, the continuing appropriations act, which ended the 43-day government shutdown by funding most agencies through January 30, 2026 and funding agriculture, military construction and veterans affairs, and the legislative branch for the full year. It passed the Senate 60-40.",
+      "yea_description": "Voted for H.R. 5371, a short-term funding bill, which ended the 43-day government shutdown by funding most agencies through January 30, 2026 and funding agriculture, military construction and veterans affairs, and the legislative branch for the full year. The Senate passed it 60-40.",
+      "nay_description": "Voted against H.R. 5371, a short-term funding bill, which ended the 43-day government shutdown by funding most agencies through January 30, 2026 and funding agriculture, military construction and veterans affairs, and the legislative branch for the full year. The Senate passed it 60-40.",
       "labels": [
         {
           "slug": "government_efficiency",

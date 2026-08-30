@@ -8,8 +8,8 @@
       "measure_id": "H R 1919",
       "vote_date": "2025-07-17",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 1919, the Anti-CBDC Surveillance State Act, which barred the Federal Reserve from issuing a central bank digital currency or holding accounts for individuals, and from studying or testing one without authorization from Congress. It passed the House 219-210.",
-      "nay_description": "Voted against passing H.R. 1919, the Anti-CBDC Surveillance State Act, which barred the Federal Reserve from issuing a central bank digital currency or holding accounts for individuals, and from studying or testing one without authorization from Congress. It passed the House 219-210.",
+      "yea_description": "Voted for H.R. 1919, the Anti-CBDC Surveillance State Act, which barred the Federal Reserve from issuing digital money or holding personal accounts, and from studying or testing one without Congress's approval. The House passed it 219-210.",
+      "nay_description": "Voted against H.R. 1919, the Anti-CBDC Surveillance State Act, which barred the Federal Reserve from issuing digital money or holding personal accounts, and from studying or testing one without Congress's approval. The House passed it 219-210.",
       "labels": [
         {
           "slug": "data_privacy",
@@ -25,8 +25,8 @@
       "measure_id": "H J RES 104",
       "vote_date": "2025-09-03",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.J.Res. 104, which used the Congressional Review Act to repeal the Bureau of Land Management plan for the Miles City field office in eastern Montana, reopening those federal lands to coal leasing. It passed the House 211-208.",
-      "nay_description": "Voted against passing H.J.Res. 104, which used the Congressional Review Act to repeal the Bureau of Land Management plan for the Miles City field office in eastern Montana, reopening those federal lands to coal leasing. It passed the House 211-208.",
+      "yea_description": "Voted for H.J.Res. 104 to cancel the federal land agency plan for the Miles City field office in eastern Montana, reopening those federal lands to coal leasing. The House passed it 211-208.",
+      "nay_description": "Voted against H.J.Res. 104 to cancel the federal land agency plan for the Miles City field office in eastern Montana, reopening those federal lands to coal leasing. The House passed it 211-208.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -42,8 +42,8 @@
       "measure_id": "H J RES 106",
       "vote_date": "2025-09-03",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.J.Res. 106, which used the Congressional Review Act to repeal the Bureau of Land Management plan for Alaska's Central Yukon area, undoing its designation of areas of critical environmental concern. It passed the House 215-210.",
-      "nay_description": "Voted against passing H.J.Res. 106, which used the Congressional Review Act to repeal the Bureau of Land Management plan for Alaska's Central Yukon area, undoing its designation of areas of critical environmental concern. It passed the House 215-210.",
+      "yea_description": "Voted for H.J.Res. 106 to cancel the federal land agency plan for Alaska's Central Yukon area, undoing its designation of specially protected areas. The House passed it 215-210.",
+      "nay_description": "Voted against H.J.Res. 106 to cancel the federal land agency plan for Alaska's Central Yukon area, undoing its designation of specially protected areas. The House passed it 215-210.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -59,8 +59,8 @@
       "measure_id": "H J RES 105",
       "vote_date": "2025-09-03",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.J.Res. 105, which used the Congressional Review Act to repeal the Bureau of Land Management plan for the North Dakota field office that had limited oil and gas development in low-potential areas and narrowed new coal leasing. It passed the House 215-211.",
-      "nay_description": "Voted against passing H.J.Res. 105, which used the Congressional Review Act to repeal the Bureau of Land Management plan for the North Dakota field office that had limited oil and gas development in low-potential areas and narrowed new coal leasing. It passed the House 215-211.",
+      "yea_description": "Voted for H.J.Res. 105 to cancel the federal land agency plan for the North Dakota field office that had limited oil and gas development in low-potential areas and narrowed new coal leasing. The House passed it 215-211.",
+      "nay_description": "Voted against H.J.Res. 105 to cancel the federal land agency plan for the North Dakota field office that had limited oil and gas development in low-potential areas and narrowed new coal leasing. The House passed it 215-211.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -76,8 +76,8 @@
       "measure_id": "H R 3838",
       "vote_date": "2025-09-10",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 3838, the National Defense Authorization Act for Fiscal Year 2026, which set defense policy and authorized spending for Department of Defense programs, military construction, and the Energy Department's national security programs. It passed the House 231-196.",
-      "nay_description": "Voted against passing H.R. 3838, the National Defense Authorization Act for Fiscal Year 2026, which set defense policy and authorized spending for Department of Defense programs, military construction, and the Energy Department's national security programs. It passed the House 231-196.",
+      "yea_description": "Voted for H.R. 3838, the National Defense Authorization Act for Fiscal Year 2026, which set defense policy and authorized funding levels for Defense Department programs, military construction, and the Energy Department's national security programs. The House passed it 231-196.",
+      "nay_description": "Voted against H.R. 3838, the National Defense Authorization Act for Fiscal Year 2026, which set defense policy and authorized funding levels for Defense Department programs, military construction, and the Energy Department's national security programs. The House passed it 231-196.",
       "labels": [
         {
           "slug": "national_defense",
@@ -93,8 +93,8 @@
       "measure_id": "H R 3486",
       "vote_date": "2025-09-11",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 3486, the Stop Illegal Entry Act, which set a five-year mandatory minimum sentence, and allowed a life sentence, for immigrants who enter the country illegally and are later convicted of a felony or who reenter after removal. It passed the House 226-197.",
-      "nay_description": "Voted against passing H.R. 3486, the Stop Illegal Entry Act, which set a five-year mandatory minimum sentence, and allowed a life sentence, for immigrants who enter the country illegally and are later convicted of a felony or who reenter after removal. It passed the House 226-197.",
+      "yea_description": "Voted for H.R. 3486, the Stop Illegal Entry Act, which set a required five-year prison term and allowed life, for immigrants who enter the country illegally and are later convicted of a felony or who reenter after removal. The House passed it 226-197.",
+      "nay_description": "Voted against H.R. 3486, the Stop Illegal Entry Act, which set a required five-year prison term and allowed life, for immigrants who enter the country illegally and are later convicted of a felony or who reenter after removal. The House passed it 226-197.",
       "labels": [
         {
           "slug": "immigration",
@@ -114,8 +114,8 @@
       "measure_id": "H R 4922",
       "vote_date": "2025-09-16",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 4922, the DC CRIMES Act, which stripped the District of Columbia of authority to change criminal sentences and lowered the maximum age for youth offender sentencing from 24 to 18. It passed the House 240-179.",
-      "nay_description": "Voted against passing H.R. 4922, the DC CRIMES Act, which stripped the District of Columbia of authority to change criminal sentences and lowered the maximum age for youth offender sentencing from 24 to 18. It passed the House 240-179.",
+      "yea_description": "Voted for H.R. 4922, the DC CRIMES Act, which stripped the District of Columbia of authority to change criminal sentences and lowered the maximum age for youth offender sentencing from 24 to 18. The House passed it 240-179.",
+      "nay_description": "Voted against H.R. 4922, the DC CRIMES Act, which stripped the District of Columbia of authority to change criminal sentences and lowered the maximum age for youth offender sentencing from 24 to 18. The House passed it 240-179.",
       "labels": [
         {
           "slug": "public_safety_and_crime_control",
@@ -131,8 +131,8 @@
       "measure_id": "H R 5140",
       "vote_date": "2025-09-16",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 5140, which lowered the age at which a minor can be tried as an adult in the District of Columbia for certain serious offenses from 16 to 14. It passed the House 225-203.",
-      "nay_description": "Voted against passing H.R. 5140, which lowered the age at which a minor can be tried as an adult in the District of Columbia for certain serious offenses from 16 to 14. It passed the House 225-203.",
+      "yea_description": "Voted for H.R. 5140, which lowered the age at which a minor can be tried as an adult in the District of Columbia for certain serious offenses from 16 to 14. The House passed it 225-203.",
+      "nay_description": "Voted against H.R. 5140, which lowered the age at which a minor can be tried as an adult in the District of Columbia for certain serious offenses from 16 to 14. The House passed it 225-203.",
       "labels": [
         {
           "slug": "public_safety_and_crime_control",

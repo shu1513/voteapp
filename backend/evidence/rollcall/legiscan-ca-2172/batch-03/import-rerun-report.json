@@ -1,0 +1,567 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": true,
+  "skipExisting": false,
+  "startedAt": "2026-08-29T20:41:15.717Z",
+  "finishedAt": "2026-08-29T20:41:29.109Z",
+  "jurisdiction": "CA",
+  "sessionId": 2172,
+  "evidenceDir": "/Users/shu/legiscan-data/ca-2172-evidence",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "/Users/shu/voteApp/.claude/worktrees/hungry-engelbart-5b1814/backend/evidence/rollcall/legiscan-ca-2172/crosswalk.json",
+  "crosswalkEntries": 121,
+  "peopleFile": "/Users/shu/voteApp/.claude/worktrees/hungry-engelbart-5b1814/backend/evidence/rollcall/legiscan-ca-2172/legiscan-people-ca-2172.json",
+  "peopleMembers": 121,
+  "files": 5328,
+  "outcomes": {
+    "not_approved": 5266,
+    "dry_run": 62
+  },
+  "actions": {
+    "unchanged": 2233
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-ca-house-2172-roll1579285.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1579285,
+      "outcome": "dry_run",
+      "legislativeVoteId": "6e093ba1-6846-4f25-a763-b94e06e015ff",
+      "reviewStatus": "approved",
+      "bill": "AB1056",
+      "voteDate": "2025-05-27",
+      "officialVoteDate": null,
+      "measureId": "AB 1056",
+      "question": "AB 1056 Bennett Assembly Third Reading",
+      "originRunId": "rollcall:CA:house:2172:1579285:2026-08-29T20:41:15.717Z",
+      "members": 68,
+      "notVoting": 0,
+      "absent": 11,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 58
+      },
+      "actions": {
+        "unchanged": 58
+      },
+      "notified": 0,
+      "candidates": 58,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1601381.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1601381,
+      "outcome": "dry_run",
+      "legislativeVoteId": "c6fca1cb-20ce-4668-a5a4-7425c92d21a0",
+      "reviewStatus": "approved",
+      "bill": "SB524",
+      "voteDate": "2025-09-08",
+      "officialVoteDate": null,
+      "measureId": "SB 524",
+      "question": "SB 524 Arreguín Senate Third Reading By Schultz",
+      "originRunId": "rollcall:CA:house:2172:1601381:2026-08-29T20:41:15.717Z",
+      "members": 67,
+      "notVoting": 0,
+      "absent": 13,
+      "resolution": {
+        "unmatched_reviewed": 9,
+        "matched": 58
+      },
+      "actions": {
+        "unchanged": 58
+      },
+      "notified": 0,
+      "candidates": 58,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1601569.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1601569,
+      "outcome": "dry_run",
+      "legislativeVoteId": "2b234026-a2f3-4edb-92ae-faa0cb6ccc9d",
+      "reviewStatus": "approved",
+      "bill": "SB518",
+      "voteDate": "2025-09-09",
+      "officialVoteDate": null,
+      "measureId": "SB 518",
+      "question": "SB 518 Weber Pierson Senate Third Reading By Jackson",
+      "originRunId": "rollcall:CA:house:2172:1601569:2026-08-29T20:41:15.717Z",
+      "members": 77,
+      "notVoting": 0,
+      "absent": 3,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 67
+      },
+      "actions": {
+        "unchanged": 67
+      },
+      "notified": 0,
+      "candidates": 67,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1601602.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1601602,
+      "outcome": "dry_run",
+      "legislativeVoteId": "e3a04390-bbb1-4f5a-a114-ae6d8ae8f4e1",
+      "reviewStatus": "approved",
+      "bill": "SB634",
+      "voteDate": "2025-09-09",
+      "officialVoteDate": null,
+      "measureId": "SB 634",
+      "question": "SB 634 Pérez Senate Third Reading By Bryan",
+      "originRunId": "rollcall:CA:house:2172:1601602:2026-08-29T20:41:15.717Z",
+      "members": 75,
+      "notVoting": 0,
+      "absent": 5,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 65
+      },
+      "actions": {
+        "unchanged": 65
+      },
+      "notified": 0,
+      "candidates": 65,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602341.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602341,
+      "outcome": "dry_run",
+      "legislativeVoteId": "1524f2db-1adf-46c7-9567-f411dea41bd3",
+      "reviewStatus": "approved",
+      "bill": "AB1127",
+      "voteDate": "2025-09-13",
+      "officialVoteDate": null,
+      "measureId": "AB 1127",
+      "question": "AB 1127 GABRIEL Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1602341:2026-08-29T20:41:15.717Z",
+      "members": 70,
+      "notVoting": 0,
+      "absent": 10,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 60
+      },
+      "actions": {
+        "unchanged": 60
+      },
+      "notified": 0,
+      "candidates": 60,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602349.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602349,
+      "outcome": "dry_run",
+      "legislativeVoteId": "565335bd-a85a-4d38-b62c-b6ad1f6d3896",
+      "reviewStatus": "approved",
+      "bill": "AB1036",
+      "voteDate": "2025-09-13",
+      "officialVoteDate": null,
+      "measureId": "AB 1036",
+      "question": "AB 1036 Schultz Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1602349:2026-08-29T20:41:15.717Z",
+      "members": 72,
+      "notVoting": 0,
+      "absent": 8,
+      "resolution": {
+        "unmatched_reviewed": 9,
+        "matched": 63
+      },
+      "actions": {
+        "unchanged": 63
+      },
+      "notified": 0,
+      "candidates": 63,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602464.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602464,
+      "outcome": "dry_run",
+      "legislativeVoteId": "1c9d9459-d8d7-47e2-9637-3bd19ea9c81b",
+      "reviewStatus": "approved",
+      "bill": "AB246",
+      "voteDate": "2025-09-10",
+      "officialVoteDate": null,
+      "measureId": "AB 246",
+      "question": "AB 246 Bryan Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1602464:2026-08-29T20:41:15.717Z",
+      "members": 67,
+      "notVoting": 0,
+      "absent": 13,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 57
+      },
+      "actions": {
+        "unchanged": 57
+      },
+      "notified": 0,
+      "candidates": 57,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602523.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602523,
+      "outcome": "dry_run",
+      "legislativeVoteId": "31b11850-561b-42f7-abae-2d13d7c08a9c",
+      "reviewStatus": "approved",
+      "bill": "AB628",
+      "voteDate": "2025-09-11",
+      "officialVoteDate": null,
+      "measureId": "AB 628",
+      "question": "AB 628 McKinnor Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1602523:2026-08-29T20:41:15.717Z",
+      "members": 66,
+      "notVoting": 0,
+      "absent": 14,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 56
+      },
+      "actions": {
+        "unchanged": 56
+      },
+      "notified": 0,
+      "candidates": 56,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602551.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602551,
+      "outcome": "dry_run",
+      "legislativeVoteId": "de9a7cfe-7b5d-4755-a373-1d1c62df6f2a",
+      "reviewStatus": "approved",
+      "bill": "SB825",
+      "voteDate": "2025-09-10",
+      "officialVoteDate": null,
+      "measureId": "SB 825",
+      "question": "SB 825 Limón Senate Third Reading By Schiavo",
+      "originRunId": "rollcall:CA:house:2172:1602551:2026-08-29T20:41:15.717Z",
+      "members": 78,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 68
+      },
+      "actions": {
+        "unchanged": 68
+      },
+      "notified": 0,
+      "candidates": 68,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1584292.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1584292,
+      "outcome": "dry_run",
+      "legislativeVoteId": "af6a0750-45d6-4aaa-899a-edd537593bf4",
+      "reviewStatus": "approved",
+      "bill": "SB825",
+      "voteDate": "2025-06-03",
+      "officialVoteDate": null,
+      "measureId": "SB 825",
+      "question": "Senate 3rd Reading SB825 Limón et al",
+      "originRunId": "rollcall:CA:senate:2172:1584292:2026-08-29T20:41:15.717Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 28,
+        "matched": 10
+      },
+      "actions": {
+        "unchanged": 10
+      },
+      "notified": 0,
+      "candidates": 10,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601478.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601478,
+      "outcome": "dry_run",
+      "legislativeVoteId": "e6cee985-2e8c-4d29-a73a-e476b7e38da7",
+      "reviewStatus": "approved",
+      "bill": "AB246",
+      "voteDate": "2025-09-09",
+      "officialVoteDate": null,
+      "measureId": "AB 246",
+      "question": "Assembly 3rd Reading AB246 Bryan et al. By Wahab",
+      "originRunId": "rollcall:CA:senate:2172:1601478:2026-08-29T20:41:15.717Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 28,
+        "matched": 10
+      },
+      "actions": {
+        "unchanged": 10
+      },
+      "notified": 0,
+      "candidates": 10,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601730.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601730,
+      "outcome": "dry_run",
+      "legislativeVoteId": "3ae0a177-8f0d-4ade-a46f-6d7cb2ae0282",
+      "reviewStatus": "approved",
+      "bill": "AB628",
+      "voteDate": "2025-09-10",
+      "officialVoteDate": null,
+      "measureId": "AB 628",
+      "question": "Assembly 3rd Reading AB628 McKinnor By Wiener",
+      "originRunId": "rollcall:CA:senate:2172:1601730:2026-08-29T20:41:15.717Z",
+      "members": 36,
+      "notVoting": 0,
+      "absent": 4,
+      "resolution": {
+        "unmatched_reviewed": 27,
+        "matched": 9
+      },
+      "actions": {
+        "unchanged": 9
+      },
+      "notified": 0,
+      "candidates": 9,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601734.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601734,
+      "outcome": "dry_run",
+      "legislativeVoteId": "0cde3d85-85d9-4970-9bd0-b05b581c616a",
+      "reviewStatus": "approved",
+      "bill": "SB524",
+      "voteDate": "2025-09-10",
+      "officialVoteDate": null,
+      "measureId": "SB 524",
+      "question": "Unfinished Business SB524 Arreguín et al. Concurrence",
+      "originRunId": "rollcall:CA:senate:2172:1601734:2026-08-29T20:41:15.717Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 28,
+        "matched": 10
+      },
+      "actions": {
+        "unchanged": 10
+      },
+      "notified": 0,
+      "candidates": 10,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601796.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601796,
+      "outcome": "dry_run",
+      "legislativeVoteId": "91be0f4b-8713-4d7b-b2b5-6c2c86190904",
+      "reviewStatus": "approved",
+      "bill": "SB634",
+      "voteDate": "2025-09-10",
+      "officialVoteDate": null,
+      "measureId": "SB 634",
+      "question": "Unfinished Business SB634 Pérez et al. Concurrence",
+      "originRunId": "rollcall:CA:senate:2172:1601796:2026-08-29T20:41:15.717Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 27,
+        "matched": 11
+      },
+      "actions": {
+        "unchanged": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601798.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601798,
+      "outcome": "dry_run",
+      "legislativeVoteId": "901ef4e2-b441-45a9-94ab-25cba14e3621",
+      "reviewStatus": "approved",
+      "bill": "SB518",
+      "voteDate": "2025-09-10",
+      "officialVoteDate": null,
+      "measureId": "SB 518",
+      "question": "Unfinished Business SB518 Weber Pierson et al. Concurrence",
+      "originRunId": "rollcall:CA:senate:2172:1601798:2026-08-29T20:41:15.717Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 29,
+        "matched": 11
+      },
+      "actions": {
+        "unchanged": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601893.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601893,
+      "outcome": "dry_run",
+      "legislativeVoteId": "39282459-e00e-4bbb-b71c-7b32ed9f9c72",
+      "reviewStatus": "approved",
+      "bill": "AB1056",
+      "voteDate": "2025-09-11",
+      "officialVoteDate": null,
+      "measureId": "AB 1056",
+      "question": "Assembly 3rd Reading AB1056 Bennett By Laird",
+      "originRunId": "rollcall:CA:senate:2172:1601893:2026-08-29T20:41:15.717Z",
+      "members": 39,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 28,
+        "matched": 11
+      },
+      "actions": {
+        "unchanged": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1602340.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1602340,
+      "outcome": "dry_run",
+      "legislativeVoteId": "3a738276-a6ba-4859-bf89-3a98e153da2f",
+      "reviewStatus": "approved",
+      "bill": "AB1127",
+      "voteDate": "2025-09-12",
+      "officialVoteDate": null,
+      "measureId": "AB 1127",
+      "question": "Assembly 3rd Reading AB1127 Gabriel et al. By Blakespear",
+      "originRunId": "rollcall:CA:senate:2172:1602340:2026-08-29T20:41:15.717Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 27,
+        "matched": 11
+      },
+      "actions": {
+        "unchanged": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1602348.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1602348,
+      "outcome": "dry_run",
+      "legislativeVoteId": "966fa636-5d23-42ca-9612-8e5619f0ca5f",
+      "reviewStatus": "approved",
+      "bill": "AB1036",
+      "voteDate": "2025-09-12",
+      "officialVoteDate": null,
+      "measureId": "AB 1036",
+      "question": "Assembly 3rd Reading AB1036 Schultz By Arreguín",
+      "originRunId": "rollcall:CA:senate:2172:1602348:2026-08-29T20:41:15.717Z",
+      "members": 37,
+      "notVoting": 0,
+      "absent": 3,
+      "resolution": {
+        "unmatched_reviewed": 27,
+        "matched": 10
+      },
+      "actions": {
+        "unchanged": 10
+      },
+      "notified": 0,
+      "candidates": 10,
+      "error": null,
+      "related": 0
+    }
+  ],
+  "rollsScopedToBatch": true
+}

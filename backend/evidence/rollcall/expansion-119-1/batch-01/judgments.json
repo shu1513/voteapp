@@ -8,8 +8,8 @@
       "measure_id": "H R 23",
       "vote_date": "2025-01-09",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 23, the Illegitimate Court Counteraction Act, which imposed sanctions on foreign nationals who help the International Criminal Court investigate, arrest, or prosecute Americans or citizens of allied countries that have not accepted the court's jurisdiction. It passed the House 243-140.",
-      "nay_description": "Voted against passing H.R. 23, the Illegitimate Court Counteraction Act, which imposed sanctions on foreign nationals who help the International Criminal Court investigate, arrest, or prosecute Americans or citizens of allied countries that have not accepted the court's jurisdiction. It passed the House 243-140.",
+      "yea_description": "Voted for H.R. 23, which imposed sanctions on people from other countries who help the International Criminal Court investigate, arrest, or prosecute Americans or citizens of allied countries that have not accepted the court's authority. The House passed it 243-140.",
+      "nay_description": "Voted against H.R. 23, which imposed sanctions on people from other countries who help the International Criminal Court investigate, arrest, or prosecute Americans or citizens of allied countries that have not accepted the court's authority. The House passed it 243-140.",
       "labels": [
         {
           "slug": "peaceful_foreign_policy",
@@ -25,8 +25,8 @@
       "measure_id": "H R 30",
       "vote_date": "2025-01-16",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 30, the Preventing Violence Against Women by Illegal Aliens Act, which made immigrants inadmissible or deportable for stalking, child abuse, child neglect, sex offenses, domestic violence, or violating a protection order. It passed the House 274-145.",
-      "nay_description": "Voted against passing H.R. 30, the Preventing Violence Against Women by Illegal Aliens Act, which made immigrants inadmissible or deportable for stalking, child abuse, child neglect, sex offenses, domestic violence, or violating a protection order. It passed the House 274-145.",
+      "yea_description": "Voted for H.R. 30, which barred immigrants from entering or allowed their removal for stalking, child abuse, child neglect, sex offenses, domestic violence, or violating a protection order. The House passed it 274-145.",
+      "nay_description": "Voted against H.R. 30, which barred immigrants from entering or allowed their removal for stalking, child abuse, child neglect, sex offenses, domestic violence, or violating a protection order. The House passed it 274-145.",
       "labels": [
         {
           "slug": "immigration",
@@ -46,8 +46,8 @@
       "measure_id": "H R 471",
       "vote_date": "2025-01-23",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 471, the Fix Our Forests Act, which designated high-risk firesheds for federal wildfire work while exempting many forest management projects from environmental review, narrowing endangered-species consultation, and limiting court challenges to those projects. It passed the House 279-141.",
-      "nay_description": "Voted against passing H.R. 471, the Fix Our Forests Act, which designated high-risk firesheds for federal wildfire work while exempting many forest management projects from environmental review, narrowing endangered-species consultation, and limiting court challenges to those projects. It passed the House 279-141.",
+      "yea_description": "Voted for H.R. 471, which marked high-risk wildfire areas for federal work while exempting many forest management projects from environmental review, narrowing checks for harm to endangered species, and limiting court challenges to those projects. The House passed it 279-141.",
+      "nay_description": "Voted against H.R. 471, which marked high-risk wildfire areas for federal work while exempting many forest management projects from environmental review, narrowing checks for harm to endangered species, and limiting court challenges to those projects. The House passed it 279-141.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -63,8 +63,8 @@
       "measure_id": "H R 26",
       "vote_date": "2025-02-07",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 26, the Protecting American Energy Production Act, which barred the President from declaring a moratorium on hydraulic fracturing without authorization from Congress and backed state authority over fracking regulation. It passed the House 226-188.",
-      "nay_description": "Voted against passing H.R. 26, the Protecting American Energy Production Act, which barred the President from declaring a moratorium on hydraulic fracturing without authorization from Congress and backed state authority over fracking regulation. It passed the House 226-188.",
+      "yea_description": "Voted for H.R. 26, the Protecting American Energy Production Act, which barred the President from declaring a halt to fracking without Congress's approval and backed state authority over fracking regulation. The House passed it 226-188.",
+      "nay_description": "Voted against H.R. 26, the Protecting American Energy Production Act, which barred the President from declaring a halt to fracking without Congress's approval and backed state authority over fracking regulation. The House passed it 226-188.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -80,8 +80,8 @@
       "measure_id": "H R 35",
       "vote_date": "2025-02-13",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.R. 35, the Agent Raul Gonzalez Officer Safety Act, which created a federal crime carrying mandatory minimum sentences for fleeing Border Patrol by vehicle within 100 miles of the border and made immigrants convicted of it deportable and ineligible for asylum. It passed the House 264-155.",
-      "nay_description": "Voted against passing H.R. 35, the Agent Raul Gonzalez Officer Safety Act, which created a federal crime carrying mandatory minimum sentences for fleeing Border Patrol by vehicle within 100 miles of the border and made immigrants convicted of it deportable and ineligible for asylum. It passed the House 264-155.",
+      "yea_description": "Voted for H.R. 35, the Agent Raul Gonzalez Officer Safety Act, which set required prison terms for fleeing Border Patrol by vehicle within 100 miles of the border and made immigrants convicted of it subject to removal and barred from asylum. The House passed it 264-155.",
+      "nay_description": "Voted against H.R. 35, the Agent Raul Gonzalez Officer Safety Act, which set required prison terms for fleeing Border Patrol by vehicle within 100 miles of the border and made immigrants convicted of it subject to removal and barred from asylum. The House passed it 264-155.",
       "labels": [
         {
           "slug": "public_safety_and_crime_control",
@@ -101,8 +101,8 @@
       "measure_id": "S.J.Res. 11",
       "vote_date": "2025-02-25",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.J.Res. 11, which used the Congressional Review Act to repeal the Bureau of Ocean Energy Management rule requiring companies to file an archaeological report with offshore oil and gas exploration and development plans. It passed the Senate 54-44.",
-      "nay_description": "Voted against passing S.J.Res. 11, which used the Congressional Review Act to repeal the Bureau of Ocean Energy Management rule requiring companies to file an archaeological report with offshore oil and gas exploration and development plans. It passed the Senate 54-44.",
+      "yea_description": "Voted for S.J.Res. 11 to cancel the federal ocean-energy agency rule requiring companies to file a report on possible historic sites with offshore oil and gas exploration and development plans. The Senate passed it 54-44.",
+      "nay_description": "Voted against S.J.Res. 11 to cancel the federal ocean-energy agency rule requiring companies to file a report on possible historic sites with offshore oil and gas exploration and development plans. The Senate passed it 54-44.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -118,8 +118,8 @@
       "measure_id": "H J RES 35",
       "vote_date": "2025-02-26",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.J.Res. 35, which used the Congressional Review Act to repeal the EPA rule implementing the waste emissions charge on methane released by oil and gas facilities. It passed the House 220-206.",
-      "nay_description": "Voted against passing H.J.Res. 35, which used the Congressional Review Act to repeal the EPA rule implementing the waste emissions charge on methane released by oil and gas facilities. It passed the House 220-206.",
+      "yea_description": "Voted for H.J.Res. 35 to cancel the federal environmental agency rule implementing the waste emissions charge on methane released by oil and gas facilities. The House passed it 220-206.",
+      "nay_description": "Voted against H.J.Res. 35 to cancel the federal environmental agency rule implementing the waste emissions charge on methane released by oil and gas facilities. The House passed it 220-206.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -135,8 +135,8 @@
       "measure_id": "S.J.Res. 10",
       "vote_date": "2025-02-26",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.J.Res. 10, which would have terminated the national energy emergency the President declared in Executive Order 14156 on January 20, 2025. It failed in the Senate 47-52.",
-      "nay_description": "Voted against passing S.J.Res. 10, which would have terminated the national energy emergency the President declared in Executive Order 14156 on January 20, 2025. It failed in the Senate 47-52.",
+      "yea_description": "Voted for S.J.Res. 10, which would end the energy emergency declared under Executive Order 14156 on January 20, 2025. The Senate rejected it 47-52, so it did not become law.",
+      "nay_description": "Voted against S.J.Res. 10, which would end the energy emergency declared under Executive Order 14156 on January 20, 2025. The Senate rejected it 47-52, so it did not become law.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -152,8 +152,8 @@
       "measure_id": "H J RES 20",
       "vote_date": "2025-02-27",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.J.Res. 20, which used the Congressional Review Act to repeal the Department of Energy efficiency standards for consumer gas-fired instantaneous water heaters. It passed the House 221-198.",
-      "nay_description": "Voted against passing H.J.Res. 20, which used the Congressional Review Act to repeal the Department of Energy efficiency standards for consumer gas-fired instantaneous water heaters. It passed the House 221-198.",
+      "yea_description": "Voted for H.J.Res. 20 to cancel the Department of Energy efficiency standards for consumer gas-fired instantaneous water heaters. The House passed it 221-198.",
+      "nay_description": "Voted against H.J.Res. 20 to cancel the Department of Energy efficiency standards for consumer gas-fired instantaneous water heaters. The House passed it 221-198.",
       "labels": [
         {
           "slug": "environment_and_public_health",

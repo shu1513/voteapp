@@ -1,0 +1,464 @@
+bill	status	title	ch	date	desc	roll	yea	nay	passed	cls	margin
+LD100	4	An Act to Increase the Expenditure Limit for the Informal Bidding Process for the Selection of Professional, Architect and Engineer Services	H	2025-03-25	Acc Maj Ought To Pass Rep	1526194	78	66	1	passage	0.846
+LD100	4	An Act to Increase the Expenditure Limit for the Informal Bidding Process for the Selection of Professional, Architect and Engineer Services	S	2025-03-27	Accept Majority Ought To Pass Report	1528984	19	14	1	passage	0.737
+LD100	4	An Act to Increase the Expenditure Limit for the Informal Bidding Process for the Selection of Professional, Architect and Engineer Services	H	2025-04-01	Enactment	1532910	72	68	1	passage	0.944
+LD1003	4	An Act Establishing the Retirement Improvement Fund	S	2025-06-03	Accept Majority Ought To Pass As Amended Report	1584208	19	14	1	passage	0.737
+LD1012	4	An Act to Fund the Operations of the University of Maine Cooperative Extension Tick Laboratory	S	2025-06-03	Accept Majority Ought To Pass As Amended Report	1584188	16	17	0	passage	0.941
+LD1012	4	An Act to Fund the Operations of the University of Maine Cooperative Extension Tick Laboratory	S	2025-06-04	Recede And Concur	1584965	19	14	1	concurrence	0.737
+LD1016	4	An Act to Establish the Manufactured Housing Community and Mobile Home Park Preservation and Assistance Fund	S	2025-06-05	Accept Majority Ought To Pass As Amended Report	1585717	19	13	1	passage	0.684
+LD1016	4	An Act to Establish the Manufactured Housing Community and Mobile Home Park Preservation and Assistance Fund	H	2025-06-10	Acc Maj Otp As Amended Rep	1587988	75	65	1	passage	0.867
+LD1016	4	An Act to Establish the Manufactured Housing Community and Mobile Home Park Preservation and Assistance Fund	S	2025-06-11	Recede And Concur	1588941	18	15	1	concurrence	0.833
+LD102	4	An Act to Notify the Public of Juveniles That Have Escaped a Department of Corrections Facility and to Direct the Department of Corrections to Study the Further Release of Juvenile Intelligence and Investigative Record Information	H	2026-03-17	"Acc Otp-am By Ca ""a"""	1664489	76	65	1	passage	0.855
+LD1023	4	Resolve, to Reestablish the Blue Economy Task Force to Support Maine's Emergence as a Center for Blue Economy Innovation and Opportunity in the 21st Century	H	2025-06-25	Recede And Concur	1595018	74	64	1	concurrence	0.865
+LD1044	4	An Act to Clarify the Qualifying Use of Tax Increment Financing for Extension of a Development District	H	2025-06-11	Acc Maj Ought To Pass Rep	1589196	73	65	1	passage	0.89
+LD1044	4	An Act to Clarify the Qualifying Use of Tax Increment Financing for Extension of a Development District	S	2025-06-12	Accept Majority Ought To Pass Report	1590079	25	10	1	passage	0.4
+LD1048	4	An Act to Require Certain Notice Requirements for Whistleblower Protections	H	2025-06-09	Acc Maj Otp As Amended Rep	1586720	75	68	1	passage	0.907
+LD1078	4	An Act to Support Maine's Public Health Objectives by Increasing Access to Hypodermic Apparatus Exchange Programs	H	2025-06-05	Acc Maj Otp As Amended Rep	1585483	74	65	1	passage	0.878
+LD1078	4	An Act to Support Maine's Public Health Objectives by Increasing Access to Hypodermic Apparatus Exchange Programs	S	2025-06-09	Accept Majority Ought To Pass As Amended Report	1586829	20	11	1	passage	0.55
+LD1080	4	An Act Prohibiting Public Utilities from Requiring Deposits Based Solely on a Residential Customer's Income	H	2025-05-14	Acc Maj Otp As Amended Rep	1571130	77	63	1	passage	0.818
+LD1080	4	An Act Prohibiting Public Utilities from Requiring Deposits Based Solely on a Residential Customer's Income	S	2025-05-20	Accept Majority Ought To Pass As Amended Report	1574010	18	14	1	passage	0.778
+LD1080	4	An Act Prohibiting Public Utilities from Requiring Deposits Based Solely on a Residential Customer's Income	S	2025-05-20	Passage To Be Engrossed As Amended	1574011	19	13	1	passage	0.684
+LD109	4	Resolve, Directing the Maine Arts Commission to Study Federal and National Efforts to Protect Artists from Copyright Infringement by Artificial Intelligence Companies and Users and to Monitor Educational Use	H	2025-04-22	Acc Maj Otp As Amended Rep	1553495	80	64	1	passage	0.8
+LD109	4	Resolve, Directing the Maine Arts Commission to Study Federal and National Efforts to Protect Artists from Copyright Infringement by Artificial Intelligence Companies and Users and to Monitor Educational Use	S	2025-04-23	Accept Majority Ought To Pass As Amended Report	1555283	18	14	1	passage	0.778
+LD109	4	Resolve, Directing the Maine Arts Commission to Study Federal and National Efforts to Protect Artists from Copyright Infringement by Artificial Intelligence Companies and Users and to Monitor Educational Use	H	2025-06-25	Recede And Concur	1594820	75	64	1	concurrence	0.853
+LD1097	4	Resolve, to Require the Department of Education to Convene a Group to Develop Best Practices for De-escalation and Behavior Intervention	H	2025-05-29	Acc Maj Otp As Amended Rep	1581091	76	69	1	passage	0.908
+LD1101	4	An Act to Address the Limited Availability of Counsel in Courts to Represent Indigent Parties in Matters Affecting Their Fundamental Rights	H	2025-04-10	Passage To Be Engrossed	1544873	113	32	1	passage	0.283
+LD1105	4	An Act Concerning Displaced Civilian Federal Firefighters in Maine	H	2025-06-02	Acc Maj Otp As Amended Rep	1583164	74	66	1	passage	0.892
+LD1105	4	An Act Concerning Displaced Civilian Federal Firefighters in Maine	S	2025-06-03	Accept Majority Ought To Pass As Amended Report	1584183	20	13	1	passage	0.65
+LD1113	4	An Act Regarding Fairness in Sentencing for Persons Based on Age	S	2025-06-09	Accept Majority Ought To Pass As Amended Report	1587071	19	15	1	passage	0.789
+LD1113	4	An Act Regarding Fairness in Sentencing for Persons Based on Age	H	2025-06-09	Acc Maj Otp As Amended Rep	1587070	74	71	1	passage	0.959
+LD1117	4	An Act to Strengthen Maine's Workforce Through Certified Preapprenticeship Training Programs	S	2025-06-03	Accept Majority Ought To Pass As Amended Report	1584137	24	8	1	passage	0.333
+LD1117	4	An Act to Strengthen Maine's Workforce Through Certified Preapprenticeship Training Programs	H	2025-06-04	Enactment	1585332	108	34	1	passage	0.315
+LD1126	4	An Act Requiring Serial Numbers on Firearms and Prohibiting Undetectable Firearms	S	2025-06-12	Accept Majority Ought To Pass As Amended Report	1590096	18	17	1	passage	0.944
+LD1126	4	An Act Requiring Serial Numbers on Firearms and Prohibiting Undetectable Firearms	H	2025-06-12	Acc Maj Otp As Amended Rep	1589819	77	70	1	passage	0.909
+LD1126	4	An Act Requiring Serial Numbers on Firearms and Prohibiting Undetectable Firearms	H	2025-06-17	Enactment	1591692	76	72	1	passage	0.947
+LD1126	4	An Act Requiring Serial Numbers on Firearms and Prohibiting Undetectable Firearms	H	2025-06-25	Recede And Concur	1594835	73	67	1	concurrence	0.918
+LD1126	4	An Act Requiring Serial Numbers on Firearms and Prohibiting Undetectable Firearms	S	2025-06-25	Enactment	1595032	17	16	1	passage	0.941
+LD1133	4	An Act to Allow Electric Vehicle Charging Stations by Condominium and Residential Associations	S	2025-06-04	Accept Majority Ought To Pass As Amended Report	1584824	21	13	1	passage	0.619
+LD1145	4	An Act to Protect Residents Living in Mobile Home Parks	S	2025-06-05	Accept Majority Ought To Pass As Amended Report	1585732	25	7	1	passage	0.28
+LD1145	4	An Act to Protect Residents Living in Mobile Home Parks	H	2025-06-09	Acc Maj Otp As Amended Rep	1586788	81	64	1	passage	0.79
+LD1146	4	An Act Regarding the Required State of Mind Relating to Robbery	S	2025-06-02	Accept Majority Ought To Pass As Amended Report	1583204	20	14	1	passage	0.7
+LD1159	4	An Act to Prohibit Governmental Entities That Charge a Fee for In-person Credit Card Purchases from Refusing to Accept Cash	H	2025-05-28	Recede And Concur	1579849	81	66	1	concurrence	0.815
+LD1164	4	An Act to Create Economic Opportunity for the Wabanaki Nations Through Internet Gaming	H	2025-06-12	Acc Maj Otp As Amended Rep	1589537	85	59	1	passage	0.694
+LD1164	4	An Act to Create Economic Opportunity for the Wabanaki Nations Through Internet Gaming	S	2025-06-12	Accept Majority Ought To Pass As Amended Report	1590120	17	17	0	passage	1.0
+LD1164	4	An Act to Create Economic Opportunity for the Wabanaki Nations Through Internet Gaming	H	2025-06-17	Enactment	1591729	87	60	1	passage	0.69
+LD1184	4	An Act to Require Municipal Reporting on Residential Building Permits, Dwelling Units Permitted and Demolished and Certificates of Occupancy Issued	H	2025-06-25	Recede And Concur	1594773	73	65	1	concurrence	0.89
+LD1185	4	An Act to Prohibit Persons Under 18 Years of Age from Marrying	H	2025-04-15	Acc Maj Ought To Pass Rep	1548445	93	52	1	passage	0.559
+LD1185	4	An Act to Prohibit Persons Under 18 Years of Age from Marrying	S	2025-04-17	Accept Majority Ought To Pass Report	1551474	23	11	1	passage	0.478
+LD1185	4	An Act to Prohibit Persons Under 18 Years of Age from Marrying	S	2025-04-23	Enactment	1555067	19	11	1	passage	0.579
+LD1187	4	An Act to Include Certain Mental Health Assessment Data in Firearm Fatalities and Hospitalizations Reports	H	2025-06-11	Acc Maj Otp As Amended Rep	1588755	75	67	1	passage	0.893
+LD1187	4	An Act to Include Certain Mental Health Assessment Data in Firearm Fatalities and Hospitalizations Reports	H	2026-02-10	Passage To Be Engrossed	1628136	75	64	1	passage	0.853
+LD1187	4	An Act to Include Certain Mental Health Assessment Data in Firearm Fatalities and Hospitalizations Reports	S	2026-02-12	Recede And Concur	1631647	19	13	1	concurrence	0.684
+LD1189	4	An Act to Allow an Attorney for the State to Determine Whether to Charge Certain Class E Crimes as Civil Violations	S	2025-06-17	Accept Majority Ought To Pass As Amended Report	1591756	19	15	1	passage	0.789
+LD1189	4	An Act to Allow an Attorney for the State to Determine Whether to Charge Certain Class E Crimes as Civil Violations	H	2025-06-17	Acc Maj Otp As Amended Rep	1591468	77	70	1	passage	0.909
+LD1202	4	Resolve, Requiring the Department of Education to Develop Professional Opportunities for Educators in African American Studies	H	2025-06-10	Acc Maj Otp As Amended Rep	1587514	74	69	1	passage	0.932
+LD1228	5	An Act to Clarify Certain Terms in and to Make Other Changes to the Automotive Right to Repair Laws	S	2025-06-17	Accept Majority Ought To Pass As Amended Report	1591915	21	14	1	passage	0.667
+LD1228	5	An Act to Clarify Certain Terms in and to Make Other Changes to the Automotive Right to Repair Laws	H	2026-01-13	Reconsideration - Veto	1613819	96	44	1	veto_override	0.458
+LD1228	5	An Act to Clarify Certain Terms in and to Make Other Changes to the Automotive Right to Repair Laws	S	2026-01-20	Reconsideration - Veto	1614471	10	24	0	veto_override	0.417
+LD1258	4	An Act to Include Qualified Out-of-state Electric Vehicle Providers and Clarify Provisions Regarding Electric Bicycles Under the Electric Vehicle Fund	H	2025-05-29	Acc Maj Ought To Pass Rep	1581289	75	69	1	passage	0.92
+LD1258	4	An Act to Include Qualified Out-of-state Electric Vehicle Providers and Clarify Provisions Regarding Electric Bicycles Under the Electric Vehicle Fund	S	2025-06-02	Accept Majority Ought To Pass Report	1583208	19	15	1	passage	0.789
+LD1265	4	An Act to Amend the Laws Governing Public Employee Market Pay Studies and Comprehensive Reviews of the Classification Plan for State Service Positions	S	2025-06-05	Accept Majority Ought To Pass As Amended Report	1585843	21	11	1	passage	0.524
+LD1266	4	Resolve, Directing the Department of Health and Human Services, Office of Behavioral Health to Convene a Working Group to Propose a Plan for Expanding the Reach of Treatment Courts	H	2025-06-16	Acc Maj Otp As Amended Rep	1590940	83	63	1	passage	0.759
+LD1270	4	An Act to Establish the Department of Energy Resources	H	2025-06-17	Acc Maj Otp As Amended Rep	1591487	77	69	1	passage	0.896
+LD1270	4	An Act to Establish the Department of Energy Resources	S	2025-06-17	Accept Majority Ought To Pass As Amended Report	1591927	16	19	0	passage	0.842
+LD1270	4	An Act to Establish the Department of Energy Resources	S	2025-06-18	Accept Majority Ought To Pass As Amended Report	1592074	19	15	1	passage	0.789
+LD1277	4	An Act Regarding Controlled Substances Prescription Monitoring Activities	H	2025-06-09	Acc Maj Otp As Amended Rep	1586470	79	66	1	passage	0.835
+LD1277	4	An Act Regarding Controlled Substances Prescription Monitoring Activities	S	2025-06-09	Accept Majority Ought To Pass As Amended Report	1587079	21	13	1	passage	0.619
+LD1328	5	An Act to Create Culturally Appropriate and Trauma-informed Housing and Recovery Services	H	2025-06-10	Acc Maj Otp As Amended Rep	1588003	75	65	1	passage	0.867
+LD1328	5	An Act to Create Culturally Appropriate and Trauma-informed Housing and Recovery Services	S	2025-06-11	Accept Majority Ought To Pass As Amended Report	1588975	19	14	1	passage	0.737
+LD1328	5	An Act to Create Culturally Appropriate and Trauma-informed Housing and Recovery Services	H	2025-06-25	Reconsideration - Veto	1594770	40	100	0	veto_override	0.4
+LD1343	4	An Act to Protect the Right to Harvest Fish and Wildlife	S	2026-03-03	Accept Majority Ought To Pass As Amended Report	1650775	15	19	0	passage	0.789
+LD1343	4	An Act to Protect the Right to Harvest Fish and Wildlife	S	2026-03-24	Recede And Concur	1668614	20	15	1	concurrence	0.75
+LD1343	4	An Act to Protect the Right to Harvest Fish and Wildlife	H	2026-03-26	Enactment	1671371	77	66	1	passage	0.857
+LD1353	4	An Act Regarding Required Landings in the Menhaden Fishery	H	2026-03-24	Acc Maj Otp As Amended Rep	1668772	79	63	1	passage	0.797
+LD1353	4	An Act Regarding Required Landings in the Menhaden Fishery	S	2026-04-06	Enactment	1676965	14	18	0	passage	0.778
+LD1366	4	An Act to Amend Certain Provisions of the Drug Laws Related to Cocaine Base	H	2025-06-02	Acc Maj Otp As Amended Rep	1583054	74	67	1	passage	0.905
+LD1366	4	An Act to Amend Certain Provisions of the Drug Laws Related to Cocaine Base	S	2025-06-03	Accept Majority Ought To Pass As Amended Report	1584436	16	15	1	passage	0.938
+LD1423	4	An Act to Improve Recycling by Updating the Stewardship Program for Packaging	H	2025-06-17	Acc Maj Otp As Amended Rep	1591787	88	59	1	passage	0.67
+LD143	4	An Act to Improve Women's Health and Economic Security by Funding Family Planning Services	S	2025-04-17	Accept Majority Ought To Pass As Amended Report	1551454	21	13	1	passage	0.619
+LD143	4	An Act to Improve Women's Health and Economic Security by Funding Family Planning Services	H	2025-04-22	Acc Maj Otp As Amended Rep	1553237	78	66	1	passage	0.846
+LD143	4	An Act to Improve Women's Health and Economic Security by Funding Family Planning Services	H	2025-04-23	Enactment	1555465	75	64	1	passage	0.853
+LD143	4	An Act to Improve Women's Health and Economic Security by Funding Family Planning Services	H	2025-06-25	Enactment	1594958	73	66	1	passage	0.904
+LD143	4	An Act to Improve Women's Health and Economic Security by Funding Family Planning Services	S	2025-06-25	Recede And Concur	1594955	18	14	1	concurrence	0.778
+LD143	4	An Act to Improve Women's Health and Economic Security by Funding Family Planning Services	S	2025-06-25	Enactment	1594956	19	14	1	passage	0.737
+LD1462	4	An Act to Promote Artisans and the Creative Economy	H	2025-05-27	"Acc Report ""a"" Ought To Pass"	1578928	73	61	1	passage	0.836
+LD1462	4	An Act to Promote Artisans and the Creative Economy	S	2025-05-28	Accept Report 'a' Ought To Pass	1580110	23	11	1	passage	0.478
+LD1471	4	An Act to Require Energy Efficiency Disclosure Statements for Certain Rental Housing in the State	S	2025-06-09	Accept Majority Ought To Pass As Amended Report	1586952	18	15	1	passage	0.833
+LD1473	4	An Act to Require Gas Utilities to Assess for Natural Gas Leaks and to Require Reporting of Gas Leak Information	H	2025-05-29	Acc Maj Otp As Amended Rep	1581605	76	68	1	passage	0.895
+LD1474	4	An Act to Strengthen the Teaching of Wabanaki Studies in Maine Schools	H	2025-06-10	Acc Maj Otp As Amended Rep	1587385	75	72	1	passage	0.96
+LD1494	4	Resolve, Directing the Office of Procurement Services to Study Adapting the Procurement Process to the State Climate Action Plan	H	2025-06-05	"Acc Report ""a"" Otp-am"	1586173	72	66	1	passage	0.917
+LD1494	4	Resolve, Directing the Office of Procurement Services to Study Adapting the Procurement Process to the State Climate Action Plan	S	2025-06-09	Accept Report 'a' Ought To Pass As Amended	1587212	19	15	1	passage	0.789
+LD1519	4	An Act to Create a Stewardship Program for Electronic Smoking Devices and Related Products	S	2025-06-09	Passage To Be Engrossed As Amended	1586809	19	12	1	passage	0.632
+LD1519	4	An Act to Create a Stewardship Program for Electronic Smoking Devices and Related Products	H	2025-06-10	Recede And Concur	1587593	74	67	1	concurrence	0.905
+LD1519	4	An Act to Create a Stewardship Program for Electronic Smoking Devices and Related Products	H	2026-04-14	Enactment	1682143	75	68	1	passage	0.907
+LD1519	4	An Act to Create a Stewardship Program for Electronic Smoking Devices and Related Products	S	2026-04-14	Enactment	1682144	21	13	1	passage	0.619
+LD1543	4	An Act to Establish the Maine Green Schools Network	S	2025-06-09	Accept Majority Ought To Pass As Amended Report	1587199	20	14	1	passage	0.7
+LD1543	4	An Act to Establish the Maine Green Schools Network	H	2025-06-10	Acc Maj Otp As Amended Rep	1587633	76	71	1	passage	0.934
+LD1566	4	An Act to Provide Compensation to Individuals with Lived Experience Serving on Certain Advisory Boards, Commissions, Councils and Similar Groups	H	2025-06-13	Acc Maj Otp As Amended Rep	1590333	75	72	1	passage	0.96
+LD1566	4	An Act to Provide Compensation to Individuals with Lived Experience Serving on Certain Advisory Boards, Commissions, Councils and Similar Groups	S	2025-06-13	Accept Majority Ought To Pass As Amended Report	1590610	18	13	1	passage	0.722
+LD1571	4	An Act to Modify Certification Standards for Full-time Teachers in Public Charter Schools and Standards for Reissuance of Educational Technician Certificates	S	2025-06-10	Accept Majority Ought To Pass As Amended Report	1587844	18	14	1	passage	0.778
+LD1587	4	An Act to Clarify the Bureau of Labor Standards' Investigatory and Enforcement Procedures	H	2026-02-24	"Otp-am By Ca ""a"""	1642384	64	65	0	passage	0.985
+LD1587	4	An Act to Clarify the Bureau of Labor Standards' Investigatory and Enforcement Procedures	S	2026-02-26	Accept Majority Ought To Pass As Amended Report	1646248	18	14	1	passage	0.778
+LD1587	4	An Act to Clarify the Bureau of Labor Standards' Investigatory and Enforcement Procedures	H	2026-03-05	Recede And Concur	1654878	72	68	1	concurrence	0.944
+LD163	4	An Act to Require Health Insurance Coverage for Federally Approved Nonprescription Oral Hormonal Contraceptives and Nonprescription Emergency Contraceptives	H	2025-05-13	Acc Min Otp As Amended Rep	1570088	73	69	1	passage	0.945
+LD163	4	An Act to Require Health Insurance Coverage for Federally Approved Nonprescription Oral Hormonal Contraceptives and Nonprescription Emergency Contraceptives	S	2025-05-14	Accept Minority Ought To Pass As Amended Report	1571240	21	13	1	passage	0.619
+LD1643	4	An Act to Establish the Maine Life Sciences Innovation Center	S	2026-03-18	Accept Majority Ought To Pass As Amended Report	1667272	22	10	1	passage	0.455
+LD166	4	An Act to Prohibit the Sale of Tobacco Products in Pharmacies and Retail Establishments Containing Pharmacies	H	2025-06-05	Acc Maj Otp As Amended Rep	1585539	72	68	1	passage	0.944
+LD166	4	An Act to Prohibit the Sale of Tobacco Products in Pharmacies and Retail Establishments Containing Pharmacies	S	2025-06-09	Accept Majority Ought To Pass As Amended Report	1586813	19	12	1	passage	0.632
+LD166	4	An Act to Prohibit the Sale of Tobacco Products in Pharmacies and Retail Establishments Containing Pharmacies	H	2025-06-25	Recede And Concur	1594847	71	68	1	concurrence	0.958
+LD166	4	An Act to Prohibit the Sale of Tobacco Products in Pharmacies and Retail Establishments Containing Pharmacies	S	2025-06-25	Enactment	1595041	17	16	1	passage	0.941
+LD1664	4	An Act to Amend the Dirigo Business Incentives Program	S	2025-06-03	Accept Majority Ought To Pass As Amended Report	1584148	23	9	1	passage	0.391
+LD1668	4	An Act Regarding the Voting Requirement to Extend the Date for Adjournment of the Legislature	S	2025-06-02	Accept Majority Ought To Pass As Amended Report	1583287	20	14	1	passage	0.7
+LD1668	4	An Act Regarding the Voting Requirement to Extend the Date for Adjournment of the Legislature	H	2025-06-04	Acc Maj Otp As Amended Rep	1584934	72	71	1	passage	0.986
+LD1668	4	An Act Regarding the Voting Requirement to Extend the Date for Adjournment of the Legislature	H	2025-06-09	Passage To Be Engrossed	1586899	73	72	1	passage	0.986
+LD1668	4	An Act Regarding the Voting Requirement to Extend the Date for Adjournment of the Legislature	H	2025-06-10	Enactment	1588009	73	71	1	passage	0.973
+LD1684	4	An Act to Implement Additional Criteria and Processes for the Supervised Community Confinement Program	S	2025-06-12	Accept Majority Ought To Pass As Amended Report	1590196	18	17	1	passage	0.944
+LD1697	4	An Act to Increase Penalties to Deter Violations of the Laws Regarding Improper Pesticide Use	H	2025-06-05	Acc Maj Otp As Amended Rep	1585529	74	67	1	passage	0.905
+LD1705	4	An Act Regarding Adult Education Funding and Oversight	H	2025-06-11	Final Enactment	1589331	105	34	1	passage	0.324
+LD1710	4	An Act Regarding the Authority to Transport Prisoners Confined in Jail and the Use of Physical Force with Respect to Prisoners and Persons Who Have Been Arrested	S	2025-06-16	Accept Minority Ought To Pass As Amended Report	1591191	19	16	1	passage	0.842
+LD1710	4	An Act Regarding the Authority to Transport Prisoners Confined in Jail and the Use of Physical Force with Respect to Prisoners and Persons Who Have Been Arrested	H	2025-06-16	Acc Min Otp As Amended Rep	1591190	76	72	1	passage	0.947
+LD1710	4	An Act Regarding the Authority to Transport Prisoners Confined in Jail and the Use of Physical Force with Respect to Prisoners and Persons Who Have Been Arrested	H	2025-06-17	Enactment	1591922	110	38	1	passage	0.345
+LD1723	4	An Act to Amend the Laws Governing Manufactured Housing Communities to Prevent Excessive Rent and Fees Increases	H	2025-06-13	Acc Maj Otp As Amended Rep	1590351	78	67	1	passage	0.859
+LD1723	4	An Act to Amend the Laws Governing Manufactured Housing Communities to Prevent Excessive Rent and Fees Increases	S	2025-06-13	Accept Majority Ought To Pass As Amended Report	1590627	20	12	1	passage	0.6
+LD1726	4	An Act to Enhance the Coordination and Effectiveness of Integrated Distribution Grid Planning	H	2025-06-04	Acc Maj Otp As Amended Rep	1584792	75	69	1	passage	0.92
+LD1726	4	An Act to Enhance the Coordination and Effectiveness of Integrated Distribution Grid Planning	S	2025-06-05	Accept Majority Ought To Pass As Amended Report	1585758	19	13	1	passage	0.684
+LD1730	4	An Act to Make Small Plug-in Solar Generation Devices Accessible for All Maine Residents to Address the Energy Affordability Crisis	S	2026-03-17	Accept Majority Ought To Pass As Amended Report	1664130	25	8	1	passage	0.32
+LD1730	4	An Act to Make Small Plug-in Solar Generation Devices Accessible for All Maine Residents to Address the Energy Affordability Crisis	H	2026-03-24	Enactment	1668608	79	65	1	passage	0.823
+LD1731	5	An Act to Increase the Influence of the Maine State Ferry Advisory Board on the Funding and Operations of the Maine State Ferry Service	S	2025-06-12	Enactment	1590166	16	18	0	passage	0.889
+LD1731	5	An Act to Increase the Influence of the Maine State Ferry Advisory Board on the Funding and Operations of the Maine State Ferry Service	S	2025-06-16	Enactment	1592655	19	14	1	passage	0.737
+LD1731	5	An Act to Increase the Influence of the Maine State Ferry Advisory Board on the Funding and Operations of the Maine State Ferry Service	S	2025-06-25	Veto Override (2/3)	1595273	16	16	0	veto_override	1.0
+LD1736	4	An Act to Increase the Supply of Child Care Services Through the Use of Contracts	H	2025-06-03	Acc Maj Ought To Pass Rep	1584019	77	68	1	passage	0.883
+LD1738	4	An Act to Establish the Biohazard Waste Disposal Grant Program to Support Public Health Efforts in the State	H	2025-06-05	Acc Maj Otp As Amended Rep	1585481	75	66	1	passage	0.88
+LD1738	4	An Act to Establish the Biohazard Waste Disposal Grant Program to Support Public Health Efforts in the State	H	2025-06-25	Recede And Concur	1594850	76	63	1	concurrence	0.829
+LD1748	4	An Act to Enhance Businesses' Understanding of Labor Standards and Grow Maine's Energy Economy Through Project Development Information Resources	H	2025-06-13	Acc Maj Otp As Amended Rep	1590599	75	69	1	passage	0.92
+LD1748	4	An Act to Enhance Businesses' Understanding of Labor Standards and Grow Maine's Energy Economy Through Project Development Information Resources	S	2025-06-16	Accept Majority Ought To Pass As Amended Report	1592670	19	14	1	passage	0.737
+LD1749	4	Resolve, Directing the Department of Corrections to Study Achieving Gender Equality	S	2025-06-17	Accept Majority Ought To Pass Report	1592064	20	15	1	passage	0.75
+LD1749	4	Resolve, Directing the Department of Corrections to Study Achieving Gender Equality	H	2025-06-17	Acc Maj Ought To Pass Rep	1592063	77	70	1	passage	0.909
+LD1765	4	An Act to Ensure Affordability and Stability in Residential Housing and in Manufactured Housing Communities	H	2025-06-13	Acc Maj Otp As Amended Rep	1590388	75	69	1	passage	0.92
+LD1768	4	An Act to Protect Residents of Mobile Home Parks by Amending the Real Estate Transfer Tax	S	2025-06-02	Accept Majority Ought To Pass As Amended Report	1583357	23	11	1	passage	0.478
+LD1768	4	An Act to Protect Residents of Mobile Home Parks by Amending the Real Estate Transfer Tax	H	2025-06-03	Acc Maj Otp As Amended Rep	1584131	79	69	1	passage	0.873
+LD1771	4	An Act to Strengthen Oversight of Kennels by Changing the Licensing Authority from Municipalities to the Department of Agriculture, Conservation and Forestry	H	2025-06-04	Acc Maj Otp As Amended Rep	1584800	71	69	1	passage	0.972
+LD1784	4	An Act to Require Police Departments to Publish and Make Accessible Their Policies and Procedures and Require Training of Officers	H	2025-06-13	Acc Maj Otp As Amended Rep	1590866	73	69	1	passage	0.945
+LD1784	4	An Act to Require Police Departments to Publish and Make Accessible Their Policies and Procedures and Require Training of Officers	S	2025-06-16	Accept Majority Ought To Pass As Amended Report	1591150	17	16	1	passage	0.941
+LD1787	4	An Act to Increase Seed Money Contribution Limits for Gubernatorial Candidates Under the Maine Clean Election Act	S	2025-06-05	Accept Majority Ought To Pass As Amended Report	1585699	20	12	1	passage	0.6
+LD1819	4	An Act Regarding the Brunswick Naval Air Station Job Increment Financing Fund	H	2025-06-05	Acc Maj Otp As Amended Rep	1585504	74	67	1	passage	0.905
+LD1840	4	An Act to Amend the Maine Medical Use of Cannabis Act	S	2025-06-13	Accept Ought To Pass As Amended Report	1590853	24	8	1	passage	0.333
+LD1849	4	An Act to Establish a Minimum Age at Which Conduct Constitutes a Juvenile Crime and to Confer Jurisdiction to the Juvenile Courts Over Any Criminal Offense Under Maine Law Committed by a Juvenile	S	2025-06-17	Accept Majority Ought To Pass As Amended Report	1591992	20	15	1	passage	0.75
+LD1849	4	An Act to Establish a Minimum Age at Which Conduct Constitutes a Juvenile Crime and to Confer Jurisdiction to the Juvenile Courts Over Any Criminal Offense Under Maine Law Committed by a Juvenile	H	2025-06-17	Acc Maj Otp As Amended Rep	1591991	76	71	1	passage	0.934
+LD186	4	An Act to Clarify the Public Utilities Commission's Authority to Establish Time-of-use Pricing for Standard-offer Service	H	2025-05-29	Acc Maj Otp As Amended Rep	1581024	77	69	1	passage	0.896
+LD186	4	An Act to Clarify the Public Utilities Commission's Authority to Establish Time-of-use Pricing for Standard-offer Service	S	2025-06-02	Accept Majority Ought To Pass As Amended Report	1583071	20	14	1	passage	0.7
+LD186	4	An Act to Clarify the Public Utilities Commission's Authority to Establish Time-of-use Pricing for Standard-offer Service	H	2025-06-02	Enactment	1583070	74	66	1	passage	0.892
+LD1868	4	An Act to Advance a Clean Energy Economy by Updating Renewable and Clean Resource Procurement Laws	H	2025-06-13	Acc Maj Otp As Amended Rep	1590589	74	68	1	passage	0.919
+LD1868	4	An Act to Advance a Clean Energy Economy by Updating Renewable and Clean Resource Procurement Laws	S	2025-06-13	Accept Majority Ought To Pass As Amended Report	1590588	19	16	1	passage	0.842
+LD1868	4	An Act to Advance a Clean Energy Economy by Updating Renewable and Clean Resource Procurement Laws	H	2025-06-16	Enactment	1590978	77	68	1	passage	0.883
+LD1868	4	An Act to Advance a Clean Energy Economy by Updating Renewable and Clean Resource Procurement Laws	S	2025-06-17	Enactment	1591936	19	16	1	passage	0.842
+LD1868	4	An Act to Advance a Clean Energy Economy by Updating Renewable and Clean Resource Procurement Laws	S	2025-06-17	Enactment	1591935	20	15	1	passage	0.75
+LD1870	4	Resolve, to Assess the Total Cost to the State of Greenhouse Gas Emissions	S	2026-03-30	Accept Majority Ought To Pass As Amended Report	1672597	19	13	1	passage	0.684
+LD1870	4	Resolve, to Assess the Total Cost to the State of Greenhouse Gas Emissions	H	2026-03-31	Acc Maj Otp As Amended Rep	1673584	75	72	1	passage	0.96
+LD1871	4	An Act to Permit Sealing Criminal History Record Information of Victims of Sex Trafficking or Sexual Exploitation	S	2025-06-16	Accept Majority Ought To Pass As Amended Report	1591254	22	12	1	passage	0.545
+LD1871	4	An Act to Permit Sealing Criminal History Record Information of Victims of Sex Trafficking or Sexual Exploitation	H	2025-06-17	Enactment	1591534	89	58	1	passage	0.652
+LD1886	4	An Act to Include Serious Bodily Injury in the Law Governing Motor Vehicle Violations Resulting in Death	H	2025-06-05	Acc Maj Otp As Amended Rep	1585729	108	32	1	passage	0.296
+LD1897	4	An Act Regarding Outdoor Cultivation in the Medical Use Cannabis and Adult Use Cannabis Industries	S	2025-06-16	Accept Majority Ought To Pass As Amended Report	1591234	21	14	1	passage	0.667
+LD1897	4	An Act Regarding Outdoor Cultivation in the Medical Use Cannabis and Adult Use Cannabis Industries	H	2025-06-16	Acc Min Otp As Amended Rep	1590960	110	35	1	passage	0.318
+LD1897	4	An Act Regarding Outdoor Cultivation in the Medical Use Cannabis and Adult Use Cannabis Industries	S	2025-06-16	Accept Majority Ought To Pass As Amended Report	1591232	8	27	0	passage	0.296
+LD1897	4	An Act Regarding Outdoor Cultivation in the Medical Use Cannabis and Adult Use Cannabis Industries	S	2025-06-16	Accept Minority Ought To Pass As Amended Report	1591233	17	18	0	passage	0.944
+LD1897	4	An Act Regarding Outdoor Cultivation in the Medical Use Cannabis and Adult Use Cannabis Industries	H	2025-06-16	Acc Maj Otp As Amended Rep	1590959	54	92	0	passage	0.587
+LD1900	4	An Act to Bring Parity to the State's Recognition of the Wabanaki Nations' Authority to Provide Electric Power Districts and Child Support Enforcement	H	2025-06-04	Acc Maj Ought To Pass Rep	1584884	75	67	1	passage	0.893
+LD1900	4	An Act to Bring Parity to the State's Recognition of the Wabanaki Nations' Authority to Provide Electric Power Districts and Child Support Enforcement	S	2025-06-05	Accept Majority Ought To Pass Report	1585711	20	12	1	passage	0.6
+LD1911	5	An Act to Automatically Seal Criminal History Record Information for Certain Crimes	S	2026-04-06	Accept Majority Ought To Pass As Amended Report	1677040	20	12	1	passage	0.6
+LD1911	5	An Act to Automatically Seal Criminal History Record Information for Certain Crimes	H	2026-04-07	Acc Maj Otp As Amended Rep	1677425	81	65	1	passage	0.802
+LD1911	5	An Act to Automatically Seal Criminal History Record Information for Certain Crimes	H	2026-04-07	Enactment	1678099	79	68	1	passage	0.861
+LD1911	5	An Act to Automatically Seal Criminal History Record Information for Certain Crimes	S	2026-04-29	Reconsideration - Veto	1691435	20	11	0	veto_override	0.55
+LD1923	4	An Act to Update Juvenile Justice System Reporting Requirements and to Direct the Department of Corrections and the Department of Health and Human Services to Study Modifying the Long Creek Youth Development Center	S	2026-03-18	Accept Majority Ought To Pass As Amended Report	1665351	19	13	1	passage	0.684
+LD1934	4	An Act to Promote Responsible Outdoor Lighting	H	2025-06-10	Acc Maj Otp As Amended Rep	1587542	66	78	0	passage	0.846
+LD1934	4	An Act to Promote Responsible Outdoor Lighting	S	2025-06-11	Passage To Be Engrossed As Amended	1588849	24	7	1	passage	0.292
+LD1934	4	An Act to Promote Responsible Outdoor Lighting	S	2025-06-11	Accept Majority Ought To Pass As Amended Report	1588848	22	9	1	passage	0.409
+LD1934	4	An Act to Promote Responsible Outdoor Lighting	H	2025-06-11	Recede And Concur	1589358	74	67	1	concurrence	0.905
+LD1934	4	An Act to Promote Responsible Outdoor Lighting	H	2025-06-13	Enactment	1590321	74	72	1	passage	0.973
+LD1937	4	An Act to Require Hospitals and Hospital-affiliated Providers to Provide Financial Assistance Programs for Medical Care	S	2025-06-12	Accept Majority Ought To Pass As Amended Report	1589984	21	14	1	passage	0.667
+LD1937	4	An Act to Require Hospitals and Hospital-affiliated Providers to Provide Financial Assistance Programs for Medical Care	H	2025-06-17	Acc Maj Otp As Amended Rep	1591741	75	72	1	passage	0.96
+LD1941	4	Resolve, Establishing the Commission to Examine the Intersection of Parole and Current Sentencing Practices	H	2026-04-07	"Acc Report ""c"" Otp-am By Ca ""b"""	1677645	77	71	1	passage	0.922
+LD1941	4	Resolve, Establishing the Commission to Examine the Intersection of Parole and Current Sentencing Practices	H	2026-04-07	"Acc Report ""b"" Otp-am By Ca ""a"""	1677644	54	94	0	passage	0.574
+LD1941	4	Resolve, Establishing the Commission to Examine the Intersection of Parole and Current Sentencing Practices	S	2026-04-08	Passage To Be Engrossed As Amended	1679517	20	15	1	passage	0.75
+LD1941	4	Resolve, Establishing the Commission to Examine the Intersection of Parole and Current Sentencing Practices	S	2026-04-08	Accept Report 'c' Ought To Pass As Amended	1679516	21	14	1	passage	0.667
+LD1949	4	An Act Regarding Energy Fairness	S	2025-06-16	Accept Report 'a' Ought To Pass As Amended	1591271	22	13	1	passage	0.591
+LD1949	4	An Act Regarding Energy Fairness	S	2026-03-05	Accept Majority Ought To Pass As Amended Report	1655394	21	12	1	passage	0.571
+LD1949	4	An Act Regarding Energy Fairness	H	2026-03-17	Enactment	1664341	86	56	1	passage	0.651
+LD1951	4	An Act to Promote Food Processing and Manufacturing Facility Expansion and Create Jobs	H	2025-06-25	Recede And Concur	1595125	96	43	1	concurrence	0.448
+LD1956	4	An Act to Amend the Law Governing the Competitive Skills Scholarship Program and Establish the Community Workforce Connections Program	H	2025-06-10	Enactment	1587797	79	66	1	passage	0.835
+LD1962	4	An Act to Increase Legislative Access to Department of Corrections Facilities and to Direct the Commissioner to Establish Rules Regarding Legislator Access to Correctional and Detention Facilities	S	2026-03-26	Accept Report 'a' Ought To Pass As Amended	1670758	21	14	1	passage	0.667
+LD1962	4	An Act to Increase Legislative Access to Department of Corrections Facilities and to Direct the Commissioner to Establish Rules Regarding Legislator Access to Correctional and Detention Facilities	H	2026-03-30	"Acc Report ""a"" Otp-am By Ca ""a"""	1672947	69	69	0	passage	1.0
+LD1966	4	An Act to Increase Disclosure of Utility Charges and Improve Access to Distributed Generation Resources in the State	H	2026-04-02	Acc Maj Otp As Amended Rep	1675621	76	68	1	passage	0.895
+LD1966	4	An Act to Increase Disclosure of Utility Charges and Improve Access to Distributed Generation Resources in the State	S	2026-04-06	Accept Majority Ought To Pass As Amended Report	1677077	20	12	1	passage	0.6
+LD1966	4	An Act to Increase Disclosure of Utility Charges and Improve Access to Distributed Generation Resources in the State	H	2026-04-07	Enactment	1677418	77	70	1	passage	0.909
+LD1967	4	Resolve, to Design a Maine Home Energy Navigator and Coaching Pilot Program	H	2025-06-10	Acc Maj Otp As Amended Rep	1587786	77	67	1	passage	0.87
+LD1968	4	An Act to Amend the Laws Regarding Legislative Reimbursement	H	2025-06-09	Acc Maj Otp As Amended Rep	1586831	75	69	1	passage	0.92
+LD1968	4	An Act to Amend the Laws Regarding Legislative Reimbursement	S	2025-06-16	Accept Majority Ought To Pass As Amended Report	1591337	18	14	1	passage	0.778
+LD1968	4	An Act to Amend the Laws Regarding Legislative Reimbursement	S	2025-06-25	Enactment	1595250	18	15	1	passage	0.833
+LD197	4	Resolve, to Direct the Governor's Energy Office to Conduct a Study Regarding the Future of Electric Transmission Infrastructure in the State	H	2025-05-29	Recede And Concur	1581000	73	64	0	concurrence	0.877
+LD1971	4	An Act to Protect Workers in This State by Clarifying the Relationship of State and Local Law Enforcement Agencies with Federal Immigration Authorities	S	2025-06-17	Passage To Be Engrossed As Amended	1591832	21	14	1	passage	0.667
+LD1971	4	An Act to Protect Workers in This State by Clarifying the Relationship of State and Local Law Enforcement Agencies with Federal Immigration Authorities	H	2025-06-17	Acc Maj Otp As Amended Rep	1591635	74	73	1	passage	0.986
+LD1971	4	An Act to Protect Workers in This State by Clarifying the Relationship of State and Local Law Enforcement Agencies with Federal Immigration Authorities	S	2025-06-17	Accept Majority Ought To Pass As Amended Report	1591831	21	14	1	passage	0.667
+LD1971	4	An Act to Protect Workers in This State by Clarifying the Relationship of State and Local Law Enforcement Agencies with Federal Immigration Authorities	S	2025-06-18	Enactment	1592547	20	14	1	passage	0.7
+LD1971	4	An Act to Protect Workers in This State by Clarifying the Relationship of State and Local Law Enforcement Agencies with Federal Immigration Authorities	H	2025-06-18	Enactment	1592017	75	73	1	passage	0.973
+LD1975	4	Resolve, Directing the Maine Connectivity Authority to Develop Recommendations to Transition Functions Performed by the ConnectMaine Authority to the Maine Connectivity Authority	H	2026-02-24	"Acc Rep ""a"" Otp-am By Ca ""a"""	1642699	65	64	1	passage	0.985
+LD1975	4	Resolve, Directing the Maine Connectivity Authority to Develop Recommendations to Transition Functions Performed by the ConnectMaine Authority to the Maine Connectivity Authority	S	2026-02-26	Accept Report 'a' Ought To Pass As Amended	1646559	19	13	1	passage	0.684
+LD1979	4	Resolve, Directing the Department of Corrections to Convene a Working Group to Examine the Establishment of a Program to Award Earned Time Credit for Educational Achievement to Persons Who Are Incarcerated	S	2025-06-03	Accept Majority Ought To Pass Report	1584016	20	13	1	passage	0.65
+LD1987	4	An Act to Fund Collective Bargaining Agreements with Executive Branch Employees and Continue the Voluntary Employee Incentive Program	H	2025-06-17	Recede And Concur	1591929	118	30	1	concurrence	0.254
+LD1993	4	An Act to Increase the Annual Cap on Funds Assessed for the Safety Education and Training Fund	S	2026-03-05	Accept Majority Ought To Pass As Amended Report	1655938	19	14	1	passage	0.737
+LD1993	4	An Act to Increase the Annual Cap on Funds Assessed for the Safety Education and Training Fund	H	2026-03-12	"Acc Otp-am By Ca ""a"""	1661648	74	67	1	passage	0.905
+LD2003	4	An Act to Improve Localization of Emergency Broadcast Messaging	S	2026-03-05	Accept Majority Ought To Pass As Amended Report	1655531	21	12	1	passage	0.571
+LD2007	4	An Act Regarding the Prohibition of Online Sweepstakes Games	H	2026-03-26	Acc Maj Otp As Amended Rep	1671160	87	55	1	passage	0.632
+LD2017	4	An Act to Update Certain Statutes Governing School Nutrition	H	2026-03-05	"Acc Otp-am By Ca ""a"""	1654609	74	68	1	passage	0.919
+LD2018	4	An Act to Amend the Requirements Governing Self-insurance Plans in the Paid Family and Medical Leave Benefits Program	H	2026-04-02	"Acc Maj Otp-am By Ca ""a"""	1676308	73	72	1	passage	0.986
+LD2018	4	An Act to Amend the Requirements Governing Self-insurance Plans in the Paid Family and Medical Leave Benefits Program	S	2026-04-08	Accept Majority Ought To Pass As Amended Report	1679447	19	15	1	passage	0.789
+LD2018	4	An Act to Amend the Requirements Governing Self-insurance Plans in the Paid Family and Medical Leave Benefits Program	H	2026-04-09	Enactment	1679847	76	73	1	passage	0.961
+LD2037	4	An Act to Update the Regional Greenhouse Gas Initiative Allowances	H	2026-02-10	Acc Maj Ought To Pass Rep	1628071	75	64	1	passage	0.853
+LD2037	4	An Act to Update the Regional Greenhouse Gas Initiative Allowances	S	2026-02-12	Accept Majority Ought To Pass Report	1631625	19	13	1	passage	0.684
+LD2037	4	An Act to Update the Regional Greenhouse Gas Initiative Allowances	H	2026-02-26	Enactment	1647559	71	66	1	passage	0.93
+LD2038	4	An Act to Require Maine Transmission and Distribution Utility Participation in a Regional Transmission Organization	H	2026-03-24	Acc Maj Otp As Amended Rep	1668832	77	67	1	passage	0.87
+LD2038	4	An Act to Require Maine Transmission and Distribution Utility Participation in a Regional Transmission Organization	S	2026-03-26	Accept Majority Ought To Pass As Amended Report	1670851	27	8	1	passage	0.296
+LD2038	4	An Act to Require Maine Transmission and Distribution Utility Participation in a Regional Transmission Organization	H	2026-03-30	Recede And Concur	1672441	74	65	1	concurrence	0.878
+LD2051	4	An Act to Ensure Access to the Supplemental Nutrition Assistance Program in Maine	H	2026-03-26	Acc Maj Otp As Amended Rep	1671273	76	67	1	passage	0.882
+LD2051	4	An Act to Ensure Access to the Supplemental Nutrition Assistance Program in Maine	S	2026-03-30	Accept Majority Ought To Pass As Amended Report	1672744	20	12	1	passage	0.6
+LD2054	4	An Act to Clarify the Laws Regarding Moose Hunting Permits for Hunting Outfitters	S	2026-04-14	Recede And Concur	1682097	24	10	1	concurrence	0.417
+LD2057	4	An Act to Support Rehabilitation and Development of Affordable Housing	S	2026-03-24	Accept Majority Ought To Pass As Amended Report	1668516	22	13	1	passage	0.591
+LD2057	4	An Act to Support Rehabilitation and Development of Affordable Housing	H	2026-03-25	"Acc Maj Otp-am By Ca ""a"""	1669503	74	67	1	passage	0.905
+LD2058	4	An Act to Clarify the Requirement That Municipal and County Jails Be Available at All Times for Detention of Arrested Persons	S	2026-03-30	Accept Majority Ought To Pass As Amended Report	1673194	20	12	1	passage	0.6
+LD2058	4	An Act to Clarify the Requirement That Municipal and County Jails Be Available at All Times for Detention of Arrested Persons	H	2026-03-31	Acc Maj Otp As Amended Rep	1673596	75	70	1	passage	0.933
+LD2058	4	An Act to Clarify the Requirement That Municipal and County Jails Be Available at All Times for Detention of Arrested Persons	H	2026-04-02	Enactment	1676321	77	71	1	passage	0.922
+LD2059	4	An Act to Provide Required Funding for the Reimbursement of Assigned Counsel	H	2026-03-03	"Otp-am By Ca ""a"""	1650875	77	67	1	passage	0.87
+LD2063	4	An Act to Clarify Activities Allowed Under the Natural Resources Protection Act	S	2026-03-05	Accept Majority Ought To Pass As Amended Report	1655117	20	13	1	passage	0.65
+LD2063	4	An Act to Clarify Activities Allowed Under the Natural Resources Protection Act	H	2026-03-12	"Acc Otp-am By Ca ""a"""	1661188	73	68	1	passage	0.932
+LD2071	4	An Act to Expand Access to Vaccines Approved by the United States Food and Drug Administration by Allowing Pharmacists to Prescribe, Dispense and Administer Vaccines and Require Insurance Coverage	H	2026-04-02	Acc Maj Otp As Amended Rep	1675666	96	48	1	passage	0.5
+LD2079	4	An Act to Amend the Laws Governing Municipal Reporting on Residential Buildings	H	2026-03-05	Acc Maj Ought To Pass Rep	1654612	72	70	1	passage	0.972
+LD2079	4	An Act to Amend the Laws Governing Municipal Reporting on Residential Buildings	S	2026-03-10	Accept Majority Ought To Pass Report	1658357	18	13	1	passage	0.722
+LD2080	4	An Act to Protect Consumers by Prohibiting the Use of Credit Cards in Sports Wagering and Internet Gaming	H	2026-03-18	Acc Maj Otp As Amended Rep	1665677	90	53	1	passage	0.589
+LD2097	4	An Act to Modify the Law Governing Revocation of a Code Enforcement Officer's Certification	S	2026-04-06	Accept Majority Ought To Pass As Amended Report	1676896	20	10	1	passage	0.5
+LD2098	4	An Act to Update Certain Higher Education Statutes and Laws	H	2026-03-17	Acc Maj Otp As Amended Rep	1664536	75	67	1	passage	0.893
+LD2098	4	An Act to Update Certain Higher Education Statutes and Laws	S	2026-03-18	Accept Majority Ought To Pass As Amended Report	1665254	20	12	1	passage	0.6
+LD2099	4	An Act to Amend Certain Eligibility Requirements for Secondary Students Receiving State Subsidies for Postsecondary Courses	S	2026-03-18	Accept Majority Ought To Pass As Amended Report	1665516	24	8	1	passage	0.333
+LD21	4	An Act to Update the Provision of Law Concerning Student Codes of Conduct in Order to Reflect Best Practices Regarding Behavioral Threat Assessment and Response	S	2025-05-21	Accept Majority Ought To Pass Report	1575341	18	14	1	passage	0.778
+LD21	4	An Act to Update the Provision of Law Concerning Student Codes of Conduct in Order to Reflect Best Practices Regarding Behavioral Threat Assessment and Response	H	2025-05-22	Acc Maj Ought To Pass Rep	1576079	79	65	1	passage	0.823
+LD210	4	An Act Making Unified Appropriations and Allocations from the General Fund and Other Funds for the Expenditures of State Government and Changing Certain Provisions of the Law Necessary to the Proper Operations of State Government for the Fiscal Years Ending June 30, 2025, June 30, 2026 and June 30, 2027	H	2025-06-18	Recede And Concur	1592455	75	73	1	concurrence	0.973
+LD210	4	An Act Making Unified Appropriations and Allocations from the General Fund and Other Funds for the Expenditures of State Government and Changing Certain Provisions of the Law Necessary to the Proper Operations of State Government for the Fiscal Years Ending June 30, 2025, June 30, 2026 and June 30, 2027	S	2025-06-18	Enactment	1592691	19	15	1	passage	0.789
+LD210	4	An Act Making Unified Appropriations and Allocations from the General Fund and Other Funds for the Expenditures of State Government and Changing Certain Provisions of the Law Necessary to the Proper Operations of State Government for the Fiscal Years Ending June 30, 2025, June 30, 2026 and June 30, 2027	H	2025-06-18	Acc Maj Otp As Amended Rep	1592060	71	77	0	passage	0.922
+LD210	4	An Act Making Unified Appropriations and Allocations from the General Fund and Other Funds for the Expenditures of State Government and Changing Certain Provisions of the Law Necessary to the Proper Operations of State Government for the Fiscal Years Ending June 30, 2025, June 30, 2026 and June 30, 2027	S	2025-06-18	Accept Majority Ought To Pass As Amended Report	1592457	19	15	1	passage	0.789
+LD210	4	An Act Making Unified Appropriations and Allocations from the General Fund and Other Funds for the Expenditures of State Government and Changing Certain Provisions of the Law Necessary to the Proper Operations of State Government for the Fiscal Years Ending June 30, 2025, June 30, 2026 and June 30, 2027	H	2025-06-18	Enactment	1592456	74	73	1	passage	0.986
+LD2102	4	An Act to Clarify and Strengthen the Government Shutdown Loan Guarantee Program	H	2026-03-05	"Acc Otp-am By Ca ""a"""	1654815	106	36	1	passage	0.34
+LD2106	4	An Act to Limit Consent for Entry into Nonpublic Areas of and to Limit Access to Protected Records Maintained by Certain Public Entities	H	2026-04-08	Acc Maj Otp As Amended Rep	1678789	77	70	1	passage	0.909
+LD2106	4	An Act to Limit Consent for Entry into Nonpublic Areas of and to Limit Access to Protected Records Maintained by Certain Public Entities	S	2026-04-08	Accept Majority Ought To Pass As Amended Report	1679434	20	14	1	passage	0.7
+LD2106	4	An Act to Limit Consent for Entry into Nonpublic Areas of and to Limit Access to Protected Records Maintained by Certain Public Entities	H	2026-04-09	Enactment	1679820	79	69	1	passage	0.873
+LD2107	4	An Act to Establish the Maine Nonprofit Security Grant Program	H	2026-03-24	Acc Maj Otp As Amended Rep	1668769	76	68	1	passage	0.895
+LD2107	4	An Act to Establish the Maine Nonprofit Security Grant Program	S	2026-03-25	Accept Majority Ought To Pass As Amended Report	1669869	21	14	1	passage	0.667
+LD2109	4	"An Act to Define ""Public Education"" and Clarify That a Private School Receiving Approval for Public Tuition Must Be Located in the State"	S	2026-03-17	Accept Majority Ought To Pass As Amended Report	1664201	22	11	1	passage	0.5
+LD2112	4	An Act to Authorize Municipalities to Form Community Choice Aggregation Programs to Procure Electricity	H	2026-03-30	Acc Maj Otp As Amended Rep	1672431	76	62	1	passage	0.816
+LD2112	4	An Act to Authorize Municipalities to Form Community Choice Aggregation Programs to Procure Electricity	S	2026-04-02	Accept Majority Ought To Pass As Amended Report	1676317	21	12	1	passage	0.571
+LD2114	4	An Act Regarding Public Preschool Programs Serving Children Who Are 3 Years of Age	H	2026-03-18	Acc Maj Otp As Amended Rep	1665597	75	67	1	passage	0.893
+LD2114	4	An Act Regarding Public Preschool Programs Serving Children Who Are 3 Years of Age	S	2026-03-19	Accept Majority Ought To Pass As Amended Report	1666449	18	14	1	passage	0.778
+LD2114	4	An Act Regarding Public Preschool Programs Serving Children Who Are 3 Years of Age	H	2026-03-24	Enactment	1668557	75	68	1	passage	0.907
+LD2116	4	An Act to Extend the Sunset Date of the Affordable Housing Income Tax Credit	H	2026-03-30	Acc Maj Otp As Amended Rep	1672493	73	66	1	passage	0.904
+LD2132	4	An Act to Amend the Maine Emergency Medical Services Act of 1982 to Modify Penalties for Unauthorized Operation or Practice of Emergency Medical Services, to Direct Maine Emergency Medical Services to Evaluate Improvements to Maine's Trauma System Reporting and to Make Certain Technical Changes	S	2026-03-30	Accept Majority Ought To Pass As Amended Report	1672956	19	12	1	passage	0.632
+LD2136	4	An Act to Support Victims of Trafficking in Maine in Response to Federal Funding Cuts	H	2026-03-17	Acc Maj Otp As Amended Rep	1664807	81	61	1	passage	0.753
+LD2140	4	Resolve, to Establish a Demand Response Program to Lower Electric Bills and Improve Grid Reliability	S	2026-03-30	Accept Majority Ought To Pass As Amended Report	1672972	19	11	1	passage	0.579
+LD2140	4	Resolve, to Establish a Demand Response Program to Lower Electric Bills and Improve Grid Reliability	H	2026-04-02	Acc Maj Otp As Amended Rep	1675595	75	67	1	passage	0.893
+LD2146	4	An Act to Increase Access to Critical Vaccinations	S	2026-04-02	Accept Majority Ought To Pass As Amended Report	1676026	23	10	1	passage	0.435
+LD2146	4	An Act to Increase Access to Critical Vaccinations	H	2026-04-02	Acc Maj Otp As Amended Rep	1676325	86	58	1	passage	0.674
+LD2148	4	An Act to Amend the Laws Governing the Health Insurance Premium Cap for State Employees	S	2026-04-06	Accept Report 'a' Ought To Pass As Amended	1676831	21	10	1	passage	0.476
+LD2148	4	An Act to Amend the Laws Governing the Health Insurance Premium Cap for State Employees	H	2026-04-07	"Acc Report ""a"" Otp-am By Ca ""a"""	1677851	75	71	1	passage	0.947
+LD2149	4	An Act to Protect Affordability in Mobile Home Parks and Manufactured Housing Communities	H	2026-04-08	Recede And Concur	1679050	77	71	1	concurrence	0.922
+LD215	4	An Act Regarding Large Recovery Residences	H	2025-06-11	Acc Maj Otp As Amended Rep	1589170	76	65	1	passage	0.855
+LD215	4	An Act Regarding Large Recovery Residences	S	2025-06-12	Accept Majority Ought To Pass As Amended Report	1590154	22	13	1	passage	0.591
+LD2150	4	An Act to Enhance Notice to Individuals Whose Access to State Property Has Been Restricted	S	2026-04-09	Accept Majority Ought To Pass As Amended Report	1680145	21	13	1	passage	0.619
+LD2155	4	An Act to Exempt, for Licenses Issued Prior to December 21, 2025, Persons Holding a Majority Ownership Interest from the Restriction on the Number of Manufacturing Facility Licenses and On-premises Retail Licenses	S	2026-04-13	Enactment	1681017	20	14	1	passage	0.7
+LD2156	4	An Act to Provide for the 2026 and 2027 Allocations of the State Ceiling on Private Activity Bonds	S	2026-03-17	Enactment-emergency	1664082	19	14	0	passage	0.737
+LD2157	4	An Act to Prohibit the Unauthorized Use of Drones on or over the Premises of Correctional Facilities and Jails	H	2026-03-25	"Acc Report ""a"" Otp-am By Ca ""a"""	1669570	65	75	0	passage	0.867
+LD2157	4	An Act to Prohibit the Unauthorized Use of Drones on or over the Premises of Correctional Facilities and Jails	H	2026-03-25	"Acc Report ""b"" Otp-am By Ca ""b"""	1669571	71	69	1	passage	0.972
+LD2157	4	An Act to Prohibit the Unauthorized Use of Drones on or over the Premises of Correctional Facilities and Jails	S	2026-04-06	Accept Report 'a' Ought To Pass As Amended	1677135	20	12	1	passage	0.6
+LD2175	4	Resolve, Regarding Legislative Review of Portions of Chapter 115: The Credentialing of Education Personnel, a Major Substantive Rule of the Department of Education, State Board of Education	H	2026-04-02	"Acc Maj Otp-am By Ca ""a"""	1675972	80	63	1	passage	0.787
+LD2176	4	An Act to Safeguard Personal Information and Strengthen Tenant Rights in Maine	S	2026-04-07	Accept Majority Ought To Pass As Amended Report	1678354	20	14	1	passage	0.7
+LD2176	4	An Act to Safeguard Personal Information and Strengthen Tenant Rights in Maine	H	2026-04-08	Enactment	1678710	75	73	1	passage	0.973
+LD2176	4	An Act to Safeguard Personal Information and Strengthen Tenant Rights in Maine	H	2026-04-08	Acc Maj Otp As Amended Rep	1678709	76	73	1	passage	0.961
+LD2187	4	An Act to Update Certain Water Quality Standards and to Reclassify Certain Waters of the State	S	2026-03-24	Accept Minority Ought To Pass As Amended Report	1668561	13	22	0	passage	0.591
+LD2187	4	An Act to Update Certain Water Quality Standards and to Reclassify Certain Waters of the State	H	2026-03-25	Acc Maj Ought To Pass Rep	1669637	106	34	1	passage	0.321
+LD2200	4	An Act Relating to Noncompete Agreements Between Employers and Health Care Practitioners	H	2026-03-30	Acc Maj Otp-am Report	1672603	73	68	1	passage	0.932
+LD2209	4	Resolve, to Direct the Department of Health and Human Services to Develop Innovative Models for the Delivery of Dental Services to Expand Access to Oral Health Care Throughout the State	S	2026-03-25	Accept Majority Ought To Pass As Amended Report	1669599	22	13	1	passage	0.591
+LD2211	4	An Act Implementing the Recommendations of the Automotive Right to Repair Working Group	H	2026-04-02	Acc Maj Ought To Pass Rep	1676242	76	68	1	passage	0.895
+LD2212	4	An Act Making Supplemental Appropriations and Allocations from the General Fund and Other Funds for the Expenditures of State Government and Changing Certain Provisions of the Law Necessary to the Proper Operations of State Government for the Fiscal Years Ending June 30, 2026 and June 30, 2027	H	2026-04-08	Enactment	1679481	76	71	1	passage	0.934
+LD2212	4	An Act Making Supplemental Appropriations and Allocations from the General Fund and Other Funds for the Expenditures of State Government and Changing Certain Provisions of the Law Necessary to the Proper Operations of State Government for the Fiscal Years Ending June 30, 2026 and June 30, 2027	H	2026-04-08	"Acc Otp-am By Ca ""a"""	1679459	76	73	1	passage	0.961
+LD2212	4	An Act Making Supplemental Appropriations and Allocations from the General Fund and Other Funds for the Expenditures of State Government and Changing Certain Provisions of the Law Necessary to the Proper Operations of State Government for the Fiscal Years Ending June 30, 2026 and June 30, 2027	S	2026-04-08	Accept Majority Ought To Pass As Amended Report	1679482	19	15	1	passage	0.789
+LD2212	4	An Act Making Supplemental Appropriations and Allocations from the General Fund and Other Funds for the Expenditures of State Government and Changing Certain Provisions of the Law Necessary to the Proper Operations of State Government for the Fiscal Years Ending June 30, 2026 and June 30, 2027	S	2026-04-08	Passage To Be Engrossed As Amended	1679488	18	16	1	passage	0.889
+LD2212	4	An Act Making Supplemental Appropriations and Allocations from the General Fund and Other Funds for the Expenditures of State Government and Changing Certain Provisions of the Law Necessary to the Proper Operations of State Government for the Fiscal Years Ending June 30, 2026 and June 30, 2027	S	2026-04-09	Enactment	1680127	18	16	1	passage	0.889
+LD2216	4	An Act to Establish the Maine Blue Economy Center	S	2026-04-06	Accept Majority Ought To Pass As Amended Report	1677002	20	12	1	passage	0.6
+LD2216	4	An Act to Establish the Maine Blue Economy Center	H	2026-04-07	Acc Maj Otp As Amended Rep	1677401	78	68	1	passage	0.872
+LD2220	4	An Act to Establish the Maine Home Energy Navigator and Coaching Resource Hub	S	2026-04-13	Enactment	1681180	20	14	1	passage	0.7
+LD2224	4	An Act to Reduce Certain Costs Associated with Residential Construction	S	2026-04-02	Accept Majority Ought To Pass As Amended Report	1676124	19	14	1	passage	0.737
+LD2225	4	An Act to Support Municipal Enforcement of Residential Construction Laws, Codes and Regulations	S	2026-04-02	Accept Majority Ought To Pass As Amended Report	1676280	19	14	1	passage	0.737
+LD2231	4	An Act to Support Owners of Manufactured Housing, Mobile Homes and Tiny Homes	S	2026-04-08	Accept Majority Ought To Pass As Amended Report	1679427	20	14	1	passage	0.7
+LD2231	4	An Act to Support Owners of Manufactured Housing, Mobile Homes and Tiny Homes	H	2026-04-08	"Acc Maj Otp-am By Ca ""a"""	1678714	78	67	1	passage	0.859
+LD2240	4	Resolve, Regarding Legislative Review of Chapter 10: Significant Wildlife Habitat, a Late-filed Major Substantive Rule of the Department of Inland Fisheries and Wildlife	H	2026-03-30	Acc Maj Ought To Pass Rep	1672407	73	66	1	passage	0.904
+LD2240	4	Resolve, Regarding Legislative Review of Chapter 10: Significant Wildlife Habitat, a Late-filed Major Substantive Rule of the Department of Inland Fisheries and Wildlife	S	2026-04-02	Accept Majority Ought To Pass Report	1676003	22	11	1	passage	0.5
+LD241	4	An Act to Authorize the Public Utilities Commission to Approve Rate Adjustments for Low-income Water Utility Ratepayers	S	2025-05-21	Accept Majority Ought To Pass As Amended Report	1575019	19	12	1	passage	0.632
+LD246	4	An Act to Establish the Option of Sentencing Alternatives for Primary Caregivers	S	2025-06-04	Accept Report 'a' Ought To Pass As Amended	1584640	20	14	1	passage	0.7
+LD246	4	An Act to Establish the Option of Sentencing Alternatives for Primary Caregivers	H	2025-06-05	"Acc Report ""a"" Otp-am"	1585367	74	67	1	passage	0.905
+LD259	4	An Act to Establish the Criminal Records Review Commission in Statute	S	2025-06-09	Accept Majority Ought To Pass As Amended Report	1587038	19	15	1	passage	0.789
+LD259	4	An Act to Establish the Criminal Records Review Commission in Statute	H	2025-06-10	Acc Maj Otp As Amended Rep	1587504	78	68	1	passage	0.872
+LD297	4	An Act Regarding the Management of Wastewater Treatment Plant Sludge at the State-owned Landfill	H	2025-06-09	Acc Maj Otp As Amended Rep	1586754	100	44	1	passage	0.44
+LD297	4	An Act Regarding the Management of Wastewater Treatment Plant Sludge at the State-owned Landfill	S	2025-06-11	Accept Majority Ought To Pass As Amended Report	1588949	22	10	1	passage	0.455
+LD297	4	An Act Regarding the Management of Wastewater Treatment Plant Sludge at the State-owned Landfill	S	2025-06-11	Passage To Be Engrossed As Amended	1588952	23	9	1	passage	0.391
+LD297	4	An Act Regarding the Management of Wastewater Treatment Plant Sludge at the State-owned Landfill	H	2025-06-11	Enactment - Emer	1588948	85	57	0	passage	0.671
+LD297	4	An Act Regarding the Management of Wastewater Treatment Plant Sludge at the State-owned Landfill	S	2025-06-12	Passage To Be Engrossed As Amended	1590015	25	10	1	passage	0.4
+LD297	4	An Act Regarding the Management of Wastewater Treatment Plant Sludge at the State-owned Landfill	S	2025-06-16	Enactment	1591226	24	10	1	passage	0.417
+LD301	4	An Act to Allow the Public Utilities Commission to Use Quantitative Metrics and Rate-adjustment Mechanisms in a Proceeding for a General Rate Increase	H	2025-05-22	Acc Maj Otp As Amended Rep	1575839	68	73	0	passage	0.932
+LD301	4	An Act to Allow the Public Utilities Commission to Use Quantitative Metrics and Rate-adjustment Mechanisms in a Proceeding for a General Rate Increase	S	2025-05-27	Accept Majority Ought To Pass As Amended Report	1578767	21	13	1	passage	0.619
+LD301	4	An Act to Allow the Public Utilities Commission to Use Quantitative Metrics and Rate-adjustment Mechanisms in a Proceeding for a General Rate Increase	H	2025-05-28	Recede And Concur	1579856	73	74	0	concurrence	0.986
+LD307	5	An Act to Establish the Maine Data Center Coordination Council and Place a Temporary Limitation on Certain Data Centers	H	2026-03-26	"Report ""a"" Otp-am By Ca ""a"""	1671375	80	62	1	passage	0.775
+LD307	5	An Act to Establish the Maine Data Center Coordination Council and Place a Temporary Limitation on Certain Data Centers	H	2026-04-06	Passage To Be Engrossed	1676924	82	62	1	passage	0.756
+LD307	5	An Act to Establish the Maine Data Center Coordination Council and Place a Temporary Limitation on Certain Data Centers	S	2026-04-08	Accept Report 'a' Ought To Pass As Amended	1679401	21	14	1	passage	0.667
+LD307	5	An Act to Establish the Maine Data Center Coordination Council and Place a Temporary Limitation on Certain Data Centers	H	2026-04-08	Enactment	1679400	83	66	1	passage	0.795
+LD307	5	An Act to Establish the Maine Data Center Coordination Council and Place a Temporary Limitation on Certain Data Centers	H	2026-04-14	Enactment	1682007	79	62	1	passage	0.785
+LD307	5	An Act to Establish the Maine Data Center Coordination Council and Place a Temporary Limitation on Certain Data Centers	S	2026-04-14	Enactment	1682479	21	13	1	passage	0.619
+LD307	5	An Act to Establish the Maine Data Center Coordination Council and Place a Temporary Limitation on Certain Data Centers	H	2026-04-29	Reconsideration-veto	1691461	72	65	0	veto_override	0.903
+LD32	4	An Act Regarding the Interconnection Ombudsman Position at the Public Utilities Commission	S	2026-03-30	Accept Majority Ought To Pass As Amended Report	1672720	19	12	1	passage	0.632
+LD32	4	An Act Regarding the Interconnection Ombudsman Position at the Public Utilities Commission	H	2026-04-02	Acc Maj Otp As Amended Rep	1675764	75	68	1	passage	0.907
+LD324	4	An Act Regarding Funding for Educational Programs and Opportunities	H	2025-06-02	Acc Maj Otp As Amended Rep	1583233	77	64	1	passage	0.831
+LD343	4	An Act to Incorporate the Assessment of Emerging Energy Technologies into the Comprehensive State Energy Plan	H	2025-05-28	Acc Maj Otp As Amended Rep	1580113	77	68	1	passage	0.883
+LD384	4	An Act to Prevent Student Homelessness	H	2025-05-29	Acc Maj Otp As Amended Rep	1581113	81	62	1	passage	0.765
+LD385	4	An Act to Protect Communications by Alleged Victims Regarding Sexual Assault, Sexual Harassment, Sexual Misconduct, Cyberbullying or Discrimination from Litigation	H	2025-06-05	Acc Maj Ought To Pass Rep	1585510	72	70	1	passage	0.972
+LD395	4	Resolve, Establishing the Working Group to Develop Recommendations for Extending Federal Beneficial Laws to the Wabanaki Nations	H	2026-04-13	Final Passage - Emer	1681153	91	54	0	passage	0.593
+LD396	4	Resolve, Directing the Department of Education to Develop a Grant Program to Encourage Secondary Schools to Adopt Later Start Times	S	2025-06-03	Accept Report 'a' Ought To Pass As Amended	1584178	20	13	1	passage	0.65
+LD405	4	An Act to Require Reporting on the Uses of Prisoner Segregation	H	2025-06-02	Acc Maj Otp As Amended Rep	1583368	73	63	1	passage	0.863
+LD405	4	An Act to Require Reporting on the Uses of Prisoner Segregation	S	2025-06-03	Accept Majority Ought To Pass As Amended Report	1584103	19	13	1	passage	0.684
+LD411	4	Resolve, Directing the Attorney General to Update Rules Relating to the Disposition of Forfeited Firearms	S	2025-06-12	Accept Majority Ought To Pass As Amended Report	1589976	13	21	0	passage	0.619
+LD411	4	Resolve, Directing the Attorney General to Update Rules Relating to the Disposition of Forfeited Firearms	H	2025-06-12	Acc Maj Otp As Amended Rep	1589629	68	78	0	passage	0.872
+LD427	4	An Act to Regulate Municipal Parking Space Minimums	H	2025-06-10	Acc Maj Otp As Amended Rep	1587668	63	83	0	passage	0.759
+LD427	4	An Act to Regulate Municipal Parking Space Minimums	S	2025-06-12	Accept Majority Ought To Pass As Amended Report	1590110	19	16	1	passage	0.842
+LD427	4	An Act to Regulate Municipal Parking Space Minimums	H	2025-06-13	Recede And Concur	1590609	72	70	1	concurrence	0.972
+LD427	4	An Act to Regulate Municipal Parking Space Minimums	H	2025-06-16	Recede And Concur	1591136	82	65	1	concurrence	0.793
+LD427	4	An Act to Regulate Municipal Parking Space Minimums	H	2025-06-16	Enactment	1590996	71	74	0	passage	0.959
+LD470	4	Resolve, Directing the Department of Education to Review Teacher Mentoring Programs in Maine Public Schools	S	2025-06-05	Accept Majority Ought To Pass As Amended Report	1585870	19	13	1	passage	0.684
+LD493	4	An Act to Expand Testing for Perfluoroalkyl and Polyfluoroalkyl Substances to Private Drinking Water Wells	H	2025-05-28	Acc Maj Otp As Amended Rep	1580645	78	69	1	passage	0.885
+LD493	4	An Act to Expand Testing for Perfluoroalkyl and Polyfluoroalkyl Substances to Private Drinking Water Wells	S	2025-05-29	Accept Majority Ought To Pass As Amended Report	1581852	21	14	1	passage	0.667
+LD493	4	An Act to Expand Testing for Perfluoroalkyl and Polyfluoroalkyl Substances to Private Drinking Water Wells	S	2026-04-14	Enactment	1682318	21	13	1	passage	0.619
+LD497	4	An Act Regarding the Regulation of Significant Vernal Pools Under the Natural Resources Protection Act	S	2025-06-10	Accept Majority Ought To Pass As Amended Report	1587898	18	14	1	passage	0.778
+LD497	4	An Act Regarding the Regulation of Significant Vernal Pools Under the Natural Resources Protection Act	H	2025-06-10	Acc Maj Otp As Amended Rep	1587897	77	70	1	passage	0.909
+LD517	4	An Act Regarding Synthetic Media in Campaign Advertising	H	2026-03-10	Acc Maj Otp As Amended Rep	1658072	73	65	1	passage	0.89
+LD517	4	An Act Regarding Synthetic Media in Campaign Advertising	S	2026-03-12	Accept Majority Ought To Pass As Amended Report	1661402	20	14	1	passage	0.7
+LD522	4	Resolve, Directing the Permanent Commission on the Status of Women to Study the Extent of Workforce Gender Segregation in the State	H	2025-04-15	Acc Maj Otp As Amended Rep	1548464	82	63	1	passage	0.768
+LD522	4	Resolve, Directing the Permanent Commission on the Status of Women to Study the Extent of Workforce Gender Segregation in the State	S	2025-04-17	Accept Majority Ought To Pass As Amended Report	1551480	22	12	1	passage	0.545
+LD530	4	An Act to Eliminate a Rebuttable Presumption Against the Admission of Certain Applicants to the Bar	S	2025-05-21	Accept Majority Ought To Pass As Amended Report	1574997	17	15	1	passage	0.882
+LD536	4	An Act to Establish Net Neutrality	H	2025-06-04	Acc Maj Otp As Amended Rep	1584679	79	66	1	passage	0.835
+LD537	4	An Act to Prohibit the Doxing of a Minor and to Authorize a Related Civil Action	S	2025-06-10	Accept Majority Ought To Pass As Amended Report	1587780	18	14	1	passage	0.778
+LD537	4	An Act to Prohibit the Doxing of a Minor and to Authorize a Related Civil Action	H	2025-06-10	Acc Maj Otp As Amended Rep	1587779	78	69	1	passage	0.885
+LD538	4	An Act to Amend Maine's Prescription Drug Labeling Law by Allowing the Removal of the Name of a Prescriber of Mifepristone, Misoprostol and Their Generic Alternatives	H	2025-05-20	Acc Maj Otp As Amended Rep	1574213	75	71	1	passage	0.947
+LD538	4	An Act to Amend Maine's Prescription Drug Labeling Law by Allowing the Removal of the Name of a Prescriber of Mifepristone, Misoprostol and Their Generic Alternatives	S	2025-05-21	Accept Majority Ought To Pass As Amended Report	1574972	19	13	1	passage	0.684
+LD54	4	An Act to Require Employers to Disclose Pay Ranges and Maintain Records of Employees' Pay Histories	H	2025-05-13	Acc Maj Otp As Amended Rep	1570256	73	69	1	passage	0.945
+LD54	4	An Act to Require Employers to Disclose Pay Ranges and Maintain Records of Employees' Pay Histories	S	2025-05-14	Accept Majority Ought To Pass As Amended Report	1571118	21	13	1	passage	0.619
+LD556	4	An Act to Preserve Heating and Energy Choice by Prohibiting a Municipality from Prohibiting a Particular Energy System or Energy Distributor	S	2025-06-16	Accept Majority Ought To Pass Report	1591251	17	17	0	passage	1.0
+LD556	4	An Act to Preserve Heating and Energy Choice by Prohibiting a Municipality from Prohibiting a Particular Energy System or Energy Distributor	H	2025-06-17	Acc Maj Ought To Pass Rep	1591540	81	67	1	passage	0.827
+LD556	4	An Act to Preserve Heating and Energy Choice by Prohibiting a Municipality from Prohibiting a Particular Energy System or Energy Distributor	S	2025-06-18	Recede And Concur	1592312	17	16	1	concurrence	0.941
+LD556	4	An Act to Preserve Heating and Energy Choice by Prohibiting a Municipality from Prohibiting a Particular Energy System or Energy Distributor	H	2025-06-18	Enactment	1592313	78	67	1	passage	0.859
+LD556	4	An Act to Preserve Heating and Energy Choice by Prohibiting a Municipality from Prohibiting a Particular Energy System or Energy Distributor	S	2025-06-25	Enactment	1594826	18	14	1	passage	0.778
+LD585	4	An Act to Use Certain Regional Transmission Organization Payments for Beneficial Electrification to Reduce Electricity Rates	S	2025-04-10	Accept Majority Ought To Pass Report	1543527	19	15	1	passage	0.789
+LD585	4	An Act to Use Certain Regional Transmission Organization Payments for Beneficial Electrification to Reduce Electricity Rates	H	2025-04-15	Acc Maj Ought To Pass Rep	1549183	77	72	1	passage	0.935
+LD588	5	An Act to Enact the Agricultural Employees Concerted Activity Protection Act	S	2025-04-30	Accept Majority Ought To Pass Report	1562494	21	13	1	passage	0.619
+LD588	5	An Act to Enact the Agricultural Employees Concerted Activity Protection Act	H	2025-06-03	Acc Maj Ought To Pass Rep	1583721	71	75	0	passage	0.947
+LD588	5	An Act to Enact the Agricultural Employees Concerted Activity Protection Act	S	2025-06-03	Recede And Concur	1584013	12	20	0	concurrence	0.6
+LD588	5	An Act to Enact the Agricultural Employees Concerted Activity Protection Act	H	2025-06-04	Recede And Concur	1584622	72	71	1	concurrence	0.986
+LD588	5	An Act to Enact the Agricultural Employees Concerted Activity Protection Act	H	2025-06-04	Enactment	1584623	74	71	1	passage	0.959
+LD588	5	An Act to Enact the Agricultural Employees Concerted Activity Protection Act	S	2025-06-25	Veto Override (2/3)	1594909	18	14	0	veto_override	0.778
+LD589	4	An Act to Establish a State Minimum Hourly Wage for Agricultural Workers	S	2025-06-02	Accept Majority Ought To Pass As Amended Report	1583352	22	12	1	passage	0.545
+LD589	4	An Act to Establish a State Minimum Hourly Wage for Agricultural Workers	H	2025-06-03	Acc Maj Otp As Amended Rep	1583726	74	72	1	passage	0.973
+LD589	4	An Act to Establish a State Minimum Hourly Wage for Agricultural Workers	H	2025-06-03	Enactment	1584033	74	73	1	passage	0.986
+LD598	4	An Act to Require Minimum Pay for Reporting to Work	S	2025-06-02	Accept Majority Ought To Pass As Amended Report	1583309	20	14	1	passage	0.7
+LD598	4	An Act to Require Minimum Pay for Reporting to Work	H	2025-06-03	Acc Maj Otp As Amended Rep	1583984	88	60	1	passage	0.682
+LD598	4	An Act to Require Minimum Pay for Reporting to Work	H	2025-06-10	Recede And Concur	1587268	76	69	1	concurrence	0.908
+LD598	4	An Act to Require Minimum Pay for Reporting to Work	S	2025-06-11	Enactment	1588827	18	16	1	passage	0.889
+LD609	4	An Act Making Certain Appropriations and Allocations and Changing Certain Provisions of Law Necessary to the Proper Operations of State Government	S	2025-03-20	Passage To Be Engrossed As Amended	1523901	18	17	1	passage	0.944
+LD609	4	An Act Making Certain Appropriations and Allocations and Changing Certain Provisions of Law Necessary to the Proper Operations of State Government	H	2025-03-20	Passage To Be Engrossed	1522754	74	67	1	passage	0.905
+LD609	4	An Act Making Certain Appropriations and Allocations and Changing Certain Provisions of Law Necessary to the Proper Operations of State Government	S	2025-03-20	Enactment	1523903	18	17	1	passage	0.944
+LD609	4	An Act Making Certain Appropriations and Allocations and Changing Certain Provisions of Law Necessary to the Proper Operations of State Government	S	2025-03-20	Accept Majority Ought To Pass As Amended Report	1523895	18	17	1	passage	0.944
+LD609	4	An Act Making Certain Appropriations and Allocations and Changing Certain Provisions of Law Necessary to the Proper Operations of State Government	H	2025-03-20	Acc Maj Otp As Amended Rep	1522732	74	69	1	passage	0.932
+LD609	4	An Act Making Certain Appropriations and Allocations and Changing Certain Provisions of Law Necessary to the Proper Operations of State Government	H	2025-03-20	Enactment	1523894	76	66	1	passage	0.868
+LD61	4	An Act to Regulate Employer Surveillance to Protect Workers	H	2025-05-27	Acc Maj Otp As Amended Rep	1579051	73	63	1	passage	0.863
+LD61	4	An Act to Regulate Employer Surveillance to Protect Workers	S	2025-05-28	Accept Majority Ought To Pass As Amended Report	1579868	20	14	1	passage	0.7
+LD613	4	An Act to Amend the Maine Death with Dignity Act to Ensure Access by Qualified Patients	H	2025-06-04	Acc Maj Otp As Amended Rep	1584693	74	64	1	passage	0.865
+LD613	4	An Act to Amend the Maine Death with Dignity Act to Ensure Access by Qualified Patients	S	2025-06-09	Accept Majority Ought To Pass As Amended Report	1586659	17	18	0	passage	0.944
+LD613	4	An Act to Amend the Maine Death with Dignity Act to Ensure Access by Qualified Patients	H	2025-06-10	Recede And Concur	1587273	67	76	0	concurrence	0.882
+LD613	4	An Act to Amend the Maine Death with Dignity Act to Ensure Access by Qualified Patients	S	2025-06-12	Passage To Be Engrossed As Amended	1590127	18	15	1	passage	0.833
+LD613	4	An Act to Amend the Maine Death with Dignity Act to Ensure Access by Qualified Patients	S	2025-06-12	Recede And Concur	1590121	17	18	0	concurrence	0.944
+LD613	4	An Act to Amend the Maine Death with Dignity Act to Ensure Access by Qualified Patients	S	2025-06-12	Accept Majority Ought To Pass As Amended Report	1590123	19	16	1	passage	0.842
+LD613	4	An Act to Amend the Maine Death with Dignity Act to Ensure Access by Qualified Patients	H	2025-06-16	Recede And Concur	1590925	79	62	1	concurrence	0.785
+LD633	4	An Act Concerning the Restoration of Electricity During Emergencies for Certain Medically Vulnerable Individuals Who Rely on Electronic Medical Apparatuses	H	2025-04-08	Acc Maj Ought To Pass Rep	1539775	103	41	1	passage	0.398
+LD633	4	An Act Concerning the Restoration of Electricity During Emergencies for Certain Medically Vulnerable Individuals Who Rely on Electronic Medical Apparatuses	S	2025-04-10	Accept Majority Ought To Pass Report	1544176	20	14	1	passage	0.7
+LD66	4	An Act to Expand Access to the Maine Wage Assurance Fund	S	2025-05-28	Accept Majority Ought To Pass As Amended Report	1580240	22	12	1	passage	0.545
+LD670	4	An Act to Address Coercive Control in Domestic Abuse Cases	H	2025-06-16	Acc Maj Otp As Amended Rep	1590993	76	69	1	passage	0.908
+LD670	4	An Act to Address Coercive Control in Domestic Abuse Cases	S	2025-06-16	Accept Majority Ought To Pass As Amended Report	1591267	20	12	1	passage	0.6
+LD68	4	An Act to Amend the State Tax Laws	H	2025-06-04	"Acc Report ""a"" Otp"	1584956	73	66	1	passage	0.904
+LD68	4	An Act to Amend the State Tax Laws	S	2025-06-05	Accept Report 'a' Ought To Pass	1585857	18	14	1	passage	0.778
+LD698	4	An Act to Sustain Emergency Homeless Shelters in Maine	H	2025-05-22	Acc Maj Otp As Amended Rep	1576132	85	58	1	passage	0.682
+LD698	4	An Act to Sustain Emergency Homeless Shelters in Maine	S	2025-06-25	Enactment	1595087	21	12	1	passage	0.571
+LD698	4	An Act to Sustain Emergency Homeless Shelters in Maine	H	2025-06-25	Recede And Concur	1594879	76	62	1	concurrence	0.816
+LD70	4	An Act to Fund Free Health Clinics	H	2025-04-22	Acc Maj Otp As Amended Rep	1553423	78	66	1	passage	0.846
+LD70	4	An Act to Fund Free Health Clinics	S	2025-04-23	Accept Majority Ought To Pass As Amended Report	1555201	19	13	1	passage	0.684
+LD70	4	An Act to Fund Free Health Clinics	H	2025-06-25	Recede And Concur	1594790	73	67	1	concurrence	0.918
+LD70	4	An Act to Fund Free Health Clinics	H	2025-06-25	Enactment	1594791	70	62	1	passage	0.886
+LD702	4	An Act to Designate January 6th as A Day to Remember	H	2025-05-13	Acc Maj Otp As Amended Rep	1570314	74	65	1	passage	0.878
+LD702	4	An Act to Designate January 6th as A Day to Remember	S	2025-05-14	Accept Majority Ought To Pass As Amended Report	1571143	20	14	1	passage	0.7
+LD702	4	An Act to Designate January 6th as A Day to Remember	S	2025-05-22	Enactment	1576036	19	14	1	passage	0.737
+LD703	4	An Act to Establish a Health Care Gap Year Program for Recent College Graduates	H	2025-04-22	Acc Maj Otp As Amended Rep	1554161	87	56	1	passage	0.644
+LD704	4	An Act to Clarify Performance Standards for Quarries	H	2025-05-13	Acc Maj Otp As Amended Rep	1570675	82	59	1	passage	0.72
+LD704	4	An Act to Clarify Performance Standards for Quarries	S	2025-05-14	Accept Majority Ought To Pass As Amended Report	1571359	21	13	1	passage	0.619
+LD708	4	An Act to Allow for Rescission of a Site Location of Development Permit When a Development Is Decommissioned	S	2025-04-17	Accept Majority Ought To Pass Report	1551737	23	11	1	passage	0.478
+LD713	4	An Act to Exclude Data Centers from the Business Equipment Tax Exemption and the Dirigo Business Incentives Program and to Require the Department of Economic and Community Development to Study Financial Incentives for Data Centers	H	2026-04-06	Acc Maj Otp As Amended Rep	1676744	75	61	1	passage	0.813
+LD713	4	An Act to Exclude Data Centers from the Business Equipment Tax Exemption and the Dirigo Business Incentives Program and to Require the Department of Economic and Community Development to Study Financial Incentives for Data Centers	S	2026-04-06	Accept Majority Ought To Pass As Amended Report	1677113	19	13	1	passage	0.684
+LD72	4	An Act to Designate the Spring Peeper as the Official State Amphibian	H	2025-03-25	Acc Maj Ought To Pass Rep	1525884	83	60	1	passage	0.723
+LD725	4	Resolve, Directing the Efficiency Maine Trust to Study the Quality of Jobs It Creates in Consultation with an Advisory Group	H	2026-03-26	Acc Maj Otp As Amended Rep	1670710	77	66	1	passage	0.857
+LD725	4	Resolve, Directing the Efficiency Maine Trust to Study the Quality of Jobs It Creates in Consultation with an Advisory Group	S	2026-03-30	Accept Majority Ought To Pass As Amended Report	1672749	20	13	1	passage	0.65
+LD73	4	An Act to Designate the Wood Turtle as the Official State Reptile	H	2025-03-25	Acc Maj Ought To Pass Rep	1525958	85	58	1	passage	0.682
+LD74	4	An Act to Update the System of Learning Results Review Timeline	H	2025-03-25	Acc Maj Ought To Pass Rep	1526108	78	64	1	passage	0.821
+LD74	4	An Act to Update the System of Learning Results Review Timeline	S	2025-03-27	Accept Majority Ought To Pass Report	1528791	24	9	1	passage	0.375
+LD740	4	Resolve, to Study Methods for Improving Youth Community Supervision and Increasing Juvenile Diversion from Formal Judicial Processing	H	2026-03-25	Acc Maj Otp As Amended Rep	1669500	73	66	1	passage	0.904
+LD747	4	An Act to Provide Funds to Reduce Student Homelessness	H	2025-06-25	Recede And Concur	1594895	89	51	1	concurrence	0.573
+LD783	4	An Act to Continue Support for the Maine Multicultural Center	S	2025-05-06	Accept Majority Ought To Pass As Amended Report	1565543	21	12	1	passage	0.571
+LD783	4	An Act to Continue Support for the Maine Multicultural Center	H	2025-05-07	Acc Maj Otp As Amended Rep	1567391	73	65	1	passage	0.89
+LD784	4	An Act to Create a Rebuttable Presumption Related to Specialized Risk Screening for First Responders	S	2025-05-20	Accept Majority Ought To Pass As Amended Report	1574113	20	12	1	passage	0.6
+LD784	4	An Act to Create a Rebuttable Presumption Related to Specialized Risk Screening for First Responders	H	2025-05-27	Acc Maj Otp As Amended Rep	1579017	78	62	1	passage	0.795
+LD785	4	An Act to Amend Certain Tax Laws Regarding the Wabanaki Nations	S	2026-04-13	Accept Report 'a' Ought To Pass As Amended	1680940	22	11	1	passage	0.5
+LD785	4	An Act to Amend Certain Tax Laws Regarding the Wabanaki Nations	H	2026-04-13	Report A Otp-am By Ca-a	1680941	83	64	1	passage	0.771
+LD80	4	An Act to Designate the Seppala Siberian Sleddog as the Maine State Dog	S	2025-04-08	Accept Majority Ought To Pass Report	1539444	24	8	1	passage	0.333
+LD810	4	An Act Regarding the Approval of Transmission Lines	H	2025-06-03	Acc Maj Otp As Amended Rep	1584498	72	75	0	passage	0.96
+LD810	4	An Act Regarding the Approval of Transmission Lines	S	2025-06-04	Accept Majority Ought To Pass As Amended Report	1584648	18	16	1	passage	0.889
+LD810	4	An Act Regarding the Approval of Transmission Lines	H	2025-06-09	Recede And Concur	1587064	74	73	1	concurrence	0.986
+LD810	4	An Act Regarding the Approval of Transmission Lines	H	2025-06-10	Enactment	1588162	74	69	1	passage	0.932
+LD837	4	An Act to Require Positions Taken by the Public Advocate to Be Consistent with the Cost-effective Implementation of the State's Greenhouse Gas Emissions Reductions Obligations	S	2025-04-29	Accept Majority Ought To Pass As Amended Report	1560427	18	15	1	passage	0.833
+LD837	4	An Act to Require Positions Taken by the Public Advocate to Be Consistent with the Cost-effective Implementation of the State's Greenhouse Gas Emissions Reductions Obligations	H	2025-04-30	Acc Maj Otp As Amended Rep	1562358	74	67	1	passage	0.905
+LD837	4	An Act to Require Positions Taken by the Public Advocate to Be Consistent with the Cost-effective Implementation of the State's Greenhouse Gas Emissions Reductions Obligations	S	2025-05-14	Enactment	1571348	20	14	1	passage	0.7
+LD858	4	An Act to Ensure Behavioral and Mental Health Services Are Available to Students by Providing Grants to Schools That Contract for Those Services	H	2025-05-28	Acc Maj Otp As Amended Rep	1579738	79	65	1	passage	0.823
+LD86	4	An Act to Update the Laws Regarding Education	H	2025-05-06	Acc Maj Ought To Pass Rep	1566048	72	68	1	passage	0.944
+LD86	4	An Act to Update the Laws Regarding Education	S	2025-05-20	Accept Majority Ought To Pass Report	1573924	19	13	1	passage	0.684
+LD87	4	An Act Regarding the State Workforce Board	S	2025-05-27	Accept Majority Ought To Pass As Amended Report	1579004	20	14	1	passage	0.7
+LD870	4	An Act Regarding the Membership of the Maine Land Use Planning Commission	H	2025-05-29	Acc Maj Otp As Amended Rep	1581085	75	69	1	passage	0.92
+LD870	4	An Act Regarding the Membership of the Maine Land Use Planning Commission	S	2025-06-02	Accept Majority Ought To Pass As Amended Report	1583091	20	14	1	passage	0.7
+LD874	4	An Act to Provide Relief to Federal or State Employees Affected by a Federal Government or State Government Shutdown	H	2025-05-20	Enactment	1574424	88	56	1	passage	0.636
+LD874	4	An Act to Provide Relief to Federal or State Employees Affected by a Federal Government or State Government Shutdown	H	2025-06-25	Recede And Concur	1594772	81	59	1	concurrence	0.728
+LD894	4	An Act to Amend the Laws Governing Paid Family and Medical Leave	S	2025-06-02	Accept Report 'a' Ought To Pass	1583581	20	14	1	passage	0.7
+LD894	4	An Act to Amend the Laws Governing Paid Family and Medical Leave	H	2025-06-04	"Report ""a"" Ought To Pass"	1584674	72	70	1	passage	0.972
+LD894	4	An Act to Amend the Laws Governing Paid Family and Medical Leave	H	2025-06-04	Passage To Be Engrossed	1584678	72	69	1	passage	0.958
+LD894	4	An Act to Amend the Laws Governing Paid Family and Medical Leave	H	2025-06-09	Enactment	1586612	75	71	1	passage	0.947
+LD897	4	An Act Regarding the Nonwires Alternative Process and Required Negative Pricing Provisions in Contracts for Energy Resulting from Competitive Solicitations Conducted by the Public Utilities Commission	S	2026-04-06	Accept Report 'a' Ought To Pass As Amended	1677200	20	12	1	passage	0.6
+LD901	4	Resolve, Directing the Maine Redevelopment Land Bank Authority to Take Appropriate Actions to Identify Opportunities for the Beneficial Reuse of the Buildings and Land Commonly Known as the Bangor Mall	H	2025-06-02	Acc Maj Otp As Amended Rep	1583643	76	61	1	passage	0.803
+LD911	4	An Act to Clarify Procedures for When a Candidate Withdraws from an Election Determined by Ranked-choice Voting or When a Candidate Dies or Becomes Disqualified in an Election Determined by Ranked-choice Voting	S	2025-06-13	Accept Majority Ought To Pass As Amended Report	1590624	21	13	1	passage	0.619
+LD911	4	An Act to Clarify Procedures for When a Candidate Withdraws from an Election Determined by Ranked-choice Voting or When a Candidate Dies or Becomes Disqualified in an Election Determined by Ranked-choice Voting	H	2025-06-13	Acc Maj Otp As Amended Rep	1590626	74	68	1	passage	0.919
+LD913	4	An Act to Amend the Law Regulating the Resale of Tickets	S	2025-06-11	Accept Majority Ought To Pass As Amended Report	1589006	21	10	1	passage	0.476
+LD913	4	An Act to Amend the Law Regulating the Resale of Tickets	H	2025-06-12	Acc Maj Otp As Amended Rep	1589596	76	71	1	passage	0.934
+LD93	4	An Act to Reduce Cost and Increase Access to Disease Prevention by Expanding the Universal Childhood Immunization Program to Include Adults	H	2025-06-16	Acc Maj Otp As Amended Rep	1591080	78	69	1	passage	0.885
+LD93	4	An Act to Reduce Cost and Increase Access to Disease Prevention by Expanding the Universal Childhood Immunization Program to Include Adults	S	2025-06-17	Accept Majority Ought To Pass As Amended Report	1591746	20	13	1	passage	0.65
+LD93	4	An Act to Reduce Cost and Increase Access to Disease Prevention by Expanding the Universal Childhood Immunization Program to Include Adults	H	2025-06-17	Enactment	1591745	78	70	1	passage	0.897
+LD930	4	An Act to Amend the Law Governing Items Identified as Prison Contraband	S	2025-06-12	Accept Majority Ought To Pass As Amended Report	1590106	24	11	1	passage	0.458
+LD957	4	An Act to Integrate Asian American, Native Hawaiian and Pacific Islander History into the Statewide System of Learning Results	S	2025-06-05	Accept Majority Ought To Pass As Amended Report	1585826	19	13	1	passage	0.684
+LD958	5	An Act to Prohibit Eminent Domain on Existing Tribal Trust Lands	S	2025-06-13	Accept Majority Ought To Pass As Amended Report	1590675	20	12	1	passage	0.6
+LD958	5	An Act to Prohibit Eminent Domain on Existing Tribal Trust Lands	H	2025-06-13	Acc Maj Otp As Amended Rep	1590390	86	60	1	passage	0.698
+LD958	5	An Act to Prohibit Eminent Domain on Existing Tribal Trust Lands	H	2025-06-16	Enactment	1590927	89	55	1	passage	0.618
+LD958	5	An Act to Prohibit Eminent Domain on Existing Tribal Trust Lands	H	2025-06-25	Reconsideration - Veto	1594920	77	63	0	veto_override	0.818
+LD98	4	An Act to Include School Counselors in the Educators for Maine Program	S	2025-04-23	Accept Majority Ought To Pass As Amended Report	1555149	18	13	1	passage	0.722

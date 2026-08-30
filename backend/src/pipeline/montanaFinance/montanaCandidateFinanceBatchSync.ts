@@ -192,6 +192,15 @@ export async function syncDueMontanaCandidateFinance(
         dryRun,
       });
       succeeded += 1;
+      // Surface demoted CSV discrepancies in worker logs — the scheduler
+      // path otherwise reports only aggregate counts and the drift would
+      // be invisible outside the full batch JSON.
+      const warnings = result.aggregation?.csvCrossCheckWarnings ?? [];
+      if (warnings.length > 0) {
+        log(
+          `Montana CSV cross-check warnings for ${row.candidateName} (CERS ${row.committeeId}): ${warnings.join(" | ")}`
+        );
+      }
       candidates.push({ row, ok: true, result });
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
