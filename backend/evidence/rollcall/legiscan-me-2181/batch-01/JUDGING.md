@@ -155,3 +155,57 @@ The repo's `candidateRecordPlainLanguageLint` was run over all 48 descriptions
 **before** importing: **0 warnings** (longest sentence 44 words, limit 45).
 Tails say "became law", not "was signed into law" — LD 1126 and LD 61 both
 became law WITHOUT the governor's signature.
+
+## Plain-language rewrite, 2026-08-30
+
+Every description in this batch was rewritten for an ordinary reader at roughly
+a 7th-grade level. **Wording only** — no fact, date, tally, chamber, stance
+direction, or label changed, and nothing was re-researched. The rewrite works
+from the same evidence the original judgments were built on.
+
+What changed in the writing: each description now opens by naming what the bill
+is about in everyday words ("a gun bill", "a bill about bosses watching
+workers"), every term of art is explained in the sentence that uses it (a
+serial number is "the maker's ID number that lets police trace a gun"; a
+frame is "the core part a gun is built on"; an immigration detainer is a
+federal request "to keep someone locked up past their release time"), and
+Maine's procedural stages are stated in plain terms ("This was the final
+passage vote", "The two chambers had passed different versions. This vote
+accepted the Senate's wording"). Sentences are short. Every description still
+closes with the roll call's own tally.
+
+**Ledger:** 1,516 `rewrite`, 0 errors, row count unchanged at 1,516; the
+importer preserved the original insert ledger as `import-report.json` on its
+own and wrote this run to `import-rerun-report.json` (stamp
+`2026-08-30T05:31:14.491Z`). Convergence dry run: all 1,516 `unchanged`.
+
+**Two things this re-judge surfaced, both from gates added after batch-01
+shipped:**
+
+1. **`nay` is now required on every label.** Set to `null` throughout, matching
+   batch-02 and the PA precedent. For the 20 rolls this session had written,
+   that is a no-op — the pre-gate importer already tagged only the yea side
+   (LD 556's 70 `against` tags are its YEA voters, since that measure scores
+   `environment_and_public_health`/against).
+2. **Two same-day roll pairs needed `acknowledge_later_rolls`**, the same shape
+   as batch-02: LD 1868 senate 1591936 acknowledges 1591935 (the Senate
+   enacted, reconsidered, then re-enacted; RC #612 is the final one), and
+   LD 2176 house 1678710 acknowledges 1678709 (the report vote that preceded
+   enactment the same day).
+
+## ⚠ A parallel session had rewritten four of these rolls
+
+Between batch-02's import and this rewrite, **another session working the same
+local database** rewrote the descriptions on LD 1126 house (1594835), LD 598
+house (1587268), and LD 1016 house + senate (1587988, 1588941) — 327 records,
+stamp `2026-08-30T03:57:07.640Z`. Their judgments file was never committed, so
+that text existed **only in the local database**, and this rewrite overwrote
+it. It is not lost: the eight distinct descriptions are captured in
+`parallel-session-descriptions-2026-08-30.json` beside this file.
+
+Their versions carried two facts these do not — the chapter number of the
+resulting Public Law and the date penalties take effect. Worth folding in
+deliberately if the campaign wants them, for all 46 rolls rather than four.
+Their labels also set `nay` to the inverted stance, which is why Maine's tag
+count fell from 1,578 to 1,529: the 49 `against` tags on LD 1126 house nay
+voters are gone, and every other tag is untouched.
