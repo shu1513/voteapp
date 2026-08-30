@@ -160,3 +160,48 @@ plain wording:
 `import-plain-language-report.json` is the final plain-language run;
 `import-report.json` remains the original insert ledger.
 
+## Plain-language pass 2 (2026-08-30) — the whole campaign measured, not assumed
+
+Batches 03, 04 and 05 were written after the batch-01/02 rewrite and were
+never held to the same standard, so every PA description was scored rather
+than eyeballed: Flesch-Kincaid grade, longest sentence, and a scan for terms
+of art left bare. 45 of the 179 measures came in at grade 8 or above or
+carried bare jargon (worst 10.5); those 44 bodies were rewritten. Median
+grade 6.8 -> 6.4, worst 10.5 -> 9.0, bare-jargon measures 20 -> 0. A machine
+check compared every numeric token, roll number, date, chamber, review status
+and label before and after: zero differences. 5,837 records rewritten in
+place; all five convergence runs unchanged.
+
+The pass-2 run ledger is `import-plain-language-2-report.json` (a snapshot of
+the importer's re-run report). `import-report.json` is untouched: the
+importer writes a real re-run's report to `import-rerun-report.json` and
+never overwrites the insert ledger.
+
+## Incident note (2026-08-30): this file was truncated and restored
+
+The first push of pass 2 replaced this file with only the pass-2 note. The
+cause was a Python one-liner used to append and to fix end-of-file newlines —
+`open(p,'w').write(open(p).read()...)` — which truncates the file on opening
+for write, before the read runs, so the read returns nothing. The same
+one-liner had earlier truncated batch-04's and batch-05's JUDGING.md to a
+single newline, and those truncations were merged to main unnoticed. All five
+files are restored here from git history, byte-for-byte, with the notes
+re-appended. Review caught it; nothing was lost, because every prior version
+was in a commit.
+
+## Review fixes on pass 2 (2026-08-30)
+
+Four wording regressions the pass introduced, all verified and fixed:
+
+- **HB 1866**: pass 2 wrote "owning" where the statute says possessing — the
+  exact error an earlier review had already fixed once. Possession includes
+  holding or controlling a device without owning it. Now "possessing" again.
+- **HB 1262**: "a disability that makes online filing hard" broadened the
+  bill's exemption, which requires a disability that prevents electronic
+  filing. Now "prevents them filing online".
+- **HB 316**: the rewrite framed every permit-denial ground as money owed,
+  but an unfixed serious code violation is its own ground, not a debt. The
+  sentence no longer says "owes money".
+- **HB 660**: "sprinkler heads" is a different component from the regulated
+  "spray sprinkler bodies" (the base holding the pressure regulator). The
+  correct term is back, with a short explanation.
