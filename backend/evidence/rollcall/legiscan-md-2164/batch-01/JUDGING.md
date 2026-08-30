@@ -129,8 +129,8 @@ Retraction mechanics (the H.R. 1047 recipe):
    removed from `batch-01/` (they remain in the out-of-repo evidence store).
 4. Convergence dry run: **18 files, 1,446 unchanged, 0 errors**.
 
-Final totals: **10 measures / 18 rolls / 1,446 records / 158 candidates /
-1,446 tags** — candidate coverage is unchanged, since every HB 767 voter also
+Final totals: **10 measures / 18 rolls / 1,446 records / 158 candidates**;
+tags are 1,303 after the nay repair below (1,090 yea-side + 213 nay-side) — candidate coverage is unchanged, since every HB 767 voter also
 appears in other batch rolls. MD queue now 18 approved.
 
 ## Shared-DB tag repair (found during the retraction verification)
@@ -159,3 +159,53 @@ vote-claim records for 2025, so there were no duplicates to find.
 **PROD IS UNTOUCHED.** All 1,446 live records are on local `voteapp` only
 (plus the 153 retired HB 767 rows). Promotion
 is a separate step.
+
+## Nay repair (2026-08-30): authored nay stances, 143 mechanically flipped tags dropped
+
+Batch-01 was judged and imported hours before the explicit-`nay` contract
+landed in main (PR #950's line: a no vote is not automatically the opposite
+claim; `nay` is authored, never inverted). Its 356 nay-side tags were all the
+mechanical inverse. This repair authors the nay side of every label, under the
+Connecticut #960 test: **is the bill's core mechanism the AREA's own
+mechanism, so that a no vote is a vote against that mechanism, with no other
+plausible strand to object to?**
+
+**`nay` stated — 6 measures, 213 tags kept:**
+
+| measure | nay | why |
+|---|---|---|
+| HB 1222 | against | single-subject immigration-enforcement bill; a no is the enforcement-first position, the area's own axis (the TX SB 8 mirror) |
+| HB 424 | against | the whole bill is drug price caps, the area's literal cost mechanism (CT HB 5004 analog) |
+| SB 901 | against | focused single-mechanism producer-responsibility bill (the CT HB 5004 pattern, not the SB 9 omnibus pattern) |
+| SB 848 | against | the entire act improves abortion-care access, the area's literal mechanism |
+| HB 1020 | against | single-subject consumer protection, in the area description outright (CT SB 3) |
+| HB 1378 | **for** | yea is `against`; the only coherent no keeps victims' full recovery — a fiscal hawk votes yes |
+
+**`nay: null` — 4 measures, 143 tags dropped** (nay voters keep their vote
+record, lose the area tag):
+
+| measure | dropped | why a no vote is not an area stance |
+|---|---|---|
+| HB 1424 | 37 | multi-strand: loan fund + expedited hiring + AG Maryland Defense Act powers + Rainy Day Fund transfers + a mandated appropriation — a no plausibly reads as fiscal (CT SB 1 pattern) |
+| HB 39 | 37 | the no vote's obvious strand is public safety (keep a criminal tool against knowing HIV transmission), not opposition to equal rights (CT SB 1328 pattern) |
+| HB 983 | 32 | a no most plausibly objects to the unfunded mandate on local election boards, not to elections being trusted |
+| HB 197 | 37 | restorative-practices discipline is a contested pedagogy inside the area — both sides claim school quality |
+
+Mechanics and proof, measured in `candidate_record_area_tags` (never the
+import report — a labels-only change reports every record `unchanged` because
+tag sync runs separately from the record compare):
+
+- judge: **10 updated / 8 unchanged** — exactly the 6 authored measures'
+  rolls; the null entries compare equal because `canonicalLabels` reads a
+  missing `nay` as null, so their rows are deliberately untouched.
+- import: 18 files, **1,446 unchanged**, 0 errors; nay-side tags
+  **356 → 213**, the exact 143 predicted before the run, all four null
+  measures fully untagged on the nay side, all six kept measures intact
+  (41/39/37/37/28/31), yea side untouched at 1,090.
+- Both new approval gates passed with no edits: every description already
+  cites its own roll's tally, and no changed roll has a same-chamber kept
+  floor peer on or after its date — the batch's only same-day pair (HB 1424's
+  two Senate rolls) sits on a null measure whose entry is unchanged, so no
+  `acknowledge_later_rolls` was needed.
+- Repair ledger: `import-nay-repair-report.json`; `import-report.json`
+  remains the original insert ledger.

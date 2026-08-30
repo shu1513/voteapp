@@ -13,7 +13,8 @@
       "labels": [
         {
           "slug": "immigration",
-          "yea": "for"
+          "yea": "for",
+          "nay": "against"
         }
       ]
     },
@@ -30,7 +31,8 @@
       "labels": [
         {
           "slug": "immigration",
-          "yea": "for"
+          "yea": "for",
+          "nay": "against"
         }
       ]
     },
@@ -47,7 +49,8 @@
       "labels": [
         {
           "slug": "social_programs_and_welfare",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -64,7 +67,8 @@
       "labels": [
         {
           "slug": "social_programs_and_welfare",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -81,7 +85,8 @@
       "labels": [
         {
           "slug": "healthcare_affordability",
-          "yea": "for"
+          "yea": "for",
+          "nay": "against"
         }
       ]
     },
@@ -98,7 +103,8 @@
       "labels": [
         {
           "slug": "healthcare_affordability",
-          "yea": "for"
+          "yea": "for",
+          "nay": "against"
         }
       ]
     },
@@ -115,7 +121,8 @@
       "labels": [
         {
           "slug": "environment_and_public_health",
-          "yea": "for"
+          "yea": "for",
+          "nay": "against"
         }
       ]
     },
@@ -132,7 +139,8 @@
       "labels": [
         {
           "slug": "environment_and_public_health",
-          "yea": "for"
+          "yea": "for",
+          "nay": "against"
         }
       ]
     },
@@ -149,7 +157,8 @@
       "labels": [
         {
           "slug": "womens_reproductive_rights",
-          "yea": "for"
+          "yea": "for",
+          "nay": "against"
         }
       ]
     },
@@ -166,7 +175,8 @@
       "labels": [
         {
           "slug": "womens_reproductive_rights",
-          "yea": "for"
+          "yea": "for",
+          "nay": "against"
         }
       ]
     },
@@ -183,7 +193,8 @@
       "labels": [
         {
           "slug": "civil_rights",
-          "yea": "against"
+          "yea": "against",
+          "nay": "for"
         }
       ]
     },
@@ -200,7 +211,8 @@
       "labels": [
         {
           "slug": "civil_rights",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -217,7 +229,8 @@
       "labels": [
         {
           "slug": "civil_rights",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -234,7 +247,8 @@
       "labels": [
         {
           "slug": "election_integrity",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -251,7 +265,8 @@
       "labels": [
         {
           "slug": "election_integrity",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -268,7 +283,8 @@
       "labels": [
         {
           "slug": "corporate_accountability",
-          "yea": "for"
+          "yea": "for",
+          "nay": "against"
         }
       ]
     },
@@ -285,7 +301,8 @@
       "labels": [
         {
           "slug": "public_education_quality",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -302,7 +319,8 @@
       "labels": [
         {
           "slug": "public_education_quality",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     }
