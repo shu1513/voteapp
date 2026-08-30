@@ -92,24 +92,23 @@ so every vote in this batch was cast on the enrolled text and no description nee
 
 ## Batches
 
-- `batch-01/` — 20 rolls / 10 measures / **729 records** (298 at first import against a 33-member
-  crosswalk; re-imported after the roster completion above).
-- `batch-02/` — 24 rolls / 12 measures / **859 records**. First coverage for `civil_rights` and
-  `election_integrity`.
-- `batch-03/` — 18 rolls / 9 measures / **645 records**. First coverage for
-  `social_programs_and_welfare`.
-- `batch-04/` — 21 rolls / 11 measures / **806 records**. First coverage for
-  `womens_reproductive_rights` and `data_privacy`.
+- `batch-01/` — 20 rolls / 10 measures / **729 records**.
+- `batch-02/` — 24 rolls / 12 measures / **859 records**. First `civil_rights`, `election_integrity`.
+- `batch-03/` — 18 rolls / 9 measures / **645 records**. First `social_programs_and_welfare`.
+- `batch-04/` — 21 rolls / 11 measures / **806 records**. First `womens_reproductive_rights`,
+  `data_privacy`.
+- `batch-05/` — 13 rolls / 7 measures / **509 records**. Closes the both-chamber seam.
 
-California total: **3,039 roll-call records across 80 candidates**, covering 13 of the 27 research
-areas. All descriptions are plain English (rewritten 2026-08-29; batch-04 written that way).
+California total: **3,548 roll-call records across 80 candidates**, 49 measures, 13 of the 27
+research areas. All descriptions plain English, American-spelled, every enacted qualification kept.
 
-**What remains, measured 2026-08-30 (post-batch-04).** The divided-and-enacted universe is 227
-measures. Batches 01-04 judged **42** and filter 5 has dropped **26** (16 before batch-04, 10 in
-it), leaving **159**. Of those, 46 are divided in both chambers — **11 actionable candidates**
-(about one more batch), plus 27 budget acts or trailer bills and 8 single-jurisdiction measures,
-both excluded by standing precedent — and **113 are divided in one chamber only** (one roll each).
-The numbers reconcile: 42 + 26 + 46 + 113 = 227. Separately, 430 divided rolls sat on measures
-still awaiting the governor when this dataset was cut (2026-08-23); LegiScan was still serving that
-same cut on 2026-08-29, so a genuinely refreshed dataset in the autumn is the trigger for that
-seam.
+**The both-chamber seam is closed.** Every measure in the 227-measure divided-and-enacted universe
+that is divided in BOTH chambers has now been judged or dropped with a recorded reason:
+49 judged + 29 dropped under filter 5 + 36 excluded by standing rule (budget acts, trailer bills,
+single-jurisdiction) + 113 one-chamber = 227.
+
+**What remains.** The **113 one-chamber measures**, each worth a single roll (~68 records in the
+Assembly, ~11 in the Senate). Separately, 430 divided rolls sat on measures still awaiting the
+governor when this dataset was cut (2026-08-23); LegiScan was still serving that same cut on
+2026-08-30, so a genuinely refreshed dataset in the autumn is the trigger for that seam — verify
+`dataset_hash` before re-downloading.
