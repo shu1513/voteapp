@@ -13,11 +13,13 @@
    "labels": [
     {
      "slug": "womens_reproductive_rights",
-     "yea": "against"
+     "yea": "against",
+     "nay": null
     },
     {
      "slug": "civil_rights",
-     "yea": "against"
+     "yea": "against",
+     "nay": null
     }
    ]
   },
@@ -34,11 +36,13 @@
    "labels": [
     {
      "slug": "womens_reproductive_rights",
-     "yea": "against"
+     "yea": "against",
+     "nay": null
     },
     {
      "slug": "civil_rights",
-     "yea": "against"
+     "yea": "against",
+     "nay": null
     }
    ]
   },
@@ -55,11 +59,13 @@
    "labels": [
     {
      "slug": "personal_income_tax_reduction",
-     "yea": "for"
+     "yea": "for",
+     "nay": null
     },
     {
      "slug": "cost_of_living_reduction",
-     "yea": "for"
+     "yea": "for",
+     "nay": null
     }
    ]
   },
@@ -76,11 +82,13 @@
    "labels": [
     {
      "slug": "reduce_wealth_gap",
-     "yea": "against"
+     "yea": "against",
+     "nay": null
     },
     {
      "slug": "corporate_accountability",
-     "yea": "against"
+     "yea": "against",
+     "nay": null
     }
    ]
   },
@@ -97,11 +105,13 @@
    "labels": [
     {
      "slug": "reduce_wealth_gap",
-     "yea": "against"
+     "yea": "against",
+     "nay": null
     },
     {
      "slug": "corporate_accountability",
-     "yea": "against"
+     "yea": "against",
+     "nay": null
     }
    ]
   },
@@ -118,11 +128,13 @@
    "labels": [
     {
      "slug": "anti_corruption",
-     "yea": "against"
+     "yea": "against",
+     "nay": null
     },
     {
      "slug": "data_privacy",
-     "yea": "for"
+     "yea": "for",
+     "nay": null
     }
    ]
   },
@@ -139,11 +151,13 @@
    "labels": [
     {
      "slug": "election_integrity",
-     "yea": "for"
+     "yea": "for",
+     "nay": null
     },
     {
      "slug": "data_privacy",
-     "yea": "for"
+     "yea": "for",
+     "nay": null
     }
    ]
   },
@@ -160,11 +174,13 @@
    "labels": [
     {
      "slug": "housing_affordability",
-     "yea": "against"
+     "yea": "against",
+     "nay": null
     },
     {
      "slug": "civil_rights",
-     "yea": "against"
+     "yea": "against",
+     "nay": null
     }
    ]
   },
@@ -181,11 +197,13 @@
    "labels": [
     {
      "slug": "housing_affordability",
-     "yea": "against"
+     "yea": "against",
+     "nay": null
     },
     {
      "slug": "civil_rights",
-     "yea": "against"
+     "yea": "against",
+     "nay": null
     }
    ]
   },
@@ -202,11 +220,13 @@
    "labels": [
     {
      "slug": "public_safety_and_crime_control",
-     "yea": "for"
+     "yea": "for",
+     "nay": null
     },
     {
      "slug": "anti_corruption",
-     "yea": "against"
+     "yea": "against",
+     "nay": null
     }
    ]
   }
