@@ -129,7 +129,13 @@ single judged measure reaches ~126 candidates across the two chambers.
 
 ## Status
 
-Batch-01 is imported on the LOCAL `voteapp` database only. **Production has
-zero Maine roll-call records.** See `batch-01/JUDGING.md` for what was judged,
-what was dropped and why, and `survey/divided-enacted-worklist.tsv` for the
-409 divided-and-enacted status-4 rolls still available.
+Batches 01 and 02 are imported on the LOCAL `voteapp` database only — **2,908
+records across 131 candidates**. **Production has zero Maine roll-call
+records.** See each batch's `JUDGING.md` for what was judged, what was dropped
+and why.
+
+`survey/divided-enacted-worklist.tsv` is the ledger: 463 divided rolls on
+measures that reached the governor, **433 of them on measures that became
+law**. 46 are judged (24 in batch-01, 22 in batch-02), leaving **387 rolls on
+206 measures**. The other 30 rolls sit on the 7 vetoed bills, whose overrides
+all failed (`CODE-FINDINGS.md` §2).
