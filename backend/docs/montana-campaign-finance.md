@@ -262,6 +262,79 @@ cash; it feeds neither directContributionTotal nor the cash-begin chain.
   reason; the input for attachment recovery (Conservatives4MT holds $1.55M
   of attachment-referenced rows alone).
 
+## Phase 3 facts (live run + attachment recovery, verified 2026-08-29)
+
+### Committee reports and attachments (a DIFFERENT flow from candidates)
+
+Candidate reports use `publicReportList/retrieveCampaignReports`. Committees
+do NOT — that endpoint answers 200 with an empty list for a committeeId. The
+committee path is:
+
+1. `GET search/committeeSearch` (302 -> follow to `/search;jsessionid=...`
+   for the real form).
+2. `POST searchResults/searchCommittees` {committeeName, committeeTypeCode,
+   electionYear} — assert the `(searchResults)` title.
+3. `GET searchResults/listCommitteeResults` + the DataTables query.
+4. `POST publicReportList/retrieveCommitteeReports` **{committeeId,
+   commSearchPage}** -> 302 -> `GET publicReportList` -> report list JSON.
+5. `POST viewFinanceReport/retrieveReport` {committeeId, **candidateId: ""**,
+   reportId, searchPage} — sending `candidateId: "0"` here 404s.
+6. `POST viewFinanceReport/attachmentList` (empty body) -> JSON array of
+   {attachmentId, reportId, mimeType, fileName, fileDescr, referenceType}.
+7. `GET viewFinanceReport/viewAttachment?attachmentId=N` -> **JSON, not the
+   file**: the PDF is base64 in `fileContent` (also `b64EncodedContent`).
+
+Attachment PDFs carry real text — extract with `pdftotext -layout`, never
+transcribe by hand.
+
+### What the attachments actually contain (survey of the $1.69M quarantined)
+
+Most attachment-referenced money is **not recoverable**, and the reasons are
+structural, not effort:
+
+- **Right to Work committees** attach candidate NAME LISTS with no
+  per-candidate amounts.
+- **MTGOP addendum** gives mail-piece QUANTITIES ("HD3 Kathy Mitchell - MTGOP
+  IE, 850"), not dollars.
+- **Conservatives4MT April allocation** is per-candidate by channel and sums
+  to $714,360.24, which matches no transaction or combination (nearest is
+  $10,279.98 away) — so it is evidence about some other scope.
+- One C4MT attachment is a DISTRICT-level buy breakdown (SD42, HD55...) with
+  no candidate names at all.
+
+Splitting a lump across any of those would be our inference, not the filer's
+disclosure. Only breakdowns that RECONCILE to the transaction they hang off
+are publishable.
+
+What did reconcile: C4MT report 79711, attachment 4797 — 131 rows with Date /
+Amount / Candidate / Office / **explicit Support-Oppose column** / purpose,
+aggregating to 49 candidate-stance entries summing to $392,751.52 against a
+$392,751.55 transaction (3c of the filer's own rounding). Live effect:
+resolved outside money $2,369,098.96 -> $2,741,963.72, 43.1% -> 49.9% of
+in-window dollars, including $33,754.54 of newly published filer-declared
+OPPOSE spending. 44 of 49 entries resolve; 5 stay quarantined on filer name
+typos and one office conflict.
+
+### Chain reality (what the fixtures missed)
+
+- Null `primCashBeg`/`genCashBeg` are ROUTINE (40 of 151 C5 rows in the first
+  24 candidates harvested), not corruption.
+- Report status `PENDA` ("Pending-Amended") is canonical — the filed version
+  stays operative and its rows stay in the CSV export.
+- CSV committee money splits across Independent / Political Party /
+  Incidental line items; the JSON `committee` list holds all three.
+- MCA 13-37-229 itemization is required "in excess of $50", so a $50.00 row
+  is itemizable on one surface and lumpable on the other — the bound is
+  INCLUSIVE, and disagreement runs in both directions.
+- `prepareDownloadFile` answers with no `fileName` when the entity has zero
+  rows of that class (a filer with no expenditures).
+- The CONTR export is a LOSSY secondary surface: rows dropped outright,
+  stale pre-amendment amounts. Where the chain closes against real anchors,
+  the JSON is the authority and the mismatch is recorded, not fatal.
+- Per-link chain failures that CANCEL across the span are CERS
+  period-attribution noise (restatements, a sign error corrected next period,
+  a side reclassification), not money gaps: 14 of 22 quarantined filers.
+
 ## Build notes
 
 - Adapter shape: per-candidate CONTR + EXPEND export (cent-exact, occupation included)
