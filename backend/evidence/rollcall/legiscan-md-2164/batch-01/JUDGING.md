@@ -209,3 +209,109 @@ tag sync runs separately from the record compare):
   `acknowledge_later_rolls` was needed.
 - Repair ledger: `import-nay-repair-report.json`; `import-report.json`
   remains the original insert ledger.
+
+## Plain-language rewrite (2026-08-30)
+
+All 36 descriptions were rewritten in everyday English, aimed at a reader with
+no legal or legislative background. The originals were accurate but written in
+statute voice: they left terms of art bare (`exigent circumstances`,
+`upper payment limits`, `noneconomic damages`, `previously time-barred`,
+`creditworthiness`, `mandated appropriation`, `consumer reporting agency`,
+`restorative practices`) and echoed statutory hedges that tell a voter nothing
+(`specified individuals`, `stated criteria`, `the listed services`).
+
+The rewrite used **only the existing evidence** — the DLS fiscal notes already
+in the scratchpad for this batch — and the current descriptions. No AI
+provider was called, nothing was re-researched, and no fact, date, number,
+tally, chapter, stance direction, or label changed. Where a term needed a
+gloss, the gloss was taken from the fiscal note rather than invented: the
+Maryland Defense Act one from the note's own summary of Chapter 26 of 2017
+("the Attorney General may investigate, commence, and prosecute or defend"
+suits over federal action that threatens Marylanders), and restorative
+practices from the note's quoted statutory definition ("a communally and
+culturally responsive, relationship-focused student discipline model").
+
+Sample, HB 39 — before and after:
+
+> The bill struck the misdemeanor prohibition on knowingly transferring or
+> attempting to transfer HIV to another person, along with its penalty.
+
+> Knowingly giving or trying to give someone HIV had been a misdemeanor, the
+> lower level of crime. The bill removed it and its penalty.
+
+**Invariants asserted in the rewrite script, before anything was written:**
+every non-description field byte-identical at rewrite time (one field then
+changed separately and deliberately: the HB 1424 Senate entry gained
+`acknowledge_later_rolls` when the superseded-stage gate fired — see below); each description still cites its
+own roll's tally (the same tally as before); every number in the original
+still present; no `", The "` comma splice; every sentence at most 45 words;
+the batch total shorter than the original; and no single description grown by
+more than 10%. Batch length fell **27,232 → 25,434 characters (-1,798)**.
+Longest sentence **45 → 36 words**, mean 18. The plain-language lint reported
+**0 warnings** over all 36 descriptions before the import.
+
+### The superseded-stage gate fired once, correctly
+
+HB 1424's Senate roll 1572563 was flagged against same-day peer 1566202. The
+official MGA history settles the order the gate cannot see: the Senate passed
+its own version **34-13** (1566202), the House refused to concur, a conference
+committee met, and the Senate then adopted the conference report and re-passed
+**33-13** (1572563). The judged roll is the chamber's final action, so the
+entry carries `"acknowledge_later_rolls": [1566202]`. This is the same
+same-day-peer situation Connecticut documented in #960; it stayed latent
+through the nay repair only because that measure's entry compared unchanged,
+so the gate never ran on it. No other roll in the batch has a same-chamber
+peer on or after its date — verified with a direct query, not by iterating on
+gate errors.
+
+### Import
+
+Dry run and real run agreed exactly: **18 files, 1,446 rewrites, 0 inserts,
+0 errors, 0 notified**, stamp `2026-08-30T…25.560Z`; convergence re-run
+**1,446 unchanged**. Records stay **1,446 across 158 candidates** — a wording
+change rewrites in place (the Texas batch-02 precedent) and the freeze trigger
+permits description edits on approved rows.
+
+**Labels were guarded, not assumed.** The federal pass had to strip tags the
+importer re-added on existing records; here a count-and-hash taken before the
+run was compared after it and is **byte-identical** (1,303 tags, md5
+`2a12def6…`), because MD's labels already matched its judgments exactly after
+the nay repair. Ledger committed as `import-plain-language-report.json`;
+`import-report.json` remains the original insert ledger.
+
+**Production still holds the old wording** — it has no Maryland roll-call
+records at all, so re-promotion is separate later work.
+
+### Review fixes (2026-08-30): four descriptions corrected, 614 records rewritten
+
+PR review found four real wording defects, each checked against the DLS
+fiscal note (SB 901 against the note's producer definition) before fixing:
+
+- **HB 1222 (157 records):** "state and local government offices" had
+  broadened the law's reach. The duty covers public schools, public
+  libraries, and **Executive Branch** units of state or local government
+  **operating at a defined "sensitive location"** — now stated, with the
+  note's list (schools, libraries, courthouses, government-run health care
+  sites).
+- **HB 197 (149 records):** "instead of punishing" was invented. The note's
+  definition is a relationship-focused student discipline model including
+  personal accountability; the description now uses those terms and makes no
+  claim about eliminating punishment.
+- **HB 1424 (155 records):** "It moved $5.0 million" stated a completed
+  transfer. The bill **let the Governor move up to** $5.0 million — now
+  worded as the authorization it is.
+- **SB 901 (153 records):** "companies that produce" read as manufacturers
+  only. The statutory producer generally includes brand owners,
+  manufacturers, and importers — now "the companies behind packaging and
+  paper products - including makers, brand owners, and importers".
+
+Judge: 8 updated / 10 unchanged. Import dry and real agreed: **614 rewrites /
+832 unchanged, 0 errors**; convergence 1,446 unchanged; records 1,446 / 158;
+tag count-and-hash again byte-identical (1,303, md5 `2a12def6…`). Ledger:
+`import-review-fixes-report.json` (note: a real re-run writes
+`import-rerun-report.json` when `import-report.json` exists — renamed after
+verifying its contents).
+
+The review also flagged the invariant sentence above as contradicting the
+diff (`acknowledge_later_rolls` was added in the same PR): correct — the
+sentence now states the exception explicitly.
