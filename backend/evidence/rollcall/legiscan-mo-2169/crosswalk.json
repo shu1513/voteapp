@@ -2,7 +2,7 @@
   "source": "legiscan",
   "jurisdiction": "MO",
   "session_id": 2169,
-  "note": "people_id -> VoteApp candidate id for the MO 2025 Regular Session (LegiScan 2169). 89 proposer matches (all accepted), 5 original hand-adds, 23 certified-roster incumbent matches, 80 explicit nulls: 117 mapped total. Seat comes from `district`, never `role`.",
+  "note": "people_id -> VoteApp candidate id for the MO 2025 Regular Session (LegiScan 2169). Mapped entries cover the proposer's matches plus hand-reviewed name-variant and seat-change cases; every unmapped entry carries the reason it is null. Seat comes from `district`, never `role`.",
   "entries": [
     {
       "people_id": 7655,
@@ -212,7 +212,7 @@
     {
       "people_id": 20704,
       "candidate_id": null,
-      "note": "no Nov-2026 candidate row: Jeff Coleman (HD-032)"
+      "note": "REVIEWED, DELIBERATELY NULL: the proposer matches this to a Jeff Coleman running in HD-101 (seatAgrees:false), but that candidate is a LIBERTARIAN and the sitting HD-032 member is a REPUBLICAN \u2014 a different person who shares the name. Do not link."
     },
     {
       "people_id": 20705,
@@ -286,8 +286,8 @@
     },
     {
       "people_id": 20729,
-      "candidate_id": null,
-      "note": "no Nov-2026 candidate row: Gregory Sharpe (HD-004)"
+      "candidate_id": "5c181daf-36a2-492c-877c-3b6804cc8ad3",
+      "note": "hand-added: sitting representative (HD-004) running for SD-018; proposer flagged seatAgrees:false. Corroborated: same party (R), HD-004's own Nov-2026 roster is Sutton/Gudehus so he is not seeking re-election, and SD-018's incumbent Cindy O'Laughlin has no Nov-2026 candidacy. LegiScan first_name Gregory, candidate files as Greg."
     },
     {
       "people_id": 20731,
@@ -331,8 +331,8 @@
     },
     {
       "people_id": 21704,
-      "candidate_id": null,
-      "note": "no Nov-2026 candidate row: Bill Hardwick (HD-121)"
+      "candidate_id": "54fdbb34-9684-46cc-9027-cbcaa406d6db",
+      "note": "hand-added: sitting representative (HD-121) running for SD-016; proposer flagged seatAgrees:false. Corroborated: same party (R), HD-121's own Nov-2026 roster is Pritchard/Arellanes so he is not seeking re-election, and SD-016's incumbent Justin Brown has no Nov-2026 candidacy."
     },
     {
       "people_id": 21705,

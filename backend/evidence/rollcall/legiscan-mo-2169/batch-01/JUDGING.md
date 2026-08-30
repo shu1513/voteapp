@@ -160,6 +160,24 @@ run (583 unchanged). The roster-expansion sequence is separate:
 `import-rerun-report.json` is the real expansion ledger (136 insert / 583 unchanged), and
 `import-roster-expansion-convergence-report.json` is the post-import proof (719 unchanged).
 
+## Seat-change review (2026-08-30)
+
+After the certified-roster expansion the proposer surfaced three `seatAgrees:false` matches the
+expansion had left null. Two are real and were added — **Greg Sharpe** (HD-004 → SD-018) and
+**Bill Hardwick** (HD-121 → SD-016), both sitting representatives running for the Senate, each
+corroborated by party, by their own House seat carrying other November candidates, and by the target
+Senate seat's member having no November candidacy. The third, **Jeff Coleman**, was rejected: the
+sitting HD-032 member is a Republican and the Jeff Coleman on the HD-101 ballot is a Libertarian.
+That entry now carries an explicit "do not link" note so the next reviewer does not re-open it.
+
+Import: dry run planned 14 inserts / 719 unchanged, the real run inserted 14 (7 rolls each for the
+two members), and a convergence dry run reported all **733 unchanged**. Ledgers are
+`import-seat-change-{dry-run,,convergence}-report.json`; the earlier ledgers were preserved.
+
+**Tag counts on this batch look low on purpose.** 492 yea-side records carry 984 tags (exactly two
+each) and the 241 nay-side records carry none — the nay-side stance flip was removed repo-wide by a
+separate campaign. Do not read the 733-record / 984-tag ratio as missing tags.
+
 ## Roll dates
 
 No Missouri roll in this batch falls on a session-end day, and the 2025 Regular Session adjourned
