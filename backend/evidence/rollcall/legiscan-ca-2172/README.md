@@ -92,18 +92,24 @@ so every vote in this batch was cast on the enrolled text and no description nee
 
 ## Batches
 
-- `batch-01/` — 20 rolls / 10 measures. Imported 2026-08-27 at 298 records against a 33-member
-  crosswalk; re-imported to **729 records** after the roster completion above.
-- `batch-02/` — 24 rolls / 12 measures / **859 records**, imported 2026-08-29 on the full 80-member
-  crosswalk. First California coverage for `civil_rights` (AB 1071) and `election_integrity`
-  (SB 73).
-- `batch-03/` — 18 rolls / 9 measures / **645 records**, imported 2026-08-29. First California
-  coverage for `social_programs_and_welfare` (AB 246, SB 634).
+- `batch-01/` — 20 rolls / 10 measures / **729 records** (298 at first import against a 33-member
+  crosswalk; re-imported after the roster completion above).
+- `batch-02/` — 24 rolls / 12 measures / **859 records**. First coverage for `civil_rights` and
+  `election_integrity`.
+- `batch-03/` — 18 rolls / 9 measures / **645 records**. First coverage for
+  `social_programs_and_welfare`.
+- `batch-04/` — 21 rolls / 11 measures / **806 records**. First coverage for
+  `womens_reproductive_rights` and `data_privacy`.
 
-California total: **2,233 roll-call records across 80 candidates.**
+California total: **3,039 roll-call records across 80 candidates**, covering 13 of the 27 research
+areas. All descriptions are plain English (rewritten 2026-08-29; batch-04 written that way).
 
-**Next:** 369 divided-and-enacted rolls on ~196 measures remain in this dataset. Beyond those, 430
-divided rolls on 419 measures were still awaiting the governor when it was cut (2026-08-23);
-LegiScan was still serving that same cut on 2026-08-29 (identical `dataset_hash`), so the trigger
-for batch-04 is a genuinely refreshed dataset in the autumn, after the session's end-of-August close
-and the signing period that follows.
+**What remains, measured 2026-08-30 (post-batch-04).** The divided-and-enacted universe is 227
+measures. Batches 01-04 judged **42** and filter 5 has dropped **26** (16 before batch-04, 10 in
+it), leaving **159**. Of those, 46 are divided in both chambers — **11 actionable candidates**
+(about one more batch), plus 27 budget acts or trailer bills and 8 single-jurisdiction measures,
+both excluded by standing precedent — and **113 are divided in one chamber only** (one roll each).
+The numbers reconcile: 42 + 26 + 46 + 113 = 227. Separately, 430 divided rolls sat on measures
+still awaiting the governor when this dataset was cut (2026-08-23); LegiScan was still serving that
+same cut on 2026-08-29, so a genuinely refreshed dataset in the autumn is the trigger for that
+seam.
