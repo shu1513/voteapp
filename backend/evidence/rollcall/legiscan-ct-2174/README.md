@@ -154,6 +154,8 @@ it to a CA bundle, and pass `--cacert`. Never disable verification.
   `divided-enacted-worklist.tsv`, one row per divided decisive passage roll with its disposition.
 - `batch-01/` — PLAN.md, JUDGING.md, rolls.json, judgments.json, the 17 roll evidence JSONs, and the
   import ledgers.
+- `batch-02/` — the same layout for the second batch: 7 rolls / 4 measures, plus its own PLAN.md,
+  JUDGING.md and ledgers.
 
 The dataset itself and all 842 evidence JSONs live OUTSIDE the repo at `/Users/shu/legiscan-data/ct-2174*`.
 
