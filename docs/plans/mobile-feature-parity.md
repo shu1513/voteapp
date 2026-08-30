@@ -1,9 +1,9 @@
 # Mobile feature parity — stance summary, picks, auto-pick, auth
 
-Status: planned 2026-08-28, revised same day after review. Phase 1
-implemented in PR #925 (this plan's own PR); Phase 2 implemented in
-PR #928 (2026-08-28); Phase 3 implemented (2026-08-28, this branch);
-phases 4–6 not started.
+Status: planned 2026-08-28, revised same day after review. All phases
+implemented: 1 in PR #925 (this plan's own PR), 2 in #928, 3 in #932,
+4 in #939, 5 in #953, 6 (redefined email-only, see its section) in this
+branch's PR. The campaign is complete; this doc is now the record.
 
 ## Context
 
@@ -19,10 +19,14 @@ app never received. Audit (2026-08-28) compared `mobile/src` against
 - Finance summary cards, records grouped by research area, follows,
   ballot filters / sort chips, push notifications, terms gates.
 
-**Missing on mobile:** election choices ("my pick"), the My Draft / My Picks
-page, pick-card sharing, auto-pick, issue direction + hard-veto editing,
-Google Sign-In, guest ballot draft, chatbot, ballot facsimile, membership.
-(The candidate stance summary was on this list; Phase 1 shipped it.)
+**Missing on mobile at audit time:** election choices ("my pick"), the
+My Draft / My Picks page, pick-card sharing, auto-pick, issue direction +
+hard-veto editing, Google Sign-In, guest ballot draft, chatbot, ballot
+facsimile, membership. (The candidate stance summary was on this list;
+Phase 1 shipped it. Phases 2–6 shipped choices, My Draft + sharing,
+issue controls, auto-pick, and the has_password split; Google Sign-In was
+decided against — mobile auth is email-only, see Phase 6. Guest draft,
+chatbot, facsimile, and the membership row stay out of scope below.)
 
 **What is and is not shared today.** `@voteapp/api-client` exports the core
 choice hooks and every choice/auto-pick type: `useElectionChoices`,
@@ -278,11 +282,11 @@ store config).
   which excludes react/react-dom on purpose); then a manual Expo Go walk of
   the touched flow (pick → undo → measure Yes/No → gate states → progress →
   share URL opens the web card).
-- Phases 1 and 6.4 are independent of everything else; 2 → 3 → 5 is a strict
-  chain; 4 must land before 5.
+- Phase order (historical — all landed): 1 was independent; 2 → 3 → 5 was
+  a strict chain; 4 landed before 5; 6 (email-only) came last.
 - **Terms version on distributed builds.** Mobile bundles `TERMS_VERSION`
   at compile time. No distributed build exists today, so bumps have been
-  free — but this plan's later phases (auth epic, store setup) end that.
+  free — store distribution, whenever it happens, ends that.
   Any build that actually ships must carry the then-current version (≥1.3
   after #922), and every future bundle bump must use the
   `GRACE_TERMS_VERSIONS` dual-accept window (`backend/src/constants/legal.ts`)
