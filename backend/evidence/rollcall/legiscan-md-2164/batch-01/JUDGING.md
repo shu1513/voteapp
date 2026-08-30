@@ -160,6 +160,27 @@ vote-claim records for 2025, so there were no duplicates to find.
 (plus the 153 retired HB 767 rows). Promotion
 is a separate step.
 
+## Roster crosswalk follow-up (2026-08-29)
+
+The official Maryland State Board of Elections 2026 general-candidate list
+resolved two District 31 roster gaps: Brian A. Chisholm and LaToya Marie
+Caldwell-Nkongolo. The current Maryland General Assembly member pages confirmed
+both identities and incumbencies. Their profile writes created two candidate
+rows; no AI provider or candidate-record worker ran.
+
+The remaining 29 null crosswalk entries were checked in their stated
+state-legislative races. The official list does not include those members, so
+each remains null. Successor candidates were not mapped to votes
+they did not cast. Full evidence: `../crosswalk-roster-review-2026-08-29.md`.
+
+Before re-import, the existing Maryland tag set had 1,303 rows and MD5
+`1e76a39ca4fc70bb063687eabd64a8bd`. Its count and hash were identical after.
+The real rerun (`import-rerun-report.json`) reported 1,446 `unchanged` and 19
+`insert`; the convergence dry run reported 1,465 `unchanged`. Current local
+total: 1,465 records across 160 candidates and 1,315 tags. `import-report.json`
+was copied to `import-pre-roster-report.json` before the real rerun. Production
+remains untouched.
+
 ## Nay repair (2026-08-30): authored nay stances, 143 mechanically flipped tags dropped
 
 Batch-01 was judged and imported hours before the explicit-`nay` contract

@@ -1,9 +1,9 @@
 {
   "importerVersion": "rollcall-legiscan-import-v1",
-  "dryRun": true,
+  "dryRun": false,
   "skipExisting": false,
-  "startedAt": "2026-08-30T06:53:33.146Z",
-  "finishedAt": "2026-08-30T06:53:36.665Z",
+  "startedAt": "2026-08-30T06:52:52.326Z",
+  "finishedAt": "2026-08-30T06:52:57.890Z",
   "jurisdiction": "MD",
   "sessionId": 2164,
   "evidenceDir": "/Users/shu/.codex/worktrees/7a90/voteApp/backend/evidence/rollcall/legiscan-md-2164/batch-01",
@@ -14,10 +14,11 @@
   "peopleMembers": 189,
   "files": 18,
   "outcomes": {
-    "dry_run": 18
+    "imported": 18
   },
   "actions": {
-    "unchanged": 1465
+    "unchanged": 1446,
+    "insert": 19
   },
   "notified": 0,
   "rolls": [
@@ -27,7 +28,7 @@
       "chamber": "house",
       "sessionId": 2164,
       "roll": 1499761,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "6b21e15d-4cc8-4f36-8109-062283891378",
       "reviewStatus": "approved",
       "bill": "HB39",
@@ -35,7 +36,7 @@
       "officialVoteDate": null,
       "measureId": "HB 39",
       "question": "Third Reading Passed",
-      "originRunId": "rollcall:MD:house:2164:1499761:2026-08-30T06:53:33.146Z",
+      "originRunId": "rollcall:MD:house:2164:1499761:2026-08-30T06:52:52.326Z",
       "members": 136,
       "notVoting": 2,
       "absent": 1,
@@ -44,7 +45,8 @@
         "matched": 116
       },
       "actions": {
-        "unchanged": 116
+        "unchanged": 114,
+        "insert": 2
       },
       "notified": 0,
       "candidates": [
@@ -1278,7 +1280,7 @@
           "peopleId": 20530,
           "memberName": "Brian Chisholm",
           "side": "nay",
-          "action": "unchanged",
+          "action": "insert",
           "recordId": "ff9ba9e6-f1fe-4ede-9329-5acc800eb425",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -1434,7 +1436,7 @@
           "peopleId": 26325,
           "memberName": "LaToya Nkongolo",
           "side": "nay",
-          "action": "unchanged",
+          "action": "insert",
           "recordId": "d1d89c58-bde5-464b-8948-074889eeac4b",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -1449,7 +1451,7 @@
       "chamber": "house",
       "sessionId": 2164,
       "roll": 1505879,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "9e49e1ee-cd68-405f-80f9-bceadc5153f8",
       "reviewStatus": "approved",
       "bill": "HB197",
@@ -1457,7 +1459,7 @@
       "officialVoteDate": null,
       "measureId": "HB 197",
       "question": "Third Reading Passed",
-      "originRunId": "rollcall:MD:house:2164:1505879:2026-08-30T06:53:33.146Z",
+      "originRunId": "rollcall:MD:house:2164:1505879:2026-08-30T06:52:52.326Z",
       "members": 130,
       "notVoting": 0,
       "absent": 9,
@@ -1466,7 +1468,8 @@
         "matched": 112
       },
       "actions": {
-        "unchanged": 112
+        "unchanged": 110,
+        "insert": 2
       },
       "notified": 0,
       "candidates": [
@@ -2640,7 +2643,7 @@
           "peopleId": 20530,
           "memberName": "Brian Chisholm",
           "side": "nay",
-          "action": "unchanged",
+          "action": "insert",
           "recordId": "26f40108-2eb8-42c6-b5c0-5a5d872f74c9",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -2808,7 +2811,7 @@
           "peopleId": 26325,
           "memberName": "LaToya Nkongolo",
           "side": "nay",
-          "action": "unchanged",
+          "action": "insert",
           "recordId": "40c58d97-c413-4682-ae9f-b59041c8a676",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -2823,7 +2826,7 @@
       "chamber": "house",
       "sessionId": 2164,
       "roll": 1537949,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "ded8a0e6-aab6-46cb-9e58-38e499a84647",
       "reviewStatus": "approved",
       "bill": "SB848",
@@ -2831,7 +2834,7 @@
       "officialVoteDate": null,
       "measureId": "SB 848",
       "question": "Third Reading Passed",
-      "originRunId": "rollcall:MD:house:2164:1537949:2026-08-30T06:53:33.146Z",
+      "originRunId": "rollcall:MD:house:2164:1537949:2026-08-30T06:52:52.326Z",
       "members": 131,
       "notVoting": 5,
       "absent": 5,
@@ -2840,7 +2843,8 @@
         "unmatched_reviewed": 16
       },
       "actions": {
-        "unchanged": 115
+        "unchanged": 113,
+        "insert": 2
       },
       "notified": 0,
       "candidates": [
@@ -4086,7 +4090,7 @@
           "peopleId": 20530,
           "memberName": "Brian Chisholm",
           "side": "nay",
-          "action": "unchanged",
+          "action": "insert",
           "recordId": "23aaa103-99c6-4746-9bd3-d130a378ada0",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -4218,7 +4222,7 @@
           "peopleId": 26325,
           "memberName": "LaToya Nkongolo",
           "side": "nay",
-          "action": "unchanged",
+          "action": "insert",
           "recordId": "0c29ad60-473d-4920-b4b3-7526c7be217d",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -4233,7 +4237,7 @@
       "chamber": "house",
       "sessionId": 2164,
       "roll": 1545740,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "769bad30-5a87-4fad-ba64-4ac41c7dcfa9",
       "reviewStatus": "approved",
       "bill": "HB983",
@@ -4241,7 +4245,7 @@
       "officialVoteDate": null,
       "measureId": "HB 983",
       "question": "Third Reading Passed",
-      "originRunId": "rollcall:MD:house:2164:1545740:2026-08-30T06:53:33.146Z",
+      "originRunId": "rollcall:MD:house:2164:1545740:2026-08-30T06:52:52.326Z",
       "members": 127,
       "notVoting": 10,
       "absent": 4,
@@ -4250,7 +4254,8 @@
         "matched": 111
       },
       "actions": {
-        "unchanged": 111
+        "unchanged": 110,
+        "insert": 1
       },
       "notified": 0,
       "candidates": [
@@ -5472,7 +5477,7 @@
           "peopleId": 20530,
           "memberName": "Brian Chisholm",
           "side": "nay",
-          "action": "unchanged",
+          "action": "insert",
           "recordId": "0962f8f2-d08c-4ea6-ae19-03daf99ce13f",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -5595,7 +5600,7 @@
       "chamber": "house",
       "sessionId": 2164,
       "roll": 1545844,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "b1f2e564-796b-41f8-8cd3-d0ceeb9cdd61",
       "reviewStatus": "approved",
       "bill": "HB1378",
@@ -5603,7 +5608,7 @@
       "officialVoteDate": null,
       "measureId": "HB 1378",
       "question": "Third Reading Passed",
-      "originRunId": "rollcall:MD:house:2164:1545844:2026-08-30T06:53:33.146Z",
+      "originRunId": "rollcall:MD:house:2164:1545844:2026-08-30T06:52:52.326Z",
       "members": 132,
       "notVoting": 6,
       "absent": 3,
@@ -5612,7 +5617,8 @@
         "matched": 114
       },
       "actions": {
-        "unchanged": 114
+        "unchanged": 112,
+        "insert": 2
       },
       "notified": 0,
       "candidates": [
@@ -6774,7 +6780,7 @@
           "peopleId": 20530,
           "memberName": "Brian Chisholm",
           "side": "nay",
-          "action": "unchanged",
+          "action": "insert",
           "recordId": "c3e3c4dc-202a-44be-9d9e-66b2bfc73a69",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -6978,7 +6984,7 @@
           "peopleId": 26325,
           "memberName": "LaToya Nkongolo",
           "side": "nay",
-          "action": "unchanged",
+          "action": "insert",
           "recordId": "5de2368a-ca07-4ecd-abf3-059e3acd4ecf",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -6993,7 +6999,7 @@
       "chamber": "house",
       "sessionId": 2164,
       "roll": 1546805,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "e914aa7e-dfe2-4690-9ad9-b510150465b8",
       "reviewStatus": "approved",
       "bill": "HB424",
@@ -7001,7 +7007,7 @@
       "officialVoteDate": null,
       "measureId": "HB 424",
       "question": "Third Reading Passed",
-      "originRunId": "rollcall:MD:house:2164:1546805:2026-08-30T06:53:33.146Z",
+      "originRunId": "rollcall:MD:house:2164:1546805:2026-08-30T06:52:52.326Z",
       "members": 138,
       "notVoting": 2,
       "absent": 1,
@@ -7010,7 +7016,8 @@
         "matched": 118
       },
       "actions": {
-        "unchanged": 118
+        "unchanged": 116,
+        "insert": 2
       },
       "notified": 0,
       "candidates": [
@@ -8256,7 +8263,7 @@
           "peopleId": 20530,
           "memberName": "Brian Chisholm",
           "side": "nay",
-          "action": "unchanged",
+          "action": "insert",
           "recordId": "d79d7b65-db27-4e6f-85e8-7e8047721ac7",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8424,7 +8431,7 @@
           "peopleId": 26325,
           "memberName": "LaToya Nkongolo",
           "side": "nay",
-          "action": "unchanged",
+          "action": "insert",
           "recordId": "e1a14120-b5f3-4959-a090-d4df3e9fad0c",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8439,7 +8446,7 @@
       "chamber": "house",
       "sessionId": 2164,
       "roll": 1546815,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "83f248ff-04cd-46eb-a7d7-e4d6a6abd5cb",
       "reviewStatus": "approved",
       "bill": "SB901",
@@ -8447,7 +8454,7 @@
       "officialVoteDate": null,
       "measureId": "SB 901",
       "question": "Third Reading Passed",
-      "originRunId": "rollcall:MD:house:2164:1546815:2026-08-30T06:53:33.146Z",
+      "originRunId": "rollcall:MD:house:2164:1546815:2026-08-30T06:52:52.326Z",
       "members": 136,
       "notVoting": 3,
       "absent": 2,
@@ -8456,7 +8463,8 @@
         "matched": 117
       },
       "actions": {
-        "unchanged": 117
+        "unchanged": 115,
+        "insert": 2
       },
       "notified": 0,
       "candidates": [
@@ -9702,7 +9710,7 @@
           "peopleId": 20530,
           "memberName": "Brian Chisholm",
           "side": "nay",
-          "action": "unchanged",
+          "action": "insert",
           "recordId": "a546c40f-a304-42fc-9ba6-f2170681aad6",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -9858,7 +9866,7 @@
           "peopleId": 26325,
           "memberName": "LaToya Nkongolo",
           "side": "nay",
-          "action": "unchanged",
+          "action": "insert",
           "recordId": "cf9c39c7-eaa7-49a4-b67a-24bcf2e3faaa",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -9873,7 +9881,7 @@
       "chamber": "house",
       "sessionId": 2164,
       "roll": 1546881,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "9fa2ac0e-ca8a-4ff4-b6c0-b4112fb8c1cd",
       "reviewStatus": "approved",
       "bill": "HB1020",
@@ -9881,7 +9889,7 @@
       "officialVoteDate": null,
       "measureId": "HB 1020",
       "question": "Third Reading Passed",
-      "originRunId": "rollcall:MD:house:2164:1546881:2026-08-30T06:53:33.146Z",
+      "originRunId": "rollcall:MD:house:2164:1546881:2026-08-30T06:52:52.326Z",
       "members": 139,
       "notVoting": 1,
       "absent": 1,
@@ -9890,7 +9898,8 @@
         "matched": 119
       },
       "actions": {
-        "unchanged": 119
+        "unchanged": 117,
+        "insert": 2
       },
       "notified": 0,
       "candidates": [
@@ -11162,7 +11171,7 @@
           "peopleId": 20530,
           "memberName": "Brian Chisholm",
           "side": "nay",
-          "action": "unchanged",
+          "action": "insert",
           "recordId": "6a431236-88fb-4b16-86a7-6b4783140587",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -11318,7 +11327,7 @@
           "peopleId": 26325,
           "memberName": "LaToya Nkongolo",
           "side": "nay",
-          "action": "unchanged",
+          "action": "insert",
           "recordId": "48172204-4fee-46e9-a3d7-40799e51d813",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -11333,7 +11342,7 @@
       "chamber": "house",
       "sessionId": 2164,
       "roll": 1546900,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "804129f3-f596-4dc2-916f-2e4533419984",
       "reviewStatus": "approved",
       "bill": "HB1424",
@@ -11341,7 +11350,7 @@
       "officialVoteDate": null,
       "measureId": "HB 1424",
       "question": "Third Reading Passed",
-      "originRunId": "rollcall:MD:house:2164:1546900:2026-08-30T06:53:33.146Z",
+      "originRunId": "rollcall:MD:house:2164:1546900:2026-08-30T06:52:52.326Z",
       "members": 138,
       "notVoting": 3,
       "absent": 0,
@@ -11350,7 +11359,8 @@
         "matched": 119
       },
       "actions": {
-        "unchanged": 119
+        "unchanged": 117,
+        "insert": 2
       },
       "notified": 0,
       "candidates": [
@@ -12622,7 +12632,7 @@
           "peopleId": 20530,
           "memberName": "Brian Chisholm",
           "side": "nay",
-          "action": "unchanged",
+          "action": "insert",
           "recordId": "0857e4df-1b51-47cf-8199-6fad58bb5265",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -12778,7 +12788,7 @@
           "peopleId": 26325,
           "memberName": "LaToya Nkongolo",
           "side": "nay",
-          "action": "unchanged",
+          "action": "insert",
           "recordId": "092bb50b-d392-40a2-adb1-f0d77036876a",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -12793,7 +12803,7 @@
       "chamber": "house",
       "sessionId": 2164,
       "roll": 1547029,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "3abca084-a891-4c0e-a707-9ce899a7d277",
       "reviewStatus": "approved",
       "bill": "HB1222",
@@ -12801,7 +12811,7 @@
       "officialVoteDate": null,
       "measureId": "HB 1222",
       "question": "Third Reading Passed",
-      "originRunId": "rollcall:MD:house:2164:1547029:2026-08-30T06:53:33.146Z",
+      "originRunId": "rollcall:MD:house:2164:1547029:2026-08-30T06:52:52.326Z",
       "members": 139,
       "notVoting": 2,
       "absent": 0,
@@ -12810,7 +12820,8 @@
         "matched": 120
       },
       "actions": {
-        "unchanged": 120
+        "unchanged": 118,
+        "insert": 2
       },
       "notified": 0,
       "candidates": [
@@ -14070,7 +14081,7 @@
           "peopleId": 20530,
           "memberName": "Brian Chisholm",
           "side": "nay",
-          "action": "unchanged",
+          "action": "insert",
           "recordId": "cdeb09f8-1438-4943-af25-35b0fa387e70",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -14250,7 +14261,7 @@
           "peopleId": 26325,
           "memberName": "LaToya Nkongolo",
           "side": "nay",
-          "action": "unchanged",
+          "action": "insert",
           "recordId": "088efea4-47b3-4239-9115-5a96a301e044",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -14265,7 +14276,7 @@
       "chamber": "senate",
       "sessionId": 2164,
       "roll": 1532080,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "6c8ddf25-ef58-4d42-9bed-643a5a2fa326",
       "reviewStatus": "approved",
       "bill": "SB848",
@@ -14273,7 +14284,7 @@
       "officialVoteDate": null,
       "measureId": "SB 848",
       "question": "Third Reading Passed",
-      "originRunId": "rollcall:MD:senate:2164:1532080:2026-08-30T06:53:33.146Z",
+      "originRunId": "rollcall:MD:senate:2164:1532080:2026-08-30T06:52:52.326Z",
       "members": 44,
       "notVoting": 0,
       "absent": 3,
@@ -14739,7 +14750,7 @@
       "chamber": "senate",
       "sessionId": 2164,
       "roll": 1559874,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "1a5038e5-7e2a-4522-84a0-ae91f26e39f9",
       "reviewStatus": "approved",
       "bill": "HB197",
@@ -14747,7 +14758,7 @@
       "officialVoteDate": null,
       "measureId": "HB 197",
       "question": "Third Reading Passed",
-      "originRunId": "rollcall:MD:senate:2164:1559874:2026-08-30T06:53:33.146Z",
+      "originRunId": "rollcall:MD:senate:2164:1559874:2026-08-30T06:52:52.326Z",
       "members": 47,
       "notVoting": 0,
       "absent": 0,
@@ -15237,7 +15248,7 @@
       "chamber": "senate",
       "sessionId": 2164,
       "roll": 1561552,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "9810dfa5-798c-463b-800b-a5f8bd576646",
       "reviewStatus": "approved",
       "bill": "HB39",
@@ -15245,7 +15256,7 @@
       "officialVoteDate": null,
       "measureId": "HB 39",
       "question": "Third Reading Passed",
-      "originRunId": "rollcall:MD:senate:2164:1561552:2026-08-30T06:53:33.146Z",
+      "originRunId": "rollcall:MD:senate:2164:1561552:2026-08-30T06:52:52.326Z",
       "members": 46,
       "notVoting": 1,
       "absent": 0,
@@ -15735,7 +15746,7 @@
       "chamber": "senate",
       "sessionId": 2164,
       "roll": 1561703,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "6cb699fb-5503-400a-b255-f73018da8a58",
       "reviewStatus": "approved",
       "bill": "HB1222",
@@ -15743,7 +15754,7 @@
       "officialVoteDate": null,
       "measureId": "HB 1222",
       "question": "Third Reading Passed",
-      "originRunId": "rollcall:MD:senate:2164:1561703:2026-08-30T06:53:33.146Z",
+      "originRunId": "rollcall:MD:senate:2164:1561703:2026-08-30T06:52:52.326Z",
       "members": 47,
       "notVoting": 0,
       "absent": 0,
@@ -16235,7 +16246,7 @@
       "chamber": "senate",
       "sessionId": 2164,
       "roll": 1561754,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "297db90a-8c6b-4898-8eb6-9829e98b49d5",
       "reviewStatus": "approved",
       "bill": "SB901",
@@ -16243,7 +16254,7 @@
       "officialVoteDate": null,
       "measureId": "SB 901",
       "question": "Third Reading Passed",
-      "originRunId": "rollcall:MD:senate:2164:1561754:2026-08-30T06:53:33.146Z",
+      "originRunId": "rollcall:MD:senate:2164:1561754:2026-08-30T06:52:52.326Z",
       "members": 44,
       "notVoting": 3,
       "absent": 0,
@@ -16723,7 +16734,7 @@
       "chamber": "senate",
       "sessionId": 2164,
       "roll": 1561850,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "bade063a-4801-4b75-ab83-4dca2bbe70d2",
       "reviewStatus": "approved",
       "bill": "HB424",
@@ -16731,7 +16742,7 @@
       "officialVoteDate": null,
       "measureId": "HB 424",
       "question": "Third Reading Passed",
-      "originRunId": "rollcall:MD:senate:2164:1561850:2026-08-30T06:53:33.146Z",
+      "originRunId": "rollcall:MD:senate:2164:1561850:2026-08-30T06:52:52.326Z",
       "members": 45,
       "notVoting": 0,
       "absent": 2,
@@ -17209,7 +17220,7 @@
       "chamber": "senate",
       "sessionId": 2164,
       "roll": 1565951,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "ec1def05-99d8-4c26-aa1a-6629b7a7e691",
       "reviewStatus": "approved",
       "bill": "HB983",
@@ -17217,7 +17228,7 @@
       "officialVoteDate": null,
       "measureId": "HB 983",
       "question": "Third Reading Passed",
-      "originRunId": "rollcall:MD:senate:2164:1565951:2026-08-30T06:53:33.146Z",
+      "originRunId": "rollcall:MD:senate:2164:1565951:2026-08-30T06:52:52.326Z",
       "members": 44,
       "notVoting": 0,
       "absent": 3,
@@ -17671,7 +17682,7 @@
       "chamber": "senate",
       "sessionId": 2164,
       "roll": 1572563,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "0b9dbd8e-86b0-452a-85cf-419b703c4472",
       "reviewStatus": "approved",
       "bill": "HB1424",
@@ -17679,7 +17690,7 @@
       "officialVoteDate": null,
       "measureId": "HB 1424",
       "question": "Third Reading Passed",
-      "originRunId": "rollcall:MD:senate:2164:1572563:2026-08-30T06:53:33.146Z",
+      "originRunId": "rollcall:MD:senate:2164:1572563:2026-08-30T06:52:52.326Z",
       "members": 46,
       "notVoting": 1,
       "absent": 0,
