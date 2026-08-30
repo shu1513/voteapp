@@ -72,7 +72,7 @@
         {
           "slug": "gun_control",
           "yea": "for",
-          "nay": "against"
+          "nay": null
         }
       ]
     },
@@ -90,7 +90,7 @@
         {
           "slug": "gun_control",
           "yea": "for",
-          "nay": "against"
+          "nay": null
         }
       ]
     },
