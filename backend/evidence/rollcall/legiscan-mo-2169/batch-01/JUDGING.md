@@ -1,6 +1,6 @@
 # Missouri batch-01 — judging and import
 
-**Result on local `voteapp` 2026-08-29: 10 files all `imported`, 0 errors, 583 inserts,
+**Original result on local `voteapp` 2026-08-29: 10 files all `imported`, 0 errors, 583 inserts,
 0 notified, 92 candidates, 1,166 tags. PRODUCTION UNTOUCHED.**
 
 Reconciled three ways:
@@ -17,11 +17,22 @@ A dry re-run then reported all 583 `unchanged` (`import-dry-run-rerun-report.jso
 insert ledger intact. (A *real* re-run would have overwritten `import-report.json`; the Tennessee
 lesson.)
 
-**92 candidates, not the 94 the crosswalk maps.** Brian Williams and Doug Clemens are sitting
-legislators whose only 2026 candidacy is the 4 August county *primary*; with no November row yet
-they fall outside the pipeline's `--scope-from 2026-11-01` and resolve as `out_of_scope`. Their
-identities are reviewed and correct, so a later November roster plus a re-import adds their records
+**The original import covered 92 candidates, not the 94 in the original crosswalk.** Brian Williams
+and Doug Clemens are sitting legislators whose only 2026 candidacy is the 4 August county *primary*;
+with no November row yet, they fall outside the pipeline's `--scope-from 2026-11-01` and resolve as
+`out_of_scope`. Their identities are reviewed and correct, so a later November roster plus a
+re-import adds their records
 idempotently.
+
+## Certified-roster expansion (2026-08-30)
+
+The Missouri SOS certified general-election roster added 23 sitting legislators to the crosswalk,
+moving it from **94 mapped / 103 null** to **117 mapped / 80 null**. The pre-import dry run planned
+**136 inserts / 583 unchanged** across 115 candidates
+(`import-roster-expansion-dry-run-report.json`). The real rerun wrote those 136 records and left 583
+unchanged (`import-rerun-report.json`), bringing the batch to **719 records across 115 candidates**.
+A post-import dry run then proved convergence with **719 unchanged / 0 inserts**
+(`import-roster-expansion-convergence-report.json`). Production remained untouched.
 
 ## Sources
 
@@ -144,7 +155,10 @@ rewrites, not 79.
 Report provenance: `import-report.json` is the ORIGINAL insert ledger (`insert: 583`, preserved
 before the re-run — the Tennessee lesson); `import-rewrite-report.json` is the review-response run
 (82 rewrite / 501 unchanged); `import-dry-run-rerun-report.json` is the post-rewrite convergence
-run (583 unchanged).
+run (583 unchanged). The roster-expansion sequence is separate:
+`import-roster-expansion-dry-run-report.json` is the pre-import plan (136 insert / 583 unchanged),
+`import-rerun-report.json` is the real expansion ledger (136 insert / 583 unchanged), and
+`import-roster-expansion-convergence-report.json` is the post-import proof (719 unchanged).
 
 ## Roll dates
 
