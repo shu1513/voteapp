@@ -31,16 +31,23 @@ while keeping the no-influence shield absolute. Substance change - the
 bundle bumps to 1.3 (disclaimer.md, CURRENT_TERMS_VERSION, TERMS_VERSION),
 GRACE_TERMS_VERSIONS ships listing "1.2", and signed-in users re-accept
 once. Must be LIVE before the first member-only communication is sent.
+Operator change 2026-08-29 (1.3 -> 1.4): the operator and contracting party
+is now Elections Simplified Inc., a Delaware corporation (previously
+impactperdollar). Principal place of business remains California, so the
+Section 12.1/12.8 assumptions are unchanged. A change of contracting party
+is material — the bundle bumps to 1.4 (disclaimer.md, privacy-policy.md,
+CURRENT_TERMS_VERSION, TERMS_VERSION), GRACE_TERMS_VERSIONS ships listing
+"1.3", and signed-in users re-accept once.
 -->
 
 # Elections Simplified Terms of Use
 
-**Last updated:** August 28, 2026
-**Version:** 1.3
+**Last updated:** August 29, 2026
+**Version:** 1.4
 
 ## 1. Acceptance of these Terms
 
-These Terms of Use ("Terms") are an agreement between you and impactperdollar, the operator of the Elections Simplified service ("Elections Simplified," "we," "us," or "our") governing your use of the Elections Simplified website and services (the "Service"). By checking an agreement box, creating an account, submitting an address or search, or otherwise using the Service, you accept these Terms, the [Privacy Policy](/privacy), and the [AI Research and Election Information Disclaimer](/disclaimer) (the "Disclaimer"), which is incorporated into these Terms by reference. You consent to entering this agreement electronically.
+These Terms of Use ("Terms") are an agreement between you and Elections Simplified Inc., a Delaware corporation and the operator of the Elections Simplified service ("Elections Simplified," "we," "us," or "our") governing your use of the Elections Simplified website and services (the "Service"). By checking an agreement box, creating an account, submitting an address or search, or otherwise using the Service, you accept these Terms, the [Privacy Policy](/privacy), and the [AI Research and Election Information Disclaimer](/disclaimer) (the "Disclaimer"), which is incorporated into these Terms by reference. You consent to entering this agreement electronically.
 
 **Electronic communications and notices.** You consent to receive communications from us electronically — by email to your account address or by posting in the Service — and you agree that all agreements, notices, disclosures, and other communications we provide electronically satisfy any legal requirement that they be in writing. Notices to you are effective when posted in the Service or sent to your account email; notices to us must be sent to contact@electionssimplified.com.
 

@@ -2,8 +2,8 @@
   "importerVersion": "rollcall-legiscan-import-v1",
   "dryRun": false,
   "skipExisting": false,
-  "startedAt": "2026-08-29T05:22:44.691Z",
-  "finishedAt": "2026-08-29T05:22:57.938Z",
+  "startedAt": "2026-08-29T22:28:05.600Z",
+  "finishedAt": "2026-08-29T22:28:26.025Z",
   "jurisdiction": "CA",
   "sessionId": 2172,
   "evidenceDir": "/Users/shu/legiscan-data/ca-2172-evidence",
@@ -14,12 +14,12 @@
   "peopleMembers": 121,
   "files": 5328,
   "outcomes": {
-    "not_approved": 5284,
-    "imported": 44
+    "not_approved": 5266,
+    "imported": 62
   },
   "actions": {
-    "unchanged": 1230,
-    "rewrite": 358
+    "rewrite": 143,
+    "unchanged": 2090
   },
   "notified": 0,
   "rolls": [
@@ -37,7 +37,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1061",
       "question": "AB 1061 Quirk-Silva Concurrence in Senate Amendments",
-      "originRunId": "rollcall:CA:house:2172:1601300:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:house:2172:1601300:2026-08-29T22:28:05.600Z",
       "members": 64,
       "notVoting": 0,
       "absent": 16,
@@ -67,7 +67,7 @@
       "officialVoteDate": null,
       "measureId": "SB 82",
       "question": "SB 82 Umberg Senate Third Reading By Connolly",
-      "originRunId": "rollcall:CA:house:2172:1601404:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:house:2172:1601404:2026-08-29T22:28:05.600Z",
       "members": 73,
       "notVoting": 0,
       "absent": 7,
@@ -97,7 +97,7 @@
       "officialVoteDate": null,
       "measureId": "SB 30",
       "question": "SB 30 Cortese Senate Third Reading By Wilson",
-      "originRunId": "rollcall:CA:house:2172:1601531:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:house:2172:1601531:2026-08-29T22:28:05.600Z",
       "members": 75,
       "notVoting": 0,
       "absent": 5,
@@ -106,7 +106,7 @@
         "matched": 65
       },
       "actions": {
-        "rewrite": 65
+        "unchanged": 65
       },
       "notified": 0,
       "candidates": 65,
@@ -127,7 +127,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1318",
       "question": "AB 1318 Bonta Concurrence in Senate Amendments",
-      "originRunId": "rollcall:CA:house:2172:1601541:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:house:2172:1601541:2026-08-29T22:28:05.600Z",
       "members": 79,
       "notVoting": 0,
       "absent": 1,
@@ -157,7 +157,7 @@
       "officialVoteDate": null,
       "measureId": "AB 572",
       "question": "AB 572 Kalra Concurrence in Senate Amendments",
-      "originRunId": "rollcall:CA:house:2172:1602196:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:house:2172:1602196:2026-08-29T22:28:05.600Z",
       "members": 64,
       "notVoting": 0,
       "absent": 16,
@@ -166,7 +166,7 @@
         "matched": 56
       },
       "actions": {
-        "rewrite": 56
+        "unchanged": 56
       },
       "notified": 0,
       "candidates": 56,
@@ -187,7 +187,7 @@
       "officialVoteDate": null,
       "measureId": "SB 763",
       "question": "SB 763 Hurtado Senate Third Reading By Kalra",
-      "originRunId": "rollcall:CA:house:2172:1602306:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:house:2172:1602306:2026-08-29T22:28:05.600Z",
       "members": 73,
       "notVoting": 0,
       "absent": 7,
@@ -196,7 +196,7 @@
         "matched": 63
       },
       "actions": {
-        "rewrite": 63
+        "unchanged": 63
       },
       "notified": 0,
       "candidates": 63,
@@ -217,7 +217,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1071",
       "question": "AB 1071 Kalra Concurrence in Senate Amendments",
-      "originRunId": "rollcall:CA:house:2172:1602345:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:house:2172:1602345:2026-08-29T22:28:05.600Z",
       "members": 63,
       "notVoting": 0,
       "absent": 17,
@@ -247,7 +247,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1037",
       "question": "AB 1037 Elhawary Concurrence in Senate Amendments",
-      "originRunId": "rollcall:CA:house:2172:1602510:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:house:2172:1602510:2026-08-29T22:28:05.600Z",
       "members": 74,
       "notVoting": 0,
       "absent": 6,
@@ -256,7 +256,7 @@
         "matched": 63
       },
       "actions": {
-        "unchanged": 63
+        "rewrite": 63
       },
       "notified": 0,
       "candidates": 63,
@@ -277,7 +277,7 @@
       "officialVoteDate": null,
       "measureId": "AB 858",
       "question": "AB 858 Lee Concurrence in Senate Amendments",
-      "originRunId": "rollcall:CA:house:2172:1602541:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:house:2172:1602541:2026-08-29T22:28:05.600Z",
       "members": 68,
       "notVoting": 0,
       "absent": 12,
@@ -286,7 +286,7 @@
         "matched": 58
       },
       "actions": {
-        "rewrite": 58
+        "unchanged": 58
       },
       "notified": 0,
       "candidates": 58,
@@ -307,7 +307,7 @@
       "officialVoteDate": null,
       "measureId": "SB 596",
       "question": "SB 596 Menjivar Senate Third Reading By Schiavo",
-      "originRunId": "rollcall:CA:house:2172:1602572:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:house:2172:1602572:2026-08-29T22:28:05.600Z",
       "members": 67,
       "notVoting": 0,
       "absent": 13,
@@ -337,7 +337,7 @@
       "officialVoteDate": null,
       "measureId": "SB 73",
       "question": "SB 73 Cervantes Third Reading Urgency By Pellerin",
-      "originRunId": "rollcall:CA:house:2172:1701449:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:house:2172:1701449:2026-08-29T22:28:05.600Z",
       "members": 76,
       "notVoting": 0,
       "absent": 4,
@@ -346,7 +346,7 @@
         "matched": 66
       },
       "actions": {
-        "rewrite": 66
+        "unchanged": 66
       },
       "notified": 0,
       "candidates": 66,
@@ -367,7 +367,7 @@
       "officialVoteDate": null,
       "measureId": "AB 2624",
       "question": "AB 2624 Bonta Concurrence in Senate Amendments",
-      "originRunId": "rollcall:CA:house:2172:1725474:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:house:2172:1725474:2026-08-29T22:28:05.600Z",
       "members": 78,
       "notVoting": 0,
       "absent": 1,
@@ -397,7 +397,7 @@
       "officialVoteDate": null,
       "measureId": "SB 82",
       "question": "Senate 3rd Reading SB82 Umberg",
-      "originRunId": "rollcall:CA:senate:2172:1586421:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:senate:2172:1586421:2026-08-29T22:28:05.600Z",
       "members": 38,
       "notVoting": 0,
       "absent": 2,
@@ -427,7 +427,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1061",
       "question": "Assembly 3rd Reading AB1061 Quirk-Silva et al. By Wiener",
-      "originRunId": "rollcall:CA:senate:2172:1600931:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:senate:2172:1600931:2026-08-29T22:28:05.600Z",
       "members": 34,
       "notVoting": 0,
       "absent": 6,
@@ -457,7 +457,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1318",
       "question": "Assembly 3rd Reading AB1318 Bonta et al. By McNerney Urgency Clause",
-      "originRunId": "rollcall:CA:senate:2172:1601264:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:senate:2172:1601264:2026-08-29T22:28:05.600Z",
       "members": 39,
       "notVoting": 0,
       "absent": 1,
@@ -487,7 +487,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1037",
       "question": "Assembly 3rd Reading AB1037 Elhawary By Menjivar",
-      "originRunId": "rollcall:CA:senate:2172:1601620:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:senate:2172:1601620:2026-08-29T22:28:05.600Z",
       "members": 40,
       "notVoting": 0,
       "absent": 0,
@@ -496,7 +496,7 @@
         "matched": 11
       },
       "actions": {
-        "unchanged": 11
+        "rewrite": 11
       },
       "notified": 0,
       "candidates": 11,
@@ -517,7 +517,7 @@
       "officialVoteDate": null,
       "measureId": "SB 30",
       "question": "Unfinished Business SB30 Cortese et al. Concurrence",
-      "originRunId": "rollcall:CA:senate:2172:1601722:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:senate:2172:1601722:2026-08-29T22:28:05.600Z",
       "members": 39,
       "notVoting": 0,
       "absent": 1,
@@ -526,7 +526,7 @@
         "matched": 11
       },
       "actions": {
-        "rewrite": 11
+        "unchanged": 11
       },
       "notified": 0,
       "candidates": 11,
@@ -547,7 +547,7 @@
       "officialVoteDate": null,
       "measureId": "AB 858",
       "question": "Assembly 3rd Reading AB858 Lee et al. By Durazo",
-      "originRunId": "rollcall:CA:senate:2172:1601757:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:senate:2172:1601757:2026-08-29T22:28:05.600Z",
       "members": 39,
       "notVoting": 0,
       "absent": 1,
@@ -556,7 +556,7 @@
         "matched": 10
       },
       "actions": {
-        "rewrite": 10
+        "unchanged": 10
       },
       "notified": 0,
       "candidates": 10,
@@ -577,7 +577,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1071",
       "question": "Assembly 3rd Reading AB1071 Kalra By Arreguín",
-      "originRunId": "rollcall:CA:senate:2172:1601943:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:senate:2172:1601943:2026-08-29T22:28:05.600Z",
       "members": 36,
       "notVoting": 0,
       "absent": 4,
@@ -607,7 +607,7 @@
       "officialVoteDate": null,
       "measureId": "AB 572",
       "question": "Assembly 3rd Reading AB572 Kalra et al. By Cortese",
-      "originRunId": "rollcall:CA:senate:2172:1602195:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:senate:2172:1602195:2026-08-29T22:28:05.600Z",
       "members": 32,
       "notVoting": 0,
       "absent": 8,
@@ -616,7 +616,7 @@
         "matched": 8
       },
       "actions": {
-        "rewrite": 8
+        "unchanged": 8
       },
       "notified": 0,
       "candidates": 8,
@@ -637,7 +637,7 @@
       "officialVoteDate": null,
       "measureId": "SB 596",
       "question": "Unfinished Business SB596 Menjivar Concurrence",
-      "originRunId": "rollcall:CA:senate:2172:1602214:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:senate:2172:1602214:2026-08-29T22:28:05.600Z",
       "members": 31,
       "notVoting": 0,
       "absent": 9,
@@ -667,7 +667,7 @@
       "officialVoteDate": null,
       "measureId": "SB 763",
       "question": "Unfinished Business SB763 Hurtado Concurrence",
-      "originRunId": "rollcall:CA:senate:2172:1602893:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:senate:2172:1602893:2026-08-29T22:28:05.600Z",
       "members": 37,
       "notVoting": 0,
       "absent": 3,
@@ -676,7 +676,7 @@
         "matched": 11
       },
       "actions": {
-        "rewrite": 11
+        "unchanged": 11
       },
       "notified": 0,
       "candidates": 11,
@@ -697,7 +697,7 @@
       "officialVoteDate": null,
       "measureId": "SB 73",
       "question": "Unfinished Business SB73 Cervantes et al. Urgency Clause Concurrence",
-      "originRunId": "rollcall:CA:senate:2172:1702119:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:senate:2172:1702119:2026-08-29T22:28:05.600Z",
       "members": 37,
       "notVoting": 0,
       "absent": 3,
@@ -706,7 +706,7 @@
         "matched": 10
       },
       "actions": {
-        "rewrite": 10
+        "unchanged": 10
       },
       "notified": 0,
       "candidates": 10,
@@ -727,7 +727,7 @@
       "officialVoteDate": null,
       "measureId": "AB 2624",
       "question": "Assembly 3rd Reading AB2624 Bonta et al. By Gonzalez",
-      "originRunId": "rollcall:CA:senate:2172:1725364:2026-08-29T05:22:44.691Z",
+      "originRunId": "rollcall:CA:senate:2172:1725364:2026-08-29T22:28:05.600Z",
       "members": 40,
       "notVoting": 0,
       "absent": 0,

@@ -1,0 +1,2633 @@
+{
+  "importerVersion": "rollcall-legiscan-resolve-v1",
+  "startedAt": "2026-08-29T05:28:44.322Z",
+  "finishedAt": "2026-08-29T05:28:45.314Z",
+  "jurisdiction": "MD",
+  "sessionId": 2164,
+  "evidenceDir": "/Users/shu/legiscan-data/md-2164-evidence",
+  "scopeFrom": "2026-11-01",
+  "peopleSource": "/Users/shu/legiscan-data/md-2164/MD/2025-2025_Regular_Session",
+  "peopleMembers": 189,
+  "candidatePool": 300,
+  "crosswalkFile": null,
+  "crosswalkEntries": null,
+  "crosswalkPeopleNotInSnapshot": [],
+  "proposals": [
+    {
+      "peopleId": 4553,
+      "rosterName": "Jeff Waldstreicher",
+      "rosterSeat": "senate SD-018",
+      "candidateId": "030b4ee0-5519-4951-9bb1-acc53bba925c",
+      "candidateName": "Jeff Waldstreicher",
+      "candidacy": "state_upper: State Senate District 18 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 4561,
+      "rosterName": "Joseline Pena-Melnyk",
+      "rosterSeat": "house HD-021",
+      "candidateId": "82025bfb-fb50-4f6f-8057-0cc3ea3eb9eb",
+      "candidateName": "Joseline A. Pe\u00f1a-Melnyk",
+      "candidacy": "state_lower: State Legislative District 21 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 4575,
+      "rosterName": "Brian Feldman",
+      "rosterSeat": "senate SD-015",
+      "candidateId": "abad9574-495b-46b9-b285-6f3c50fb57cb",
+      "candidateName": "Brian J. Feldman",
+      "candidacy": "state_upper: State Senate District 15 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 4583,
+      "rosterName": "Ben Barnes",
+      "rosterSeat": "house HD-021",
+      "candidateId": "fe4f7968-70b2-4d55-bc01-51bcf912244b",
+      "candidateName": "Ben Barnes",
+      "candidacy": "state_lower: State Legislative District 21 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 4588,
+      "rosterName": "Anne Kaiser",
+      "rosterSeat": "house HD-014",
+      "candidateId": "0d5fa8b3-6832-4c21-97ea-b9fbd6544ad9",
+      "candidateName": "Anne R. Kaiser",
+      "candidacy": "state_lower: State Legislative District 14 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 4596,
+      "rosterName": "J.B. Jennings",
+      "rosterSeat": "senate SD-007",
+      "candidateId": "a217ab4c-5e07-4172-b79b-0ba45f307a03",
+      "candidateName": "J. B. Jennings",
+      "candidacy": "state_upper: State Senate District 7 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 4597,
+      "rosterName": "Benjamin Kramer",
+      "rosterSeat": "senate SD-019",
+      "candidateId": "5201feea-2bf2-4384-82a7-6029781721c1",
+      "candidateName": "Ben Kramer",
+      "candidacy": "state_upper: State Senate District 19 (2024); Maryland",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 4598,
+      "rosterName": "Jon Cardin",
+      "rosterSeat": "house HD-011",
+      "candidateId": "23119c3f-768a-4b0b-b2ad-f930c9ff098e",
+      "candidateName": "Jon S. Cardin",
+      "candidacy": "state_lower: State Legislative Subdistrict 11B (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 4623,
+      "rosterName": "Marvin Holmes",
+      "rosterSeat": "house HD-023",
+      "candidateId": "b26625af-dc2d-40c5-87b1-466f5fc73187",
+      "candidateName": "Marvin E. Holmes, Jr.",
+      "candidacy": "state_lower: State Legislative District 23 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 4627,
+      "rosterName": "Dana Stein",
+      "rosterSeat": "house HD-011",
+      "candidateId": "1f63676d-15c7-41a7-bb23-02205bde39ab",
+      "candidateName": "Dana Stein",
+      "candidacy": "state_lower: State Legislative Subdistrict 11B (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 4636,
+      "rosterName": "Guy Guzzone",
+      "rosterSeat": "senate SD-013",
+      "candidateId": "e647ecfc-df4f-4d62-8bc2-44e4db0fcc0e",
+      "candidateName": "Guy J. Guzzone",
+      "candidacy": "state_upper: State Senate District 13 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 4639,
+      "rosterName": "Mary James",
+      "rosterSeat": "senate SD-034",
+      "candidateId": "0f82c0cb-7204-4921-a69e-e7f9521e3273",
+      "candidateName": "Mary-Dulany James",
+      "candidacy": "state_upper: State Senate District 34 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 11447,
+      "rosterName": "Luke Clippinger",
+      "rosterSeat": "house HD-046",
+      "candidateId": "e5f83f28-bcb3-4871-9a21-bca3f951abb1",
+      "candidateName": "Luke Clippinger",
+      "candidacy": "state_lower: State Legislative District 46 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 11450,
+      "rosterName": "Tiffany Alston",
+      "rosterSeat": "house HD-024",
+      "candidateId": "89322e0a-1084-4da9-947e-878949c2e90e",
+      "candidateName": "Tiffany Alston",
+      "candidacy": "state_upper: State Senate District 24 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 11766,
+      "rosterName": "Kathy Szeliga",
+      "rosterSeat": "house HD-007",
+      "candidateId": "e4deef99-f826-4b83-a76a-d48075d92aca",
+      "candidateName": "Kathy Szeliga",
+      "candidacy": "state_lower: State Legislative Subdistrict 7A (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 11917,
+      "rosterName": "Mary Washington",
+      "rosterSeat": "senate SD-043",
+      "candidateId": "a638df3b-7ec9-4fe9-abf5-fe15f2de60ef",
+      "candidateName": "Mary Washington",
+      "candidacy": "state_upper: State Senate District 43 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 11972,
+      "rosterName": "Justin Ready",
+      "rosterSeat": "senate SD-005",
+      "candidateId": "e8e6b859-c1a3-4e7b-b801-fa91f774edf3",
+      "candidateName": "Justin D. Ready",
+      "candidacy": "state_upper: State Senate District 5 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 11975,
+      "rosterName": "Craig Zucker",
+      "rosterSeat": "senate SD-014",
+      "candidateId": "c3ee7aab-212b-4e53-bc4a-3a2fbfde5651",
+      "candidateName": "Craig J. Zucker",
+      "candidacy": "state_upper: State Senate District 14 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12163,
+      "rosterName": "C.T. Wilson",
+      "rosterSeat": "house HD-028",
+      "candidateId": "beeb9d1c-5831-460c-82fc-ab6ada19736b",
+      "candidateName": "C. T. Wilson",
+      "candidacy": "state_upper: State Senate District 28 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 15140,
+      "rosterName": "Alonzo Washington",
+      "rosterSeat": "senate SD-022",
+      "candidateId": "b186e54c-4fee-41c1-a5b1-2eff8d09e039",
+      "candidateName": "Alonzo T. Washington",
+      "candidacy": "state_upper: State Senate District 22 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16100,
+      "rosterName": "David Fraser-hidalgo",
+      "rosterSeat": "house HD-015",
+      "candidateId": "1f734a55-e318-4656-b7fd-8e7dca5678cd",
+      "candidateName": "David V. Fraser-Hidalgo",
+      "candidacy": "state_lower: State Legislative District 15 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17167,
+      "rosterName": "Terri Hill",
+      "rosterSeat": "house HD-012",
+      "candidateId": "f6fab847-df85-489a-8553-5efb3964aaca",
+      "candidateName": "Terri Hill",
+      "candidacy": "state_lower: State Legislative Subdistrict 12A (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 17170,
+      "rosterName": "Clarence Lam",
+      "rosterSeat": "senate SD-012",
+      "candidateId": "900b89db-39e4-4090-ba0c-a8279f4d8bda",
+      "candidateName": "Clarence Lam",
+      "candidacy": "state_upper: State Senate District 12 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17171,
+      "rosterName": "William Smith",
+      "rosterSeat": "senate SD-020",
+      "candidateId": "5540a3d5-a477-4528-8929-c56ea321b5e9",
+      "candidateName": "Will Smith",
+      "candidacy": "state_upper: State Senate District 20 (2024); Maryland",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17231,
+      "rosterName": "Jason Buckel",
+      "rosterSeat": "house HD-001",
+      "candidateId": "2545e72b-9f0d-40c7-bc77-dcd3e6c08ca2",
+      "candidateName": "Jason C. Buckel",
+      "candidacy": "state_lower: State Legislative Subdistrict 1B (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 17233,
+      "rosterName": "Mark Chang",
+      "rosterSeat": "house HD-032",
+      "candidateId": "5fd64dda-f108-4ca5-9656-24b43df4984e",
+      "candidateName": "Mark S. Chang",
+      "candidacy": "state_upper: State Senate District 32 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 17234,
+      "rosterName": "Eric Ebersole",
+      "rosterSeat": "house HD-044",
+      "candidateId": "ce9ec51b-1654-4310-b28e-abf04e951fb7",
+      "candidateName": "Eric Ebersole",
+      "candidacy": "state_lower: State Legislative Subdistrict 44A (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 17238,
+      "rosterName": "David Moon",
+      "rosterSeat": "house HD-020",
+      "candidateId": "348596b3-a240-48b4-ab5d-6fbdb1d934c3",
+      "candidateName": "David Moon",
+      "candidacy": "state_lower: State Legislative District 20 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17239,
+      "rosterName": "Matt Morgan",
+      "rosterSeat": "house HD-029",
+      "candidateId": "e4e4b784-910d-40ab-9a76-de4cb49f11a7",
+      "candidateName": "Matt Morgan",
+      "candidacy": "state_lower: State Legislative Subdistrict 29A (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 17246,
+      "rosterName": "Johnny Salling",
+      "rosterSeat": "senate SD-006",
+      "candidateId": "77e56866-04c2-4492-bd01-fd99df2e4911",
+      "candidateName": "Johnny Ray Salling",
+      "candidacy": "state_upper: State Senate District 6 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17248,
+      "rosterName": "Karen Lewis Young",
+      "rosterSeat": "senate SD-003",
+      "candidateId": "5be9b334-121e-43f1-b1d4-bef9ca48f0cb",
+      "candidateName": "Karen Lewis Young",
+      "candidacy": "state_upper: State Senate District 3 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17313,
+      "rosterName": "Cheryl Kagan",
+      "rosterSeat": "senate SD-017",
+      "candidateId": "0a6dca01-0881-4c13-ab0e-4cf8db6d09cf",
+      "candidateName": "Cheryl C. Kagan",
+      "candidacy": "state_upper: State Senate District 17 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17320,
+      "rosterName": "Diana Fennell",
+      "rosterSeat": "house HD-047",
+      "candidateId": "6ee4751d-e868-4064-88ea-f4172e02314d",
+      "candidateName": "Diana M. Fennell",
+      "candidacy": "state_lower: State Legislative Subdistrict 47A (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 17321,
+      "rosterName": "Antonio Hayes",
+      "rosterSeat": "senate SD-040",
+      "candidateId": "a98a36f4-7520-4505-b2b9-35f04dbeee7f",
+      "candidateName": "Antonio Hayes",
+      "candidacy": "state_upper: State Senate District 40 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17322,
+      "rosterName": "Cory McCray",
+      "rosterSeat": "senate SD-045",
+      "candidateId": "0e28bb08-f236-450a-9c40-24358afc41ae",
+      "candidateName": "Cory V. McCray",
+      "candidacy": "state_upper: State Senate District 45 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17324,
+      "rosterName": "Seth Howard",
+      "rosterSeat": "house HD-030",
+      "candidateId": "147670ef-28fd-4e3c-a389-a28e41e3377a",
+      "candidateName": "Seth Howard",
+      "candidacy": "state_lower: State Legislative Subdistrict 30B (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 17375,
+      "rosterName": "Benjamin Brooks",
+      "rosterSeat": "senate SD-010",
+      "candidateId": "6d62af1d-fdca-4932-a3b5-98476ad297f7",
+      "candidateName": "Ben Brooks",
+      "candidacy": "state_upper: State Senate District 10 (2024); Maryland",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17376,
+      "rosterName": "William Folden",
+      "rosterSeat": "senate SD-004",
+      "candidateId": "b519f3aa-b347-4300-99eb-118d0a9c6e8e",
+      "candidateName": "William \"Bill\" Folden",
+      "candidacy": "state_upper: State Senate District 4 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17377,
+      "rosterName": "Shelly Hettleman",
+      "rosterSeat": "senate SD-011",
+      "candidateId": "0e102484-6375-4566-b972-69056543e3b8",
+      "candidateName": "Shelly L. Hettleman",
+      "candidacy": "state_upper: State Senate District 11 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17380,
+      "rosterName": "Charles Sydnor",
+      "rosterSeat": "senate SD-044",
+      "candidateId": "74b18319-2cb9-4b4c-a64a-d16b4da60286",
+      "candidateName": "Charles E. Sydnor, III",
+      "candidacy": "state_upper: State Senate District 44 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17398,
+      "rosterName": "Christopher Adams",
+      "rosterSeat": "house HD-037",
+      "candidateId": "b7fb7a70-9c8c-4953-a5d7-e30216915458",
+      "candidateName": "Chris Adams",
+      "candidacy": "state_lower: State Legislative Subdistrict 37B (2024); Maryland",
+      "confidence": "first_prefix",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 17401,
+      "rosterName": "Marc Korman",
+      "rosterSeat": "house HD-016",
+      "candidateId": "2d5638e1-81ee-4fec-a4ad-273a6ffa7ea8",
+      "candidateName": "Marc Korman",
+      "candidacy": "state_lower: State Legislative District 16 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17402,
+      "rosterName": "Mike McKay",
+      "rosterSeat": "senate SD-001",
+      "candidateId": "ba54e774-2362-45e4-b1b9-c7095f2c076d",
+      "candidateName": "Mike McKay",
+      "candidacy": "state_upper: State Senate District 1 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17403,
+      "rosterName": "Ric Metzgar",
+      "rosterSeat": "house HD-006",
+      "candidateId": "75e27f8a-73d2-408d-ab01-b935a0e9131f",
+      "candidateName": "Ric Metzgar",
+      "candidacy": "state_lower: State Legislative District 6 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17422,
+      "rosterName": "Mary Carozza",
+      "rosterSeat": "senate SD-038",
+      "candidateId": "1e448003-3049-45b6-aa7e-5af7f4b081ad",
+      "candidateName": "Mary Beth Carozza",
+      "candidacy": "state_upper: State Senate District 38 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17423,
+      "rosterName": "Robin Grammer",
+      "rosterSeat": "house HD-006",
+      "candidateId": "c604a96e-ffdf-4036-b9d2-779e20936a4c",
+      "candidateName": "Robin L. Grammer",
+      "candidacy": "state_lower: State Legislative District 6 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17425,
+      "rosterName": "Johnny Mautz",
+      "rosterSeat": "senate SD-037",
+      "candidateId": "6a0c21ae-20fa-45a2-8235-9232ad5b51fb",
+      "candidateName": "Johnny Mautz",
+      "candidacy": "state_upper: State Senate District 37 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17426,
+      "rosterName": "Teresa Reilly",
+      "rosterSeat": "house HD-035",
+      "candidateId": "d736cadc-df94-4f90-bfeb-1954aa95bafc",
+      "candidateName": "Teresa Reilly",
+      "candidacy": "state_lower: State Legislative Subdistrict 35A (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 17434,
+      "rosterName": "Edith Patterson",
+      "rosterSeat": "house HD-028",
+      "candidateId": "f77e81ee-d2dd-469f-90ed-3a5485f928c4",
+      "candidateName": "Edith J. Patterson",
+      "candidacy": "state_lower: State Legislative District 28 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17435,
+      "rosterName": "Sheree Sample-Hughes",
+      "rosterSeat": "house HD-037",
+      "candidateId": "12b5b85f-ac8c-47f4-84be-1c664169d57c",
+      "candidateName": "Sheree Sample-Hughes",
+      "candidacy": "state_lower: State Legislative Subdistrict 37A (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 17669,
+      "rosterName": "William Wivell",
+      "rosterSeat": "house HD-002",
+      "candidateId": "72f69c07-36c4-4b10-8816-a4d892330b84",
+      "candidateName": "William J. Wivell",
+      "candidacy": "state_lower: State Legislative Subdistrict 2A (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 17670,
+      "rosterName": "April Rose",
+      "rosterSeat": "house HD-005",
+      "candidateId": "bb5afd9c-cfc0-4235-8fca-68e059086778",
+      "candidateName": "April R. Rose",
+      "candidacy": "state_lower: State Legislative District 5 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18731,
+      "rosterName": "Robbyn Lewis",
+      "rosterSeat": "house HD-046",
+      "candidateId": "2058e3f6-04b6-4add-80c4-5665e9f86b44",
+      "candidateName": "Robbyn Lewis",
+      "candidacy": "state_lower: State Legislative District 46 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19199,
+      "rosterName": "Jheanelle Wilkins",
+      "rosterSeat": "house HD-020",
+      "candidateId": "2dd958ca-5559-4072-a072-0e861b205227",
+      "candidateName": "Jheanelle K. Wilkins",
+      "candidacy": "state_lower: State Legislative District 20 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19527,
+      "rosterName": "Paul Corderman",
+      "rosterSeat": "senate SD-002",
+      "candidateId": "3166e116-2706-4e9e-bd6b-78873ef913a5",
+      "candidateName": "Paul D. Corderman",
+      "candidacy": "state_upper: State Senate District 2 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20532,
+      "rosterName": "Jason Gallion",
+      "rosterSeat": "senate SD-035",
+      "candidateId": "d7d36e11-9b79-420b-ab79-96a200481ebb",
+      "candidateName": "Jason C. Gallion",
+      "candidacy": "state_upper: State Senate District 35 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20533,
+      "rosterName": "Wayne Hartman",
+      "rosterSeat": "house HD-038",
+      "candidateId": "acca26b3-c527-47fd-a512-b573cd82f9f7",
+      "candidateName": "Wayne A. Hartman",
+      "candidacy": "state_lower: State Legislative Subdistrict 38C (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20534,
+      "rosterName": "Jesse Pippy",
+      "rosterSeat": "house HD-004",
+      "candidateId": "d6154c97-ca5a-4e81-940e-0bef8ffd4284",
+      "candidateName": "Jesse T. Pippy",
+      "candidacy": "state_lower: State Legislative District 4 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20588,
+      "rosterName": "Heather Bagnall",
+      "rosterSeat": "house HD-033",
+      "candidateId": "f0c33547-53ce-40f1-adc4-e19f84996bb6",
+      "candidateName": "Heather A. Bagnall",
+      "candidacy": "state_lower: State Legislative Subdistrict 33C (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20591,
+      "rosterName": "Mary Lehman",
+      "rosterSeat": "house HD-021",
+      "candidateId": "dd40d006-8d88-4393-8d48-aa9381ec593d",
+      "candidateName": "Mary A. Lehman",
+      "candidacy": "state_lower: State Legislative District 21 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20592,
+      "rosterName": "Mike Rogers",
+      "rosterSeat": "house HD-032",
+      "candidateId": "77edf10a-c07e-4a8e-a7dd-a36b05a0391c",
+      "candidateName": "Mike Rogers",
+      "candidacy": "state_lower: State Legislative District 32 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20789,
+      "rosterName": "Gabriel Acevero",
+      "rosterSeat": "house HD-039",
+      "candidateId": "6d289b37-7b43-43ae-9903-ff53ec2609d7",
+      "candidateName": "Gabriel Acevero",
+      "candidacy": "state_lower: State Legislative District 39 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20790,
+      "rosterName": "Harry Bhandari",
+      "rosterSeat": "house HD-008",
+      "candidateId": "7cb1c58b-0e2b-4a74-b4d8-a75142ab1a6b",
+      "candidateName": "Harry Bhandari",
+      "candidacy": "state_lower: State Legislative District 8 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20792,
+      "rosterName": "Ken Kerr",
+      "rosterSeat": "house HD-003",
+      "candidateId": "cecc4adb-8fb0-40b3-bb7b-00623b799470",
+      "candidateName": "Ken Kerr",
+      "candidacy": "state_lower: State Legislative District 3 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20793,
+      "rosterName": "Lesley Lopez",
+      "rosterSeat": "house HD-039",
+      "candidateId": "0b12ab9b-f8cd-4690-aacf-4d2d1d28353c",
+      "candidateName": "Lesley J. Lopez",
+      "candidacy": "state_lower: State Legislative District 39 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20794,
+      "rosterName": "Julie Palakovich Carr",
+      "rosterSeat": "house HD-017",
+      "candidateId": "dac6b98c-6a68-44bf-823f-5aeee6c6c849",
+      "candidateName": "Julie Palakovich Carr",
+      "candidacy": "state_lower: State Legislative District 17 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20795,
+      "rosterName": "Emily Shetty",
+      "rosterSeat": "house HD-018",
+      "candidateId": "edab1030-ea3b-4024-a3b6-5a7316af7a6a",
+      "candidateName": "Emily Shetty",
+      "candidacy": "state_lower: State Legislative District 18 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20796,
+      "rosterName": "Jared Solomon",
+      "rosterSeat": "house HD-018",
+      "candidateId": "1cbd9e96-d072-45e3-8aeb-35225c21b71c",
+      "candidateName": "Jared Solomon",
+      "candidacy": "state_lower: State Legislative District 18 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20797,
+      "rosterName": "Vaughn Stewart",
+      "rosterSeat": "house HD-019",
+      "candidateId": "e951578c-5e78-4a6f-bd5c-6ef108d43e92",
+      "candidateName": "Vaughn Stewart",
+      "candidacy": "state_lower: State Legislative District 19 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20855,
+      "rosterName": "Regina Boyce",
+      "rosterSeat": "house HD-043",
+      "candidateId": "86bdcf47-478c-4ad8-a9af-5b7b59367b66",
+      "candidateName": "Regina T. Boyce",
+      "candidacy": "state_lower: State Legislative Subdistrict 43A (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20857,
+      "rosterName": "Courtney Watson",
+      "rosterSeat": "house HD-009",
+      "candidateId": "b8909f9c-3dc5-43e7-92df-0a243f57a2af",
+      "candidateName": "Courtney Watson",
+      "candidacy": "state_lower: State Legislative Subdistrict 9B (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20858,
+      "rosterName": "Lorig Charkoudian",
+      "rosterSeat": "house HD-020",
+      "candidateId": "f83cdcd9-5a93-4010-8aa9-8b0a465a6554",
+      "candidateName": "Lorig Charkoudian",
+      "candidacy": "state_lower: State Legislative District 20 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20859,
+      "rosterName": "Debra Davis",
+      "rosterSeat": "house HD-028",
+      "candidateId": "cc51a1fd-a14b-4a9b-98b7-465dc816cf8e",
+      "candidateName": "Debra Davis",
+      "candidacy": "state_lower: State Legislative District 28 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20860,
+      "rosterName": "Jessica Feldmark",
+      "rosterSeat": "house HD-012",
+      "candidateId": "53d85e48-5a97-4c51-ba4f-196f74b49871",
+      "candidateName": "Jessica Feldmark",
+      "candidacy": "state_lower: State Legislative Subdistrict 12A (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20861,
+      "rosterName": "Michele Guyton",
+      "rosterSeat": "house HD-042",
+      "candidateId": "9a69c900-4c2b-4b59-9fb0-43cc1ba3fad6",
+      "candidateName": "Michele Guyton",
+      "candidacy": "state_lower: State Legislative Subdistrict 42B (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20862,
+      "rosterName": "Sara Love",
+      "rosterSeat": "senate SD-016",
+      "candidateId": "f05f0bba-38fd-4153-8ed2-ba4e2dd57cba",
+      "candidateName": "Sara N. Love",
+      "candidacy": "state_upper: State Senate District 16 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20864,
+      "rosterName": "Melissa Wells",
+      "rosterSeat": "house HD-040",
+      "candidateId": "0e0872d3-0c42-4b50-bfc5-3f2206ebbbfa",
+      "candidateName": "Melissa Wells",
+      "candidacy": "state_lower: State Legislative District 40 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20867,
+      "rosterName": "Charlotte Crutchfield",
+      "rosterSeat": "house HD-019",
+      "candidateId": "bd805e26-4059-4a28-af9c-ebb78b82fd3e",
+      "candidateName": "Charlotte Crutchfield",
+      "candidacy": "state_lower: State Legislative District 19 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20931,
+      "rosterName": "Nick Charles",
+      "rosterSeat": "senate SD-025",
+      "candidateId": "48d0839b-b01f-42bf-a9f5-e806ce4a718b",
+      "candidateName": "Nick Charles",
+      "candidacy": "state_upper: State Senate District 25 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20934,
+      "rosterName": "Ron Watson",
+      "rosterSeat": "senate SD-023",
+      "candidateId": "0a234fef-2882-4223-80cf-0289a1f32c04",
+      "candidateName": "Ron Watson",
+      "candidacy": "state_upper: State Senate District 23 (2024); Maryland",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20956,
+      "rosterName": "Katie Hester",
+      "rosterSeat": "senate SD-009",
+      "candidateId": "f1409a68-9809-4291-ada3-508e13bc3846",
+      "candidateName": "Katie Fry Hester",
+      "candidacy": "state_upper: State Senate District 9 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20964,
+      "rosterName": "Lauren Arikan",
+      "rosterSeat": "house HD-007",
+      "candidateId": "2465e17d-00ea-4094-acc9-1795b6e6786a",
+      "candidateName": "Lauren Arikan",
+      "candidacy": "state_lower: State Legislative Subdistrict 7B (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20965,
+      "rosterName": "Steve Johnson",
+      "rosterSeat": "house HD-034",
+      "candidateId": "82b698b7-acff-4350-bd26-d8fea52b4d5e",
+      "candidateName": "Steve Johnson",
+      "candidacy": "state_lower: State Legislative Subdistrict 34A (2024); Maryland",
+      "confidence": "first_prefix",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20966,
+      "rosterName": "Lily Qi",
+      "rosterSeat": "house HD-015",
+      "candidateId": "333f41ac-d96b-41a4-8736-3a4fe5aaf537",
+      "candidateName": "Lily Qi",
+      "candidacy": "state_lower: State Legislative District 15 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21279,
+      "rosterName": "Andrea Harrison",
+      "rosterSeat": "house HD-024",
+      "candidateId": "c9f50d4c-279c-4212-9db7-210df250dfa8",
+      "candidateName": "Andrea Fletcher Harrison",
+      "candidacy": "state_lower: State Legislative District 24 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21427,
+      "rosterName": "Shaneka Henson",
+      "rosterSeat": "senate SD-030",
+      "candidateId": "78da6051-ee36-4571-a78b-c4587ef1ed16",
+      "candidateName": "Shaneka T. Henson",
+      "candidacy": "state_upper: State Senate District 30 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21442,
+      "rosterName": "Carl Jackson",
+      "rosterSeat": "senate SD-008",
+      "candidateId": "b7b5781f-cd2e-47ae-8089-1f9f83571938",
+      "candidateName": "Carl Jackson",
+      "candidacy": "state_upper: State Senate District 8 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21541,
+      "rosterName": "Sheila Ruth",
+      "rosterSeat": "house HD-044",
+      "candidateId": "035c724a-e9c1-400d-bfdb-de94e52db2c5",
+      "candidateName": "Sheila Ruth",
+      "candidacy": "state_lower: State Legislative Subdistrict 44B (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 21906,
+      "rosterName": "Dana Jones",
+      "rosterSeat": "house HD-030",
+      "candidateId": "7edd58e2-1d49-43c3-bfa2-c5c7a6793d9e",
+      "candidateName": "Dana Jones",
+      "candidacy": "state_lower: State Legislative Subdistrict 30A (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 22755,
+      "rosterName": "Marlon Amprey",
+      "rosterSeat": "house HD-040",
+      "candidateId": "30f6c252-44a0-4ff7-8ca7-1502a1468dd7",
+      "candidateName": "Marlon D. Amprey",
+      "candidacy": "state_lower: State Legislative District 40 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23041,
+      "rosterName": "Linda Foley",
+      "rosterSeat": "house HD-015",
+      "candidateId": "52cce1ea-44bb-40dc-beac-dd0666680c84",
+      "candidateName": "Linda Foley",
+      "candidacy": "state_lower: State Legislative District 15 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23056,
+      "rosterName": "Karen Toles",
+      "rosterSeat": "house HD-025",
+      "candidateId": "d4b5e099-a212-475e-863f-231e3c3fc690",
+      "candidateName": "Karen Toles",
+      "candidacy": "state_lower: State Legislative District 25 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23908,
+      "rosterName": "Jeffrie Long",
+      "rosterSeat": "house HD-027",
+      "candidateId": "9b62ac48-10c9-41cc-836c-788728bc8d78",
+      "candidateName": "Jeffrie E. Long, Jr.",
+      "candidacy": "state_lower: State Legislative Subdistrict 27B (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23909,
+      "rosterName": "Andre Johnson",
+      "rosterSeat": "house HD-034",
+      "candidateId": "347af80e-9444-4a73-8308-dbdb35b54590",
+      "candidateName": "Andre V. Johnson, Jr.",
+      "candidacy": "state_lower: State Legislative Subdistrict 34A (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 24386,
+      "rosterName": "Kris Fair",
+      "rosterSeat": "house HD-003",
+      "candidateId": "fe6f8fd2-71cf-4d98-8453-0ed3bed1d41a",
+      "candidateName": "Kris Fair",
+      "candidacy": "state_lower: State Legislative District 3 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24388,
+      "rosterName": "Karen Simpson",
+      "rosterSeat": "house HD-003",
+      "candidateId": "c7ada61d-dfd3-4474-b741-6eb63ee6af6c",
+      "candidateName": "Karen Simpson",
+      "candidacy": "state_lower: State Legislative District 3 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24389,
+      "rosterName": "Joe Vogel",
+      "rosterSeat": "house HD-017",
+      "candidateId": "6f801c1d-e119-489d-b61f-ddb45ca709cb",
+      "candidateName": "Joe Vogel",
+      "candidacy": "state_lower: State Legislative District 17 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24485,
+      "rosterName": "Caylin Young",
+      "rosterSeat": "house HD-045",
+      "candidateId": "552af323-4d82-463e-8a36-4681158ae1a6",
+      "candidateName": "Caylin Young",
+      "candidacy": "state_lower: State Legislative District 45 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24532,
+      "rosterName": "Nick Allen",
+      "rosterSeat": "house HD-008",
+      "candidateId": "ad31db6d-a37c-4e02-85fc-53d6c3052f14",
+      "candidateName": "Nick Allen",
+      "candidacy": "state_lower: State Legislative District 8 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24534,
+      "rosterName": "Kevin Harris",
+      "rosterSeat": "house HD-027",
+      "candidateId": "73ca91e8-32cf-4106-96f6-99aaa41506e9",
+      "candidateName": "Kevin M. Harris",
+      "candidacy": "state_upper: State Senate District 27 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 24536,
+      "rosterName": "Aaron Kaufman",
+      "rosterSeat": "house HD-018",
+      "candidateId": "367d6052-4469-40fb-99bd-229643d70784",
+      "candidateName": "Aaron M. Kaufman",
+      "candidacy": "state_lower: State Legislative District 18 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24537,
+      "rosterName": "Aletheia McCaskill",
+      "rosterSeat": "house HD-044",
+      "candidateId": "c1c556b0-028d-45fe-ba41-c16115de71ca",
+      "candidateName": "Aletheia McCaskill",
+      "candidacy": "state_lower: State Legislative Subdistrict 44B (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 24538,
+      "rosterName": "Cheryl Pasteur",
+      "rosterSeat": "house HD-011",
+      "candidateId": "48b35ce1-84aa-48c3-bbee-3965c893e69c",
+      "candidateName": "Cheryl E. Pasteur",
+      "candidacy": "state_lower: State Legislative Subdistrict 11A (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 24539,
+      "rosterName": "Andrew Pruski",
+      "rosterSeat": "house HD-033",
+      "candidateId": "be793ce5-a969-4ff9-8dc7-e3f4f885c03d",
+      "candidateName": "Andrew C. Pruski",
+      "candidacy": "state_lower: State Legislative Subdistrict 33A (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 24540,
+      "rosterName": "Deni Taveras",
+      "rosterSeat": "house HD-047",
+      "candidateId": "1ac9756d-92ea-45e7-ba64-c46084934359",
+      "candidateName": "Deni Taveras",
+      "candidacy": "state_lower: State Legislative Subdistrict 47B (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 24541,
+      "rosterName": "Chris Tomlinson",
+      "rosterSeat": "house HD-005",
+      "candidateId": "653246ea-883f-43c8-abfe-a3c00f2fa0c8",
+      "candidateName": "Chris Tomlinson",
+      "candidacy": "state_lower: State Legislative District 5 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24542,
+      "rosterName": "Natalie Ziegler",
+      "rosterSeat": "house HD-009",
+      "candidateId": "4b0969d9-15c9-40f6-94e0-24b928694cb1",
+      "candidateName": "Natalie Ziegler",
+      "candidacy": "state_lower: State Legislative Subdistrict 9A (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 24543,
+      "rosterName": "Dawn Gile",
+      "rosterSeat": "senate SD-033",
+      "candidateId": "dfb387d6-ede2-4a59-9678-10e3fe6b297f",
+      "candidateName": "Dawn D. Gile",
+      "candidacy": "state_upper: State Senate District 33 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24709,
+      "rosterName": "Terry Baker",
+      "rosterSeat": "house HD-001",
+      "candidateId": "ffe0abab-67e4-418d-b7de-266a0e09baf6",
+      "candidateName": "Terry Baker",
+      "candidacy": "state_lower: State Legislative Subdistrict 1C (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 24712,
+      "rosterName": "Mark Edelson",
+      "rosterSeat": "house HD-046",
+      "candidateId": "6552fb27-3bcb-4ef5-a37b-75b6c34b9d50",
+      "candidateName": "Mark Edelson",
+      "candidacy": "state_lower: State Legislative District 46 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24713,
+      "rosterName": "Elizabeth Embry",
+      "rosterSeat": "house HD-043",
+      "candidateId": "9443a870-0b60-4ad3-878f-27924a4db7c9",
+      "candidateName": "Elizabeth Embry",
+      "candidacy": "state_lower: State Legislative Subdistrict 43A (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 24714,
+      "rosterName": "Pam Guzzone",
+      "rosterSeat": "house HD-013",
+      "candidateId": "fc82f328-ff88-4c94-8fe0-714fcf2c852f",
+      "candidateName": "Pam Lanman Guzzone",
+      "candidacy": "state_lower: State Legislative District 13 (2024); Maryland",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24716,
+      "rosterName": "April Fleming Miller",
+      "rosterSeat": "house HD-004",
+      "candidateId": "f2a1e41d-1e8f-4ffe-8a18-2dcdd81e44a0",
+      "candidateName": "April Fleming Miller",
+      "candidacy": "state_lower: State Legislative District 4 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24717,
+      "rosterName": "Todd Morgan",
+      "rosterSeat": "house HD-029",
+      "candidateId": "54cb9c23-b9d6-4e96-930d-45483fdf37a3",
+      "candidateName": "Todd B. Morgan",
+      "candidacy": "state_lower: State Legislative Subdistrict 29C (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 24718,
+      "rosterName": "Ryan Nawrocki",
+      "rosterSeat": "house HD-007",
+      "candidateId": "4b000f55-490d-4aab-bfa4-928afc811f57",
+      "candidateName": "Ryan Nawrocki",
+      "candidacy": "state_lower: State Legislative Subdistrict 7A (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 24719,
+      "rosterName": "Stuart Schmidt",
+      "rosterSeat": "house HD-033",
+      "candidateId": "0d2224c3-7273-4fbc-a402-f75780099293",
+      "candidateName": "Stuart M. Schmidt, Jr.",
+      "candidacy": "state_lower: State Legislative Subdistrict 33B (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 24720,
+      "rosterName": "Gary Simmons",
+      "rosterSeat": "house HD-012",
+      "candidateId": "6b82d2a1-fdfa-485f-9b59-e872092ed361",
+      "candidateName": "Gary Simmons",
+      "candidacy": "state_lower: State Legislative Subdistrict 12B (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 24721,
+      "rosterName": "Kym Taylor",
+      "rosterSeat": "house HD-023",
+      "candidateId": "547d3570-20f9-401d-ac5b-eed8428b2e90",
+      "candidateName": "Kym Taylor",
+      "candidacy": "state_lower: State Legislative District 23 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24722,
+      "rosterName": "William Valentine",
+      "rosterSeat": "house HD-002",
+      "candidateId": "84f984fd-9bc5-43ce-9c61-33532823f8de",
+      "candidateName": "William Valentine",
+      "candidacy": "state_lower: State Legislative Subdistrict 2A (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 24723,
+      "rosterName": "Jennifer White Holland",
+      "rosterSeat": "house HD-010",
+      "candidateId": "1dd88a99-b6a7-43cd-b279-8dc4aa9c94a3",
+      "candidateName": "Jennifer White Holland",
+      "candidacy": "state_lower: State Legislative District 10 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24725,
+      "rosterName": "Chao Wu",
+      "rosterSeat": "house HD-009",
+      "candidateId": "776697e6-5076-4724-bf17-bf390034da1d",
+      "candidateName": "Chao Wu",
+      "candidacy": "state_lower: State Legislative Subdistrict 9A (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 24787,
+      "rosterName": "Jackie Addison",
+      "rosterSeat": "house HD-045",
+      "candidateId": "bf3afa48-8c73-472d-80b7-1f4af42759bb",
+      "candidateName": "Jackie Addison",
+      "candidacy": "state_lower: State Legislative District 45 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24858,
+      "rosterName": "Bernice Mireku-North",
+      "rosterSeat": "house HD-014",
+      "candidateId": "c3cc1ad0-2ef3-423b-9021-d25f440d92f6",
+      "candidateName": "Bernice Mireku-North",
+      "candidacy": "state_lower: State Legislative District 14 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24906,
+      "rosterName": "Ashanti Martinez",
+      "rosterSeat": "house HD-022",
+      "candidateId": "7a9d36fa-8a1e-4647-8af5-211c258ebdf8",
+      "candidateName": "Ashanti Martinez",
+      "candidacy": "state_lower: State Legislative District 22 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24931,
+      "rosterName": "Sarah Wolek",
+      "rosterSeat": "house HD-016",
+      "candidateId": "f89cc7fd-5fc5-461d-82d7-b3cd003031ea",
+      "candidateName": "Sarah Wolek",
+      "candidacy": "state_lower: State Legislative District 16 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25010,
+      "rosterName": "Kent Roberson",
+      "rosterSeat": "house HD-025",
+      "candidateId": "a8a03a4a-85aa-4d9e-851d-b8edc5d43f6b",
+      "candidateName": "Kent Roberson",
+      "candidacy": "state_lower: State Legislative District 25 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25011,
+      "rosterName": "Malcolm Ruff",
+      "rosterSeat": "house HD-041",
+      "candidateId": "cdfefa94-1c9c-43e1-8722-568eb4f71bbd",
+      "candidateName": "Malcolm P. Ruff",
+      "candidacy": "state_upper: State Senate District 41 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 25012,
+      "rosterName": "Ryan Spiegel",
+      "rosterSeat": "house HD-017",
+      "candidateId": "16e6f22c-f09c-41fc-ae22-35a8552df4e8",
+      "candidateName": "Ryan Spiegel",
+      "candidacy": "state_lower: State Legislative District 17 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25013,
+      "rosterName": "Greg Wims",
+      "rosterSeat": "house HD-039",
+      "candidateId": "abbfbb6e-92fe-4d6b-b116-e78548a25691",
+      "candidateName": "Greg Wims",
+      "candidacy": "state_lower: State Legislative District 39 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25071,
+      "rosterName": "Denise Roberts",
+      "rosterSeat": "house HD-025",
+      "candidateId": "af11ce7e-c4f3-435c-9022-000d5a47925f",
+      "candidateName": "Denise Roberts",
+      "candidacy": "state_lower: State Legislative District 25 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25625,
+      "rosterName": "Barry Beauchamp",
+      "rosterSeat": "house HD-038",
+      "candidateId": "70f66733-4a3c-49a8-8448-2340dc80486a",
+      "candidateName": "Barry S. Beauchamp",
+      "candidacy": "state_lower: State Legislative Subdistrict 38B (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 25626,
+      "rosterName": "Teresa Woorman",
+      "rosterSeat": "house HD-016",
+      "candidateId": "6ed1418f-e497-49e6-b297-96b71270d3d2",
+      "candidateName": "Teresa Woorman",
+      "candidacy": "state_lower: State Legislative District 16 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26073,
+      "rosterName": "Matthew Schindler",
+      "rosterSeat": "house HD-002",
+      "candidateId": "11973d5b-8546-465a-9cff-93560025baa0",
+      "candidateName": "Matthew J. Schindler",
+      "candidacy": "state_lower: State Legislative Subdistrict 2B (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26407,
+      "rosterName": "Dylan Behler",
+      "rosterSeat": "house HD-030",
+      "candidateId": "195c9e4b-a909-4eaa-ba88-8163c9256850",
+      "candidateName": "Dylan Behler",
+      "candidacy": "state_lower: State Legislative Subdistrict 30A (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26426,
+      "rosterName": "Kim Ross",
+      "rosterSeat": "house HD-008",
+      "candidateId": "93538af1-3395-4e26-aa5f-663f4eaa9702",
+      "candidateName": "Kim L. Ross",
+      "candidacy": "state_lower: State Legislative District 8 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26427,
+      "rosterName": "Sean Stinnett",
+      "rosterSeat": "house HD-041",
+      "candidateId": "8eb65ba6-36ac-40b8-936b-f44d7717c45d",
+      "candidateName": "Sean A. Stinnett",
+      "candidacy": "state_lower: State Legislative District 41 (2024); Maryland",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    }
+  ],
+  "unmatchedPeople": [
+    {
+      "peopleId": 11448,
+      "name": "Stephen Hershey",
+      "seat": "senate SD-036"
+    },
+    {
+      "peopleId": 11449,
+      "name": "Jay Jacobs",
+      "seat": "house HD-036"
+    },
+    {
+      "peopleId": 11453,
+      "name": "William Ferguson",
+      "seat": "senate SD-046"
+    },
+    {
+      "peopleId": 11554,
+      "name": "Mark Fisher",
+      "seat": "house HD-027"
+    },
+    {
+      "peopleId": 11768,
+      "name": "Bonnie Cullison",
+      "seat": "house HD-019"
+    },
+    {
+      "peopleId": 12078,
+      "name": "Charles Otto",
+      "seat": "house HD-038"
+    },
+    {
+      "peopleId": 16083,
+      "name": "Steven Arentz",
+      "seat": "house HD-036"
+    },
+    {
+      "peopleId": 17235,
+      "name": "Michael Jackson",
+      "seat": "senate SD-027"
+    },
+    {
+      "peopleId": 17243,
+      "name": "Chris West",
+      "seat": "senate SD-042"
+    },
+    {
+      "peopleId": 17399,
+      "name": "Jeff Ghrist",
+      "seat": "house HD-036"
+    },
+    {
+      "peopleId": 17400,
+      "name": "Kevin Hornberger",
+      "seat": "house HD-035"
+    },
+    {
+      "peopleId": 17420,
+      "name": "Vanessa Atterbeary",
+      "seat": "house HD-013"
+    },
+    {
+      "peopleId": 17424,
+      "name": "Bob Long",
+      "seat": "house HD-006"
+    },
+    {
+      "peopleId": 17553,
+      "name": "Barrie Ciliberti",
+      "seat": "house HD-004"
+    },
+    {
+      "peopleId": 17917,
+      "name": "Pamela Queen",
+      "seat": "house HD-014"
+    },
+    {
+      "peopleId": 19271,
+      "name": "Jazz Lewis",
+      "seat": "house HD-024"
+    },
+    {
+      "peopleId": 20529,
+      "name": "Jack Bailey",
+      "seat": "senate SD-029"
+    },
+    {
+      "peopleId": 20530,
+      "name": "Brian Chisholm",
+      "seat": "house HD-031"
+    },
+    {
+      "peopleId": 20589,
+      "name": "Sandy Bartlett",
+      "seat": "house HD-032"
+    },
+    {
+      "peopleId": 20791,
+      "name": "Julian Ivey",
+      "seat": "house HD-047"
+    },
+    {
+      "peopleId": 20865,
+      "name": "Malcolm Augustine",
+      "seat": "senate SD-047"
+    },
+    {
+      "peopleId": 20868,
+      "name": "Jen Terrasa",
+      "seat": "house HD-013"
+    },
+    {
+      "peopleId": 20930,
+      "name": "Dalya Attar",
+      "seat": "senate SD-041"
+    },
+    {
+      "peopleId": 20932,
+      "name": "Brian Crosby",
+      "seat": "house HD-029"
+    },
+    {
+      "peopleId": 20933,
+      "name": "Nino Mangione",
+      "seat": "house HD-042"
+    },
+    {
+      "peopleId": 20955,
+      "name": "Arthur Ellis",
+      "seat": "senate SD-028"
+    },
+    {
+      "peopleId": 21255,
+      "name": "Stephanie Smith",
+      "seat": "house HD-045"
+    },
+    {
+      "peopleId": 21425,
+      "name": "Catherine Forbes",
+      "seat": "house HD-043"
+    },
+    {
+      "peopleId": 21426,
+      "name": "Nicole Williams",
+      "seat": "house HD-022"
+    },
+    {
+      "peopleId": 21591,
+      "name": "Michael Griffith",
+      "seat": "house HD-035"
+    },
+    {
+      "peopleId": 24387,
+      "name": "Scott Phillips",
+      "seat": "house HD-010"
+    },
+    {
+      "peopleId": 24535,
+      "name": "Tom Hutchinson",
+      "seat": "house HD-037"
+    },
+    {
+      "peopleId": 24710,
+      "name": "Adrian Boafo",
+      "seat": "house HD-023"
+    },
+    {
+      "peopleId": 24711,
+      "name": "Christopher Bouchat",
+      "seat": "house HD-005"
+    },
+    {
+      "peopleId": 24715,
+      "name": "Jim Hinebaugh",
+      "seat": "house HD-001"
+    },
+    {
+      "peopleId": 24724,
+      "name": "Jamila Woods",
+      "seat": "house HD-026"
+    },
+    {
+      "peopleId": 24820,
+      "name": "Joshua Stonko",
+      "seat": "house HD-042"
+    },
+    {
+      "peopleId": 26325,
+      "name": "LaToya Nkongolo",
+      "seat": "house HD-031"
+    },
+    {
+      "peopleId": 4527,
+      "name": "Pamela Beidle",
+      "seat": "senate SD-032"
+    },
+    {
+      "peopleId": 4531,
+      "name": "Frank Conaway",
+      "seat": "house HD-040"
+    },
+    {
+      "peopleId": 4534,
+      "name": "Kriselda Valderrama",
+      "seat": "house HD-026"
+    },
+    {
+      "peopleId": 4554,
+      "name": "Veronica Turner",
+      "seat": "house HD-026"
+    },
+    {
+      "peopleId": 4562,
+      "name": "Joanne Benson",
+      "seat": "senate SD-024"
+    },
+    {
+      "peopleId": 4581,
+      "name": "Samuel Rosenberg",
+      "seat": "house HD-041"
+    },
+    {
+      "peopleId": 4606,
+      "name": "Nicholaus Kipke",
+      "seat": "house HD-031"
+    },
+    {
+      "peopleId": 4607,
+      "name": "Adrienne Jones",
+      "seat": "house HD-010"
+    },
+    {
+      "peopleId": 4624,
+      "name": "Anne Healey",
+      "seat": "house HD-022"
+    },
+    {
+      "peopleId": 4641,
+      "name": "Susan McComas",
+      "seat": "house HD-034"
+    },
+    {
+      "peopleId": 4682,
+      "name": "Bryan Simonaire",
+      "seat": "senate SD-031"
+    },
+    {
+      "peopleId": 4686,
+      "name": "Katherine Klausmeier",
+      "seat": "senate SD-008"
+    },
+    {
+      "peopleId": 4689,
+      "name": "Anthony Muse",
+      "seat": "senate SD-026"
+    },
+    {
+      "peopleId": 4718,
+      "name": "Nancy King",
+      "seat": "senate SD-039"
+    },
+    {
+      "peopleId": 4731,
+      "name": "Jim Rosapepe",
+      "seat": "senate SD-021"
+    }
+  ],
+  "unmatchedCandidates": [
+    {
+      "candidateId": "4dadd276-266f-4db3-a4ad-b79708a60d1d",
+      "name": "Abena Affum-McAllister",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 28 (2024); Maryland"
+    },
+    {
+      "candidateId": "f30ffff4-c928-490f-be23-9bd4172257ab",
+      "name": "Adrianne M. Mathis",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 29B (2024); Maryland"
+    },
+    {
+      "candidateId": "effdf680-735e-4e4d-a07f-027cb80ddc50",
+      "name": "Al Larsen",
+      "scope": "state_upper",
+      "districtName": "State Senate District 27 (2024); Maryland"
+    },
+    {
+      "candidateId": "2b228dbd-389f-4600-9b12-a4270d50d056",
+      "name": "Alan Rebar",
+      "scope": "state_upper",
+      "districtName": "State Senate District 40 (2024); Maryland"
+    },
+    {
+      "candidateId": "02fa2a9a-841f-4ccb-a77e-c61958e406a5",
+      "name": "Alec Stone",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 19 (2024); Maryland"
+    },
+    {
+      "candidateId": "54c83eaf-a3f2-452f-b16d-4b96df923a33",
+      "name": "Alison Rudolph",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 5 (2024); Maryland"
+    },
+    {
+      "candidateId": "000a571f-8717-4d2f-bb44-5c71571a6376",
+      "name": "Alleria Stanley",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 4 (2024); Maryland"
+    },
+    {
+      "candidateId": "ffe35bc9-26f4-4c32-a2fd-1387b491b151",
+      "name": "Amar Mukunda",
+      "scope": "state_upper",
+      "districtName": "State Senate District 39 (2024); Maryland"
+    },
+    {
+      "candidateId": "b54d8f98-c665-466b-80bd-58ffae016e3a",
+      "name": "Amy Leahy",
+      "scope": "state_upper",
+      "districtName": "State Senate District 33 (2024); Maryland"
+    },
+    {
+      "candidateId": "8fdc2545-a37c-4ec6-9101-9519087260c5",
+      "name": "Amy R. Brooks",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 13 (2024); Maryland"
+    },
+    {
+      "candidateId": "d1e3a049-e938-456d-b6dc-c6180625260d",
+      "name": "Andrew Duck",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 4 (2024); Maryland"
+    },
+    {
+      "candidateId": "7a428763-6a89-419e-800f-1f550b7364e7",
+      "name": "Angela McIntosh",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 3 (2024); Maryland"
+    },
+    {
+      "candidateId": "b233bf7c-b854-4afc-9110-cbe6270943b1",
+      "name": "Ann Guthrie Hingston",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 16 (2024); Maryland"
+    },
+    {
+      "candidateId": "8a50e619-08f7-44b8-b268-2e4d2b6ca8f2",
+      "name": "Anthony Lyon",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 34B (2024); Maryland"
+    },
+    {
+      "candidateId": "8cdd89a8-3f6c-42f1-ac07-fb7985ec4821",
+      "name": "Arentz, Steve",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 36 (2024); Maryland"
+    },
+    {
+      "candidateId": "e89fc81d-0dda-4dd2-af24-a63dbed43fde",
+      "name": "Artus W. Huffman",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 6 (2024); Maryland"
+    },
+    {
+      "candidateId": "827a7a7e-cd21-4768-b167-d9d61a40f7dd",
+      "name": "Ashley Emerick",
+      "scope": "state_upper",
+      "districtName": "State Senate District 1 (2024); Maryland"
+    },
+    {
+      "candidateId": "23138bbb-9903-46db-94fa-30febc9502f2",
+      "name": "Ashley Nieves",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 3 (2024); Maryland"
+    },
+    {
+      "candidateId": "4a9f777d-83a3-494a-b2ea-30f9771bce95",
+      "name": "Augustine, Malcolm L.",
+      "scope": "state_upper",
+      "districtName": "State Senate District 47 (2024); Maryland"
+    },
+    {
+      "candidateId": "ed547f0a-82f8-4bfb-a5db-07dfc43feea9",
+      "name": "Bailey, John D. Jack",
+      "scope": "state_upper",
+      "districtName": "State Senate District 29 (2024); Maryland"
+    },
+    {
+      "candidateId": "b554c368-7298-4b66-8154-3dcb92437bcb",
+      "name": "Ben Hightower",
+      "scope": "state_upper",
+      "districtName": "State Senate District 9 (2024); Maryland"
+    },
+    {
+      "candidateId": "5d47320e-83ce-45ed-ae44-e3dc7ba472fd",
+      "name": "Bill Ferguson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 46 (2024); Maryland"
+    },
+    {
+      "candidateId": "3fe58a9a-6375-491b-b89b-5f63686bb10a",
+      "name": "Bill Geibler",
+      "scope": "state_upper",
+      "districtName": "State Senate District 7 (2024); Maryland"
+    },
+    {
+      "candidateId": "9ab612c1-8ffe-4af7-b289-3b77c4140324",
+      "name": "BJ Hall",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 29B (2024); Maryland"
+    },
+    {
+      "candidateId": "6b32ed83-e7bf-4b31-a2e8-899f35d06071",
+      "name": "Blair L. Brannock",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 12B (2024); Maryland"
+    },
+    {
+      "candidateId": "293fa269-d8e9-48b4-84ac-6cc04c042ff2",
+      "name": "Blessing T. Oluwadare",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 35B (2024); Maryland"
+    },
+    {
+      "candidateId": "8cc9ebad-2376-4955-9e18-3d84bef17fa9",
+      "name": "Bob Long",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 6 (2024); Maryland"
+    },
+    {
+      "candidateId": "f820a43c-60da-470d-a5e2-ee67218eac49",
+      "name": "Bob White",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 16 (2024); Maryland"
+    },
+    {
+      "candidateId": "bfdf4763-271a-4091-b6d7-6449394f8deb",
+      "name": "Bobby Al Jolson Berger",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 6 (2024); Maryland"
+    },
+    {
+      "candidateId": "c4062363-3451-43a3-acbf-b4a7a59f5505",
+      "name": "Borges, Chuck",
+      "scope": "state_upper",
+      "districtName": "State Senate District 29 (2024); Maryland"
+    },
+    {
+      "candidateId": "f544a9c5-8b2c-453d-9983-70b5fb8a76fe",
+      "name": "Brandon Thompson",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 2A (2024); Maryland"
+    },
+    {
+      "candidateId": "535d13c2-6ee7-43b6-a2f6-5c2af34029e9",
+      "name": "Brenda J. Thiam",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 2B (2024); Maryland"
+    },
+    {
+      "candidateId": "9f732d6b-a305-451f-b216-e76a833fdd18",
+      "name": "Brent Mulrooney",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 31 (2024); Maryland"
+    },
+    {
+      "candidateId": "9f732d6b-a305-451f-b216-e76a833fdd18",
+      "name": "Brent Mulrooney",
+      "scope": "state_upper",
+      "districtName": "State Senate District 31 (2024); Maryland"
+    },
+    {
+      "candidateId": "9d8ae6bf-16dc-462f-95d1-e6c93e63e94a",
+      "name": "Brett Shepherd",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 6 (2024); Maryland"
+    },
+    {
+      "candidateId": "090aad1f-4dea-4db6-bc7c-7cc164ae085e",
+      "name": "Brian A. Campbell",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 8 (2024); Maryland"
+    },
+    {
+      "candidateId": "b27bbc80-9ffd-44b0-8a39-e8bcb9fb4838",
+      "name": "C. L. Marshall, III",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 38A (2024); Maryland"
+    },
+    {
+      "candidateId": "cdb6d381-7bd5-4378-bfef-a6380a5ff631",
+      "name": "Candace Hart",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 7B (2024); Maryland"
+    },
+    {
+      "candidateId": "a14c064d-0994-494d-974a-9c53a1d31472",
+      "name": "Cathi Forbes",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 43B (2024); Maryland"
+    },
+    {
+      "candidateId": "5adcf225-e908-4623-95e8-e8976dce4a79",
+      "name": "Chanel A. Branch",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 45 (2024); Maryland"
+    },
+    {
+      "candidateId": "294776a6-45b7-40eb-b89c-9bcfc9de0909",
+      "name": "Charles Edward Murphy, III",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 42A (2024); Maryland"
+    },
+    {
+      "candidateId": "91c65838-17c4-473b-91b9-02eafa9d7203",
+      "name": "Christa Tichy",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 19 (2024); Maryland"
+    },
+    {
+      "candidateId": "dd2f0d78-92e4-4918-9931-833aef3f8a0e",
+      "name": "Chuck Cook",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 33B (2024); Maryland"
+    },
+    {
+      "candidateId": "7c92d622-34c8-4fb6-a476-0759cef7d81d",
+      "name": "Chuck Linton",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 44A (2024); Maryland"
+    },
+    {
+      "candidateId": "44b63a0c-659a-41c8-ac22-adb34f95736f",
+      "name": "Colin McEvers",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 32 (2024); Maryland"
+    },
+    {
+      "candidateId": "0bee4362-98f9-416b-aae7-6e7dea400b41",
+      "name": "Corynne Courpas",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 42C (2024); Maryland"
+    },
+    {
+      "candidateId": "0ee9d887-f840-4eae-9646-bf37914e6ead",
+      "name": "Courtney Alexa Welch",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 5 (2024); Maryland"
+    },
+    {
+      "candidateId": "240e1d1e-0a8f-445b-b64f-93495e437e81",
+      "name": "Crouse, Nevin",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 36 (2024); Maryland"
+    },
+    {
+      "candidateId": "995565b9-1b7a-4e28-bf2c-089f27e66e6b",
+      "name": "Dan Duggan",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 1A (2024); Maryland"
+    },
+    {
+      "candidateId": "8dc3a8b9-2eb9-4c42-8fc4-0f43aa01f0f4",
+      "name": "Dan L. Thomas",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 27B (2024); Maryland"
+    },
+    {
+      "candidateId": "484a7a8f-acd8-41e3-87b3-36c4ca0dc909",
+      "name": "Darrell C. Odom, Sr.",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 27A (2024); Maryland"
+    },
+    {
+      "candidateId": "4f5b17f6-1687-4a40-93cc-87cdb8c1430d",
+      "name": "Dayana Bergman",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 5 (2024); Maryland"
+    },
+    {
+      "candidateId": "2c9c4215-9245-4941-a41d-194d0c8799b1",
+      "name": "Derek J. Howell",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 35B (2024); Maryland"
+    },
+    {
+      "candidateId": "3dfa8fb7-7ef5-4c4f-9ffd-f3040c94cb5e",
+      "name": "Derrick L. Coley",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 24 (2024); Maryland"
+    },
+    {
+      "candidateId": "a1e9df6e-5c89-4c54-a725-411539147f2a",
+      "name": "Domonic Martin",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 44B (2024); Maryland"
+    },
+    {
+      "candidateId": "77ff677f-30e8-4904-8bc3-fc7ae39ea016",
+      "name": "Edmund J. Barrett",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 37B (2024); Maryland"
+    },
+    {
+      "candidateId": "22028483-60b8-4b15-bc82-2b30758a6cae",
+      "name": "Elliott Joseph Herneker",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 34A (2024); Maryland"
+    },
+    {
+      "candidateId": "c6f8228c-6207-4f53-97ac-5feda2519310",
+      "name": "Emmanuel Digman",
+      "scope": "state_upper",
+      "districtName": "State Senate District 46 (2024); Maryland"
+    },
+    {
+      "candidateId": "87bd8bf7-2809-499e-a0eb-202a4b15f75e",
+      "name": "Eric Martin Van Buren",
+      "scope": "state_upper",
+      "districtName": "State Senate District 2 (2024); Maryland"
+    },
+    {
+      "candidateId": "3e4f78c9-b365-47af-bc5e-ad9e6060c9a1",
+      "name": "Evan Smith",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 28 (2024); Maryland"
+    },
+    {
+      "candidateId": "1824dcc3-c50e-4353-9422-290e3c23d3c4",
+      "name": "Fisher, JoAnn Y.",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 26 (2024); Maryland"
+    },
+    {
+      "candidateId": "89959aff-374d-4c4a-847f-16a508f72611",
+      "name": "Fitzgerald Mofor",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 9A (2024); Maryland"
+    },
+    {
+      "candidateId": "6214da38-2ad3-432f-86a2-b9ede45c1449",
+      "name": "Frank Glover",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 12A (2024); Maryland"
+    },
+    {
+      "candidateId": "e17e05e0-60cc-4c6b-aade-1d296d6664e5",
+      "name": "Fred M. Price, Jr.",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 47A (2024); Maryland"
+    },
+    {
+      "candidateId": "0138171a-4c45-4791-bec7-dbdde243dcc8",
+      "name": "Gabriel Maximilian Moreno",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 13 (2024); Maryland"
+    },
+    {
+      "candidateId": "4e80eff3-2357-4d2e-8029-6e6759756a3e",
+      "name": "Gabriel Sorrel",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 19 (2024); Maryland"
+    },
+    {
+      "candidateId": "7edb978c-8026-41e9-ae0e-f82b0ba22e73",
+      "name": "Gary Foote",
+      "scope": "state_upper",
+      "districtName": "State Senate District 5 (2024); Maryland"
+    },
+    {
+      "candidateId": "0bf594a0-10bf-4b0d-9d35-aa1f9fbcb77a",
+      "name": "Ghrist, Jefferson L.",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 36 (2024); Maryland"
+    },
+    {
+      "candidateId": "1b40eb59-e3d6-4581-b066-a907951d661c",
+      "name": "Glen Geelhaar",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 8 (2024); Maryland"
+    },
+    {
+      "candidateId": "5e3e5aa5-01ee-425c-b964-bedbfb1af036",
+      "name": "Gregory V. Anderson",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 35A (2024); Maryland"
+    },
+    {
+      "candidateId": "3ce9bc1a-2cef-4f43-a0eb-202c2016cd0a",
+      "name": "Helene Meister",
+      "scope": "state_upper",
+      "districtName": "State Senate District 17 (2024); Maryland"
+    },
+    {
+      "candidateId": "178587b2-c1c6-4bf6-8c1a-14f5cbe3f103",
+      "name": "Henry J. Ciezkowski",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 6 (2024); Maryland"
+    },
+    {
+      "candidateId": "7c046001-6afb-40f5-8e88-91af6939e5a6",
+      "name": "Hershey, Steve",
+      "scope": "state_upper",
+      "districtName": "State Senate District 36 (2024); Maryland"
+    },
+    {
+      "candidateId": "015f5840-cdcf-4b5b-b346-c544d6992194",
+      "name": "J. Sandy Bartlett",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 32 (2024); Maryland"
+    },
+    {
+      "candidateId": "f8b3de55-9387-4d44-8e0b-a36b3a5d512d",
+      "name": "Jacobs, Jay A.",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 36 (2024); Maryland"
+    },
+    {
+      "candidateId": "0a15e37c-3842-4db5-ac84-d5269518e895",
+      "name": "Jake Taylor",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 34B (2024); Maryland"
+    },
+    {
+      "candidateId": "8a662f92-99fc-4cc5-96a1-90728df0c5ce",
+      "name": "James A. T. Amah",
+      "scope": "state_upper",
+      "districtName": "State Senate District 23 (2024); Maryland"
+    },
+    {
+      "candidateId": "471cb5d2-b58b-4898-9ad1-46cc902a153d",
+      "name": "James Emerson Ashburn",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 28 (2024); Maryland"
+    },
+    {
+      "candidateId": "0469579e-44f9-4f51-aab2-541ac69def62",
+      "name": "Jason E. Keckler",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 4 (2024); Maryland"
+    },
+    {
+      "candidateId": "dbb4a630-e8c9-42ae-9a70-3ec56351c2bd",
+      "name": "Jason M. Jobe",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 1A (2024); Maryland"
+    },
+    {
+      "candidateId": "cba7998e-60f9-470e-9523-cde67f19f5f7",
+      "name": "Jason T. Fowler",
+      "scope": "state_upper",
+      "districtName": "State Senate District 27 (2024); Maryland"
+    },
+    {
+      "candidateId": "afbdbbbb-400d-4734-8c08-e3ec165253ac",
+      "name": "Jeffry K. McDonald",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 42B (2024); Maryland"
+    },
+    {
+      "candidateId": "4e0d3225-3d67-4b95-b865-85bae22672fd",
+      "name": "Jennifer Lynn Clancy",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 29A (2024); Maryland"
+    },
+    {
+      "candidateId": "68f48848-2e6a-44c0-9092-e1359754e286",
+      "name": "Jennifer M. Davidson",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 27C (2024); Maryland"
+    },
+    {
+      "candidateId": "213aedb6-f165-456c-8a7a-26cef82ce931",
+      "name": "Jeremy L. Amason",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 46 (2024); Maryland"
+    },
+    {
+      "candidateId": "18671ff6-d065-455a-88ab-e454abef405f",
+      "name": "Jerry Donald",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 4 (2024); Maryland"
+    },
+    {
+      "candidateId": "dca002d7-ad2f-43e0-92af-1e69459b29b9",
+      "name": "Jessica Haire",
+      "scope": "state_upper",
+      "districtName": "State Senate District 30 (2024); Maryland"
+    },
+    {
+      "candidateId": "67b600b7-2318-419d-9ced-0c7f64043b29",
+      "name": "Jim Crawford",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 27A (2024); Maryland"
+    },
+    {
+      "candidateId": "9202a24e-3b3f-4781-ba94-9f83d21fd52f",
+      "name": "Jim Rosapepe",
+      "scope": "state_upper",
+      "districtName": "State Senate District 21 (2024); Maryland"
+    },
+    {
+      "candidateId": "21799cb9-d44b-4448-85d7-37c49ca86bbc",
+      "name": "Jim Simpson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 11 (2024); Maryland"
+    },
+    {
+      "candidateId": "c11f5961-aa30-46e1-a632-67b9daa133da",
+      "name": "Jim Wass",
+      "scope": "state_upper",
+      "districtName": "State Senate District 22 (2024); Maryland"
+    },
+    {
+      "candidateId": "e881e9fe-11db-4be1-ab25-eedb0cfa8393",
+      "name": "John C. Gordon",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 11B (2024); Maryland"
+    },
+    {
+      "candidateId": "869c8964-2a0b-446f-8631-f4ff0fce0299",
+      "name": "John D. Jones, Jr.",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 28 (2024); Maryland"
+    },
+    {
+      "candidateId": "6aa8ed05-b314-4ff9-92ec-3258de9dd5ae",
+      "name": "John D. Leonard",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 2A (2024); Maryland"
+    },
+    {
+      "candidateId": "85cf9684-2c99-4655-b400-1e6eb2df0da7",
+      "name": "Johnson, Nivek",
+      "scope": "state_upper",
+      "districtName": "State Senate District 36 (2024); Maryland"
+    },
+    {
+      "candidateId": "ebf15fcd-da92-4156-b5b2-2d97c27520c9",
+      "name": "Josh Hastings",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 38B (2024); Maryland"
+    },
+    {
+      "candidateId": "a826afa3-70db-41d3-9a85-6a46564aebf4",
+      "name": "Justin Gallucci",
+      "scope": "state_upper",
+      "districtName": "State Senate District 32 (2024); Maryland"
+    },
+    {
+      "candidateId": "7f2630a2-6194-4b1a-87cf-6666cd7cc5ec",
+      "name": "Justin Holliday",
+      "scope": "state_upper",
+      "districtName": "State Senate District 6 (2024); Maryland"
+    },
+    {
+      "candidateId": "d1857caa-beba-46f8-add3-048438dff350",
+      "name": "Jyoti Mohan",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 42A (2024); Maryland"
+    },
+    {
+      "candidateId": "31a1782d-90a2-47e0-8323-c5acb61f760c",
+      "name": "Katie G. Clendaniel",
+      "scope": "state_upper",
+      "districtName": "State Senate District 37 (2024); Maryland"
+    },
+    {
+      "candidateId": "33800528-e88b-4f0b-8762-61e84b66b313",
+      "name": "Keenon James",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 23 (2024); Maryland"
+    },
+    {
+      "candidateId": "efa32580-a731-4147-a7cf-af5d3a8ce3ad",
+      "name": "Kevin Ford",
+      "scope": "state_upper",
+      "districtName": "State Senate District 42 (2024); Maryland"
+    },
+    {
+      "candidateId": "6ced3c73-9646-452f-842a-471d7d3111c6",
+      "name": "Kimberly Simmons Robinson",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 23 (2024); Maryland"
+    },
+    {
+      "candidateId": "f41b7a1c-38da-4feb-b481-cd8d1036030d",
+      "name": "Kristin M. Norris",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 33C (2024); Maryland"
+    },
+    {
+      "candidateId": "e4c3748a-060a-4b31-ad7b-479a9de56f2f",
+      "name": "Lara Westdorp",
+      "scope": "state_upper",
+      "districtName": "State Senate District 4 (2024); Maryland"
+    },
+    {
+      "candidateId": "7d6e0a4e-4141-4865-b3e1-9c7cacd9e7d3",
+      "name": "LaTasha R. Ward",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 24 (2024); Maryland"
+    },
+    {
+      "candidateId": "d7f241f8-e577-4ba8-8c61-6bdfc503cc1c",
+      "name": "Lee Havis",
+      "scope": "state_upper",
+      "districtName": "State Senate District 21 (2024); Maryland"
+    },
+    {
+      "candidateId": "bc6ffd3c-fda2-4375-9adb-04b5f8908d7c",
+      "name": "Lino V. Cressotti",
+      "scope": "state_upper",
+      "districtName": "State Senate District 38 (2024); Maryland"
+    },
+    {
+      "candidateId": "09f78f13-7598-40b1-9937-21390ca1744f",
+      "name": "Ly Xinzhen Brown",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 7A (2024); Maryland"
+    },
+    {
+      "candidateId": "0968a1eb-0736-48b8-b300-b0c283d843c2",
+      "name": "Marcus Damon Snipes, Jr.",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 32 (2024); Maryland"
+    },
+    {
+      "candidateId": "6d53eb11-2707-4223-b629-2118dad8fded",
+      "name": "Mark Fisher",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 13 (2024); Maryland"
+    },
+    {
+      "candidateId": "027f5dd9-aab9-4130-933a-a43396f51964",
+      "name": "Mark N. Fisher",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 27C (2024); Maryland"
+    },
+    {
+      "candidateId": "58f4cde9-7118-47d3-ac54-728067d833b2",
+      "name": "Mary Phelps",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 32 (2024); Maryland"
+    },
+    {
+      "candidateId": "fe7b0b30-9c02-4fc8-9973-2ecd72b64d19",
+      "name": "Matt Johnston",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 30B (2024); Maryland"
+    },
+    {
+      "candidateId": "20fad6c2-6f69-467f-bdf2-b070ad9b5323",
+      "name": "Matt Post",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 14 (2024); Maryland"
+    },
+    {
+      "candidateId": "03502d35-4004-4fd3-887f-ed13875e26dc",
+      "name": "Megan Ann Mioduszewski",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 6 (2024); Maryland"
+    },
+    {
+      "candidateId": "f91519e6-a1c0-4c83-a1b9-c39cb9e49736",
+      "name": "Michael A. Eckels, Jr.",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 35A (2024); Maryland"
+    },
+    {
+      "candidateId": "b6079292-131e-486d-81e3-7dde14cec48c",
+      "name": "Michael Riker",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 23 (2024); Maryland"
+    },
+    {
+      "candidateId": "bb8e9b57-8e9a-4851-b008-8b6cdf7959cf",
+      "name": "Michele W. Johnson",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 37B (2024); Maryland"
+    },
+    {
+      "candidateId": "56b643d8-b9c2-4a7e-b9a1-fc2c7ce15d2d",
+      "name": "Mike Griffith",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 35A (2024); Maryland"
+    },
+    {
+      "candidateId": "6b8b278f-8932-4b4d-8d0c-afa348041746",
+      "name": "Molly McKee-Seabrook",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 22 (2024); Maryland"
+    },
+    {
+      "candidateId": "ca1bd9ca-5d55-4c08-95ba-9667198d1566",
+      "name": "Muse, C. Anthony",
+      "scope": "state_upper",
+      "districtName": "State Senate District 26 (2024); Maryland"
+    },
+    {
+      "candidateId": "524c8c15-c417-4ca9-a19b-17d5463151d0",
+      "name": "N. Scott Phillips",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 10 (2024); Maryland"
+    },
+    {
+      "candidateId": "0ce6d0ff-a869-4942-acf5-b63f735985c8",
+      "name": "Neil Jennings",
+      "scope": "state_upper",
+      "districtName": "State Senate District 35 (2024); Maryland"
+    },
+    {
+      "candidateId": "ca8245e3-a3e6-4b1e-82cd-a4f24a4ad44e",
+      "name": "Nicholaus Kipke",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 31 (2024); Maryland"
+    },
+    {
+      "candidateId": "ca8245e3-a3e6-4b1e-82cd-a4f24a4ad44e",
+      "name": "Nicholaus Kipke",
+      "scope": "state_upper",
+      "districtName": "State Senate District 31 (2024); Maryland"
+    },
+    {
+      "candidateId": "3577618c-54d1-44d4-ae4a-a3255b597426",
+      "name": "Peter Chan",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 15 (2024); Maryland"
+    },
+    {
+      "candidateId": "5208df60-3a79-48ab-b5f0-0037e9a07dd1",
+      "name": "Puzon, Ike",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 26 (2024); Maryland"
+    },
+    {
+      "candidateId": "818a204c-a0e2-452a-b55b-ba270c392f5d",
+      "name": "Queen, John",
+      "scope": "state_upper",
+      "districtName": "State Senate District 36 (2024); Maryland"
+    },
+    {
+      "candidateId": "0f0bea77-4520-46b4-8887-2413de1f4b6d",
+      "name": "Raj Goel",
+      "scope": "state_upper",
+      "districtName": "State Senate District 34 (2024); Maryland"
+    },
+    {
+      "candidateId": "19836bcb-df1f-4e83-9f0b-50727fa8b404",
+      "name": "Ravert, Michelle",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 36 (2024); Maryland"
+    },
+    {
+      "candidateId": "611e38fe-51f2-4cf8-a399-0e5677ff29be",
+      "name": "Rayneika Robinson",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 6 (2024); Maryland"
+    },
+    {
+      "candidateId": "32739799-4852-48f7-b0df-6d8a5d8ba96d",
+      "name": "Renaud De\u2019Aundre Brown",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 45 (2024); Maryland"
+    },
+    {
+      "candidateId": "3ed1e857-4af9-4654-a73c-ca3a3282b455",
+      "name": "Rhiannon C. Brown",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 1B (2024); Maryland"
+    },
+    {
+      "candidateId": "014ab6ae-49fe-4087-9623-49c2769e3616",
+      "name": "Robert Julian Ivey",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 47A (2024); Maryland"
+    },
+    {
+      "candidateId": "274c5956-44ec-4b04-8c13-aa8249c40cc9",
+      "name": "Robin Harvey",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 10 (2024); Maryland"
+    },
+    {
+      "candidateId": "09322dad-e535-45e2-b32c-158b87531fa9",
+      "name": "Ryan Turner",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 41 (2024); Maryland"
+    },
+    {
+      "candidateId": "a1702a62-2d95-4938-9170-6ff1783adaf3",
+      "name": "S. I. \"Sandy\" Rosenberg",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 41 (2024); Maryland"
+    },
+    {
+      "candidateId": "03ad333a-8bba-44a7-9ee7-cf109b0b9094",
+      "name": "Saif Rehman",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 9A (2024); Maryland"
+    },
+    {
+      "candidateId": "4a15f576-d411-4411-bc62-fc46e978bbb1",
+      "name": "Sallie B. Taylor",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 5 (2024); Maryland"
+    },
+    {
+      "candidateId": "ff1b9bf8-5cff-4941-b154-994b93d7022b",
+      "name": "Satish Chapagain",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 7A (2024); Maryland"
+    },
+    {
+      "candidateId": "c08391d7-19d3-4816-8733-27efe147fe26",
+      "name": "Sebastian Johnson",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 19 (2024); Maryland"
+    },
+    {
+      "candidateId": "19d69f52-2425-4273-bcd3-b0a2dce4d9bc",
+      "name": "Seth Funk",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 1C (2024); Maryland"
+    },
+    {
+      "candidateId": "603f9f8b-638d-4bca-a418-8f3ba48c4411",
+      "name": "Shaara Watts",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 29C (2024); Maryland"
+    },
+    {
+      "candidateId": "0d2263dc-ab12-4d6a-a002-d1eeccd7c72b",
+      "name": "Shelley Aloi",
+      "scope": "state_upper",
+      "districtName": "State Senate District 3 (2024); Maryland"
+    },
+    {
+      "candidateId": "9b18318d-0c17-4b47-a4dc-5c1644ad7c29",
+      "name": "Shelley Johnson",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 38A (2024); Maryland"
+    },
+    {
+      "candidateId": "d254004c-fc9f-4d5e-b7c5-5043a9a904b2",
+      "name": "Spencer F. Dixon",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 32 (2024); Maryland"
+    },
+    {
+      "candidateId": "53162525-4121-4b39-995f-502ad936db58",
+      "name": "Spencer Rhoda",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 9A (2024); Maryland"
+    },
+    {
+      "candidateId": "7d3e231f-f31d-4d36-941b-16742c271020",
+      "name": "Stephanie Popescu",
+      "scope": "state_upper",
+      "districtName": "State Senate District 42 (2024); Maryland"
+    },
+    {
+      "candidateId": "7173aee3-fe77-4bdd-a65b-e29a6351f381",
+      "name": "Steve Patten",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 42C (2024); Maryland"
+    },
+    {
+      "candidateId": "64471120-c582-4ee5-a98b-c245aa201bdd",
+      "name": "Steve Whisler",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 5 (2024); Maryland"
+    },
+    {
+      "candidateId": "5ce803fc-0fb2-4c13-98f6-cccb069bdf68",
+      "name": "Steven J. Riemer",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 8 (2024); Maryland"
+    },
+    {
+      "candidateId": "42f651bb-f15a-43d9-b60b-080c5503eb9b",
+      "name": "Sunil Dasgupta",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 19 (2024); Maryland"
+    },
+    {
+      "candidateId": "8f6ded73-6658-458d-b802-5d30d6255f52",
+      "name": "Tarinna N. Terrell",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 28 (2024); Maryland"
+    },
+    {
+      "candidateId": "25502313-dcb3-40cd-8816-cece7ac44469",
+      "name": "Tiffany Welch",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 40 (2024); Maryland"
+    },
+    {
+      "candidateId": "8828b8cf-e131-4966-a9d8-a95d4674ee25",
+      "name": "Timothy McGarrahan",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 12B (2024); Maryland"
+    },
+    {
+      "candidateId": "9d364b81-44a7-449a-b87c-181b38d54530",
+      "name": "Tom Hutchinson",
+      "scope": "state_lower",
+      "districtName": "State Legislative Subdistrict 37B (2024); Maryland"
+    },
+    {
+      "candidateId": "e62b6886-ea1c-4211-8c7d-90c46b5892dc",
+      "name": "Tracy Gant",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 22 (2024); Maryland"
+    },
+    {
+      "candidateId": "3d9e62d8-ac5b-4f1e-ad1e-45ea0cc9972a",
+      "name": "Turner, Veronica L.",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 26 (2024); Maryland"
+    },
+    {
+      "candidateId": "51ea8f82-43ee-4aca-9aae-a3abee8aba6a",
+      "name": "Valderrama, Kriselda",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 26 (2024); Maryland"
+    },
+    {
+      "candidateId": "a0eb3d52-a4e5-4df8-8696-3f01599a3f20",
+      "name": "Winfield W. Clark, Jr.",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 28 (2024); Maryland"
+    },
+    {
+      "candidateId": "a2248830-d43e-4f1e-ac84-de86da7b8d79",
+      "name": "Woods, Jamila J.",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 26 (2024); Maryland"
+    },
+    {
+      "candidateId": "83ebaa02-4724-4b04-a36b-7d806fd75ae4",
+      "name": "Woodward, Crystal",
+      "scope": "state_lower",
+      "districtName": "State Legislative District 36 (2024); Maryland"
+    },
+    {
+      "candidateId": "99a16cd7-693e-49ef-be54-2a730d3090dc",
+      "name": "Yahu Blackwell",
+      "scope": "state_upper",
+      "districtName": "State Senate District 8 (2024); Maryland"
+    }
+  ],
+  "files": 2494,
+  "fileErrors": 0,
+  "counts": {}
+}

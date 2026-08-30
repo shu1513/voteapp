@@ -1,0 +1,520 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1603210,
+   "measure_id": "HB 102",
+   "vote_date": "2025-10-01",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 102. It would have made harassing a sports official a third-degree misdemeanor, when the harassment comes from the official's decisions or their role as an official. The Pennsylvania House passed it 137-66. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 102. It would have made harassing a sports official a third-degree misdemeanor, when the harassment comes from the official's decisions or their role as an official. The Pennsylvania House passed it 137-66. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1715952,
+   "measure_id": "HB 1042",
+   "vote_date": "2026-07-23",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1042. It would have let state prisoners earn credit toward a shorter minimum sentence by completing vocational training and education. It also set out sentencing and parole eligibility for second-degree murder, which now carries an automatic life sentence. The Pennsylvania House passed the final version 102-100. As of August 2026 the bill had not become law.",
+   "nay_description": "Voted against House Bill 1042. It would have let state prisoners earn credit toward a shorter minimum sentence by completing vocational training and education. It also set out sentencing and parole eligibility for second-degree murder, which now carries an automatic life sentence. The Pennsylvania House passed the final version 102-100. As of August 2026 the bill had not become law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1667909
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1704111,
+   "measure_id": "HB 1045",
+   "vote_date": "2026-06-01",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1045. It would have required school nurses and school staff who work directly with students to take seizure recognition and first aid training every three years, starting in the 2026-27 school year. That training is optional under current law. The Pennsylvania House passed it 130-71. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1045. It would have required school nurses and school staff who work directly with students to take seizure recognition and first aid training every three years, starting in the 2026-27 school year. That training is optional under current law. The Pennsylvania House passed it 130-71. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1569645,
+   "measure_id": "HB 1062",
+   "vote_date": "2025-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1062. It would have created a statewide registry of serious property maintenance code violations, run by the state economic development department or a contractor it picks. The Pennsylvania House passed it 125-78. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1062. It would have created a statewide registry of serious property maintenance code violations, run by the state economic development department or a contractor it picks. The Pennsylvania House passed it 125-78. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1570575,
+   "measure_id": "HB 1396",
+   "vote_date": "2025-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1396. It would have changed the election code in several ways. Election workers would be paid at least $175 per election. Every county would have to provide at least two ballot drop boxes, and tell the state where they are at least 65 days before an election. The Pennsylvania House passed it 102-101. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1396. It would have changed the election code in several ways. Election workers would be paid at least $175 per election. Every county would have to provide at least two ballot drop boxes, and tell the state where they are at least 65 days before an election. The Pennsylvania House passed it 102-101. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1597021,
+   "measure_id": "HB 1574",
+   "vote_date": "2025-07-01",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1574. It would have created a state loan fund letting a redevelopment authority or land bank borrow up to $500,000 in startup money from the state economic development department. The Pennsylvania House passed it 160-42. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1574. It would have created a state loan fund letting a redevelopment authority or land bank borrow up to $500,000 in startup money from the state economic development department. The Pennsylvania House passed it 160-42. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1683158,
+   "measure_id": "HB 1706",
+   "vote_date": "2026-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1706. It would have required the education department, working with the health and human services departments, to publish guidance helping students, parents and coaches recognize the warning signs of mental health distress and illness. The Pennsylvania House passed it 107-94. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1706. It would have required the education department, working with the health and human services departments, to publish guidance helping students, parents and coaches recognize the warning signs of mental health distress and illness. The Pennsylvania House passed it 107-94. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1689964,
+   "measure_id": "HB 2042",
+   "vote_date": "2026-04-27",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 2042. It would have extended the state's youth sports concussion rules to official recreational leagues. Those rules on managing concussions and head injuries now cover only school sports. The Pennsylvania House passed it 121-79. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 2042. It would have extended the state's youth sports concussion rules to official recreational leagues. Those rules on managing concussions and head injuries now cover only school sports. The Pennsylvania House passed it 121-79. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1668594,
+   "measure_id": "HB 2189",
+   "vote_date": "2026-03-24",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 2189. It would have raised Pennsylvania's minimum wage above the $7.25 federal floor on a single statewide schedule: $11 an hour in 2027, $13 in 2028 and $15 after that. The state rate has been stuck at $7.15 since 2007. The Pennsylvania House passed it 104-95. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 2189. It would have raised Pennsylvania's minimum wage above the $7.25 federal floor on a single statewide schedule: $11 an hour in 2027, $13 in 2028 and $15 after that. The state rate has been stuck at $7.15 since 2007. The Pennsylvania House passed it 104-95. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1689887,
+   "measure_id": "HB 2246",
+   "vote_date": "2026-04-27",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 2246. It would have let the Department of Environmental Protection regulate and require permits for water used or withdrawn by large data centers, meaning those using more than 100,000 gallons a day. The Pennsylvania House passed it 116-84. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 2246. It would have let the Department of Environmental Protection regulate and require permits for water used or withdrawn by large data centers, meaning those using more than 100,000 gallons a day. The Pennsylvania House passed it 116-84. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1555171,
+   "measure_id": "HB 273",
+   "vote_date": "2025-04-23",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 273. It would have let a county adopt its own property maintenance code, using a nationally recognized code or its own version, and appoint inspectors to enforce it, with fines for violations. It also created a state grant program, up to $100,000 a town with matching funds, to help towns with no code enforcement start one. Penalty money would feed a fund paying for demolition, cleanup and repair of blighted property. The Pennsylvania House passed it 110-93. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 273. It would have let a county adopt its own property maintenance code, using a nationally recognized code or its own version, and appoint inspectors to enforce it, with fines for violations. It also created a state grant program, up to $100,000 a town with matching funds, to help towns with no code enforcement start one. Penalty money would feed a fund paying for demolition, cleanup and repair of blighted property. The Pennsylvania House passed it 110-93. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1603632,
+   "measure_id": "HB 441",
+   "vote_date": "2025-10-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 441. It would have let the Department of Conservation and Natural Resources protect wild native land invertebrates, such as native insects, as protected species. The department would gather data on their populations, range and habitat. The Pennsylvania House passed it 102-101. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 441. It would have let the Department of Conservation and Natural Resources protect wild native land invertebrates, such as native insects, as protected species. The department would gather data on their populations, range and habitat. The Pennsylvania House passed it 102-101. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1610588,
+   "measure_id": "HB 458",
+   "vote_date": "2025-12-16",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 458. It would have let a veteran ask a court to reopen their conviction or sentence if they can show it resulted from a failure to consider evidence of a service-connected mental health disability. The Pennsylvania House passed it 102-101. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 458. It would have let a veteran ask a court to reopen their conviction or sentence if they can show it resulted from a failure to consider evidence of a service-connected mental health disability. The Pennsylvania House passed it 102-101. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1691580,
+   "measure_id": "HB 830",
+   "vote_date": "2026-04-29",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 830. It would have strengthened what school anti-bullying policies must contain. Current law requires each district to set out discipline for bullying and name a staff member to receive reports. The Pennsylvania House passed it 136-65. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 830. It would have strengthened what school anti-bullying policies must contain. Current law requires each district to set out discipline for bullying and name a staff member to receive reports. The Pennsylvania House passed it 136-65. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1586755,
+   "measure_id": "HB 846",
+   "vote_date": "2025-06-09",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 846. It would have widened the prevailing wage law, which sets minimum pay on public construction, to cover HVAC duct cleaning and custom offsite fabrication. It would also have banned split rates, where workers are paid different amounts at different times on the same job. The Pennsylvania House passed it 126-76. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 846. It would have widened the prevailing wage law, which sets minimum pay on public construction, to cover HVAC duct cleaning and custom offsite fabrication. It would also have banned split rates, where workers are paid different amounts at different times on the same job. The Pennsylvania House passed it 126-76. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "senate",
+   "session": "2192",
+   "roll": 1715680,
+   "measure_id": "HB 1042",
+   "vote_date": "2026-07-12",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1042. It would have let state prisoners earn credit toward a shorter minimum sentence by completing vocational training and education. It also set out sentencing and parole eligibility for second-degree murder, which now carries an automatic life sentence. The Pennsylvania Senate passed it 30-20. As of August 2026 the bill had not become law.",
+   "nay_description": "Voted against House Bill 1042. It would have let state prisoners earn credit toward a shorter minimum sentence by completing vocational training and education. It also set out sentencing and parole eligibility for second-degree murder, which now carries an automatic life sentence. The Pennsylvania Senate passed it 30-20. As of August 2026 the bill had not become law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1715679
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "senate",
+   "session": "2192",
+   "roll": 1601433,
+   "measure_id": "SB 114",
+   "vote_date": "2025-09-09",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 114. It would have expanded long-term care training for nurse aides and widened who may sit the nurse aide competency exam. The education department would develop the long-term care curriculum. The Pennsylvania Senate passed it 31-18. As of August 2026 the House had not voted on it.",
+   "nay_description": "Voted against Senate Bill 114. It would have expanded long-term care training for nurse aides and widened who may sit the nurse aide competency exam. The education department would develop the long-term care curriculum. The Pennsylvania Senate passed it 31-18. As of August 2026 the House had not voted on it.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1601432
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "senate",
+   "session": "2192",
+   "roll": 1704969,
+   "measure_id": "SB 1236",
+   "vote_date": "2026-06-03",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 1236. It would have let operators of construction sites disturbing between one and five acres apply to skip the federal clean water permit that such sites now need. The Pennsylvania Senate passed it 30-20. As of August 2026 the House had not voted on it.",
+   "nay_description": "Voted against Senate Bill 1236. It would have let operators of construction sites disturbing between one and five acres apply to skip the federal clean water permit that such sites now need. The Pennsylvania Senate passed it 30-20. As of August 2026 the House had not voted on it.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "senate",
+   "session": "2192",
+   "roll": 1711970,
+   "measure_id": "SB 1400",
+   "vote_date": "2026-06-25",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 1400. It would have ended the automatic life sentence for second-degree murder, also called felony murder, for defendants who were 18 or older. Courts would instead set a minimum prison term, opening the possibility of parole. The Pennsylvania Senate passed it 30-20. As of August 2026 the House had not voted on it.",
+   "nay_description": "Voted against Senate Bill 1400. It would have ended the automatic life sentence for second-degree murder, also called felony murder, for defendants who were 18 or older. Courts would instead set a minimum prison term, opening the possibility of parole. The Pennsylvania Senate passed it 30-20. As of August 2026 the House had not voted on it.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1711969
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "senate",
+   "session": "2192",
+   "roll": 1476134,
+   "measure_id": "SB 153",
+   "vote_date": "2025-01-29",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 153. It would have made an unemployment claimant ineligible for benefits for discouraging their own hiring, such as skipping a job interview without good reason. The Pennsylvania Senate passed it 29-20. As of August 2026 the House had not voted on it.",
+   "nay_description": "Voted against Senate Bill 153. It would have made an unemployment claimant ineligible for benefits for discouraging their own hiring, such as skipping a job interview without good reason. The Pennsylvania Senate passed it 29-20. As of August 2026 the House had not voted on it.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "senate",
+   "session": "2192",
+   "roll": 1476138,
+   "measure_id": "SB 155",
+   "vote_date": "2025-01-29",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 155. It would have required the human services department to check state death records every month against people receiving Medicaid and food stamps, so benefits stop for those who have died. The Pennsylvania Senate passed it 30-19. As of August 2026 the House had not voted on it.",
+   "nay_description": "Voted against Senate Bill 155. It would have required the human services department to check state death records every month against people receiving Medicaid and food stamps, so benefits stop for those who have died. The Pennsylvania Senate passed it 30-19. As of August 2026 the House had not voted on it.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "senate",
+   "session": "2192",
+   "roll": 1476142,
+   "measure_id": "SB 156",
+   "vote_date": "2025-01-29",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 156. It would have required the human services department to check state wage records every three months against people receiving Medicaid and food stamps, to confirm they still qualify on income. The Pennsylvania Senate passed it 30-19. As of August 2026 the House had not voted on it.",
+   "nay_description": "Voted against Senate Bill 156. It would have required the human services department to check state wage records every three months against people receiving Medicaid and food stamps, to confirm they still qualify on income. The Pennsylvania Senate passed it 30-19. As of August 2026 the House had not voted on it.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "senate",
+   "session": "2192",
+   "roll": 1569470,
+   "measure_id": "SB 227",
+   "vote_date": "2025-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 227. It would have brought the Pennsylvania School Boards Association under the state's open records law, so the public could request its records the way they can from a state agency. The Pennsylvania Senate passed it 29-21. As of August 2026 the House had not voted on it.",
+   "nay_description": "Voted against Senate Bill 227. It would have brought the Pennsylvania School Boards Association under the state's open records law, so the public could request its records the way they can from a state agency. The Pennsylvania Senate passed it 29-21. As of August 2026 the House had not voted on it.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "senate",
+   "session": "2192",
+   "roll": 1711502,
+   "measure_id": "SB 482",
+   "vote_date": "2026-06-24",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 482. It would have required the human services department to tell eligible older adults about the LIFE program, which provides care that lets frail seniors keep living at home instead of moving into a nursing home. The Pennsylvania Senate passed it 27-23. As of August 2026 the House had not voted on it.",
+   "nay_description": "Voted against Senate Bill 482. It would have required the human services department to tell eligible older adults about the LIFE program, which provides care that lets frail seniors keep living at home instead of moving into a nursing home. The Pennsylvania Senate passed it 27-23. As of August 2026 the House had not voted on it.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "senate",
+   "session": "2192",
+   "roll": 1531337,
+   "measure_id": "SB 490",
+   "vote_date": "2025-03-31",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 490. It would have barred releasing a defendant found to pose a threat to public safety on their own recognizance or on unsecured bail. An arresting officer could not release such a person before taking them before a judge. The Pennsylvania Senate passed it 32-17. As of August 2026 the House had not voted on it.",
+   "nay_description": "Voted against Senate Bill 490. It would have barred releasing a defendant found to pose a threat to public safety on their own recognizance or on unsecured bail. An arresting officer could not release such a person before taking them before a judge. The Pennsylvania Senate passed it 32-17. As of August 2026 the House had not voted on it.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "senate",
+   "session": "2192",
+   "roll": 1584619,
+   "measure_id": "SB 686",
+   "vote_date": "2025-06-04",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 686. It would have made it a third-degree felony to intentionally alter, destroy, conceal or remove a public record that someone has asked for under the state's open records law. The Pennsylvania Senate passed it 31-18. As of August 2026 the House had not voted on it.",
+   "nay_description": "Voted against Senate Bill 686. It would have made it a third-degree felony to intentionally alter, destroy, conceal or remove a public record that someone has asked for under the state's open records law. The Pennsylvania Senate passed it 31-18. As of August 2026 the House had not voted on it.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "senate",
+   "session": "2192",
+   "roll": 1623046,
+   "measure_id": "SB 712",
+   "vote_date": "2026-02-04",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 712. It would have tightened how abandoned oil and gas wells must be sealed, requiring a cement plug at least 50 feet long at the reachable bottom of the well, with the depth and effectiveness of the plug confirmed. The Pennsylvania Senate passed it 32-16. As of August 2026 the House had not voted on it.",
+   "nay_description": "Voted against Senate Bill 712. It would have tightened how abandoned oil and gas wells must be sealed, requiring a cement plug at least 50 feet long at the reachable bottom of the well, with the depth and effectiveness of the plug confirmed. The Pennsylvania Senate passed it 32-16. As of August 2026 the House had not voted on it.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "senate",
+   "session": "2192",
+   "roll": 1707980,
+   "measure_id": "SB 908",
+   "vote_date": "2026-06-10",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 908. It would have narrowed the prevailing wage law, which sets minimum pay on public construction. Rehabilitating a home, school safety and security improvements, and HVAC duct cleaning would no longer count as public work covered by those wage rules. The Pennsylvania Senate passed it 37-13. As of August 2026 the House had not voted on it.",
+   "nay_description": "Voted against Senate Bill 908. It would have narrowed the prevailing wage law, which sets minimum pay on public construction. Rehabilitating a home, school safety and security improvements, and HVAC duct cleaning would no longer count as public work covered by those wage rules. The Pennsylvania Senate passed it 37-13. As of August 2026 the House had not voted on it.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

@@ -1,14 +1,17 @@
-import type { BallotSummary, ElectionChoice, ElectionSummary, Me } from "@voteapp/api-client";
+import type { AutoPickElectionResult, BallotSummary, ElectionChoice, ElectionSummary, Me } from "@voteapp/api-client";
 import {
   apiRequest,
   formatElectionDate,
+  reasonLabel,
   useElectionChoices,
   useMintPickCardShare,
 } from "@voteapp/api-client";
 import { useQuery } from "@tanstack/react-query";
 import { Stack, useRouter } from "expo-router";
+import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { AccountGate } from "../components/AccountGate";
+import { AutoPickFillControl } from "../components/AutoPickControls";
 import { Collapsible } from "../components/Collapsible";
 import { RemoveStrandedPickButton } from "../components/ElectionChoiceControls";
 import { ShareButton, SITE_ORIGIN } from "../components/ShareButton";
@@ -19,10 +22,10 @@ import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 
 // My Draft (port of the web PicksPage's list view): the pick cards — one per
 // upcoming election day on the saved ballot: what's on it, who I picked,
-// what's still undecided. Mobile drops the web page's ballot-sheet view
-// (no facsimile on mobile yet) and its auto-pick controls (Phase 5), and has
-// no guest branch — the screen is reached from the saved-ballot header,
-// behind AccountGate.
+// what's still undecided — with the per-date auto-pick fill/clear controls.
+// Mobile drops the web page's ballot-sheet view (no facsimile on mobile
+// yet) and has no guest branch — the screen is reached from the
+// saved-ballot header, behind AccountGate.
 
 // Inline outcome flags on a picked name. The web renders these as badge
 // chips; React Native can't style nested Text spans with padding or rounded
@@ -232,17 +235,28 @@ function hasRenderablePick(choice: ElectionChoice | undefined): choice is Electi
   return choice !== undefined && (choice.picks.length > 0 || choice.measure_position !== null);
 }
 
-// Per-election-day card: x/y progress, share, one row per race.
+// Per-election-day card: x/y progress, share, auto-pick fill/clear, one row
+// per race.
 function PickDateCard({
   date,
   elections,
   choiceByElectionId,
+  choices,
   today,
+  autoResults,
+  onAutoResults,
 }: {
   date: string;
   elections: ElectionSummary[];
   choiceByElectionId: Map<string, ElectionChoice> | undefined;
+  /** Every stored choice, for the fill control's date-scoped Clear gating. */
+  choices: ElectionChoice[];
   today: string;
+  /** This date's last fill run, keyed by election id — feeds the per-row
+   * "auto pick: …" annotations below. Lives in MyDraftBody (not here), like
+   * the web page, so it survives the card re-rendering around a refetch. */
+  autoResults: Map<string, AutoPickElectionResult> | null;
+  onAutoResults: (byElectionId: Map<string, AutoPickElectionResult> | null) => void;
 }) {
   const router = useRouter();
   const pickedCount = elections.filter((election) => hasRenderablePick(choiceByElectionId?.get(election.id))).length;
@@ -260,9 +274,21 @@ function PickDateCard({
           Hidden entirely while the card has zero picks — the backend
           refuses to mint for an empty card anyway. */}
       {pickedCount > 0 ? <ShareCardControl electionDate={date} /> : null}
+      {/* Past cards drop the fill control (the backend rejects writes to
+          past elections), matching the rows' "no pick" retirement. */}
+      {!isPast ? (
+        <AutoPickFillControl
+          date={date}
+          elections={elections}
+          choices={choices}
+          choiceByElectionId={choiceByElectionId}
+          onResults={onAutoResults}
+        />
+      ) : null}
       <View className="mt-3 gap-2">
         {elections.map((election) => {
           const choice = choiceByElectionId?.get(election.id);
+          const autoResult = autoResults?.get(election.id);
           return (
             <View key={election.id}>
               {hasRenderablePick(choice) ? (
@@ -277,18 +303,28 @@ function PickDateCard({
                     </Text>
                     <Text className="text-ink-soft"> — </Text>
                     <PickedLine choice={choice} election={election} />
+                    {autoResult?.outcome === "picked" &&
+                    autoResult.reason === "tie" &&
+                    (choice?.picks.length ?? 0) < (choice?.seats_to_fill ?? 1) ? (
+                      // Partial fill: some seats landed, the rest tied.
+                      // Gated on a live vacancy so the note retires the
+                      // moment the user fills the remaining seats by hand.
+                      <Text className="text-ink-soft"> · auto pick: remaining seats tied — your call</Text>
+                    ) : null}
                   </Text>
                   <StrandedRemoveButtons choice={choice} today={today} />
                 </>
               ) : (
                 // Undecided: the whole line is the quiet call to action —
-                // grey, tappable, straight to the race.
+                // grey, tappable, straight to the race. After a fill run,
+                // the one-line reason the engine left it open rides along.
                 <Text
                   className="text-sm text-ink-soft underline"
                   accessibilityRole="link"
                   onPress={() => router.push(`/elections/${election.id}`)}
                 >
                   {election.official_ballot_title} — {isPast ? "no pick" : "no pick yet"}
+                  {autoResult?.outcome === "no_pick" ? ` · auto pick: ${reasonLabel(autoResult.reason)}` : ""}
                 </Text>
               )}
             </View>
@@ -388,6 +424,26 @@ function MyDraftBody({ me }: { me: Me }) {
     retry: false,
     staleTime: 60_000,
   });
+
+  // Fill-run results per election date: the cards annotate their race rows
+  // from it ("auto pick: not enough evidence"). Screen-level like the web
+  // page, so the annotations survive the cards re-rendering around the
+  // post-fill choices refetch. Above the early returns — hooks must run on
+  // every render.
+  const [autoResultsByDate, setAutoResultsByDate] = useState<
+    Map<string, Map<string, AutoPickElectionResult>>
+  >(() => new Map());
+  const handleAutoResults = (date: string) => (byElectionId: Map<string, AutoPickElectionResult> | null) => {
+    setAutoResultsByDate((previous) => {
+      const next = new Map(previous);
+      if (byElectionId === null) {
+        next.delete(date);
+      } else {
+        next.set(date, byElectionId);
+      }
+      return next;
+    });
+  };
 
   const today = usLatestLocalDate();
 
@@ -499,7 +555,10 @@ function MyDraftBody({ me }: { me: Me }) {
               date={date}
               elections={byDate.get(date) ?? []}
               choiceByElectionId={choiceByElectionId}
+              choices={choices ?? []}
               today={today}
+              autoResults={autoResultsByDate.get(date) ?? null}
+              onAutoResults={handleAutoResults(date)}
             />
           ))}
         </View>

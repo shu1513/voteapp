@@ -1,0 +1,406 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1591745,
+   "measure_id": "LD 93",
+   "vote_date": "2025-06-17",
+   "review_status": "approved",
+   "yea_description": "Voted to enact LD 93, which extends Maine's Universal Immunization Program from children to all state residents. The program buys vaccines in bulk and supplies them to health care providers, paid for by assessments the Maine Vaccine Board levies on health insurance carriers. The board sets the vaccine list, and the law drops the requirement that the list follow the federal advisory committee's recommendations. It cleared the Maine House of Representatives 78-70 and became law.",
+   "nay_description": "Voted against enacting LD 93, which extends Maine's Universal Immunization Program from children to all state residents. The program buys vaccines in bulk and supplies them to health care providers, paid for by assessments the Maine Vaccine Board levies on health insurance carriers. The board sets the vaccine list, and the law drops the requirement that the list follow the federal advisory committee's recommendations. It cleared the Maine House of Representatives 78-70 and became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1591746,
+   "measure_id": "LD 93",
+   "vote_date": "2025-06-17",
+   "review_status": "approved",
+   "yea_description": "Voted to pass LD 93, which extends Maine's Universal Immunization Program from children to all state residents. The program buys vaccines in bulk and supplies them to health care providers, paid for by assessments the Maine Vaccine Board levies on health insurance carriers. The board sets the vaccine list, and the law drops the requirement that the list follow the federal advisory committee's recommendations. It cleared the Maine Senate 20-13 and became law.",
+   "nay_description": "Voted against passing LD 93, which extends Maine's Universal Immunization Program from children to all state residents. The program buys vaccines in bulk and supplies them to health care providers, paid for by assessments the Maine Vaccine Board levies on health insurance carriers. The board sets the vaccine list, and the law drops the requirement that the list follow the federal advisory committee's recommendations. It cleared the Maine Senate 20-13 and became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1591136,
+   "measure_id": "LD 427",
+   "vote_date": "2025-06-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass the Senate's final version of LD 427, which caps municipal parking mandates. A municipality may not require more than one off-street parking space per dwelling unit for housing in a designated growth area. It must also let a developer meet parking requirements through an agreement with an existing parking facility within a quarter mile of the site. It cleared the Maine House of Representatives 82-65 and became law.",
+   "nay_description": "Voted against passing the Senate's final version of LD 427, which caps municipal parking mandates. A municipality may not require more than one off-street parking space per dwelling unit for housing in a designated growth area. It must also let a developer meet parking requirements through an agreement with an existing parking facility within a quarter mile of the site. It cleared the Maine House of Representatives 82-65 and became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1590996
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1679820,
+   "measure_id": "LD 2106",
+   "vote_date": "2026-04-09",
+   "review_status": "approved",
+   "yea_description": "Voted to enact LD 2106, which directs the Attorney General to publish model policies for keeping facilities open to all residents regardless of immigration status. The policies limit, as far as state and federal law allow, voluntary consent for officers to enter nonpublic areas for immigration enforcement and the release of protected records for that purpose. Public schools, colleges, state institutions, and state libraries must adopt them. Private schools, health care and child care facilities, public libraries, and houses of worship may. It cleared the Maine House of Representatives 79-69 and became law.",
+   "nay_description": "Voted against enacting LD 2106, which directs the Attorney General to publish model policies for keeping facilities open to all residents regardless of immigration status. The policies limit, as far as state and federal law allow, voluntary consent for officers to enter nonpublic areas for immigration enforcement and the release of protected records for that purpose. Public schools, colleges, state institutions, and state libraries must adopt them. Private schools, health care and child care facilities, public libraries, and houses of worship may. It cleared the Maine House of Representatives 79-69 and became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1679434,
+   "measure_id": "LD 2106",
+   "vote_date": "2026-04-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass LD 2106, which directs the Attorney General to publish model policies for keeping facilities open to all residents regardless of immigration status. The policies limit, as far as state and federal law allow, voluntary consent for officers to enter nonpublic areas for immigration enforcement and the release of protected records for that purpose. Public schools, colleges, state institutions, and state libraries must adopt them. Private schools, health care and child care facilities, public libraries, and houses of worship may. It cleared the Maine Senate 20-14 and became law.",
+   "nay_description": "Voted against passing LD 2106, which directs the Attorney General to publish model policies for keeping facilities open to all residents regardless of immigration status. The policies limit, as far as state and federal law allow, voluntary consent for officers to enter nonpublic areas for immigration enforcement and the release of protected records for that purpose. Public schools, colleges, state institutions, and state libraries must adopt them. Private schools, health care and child care facilities, public libraries, and houses of worship may. It cleared the Maine Senate 20-14 and became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1583054,
+   "measure_id": "LD 1366",
+   "vote_date": "2025-06-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass LD 1366, which ends the separate drug-crime thresholds that applied to cocaine base, often called crack. It repeals the cocaine base subparagraph in the trafficking-by-possession statute, leaving one 14-gram threshold for cocaine in any form. It also removes the 32-gram cocaine base threshold from the importation crime, which now uses a single 112-gram threshold. It cleared the Maine House of Representatives 74-67 and became law.",
+   "nay_description": "Voted against passing LD 1366, which ends the separate drug-crime thresholds that applied to cocaine base, often called crack. It repeals the cocaine base subparagraph in the trafficking-by-possession statute, leaving one 14-gram threshold for cocaine in any form. It also removes the 32-gram cocaine base threshold from the importation crime, which now uses a single 112-gram threshold. It cleared the Maine House of Representatives 74-67 and became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1584436,
+   "measure_id": "LD 1366",
+   "vote_date": "2025-06-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass LD 1366, which ends the separate drug-crime thresholds that applied to cocaine base, often called crack. It repeals the cocaine base subparagraph in the trafficking-by-possession statute, leaving one 14-gram threshold for cocaine in any form. It also removes the 32-gram cocaine base threshold from the importation crime, which now uses a single 112-gram threshold. It cleared the Maine Senate 16-15 and became law.",
+   "nay_description": "Voted against passing LD 1366, which ends the separate drug-crime thresholds that applied to cocaine base, often called crack. It repeals the cocaine base subparagraph in the trafficking-by-possession statute, leaving one 14-gram threshold for cocaine in any form. It also removes the 32-gram cocaine base threshold from the importation crime, which now uses a single 112-gram threshold. It cleared the Maine Senate 16-15 and became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1590866,
+   "measure_id": "LD 1784",
+   "vote_date": "2025-06-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass LD 1784, which requires every Maine law enforcement agency to publish its policies and procedures in clear language, on a public website with no password or fee, or on paper within seven business days of a request. Agencies must train officers on those policies and certify their compliance each year. Confidential intelligence and investigative records are excluded, and an agency may charge a reasonable fee for paper copies. It cleared the Maine House of Representatives 73-69 and became law.",
+   "nay_description": "Voted against passing LD 1784, which requires every Maine law enforcement agency to publish its policies and procedures in clear language, on a public website with no password or fee, or on paper within seven business days of a request. Agencies must train officers on those policies and certify their compliance each year. Confidential intelligence and investigative records are excluded, and an agency may charge a reasonable fee for paper copies. It cleared the Maine House of Representatives 73-69 and became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1591150,
+   "measure_id": "LD 1784",
+   "vote_date": "2025-06-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass LD 1784, which requires every Maine law enforcement agency to publish its policies and procedures in clear language, on a public website with no password or fee, or on paper within seven business days of a request. Agencies must train officers on those policies and certify their compliance each year. Confidential intelligence and investigative records are excluded, and an agency may charge a reasonable fee for paper copies. It cleared the Maine Senate 17-16 and became law.",
+   "nay_description": "Voted against passing LD 1784, which requires every Maine law enforcement agency to publish its policies and procedures in clear language, on a public website with no password or fee, or on paper within seven business days of a request. Agencies must train officers on those policies and certify their compliance each year. Confidential intelligence and investigative records are excluded, and an agency may charge a reasonable fee for paper copies. It cleared the Maine Senate 17-16 and became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1587779,
+   "measure_id": "LD 537",
+   "vote_date": "2025-06-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass LD 537, which creates a civil lawsuit for doxing a minor. A person is liable for disclosing a minor's personal identifying information intentionally, knowingly, or recklessly. The disclosure must also disregard a substantial risk of, and actually cause, stalking, physical harm, serious property damage, or reasonable fear for physical safety. It cleared the Maine House of Representatives 78-69 and became law.",
+   "nay_description": "Voted against passing LD 537, which creates a civil lawsuit for doxing a minor. A person is liable for disclosing a minor's personal identifying information intentionally, knowingly, or recklessly. The disclosure must also disregard a substantial risk of, and actually cause, stalking, physical harm, serious property damage, or reasonable fear for physical safety. It cleared the Maine House of Representatives 78-69 and became law.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1587780,
+   "measure_id": "LD 537",
+   "vote_date": "2025-06-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass LD 537, which creates a civil lawsuit for doxing a minor. A person is liable for disclosing a minor's personal identifying information intentionally, knowingly, or recklessly. The disclosure must also disregard a substantial risk of, and actually cause, stalking, physical harm, serious property damage, or reasonable fear for physical safety. It cleared the Maine Senate 18-14 and became law.",
+   "nay_description": "Voted against passing LD 537, which creates a civil lawsuit for doxing a minor. A person is liable for disclosing a minor's personal identifying information intentionally, knowingly, or recklessly. The disclosure must also disregard a substantial risk of, and actually cause, stalking, physical harm, serious property damage, or reasonable fear for physical safety. It cleared the Maine Senate 18-14 and became law.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1668557,
+   "measure_id": "LD 2114",
+   "vote_date": "2026-03-24",
+   "review_status": "approved",
+   "yea_description": "Voted to enact LD 2114, which lets public preschool programs serve 3-year-olds. It adds them to the definition of a public preschool program and to the programs the state encourages districts to develop. A child who turns 3 by October 15 of the school year and has not been identified as having a disability may enroll where the program serves that age. It cleared the Maine House of Representatives 75-68 and became law.",
+   "nay_description": "Voted against enacting LD 2114, which lets public preschool programs serve 3-year-olds. It adds them to the definition of a public preschool program and to the programs the state encourages districts to develop. A child who turns 3 by October 15 of the school year and has not been identified as having a disability may enroll where the program serves that age. It cleared the Maine House of Representatives 75-68 and became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1666449,
+   "measure_id": "LD 2114",
+   "vote_date": "2026-03-19",
+   "review_status": "approved",
+   "yea_description": "Voted to pass LD 2114, which lets public preschool programs serve 3-year-olds. It adds them to the definition of a public preschool program and to the programs the state encourages districts to develop. A child who turns 3 by October 15 of the school year and has not been identified as having a disability may enroll where the program serves that age. It cleared the Maine Senate 18-14 and became law.",
+   "nay_description": "Voted against passing LD 2114, which lets public preschool programs serve 3-year-olds. It adds them to the definition of a public preschool program and to the programs the state encourages districts to develop. A child who turns 3 by October 15 of the school year and has not been identified as having a disability may enroll where the program serves that age. It cleared the Maine Senate 18-14 and became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1647559,
+   "measure_id": "LD 2037",
+   "vote_date": "2026-02-26",
+   "review_status": "approved",
+   "yea_description": "Voted to enact LD 2037, which tightens Maine's cap on power plant carbon dioxide emissions under the Regional Greenhouse Gas Initiative. It replaces the existing 2.5 percent annual decline with a fixed schedule falling from 2,065,595 tons in 2027 to 221,314 tons in 2037 and each year after. It cleared the Maine House of Representatives 71-66 and became law.",
+   "nay_description": "Voted against enacting LD 2037, which tightens Maine's cap on power plant carbon dioxide emissions under the Regional Greenhouse Gas Initiative. It replaces the existing 2.5 percent annual decline with a fixed schedule falling from 2,065,595 tons in 2027 to 221,314 tons in 2037 and each year after. It cleared the Maine House of Representatives 71-66 and became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1631625,
+   "measure_id": "LD 2037",
+   "vote_date": "2026-02-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass LD 2037, which tightens Maine's cap on power plant carbon dioxide emissions under the Regional Greenhouse Gas Initiative. It replaces the existing 2.5 percent annual decline with a fixed schedule falling from 2,065,595 tons in 2027 to 221,314 tons in 2037 and each year after. It cleared the Maine Senate 19-13 and became law.",
+   "nay_description": "Voted against passing LD 2037, which tightens Maine's cap on power plant carbon dioxide emissions under the Regional Greenhouse Gas Initiative. It replaces the existing 2.5 percent annual decline with a fixed schedule falling from 2,065,595 tons in 2027 to 221,314 tons in 2037 and each year after. It cleared the Maine Senate 19-13 and became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1571130,
+   "measure_id": "LD 1080",
+   "vote_date": "2025-05-14",
+   "review_status": "approved",
+   "yea_description": "Voted to pass LD 1080, which bars a public utility from requiring a deposit from someone applying for residential service based solely on the applicant's income. An applicant is a person who has not been a customer of that utility in the previous 30 days. The Public Utilities Commission must begin writing rules within 30 days. It cleared the Maine House of Representatives 77-63 and became law.",
+   "nay_description": "Voted against passing LD 1080, which bars a public utility from requiring a deposit from someone applying for residential service based solely on the applicant's income. An applicant is a person who has not been a customer of that utility in the previous 30 days. The Public Utilities Commission must begin writing rules within 30 days. It cleared the Maine House of Representatives 77-63 and became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1574011,
+   "measure_id": "LD 1080",
+   "vote_date": "2025-05-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass LD 1080, which bars a public utility from requiring a deposit from someone applying for residential service based solely on the applicant's income. An applicant is a person who has not been a customer of that utility in the previous 30 days. The Public Utilities Commission must begin writing rules within 30 days. It cleared the Maine Senate 19-13 and became law.",
+   "nay_description": "Voted against passing LD 1080, which bars a public utility from requiring a deposit from someone applying for residential service based solely on the applicant's income. An applicant is a person who has not been a customer of that utility in the previous 30 days. The Public Utilities Commission must begin writing rules within 30 days. It cleared the Maine Senate 19-13 and became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1574010
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1654878,
+   "measure_id": "LD 1587",
+   "vote_date": "2026-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass the Senate's final version of LD 1587, which lets the Director of Labor Standards open an investigation when the director believes a person or employer has violated Maine's labor laws. The director may examine records, issue subpoenas, take testimony, and order penalties when a violation is found. It cleared the Maine House of Representatives 72-68 and became law.",
+   "nay_description": "Voted against passing the Senate's final version of LD 1587, which lets the Director of Labor Standards open an investigation when the director believes a person or employer has violated Maine's labor laws. The director may examine records, issue subpoenas, take testimony, and order penalties when a violation is found. It cleared the Maine House of Representatives 72-68 and became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1646248,
+   "measure_id": "LD 1587",
+   "vote_date": "2026-02-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass LD 1587, which lets the Director of Labor Standards open an investigation when the director believes a person or employer has violated Maine's labor laws. The director may examine records, issue subpoenas, take testimony, and order penalties when a violation is found. It cleared the Maine Senate 18-14 and became law.",
+   "nay_description": "Voted against passing LD 1587, which lets the Director of Labor Standards open an investigation when the director believes a person or employer has violated Maine's labor laws. The director may examine records, issue subpoenas, take testimony, and order penalties when a violation is found. It cleared the Maine Senate 18-14 and became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1543527,
+   "measure_id": "LD 585",
+   "vote_date": "2025-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass LD 585, which makes permanent the requirement that Efficiency Maine spend regional grid capacity payments on beneficial electrification. The money must supplement incentives for measures that are cost-effective and reliably lower electricity rates over their life, including high-performance heat pumps and electric vehicles. The previous version of the law let this direction expire after the 2024-25 fiscal year. It cleared the Maine Senate 19-15 and became law.",
+   "nay_description": "Voted against passing LD 585, which makes permanent the requirement that Efficiency Maine spend regional grid capacity payments on beneficial electrification. The money must supplement incentives for measures that are cost-effective and reliably lower electricity rates over their life, including high-performance heat pumps and electric vehicles. The previous version of the law let this direction expire after the 2024-25 fiscal year. It cleared the Maine Senate 19-15 and became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1549183,
+   "measure_id": "LD 585",
+   "vote_date": "2025-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted to pass LD 585, which makes permanent the requirement that Efficiency Maine spend regional grid capacity payments on beneficial electrification. The money must supplement incentives for measures that are cost-effective and reliably lower electricity rates over their life, including high-performance heat pumps and electric vehicles. The previous version of the law let this direction expire after the 2024-25 fiscal year. It cleared the Maine House of Representatives 77-72 and became law.",
+   "nay_description": "Voted against passing LD 585, which makes permanent the requirement that Efficiency Maine spend regional grid capacity payments on beneficial electrification. The money must supplement incentives for measures that are cost-effective and reliably lower electricity rates over their life, including high-performance heat pumps and electric vehicles. The previous version of the law let this direction expire after the 2024-25 fiscal year. It cleared the Maine House of Representatives 77-72 and became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1590110,
+   "measure_id": "LD 427",
+   "vote_date": "2025-06-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass the committee version of LD 427, which capped municipal parking mandates more broadly than the law that resulted. The version the Senate accepted barred a municipality from requiring off-street parking within a quarter mile of a transit stop, limited growth-area housing to one required off-street space per unit, and required municipalities to accept off-site parking agreements. The Senate removed the transit-stop provision later the same day, and the narrower bill became law. It cleared the Maine Senate 19-16.",
+   "nay_description": "Voted against passing the committee version of LD 427, which capped municipal parking mandates more broadly than the law that resulted. The version the Senate accepted barred a municipality from requiring off-street parking within a quarter mile of a transit stop, limited growth-area housing to one required off-street space per unit, and required municipalities to accept off-site parking agreements. The Senate removed the transit-stop provision later the same day, and the narrower bill became law. It cleared the Maine Senate 19-16.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

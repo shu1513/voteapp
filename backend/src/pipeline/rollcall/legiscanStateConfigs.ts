@@ -720,6 +720,190 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       /^substitute joint res/,
     ],
   },
+  // Missouri 103rd General Assembly, 2025 Regular Session (LegiScan session
+  // 2169; the two 2025 special sessions, 2216 and 2226, are separate
+  // datasets and would need their own entries). Vocabulary measured from
+  // the full dataset survey 2026-08-29: 2,673 bills, 557 roll calls, 197
+  // people (163 House + 34 Senate seats plus mid-session turnover).
+  //
+  // What the survey established:
+  // - The two chambers write their descs in COMPLETELY different styles.
+  //   The Senate prints the bare question and nothing else — only five
+  //   spellings exist in the whole session. The House prints its CALENDAR
+  //   HEADING followed by the bill's substitute chain, so every House desc
+  //   is unique (`House: HBs WITH SENATE AMENDMENTS SS SCS HB 225, A.A.,
+  //   E.C.`); 275 raw House descs fold to 16 calendar families. House
+  //   patterns therefore match the heading and let the chain trail.
+  // - `Senate: Third Reading` (172 rolls) is BOTH the first-round third
+  //   reading and the Truly Agreed To And Finally Passed vote — Missouri
+  //   prints no separate TAFP wording — so the second chamber's vote on
+  //   the enacted text lands in this family too.
+  // - MISSOURI PERFECTION IS NOT PASSAGE. `HBs FOR PERFECTION` /
+  //   `HBs PERFECTION - INFORMAL` / `HJRs FOR PERFECTION` (36 rolls) are
+  //   the House's amend-and-engross stage, the second-reading analog that
+  //   Texas and California also exclude; third reading is the passage
+  //   question and every perfected bill gets one.
+  // - `Senate: Adopt Substitute` (13) is the floor adoption of an SS/SCS
+  //   (nine of them on SB 98 in a single day) and `Senate: Emergency
+  //   Clause` (8) is the separate vote on whether the act takes effect at
+  //   once — neither is a vote on the measure, so both are excluded.
+  // - `Senate: Adoption` (10) is DELIBERATELY LEFT UNMATCHED so it
+  //   surfaces: nine of the ten are ceremonial concurrent/simple
+  //   resolutions (rejected earlier as excluded measure types) but the
+  //   tenth is the Senate adopting the HB 595 conference committee report
+  //   (22-11). One desc, two questions, so it is reviewed rather than
+  //   guessed.
+  // - The dataset carries NO committee votes at all: every tally is a
+  //   whole-chamber tally (House 161-163, Senate 31-34).
+  // - A HOUSE DESC NAMES THE CALENDAR, NOT THE QUESTION. On one calendar
+  //   day the House prints the previous-question motion (the debate
+  //   cutoff), the concurrence ("House Adopts"), the Truly Agreed To And
+  //   Finally Passed vote and the emergency clause under the SAME desc —
+  //   HB 225 on 2025-05-08 is one string over 92-45 / 89-32 / 88-26 /
+  //   88-34, and only the last two are votes on the measure. Nothing in
+  //   the feed separates them, so the kept patterns classify the FAMILY
+  //   and `questionClass` here is report metadata, not ground truth. The
+  //   queue is a review queue — a stored roll fans out only after a human
+  //   judgment — and Missouri selection must match every roll to its
+  //   official House roll-call PDF (documents.house.mo.gov/billtracking/
+  //   bills251/rollcalls/<day>.<n>.pdf), whose header names any
+  //   non-passage question and stamps the LR number of the text on the
+  //   floor; see evidence/rollcall/legiscan-mo-2169/CODE-FINDINGS.md.
+  //   Classifying these headings as unknown instead would park ~293 House
+  //   rolls in the surfaced queue, where the approval CHECK can never
+  //   accept them, while relocating the same per-roll PDF check nowhere.
+  // - Only the calendar headings measured in this session are listed. A
+  //   heading this session never printed (an `SJRs FOR THIRD READING`, a
+  //   Senate concurrence wording) surfaces as unknown rather than being
+  //   guessed from another state.
+  // - Feed health: 0 repeated roll_call_ids (the Texas 9.4% collapse is a
+  //   verified no-op here), 0 summary-only rolls, 0 tally mismatches, 0
+  //   file errors. 49 rolls collapse under the shared identity key, and
+  //   in Missouri they are NOT all reprints of one action: back-to-back
+  //   DISTINCT actions can carry identical data — HB 594's "House Adopts
+  //   SS#2" (official roll 066.003) and its Truly Agreed To And Finally
+  //   Passed vote minutes later (066.004) are both 102-41 with the same
+  //   member list, so the key folds them and the lowest roll_call_id
+  //   survives as the class representative. No member position is lost
+  //   (the lists are identical, and the fan-out imports one roll per
+  //   measure per chamber regardless), but a judgment's description must
+  //   be worded to hold for the whole class unless the roll-call PDF pins
+  //   the specific action. Disabling the collapse would be worse: the
+  //   fan-out dedupes on ls:<id> URL keys, so two stored ids for one
+  //   identical vote would let a double judgment write every member's
+  //   record twice.
+  MO: {
+    jurisdiction: "MO",
+    sessionId: 2169,
+    chamberSizes: { house: 163, senate: 34 },
+    keptQuestions: [
+      // House third reading, under any of its calendars: the regular
+      // `HBs FOR THIRD READING` / `SBs FOR THIRD READING`, the informal
+      // calendar (`HBs 3rd READ - INFORMAL`), the consent calendar
+      // (`HBs 3rd READING - CONSENT`), the constitutional-amendment
+      // calendar (`HJRs FOR THIRD READING`) and the appropriations
+      // calendar (`HABs FOR THIRD READING`). The trailing space is
+      // required so the heading is never matched without its bill chain.
+      {
+        pattern: /^house: (?:hbs|sbs|hjrs|habs) (?:for third reading|3rd read - informal|3rd reading - consent) /,
+        questionClass: "passage",
+      },
+      // The House taking up its own bill as returned with Senate
+      // amendments — Missouri's concurrence question.
+      { pattern: /^house: (?:hbs|hjrs) with senate amendments /, questionClass: "concurrence" },
+      // `House: BILLS IN CONFERENCE CCS HCS SS SCS SBS 81 & 174, E.C`.
+      { pattern: /^house: bills in conference /, questionClass: "conference_report" },
+      // The Senate's two substantive spellings.
+      { pattern: /^senate: third reading$/, questionClass: "passage" },
+      { pattern: /^senate: conference committee report adoption$/, questionClass: "conference_report" },
+    ],
+    excludedQuestions: [
+      // Perfection: the House's amend-and-engross stage, not passage.
+      /^house: (?:hbs|hjrs) (?:for perfection|perfection - informal) /,
+      // The motion for the previous question (debate cutoff).
+      /^house: general pq$/,
+      // Floor adoption of a Senate substitute, and the separate vote on a
+      // bill's emergency clause.
+      /^senate: adopt substitute$/,
+      /^senate: emergency clause$/,
+    ],
+  },
+
+  // Maryland General Assembly, 2025 Regular Session (Jan 8 - Apr 7 2025;
+  // Maryland sits in ANNUAL sessions, so this dataset is one year only —
+  // the 2026 Regular Session is its own LegiScan session, 2240).
+  // Vocabulary measured from the full dataset survey 2026-08-29: 2,617
+  // bills, 2,494 roll calls, 216 people (141 Delegates + 47 Senators plus
+  // mid-term turnover).
+  //
+  // What the survey established:
+  // - Maryland's vocabulary is the SMALLEST of any state surveyed so far:
+  //   2,494 rolls collapse to 15 desc families, and 2,295 of them are the
+  //   single literal string `Third Reading Passed`. Passage of a version
+  //   the other chamber amended is worded `Third Reading Passed with
+  //   Amendments` in the House and `Third ReadingS Passed with Amendments`
+  //   (plural) in the Senate — the same question, two spellings, so the
+  //   pattern makes the `s` optional. All 14 of those are ordinary
+  //   single-bill second-chamber passages, not en-bloc calendars.
+  // - The session has exactly ONE conference-report roll (SB 338, Senate,
+  //   30-17), worded `Conference Committee Report 903525/1 Adopted` — the
+  //   number is the amendment's filing id, so the pattern tolerates digits
+  //   and a slash rather than naming it.
+  // - Maryland does NOT roll-call concurrence: no desc in the session
+  //   mentions concurring. The originating chamber's agreement to the
+  //   other chamber's amendments is taken without a recorded vote, so for
+  //   an amended bill the only recorded votes are each chamber's own third
+  //   reading — which means the two chambers routinely voted DIFFERENT
+  //   TEXT. Every judgment on a `with Amendments` measure has to name the
+  //   version each roll actually was.
+  // - The dataset carries NO committee votes at all (as in Georgia): every
+  //   tally is whole-chamber (House 137-141, Senate 45-47), so nothing
+  //   reaches the small-tally or committee buckets and no roll is left
+  //   surfaced. Every desc in the session matches a kept or an excluded
+  //   pattern — 2,310 kept, 184 excluded, 0 unmatched (measured).
+  // - Excluded families are all floor-sized and all procedural: floor
+  //   amendments (152 rejected, 2 adopted), committee amendments adopted
+  //   on the floor (12), and motions (previous question, suspend the rules
+  //   for late introduction / two readings the same day / to refer,
+  //   special order). Amendment descs name the sponsoring member in
+  //   parentheses, so they are anchored at the start of the string.
+  // - Feed health is the best of any phase-4 state, tied with Georgia: 0
+  //   repeated roll_call_ids (the Texas 9.4% collapse is a verified no-op
+  //   here), 0 identity-duplicate groups, 0 summary-only rolls (every roll
+  //   carries a member list), 0 tally mismatches, 0 file errors.
+  // - Only bill types B (2,605) and JR (12) appear; Maryland proposes
+  //   constitutional amendments as ordinary BILLS, so the Georgia
+  //   resolution-typed-amendment gap does not recur.
+  // - 414 of the kept rolls fall on sine die (2025-04-07); per the Illinois
+  //   date-skew finding, audit a selected roll's date against the official
+  //   Maryland General Assembly bill page before importing it.
+  MD: {
+    jurisdiction: "MD",
+    sessionId: 2164,
+    chamberSizes: { house: 141, senate: 47 },
+    keptQuestions: [
+      // `Third Reading Passed`, `Third Reading Passed with Amendments`,
+      // `Third Readings Passed with Amendments`. Anchored at both ends:
+      // the excluded amendment and motion families never share this
+      // wording, and nothing else in the session's vocabulary does either.
+      { pattern: /^third readings? passed(?: with amendments)?$/, questionClass: "passage" },
+      // `Conference Committee Report 903525/1 Adopted` (SB 338).
+      { pattern: /^conference committee report [\d/]+ adopted$/, questionClass: "conference_report" },
+    ],
+    excludedQuestions: [
+      // `Floor Amendment 273422/1 (Delegate Hornberger) Rejected`, and the
+      // handful worded without a filing number.
+      /^floor amendment\b/,
+      // `Committee Amendment (Senator Beidle) Adopted` — the floor vote
+      // adopting a committee's amendment, not the question on the bill.
+      /^committee amendment\b/,
+      // `Motion Vote Previous Question (...) Adopted`, `Motion Rules
+      // Suspend for Late Introduction (...) Adopted`, `Motion Special
+      // Order until Later This Session (...) Rejected`, `Motion Rules
+      // Suspend to Refer (...) Rejected`.
+      /^motion /,
+    ],
+  },
 };
 
 export const LEGISCAN_STATE_JURISDICTIONS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);

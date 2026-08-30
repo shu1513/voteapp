@@ -13,7 +13,8 @@
       "labels": [
         {
           "slug": "environment_and_public_health",
-          "yea": "for"
+          "yea": "for",
+          "nay": "against"
         }
       ]
     },
@@ -30,7 +31,8 @@
       "labels": [
         {
           "slug": "environment_and_public_health",
-          "yea": "for"
+          "yea": "for",
+          "nay": "against"
         }
       ]
     },
@@ -47,8 +49,13 @@
       "labels": [
         {
           "slug": "civil_rights",
-          "yea": "for"
+          "yea": "for",
+          "nay": "against"
         }
+      ],
+      "acknowledge_later_rolls": [
+        1576162,
+        1576163
       ]
     },
     {
@@ -64,7 +71,8 @@
       "labels": [
         {
           "slug": "gun_control",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -81,7 +89,8 @@
       "labels": [
         {
           "slug": "gun_control",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -98,7 +107,8 @@
       "labels": [
         {
           "slug": "immigration",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -115,8 +125,13 @@
       "labels": [
         {
           "slug": "immigration",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
+      ],
+      "acknowledge_later_rolls": [
+        1498835,
+        1498836
       ]
     },
     {
@@ -132,7 +147,8 @@
       "labels": [
         {
           "slug": "public_education_quality",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -149,7 +165,8 @@
       "labels": [
         {
           "slug": "corporate_accountability",
-          "yea": "for"
+          "yea": "for",
+          "nay": "against"
         }
       ]
     },
@@ -166,8 +183,13 @@
       "labels": [
         {
           "slug": "corporate_accountability",
-          "yea": "for"
+          "yea": "for",
+          "nay": "against"
         }
+      ],
+      "acknowledge_later_rolls": [
+        1572264,
+        1572265
       ]
     },
     {
@@ -183,7 +205,8 @@
       "labels": [
         {
           "slug": "environment_and_public_health",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -200,7 +223,8 @@
       "labels": [
         {
           "slug": "environment_and_public_health",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -217,7 +241,8 @@
       "labels": [
         {
           "slug": "corporate_accountability",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -234,7 +259,8 @@
       "labels": [
         {
           "slug": "public_safety_and_crime_control",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -251,7 +277,8 @@
       "labels": [
         {
           "slug": "social_programs_and_welfare",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -268,7 +295,8 @@
       "labels": [
         {
           "slug": "housing_affordability",
-          "yea": "for"
+          "yea": "for",
+          "nay": "against"
         }
       ]
     },
@@ -285,7 +313,8 @@
       "labels": [
         {
           "slug": "civil_rights",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     }

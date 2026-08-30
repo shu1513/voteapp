@@ -292,9 +292,52 @@ describe("legiscanRollCallPageUrl", () => {
   });
 });
 
+
+describe("Maryland's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS.MD!;
+  const md = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+
+  it("keeps the three third-reading spellings and the session's one conference report", () => {
+    // 2,295 of the session's 2,494 rolls are this exact string.
+    expect(md("Third Reading Passed", 141)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(md("Third Reading Passed", 47, "senate")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    // The same question, spelled singular in the House and plural in the Senate.
+    expect(md("Third Reading Passed with Amendments", 141)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(md("Third Readings Passed with Amendments", 47, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(md("Conference Committee Report 903525/1 Adopted", 47, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "conference_report",
+    });
+  });
+
+  it("excludes the floor-sized procedural families by rule, never surfacing them", () => {
+    for (const desc of [
+      "Floor Amendment 273422/1 (Delegate Hornberger) Rejected",
+      "Floor Amendment (Senator Carozza) Rejected",
+      "Committee Amendment (Senator Beidle) Adopted",
+      "Committee Amendment 123456/1 Adopted",
+      "Motion Vote Previous Question (Delegate Wilkins) Adopted",
+      "Motion Rules Suspend for Late Introduction (Delegate Barnes) Adopted",
+      "Motion Special Order until Later This Session (Delegate Kipke) Rejected",
+      "Motion Rules Suspend to Refer (Senator Ferguson) Rejected",
+    ]) {
+      expect(classifyLegiscanRollCall({ desc, total: 141, chamber: "house", billType: "B", config })).toMatchObject({
+        isFloorVote: false,
+      });
+    }
+  });
+});
+
 describe("getLegiscanStateConfig", () => {
   it("serves only surveyed states; an unsurveyed state is refused by name", () => {
-    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual(["GA", "CT", "IL", "TN", "TX", "FL", "CA", "PA", "ME"]);
+    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual(["GA", "CT", "IL", "TN", "TX", "FL", "CA", "PA", "ME", "MO", "MD"]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
     expect(getLegiscanStateConfig("GA").sessionId).toBe(2167);
@@ -304,8 +347,53 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("PA").sessionId).toBe(2192);
     expect(getLegiscanStateConfig("ME").sessionId).toBe(2181);
     expect(getLegiscanStateConfig("CT").sessionId).toBe(2174);
+    expect(getLegiscanStateConfig("MO").sessionId).toBe(2169);
+    expect(getLegiscanStateConfig("MD").sessionId).toBe(2164);
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("NY")).toThrow("no LegiScan state config for NY");
+  });
+
+  it("classifies Missouri's real desc vocabulary as surveyed", () => {
+    const config = LEGISCAN_STATE_CONFIGS.MO!;
+    const mo = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
+      classifyLegiscanRollCall({ desc, total, chamber, billType, config });
+    // The House prints its calendar heading and lets the substitute chain trail.
+    expect(mo("House: HBs FOR THIRD READING HCS#2 HBS 567, 546, 758 & 958, E.C.", 162)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(mo("House: SBs FOR THIRD READING HCS SS SB 160, A.A., E.C.", 161).questionClass).toBe("passage");
+    expect(mo("House: HBs 3rd READ - INFORMAL HB 563", 162).questionClass).toBe("passage");
+    expect(mo("House: HBs 3rd READING - CONSENT HCS HB 339, E.C.", 162).questionClass).toBe("passage");
+    expect(mo("House: HJRs FOR THIRD READING HCS HJR 73", 162, "house", "JR").questionClass).toBe("passage");
+    expect(mo("House: HBs WITH SENATE AMENDMENTS SS SCS HB 225, A.A., E.C.", 161).questionClass).toBe("concurrence");
+    expect(mo("House: BILLS IN CONFERENCE CCS HCS SS SCS SBS 81 & 174, E.C", 161).questionClass).toBe(
+      "conference_report"
+    );
+    // The Senate prints the bare question; `Third Reading` is also its
+    // Truly Agreed To And Finally Passed vote.
+    expect(mo("Senate: Third Reading", 33, "senate")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(mo("Senate: Conference Committee Report Adoption", 33, "senate").questionClass).toBe("conference_report");
+    // Perfection is the amend-and-engross stage, not passage; the previous
+    // question, substitute adoption and emergency clause are not the measure.
+    for (const [desc, chamber] of [
+      ["House: HBs FOR PERFECTION HB 660, A.A.", "house"],
+      ["House: HBs PERFECTION - INFORMAL *HCS HB 970, A.A.", "house"],
+      ["House: HJRs FOR PERFECTION *HCS HJR 73", "house"],
+      ["House: General PQ", "house"],
+      ["Senate: Adopt Substitute", "senate"],
+      ["Senate: Emergency Clause", "senate"],
+    ] as const) {
+      expect(mo(desc, chamber === "house" ? 162 : 33, chamber)).toMatchObject({
+        isFloorVote: false,
+        questionClass: null,
+      });
+    }
+    // `Senate: Adoption` is one desc over two questions (ceremonial
+    // resolutions and the HB 595 conference report), so it surfaces.
+    expect(mo("Senate: Adoption", 33, "senate")).toMatchObject({ isFloorVote: null, questionClass: null });
+    // A heading this session never printed surfaces rather than being guessed.
+    expect(mo("House: SJRs FOR THIRD READING SS SJR 78", 162, "house", "JR").isFloorVote).toBeNull();
   });
 
   it("classifies Texas's real desc vocabulary as surveyed", () => {
