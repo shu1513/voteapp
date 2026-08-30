@@ -42,11 +42,13 @@ overdose-prevention question is one where the evidence bases are contested.
 move onto bills earlier (construction work in progress for new gas plants in rate base, future-test-
 year ratemaking, PISA sunsets extended) while other provisions push the other way (the revenue-
 requirement impact cap cut from 2.5 % to 2.25 %, CWIP recoveries refundable **with interest** if
-imprudent, a one-time cut if federal corporate income tax falls, large-load tariffs so data-centre
-customers carry their own share).
+imprudent, a one-time authority to pass a federal corporate-tax cut through to rates — with the
+savings deferred and credited in the next rate case either way — and large-load tariffs so
+data-centre customers carry their own share).
 
-Clean side strands do exist — the Fair Competition Law barring utilities from selling HVAC services
-(`corporate_accountability`/for) and the hot- and cold-weather shutoff bans plus a utility-burden
+Clean side strands do exist — the tightened Fair Competition Law, which keeps utilities themselves
+out of HVAC sales while their affiliates and contractors continue under separation and open-
+qualification rules (`corporate_accountability`/for), and the hot- and cold-weather shutoff bans plus a utility-burden
 discount (`social_programs_and_welfare`/for) — but labelling only those would mislead by omission on
 the ratemaking fight that is the whole point of the bill.
 
