@@ -242,8 +242,8 @@
    "measure_id": "HB 1262",
    "vote_date": "2026-06-10",
    "review_status": "approved",
-   "yea_description": "Voted for House Bill 1262. It would have made campaign finance reports be filed online with the state instead of on paper, so anyone can search them. A candidate could be excused if they lack a computer or internet access, or have a disability that makes online filing hard. The Pennsylvania House passed it 105-97. As of August 2026 the Senate had not voted on it.",
-   "nay_description": "Voted against House Bill 1262. It would have made campaign finance reports be filed online with the state instead of on paper, so anyone can search them. A candidate could be excused if they lack a computer or internet access, or have a disability that makes online filing hard. The Pennsylvania House passed it 105-97. As of August 2026 the Senate had not voted on it.",
+   "yea_description": "Voted for House Bill 1262. It would have made campaign finance reports be filed online with the state instead of on paper, so anyone can search them. A candidate could be excused if they lack a computer or internet access, or have a disability that prevents them filing online. The Pennsylvania House passed it 105-97. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1262. It would have made campaign finance reports be filed online with the state instead of on paper, so anyone can search them. A candidate could be excused if they lack a computer or internet access, or have a disability that prevents them filing online. The Pennsylvania House passed it 105-97. As of August 2026 the Senate had not voted on it.",
    "labels": [
     {
      "slug": "anti_corruption",
@@ -1088,8 +1088,8 @@
    "measure_id": "HB 316",
    "vote_date": "2025-04-22",
    "review_status": "approved",
-   "yea_description": "Voted for House Bill 316. It would have let a town turn down a permit for a company that owes money on property anywhere in the state. That covers unpaid property taxes, unpaid town bills, or a serious code violation. Companies would have to list any such debts in writing when they apply. The Pennsylvania House passed it 114-89. As of August 2026 the Senate had not voted on it.",
-   "nay_description": "Voted against House Bill 316. It would have let a town turn down a permit for a company that owes money on property anywhere in the state. That covers unpaid property taxes, unpaid town bills, or a serious code violation. Companies would have to list any such debts in writing when they apply. The Pennsylvania House passed it 114-89. As of August 2026 the Senate had not voted on it.",
+   "yea_description": "Voted for House Bill 316. It would have let a town turn down a permit for a company whose property anywhere in the state has unpaid property taxes, unpaid town bills, or a serious code violation that has not been fixed. Companies would have to list any such debts in writing when they apply. The Pennsylvania House passed it 114-89. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 316. It would have let a town turn down a permit for a company whose property anywhere in the state has unpaid property taxes, unpaid town bills, or a serious code violation that has not been fixed. Companies would have to list any such debts in writing when they apply. The Pennsylvania House passed it 114-89. As of August 2026 the Senate had not voted on it.",
    "labels": [
     {
      "slug": "corporate_accountability",
@@ -1304,8 +1304,8 @@
    "measure_id": "HB 660",
    "vote_date": "2026-02-02",
    "review_status": "approved",
-   "yea_description": "Voted for House Bill 660. It would have set minimum energy and water efficiency standards for appliances sold or installed in Pennsylvania. The list covered commercial kitchen gear, faucets, gas fireplaces, some lamps and portable spas. It also covered vent fans, showerheads, sprinkler heads, toilets and water coolers. The state Environmental Quality Board would write the rules. The Pennsylvania House passed it 101-97. As of August 2026 the Senate had not voted on it.",
-   "nay_description": "Voted against House Bill 660. It would have set minimum energy and water efficiency standards for appliances sold or installed in Pennsylvania. The list covered commercial kitchen gear, faucets, gas fireplaces, some lamps and portable spas. It also covered vent fans, showerheads, sprinkler heads, toilets and water coolers. The state Environmental Quality Board would write the rules. The Pennsylvania House passed it 101-97. As of August 2026 the Senate had not voted on it.",
+   "yea_description": "Voted for House Bill 660. It would have set minimum energy and water efficiency standards for appliances sold or installed in Pennsylvania. The list covered commercial kitchen gear, faucets, gas fireplaces, some lamps and portable spas. It also covered vent fans, showerheads, spray sprinkler bodies, which are the base a lawn sprinkler head attaches to, plus toilets and water coolers. The state Environmental Quality Board would write the rules. The Pennsylvania House passed it 101-97. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 660. It would have set minimum energy and water efficiency standards for appliances sold or installed in Pennsylvania. The list covered commercial kitchen gear, faucets, gas fireplaces, some lamps and portable spas. It also covered vent fans, showerheads, spray sprinkler bodies, which are the base a lawn sprinkler head attaches to, plus toilets and water coolers. The state Environmental Quality Board would write the rules. The Pennsylvania House passed it 101-97. As of August 2026 the Senate had not voted on it.",
    "labels": [
     {
      "slug": "environment_and_public_health",
