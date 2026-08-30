@@ -128,3 +128,35 @@ Version-check recipe: the printer's number is in the desc. Compare it to the
 last PN on the bill page. Equal → the chamber voted the enacted text.
 Different → diff the two PN texts at
 `palegis.us/legislation/bills/text/HTM/<year>/0/<BILL>/PN<n>`.
+
+## Campaign complete (2026-08-30)
+
+Every one of the session's **291 divided floor votes** now carries a
+disposition, and everything judgeable has been judged.
+
+| | rolls |
+| --- | --- |
+| Divided floor votes in the session | 291 |
+| **Judged and imported** | **177** |
+| Dropped with a written reason | 109 |
+| Retracted on review (SB 187) | 1 |
+| Superseded by a later vote in the same chamber | 4 |
+
+Batches: **batch-01** 5 measures (divided and enacted), **batch-02** 32,
+**batch-03** 112, **batch-04** 28 (29 imported, SB 187 retracted). Local totals: **25,908 live records across 194
+candidates** (14 SB 187 records retired on review).
+
+The 570 kept floor votes that were not divided stay out of scope by the
+campaign's gate everywhere — a near-unanimous vote says nothing about how
+members differ. The session runs to 30 November 2026 and this dataset is
+dated 23 August, so later votes exist that are not in it.
+
+Two measures are still parked on a deliberate user direction call: **HB 1200**
+(adult-use cannabis, passed the House 102-101) and **SB 49** (the Cannabis
+Control Board, failed the Senate 23-27). No research area carries an honest
+direction for legalisation.
+
+Of the 30 divided-and-enacted rolls left pending in
+`survey/divided-enacted-worklist.tsv`, 18 are appropriations, excluded on the
+user's scope decision and on the federal and Georgia precedent that a
+fund-the-government vote has no honest research area.
