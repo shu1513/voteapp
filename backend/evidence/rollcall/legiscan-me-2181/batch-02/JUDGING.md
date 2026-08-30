@@ -140,3 +140,46 @@ WHERE origin_run_id LIKE 'rollcall:ME:%';                            -- 2908
 
 The dry run's own stamp (`2026-08-30T01:45:23.409Z`) matches zero rows, the
 standing proof that `--dry-run` is inert. PROD UNTOUCHED.
+
+## Plain-language rewrite, 2026-08-30
+
+Every description in this batch was rewritten for an ordinary reader at roughly
+a 7th-grade level, on the same terms as batch-01: **wording only**, no fact,
+date, tally, chamber, stance direction, or label changed, and nothing
+re-researched.
+
+The jargon that came out: "Class III clean energy standard" is now a rule that
+electricity sellers "must start buying power the state counts as clean"; "the
+cocaine base subparagraph in the trafficking-by-possession statute" is now
+"Maine used to punish crack cocaine at lower amounts than powder cocaine";
+"beneficial electrification" and "regional grid capacity payments" are now
+money the power grid pays Efficiency Maine, "the state agency that pays for
+energy-saving upgrades", spent helping people switch to heat pumps and electric
+cars; "the federal poverty level" and "the consumer price index" are explained
+where they appear; a subpoena is "a legal order to hand over documents or
+testify".
+
+**Ledger:** 1,392 `rewrite`, 0 errors, row count unchanged at 1,392. The
+importer preserved the original insert ledger as `import-report.json` and wrote
+this run to `import-rerun-report.json` (stamp `2026-08-30T05:29:04.395Z`).
+Convergence dry run: all 1,392 `unchanged`. Tag count unchanged at 733 — the
+labels were already explicit `nay: null`.
+
+### Review fixes, 2026-08-30 (second pass)
+
+Three review findings on the plain-language pass, all real:
+
+- **LD 427 senate** — an antecedent bug: "The Maine Senate passed that version
+  19-16" followed a sentence about the SMALLER version, but the 19-16 vote was
+  on the broader committee version (as this file's own version-check section
+  says). Now "passed the broader version 19-16".
+- **LD 537** — "posts … online" narrowed the enacted definition of disclosure,
+  which covers "electronic or other means". Now "shares … whether online or
+  any other way".
+- **LD 1784** — "every police department" mis-scoped the statute's "law
+  enforcement agency", which includes sheriffs and the State Police. Now
+  "every Maine law enforcement agency, including town and city police, county
+  sheriffs, and the State Police".
+
+279 records rewritten in place (128 + 126 + 25), rows unchanged at 1,392,
+convergence all unchanged. Rewrite ledger stamp `2026-08-30T06:14:20.477Z`.
