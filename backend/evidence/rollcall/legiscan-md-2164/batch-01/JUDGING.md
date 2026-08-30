@@ -240,7 +240,9 @@ Sample, HB 39 — before and after:
 > lower level of crime. The bill removed it and its penalty.
 
 **Invariants asserted in the rewrite script, before anything was written:**
-every non-description field byte-identical; each description still cites its
+every non-description field byte-identical at rewrite time (one field then
+changed separately and deliberately: the HB 1424 Senate entry gained
+`acknowledge_later_rolls` when the superseded-stage gate fired — see below); each description still cites its
 own roll's tally (the same tally as before); every number in the original
 still present; no `", The "` comma splice; every sentence at most 45 words;
 the batch total shorter than the original; and no single description grown by
@@ -279,3 +281,37 @@ the nay repair. Ledger committed as `import-plain-language-report.json`;
 
 **Production still holds the old wording** — it has no Maryland roll-call
 records at all, so re-promotion is separate later work.
+
+### Review fixes (2026-08-30): four descriptions corrected, 614 records rewritten
+
+PR review found four real wording defects, each checked against the DLS
+fiscal note (SB 901 against the note's producer definition) before fixing:
+
+- **HB 1222 (157 records):** "state and local government offices" had
+  broadened the law's reach. The duty covers public schools, public
+  libraries, and **Executive Branch** units of state or local government
+  **operating at a defined "sensitive location"** — now stated, with the
+  note's list (schools, libraries, courthouses, government-run health care
+  sites).
+- **HB 197 (149 records):** "instead of punishing" was invented. The note's
+  definition is a relationship-focused student discipline model including
+  personal accountability; the description now uses those terms and makes no
+  claim about eliminating punishment.
+- **HB 1424 (155 records):** "It moved $5.0 million" stated a completed
+  transfer. The bill **let the Governor move up to** $5.0 million — now
+  worded as the authorization it is.
+- **SB 901 (153 records):** "companies that produce" read as manufacturers
+  only. The statutory producer generally includes brand owners,
+  manufacturers, and importers — now "the companies behind packaging and
+  paper products - including makers, brand owners, and importers".
+
+Judge: 8 updated / 10 unchanged. Import dry and real agreed: **614 rewrites /
+832 unchanged, 0 errors**; convergence 1,446 unchanged; records 1,446 / 158;
+tag count-and-hash again byte-identical (1,303, md5 `2a12def6…`). Ledger:
+`import-review-fixes-report.json` (note: a real re-run writes
+`import-rerun-report.json` when `import-report.json` exists — renamed after
+verifying its contents).
+
+The review also flagged the invariant sentence above as contradicting the
+diff (`acknowledge_later_rolls` was added in the same PR): correct — the
+sentence now states the exception explicitly.
