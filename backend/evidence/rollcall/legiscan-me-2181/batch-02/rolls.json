@@ -1,0 +1,429 @@
+{
+ "jurisdiction": "ME",
+ "session": "2181",
+ "batch": "batch-02",
+ "rolls": [
+  {
+   "measure_id": "LD 1080",
+   "roll": 1571130,
+   "chamber": "house",
+   "vote_date": "2025-05-14",
+   "question": "Acc Maj Otp As Amended Rep",
+   "question_class": "passage",
+   "yea": 77,
+   "nay": 63,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act Prohibiting Public Utilities from Requiring Deposits Based Solely on a Residential Customer's Income",
+   "label": {
+    "slug": "corporate_accountability",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 1080",
+   "roll": 1574011,
+   "chamber": "senate",
+   "vote_date": "2025-05-20",
+   "question": "Passage To Be Engrossed As Amended",
+   "question_class": "passage",
+   "yea": 19,
+   "nay": 13,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act Prohibiting Public Utilities from Requiring Deposits Based Solely on a Residential Customer's Income",
+   "label": {
+    "slug": "corporate_accountability",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": [
+    1574010
+   ]
+  },
+  {
+   "measure_id": "LD 1366",
+   "roll": 1583054,
+   "chamber": "house",
+   "vote_date": "2025-06-02",
+   "question": "Acc Maj Otp As Amended Rep",
+   "question_class": "passage",
+   "yea": 74,
+   "nay": 67,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Amend Certain Provisions of the Drug Laws Related to Cocaine Base",
+   "label": {
+    "slug": "civil_rights",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 1366",
+   "roll": 1584436,
+   "chamber": "senate",
+   "vote_date": "2025-06-03",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 16,
+   "nay": 15,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Amend Certain Provisions of the Drug Laws Related to Cocaine Base",
+   "label": {
+    "slug": "civil_rights",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 1587",
+   "roll": 1646248,
+   "chamber": "senate",
+   "vote_date": "2026-02-26",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 18,
+   "nay": 14,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Clarify the Bureau of Labor Standards' Investigatory and Enforcement Procedures",
+   "label": {
+    "slug": "corporate_accountability",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 1587",
+   "roll": 1654878,
+   "chamber": "house",
+   "vote_date": "2026-03-05",
+   "question": "Recede And Concur",
+   "question_class": "concurrence",
+   "yea": 72,
+   "nay": 68,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Clarify the Bureau of Labor Standards' Investigatory and Enforcement Procedures",
+   "label": {
+    "slug": "corporate_accountability",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 1784",
+   "roll": 1590866,
+   "chamber": "house",
+   "vote_date": "2025-06-13",
+   "question": "Acc Maj Otp As Amended Rep",
+   "question_class": "passage",
+   "yea": 73,
+   "nay": 69,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Require Police Departments to Publish and Make Accessible Their Policies and Procedures and Require Training of Officers",
+   "label": {
+    "slug": "public_safety_and_crime_control",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 1784",
+   "roll": 1591150,
+   "chamber": "senate",
+   "vote_date": "2025-06-16",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 17,
+   "nay": 16,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Require Police Departments to Publish and Make Accessible Their Policies and Procedures and Require Training of Officers",
+   "label": {
+    "slug": "public_safety_and_crime_control",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 2037",
+   "roll": 1631625,
+   "chamber": "senate",
+   "vote_date": "2026-02-12",
+   "question": "Accept Majority Ought To Pass Report",
+   "question_class": "passage",
+   "yea": 19,
+   "nay": 13,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Update the Regional Greenhouse Gas Initiative Allowances",
+   "label": {
+    "slug": "environment_and_public_health",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 2037",
+   "roll": 1647559,
+   "chamber": "house",
+   "vote_date": "2026-02-26",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 71,
+   "nay": 66,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Update the Regional Greenhouse Gas Initiative Allowances",
+   "label": {
+    "slug": "environment_and_public_health",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 2106",
+   "roll": 1679434,
+   "chamber": "senate",
+   "vote_date": "2026-04-08",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 20,
+   "nay": 14,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Limit Consent for Entry into Nonpublic Areas of and to Limit Access to Protected Records Maintained by Certain Public Entities",
+   "label": {
+    "slug": "immigration",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 2106",
+   "roll": 1679820,
+   "chamber": "house",
+   "vote_date": "2026-04-09",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 79,
+   "nay": 69,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Limit Consent for Entry into Nonpublic Areas of and to Limit Access to Protected Records Maintained by Certain Public Entities",
+   "label": {
+    "slug": "immigration",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 2114",
+   "roll": 1666449,
+   "chamber": "senate",
+   "vote_date": "2026-03-19",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 18,
+   "nay": 14,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act Regarding Public Preschool Programs Serving Children Who Are 3 Years of Age",
+   "label": {
+    "slug": "public_education_quality",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 2114",
+   "roll": 1668557,
+   "chamber": "house",
+   "vote_date": "2026-03-24",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 75,
+   "nay": 68,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act Regarding Public Preschool Programs Serving Children Who Are 3 Years of Age",
+   "label": {
+    "slug": "public_education_quality",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 427",
+   "roll": 1590110,
+   "chamber": "senate",
+   "vote_date": "2025-06-12",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 19,
+   "nay": 16,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Regulate Municipal Parking Space Minimums",
+   "label": {
+    "slug": "housing_affordability",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 427",
+   "roll": 1591136,
+   "chamber": "house",
+   "vote_date": "2025-06-16",
+   "question": "Recede And Concur",
+   "question_class": "concurrence",
+   "yea": 82,
+   "nay": 65,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Regulate Municipal Parking Space Minimums",
+   "label": {
+    "slug": "housing_affordability",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": [
+    1590996
+   ]
+  },
+  {
+   "measure_id": "LD 537",
+   "roll": 1587779,
+   "chamber": "house",
+   "vote_date": "2025-06-10",
+   "question": "Acc Maj Otp As Amended Rep",
+   "question_class": "passage",
+   "yea": 78,
+   "nay": 69,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Prohibit the Doxing of a Minor and to Authorize a Related Civil Action",
+   "label": {
+    "slug": "data_privacy",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 537",
+   "roll": 1587780,
+   "chamber": "senate",
+   "vote_date": "2025-06-10",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 18,
+   "nay": 14,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Prohibit the Doxing of a Minor and to Authorize a Related Civil Action",
+   "label": {
+    "slug": "data_privacy",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 585",
+   "roll": 1543527,
+   "chamber": "senate",
+   "vote_date": "2025-04-10",
+   "question": "Accept Majority Ought To Pass Report",
+   "question_class": "passage",
+   "yea": 19,
+   "nay": 15,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Use Certain Regional Transmission Organization Payments for Beneficial Electrification to Reduce Electricity Rates",
+   "label": {
+    "slug": "environment_and_public_health",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 585",
+   "roll": 1549183,
+   "chamber": "house",
+   "vote_date": "2025-04-15",
+   "question": "Acc Maj Ought To Pass Rep",
+   "question_class": "passage",
+   "yea": 77,
+   "nay": 72,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Use Certain Regional Transmission Organization Payments for Beneficial Electrification to Reduce Electricity Rates",
+   "label": {
+    "slug": "environment_and_public_health",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 93",
+   "roll": 1591745,
+   "chamber": "house",
+   "vote_date": "2025-06-17",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 78,
+   "nay": 70,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Reduce Cost and Increase Access to Disease Prevention by Expanding the Universal Childhood Immunization Program to Include Adults",
+   "label": {
+    "slug": "healthcare_affordability",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 93",
+   "roll": 1591746,
+   "chamber": "senate",
+   "vote_date": "2025-06-17",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 20,
+   "nay": 13,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Reduce Cost and Increase Access to Disease Prevention by Expanding the Universal Childhood Immunization Program to Include Adults",
+   "label": {
+    "slug": "healthcare_affordability",
+    "yea": "for",
+    "nay": null
+   },
+   "acknowledge_later_rolls": null
+  }
+ ]
+}
