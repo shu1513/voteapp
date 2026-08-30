@@ -15,9 +15,9 @@ Triaged every remaining measure before starting. After the 31 measures used in b
 | — **genuine candidates** | **32** |
 | divided in ONE chamber only | 113 |
 
-So the both-chamber tail is **two batches, not five**. This batch reads 11 of the 32; the rest,
-plus the 113 one-chamber measures (one roll each, ~68 records in the Assembly or ~11 in the Senate),
-are what remains.
+So the both-chamber tail is small. This batch judged 11 of the 32 and dropped 10 more under
+filter 5 after full reads, leaving 11; those, plus the 113 one-chamber measures (one roll each, ~68
+records in the Assembly or ~11 in the Senate), are what remains.
 
 ## What came through
 
@@ -77,6 +77,7 @@ are what remains.
 
 ## Left for later
 
-**21 both-chamber candidates** from the 32 triaged, plus **113 one-chamber measures**. The autumn
-re-download remains a separate, larger seam: 430 divided rolls were still awaiting the governor when
-this dataset was cut on 2026-08-23.
+**11 both-chamber candidates** — the 32 triaged, minus the 11 judged and the 10 dropped here —
+plus **113 one-chamber measures**. (An earlier draft said 21, forgetting to subtract the drops;
+caught on review.) The autumn re-download remains a separate, larger seam: 430 divided rolls were
+still awaiting the governor when this dataset was cut on 2026-08-23.

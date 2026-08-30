@@ -104,10 +104,12 @@ so every vote in this batch was cast on the enrolled text and no description nee
 California total: **3,039 roll-call records across 80 candidates**, covering 13 of the 27 research
 areas. All descriptions are plain English (rewritten 2026-08-29; batch-04 written that way).
 
-**What remains, measured 2026-08-30.** After the 42 measures used and the 21 dropped under filter 5,
-180 measures still hold a divided, enacted roll — but 27 are budget acts or trailer bills and 8 are
-single-jurisdiction, both excluded by standing precedent. The real tail is **21 both-chamber
-candidates** (about two batches) plus **113 one-chamber measures**, each worth a single roll.
-Separately, 430 divided rolls sat on measures still awaiting the governor when this dataset was cut
-(2026-08-23); LegiScan was still serving that same cut on 2026-08-29, so a genuinely refreshed
-dataset in the autumn is the trigger for that seam.
+**What remains, measured 2026-08-30 (post-batch-04).** The divided-and-enacted universe is 227
+measures. Batches 01-04 judged **42** and filter 5 has dropped **26** (16 before batch-04, 10 in
+it), leaving **159**. Of those, 46 are divided in both chambers — **11 actionable candidates**
+(about one more batch), plus 27 budget acts or trailer bills and 8 single-jurisdiction measures,
+both excluded by standing precedent — and **113 are divided in one chamber only** (one roll each).
+The numbers reconcile: 42 + 26 + 46 + 113 = 227. Separately, 430 divided rolls sat on measures
+still awaiting the governor when this dataset was cut (2026-08-23); LegiScan was still serving that
+same cut on 2026-08-29, so a genuinely refreshed dataset in the autumn is the trigger for that
+seam.

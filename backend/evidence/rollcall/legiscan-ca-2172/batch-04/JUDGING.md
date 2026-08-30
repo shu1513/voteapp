@@ -73,3 +73,24 @@ candidates; and the DRY RUN's stamp `2026-08-30T02:27:09.903Z` matches **zero** 
 
 California now holds **3,039 roll-call records across 80 candidates** (729 + 859 + 645 + 806). All
 runs clean first time — no legiscan.com timeout this round. Prod untouched.
+
+## Review response (2026-08-30) — SB 497 employer scope split; the tail arithmetic corrected
+
+**SB 497 (P2, true — and the digest trap again).** The word "employer" appears exactly once in the
+chaptered text: in the cooperation ban, which is tied to **gender-affirming care only** ("a provider
+of health care, health care service plan, contractor, or employer shall not cooperate…"). The
+sensitive-services release ban binds "a provider of health care, health care service plan, or
+contractor" — no employer — and the subpoena bans bind courts and attorneys. The first pass put
+employers in the lead sentence covering all protected care, because the DIGEST's "these entities"
+phrasing appears to carry the employer forward into the sensitive-services sentence; the statute
+does not. The descriptions now state the two scopes separately, including "that rule does not reach
+employers" on the sensitive-services side. 78 records rewritten (67 Assembly + 11 Senate), re-run
+3,039 `unchanged` / 0 errors, lint 0 warnings, row count unchanged. `import-rewrite-report.json`
+and the refreshed `import-rerun-report.json` are the ledgers.
+
+**Remaining-measure arithmetic (P3, true — and it hid a second error).** The README paired the
+pre-batch-04 pool (180) with post-batch-04 used/dropped counts, which cannot reconcile (227 − 42 −
+21 ≠ 180). Re-deriving the whole ledger also showed the "21 both-chamber candidates left" figure
+forgot to subtract this batch's 10 filter-5 drops: the true actionable tail is **11** both-chamber
+candidates. Both files now carry the reconciled arithmetic: 42 judged + 26 dropped + 46 both-chamber
+remaining (11 actionable + 27 budget/trailer + 8 local) + 113 one-chamber = 227.
