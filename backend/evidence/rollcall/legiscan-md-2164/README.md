@@ -159,12 +159,18 @@ needed for Maryland.
 
 ## Batch-01
 
-11 measures / 20 rolls / **1,599 records across 158 candidates**. See
+10 measures / 18 rolls / **1,446 records across 158 candidates** (originally 11
+measures / 20 rolls / 1,599 records; HB 767 was retracted on PR review — the
+`housing_affordability` label misstated the area's supply-and-costs scope, and
+no other area fits, so its 153 records were retired and both rolls set back to
+pending). See
 `batch-01/PLAN.md` and `batch-01/JUDGING.md`.
 
 ## What is left
 
-**300 divided-and-enacted rolls on 165 measures** remain for batch-02+ (worklist
+**302 divided-and-enacted rolls on 166 measures** remain unworked for batch-02+
+(HB 767's two rolls are back in the pool but screened: no defensible stance)
+(worklist
 regenerable from the dataset with the divided gate; the twin-pair rule above
 removes roughly a third of it). Also unworked: the 105 divided rolls on measures
 that did not become law, and the entire **2026 Regular Session (LegiScan 2240)**.
@@ -177,4 +183,4 @@ President-adjacent members and several sitting Delegates have no 2026 row yet).
 Re-running the import after extending the crosswalk adds those members
 **idempotently**.
 
-**PROD IS UNTOUCHED.** All 1,599 records are on local `voteapp` only.
+**PROD IS UNTOUCHED.** All 1,446 live records are on local `voteapp` only.

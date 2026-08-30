@@ -1,7 +1,8 @@
 # Maryland batch-01 — selection
 
-**11 measures / 20 rolls / 1,599 records across 158 candidates.** Deliberately
-the size of the Georgia and Ohio pilots.
+**10 measures / 18 rolls / 1,446 records across 158 candidates.** Deliberately
+the size of the Georgia and Ohio pilots. (Originally 11 measures / 20 rolls /
+1,599 records; HB 767 was retracted on review — see the dropped list.)
 
 ## The gate
 
@@ -37,7 +38,6 @@ version header:
 | SB 848 | 436 | `t` — unamended | S 1532080, H 1537949 |
 | HB 424 | 611 | `e` — Senate amended | H 1546805 (post-concurrence), S 1561850 |
 | SB 901 | 431 | `e` — House amended | S 1561754 (post-concurrence), H 1546815 |
-| HB 767 | 563 | `e` — Senate amended | H 1547072 (post-concurrence), S 1561714 |
 | HB 983 | 278 | `e` — Senate amended | H 1545740 (post-concurrence), S 1565951 |
 | HB 1020 | 121 | `e` — Senate amended | H 1546881 (post-concurrence) |
 | HB 1222 | 718 | `e` — Senate amended | H 1547029 (post-concurrence), S 1561703 |
@@ -70,7 +70,6 @@ claim onto every legislator.
 | HB 1424 Protect Our Federal Workers Act | 97 | social_programs_and_welfare | for |
 | HB 424 Prescription Drug Affordability Board | 611 | healthcare_affordability | for |
 | SB 901 packaging producer responsibility | 431 | environment_and_public_health | for |
-| HB 767 landlord-tenant eviction notice | 563 | housing_affordability | for |
 | SB 848 Public Health Abortion Grant Program | 436 | womens_reproductive_rights | for |
 | HB 1378 child sexual abuse damages caps | 104 | civil_rights | **against** |
 | HB 39 Carlton R. Smith Act (HIV) | 651 | civil_rights | for |
@@ -78,11 +77,22 @@ claim onto every legislator.
 | HB 1020 Fair Medical Debt Reporting Act | 121 | corporate_accountability | for |
 | HB 197 restorative practices schools | 240 | public_education_quality | for |
 
-Ten areas, and `civil_rights` deliberately carries **both directions** in one
+Nine areas, and `civil_rights` deliberately carries **both directions** in one
 batch (HB 39 for, HB 1378 against) — the Tennessee `gun_control` pattern.
 
 ## Dropped under filter 5, after a full read of the fiscal note
 
+- **HB 767 eviction notice requirements** (Ch. 563) — **RETRACTED on PR review
+  after import** (153 records retired, both rolls back to `pending`; ledger in
+  `hb767-retirements.json`). The bill adds notice requirements and tenant
+  remedies late in an eviction; it does not increase housing supply or reduce
+  renter costs, so `housing_affordability` ("Increase housing supply and reduce
+  cost burdens") misstated the area — and no other area carries a defensible
+  direction (`civil_rights` is anti-discrimination enforcement,
+  `social_programs_and_welfare` is safety-net programs), so under filter 5 the
+  measure is dropped, not relabeled. The honest `housing_affordability`
+  candidate left on the table is HB 390 / SB 327 (Affordable Housing PILOT
+  Expansion Act — genuinely supply-side, divided and enacted) for batch-02.
 - **HB 853 Maryland Second Look Act** (Ch. 96) — resentencing after 20 years for
   people convicted at 18-24. `public_safety_and_crime_control` reads
   "justice system performance" one way and "safety" the other; genuinely

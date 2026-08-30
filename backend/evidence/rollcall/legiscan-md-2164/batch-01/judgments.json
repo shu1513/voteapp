@@ -138,40 +138,6 @@
     },
     {
       "jurisdiction": "MD",
-      "chamber": "house",
-      "session": "2164",
-      "roll": 1547072,
-      "measure_id": "HB 767",
-      "vote_date": "2025-04-07",
-      "review_status": "approved",
-      "yea_description": "Voted to pass HB 767, which added notice requirements and tenant remedies late in an eviction. Once a court issues a warrant of restitution in a failure to pay rent, breach of lease, or tenant holding over case, the landlord must give the tenant written notice at least six days before the repossession date the sheriff has set. The bill gave tenants civil remedies against a landlord who breaks those rules. It applies only going forward, and does not reach any cause of action filed before its effective date. The Maryland House of Delegates passed it 97-41 and it was signed into law as Chapter 563 of 2025.",
-      "nay_description": "Voted against passing HB 767, which added notice requirements and tenant remedies late in an eviction. Once a court issues a warrant of restitution in a failure to pay rent, breach of lease, or tenant holding over case, the landlord must give the tenant written notice at least six days before the repossession date the sheriff has set. The bill gave tenants civil remedies against a landlord who breaks those rules. It applies only going forward, and does not reach any cause of action filed before its effective date. The Maryland House of Delegates passed it 97-41 over these votes and it was signed into law as Chapter 563 of 2025.",
-      "labels": [
-        {
-          "slug": "housing_affordability",
-          "yea": "for"
-        }
-      ]
-    },
-    {
-      "jurisdiction": "MD",
-      "chamber": "senate",
-      "session": "2164",
-      "roll": 1561714,
-      "measure_id": "HB 767",
-      "vote_date": "2025-04-04",
-      "review_status": "approved",
-      "yea_description": "Voted to pass HB 767, which added notice requirements and tenant remedies late in an eviction. Once a court issues a warrant of restitution in a failure to pay rent, breach of lease, or tenant holding over case, the landlord must give the tenant written notice at least six days before the repossession date the sheriff has set. The bill gave tenants civil remedies against a landlord who breaks those rules. It applies only going forward, and does not reach any cause of action filed before its effective date. The Maryland Senate passed it 32-12 and it was signed into law as Chapter 563 of 2025.",
-      "nay_description": "Voted against passing HB 767, which added notice requirements and tenant remedies late in an eviction. Once a court issues a warrant of restitution in a failure to pay rent, breach of lease, or tenant holding over case, the landlord must give the tenant written notice at least six days before the repossession date the sheriff has set. The bill gave tenants civil remedies against a landlord who breaks those rules. It applies only going forward, and does not reach any cause of action filed before its effective date. The Maryland Senate passed it 32-12 over these votes and it was signed into law as Chapter 563 of 2025.",
-      "labels": [
-        {
-          "slug": "housing_affordability",
-          "yea": "for"
-        }
-      ]
-    },
-    {
-      "jurisdiction": "MD",
       "chamber": "senate",
       "session": "2164",
       "roll": 1532080,
