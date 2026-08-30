@@ -1,0 +1,40 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1676408,
+      "measure_id": "HB 1247",
+      "vote_date": "2026-04-02",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's final version of HB 1247, the 'Georgia Bureaucratic Deference Elimination Act.' The Georgia House agreed 98-70 and the bill became law as Act 718. The law bars courts from deferring to a state agency's own reading of laws and rules. Its 'Red Tape Rollback Act of 2026' sets new steps for writing rules. It also makes each agency send the Office of Planning and Budget a review of its own rules. The law opens to the public any settlement of an unlawful employment practice claim against a member of the General Assembly. The claimant's name is removed, but the member is named. A separate part requires some privately funded groups that shelter or serve homeless people to take part in Georgia's Homeless Management Information System. That duty is narrow. It reaches only groups within 1,000 feet of a school, college, child care center, public park, or playground. It applies in one metro area, not statewide, and skips groups that served fewer than ten people in the past year. A group that does not take part gets a non-criminal citation.",
+      "nay_description": "Voted against accepting the Senate's final version of HB 1247, the 'Georgia Bureaucratic Deference Elimination Act.' The Georgia House agreed 98-70 anyway and the bill became law as Act 718. The law bars courts from deferring to a state agency's own reading of laws and rules. Its 'Red Tape Rollback Act of 2026' sets new steps for writing rules. It also makes each agency send the Office of Planning and Budget a review of its own rules. The law opens to the public any settlement of an unlawful employment practice claim against a member of the General Assembly. The claimant's name is removed, but the member is named. A separate part requires some privately funded groups that shelter or serve homeless people to take part in Georgia's Homeless Management Information System. That duty is narrow. It reaches only groups within 1,000 feet of a school, college, child care center, public park, or playground. It applies in one metro area, not statewide, and skips groups that served fewer than ten people in the past year. A group that does not take part gets a non-criminal citation.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "senate",
+      "session": "2167",
+      "roll": 1676409,
+      "measure_id": "HB 1247",
+      "vote_date": "2026-04-03",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the final version of HB 1247, the 'Georgia Bureaucratic Deference Elimination Act.' The Georgia Senate agreed 34-18 and the bill became law as Act 718. The law bars courts from deferring to a state agency's own reading of laws and rules. Its 'Red Tape Rollback Act of 2026' sets new steps for writing rules. It also makes each agency send the Office of Planning and Budget a review of its own rules. The law opens to the public any settlement of an unlawful employment practice claim against a member of the General Assembly. The claimant's name is removed, but the member is named. A separate part requires some privately funded groups that shelter or serve homeless people to take part in Georgia's Homeless Management Information System. That duty is narrow. It reaches only groups within 1,000 feet of a school, college, child care center, public park, or playground. It applies in one metro area, not statewide, and skips groups that served fewer than ten people in the past year. A group that does not take part gets a non-criminal citation.",
+      "nay_description": "Voted against accepting the final version of HB 1247, the 'Georgia Bureaucratic Deference Elimination Act.' The Georgia Senate agreed 34-18 anyway and the bill became law as Act 718. The law bars courts from deferring to a state agency's own reading of laws and rules. Its 'Red Tape Rollback Act of 2026' sets new steps for writing rules. It also makes each agency send the Office of Planning and Budget a review of its own rules. The law opens to the public any settlement of an unlawful employment practice claim against a member of the General Assembly. The claimant's name is removed, but the member is named. A separate part requires some privately funded groups that shelter or serve homeless people to take part in Georgia's Homeless Management Information System. That duty is narrow. It reaches only groups within 1,000 feet of a school, college, child care center, public park, or playground. It applies in one metro area, not statewide, and skips groups that served fewer than ten people in the past year. A group that does not take part gets a non-criminal citation.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

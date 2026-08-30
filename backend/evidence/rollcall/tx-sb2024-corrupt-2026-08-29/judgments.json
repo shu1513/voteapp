@@ -1,0 +1,22 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "TX",
+      "chamber": "senate",
+      "session": "2160",
+      "roll": 1556014,
+      "measure_id": "SB 2024",
+      "vote_date": "2025-04-23",
+      "review_status": "pending",
+      "yea_description": "Voted to pass the Senate version of S.B. 2024, which barred marketing, advertising, or selling an e-cigarette product whose container uses cartoon characters, celebrity names, or images resembling candy or other food, whose shape is disguised as a school supply, smart device, headphones, clothing, backpack, cosmetic, or toy, that was made in China, or that contains cannabinoids, alcohol, kratom, kava, or mushrooms. It passed the Texas Senate 20-11; the enacted law also reached products from other countries designated foreign adversaries and products containing tianeptine, and set the penalty at a Class A misdemeanor.",
+      "nay_description": "Voted against passing the Senate version of S.B. 2024, which barred marketing, advertising, or selling an e-cigarette product whose container uses cartoon characters, celebrity names, or images resembling candy or other food, whose shape is disguised as a school supply, smart device, headphones, clothing, backpack, cosmetic, or toy, that was made in China, or that contains cannabinoids, alcohol, kratom, kava, or mushrooms. It passed the Texas Senate 20-11; the enacted law also reached products from other countries designated foreign adversaries and products containing tianeptine, and set the penalty at a Class A misdemeanor.",
+      "labels": [
+        {
+          "yea": "for",
+          "slug": "environment_and_public_health",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

@@ -82,6 +82,11 @@ export type RollCallImportOutcome =
 // automation from reading such a run as clean.
 const FAILURE_OUTCOMES: ReadonlySet<RollCallImportOutcome> = new Set(["source_mismatch", "error"]);
 
+// A plan action, plus the maintenance-only marker for an out-of-scope
+// candidate whose plan came back `insert` (nothing is written; the report
+// records why).
+export type RollCallImportAction = CandidateRecordPlan["action"] | "out_of_scope_no_record";
+
 export type RollCallImportCandidateRow = {
   candidateId: string;
   candidateName: string;
@@ -90,7 +95,11 @@ export type RollCallImportCandidateRow = {
   state: string;
   vote: string;
   side: RollCallVoteSide;
-  action: CandidateRecordPlan["action"];
+  // Resolved to a known candidate who is no longer on a Nov-2026-or-later
+  // election: their EXISTING records are still maintained (rewrite on a
+  // corrected judgment, tag re-sync), but no new record is inserted.
+  maintenanceOnly: boolean;
+  action: RollCallImportAction;
   recordId: string | null;
   // The live rows an `ambiguous` candidate already has for this vote.
   ambiguousRecordIds: string[];
@@ -111,7 +120,7 @@ export type RollCallImportReportRow = RollCallEvidenceFile & {
   resolution: Partial<Record<FederalMemberResolutionOutcome, number>>;
   // Matched members who voted Present / Not Voting: no record.
   notVoting: number;
-  actions: Partial<Record<CandidateRecordPlan["action"], number>>;
+  actions: Partial<Record<RollCallImportAction, number>>;
   // Follower notification events created (one per eligible follow).
   notified: number;
   candidates: RollCallImportCandidateRow[];
@@ -181,14 +190,19 @@ function count<K extends string>(counts: Partial<Record<K, number>>, key: K): vo
 
 export type RollCallVoter = Pick<
   RollCallImportCandidateRow,
-  "candidateId" | "candidateName" | "memberId" | "memberName" | "state" | "vote" | "side"
+  "candidateId" | "candidateName" | "memberId" | "memberName" | "state" | "vote" | "side" | "maintenanceOnly"
 >;
 
 /**
- * The matched members who took a position, one per candidate. Counts every
- * resolution outcome into `resolutionCounts` for the report. A candidate
- * reached from two member rows of one roll call is a data defect (two ids
- * sharing an FEC id), so it fails the roll call rather than writing twice.
+ * The members who took a position and resolve to exactly one candidate, one
+ * per candidate. Counts every resolution outcome into `resolutionCounts` for
+ * the report. `matched` voters get full treatment; an `out_of_scope`
+ * resolution with a single unambiguous candidate becomes a MAINTENANCE
+ * voter — a corrected judgment must still rewrite the records that were fanned
+ * out while the member was in scope (a withdrawn candidate's profile keeps
+ * showing them), but no new record is inserted for them. A candidate reached
+ * from two member rows of one roll call is a data defect (two ids sharing an
+ * FEC id), so it fails the roll call rather than writing twice.
  */
 export function collectVoters(
   resolutions: readonly FederalMemberResolution[],
@@ -199,15 +213,23 @@ export function collectVoters(
   let notVoting = 0;
   for (const resolution of resolutions) {
     count(resolutionCounts, resolution.outcome);
-    if (resolution.outcome !== "matched" || !resolution.candidate) {
+    const candidate =
+      resolution.outcome === "matched"
+        ? resolution.candidate
+        : resolution.outcome === "out_of_scope" && resolution.candidates.length === 1
+          ? resolution.candidates[0]!
+          : null;
+    if (!candidate) {
       continue;
     }
     const side = memberVoteSide(resolution.member.vote);
     if (side === null) {
-      notVoting += 1;
+      if (resolution.outcome === "matched") {
+        notVoting += 1;
+      }
       continue;
     }
-    const { candidateId, name: candidateName } = resolution.candidate;
+    const { candidateId, name: candidateName } = candidate;
     if (seen.has(candidateId)) {
       throw new Error(`candidate ${candidateId} matches more than one member of this roll call`);
     }
@@ -220,25 +242,27 @@ export function collectVoters(
       state: resolution.member.state,
       vote: resolution.member.vote,
       side,
+      maintenanceOnly: resolution.outcome === "out_of_scope",
     });
   }
   return { voters, notVoting };
 }
 
 /**
- * Which report file a run writes. Once the dir holds import-report.json,
- * import-dry-run-report.json is the reviewed pre-import plan (committed as
- * evidence), so a later dry run — a post-import check — lands in a rerun
- * file instead of eating the plan. Before the import, repeated dry runs
- * overwrite the plan file; that is the reviewing loop.
+ * Which report file a run writes. Once the dir holds import-report.json —
+ * the committed ledger of the FIRST import — neither kind of later run may
+ * eat it: a dry rerun (a post-import check) lands in
+ * import-dry-run-rerun-report.json, and a real rerun (a maintenance
+ * re-import propagating a corrected judgment) lands in
+ * import-rerun-report.json. Before the import, repeated dry runs overwrite
+ * the plan file; that is the reviewing loop.
  */
 export function importReportFileName(evidenceDir: string, dryRun: boolean): string {
+  const hasLedger = existsSync(resolve(evidenceDir, "import-report.json"));
   if (!dryRun) {
-    return "import-report.json";
+    return hasLedger ? "import-rerun-report.json" : "import-report.json";
   }
-  return existsSync(resolve(evidenceDir, "import-report.json"))
-    ? "import-dry-run-rerun-report.json"
-    : "import-dry-run-report.json";
+  return hasLedger ? "import-dry-run-rerun-report.json" : "import-dry-run-report.json";
 }
 
 function readValueFlag(argv: readonly string[], flagName: string): string | null {
@@ -393,15 +417,19 @@ async function main(): Promise<void> {
             measure,
             skipExisting,
           });
+          // A maintenance-only voter has no record to maintain when the
+          // plan is `insert`: nothing is written, and the report says why.
+          const action: RollCallImportAction =
+            voter.maintenanceOnly && decision.plan.action === "insert" ? "out_of_scope_no_record" : decision.plan.action;
           const reportRow: RollCallImportCandidateRow = {
             ...voter,
-            action: decision.plan.action,
+            action,
             recordId: "recordId" in decision.plan ? decision.plan.recordId : null,
             ambiguousRecordIds: decision.plan.action === "ambiguous" ? decision.plan.recordIds : [],
             notified: false,
             relatedRecordIds: decision.relatedRecordIds,
           };
-          count(row.actions, decision.plan.action);
+          count(row.actions, action);
           row.candidates.push(reportRow);
           return { voter, template, identityKey, plan: decision.plan, reportRow };
         });
@@ -419,7 +447,7 @@ async function main(): Promise<void> {
           for (const item of work) {
             const content = { ...item.template, candidateId: item.voter.candidateId, identityKey: item.identityKey, originRunId };
             let recordId: string | null = null;
-            if (item.plan.action === "insert") {
+            if (item.plan.action === "insert" && !item.voter.maintenanceOnly) {
               recordId = await insertRollCallRecord(client, content);
               item.reportRow.recordId = recordId;
               if (notify) {
@@ -455,11 +483,11 @@ async function main(): Promise<void> {
   }
 
   const outcomes: Partial<Record<RollCallImportOutcome, number>> = {};
-  const actions: Partial<Record<CandidateRecordPlan["action"], number>> = {};
+  const actions: Partial<Record<RollCallImportAction, number>> = {};
   for (const row of rows) {
     count(outcomes, row.outcome);
     for (const [action, n] of Object.entries(row.actions)) {
-      actions[action as CandidateRecordPlan["action"]] = (actions[action as CandidateRecordPlan["action"]] ?? 0) + n;
+      actions[action as RollCallImportAction] = (actions[action as RollCallImportAction] ?? 0) + n;
     }
   }
   const report = {
