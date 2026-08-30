@@ -29,6 +29,7 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AddressNudge } from "../../components/AddressNudge";
+import { AutoPickControl } from "../../components/AutoPickControls";
 import {
   CandidatePickButton,
   LogInToPlanLine,
@@ -294,6 +295,16 @@ export default function ElectionScreen() {
               <Text className="mt-1 text-sm text-red-900">{measure.what_no_means}</Text>
             </View>
           </View>
+          {/* Auto-pick sits here, not on the footer card: right after
+              reading what Yes and No mean is where "answer from my issues"
+              helps. Compact so the Yes/No pair stays the loud control; same
+              gate as the card, and keyed to the election because this
+              mounted screen can render another race after a push. */}
+          {data.race_type === "ballot_measure" && showChoiceControls ? (
+            <View className="mt-3">
+              <AutoPickControl key={data.id} electionId={data.id} seatsToFill={null} compact />
+            </View>
+          ) : null}
           {measure.result ? (
             <Text className="mt-3 text-sm font-medium text-ink">
               Result:{" "}
@@ -347,6 +358,19 @@ export default function ElectionScreen() {
             <Text className="mt-1 text-xs text-ink-soft">
               This election fills {data.seats_to_fill} seats — pick up to {data.seats_to_fill} candidates.
             </Text>
+          ) : null}
+          {/* Race-level "Pick by my issues": one engine run for this
+              election (mode replace — a re-run refreshes the pick), with
+              its "Why this pick" panel below the button. key: this mounted
+              screen can render another race after a push, and without a
+              remount the previous election's panel (or an in-flight run's
+              result) would surface under the next one. length: in the
+              stranded-only state (section open, every candidacy withdrawn)
+              the engine has nobody to pick. */}
+          {data.candidates.length > 0 && showChoiceControls && data.race_type !== "ballot_measure" ? (
+            <View className="mt-2">
+              <AutoPickControl key={data.id} electionId={data.id} seatsToFill={data.seats_to_fill ?? null} />
+            </View>
           ) : null}
           {/* Stranded picks have no candidate card below (withdrawn
               candidacies are filtered out of the payload), yet still count
