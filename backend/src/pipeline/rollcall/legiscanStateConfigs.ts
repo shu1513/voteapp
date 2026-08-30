@@ -828,6 +828,82 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       /^senate: emergency clause$/,
     ],
   },
+
+  // Maryland General Assembly, 2025 Regular Session (Jan 8 - Apr 7 2025;
+  // Maryland sits in ANNUAL sessions, so this dataset is one year only —
+  // the 2026 Regular Session is its own LegiScan session, 2240).
+  // Vocabulary measured from the full dataset survey 2026-08-29: 2,617
+  // bills, 2,494 roll calls, 216 people (141 Delegates + 47 Senators plus
+  // mid-term turnover).
+  //
+  // What the survey established:
+  // - Maryland's vocabulary is the SMALLEST of any state surveyed so far:
+  //   2,494 rolls collapse to 15 desc families, and 2,295 of them are the
+  //   single literal string `Third Reading Passed`. Passage of a version
+  //   the other chamber amended is worded `Third Reading Passed with
+  //   Amendments` in the House and `Third ReadingS Passed with Amendments`
+  //   (plural) in the Senate — the same question, two spellings, so the
+  //   pattern makes the `s` optional. All 14 of those are ordinary
+  //   single-bill second-chamber passages, not en-bloc calendars.
+  // - The session has exactly ONE conference-report roll (SB 338, Senate,
+  //   30-17), worded `Conference Committee Report 903525/1 Adopted` — the
+  //   number is the amendment's filing id, so the pattern tolerates digits
+  //   and a slash rather than naming it.
+  // - Maryland does NOT roll-call concurrence: no desc in the session
+  //   mentions concurring. The originating chamber's agreement to the
+  //   other chamber's amendments is taken without a recorded vote, so for
+  //   an amended bill the only recorded votes are each chamber's own third
+  //   reading — which means the two chambers routinely voted DIFFERENT
+  //   TEXT. Every judgment on a `with Amendments` measure has to name the
+  //   version each roll actually was.
+  // - The dataset carries NO committee votes at all (as in Georgia): every
+  //   tally is whole-chamber (House 137-141, Senate 45-47), so nothing
+  //   reaches the small-tally or committee buckets and no roll is left
+  //   surfaced. Every desc in the session matches a kept or an excluded
+  //   pattern — 2,310 kept, 184 excluded, 0 unmatched (measured).
+  // - Excluded families are all floor-sized and all procedural: floor
+  //   amendments (152 rejected, 2 adopted), committee amendments adopted
+  //   on the floor (12), and motions (previous question, suspend the rules
+  //   for late introduction / two readings the same day / to refer,
+  //   special order). Amendment descs name the sponsoring member in
+  //   parentheses, so they are anchored at the start of the string.
+  // - Feed health is the best of any phase-4 state, tied with Georgia: 0
+  //   repeated roll_call_ids (the Texas 9.4% collapse is a verified no-op
+  //   here), 0 identity-duplicate groups, 0 summary-only rolls (every roll
+  //   carries a member list), 0 tally mismatches, 0 file errors.
+  // - Only bill types B (2,605) and JR (12) appear; Maryland proposes
+  //   constitutional amendments as ordinary BILLS, so the Georgia
+  //   resolution-typed-amendment gap does not recur.
+  // - 414 of the kept rolls fall on sine die (2025-04-07); per the Illinois
+  //   date-skew finding, audit a selected roll's date against the official
+  //   Maryland General Assembly bill page before importing it.
+  MD: {
+    jurisdiction: "MD",
+    sessionId: 2164,
+    chamberSizes: { house: 141, senate: 47 },
+    keptQuestions: [
+      // `Third Reading Passed`, `Third Reading Passed with Amendments`,
+      // `Third Readings Passed with Amendments`. Anchored at both ends:
+      // the excluded amendment and motion families never share this
+      // wording, and nothing else in the session's vocabulary does either.
+      { pattern: /^third readings? passed(?: with amendments)?$/, questionClass: "passage" },
+      // `Conference Committee Report 903525/1 Adopted` (SB 338).
+      { pattern: /^conference committee report [\d/]+ adopted$/, questionClass: "conference_report" },
+    ],
+    excludedQuestions: [
+      // `Floor Amendment 273422/1 (Delegate Hornberger) Rejected`, and the
+      // handful worded without a filing number.
+      /^floor amendment\b/,
+      // `Committee Amendment (Senator Beidle) Adopted` — the floor vote
+      // adopting a committee's amendment, not the question on the bill.
+      /^committee amendment\b/,
+      // `Motion Vote Previous Question (...) Adopted`, `Motion Rules
+      // Suspend for Late Introduction (...) Adopted`, `Motion Special
+      // Order until Later This Session (...) Rejected`, `Motion Rules
+      // Suspend to Refer (...) Rejected`.
+      /^motion /,
+    ],
+  },
 };
 
 export const LEGISCAN_STATE_JURISDICTIONS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);

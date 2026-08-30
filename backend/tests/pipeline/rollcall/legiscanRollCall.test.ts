@@ -292,9 +292,52 @@ describe("legiscanRollCallPageUrl", () => {
   });
 });
 
+
+describe("Maryland's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS.MD!;
+  const md = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+
+  it("keeps the three third-reading spellings and the session's one conference report", () => {
+    // 2,295 of the session's 2,494 rolls are this exact string.
+    expect(md("Third Reading Passed", 141)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(md("Third Reading Passed", 47, "senate")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    // The same question, spelled singular in the House and plural in the Senate.
+    expect(md("Third Reading Passed with Amendments", 141)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(md("Third Readings Passed with Amendments", 47, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(md("Conference Committee Report 903525/1 Adopted", 47, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "conference_report",
+    });
+  });
+
+  it("excludes the floor-sized procedural families by rule, never surfacing them", () => {
+    for (const desc of [
+      "Floor Amendment 273422/1 (Delegate Hornberger) Rejected",
+      "Floor Amendment (Senator Carozza) Rejected",
+      "Committee Amendment (Senator Beidle) Adopted",
+      "Committee Amendment 123456/1 Adopted",
+      "Motion Vote Previous Question (Delegate Wilkins) Adopted",
+      "Motion Rules Suspend for Late Introduction (Delegate Barnes) Adopted",
+      "Motion Special Order until Later This Session (Delegate Kipke) Rejected",
+      "Motion Rules Suspend to Refer (Senator Ferguson) Rejected",
+    ]) {
+      expect(classifyLegiscanRollCall({ desc, total: 141, chamber: "house", billType: "B", config })).toMatchObject({
+        isFloorVote: false,
+      });
+    }
+  });
+});
+
 describe("getLegiscanStateConfig", () => {
   it("serves only surveyed states; an unsurveyed state is refused by name", () => {
-    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual(["GA", "CT", "IL", "TN", "TX", "FL", "CA", "PA", "ME", "MO"]);
+    expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual(["GA", "CT", "IL", "TN", "TX", "FL", "CA", "PA", "ME", "MO", "MD"]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
     expect(getLegiscanStateConfig("GA").sessionId).toBe(2167);
@@ -305,6 +348,7 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("ME").sessionId).toBe(2181);
     expect(getLegiscanStateConfig("CT").sessionId).toBe(2174);
     expect(getLegiscanStateConfig("MO").sessionId).toBe(2169);
+    expect(getLegiscanStateConfig("MD").sessionId).toBe(2164);
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("NY")).toThrow("no LegiScan state config for NY");
   });
