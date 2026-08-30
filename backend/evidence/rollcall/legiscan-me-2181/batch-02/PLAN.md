@@ -1,7 +1,8 @@
 # Maine batch-02 — selection
 
-**22 rolls / 11 measures / 1,392 records**, drawn from the 387 divided rolls
-on measures that became law that batch-01 left. Every measure appears once per
+**22 rolls / 11 measures / 1,392 records**, drawn from the 409 divided rolls
+on measures that became law that batch-01 left (433 total, minus batch-01's
+24); 387 remain after this batch. Every measure appears once per
 chamber.
 
 Same five filters as batch-01 (divided → became law → nameable subject → one
@@ -26,10 +27,10 @@ floor vote on the same measure in the same chamber is unjudged.
 | LD 1587 | Labor Standards investigation and penalty authority | corporate_accountability / for | H 1654878, S 1646248 |
 | LD 585 | grid capacity payments directed to electrification | environment_and_public_health / for | S 1543527, H 1549183 |
 
-Nine areas. Four are new to Maine: `healthcare_affordability`,
-`immigration`, `civil_rights`, `public_safety_and_crime_control`,
-`public_education_quality` — five, counting `corporate_accountability`, which
-batch-01 reached only through LD 598.
+Nine areas, three of them new to Maine: `civil_rights`,
+`public_education_quality`, and `public_safety_and_crime_control` (batch-01
+already reached `healthcare_affordability` via LD 1937, `immigration` via
+LD 1971, and `corporate_accountability` via LD 598).
 
 **Every label is `for`.** That is the session, not a filter artifact: Maine had
 a Democratic trifecta, and the divided-and-enacted set is overwhelmingly the
