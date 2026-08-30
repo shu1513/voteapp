@@ -2,7 +2,7 @@
   "source": "legiscan",
   "jurisdiction": "MO",
   "session_id": 2169,
-  "note": "people_id -> VoteApp candidate id for the MO 2025 Regular Session (LegiScan 2169). 89 proposer matches (all accepted), 5 hand-added, 103 explicit nulls. Seat comes from `district`, never `role`.",
+  "note": "people_id -> VoteApp candidate id for the MO 2025 Regular Session (LegiScan 2169). 89 proposer matches (all accepted), 5 original hand-adds, 23 certified-roster incumbent matches, 80 explicit nulls: 117 mapped total. Seat comes from `district`, never `role`.",
   "entries": [
     {
       "people_id": 7655,

@@ -70,12 +70,13 @@ leaves the desc unmatched so the roll **surfaces** for review instead of being c
 The Senate's own `Senate: Third Reading` for HB 595 the same day (23-10) is the Truly Agreed To And
 Finally Passed vote, so nothing of value is lost by surfacing rather than keeping it.
 
-## 4. Roster coverage, not votes, is Missouri's binding constraint on the Senate side
+## 4. Roster coverage was Missouri's binding constraint on the Senate side
 
-The Nov-2026 pool holds 111 of 163 House districts (204 candidates) but only **5 of 34 Senate
-districts** (11 candidates). Fan-out is therefore house median 81 / senate median 3. Missouri's
-Senate is staggered (~17 seats up in 2026), so most of that gap is a roster gap, not the staggering
-— a Missouri **Senate roster campaign** would be worth more than any further roll-call batch.
+At the original import, the Nov-2026 pool held 111 of 163 House districts (204 candidates) and only
+5 Senate districts (11 candidates), producing house median 81 / senate median 3 fan-out. That
+finding prompted the 2026-08-30 certified-roster expansion. The local database now has candidates
+for all 163 House contests and all 10 November 2026 Senate election rows present there; the batch
+now spans 719 records across 115 candidates.
 
 ## 5. The identity collapse can merge two DISTINCT official actions
 

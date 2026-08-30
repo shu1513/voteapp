@@ -58,8 +58,10 @@ identity duplicates are counted and never stored. 499 + 14 + 44 = 557, the whole
 
 ## Crosswalk
 
-`crosswalk.json` — 197 entries: **89 proposer matches (all accepted) + 5 hand-added + 103 explicit
-nulls = 94 mapped.** Seat comes from `district`, never `role`.
+`crosswalk.json` — 197 entries. The original batch had **89 proposer matches (all accepted) + 5
+hand-added + 103 explicit nulls = 94 mapped**. The 2026-08-30 certified-roster expansion added 23
+incumbent matches, bringing the current file to **117 mapped / 80 explicit nulls**. Seat comes from
+`district`, never `role`.
 
 Two proposals carry `seatAgrees:false` and both are real: **Betsy Fogle (HD-135)** and
 **Melanie Stinnett (HD-133)** are sitting representatives running for **SD-030**, and HD-133 and
@@ -76,17 +78,18 @@ The five hand-adds are the classes the proposer cannot reach:
 | 20403 Brian Williams | sitting senator (SD-014) running for a St. Louis County office |
 | 20703 Doug Clemens | sitting representative (HD-072) running for a St. Louis County office |
 
-Validation over all 499 stored rolls: **matched 26,979 / unmatched_reviewed 25,904 / `no_crosswalk`
-0 / `out_of_scope` 418 / 0 file errors / 0 zero-match rolls.**
+Original validation over all 499 stored rolls: **matched 26,979 / unmatched_reviewed 25,904 /
+`no_crosswalk` 0 / `out_of_scope` 418 / 0 file errors / 0 zero-match rolls.**
 
 ⚠ The 418 `out_of_scope` resolutions are **Brian Williams and Doug Clemens only**: their sole
 candidacies are the 2026-08-04 county *primary* and no November row exists yet, so the pipeline
 default `--scope-from 2026-11-01` skips them. Their identity is reviewed and correct; when a
 November candidacy is rostered, a re-import adds their records idempotently.
 
-**Fan-out: house median 81 matched candidates per roll (max 89), senate median 3.** Our Missouri
-roster covers 111 of 163 House districts but only 5 of 34 Senate districts, so House rolls carry
-essentially all of this state's value (TX 114/13, GA 149/42, IL 92/33, TN 13/15).
+**Original fan-out: house median 81 matched candidates per roll (max 89), senate median 3.** The
+original import wrote 583 records across 92 candidates. The certified-roster expansion completed
+all 163 House contests and all 10 November 2026 Senate election rows present in the local database;
+the rerun added 136 records, bringing this batch to **719 records across 115 candidates**.
 
 ## Selection pool
 

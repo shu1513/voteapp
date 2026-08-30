@@ -1,6 +1,7 @@
 # Missouri batch-01 — selection
 
-**10 roll calls / 7 measures (7 House + 3 Senate), 583 records across 92 candidates.**
+**10 roll calls / 7 measures (7 House + 3 Senate). Original import: 583 records across 92
+candidates. After the certified-roster expansion: 719 records across 115 candidates.**
 
 ## How the pool narrowed
 
@@ -85,5 +86,6 @@ under one identical desc, so every roll here was matched to its official roll-ca
 ## Left for later
 
 73 divided-and-enacted rolls on 28 measures, plus the 13 senate-only appropriations measures. The
-ledger with every divided-and-enacted roll is `../survey/divided-enacted-worklist.tsv`. Missouri's
-higher-value next move is a **Senate roster campaign** — see `../CODE-FINDINGS.md` §4.
+ledger with every divided-and-enacted roll is `../survey/divided-enacted-worklist.tsv`. The
+certified-roster expansion is complete for every November 2026 House and Senate election row in the
+local database, so later batches can use the expanded crosswalk directly.
