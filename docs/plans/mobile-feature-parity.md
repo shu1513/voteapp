@@ -1,9 +1,10 @@
 # Mobile feature parity — stance summary, picks, auto-pick, auth
 
-Status: planned 2026-08-28, revised same day after review. Phase 1
-implemented in PR #925 (this plan's own PR); Phase 2 implemented in
-PR #928 (2026-08-28); Phase 3 implemented (2026-08-28, this branch);
-phases 4–6 not started.
+Status: planned 2026-08-28, revised same day after review; last updated
+2026-08-30 (Phase 6 redefined email-only). All phases
+implemented: 1 in PR #925 (this plan's own PR), 2 in #928, 3 in #932,
+4 in #939, 5 in #953, 6 (redefined email-only, see its section) in this
+branch's PR. The campaign is complete; this doc is now the record.
 
 ## Context
 
@@ -19,10 +20,14 @@ app never received. Audit (2026-08-28) compared `mobile/src` against
 - Finance summary cards, records grouped by research area, follows,
   ballot filters / sort chips, push notifications, terms gates.
 
-**Missing on mobile:** election choices ("my pick"), the My Draft / My Picks
-page, pick-card sharing, auto-pick, issue direction + hard-veto editing,
-Google Sign-In, guest ballot draft, chatbot, ballot facsimile, membership.
-(The candidate stance summary was on this list; Phase 1 shipped it.)
+**Missing on mobile at audit time:** election choices ("my pick"), the
+My Draft / My Picks page, pick-card sharing, auto-pick, issue direction +
+hard-veto editing, Google Sign-In, guest ballot draft, chatbot, ballot
+facsimile, membership. (The candidate stance summary was on this list;
+Phase 1 shipped it. Phases 2–6 shipped choices, My Draft + sharing,
+issue controls, auto-pick, and the has_password split; Google Sign-In was
+decided against — mobile auth is email-only, see Phase 6. Guest draft,
+chatbot, facsimile, and the membership row stay out of scope below.)
 
 **What is and is not shared today.** `@voteapp/api-client` exports the core
 choice hooks and every choice/auto-pick type: `useElectionChoices`,
@@ -236,34 +241,31 @@ mobile-first users would run auto-pick on defaults they never chose.
    Never rausch; never a `bg-auto` token name (collides with Tailwind's
    `background-size: auto`).
 
-## Phase 6 — auth epic (multiple PRs, independent, last)
+## Phase 6 — auth (one PR after all; redefined 2026-08-30)
 
-Not a simple "add Google" PR. Known constraints, to verify against current
-Expo/Google/Apple docs before building (per `mobile/AGENTS.md`, read the
-versioned docs first):
+**Decision (Shu, 2026-08-30): mobile auth is email-only — no Google, no
+Sign in with Apple.** That dissolves the epic this section used to plan:
+no development build (the dev-build requirement came only from the
+provider-native Google library; the app stays Expo Go-compatible), no
+guideline 4.8 obligation (it applies only when third-party login is
+offered), no OAuth client IDs or store capabilities, no backend `aud`
+questions. Email login/register/reset already exist on mobile. What
+remains — and shipped as this phase:
 
-1. **Development build is likely required.** Expo's current guidance is that
-   Google OAuth needs a development build with the provider-native library
-   (`@react-native-google-signin`); the old `expo-auth-session` proxy flow is
-   not a supported Expo Go path anymore. This project has so far stayed
-   Expo Go-compatible on purpose (see the gesture-handler pin) — **moving to
-   dev builds is a workflow decision for Shu, not a line item**. Get that
-   decision first; it gates the whole phase.
-2. **Google + Sign in with Apple together.** App Review guideline 4.8: an app
-   offering third-party login must offer a privacy-equivalent option, which
-   in practice means Sign in with Apple ships in the same release.
-3. **Backend may need no change.** `POST /api/auth/google` verifies the ID
-   token. Native Google flows can request the ID token with the *server's
-   web client ID* as audience, in which case the existing check passes.
-   Observe the real token's `aud` before touching any audience allowlist.
-4. **`me.has_password` handling ships first** (small, useful before any
-   OAuth): mobile's profile and security screens unconditionally require a
-   password today (`settings/profile.tsx:96`, `settings/security.tsx:26`).
-   Mirror the web split (`SettingsPage.tsx:455-463`): no password → "Add
-   password" section; change-email and delete-account hidden until a
-   password exists.
-5. Store configuration (OAuth client IDs for iOS/Android, Apple capability,
-   provider testing) is its own chunk of work; plan it as such.
+1. **`me.has_password` split**, mirroring the web settings page
+   (`SettingsPage.tsx:455-463`): a web-Google account has no password, so
+   the password-confirmed forms (change password, change email, delete
+   account) hide behind an "Add a password" section that routes to the
+   existing forgot-password flow (the reset email doubles as the
+   set-a-password flow).
+2. **Login-screen hint** for web-Google users: a static line pointing at
+   the reset flow. Static on purpose — the backend deliberately returns
+   the same "Invalid email or password" for password-less accounts
+   (anti-enumeration), so the client cannot react to the error.
+
+If third-party login is ever revisited, restore this section's old
+constraints from git history (dev build, guideline 4.8, `aud` audit,
+store config).
 
 ## Cross-cutting rules
 
@@ -281,11 +283,11 @@ versioned docs first):
   which excludes react/react-dom on purpose); then a manual Expo Go walk of
   the touched flow (pick → undo → measure Yes/No → gate states → progress →
   share URL opens the web card).
-- Phases 1 and 6.4 are independent of everything else; 2 → 3 → 5 is a strict
-  chain; 4 must land before 5.
+- Phase order (historical — all landed): 1 was independent; 2 → 3 → 5 was
+  a strict chain; 4 landed before 5; 6 (email-only) came last.
 - **Terms version on distributed builds.** Mobile bundles `TERMS_VERSION`
   at compile time. No distributed build exists today, so bumps have been
-  free — but this plan's later phases (auth epic, store setup) end that.
+  free — store distribution, whenever it happens, ends that.
   Any build that actually ships must carry the then-current version (≥1.3
   after #922), and every future bundle bump must use the
   `GRACE_TERMS_VERSIONS` dual-accept window (`backend/src/constants/legal.ts`)

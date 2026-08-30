@@ -129,7 +129,11 @@ export default function ProfileScreen() {
         {(me) => (
           <ScrollView keyboardShouldPersistTaps="handled" contentContainerClassName="gap-4 px-4 py-8">
             <NameSection me={me} />
-            <EmailSection me={me} />
+            {/* Change email is password-confirmed, so a Google-only account
+                (no password yet) can't use it — the security screen's
+                AddPasswordSection names the way in. Same gate as the web
+                settings page. */}
+            {me.has_password ? <EmailSection me={me} /> : null}
           </ScrollView>
         )}
       </AccountGate>
