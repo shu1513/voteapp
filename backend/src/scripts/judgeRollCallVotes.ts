@@ -9,7 +9,7 @@ import {
   type LegislativeVoteJudgment,
   type LegislativeVoteJudgmentOutcome,
 } from "../pipeline/rollcall/legislativeVoteStore.js";
-import { LEGISCAN_STATE_JURISDICTIONS } from "../pipeline/rollcall/legiscanStateConfigs.js";
+import { LEGISCAN_RECORD_JURISDICTIONS } from "../pipeline/rollcall/legiscanStateConfigs.js";
 import { LEGISLATIVE_VOTE_CHAMBERS, type LegislativeVoteChamber } from "../pipeline/rollcall/legislativeVotes.js";
 import { parseRollCallLabels } from "../pipeline/rollcall/rollCallFanOut.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
@@ -72,7 +72,7 @@ const FEDERAL_JURISDICTION = "US";
 // fetcher are accepted, so a typo cannot write a judgment nothing imports:
 // the Ohio pilot's own feed, plus every state registered in the LegiScan
 // config registry (whose session id is the entry's session key).
-const STATE_JURISDICTIONS = new Set(["OH", ...LEGISCAN_STATE_JURISDICTIONS]);
+const STATE_JURISDICTIONS = new Set(["OH", ...LEGISCAN_RECORD_JURISDICTIONS]);
 const REVIEW_STATUSES = ["pending", "approved"] as const;
 
 function fail(index: number, message: string): never {

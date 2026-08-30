@@ -46,6 +46,42 @@ export type LegiscanStateConfig = {
 // accepts that (allowStatusCodes [403] in
 // verifyUniqueCandidateRecordSourceUrls), and a human viewer passes the
 // challenge in a browser, so the roll-call page stays a valid source_url.
+// Missouri's floor-question vocabulary, shared by its regular session and the
+// 2025 2nd Extraordinary Session below. Both sessions were surveyed
+// separately and print the SAME families, so they share one definition
+// rather than two copies that could drift apart.
+const MISSOURI_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // House third reading, under any of its calendars: the regular
+  // `HBs FOR THIRD READING` / `SBs FOR THIRD READING`, the informal
+  // calendar (`HBs 3rd READ - INFORMAL`), the consent calendar
+  // (`HBs 3rd READING - CONSENT`), the constitutional-amendment
+  // calendar (`HJRs FOR THIRD READING`) and the appropriations
+  // calendar (`HABs FOR THIRD READING`). The trailing space is
+  // required so the heading is never matched without its bill chain.
+  {
+    pattern: /^house: (?:hbs|sbs|hjrs|habs) (?:for third reading|3rd read - informal|3rd reading - consent) /,
+    questionClass: "passage",
+  },
+  // The House taking up its own bill as returned with Senate
+  // amendments — Missouri's concurrence question.
+  { pattern: /^house: (?:hbs|hjrs) with senate amendments /, questionClass: "concurrence" },
+  // `House: BILLS IN CONFERENCE CCS HCS SS SCS SBS 81 & 174, E.C`.
+  { pattern: /^house: bills in conference /, questionClass: "conference_report" },
+  // The Senate's two substantive spellings.
+  { pattern: /^senate: third reading$/, questionClass: "passage" },
+  { pattern: /^senate: conference committee report adoption$/, questionClass: "conference_report" },
+];
+const MISSOURI_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
+  // Perfection: the House's amend-and-engross stage, not passage.
+  /^house: (?:hbs|hjrs) (?:for perfection|perfection - informal) /,
+  // The motion for the previous question (debate cutoff).
+  /^house: general pq$/,
+  // Floor adoption of a Senate substitute, and the separate vote on a
+  // bill's emergency clause.
+  /^senate: adopt substitute$/,
+  /^senate: emergency clause$/,
+];
+
 export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {
   // Georgia General Assembly, 2025-2026 Regular Session (both years, sine
   // die 2026-04-03). Vocabulary measured from the full dataset survey
@@ -796,37 +832,47 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     jurisdiction: "MO",
     sessionId: 2169,
     chamberSizes: { house: 163, senate: 34 },
-    keptQuestions: [
-      // House third reading, under any of its calendars: the regular
-      // `HBs FOR THIRD READING` / `SBs FOR THIRD READING`, the informal
-      // calendar (`HBs 3rd READ - INFORMAL`), the consent calendar
-      // (`HBs 3rd READING - CONSENT`), the constitutional-amendment
-      // calendar (`HJRs FOR THIRD READING`) and the appropriations
-      // calendar (`HABs FOR THIRD READING`). The trailing space is
-      // required so the heading is never matched without its bill chain.
-      {
-        pattern: /^house: (?:hbs|sbs|hjrs|habs) (?:for third reading|3rd read - informal|3rd reading - consent) /,
-        questionClass: "passage",
-      },
-      // The House taking up its own bill as returned with Senate
-      // amendments — Missouri's concurrence question.
-      { pattern: /^house: (?:hbs|hjrs) with senate amendments /, questionClass: "concurrence" },
-      // `House: BILLS IN CONFERENCE CCS HCS SS SCS SBS 81 & 174, E.C`.
-      { pattern: /^house: bills in conference /, questionClass: "conference_report" },
-      // The Senate's two substantive spellings.
-      { pattern: /^senate: third reading$/, questionClass: "passage" },
-      { pattern: /^senate: conference committee report adoption$/, questionClass: "conference_report" },
-    ],
-    excludedQuestions: [
-      // Perfection: the House's amend-and-engross stage, not passage.
-      /^house: (?:hbs|hjrs) (?:for perfection|perfection - informal) /,
-      // The motion for the previous question (debate cutoff).
-      /^house: general pq$/,
-      // Floor adoption of a Senate substitute, and the separate vote on a
-      // bill's emergency clause.
-      /^senate: adopt substitute$/,
-      /^senate: emergency clause$/,
-    ],
+    keptQuestions: MISSOURI_KEPT_QUESTIONS,
+    excludedQuestions: MISSOURI_EXCLUDED_QUESTIONS,
+  },
+
+  // Missouri's 2025 SECOND EXTRAORDINARY SESSION (LegiScan session 2226),
+  // surveyed 2026-08-30: 13 bills, 8 roll calls, 194 people.
+  //
+  // ⚠ THE REGISTRY KEY IS NOT THE JURISDICTION HERE. Every other entry is
+  // keyed by its postal code because a state has had one session in scope;
+  // Missouri has two. `jurisdiction` is a separate field that every database
+  // write already uses, so a compound KEY pins the second session while the
+  // rows, the evidence filenames (`ls-mo-…`) and the run ids all stay `MO`.
+  // Nothing looks a config up by a row's jurisdiction — all four scripts
+  // resolve it from the `--state` flag — so the two entries cannot collide.
+  // Run this one with `--state MO-2226`.
+  //
+  // What the survey established:
+  // - The vocabulary is a SUBSET of the regular session's and needs no new
+  //   pattern: `HJRs/HBs FOR THIRD READING` and `Senate: Third Reading` are
+  //   kept, `HJRs/HBs FOR PERFECTION` excluded. Hence the shared constants.
+  // - Both enacted measures are divided in both chambers: HB 1, the
+  //   congressional redistricting map, and HJR 3, the "Protect Missouri
+  //   Voters" amendment. 5 kept floor votes, 3 excluded perfection votes.
+  // - House tallies run to 159 of 163 seats and the Senate to 34 of 34, so
+  //   the floor cut is unchanged.
+  // - Feed health: 0 repeated roll_call_ids, 0 summary-only rolls, 0 tally
+  //   mismatches, 0 file errors, and no roll_call_id collides with session
+  //   2169's.
+  //
+  // Missouri's 2025 FIRST Extraordinary Session (LegiScan 2216) is
+  // deliberately NOT registered: LegiScan files the REGULAR session's SB 4
+  // utility votes under that session's unrelated SB 4 (a housing trust fund
+  // bill), with roll_call_ids that do not collide with 2169's, so importing
+  // it would attach utility votes to a housing bill. See
+  // evidence/rollcall/legiscan-mo-2169/README.md.
+  "MO-2226": {
+    jurisdiction: "MO",
+    sessionId: 2226,
+    chamberSizes: { house: 163, senate: 34 },
+    keptQuestions: MISSOURI_KEPT_QUESTIONS,
+    excludedQuestions: MISSOURI_EXCLUDED_QUESTIONS,
   },
 
   // Maryland General Assembly, 2025 Regular Session (Jan 8 - Apr 7 2025;
@@ -907,6 +953,15 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
 };
 
 export const LEGISCAN_STATE_JURISDICTIONS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);
+
+// The distinct `jurisdiction` values the registry can write, which is NOT
+// the key list: a state with two sessions in scope is keyed `MO` and
+// `MO-2226` but writes only `MO`. Anything validating a jurisdiction a
+// human typed (the judge's judgments file) must use this, or it would
+// accept `MO-2226` as a jurisdiction and store rows no importer looks for.
+export const LEGISCAN_RECORD_JURISDICTIONS: readonly string[] = [
+  ...new Set(Object.values(LEGISCAN_STATE_CONFIGS).map((config) => config.jurisdiction)),
+];
 
 // States already served by their OWN source pipeline. Importing one of these
 // through LegiScan would DUPLICATE every record: the two feeds cite the same

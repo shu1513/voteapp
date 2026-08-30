@@ -1,0 +1,80 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MO",
+   "chamber": "house",
+   "session": "2226",
+   "roll": 1601420,
+   "measure_id": "HJR 3",
+   "vote_date": "2025-09-09",
+   "review_status": "approved",
+   "yea_description": "Voted for House Joint Resolution 3, which would add the \u201cProtect Missouri Voters\u201d amendment to the Missouri Constitution. Its central change is that a constitutional amendment proposed by initiative petition would pass only if a majority of voters in every congressional district approved it, on top of the statewide majority required today. It would bar committees that spend on statewide ballot measures from taking money from foreign nationals or foreign adversaries, and make doing so a crime that only the Attorney General may prosecute. It would make petition signature fraud a crime. It would require at least one public hearing after an initiative petition's signatures are filed and before the measure reaches the ballot. It would also require the full text of an initiative measure to be given to every voter with their ballot. The Missouri House passed it 98-58. It takes effect only if voters approve it at the November 2026 general election, or at an earlier special election called by the governor; a joint resolution needs no governor's signature.",
+   "nay_description": "Voted against House Joint Resolution 3, which would add the \u201cProtect Missouri Voters\u201d amendment to the Missouri Constitution. Its central change is that a constitutional amendment proposed by initiative petition would pass only if a majority of voters in every congressional district approved it, on top of the statewide majority required today. It would bar committees that spend on statewide ballot measures from taking money from foreign nationals or foreign adversaries, and make doing so a crime that only the Attorney General may prosecute. It would make petition signature fraud a crime. It would require at least one public hearing after an initiative petition's signatures are filed and before the measure reaches the ballot. It would also require the full text of an initiative measure to be given to every voter with their ballot. The Missouri House passed it 98-58. It takes effect only if voters approve it at the November 2026 general election, or at an earlier special election called by the governor; a joint resolution needs no governor's signature.",
+   "labels": [
+    {
+     "slug": "general",
+     "yea": null,
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1601419
+   ],
+   "note": "Both 2025-09-09 House rolls wear the desc `House: HJRs FOR THIRD READING HCS HJR 3`. Roll 1601419 (104-51) is House roll-call PDF 006.002, whose header carries the extra line PREVIOUS QUESTION; roll 1601420 (98-58) is PDF 006.003, the passage vote, and it matches the bill history's `Third Read and Passed (H) - AYES: 98 NOES: 58`. See ../../legiscan-mo-2169/CODE-FINDINGS.md \u00a71."
+  },
+  {
+   "jurisdiction": "MO",
+   "chamber": "senate",
+   "session": "2226",
+   "roll": 1602025,
+   "measure_id": "HJR 3",
+   "vote_date": "2025-09-12",
+   "review_status": "approved",
+   "yea_description": "Voted for House Joint Resolution 3, which would add the \u201cProtect Missouri Voters\u201d amendment to the Missouri Constitution. Its central change is that a constitutional amendment proposed by initiative petition would pass only if a majority of voters in every congressional district approved it, on top of the statewide majority required today. It would bar committees that spend on statewide ballot measures from taking money from foreign nationals or foreign adversaries, and make doing so a crime that only the Attorney General may prosecute. It would make petition signature fraud a crime. It would require at least one public hearing after an initiative petition's signatures are filed and before the measure reaches the ballot. It would also require the full text of an initiative measure to be given to every voter with their ballot. The Missouri Senate passed it 21-11. It takes effect only if voters approve it at the November 2026 general election, or at an earlier special election called by the governor; a joint resolution needs no governor's signature.",
+   "nay_description": "Voted against House Joint Resolution 3, which would add the \u201cProtect Missouri Voters\u201d amendment to the Missouri Constitution. Its central change is that a constitutional amendment proposed by initiative petition would pass only if a majority of voters in every congressional district approved it, on top of the statewide majority required today. It would bar committees that spend on statewide ballot measures from taking money from foreign nationals or foreign adversaries, and make doing so a crime that only the Attorney General may prosecute. It would make petition signature fraud a crime. It would require at least one public hearing after an initiative petition's signatures are filed and before the measure reaches the ballot. It would also require the full text of an initiative measure to be given to every voter with their ballot. The Missouri Senate passed it 21-11. It takes effect only if voters approve it at the November 2026 general election, or at an earlier special election called by the governor; a joint resolution needs no governor's signature.",
+   "labels": [
+    {
+     "slug": "general",
+     "yea": null,
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MO",
+   "chamber": "house",
+   "session": "2226",
+   "roll": 1601681,
+   "measure_id": "HB 1",
+   "vote_date": "2025-09-09",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1, which redrew Missouri's eight congressional districts in the middle of the decade, replacing the map the legislature adopted after the 2020 census. The new boundaries take effect with the election of the 120th Congress, which is the November 2026 election. The act repeals the sections holding the previous map, writes the new districts into law county by county, and directs the revisor of statutes to publish the official map. The Missouri House passed it 90-65 and the governor signed it into law.",
+   "nay_description": "Voted against House Bill 1, which redrew Missouri's eight congressional districts in the middle of the decade, replacing the map the legislature adopted after the 2020 census. The new boundaries take effect with the election of the 120th Congress, which is the November 2026 election. The act repeals the sections holding the previous map, writes the new districts into law county by county, and directs the revisor of statutes to publish the official map. The Missouri House passed it 90-65 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "general",
+     "yea": null,
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MO",
+   "chamber": "senate",
+   "session": "2226",
+   "roll": 1602026,
+   "measure_id": "HB 1",
+   "vote_date": "2025-09-12",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1, which redrew Missouri's eight congressional districts in the middle of the decade, replacing the map the legislature adopted after the 2020 census. The new boundaries take effect with the election of the 120th Congress, which is the November 2026 election. The act repeals the sections holding the previous map, writes the new districts into law county by county, and directs the revisor of statutes to publish the official map. The Missouri Senate passed it 21-11 and the governor signed it into law.",
+   "nay_description": "Voted against House Bill 1, which redrew Missouri's eight congressional districts in the middle of the decade, replacing the map the legislature adopted after the 2020 census. The new boundaries take effect with the election of the 120th Congress, which is the November 2026 election. The act repeals the sections holding the previous map, writes the new districts into law county by county, and directs the revisor of statutes to publish the official map. The Missouri Senate passed it 21-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "general",
+     "yea": null,
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
