@@ -110,7 +110,8 @@ const PINNED_DOCUMENTS = [
     // 1.3 → 1.4 (2026-08-29): operator/contracting party is now Elections
     // Simplified Inc., a Delaware corporation (previously impactperdollar).
     // Party-identity change is material — bundle bumps to 1.4,
-    // GRACE_TERMS_VERSIONS ships ["1.3"], signed-in users re-accept once.
+    // GRACE_TERMS_VERSIONS ships ["1.3", "1.2"] (the 1.3 rollout was only a
+    // day old), signed-in users re-accept once.
     version: "1.4",
     sha256: "82f7321b2b2d4856e0a5e41b0dab39813e4fd763c596f2fec4a1b6ae70cc1fc5",
   },

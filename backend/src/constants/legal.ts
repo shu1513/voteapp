@@ -20,7 +20,10 @@ export const CURRENT_TERMS_VERSION = "1.4";
  * bundles refreshed, no distributed mobile build on the old version), and
  * repopulate it with the outgoing version at the next bump.
  */
-export const GRACE_TERMS_VERSIONS: readonly string[] = ["1.3"];
+// 1.2 stays listed because 1.3 shipped only one day before 1.4 — its own
+// rollout never settled, so 1.2 web bundles may still be open in stale tabs.
+// Drop "1.2" first, then "1.3" once the 1.4 rollout settles.
+export const GRACE_TERMS_VERSIONS: readonly string[] = ["1.3", "1.2"];
 
 /** A terms version a client may accept right now: current, or a listed
  * still-rolling-out previous version. */
