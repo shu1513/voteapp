@@ -49,12 +49,20 @@ session's batch-02, whose labelled strands are independent statutory changes.
 
 ## Facts the descriptions had to get right
 
-- **HJR 3 is a joint resolution.** It needed no governor's signature and is not law: it goes to the
-  voters at the November 2026 general election, or at an earlier special election the governor calls
-  (enrolled text, opening clause). It adds a new Article III, Section 54.
+- **HJR 3 is a joint resolution, and it has already been voted on.** It needed no governor's
+  signature and never became law. Its opening clause offered the November 2026 general election "or
+  at a special election to be called by the governor", and the governor took that option: a
+  proclamation announced 2026-05-22 put it on the **August 4, 2026 primary ballot as Amendment 4**,
+  and his official statement of 2026-08-05 records its defeat. The descriptions say so, and describe
+  its provisions as things it "would have" done. It proposed a new Article III, Section 54.
 - **The district rule is a majority in EVERY congressional district**, not a majority of districts —
   "approved only if affirmative votes are cast by a majority of voters in each congressional district
   in effect at the time of the vote" (§ 54.6), notwithstanding Article III §§ 51 and 52(b).
+- **The foreign-money ban is asymmetric.** A committee may not "knowingly or willfully" receive,
+  solicit or accept foreign contributions (§ 54.3(1), first sentence), but the ban on a foreign
+  national or foreign adversary *making* a contribution or expenditure is unqualified (second
+  sentence). A description must carry the intent element on the committee side and not import it
+  onto the donor side.
 - **HJR 3 contains no voter-citizenship provision.** The word "citizen" appears only in the
   definitions of "foreign adversary" and "foreign national". A description asserting a
   proof-of-citizenship or noncitizen-voting rule would be inventing one.
