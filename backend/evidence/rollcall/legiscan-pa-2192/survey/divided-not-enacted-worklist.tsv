@@ -7,7 +7,7 @@ HB1042	1715680	senate	2026-07-12	30-20	passed	passage	batch-04	public_safety_and
 HB1042	1715952	house	2026-07-23	102-100	passed	concurrence	batch-04	public_safety_and_crime_control/for
 HB1045	1704111	house	2026-06-01	130-71	passed	passage	batch-04	environment_and_public_health/for
 HB1048	1593967	house	2025-06-23	113-90	passed	passage	batch-03	public_infrastructure/for
-HB1062	1569645	house	2025-05-12	125-78	passed	passage	batch-04	corporate_accountability/for
+HB1062	1569645	house	2025-05-12	125-78	passed	passage	batch-04	housing_affordability/for (relabelled from corporate_accountability for the same reason as HB273)
 HB1077	1692983	house	2026-05-04	150-51	passed	passage	dropped	dropped: creates an advisory Commission on Children's Vision and nothing else, no honest direction
 HB1088	1587838	house	2025-06-10	143-60	passed	passage	dropped	no defensible direction after reading the official analysis
 HB1089	1584783	house	2025-06-04	102-100	passed	passage	batch-03	environment_and_public_health/for
@@ -131,7 +131,7 @@ HB257	1599302	senate	2025-08-12	27-22	passed	passage	dropped	narrow: interactive
 HB2632	1710655	house	2026-06-22	105-97	passed	passage	dropped	school-choice financing: educational improvement tax credits
 HB265	1566384	house	2025-05-06	105-98	passed	passage	dropped	no defensible direction after reading the official analysis
 HB2650	1711506	house	2026-06-24	134-68	passed	passage	dropped	dropped: replaces the data center tax certification with a new standards framework, reads as both a tax break and an accountability measure
-HB273	1555171	house	2025-04-23	110-93	passed	passage	batch-04	corporate_accountability/for
+HB273	1555171	house	2025-04-23	110-93	passed	passage	batch-04	housing_affordability/for (relabelled from corporate_accountability on review: blight enforcement applies to all property owners, and the grant program and mitigation fund target blighted housing)
 HB276	1588746	house	2025-06-11	108-95	passed	passage	batch-03	corporate_accountability/for
 HB282	1584057	house	2025-06-03	153-50	passed	passage	dropped	no defensible direction after reading the official analysis
 HB308	1541711	house	2025-04-09	111-92	passed	passage	batch-03	corporate_accountability/for
@@ -215,7 +215,7 @@ SB155	1476138	senate	2025-01-29	30-19	passed	passage	batch-04	government_efficie
 SB156	1476142	senate	2025-01-29	30-19	passed	passage	batch-04	government_efficiency/for
 SB157	1476146	senate	2025-01-29	29-20	passed	passage	dropped	dropped: an annual report to legislative committees, too thin to carry a direction
 SB186	1479826	senate	2025-02-04	31-18	passed	passage	batch-03	environment_and_public_health/against
-SB187	1478740	senate	2025-02-03	27-21	passed	passage	batch-04	government_efficiency/for
+SB187	1478740	senate	2025-02-03	27-21	passed	passage	retracted	government_efficiency/for withdrawn on review 2026-08-30: a new $1.25M/yr energy policy-analysis office fits no part of the area definition; 14 records retired, roll returned to pending
 SB226	1569515	senate	2025-05-12	29-21	passed	passage	batch-03	anti_corruption/for
 SB227	1569470	senate	2025-05-12	29-21	passed	passage	batch-04	anti_corruption/for
 SB241	1601699	senate	2025-09-10	28-22	passed	passage	dropped	narrow: expunges COVID-era liquor citations

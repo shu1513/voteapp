@@ -69,7 +69,7 @@
    "nay_description": "Voted against House Bill 1062. It would have created a statewide registry of serious property maintenance code violations, run by the state economic development department or a contractor it picks. The Pennsylvania House passed it 125-78. As of August 2026 the Senate had not voted on it.",
    "labels": [
     {
-     "slug": "corporate_accountability",
+     "slug": "housing_affordability",
      "yea": "for",
      "nay": null
     }
@@ -191,11 +191,11 @@
    "measure_id": "HB 273",
    "vote_date": "2025-04-23",
    "review_status": "approved",
-   "yea_description": "Voted for House Bill 273. It would have let a county adopt its own property maintenance code, either by adopting a recognized national code or by writing its own version. The Pennsylvania House passed it 110-93. As of August 2026 the Senate had not voted on it.",
-   "nay_description": "Voted against House Bill 273. It would have let a county adopt its own property maintenance code, either by adopting a recognized national code or by writing its own version. The Pennsylvania House passed it 110-93. As of August 2026 the Senate had not voted on it.",
+   "yea_description": "Voted for House Bill 273. It would have let a county adopt its own property maintenance code, using a nationally recognized code or its own version, and appoint inspectors to enforce it, with fines for violations. It also created a state grant program, up to $100,000 a town with matching funds, to help towns with no code enforcement start one. Penalty money would feed a fund paying for demolition, cleanup and repair of blighted property. The Pennsylvania House passed it 110-93. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 273. It would have let a county adopt its own property maintenance code, using a nationally recognized code or its own version, and appoint inspectors to enforce it, with fines for violations. It also created a state grant program, up to $100,000 a town with matching funds, to help towns with no code enforcement start one. Penalty money would feed a fund paying for demolition, cleanup and repair of blighted property. The Pennsylvania House passed it 110-93. As of August 2026 the Senate had not voted on it.",
    "labels": [
     {
-     "slug": "corporate_accountability",
+     "slug": "housing_affordability",
      "yea": "for",
      "nay": null
     }
@@ -400,24 +400,6 @@
    "review_status": "approved",
    "yea_description": "Voted for Senate Bill 156. It would have required the human services department to check state wage records every three months against people receiving Medicaid and food stamps, to confirm they still qualify on income. The Pennsylvania Senate passed it 30-19. As of August 2026 the House had not voted on it.",
    "nay_description": "Voted against Senate Bill 156. It would have required the human services department to check state wage records every three months against people receiving Medicaid and food stamps, to confirm they still qualify on income. The Pennsylvania Senate passed it 30-19. As of August 2026 the House had not voted on it.",
-   "labels": [
-    {
-     "slug": "government_efficiency",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "PA",
-   "chamber": "senate",
-   "session": "2192",
-   "roll": 1478740,
-   "measure_id": "SB 187",
-   "vote_date": "2025-02-03",
-   "review_status": "approved",
-   "yea_description": "Voted for Senate Bill 187. It would have created an Independent Energy Office as a nonpartisan agency to analyze state energy policy, laws and regulations and recommend plans covering energy technology. The Pennsylvania Senate passed it 27-21. As of August 2026 the House had not voted on it.",
-   "nay_description": "Voted against Senate Bill 187. It would have created an Independent Energy Office as a nonpartisan agency to analyze state energy policy, laws and regulations and recommend plans covering energy technology. The Pennsylvania Senate passed it 27-21. As of August 2026 the House had not voted on it.",
    "labels": [
     {
      "slug": "government_efficiency",

@@ -137,13 +137,14 @@ disposition, and everything judgeable has been judged.
 | | rolls |
 | --- | --- |
 | Divided floor votes in the session | 291 |
-| **Judged and imported** | **178** |
+| **Judged and imported** | **177** |
 | Dropped with a written reason | 109 |
+| Retracted on review (SB 187) | 1 |
 | Superseded by a later vote in the same chamber | 4 |
 
 Batches: **batch-01** 5 measures (divided and enacted), **batch-02** 32,
-**batch-03** 112, **batch-04** 29. Local totals: **25,922 records across 194
-candidates**.
+**batch-03** 112, **batch-04** 28 (29 imported, SB 187 retracted). Local totals: **25,908 live records across 194
+candidates** (14 SB 187 records retired on review).
 
 The 570 kept floor votes that were not divided stay out of scope by the
 campaign's gate everywhere — a near-unanimous vote says nothing about how
