@@ -30,12 +30,14 @@ Checked before starting: LegiScan still serves the **2026-08-23 cut** for sessio
 | SB 22 cash out small gift-card balances | corporate_accountability | for | 58-16 | — |
 | AB 931 consumer legal funding rules | corporate_accountability | for | 60-16 | 29-10 |
 | AB 1487 2TGI wellness grant fund | social_programs_and_welfare | for | 59-15 | 30-10 |
-| SB 635 sidewalk vendors' personal details | data_privacy | for | 58-15 | 29-8 |
-| SB 805 plain-clothes officers must show ID | public_safety_and_crime_control | for | 60-15 | 30-10 |
+| SB 635 sidewalk vendors shielded from immigration enforcement | data_privacy + immigration | for | 58-15 | 29-8 |
+| SB 805 plain-clothes officers must show ID | public_safety_and_crime_control + immigration | for | 60-15 | 30-10 |
 | SB 358 traffic fees on low-car-trip housing | housing_affordability | for | 53-14 | 28-9 |
 
 All seven carry a stance, and every label states `"nay": null` on purpose — none of these is a
-referendum on its area.
+referendum on its area. SB 805 and SB 635 carry a second label, `immigration`/for, added on review:
+both bills restrict cooperation with immigration enforcement (SB 805 through its bail-recovery-agent
+sections, SB 635 throughout), and users following that area would otherwise never see these votes.
 
 ## Dropped under filter 5 after a full read
 

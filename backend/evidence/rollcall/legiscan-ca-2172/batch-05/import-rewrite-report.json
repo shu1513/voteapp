@@ -1,9 +1,9 @@
 {
   "importerVersion": "rollcall-legiscan-import-v1",
-  "dryRun": true,
+  "dryRun": false,
   "skipExisting": false,
-  "startedAt": "2026-08-30T06:18:21.336Z",
-  "finishedAt": "2026-08-30T06:18:46.073Z",
+  "startedAt": "2026-08-30T06:17:50.491Z",
+  "finishedAt": "2026-08-30T06:18:20.823Z",
   "jurisdiction": "CA",
   "sessionId": 2172,
   "evidenceDir": "/Users/shu/legiscan-data/ca-2172-evidence",
@@ -15,10 +15,11 @@
   "files": 5328,
   "outcomes": {
     "not_approved": 5232,
-    "dry_run": 96
+    "imported": 96
   },
   "actions": {
-    "unchanged": 3548
+    "unchanged": 3188,
+    "rewrite": 360
   },
   "notified": 0,
   "rolls": [
@@ -28,7 +29,7 @@
       "chamber": "house",
       "sessionId": 2172,
       "roll": 1600947,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "e86d3b61-3005-4c75-945e-03a117a3bc08",
       "reviewStatus": "approved",
       "bill": "SB358",
@@ -36,7 +37,7 @@
       "officialVoteDate": null,
       "measureId": "SB 358",
       "question": "SB 358 Becker Senate Third Reading By Ward",
-      "originRunId": "rollcall:CA:house:2172:1600947:2026-08-30T06:18:21.336Z",
+      "originRunId": "rollcall:CA:house:2172:1600947:2026-08-30T06:17:50.491Z",
       "members": 67,
       "notVoting": 0,
       "absent": 12,
@@ -45,7 +46,7 @@
         "matched": 58
       },
       "actions": {
-        "unchanged": 58
+        "rewrite": 58
       },
       "notified": 0,
       "candidates": 58,
@@ -58,7 +59,7 @@
       "chamber": "house",
       "sessionId": 2172,
       "roll": 1601334,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "26fc34de-a7b5-46ec-8ca5-6e12b15143df",
       "reviewStatus": "approved",
       "bill": "AB931",
@@ -66,7 +67,7 @@
       "officialVoteDate": null,
       "measureId": "AB 931",
       "question": "AB 931 Kalra Concurrence in Senate Amendments",
-      "originRunId": "rollcall:CA:house:2172:1601334:2026-08-30T06:18:21.336Z",
+      "originRunId": "rollcall:CA:house:2172:1601334:2026-08-30T06:17:50.491Z",
       "members": 76,
       "notVoting": 0,
       "absent": 4,
@@ -75,7 +76,7 @@
         "matched": 66
       },
       "actions": {
-        "unchanged": 66
+        "rewrite": 66
       },
       "notified": 0,
       "candidates": 66,
@@ -88,7 +89,7 @@
       "chamber": "house",
       "sessionId": 2172,
       "roll": 1601456,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "c206ee6c-e6fb-4f8b-a666-091151142810",
       "reviewStatus": "approved",
       "bill": "SB805",
@@ -96,7 +97,7 @@
       "officialVoteDate": null,
       "measureId": "SB 805",
       "question": "SB 805 Pérez Third Reading Urgency By Ortega",
-      "originRunId": "rollcall:CA:house:2172:1601456:2026-08-30T06:18:21.336Z",
+      "originRunId": "rollcall:CA:house:2172:1601456:2026-08-30T06:17:50.491Z",
       "members": 75,
       "notVoting": 0,
       "absent": 5,
@@ -105,7 +106,7 @@
         "matched": 66
       },
       "actions": {
-        "unchanged": 66
+        "rewrite": 66
       },
       "notified": 0,
       "candidates": 66,
@@ -118,7 +119,7 @@
       "chamber": "house",
       "sessionId": 2172,
       "roll": 1602109,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "2b56f880-2ded-4029-b399-f4b9b1b28011",
       "reviewStatus": "approved",
       "bill": "AB1079",
@@ -126,7 +127,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1079",
       "question": "AB 1079 Ávila Farías Concurrence in Senate Amendments",
-      "originRunId": "rollcall:CA:house:2172:1602109:2026-08-30T06:18:21.336Z",
+      "originRunId": "rollcall:CA:house:2172:1602109:2026-08-30T06:17:50.491Z",
       "members": 73,
       "notVoting": 0,
       "absent": 7,
@@ -148,7 +149,7 @@
       "chamber": "house",
       "sessionId": 2172,
       "roll": 1602330,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "e1646843-c3f1-4f70-a722-02b806a3a543",
       "reviewStatus": "approved",
       "bill": "SB635",
@@ -156,7 +157,7 @@
       "officialVoteDate": null,
       "measureId": "SB 635",
       "question": "SB 635 Durazo Senate Third Reading By Carrillo",
-      "originRunId": "rollcall:CA:house:2172:1602330:2026-08-30T06:18:21.336Z",
+      "originRunId": "rollcall:CA:house:2172:1602330:2026-08-30T06:17:50.491Z",
       "members": 73,
       "notVoting": 0,
       "absent": 7,
@@ -165,7 +166,7 @@
         "matched": 63
       },
       "actions": {
-        "unchanged": 63
+        "rewrite": 63
       },
       "notified": 0,
       "candidates": 63,
@@ -178,7 +179,7 @@
       "chamber": "house",
       "sessionId": 2172,
       "roll": 1602444,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "ede6f44e-f43e-4885-8ecc-4e44dbe59be7",
       "reviewStatus": "approved",
       "bill": "AB1487",
@@ -186,7 +187,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1487",
       "question": "AB 1487 Addis Concurrence in Senate Amendments",
-      "originRunId": "rollcall:CA:house:2172:1602444:2026-08-30T06:18:21.336Z",
+      "originRunId": "rollcall:CA:house:2172:1602444:2026-08-30T06:17:50.491Z",
       "members": 74,
       "notVoting": 0,
       "absent": 6,
@@ -208,7 +209,7 @@
       "chamber": "house",
       "sessionId": 2172,
       "roll": 1602556,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "52f1757c-057c-423b-97ca-1137368b7cca",
       "reviewStatus": "approved",
       "bill": "SB22",
@@ -216,7 +217,7 @@
       "officialVoteDate": null,
       "measureId": "SB 22",
       "question": "SB 22 Laird Senate Third Reading By Bauer-Kahan",
-      "originRunId": "rollcall:CA:house:2172:1602556:2026-08-30T06:18:21.336Z",
+      "originRunId": "rollcall:CA:house:2172:1602556:2026-08-30T06:17:50.491Z",
       "members": 74,
       "notVoting": 0,
       "absent": 6,
@@ -225,7 +226,7 @@
         "matched": 63
       },
       "actions": {
-        "unchanged": 63
+        "rewrite": 63
       },
       "notified": 0,
       "candidates": 63,
@@ -238,7 +239,7 @@
       "chamber": "senate",
       "sessionId": 2172,
       "roll": 1601097,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "6a0ab2db-b8e4-4d37-94ef-545b3e36c6a9",
       "reviewStatus": "approved",
       "bill": "AB931",
@@ -246,7 +247,7 @@
       "officialVoteDate": null,
       "measureId": "AB 931",
       "question": "Assembly 3rd Reading AB931 Kalra By Umberg",
-      "originRunId": "rollcall:CA:senate:2172:1601097:2026-08-30T06:18:21.336Z",
+      "originRunId": "rollcall:CA:senate:2172:1601097:2026-08-30T06:17:50.491Z",
       "members": 39,
       "notVoting": 0,
       "absent": 1,
@@ -255,7 +256,7 @@
         "matched": 11
       },
       "actions": {
-        "unchanged": 11
+        "rewrite": 11
       },
       "notified": 0,
       "candidates": 11,
@@ -268,7 +269,7 @@
       "chamber": "senate",
       "sessionId": 2172,
       "roll": 1601272,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "634ebb66-b807-4df5-b31b-e7aab33d7347",
       "reviewStatus": "approved",
       "bill": "SB358",
@@ -276,7 +277,7 @@
       "officialVoteDate": null,
       "measureId": "SB 358",
       "question": "Unfinished Business SB358 Becker Concurrence",
-      "originRunId": "rollcall:CA:senate:2172:1601272:2026-08-30T06:18:21.336Z",
+      "originRunId": "rollcall:CA:senate:2172:1601272:2026-08-30T06:17:50.491Z",
       "members": 37,
       "notVoting": 0,
       "absent": 3,
@@ -285,7 +286,7 @@
         "matched": 11
       },
       "actions": {
-        "unchanged": 11
+        "rewrite": 11
       },
       "notified": 0,
       "candidates": 11,
@@ -298,7 +299,7 @@
       "chamber": "senate",
       "sessionId": 2172,
       "roll": 1601632,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "f5a32a18-1d30-4661-aa49-8e21b9f4b50d",
       "reviewStatus": "approved",
       "bill": "AB1487",
@@ -306,7 +307,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1487",
       "question": "Assembly 3rd Reading AB1487 Addis et al. By Menjivar",
-      "originRunId": "rollcall:CA:senate:2172:1601632:2026-08-30T06:18:21.336Z",
+      "originRunId": "rollcall:CA:senate:2172:1601632:2026-08-30T06:17:50.491Z",
       "members": 40,
       "notVoting": 0,
       "absent": 0,
@@ -328,7 +329,7 @@
       "chamber": "senate",
       "sessionId": 2172,
       "roll": 1601942,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "c626ee0d-5182-438b-988a-ea32ebdf3fa2",
       "reviewStatus": "approved",
       "bill": "SB805",
@@ -336,7 +337,7 @@
       "officialVoteDate": null,
       "measureId": "SB 805",
       "question": "Unfinished Business SB805 Pérez et al. Urgency Clause Concurrence",
-      "originRunId": "rollcall:CA:senate:2172:1601942:2026-08-30T06:18:21.336Z",
+      "originRunId": "rollcall:CA:senate:2172:1601942:2026-08-30T06:17:50.491Z",
       "members": 40,
       "notVoting": 0,
       "absent": 0,
@@ -345,7 +346,7 @@
         "matched": 11
       },
       "actions": {
-        "unchanged": 11
+        "rewrite": 11
       },
       "notified": 0,
       "candidates": 11,
@@ -358,7 +359,7 @@
       "chamber": "senate",
       "sessionId": 2172,
       "roll": 1602108,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "e96de221-1e4a-4509-8d06-a3bf43301dd0",
       "reviewStatus": "approved",
       "bill": "AB1079",
@@ -366,7 +367,7 @@
       "officialVoteDate": null,
       "measureId": "AB 1079",
       "question": "Assembly 3rd Reading AB1079 Ávila Farías By Arreguín",
-      "originRunId": "rollcall:CA:senate:2172:1602108:2026-08-30T06:18:21.336Z",
+      "originRunId": "rollcall:CA:senate:2172:1602108:2026-08-30T06:17:50.491Z",
       "members": 38,
       "notVoting": 0,
       "absent": 2,
@@ -388,7 +389,7 @@
       "chamber": "senate",
       "sessionId": 2172,
       "roll": 1602895,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "db27be90-7bc4-4769-9bb0-1de3e96ebb49",
       "reviewStatus": "approved",
       "bill": "SB635",
@@ -396,7 +397,7 @@
       "officialVoteDate": null,
       "measureId": "SB 635",
       "question": "Unfinished Business SB635 Durazo et al. Concurrence",
-      "originRunId": "rollcall:CA:senate:2172:1602895:2026-08-30T06:18:21.336Z",
+      "originRunId": "rollcall:CA:senate:2172:1602895:2026-08-30T06:17:50.491Z",
       "members": 37,
       "notVoting": 0,
       "absent": 3,
@@ -405,7 +406,7 @@
         "matched": 11
       },
       "actions": {
-        "unchanged": 11
+        "rewrite": 11
       },
       "notified": 0,
       "candidates": 11,

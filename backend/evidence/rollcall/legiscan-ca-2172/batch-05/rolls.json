@@ -135,7 +135,7 @@
       "measure_class": "bill",
       "last_amended": "2025-09-04",
       "source_url": "https://legiscan.com/CA/rollcall/SB635/id/1602330",
-      "label": "data_privacy",
+      "label": "data_privacy + immigration",
       "yea_stance": "for",
       "nay_stance": null
     },
@@ -152,7 +152,7 @@
       "measure_class": "bill",
       "last_amended": "2025-09-04",
       "source_url": "https://legiscan.com/CA/rollcall/SB635/id/1602895",
-      "label": "data_privacy",
+      "label": "data_privacy + immigration",
       "yea_stance": "for",
       "nay_stance": null
     },
@@ -169,7 +169,7 @@
       "measure_class": "bill",
       "last_amended": "2025-09-05",
       "source_url": "https://legiscan.com/CA/rollcall/SB805/id/1601456",
-      "label": "public_safety_and_crime_control",
+      "label": "public_safety_and_crime_control + immigration",
       "yea_stance": "for",
       "nay_stance": null
     },
@@ -186,7 +186,7 @@
       "measure_class": "bill",
       "last_amended": "2025-09-05",
       "source_url": "https://legiscan.com/CA/rollcall/SB805/id/1601942",
-      "label": "public_safety_and_crime_control",
+      "label": "public_safety_and_crime_control + immigration",
       "yea_stance": "for",
       "nay_stance": null
     },
