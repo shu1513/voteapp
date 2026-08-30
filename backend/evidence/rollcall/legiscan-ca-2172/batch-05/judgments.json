@@ -1,0 +1,238 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602109,
+      "measure_id": "AB 1079",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 1079, which lets a court's fix for illegal local election rules take effect while the losing side appeals, instead of being frozen automatically. It applies when a trial court finds that a city or district's at-large elections break the California Voting Rights Act, or that its district lines break the FAIR MAPS Act, or are likely to. The trial court can still pause its own order, and must consider doing so if the Secretary of State certifies that a pause is needed to run the state's elections in an orderly way. The side found in the wrong repays county election officials for the cost of running an election under the order. None of this applies to cases already begun on or before January 1, 2026. The California State Assembly agreed 56-17, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 1079, which lets a court's fix for illegal local election rules take effect while the losing side appeals, instead of being frozen automatically. It applies when a trial court finds that a city or district's at-large elections break the California Voting Rights Act, or that its district lines break the FAIR MAPS Act, or are likely to. The trial court can still pause its own order, and must consider doing so if the Secretary of State certifies that a pause is needed to run the state's elections in an orderly way. The side found in the wrong repays county election officials for the cost of running an election under the order. None of this applies to cases already begun on or before January 1, 2026. The California State Assembly agreed 56-17, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1602108,
+      "measure_id": "AB 1079",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1079, which lets a court's fix for illegal local election rules take effect while the losing side appeals, instead of being frozen automatically. It applies when a trial court finds that a city or district's at-large elections break the California Voting Rights Act, or that its district lines break the FAIR MAPS Act, or are likely to. The trial court can still pause its own order, and must consider doing so if the Secretary of State certifies that a pause is needed to run the state's elections in an orderly way. The side found in the wrong repays county election officials for the cost of running an election under the order. None of this applies to cases already begun on or before January 1, 2026. It passed the California State Senate 25-13 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 1079, which lets a court's fix for illegal local election rules take effect while the losing side appeals, instead of being frozen automatically. It applies when a trial court finds that a city or district's at-large elections break the California Voting Rights Act, or that its district lines break the FAIR MAPS Act, or are likely to. The trial court can still pause its own order, and must consider doing so if the Secretary of State certifies that a pause is needed to run the state's elections in an orderly way. The side found in the wrong repays county election officials for the cost of running an election under the order. None of this applies to cases already begun on or before January 1, 2026. It passed the California State Senate 25-13 and became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602556,
+      "measure_id": "SB 22",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 22, which lets people cash out a gift card with a small balance left on it, raising the cut-off from under $10 to under $15. Electronic gift cards now count as gift certificates under the law, so the same right applies to them. Cards donated to a nonprofit or charity are exempt, and the change takes effect on April 1, 2026. It passed the California State Assembly 58-16 and became law.",
+      "nay_description": "Voted against passing Senate Bill 22, which lets people cash out a gift card with a small balance left on it, raising the cut-off from under $10 to under $15. Electronic gift cards now count as gift certificates under the law, so the same right applies to them. Cards donated to a nonprofit or charity are exempt, and the change takes effect on April 1, 2026. It passed the California State Assembly 58-16 and became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601334,
+      "measure_id": "AB 931",
+      "vote_date": "2025-09-08",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 931, which regulates consumer legal funding, where a company advances a person money and takes a share of whatever their lawsuit later pays out. The contract must be in writing and state what the consumer receives, an itemized list of charges, and a repayment schedule, and it must be given in the language it was negotiated in. The consumer may cancel within five business days of getting the money by returning it in full. The company must have no say in whether, when, or for how much the claim settles, though it may ask how the case is going. What the company is owed must be a set amount fixed by how long the case runs, not a percentage of the winnings, and it may not pay referral fees to attorneys. The California State Assembly agreed 60-16, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 931, which regulates consumer legal funding, where a company advances a person money and takes a share of whatever their lawsuit later pays out. The contract must be in writing and state what the consumer receives, an itemized list of charges, and a repayment schedule, and it must be given in the language it was negotiated in. The consumer may cancel within five business days of getting the money by returning it in full. The company must have no say in whether, when, or for how much the claim settles, though it may ask how the case is going. What the company is owed must be a set amount fixed by how long the case runs, not a percentage of the winnings, and it may not pay referral fees to attorneys. The California State Assembly agreed 60-16, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601097,
+      "measure_id": "AB 931",
+      "vote_date": "2025-09-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 931, which regulates consumer legal funding, where a company advances a person money and takes a share of whatever their lawsuit later pays out. The contract must be in writing and state what the consumer receives, an itemized list of charges, and a repayment schedule, and it must be given in the language it was negotiated in. The consumer may cancel within five business days of getting the money by returning it in full. The company must have no say in whether, when, or for how much the claim settles, though it may ask how the case is going. What the company is owed must be a set amount fixed by how long the case runs, not a percentage of the winnings, and it may not pay referral fees to attorneys. It passed the California State Senate 29-10 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 931, which regulates consumer legal funding, where a company advances a person money and takes a share of whatever their lawsuit later pays out. The contract must be in writing and state what the consumer receives, an itemized list of charges, and a repayment schedule, and it must be given in the language it was negotiated in. The consumer may cancel within five business days of getting the money by returning it in full. The company must have no say in whether, when, or for how much the claim settles, though it may ask how the case is going. What the company is owed must be a set amount fixed by how long the case runs, not a percentage of the winnings, and it may not pay referral fees to attorneys. It passed the California State Senate 29-10 and became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602444,
+      "measure_id": "AB 1487",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 1487, which widens what a state public health grant fund for transgender, gender nonconforming, and intersex people can pay for, and renames it to include Two-Spirit people. Grants may now fund job training, resettlement and social support for asylees and immigrants, and diversion and outreach programs for young people. An organization serving tribal populations can receive a grant if it applies together with a group that serves those communities. The fund only makes grants when the Legislature sets money aside for it. The California State Assembly agreed 59-15, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 1487, which widens what a state public health grant fund for transgender, gender nonconforming, and intersex people can pay for, and renames it to include Two-Spirit people. Grants may now fund job training, resettlement and social support for asylees and immigrants, and diversion and outreach programs for young people. An organization serving tribal populations can receive a grant if it applies together with a group that serves those communities. The fund only makes grants when the Legislature sets money aside for it. The California State Assembly agreed 59-15, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601632,
+      "measure_id": "AB 1487",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1487, which widens what a state public health grant fund for transgender, gender nonconforming, and intersex people can pay for, and renames it to include Two-Spirit people. Grants may now fund job training, resettlement and social support for asylees and immigrants, and diversion and outreach programs for young people. An organization serving tribal populations can receive a grant if it applies together with a group that serves those communities. The fund only makes grants when the Legislature sets money aside for it. It passed the California State Senate 30-10 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 1487, which widens what a state public health grant fund for transgender, gender nonconforming, and intersex people can pay for, and renames it to include Two-Spirit people. Grants may now fund job training, resettlement and social support for asylees and immigrants, and diversion and outreach programs for young people. An organization serving tribal populations can receive a grant if it applies together with a group that serves those communities. The fund only makes grants when the Legislature sets money aside for it. It passed the California State Senate 30-10 and became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602330,
+      "measure_id": "SB 635",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 635, which stops city and county officials from handing over sidewalk vendors' personal details unless served with a subpoena or a judicial warrant. They may not consent voluntarily to anyone inspecting or taking those records, and may not pass the information on in writing, by word of mouth, or any other way. Personal details here means a vendor's name, business name, home and business address, date of birth, telephone number, and driver's license or state identification. The rule gives way where state or federal law requires disclosure. It passed the California State Assembly 58-15 and became law.",
+      "nay_description": "Voted against passing Senate Bill 635, which stops city and county officials from handing over sidewalk vendors' personal details unless served with a subpoena or a judicial warrant. They may not consent voluntarily to anyone inspecting or taking those records, and may not pass the information on in writing, by word of mouth, or any other way. Personal details here means a vendor's name, business name, home and business address, date of birth, telephone number, and driver's license or state identification. The rule gives way where state or federal law requires disclosure. It passed the California State Assembly 58-15 and became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1602895,
+      "measure_id": "SB 635",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 635, which stops city and county officials from handing over sidewalk vendors' personal details unless served with a subpoena or a judicial warrant. They may not consent voluntarily to anyone inspecting or taking those records, and may not pass the information on in writing, by word of mouth, or any other way. Personal details here means a vendor's name, business name, home and business address, date of birth, telephone number, and driver's license or state identification. The rule gives way where state or federal law requires disclosure. The California State Senate agreed 29-8, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 635, which stops city and county officials from handing over sidewalk vendors' personal details unless served with a subpoena or a judicial warrant. They may not consent voluntarily to anyone inspecting or taking those records, and may not pass the information on in writing, by word of mouth, or any other way. Personal details here means a vendor's name, business name, home and business address, date of birth, telephone number, and driver's license or state identification. The rule gives way where state or federal law requires disclosure. The California State Senate agreed 29-8, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601456,
+      "measure_id": "SB 805",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 805, which requires law enforcement officers working in plain clothes in California to visibly show identification giving their agency and either a name or a badge number while carrying out enforcement duties. The requirement starts on January 1, 2026, and breaking it is a misdemeanor. Agencies must adopt a policy setting out narrow exemptions. Those cover undercover and investigative work, named plainclothes state and federal regulatory roles, and protective equipment that makes display impossible. They also cover urgent danger to people or property or an escaping suspect, and a specific, stated reason to believe showing identification would put the officer in real danger. The law also rewrites the crime of impersonating a law enforcement officer to cover federal officers and to reach impersonation by any means for the purpose of defrauding someone. It passed the California State Assembly 60-15 and became law.",
+      "nay_description": "Voted against passing Senate Bill 805, which requires law enforcement officers working in plain clothes in California to visibly show identification giving their agency and either a name or a badge number while carrying out enforcement duties. The requirement starts on January 1, 2026, and breaking it is a misdemeanor. Agencies must adopt a policy setting out narrow exemptions. Those cover undercover and investigative work, named plainclothes state and federal regulatory roles, and protective equipment that makes display impossible. They also cover urgent danger to people or property or an escaping suspect, and a specific, stated reason to believe showing identification would put the officer in real danger. The law also rewrites the crime of impersonating a law enforcement officer to cover federal officers and to reach impersonation by any means for the purpose of defrauding someone. It passed the California State Assembly 60-15 and became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601942,
+      "measure_id": "SB 805",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 805, which requires law enforcement officers working in plain clothes in California to visibly show identification giving their agency and either a name or a badge number while carrying out enforcement duties. The requirement starts on January 1, 2026, and breaking it is a misdemeanor. Agencies must adopt a policy setting out narrow exemptions. Those cover undercover and investigative work, named plainclothes state and federal regulatory roles, and protective equipment that makes display impossible. They also cover urgent danger to people or property or an escaping suspect, and a specific, stated reason to believe showing identification would put the officer in real danger. The law also rewrites the crime of impersonating a law enforcement officer to cover federal officers and to reach impersonation by any means for the purpose of defrauding someone. The California State Senate agreed 30-10, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 805, which requires law enforcement officers working in plain clothes in California to visibly show identification giving their agency and either a name or a badge number while carrying out enforcement duties. The requirement starts on January 1, 2026, and breaking it is a misdemeanor. Agencies must adopt a policy setting out narrow exemptions. Those cover undercover and investigative work, named plainclothes state and federal regulatory roles, and protective equipment that makes display impossible. They also cover urgent danger to people or property or an escaping suspect, and a specific, stated reason to believe showing identification would put the officer in real danger. The law also rewrites the crime of impersonating a law enforcement officer to cover federal officers and to reach impersonation by any means for the purpose of defrauding someone. The California State Senate agreed 30-10, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1600947,
+      "measure_id": "SB 358",
+      "vote_date": "2025-09-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 358, which makes it harder for a city or county to charge a housing project the full traffic-impact fee when the project is built to generate fewer car trips. Such projects already qualify for a lower fee rate, and a local agency that wants to deny it must make findings after a public hearing. Those findings must now be backed by real evidence in the record, put together before or as part of approving the project. It passed the California State Assembly 53-14 and became law.",
+      "nay_description": "Voted against passing Senate Bill 358, which makes it harder for a city or county to charge a housing project the full traffic-impact fee when the project is built to generate fewer car trips. Such projects already qualify for a lower fee rate, and a local agency that wants to deny it must make findings after a public hearing. Those findings must now be backed by real evidence in the record, put together before or as part of approving the project. It passed the California State Assembly 53-14 and became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601272,
+      "measure_id": "SB 358",
+      "vote_date": "2025-09-08",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 358, which makes it harder for a city or county to charge a housing project the full traffic-impact fee when the project is built to generate fewer car trips. Such projects already qualify for a lower fee rate, and a local agency that wants to deny it must make findings after a public hearing. Those findings must now be backed by real evidence in the record, put together before or as part of approving the project. The California State Senate agreed 28-9, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 358, which makes it harder for a city or county to charge a housing project the full traffic-impact fee when the project is built to generate fewer car trips. Such projects already qualify for a lower fee rate, and a local agency that wants to deny it must make findings after a public hearing. Those findings must now be backed by real evidence in the record, put together before or as part of approving the project. The California State Senate agreed 28-9, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
