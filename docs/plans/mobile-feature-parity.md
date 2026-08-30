@@ -1,6 +1,7 @@
 # Mobile feature parity — stance summary, picks, auto-pick, auth
 
-Status: planned 2026-08-28, revised same day after review. All phases
+Status: planned 2026-08-28, revised same day after review; last updated
+2026-08-30 (Phase 6 redefined email-only). All phases
 implemented: 1 in PR #925 (this plan's own PR), 2 in #928, 3 in #932,
 4 in #939, 5 in #953, 6 (redefined email-only, see its section) in this
 branch's PR. The campaign is complete; this doc is now the record.
