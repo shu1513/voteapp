@@ -1,0 +1,382 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601580,
+      "measure_id": "SB 497",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 497, which stops California doctors, health plans, and employers from handing over medical records to another state's case against someone for seeking or providing care that is legal here. It covers gender-affirming care and other sensitive services, which in California law include reproductive health care. They may not cooperate with another state's agency, or with a federal law enforcement agency as far as federal law allows, when doing so would identify the patient. California courts may not issue a subpoena based on another state's law that interferes with the right to seek that care. State and local agencies also may not hand over prescription-monitoring data or spend public money helping an out-of-state case about care that is legal in California. It passed the California State Assembly 61-17 and became law.",
+      "nay_description": "Voted against passing Senate Bill 497, which stops California doctors, health plans, and employers from handing over medical records to another state's case against someone for seeking or providing care that is legal here. It covers gender-affirming care and other sensitive services, which in California law include reproductive health care. They may not cooperate with another state's agency, or with a federal law enforcement agency as far as federal law allows, when doing so would identify the patient. California courts may not issue a subpoena based on another state's law that interferes with the right to seek that care. State and local agencies also may not hand over prescription-monitoring data or spend public money helping an out-of-state case about care that is legal in California. It passed the California State Assembly 61-17 and became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601787,
+      "measure_id": "SB 497",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 497, which stops California doctors, health plans, and employers from handing over medical records to another state's case against someone for seeking or providing care that is legal here. It covers gender-affirming care and other sensitive services, which in California law include reproductive health care. They may not cooperate with another state's agency, or with a federal law enforcement agency as far as federal law allows, when doing so would identify the patient. California courts may not issue a subpoena based on another state's law that interferes with the right to seek that care. State and local agencies also may not hand over prescription-monitoring data or spend public money helping an out-of-state case about care that is legal in California. The California State Senate agreed 30-10, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 497, which stops California doctors, health plans, and employers from handing over medical records to another state's case against someone for seeking or providing care that is legal here. It covers gender-affirming care and other sensitive services, which in California law include reproductive health care. They may not cooperate with another state's agency, or with a federal law enforcement agency as far as federal law allows, when doing so would identify the patient. California courts may not issue a subpoena based on another state's law that interferes with the right to seek that care. State and local agencies also may not hand over prescription-monitoring data or spend public money helping an out-of-state case about care that is legal in California. The California State Senate agreed 30-10, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602139,
+      "measure_id": "SB 59",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 59, which keeps court records private when someone asks a judge to change their name, gender, or sex identifier. That privacy used to apply only to people under 18; it now covers petitioners of any age, and reaches name changes made to match a person's gender identity. Only named people, such as the petitioner and their lawyer, may see the records. It applies to petitions filed from July 1, 2026, to earlier ones if the petitioner asks, and to records already sealed. Nobody but the petitioner may post a sealed record online or anywhere else, and after six months a person may sue to enforce that. It passed the California State Assembly 60-16 and became law.",
+      "nay_description": "Voted against passing Senate Bill 59, which keeps court records private when someone asks a judge to change their name, gender, or sex identifier. That privacy used to apply only to people under 18; it now covers petitioners of any age, and reaches name changes made to match a person's gender identity. Only named people, such as the petitioner and their lawyer, may see the records. It applies to petitions filed from July 1, 2026, to earlier ones if the petitioner asks, and to records already sealed. Nobody but the petitioner may post a sealed record online or anywhere else, and after six months a person may sue to enforce that. It passed the California State Assembly 60-16 and became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1602889,
+      "measure_id": "SB 59",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 59, which keeps court records private when someone asks a judge to change their name, gender, or sex identifier. That privacy used to apply only to people under 18; it now covers petitioners of any age, and reaches name changes made to match a person's gender identity. Only named people, such as the petitioner and their lawyer, may see the records. It applies to petitions filed from July 1, 2026, to earlier ones if the petitioner asks, and to records already sealed. Nobody but the petitioner may post a sealed record online or anywhere else, and after six months a person may sue to enforce that. The California State Senate agreed 29-8, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 59, which keeps court records private when someone asks a judge to change their name, gender, or sex identifier. That privacy used to apply only to people under 18; it now covers petitioners of any age, and reaches name changes made to match a person's gender identity. Only named people, such as the petitioner and their lawyer, may see the records. It applies to petitions filed from July 1, 2026, to earlier ones if the petitioner asks, and to records already sealed. Nobody but the petitioner may post a sealed record online or anywhere else, and after six months a person may sue to enforce that. The California State Senate agreed 29-8, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602324,
+      "measure_id": "AB 847",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 847, which lets civilian boards that oversee the police, and county inspectors general, see officers' confidential personnel records while investigating their conduct. Those records stay closed to the public: the oversight board must keep them confidential and may go into closed session to review them. The California State Assembly agreed 50-16, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 847, which lets civilian boards that oversee the police, and county inspectors general, see officers' confidential personnel records while investigating their conduct. Those records stay closed to the public: the oversight board must keep them confidential and may go into closed session to review them. The California State Assembly agreed 50-16, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1602323,
+      "measure_id": "AB 847",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 847, which lets civilian boards that oversee the police, and county inspectors general, see officers' confidential personnel records while investigating their conduct. Those records stay closed to the public: the oversight board must keep them confidential and may go into closed session to review them. It passed the California State Senate 23-10 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 847, which lets civilian boards that oversee the police, and county inspectors general, see officers' confidential personnel records while investigating their conduct. Those records stay closed to the public: the oversight board must keep them confidential and may go into closed session to review them. It passed the California State Senate 23-10 and became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601466,
+      "measure_id": "AB 1312",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 1312, which requires hospitals, from July 1, 2027, to check whether a patient qualifies for free or discounted care instead of waiting for the patient to apply. A patient enrolled in CalFresh or CalWORKs is presumed to qualify, and a hospital must run the check for patients who are uninsured or meet other listed conditions. A hospital may not make a patient apply for Medicare, Medi-Cal, or other coverage before it screens them. The California State Assembly agreed 62-16, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 1312, which requires hospitals, from July 1, 2027, to check whether a patient qualifies for free or discounted care instead of waiting for the patient to apply. A patient enrolled in CalFresh or CalWORKs is presumed to qualify, and a hospital must run the check for patients who are uninsured or meet other listed conditions. A hospital may not make a patient apply for Medicare, Medi-Cal, or other coverage before it screens them. The California State Assembly agreed 62-16, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601279,
+      "measure_id": "AB 1312",
+      "vote_date": "2025-09-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1312, which requires hospitals, from July 1, 2027, to check whether a patient qualifies for free or discounted care instead of waiting for the patient to apply. A patient enrolled in CalFresh or CalWORKs is presumed to qualify, and a hospital must run the check for patients who are uninsured or meet other listed conditions. A hospital may not make a patient apply for Medicare, Medi-Cal, or other coverage before it screens them. It passed the California State Senate 27-8 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 1312, which requires hospitals, from July 1, 2027, to check whether a patient qualifies for free or discounted care instead of waiting for the patient to apply. A patient enrolled in CalFresh or CalWORKs is presumed to qualify, and a hospital must run the check for patients who are uninsured or meet other listed conditions. A hospital may not make a patient apply for Medicare, Medi-Cal, or other coverage before it screens them. It passed the California State Senate 27-8 and became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602291,
+      "measure_id": "SB 707",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 707, which requires larger local governments to let the public take part in open meetings by phone or video, not only in person. It covers city councils and county boards where 30,000 or more people live, city councils in counties of 600,000 or more, and bigger special districts, and it runs from July 1, 2026 to January 1, 2030. Those bodies must offer two-way phone or video access, take steps to encourage residents to take part, and adopt a written policy on service breakdowns by July 1, 2026. If the connection fails in certain ways, the meeting must pause for at least an hour while the body makes a genuine effort to restore it. It passed the California State Assembly 53-16 and became law.",
+      "nay_description": "Voted against passing Senate Bill 707, which requires larger local governments to let the public take part in open meetings by phone or video, not only in person. It covers city councils and county boards where 30,000 or more people live, city councils in counties of 600,000 or more, and bigger special districts, and it runs from July 1, 2026 to January 1, 2030. Those bodies must offer two-way phone or video access, take steps to encourage residents to take part, and adopt a written policy on service breakdowns by July 1, 2026. If the connection fails in certain ways, the meeting must pause for at least an hour while the body makes a genuine effort to restore it. It passed the California State Assembly 53-16 and became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602531,
+      "measure_id": "AB 1362",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 1362, which extends California's registration rules for foreign labor recruiters to the people who recruit farmworkers from abroad. Recruiters who bring in workers on H-2B visas for non-farm jobs were already covered; from July 1, 2027 the rules also cover recruiting agricultural workers on H-2A visas. Those recruiters must register with the Labor Commissioner and disclose who has a financial interest in the business. The California State Assembly agreed 59-16, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 1362, which extends California's registration rules for foreign labor recruiters to the people who recruit farmworkers from abroad. Recruiters who bring in workers on H-2B visas for non-farm jobs were already covered; from July 1, 2027 the rules also cover recruiting agricultural workers on H-2A visas. Those recruiters must register with the Labor Commissioner and disclose who has a financial interest in the business. The California State Assembly agreed 59-16, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601800,
+      "measure_id": "AB 1362",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1362, which extends California's registration rules for foreign labor recruiters to the people who recruit farmworkers from abroad. Recruiters who bring in workers on H-2B visas for non-farm jobs were already covered; from July 1, 2027 the rules also cover recruiting agricultural workers on H-2A visas. Those recruiters must register with the Labor Commissioner and disclose who has a financial interest in the business. It passed the California State Senate 30-8 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 1362, which extends California's registration rules for foreign labor recruiters to the people who recruit farmworkers from abroad. Recruiters who bring in workers on H-2B visas for non-farm jobs were already covered; from July 1, 2027 the rules also cover recruiting agricultural workers on H-2A visas. Those recruiters must register with the Labor Commissioner and disclose who has a financial interest in the business. It passed the California State Senate 30-8 and became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601669,
+      "measure_id": "AB 1340",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 1340, which lets drivers for rideshare apps join together and bargain with the companies over their pay and working conditions. The state's Public Employment Relations Board certifies a driver organization, and the company must then negotiate with it in good faith, with mediation and arbitration if the talks stall. Drivers remain independent contractors under Proposition 22, which the voters passed in 2020. The California State Assembly agreed 60-15, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 1340, which lets drivers for rideshare apps join together and bargain with the companies over their pay and working conditions. The state's Public Employment Relations Board certifies a driver organization, and the company must then negotiate with it in good faith, with mediation and arbitration if the talks stall. Drivers remain independent contractors under Proposition 22, which the voters passed in 2020. The California State Assembly agreed 60-15, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601270,
+      "measure_id": "AB 1340",
+      "vote_date": "2025-09-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1340, which lets drivers for rideshare apps join together and bargain with the companies over their pay and working conditions. The state's Public Employment Relations Board certifies a driver organization, and the company must then negotiate with it in good faith, with mediation and arbitration if the talks stall. Drivers remain independent contractors under Proposition 22, which the voters passed in 2020. It passed the California State Senate 29-10 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 1340, which lets drivers for rideshare apps join together and bargain with the companies over their pay and working conditions. The state's Public Employment Relations Board certifies a driver organization, and the company must then negotiate with it in good faith, with mediation and arbitration if the talks stall. Drivers remain independent contractors under Proposition 22, which the voters passed in 2020. It passed the California State Senate 29-10 and became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601173,
+      "measure_id": "AB 454",
+      "vote_date": "2025-09-04",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 454, which makes it unlawful, with no end date, to kill, capture, or possess migratory birds protected by the federal Migratory Bird Treaty Act. It fixes the list to the birds protected under that federal law before January 1, 2025, plus any added later, so a federal rollback does not narrow California's protection. Federal rules allowing certain takings still apply, unless they conflict with California's own fish and game law. The state protection it replaces had been written to lapse. The California State Assembly agreed 58-17, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 454, which makes it unlawful, with no end date, to kill, capture, or possess migratory birds protected by the federal Migratory Bird Treaty Act. It fixes the list to the birds protected under that federal law before January 1, 2025, plus any added later, so a federal rollback does not narrow California's protection. Federal rules allowing certain takings still apply, unless they conflict with California's own fish and game law. The state protection it replaces had been written to lapse. The California State Assembly agreed 58-17, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1600963,
+      "measure_id": "AB 454",
+      "vote_date": "2025-09-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 454, which makes it unlawful, with no end date, to kill, capture, or possess migratory birds protected by the federal Migratory Bird Treaty Act. It fixes the list to the birds protected under that federal law before January 1, 2025, plus any added later, so a federal rollback does not narrow California's protection. Federal rules allowing certain takings still apply, unless they conflict with California's own fish and game law. The state protection it replaces had been written to lapse. It passed the California State Senate 30-10 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 454, which makes it unlawful, with no end date, to kill, capture, or possess migratory birds protected by the federal Migratory Bird Treaty Act. It fixes the list to the birds protected under that federal law before January 1, 2025, plus any added later, so a federal rollback does not narrow California's protection. Federal rules allowing certain takings still apply, unless they conflict with California's own fish and game law. The state protection it replaces had been written to lapse. It passed the California State Senate 30-10 and became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1572403,
+      "measure_id": "AB 309",
+      "vote_date": "2025-05-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 309, which makes permanent a rule that had been set to expire at the end of 2025, letting pharmacists and doctors supply clean needles and syringes to adults without a prescription. Adults 18 and over may obtain them for their own use, and a pharmacy that sells them must still provide written information or counselling. It passed the California State Assembly 54-15 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 309, which makes permanent a rule that had been set to expire at the end of 2025, letting pharmacists and doctors supply clean needles and syringes to adults without a prescription. Adults 18 and over may obtain them for their own use, and a pharmacy that sells them must still provide written information or counselling. It passed the California State Assembly 54-15 and became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1600943,
+      "measure_id": "AB 309",
+      "vote_date": "2025-09-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 309, which makes permanent a rule that had been set to expire at the end of 2025, letting pharmacists and doctors supply clean needles and syringes to adults without a prescription. Adults 18 and over may obtain them for their own use, and a pharmacy that sells them must still provide written information or counselling. It passed the California State Senate 28-11 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 309, which makes permanent a rule that had been set to expire at the end of 2025, letting pharmacists and doctors supply clean needles and syringes to adults without a prescription. Adults 18 and over may obtain them for their own use, and a pharmacy that sells them must still provide written information or counselling. It passed the California State Senate 28-11 and became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601347,
+      "measure_id": "SB 262",
+      "vote_date": "2025-09-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 262, which widens what counts as a prohousing policy when the state rates how well a city or county supports new housing. Policies that keep people in the homes they already have now count, alongside the existing examples such as local money for housing and zoning that allows homes to be built by right. A city or county rated prohousing gets extra points when it applies for certain state funding programs. It passed the California State Assembly 57-15 and became law.",
+      "nay_description": "Voted against passing Senate Bill 262, which widens what counts as a prohousing policy when the state rates how well a city or county supports new housing. Policies that keep people in the homes they already have now count, alongside the existing examples such as local money for housing and zoning that allows homes to be built by right. A city or county rated prohousing gets extra points when it applies for certain state funding programs. It passed the California State Assembly 57-15 and became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601648,
+      "measure_id": "SB 262",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 262, which widens what counts as a prohousing policy when the state rates how well a city or county supports new housing. Policies that keep people in the homes they already have now count, alongside the existing examples such as local money for housing and zoning that allows homes to be built by right. A city or county rated prohousing gets extra points when it applies for certain state funding programs. The California State Senate agreed 27-11, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 262, which widens what counts as a prohousing policy when the state rates how well a city or county supports new housing. Policies that keep people in the homes they already have now count, alongside the existing examples such as local money for housing and zoning that allows homes to be built by right. A city or county rated prohousing gets extra points when it applies for certain state funding programs. The California State Senate agreed 27-11, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602534,
+      "measure_id": "AB 727",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 727, which requires public schools teaching grades 7 through 12, and public colleges, to print an LGBTQ+ suicide crisis line on the student identification cards they issue. Both the phone number and the text line must appear, starting July 1, 2026, alongside the 988 crisis line those cards already carry. The California State Assembly agreed 58-15, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 727, which requires public schools teaching grades 7 through 12, and public colleges, to print an LGBTQ+ suicide crisis line on the student identification cards they issue. Both the phone number and the text line must appear, starting July 1, 2026, alongside the 988 crisis line those cards already carry. The California State Assembly agreed 58-15, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601635,
+      "measure_id": "AB 727",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 727, which requires public schools teaching grades 7 through 12, and public colleges, to print an LGBTQ+ suicide crisis line on the student identification cards they issue. Both the phone number and the text line must appear, starting July 1, 2026, alongside the 988 crisis line those cards already carry. It passed the California State Senate 30-10 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 727, which requires public schools teaching grades 7 through 12, and public colleges, to print an LGBTQ+ suicide crisis line on the student identification cards they issue. Both the phone number and the text line must appear, starting July 1, 2026, alongside the 988 crisis line those cards already carry. It passed the California State Senate 30-10 and became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

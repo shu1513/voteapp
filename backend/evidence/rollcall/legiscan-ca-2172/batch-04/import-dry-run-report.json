@@ -1,0 +1,658 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": true,
+  "skipExisting": false,
+  "startedAt": "2026-08-30T02:27:09.903Z",
+  "finishedAt": "2026-08-30T02:27:24.965Z",
+  "jurisdiction": "CA",
+  "sessionId": 2172,
+  "evidenceDir": "/Users/shu/legiscan-data/ca-2172-evidence",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "/Users/shu/voteApp/.claude/worktrees/hungry-engelbart-5b1814/backend/evidence/rollcall/legiscan-ca-2172/crosswalk.json",
+  "crosswalkEntries": 121,
+  "peopleFile": "/Users/shu/voteApp/.claude/worktrees/hungry-engelbart-5b1814/backend/evidence/rollcall/legiscan-ca-2172/legiscan-people-ca-2172.json",
+  "peopleMembers": 121,
+  "files": 5328,
+  "outcomes": {
+    "not_approved": 5245,
+    "dry_run": 83
+  },
+  "actions": {
+    "insert": 806,
+    "unchanged": 2233
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-ca-house-2172-roll1572403.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1572403,
+      "outcome": "dry_run",
+      "legislativeVoteId": "fc8e0585-5323-4c9d-9b16-04ace21b0e11",
+      "reviewStatus": "approved",
+      "bill": "AB309",
+      "voteDate": "2025-05-15",
+      "officialVoteDate": null,
+      "measureId": "AB 309",
+      "question": "AB 309 Zbur Assembly Third Reading",
+      "originRunId": "rollcall:CA:house:2172:1572403:2026-08-30T02:27:09.903Z",
+      "members": 69,
+      "notVoting": 0,
+      "absent": 10,
+      "resolution": {
+        "unmatched_reviewed": 9,
+        "matched": 60
+      },
+      "actions": {
+        "insert": 60
+      },
+      "notified": 0,
+      "candidates": 60,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1601173.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1601173,
+      "outcome": "dry_run",
+      "legislativeVoteId": "fe126f1b-5e20-46fb-9fbf-cd9452731b17",
+      "reviewStatus": "approved",
+      "bill": "AB454",
+      "voteDate": "2025-09-04",
+      "officialVoteDate": null,
+      "measureId": "AB 454",
+      "question": "AB 454 Kalra Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1601173:2026-08-30T02:27:09.903Z",
+      "members": 75,
+      "notVoting": 0,
+      "absent": 4,
+      "resolution": {
+        "unmatched_reviewed": 11,
+        "matched": 64
+      },
+      "actions": {
+        "insert": 64
+      },
+      "notified": 0,
+      "candidates": 64,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1601347.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1601347,
+      "outcome": "dry_run",
+      "legislativeVoteId": "726d7e9a-b92f-4e2a-a151-57181991bdb5",
+      "reviewStatus": "approved",
+      "bill": "SB262",
+      "voteDate": "2025-09-08",
+      "officialVoteDate": null,
+      "measureId": "SB 262",
+      "question": "SB 262 Wahab Senate Third Reading By Ahrens",
+      "originRunId": "rollcall:CA:house:2172:1601347:2026-08-30T02:27:09.903Z",
+      "members": 72,
+      "notVoting": 0,
+      "absent": 8,
+      "resolution": {
+        "unmatched_reviewed": 8,
+        "matched": 64
+      },
+      "actions": {
+        "insert": 64
+      },
+      "notified": 0,
+      "candidates": 64,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1601466.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1601466,
+      "outcome": "dry_run",
+      "legislativeVoteId": "c89abb53-9ae5-4ba0-947d-b032340440aa",
+      "reviewStatus": "approved",
+      "bill": "AB1312",
+      "voteDate": "2025-09-09",
+      "officialVoteDate": null,
+      "measureId": "AB 1312",
+      "question": "AB 1312 Schiavo Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1601466:2026-08-30T02:27:09.903Z",
+      "members": 78,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 11,
+        "matched": 67
+      },
+      "actions": {
+        "insert": 67
+      },
+      "notified": 0,
+      "candidates": 67,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1601580.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1601580,
+      "outcome": "dry_run",
+      "legislativeVoteId": "06853c5b-e031-4392-bc7a-f81db6597691",
+      "reviewStatus": "approved",
+      "bill": "SB497",
+      "voteDate": "2025-09-09",
+      "officialVoteDate": null,
+      "measureId": "SB 497",
+      "question": "SB 497 Wiener Third Reading Urgency By Ward",
+      "originRunId": "rollcall:CA:house:2172:1601580:2026-08-30T02:27:09.903Z",
+      "members": 78,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 11,
+        "matched": 67
+      },
+      "actions": {
+        "insert": 67
+      },
+      "notified": 0,
+      "candidates": 67,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1601669.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1601669,
+      "outcome": "dry_run",
+      "legislativeVoteId": "1d0f7f66-b251-4e9e-9da5-a9cc79a712e4",
+      "reviewStatus": "approved",
+      "bill": "AB1340",
+      "voteDate": "2025-09-09",
+      "officialVoteDate": null,
+      "measureId": "AB 1340",
+      "question": "AB 1340 Wicks Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1601669:2026-08-30T02:27:09.903Z",
+      "members": 75,
+      "notVoting": 0,
+      "absent": 5,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 65
+      },
+      "actions": {
+        "insert": 65
+      },
+      "notified": 0,
+      "candidates": 65,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602139.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602139,
+      "outcome": "dry_run",
+      "legislativeVoteId": "ba6008a8-e5c9-4cbe-9a62-56064a737fa4",
+      "reviewStatus": "approved",
+      "bill": "SB59",
+      "voteDate": "2025-09-12",
+      "officialVoteDate": null,
+      "measureId": "SB 59",
+      "question": "SB 59 Wiener Third Reading Urgency By Mark González",
+      "originRunId": "rollcall:CA:house:2172:1602139:2026-08-30T02:27:09.903Z",
+      "members": 76,
+      "notVoting": 0,
+      "absent": 4,
+      "resolution": {
+        "unmatched_reviewed": 11,
+        "matched": 65
+      },
+      "actions": {
+        "insert": 65
+      },
+      "notified": 0,
+      "candidates": 65,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602291.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602291,
+      "outcome": "dry_run",
+      "legislativeVoteId": "78f295a6-e512-4ada-8db2-8d315964b151",
+      "reviewStatus": "approved",
+      "bill": "SB707",
+      "voteDate": "2025-09-13",
+      "officialVoteDate": null,
+      "measureId": "SB 707",
+      "question": "SB 707 Durazo Senate Third Reading By Blanca Rubio",
+      "originRunId": "rollcall:CA:house:2172:1602291:2026-08-30T02:27:09.903Z",
+      "members": 69,
+      "notVoting": 0,
+      "absent": 11,
+      "resolution": {
+        "unmatched_reviewed": 8,
+        "matched": 61
+      },
+      "actions": {
+        "insert": 61
+      },
+      "notified": 0,
+      "candidates": 61,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602324.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602324,
+      "outcome": "dry_run",
+      "legislativeVoteId": "1cfb9cae-c6c4-4e1f-bca2-f9042cbec5eb",
+      "reviewStatus": "approved",
+      "bill": "AB847",
+      "voteDate": "2025-09-13",
+      "officialVoteDate": null,
+      "measureId": "AB 847",
+      "question": "AB 847 Sharp-Collins Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1602324:2026-08-30T02:27:09.903Z",
+      "members": 66,
+      "notVoting": 0,
+      "absent": 14,
+      "resolution": {
+        "unmatched_reviewed": 7,
+        "matched": 59
+      },
+      "actions": {
+        "insert": 59
+      },
+      "notified": 0,
+      "candidates": 59,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602531.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602531,
+      "outcome": "dry_run",
+      "legislativeVoteId": "307cc1ba-d6a4-4680-bce1-b486cfceb0b6",
+      "reviewStatus": "approved",
+      "bill": "AB1362",
+      "voteDate": "2025-09-11",
+      "officialVoteDate": null,
+      "measureId": "AB 1362",
+      "question": "AB 1362 Kalra Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1602531:2026-08-30T02:27:09.903Z",
+      "members": 75,
+      "notVoting": 0,
+      "absent": 5,
+      "resolution": {
+        "unmatched_reviewed": 9,
+        "matched": 66
+      },
+      "actions": {
+        "insert": 66
+      },
+      "notified": 0,
+      "candidates": 66,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602534.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602534,
+      "outcome": "dry_run",
+      "legislativeVoteId": "d8d8bd47-9dbe-415d-806a-047500328302",
+      "reviewStatus": "approved",
+      "bill": "AB727",
+      "voteDate": "2025-09-10",
+      "officialVoteDate": null,
+      "measureId": "AB 727",
+      "question": "AB 727 Mark González Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1602534:2026-08-30T02:27:09.903Z",
+      "members": 73,
+      "notVoting": 0,
+      "absent": 7,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 63
+      },
+      "actions": {
+        "insert": 63
+      },
+      "notified": 0,
+      "candidates": 63,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1600943.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1600943,
+      "outcome": "dry_run",
+      "legislativeVoteId": "fc6825f9-fad9-4ce7-8b33-1cb2bfb2f7a3",
+      "reviewStatus": "approved",
+      "bill": "AB309",
+      "voteDate": "2025-09-03",
+      "officialVoteDate": null,
+      "measureId": "AB 309",
+      "question": "Assembly 3rd Reading AB309 Zbur et al. By Padilla Final Vote",
+      "originRunId": "rollcall:CA:senate:2172:1600943:2026-08-30T02:27:09.903Z",
+      "members": 39,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 29,
+        "matched": 10
+      },
+      "actions": {
+        "insert": 10
+      },
+      "notified": 0,
+      "candidates": 10,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1600963.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1600963,
+      "outcome": "dry_run",
+      "legislativeVoteId": "c8360035-11cf-43a1-aa24-35d06b9bd4eb",
+      "reviewStatus": "approved",
+      "bill": "AB454",
+      "voteDate": "2025-09-03",
+      "officialVoteDate": null,
+      "measureId": "AB 454",
+      "question": "Assembly 3rd Reading AB454 Kalra et al. By Allen Urgency Clause",
+      "originRunId": "rollcall:CA:senate:2172:1600963:2026-08-30T02:27:09.903Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 29,
+        "matched": 11
+      },
+      "actions": {
+        "insert": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601270.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601270,
+      "outcome": "dry_run",
+      "legislativeVoteId": "3039c1d5-189b-4ced-a521-ae7bc73e1870",
+      "reviewStatus": "approved",
+      "bill": "AB1340",
+      "voteDate": "2025-09-08",
+      "officialVoteDate": null,
+      "measureId": "AB 1340",
+      "question": "Assembly 3rd Reading AB1340 Wicks et al. By Cortese",
+      "originRunId": "rollcall:CA:senate:2172:1601270:2026-08-30T02:27:09.903Z",
+      "members": 39,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 28,
+        "matched": 11
+      },
+      "actions": {
+        "insert": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601279.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601279,
+      "outcome": "dry_run",
+      "legislativeVoteId": "01e6fc56-f160-4eec-b04a-5f6a63980124",
+      "reviewStatus": "approved",
+      "bill": "AB1312",
+      "voteDate": "2025-09-08",
+      "officialVoteDate": null,
+      "measureId": "AB 1312",
+      "question": "Assembly 3rd Reading AB1312 Schiavo By Pérez",
+      "originRunId": "rollcall:CA:senate:2172:1601279:2026-08-30T02:27:09.903Z",
+      "members": 35,
+      "notVoting": 0,
+      "absent": 5,
+      "resolution": {
+        "unmatched_reviewed": 24,
+        "matched": 11
+      },
+      "actions": {
+        "insert": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601635.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601635,
+      "outcome": "dry_run",
+      "legislativeVoteId": "94b021e2-93d2-488b-97d4-b05a7ac6843e",
+      "reviewStatus": "approved",
+      "bill": "AB727",
+      "voteDate": "2025-09-09",
+      "officialVoteDate": null,
+      "measureId": "AB 727",
+      "question": "Assembly 3rd Reading AB727 Mark González et al. By Pérez",
+      "originRunId": "rollcall:CA:senate:2172:1601635:2026-08-30T02:27:09.903Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 29,
+        "matched": 11
+      },
+      "actions": {
+        "insert": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601648.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601648,
+      "outcome": "dry_run",
+      "legislativeVoteId": "00eac738-272d-4329-a34d-daa6e51cdcf1",
+      "reviewStatus": "approved",
+      "bill": "SB262",
+      "voteDate": "2025-09-09",
+      "officialVoteDate": null,
+      "measureId": "SB 262",
+      "question": "Unfinished Business SB262 Wahab et al. Concurrence",
+      "originRunId": "rollcall:CA:senate:2172:1601648:2026-08-30T02:27:09.903Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 28,
+        "matched": 10
+      },
+      "actions": {
+        "insert": 10
+      },
+      "notified": 0,
+      "candidates": 10,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601787.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601787,
+      "outcome": "dry_run",
+      "legislativeVoteId": "e42a7307-53ba-4e36-a3e1-343dab17cdd7",
+      "reviewStatus": "approved",
+      "bill": "SB497",
+      "voteDate": "2025-09-10",
+      "officialVoteDate": null,
+      "measureId": "SB 497",
+      "question": "Unfinished Business SB497 Wiener et al. Urgency Clause Concurrence",
+      "originRunId": "rollcall:CA:senate:2172:1601787:2026-08-30T02:27:09.903Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 29,
+        "matched": 11
+      },
+      "actions": {
+        "insert": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601800.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601800,
+      "outcome": "dry_run",
+      "legislativeVoteId": "58d1037c-4b42-44db-9745-eb0e2249771d",
+      "reviewStatus": "approved",
+      "bill": "AB1362",
+      "voteDate": "2025-09-10",
+      "officialVoteDate": null,
+      "measureId": "AB 1362",
+      "question": "Assembly 3rd Reading AB1362 Kalra et al. By Laird",
+      "originRunId": "rollcall:CA:senate:2172:1601800:2026-08-30T02:27:09.903Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 27,
+        "matched": 11
+      },
+      "actions": {
+        "insert": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1602323.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1602323,
+      "outcome": "dry_run",
+      "legislativeVoteId": "e6d7022e-54d9-4f62-b9a2-5bcbaa587593",
+      "reviewStatus": "approved",
+      "bill": "AB847",
+      "voteDate": "2025-09-12",
+      "officialVoteDate": null,
+      "measureId": "AB 847",
+      "question": "Assembly 3rd Reading AB847 Sharp-Collins et al. By Arreguín",
+      "originRunId": "rollcall:CA:senate:2172:1602323:2026-08-30T02:27:09.903Z",
+      "members": 33,
+      "notVoting": 0,
+      "absent": 7,
+      "resolution": {
+        "unmatched_reviewed": 25,
+        "matched": 8
+      },
+      "actions": {
+        "insert": 8
+      },
+      "notified": 0,
+      "candidates": 8,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1602889.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1602889,
+      "outcome": "dry_run",
+      "legislativeVoteId": "1c9febd2-ee42-41f0-8866-249397dba25d",
+      "reviewStatus": "approved",
+      "bill": "SB59",
+      "voteDate": "2025-09-13",
+      "officialVoteDate": null,
+      "measureId": "SB 59",
+      "question": "Unfinished Business SB59 Wiener et al. Urgency Clause Concurrence",
+      "originRunId": "rollcall:CA:senate:2172:1602889:2026-08-30T02:27:09.903Z",
+      "members": 37,
+      "notVoting": 0,
+      "absent": 3,
+      "resolution": {
+        "unmatched_reviewed": 26,
+        "matched": 11
+      },
+      "actions": {
+        "insert": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    }
+  ],
+  "rollsScopedToBatch": true
+}
