@@ -102,8 +102,9 @@ describe("importReportFileName", () => {
     // The reviewing loop: dry runs before the import overwrite the plan.
     expect(importReportFileName(evidenceDir, true)).toBe("import-dry-run-report.json");
     writeFileSync(join(evidenceDir, "import-report.json"), "{}\n");
-    // After the import, a dry run is a check and must not eat the plan.
+    // After the import, a dry run is a check and must not eat the plan —
+    // and a real rerun (a maintenance re-import) must not eat the ledger.
     expect(importReportFileName(evidenceDir, true)).toBe("import-dry-run-rerun-report.json");
-    expect(importReportFileName(evidenceDir, false)).toBe("import-report.json");
+    expect(importReportFileName(evidenceDir, false)).toBe("import-rerun-report.json");
   });
 });

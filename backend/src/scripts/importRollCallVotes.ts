@@ -249,19 +249,20 @@ export function collectVoters(
 }
 
 /**
- * Which report file a run writes. Once the dir holds import-report.json,
- * import-dry-run-report.json is the reviewed pre-import plan (committed as
- * evidence), so a later dry run — a post-import check — lands in a rerun
- * file instead of eating the plan. Before the import, repeated dry runs
- * overwrite the plan file; that is the reviewing loop.
+ * Which report file a run writes. Once the dir holds import-report.json —
+ * the committed ledger of the FIRST import — neither kind of later run may
+ * eat it: a dry rerun (a post-import check) lands in
+ * import-dry-run-rerun-report.json, and a real rerun (a maintenance
+ * re-import propagating a corrected judgment) lands in
+ * import-rerun-report.json. Before the import, repeated dry runs overwrite
+ * the plan file; that is the reviewing loop.
  */
 export function importReportFileName(evidenceDir: string, dryRun: boolean): string {
+  const hasLedger = existsSync(resolve(evidenceDir, "import-report.json"));
   if (!dryRun) {
-    return "import-report.json";
+    return hasLedger ? "import-rerun-report.json" : "import-report.json";
   }
-  return existsSync(resolve(evidenceDir, "import-report.json"))
-    ? "import-dry-run-rerun-report.json"
-    : "import-dry-run-report.json";
+  return hasLedger ? "import-dry-run-rerun-report.json" : "import-dry-run-report.json";
 }
 
 function readValueFlag(argv: readonly string[], flagName: string): string | null {
