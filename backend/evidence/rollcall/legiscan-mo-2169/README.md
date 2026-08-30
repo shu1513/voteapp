@@ -113,6 +113,32 @@ Hardwick), bringing this batch to **733 records across 117 candidates**, converg
 83 divided **and** enacted kept-floor rolls on 35 measures (house 44 / senate 39); only **20** of
 those measures have a divided *House* roll. Ledger: `survey/divided-enacted-worklist.tsv`.
 
+## Special sessions — surveyed 2026-08-30, NOT imported
+
+Missouri ran two 2025 special sessions, and they are separate LegiScan datasets that the `MO` config
+(pinned to session 2169) cannot fetch.
+
+**Session 2226 (2nd Special) is the highest-value Missouri material outstanding.** 13 bills, 8 roll
+calls, and both enacted measures are marquee and divided in both chambers: **HB 1**, mid-decade
+congressional redistricting (House 90-65, Senate 21-11), and **HJR 3**, the "Protect Missouri Voters"
+constitutional amendment that goes to the ballot (House 104-51, Senate 21-11). Its desc vocabulary is
+already covered by the MO patterns — `HJRs/HBs FOR THIRD READING` kept, `FOR PERFECTION` excluded,
+`Senate: Third Reading` kept — and all 194 of its people appear in the 2169 snapshot, so **the
+committed `crosswalk.json` covers it unchanged** (people_ids are session-stable).
+
+**Session 2216 (1st Special) is not worth importing and carries a trap.** Its only divided
+House rolls are dated 2025-03-13 with the desc `House: SBs FOR THIRD READING SS#2 SB 4` and tallies
+99-44 and 96-44 — which are the **regular session's** SB 4 (utilities) votes, attached by LegiScan to
+the special session's unrelated SB 4 (Missouri Housing Trust Fund disbursement). The roll_call_ids do
+not collide with 2169's, so nothing would be deduped: importing 2216 would file utility-bill votes
+under a housing bill. Everything else there is either an appropriation or a senate-only roll reaching
+three candidates.
+
+Registering 2226 needs a registry entry, not a code change: the registry key and the `jurisdiction`
+field are separate, so a `MO-2226` key carrying `jurisdiction: "MO"` and `sessionId: 2226` pins the
+second session while every DB write stays under `MO`. That is a deliberate extension of the key
+convention and should be argued in its own PR.
+
 ## Judging source
 
 **The Missouri House publishes an official, nonpartisan bill summary for every version of every
