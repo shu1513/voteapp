@@ -53,7 +53,7 @@ import { useMe } from "@voteapp/api-client";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { UNRANKED_RESEARCH_AREA_RANK } from "@voteapp/api-client";
 
-type RecordView = "by_issue" | "my_issues" | "newest";
+type RecordView = "my_issues" | "newest";
 
 // A researched incumbent can carry 50+ records; rendering everything open
 // made the profile a 10,000px wall. Grouped views start with EVERY issue
@@ -517,17 +517,10 @@ export function CandidatePage() {
   const { follows, canFollow } = useFollows();
   const { me } = useMe();
   const { hasSaved, preferences, weights, isLoading: savedAreasLoading } = useMyResearchAreas();
-  // null = the user hasn't picked a view; default to "my issues first" once
-  // saved areas exist (they load async, so this can't live in useState's
-  // initial value). An explicit pick always wins — except a picked
-  // "my_issues" is ignored while hasSaved is false (the user cleared their
-  // areas in Settings; the shared query key syncs it here), because its
-  // <option> is gated on hasSaved and a value without an option leaves the
-  // select uncontrolled. The pick is kept, not cleared: re-saving areas
-  // restores it.
-  const [chosenRecordView, setChosenRecordView] = useState<RecordView | null>(null);
-  const effectiveChosenView = chosenRecordView === "my_issues" && !hasSaved ? null : chosenRecordView;
-  const recordView = effectiveChosenView ?? (hasSaved ? "my_issues" : "by_issue");
+  // "My issues first" is the only grouped view: with no saved areas the
+  // preference reorder is a no-op, so it degrades to the public-salience
+  // order a plain "by issue" view would show.
+  const [recordView, setRecordView] = useState<RecordView>("my_issues");
   // Keyed by candidate, unlike the view pick above: the roster pager keeps
   // this component mounted across candidates, and a bare boolean would leak
   // one candidate's 50-record expansion into the next — defeating the
@@ -547,9 +540,7 @@ export function CandidatePage() {
   const ongoingFinance = detail.ongoing_finance ?? {};
   const isFollowing = (follows ?? []).some((follow) => follow.candidate_id === candidate.candidate_id);
   const profileLinks = candidateProfileLinks(candidate);
-  const baseGroups = groupRecords(candidate.records);
-  const recordGroups =
-    recordView === "my_issues" ? orderGroupsByPreference(baseGroups, preferences) : baseGroups;
+  const recordGroups = orderGroupsByPreference(groupRecords(candidate.records), preferences);
   const today = usLatestLocalDate();
   const ongoingElections = candidate.elections.filter((election) => election.election_date >= today);
   // The history list splits on the same date boundary: "is in" would misread
@@ -952,11 +943,10 @@ export function CandidatePage() {
                 View
                 <select
                   value={recordView}
-                  onChange={(event) => setChosenRecordView(event.target.value as RecordView)}
+                  onChange={(event) => setRecordView(event.target.value as RecordView)}
                   className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none"
                 >
-                  <option value="by_issue">By issue</option>
-                  {hasSaved ? <option value="my_issues">My issues first</option> : null}
+                  <option value="my_issues">My issues first</option>
                   <option value="newest">Newest first</option>
                 </select>
               </label>
