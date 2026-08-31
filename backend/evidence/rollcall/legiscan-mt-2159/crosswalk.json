@@ -1,0 +1,763 @@
+{
+ "source": "legiscan",
+ "jurisdiction": "MT",
+ "session_id": 2159,
+ "note": "people_id -> VoteApp candidate id for the Montana 2025 Regular Session (LegiScan 2159). Seats in these notes come from Montana's own roster of the 69th Legislature (api.legmt.gov), NOT from LegiScan's `district` field: LegiScan still carries the pre-2024-map district for 63 of the 151 members, so its seat disagrees with the state's own record more often than it agrees. Mapped entries are the proposer's 85 matches, each checked against the official seat, plus 2 hand-added members whose working name LegiScan stores only in its `nickname` field. Every unmapped entry carries the reason it is null.",
+ "entries": [
+  {
+   "people_id": 7855,
+   "candidate_id": "07417713-ffa1-4d99-ba8e-c86b9f74acfd",
+   "note": "Llew Jones, HD-018 in the 2025 session; running for the other chamber, and SD-9 contains HD-17 and HD-18; name matched by first-name prefix (Llew Jones / Llew Jones)"
+  },
+  {
+   "people_id": 7872,
+   "candidate_id": null,
+   "note": "Jill Cohenour, HD-083 in the 2025 session; no 2026 candidacy. The Joe Cohenour on the House District 83 ballot is a different person, deliberately not linked"
+  },
+  {
+   "people_id": 7923,
+   "candidate_id": null,
+   "note": "Mary Caferro, HD-081 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 7926,
+   "candidate_id": null,
+   "note": "Tom McGillvray, SD-026 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 7986,
+   "candidate_id": null,
+   "note": "John Esp, SD-029 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 7994,
+   "candidate_id": null,
+   "note": "Jonathan Windy Boy, SD-016 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 10396,
+   "candidate_id": "7c5123f8-af35-40a7-af4b-af236ecf11ed",
+   "note": "Steve Fitzpatrick, HD-024 in the 2025 session"
+  },
+  {
+   "people_id": 10405,
+   "candidate_id": null,
+   "note": "Frank Smith, HD-031 in the 2025 session; no 2026 candidacy. The Melissa Smith running in House District 39 is a different person, deliberately not linked"
+  },
+  {
+   "people_id": 11953,
+   "candidate_id": null,
+   "note": "Mike Cuffe, SD-001 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 11962,
+   "candidate_id": null,
+   "note": "Edward Buttrey, HD-021 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 12051,
+   "candidate_id": null,
+   "note": "Ellie Boldman, SD-047 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 14173,
+   "candidate_id": null,
+   "note": "Greg Hertz, SD-007 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 14259,
+   "candidate_id": null,
+   "note": "Wylie Galt, SD-039 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 14331,
+   "candidate_id": null,
+   "note": "Carl Glimm, SD-003 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 14338,
+   "candidate_id": "c7b76311-d5e6-4f6e-a846-b77673186fc0",
+   "note": "Dennis Lenz, SD-025 in the 2025 session"
+  },
+  {
+   "people_id": 14351,
+   "candidate_id": "e40461f0-ffa6-491e-995c-3c007a1ae613",
+   "note": "Daniel Zolnikov, SD-022 in the 2025 session"
+  },
+  {
+   "people_id": 16313,
+   "candidate_id": null,
+   "note": "Denise Hayman, SD-032 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 16341,
+   "candidate_id": "2cb4ec20-4f62-4eae-8fca-2f8839d322cb",
+   "note": "Mary Dunwell, SD-042 in the 2025 session"
+  },
+  {
+   "people_id": 16342,
+   "candidate_id": "3ca9586b-934a-4f36-a1c4-d4cd34e12d2e",
+   "note": "Willis Curdy, SD-049 in the 2025 session"
+  },
+  {
+   "people_id": 16353,
+   "candidate_id": null,
+   "note": "Susan Webber, SD-008 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 16355,
+   "candidate_id": "32c719e5-6ddf-4263-8bef-1efb3f468afe",
+   "note": "Janet Ellis, SD-041 in the 2025 session; running for the other chamber, and SD-41 contains HD-81 and HD-82"
+  },
+  {
+   "people_id": 16356,
+   "candidate_id": "bed0eac2-bf4a-467f-a0d6-7216665270a3",
+   "note": "Andrea Olsen, SD-048 in the 2025 session"
+  },
+  {
+   "people_id": 16375,
+   "candidate_id": null,
+   "note": "Wendy McKamey, SD-012 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 16445,
+   "candidate_id": null,
+   "note": "Vince Ricci, SD-027 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 16562,
+   "candidate_id": "d1fb5543-9924-472f-ada7-a91d9a3eae4a",
+   "note": "Forrest Mandeville, SD-028 in the 2025 session"
+  },
+  {
+   "people_id": 16563,
+   "candidate_id": null,
+   "note": "Theresa Manzella, SD-044 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 16656,
+   "candidate_id": "fbab26db-2b21-463d-8ba7-92a5ad08a6c1",
+   "note": "Mark Noland, SD-006 in the 2025 session"
+  },
+  {
+   "people_id": 16658,
+   "candidate_id": null,
+   "note": "Christopher Pope, SD-033 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 16672,
+   "candidate_id": "5db347d0-b82c-4c46-bd4a-ded089a528c0",
+   "note": "Jedediah Hinkle, HD-067 in the 2025 session"
+  },
+  {
+   "people_id": 18028,
+   "candidate_id": null,
+   "note": "Dave Fern, SD-002 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 18044,
+   "candidate_id": null,
+   "note": "Denley Loge, SD-045 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 18373,
+   "candidate_id": null,
+   "note": "Becky Beard, SD-038 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 18381,
+   "candidate_id": "22f7c3af-9093-455a-8f07-757a0d07a0c6",
+   "note": "Shane Morigeau, SD-050 in the 2025 session"
+  },
+  {
+   "people_id": 18387,
+   "candidate_id": null,
+   "note": "Jeremy Trebas, SD-010 in the 2025 session; no 2026 candidacy. The Hannah Trebas running in House District 19 is a different person, deliberately not linked"
+  },
+  {
+   "people_id": 18388,
+   "candidate_id": null,
+   "note": "Barry Usher, SD-019 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 18389,
+   "candidate_id": null,
+   "note": "Sue Vinton, SD-020 in the 2025 session; no 2026 candidacy. The Mike Vinton running in House District 40 is a different person, and is mapped separately"
+  },
+  {
+   "people_id": 18515,
+   "candidate_id": null,
+   "note": "Matt Regier, SD-005 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 18552,
+   "candidate_id": null,
+   "note": "Russel Tempel, SD-014 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 19734,
+   "candidate_id": null,
+   "note": "Pat Flowers, SD-031 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 19742,
+   "candidate_id": "e249407b-8675-485f-a275-a0907fa6ddfd",
+   "note": "David Bedey, HD-086 in the 2025 session; running for the other chamber, and SD-43 contains HD-85 and HD-86"
+  },
+  {
+   "people_id": 19909,
+   "candidate_id": null,
+   "note": "Julie Dooling, listed by LegiScan as HD-070 but absent from Montana's official roster of the 69th Legislature; no 2026 candidacy either way"
+  },
+  {
+   "people_id": 19910,
+   "candidate_id": null,
+   "note": "Katie Sullivan, HD-093 in the 2025 session; no 2026 candidacy. The Patrick Sullivan running in House District 75 is a different person, deliberately not linked"
+  },
+  {
+   "people_id": 19911,
+   "candidate_id": null,
+   "note": "Marilyn Marler, HD-094 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 19916,
+   "candidate_id": "7f5760b5-c080-43c5-a231-b13a09d114c2",
+   "note": "Bruce Gillespie, seat not in the official 69th Legislature roster in the 2025 session; running for the other chamber, and SD-9 contains HD-17 and HD-18"
+  },
+  {
+   "people_id": 20370,
+   "candidate_id": null,
+   "note": "John Fuller, SD-004 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 20371,
+   "candidate_id": null,
+   "note": "Joshua Kassmier, SD-013 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 20372,
+   "candidate_id": null,
+   "note": "Neil Duram, HD-001 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 20496,
+   "candidate_id": null,
+   "note": "Derek Harvey, SD-037 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 20497,
+   "candidate_id": null,
+   "note": "Connie Keogh, HD-092 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 20498,
+   "candidate_id": "43552bc8-a7b3-465f-9f47-4eab7568884a",
+   "note": "Emma Kerr-Carpenter, SD-023 in the 2025 session"
+  },
+  {
+   "people_id": 20501,
+   "candidate_id": null,
+   "note": "Bill Mercer, HD-052 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 20502,
+   "candidate_id": "d9579cd7-9a76-4136-8508-2bb8317901e4",
+   "note": "Tyson Running Wolf, HD-016 in the 2025 session; running for the other chamber, and SD-8 contains HD-15 and HD-16"
+  },
+  {
+   "people_id": 20677,
+   "candidate_id": null,
+   "note": "Jason Ellsworth, SD-043 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 20760,
+   "candidate_id": null,
+   "note": "Kenneth Bogner, SD-018 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 21433,
+   "candidate_id": "384e18b9-1170-4f63-9a2a-05aeeff93e30",
+   "note": "Debo Powers, HD-003 in the 2025 session"
+  },
+  {
+   "people_id": 21762,
+   "candidate_id": "001cc7a2-f9f7-4834-bd08-e142b9877a3d",
+   "note": "Steve Gist, HD-025 in the 2025 session"
+  },
+  {
+   "people_id": 21770,
+   "candidate_id": null,
+   "note": "Marta Bertoglio, HD-075 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 21771,
+   "candidate_id": "d6a5f087-01d2-4588-83c0-8d0de674a5f4",
+   "note": "Mike Fox, HD-032 in the 2025 session"
+  },
+  {
+   "people_id": 21773,
+   "candidate_id": "dfb74e91-9d2a-4fed-bf32-57b11c425cbc",
+   "note": "Jane Gillette, HD-077 in the 2025 session"
+  },
+  {
+   "people_id": 21774,
+   "candidate_id": "86a2afcd-ed22-438e-b1c5-691064723a3b",
+   "note": "Kerri Seekins-Crowe, HD-039 in the 2025 session"
+  },
+  {
+   "people_id": 21896,
+   "candidate_id": "c6053f37-e079-42ee-acfa-3a63ff3f4cba",
+   "note": "Donavon Hawk, HD-072 in the 2025 session"
+  },
+  {
+   "people_id": 21897,
+   "candidate_id": null,
+   "note": "Kenneth Walsh, HD-069 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 21982,
+   "candidate_id": null,
+   "note": "Ed Stafman, HD-059 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 22021,
+   "candidate_id": null,
+   "note": "Ron Marshall, HD-087 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 22084,
+   "candidate_id": "2e5b4685-befc-4bcb-b45a-e4e72615d5a6",
+   "note": "Braxton Mitchell, HD-005 in the 2025 session"
+  },
+  {
+   "people_id": 22118,
+   "candidate_id": null,
+   "note": "Linda Reksten, HD-013 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 22177,
+   "candidate_id": "ca77fe3c-9369-459b-a218-4d6517a16361",
+   "note": "Fiona Nave, HD-056 in the 2025 session"
+  },
+  {
+   "people_id": 22178,
+   "candidate_id": "b2a0e9b2-c5b6-4f1d-8b72-0ddc6a9ced7c",
+   "note": "Jerry Schillinger, HD-034 in the 2025 session"
+  },
+  {
+   "people_id": 22184,
+   "candidate_id": "49bbd380-a71d-48f1-a5c4-4dfd1a5850c7",
+   "note": "Larry Brewster, HD-043 in the 2025 session"
+  },
+  {
+   "people_id": 22186,
+   "candidate_id": "c1ee1ae1-b869-4817-bb11-dd74c58317fd",
+   "note": "Paul Fielder, HD-014 in the 2025 session"
+  },
+  {
+   "people_id": 22187,
+   "candidate_id": "cbddd89f-cfac-41c4-9683-4b1f8bbd209e",
+   "note": "Tom France, HD-099 in the 2025 session; hand-added because LegiScan stores the legal first name Thomas and the working name Tom only in its nickname field, which the proposer does not read"
+  },
+  {
+   "people_id": 22190,
+   "candidate_id": "ab1e7bec-f9fa-45a5-a00d-43f7d3406811",
+   "note": "Caleb Hinkle, HD-068 in the 2025 session; running for the other chamber, and SD-34 contains HD-67 and HD-68"
+  },
+  {
+   "people_id": 22192,
+   "candidate_id": "581b6f1b-ea9b-499c-a9aa-78148b1f6b16",
+   "note": "Kelly Kortum, HD-064 in the 2025 session; running for the other chamber, and SD-32 contains HD-63 and HD-64"
+  },
+  {
+   "people_id": 22193,
+   "candidate_id": "074c84cf-4e74-4b56-a1fc-08d9dcf83533",
+   "note": "Brandon Ler, HD-033 in the 2025 session"
+  },
+  {
+   "people_id": 22194,
+   "candidate_id": null,
+   "note": "Sara Novak, SD-036 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 22195,
+   "candidate_id": null,
+   "note": "Bob Phalen, SD-017 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 22196,
+   "candidate_id": "37bb4771-4db3-4602-9f32-3f04c2d68d35",
+   "note": "Amy Regier, HD-006 in the 2025 session; files in a neighbouring Senate district (Senate District 3, which contains her House District 6, is not on the 2026 ballot)"
+  },
+  {
+   "people_id": 22198,
+   "candidate_id": "7ebf0455-ea7d-4d14-8095-ba9c97aba74c",
+   "note": "Mark Thane, HD-089 in the 2025 session"
+  },
+  {
+   "people_id": 22201,
+   "candidate_id": "db4933f3-f102-4ab5-b73b-d6fad4c19afe",
+   "note": "Katie Zolnikov, HD-044 in the 2025 session"
+  },
+  {
+   "people_id": 22943,
+   "candidate_id": null,
+   "note": "Sherry Essmann, HD-049 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 23146,
+   "candidate_id": null,
+   "note": "Michael Yakawich, SD-024 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 23191,
+   "candidate_id": "badc7ccf-6e33-42e0-9b72-6bdb1c13fb75",
+   "note": "George Nikolakakos, HD-022 in the 2025 session; files in a neighbouring Senate district (Senate District 11, which contains his House District 22, is also on the ballot; he filed in 12)"
+  },
+  {
+   "people_id": 23292,
+   "candidate_id": "72f9c7d7-f2d6-49a6-8382-40d75d2961c8",
+   "note": "Greg Oblander, HD-038 in the 2025 session"
+  },
+  {
+   "people_id": 23296,
+   "candidate_id": "65510527-10bd-4839-99d2-df2be105b647",
+   "note": "Gary Parry, HD-035 in the 2025 session"
+  },
+  {
+   "people_id": 23312,
+   "candidate_id": "901352a0-429b-4b2e-b994-04508adf8733",
+   "note": "Greg Kmetz, HD-036 in the 2025 session; running for the other chamber, and SD-18 contains HD-35 and HD-36"
+  },
+  {
+   "people_id": 23313,
+   "candidate_id": null,
+   "note": "Nelly Nicol, HD-053 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 23315,
+   "candidate_id": "bb71188c-799f-4f5b-90bc-b997fff788ff",
+   "note": "Terry Falk, HD-010 in the 2025 session"
+  },
+  {
+   "people_id": 23326,
+   "candidate_id": null,
+   "note": "John Fitzpatrick, HD-076 in the 2025 session; no 2026 candidacy. The Patrick Fitzpatrick running in Senate District 6 is a different person, deliberately not linked"
+  },
+  {
+   "people_id": 23334,
+   "candidate_id": "011af813-4d14-48d0-9884-38c9943319bb",
+   "note": "Brad Barker, HD-055 in the 2025 session"
+  },
+  {
+   "people_id": 23335,
+   "candidate_id": "5838c020-3745-490b-99d7-3e12e86e5676",
+   "note": "Jodee Etchart, HD-051 in the 2025 session"
+  },
+  {
+   "people_id": 23336,
+   "candidate_id": "5b3fdba4-6fd7-48ef-a63d-999034a78ec0",
+   "note": "Russel Miner, HD-026 in the 2025 session; name matched by first-name prefix (Russel Miner / Russ Miner)"
+  },
+  {
+   "people_id": 23337,
+   "candidate_id": "820cd636-b686-4ca8-801b-b6befae762ed",
+   "note": "Courtenay Sprunger, HD-007 in the 2025 session"
+  },
+  {
+   "people_id": 23363,
+   "candidate_id": "e5493f5d-50b3-4f15-a452-847c9e0a3aa9",
+   "note": "Jennifer Lynch, HD-073 in the 2025 session"
+  },
+  {
+   "people_id": 23370,
+   "candidate_id": null,
+   "note": "Daniel Emrich, SD-011 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 23372,
+   "candidate_id": "cadd1c93-d031-4890-81b6-d0dfed663d42",
+   "note": "Paul Tuss, HD-027 in the 2025 session"
+  },
+  {
+   "people_id": 23607,
+   "candidate_id": null,
+   "note": "Shelley Vance, SD-034 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 23629,
+   "candidate_id": "f49c3794-53fd-474b-bce3-d7a105a296ea",
+   "note": "Denise Baum, HD-045 in the 2025 session"
+  },
+  {
+   "people_id": 23630,
+   "candidate_id": "efc20e1e-e8a4-4cd2-a4ac-ed2ce59eff33",
+   "note": "Bob Carter, HD-096 in the 2025 session; hand-added because LegiScan stores the legal first name Robert and the working name Bob only in its nickname field, which the proposer does not read"
+  },
+  {
+   "people_id": 23631,
+   "candidate_id": "3b0e0d5d-2c2b-4f41-a1f0-d386ed1d699e",
+   "note": "Lee Deming, HD-054 in the 2025 session"
+  },
+  {
+   "people_id": 23632,
+   "candidate_id": "56500058-5df9-4019-9d5c-77815e3534d3",
+   "note": "SJ Howell, HD-100 in the 2025 session"
+  },
+  {
+   "people_id": 23633,
+   "candidate_id": "cc9e5b99-98df-4219-af60-7dafc3da3bda",
+   "note": "Jonathan Karlen, HD-098 in the 2025 session"
+  },
+  {
+   "people_id": 23634,
+   "candidate_id": null,
+   "note": "Melissa Romano, HD-080 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 23635,
+   "candidate_id": null,
+   "note": "Laura Smith, SD-040 in the 2025 session; no 2026 candidacy. The Melissa Smith running in House District 39 is a different person, deliberately not linked"
+  },
+  {
+   "people_id": 23637,
+   "candidate_id": "84aa95a1-622b-480f-9afd-ae67553bce22",
+   "note": "Eric Matthews, HD-066 in the 2025 session"
+  },
+  {
+   "people_id": 23638,
+   "candidate_id": "c68e2f0e-b5d1-4157-9b65-7a61b7ee1eb6",
+   "note": "Zooey Zephyr, HD-095 in the 2025 session"
+  },
+  {
+   "people_id": 23639,
+   "candidate_id": null,
+   "note": "Zack Wirth, HD-017 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 25390,
+   "candidate_id": "d3d86dd3-b408-4b4f-aa97-0bdaff2cb132",
+   "note": "Eric Albus, HD-028 in the 2025 session; running for the other chamber, and SD-14 contains HD-27 and HD-28"
+  },
+  {
+   "people_id": 25391,
+   "candidate_id": null,
+   "note": "Lyn Bennett, HD-004 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 25392,
+   "candidate_id": "4f31567c-e6e8-4784-9089-5cde6d63d00c",
+   "note": "Ed Byrne, HD-011 in the 2025 session"
+  },
+  {
+   "people_id": 25393,
+   "candidate_id": "c5c7fac8-aec3-44e6-b8ce-b5d20aee664b",
+   "note": "Brian Close, HD-065 in the 2025 session"
+  },
+  {
+   "people_id": 25394,
+   "candidate_id": null,
+   "note": "Curtis Cochran, HD-090 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 25395,
+   "candidate_id": "79c06e7c-0a82-4d63-89dd-f95447262bb7",
+   "note": "Thedis Crowe, HD-015 in the 2025 session"
+  },
+  {
+   "people_id": 25396,
+   "candidate_id": "edce702c-8713-469b-a352-91d4417fc656",
+   "note": "Melody Cunningham, HD-097 in the 2025 session"
+  },
+  {
+   "people_id": 25397,
+   "candidate_id": "f3ce897b-2471-4a18-9964-62ed27ee4ffc",
+   "note": "Scott DeMarois, HD-071 in the 2025 session"
+  },
+  {
+   "people_id": 25398,
+   "candidate_id": null,
+   "note": "Becky Edwards, HD-061 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 25399,
+   "candidate_id": "cfe35e02-50e0-461e-8fff-7f2ed7820f16",
+   "note": "Pete Elverum, HD-082 in the 2025 session"
+  },
+  {
+   "people_id": 25400,
+   "candidate_id": "c20799b8-e77f-4d9e-b602-8b92be550614",
+   "note": "Sidney Fitzpatrick, HD-042 in the 2025 session"
+  },
+  {
+   "people_id": 25401,
+   "candidate_id": "d69907f2-9baf-4954-8241-4ee152c641df",
+   "note": "Shelly Fyant, HD-091 in the 2025 session"
+  },
+  {
+   "people_id": 25402,
+   "candidate_id": "3e0fbfab-19a2-4849-a099-6ff031715cc4",
+   "note": "Randyn Gregg, HD-078 in the 2025 session"
+  },
+  {
+   "people_id": 25403,
+   "candidate_id": "dd26bb2a-b2f9-4cb6-b4d0-db18f75c2ea1",
+   "note": "Alanah Griffith, HD-060 in the 2025 session"
+  },
+  {
+   "people_id": 25404,
+   "candidate_id": "9c4b0649-7932-4e55-b8d8-2fe5b7b23b71",
+   "note": "Jamie Isaly, HD-058 in the 2025 session"
+  },
+  {
+   "people_id": 25405,
+   "candidate_id": "d636f767-ae48-4efa-b5b0-6c6b7445dc67",
+   "note": "Steven Kelly, HD-009 in the 2025 session"
+  },
+  {
+   "people_id": 25406,
+   "candidate_id": "afcca138-807f-4a60-bcff-50ea1cae63c4",
+   "note": "Shane Klakken, HD-037 in the 2025 session"
+  },
+  {
+   "people_id": 25407,
+   "candidate_id": null,
+   "note": "Gayle Lammers, SD-021 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 25408,
+   "candidate_id": "5cc3aa2d-1623-4ae6-9a31-8098e0c1f4ae",
+   "note": "Marc Lee, HD-074 in the 2025 session"
+  },
+  {
+   "people_id": 25409,
+   "candidate_id": null,
+   "note": "Kathy Love, HD-085 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 25410,
+   "candidate_id": "57561ab7-4a55-4a60-a1ab-d8f3b68e79f9",
+   "note": "Shannon Maness, HD-070 in the 2025 session"
+  },
+  {
+   "people_id": 25411,
+   "candidate_id": "e7131cc8-681d-4afa-abb7-093429f10768",
+   "note": "Tom Millett, HD-002 in the 2025 session"
+  },
+  {
+   "people_id": 25412,
+   "candidate_id": "51a89b46-80a9-4fb1-a953-2f9435d3544f",
+   "note": "Valerie Moore, HD-029 in the 2025 session"
+  },
+  {
+   "people_id": 25413,
+   "candidate_id": "dc4eb0f3-749f-41e3-9bbc-a4ae769b43ef",
+   "note": "Luke Muszkiewicz, HD-079 in the 2025 session"
+  },
+  {
+   "people_id": 25414,
+   "candidate_id": null,
+   "note": "Anthony Nicastro, HD-050 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 25415,
+   "candidate_id": "eef1fbe0-6902-4e27-8539-3040e7898a6f",
+   "note": "Melissa Nikolakakos, HD-020 in the 2025 session"
+  },
+  {
+   "people_id": 25416,
+   "candidate_id": "c8957557-93e8-4238-af8e-cff291460e4f",
+   "note": "Greg Overstreet, HD-088 in the 2025 session"
+  },
+  {
+   "people_id": 25417,
+   "candidate_id": "97109e38-d88f-4e89-9d34-9db7f338e353",
+   "note": "James Reavis, HD-047 in the 2025 session"
+  },
+  {
+   "people_id": 25418,
+   "candidate_id": "5a13672b-4126-4871-ba96-473b674f53e2",
+   "note": "Scott Rosenzweig, HD-057 in the 2025 session; running for the other chamber, and SD-29 contains HD-57 and HD-58"
+  },
+  {
+   "people_id": 25419,
+   "candidate_id": "2a4ede01-6da6-43c8-9397-a7ebaafbe513",
+   "note": "Curtis Schomer, HD-048 in the 2025 session"
+  },
+  {
+   "people_id": 25420,
+   "candidate_id": "cf45a54f-78e4-4c62-8770-471cfa045f95",
+   "note": "Lukas Schubert, HD-008 in the 2025 session"
+  },
+  {
+   "people_id": 25421,
+   "candidate_id": "7f715f0c-7635-4079-95a9-aef19db840d9",
+   "note": "Josh Seckinger, HD-062 in the 2025 session; name matched by first-name prefix (Josh Seckinger / Josh Seckinger)"
+  },
+  {
+   "people_id": 25422,
+   "candidate_id": "8bfaf265-9f68-4853-8f97-ffc66d1232aa",
+   "note": "Tracy Sharp, HD-012 in the 2025 session"
+  },
+  {
+   "people_id": 25423,
+   "candidate_id": "3950d736-6453-4ea1-8d9b-83205f464b9d",
+   "note": "Jade Sooktis, HD-041 in the 2025 session"
+  },
+  {
+   "people_id": 25424,
+   "candidate_id": "dd6040fe-50a6-4027-a20d-2e8ab710b42e",
+   "note": "Peter Strand, HD-063 in the 2025 session"
+  },
+  {
+   "people_id": 25425,
+   "candidate_id": "868f2fa7-78ef-4f68-93f6-df23413c2847",
+   "note": "Morgan Thiel, HD-030 in the 2025 session"
+  },
+  {
+   "people_id": 25426,
+   "candidate_id": "bfa92d98-2545-4687-96c9-b0147e95d065",
+   "note": "Eric Tilleman, HD-023 in the 2025 session"
+  },
+  {
+   "people_id": 25427,
+   "candidate_id": "71d33d31-0abb-4fa9-a46c-0fbcc4fe3405",
+   "note": "Mike Vinton, HD-040 in the 2025 session"
+  },
+  {
+   "people_id": 25428,
+   "candidate_id": "b5a36235-6a9a-4ee3-adfd-ef19393dd132",
+   "note": "Jane Weber, HD-019 in the 2025 session"
+  },
+  {
+   "people_id": 25429,
+   "candidate_id": null,
+   "note": "Gregg Hunter, SD-015 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 25430,
+   "candidate_id": null,
+   "note": "Jacinda Morigeau, SD-046 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 25431,
+   "candidate_id": null,
+   "note": "Cora Neumann, SD-030 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 25432,
+   "candidate_id": null,
+   "note": "Tony Tezak, SD-035 in the 2025 session; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 25732,
+   "candidate_id": "d6da5f4d-27cf-401c-ba98-20670f0e2936",
+   "note": "Denise Joy, HD-046 in the 2025 session"
+  },
+  {
+   "people_id": 26438,
+   "candidate_id": "7dc3258c-fe33-4f66-bfeb-e9cc002d94f3",
+   "note": "Terry Nelson, HD-087 in the 2025 session"
+  }
+ ]
+}
