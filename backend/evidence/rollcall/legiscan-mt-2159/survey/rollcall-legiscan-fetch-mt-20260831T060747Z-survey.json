@@ -1,0 +1,4455 @@
+{
+  "runId": "rollcall-legiscan-fetch-mt-20260831T060747Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "MT",
+  "startedAt": "2026-08-31T06:07:47.183Z",
+  "finishedAt": "2026-08-31T06:07:48.311Z",
+  "datasetDir": "/Users/shu/legiscan-data/mt-2159",
+  "bills": 1761,
+  "votes": 9209,
+  "people": 151,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "(H) 2nd Reading Passed",
+      "count": 700,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HB24",
+        "HB47",
+        "HB29"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 3rd Reading Passed",
+      "count": 694,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB24",
+        "HB47",
+        "HB29"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 3rd Reading Concurred",
+      "count": 588,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB1",
+        "HB121",
+        "HB83"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 2nd Reading Concurred",
+      "count": 577,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB1",
+        "HB121",
+        "HB83"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 3rd Reading Passed",
+      "count": 398,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB7",
+        "SB13",
+        "SB11"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 2nd Reading Passed",
+      "count": 391,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB26",
+        "SB19",
+        "SB7"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 2nd Reading Concurred",
+      "count": 306,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB59",
+        "SJ8",
+        "SB76"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 3rd Reading Concurred",
+      "count": 306,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB59",
+        "SB61",
+        "SB76"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 2nd Reading Senate Amendments Concurred",
+      "count": 148,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB197",
+        "HB190",
+        "HB136"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 3rd Reading Passed as Amended by Senate",
+      "count": 146,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB190",
+        "HB197",
+        "HB409"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Judiciary--Do Pass",
+      "count": 107,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HB41",
+        "HB52",
+        "HB49"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Resolution Adopted",
+      "count": 103,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR14",
+        "SR6",
+        "SR7"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Business and Labor--Do Pass",
+      "count": 90,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB78",
+        "HB92",
+        "HB109"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 2nd Reading House Amendments Concurred",
+      "count": 89,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB113",
+        "SB23",
+        "SB64"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Judiciary--To Table",
+      "count": 88,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB127",
+        "SB139",
+        "SB209"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 3rd Reading Passed as Amended by House",
+      "count": 86,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB113",
+        "SB23",
+        "SB64"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 2nd Reading Motion to Amend Carried",
+      "count": 85,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SB113",
+        "SB151",
+        "SB217"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Business, Labor  and Economic Affairs--Be Concurred In",
+      "count": 81,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 12,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB195",
+        "HB60",
+        "HB211"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Judiciary--Be Concurred In",
+      "count": 78,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB36",
+        "HB39",
+        "HB35"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Appropriations--Do Pass",
+      "count": 77,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB40",
+        "HB18",
+        "HB15"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 2nd Reading Motion to Amend Carried",
+      "count": 75,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB53",
+        "HB38",
+        "HB62"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) State Administration--Do Pass",
+      "count": 75,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 19,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB47",
+        "HB39",
+        "HB54"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 2nd Reading Indefinitely Postponed",
+      "count": 74,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SR1",
+        "SB66",
+        "SB159"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Judiciary--Do Pass",
+      "count": 69,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB13",
+        "SB30",
+        "SB20"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 2nd Reading Motion to Amend Failed",
+      "count": 66,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB16",
+        "HB1",
+        "HB35"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Taxation--To Table",
+      "count": 66,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB213",
+        "HB25",
+        "HB209"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 2nd Reading Motion to Amend Failed",
+      "count": 66,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB15",
+        "SB44",
+        "SB48"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Judiciary--Do Pass As Amended",
+      "count": 65,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB44",
+        "HB38",
+        "HB83"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 2nd Reading Not Passed",
+      "count": 63,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB52",
+        "HB30",
+        "HB199"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Business and Labor--Do Pass As Amended",
+      "count": 63,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB60",
+        "HB123",
+        "HB137"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Public Health, Welfare and Safety--To Table",
+      "count": 60,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB72",
+        "SB135",
+        "SB206"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Appropriations--To Table",
+      "count": 57,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB148",
+        "HB131",
+        "HB314"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 2nd Reading Pass Motion Failed",
+      "count": 53,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB66",
+        "SB159",
+        "SB114"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Judiciary--Be Concurred In",
+      "count": 51,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB261",
+        "SB132",
+        "SB156"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Judiciary--To Table",
+      "count": 50,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB237",
+        "HB277",
+        "HB304"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Appropriations--Do Pass As Amended",
+      "count": 49,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3",
+        "HB13",
+        "HB234"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Human Services--To Table",
+      "count": 49,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 21,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB230",
+        "HB236",
+        "HB274"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) State Administration--Be Concurred In",
+      "count": 49,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB203",
+        "HB181",
+        "HB61"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) State Administration--To Table",
+      "count": 46,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 19,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB187",
+        "HB224",
+        "HB152"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Finance and Claims--Be Concurred In",
+      "count": 46,
+      "withoutMemberList": 0,
+      "minTotal": 22,
+      "maxTotal": 22,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB245",
+        "HB13",
+        "HB82"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Business, Labor  and Economic Affairs--Do Pass",
+      "count": 43,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 12,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB27",
+        "SB60",
+        "SB109"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 2nd Reading Passed as Amended",
+      "count": 42,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB53",
+        "HB38",
+        "HB62"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Education and Cultural Resources--To Table",
+      "count": 42,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB181",
+        "SB210",
+        "SB451"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Finance and Claims--Do Pass",
+      "count": 42,
+      "withoutMemberList": 0,
+      "minTotal": 22,
+      "maxTotal": 22,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB28",
+        "SB223",
+        "SB171"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 2nd Reading Passed as Amended",
+      "count": 41,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB113",
+        "SB217",
+        "SB70"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Business, Labor  and Economic Affairs--To Table",
+      "count": 41,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB153",
+        "SB234",
+        "SB219"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Business and Labor--To Table",
+      "count": 39,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 20,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB297",
+        "HJ5",
+        "HB331"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Taken from Committee; Placed on 2nd Reading",
+      "count": 39,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HB101",
+        "HB404",
+        "HB311"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Taken from Committee; Placed on 2nd Reading",
+      "count": 39,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SB447",
+        "SB81",
+        "SB440"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Public Health, Welfare and Safety--Do Pass",
+      "count": 38,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB18",
+        "SB17",
+        "SB62"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Education and Cultural Resources--Be Concurred In",
+      "count": 37,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB118",
+        "HB28",
+        "HB15"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Education--Do Pass",
+      "count": 36,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 15,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB24",
+        "HB15",
+        "HB67"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Judiciary--Do Pass As Amended",
+      "count": 35,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB15",
+        "SB40",
+        "SB41"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Local Government--To Table",
+      "count": 34,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB160",
+        "HB378",
+        "HB369"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) State Administration--Do Pass",
+      "count": 34,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB7",
+        "SB29",
+        "SB47"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Appropriations--Be Concurred In",
+      "count": 33,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB315",
+        "SB104",
+        "SB165"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Judiciary--Be Concurred In As Amended",
+      "count": 32,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB65",
+        "HB82",
+        "HB409"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Natural Resources--Be Concurred In",
+      "count": 32,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB127",
+        "HB64",
+        "HB79"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Business and Labor--Be Concurred In",
+      "count": 31,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 20,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB110",
+        "SB320",
+        "SB198"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Fish, Wildlife and Parks--Do Pass",
+      "count": 31,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB57",
+        "HB71",
+        "HB95"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Natural Resources--Do Pass",
+      "count": 31,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB48",
+        "HB31",
+        "HB26"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Education--Do Pass As Amended",
+      "count": 30,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB28",
+        "HB118",
+        "HB151"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 2nd Reading Concurred as Amended",
+      "count": 30,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB59",
+        "HB446",
+        "HB764"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) State Administration--To Table",
+      "count": 30,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB142",
+        "SB122",
+        "SB281"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 2nd Reading Not Concurred",
+      "count": 29,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB120",
+        "SB156",
+        "SB14"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Taxation--Do Pass",
+      "count": 29,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB29",
+        "HB19",
+        "HB17"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Motion Failed",
+      "count": 29,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB432",
+        "SB254",
+        "SB8"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Energy, Technology and Federal Relations--Do Pass",
+      "count": 28,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB45",
+        "HB53",
+        "HB103"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Human Services--Do Pass",
+      "count": 28,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB77",
+        "HB161",
+        "HB245"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Fish and Game--Be Concurred In",
+      "count": 28,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB57",
+        "HB96",
+        "HB105"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Public Health, Welfare and Safety--Be Concurred In",
+      "count": 27,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB245",
+        "HB198",
+        "HB253"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Public Health, Welfare and Safety--Resolution Adopted",
+      "count": 27,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SJ13",
+        "SR12",
+        "SR11"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Taxation--To Table",
+      "count": 27,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB173",
+        "SB4",
+        "SB157"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) State Administration--Be Concurred In",
+      "count": 26,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 19,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB224",
+        "SB115",
+        "SB9"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Business, Labor  and Economic Affairs--Resolution Adopted",
+      "count": 26,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SR75",
+        "SR64",
+        "SR65"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Local Government--Be Concurred In",
+      "count": 26,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB68",
+        "HB37",
+        "HB144"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Human Services--Be Concurred In",
+      "count": 25,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB18",
+        "SB73",
+        "SB17"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Human Services--Do Pass As Amended",
+      "count": 25,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB50",
+        "HB184",
+        "HB185"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Local Government--Do Pass",
+      "count": 25,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB68",
+        "HB144",
+        "HB159"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Education--To Table",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB51",
+        "HB138",
+        "HB265"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Judiciary--Be Concurred In As Amended",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB154",
+        "SB124",
+        "SB149"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) State Administration--Do Pass As Amended",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 19,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB33",
+        "HB85",
+        "HB100"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Highways and Transportation--Be Concurred In",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB42",
+        "HB43",
+        "HB99"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Taxation--Be Concurred In",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB18",
+        "HB19",
+        "HB17"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Fish, Wildlife and Parks--To Table",
+      "count": 23,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB101",
+        "HB353",
+        "HB216"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 3rd Reading Failed",
+      "count": 23,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB47",
+        "SB44",
+        "SB158"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Judiciary--Resolution Adopted",
+      "count": 23,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SR7",
+        "SR6",
+        "SR92"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Local Government--Do Pass As Amended",
+      "count": 23,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB11",
+        "SB90",
+        "SB99"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 2nd Reading Concur Motion Failed",
+      "count": 22,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB35",
+        "HB36",
+        "HB30"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Finance and Claims--To Table",
+      "count": 22,
+      "withoutMemberList": 0,
+      "minTotal": 22,
+      "maxTotal": 22,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB159",
+        "SB45",
+        "SB268"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Local Government--Do Pass As Amended",
+      "count": 21,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB180",
+        "HB333",
+        "HB313"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Taxation--Be Concurred In",
+      "count": 21,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB1",
+        "SB54",
+        "SJ8"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Reconsidered Previous Action; Placed on 2nd Reading",
+      "count": 20,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB30",
+        "HB65",
+        "HB139"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Taxation--Do Pass As Amended",
+      "count": 20,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB18",
+        "HB20",
+        "HB87"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Business, Labor  and Economic Affairs--Be Concurred In As Amended",
+      "count": 20,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB136",
+        "HB197",
+        "HB464"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Education and Cultural Resources--Do Pass",
+      "count": 20,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SB36",
+        "SB34",
+        "SB35"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Energy, Technology & Federal Relations--To Table",
+      "count": 20,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB24",
+        "SB160",
+        "SB119"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Transportation--Do Pass",
+      "count": 19,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB99",
+        "HB165",
+        "HB351"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Taxation--Do Pass",
+      "count": 19,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB54",
+        "SB93",
+        "SJ8"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Fish, Wildlife and Parks--Do Pass As Amended",
+      "count": 18,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB96",
+        "HB107",
+        "HB176"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Finance and Claims--Be Concurred In As Amended",
+      "count": 18,
+      "withoutMemberList": 0,
+      "minTotal": 22,
+      "maxTotal": 22,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3",
+        "HB6",
+        "HB7"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Local Government--Do Pass",
+      "count": 18,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB10",
+        "SB96",
+        "SB103"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Public Health, Welfare and Safety--Do Pass As Amended",
+      "count": 18,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB72",
+        "SB100",
+        "SB216"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Taxation--Do Pass As Amended",
+      "count": 18,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB1",
+        "SB3",
+        "SB172"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 2nd Reading Concurred as Amended",
+      "count": 17,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SJ6",
+        "SB161",
+        "SB154"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Transportation--Do Pass As Amended",
+      "count": 17,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB42",
+        "HB43",
+        "HB97"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Energy, Technology & Federal Relations--Do Pass",
+      "count": 17,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB51",
+        "SB124",
+        "SB163"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Energy, Technology and Federal Relations--To Table",
+      "count": 16,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB263",
+        "HJ13",
+        "HB363"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Judiciary--To Take From The Table",
+      "count": 16,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB83",
+        "SB261",
+        "SB127"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Local Government--To Table",
+      "count": 16,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB102",
+        "SB204",
+        "SB205"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Reconsidered Previous Action; Placed on 2nd Reading",
+      "count": 16,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB159",
+        "SB186",
+        "SB204"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) State Administration--Do Pass As Amended",
+      "count": 16,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB9",
+        "SB33",
+        "SB56"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 3rd Reading Failed",
+      "count": 15,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB320",
+        "HB437",
+        "HB479"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Business and Labor--Be Concurred In As Amended",
+      "count": 15,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB113",
+        "SB166",
+        "SB101"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Natural Resources--To Table",
+      "count": 15,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB229",
+        "HB481",
+        "HB660"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Transportation--Be Concurred In",
+      "count": 15,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SJ3",
+        "SB309",
+        "SB341"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Energy, Technology & Federal Relations--Resolution Adopted",
+      "count": 15,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SJ9",
+        "HJ4",
+        "HJ1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Natural Resources--Do Pass",
+      "count": 15,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB46",
+        "SB55",
+        "SB61"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Natural Resources--Do Pass As Amended",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB59",
+        "HB74",
+        "HB79"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Taxation--Be Concurred In As Amended",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB302",
+        "SB289",
+        "SB409"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Fish and Game--To Table",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB71",
+        "SB310",
+        "SB403"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Natural Resources--Be Concurred In As Amended",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB70",
+        "HB285",
+        "HB270"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) State Administration--Resolution Adopted",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SR4",
+        "HJ19",
+        "SR83"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Education--Be Concurred In",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 15,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SJ7",
+        "SB35",
+        "SB34"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) State Administration--Be Concurred In As Amended",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB11",
+        "SB246",
+        "SB316"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Transportation--To Table",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HJ3",
+        "HB172",
+        "SB28"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Energy, Technology & Federal Relations--Be Concurred In As Amended",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB31",
+        "HB178",
+        "HB392"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Local Government--Be Concurred In As Amended",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB192",
+        "HB394",
+        "HB162"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Natural Resources--Resolution Adopted",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SJ18",
+        "SR43",
+        "SR25"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Natural Resources--Be Concurred In",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB61",
+        "SB76",
+        "SB55"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Agriculture, Livestock and Irrigation--Resolution Adopted",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SR34",
+        "SR19",
+        "SR45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Motion Carried",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB203",
+        "SB546",
+        "HB129"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) State Administration--Be Concurred In As Amended",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB201",
+        "HB100",
+        "HB88"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 3rd Reading Governor's Proposed Amendments Adopted",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB145",
+        "HB228",
+        "HB76"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Energy, Technology and Federal Relations--Do Pass As Amended",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB122",
+        "HB257",
+        "HB55"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Human Services--Be Concurred In As Amended",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB256",
+        "SB191",
+        "SB296"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Local Government--Be Concurred In",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB213",
+        "SB175",
+        "SB10"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 2nd Reading Conference Committee Report Adopted",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB151",
+        "HB59",
+        "SB226"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 3rd Reading Governor's Proposed Amendments Adopted",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45",
+        "SB116",
+        "HB145"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Education and Cultural Resources--Be Concurred In As Amended",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB151",
+        "HB266",
+        "HB628"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Energy, Technology & Federal Relations--Be Concurred In",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB196",
+        "HB249",
+        "HB257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Finance and Claims--Do Pass As Amended",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 22,
+      "maxTotal": 22,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB167",
+        "SB27",
+        "SB151"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Highways and Transportation--Do Pass",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB28",
+        "SB111",
+        "SB264"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 2nd Reading Senate Amendments Not Concurred",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB201",
+        "HB151",
+        "HB59"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Fish, Wildlife and Parks--Be Concurred In",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB83",
+        "SB310",
+        "SB165"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Natural Resources--To Table",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB71",
+        "SB123",
+        "SB349"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 2nd Reading Conference Committee Report Adopted",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB151",
+        "HB59",
+        "SB226"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 2nd Reading Governor's Proposed Amendments Adopted",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB145",
+        "HB228",
+        "HB76"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 3rd Reading Conference Committee Report Adopted",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB151",
+        "HB59",
+        "SB226"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Energy, Technology and Federal Relations--Be Concurred In",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SJ9",
+        "SB22",
+        "SB51"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Local Government--Be Concurred In As Amended",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB103",
+        "SB252",
+        "SB174"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 2nd Reading Governor's Proposed Amendments Adopted",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB116",
+        "SB45",
+        "HB145"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 2nd Reading House Amendments Not Concurred",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB226",
+        "SB319",
+        "SB446"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 3rd Reading Conference Committee Report Adopted",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB151",
+        "HB59",
+        "SB226"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Agriculture, Livestock and Irrigation--Be Concurred In",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB80",
+        "HB74",
+        "HB356"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Fish and Game--Be Concurred In As Amended",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB106",
+        "HB176",
+        "HB258"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Highways and Transportation--Do Pass As Amended",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SB26",
+        "SB245",
+        "SB359"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Highways and Transportation--To Table",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB290",
+        "SB423",
+        "SB454"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Agriculture--Do Pass",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB171",
+        "HB356",
+        "HB522"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Appropriations--Be Concurred In As Amended",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB167",
+        "SB72",
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Appropriations--To Take From The Table",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB908",
+        "HB21",
+        "HB951"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Human Services--Resolution Adopted",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJ19",
+        "SJ13",
+        "HJ66"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Motion Failed",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB245",
+        "HJ11",
+        "HB552"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Business, Labor  and Economic Affairs--Do Pass As Amended",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB110",
+        "SB74",
+        "SB244"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Education and Cultural Resources--Resolution Adopted",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR9",
+        "SR31",
+        "SR32"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Fish and Game--Do Pass As Amended",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB165",
+        "SB270",
+        "SB235"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Legislative Administration--Be Concurred In",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB142",
+        "HB110",
+        "HB111"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Natural Resources--Do Pass As Amended",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB221",
+        "SB263",
+        "SB201"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Taxation--Be Concurred In As Amended",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB20",
+        "HB785",
+        "HB329"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 2nd Reading Not Passed as Amended",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB149",
+        "HB709",
+        "HB27"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Agriculture--Be Concurred In",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB79",
+        "SB80",
+        "SB78"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Energy, Technology and Federal Relations--Be Concurred In As Amended",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB23",
+        "SB330",
+        "SB364"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Legislative Administration--Do Pass",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB110",
+        "HB142",
+        "HB348"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Reconsidered Previous Action; Remains in 3rd Reading Process",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB500",
+        "HB480",
+        "SB324"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Education and Cultural Resources--Do Pass As Amended",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB138",
+        "SB118",
+        "SB116"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Legislative Administration--Do Pass",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB64",
+        "SB87",
+        "SB75"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Legislative Administration--To Table",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB68",
+        "SB506",
+        "HB674"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 2nd Reading Free Conference Committee Report Adopted",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB201",
+        "HB682",
+        "SB446"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 3rd Reading Free Conference Committee Report Adopted",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB201",
+        "SB446",
+        "SB40"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Legislative Administration--Be Concurred In",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB26",
+        "SB87",
+        "SB75"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Taxation--To Take From The Table",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB220",
+        "HB537",
+        "HB868"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 2nd Reading Free Conference Committee Report Adopted",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB201",
+        "HB682",
+        "SB446"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 3rd Reading Free Conference Committee Report Adopted",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB201",
+        "HB682",
+        "SB446"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Energy, Technology & Federal Relations--Do Pass As Amended",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB228",
+        "SB212",
+        "SB330"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Motion to Reconsider Failed",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB47",
+        "SB146",
+        "SB43"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Public Health, Welfare and Safety--Be Concurred In As Amended",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB397",
+        "HB76",
+        "HB352"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Agriculture--Do Pass As Amended",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB119",
+        "HB269",
+        "HB401"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Agriculture--To Table",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB73",
+        "HB418",
+        "HB928"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Business and Labor--Resolution Adopted",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJ5",
+        "HJ27",
+        "HJ28"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Education--Be Concurred In As Amended",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB181",
+        "SB118",
+        "SB350"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Judiciary--Resolution Adopted",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HJ9",
+        "HJ45",
+        "HJ32"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Natural Resources--Be Concurred In As Amended",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB520",
+        "SB472",
+        "SB77"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Resolution Adopted",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HR2",
+        "HJ33",
+        "HR5"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Agriculture, Livestock and Irrigation--Be Concurred In As Amended",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB190",
+        "HB171",
+        "HB624"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Agriculture, Livestock and Irrigation--To Table",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB509",
+        "SB517",
+        "SB386"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Fish and Game--Do Pass",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB63",
+        "SB148",
+        "SB257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Business and Labor--To Take From The Table",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 20,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB362",
+        "SJ5"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 3rd Reading Failed; 2nd House Vote Required",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB921",
+        "HB316",
+        "HB822"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Agriculture, Livestock and Irrigation--Do Pass",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB79",
+        "SB78",
+        "SB80"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Agriculture, Livestock and Irrigation--Do Pass As Amended",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB161",
+        "SJ11",
+        "SB414"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Taxation--To Take From The Table",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB231"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 3rd Reading Not Passed as Amended by Senate",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB258",
+        "HB174",
+        "HB480"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Appropriations--",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB34",
+        "HB21",
+        "HB103"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Energy, Technology and Federal Relations--Resolution Adopted",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJ7",
+        "SJ12",
+        "SJ26"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Human Services--To Take From The Table",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB390"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Legislative Administration--Be Concurred In As Amended",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB64",
+        "SB120"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Motion to Reconsider Failed",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB649",
+        "HB536",
+        "SB156"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) State Administration--To Take From The Table",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB375",
+        "SB222"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Business, Labor  and Economic Affairs--To Take From The Table",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB141"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Education and Cultural Resources--To Take From The Table",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB343",
+        "HB669"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Energy, Technology & Federal Relations--Resolution Adopted As Amended",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJ16",
+        "HJ15",
+        "HJ17"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Fish and Game--Resolution Adopted",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR51",
+        "SR17",
+        "SR84"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Highways and Transportation--Resolution Adopted",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SJ19",
+        "SR81",
+        "HJ20"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Legislative Administration--Resolution Adopted",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJ22",
+        "SJ28",
+        "HJ40"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Local Government--Resolution Adopted",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR48",
+        "SR91"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Reconsidered Previous Action; Remains in 3rd Reading Process",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB607",
+        "HB231"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 3rd Reading Failed; 2nd House Vote Required",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB185",
+        "HB921"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Business and Labor--",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB290",
+        "HB315"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Fish, Wildlife and Parks--Be Concurred In As Amended",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB235",
+        "SB106"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Local Government--Resolution Adopted",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJ47",
+        "HJ50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Motion Carried",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB886"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Natural Resources--Resolution Adopted",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJ74",
+        "HJ71"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Rules--Resolution Adopted",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 22,
+      "maxTotal": 22,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJ1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) State Administration--Resolution Adopted",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 19,
+      "billTypes": [
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HJ48",
+        "HR7"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 2nd Reading House Amendments Concur Motion Failed",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB472",
+        "SB324"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Business, Labor  and Economic Affairs--",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB78",
+        "SB179"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Business, Labor  and Economic Affairs--Resolution Adopted As Amended",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR57",
+        "SR89"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Highways and Transportation--Be Concurred In As Amended",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB588",
+        "HB586"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Judiciary--",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SJ4",
+        "SB83"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Public Health, Welfare and Safety--To Take From The Table",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB140"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Resolution Failed",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR1",
+        "SR4"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) State Administration--",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB131",
+        "SB130"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 2nd Reading Governor's Proposed Amendments Not Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB218"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) 2nd Reading Senate Amendments Not Concur Motion Failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB726"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Agriculture--Be Concurred In As Amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB161"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Education--",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB153"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Education--Resolution Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 15,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJ36"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Education--To Take From The Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB153"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Energy, Technology and Federal Relations--",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJ1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Energy, Technology and Federal Relations--To Take From The Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB877"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Fish, Wildlife and Parks--Resolution Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJ73"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Fish, Wildlife and Parks--Resolution Adopted As Amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR6"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Human Services--Resolution Adopted As Amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJ43"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Legislative Administration--Resolution Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJ28"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Legislative Administration--To Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB188"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Local Government--To Take From The Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB511"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Natural Resources--",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Resolution Failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR7"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Rules--Do Pass As Amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 22,
+      "maxTotal": 22,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) State Administration--",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB152"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Taxation--Resolution Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJ2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "(H) Transportation--Be Concurred In As Amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB111"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 2nd Reading Indefinitely Postpone Motion Failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB155"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) 3rd Reading Conference Committee Report Rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB324"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Agriculture, Livestock and Irrigation--Resolution Adopted As Amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJ34"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Education and Cultural Resources--",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJ7"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Education and Cultural Resources--Resolution Adopted As Amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJ20"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Finance and Claims--",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 22,
+      "maxTotal": 22,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Highways and Transportation--",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJ3"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Judiciary--Resolution Adopted As Amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR16"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Legislative Administration--Do Pass As Amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB311"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Public Health, Welfare and Safety--",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB125"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Public Health, Welfare and Safety--Resolution Adopted As Amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJ30"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Rules--",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 18,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) Rules--Resolution Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 18,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJ1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "(S) State Administration--To Take From The Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB722"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 1518,
+    "JR": 125,
+    "R": 118
+  },
+  "sessionIds": {
+    "2159": 1761
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": [
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1480881.json",
+      "error": "LegiScan roll call 1480881: yea says 16 but the member list holds 8"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1480930.json",
+      "error": "LegiScan roll call 1480930: yea says 119 but the member list holds 17"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1480945.json",
+      "error": "LegiScan roll call 1480945: yea says 79 but the member list holds 20"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481018.json",
+      "error": "LegiScan roll call 1481018: yea says 153 but the member list holds 17"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481082.json",
+      "error": "LegiScan roll call 1481082: yea says 170 but the member list holds 17"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481121.json",
+      "error": "LegiScan roll call 1481121: yea says 44 but the member list holds 22"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481156.json",
+      "error": "LegiScan roll call 1481156: yea says 102 but the member list holds 17"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481284.json",
+      "error": "LegiScan roll call 1481284: yea says 12 but the member list holds 6"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481296.json",
+      "error": "LegiScan roll call 1481296: yea says 500 but the member list holds 20"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481326.json",
+      "error": "LegiScan roll call 1481326: nay says 3 but the member list holds 2"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481381.json",
+      "error": "LegiScan roll call 1481381: nay says 4 but the member list holds 0"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481396.json",
+      "error": "LegiScan roll call 1481396: yea says 20 but the member list holds 17"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481417.json",
+      "error": "LegiScan roll call 1481417: yea says 34 but the member list holds 17"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481534.json",
+      "error": "LegiScan roll call 1481534: yea says 68 but the member list holds 17"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481554.json",
+      "error": "LegiScan roll call 1481554: yea says 460 but the member list holds 20"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481675.json",
+      "error": "LegiScan roll call 1481675: yea says 40 but the member list holds 20"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481690.json",
+      "error": "LegiScan roll call 1481690: yea says 40 but the member list holds 20"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481721.json",
+      "error": "LegiScan roll call 1481721: yea says 33 but the member list holds 11"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481730.json",
+      "error": "LegiScan roll call 1481730: yea says 40 but the member list holds 20"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481735.json",
+      "error": "LegiScan roll call 1481735: yea says 75 but the member list holds 15"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481745.json",
+      "error": "LegiScan roll call 1481745: yea says 40 but the member list holds 20"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481773.json",
+      "error": "LegiScan roll call 1481773: yea says 40 but the member list holds 20"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481796.json",
+      "error": "LegiScan roll call 1481796: yea says 36 but the member list holds 12"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481807.json",
+      "error": "LegiScan roll call 1481807: yea says 24 but the member list holds 12"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481853.json",
+      "error": "LegiScan roll call 1481853: yea says 60 but the member list holds 20"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481880.json",
+      "error": "LegiScan roll call 1481880: yea says 40 but the member list holds 20"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481894.json",
+      "error": "LegiScan roll call 1481894: yea says 60 but the member list holds 20"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1481939.json",
+      "error": "LegiScan roll call 1481939: yea says 33 but the member list holds 11"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1482022.json",
+      "error": "LegiScan roll call 1482022: yea says 40 but the member list holds 20"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1482028.json",
+      "error": "LegiScan roll call 1482028: yea says 75 but the member list holds 15"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1482045.json",
+      "error": "LegiScan roll call 1482045: yea says 60 but the member list holds 12"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1482063.json",
+      "error": "LegiScan roll call 1482063: yea says 75 but the member list holds 15"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1482070.json",
+      "error": "LegiScan roll call 1482070: yea says 75 but the member list holds 15"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1482120.json",
+      "error": "LegiScan roll call 1482120: yea says 32 but the member list holds 16"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1482125.json",
+      "error": "LegiScan roll call 1482125: yea says 60 but the member list holds 20"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1482343.json",
+      "error": "LegiScan roll call 1482343: yea says 33 but the member list holds 11"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1482355.json",
+      "error": "LegiScan roll call 1482355: yea says 30 but the member list holds 10"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1482369.json",
+      "error": "LegiScan roll call 1482369: yea says 24 but the member list holds 12"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1482445.json",
+      "error": "LegiScan roll call 1482445: yea says 33 but the member list holds 11"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1482494.json",
+      "error": "LegiScan roll call 1482494: yea says 27 but the member list holds 9"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1482518.json",
+      "error": "LegiScan roll call 1482518: yea says 33 but the member list holds 11"
+    },
+    {
+      "file": "MT/2025-2025_Regular_Session/vote/1482603.json",
+      "error": "LegiScan roll call 1482603: yea says 33 but the member list holds 11"
+    }
+  ]
+}
