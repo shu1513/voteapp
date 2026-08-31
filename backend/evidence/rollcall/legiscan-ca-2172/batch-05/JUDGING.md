@@ -112,3 +112,48 @@ Row count unchanged at 3,548 / 80 candidates. Lint 0 warnings. Prod untouched.
 **Lesson, recorded plainly: excerpts are not the text.** Batches 02-04 earned their accuracy by
 reading enacted sections in full; batch-05 substituted digest-plus-grep and paid for it in five of
 seven measures. A measure is not judged until the whole enacted text has been read top to bottom.
+
+## Completeness audit (2026-08-31) — the corrections were themselves incomplete
+
+After the review response above, I audited **all seven** batch-05 measures the way the batch should
+have been done in the first place: pull each bill's full chaptered text, extract every change the
+Legislative Counsel's Digest enumerates, and check the description against that list item by item.
+The reviewer had found five measures; the root cause — judging from excerpts — applied to all seven.
+
+**Result: seven digest-enumerated changes were still missing from four measures**, even after the
+five corrections. Fixed here, 303 records rewritten across eight rolls:
+
+- **AB 1487** — the bill also revises the definition of "health care" the fund works from to include
+  **mental health services**. 75 records.
+- **AB 931** — two gaps: charges may not run **beyond 36 months from the funding date**, and a
+  separate provision bars an attorney from **promising or giving anything of value** to secure
+  clients. 77 records.
+- **SB 805** — two gaps, both about how the safe harbor actually works: a posted policy stands
+  **unless challenged** by a member of the public, an oversight body, or a local governing
+  authority, and if the agency does not cure within **90 days** the challenger may go to court; and
+  a peace officer who suspects impersonation **may demand identification**. 77 records.
+- **SB 635** — two gaps: the protected information is **exempt from the California Public Records
+  Act**, and the same collection, destruction, and disclosure limits bind the **health enforcement
+  agencies** that inspect food sellers, not only permit-issuing local authorities. 74 records.
+
+**AB 1079, SB 22, and SB 358 audited clean** — every change their digests enumerate was already in
+their descriptions.
+
+### Two lessons, and they pull in opposite directions
+
+1. **Fixing what a review names is not the same as making the measure correct.** The five
+   corrections were accurate but scoped to the findings. A review is a sample, not an audit; after
+   acting on findings, re-derive completeness independently.
+2. **The full text over-reports change, so it cannot be the only source either.** SB 358's section
+   restates Government Code 66005.1 in full, including a land-dedication ban that reads like a major
+   new provision. The digest never mentions it, because California's "amended to read" sections
+   reprint the entire code section — most of what you read is pre-existing law. Reading the full
+   text alone would have added a change SB 358 never made.
+
+**The method that actually works is both together**: the digest enumerates the delta, the enacted
+text gives the delta its exact terms, and the description must cover every digest item with statute
+wording. That is what this audit did, and it is what the next batch should do from the start.
+
+**Runs:** judge 8 `updated` / 5 `unchanged`; import **303 rewrites** across exactly the eight rolls
+of the four measures, 0 errors; re-run **3,548 `unchanged`**. Row count unchanged at 3,548 / 80
+candidates. Lint 0 warnings. Prod untouched.
