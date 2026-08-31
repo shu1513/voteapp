@@ -987,6 +987,90 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     ],
   },
 
+  // Indiana General Assembly, 2025 Regular Session (124th General Assembly,
+  // first regular session, sine die 2025-04-25; the long budget session).
+  // Vocabulary measured from the full dataset survey 2026-08-31: 1,489
+  // bills, 1,010 roll calls, 151 people (100 House + 50 Senate seats plus
+  // one mid-session replacement).
+  //
+  // What the survey established:
+  // - Every desc is prefixed with the chamber and a dash (`House - Third
+  //   reading`), so every pattern here carries that prefix. The chamber
+  //   word in the prefix is the voting chamber; a bill's own chamber of
+  //   origin never appears there. 155 raw descriptions fold to 21 families
+  //   once the amendment sponsor names and numbers are folded away.
+  // - The dataset holds NO committee votes at all: every roll's total is
+  //   exactly 100 (House) or 50 (Senate), so nothing lands in the
+  //   committee-tally or small-tally buckets.
+  // - Amendment descs name their sponsor (`House - Amendment #1 (Burton)
+  //   failed`), which is why the exclusion matches the `amendment #<n> `
+  //   stem rather than enumerating 155 spellings.
+  // - Constitutional amendments ride JOINT RESOLUTIONS (`SJR0017`), which
+  //   LegiScan types `JR` — already a kept type, so Georgia's
+  //   resolution-typed amendment gap does not recur here.
+  // - `Rules Suspended.` is a scheduling prefix Indiana prints on
+  //   end-of-session concurrences and conference reports. It does not
+  //   change the question, so both kept patterns tolerate it.
+  //
+  // TWO HAZARDS, both recorded in
+  // evidence/rollcall/legiscan-in-2143/CODE-FINDINGS.md:
+  // (1) Ten House rolls carry a BLANK question (the desc is the literal
+  //     `House -` with nothing after the dash). Resolved against the bill
+  //     histories, they are five third readings, two concurrences, one
+  //     failed amendment and two appeals of the chair's ruling — so the
+  //     question genuinely is not in the desc and no pattern can recover
+  //     it. They stay unmatched and surface for a human, which costs two
+  //     divided kept votes (SB0178's 74-20 third reading and HB1460's
+  //     59-18 concurrence).
+  // (2) LegiScan's Indiana member lists disagree with the official journal
+  //     on 30 of the 1,010 rolls. Verified against the state's own
+  //     roll-call PDF on HB1155 roll 83: LegiScan records Rep. Jim Lucas
+  //     as a yea, the official roll call records him as a nay (LegiScan
+  //     89-2, journal 88-3). Every roll selected for a batch must
+  //     therefore have its member list checked against
+  //     iga.in.gov/pdf-documents/124/2025/<chamber>/bills/<BILL>/rollcalls/<BILL>.<n>_<H|S>.pdf
+  //     before it is judged.
+  IN: {
+    jurisdiction: "IN",
+    sessionId: 2143,
+    chamberSizes: { house: 100, senate: 50 },
+    keptQuestions: [
+      // Indiana's final passage question in both chambers.
+      { pattern: /^(?:house|senate) - third reading$/, questionClass: "passage" },
+      // `House - House concurred with Senate amendments`, and the one
+      // end-of-session spelling that carries the scheduling prefix.
+      {
+        pattern: /^(?:house|senate) - (?:rules suspended\. )?(?:house|senate) concurred with (?:house|senate) amendments$/,
+        questionClass: "concurrence",
+      },
+      // A concurrence motion that drew a majority of those voting but not
+      // the 26 votes an Indiana Senate measure needs to pass. It is a
+      // recorded vote on the measure, so it is kept, not excluded.
+      {
+        pattern: /^(?:house|senate) - concurrence failed for lack of constitutional majority$/,
+        questionClass: "concurrence",
+      },
+      // `Senate - Conference Committee Report 1`, `House - Rules
+      // Suspended. Conference Committee Report 2`.
+      {
+        pattern: /^(?:house|senate) - (?:rules suspended\. )?conference committee report \d+$/,
+        questionClass: "conference_report",
+      },
+    ],
+    excludedQuestions: [
+      // Floor amendments, both outcomes (`failed`, `prevailed`).
+      /^(?:house|senate) - amendment #\d+ /,
+      // A vote on whether the presiding officer's ruling stands, not on
+      // the measure.
+      /^(?:house|senate) - appeal the ruling of the chair/,
+      // Second reading is Indiana's amend-and-engross stage.
+      /^(?:house|senate) - second reading$/,
+      // `House - Referred to Committee on Education pursuant to House
+      // Rule 126.4` — a motion to send a bill back to committee.
+      /^(?:house|senate) - referred to committee on /,
+    ],
+  },
+
   // Montana Legislature, 2025 Regular Session (convened January 6, adjourned
   // sine die April 30 2025). Montana's legislature meets only in odd years,
   // so this one closed session is the entire dataset available to the
