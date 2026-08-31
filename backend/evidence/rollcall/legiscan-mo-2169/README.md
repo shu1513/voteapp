@@ -118,10 +118,12 @@ those measures have a divided *House* roll. Ledger: `survey/divided-enacted-work
 Missouri ran two 2025 special sessions, and they are separate LegiScan datasets that the `MO` config
 (pinned to session 2169) cannot fetch.
 
-**Session 2226 (2nd Special) is the highest-value Missouri material outstanding.** 13 bills, 8 roll
-calls, and both enacted measures are marquee and divided in both chambers: **HB 1**, mid-decade
-congressional redistricting (House 90-65, Senate 21-11), and **HJR 3**, the "Protect Missouri Voters"
-constitutional amendment that goes to the ballot (House 104-51, Senate 21-11). Its desc vocabulary is
+**Session 2226 (2nd Special) is registered and imported — see
+[`../legiscan-mo-2226/`](../legiscan-mo-2226/).** 13 bills, 8 roll calls, and both substantive
+measures are marquee and divided in both chambers: **HB 1**, mid-decade congressional redistricting
+(House 90-65, Senate 21-11; enacted), and **HJR 3**, the "Protect Missouri Voters" constitutional
+amendment (House 98-58 on passage, Senate 21-11; finally passed, then defeated at the August 4, 2026
+primary as Amendment 4). Its desc vocabulary is
 already covered by the MO patterns — `HJRs/HBs FOR THIRD READING` kept, `FOR PERFECTION` excluded,
 `Senate: Third Reading` kept — and all 194 of its people appear in the 2169 snapshot, so **the
 committed `crosswalk.json` covers it unchanged** (people_ids are session-stable).

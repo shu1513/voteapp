@@ -16,6 +16,7 @@ import {
 } from "../../../src/pipeline/rollcall/legiscanRollCall.js";
 import {
   getLegiscanStateConfig,
+  LEGISCAN_RECORD_JURISDICTIONS,
   LEGISCAN_STATE_CONFIGS,
   type LegiscanStateConfig,
 } from "../../../src/pipeline/rollcall/legiscanStateConfigs.js";
@@ -377,9 +378,14 @@ describe("getLegiscanStateConfig", () => {
       "PA",
       "ME",
       "MO",
+      "MO-2226",
       "MD",
       "MD-2240",
     ]);
+    // A key is not a jurisdiction: Missouri and Maryland each have two
+    // sessions in scope and write both under their postal jurisdiction, so a
+    // judgment may never name `MO-2226` or `MD-2240`.
+    expect(LEGISCAN_RECORD_JURISDICTIONS).toEqual(["GA", "CT", "IL", "TN", "TX", "FL", "CA", "PA", "ME", "MO", "MD"]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
     expect(getLegiscanStateConfig("GA").sessionId).toBe(2167);
@@ -390,6 +396,7 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("ME").sessionId).toBe(2181);
     expect(getLegiscanStateConfig("CT").sessionId).toBe(2174);
     expect(getLegiscanStateConfig("MO").sessionId).toBe(2169);
+    expect(getLegiscanStateConfig("MO-2226")).toMatchObject({ jurisdiction: "MO", sessionId: 2226 });
     expect(getLegiscanStateConfig("MD").sessionId).toBe(2164);
     expect(getLegiscanStateConfig("md-2240")).toMatchObject({ jurisdiction: "MD", sessionId: 2240 });
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
@@ -437,6 +444,25 @@ describe("getLegiscanStateConfig", () => {
     expect(mo("Senate: Adoption", 33, "senate")).toMatchObject({ isFloorVote: null, questionClass: null });
     // A heading this session never printed surfaces rather than being guessed.
     expect(mo("House: SJRs FOR THIRD READING SS SJR 78", 162, "house", "JR").isFloorVote).toBeNull();
+  });
+
+  it("serves Missouri's second 2025 session under its own key, writing the same jurisdiction", () => {
+    const regular = LEGISCAN_STATE_CONFIGS.MO!;
+    const special = LEGISCAN_STATE_CONFIGS["MO-2226"]!;
+    // Same vocabulary object, so the two sessions cannot drift apart.
+    expect(special.keptQuestions).toBe(regular.keptQuestions);
+    expect(special.excludedQuestions).toBe(regular.excludedQuestions);
+    expect(special.jurisdiction).toBe(regular.jurisdiction);
+    expect(special.sessionId).not.toBe(regular.sessionId);
+    const mo = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
+      classifyLegiscanRollCall({ desc, total, chamber, billType, config: special });
+    // The special session's five measured descs, from its own survey.
+    expect(mo("House: HJRs FOR THIRD READING HCS HJR 3", 159, "house", "JR").questionClass).toBe("passage");
+    expect(mo("House: HBs FOR THIRD READING HB 1", 159).questionClass).toBe("passage");
+    expect(mo("Senate: Third Reading", 34, "senate").questionClass).toBe("passage");
+    for (const desc of ["House: HJRs FOR PERFECTION *HCS HJR 3, A.A.", "House: HBs FOR PERFECTION *HB 1"]) {
+      expect(mo(desc, 159, "house", "JR")).toMatchObject({ isFloorVote: false, questionClass: null });
+    }
   });
 
   it("classifies Texas's real desc vocabulary as surveyed", () => {

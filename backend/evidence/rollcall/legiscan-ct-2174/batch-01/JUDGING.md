@@ -185,3 +185,78 @@ Verified: CT tags 1,211 -> 1,162 (exactly the 49 HB 7042 nay-side tags), HB 7042
 yea side intact at 105, records unchanged at 1,457.
 `import-nay-repair-report.json` is the final repair run (all 1,457 `unchanged`,
 as a labels-only change reports).
+
+## Plain-English rewrite 2026-08-30
+
+All 17 judgments were rewritten for a reader with no legal background, and all **1,457 records were
+rewritten in place**. Batch-02 was written this way from the start; batch-01 was not, so it is
+brought up to the same standard here.
+
+**Wording only.** No fact, number, date, tally, stance or label changed. That was machine-checked
+rather than asserted: every number in every body is identical old to new, and the `labels`,
+`vote_date` and the closing tally sentence are byte-identical on all 17.
+
+Result: **lint 0 warnings over 34 descriptions, mean sentence 16.6 words, longest 33.**
+
+The lint only counts words per sentence, so the register was checked separately. Terms of art that
+are now gone: lookback period, adjudicated delinquent, summary review, variance, special permit,
+endowment, cultural competency training, managed residential communities, appropriations sections.
+Terms that remain are explained where they appear — an ombudsperson is "an official who helps
+families with complaints", the Northeast consumer price index is "a measure of inflation", and the
+two pesticide classes keep their names because those names are what the law regulates.
+
+### The check that mattered: what the first draft lost
+
+A register change is an edit, so the new text was diffed against the old for lost scope. Four
+things were pulled back:
+
+1. **Senate Bill 1444** — "less than half full on average" dropped the statute's **50%**. Restored.
+   The numeric diff caught this; it was the only real one.
+2. **Senate Bill 9** — "a strong class of rat poison" dropped the regulated category's name.
+   Restored as "a class of rat poisons called second-generation anticoagulants".
+3. **Senate Bill 1234** — "a very similar law" loosened the statutory trigger. Restored to
+   "substantially similar", which is the legal test the secretary of the state applies.
+4. **Senate Bill 1328** — "private companies" narrowed a ban that covers private ownership
+   generally. Restored to "private parties", which also covers individuals.
+
+Every one is the Pennsylvania failure shape: simplification quietly narrowing a scope. A jargon scan
+would have caught none of them.
+
+Verified: judge 17 updated; import 1,457 `rewrite`; a convergence dry run reports all 1,457
+`unchanged`; the row count stayed 2,040 and tags stayed 1,543, so nothing was inserted, deleted or
+retagged; 0 records still carry any of the old heavy terms.
+`import-plain-language-report.json` is this run's ledger (rewrite: 1,457, started
+2026-08-30T05:52:15.034Z). `import-report.json` remains the original insert ledger and was preserved
+before the run.
+
+### Review response (PR #975): three scopes the rewrite still lost, and one wrong ledger
+
+All four review findings were real. The three wording findings are the same failure shape this note
+already warned about — and my own scope diff missed them, because none of the three involved a
+number. A numeric diff cannot see a lost qualifier.
+
+1. **House Bill 7042** said the businesses "fail to control" sales and marketing. The law requires
+   **reasonable controls**, a defined set of steps — not total control. The old heavy text had
+   "reasonable controls" and the rewrite dropped the word that carries the limit. Restored, with a
+   plain gloss: the controls are "steps the law requires, such as ones designed to prevent sales to
+   people who are banned from having guns." 154 records.
+2. **Senate Bill 3** said makers "must sell repair manuals, parts and tools." Manuals must be made
+   **available**; "sell" was wrong for them. Now "must make repair manuals, parts and tools
+   available on fair and reasonable terms," which matches the OLR summary's own verb. 153 records.
+3. **House Bill 7066** narrowed "covered foreign entities" to "companies from covered foreign
+   countries." The legal term also covers governments, people, controlled companies and entities on
+   federal restriction lists. Restored the term with a plain explanation. 152 records.
+
+Fixed via judgments (6 updated), a rewrite import (**459 rewrites, 998 unchanged** — exactly the
+three measures' records), and a convergence dry run of all 1,457 `unchanged`. Row count stayed
+2,040; 0 records carry the faulty strings.
+
+4. **The committed ledger was the wrong file.** The first pass said `import-plain-language-report.json`
+   held the 1,457-rewrite run, but the file actually held an earlier all-`unchanged` convergence run.
+   Cause: **the importer writes a repeat REAL run's report to `import-rerun-report.json` when
+   `import-report.json` already exists** — so the true rewrite ledger was sitting under that name in
+   the working evidence directory while I copied the stale fixed-name file. Both ledgers are now
+   committed and verified by their contents: `import-plain-language-report.json` = the full rewrite
+   (rewrite: 1,457, `…T05:52:15.034Z`), `import-plain-language-fix-report.json` = this review fix
+   (rewrite: 459, `…T06:18:11.691Z`). Rule for next time: after any re-run, check the report's own
+   `actions` before committing it as a ledger — the filename is not proof of what ran.
