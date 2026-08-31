@@ -58,10 +58,10 @@ AND enacted across 176 measures.** See `fetch-report.json`.
 
 ## Crosswalk
 
-`crosswalk.json` — **189 entries: 158 mapped (136 proposed, all accepted, plus 22
-hand-added) and 31 explicit null.** Validation over all 2,494 rolls: matched
-**197,538**, `no_crosswalk` **0**, `out_of_scope` **0**, 0 file errors, and **0
-zero-match rolls**.
+`crosswalk.json` — **189 entries: 160 mapped (136 proposed, 22 original
+hand-added, and 2 roster-campaign mappings) and 29 explicit null.** Validation
+over all 2,494 rolls: `no_crosswalk` **0**, `out_of_scope` **0**, 0 file errors,
+and **0 zero-match rolls**.
 
 Every one of the 136 proposals was checked two ways before acceptance: the
 district NUMBER agrees with the candidacy in all 136, and the 5 proposals that
@@ -175,12 +175,11 @@ regenerable from the dataset with the divided gate; the twin-pair rule above
 removes roughly a third of it). Also unworked: the 105 divided rolls on measures
 that did not become law, and the entire **2026 Regular Session (LegiScan 2240)**.
 
-**Roster note:** our Nov-2026 Maryland pool holds 300 state-legislative
-candidates and the crosswalk maps 158 of the 189 sitting members. 31 members map
-to nothing — most are not seeking a General Assembly seat, but a later Maryland
-roster campaign will close the remainder (Speaker Adrienne Jones, Senate
-President-adjacent members and several sitting Delegates have no 2026 row yet).
-Re-running the import after extending the crosswalk adds those members
-**idempotently**.
+**Roster follow-up (2026-08-29):** the official State Board general-candidate
+CSVs resolved two real roster gaps: Brian A. Chisholm and LaToya Marie
+Caldwell-Nkongolo, both House District 31 delegates. They added 19 records on a
+local-only re-import. The remaining 29 current nulls are verified non-candidates
+in their stated state-legislative races; they remain null because a successor
+cannot receive a former member's votes. See `crosswalk-roster-review-2026-08-29.md`.
 
-**PROD IS UNTOUCHED.** All 1,446 live records are on local `voteapp` only.
+**PROD IS UNTOUCHED.** All 1,465 live records are on local `voteapp` only.
