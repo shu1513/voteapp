@@ -53,6 +53,23 @@ describe("buildCandidateRecordSourceRepairPrompt", () => {
     expect(prompt).not.toContain('"title"');
   });
 
+  it("requires the replacement source to be the same person", () => {
+    const prompt = buildCandidateRecordSourceRepairPrompt({
+      candidateDisplayName: "Jane Doe",
+      districtName: "California",
+      districtType: "statewide",
+      state: "CA",
+      electionDate: "2026-11-03",
+      officialBallotTitle: "Governor",
+      blockedUrls: [],
+      badRecords: [],
+    });
+
+    expect(prompt).toContain(
+      "- The replacement source must be about this same person; a name match is not proof. Tie it to this candidate with a hard identifier: office or district held, employer, license or docket number, or reporting that states the identification. On a page covering several candidates, take the fact next to this candidate's name. If you cannot confirm the person, return no_replacement=true."
+    );
+  });
+
   it("includes election_stage for non-senate offices when provided", () => {
     const prompt = buildCandidateRecordSourceRepairPrompt({
       candidateDisplayName: "Jane Doe",
