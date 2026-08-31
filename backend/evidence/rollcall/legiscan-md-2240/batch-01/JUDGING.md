@@ -61,3 +61,22 @@ kept: David Moon's record is a different bill's co-sponsorship and Cheryl
 Kagan's is a committee vote on SB 949, not either selected roll-call claim.
 
 Production is untouched. All changes are in local `voteapp`.
+
+## Crosswalk link to the roster campaign (2026-08-30)
+
+This crosswalk was built before the roster campaign (PR #978) added 2026
+candidate rows for two sitting HD-031 Delegates, so people_ids 20530 (Brian
+Chisholm) and 26325 (LaToya Nkongolo, ballot surname Caldwell-Nkongolo)
+carried stale "no candidate row" nulls. Both voted on all five House rolls in
+this batch. The two entries are now mapped, and the idempotent re-import added
+exactly their records: **10 inserts / 763 unchanged, 0 errors**; convergence
+**773 unchanged**. Batch totals are now **773 records / 163 candidates / 735
+tags** (their two HB 115 nay records carry no tag — that label's nay side is
+null by design). Ledger: `import-crosswalk-link-report.json`;
+`import-report.json` and `import-rerun-report.json` remain the original insert
+and convergence ledgers.
+
+Standing rule this documents: after ANY Maryland roster addition, both session
+crosswalks (2164 and 2240) are extendable — people_ids are session-stable, and
+re-import picks new members up idempotently. Check both, not just the session
+being worked.
