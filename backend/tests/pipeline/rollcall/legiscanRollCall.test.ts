@@ -336,6 +336,35 @@ describe("Maryland's measured desc vocabulary", () => {
   });
 });
 
+describe("Maryland 2026's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS["MD-2240"]!;
+  const md = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+
+  it("keeps the measured final-passage spellings", () => {
+    expect(md("Third Reading Passed", 141)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(md("Third Readings Passed with Amendments", 47, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(md("Conference Committee Report Adopted", 47, "senate").questionClass).toBe("conference_report");
+    expect(md("Conference Committee Report 583123/1 Adopted", 47, "senate").questionClass).toBe("conference_report");
+    expect(md("Overridden", 141).questionClass).toBe("veto_override");
+  });
+
+  it("excludes each surveyed procedural family", () => {
+    for (const desc of [
+      "Decision of the Chair upheld",
+      "Motion Limit Debate (Senator King) Adopted",
+      "Committee Amendment (#69) Adopted",
+      "Favorable with Amendments 923921/1 Adopted",
+      "Floor Amendment (Delegate Buckel) Rejected",
+    ]) {
+      expect(md(desc, 141)).toMatchObject({ isFloorVote: false });
+    }
+  });
+});
+
 describe("getLegiscanStateConfig", () => {
   it("serves only surveyed states; an unsurveyed state is refused by name", () => {
     expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual([
@@ -351,9 +380,11 @@ describe("getLegiscanStateConfig", () => {
       "MO",
       "MO-2226",
       "MD",
+      "MD-2240",
     ]);
-    // A key is not a jurisdiction: Missouri has two sessions in scope and
-    // writes both under `MO`, so a judgment may never name `MO-2226`.
+    // A key is not a jurisdiction: Missouri and Maryland each have two
+    // sessions in scope and write both under their postal jurisdiction, so a
+    // judgment may never name `MO-2226` or `MD-2240`.
     expect(LEGISCAN_RECORD_JURISDICTIONS).toEqual(["GA", "CT", "IL", "TN", "TX", "FL", "CA", "PA", "ME", "MO", "MD"]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
@@ -367,6 +398,7 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("MO").sessionId).toBe(2169);
     expect(getLegiscanStateConfig("MO-2226")).toMatchObject({ jurisdiction: "MO", sessionId: 2226 });
     expect(getLegiscanStateConfig("MD").sessionId).toBe(2164);
+    expect(getLegiscanStateConfig("md-2240")).toMatchObject({ jurisdiction: "MD", sessionId: 2240 });
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("NY")).toThrow("no LegiScan state config for NY");
   });

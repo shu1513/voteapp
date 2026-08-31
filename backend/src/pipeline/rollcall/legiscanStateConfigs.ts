@@ -1,6 +1,6 @@
 import type { LegislativeVoteChamber } from "./legislativeVotes.js";
 
-// Per-state configuration for the LegiScan roll-call pipeline, the phase-4
+// Per-session configuration for the LegiScan roll-call pipeline, the phase-4
 // rollout source (docs/plans/roll-call-vote-import.md §5 phase 4). LegiScan's
 // `desc` field has no national convention (`Read 3rd time`, `House Passed`,
 // `Passage: House Vote #243`, `FP`, TX prints bare `RV#105`), so which
@@ -40,7 +40,11 @@ export type LegiscanStateConfig = {
   excludedQuestions: readonly RegExp[];
 };
 
-// Registered per state as each state's survey is read (data-phase PRs).
+// Registered per surveyed session. A state's first configured session keeps
+// its postal key for backwards-compatible CLI use (for example `MD`), while
+// later sessions use `<ST>-<LegiScan session id>` (for example `MD-2240`).
+// The key selects a source session only; `config.jurisdiction` remains the
+// stored legislative_votes jurisdiction.
 // NOTE: legiscan.com pages sit behind a Cloudflare challenge (probed
 // 2026-08-24, curl answers 403 "Just a moment..."); the record validator
 // accepts that (allowStatusCodes [403] in
@@ -952,9 +956,39 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       /^motion /,
     ],
   },
+
+  // Maryland General Assembly, 2026 Regular Session (Jan 14 - Apr 13 2026,
+  // the constitutional 90-day adjournment; April 6 was the budget deadline,
+  // not sine die). The LegiScan session also carries a 32-roll August 2026
+  // sitting under the same session id — the source of the `Overridden`
+  // veto-override rolls; the regular session's own last votes fall on
+  // April 13. Vocabulary measured from the full dataset survey 2026-08-29:
+  // 2,675 bills, 2,732 roll calls, and 217 people. The 2,449 final floor
+  // votes use the same three third-reading spellings as 2025. Two Senate
+  // conference-report votes and the veto overrides appeared after the
+  // initial final-passage histogram and are explicitly listed below.
+  // Every roll has a member list and whole-chamber tally (House 141, Senate
+  // 47); the remaining 279 rolls are procedural.
+  "MD-2240": {
+    jurisdiction: "MD",
+    sessionId: 2240,
+    chamberSizes: { house: 141, senate: 47 },
+    keptQuestions: [
+      { pattern: /^third readings? passed(?: with amendments)?$/, questionClass: "passage" },
+      { pattern: /^conference committee report(?: [\d/]+)? adopted$/, questionClass: "conference_report" },
+      { pattern: /^overridden$/, questionClass: "veto_override" },
+    ],
+    excludedQuestions: [
+      /^floor amendment\b/,
+      /^committee amendment\b/,
+      /^favorable with amendments\b/,
+      /^motion /,
+      /^decision of the chair upheld$/,
+    ],
+  },
 };
 
-export const LEGISCAN_STATE_JURISDICTIONS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);
+export const LEGISCAN_CONFIG_KEYS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);
 
 // The distinct `jurisdiction` values the registry can write, which is NOT
 // the key list: a state with two sessions in scope is keyed `MO` and
@@ -990,7 +1024,7 @@ export function getLegiscanStateConfig(state: string): LegiscanStateConfig {
   }
   const config = LEGISCAN_STATE_CONFIGS[jurisdiction];
   if (!config) {
-    const registered = LEGISCAN_STATE_JURISDICTIONS.length > 0 ? LEGISCAN_STATE_JURISDICTIONS.join(", ") : "none yet";
+    const registered = LEGISCAN_CONFIG_KEYS.length > 0 ? LEGISCAN_CONFIG_KEYS.join(", ") : "none yet";
     throw new Error(
       `no LegiScan state config for ${state} (registered: ${registered}); ` +
         "survey the state's dataset first and add its entry to legiscanStateConfigs.ts"

@@ -1,0 +1,976 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "MD",
+  "entries": [
+    {
+      "people_id": 4527,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Pamela Beidle (SD-032) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 4531,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Frank Conaway (HD-040) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 4534,
+      "candidate_id": "51ea8f82-43ee-4aca-9aae-a3abee8aba6a",
+      "note": "name variant: surname-first candidate row"
+    },
+    {
+      "people_id": 4553,
+      "candidate_id": "030b4ee0-5519-4951-9bb1-acc53bba925c",
+      "note": null
+    },
+    {
+      "people_id": 4554,
+      "candidate_id": "3d9e62d8-ac5b-4f1e-ad1e-45ea0cc9972a",
+      "note": "name variant: surname-first candidate row"
+    },
+    {
+      "people_id": 4561,
+      "candidate_id": "82025bfb-fb50-4f6f-8057-0cc3ea3eb9eb",
+      "note": null
+    },
+    {
+      "people_id": 4562,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Joanne Benson (SD-024) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 4575,
+      "candidate_id": "abad9574-495b-46b9-b285-6f3c50fb57cb",
+      "note": null
+    },
+    {
+      "people_id": 4581,
+      "candidate_id": "a1702a62-2d95-4938-9170-6ff1783adaf3",
+      "note": "name variant: LegiScan legal first name Samuel; candidate row is initials plus the nickname"
+    },
+    {
+      "people_id": 4583,
+      "candidate_id": "fe4f7968-70b2-4d55-bc01-51bcf912244b",
+      "note": null
+    },
+    {
+      "people_id": 4588,
+      "candidate_id": "0d5fa8b3-6832-4c21-97ea-b9fbd6544ad9",
+      "note": null
+    },
+    {
+      "people_id": 4596,
+      "candidate_id": "a217ab4c-5e07-4172-b79b-0ba45f307a03",
+      "note": null
+    },
+    {
+      "people_id": 4597,
+      "candidate_id": "5201feea-2bf2-4384-82a7-6029781721c1",
+      "note": null
+    },
+    {
+      "people_id": 4598,
+      "candidate_id": "23119c3f-768a-4b0b-b2ad-f930c9ff098e",
+      "note": null
+    },
+    {
+      "people_id": 4606,
+      "candidate_id": "ca8245e3-a3e6-4b1e-82cd-a4f24a4ad44e",
+      "note": "sitting Delegate (HD-031) running for SENATE District 31; the candidate holds candidacies in both scopes, which is why the proposer declined"
+    },
+    {
+      "people_id": 4607,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Adrienne Jones (HD-010) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 4623,
+      "candidate_id": "b26625af-dc2d-40c5-87b1-466f5fc73187",
+      "note": null
+    },
+    {
+      "people_id": 4624,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Anne Healey (HD-022) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 4627,
+      "candidate_id": "1f63676d-15c7-41a7-bb23-02205bde39ab",
+      "note": null
+    },
+    {
+      "people_id": 4636,
+      "candidate_id": "e647ecfc-df4f-4d62-8bc2-44e4db0fcc0e",
+      "note": null
+    },
+    {
+      "people_id": 4639,
+      "candidate_id": "0f82c0cb-7204-4921-a69e-e7f9521e3273",
+      "note": null
+    },
+    {
+      "people_id": 4641,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Susan McComas (HD-034) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 4682,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Bryan Simonaire (SD-031) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 4686,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Katherine Klausmeier (SD-008) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 4689,
+      "candidate_id": "ca1bd9ca-5d55-4c08-95ba-9667198d1566",
+      "note": "name variant: surname-first candidate row leading with an initial"
+    },
+    {
+      "people_id": 4718,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Nancy King (SD-039) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 4731,
+      "candidate_id": "9202a24e-3b3f-4781-ba94-9f83d21fd52f",
+      "note": "exact name; the proposer left it unmatched"
+    },
+    {
+      "people_id": 11447,
+      "candidate_id": "e5f83f28-bcb3-4871-9a21-bca3f951abb1",
+      "note": null
+    },
+    {
+      "people_id": 11448,
+      "candidate_id": "7c046001-6afb-40f5-8e88-91af6939e5a6",
+      "note": "name variant: LegiScan legal first name Stephen; candidate row is surname-first with the nickname"
+    },
+    {
+      "people_id": 11449,
+      "candidate_id": "f8b3de55-9387-4d44-8e0b-a36b3a5d512d",
+      "note": "name variant: candidate row is surname-first with a middle initial"
+    },
+    {
+      "people_id": 11450,
+      "candidate_id": "89322e0a-1084-4da9-947e-878949c2e90e",
+      "note": null
+    },
+    {
+      "people_id": 11453,
+      "candidate_id": "5d47320e-83ce-45ed-ae44-e3dc7ba472fd",
+      "note": "name variant: LegiScan legal first name William; the Senate President files as Bill"
+    },
+    {
+      "people_id": 11554,
+      "candidate_id": "027f5dd9-aab9-4130-933a-a43396f51964",
+      "note": "IDENTITY TRAP: a DIFFERENT Mark Fisher is a 2026 candidate in District 13; LegiScan's HD-027 Mark Fisher is the District 27C delegate"
+    },
+    {
+      "people_id": 11766,
+      "candidate_id": "e4deef99-f826-4b83-a76a-d48075d92aca",
+      "note": null
+    },
+    {
+      "people_id": 11768,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Bonnie Cullison (HD-019) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 11917,
+      "candidate_id": "a638df3b-7ec9-4fe9-abf5-fe15f2de60ef",
+      "note": null
+    },
+    {
+      "people_id": 11972,
+      "candidate_id": "e8e6b859-c1a3-4e7b-b801-fa91f774edf3",
+      "note": null
+    },
+    {
+      "people_id": 11975,
+      "candidate_id": "c3ee7aab-212b-4e53-bc4a-3a2fbfde5651",
+      "note": null
+    },
+    {
+      "people_id": 12078,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Charles Otto (HD-038) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 12163,
+      "candidate_id": "beeb9d1c-5831-460c-82fc-ab6ada19736b",
+      "note": null
+    },
+    {
+      "people_id": 15140,
+      "candidate_id": "b186e54c-4fee-41c1-a5b1-2eff8d09e039",
+      "note": null
+    },
+    {
+      "people_id": 16083,
+      "candidate_id": "8cdd89a8-3f6c-42f1-ac07-fb7985ec4821",
+      "note": "name variant: LegiScan legal first name Steven; surname-first candidate row"
+    },
+    {
+      "people_id": 16100,
+      "candidate_id": "1f734a55-e318-4656-b7fd-8e7dca5678cd",
+      "note": null
+    },
+    {
+      "people_id": 17167,
+      "candidate_id": "f6fab847-df85-489a-8553-5efb3964aaca",
+      "note": null
+    },
+    {
+      "people_id": 17170,
+      "candidate_id": "900b89db-39e4-4090-ba0c-a8279f4d8bda",
+      "note": null
+    },
+    {
+      "people_id": 17171,
+      "candidate_id": "5540a3d5-a477-4528-8929-c56ea321b5e9",
+      "note": null
+    },
+    {
+      "people_id": 17231,
+      "candidate_id": "2545e72b-9f0d-40c7-bc77-dcd3e6c08ca2",
+      "note": null
+    },
+    {
+      "people_id": 17233,
+      "candidate_id": "5fd64dda-f108-4ca5-9656-24b43df4984e",
+      "note": null
+    },
+    {
+      "people_id": 17234,
+      "candidate_id": "ce9ec51b-1654-4310-b28e-abf04e951fb7",
+      "note": null
+    },
+    {
+      "people_id": 17235,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Michael Jackson (SD-027) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 17238,
+      "candidate_id": "348596b3-a240-48b4-ab5d-6fbdb1d934c3",
+      "note": null
+    },
+    {
+      "people_id": 17239,
+      "candidate_id": "e4e4b784-910d-40ab-9a76-de4cb49f11a7",
+      "note": null
+    },
+    {
+      "people_id": 17243,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Chris West (SD-042) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 17246,
+      "candidate_id": "77e56866-04c2-4492-bd01-fd99df2e4911",
+      "note": null
+    },
+    {
+      "people_id": 17248,
+      "candidate_id": "5be9b334-121e-43f1-b1d4-bef9ca48f0cb",
+      "note": null
+    },
+    {
+      "people_id": 17313,
+      "candidate_id": "0a6dca01-0881-4c13-ab0e-4cf8db6d09cf",
+      "note": null
+    },
+    {
+      "people_id": 17320,
+      "candidate_id": "6ee4751d-e868-4064-88ea-f4172e02314d",
+      "note": null
+    },
+    {
+      "people_id": 17321,
+      "candidate_id": "a98a36f4-7520-4505-b2b9-35f04dbeee7f",
+      "note": null
+    },
+    {
+      "people_id": 17322,
+      "candidate_id": "0e28bb08-f236-450a-9c40-24358afc41ae",
+      "note": null
+    },
+    {
+      "people_id": 17324,
+      "candidate_id": "147670ef-28fd-4e3c-a389-a28e41e3377a",
+      "note": null
+    },
+    {
+      "people_id": 17375,
+      "candidate_id": "6d62af1d-fdca-4932-a3b5-98476ad297f7",
+      "note": null
+    },
+    {
+      "people_id": 17376,
+      "candidate_id": "b519f3aa-b347-4300-99eb-118d0a9c6e8e",
+      "note": null
+    },
+    {
+      "people_id": 17377,
+      "candidate_id": "0e102484-6375-4566-b972-69056543e3b8",
+      "note": null
+    },
+    {
+      "people_id": 17380,
+      "candidate_id": "74b18319-2cb9-4b4c-a64a-d16b4da60286",
+      "note": null
+    },
+    {
+      "people_id": 17398,
+      "candidate_id": "b7fb7a70-9c8c-4953-a5d7-e30216915458",
+      "note": null
+    },
+    {
+      "people_id": 17399,
+      "candidate_id": "0bf594a0-10bf-4b0d-9d35-aa1f9fbcb77a",
+      "note": "name variant: LegiScan prints the nickname Jeff; surname-first candidate row"
+    },
+    {
+      "people_id": 17400,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Kevin Hornberger (HD-035) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 17401,
+      "candidate_id": "2d5638e1-81ee-4fec-a4ad-273a6ffa7ea8",
+      "note": null
+    },
+    {
+      "people_id": 17402,
+      "candidate_id": "ba54e774-2362-45e4-b1b9-c7095f2c076d",
+      "note": null
+    },
+    {
+      "people_id": 17403,
+      "candidate_id": "75e27f8a-73d2-408d-ab01-b935a0e9131f",
+      "note": null
+    },
+    {
+      "people_id": 17420,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Vanessa Atterbeary (HD-013) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 17422,
+      "candidate_id": "1e448003-3049-45b6-aa7e-5af7f4b081ad",
+      "note": null
+    },
+    {
+      "people_id": 17423,
+      "candidate_id": "c604a96e-ffdf-4036-b9d2-779e20936a4c",
+      "note": null
+    },
+    {
+      "people_id": 17424,
+      "candidate_id": "8cc9ebad-2376-4955-9e18-3d84bef17fa9",
+      "note": "exact name; the proposer left it unmatched"
+    },
+    {
+      "people_id": 17425,
+      "candidate_id": "6a0c21ae-20fa-45a2-8235-9232ad5b51fb",
+      "note": null
+    },
+    {
+      "people_id": 17426,
+      "candidate_id": "d736cadc-df94-4f90-bfeb-1954aa95bafc",
+      "note": null
+    },
+    {
+      "people_id": 17434,
+      "candidate_id": "f77e81ee-d2dd-469f-90ed-3a5485f928c4",
+      "note": null
+    },
+    {
+      "people_id": 17435,
+      "candidate_id": "12b5b85f-ac8c-47f4-84be-1c664169d57c",
+      "note": null
+    },
+    {
+      "people_id": 17553,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Barrie Ciliberti (HD-004) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 17669,
+      "candidate_id": "72f69c07-36c4-4b10-8816-a4d892330b84",
+      "note": null
+    },
+    {
+      "people_id": 17670,
+      "candidate_id": "bb5afd9c-cfc0-4235-8fca-68e059086778",
+      "note": null
+    },
+    {
+      "people_id": 17917,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Pamela Queen (HD-014) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 18731,
+      "candidate_id": "2058e3f6-04b6-4add-80c4-5665e9f86b44",
+      "note": null
+    },
+    {
+      "people_id": 19199,
+      "candidate_id": "2dd958ca-5559-4072-a072-0e861b205227",
+      "note": null
+    },
+    {
+      "people_id": 19271,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Jazz Lewis (HD-024) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 19527,
+      "candidate_id": "3166e116-2706-4e9e-bd6b-78873ef913a5",
+      "note": null
+    },
+    {
+      "people_id": 20529,
+      "candidate_id": "ed547f0a-82f8-4bfb-a5db-07dfc43feea9",
+      "note": "name variant: LegiScan prints the nickname Jack; candidate row is surname-first with the legal name"
+    },
+    {
+      "people_id": 20530,
+      "candidate_id": "565faa5c-9dcd-4a71-8109-3a72b0434b52",
+      "note": "sitting HD-031 Delegate; 2026 general candidate per the official SBE list (Brian A. Chisholm, House District 31), rostered 2026-08-29 in the roster campaign (PR #978) after this crosswalk was first built"
+    },
+    {
+      "people_id": 20532,
+      "candidate_id": "d7d36e11-9b79-420b-ab79-96a200481ebb",
+      "note": null
+    },
+    {
+      "people_id": 20533,
+      "candidate_id": "acca26b3-c527-47fd-a512-b573cd82f9f7",
+      "note": null
+    },
+    {
+      "people_id": 20534,
+      "candidate_id": "d6154c97-ca5a-4e81-940e-0bef8ffd4284",
+      "note": null
+    },
+    {
+      "people_id": 20588,
+      "candidate_id": "f0c33547-53ce-40f1-adc4-e19f84996bb6",
+      "note": null
+    },
+    {
+      "people_id": 20589,
+      "candidate_id": "015f5840-cdcf-4b5b-b346-c544d6992194",
+      "note": "name variant: candidate row leads with an initial before the working first name"
+    },
+    {
+      "people_id": 20591,
+      "candidate_id": "dd40d006-8d88-4393-8d48-aa9381ec593d",
+      "note": null
+    },
+    {
+      "people_id": 20592,
+      "candidate_id": "77edf10a-c07e-4a8e-a7dd-a36b05a0391c",
+      "note": null
+    },
+    {
+      "people_id": 20789,
+      "candidate_id": "6d289b37-7b43-43ae-9903-ff53ec2609d7",
+      "note": null
+    },
+    {
+      "people_id": 20790,
+      "candidate_id": "7cb1c58b-0e2b-4a74-b4d8-a75142ab1a6b",
+      "note": null
+    },
+    {
+      "people_id": 20791,
+      "candidate_id": "014ab6ae-49fe-4087-9623-49c2769e3616",
+      "note": "name variant: LegiScan prints the middle name Julian as the first name"
+    },
+    {
+      "people_id": 20792,
+      "candidate_id": "cecc4adb-8fb0-40b3-bb7b-00623b799470",
+      "note": null
+    },
+    {
+      "people_id": 20793,
+      "candidate_id": "0b12ab9b-f8cd-4690-aacf-4d2d1d28353c",
+      "note": null
+    },
+    {
+      "people_id": 20794,
+      "candidate_id": "dac6b98c-6a68-44bf-823f-5aeee6c6c849",
+      "note": null
+    },
+    {
+      "people_id": 20795,
+      "candidate_id": "edab1030-ea3b-4024-a3b6-5a7316af7a6a",
+      "note": null
+    },
+    {
+      "people_id": 20796,
+      "candidate_id": "1cbd9e96-d072-45e3-8aeb-35225c21b71c",
+      "note": null
+    },
+    {
+      "people_id": 20797,
+      "candidate_id": "e951578c-5e78-4a6f-bd5c-6ef108d43e92",
+      "note": null
+    },
+    {
+      "people_id": 20855,
+      "candidate_id": "86bdcf47-478c-4ad8-a9af-5b7b59367b66",
+      "note": null
+    },
+    {
+      "people_id": 20857,
+      "candidate_id": "b8909f9c-3dc5-43e7-92df-0a243f57a2af",
+      "note": null
+    },
+    {
+      "people_id": 20858,
+      "candidate_id": "f83cdcd9-5a93-4010-8aa9-8b0a465a6554",
+      "note": null
+    },
+    {
+      "people_id": 20859,
+      "candidate_id": "cc51a1fd-a14b-4a9b-98b7-465dc816cf8e",
+      "note": null
+    },
+    {
+      "people_id": 20860,
+      "candidate_id": "53d85e48-5a97-4c51-ba4f-196f74b49871",
+      "note": null
+    },
+    {
+      "people_id": 20861,
+      "candidate_id": "9a69c900-4c2b-4b59-9fb0-43cc1ba3fad6",
+      "note": null
+    },
+    {
+      "people_id": 20862,
+      "candidate_id": "f05f0bba-38fd-4153-8ed2-ba4e2dd57cba",
+      "note": null
+    },
+    {
+      "people_id": 20864,
+      "candidate_id": "0e0872d3-0c42-4b50-bfc5-3f2206ebbbfa",
+      "note": null
+    },
+    {
+      "people_id": 20865,
+      "candidate_id": "4a9f777d-83a3-494a-b2ea-30f9771bce95",
+      "note": "name variant: surname-first candidate row"
+    },
+    {
+      "people_id": 20867,
+      "candidate_id": "bd805e26-4059-4a28-af9c-ebb78b82fd3e",
+      "note": null
+    },
+    {
+      "people_id": 20868,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Jen Terrasa (HD-013) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 20930,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Dalya Attar (SD-041) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 20931,
+      "candidate_id": "48d0839b-b01f-42bf-a9f5-e806ce4a718b",
+      "note": null
+    },
+    {
+      "people_id": 20932,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Brian Crosby (HD-029) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 20933,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Nino Mangione (HD-042) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 20934,
+      "candidate_id": "0a234fef-2882-4223-80cf-0289a1f32c04",
+      "note": null
+    },
+    {
+      "people_id": 20955,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Arthur Ellis (SD-028) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 20956,
+      "candidate_id": "f1409a68-9809-4291-ada3-508e13bc3846",
+      "note": null
+    },
+    {
+      "people_id": 20964,
+      "candidate_id": "2465e17d-00ea-4094-acc9-1795b6e6786a",
+      "note": null
+    },
+    {
+      "people_id": 20965,
+      "candidate_id": "82b698b7-acff-4350-bd26-d8fea52b4d5e",
+      "note": null
+    },
+    {
+      "people_id": 20966,
+      "candidate_id": "333f41ac-d96b-41a4-8736-3a4fe5aaf537",
+      "note": null
+    },
+    {
+      "people_id": 21255,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Stephanie Smith (HD-045) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 21279,
+      "candidate_id": "c9f50d4c-279c-4212-9db7-210df250dfa8",
+      "note": null
+    },
+    {
+      "people_id": 21425,
+      "candidate_id": "a14c064d-0994-494d-974a-9c53a1d31472",
+      "note": "name variant: LegiScan legal first name Catherine"
+    },
+    {
+      "people_id": 21426,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Nicole Williams (HD-022) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 21427,
+      "candidate_id": "78da6051-ee36-4571-a78b-c4587ef1ed16",
+      "note": null
+    },
+    {
+      "people_id": 21442,
+      "candidate_id": "b7b5781f-cd2e-47ae-8089-1f9f83571938",
+      "note": null
+    },
+    {
+      "people_id": 21541,
+      "candidate_id": "035c724a-e9c1-400d-bfdb-de94e52db2c5",
+      "note": null
+    },
+    {
+      "people_id": 21591,
+      "candidate_id": "56b643d8-b9c2-4a7e-b9a1-fc2c7ce15d2d",
+      "note": "name variant: LegiScan legal first name Michael"
+    },
+    {
+      "people_id": 21906,
+      "candidate_id": "7edd58e2-1d49-43c3-bfa2-c5c7a6793d9e",
+      "note": null
+    },
+    {
+      "people_id": 22755,
+      "candidate_id": "30f6c252-44a0-4ff7-8ca7-1502a1468dd7",
+      "note": null
+    },
+    {
+      "people_id": 23041,
+      "candidate_id": "52cce1ea-44bb-40dc-beac-dd0666680c84",
+      "note": null
+    },
+    {
+      "people_id": 23056,
+      "candidate_id": "d4b5e099-a212-475e-863f-231e3c3fc690",
+      "note": null
+    },
+    {
+      "people_id": 23908,
+      "candidate_id": "9b62ac48-10c9-41cc-836c-788728bc8d78",
+      "note": null
+    },
+    {
+      "people_id": 23909,
+      "candidate_id": "347af80e-9444-4a73-8308-dbdb35b54590",
+      "note": null
+    },
+    {
+      "people_id": 24386,
+      "candidate_id": "fe6f8fd2-71cf-4d98-8453-0ed3bed1d41a",
+      "note": null
+    },
+    {
+      "people_id": 24387,
+      "candidate_id": "524c8c15-c417-4ca9-a19b-17d5463151d0",
+      "note": "name variant: candidate row leads with an initial before the working first name"
+    },
+    {
+      "people_id": 24388,
+      "candidate_id": "c7ada61d-dfd3-4474-b741-6eb63ee6af6c",
+      "note": null
+    },
+    {
+      "people_id": 24389,
+      "candidate_id": "6f801c1d-e119-489d-b61f-ddb45ca709cb",
+      "note": null
+    },
+    {
+      "people_id": 24485,
+      "candidate_id": "552af323-4d82-463e-8a36-4681158ae1a6",
+      "note": null
+    },
+    {
+      "people_id": 24532,
+      "candidate_id": "ad31db6d-a37c-4e02-85fc-53d6c3052f14",
+      "note": null
+    },
+    {
+      "people_id": 24534,
+      "candidate_id": "73ca91e8-32cf-4106-96f6-99aaa41506e9",
+      "note": null
+    },
+    {
+      "people_id": 24535,
+      "candidate_id": "9d364b81-44a7-449a-b87c-181b38d54530",
+      "note": "exact name; the proposer left it unmatched"
+    },
+    {
+      "people_id": 24536,
+      "candidate_id": "367d6052-4469-40fb-99bd-229643d70784",
+      "note": null
+    },
+    {
+      "people_id": 24537,
+      "candidate_id": "c1c556b0-028d-45fe-ba41-c16115de71ca",
+      "note": null
+    },
+    {
+      "people_id": 24538,
+      "candidate_id": "48b35ce1-84aa-48c3-bbee-3965c893e69c",
+      "note": null
+    },
+    {
+      "people_id": 24539,
+      "candidate_id": "be793ce5-a969-4ff9-8dc7-e3f4f885c03d",
+      "note": null
+    },
+    {
+      "people_id": 24540,
+      "candidate_id": "1ac9756d-92ea-45e7-ba64-c46084934359",
+      "note": null
+    },
+    {
+      "people_id": 24541,
+      "candidate_id": "653246ea-883f-43c8-abfe-a3c00f2fa0c8",
+      "note": null
+    },
+    {
+      "people_id": 24542,
+      "candidate_id": "4b0969d9-15c9-40f6-94e0-24b928694cb1",
+      "note": null
+    },
+    {
+      "people_id": 24543,
+      "candidate_id": "dfb387d6-ede2-4a59-9678-10e3fe6b297f",
+      "note": null
+    },
+    {
+      "people_id": 24709,
+      "candidate_id": "ffe0abab-67e4-418d-b7de-266a0e09baf6",
+      "note": null
+    },
+    {
+      "people_id": 24710,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Adrian Boafo (HD-023) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 24711,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Christopher Bouchat (HD-005) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 24712,
+      "candidate_id": "6552fb27-3bcb-4ef5-a37b-75b6c34b9d50",
+      "note": null
+    },
+    {
+      "people_id": 24713,
+      "candidate_id": "9443a870-0b60-4ad3-878f-27924a4db7c9",
+      "note": null
+    },
+    {
+      "people_id": 24714,
+      "candidate_id": "fc82f328-ff88-4c94-8fe0-714fcf2c852f",
+      "note": null
+    },
+    {
+      "people_id": 24715,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Jim Hinebaugh (HD-001) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 24716,
+      "candidate_id": "f2a1e41d-1e8f-4ffe-8a18-2dcdd81e44a0",
+      "note": null
+    },
+    {
+      "people_id": 24717,
+      "candidate_id": "54cb9c23-b9d6-4e96-930d-45483fdf37a3",
+      "note": null
+    },
+    {
+      "people_id": 24718,
+      "candidate_id": "4b000f55-490d-4aab-bfa4-928afc811f57",
+      "note": null
+    },
+    {
+      "people_id": 24719,
+      "candidate_id": "0d2224c3-7273-4fbc-a402-f75780099293",
+      "note": null
+    },
+    {
+      "people_id": 24720,
+      "candidate_id": "6b82d2a1-fdfa-485f-9b59-e872092ed361",
+      "note": null
+    },
+    {
+      "people_id": 24721,
+      "candidate_id": "547d3570-20f9-401d-ac5b-eed8428b2e90",
+      "note": null
+    },
+    {
+      "people_id": 24722,
+      "candidate_id": "84f984fd-9bc5-43ce-9c61-33532823f8de",
+      "note": null
+    },
+    {
+      "people_id": 24723,
+      "candidate_id": "1dd88a99-b6a7-43cd-b279-8dc4aa9c94a3",
+      "note": null
+    },
+    {
+      "people_id": 24724,
+      "candidate_id": "a2248830-d43e-4f1e-ac84-de86da7b8d79",
+      "note": "name variant: surname-first candidate row"
+    },
+    {
+      "people_id": 24725,
+      "candidate_id": "776697e6-5076-4724-bf17-bf390034da1d",
+      "note": null
+    },
+    {
+      "people_id": 24787,
+      "candidate_id": "bf3afa48-8c73-472d-80b7-1f4af42759bb",
+      "note": null
+    },
+    {
+      "people_id": 24820,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland state-legislative candidate row for Joshua Stonko (HD-042) \u2014 not seeking a General Assembly seat, or a roster gap"
+    },
+    {
+      "people_id": 24858,
+      "candidate_id": "c3cc1ad0-2ef3-423b-9021-d25f440d92f6",
+      "note": null
+    },
+    {
+      "people_id": 24906,
+      "candidate_id": "7a9d36fa-8a1e-4647-8af5-211c258ebdf8",
+      "note": null
+    },
+    {
+      "people_id": 24931,
+      "candidate_id": "f89cc7fd-5fc5-461d-82d7-b3cd003031ea",
+      "note": null
+    },
+    {
+      "people_id": 25010,
+      "candidate_id": "a8a03a4a-85aa-4d9e-851d-b8edc5d43f6b",
+      "note": null
+    },
+    {
+      "people_id": 25011,
+      "candidate_id": "cdfefa94-1c9c-43e1-8722-568eb4f71bbd",
+      "note": null
+    },
+    {
+      "people_id": 25012,
+      "candidate_id": "16e6f22c-f09c-41fc-ae22-35a8552df4e8",
+      "note": null
+    },
+    {
+      "people_id": 25013,
+      "candidate_id": "abbfbb6e-92fe-4d6b-b116-e78548a25691",
+      "note": null
+    },
+    {
+      "people_id": 25071,
+      "candidate_id": "af11ce7e-c4f3-435c-9022-000d5a47925f",
+      "note": null
+    },
+    {
+      "people_id": 25625,
+      "candidate_id": "70f66733-4a3c-49a8-8448-2340dc80486a",
+      "note": null
+    },
+    {
+      "people_id": 25626,
+      "candidate_id": "6ed1418f-e497-49e6-b297-96b71270d3d2",
+      "note": null
+    },
+    {
+      "people_id": 26073,
+      "candidate_id": "11973d5b-8546-465a-9cff-93560025baa0",
+      "note": null
+    },
+    {
+      "people_id": 26325,
+      "candidate_id": "d8161e29-493c-4ecb-827e-77ee1e22fad8",
+      "note": "sitting HD-031 Delegate; 2026 general candidate per the official SBE list (LaToya Marie Caldwell-Nkongolo, House District 31 \u2014 ballot surname changed from Nkongolo), rostered 2026-08-29 in the roster campaign (PR #978) after this crosswalk was first built"
+    },
+    {
+      "people_id": 26407,
+      "candidate_id": "195c9e4b-a909-4eaa-ba88-8163c9256850",
+      "note": null
+    },
+    {
+      "people_id": 26426,
+      "candidate_id": "93538af1-3395-4e26-aa5f-663f4eaa9702",
+      "note": null
+    },
+    {
+      "people_id": 26427,
+      "candidate_id": "8eb65ba6-36ac-40b8-936b-f44d7717c45d",
+      "note": null
+    },
+    {
+      "people_id": 26605,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland House candidate row for Kevin H. Anderson (HD-038) in the official State Board of Elections list"
+    },
+    {
+      "people_id": 26606,
+      "candidate_id": "3dfa8fb7-7ef5-4c4f-9ffd-f3040c94cb5e",
+      "note": "official 2026 House candidate row: Derrick L. Coley (HD-024); LegiScan omits middle initial"
+    },
+    {
+      "people_id": 26607,
+      "candidate_id": "0138171a-4c45-4791-bec7-dbdde243dcc8",
+      "note": "official 2026 House candidate row: Gabriel Maximilian Moreno (HD-013); LegiScan middle initial matches"
+    },
+    {
+      "people_id": 26608,
+      "candidate_id": "484a7a8f-acd8-41e3-87b3-36c4ca0dc909",
+      "note": "official 2026 House candidate row: Darrell C. Odom, Sr. (HD-027A); LegiScan abbreviates the subdistrict"
+    },
+    {
+      "people_id": 26680,
+      "candidate_id": null,
+      "note": "no Nov-2026 Maryland House candidate row for Alexander M. Harlan (HD-042) in the official State Board of Elections list"
+    }
+  ]
+}
