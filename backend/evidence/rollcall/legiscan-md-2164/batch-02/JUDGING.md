@@ -69,13 +69,37 @@ review caught, where simplification quietly broadened scope.
 
 Real import stamp `2026-08-31T06:11:47.355Z`.
 
-- Dry run: 19 files, **1,449 inserts**, 0 errors, 0 notifications, 0 related
-  flags.
+- Dry run: 19 files, **1,449 inserts**, 0 errors, 0 notifications, 7 related
+  flags (see below).
 - Real run: identical — 19 files imported, **1,449 inserts**, 0 errors.
 - Convergence re-run: **1,449 unchanged**, written to
   `import-rerun-report.json`. `import-report.json` remains the original insert
   ledger; its `dryRun: false` and `insert: 1449` were checked inside the file
   rather than trusted from the file name.
+
+### Related-record flags (7, reviewed post-import)
+
+An earlier version of this file wrongly said zero related flags; all three
+ledgers actually carry seven non-empty `relatedRecordIds`, pointing at four
+pre-existing manual records. Reviewed each against the existing record's text:
+
+- Chang / HB 390 → existing record is about **HB 61** (solar canopies). Not a
+  duplicate; date-proximity noise.
+- Tomlinson / HB 783 → existing record is about **HB 662** (supply contracts).
+  Not a duplicate.
+- Acevero / HB 861 → existing record is about **HB 1473**. Different bill, not
+  a duplicate.
+- Sydnor / HB 1315, SB 608, HB 1473 (3 flags) → existing record is about
+  **SB 342** (his own sponsored bill). Not duplicates.
+- **Acevero / HB 1473 → true overlap.** Existing manual record
+  `24192bbd-31d5-4b32-925f-eb24585a5b6d` combined his HB 1473 sponsorship with
+  the same 104-35 yea vote this batch imports as
+  `9305a100-9876-4beb-a593-d33f56d0f246`. Resolution (applied to the local DB
+  2026-08-31): the manual record was trimmed to sponsorship-only ("Led
+  sponsorship … signed as Chapter 434"), dropping its vote clause; the
+  imported vote record stays, keeping Acevero consistent with the other 133
+  members on this roll. No records retired, no ledgers regenerated — the
+  reports stay as the truthful record of what the importer did.
 
 Records by stamp: **1,449 records across 19 rolls**. Area tags for the stamp:
 **1,213**. That split is exact — all 1,085 yea-side records are tagged, and of
