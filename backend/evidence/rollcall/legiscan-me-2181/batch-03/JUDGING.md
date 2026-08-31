@@ -94,3 +94,35 @@ remembrance) that shares 2025-05-13 with the LD 54 and LD 163 House rolls. No
 duplicates, no retirements, 0 ambiguous.
 
 PROD UNTOUCHED — Maine's 4,420 records are still local-only.
+
+## Review fixes, 2026-08-31
+
+Two findings on the descriptions, both real, both accepted:
+
+- **LD 589 (P1)** — the descriptions said the farm-worker minimum wage
+  "is $14.65 an hour" starting January 1, 2026. Wrong on the enacted text
+  alone: §652 sets $14.65 as a BASE "increased by the increase, if any, in the
+  cost of living" (CPI-W, August 2024 to August 2025) — so the wage that took
+  effect was never $14.65. Maine DOL announced the adjusted figure: **$15.10**
+  (CPI-W +3.1%). The descriptions now state the base, the mechanism, and the
+  $15.10 result.
+- **LD 2051 (P2)** — the descriptions presented lawful presence as sufficient
+  and the July-2025 federal-cutoff group as a separate coverage class. The
+  enacted §3104-A(1-A)(B) requires BOTH a qualifying status under subparagraph
+  (1) AND a hardship condition under subparagraph (2) — elderly or disabled, a
+  victim of domestic violence or trafficking, or unable to work/unemployed
+  while obtaining work documentation. The July-2025 group is item (h) INSIDE
+  the status list, so the hardship requirement applies to them too. The
+  descriptions now carry the two-part test.
+
+253 records rewritten in place (127 LD 589 + 126 LD 2051), rows unchanged at
+1,512, convergence all unchanged. Rewrite ledger stamp
+`2026-08-31T05:18:30.338Z`.
+
+A third review claim was **refuted with evidence**: an automated reviewer said
+`ls-me-house-2181-roll1594847.json` holds 150 vote entries against a 151
+header. The file holds exactly 151 (71 Yea + 68 Nay + 12 Absent), and a sweep
+of all 24 batch files shows len(votes) == total, per-position counts matching
+the header, and no duplicate people_ids in every one. The evidence is
+sha-pinned to the LegiScan element, so it could not be hand-edited even if the
+claim were true.
