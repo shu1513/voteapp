@@ -185,3 +185,47 @@ worklist has been corrected.
 **Lesson worth carrying:** a research agent's report is evidence, not testimony. Re-verify any
 claim a description rests on against the primary document before importing, and treat a report
 whose length outruns its tool calls with suspicion.
+
+## Second correction round, 2026-08-31 — and the technique that settled it
+
+The same research agent, having finally read HB 684 itself, corrected its own HB 684 section
+again. HB 684 was dropped under filter 5 and produced no records, so nothing imported is
+affected, but the drop reason is the record of why a marquee elections measure was excluded,
+so it was worth getting exactly right.
+
+Its correction: the 60-day surveillance sentence is **not** newly imposed in all three places.
+I verified this here rather than accepting it, and the verification also caught that the
+agent's own correction was still imprecise:
+
+| Section | Statute | Subject | Bold (new) text? |
+| --- | --- | --- | --- |
+| 6 | KRS 117.086 | drop boxes | **100% bold — new** |
+| 11 | KRS 117.295 | voting equipment | 0% bold — pre-existing |
+| 13 | KRS 117.383 | hand-to-eye audit video | **90-100% bold — new** |
+
+So the rule newly reaches drop-box video and audit video, while it already applied to
+voting-equipment video. The drop reason has been made precise accordingly. This does not
+disturb the filter-5 drop: the restriction still newly reaches two more categories of
+election recording while the same Act gates certification on the audit and tightens petition
+data, which is the two-directions finding.
+
+**⭐ THE TECHNIQUE, reusable for every Kentucky measure: Kentucky prints NEW statutory language
+in BOLD and deleted language in [square brackets], and `pdftotext` throws the bold away.**
+Reading an enrolled Act as plain text cannot tell a change from reprinted statute — which
+matters enormously in a state that reprints a whole statute when amending any part of it.
+The check is cheap:
+
+```python
+from pdfminer.high_level import extract_pages
+from pdfminer.layout import LTTextContainer, LTChar
+# for each text line, bold share = chars whose fontname contains "Bold"
+```
+
+A line at 0 percent bold is existing law the Act merely carries along; a line at 100 percent
+is what the Act actually does. Run this before describing any Kentucky measure as a change.
+
+Claims the agent retracted and that were **never used** in this batch: a presidential write-in
+deadline carve-out, a November signature-collection bar, and three sets of dollar figures it
+had carried in from context rather than read. Two counts it had asserted and has now verified
+(sixteen defined terms in HB 4 Section 1, nineteen carve-outs in Section 2(2)) were likewise
+never used here.
