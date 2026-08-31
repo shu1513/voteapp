@@ -957,12 +957,16 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     ],
   },
 
-  // Maryland General Assembly, 2026 Regular Session (Jan 14 - Apr 6 2026).
-  // Vocabulary measured from the full dataset survey 2026-08-29: 2,675
-  // bills, 2,732 roll calls, and 217 people. The 2,449 final floor votes
-  // use the same three third-reading spellings as 2025. Two Senate
-  // conference-report votes and a two-chamber veto override appeared after
-  // the initial final-passage histogram and are explicitly listed below.
+  // Maryland General Assembly, 2026 Regular Session (Jan 14 - Apr 13 2026,
+  // the constitutional 90-day adjournment; April 6 was the budget deadline,
+  // not sine die). The LegiScan session also carries a 32-roll August 2026
+  // sitting under the same session id — the source of the `Overridden`
+  // veto-override rolls; the regular session's own last votes fall on
+  // April 13. Vocabulary measured from the full dataset survey 2026-08-29:
+  // 2,675 bills, 2,732 roll calls, and 217 people. The 2,449 final floor
+  // votes use the same three third-reading spellings as 2025. Two Senate
+  // conference-report votes and the veto overrides appeared after the
+  // initial final-passage histogram and are explicitly listed below.
   // Every roll has a member list and whole-chamber tally (House 141, Senate
   // 47); the remaining 279 rolls are procedural.
   "MD-2240": {
