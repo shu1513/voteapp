@@ -95,10 +95,11 @@ so every vote in this batch was cast on the enrolled text and no description nee
 - `batch-01/` 20 rolls / 10 measures / **729 records** · `batch-02/` 24 / 12 / **859** ·
   `batch-03/` 18 / 9 / **645** · `batch-04/` 21 / 11 / **806** · `batch-05/` 13 / 7 / **509**
   (both-chamber seam closed) · `batch-06/` 5 / 5 / **311** (one-chamber tail begins) ·
-  `batch-07/` 8 / 8 / **507** (final-text rule; Assembly-only tail).
+  `batch-07/` 8 / 8 / **507** (final-text rule; Assembly-only tail) ·
+  `batch-08/` 10 / 10 / **107** (Senate-only tail begins).
 
-California total: **4,366 roll-call records across 80 candidates**, 62 measures, 14 of 27 research
-areas. All descriptions plain English, American-spelled, every qualification kept.
+California total: **4,473 roll-call records across 80 candidates**, 72 measures, **17 of 27
+research areas**. All descriptions plain English, American-spelled, every qualification kept.
 
 ## The rule changed on 2026-08-31: final text, not enacted
 
@@ -144,3 +145,28 @@ Assembly-first ordering holds for the rest of the campaign.
 12 budget-package bills, 6 on the version check, 2 under filter 5, 3 already known bad.
 Two measures remain permanently unavailable: AB 863 and AB 483 have only pre-amendment divided
 votes.
+
+`batch-08` opened the **Senate-only** tail (10 of 160).
+
+## The version check runs offline
+
+The dataset's bill JSON carries `texts[]` — one entry per version with a `date` and a `type`. So
+"was this vote cast on the final text?" is answerable from local files, with **no web fetch**:
+
+    vote_date >= max(date for t in bill["texts"] if t["type"] == "Amended")
+
+Run across the 160 Senate-only measures it gives **118 pass / 42 fail** in a single pass. Use it
+before reading anything; it is the cheapest filter in the pipeline and it removes about a quarter
+of the pool.
+
+## Where the value is
+
+| slice | measures | records per measure | note |
+| --- | --- | --- | --- |
+| both-chamber, open | 163 | ~79 | **highest value, not started** |
+| Senate-only, passes version check | 108 left | ~11 | batch-08 took 10 |
+| Assembly-only | 0 | ~68 | cleared by batch-07 |
+
+An Assembly roll reaches ~68 of our candidates and a Senate roll ~11, because all 80 Assembly seats
+are on the November ballot against 20 of 40 Senate seats. The both-chamber pool should be worked
+before the rest of the Senate-only tail.

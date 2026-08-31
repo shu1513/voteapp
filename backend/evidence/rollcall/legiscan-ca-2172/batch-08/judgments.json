@@ -1,0 +1,184 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601872,
+      "measure_id": "AB 1263",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1263, which targets untraceable homemade firearms. It becomes a misdemeanor to knowingly cause, aid or encourage someone else to make a gun unlawfully, including with a 3D printer or a computer-controlled milling machine. The law covering digital gun-making files is widened to cover computer-aided manufacturing files and files for machineguns and large-capacity magazines. Someone who runs a website that sells or hands out those files, and that encourages people to use them to make guns, is presumed to have broken that law unless they show otherwise. Someone harmed in California by a violation may sue for damages and a court order. Sellers of loose gun barrels, accessories and gun-making machines must warn buyers that unlicensed manufacture is generally a crime, and people convicted of these new offenses lose the right to own a firearm for 10 years. The Senate passed it 30-10 and it became law.",
+      "nay_description": "Voted against passing Assembly Bill 1263, which targets untraceable homemade firearms. It becomes a misdemeanor to knowingly cause, aid or encourage someone else to make a gun unlawfully, including with a 3D printer or a computer-controlled milling machine. The law covering digital gun-making files is widened to cover computer-aided manufacturing files and files for machineguns and large-capacity magazines. Someone who runs a website that sells or hands out those files, and that encourages people to use them to make guns, is presumed to have broken that law unless they show otherwise. Someone harmed in California by a violation may sue for damages and a court order. Sellers of loose gun barrels, accessories and gun-making machines must warn buyers that unlicensed manufacture is generally a crime, and people convicted of these new offenses lose the right to own a firearm for 10 years. The Senate passed it 30-10 and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1726054,
+      "measure_id": "SB 1220",
+      "vote_date": "2026-08-25",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 1220, which adds serial-number tampering to the list of convictions that cost a person the right to own a gun. California already bars firearm ownership for 10 years after certain misdemeanor convictions. The bill adds the offense of changing, removing or destroying a gun's maker name, model or serial number, or dealing in or possessing a gun with those marks defaced, for anyone convicted on or after January 1, 2027. The Senate agreed 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 1220, which adds serial-number tampering to the list of convictions that cost a person the right to own a gun. California already bars firearm ownership for 10 years after certain misdemeanor convictions. The bill adds the offense of changing, removing or destroying a gun's maker name, model or serial number, or dealing in or possessing a gun with those marks defaced, for anyone convicted on or after January 1, 2027. The Senate agreed 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1602910,
+      "measure_id": "SB 53",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 53, the Transparency in Frontier Artificial Intelligence Act. It applies to companies training the largest AI models, those built with more than 10 to the 26th power computing operations, and its heaviest duties fall on developers with over $500 million in yearly revenue. Those companies must publish a safety framework explaining how they handle catastrophic risk, and send the Office of Emergency Services summaries of their internal risk assessments. That office must run a channel for reporting serious safety incidents, open to companies and the public. Employees who report a serious danger to public safety are protected from retaliation, and large developers must offer an anonymous internal channel for such reports. Incident reports and risk assessments sent to that office are closed to public records requests. The Attorney General may seek penalties of up to $1 million per violation. The act also bars cities and counties from writing their own rules on catastrophic AI risk, and sets up a consortium to plan a public computing cluster if the Legislature funds it. The Senate agreed 29-8 and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 53, the Transparency in Frontier Artificial Intelligence Act. It applies to companies training the largest AI models, those built with more than 10 to the 26th power computing operations, and its heaviest duties fall on developers with over $500 million in yearly revenue. Those companies must publish a safety framework explaining how they handle catastrophic risk, and send the Office of Emergency Services summaries of their internal risk assessments. That office must run a channel for reporting serious safety incidents, open to companies and the public. Employees who report a serious danger to public safety are protected from retaliation, and large developers must offer an anonymous internal channel for such reports. Incident reports and risk assessments sent to that office are closed to public records requests. The Attorney General may seek penalties of up to $1 million per violation. The act also bars cities and counties from writing their own rules on catastrophic AI risk, and sets up a consortium to plan a public computing cluster if the Legislature funds it. The Senate agreed 29-8 and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1602297,
+      "measure_id": "AB 45",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 45, which restricts tracking people by their location at health facilities. Collecting, using, selling, sharing or keeping the personal information of someone physically at a family planning center is barred, apart from listed exceptions such as providing the service the person asked for. The bill also bans geofencing, that is, drawing a virtual boundary to identify or track people near a place that provides in-person health care in California, and bars using information gathered that way. Research records that identify people who sought health care may not be handed over in response to a subpoena or a law enforcement request made to enforce another state's law restricting abortion, or a foreign penal claim. The bill does not change existing law on police use of data from electronic monitoring devices. The Attorney General may sue for civil penalties, which go to a reproductive justice fund and are then granted out for medically accurate reproductive and sexual health education. The Senate passed it 29-9 and it became law.",
+      "nay_description": "Voted against passing Assembly Bill 45, which restricts tracking people by their location at health facilities. Collecting, using, selling, sharing or keeping the personal information of someone physically at a family planning center is barred, apart from listed exceptions such as providing the service the person asked for. The bill also bans geofencing, that is, drawing a virtual boundary to identify or track people near a place that provides in-person health care in California, and bars using information gathered that way. Research records that identify people who sought health care may not be handed over in response to a subpoena or a law enforcement request made to enforce another state's law restricting abortion, or a foreign penal claim. The bill does not change existing law on police use of data from electronic monitoring devices. The Attorney General may sue for civil penalties, which go to a reproductive justice fund and are then granted out for medically accurate reproductive and sexual health education. The Senate passed it 29-9 and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1726637,
+      "measure_id": "SB 1418",
+      "vote_date": "2026-08-27",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 1418, which strengthens the rules on keeping election materials. Records that must be preserved after an election, along with certified voting equipment and electronic data, cannot be destroyed until any contest, criminal investigation or prosecution has been finally decided. The bill spells out that the electronic media holding required data includes hard drives, solid-state drives, flash drives and memory cards, and requires that media to be stored in a sealed container. The existing crime of taking a package of ballots from an elections official is extended to taking any election record, certified voting technology, electronic data including source code, or other material or equipment needed to run an election. It takes effect immediately as an urgency measure. The Senate agreed 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 1418, which strengthens the rules on keeping election materials. Records that must be preserved after an election, along with certified voting equipment and electronic data, cannot be destroyed until any contest, criminal investigation or prosecution has been finally decided. The bill spells out that the electronic media holding required data includes hard drives, solid-state drives, flash drives and memory cards, and requires that media to be stored in a sealed container. The existing crime of taking a package of ballots from an elections official is extended to taking any election record, certified voting technology, electronic data including source code, or other material or equipment needed to run an election. It takes effect immediately as an urgency measure. The Senate agreed 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601520,
+      "measure_id": "AB 1411",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1411, which changes how counties reach unregistered voters. It repeals the old system, under which the Secretary of State set minimum requirements and designed a county's program if the county fell short. In its place, counties that do not run all-mailed-ballot elections must write and carry out their own voter education and outreach plan to find and register eligible voters, covering topics such as vote-by-mail procedures and the options open to military and overseas voters. Counties send changes to the Secretary of State, who publishes the current plans online and supplies a template. The Senate passed it 30-10 and it became law.",
+      "nay_description": "Voted against passing Assembly Bill 1411, which changes how counties reach unregistered voters. It repeals the old system, under which the Secretary of State set minimum requirements and designed a county's program if the county fell short. In its place, counties that do not run all-mailed-ballot elections must write and carry out their own voter education and outreach plan to find and register eligible voters, covering topics such as vote-by-mail procedures and the options open to military and overseas voters. Counties send changes to the Secretary of State, who publishes the current plans online and supplies a template. The Senate passed it 30-10 and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601532,
+      "measure_id": "AB 1167",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1167, which stops utility customers paying for their utility's politics. Electric and gas companies may not put the cost of political influence work or promotional advertising into the accounts they recover from ratepayers. Every public message from such a company must say clearly whether shareholders or ratepayers paid for it. The companies must report related information to the Public Utilities Commission each year from May 31, 2026, and the commission must publish those reports and impose a civil penalty, scaled to how serious the breach is, on a company that breaks the rule. The Senate passed it 29-10 and it became law.",
+      "nay_description": "Voted against passing Assembly Bill 1167, which stops utility customers paying for their utility's politics. Electric and gas companies may not put the cost of political influence work or promotional advertising into the accounts they recover from ratepayers. Every public message from such a company must say clearly whether shareholders or ratepayers paid for it. The companies must report related information to the Public Utilities Commission each year from May 31, 2026, and the commission must publish those reports and impose a civil penalty, scaled to how serious the breach is, on a company that breaks the rule. The Senate passed it 29-10 and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601918,
+      "measure_id": "SB 766",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 766, the California Combating Auto Retail Scams Act. Car dealers may not misrepresent material facts about a sale, including the cost or terms of buying, financing or leasing, whether a vehicle is actually available at an advertised price, and what a buyer can do if the dealer will not honor that price. Dealers must state the total price and any add-on products clearly, and may not charge for an add-on the buyer would get no benefit from. The existing cancellation-option agreement for used cars is replaced with a straight three-day right to cancel. Used cars sold at auction are outside the disclosure rule. Dealers must keep compliance records for two years. The rules start on October 1, 2026. The Senate agreed 30-8 and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 766, the California Combating Auto Retail Scams Act. Car dealers may not misrepresent material facts about a sale, including the cost or terms of buying, financing or leasing, whether a vehicle is actually available at an advertised price, and what a buyer can do if the dealer will not honor that price. Dealers must state the total price and any add-on products clearly, and may not charge for an add-on the buyer would get no benefit from. The existing cancellation-option agreement for used cars is replaced with a straight three-day right to cancel. Used cars sold at auction are outside the disclosure rule. Dealers must keep compliance records for two years. The rules start on October 1, 2026. The Senate agreed 30-8 and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601512,
+      "measure_id": "AB 1261",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1261, which pays for lawyers for immigrant young people in California. As far as funding allows, the Department of Social Services must set aside money to provide legal counsel to immigrant youth, and must weigh whether federal money has already reached organizations here when deciding how much to award and to whom. Contracts go to nonprofit legal services groups experienced in removal and asylum cases, or to a public defender's office that meets the same standard. The department may also pay for social work services that those legal groups arrange to support the young people. The Senate passed it 30-8 and it became law.",
+      "nay_description": "Voted against passing Assembly Bill 1261, which pays for lawyers for immigrant young people in California. As far as funding allows, the Department of Social Services must set aside money to provide legal counsel to immigrant youth, and must weigh whether federal money has already reached organizations here when deciding how much to award and to whom. Contracts go to nonprofit legal services groups experienced in removal and asylum cases, or to a public defender's office that meets the same standard. The department may also pay for social work services that those legal groups arrange to support the young people. The Senate passed it 30-8 and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601976,
+      "measure_id": "SB 771",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 771, which would have made social media companies pay penalties when their recommendation systems break California's civil rights laws against intimidation and violence aimed at people for who they are. A platform would have been liable where its algorithms relayed the offending content, or where it helped, encouraged or acted together with a violator. Penalties would have reached $1 million for a deliberate violation and $500,000 for a reckless one, and companies could not have contracted their way out. It was to start on January 1, 2027. The Senate agreed 30-8, but the governor vetoed it, so it did not become law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 771, which would have made social media companies pay penalties when their recommendation systems break California's civil rights laws against intimidation and violence aimed at people for who they are. A platform would have been liable where its algorithms relayed the offending content, or where it helped, encouraged or acted together with a violator. Penalties would have reached $1 million for a deliberate violation and $500,000 for a reckless one, and companies could not have contracted their way out. It was to start on January 1, 2027. The Senate agreed 30-8, but the governor vetoed it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
