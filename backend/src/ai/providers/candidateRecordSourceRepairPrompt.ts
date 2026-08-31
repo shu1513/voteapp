@@ -94,7 +94,7 @@ export function buildCandidateRecordSourceRepairPrompt(
     // page re-cites a real record to the wrong human with nothing visibly
     // broken. No validator checks this. Mirrors the identity rule in
     // candidateRecordDiscoveryPrompt.ts, reworded for the repair path.
-    "- The replacement source must be about this same person; a name match is not proof. Tie it to this candidate with a hard identifier: office or district held, employer, license or docket number, or reporting that states the identification. On a page covering several candidates, take the fact next to this candidate's name. If you cannot confirm the person, return no_replacement=true.",
+    "- The replacement source must be about this same person; a name match is not proof. Tie it to this candidate with a hard identifier: office or district held, employer, license or docket number, or reporting that states the identification. On a page covering several candidates, take the fact next to this candidate's name. If you cannot confirm the person, return no_replacement=true for that item rather than omitting it.",
     RECORD_DESCRIPTION_SUBSTANCE_RULE,
     ...PLAIN_LANGUAGE_STYLE_RULES,
     "- return JSON only (no prose, no markdown).",

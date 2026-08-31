@@ -66,7 +66,7 @@ describe("buildCandidateRecordSourceRepairPrompt", () => {
     });
 
     expect(prompt).toContain(
-      "- The replacement source must be about this same person; a name match is not proof. Tie it to this candidate with a hard identifier: office or district held, employer, license or docket number, or reporting that states the identification. On a page covering several candidates, take the fact next to this candidate's name. If you cannot confirm the person, return no_replacement=true."
+      "- The replacement source must be about this same person; a name match is not proof. Tie it to this candidate with a hard identifier: office or district held, employer, license or docket number, or reporting that states the identification. On a page covering several candidates, take the fact next to this candidate's name. If you cannot confirm the person, return no_replacement=true for that item rather than omitting it."
     );
   });
 
