@@ -1,0 +1,178 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": true,
+  "skipExisting": false,
+  "startedAt": "2026-08-31T06:00:20.168Z",
+  "finishedAt": "2026-08-31T06:00:42.871Z",
+  "jurisdiction": "CA",
+  "sessionId": 2172,
+  "evidenceDir": "/Users/shu/legiscan-data/ca-2172-evidence",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "/Users/shu/voteApp/.claude/worktrees/hungry-engelbart-5b1814/backend/evidence/rollcall/legiscan-ca-2172/crosswalk.json",
+  "crosswalkEntries": 121,
+  "peopleFile": "/Users/shu/voteApp/.claude/worktrees/hungry-engelbart-5b1814/backend/evidence/rollcall/legiscan-ca-2172/legiscan-people-ca-2172.json",
+  "peopleMembers": 121,
+  "files": 5328,
+  "outcomes": {
+    "not_approved": 5227,
+    "dry_run": 101
+  },
+  "actions": {
+    "unchanged": 3548,
+    "insert": 311
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-ca-house-2172-roll1601320.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1601320,
+      "outcome": "dry_run",
+      "legislativeVoteId": "d4e74f9a-9196-4c63-9275-b02f8f888abd",
+      "reviewStatus": "approved",
+      "bill": "AB435",
+      "voteDate": "2025-09-08",
+      "officialVoteDate": null,
+      "measureId": "AB 435",
+      "question": "AB 435 Wilson Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1601320:2026-08-31T06:00:20.168Z",
+      "members": 62,
+      "notVoting": 0,
+      "absent": 18,
+      "resolution": {
+        "unmatched_reviewed": 8,
+        "matched": 54
+      },
+      "actions": {
+        "insert": 54
+      },
+      "notified": 0,
+      "candidates": 54,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602358.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602358,
+      "outcome": "dry_run",
+      "legislativeVoteId": "bd648b1d-2ac6-4703-8a12-ecce93c0c474",
+      "reviewStatus": "approved",
+      "bill": "AB1084",
+      "voteDate": "2025-09-13",
+      "officialVoteDate": null,
+      "measureId": "AB 1084",
+      "question": "AB 1084 Zbur Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1602358:2026-08-31T06:00:20.168Z",
+      "members": 74,
+      "notVoting": 0,
+      "absent": 6,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 64
+      },
+      "actions": {
+        "insert": 64
+      },
+      "notified": 0,
+      "candidates": 64,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602416.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602416,
+      "outcome": "dry_run",
+      "legislativeVoteId": "66b33741-86c7-45cf-8bc0-d62434049f50",
+      "reviewStatus": "approved",
+      "bill": "SB709",
+      "voteDate": "2025-09-10",
+      "officialVoteDate": null,
+      "measureId": "SB 709",
+      "question": "SB 709 Menjivar Senate Third Reading By Schultz",
+      "originRunId": "rollcall:CA:house:2172:1602416:2026-08-31T06:00:20.168Z",
+      "members": 74,
+      "notVoting": 0,
+      "absent": 6,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 64
+      },
+      "actions": {
+        "insert": 64
+      },
+      "notified": 0,
+      "candidates": 64,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602563.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602563,
+      "outcome": "dry_run",
+      "legislativeVoteId": "fed6ff52-1bfd-4d46-ac9a-107d5669b5cf",
+      "reviewStatus": "approved",
+      "bill": "AB263",
+      "voteDate": "2025-09-10",
+      "officialVoteDate": null,
+      "measureId": "AB 263",
+      "question": "AB 263 Rogers Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1602563:2026-08-31T06:00:20.168Z",
+      "members": 78,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 11,
+        "matched": 67
+      },
+      "actions": {
+        "insert": 67
+      },
+      "notified": 0,
+      "candidates": 67,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1616312.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1616312,
+      "outcome": "dry_run",
+      "legislativeVoteId": "f3496e27-c57a-4d76-a9e1-0ca6b7973c52",
+      "reviewStatus": "approved",
+      "bill": "SB25",
+      "voteDate": "2026-01-22",
+      "officialVoteDate": null,
+      "measureId": "SB 25",
+      "question": "SB 25 Umberg Senate Third Reading By Aguiar-Curry",
+      "originRunId": "rollcall:CA:house:2172:1616312:2026-08-31T06:00:20.168Z",
+      "members": 69,
+      "notVoting": 0,
+      "absent": 11,
+      "resolution": {
+        "unmatched_reviewed": 7,
+        "matched": 62
+      },
+      "actions": {
+        "insert": 62
+      },
+      "notified": 0,
+      "candidates": 62,
+      "error": null,
+      "related": 0
+    }
+  ],
+  "rollsScopedToBatch": true
+}

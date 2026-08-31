@@ -986,6 +986,192 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       /^decision of the chair upheld$/,
     ],
   },
+
+  // Indiana General Assembly, 2025 Regular Session (124th General Assembly,
+  // first regular session, sine die 2025-04-25; the long budget session).
+  // Vocabulary measured from the full dataset survey 2026-08-31: 1,489
+  // bills, 1,010 roll calls, 151 people (100 House + 50 Senate seats plus
+  // one mid-session replacement).
+  //
+  // What the survey established:
+  // - Every desc is prefixed with the chamber and a dash (`House - Third
+  //   reading`), so every pattern here carries that prefix. The chamber
+  //   word in the prefix is the voting chamber; a bill's own chamber of
+  //   origin never appears there. 155 raw descriptions fold to 21 families
+  //   once the amendment sponsor names and numbers are folded away.
+  // - The dataset holds NO committee votes at all: every roll's total is
+  //   exactly 100 (House) or 50 (Senate), so nothing lands in the
+  //   committee-tally or small-tally buckets.
+  // - Amendment descs name their sponsor (`House - Amendment #1 (Burton)
+  //   failed`), which is why the exclusion matches the `amendment #<n> `
+  //   stem rather than enumerating 155 spellings.
+  // - Constitutional amendments ride JOINT RESOLUTIONS (`SJR0017`), which
+  //   LegiScan types `JR` — already a kept type, so Georgia's
+  //   resolution-typed amendment gap does not recur here.
+  // - `Rules Suspended.` is a scheduling prefix Indiana prints on
+  //   end-of-session concurrences and conference reports. It does not
+  //   change the question, so both kept patterns tolerate it.
+  //
+  // TWO HAZARDS, both recorded in
+  // evidence/rollcall/legiscan-in-2143/CODE-FINDINGS.md:
+  // (1) Ten House rolls carry a BLANK question (the desc is the literal
+  //     `House -` with nothing after the dash). Resolved against the bill
+  //     histories, they are five third readings, two concurrences, one
+  //     failed amendment and two appeals of the chair's ruling — so the
+  //     question genuinely is not in the desc and no pattern can recover
+  //     it. They stay unmatched and surface for a human, which costs two
+  //     divided kept votes (SB0178's 74-20 third reading and HB1460's
+  //     59-18 concurrence).
+  // (2) LegiScan's Indiana member lists disagree with the official journal
+  //     on 30 of the 1,010 rolls. Verified against the state's own
+  //     roll-call PDF on HB1155 roll 83: LegiScan records Rep. Jim Lucas
+  //     as a yea, the official roll call records him as a nay (LegiScan
+  //     89-2, journal 88-3). Every roll selected for a batch must
+  //     therefore have its member list checked against
+  //     iga.in.gov/pdf-documents/124/2025/<chamber>/bills/<BILL>/rollcalls/<BILL>.<n>_<H|S>.pdf
+  //     before it is judged.
+  IN: {
+    jurisdiction: "IN",
+    sessionId: 2143,
+    chamberSizes: { house: 100, senate: 50 },
+    keptQuestions: [
+      // Indiana's final passage question in both chambers.
+      { pattern: /^(?:house|senate) - third reading$/, questionClass: "passage" },
+      // `House - House concurred with Senate amendments`, and the one
+      // end-of-session spelling that carries the scheduling prefix.
+      {
+        pattern: /^(?:house|senate) - (?:rules suspended\. )?(?:house|senate) concurred with (?:house|senate) amendments$/,
+        questionClass: "concurrence",
+      },
+      // A concurrence motion that drew a majority of those voting but not
+      // the 26 votes an Indiana Senate measure needs to pass. It is a
+      // recorded vote on the measure, so it is kept, not excluded.
+      {
+        pattern: /^(?:house|senate) - concurrence failed for lack of constitutional majority$/,
+        questionClass: "concurrence",
+      },
+      // `Senate - Conference Committee Report 1`, `House - Rules
+      // Suspended. Conference Committee Report 2`.
+      {
+        pattern: /^(?:house|senate) - (?:rules suspended\. )?conference committee report \d+$/,
+        questionClass: "conference_report",
+      },
+    ],
+    excludedQuestions: [
+      // Floor amendments, both outcomes (`failed`, `prevailed`).
+      /^(?:house|senate) - amendment #\d+ /,
+      // A vote on whether the presiding officer's ruling stands, not on
+      // the measure.
+      /^(?:house|senate) - appeal the ruling of the chair/,
+      // Second reading is Indiana's amend-and-engross stage.
+      /^(?:house|senate) - second reading$/,
+      // `House - Referred to Committee on Education pursuant to House
+      // Rule 126.4` — a motion to send a bill back to committee.
+      /^(?:house|senate) - referred to committee on /,
+    ],
+  },
+
+  // Montana Legislature, 2025 Regular Session (convened January 6, adjourned
+  // sine die April 30 2025). Montana's legislature meets only in odd years,
+  // so this one closed session is the entire dataset available to the
+  // November 2026 campaign. Vocabulary measured from the full dataset survey
+  // on 2026-08-31: 1,761 bills, 9,209 roll calls, 151 people, and 266
+  // distinct descriptions.
+  //
+  // Montana separates floor votes from committee votes more cleanly than any
+  // other state in this registry. Every description opens with the chamber in
+  // parentheses, `(H) ` or `(S) `. Every committee description names the
+  // committee and its question joined by a double hyphen — `(H) Judiciary--Do
+  // Pass`, `(S) Finance and Claims--Be Concurred In` — and no committee roll
+  // reports a total above 23. No floor description contains a double hyphen,
+  // and every floor roll reports the whole chamber (House 100, Senate 50),
+  // because Montana counts absent and excused members in `total`. The
+  // floor-versus-committee tally check therefore rejects every committee roll
+  // before the review queue, and none of the patterns below has to name a
+  // committee.
+  //
+  // Montana votes each measure twice on the floor. Second reading is the
+  // committee of the whole, where floor amendments are taken; third reading
+  // is final passage. Only third reading is kept, the same call Texas,
+  // California and Missouri made about their own pre-passage floor stages.
+  // `Concurred` is Montana's word for the SECOND chamber acting on the other
+  // chamber's measure, so `3rd Reading Concurred` is that chamber's own
+  // passage vote. The originating chamber's later vote on the text the other
+  // chamber amended is worded `3rd Reading Passed as Amended by Senate` (or
+  // `by House`).
+  //
+  // Data notes (both written up in
+  // backend/evidence/rollcall/legiscan-mt-2159/CODE-FINDINGS.md):
+  // - 42 roll calls in this dataset fail to parse because their reported
+  //   tallies are multiples of their own member lists (one claims 500 votes
+  //   in a 100-seat chamber). ALL 42 are committee rolls, so none could ever
+  //   be queued; the fetch run reports them and exits non-zero. That exit
+  //   code is a signal, not a rollback — every valid roll is stored and the
+  //   import is unaffected.
+  // - LegiScan's `passed` flag is a bare majority check, so on the eight
+  //   rolls where a constitutional-amendment bill won a majority but missed
+  //   Montana's two-thirds requirement (HB 316, HB 821, HB 822, HB 921,
+  //   SB 185) the stored `result` says Passed while the desc — Montana's own
+  //   words — says Failed. The desc is right. `result` mirrors LegiScan's
+  //   claim; treat it like Florida's question fields and never trust it in a
+  //   judgment — the official action trail is the ground truth.
+  MT: {
+    jurisdiction: "MT",
+    sessionId: 2159,
+    chamberSizes: { house: 100, senate: 50 },
+    keptQuestions: [
+      // Final passage where the measure started — `(H) 3rd Reading Passed`
+      // (694 rolls), `(S) 3rd Reading Passed` (398) — and final passage in
+      // the second chamber, `(S) 3rd Reading Concurred` (588),
+      // `(H) 3rd Reading Concurred` (306).
+      { pattern: /^\([hs]\) 3rd reading (passed|concurred)$/, questionClass: "passage" },
+      // The same question, lost: `3rd Reading Failed` (15 House, 23 Senate)
+      // and `3rd Reading Failed; 2nd House Vote Required` (6). Kept so the
+      // audit trail and the superseded-stage gate see a chamber's whole
+      // third-reading record, not only the votes that carried.
+      { pattern: /^\([hs]\) 3rd reading failed(?:; 2nd house vote required)?$/, questionClass: "passage" },
+      // The originating chamber voting on the text the other chamber
+      // amended: `(H) 3rd Reading Passed as Amended by Senate` (146),
+      // `(S) 3rd Reading Passed as Amended by House` (86), and the three
+      // House rolls that refused it.
+      {
+        pattern: /^\([hs]\) 3rd reading (passed|not passed) as amended by (senate|house)$/,
+        questionClass: "concurrence",
+      },
+      // `3rd Reading Conference Committee Report Adopted` (9 House, 9
+      // Senate), the free-conference spelling (6 each), and the one Senate
+      // rejection.
+      {
+        pattern: /^\([hs]\) 3rd reading (free )?conference committee report (adopted|rejected)$/,
+        questionClass: "conference_report",
+      },
+      // Montana lets the governor return a measure with recommended
+      // amendments; the chamber then votes on adopting them, which is a vote
+      // on the text that becomes law (11 rolls in each chamber).
+      { pattern: /^\([hs]\) 3rd reading governor's proposed amendments adopted$/, questionClass: "concurrence" },
+    ],
+    excludedQuestions: [
+      // Second reading is the committee of the whole — the amendment stage,
+      // not final passage. One pattern covers `2nd Reading Passed`,
+      // `2nd Reading Concurred`, `2nd Reading Motion to Amend Carried` and
+      // `Failed`, `2nd Reading Indefinitely Postponed`, the
+      // amendment-concurrence spellings, and the conference-report and
+      // governor's-amendment votes taken at second reading.
+      /^\([hs]\) 2nd reading\b/,
+      // Scheduling and reconsideration motions: `Motion Failed`, `Motion
+      // Carried`, `Motion to Reconsider Failed`, `Taken from Committee;
+      // Placed on 2nd Reading`, `Reconsidered Previous Action; Placed on 2nd
+      // Reading`, and `Reconsidered Previous Action; Remains in 3rd Reading
+      // Process`.
+      /^\([hs]\) motion\b/,
+      /^\([hs]\) taken from committee\b/,
+      /^\([hs]\) reconsidered previous action\b/,
+      // Simple resolutions are adopted under their own wording. All but one
+      // are LegiScan type R, which never reaches this config; the exception
+      // is one House joint resolution adopted 100-0.
+      /^\([hs]\) resolution (adopted|failed)$/,
+    ],
+  },
 };
 
 export const LEGISCAN_CONFIG_KEYS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);

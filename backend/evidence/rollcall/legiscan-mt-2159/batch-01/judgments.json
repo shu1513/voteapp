@@ -1,0 +1,328 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1481625,
+   "measure_id": "HB 121",
+   "vote_date": "2025-01-16",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 121, which sets rules for shared restrooms, changing rooms, and sleeping areas. Public buildings, public schools, prisons, youth lockups, and domestic violence shelters must set each one aside for one sex only. People may not use the one set aside for the other sex, except to clean, to give medical or police help, or in an emergency. The law defines male and female by biology, and says a person's own sense of gender does not count. Someone who meets a person of the other sex in one of these rooms may sue the operator. The Montana House passed it 58-41, and it became law.",
+   "nay_description": "Voted against House Bill 121, which sets rules for shared restrooms, changing rooms, and sleeping areas. Public buildings, public schools, prisons, youth lockups, and domestic violence shelters must set each one aside for one sex only. People may not use the one set aside for the other sex, except to clean, to give medical or police help, or in an emergency. The law defines male and female by biology, and says a person's own sense of gender does not count. Someone who meets a person of the other sex in one of these rooms may sue the operator. The Montana House passed it 58-41, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1486495,
+   "measure_id": "HB 121",
+   "vote_date": "2025-02-11",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 121, which sets rules for shared restrooms, changing rooms, and sleeping areas. Public buildings, public schools, prisons, youth lockups, and domestic violence shelters must set each one aside for one sex only. People may not use the one set aside for the other sex, except to clean, to give medical or police help, or in an emergency. The law defines male and female by biology, and says a person's own sense of gender does not count. Someone who meets a person of the other sex in one of these rooms may sue the operator. The Montana Senate passed it 32-18, and it became law.",
+   "nay_description": "Voted against House Bill 121, which sets rules for shared restrooms, changing rooms, and sleeping areas. Public buildings, public schools, prisons, youth lockups, and domestic violence shelters must set each one aside for one sex only. People may not use the one set aside for the other sex, except to clean, to give medical or police help, or in an emergency. The law defines male and female by biology, and says a person's own sense of gender does not count. Someone who meets a person of the other sex in one of these rooms may sue the operator. The Montana Senate passed it 32-18, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1488434,
+   "measure_id": "HB 278",
+   "vote_date": "2025-02-12",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 278, which is about traffic and street stops by police. An officer who has lawfully stopped someone may now try to check that person's immigration status. The officer does this when there is reason to suspect a problem and when it is practical, and may skip it if it would get in the way of a case. If the officer finds the person is not lawfully in the country, the officer must report it to a federal immigration agency. The Montana House passed it 60-40, and it became law.",
+   "nay_description": "Voted against House Bill 278, which is about traffic and street stops by police. An officer who has lawfully stopped someone may now try to check that person's immigration status. The officer does this when there is reason to suspect a problem and when it is practical, and may skip it if it would get in the way of a case. If the officer finds the person is not lawfully in the country, the officer must report it to a federal immigration agency. The Montana House passed it 60-40, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1533387,
+   "measure_id": "HB 278",
+   "vote_date": "2025-04-01",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 278, which is about traffic and street stops by police. An officer who has lawfully stopped someone may now try to check that person's immigration status. The officer does this when there is reason to suspect a problem and when it is practical, and may skip it if it would get in the way of a case. If the officer finds the person is not lawfully in the country, the officer must report it to a federal immigration agency. The Montana Senate passed it 30-20, and it became law.",
+   "nay_description": "Voted against House Bill 278, which is about traffic and street stops by police. An officer who has lawfully stopped someone may now try to check that person's immigration status. The officer does this when there is reason to suspect a problem and when it is practical, and may skip it if it would get in the way of a case. If the officer finds the person is not lawfully in the country, the officer must report it to a federal immigration agency. The Montana Senate passed it 30-20, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1535087,
+   "measure_id": "HB 337",
+   "vote_date": "2025-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 337, which cuts the state income tax in two steps. In 2026 the top rate drops from 5.9% to 5.65%. A single filer also pays the lower 4.7% rate on the first $47,500 of taxable income, up from the first $20,500. Taxable income is what is left after deductions. In 2027 the top rate falls again to 5.4%, and that bracket grows to $65,000 for a single filer. The law also doubles the state earned income tax credit, a refund for lower-paid workers, from 10% to 20% of the federal credit. The Montana House passed it 55-40, and it became law.",
+   "nay_description": "Voted against House Bill 337, which cuts the state income tax in two steps. In 2026 the top rate drops from 5.9% to 5.65%. A single filer also pays the lower 4.7% rate on the first $47,500 of taxable income, up from the first $20,500. Taxable income is what is left after deductions. In 2027 the top rate falls again to 5.4%, and that bracket grows to $65,000 for a single filer. The law also doubles the state earned income tax credit, a refund for lower-paid workers, from 10% to 20% of the federal credit. The Montana House passed it 55-40, and it became law.",
+   "labels": [
+    {
+     "slug": "personal_income_tax_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1554357,
+   "measure_id": "HB 337",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 337, which cuts the state income tax in two steps. In 2026 the top rate drops from 5.9% to 5.65%. A single filer also pays the lower 4.7% rate on the first $47,500 of taxable income, up from the first $20,500. Taxable income is what is left after deductions. In 2027 the top rate falls again to 5.4%, and that bracket grows to $65,000 for a single filer. The law also doubles the state earned income tax credit, a refund for lower-paid workers, from 10% to 20% of the federal credit. The Montana Senate passed it 34-16, and it became law.",
+   "nay_description": "Voted against House Bill 337, which cuts the state income tax in two steps. In 2026 the top rate drops from 5.9% to 5.65%. A single filer also pays the lower 4.7% rate on the first $47,500 of taxable income, up from the first $20,500. Taxable income is what is left after deductions. In 2027 the top rate falls again to 5.4%, and that bracket grows to $65,000 for a single filer. The law also doubles the state earned income tax credit, a refund for lower-paid workers, from 10% to 20% of the federal credit. The Montana Senate passed it 34-16, and it became law.",
+   "labels": [
+    {
+     "slug": "personal_income_tax_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1496775,
+   "measure_id": "HB 388",
+   "vote_date": "2025-02-21",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 388, which protects pregnancy centers. These are private nonprofit groups that promote childbirth and other choices besides abortion. State and local government may not make such a center offer abortion, abortion drugs, or birth control, or send people elsewhere for them. Government also may not stop a center from giving its services, or make it hire someone who does not share its anti-abortion mission. A center that wins a lawsuit under the law gets at least $50,000 plus legal fees, and a court may triple that if the government acted with malice. The Montana House passed it 57-41, and it became law.",
+   "nay_description": "Voted against House Bill 388, which protects pregnancy centers. These are private nonprofit groups that promote childbirth and other choices besides abortion. State and local government may not make such a center offer abortion, abortion drugs, or birth control, or send people elsewhere for them. Government also may not stop a center from giving its services, or make it hire someone who does not share its anti-abortion mission. A center that wins a lawsuit under the law gets at least $50,000 plus legal fees, and a court may triple that if the government acted with malice. The Montana House passed it 57-41, and it became law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1546604,
+   "measure_id": "HB 388",
+   "vote_date": "2025-04-12",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 388, which protects pregnancy centers. These are private nonprofit groups that promote childbirth and other choices besides abortion. State and local government may not make such a center offer abortion, abortion drugs, or birth control, or send people elsewhere for them. Government also may not stop a center from giving its services, or make it hire someone who does not share its anti-abortion mission. A center that wins a lawsuit under the law gets at least $50,000 plus legal fees, and a court may triple that if the government acted with malice. The Montana Senate passed it 31-19, and it became law.",
+   "nay_description": "Voted against House Bill 388, which protects pregnancy centers. These are private nonprofit groups that promote childbirth and other choices besides abortion. State and local government may not make such a center offer abortion, abortion drugs, or birth control, or send people elsewhere for them. Government also may not stop a center from giving its services, or make it hire someone who does not share its anti-abortion mission. A center that wins a lawsuit under the law gets at least $50,000 plus legal fees, and a court may triple that if the government acted with malice. The Montana Senate passed it 31-19, and it became law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1505964,
+   "measure_id": "HB 509",
+   "vote_date": "2025-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 509, which widens the state's help with teacher student loans. The help had gone only to teachers hired at schools the state lists as short of staff. It now goes to every newly hired teacher in a public school, though the listed schools still come first for the money. The state pays up to $3,000 after a first full year, $4,000 after a second, and $5,000 after a third. If the money runs short, the state school chief must trim the payments and fund the listed schools first. The Montana House passed it 67-31, and it became law.",
+   "nay_description": "Voted against House Bill 509, which widens the state's help with teacher student loans. The help had gone only to teachers hired at schools the state lists as short of staff. It now goes to every newly hired teacher in a public school, though the listed schools still come first for the money. The state pays up to $3,000 after a first full year, $4,000 after a second, and $5,000 after a third. If the money runs short, the state school chief must trim the payments and fund the listed schools first. The Montana House passed it 67-31, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1546910,
+   "measure_id": "HB 509",
+   "vote_date": "2025-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 509, which widens the state's help with teacher student loans. The help had gone only to teachers hired at schools the state lists as short of staff. It now goes to every newly hired teacher in a public school, though the listed schools still come first for the money. The state pays up to $3,000 after a first full year, $4,000 after a second, and $5,000 after a third. If the money runs short, the state school chief must trim the payments and fund the listed schools first. The Montana Senate passed it 38-10, and it became law.",
+   "nay_description": "Voted against House Bill 509, which widens the state's help with teacher student loans. The help had gone only to teachers hired at schools the state lists as short of staff. It now goes to every newly hired teacher in a public school, though the listed schools still come first for the money. The state pays up to $3,000 after a first full year, $4,000 after a second, and $5,000 after a third. If the money runs short, the state school chief must trim the payments and fund the listed schools first. The Montana Senate passed it 38-10, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1504595,
+   "measure_id": "HB 687",
+   "vote_date": "2025-03-04",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 687, which changes a rule for adults on the state's expanded Medicaid. To keep their health coverage, they must spend 80 hours a month working, training, studying, or volunteering. The rule had covered people aged 19 through 55, and it now reaches people up to age 62. People who are pregnant, disabled, very sick, homeless, or caring for someone who cannot care for themselves are still excused. The Montana House passed it 57-42, and it became law.",
+   "nay_description": "Voted against House Bill 687, which changes a rule for adults on the state's expanded Medicaid. To keep their health coverage, they must spend 80 hours a month working, training, studying, or volunteering. The rule had covered people aged 19 through 55, and it now reaches people up to age 62. People who are pregnant, disabled, very sick, homeless, or caring for someone who cannot care for themselves are still excused. The Montana House passed it 57-42, and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1546748,
+   "measure_id": "HB 687",
+   "vote_date": "2025-04-12",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 687, which changes a rule for adults on the state's expanded Medicaid. To keep their health coverage, they must spend 80 hours a month working, training, studying, or volunteering. The rule had covered people aged 19 through 55, and it now reaches people up to age 62. People who are pregnant, disabled, very sick, homeless, or caring for someone who cannot care for themselves are still excused. The Montana Senate passed it 32-18, and it became law.",
+   "nay_description": "Voted against House Bill 687, which changes a rule for adults on the state's expanded Medicaid. To keep their health coverage, they must spend 80 hours a month working, training, studying, or volunteering. The rule had covered people aged 19 through 55, and it now reaches people up to age 62. People who are pregnant, disabled, very sick, homeless, or caring for someone who cannot care for themselves are still excused. The Montana Senate passed it 32-18, and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1508824,
+   "measure_id": "HB 809",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 809, which is about what are often called red flag orders. A red flag order is a court order that takes away a person's guns, or bars them from having guns, to lower the risk of a shooting. City and county governments in Montana may no longer adopt or enforce one, or take grant money to help run one. A local government that tries to enforce one can be fined up to $10,000 each time. Restraining orders in domestic violence cases are not affected. The Montana House passed it 55-44, and it became law.",
+   "nay_description": "Voted against House Bill 809, which is about what are often called red flag orders. A red flag order is a court order that takes away a person's guns, or bars them from having guns, to lower the risk of a shooting. City and county governments in Montana may no longer adopt or enforce one, or take grant money to help run one. A local government that tries to enforce one can be fined up to $10,000 each time. Restraining orders in domestic violence cases are not affected. The Montana House passed it 55-44, and it became law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1547433,
+   "measure_id": "HB 809",
+   "vote_date": "2025-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 809, which is about what are often called red flag orders. A red flag order is a court order that takes away a person's guns, or bars them from having guns, to lower the risk of a shooting. City and county governments in Montana may no longer adopt or enforce one, or take grant money to help run one. A local government that tries to enforce one can be fined up to $10,000 each time. Restraining orders in domestic violence cases are not affected. The Montana Senate passed it 29-19, and it became law.",
+   "nay_description": "Voted against House Bill 809, which is about what are often called red flag orders. A red flag order is a court order that takes away a person's guns, or bars them from having guns, to lower the risk of a shooting. City and county governments in Montana may no longer adopt or enforce one, or take grant money to help run one. A local government that tries to enforce one can be fined up to $10,000 each time. Restraining orders in domestic violence cases are not affected. The Montana Senate passed it 29-19, and it became law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1561832,
+   "measure_id": "HB 818",
+   "vote_date": "2025-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 818, which is about money in ballot measure campaigns. Foreign nationals may no longer give to or spend on a campaign about a statewide ballot measure. No one may take or pass on money they know came from a foreign national for that purpose. The term covers foreign governments and parties, most people who are not U.S. citizens or permanent residents, and firms based abroad. It also covers a U.S. firm mostly owned by foreign nationals. Such a firm is exempt if it employs people who pay Montana income tax and it also pays Montana property tax, or if it keeps both the money and the choices American. A ballot measure committee must also get each donor to state in writing that they are not a foreign national. The Montana House backed the final compromise version 56-44, and it became law.",
+   "nay_description": "Voted against House Bill 818, which is about money in ballot measure campaigns. Foreign nationals may no longer give to or spend on a campaign about a statewide ballot measure. No one may take or pass on money they know came from a foreign national for that purpose. The term covers foreign governments and parties, most people who are not U.S. citizens or permanent residents, and firms based abroad. It also covers a U.S. firm mostly owned by foreign nationals. Such a firm is exempt if it employs people who pay Montana income tax and it also pays Montana property tax, or if it keeps both the money and the choices American. A ballot measure committee must also get each donor to state in writing that they are not a foreign national. The Montana House backed the final compromise version 56-44, and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1562447,
+   "measure_id": "HB 818",
+   "vote_date": "2025-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 818, which is about money in ballot measure campaigns. Foreign nationals may no longer give to or spend on a campaign about a statewide ballot measure. No one may take or pass on money they know came from a foreign national for that purpose. The term covers foreign governments and parties, most people who are not U.S. citizens or permanent residents, and firms based abroad. It also covers a U.S. firm mostly owned by foreign nationals. Such a firm is exempt if it employs people who pay Montana income tax and it also pays Montana property tax, or if it keeps both the money and the choices American. A ballot measure committee must also get each donor to state in writing that they are not a foreign national. The Montana Senate backed the final compromise version 37-13, and it became law.",
+   "nay_description": "Voted against House Bill 818, which is about money in ballot measure campaigns. Foreign nationals may no longer give to or spend on a campaign about a statewide ballot measure. No one may take or pass on money they know came from a foreign national for that purpose. The term covers foreign governments and parties, most people who are not U.S. citizens or permanent residents, and firms based abroad. It also covers a U.S. firm mostly owned by foreign nationals. Such a firm is exempt if it employs people who pay Montana income tax and it also pays Montana property tax, or if it keeps both the money and the choices American. A ballot measure committee must also get each donor to state in writing that they are not a foreign national. The Montana Senate backed the final compromise version 37-13, and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1537719,
+   "measure_id": "HB 931",
+   "vote_date": "2025-04-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 931, which is about state trust land. That is public land the state rents out to raise money for schools and other public uses. A business lease of this land may now cover building single-family or apartment housing, run through one master tenant who manages the project. The law names one example: such a lease can be signed with a nonprofit group to build attainable workforce housing, meaning homes priced for people who work in the area. The Montana House passed it 55-43, and it became law.",
+   "nay_description": "Voted against House Bill 931, which is about state trust land. That is public land the state rents out to raise money for schools and other public uses. A business lease of this land may now cover building single-family or apartment housing, run through one master tenant who manages the project. The law names one example: such a lease can be signed with a nonprofit group to build attainable workforce housing, meaning homes priced for people who work in the area. The Montana House passed it 55-43, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1554135,
+   "measure_id": "HB 931",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 931, which is about state trust land. That is public land the state rents out to raise money for schools and other public uses. A business lease of this land may now cover building single-family or apartment housing, run through one master tenant who manages the project. The law names one example: such a lease can be signed with a nonprofit group to build attainable workforce housing, meaning homes priced for people who work in the area. The Montana Senate passed it 33-17, and it became law.",
+   "nay_description": "Voted against House Bill 931, which is about state trust land. That is public land the state rents out to raise money for schools and other public uses. A business lease of this land may now cover building single-family or apartment housing, run through one master tenant who manages the project. The law names one example: such a lease can be signed with a nonprofit group to build attainable workforce housing, meaning homes priced for people who work in the area. The Montana Senate passed it 33-17, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
