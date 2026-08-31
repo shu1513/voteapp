@@ -1,9 +1,9 @@
 # Montana: defects found in LegiScan's data, recorded not fixed
 
-Four problems in the LegiScan Montana feed. None is fixed in code; each is
+Five problems in the LegiScan Montana feed. None is fixed in code; each is
 worked around, and each is written down here so the next campaign does not have
 to rediscover it. Montana's own API (`api.legmt.gov`) is the ground truth used
-to settle all four.
+to settle every one.
 
 ## 1. Forty-two committee roll calls report tallies that are multiples of their own member lists
 
@@ -83,3 +83,27 @@ a network problem. A ticket minted in the same session works normally.
 Use the state's own document service instead — `getBillVersions` for the list
 and `getContent?documentId=<id>` for the file. Both are plain unauthenticated
 GETs and the PDFs extract cleanly with `pdftotext -layout`.
+
+## 5. LegiScan's `passed` flag is a bare majority check, wrong on Montana's supermajority votes
+
+Montana proposes constitutional amendments by ordinary bill, and such a bill
+needs two-thirds of the whole legislature. Five of them — HB 316, HB 821,
+HB 822, HB 921 and SB 185 — won simple majorities on third reading but missed
+that threshold, so Montana's own description says `3rd Reading Failed` (six of
+the eight rolls add `; 2nd House Vote Required`). LegiScan computes `passed`
+from the tally alone and stamps all eight rolls `passed: 1`, so the fetcher
+stored `result = "Passed"` on eight pending queue rows whose question the state
+says failed.
+
+Not fixed in code, on the Florida precedent (its question fields are recorded
+as LegiScan's claim, never trusted in a batch): no code path reads `result` —
+the fan-out, judge and import never consult it, and descriptions are written
+from the official action trail — and no description pattern can separate the
+wrong rows, because two of the eight carry the plain `3rd Reading Failed`
+wording shared with 36 rolls whose flag is correct. The rule for any future
+Montana batch that reaches these bills: the result column mirrors LegiScan's
+claim; the official action trail is the ground truth, and a judgment's
+description must state the two-thirds failure in its own words. All five bills
+are dead (LegiScan status 6), so none can appear in a divided-and-enacted
+batch; they would surface only in a failed-votes scope like Pennsylvania's
+batch 02.

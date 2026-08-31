@@ -164,3 +164,42 @@ Ledgers: `import-dry-run-report.json` (the plan), `import-report.json` (the
 insert ledger), `import-dry-run-rerun-report.json` (the convergence run).
 
 Production has zero Montana records. Nothing here touched it.
+
+## Review response, 2026-08-31
+
+Four findings on the first import, every one verified against the enrolled text
+and every one real. All four were errors of the same family: a plain-language
+gloss that dropped or changed a statutory limit.
+
+- **House Bill 931** — the descriptions said the master-lease housing "must be
+  attainable workforce housing." The operative definition in section 77-1-902
+  permits single-family or multifamily residential development under a master
+  lease generally; the nonprofit workforce-housing lease is an example the
+  statute introduces with "including," not a requirement. The bill's own title
+  reads as if workforce housing were the whole point, which is where the first
+  draft picked it up — the title-is-not-the-text rule applies to our own state
+  as much as to Georgia's. Rewritten to state the general permission first and
+  the nonprofit example as an example.
+- **House Bill 818** — the foreign-owned-firm exemption's first route requires
+  BOTH that the firm employ people who pay Montana income tax AND that it pay
+  Montana property tax. The descriptions carried only the employment half.
+- **House Bill 388** — the enrolled act says the court "may award treble
+  damages" where the defendant "acted with malice." The descriptions had made
+  the tripling automatic and softened the standard to "bad faith." Both the
+  discretion and the standard are now stated.
+- **House Bill 337** — the $47,500 and $65,000 brackets apply to Montana
+  taxable income, not to the first dollars earned. The descriptions now say
+  taxable income and add a one-line gloss ("what is left after deductions").
+
+Repair: judgments.json edited (8 entries updated, 10 unchanged on re-judge), a
+real import re-run rewrote **338 records in place** (the four measures' full
+fan-out) at stamp `2026-08-31T18:08:28.321Z`, and a convergence dry run reports
+all 764 unchanged. Rows stay 764 across 87 candidates; tags stay 436; labels
+and tails untouched. Ledgers: the original insert ledger is unchanged at
+`import-report.json`; the rewrite run is `import-rewrite-report.json` (verified
+by its own `actions` field, per the ledger-naming rule); the convergence run is
+`import-dry-run-rerun-report.json`. Lint stays at 0 warnings, longest sentence
+32 words; reading grades stay at median 7.9, worst 8.9.
+
+The batch now spans two run stamps: 426 records at
+`2026-08-31T06:44:43.175Z` and 338 at `2026-08-31T18:08:28.321Z`.
