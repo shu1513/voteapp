@@ -1,0 +1,418 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1529582,
+      "measure_id": "HB 136",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 136. It requires Kentucky's Department of Corrections to report much more each year about people leaving prison, including how long they actually served for each offense and how people on supervision fare afterward. It also orders the department to buy a new prisoner phone and messaging contract by January 1, 2026. The Kentucky House voted 80-17, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 136. It requires Kentucky's Department of Corrections to report much more each year about people leaving prison, including how long they actually served for each offense and how people on supervision fare afterward. It also orders the department to buy a new prisoner phone and messaging contract by January 1, 2026. The Kentucky House voted 80-17, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1529583,
+      "measure_id": "HB 136",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 136. It requires Kentucky's Department of Corrections to report much more each year about people leaving prison, including how long they actually served for each offense and how people on supervision fare afterward. It also orders the department to buy a new prisoner phone and messaging contract by January 1, 2026. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 136. It requires Kentucky's Department of Corrections to report much more each year about people leaving prison, including how long they actually served for each offense and how people on supervision fare afterward. It also orders the department to buy a new prisoner phone and messaging contract by January 1, 2026. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1529602,
+      "measure_id": "SB 183",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 183. It sets rules for the firms Kentucky's public pension funds pay to vote the shares of stock those funds own. A firm that votes the way a company's own board recommends needs no analysis, while a firm that votes against the board must first write a six-part study. The Kentucky House voted 72-17, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 183. It sets rules for the firms Kentucky's public pension funds pay to vote the shares of stock those funds own. A firm that votes the way a company's own board recommends needs no analysis, while a firm that votes against the board must first write a six-part study. The Kentucky House voted 72-17, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1529601,
+      "measure_id": "SB 183",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 183. It sets rules for the firms Kentucky's public pension funds pay to vote the shares of stock those funds own. A firm that votes the way a company's own board recommends needs no analysis, while a firm that votes against the board must first write a six-part study. The Kentucky Senate voted 31-7, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 183. It sets rules for the firms Kentucky's public pension funds pay to vote the shares of stock those funds own. A firm that votes the way a company's own board recommends needs no analysis, while a firm that votes against the board must first write a six-part study. The Kentucky Senate voted 31-7, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1517666,
+      "measure_id": "SB 100",
+      "vote_date": "2025-03-13",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 100. It requires every Kentucky store that sells tobacco, nicotine or vaping products to hold a state license costing five hundred dollars a year, and lets the state take that license away after a fourth citation for selling to someone under 21. It also bars stores from selling canisters of nitrous oxide, sometimes called laughing gas, with exceptions for medical, dental, industrial, food and automotive uses. The Kentucky Senate voted 32-6, and the bill became law.",
+      "nay_description": "Voted against Senate Bill 100. It requires every Kentucky store that sells tobacco, nicotine or vaping products to hold a state license costing five hundred dollars a year, and lets the state take that license away after a fourth citation for selling to someone under 21. It also bars stores from selling canisters of nitrous oxide, sometimes called laughing gas, with exceptions for medical, dental, industrial, food and automotive uses. The Kentucky Senate voted 32-6, and the bill became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1505169,
+      "measure_id": "HB 520",
+      "vote_date": "2025-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 520. It lowers the bar Kentucky police and other investigating agencies must clear to refuse a public records request. An agency once had to show that releasing a record would harm it; now it need only show a stated risk of harm to itself or to its investigation, and it may also withhold records to protect witnesses, not just informants. The Kentucky House voted 78-21, and the bill became law without the Governor's signature.",
+      "nay_description": "Voted against House Bill 520. It lowers the bar Kentucky police and other investigating agencies must clear to refuse a public records request. An agency once had to show that releasing a record would harm it; now it need only show a stated risk of harm to itself or to its investigation, and it may also withhold records to protect witnesses, not just informants. The Kentucky House voted 78-21, and the bill became law without the Governor's signature.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1518204,
+      "measure_id": "HB 520",
+      "vote_date": "2025-03-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 520. It lowers the bar Kentucky police and other investigating agencies must clear to refuse a public records request. An agency once had to show that releasing a record would harm it; now it need only show a stated risk of harm to itself or to its investigation, and it may also withhold records to protect witnesses, not just informants. The Kentucky Senate voted 25-12, and the bill became law without the Governor's signature.",
+      "nay_description": "Voted against House Bill 520. It lowers the bar Kentucky police and other investigating agencies must clear to refuse a public records request. An agency once had to show that releasing a record would harm it; now it need only show a stated risk of harm to itself or to its investigation, and it may also withhold records to protect witnesses, not just informants. The Kentucky Senate voted 25-12, and the bill became law without the Governor's signature.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1529606,
+      "measure_id": "SB 89",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 89. It narrows which waters Kentucky's environmental protection law covers, replacing a list that took in essentially all surface and underground water with four categories: waters covered by federal law, sinkholes with open drains, certain springs, and the protected areas around public water-supply wells. It also makes coal operators post extra money, twenty-five times the yearly cost, when the state finds a mine will need water treatment long after mining ends. The Kentucky House voted 66-23, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 89. It narrows which waters Kentucky's environmental protection law covers, replacing a list that took in essentially all surface and underground water with four categories: waters covered by federal law, sinkholes with open drains, certain springs, and the protected areas around public water-supply wells. It also makes coal operators post extra money, twenty-five times the yearly cost, when the state finds a mine will need water treatment long after mining ends. The Kentucky House voted 66-23, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1529605,
+      "measure_id": "SB 89",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 89. It narrows which waters Kentucky's environmental protection law covers, replacing a list that took in essentially all surface and underground water with four categories: waters covered by federal law, sinkholes with open drains, certain springs, and the protected areas around public water-supply wells. It also makes coal operators post extra money, twenty-five times the yearly cost, when the state finds a mine will need water treatment long after mining ends. The Kentucky Senate voted 29-8, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 89. It narrows which waters Kentucky's environmental protection law covers, replacing a list that took in essentially all surface and underground water with four categories: waters covered by federal law, sinkholes with open drains, certain springs, and the protected areas around public water-supply wells. It also makes coal operators post extra money, twenty-five times the yearly cost, when the state finds a mine will need water treatment long after mining ends. The Kentucky Senate voted 29-8, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1529581,
+      "measure_id": "SB 84",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 84. It tells Kentucky courts to decide for themselves what a law or a regulation means when someone challenges a state agency's action, instead of deferring to the agency's own reading. Courts still may not second-guess an agency's findings of fact. The Kentucky House voted 74-18, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 84. It tells Kentucky courts to decide for themselves what a law or a regulation means when someone challenges a state agency's action, instead of deferring to the agency's own reading. Courts still may not second-guess an agency's findings of fact. The Kentucky House voted 74-18, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1529580,
+      "measure_id": "SB 84",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 84. It tells Kentucky courts to decide for themselves what a law or a regulation means when someone challenges a state agency's action, instead of deferring to the agency's own reading. Courts still may not second-guess an agency's findings of fact. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 84. It tells Kentucky courts to decide for themselves what a law or a regulation means when someone challenges a state agency's action, instead of deferring to the agency's own reading. Courts still may not second-guess an agency's findings of fact. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1529607,
+      "measure_id": "HB 90",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 90. It sets up state licensing for freestanding birth centers and drops the state permission slip once needed to open one. It also rewrites Kentucky's abortion law, listing nine procedures a doctor may perform, such as treating an ectopic pregnancy or a miscarriage, while replacing the doctor's own best clinical judgment with a standard measured against what similarly trained doctors would advise. The Kentucky House voted 77-20, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 90. It sets up state licensing for freestanding birth centers and drops the state permission slip once needed to open one. It also rewrites Kentucky's abortion law, listing nine procedures a doctor may perform, such as treating an ectopic pregnancy or a miscarriage, while replacing the doctor's own best clinical judgment with a standard measured against what similarly trained doctors would advise. The Kentucky House voted 77-20, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1529608,
+      "measure_id": "HB 90",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 90. It sets up state licensing for freestanding birth centers and drops the state permission slip once needed to open one. It also rewrites Kentucky's abortion law, listing nine procedures a doctor may perform, such as treating an ectopic pregnancy or a miscarriage, while replacing the doctor's own best clinical judgment with a standard measured against what similarly trained doctors would advise. The Kentucky Senate voted 31-7, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 90. It sets up state licensing for freestanding birth centers and drops the state permission slip once needed to open one. It also rewrites Kentucky's abortion law, listing nine procedures a doctor may perform, such as treating an ectopic pregnancy or a miscarriage, while replacing the doctor's own best clinical judgment with a standard measured against what similarly trained doctors would advise. The Kentucky Senate voted 31-7, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1529633,
+      "measure_id": "HB 694",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 694. Once Kentucky's fund for teacher retiree health insurance is fully funded, the law sends the employer money that had been paying for retiree health into the pension fund instead, to pay down what the pension still owes. It also raises the bar before the retirement board may recommend cutting what workers and employers pay in. The Kentucky House voted 67-27, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 694. Once Kentucky's fund for teacher retiree health insurance is fully funded, the law sends the employer money that had been paying for retiree health into the pension fund instead, to pay down what the pension still owes. It also raises the bar before the retirement board may recommend cutting what workers and employers pay in. The Kentucky House voted 67-27, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "government_spending_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1529634,
+      "measure_id": "HB 694",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 694. Once Kentucky's fund for teacher retiree health insurance is fully funded, the law sends the employer money that had been paying for retiree health into the pension fund instead, to pay down what the pension still owes. It also raises the bar before the retirement board may recommend cutting what workers and employers pay in. The Kentucky Senate voted 29-8, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 694. Once Kentucky's fund for teacher retiree health insurance is fully funded, the law sends the employer money that had been paying for retiree health into the pension fund instead, to pay down what the pension still owes. It also raises the bar before the retirement board may recommend cutting what workers and employers pay in. The Kentucky Senate voted 29-8, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "government_spending_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1529588,
+      "measure_id": "HB 695",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 695. It bars Kentucky's health cabinet from changing who qualifies for Medicaid, or what Medicaid covers, without the legislature's approval first, and it creates a legislative board to oversee the program. It also orders the cabinet to ask the federal government to require work or similar activity of many adults on Medicaid, and to restore the treatment approval rules for behavioral health that existed on January 1, 2020. The Kentucky House voted 80-20, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 695. It bars Kentucky's health cabinet from changing who qualifies for Medicaid, or what Medicaid covers, without the legislature's approval first, and it creates a legislative board to oversee the program. It also orders the cabinet to ask the federal government to require work or similar activity of many adults on Medicaid, and to restore the treatment approval rules for behavioral health that existed on January 1, 2020. The Kentucky House voted 80-20, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1529589,
+      "measure_id": "HB 695",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 695. It bars Kentucky's health cabinet from changing who qualifies for Medicaid, or what Medicaid covers, without the legislature's approval first, and it creates a legislative board to oversee the program. It also orders the cabinet to ask the federal government to require work or similar activity of many adults on Medicaid, and to restore the treatment approval rules for behavioral health that existed on January 1, 2020. The Kentucky Senate voted 29-7, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 695. It bars Kentucky's health cabinet from changing who qualifies for Medicaid, or what Medicaid covers, without the legislature's approval first, and it creates a legislative board to oversee the program. It also orders the cabinet to ask the federal government to require work or similar activity of many adults on Medicaid, and to restore the treatment approval rules for behavioral health that existed on January 1, 2020. The Kentucky Senate voted 29-7, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1529592,
+      "measure_id": "HB 399",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 399. It creates two new crimes for disrupting the Kentucky General Assembly, running from a lower-level misdemeanor up to a felony for a third offense, and it lets police arrest rather than issue a citation. Legislators, their staff and legislative officers are written out of the definition of who can commit these crimes, and protest in the Capitol rotunda and outdoor grounds stays protected. The Kentucky House voted 69-28, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 399. It creates two new crimes for disrupting the Kentucky General Assembly, running from a lower-level misdemeanor up to a felony for a third offense, and it lets police arrest rather than issue a citation. Legislators, their staff and legislative officers are written out of the definition of who can commit these crimes, and protest in the Capitol rotunda and outdoor grounds stays protected. The Kentucky House voted 69-28, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1529593,
+      "measure_id": "HB 399",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 399. It creates two new crimes for disrupting the Kentucky General Assembly, running from a lower-level misdemeanor up to a felony for a third offense, and it lets police arrest rather than issue a citation. Legislators, their staff and legislative officers are written out of the definition of who can commit these crimes, and protest in the Capitol rotunda and outdoor grounds stays protected. The Kentucky Senate voted 31-7, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 399. It creates two new crimes for disrupting the Kentucky General Assembly, running from a lower-level misdemeanor up to a felony for a third offense, and it lets police arrest rather than issue a citation. Legislators, their staff and legislative officers are written out of the definition of who can commit these crimes, and protest in the Capitol rotunda and outdoor grounds stays protected. The Kentucky Senate voted 31-7, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1529818,
+      "measure_id": "HB 4",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4. It bars Kentucky's public colleges and universities from treating people differently based on religion, race, sex, color or national origin in hiring, admissions, scholarships, contracts and housing. It also bars them from spending any money, including private gifts and staff time, on a diversity, equity and inclusion office, officer, training or program, and orders existing ones closed. The Kentucky House voted 79-19, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 4. It bars Kentucky's public colleges and universities from treating people differently based on religion, race, sex, color or national origin in hiring, admissions, scholarships, contracts and housing. It also bars them from spending any money, including private gifts and staff time, on a diversity, equity and inclusion office, officer, training or program, and orders existing ones closed. The Kentucky House voted 79-19, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1516615,
+      "measure_id": "HB 4",
+      "vote_date": "2025-03-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4. It bars Kentucky's public colleges and universities from treating people differently based on religion, race, sex, color or national origin in hiring, admissions, scholarships, contracts and housing. It also bars them from spending any money, including private gifts and staff time, on a diversity, equity and inclusion office, officer, training or program, and orders existing ones closed. The Kentucky Senate voted 32-6, and the bill later became law over the Governor's veto.",
+      "nay_description": "Voted against passing House Bill 4. It bars Kentucky's public colleges and universities from treating people differently based on religion, race, sex, color or national origin in hiring, admissions, scholarships, contracts and housing. It also bars them from spending any money, including private gifts and staff time, on a diversity, equity and inclusion office, officer, training or program, and orders existing ones closed. The Kentucky Senate voted 32-6, and the bill later became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1529622,
+      "measure_id": "HB 398",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 398. It bars Kentucky officials from adopting or enforcing any workplace safety rule that is stricter than the federal rule, or that covers something the federal government has not addressed. It also gives workers only 30 days to bring a retaliation claim, ends the state's power to put a fired worker back on the job while the case is decided, and pauses an employer's duty to fix a hazard during an appeal. The Kentucky House voted 78-22, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 398. It bars Kentucky officials from adopting or enforcing any workplace safety rule that is stricter than the federal rule, or that covers something the federal government has not addressed. It also gives workers only 30 days to bring a retaliation claim, ends the state's power to put a fired worker back on the job while the case is decided, and pauses an employer's duty to fix a hazard during an appeal. The Kentucky House voted 78-22, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1529623,
+      "measure_id": "HB 398",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 398. It bars Kentucky officials from adopting or enforcing any workplace safety rule that is stricter than the federal rule, or that covers something the federal government has not addressed. It also gives workers only 30 days to bring a retaliation claim, ends the state's power to put a fired worker back on the job while the case is decided, and pauses an employer's duty to fix a hazard during an appeal. The Kentucky Senate voted 29-9, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 398. It bars Kentucky officials from adopting or enforcing any workplace safety rule that is stricter than the federal rule, or that covers something the federal government has not addressed. It also gives workers only 30 days to bring a retaliation claim, ends the state's power to put a fired worker back on the job while the case is decided, and pauses an employer's duty to fix a hazard during an appeal. The Kentucky Senate voted 29-9, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
