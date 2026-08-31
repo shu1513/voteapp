@@ -1,15 +1,17 @@
 import {
+  ADDRESS_FIELD_PRIVACY_NOTE,
   PRE_SEARCH_AGREEMENT_PARAGRAPHS,
   PRE_SEARCH_CHECKBOX_LABEL,
-  PRIVACY_NOTICE,
 } from "@voteapp/api-client";
 import { useRouter } from "expo-router";
 import { Modal, Pressable, ScrollView, Text, View } from "react-native";
 
 // Mobile port of PreSearchTermsDialog. Same rules: the box starts empty every
 // time the sheet opens, the action stays disabled until it is ticked, all
-// three documents are named and linked, arbitration is visible here rather
-// than only inside the Terms, and the button names what it does.
+// three documents are named and linked, and the button names what it does.
+// Arbitration is not called out on this screen — see
+// PRE_SEARCH_CHECKBOX_LABEL — which leaves those three links carrying the
+// whole of the notice.
 //
 // A native Modal covers the screen, so the sheet carries its own document
 // links — the ones behind it cannot be reached while it is open.
@@ -77,7 +79,8 @@ export function PreSearchTermsSheet({
                 {paragraph}
               </Text>
             ))}
-            <Text className="mb-4 text-sm text-ink-soft">{PRIVACY_NOTICE}</Text>
+            {/* One short, true privacy line; the policy itself is linked below. */}
+            <Text className="mb-4 text-sm text-ink-soft">{ADDRESS_FIELD_PRIVACY_NOTE}</Text>
 
             <View className="rounded-xl border border-line bg-surface p-4">
               <Pressable

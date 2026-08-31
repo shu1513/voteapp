@@ -1,9 +1,9 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useId } from "react";
 import {
+  ADDRESS_FIELD_PRIVACY_NOTE,
   PRE_SEARCH_AGREEMENT_PARAGRAPHS,
   PRE_SEARCH_CHECKBOX_LABEL,
-  PRIVACY_NOTICE,
 } from "@voteapp/api-client";
 
 // The anonymous clickwrap, deferred to the moment it gates something. The
@@ -15,9 +15,11 @@ import {
 // Requirements this encodes:
 // - checkbox starts empty, every single time the dialog opens
 // - the action stays disabled until it is ticked
-// - all three documents are named in the label and linked next to it
-// - the arbitration and class-waiver terms are visible here, not only inside
-//   the Terms of Use
+// - all three documents are named in the label and linked next to it. With
+//   arbitration no longer called out on this screen (see
+//   PRE_SEARCH_CHECKBOX_LABEL), those links carry the whole of the notice:
+//   named, adjacent, and reachable before agreeing. Nothing here may move to
+//   the footer or turn into a bare "Terms" label.
 // - the button names what it does ("Agree and search"), not "Continue"
 // - documents open in a new tab, so reading one does not discard the dialog
 //   or the address already typed
@@ -72,7 +74,9 @@ export function PreSearchTermsDialog({
                   {paragraph}
                 </p>
               ))}
-              <p className="mt-2">{PRIVACY_NOTICE}</p>
+              {/* One short, true privacy line, not a restatement of Privacy
+                  Policy Section 1 — the policy itself is linked below. */}
+              <p className="mt-2">{ADDRESS_FIELD_PRIVACY_NOTE}</p>
             </div>
 
             <div className="mt-4 rounded-xl border border-line bg-surface p-4 text-sm text-ink">
