@@ -157,3 +157,31 @@ wording. That is what this audit did, and it is what the next batch should do fr
 **Runs:** judge 8 `updated` / 5 `unchanged`; import **303 rewrites** across exactly the eight rolls
 of the four measures, 0 errors; re-run **3,548 `unchanged`**. Row count unchanged at 3,548 / 80
 candidates. Lint 0 warnings. Prod untouched.
+
+### Second completeness pass (2026-08-31) — the audit's own tool had a blind spot
+
+Review of the completeness audit found two more gaps, both verified true, both traceable to defects
+in how the audit itself was run. 151 records rewritten (AB 931 = 77, SB 635 = 74), re-run 3,548
+`unchanged`, lint 0 warnings.
+
+1. **AB 931 (P1).** (a) The lead said the company "takes a share of whatever their lawsuit later
+   pays out" while a later sentence said "not a share of the winnings" — an internal contradiction.
+   The accurate mechanism, now stated: the consumer assigns the company a right to collect a **set
+   amount** out of any future proceeds. (b) The remedies against **funding companies** were missing:
+   Bus. & Prof. Code 6254(b) imposes automatic contract termination, statutory damages up to $10,000
+   per violation or treble actual damages, the consumer's costs and fees, and injunctive relief.
+   **Why the audit missed it: the digest-delta extractor truncated each digest sentence at 300
+   characters**, and "…would impose various penalties, including statutory damages, set as
+   prescribed" is the tail of a long referral-fee sentence. The checklist never contained the item.
+2. **SB 635 (P2).** (a) Both permitting authorities and health enforcement agencies must accept a
+   California ID, an individual taxpayer identification number, or a municipal ID **in place of a
+   Social Security number**, kept confidential — this sat behind the digest's "comply with specified
+   requirements", a pointer the audit did not expand (the campaign's oldest lesson, "except as
+   specified is a pointer", applied to yet another phrasing). (b) "The same limits bind contractors"
+   named the outcome but not the mechanism: a covered contract must require compliance and
+   **terminates immediately** on violation.
+
+The audit method stands — digest enumerates the delta, statute supplies the terms — with two
+repairs to how it is executed: **never truncate the digest** (every sentence read in full, tails
+included), and **treat every "as specified" / "specified requirements" / "as provided" in a digest
+item as an unexpanded pointer that must be resolved in the statute before the item is checked off.**
