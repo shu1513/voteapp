@@ -48,3 +48,22 @@ run's stamp `2026-08-31T06:00:20.168Z` matches **zero** rows.
 
 California now holds **3,859 roll-call records across 80 candidates** over 54 measures. Prod
 untouched.
+
+## Review response (2026-08-31) — SB 25's two-track document rule, 62 records rewritten
+
+**The finding (P1, true).** Section 16782 splits the additional-documentary-material duty in two:
+a filer with its principal place of business in California includes the material **with the filing**
+(subdivision (b)); a filer covered only by the 20%-of-threshold California sales test provides it
+**only on the Attorney General's request, within seven business days** (subdivision (c)). The first
+draft said every covered company hands the documents over with the filing — wrong for the
+sales-only class. Reading the section in full also surfaced a term the description lacked: the
+filing itself is due **within one business day** of the federal filing (subdivision (a)). Both now
+stated. 62 records rewritten, re-run 3,859 `unchanged`, lint 0 warnings, row count unchanged.
+
+**Why the pre-flight audit missed it.** The digest item — "would also require the person to file or
+provide the additional documentary material required under federal law, **as specified**" — was on
+the checklist and the description matched it. But "file **or provide**" IS the two-track split,
+compressed into three words, and "as specified" was an unexpanded pointer. The audit checked that
+the topic was covered; it did not resolve the pointer to the statute's terms. The batch-05 rule —
+every "as specified" inside a digest item must be chased into the statute before check-off —
+applies even when the item already appears covered.
