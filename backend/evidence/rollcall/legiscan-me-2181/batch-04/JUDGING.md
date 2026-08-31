@@ -73,7 +73,7 @@ Maine's messiest sequence in this campaign. Eleven rolls; four failed. Taken:
 - **House 1590925** (2025-06-16, 79-62, Recede And Concur) — the final
   successful House vote, on the enacted text.
 - **Senate 1590127** (2025-06-12, 18-15, Passage To Be Engrossed As Amended,
-  RC #499) — the last of a six-roll sequence that day, cast after Senate
+  RC #499) — the last of a seven-roll sequence that day (RC #481-#486 and #499), cast after Senate
   Amendment "A" was adopted, so it is on the enacted text.
 
 `acknowledge_later_rolls` covers the two same-day Senate rolls the gate cannot
