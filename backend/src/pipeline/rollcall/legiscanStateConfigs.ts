@@ -986,6 +986,106 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       /^decision of the chair upheld$/,
     ],
   },
+
+  // North Carolina General Assembly, 2025-2026 Regular Session (both years in
+  // one dataset; the session was still sitting when the dataset was cut on
+  // 2026-08-30). Vocabulary measured from the full dataset survey 2026-08-31:
+  // 2,338 bills, 1,493 roll calls, 180 people (120 House + 50 Senate seats
+  // plus mid-biennium turnover).
+  //
+  // What the survey established:
+  // - North Carolina takes its recorded floor vote on SECOND READING. A bill
+  //   needs three readings; the roll call is called on the second, and the
+  //   third reading passes without a roll call unless a member objects. So
+  //   `Second Reading` (415 House / 253 Senate) is the passage question and
+  //   `Third Reading` (32 / 36) is the same question taken again on the days
+  //   somebody objected. Both are kept as passage; the campaign's
+  //   one-roll-per-chamber rule and the judge's own final-vote gate pick the
+  //   later of the pair.
+  // - THE QUESTION CAN BE A SUFFIX, so every pattern is anchored at both
+  //   ends and the exclusions run first. `A1 Blackwell Second Reading` is a
+  //   floor amendment, `Second Reading M4 Previous Question` is the motion to
+  //   cut off debate, and `Second Reading Motion 1 To Table` is a motion to
+  //   kill — all three carry the passage wording and none of them is passage.
+  // - The two chambers word the same questions differently. Concurrence in
+  //   the other chamber's changes is `M11 Concur` in the House and `Motion 9
+  //   To Concur` in the Senate; conference reports are `C RPT Adoption`
+  //   (House) and `Conference Report Motion 8 To Adopt` plus the readings on
+  //   the report (Senate).
+  // - VETO OVERRIDES ARE A REAL POOL HERE, not an edge case. North Carolina
+  //   has a Republican legislature and a Democratic governor, so 26 of the
+  //   kept rolls are override votes on 14 bills — `Veto Override` in the
+  //   House, `Motion 11 Veto Override` in the Senate. Every one is divided by
+  //   definition (the threshold is three fifths of the members present), and
+  //   an override that carries enacts the bill over the veto. The House also
+  //   prints `Veto Override M4 Previous Question`, which is the debate-cutoff
+  //   motion taken during an override debate and is excluded.
+  // - The House prefixes a question with `R2 Ruled Mat&#x27;l` / `R3 Ruled
+  //   Mat&#x27;l` when the presiding officer has ruled the matter material
+  //   under House Rule 2 or 3 (the vote is still on the concurrence or the
+  //   conference report, and the tallies are whole-chamber). LegiScan leaves
+  //   the apostrophe HTML-escaped, so the pattern matches the escape.
+  // - Feed health is in the cleanest tier: 0 repeated roll_call_ids, 0
+  //   identity-duplicate rolls, 0 summary-only rolls (every roll carries a
+  //   member list), 0 tally mismatches, 0 committee votes, 0 file or parse
+  //   errors, and NOTHING left surfaced — all 1,493 rolls match a kept or an
+  //   excluded pattern, or sit on an excluded instrument type.
+  // - Only bill types B (2,284), JR (23) and R (31) appear. North Carolina
+  //   proposes constitutional amendments as ordinary BILLS, so Georgia's
+  //   resolution-typed-amendment gap does not recur; the 31 resolutions are
+  //   dropped by the shared kept-types list before this config is read.
+  NC: {
+    jurisdiction: "NC",
+    sessionId: 2189,
+    chamberSizes: { house: 120, senate: 50 },
+    keptQuestions: [
+      // Passage. Anchored: the amendment, previous-question and table
+      // families all end in these same two words.
+      { pattern: /^(?:second|third) reading$/, questionClass: "passage" },
+      // House concurrence: `M11 Concur`, `M11 Concur Sen. Amd. 1`, and the
+      // same question under a materiality ruling. `M11 Not Concur` is
+      // excluded below — refusing to concur is not passage.
+      { pattern: /^(?:r[23] ruled mat&#x27;l )?m11 concur(?: sen\. amd\. \d+)?$/, questionClass: "concurrence" },
+      // Senate concurrence, with or without a reading named in front of it.
+      { pattern: /^(?:(?:second|third) reading )?motion 9 to concur(?: house amend)?$/, questionClass: "concurrence" },
+      // House conference report, in its three orderings.
+      {
+        pattern: /^(?:r[23] ruled mat&#x27;l )?c rpt adoption(?: r2 ruled mat&#x27;l)?$/,
+        questionClass: "conference_report",
+      },
+      // Senate conference report: the motion to adopt it, and the readings
+      // the Senate then takes on the report itself.
+      { pattern: /^conference (?:report|rpt) motion 8 to adopt$/, questionClass: "conference_report" },
+      { pattern: /^conference rpt (?:second|third) reading$/, questionClass: "conference_report" },
+      // The override votes, one spelling per chamber.
+      { pattern: /^veto override$/, questionClass: "veto_override" },
+      { pattern: /^motion 11 veto override$/, questionClass: "veto_override" },
+    ],
+    excludedQuestions: [
+      // House floor amendments: `A1 Blackwell Second Reading`, `A34 Prather
+      // Second Reading`, `A5 Brown, G. Third Reading` — the amendment number
+      // and its sponsor lead, the reading trails.
+      /^a\d+ .*\b(?:second|third) reading\b/,
+      // Senate floor amendments and the motions to table them:
+      // `Amendment 3`, `Amendment 3 Motion 1 To Table`.
+      /^amendment \d+/,
+      // Debate and scheduling motions, wherever they appear in the desc:
+      // `M4 Previous Question`, `Motion 3 Previous Question`, `M3 To Lay On
+      // The Table`, `Motion 1 To Table`, `M6 Reconsider`, `M8 Re-Refer
+      // Appropriations`, `Motion 12/Divide`, `Motion 11 To Adjourn`.
+      /\bprevious question\b/,
+      /\bto lay on the table\b/,
+      /^(?:second reading )?motion 1 to table\b/,
+      /\breconsider\b/,
+      /\bre-refer\b/,
+      /\bmotion 12\//,
+      /^motion 11 (?:to adjourn|to substitute|divide question)$/,
+      /^motion 1 to table motion 11 to postpone$/,
+      // Refusing to concur sends the bill to conference; it is a real vote
+      // but not a vote on passing the measure.
+      /\bnot concur\b/,
+    ],
+  },
 };
 
 export const LEGISCAN_CONFIG_KEYS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);

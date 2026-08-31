@@ -381,11 +381,25 @@ describe("getLegiscanStateConfig", () => {
       "MO-2226",
       "MD",
       "MD-2240",
+      "NC",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
     // judgment may never name `MO-2226` or `MD-2240`.
-    expect(LEGISCAN_RECORD_JURISDICTIONS).toEqual(["GA", "CT", "IL", "TN", "TX", "FL", "CA", "PA", "ME", "MO", "MD"]);
+    expect(LEGISCAN_RECORD_JURISDICTIONS).toEqual([
+      "GA",
+      "CT",
+      "IL",
+      "TN",
+      "TX",
+      "FL",
+      "CA",
+      "PA",
+      "ME",
+      "MO",
+      "MD",
+      "NC",
+    ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
     expect(getLegiscanStateConfig("GA").sessionId).toBe(2167);
@@ -398,6 +412,7 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("MO").sessionId).toBe(2169);
     expect(getLegiscanStateConfig("MO-2226")).toMatchObject({ jurisdiction: "MO", sessionId: 2226 });
     expect(getLegiscanStateConfig("MD").sessionId).toBe(2164);
+    expect(getLegiscanStateConfig("NC").sessionId).toBe(2189);
     expect(getLegiscanStateConfig("md-2240")).toMatchObject({ jurisdiction: "MD", sessionId: 2240 });
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("NY")).toThrow("no LegiScan state config for NY");
