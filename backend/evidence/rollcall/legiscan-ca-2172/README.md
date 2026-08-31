@@ -96,9 +96,9 @@ so every vote in this batch was cast on the enrolled text and no description nee
   `batch-03/` 18 / 9 / **645** · `batch-04/` 21 / 11 / **806** · `batch-05/` 13 / 7 / **509**
   (both-chamber seam closed) · `batch-06/` 5 / 5 / **311** (one-chamber tail begins) ·
   `batch-07/` 8 / 8 / **507** (final-text rule; Assembly-only tail) ·
-  `batch-08/` 10 / 10 / **107** (Senate-only tail begins).
+  `batch-08/` 10 / 10 / **107** (Senate-only tail begins) · `batch-09/` 8 / 8 / **87**.
 
-California total: **4,473 roll-call records across 80 candidates**, 72 measures, **17 of 27
+California total: **4,560 roll-call records across 80 candidates**, 80 measures, **18 of 27
 research areas**. All descriptions plain English, American-spelled, every qualification kept.
 
 ## The rule changed on 2026-08-31: final text, not enacted
@@ -146,7 +146,8 @@ Assembly-first ordering holds for the rest of the campaign.
 Two measures remain permanently unavailable: AB 863 and AB 483 have only pre-amendment divided
 votes.
 
-`batch-08` opened the **Senate-only** tail (10 of 160).
+`batch-08` and `batch-09` opened the **Senate-only** tail (18 of 160; 100 of the 118 that pass the
+version check remain).
 
 ## The version check runs offline
 
@@ -164,7 +165,7 @@ of the pool.
 | slice | measures | records per measure | note |
 | --- | --- | --- | --- |
 | both-chamber, open | 163 | ~79 | **highest value, not started** |
-| Senate-only, passes version check | 108 left | ~11 | batch-08 took 10 |
+| Senate-only, passes version check | 100 left | ~11 | batches 08-09 took 18 |
 | Assembly-only | 0 | ~68 | cleared by batch-07 |
 
 An Assembly roll reaches ~68 of our candidates and a Senate roll ~11, because all 80 Assembly seats

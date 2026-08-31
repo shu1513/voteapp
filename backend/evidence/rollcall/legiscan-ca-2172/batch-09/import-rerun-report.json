@@ -1,0 +1,267 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": true,
+  "skipExisting": false,
+  "startedAt": "2026-08-31T18:28:32.868Z",
+  "finishedAt": "2026-08-31T18:28:59.622Z",
+  "jurisdiction": "CA",
+  "sessionId": 2172,
+  "evidenceDir": "/Users/shu/legiscan-data/ca-2172-evidence",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "/Users/shu/voteApp/.claude/worktrees/hungry-engelbart-5b1814/backend/evidence/rollcall/legiscan-ca-2172/crosswalk.json",
+  "crosswalkEntries": 121,
+  "peopleFile": "/Users/shu/voteApp/.claude/worktrees/hungry-engelbart-5b1814/backend/evidence/rollcall/legiscan-ca-2172/legiscan-people-ca-2172.json",
+  "peopleMembers": 121,
+  "files": 6454,
+  "outcomes": {
+    "not_approved": 6327,
+    "dry_run": 127
+  },
+  "actions": {
+    "unchanged": 4560
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-ca-senate-2172-roll1601536.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601536,
+      "outcome": "dry_run",
+      "legislativeVoteId": "9025fe69-8778-455a-906b-0478b9bb86eb",
+      "reviewStatus": "approved",
+      "bill": "AB260",
+      "voteDate": "2025-09-09",
+      "officialVoteDate": null,
+      "measureId": "AB 260",
+      "question": "Assembly 3rd Reading AB260 Aguiar-Curry et al. By Limón Urgency Clause",
+      "originRunId": "rollcall:CA:senate:2172:1601536:2026-08-31T18:28:32.868Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 28,
+        "matched": 10
+      },
+      "actions": {
+        "unchanged": 10
+      },
+      "notified": 0,
+      "candidates": 10,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601735.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601735,
+      "outcome": "dry_run",
+      "legislativeVoteId": "997dde36-56ff-4133-b74e-67e58b7bacde",
+      "reviewStatus": "approved",
+      "bill": "SB464",
+      "voteDate": "2025-09-10",
+      "officialVoteDate": null,
+      "measureId": "SB 464",
+      "question": "Unfinished Business SB464 Smallwood-Cuevas Concurrence",
+      "originRunId": "rollcall:CA:senate:2172:1601735:2026-08-31T18:28:32.868Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 29,
+        "matched": 11
+      },
+      "actions": {
+        "unchanged": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601779.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601779,
+      "outcome": "dry_run",
+      "legislativeVoteId": "167b38ec-c1cd-41eb-95c9-dc3702ac1cdb",
+      "reviewStatus": "approved",
+      "bill": "AB1050",
+      "voteDate": "2025-09-10",
+      "officialVoteDate": null,
+      "measureId": "AB 1050",
+      "question": "Assembly 3rd Reading AB1050 Schultz et al. By Grayson",
+      "originRunId": "rollcall:CA:senate:2172:1601779:2026-08-31T18:28:32.868Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 29,
+        "matched": 11
+      },
+      "actions": {
+        "unchanged": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601792.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601792,
+      "outcome": "dry_run",
+      "legislativeVoteId": "6a97aa8e-ec15-4ad0-93b7-d0f1d120793d",
+      "reviewStatus": "approved",
+      "bill": "AB507",
+      "voteDate": "2025-09-10",
+      "officialVoteDate": null,
+      "measureId": "AB 507",
+      "question": "Assembly 3rd Reading AB507 Haney et al. By Wiener",
+      "originRunId": "rollcall:CA:senate:2172:1601792:2026-08-31T18:28:32.868Z",
+      "members": 39,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 28,
+        "matched": 11
+      },
+      "actions": {
+        "unchanged": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601874.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601874,
+      "outcome": "dry_run",
+      "legislativeVoteId": "08d86082-be87-4027-b201-a9ab678c5c5e",
+      "reviewStatus": "approved",
+      "bill": "SB655",
+      "voteDate": "2025-09-11",
+      "officialVoteDate": null,
+      "measureId": "SB 655",
+      "question": "Unfinished Business SB655 Stern et al. Concurrence",
+      "originRunId": "rollcall:CA:senate:2172:1601874:2026-08-31T18:28:32.868Z",
+      "members": 39,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 28,
+        "matched": 11
+      },
+      "actions": {
+        "unchanged": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1602273.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1602273,
+      "outcome": "dry_run",
+      "legislativeVoteId": "b95c1367-077b-43bf-bc33-faca11cf0080",
+      "reviewStatus": "approved",
+      "bill": "AB1108",
+      "voteDate": "2025-09-12",
+      "officialVoteDate": null,
+      "measureId": "AB 1108",
+      "question": "Assembly 3rd Reading AB1108 Hart et al. By Limón",
+      "originRunId": "rollcall:CA:senate:2172:1602273:2026-08-31T18:28:32.868Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 27,
+        "matched": 11
+      },
+      "actions": {
+        "unchanged": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1602931.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1602931,
+      "outcome": "dry_run",
+      "legislativeVoteId": "5c93c6da-9c2b-431f-b4c1-65367c784a61",
+      "reviewStatus": "approved",
+      "bill": "SB294",
+      "voteDate": "2025-09-13",
+      "officialVoteDate": null,
+      "measureId": "SB 294",
+      "question": "Unfinished Business SB294 Reyes et al. Concurrence",
+      "originRunId": "rollcall:CA:senate:2172:1602931:2026-08-31T18:28:32.868Z",
+      "members": 37,
+      "notVoting": 0,
+      "absent": 3,
+      "resolution": {
+        "unmatched_reviewed": 26,
+        "matched": 11
+      },
+      "actions": {
+        "unchanged": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1726371.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1726371,
+      "outcome": "dry_run",
+      "legislativeVoteId": "6de03f5a-f345-45fa-a726-b64efc0bdcd4",
+      "reviewStatus": "approved",
+      "bill": "SB1125",
+      "voteDate": "2026-08-26",
+      "officialVoteDate": null,
+      "measureId": "SB 1125",
+      "question": "Unfinished Business SB1125 Menjivar et al. Concurrence",
+      "originRunId": "rollcall:CA:senate:2172:1726371:2026-08-31T18:28:32.868Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 29,
+        "matched": 11
+      },
+      "actions": {
+        "unchanged": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    }
+  ],
+  "rollsScopedToBatch": true
+}

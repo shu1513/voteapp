@@ -1,0 +1,148 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601779,
+      "measure_id": "AB 1050",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1050, which widens an existing route around private deed restrictions that block housing. California already lets the owner of an affordable housing development record a document setting aside recorded covenants that limit how many homes may be built, or their size or location. The bill extends that route to a developer converting an existing commercial property to include homes, and applies it to restrictions written into reciprocal easement agreements and to covenants that bar residential use outright. Nothing in it authorizes a development that state housing law, the local general plan or zoning would not otherwise allow. The Senate passed it 31-9 and it became law.",
+      "nay_description": "Voted against passing Assembly Bill 1050, which widens an existing route around private deed restrictions that block housing. California already lets the owner of an affordable housing development record a document setting aside recorded covenants that limit how many homes may be built, or their size or location. The bill extends that route to a developer converting an existing commercial property to include homes, and applies it to restrictions written into reciprocal easement agreements and to covenants that bar residential use outright. Nothing in it authorizes a development that state housing law, the local general plan or zoning would not otherwise allow. The Senate passed it 31-9 and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1602931,
+      "measure_id": "SB 294",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 294, the Workplace Know Your Rights Act. Every year, and to each new hire, an employer must hand out a stand-alone written notice of certain workplace rights, including what an employee's constitutional rights are when law enforcement comes to the workplace. The same notice goes each year to a worker's chosen representative. The Labor Commissioner publishes a template and produces videos for workers and for employers, and either the Commissioner or a public prosecutor may enforce the act. Employers must let workers name an emergency contact, and must tell that contact if the worker is arrested or detained at work, or elsewhere on the job if the employer actually knows. Retaliating against a worker for using these rights is barred. Penalties run to $500 per employee, and for the emergency-contact duty $500 per employee per day up to $10,000. The Senate agreed 29-8 and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 294, the Workplace Know Your Rights Act. Every year, and to each new hire, an employer must hand out a stand-alone written notice of certain workplace rights, including what an employee's constitutional rights are when law enforcement comes to the workplace. The same notice goes each year to a worker's chosen representative. The Labor Commissioner publishes a template and produces videos for workers and for employers, and either the Commissioner or a public prosecutor may enforce the act. Employers must let workers name an emergency contact, and must tell that contact if the worker is arrested or detained at work, or elsewhere on the job if the employer actually knows. Retaliating against a worker for using these rights is barred. Penalties run to $500 per employee, and for the emergency-contact duty $500 per employee per day up to $10,000. The Senate agreed 29-8 and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1726371,
+      "measure_id": "SB 1125",
+      "vote_date": "2026-08-26",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 1125, which sets up a Water Rate Assistance Program to help low-income households pay residential water bills. It creates a fund in the state treasury, spendable only when the Legislature appropriates money to it, and lays out different steps depending on whether the appropriation covers a partial or a statewide rollout. The State Water Resources Control Board must hold a public hearing, adopt guidelines and report to the Legislature. Households may confirm they qualify by self-certifying under penalty of perjury, and the Attorney General may sue to stop practices that break these rules. The whole program depends on that appropriation. The Senate agreed 31-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 1125, which sets up a Water Rate Assistance Program to help low-income households pay residential water bills. It creates a fund in the state treasury, spendable only when the Legislature appropriates money to it, and lays out different steps depending on whether the appropriation covers a partial or a statewide rollout. The State Water Resources Control Board must hold a public hearing, adopt guidelines and report to the Legislature. Households may confirm they qualify by self-certifying under penalty of perjury, and the Attorney General may sue to stop practices that break these rules. The whole program depends on that appropriation. The Senate agreed 31-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601874,
+      "measure_id": "SB 655",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 655, which declares it the policy of California that every home must be able to reach and hold a safe maximum indoor temperature. State agencies must weigh that policy when they set or revise programs, criteria and grant rules, and from January 1, 2027, when they write regulations. The bill sets the goal and directs agencies toward it; it does not by itself impose a cooling standard on any building. The Senate agreed 31-8 and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 655, which declares it the policy of California that every home must be able to reach and hold a safe maximum indoor temperature. State agencies must weigh that policy when they set or revise programs, criteria and grant rules, and from January 1, 2027, when they write regulations. The bill sets the goal and directs agencies toward it; it does not by itself impose a cooling standard on any building. The Senate agreed 31-8 and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1602273,
+      "measure_id": "AB 1108",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1108, the Forensic Accountability, Custodial Transparency, and Safety Act. In counties where one official serves as both sheriff and coroner, that official may no longer decide the cause and manner of a death in custody. From January 1, 2027, the county must contract instead with an independent coroner or medical examiner office in another county, or with a qualified private examiner separate from the sheriff. A death in custody covers people detained, under arrest, being taken into custody or held in a county jail or state prison, and reaches federal correctional and immigration detention facilities as well. Boards of supervisors must renew those agreements each year, and a private examiner under such an agreement may not also be hired by that county for cases that do not involve deaths in custody. The Senate passed it 29-9 and it became law.",
+      "nay_description": "Voted against passing Assembly Bill 1108, the Forensic Accountability, Custodial Transparency, and Safety Act. In counties where one official serves as both sheriff and coroner, that official may no longer decide the cause and manner of a death in custody. From January 1, 2027, the county must contract instead with an independent coroner or medical examiner office in another county, or with a qualified private examiner separate from the sheriff. A death in custody covers people detained, under arrest, being taken into custody or held in a county jail or state prison, and reaches federal correctional and immigration detention facilities as well. Boards of supervisors must renew those agreements each year, and a private examiner under such an agreement may not also be hired by that county for cases that do not involve deaths in custody. The Senate passed it 29-9 and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601735,
+      "measure_id": "SB 464",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 464, which tightens California's employer pay data reporting. Employers with 100 or more workers already report pay by race, ethnicity and sex. The bill requires the demographic information gathered for that report to be stored separately from personnel files, and from January 1, 2027, raises the number of job categories reported from 10 to 23. Where the Civil Rights Department asks a court to penalize an employer that failed to file, the court must impose the penalty rather than merely being allowed to. The Senate agreed 30-10 and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 464, which tightens California's employer pay data reporting. Employers with 100 or more workers already report pay by race, ethnicity and sex. The bill requires the demographic information gathered for that report to be stored separately from personnel files, and from January 1, 2027, raises the number of job categories reported from 10 to 23. Where the Civil Rights Department asks a court to penalize an employer that failed to file, the court must impose the penalty rather than merely being allowed to. The Senate agreed 30-10 and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601792,
+      "measure_id": "AB 507",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 507, which makes converting existing buildings into housing far easier. From July 1, 2026, a qualifying adaptive reuse project is allowed in any zone and gets a streamlined approval with no discretionary review and no environmental impact report. To qualify, a building must be under 50 years old or meet historic preservation standards. The project must also set aside affordable homes: for rentals, 8% very low income plus 5% extremely low income, or 15% lower income; for homes to buy, 30% at moderate income or 15% at lower income. Projects must meet prevailing wage, apprenticeship and health care spending standards for their workers. No parking is required where the building has none, impact fees are limited to the actual added impact of the change of use, and local governments may not force changes to the building's outer shell. Industrial zones that bar housing are excluded. A city may write its own adaptive reuse ordinance with different procedures, so long as it does not shut off this route, and from 2026-27 may pay a project the growth in its property tax for up to 30 years. The Senate passed it 30-9 and it became law.",
+      "nay_description": "Voted against passing Assembly Bill 507, which makes converting existing buildings into housing far easier. From July 1, 2026, a qualifying adaptive reuse project is allowed in any zone and gets a streamlined approval with no discretionary review and no environmental impact report. To qualify, a building must be under 50 years old or meet historic preservation standards. The project must also set aside affordable homes: for rentals, 8% very low income plus 5% extremely low income, or 15% lower income; for homes to buy, 30% at moderate income or 15% at lower income. Projects must meet prevailing wage, apprenticeship and health care spending standards for their workers. No parking is required where the building has none, impact fees are limited to the actual added impact of the change of use, and local governments may not force changes to the building's outer shell. Industrial zones that bar housing are excluded. A city may write its own adaptive reuse ordinance with different procedures, so long as it does not shut off this route, and from 2026-27 may pay a project the growth in its property tax for up to 30 years. The Senate passed it 30-9 and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601536,
+      "measure_id": "AB 260",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 260, which protects abortion medication and the people who handle it. It repeals old abortion criminal and parental-consent provisions that courts had already struck down. Pharmacists may dispense mifepristone without the patient's name, the prescriber's name or the pharmacy's name on the label, keeping instead a log that police need a subpoena to see and that may not be shared with another state. Pharmacists, prescribers, clinics and manufacturers may not be prosecuted, sued or disciplined in California for lawful acts involving these drugs, including prescribing outside the federal label. If federal regulators withdraw approval of these drugs, state drug labeling law stops applying to them. Health plans must cover mifepristone and may not drop or penalize a provider over another state's abortion laws. It took effect immediately as an urgency measure. The Senate passed it 30-8 and it became law.",
+      "nay_description": "Voted against passing Assembly Bill 260, which protects abortion medication and the people who handle it. It repeals old abortion criminal and parental-consent provisions that courts had already struck down. Pharmacists may dispense mifepristone without the patient's name, the prescriber's name or the pharmacy's name on the label, keeping instead a log that police need a subpoena to see and that may not be shared with another state. Pharmacists, prescribers, clinics and manufacturers may not be prosecuted, sued or disciplined in California for lawful acts involving these drugs, including prescribing outside the federal label. If federal regulators withdraw approval of these drugs, state drug labeling law stops applying to them. Health plans must cover mifepristone and may not drop or penalize a provider over another state's abortion laws. It took effect immediately as an urgency measure. The Senate passed it 30-8 and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
