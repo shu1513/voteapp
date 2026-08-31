@@ -1,0 +1,346 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1681570,
+   "measure_id": "HB 351",
+   "vote_date": "2026-04-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 351, the No Kings Act, which created a state lawsuit against federal officers who violate someone's rights. A person who was harmed, or the Attorney General, may sue a covered officer who acted under color of law and took away a right protected by law, including the U.S. Constitution. A covered officer is one who can arrest for federal crimes and carry a gun on duty; Maryland officers on a joint task force are not covered. The suit may seek money and a court order, a winning plaintiff may recover lawyer and expert fees, and the deadline to sue is five years. Officers may still raise any immunity defense that existed when the claim arose. A yes vote created this right to sue. The Maryland Senate passed it 31-12 and it was signed into law as Chapter 459 of 2026.",
+   "nay_description": "Voted against passing HB 351, the No Kings Act, which created a state lawsuit against federal officers who violate someone's rights. A person who was harmed, or the Attorney General, may sue a covered officer who acted under color of law and took away a right protected by law, including the U.S. Constitution. A covered officer is one who can arrest for federal crimes and carry a gun on duty; Maryland officers on a joint task force are not covered. The suit may seek money and a court order, a winning plaintiff may recover lawyer and expert fees, and the deadline to sue is five years. Officers may still raise any immunity defense that existed when the claim arose. A no vote opposed creating it. The Maryland Senate passed it 31-12 over these votes and it was signed into law as Chapter 459 of 2026.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1682972,
+   "measure_id": "HB 351",
+   "vote_date": "2026-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 351, the No Kings Act, which created a state lawsuit against federal officers who violate someone's rights. A person who was harmed, or the Attorney General, may sue a covered officer who acted under color of law and took away a right protected by law, including the U.S. Constitution. A covered officer is one who can arrest for federal crimes and carry a gun on duty; Maryland officers on a joint task force are not covered. The suit may seek money and a court order, a winning plaintiff may recover lawyer and expert fees, and the deadline to sue is five years. Officers may still raise any immunity defense that existed when the claim arose. A yes vote created this right to sue. The Maryland House of Delegates passed it 97-35 and it was signed into law as Chapter 459 of 2026.",
+   "nay_description": "Voted against passing HB 351, the No Kings Act, which created a state lawsuit against federal officers who violate someone's rights. A person who was harmed, or the Attorney General, may sue a covered officer who acted under color of law and took away a right protected by law, including the U.S. Constitution. A covered officer is one who can arrest for federal crimes and carry a gun on duty; Maryland officers on a joint task force are not covered. The suit may seek money and a court order, a winning plaintiff may recover lawyer and expert fees, and the deadline to sue is five years. Officers may still raise any immunity defense that existed when the claim arose. A no vote opposed creating it. The Maryland House of Delegates passed it 97-35 over these votes and it was signed into law as Chapter 459 of 2026.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1654403,
+   "measure_id": "HB 372",
+   "vote_date": "2026-02-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 372, which wrote federal emergency care rules for pregnancy into Maryland law. If a hospital finds a pregnancy emergency serious enough that delay could badly harm the patient's health, organs or bodily functions, it must use its own staff to treat her until she is stable, or transfer her. Treatment includes ending the pregnancy when that is medically necessary to stabilize her, and the hospital must allow it there if the treating clinician says it is needed. The hospital may not punish a clinician who refuses to transfer an unstable patient or who follows the standard of care, nor an employee who reports a violation. Civil penalties apply. A yes vote put these emergency pregnancy care duties into state law. The Maryland House of Delegates passed it 97-37 and it was signed into law as Chapter 789 of 2026.",
+   "nay_description": "Voted against passing HB 372, which wrote federal emergency care rules for pregnancy into Maryland law. If a hospital finds a pregnancy emergency serious enough that delay could badly harm the patient's health, organs or bodily functions, it must use its own staff to treat her until she is stable, or transfer her. Treatment includes ending the pregnancy when that is medically necessary to stabilize her, and the hospital must allow it there if the treating clinician says it is needed. The hospital may not punish a clinician who refuses to transfer an unstable patient or who follows the standard of care, nor an employee who reports a violation. Civil penalties apply. A no vote opposed putting them into state law. The Maryland House of Delegates passed it 97-37 over these votes and it was signed into law as Chapter 789 of 2026.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1680681,
+   "measure_id": "HB 372",
+   "vote_date": "2026-04-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 372, which wrote federal emergency care rules for pregnancy into Maryland law. If a hospital finds a pregnancy emergency serious enough that delay could badly harm the patient's health, organs or bodily functions, it must use its own staff to treat her until she is stable, or transfer her. Treatment includes ending the pregnancy when that is medically necessary to stabilize her, and the hospital must allow it there if the treating clinician says it is needed. The hospital may not punish a clinician who refuses to transfer an unstable patient or who follows the standard of care, nor an employee who reports a violation. Civil penalties apply. A yes vote put these emergency pregnancy care duties into state law. The Maryland Senate passed it 31-12 and it was signed into law as Chapter 789 of 2026.",
+   "nay_description": "Voted against passing HB 372, which wrote federal emergency care rules for pregnancy into Maryland law. If a hospital finds a pregnancy emergency serious enough that delay could badly harm the patient's health, organs or bodily functions, it must use its own staff to treat her until she is stable, or transfer her. Treatment includes ending the pregnancy when that is medically necessary to stabilize her, and the hospital must allow it there if the treating clinician says it is needed. The hospital may not punish a clinician who refuses to transfer an unstable patient or who follows the standard of care, nor an employee who reports a violation. Civil penalties apply. A no vote opposed putting them into state law. The Maryland Senate passed it 31-12 over these votes and it was signed into law as Chapter 789 of 2026.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1625374,
+   "measure_id": "HB 444",
+   "vote_date": "2026-02-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 444, which banned state and local agreements to enforce federal immigration law. The state, any local government and any county sheriff may not sign a deal with the federal government that lets their own officers enforce civil immigration law. These are often called 287(g) agreements, after the section of federal law that allows them. Any such deal already in place had to be ended right away. It was an emergency bill, so it took effect the moment it was signed. A yes vote ended local participation in federal immigration enforcement. The Maryland House of Delegates passed it 99-40 and it was signed into law as Chapter 2 of 2026.",
+   "nay_description": "Voted against passing HB 444, which banned state and local agreements to enforce federal immigration law. The state, any local government and any county sheriff may not sign a deal with the federal government that lets their own officers enforce civil immigration law. These are often called 287(g) agreements, after the section of federal law that allows them. Any such deal already in place had to be ended right away. It was an emergency bill, so it took effect the moment it was signed. A no vote would have kept those agreements available. The Maryland House of Delegates passed it 99-40 over these votes and it was signed into law as Chapter 2 of 2026.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1633580,
+   "measure_id": "HB 444",
+   "vote_date": "2026-02-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 444, which banned state and local agreements to enforce federal immigration law. The state, any local government and any county sheriff may not sign a deal with the federal government that lets their own officers enforce civil immigration law. These are often called 287(g) agreements, after the section of federal law that allows them. Any such deal already in place had to be ended right away. It was an emergency bill, so it took effect the moment it was signed. A yes vote ended local participation in federal immigration enforcement. The Maryland Senate passed it 32-13 and it was signed into law as Chapter 2 of 2026.",
+   "nay_description": "Voted against passing HB 444, which banned state and local agreements to enforce federal immigration law. The state, any local government and any county sheriff may not sign a deal with the federal government that lets their own officers enforce civil immigration law. These are often called 287(g) agreements, after the section of federal law that allows them. Any such deal already in place had to be ended right away. It was an emergency bill, so it took effect the moment it was signed. A no vote would have kept those agreements available. The Maryland Senate passed it 32-13 over these votes and it was signed into law as Chapter 2 of 2026.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1684977,
+   "measure_id": "HB 573",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 573, which let housing discrimination be proven by effect rather than intent. A practice now breaks the fair housing law if it predictably falls harder on a protected group, or keeps neighborhoods segregated, even with no intent to discriminate. Protected groups include race, color, religion, sex, disability, marital and family status, sexual orientation, gender identity, national origin, source of income and military status. There is no violation if all three hold: no discriminatory intent, the act was needed for a substantial and legitimate purpose, and no less discriminatory way could have achieved it. A yes vote added the effect-based test to fair housing law. The Maryland House of Delegates passed it 98-34 and it was signed into law as Chapter 778 of 2026.",
+   "nay_description": "Voted against passing HB 573, which let housing discrimination be proven by effect rather than intent. A practice now breaks the fair housing law if it predictably falls harder on a protected group, or keeps neighborhoods segregated, even with no intent to discriminate. Protected groups include race, color, religion, sex, disability, marital and family status, sexual orientation, gender identity, national origin, source of income and military status. There is no violation if all three hold: no discriminatory intent, the act was needed for a substantial and legitimate purpose, and no less discriminatory way could have achieved it. A no vote opposed adding it. The Maryland House of Delegates passed it 98-34 over these votes and it was signed into law as Chapter 778 of 2026.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1691980,
+   "measure_id": "HB 573",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 573, which let housing discrimination be proven by effect rather than intent. A practice now breaks the fair housing law if it predictably falls harder on a protected group, or keeps neighborhoods segregated, even with no intent to discriminate. Protected groups include race, color, religion, sex, disability, marital and family status, sexual orientation, gender identity, national origin, source of income and military status. There is no violation if all three hold: no discriminatory intent, the act was needed for a substantial and legitimate purpose, and no less discriminatory way could have achieved it. A yes vote added the effect-based test to fair housing law. The Maryland Senate passed it 33-12 and it was signed into law as Chapter 778 of 2026.",
+   "nay_description": "Voted against passing HB 573, which let housing discrimination be proven by effect rather than intent. A practice now breaks the fair housing law if it predictably falls harder on a protected group, or keeps neighborhoods segregated, even with no intent to discriminate. Protected groups include race, color, religion, sex, disability, marital and family status, sexual orientation, gender identity, national origin, source of income and military status. There is no violation if all three hold: no discriminatory intent, the act was needed for a substantial and legitimate purpose, and no less discriminatory way could have achieved it. A no vote opposed adding it. The Maryland Senate passed it 33-12 over these votes and it was signed into law as Chapter 778 of 2026.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1716681,
+   "measure_id": "HB 862",
+   "vote_date": "2026-08-03",
+   "review_status": "approved",
+   "yea_description": "Voted to override the Governor's veto of HB 862, which set a minimum crew size for freight trains. A freight train that shares a corridor with a high-speed passenger or commuter train may not run in Maryland with fewer than two crew members. A willful violation costs the railroad up to $10,000, or up to $25,000 for a repeat within three years, and the company alone is answerable for its employees. The rule only starts once New York, Pennsylvania and Virginia pass similar laws. The Governor vetoed the bill on May 22, 2026 on policy grounds. A yes vote overrode that veto and put the two-person crew rule into law. The Maryland House of Delegates overrode the veto 99-30, so the bill became Chapter 879 of 2026.",
+   "nay_description": "Voted against overriding the Governor's veto of HB 862, which set a minimum crew size for freight trains. A freight train that shares a corridor with a high-speed passenger or commuter train may not run in Maryland with fewer than two crew members. A willful violation costs the railroad up to $10,000, or up to $25,000 for a repeat within three years, and the company alone is answerable for its employees. The rule only starts once New York, Pennsylvania and Virginia pass similar laws. The Governor vetoed the bill on May 22, 2026 on policy grounds. A no vote would have let the veto stand. The Maryland House of Delegates overrode the veto 99-30 over these votes, so the bill became Chapter 879 of 2026.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1716682,
+   "measure_id": "HB 862",
+   "vote_date": "2026-08-03",
+   "review_status": "approved",
+   "yea_description": "Voted to override the Governor's veto of HB 862, which set a minimum crew size for freight trains. A freight train that shares a corridor with a high-speed passenger or commuter train may not run in Maryland with fewer than two crew members. A willful violation costs the railroad up to $10,000, or up to $25,000 for a repeat within three years, and the company alone is answerable for its employees. The rule only starts once New York, Pennsylvania and Virginia pass similar laws. The Governor vetoed the bill on May 22, 2026 on policy grounds. A yes vote overrode that veto and put the two-person crew rule into law. The Maryland Senate overrode the veto 33-11, so the bill became Chapter 879 of 2026.",
+   "nay_description": "Voted against overriding the Governor's veto of HB 862, which set a minimum crew size for freight trains. A freight train that shares a corridor with a high-speed passenger or commuter train may not run in Maryland with fewer than two crew members. A willful violation costs the railroad up to $10,000, or up to $25,000 for a repeat within three years, and the company alone is answerable for its employees. The rule only starts once New York, Pennsylvania and Virginia pass similar laws. The Governor vetoed the bill on May 22, 2026 on policy grounds. A no vote would have let the veto stand. The Maryland Senate overrode the veto 33-11 over these votes, so the bill became Chapter 879 of 2026.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1684344,
+   "measure_id": "SB 1",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 1, which barred police from covering their faces on duty and required them to wear identification. The state police training commission must write two policies every agency follows. Officers may not wear a face covering on duty except undercover, or where a covering is absolutely needed for health or safety such as bad weather; general worry about officer safety is not enough. Officers must wear identification on their outer layer and say who they are when asked, unless in plain clothes or undercover. Breaking either rule is a civil offense with a fine up to $1,500 and counts as police misconduct. A yes vote required officers to show their faces and their names. The Maryland House of Delegates passed it 100-37 and it was signed into law as Chapter 612 of 2026.",
+   "nay_description": "Voted against passing SB 1, which barred police from covering their faces on duty and required them to wear identification. The state police training commission must write two policies every agency follows. Officers may not wear a face covering on duty except undercover, or where a covering is absolutely needed for health or safety such as bad weather; general worry about officer safety is not enough. Officers must wear identification on their outer layer and say who they are when asked, unless in plain clothes or undercover. Breaking either rule is a civil offense with a fine up to $1,500 and counts as police misconduct. A no vote opposed these requirements. The Maryland House of Delegates passed it 100-37 over these votes and it was signed into law as Chapter 612 of 2026.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1692057,
+   "measure_id": "SB 1",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 1, which barred police from covering their faces on duty and required them to wear identification. The state police training commission must write two policies every agency follows. Officers may not wear a face covering on duty except undercover, or where a covering is absolutely needed for health or safety such as bad weather; general worry about officer safety is not enough. Officers must wear identification on their outer layer and say who they are when asked, unless in plain clothes or undercover. Breaking either rule is a civil offense with a fine up to $1,500 and counts as police misconduct. A yes vote required officers to show their faces and their names. The Maryland Senate passed it 32-13 and it was signed into law as Chapter 612 of 2026.",
+   "nay_description": "Voted against passing SB 1, which barred police from covering their faces on duty and required them to wear identification. The state police training commission must write two policies every agency follows. Officers may not wear a face covering on duty except undercover, or where a covering is absolutely needed for health or safety such as bad weather; general worry about officer safety is not enough. Officers must wear identification on their outer layer and say who they are when asked, unless in plain clothes or undercover. Breaking either rule is a civil offense with a fine up to $1,500 and counts as police misconduct. A no vote opposed these requirements. The Maryland Senate passed it 32-13 over these votes and it was signed into law as Chapter 612 of 2026.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1692000,
+   "measure_id": "SB 255",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 255, the Voting Rights Act of 2026, which let voters challenge local election systems that dilute their votes. A county or town may not use a way of electing its governing body that weakens the ability of a racial, color or language minority group to elect the candidates it prefers. A challenger must show that local voting splits along those lines and that another lawful election method would likely fix the problem. The Attorney General or any person may sue in that county, and a winning private plaintiff may recover lawyer and expert costs. It does not apply to statewide elections. A yes vote created this state voting rights claim. The Maryland Senate passed it 32-14 and it was signed into law as Chapter 157 of 2026.",
+   "nay_description": "Voted against passing SB 255, the Voting Rights Act of 2026, which let voters challenge local election systems that dilute their votes. A county or town may not use a way of electing its governing body that weakens the ability of a racial, color or language minority group to elect the candidates it prefers. A challenger must show that local voting splits along those lines and that another lawful election method would likely fix the problem. The Attorney General or any person may sue in that county, and a winning private plaintiff may recover lawyer and expert costs. It does not apply to statewide elections. A no vote opposed creating it. The Maryland Senate passed it 32-14 over these votes and it was signed into law as Chapter 157 of 2026.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1672905,
+   "measure_id": "SB 334",
+   "vote_date": "2026-03-19",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 334, which banned sales of pistols that can be quickly turned into machine guns. From January 1, 2027 no one may make, sell, buy, receive or transfer a machine gun convertible pistol. That means a semiautomatic pistol with a cruciform trigger bar that a small add-on part, fitted in place of the slide's backplate, can turn into a machine gun by hand or with ordinary household tools. Breaking the ban is a misdemeanor carrying up to three years in prison and a $5,000 fine. Someone who already owns one lawfully may still pass it to an immediate family member, and dealers, gunsmiths, police and retired officers are exempt. A yes vote banned the sale and transfer of these pistols. The Maryland Senate passed it 28-16 and it was signed into law as Chapter 771 of 2026.",
+   "nay_description": "Voted against passing SB 334, which banned sales of pistols that can be quickly turned into machine guns. From January 1, 2027 no one may make, sell, buy, receive or transfer a machine gun convertible pistol. That means a semiautomatic pistol with a cruciform trigger bar that a small add-on part, fitted in place of the slide's backplate, can turn into a machine gun by hand or with ordinary household tools. Breaking the ban is a misdemeanor carrying up to three years in prison and a $5,000 fine. Someone who already owns one lawfully may still pass it to an immediate family member, and dealers, gunsmiths, police and retired officers are exempt. A no vote opposed the ban. The Maryland Senate passed it 28-16 over these votes and it was signed into law as Chapter 771 of 2026.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1681677,
+   "measure_id": "SB 334",
+   "vote_date": "2026-04-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 334, which banned sales of pistols that can be quickly turned into machine guns. From January 1, 2027 no one may make, sell, buy, receive or transfer a machine gun convertible pistol. That means a semiautomatic pistol with a cruciform trigger bar that a small add-on part, fitted in place of the slide's backplate, can turn into a machine gun by hand or with ordinary household tools. Breaking the ban is a misdemeanor carrying up to three years in prison and a $5,000 fine. Someone who already owns one lawfully may still pass it to an immediate family member, and dealers, gunsmiths, police and retired officers are exempt. A yes vote banned the sale and transfer of these pistols. The Maryland House of Delegates passed it 91-40 and it was signed into law as Chapter 771 of 2026.",
+   "nay_description": "Voted against passing SB 334, which banned sales of pistols that can be quickly turned into machine guns. From January 1, 2027 no one may make, sell, buy, receive or transfer a machine gun convertible pistol. That means a semiautomatic pistol with a cruciform trigger bar that a small add-on part, fitted in place of the slide's backplate, can turn into a machine gun by hand or with ordinary household tools. Breaking the ban is a misdemeanor carrying up to three years in prison and a $5,000 fine. Someone who already owns one lawfully may still pass it to an immediate family member, and dealers, gunsmiths, police and retired officers are exempt. A no vote opposed the ban. The Maryland House of Delegates passed it 91-40 over these votes and it was signed into law as Chapter 771 of 2026.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1673247,
+   "measure_id": "SB 417",
+   "vote_date": "2026-03-23",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 417, the Maryland Worker Freedom Act, which let workers skip employer meetings about politics or religion. An employer may not punish a worker, threaten to, or refuse to hire someone because the person declines to sit through a company meeting on the employer's political or religious views. Political matters covers elections, parties, proposed changes to law or policy, and whether to join a party or a union. Churches, political groups, schools teaching the subject, legally required training and government new-hire orientation are exempt, and voluntary meetings are still allowed. The state labor commissioner enforces it and must publish a workplace poster by November 1, 2026. A yes vote gave workers the right to walk out of these meetings. The Maryland Senate passed it 31-12 and it was signed into law as Chapter 221 of 2026.",
+   "nay_description": "Voted against passing SB 417, the Maryland Worker Freedom Act, which let workers skip employer meetings about politics or religion. An employer may not punish a worker, threaten to, or refuse to hire someone because the person declines to sit through a company meeting on the employer's political or religious views. Political matters covers elections, parties, proposed changes to law or policy, and whether to join a party or a union. Churches, political groups, schools teaching the subject, legally required training and government new-hire orientation are exempt, and voluntary meetings are still allowed. The state labor commissioner enforces it and must publish a workplace poster by November 1, 2026. A no vote opposed giving them that right. The Maryland Senate passed it 31-12 over these votes and it was signed into law as Chapter 221 of 2026.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1680685,
+   "measure_id": "SB 417",
+   "vote_date": "2026-04-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 417, the Maryland Worker Freedom Act, which let workers skip employer meetings about politics or religion. An employer may not punish a worker, threaten to, or refuse to hire someone because the person declines to sit through a company meeting on the employer's political or religious views. Political matters covers elections, parties, proposed changes to law or policy, and whether to join a party or a union. Churches, political groups, schools teaching the subject, legally required training and government new-hire orientation are exempt, and voluntary meetings are still allowed. The state labor commissioner enforces it and must publish a workplace poster by November 1, 2026. A yes vote gave workers the right to walk out of these meetings. The Maryland House of Delegates passed it 96-37 and it was signed into law as Chapter 221 of 2026.",
+   "nay_description": "Voted against passing SB 417, the Maryland Worker Freedom Act, which let workers skip employer meetings about politics or religion. An employer may not punish a worker, threaten to, or refuse to hire someone because the person declines to sit through a company meeting on the employer's political or religious views. Political matters covers elections, parties, proposed changes to law or policy, and whether to join a party or a union. Churches, political groups, schools teaching the subject, legally required training and government new-hire orientation are exempt, and voluntary meetings are still allowed. The state labor commissioner enforces it and must publish a workplace poster by November 1, 2026. A no vote opposed giving them that right. The Maryland House of Delegates passed it 96-37 over these votes and it was signed into law as Chapter 221 of 2026.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1683387,
+   "measure_id": "SB 810",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 810, the Maryland Values Act of 2026, which widened the places immigration agents may not freely enter. School staff must tell the county superintendent when they learn of immigration enforcement at a school. They may not be used for immigration enforcement, and may not hand over student records, staff records or family information for it. Places a school, library or state office must keep closed to agents now include any area behind a security screening, and school-linked protected places now include a school bus stop, a school vehicle and sites that hand out food to people in need. Each courthouse must adopt its own policy by October 1, 2026. A yes vote widened these protections. The Maryland Senate passed it 33-14 and it was signed into law as Chapter 161 of 2026.",
+   "nay_description": "Voted against passing SB 810, the Maryland Values Act of 2026, which widened the places immigration agents may not freely enter. School staff must tell the county superintendent when they learn of immigration enforcement at a school. They may not be used for immigration enforcement, and may not hand over student records, staff records or family information for it. Places a school, library or state office must keep closed to agents now include any area behind a security screening, and school-linked protected places now include a school bus stop, a school vehicle and sites that hand out food to people in need. Each courthouse must adopt its own policy by October 1, 2026. A no vote opposed widening them. The Maryland Senate passed it 33-14 over these votes and it was signed into law as Chapter 161 of 2026.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1684554,
+   "measure_id": "SB 810",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 810, the Maryland Values Act of 2026, which widened the places immigration agents may not freely enter. School staff must tell the county superintendent when they learn of immigration enforcement at a school. They may not be used for immigration enforcement, and may not hand over student records, staff records or family information for it. Places a school, library or state office must keep closed to agents now include any area behind a security screening, and school-linked protected places now include a school bus stop, a school vehicle and sites that hand out food to people in need. Each courthouse must adopt its own policy by October 1, 2026. A yes vote widened these protections. The Maryland House of Delegates passed it 100-37 and it was signed into law as Chapter 161 of 2026.",
+   "nay_description": "Voted against passing SB 810, the Maryland Values Act of 2026, which widened the places immigration agents may not freely enter. School staff must tell the county superintendent when they learn of immigration enforcement at a school. They may not be used for immigration enforcement, and may not hand over student records, staff records or family information for it. Places a school, library or state office must keep closed to agents now include any area behind a security screening, and school-linked protected places now include a school bus stop, a school vehicle and sites that hand out food to people in need. Each courthouse must adopt its own policy by October 1, 2026. A no vote opposed widening them. The Maryland House of Delegates passed it 100-37 over these votes and it was signed into law as Chapter 161 of 2026.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  }
+ ]
+}
