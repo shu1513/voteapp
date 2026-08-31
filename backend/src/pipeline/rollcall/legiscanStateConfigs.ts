@@ -1015,9 +1015,10 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   // - VETO OVERRIDES ARE A REAL POOL HERE, not an edge case. North Carolina
   //   has a Republican legislature and a Democratic governor, so 26 of the
   //   kept rolls are override votes on 14 bills — `Veto Override` in the
-  //   House, `Motion 11 Veto Override` in the Senate. Every one is divided by
-  //   definition (the threshold is three fifths of the members present), and
-  //   an override that carries enacts the bill over the veto. The House also
+  //   House, `Motion 11 Veto Override` in the Senate. The threshold is three
+  //   fifths of the members present, and an override that carries enacts the
+  //   bill over the veto (nothing forbids a unanimous override; whether a
+  //   roll is divided is measured per roll, never assumed). The House also
   //   prints `Veto Override M4 Previous Question`, which is the debate-cutoff
   //   motion taken during an override debate and is excluded.
   // - The House prefixes a question with `R2 Ruled Mat&#x27;l` / `R3 Ruled
@@ -1027,9 +1028,17 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   //   the apostrophe HTML-escaped, so the pattern matches the escape.
   // - Feed health is in the cleanest tier: 0 repeated roll_call_ids, 0
   //   identity-duplicate rolls, 0 summary-only rolls (every roll carries a
-  //   member list), 0 tally mismatches, 0 committee votes, 0 file or parse
+  //   member list), 0 INTERNAL tally mismatches (each roll's printed counts
+  //   match its own member list — a feed-consistency check, not a check
+  //   against the official journal), 0 committee votes, 0 file or parse
   //   errors, and NOTHING left surfaced — all 1,493 rolls match a kept or an
   //   excluded pattern, or sit on an excluded instrument type.
+  // - Internal consistency is NOT official accuracy: on the three House
+  //   override rolls of 2026-06-24 (1711513, 1711515, 1711527) LegiScan
+  //   drops two unaffiliated members and prints 71-46 where the official
+  //   transcripts (RCS 738, 740, 736) record 71-47. Those rolls are held out
+  //   of import until the importer can cite an official tally over the feed;
+  //   see backend/evidence/rollcall/legiscan-nc-2189/CODE-FINDINGS.md.
   // - Only bill types B (2,284), JR (23) and R (31) appear. North Carolina
   //   proposes constitutional amendments as ordinary BILLS, so Georgia's
   //   resolution-typed-amendment gap does not recur; the 31 resolutions are

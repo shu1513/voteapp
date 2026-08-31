@@ -365,6 +365,53 @@ describe("Maryland 2026's measured desc vocabulary", () => {
   });
 });
 
+describe("North Carolina's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS.NC!;
+  const nc = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+
+  it("keeps the readings, both concurrence spellings, conference reports and overrides", () => {
+    // The recorded floor vote is taken on SECOND reading; a third reading
+    // roll only exists on the days a member objected.
+    expect(nc("Second Reading", 120)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(nc("Third Reading", 50, "senate")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    // House concurrence, bare, with the amendment named, and under a
+    // materiality ruling (LegiScan leaves the apostrophe HTML-escaped).
+    expect(nc("M11 Concur", 120).questionClass).toBe("concurrence");
+    expect(nc("M11 Concur Sen. Amd. 1", 120).questionClass).toBe("concurrence");
+    expect(nc("R2 Ruled Mat&#x27;l M11 Concur", 120).questionClass).toBe("concurrence");
+    // Senate concurrence, with and without a reading in front.
+    expect(nc("Motion 9 To Concur House Amend", 50, "senate").questionClass).toBe("concurrence");
+    expect(nc("Second Reading Motion 9 To Concur", 50, "senate").questionClass).toBe("concurrence");
+    // Conference reports, one shape per chamber plus the Senate's readings
+    // on the report.
+    expect(nc("C RPT Adoption", 120).questionClass).toBe("conference_report");
+    expect(nc("R3 Ruled Mat&#x27;l C RPT Adoption", 120).questionClass).toBe("conference_report");
+    expect(nc("Conference Report Motion 8 To Adopt", 50, "senate").questionClass).toBe("conference_report");
+    expect(nc("Conference Rpt Third Reading", 50, "senate").questionClass).toBe("conference_report");
+    // The override votes, one spelling per chamber.
+    expect(nc("Veto Override", 120)).toMatchObject({ isFloorVote: true, questionClass: "veto_override" });
+    expect(nc("Motion 11 Veto Override", 50, "senate").questionClass).toBe("veto_override");
+  });
+
+  it("excludes the suffix traps that carry the passage wording", () => {
+    // The question can be a SUFFIX: amendments, previous question and table
+    // motions all end in the reading words, so exclusions must win.
+    for (const desc of [
+      "A1 Blackwell Second Reading",
+      "A1 Smith, Carson Second Reading",
+      "A1 Morey Second Reading M3 To Lay On The Table",
+      "Amendment 3",
+      "Amendment 3 Motion 1 To Table",
+      "Second Reading M4 Previous Question",
+      "Veto Override M4 Previous Question",
+      "M11 Not Concur",
+    ]) {
+      expect(nc(desc, 120)).toMatchObject({ isFloorVote: false, questionClass: null });
+    }
+  });
+});
+
 describe("getLegiscanStateConfig", () => {
   it("serves only surveyed states; an unsurveyed state is refused by name", () => {
     expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual([
