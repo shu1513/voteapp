@@ -90,4 +90,31 @@ is why the importer flagged it instead of rewriting it in place. **Retired by
 hand** naming the canonical record `513a437a-3738-4ce0-bf3c-8305b09d64fb`; see
 `retirements.json`.
 
+## Review fixes 2026-08-31
+
+Four descriptions corrected against the enacted texts after PR review; 8 rows
+re-judged (`updated: 8`) and 508 records rewritten in place
+(`import-rerun-report.json`: 759 unchanged, 508 rewrite, 0 errors, 0 notified).
+
+- **LD 1723** — the mediation trigger is not increase-vs-inflation. 10 M.R.S.
+  §9093-B: the ceiling is average lot rent/fees at comparable communities
+  "increased by 1% above the Consumer Price Index for the Northeast Region",
+  and mediation needs "owners representing 51% or more of the households" to
+  sign the request.
+- **LD 1730** — 35-A M.R.S. §3475(3): up to 420 watts plugs straight in;
+  420–1,200 watts needs a Maine-licensed electrician, a dedicated
+  single-outlet circuit, and utility notification within 30 days. The tier was
+  already in Committee Amendment "A", so both chambers voted on it.
+- **LD 1519** — the stewardship duty falls on "producers" (brand owners and
+  importers of foreign brands); wholesalers/retailers only by election, though
+  all retailers must serve as collection locations within three years.
+- **LD 1934** — scope is any "public entity" (state agencies, political
+  subdivisions, public instrumentalities) installing or replacing lighting
+  from October 2026, not lighting "paid for by the state"; shielding binds
+  fixtures over 1,000 lumens.
+
+The review's P1 (use the later Senate rolls on LD 1145 / LD 1730) was
+declined: those rolls were 32-2 and 29-3 — see "Same-day pairs" above. Each
+record states its own roll and date and is accurate for that vote.
+
 PROD UNTOUCHED.
