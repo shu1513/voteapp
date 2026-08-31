@@ -1,0 +1,896 @@
+{
+ "source": "legiscan",
+ "jurisdiction": "NC",
+ "entries": [
+  {
+   "people_id": 2031,
+   "candidate_id": "2f345945-34a4-49a1-8575-4035c61e201a",
+   "note": null
+  },
+  {
+   "people_id": 2033,
+   "candidate_id": "ad5a6947-c84c-4a25-8a8a-42bc23a22a0c",
+   "note": null
+  },
+  {
+   "people_id": 2034,
+   "candidate_id": "a02b212b-0623-470e-9199-84c36bb3a023",
+   "note": null
+  },
+  {
+   "people_id": 2038,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: William Brisson (HD-022) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 2044,
+   "candidate_id": "af85572c-c369-4523-9933-51ede4b146ca",
+   "note": null
+  },
+  {
+   "people_id": 2049,
+   "candidate_id": "cb1d9bcc-651e-488b-95d6-f3bc3794c0b3",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'Patricia', the member and the candidate both go by 'Tricia Cotham'; same seat HD-105"
+  },
+  {
+   "people_id": 2077,
+   "candidate_id": "58c40d36-fd1b-4c54-8950-1ce02363b65e",
+   "note": null
+  },
+  {
+   "people_id": 2083,
+   "candidate_id": "a93274c9-a39c-45d0-98a0-fa9b7e375e7a",
+   "note": null
+  },
+  {
+   "people_id": 2086,
+   "candidate_id": "ac0477e8-172a-48b6-ab14-1199d7f493ac",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'Francis', the member and the candidate both go by 'Frank Iler'; same seat HD-017"
+  },
+  {
+   "people_id": 2115,
+   "candidate_id": "b23ea9cc-e38b-440b-ae75-e31beba6e0b4",
+   "note": null
+  },
+  {
+   "people_id": 2122,
+   "candidate_id": "45993316-5d0d-4265-8416-3cf798286332",
+   "note": null
+  },
+  {
+   "people_id": 2127,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Sarah Stevens (HD-090) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 2154,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Philip Berger (SD-026) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 11848,
+   "candidate_id": "2edf3b4b-62ea-4f93-9377-4c821969e881",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'James', the member and the candidate both go by 'Jimmy Dixon'; same seat HD-004"
+  },
+  {
+   "people_id": 11850,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Harry Warren (HD-076) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 11852,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Kelly Hastings (HD-110) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 11853,
+   "candidate_id": "7f8cd22b-2e6c-4ebd-9050-2ee4b2692051",
+   "note": null
+  },
+  {
+   "people_id": 11858,
+   "candidate_id": "7bffaaa0-54ce-4bc2-816f-77457f4b93ca",
+   "note": null
+  },
+  {
+   "people_id": 11862,
+   "candidate_id": "14bef868-88a4-4278-9019-a599d888a7d2",
+   "note": null
+  },
+  {
+   "people_id": 11863,
+   "candidate_id": "77a3d956-b336-46f3-8d77-ef2c62271761",
+   "note": null
+  },
+  {
+   "people_id": 11866,
+   "candidate_id": "d19e940d-cffc-4477-be3d-145c9a2e6557",
+   "note": null
+  },
+  {
+   "people_id": 11937,
+   "candidate_id": "e19bc4e5-d61c-4eef-a68f-c08595489857",
+   "note": null
+  },
+  {
+   "people_id": 12009,
+   "candidate_id": "f9c8dcc6-7f12-447b-9b66-bf0f83b81c27",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'William', the member and the candidate both go by 'Brent Jackson'; same seat SD-009"
+  },
+  {
+   "people_id": 12031,
+   "candidate_id": "6f913512-6fe2-442e-aab4-4aff49a3ff1f",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'William', the member and the candidate both go by 'Bill Rabon'; same seat SD-008"
+  },
+  {
+   "people_id": 12032,
+   "candidate_id": "bd83c02b-a7a4-420a-8f8d-b15cba6cc507",
+   "note": null
+  },
+  {
+   "people_id": 12033,
+   "candidate_id": "093e8eb2-3e53-4172-acb2-e4c5e1bbfd14",
+   "note": null
+  },
+  {
+   "people_id": 14602,
+   "candidate_id": "54d4e628-6d44-45da-ac1d-8a5aaef395f8",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'Larry', the member and the candidate both go by 'Dean Arp'; same seat HD-069"
+  },
+  {
+   "people_id": 14604,
+   "candidate_id": "fbd2988d-e33c-4c84-8565-e55b82ee2e33",
+   "note": null
+  },
+  {
+   "people_id": 14606,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Mark Brody (HD-055) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 14612,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Carla Cunningham (HD-106) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 14613,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Robert Davis (HD-020) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 14615,
+   "candidate_id": "43deea1d-2296-4727-bbb4-e27d6606efc8",
+   "note": null
+  },
+  {
+   "people_id": 14624,
+   "candidate_id": "cd2aa5d1-ef7a-4ca0-a87c-2854188792ba",
+   "note": null
+  },
+  {
+   "people_id": 14633,
+   "candidate_id": "a689146a-a232-49d8-85d1-728f0b4b57b6",
+   "note": null
+  },
+  {
+   "people_id": 14634,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Stephen Ross (HD-063) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 16251,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Graig Meyer (SD-023) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 16252,
+   "candidate_id": "434754e7-61f2-400b-9a0b-d5bf0a400f88",
+   "note": null
+  },
+  {
+   "people_id": 17147,
+   "candidate_id": "ef237a3a-94d5-4c60-9123-57a40919b1ee",
+   "note": null
+  },
+  {
+   "people_id": 17149,
+   "candidate_id": "c58de844-1819-4f1c-8a41-11a5369dde8a",
+   "note": null
+  },
+  {
+   "people_id": 17151,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Cecil Brockman (HD-060) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 17157,
+   "candidate_id": "5646ed7b-2369-436c-87f3-f0113ea9d886",
+   "note": null
+  },
+  {
+   "people_id": 17158,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Shelly Willingham (HD-023) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 17163,
+   "candidate_id": "e61b06c7-cb98-4931-b8b7-7c855ad7ebf8",
+   "note": null
+  },
+  {
+   "people_id": 17437,
+   "candidate_id": "553cc952-93d6-45bf-80dd-c0e7997efe5f",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'Thomas', the member and the candidate both go by 'Tom McInnis'; same seat SD-021"
+  },
+  {
+   "people_id": 17457,
+   "candidate_id": "c88896b3-53cc-4ffb-826d-565348ad5d6e",
+   "note": null
+  },
+  {
+   "people_id": 17504,
+   "candidate_id": "fe74298d-8feb-4ed4-a8b1-74c813cf8ae1",
+   "note": null
+  },
+  {
+   "people_id": 17678,
+   "candidate_id": "7661cacc-5e8d-4c61-8c89-9ac063af6fb6",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'James', the member and the candidate both go by 'Jay Adams'; same seat HD-096"
+  },
+  {
+   "people_id": 17876,
+   "candidate_id": "4fb4dd86-a994-4914-a083-afdc4cf72345",
+   "note": null
+  },
+  {
+   "people_id": 17936,
+   "candidate_id": "389ceb7d-cb2f-4db0-88ba-859b2bffb058",
+   "note": null
+  },
+  {
+   "people_id": 18449,
+   "candidate_id": "43457028-eb7d-4abc-ae0d-a615ae1a92ee",
+   "note": null
+  },
+  {
+   "people_id": 18451,
+   "candidate_id": "1433259c-9dbb-4cfb-bab6-2ff0fd7b3cba",
+   "note": null
+  },
+  {
+   "people_id": 18453,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Mike Clampitt (HD-119) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 18454,
+   "candidate_id": "ec96a62e-c00f-4332-8752-5dee9c407e76",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'Harold', the member and the candidate both go by 'Kevin Corbin'; same seat SD-050"
+  },
+  {
+   "people_id": 18457,
+   "candidate_id": "44a8bc62-2769-43d9-a909-6f63acf3b398",
+   "note": null
+  },
+  {
+   "people_id": 18459,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Joe John (HD-040) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 18460,
+   "candidate_id": "178f4f60-185c-4f9d-8041-826864bfa9d7",
+   "note": null
+  },
+  {
+   "people_id": 18461,
+   "candidate_id": "59713dba-c4d6-4070-8e6d-4c17be981be1",
+   "note": null
+  },
+  {
+   "people_id": 18462,
+   "candidate_id": "644e866c-1260-4c5f-a4d2-8f3303beb89b",
+   "note": null
+  },
+  {
+   "people_id": 18463,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: John Sauls (HD-051) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 18464,
+   "candidate_id": "2653f628-afc0-433f-9f12-bd8e87691657",
+   "note": null
+  },
+  {
+   "people_id": 18465,
+   "candidate_id": "a9a21023-fb21-4f71-b247-f1659afe9f4a",
+   "note": null
+  },
+  {
+   "people_id": 18495,
+   "candidate_id": "1cb44dda-666f-4c27-a63d-4f948201e817",
+   "note": null
+  },
+  {
+   "people_id": 18497,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Paul Newton (SD-034) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 19238,
+   "candidate_id": "aa744d8e-3e50-4ad9-a4a6-dc6c56618ea6",
+   "note": null
+  },
+  {
+   "people_id": 19360,
+   "candidate_id": "156f8050-1d1f-4e48-92ad-f9ab5be4e42a",
+   "note": null
+  },
+  {
+   "people_id": 19669,
+   "candidate_id": "e9dd2762-bdb6-4259-9e27-86d0daa91044",
+   "note": null
+  },
+  {
+   "people_id": 20216,
+   "candidate_id": "0af18a14-85b0-4e04-a7e1-59b4b999575a",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'James', the member and the candidate both go by 'Jim Burgin'; same seat SD-012"
+  },
+  {
+   "people_id": 20220,
+   "candidate_id": "d896700c-466a-4a9c-a70c-244f791e19a9",
+   "note": null
+  },
+  {
+   "people_id": 20222,
+   "candidate_id": "dc1e69a6-00fb-43d1-8321-0021ae1edd30",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'Matthew', the member and the candidate both go by 'Todd Johnson'; same seat SD-035"
+  },
+  {
+   "people_id": 20223,
+   "candidate_id": "169578eb-1f15-44e3-bcc1-d37331b1b88c",
+   "note": null
+  },
+  {
+   "people_id": 20225,
+   "candidate_id": "606e4522-6185-4afa-94e2-140e19b8f1d0",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'William', the member and the candidate both go by 'Ted Alexander'; same seat SD-044"
+  },
+  {
+   "people_id": 20504,
+   "candidate_id": "c66b6676-0eaa-4413-a972-d01ad6b5ba6d",
+   "note": null
+  },
+  {
+   "people_id": 20505,
+   "candidate_id": "f3026da7-9b4f-4ef8-8442-f762142c796d",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'Sydney', the member and the candidate both go by 'Mrs. Sydney Batch'; same seat SD-017"
+  },
+  {
+   "people_id": 20509,
+   "candidate_id": "6238cb42-ab2c-4f8c-9825-10bce1b6e43b",
+   "note": null
+  },
+  {
+   "people_id": 20510,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Terence Everitt (SD-018) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 20512,
+   "candidate_id": "fa5b3dd4-88ec-4117-81ed-439d91d5242f",
+   "note": null
+  },
+  {
+   "people_id": 20513,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Bobby Hanig (SD-001) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 20515,
+   "candidate_id": "9e054e61-7501-4073-b4b9-d40d8faf1f2e",
+   "note": "hand-added 2026-08-31: LegiScan lists the HD-031 member as Zack Forde-Hawkins, our candidate row is Zack Hawkins in the same seat; the surname changed, the person did not"
+  },
+  {
+   "people_id": 20516,
+   "candidate_id": "b9e7989e-aa05-47ae-b497-543aa1c47e0c",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'Thomas', the member and the candidate both go by 'Chris Humphrey'; same seat HD-012"
+  },
+  {
+   "people_id": 20518,
+   "candidate_id": "43a90b63-d017-4c03-8c47-d270f7efad16",
+   "note": null
+  },
+  {
+   "people_id": 20519,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Keith Kidwell (HD-079) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 20520,
+   "candidate_id": "4f0df3c5-acae-4e85-9ed9-6889bf014aed",
+   "note": null
+  },
+  {
+   "people_id": 20521,
+   "candidate_id": "a58aac9c-78db-45f0-b679-a2e914d306ed",
+   "note": null
+  },
+  {
+   "people_id": 20522,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Nasif Majeed (HD-099) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 20523,
+   "candidate_id": "042a980f-362a-4ce7-9d02-8a23a7c0adfa",
+   "note": null
+  },
+  {
+   "people_id": 20524,
+   "candidate_id": "2f0c1624-38b9-4e20-a2aa-2ccd51765d78",
+   "note": null
+  },
+  {
+   "people_id": 20528,
+   "candidate_id": "ed8bf0d0-ad9a-41d1-b555-afcd93993511",
+   "note": null
+  },
+  {
+   "people_id": 21375,
+   "candidate_id": "76d5ed24-6e7f-4240-94b6-9d7eb5e388ae",
+   "note": null
+  },
+  {
+   "people_id": 21377,
+   "candidate_id": "e603a603-a57d-4510-ad25-9ceaebfd9da9",
+   "note": null
+  },
+  {
+   "people_id": 21631,
+   "candidate_id": "e1afeab2-6eef-488d-845a-4d62464db02c",
+   "note": null
+  },
+  {
+   "people_id": 21633,
+   "candidate_id": "2766045e-aa51-4ac6-89d9-5096d6b80c11",
+   "note": null
+  },
+  {
+   "people_id": 21663,
+   "candidate_id": "0cfcbe2a-62bb-4861-ba5c-d754f954b1fa",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'David', the member and the candidate both go by 'Dave Craven'; same seat SD-029"
+  },
+  {
+   "people_id": 22422,
+   "candidate_id": "b3c21135-cec5-469b-85e8-2f5387d08fc3",
+   "note": null
+  },
+  {
+   "people_id": 22423,
+   "candidate_id": "5a704cf3-c67d-427a-8d05-830df7f70211",
+   "note": null
+  },
+  {
+   "people_id": 22424,
+   "candidate_id": "14619392-64d5-401a-b382-1344fbd7efc0",
+   "note": null
+  },
+  {
+   "people_id": 22425,
+   "candidate_id": "b5b260f6-0c3f-4e11-9369-11ec5c137fc5",
+   "note": null
+  },
+  {
+   "people_id": 22426,
+   "candidate_id": "040f5671-0b2b-432c-b6fe-b02a9edce93f",
+   "note": null
+  },
+  {
+   "people_id": 22599,
+   "candidate_id": "94b8302b-a345-4dc5-a54c-94da9309ef93",
+   "note": null
+  },
+  {
+   "people_id": 22600,
+   "candidate_id": "ebbd4496-4f09-47a6-ad50-70cb085d23d5",
+   "note": null
+  },
+  {
+   "people_id": 22602,
+   "candidate_id": "71912d67-d6f9-4670-a329-abe647e87ebf",
+   "note": null
+  },
+  {
+   "people_id": 22603,
+   "candidate_id": "a5151a52-a963-4cc5-9f30-516fe689f212",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'Edwin', the member and the candidate both go by 'Dudley Greene'; same seat HD-085"
+  },
+  {
+   "people_id": 22605,
+   "candidate_id": "ca26a4db-58d3-49cc-9b23-6e13f173e01f",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'Abraham', the member and the candidate both go by 'Abe Jones'; same seat HD-038"
+  },
+  {
+   "people_id": 22606,
+   "candidate_id": "a1d95c8a-2ff7-455a-8a57-7d10a658d5ca",
+   "note": null
+  },
+  {
+   "people_id": 22607,
+   "candidate_id": "e9a3e14c-a4b4-4f55-b6de-c0045a807a33",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'John', the member and the candidate both go by 'Steve Tyson'; same seat HD-003"
+  },
+  {
+   "people_id": 22608,
+   "candidate_id": "58a20011-fc25-4db8-a332-471408bd4b99",
+   "note": null
+  },
+  {
+   "people_id": 22609,
+   "candidate_id": "f27dbe1a-d872-430b-9551-48204b1ed8ad",
+   "note": null
+  },
+  {
+   "people_id": 22610,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Matthew Winslow (HD-007) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 22611,
+   "candidate_id": "c82e991c-fc04-4398-a1c7-1670144344e6",
+   "note": null
+  },
+  {
+   "people_id": 22612,
+   "candidate_id": "c3571131-1023-4356-aa5f-79a79d75fd98",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'Charles', the member and the candidate both go by 'Charlie Miller'; same seat HD-019"
+  },
+  {
+   "people_id": 22613,
+   "candidate_id": "0ca0e943-d38b-4657-a510-155e9c60d18d",
+   "note": null
+  },
+  {
+   "people_id": 22614,
+   "candidate_id": "fbd58fe2-1cec-4bed-a0ca-3ac0d37972a5",
+   "note": null
+  },
+  {
+   "people_id": 22615,
+   "candidate_id": "defc242a-259f-4c7d-a1ad-34508105ca8f",
+   "note": null
+  },
+  {
+   "people_id": 22616,
+   "candidate_id": "1a301276-1847-4c4f-8b39-eb7f7a95a8f3",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'Phillip', the member and the candidate both go by 'Ray Pickett'; same seat HD-093"
+  },
+  {
+   "people_id": 22617,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Mark Pless (HD-118) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 22946,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Reece Pyrtle (HD-065) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 22965,
+   "candidate_id": "5b04df0f-d180-4e25-afaa-5bd046d6a460",
+   "note": null
+  },
+  {
+   "people_id": 23148,
+   "candidate_id": "6b1e5a3a-4f34-4b01-8287-d85ed4073aa6",
+   "note": null
+  },
+  {
+   "people_id": 24196,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Jennifer Balkcom (HD-117) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 24197,
+   "candidate_id": "d1533fc4-7e3a-455d-82a3-3cea921cb463",
+   "note": null
+  },
+  {
+   "people_id": 24198,
+   "candidate_id": "b5b76ebb-f456-4d09-9831-be7ba60eff1f",
+   "note": null
+  },
+  {
+   "people_id": 24199,
+   "candidate_id": "1e906617-bb33-43b4-b011-fae31a0be7ed",
+   "note": null
+  },
+  {
+   "people_id": 24200,
+   "candidate_id": "bd97319a-8868-4db9-b7de-06ed0e634ca3",
+   "note": null
+  },
+  {
+   "people_id": 24201,
+   "candidate_id": "dedb1994-f4d8-42b2-b95d-d4c6b4f01942",
+   "note": null
+  },
+  {
+   "people_id": 24202,
+   "candidate_id": "42945554-9a7d-4b4f-a329-ec7c3d0f8543",
+   "note": null
+  },
+  {
+   "people_id": 24203,
+   "candidate_id": "32831a0e-9274-4e1c-ae19-4fb05af3dd15",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'Gregory', the member and the candidate both go by 'Allen Chesser'; same seat HD-025"
+  },
+  {
+   "people_id": 24206,
+   "candidate_id": "79f8cfc1-97b8-408b-a3cb-f64aaf0cfbb6",
+   "note": null
+  },
+  {
+   "people_id": 24207,
+   "candidate_id": "1a380ddd-a15d-438b-8b2c-f52ffa65eb6f",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'Maze', the member and the candidate both go by 'Neal Jackson'; same seat HD-078"
+  },
+  {
+   "people_id": 24208,
+   "candidate_id": "634c0227-6d84-4a1d-8957-f04a870971af",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'Brannon', the member and the candidate both go by 'Ray Jeffers'; same seat HD-002"
+  },
+  {
+   "people_id": 24209,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Ya Liu (HD-021) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 24210,
+   "candidate_id": "497f7325-62f5-4b33-a88e-807a472d1c25",
+   "note": null
+  },
+  {
+   "people_id": 24211,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Jarrod Lowery (HD-047) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 24212,
+   "candidate_id": "40d69f4d-8ad4-402b-a083-00e454b07a19",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'Joseph', the member and the candidate both go by 'Joe Pike'; same seat HD-006"
+  },
+  {
+   "people_id": 24213,
+   "candidate_id": "8dfc9c1d-7626-4ad7-9c24-93d097a2d717",
+   "note": null
+  },
+  {
+   "people_id": 24214,
+   "candidate_id": "5069a9d1-a71e-42a2-a029-30ea10713f42",
+   "note": null
+  },
+  {
+   "people_id": 24215,
+   "candidate_id": "f9d01d57-ec77-4596-a3ce-4e496d32f9a2",
+   "note": null
+  },
+  {
+   "people_id": 24216,
+   "candidate_id": "81060f86-acbf-4f5e-9d0b-5d2394087116",
+   "note": null
+  },
+  {
+   "people_id": 24219,
+   "candidate_id": "509f2359-1868-447e-ae40-f91b646797e4",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'William', the member and the candidate both go by 'Bill Ward'; same seat HD-005"
+  },
+  {
+   "people_id": 24220,
+   "candidate_id": "10064175-ee16-4047-853e-43d1ae24dddf",
+   "note": null
+  },
+  {
+   "people_id": 24222,
+   "candidate_id": "66729ea1-dd08-4ff8-895f-92e28cb27bde",
+   "note": null
+  },
+  {
+   "people_id": 24223,
+   "candidate_id": "27d501db-f9ee-4ced-931b-c61756526e6e",
+   "note": null
+  },
+  {
+   "people_id": 24224,
+   "candidate_id": "5f8f5b4d-5569-4cdf-9af9-04b1c871f13f",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'Eldon', the member and the candidate both go by 'Buck Newton'; same seat SD-004"
+  },
+  {
+   "people_id": 24225,
+   "candidate_id": "907a10ce-2a15-4cd3-aaa6-5940918211c9",
+   "note": null
+  },
+  {
+   "people_id": 24226,
+   "candidate_id": "219748eb-82c2-4019-ac65-9d6f02c8f7f0",
+   "note": null
+  },
+  {
+   "people_id": 24890,
+   "candidate_id": "63b01ad8-4049-495c-b55d-6b1bb85cd88f",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'John', the member and the candidate both go by 'Eric Ager'; same seat HD-114"
+  },
+  {
+   "people_id": 25197,
+   "candidate_id": "e07bd45b-097f-4245-b736-239c626ae705",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'Jerry', the member and the candidate both go by 'Alan Branson'; same seat HD-059"
+  },
+  {
+   "people_id": 25212,
+   "candidate_id": "e5b76e1c-e5e1-4b70-8a78-6eb02f9d19a2",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'Robert', the member and the candidate both go by 'Bob Brinson'; same seat SD-003"
+  },
+  {
+   "people_id": 25213,
+   "candidate_id": "05a3e002-7bdf-4121-a89c-6bd0c5f2d2d7",
+   "note": null
+  },
+  {
+   "people_id": 25214,
+   "candidate_id": "fb9156d5-c823-4c63-b1d1-b110e52bf128",
+   "note": null
+  },
+  {
+   "people_id": 25222,
+   "candidate_id": "75e5d041-69ff-4e54-8076-6224fda79444",
+   "note": null
+  },
+  {
+   "people_id": 25250,
+   "candidate_id": "2dacfb14-7571-45b3-b341-6cd2a709ad83",
+   "note": null
+  },
+  {
+   "people_id": 25841,
+   "candidate_id": "3ec5dc40-3ba1-4f65-a0cb-3d97987f5d1e",
+   "note": null
+  },
+  {
+   "people_id": 25842,
+   "candidate_id": "a31fb696-e434-422b-bfe7-934dac59d558",
+   "note": null
+  },
+  {
+   "people_id": 25843,
+   "candidate_id": "e3132f64-8c8c-4fd5-bb97-324b1353ffa8",
+   "note": null
+  },
+  {
+   "people_id": 25844,
+   "candidate_id": "6242f94e-dec6-4fe0-8368-ed97c7f9925a",
+   "note": null
+  },
+  {
+   "people_id": 25845,
+   "candidate_id": "432541a9-ae2a-4fbb-9d15-3f2e62263e40",
+   "note": null
+  },
+  {
+   "people_id": 25846,
+   "candidate_id": "db2990d1-769b-4b78-abc8-3eaced418f4a",
+   "note": null
+  },
+  {
+   "people_id": 25847,
+   "candidate_id": "0e0c8a43-a7e9-4571-870b-7b55d684008d",
+   "note": null
+  },
+  {
+   "people_id": 25848,
+   "candidate_id": "80c5dce7-09a6-470c-9bfc-7957c91f1617",
+   "note": null
+  },
+  {
+   "people_id": 25849,
+   "candidate_id": "52a9e88e-4ee4-443e-86f1-e67e38611450",
+   "note": null
+  },
+  {
+   "people_id": 25850,
+   "candidate_id": "6eaf6fe7-e6f2-4e49-82c8-2b5646585bb3",
+   "note": null
+  },
+  {
+   "people_id": 25851,
+   "candidate_id": "80894992-bf03-4776-b0c6-063ca5949761",
+   "note": null
+  },
+  {
+   "people_id": 25852,
+   "candidate_id": "acf2c7b7-02d5-426f-8a5a-8dafe4e7de17",
+   "note": null
+  },
+  {
+   "people_id": 25853,
+   "candidate_id": "215f170f-9126-4bbd-af5f-e25a1934a224",
+   "note": null
+  },
+  {
+   "people_id": 25854,
+   "candidate_id": "bad0065d-f75e-45b5-b480-818176caa203",
+   "note": null
+  },
+  {
+   "people_id": 25855,
+   "candidate_id": "933065c3-443f-43b0-8040-e1d9b22bff4c",
+   "note": null
+  },
+  {
+   "people_id": 25856,
+   "candidate_id": "186df7e2-4045-44bc-b5bb-672052f499e5",
+   "note": null
+  },
+  {
+   "people_id": 25857,
+   "candidate_id": "807af3af-481a-4e52-8901-ba68ebb4ba4f",
+   "note": null
+  },
+  {
+   "people_id": 25858,
+   "candidate_id": "8691e31a-e584-469f-b208-ca7da1246cca",
+   "note": null
+  },
+  {
+   "people_id": 25859,
+   "candidate_id": "2a936b55-82c5-416a-97bc-e30f1bad8601",
+   "note": null
+  },
+  {
+   "people_id": 25860,
+   "candidate_id": "9d4ef24a-dd11-4274-9db3-9a3f7553e07c",
+   "note": "hand-added 2026-08-31: LegiScan first_name is the legal name 'Woodson', the member and the candidate both go by 'Mrs. Woodson Bradley'; same seat SD-042"
+  },
+  {
+   "people_id": 26396,
+   "candidate_id": "c1ec3450-480c-4009-a00c-efcfa195d406",
+   "note": null
+  },
+  {
+   "people_id": 26462,
+   "candidate_id": null,
+   "note": "reviewed 2026-08-31: Chris Measmer (SD-034) has no Nov-2026 North Carolina candidacy on file, in this seat, in the other chamber, or statewide"
+  },
+  {
+   "people_id": 26503,
+   "candidate_id": "55d2e31c-ad25-4f7e-ab19-5e58ea780978",
+   "note": null
+  },
+  {
+   "people_id": 26662,
+   "candidate_id": "43a4fc41-2a88-4142-a423-c524827c0e42",
+   "note": null
+  },
+  {
+   "people_id": 26663,
+   "candidate_id": "b173a527-b426-4f41-a35b-aeb88777770c",
+   "note": null
+  },
+  {
+   "people_id": 26664,
+   "candidate_id": "97d7706a-c6cb-4fa9-9711-fa4c6ce1dc90",
+   "note": null
+  },
+  {
+   "people_id": 26670,
+   "candidate_id": "69123a1f-9532-4c22-8df5-25b745b9714d",
+   "note": null
+  },
+  {
+   "people_id": 26677,
+   "candidate_id": "b775dbcd-e2f4-40bb-8ac5-21ce5638122c",
+   "note": null
+  }
+ ]
+}
