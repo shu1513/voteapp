@@ -852,9 +852,11 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   // - The vocabulary is a SUBSET of the regular session's and needs no new
   //   pattern: `HJRs/HBs FOR THIRD READING` and `Senate: Third Reading` are
   //   kept, `HJRs/HBs FOR PERFECTION` excluded. Hence the shared constants.
-  // - Both enacted measures are divided in both chambers: HB 1, the
-  //   congressional redistricting map, and HJR 3, the "Protect Missouri
-  //   Voters" amendment. 5 kept floor votes, 3 excluded perfection votes.
+  // - Both substantive measures are divided in both chambers: HB 1, the
+  //   congressional redistricting map (enacted), and HJR 3, the "Protect
+  //   Missouri Voters" amendment (finally passed; defeated at the ballot
+  //   as Amendment 4, August 2026). 5 kept floor votes, 3 excluded
+  //   perfection votes.
   // - House tallies run to 159 of 163 seats and the Senate to 34 of 34, so
   //   the floor cut is unchanged.
   // - Feed health: 0 repeated roll_call_ids, 0 summary-only rolls, 0 tally

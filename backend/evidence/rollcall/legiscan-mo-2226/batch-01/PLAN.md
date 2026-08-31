@@ -2,7 +2,8 @@
 
 **4 roll calls / 2 measures / 229 records across 115 candidates.** Both measures, both chambers.
 
-The session produced 5 kept floor votes on 2 enacted measures. Every one of the 5 is divided, and
+The session produced 5 kept floor votes on its 2 substantive measures — HB 1 enacted, HJR 3
+finally passed and later defeated at the ballot. Every one of the 5 is divided, and
 4 are in this batch; the fifth is a previous-question motion.
 
 | measure | roll | chamber | date | tally | roll-call PDF | disposition |
