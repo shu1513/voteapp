@@ -94,27 +94,53 @@ so every vote in this batch was cast on the enrolled text and no description nee
 
 - `batch-01/` 20 rolls / 10 measures / **729 records** · `batch-02/` 24 / 12 / **859** ·
   `batch-03/` 18 / 9 / **645** · `batch-04/` 21 / 11 / **806** · `batch-05/` 13 / 7 / **509**
-  (both-chamber seam closed) · `batch-06/` 5 / 5 / **311** (one-chamber tail begins).
+  (both-chamber seam closed) · `batch-06/` 5 / 5 / **311** (one-chamber tail begins) ·
+  `batch-07/` 8 / 8 / **507** (final-text rule; Assembly-only tail).
 
-California total: **3,859 roll-call records across 80 candidates**, 54 measures, 13 of 27 research
-areas. All descriptions plain English, American-spelled, every enacted qualification kept.
+California total: **4,366 roll-call records across 80 candidates**, 62 measures, 14 of 27 research
+areas. All descriptions plain English, American-spelled, every qualification kept.
 
-## The dataset refreshed on 2026-08-30 — and the trigger was wrong
+## The rule changed on 2026-08-31: final text, not enacted
 
-Earlier notes said a refreshed LegiScan cut was the trigger for the pending seam. The refresh landed
-(hash `c150cc01b198`, at `/Users/shu/legiscan-data/ca-2172-0830/`) and it is **not** the trigger:
+Batches 01-06 imported only bills that **became law**. That is the wrong test for a voting record.
+A legislator's vote is their act; a veto is the governor's act, later. The test is now whether the
+chamber voted on the **text that finished the legislative process**:
 
-| | 08-23 cut | 08-30 cut |
+| status | usable | why |
 | --- | --- | --- |
-| roll calls | 19,942 | 21,158 |
-| divided floor votes | 972 | 1,153 |
-| divided **and enacted** | 441 / 227 measures | **445 / 229** |
-| enrolled, awaiting the governor | 232 | **728** |
+| chaptered | yes | signed into law |
+| enrolled | yes | passed both chambers; enrolled text cannot change |
+| vetoed | yes | the vote happened; the description says the governor vetoed it |
+| engrossed | **no** | passed one chamber, still amendable |
+| introduced / failed | no | never finished |
 
-The final week's votes arrived, but those bills are enrolled, not signed. **The real trigger is
-signing: watch the status-3 count fall, not the `dataset_hash` change.** Signing runs into the
-autumn.
+**This removed the autumn wait.** The plan had been to re-download once the governor signed. That
+was only needed because the record was tied to the outcome. It no longer is.
 
-**What remains.** **83 one-chamber measures** actionable (12 Assembly-only at ~68 records each, 71
-Senate-only at ~11), plus the **728 enrolled bills** once signed. Two one-chamber measures are
-permanently unavailable: AB 863 and AB 483 have only pre-amendment divided votes.
+## Dataset refreshed 2026-08-30 and re-fetched
+
+Hash `c150cc01b198`, at `/Users/shu/legiscan-data/ca-2172-0830/`. Re-fetched 2026-08-31:
+21,158 rolls, 6,395 floor votes, **6,454 stored rows** (was 5,328). No `approved_conflict` — the
+store refuses to overwrite an approved row.
+
+Signing runs into the autumn and will move measures from `enrolled` to `chaptered` or `vetoed`.
+Under the new rule that changes only a description's closing sentence, not whether a vote is usable.
+
+## The open pool, measured on the 08-30 cut
+
+Divided floor votes on final-text bills, measures not yet worked:
+
+| status | both chambers | Assembly-only | Senate-only |
+| --- | --- | --- | --- |
+| chaptered | 66 | 20 | 89 |
+| enrolled | 80 | 9 | 56 |
+| vetoed | 17 | 2 | 15 |
+
+**354 open measures**, 194 of them carrying an Assembly roll. Assembly rolls are worth roughly six
+times Senate rolls (80 of 80 Assembly seats on the ballot against 20 of 40 Senate seats), so
+Assembly-first ordering holds for the rest of the campaign.
+
+`batch-07` cleared the **Assembly-only** slice: of its 31 measures, 8 were judged and 23 dropped —
+12 budget-package bills, 6 on the version check, 2 under filter 5, 3 already known bad.
+Two measures remain permanently unavailable: AB 863 and AB 483 have only pre-amendment divided
+votes.

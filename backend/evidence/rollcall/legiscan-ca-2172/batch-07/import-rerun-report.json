@@ -1,0 +1,267 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": true,
+  "skipExisting": false,
+  "startedAt": "2026-08-31T18:11:40.493Z",
+  "finishedAt": "2026-08-31T18:12:06.294Z",
+  "jurisdiction": "CA",
+  "sessionId": 2172,
+  "evidenceDir": "/Users/shu/legiscan-data/ca-2172-evidence",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "/Users/shu/voteApp/.claude/worktrees/hungry-engelbart-5b1814/backend/evidence/rollcall/legiscan-ca-2172/crosswalk.json",
+  "crosswalkEntries": 121,
+  "peopleFile": "/Users/shu/voteApp/.claude/worktrees/hungry-engelbart-5b1814/backend/evidence/rollcall/legiscan-ca-2172/legiscan-people-ca-2172.json",
+  "peopleMembers": 121,
+  "files": 6454,
+  "outcomes": {
+    "not_approved": 6345,
+    "dry_run": 109
+  },
+  "actions": {
+    "unchanged": 4366
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-ca-house-2172-roll1602105.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602105,
+      "outcome": "dry_run",
+      "legislativeVoteId": "aeffd62d-2b12-4d91-96bc-bd3f002e0bf5",
+      "reviewStatus": "approved",
+      "bill": "SB629",
+      "voteDate": "2025-09-12",
+      "officialVoteDate": null,
+      "measureId": "SB 629",
+      "question": "SB 629 Durazo Senate Third Reading By Zbur",
+      "originRunId": "rollcall:CA:house:2172:1602105:2026-08-31T18:11:40.493Z",
+      "members": 77,
+      "notVoting": 0,
+      "absent": 3,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 67
+      },
+      "actions": {
+        "unchanged": 67
+      },
+      "notified": 0,
+      "candidates": 67,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602132.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602132,
+      "outcome": "dry_run",
+      "legislativeVoteId": "34630cf0-5878-4b89-ab86-3937a23bdd13",
+      "reviewStatus": "approved",
+      "bill": "SB744",
+      "voteDate": "2025-09-12",
+      "officialVoteDate": null,
+      "measureId": "SB 744",
+      "question": "SB 744 Cabaldon Senate Third Reading By Bryan",
+      "originRunId": "rollcall:CA:house:2172:1602132:2026-08-31T18:11:40.493Z",
+      "members": 78,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 11,
+        "matched": 67
+      },
+      "actions": {
+        "unchanged": 67
+      },
+      "notified": 0,
+      "candidates": 67,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602281.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602281,
+      "outcome": "dry_run",
+      "legislativeVoteId": "8c7b492b-c125-4f02-851e-f761d1962834",
+      "reviewStatus": "approved",
+      "bill": "SB613",
+      "voteDate": "2025-09-12",
+      "officialVoteDate": null,
+      "measureId": "SB 613",
+      "question": "SB 613 Stern Senate Third Reading By Zbur",
+      "originRunId": "rollcall:CA:house:2172:1602281:2026-08-31T18:11:40.493Z",
+      "members": 68,
+      "notVoting": 0,
+      "absent": 12,
+      "resolution": {
+        "unmatched_reviewed": 9,
+        "matched": 59
+      },
+      "actions": {
+        "unchanged": 59
+      },
+      "notified": 0,
+      "candidates": 59,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602326.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602326,
+      "outcome": "dry_run",
+      "legislativeVoteId": "52149812-7e85-47af-925b-e43c9b442d24",
+      "reviewStatus": "approved",
+      "bill": "SB352",
+      "voteDate": "2025-09-13",
+      "officialVoteDate": null,
+      "measureId": "SB 352",
+      "question": "SB 352 Reyes Senate Third Reading By BRYAN",
+      "originRunId": "rollcall:CA:house:2172:1602326:2026-08-31T18:11:40.493Z",
+      "members": 74,
+      "notVoting": 0,
+      "absent": 6,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 64
+      },
+      "actions": {
+        "unchanged": 64
+      },
+      "notified": 0,
+      "candidates": 64,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602366.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602366,
+      "outcome": "dry_run",
+      "legislativeVoteId": "194b0d99-66fb-49da-a0f0-3f6dcbc0cdd8",
+      "reviewStatus": "approved",
+      "bill": "SB840",
+      "voteDate": "2025-09-13",
+      "officialVoteDate": null,
+      "measureId": "SB 840",
+      "question": "SB 840 Limón Third Reading Urgency By IRWIN",
+      "originRunId": "rollcall:CA:house:2172:1602366:2026-08-31T18:11:40.493Z",
+      "members": 74,
+      "notVoting": 0,
+      "absent": 6,
+      "resolution": {
+        "unmatched_reviewed": 9,
+        "matched": 65
+      },
+      "actions": {
+        "unchanged": 65
+      },
+      "notified": 0,
+      "candidates": 65,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1725723.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1725723,
+      "outcome": "dry_run",
+      "legislativeVoteId": "d71300b9-bfe2-4223-ba8a-eeb28f90e670",
+      "reviewStatus": "approved",
+      "bill": "SB1250",
+      "voteDate": "2026-08-24",
+      "officialVoteDate": null,
+      "measureId": "SB 1250",
+      "question": "SB 1250 Cortese Senate Third Reading By HART",
+      "originRunId": "rollcall:CA:house:2172:1725723:2026-08-31T18:11:40.493Z",
+      "members": 74,
+      "notVoting": 0,
+      "absent": 5,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 64
+      },
+      "actions": {
+        "unchanged": 64
+      },
+      "notified": 0,
+      "candidates": 64,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1726173.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1726173,
+      "outcome": "dry_run",
+      "legislativeVoteId": "ef1ee452-f8a9-4a85-a562-e8ca7c6a197a",
+      "reviewStatus": "approved",
+      "bill": "AB2247",
+      "voteDate": "2026-08-26",
+      "officialVoteDate": null,
+      "measureId": "AB 2247",
+      "question": "AB 2247 Elhawary Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1726173:2026-08-31T18:11:40.493Z",
+      "members": 76,
+      "notVoting": 0,
+      "absent": 3,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 66
+      },
+      "actions": {
+        "unchanged": 66
+      },
+      "notified": 0,
+      "candidates": 66,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1726337.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1726337,
+      "outcome": "dry_run",
+      "legislativeVoteId": "3f4b92d2-8d7d-420e-80b2-8b3ce8b9ef2f",
+      "reviewStatus": "approved",
+      "bill": "SB923",
+      "voteDate": "2026-08-26",
+      "officialVoteDate": null,
+      "measureId": "SB 923",
+      "question": "SB 923 Becker Senate Third Reading By Schiavo",
+      "originRunId": "rollcall:CA:house:2172:1726337:2026-08-31T18:11:40.493Z",
+      "members": 63,
+      "notVoting": 0,
+      "absent": 16,
+      "resolution": {
+        "unmatched_reviewed": 8,
+        "matched": 55
+      },
+      "actions": {
+        "unchanged": 55
+      },
+      "notified": 0,
+      "candidates": 55,
+      "error": null,
+      "related": 0
+    }
+  ],
+  "rollsScopedToBatch": true
+}

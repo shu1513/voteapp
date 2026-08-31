@@ -1,0 +1,148 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602326,
+      "measure_id": "SB 352",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 352, which keeps a Bureau of Environmental Justice inside the state Department of Justice and sets rules for neighborhood air monitoring. Where the Air Resources Board picks a location to monitor, monitoring must stay active for at least five years, and the local air district and the board may agree to extend it in further five-year stretches. The board must update its statewide monitoring plan by July 1, 2026, and every five years after that. It must also report each year, starting March 1, 2027, to the budget subcommittees of both houses on how the monitoring network is coming along. The board's chair and the air district officers must appear before legislative policy committees in person to present that progress. Each of these duties applies only as far as funding allows. The Assembly passed it 55-19 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 352, which keeps a Bureau of Environmental Justice inside the state Department of Justice and sets rules for neighborhood air monitoring. Where the Air Resources Board picks a location to monitor, monitoring must stay active for at least five years, and the local air district and the board may agree to extend it in further five-year stretches. The board must update its statewide monitoring plan by July 1, 2026, and every five years after that. It must also report each year, starting March 1, 2027, to the budget subcommittees of both houses on how the monitoring network is coming along. The board's chair and the air district officers must appear before legislative policy committees in person to present that progress. Each of these duties applies only as far as funding allows. The Assembly passed it 55-19 and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602132,
+      "measure_id": "SB 744",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 744, which freezes the list of college accreditors California recognizes. Any national or regional accrediting agency that the U.S. Department of Education recognized as of January 1, 2025, keeps that recognition under California law until July 1, 2029, as long as it keeps operating in substantially the same way it did then. This matters because state licensing rules and eligibility for state programs often require a degree from an accredited school. The rule is repealed on January 1, 2030. The Assembly passed it 60-18 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 744, which freezes the list of college accreditors California recognizes. Any national or regional accrediting agency that the U.S. Department of Education recognized as of January 1, 2025, keeps that recognition under California law until July 1, 2029, as long as it keeps operating in substantially the same way it did then. This matters because state licensing rules and eligibility for state programs often require a degree from an accredited school. The rule is repealed on January 1, 2030. The Assembly passed it 60-18 and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602366,
+      "measure_id": "SB 840",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 840, which rewrites how California spends the money it raises by selling greenhouse gas permits. The old formula, which sent fixed percentages to transit, affordable housing and high-speed rail, ends on July 1, 2026. From the 2026-27 budget year the money is paid out in a set order. Fire prevention costs and a $3 million legislative climate bureau come first, then $1 billion for high-speed rail, then $1 billion the Legislature appropriates itself. Fixed sums follow, among them $800 million for affordable housing and $250 million for community air protection. The bill also states the Legislature's aim of sending set shares of this revenue to dedicated funds for clean transportation, housing, clean air and water, wildfire, agriculture, clean energy and innovation, but that is an aim rather than a binding rule. The Air Resources Board must study carbon offsets by December 31, 2026, and update every offset rule to match the best available science by January 1, 2029. It must review those rules again by January 1, 2034, and every five years after. The bill took effect immediately as an urgency measure. The Assembly passed it 59-15 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 840, which rewrites how California spends the money it raises by selling greenhouse gas permits. The old formula, which sent fixed percentages to transit, affordable housing and high-speed rail, ends on July 1, 2026. From the 2026-27 budget year the money is paid out in a set order. Fire prevention costs and a $3 million legislative climate bureau come first, then $1 billion for high-speed rail, then $1 billion the Legislature appropriates itself. Fixed sums follow, among them $800 million for affordable housing and $250 million for community air protection. The bill also states the Legislature's aim of sending set shares of this revenue to dedicated funds for clean transportation, housing, clean air and water, wildfire, agriculture, clean energy and innovation, but that is an aim rather than a binding rule. The Air Resources Board must study carbon offsets by December 31, 2026, and update every offset rule to match the best available science by January 1, 2029. It must review those rules again by January 1, 2034, and every five years after. The bill took effect immediately as an urgency measure. The Assembly passed it 59-15 and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1726337,
+      "measure_id": "SB 923",
+      "vote_date": "2026-08-26",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 923, which widens the right to make a company delete your personal information. That right now covers information the company collected from you; the bill extends it to information the company collected about you from someone else. A company that got the information from another source may keep a record of the deletion request, plus the least data needed to keep the information deleted and used for nothing else. A business that operates only online must also offer a web form or online portal for these requests, not just an email address. The Assembly passed it 49-14. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "nay_description": "Voted against passing Senate Bill 923, which widens the right to make a company delete your personal information. That right now covers information the company collected from you; the bill extends it to information the company collected about you from someone else. A company that got the information from another source may keep a record of the deletion request, plus the least data needed to keep the information deleted and used for nothing else. A business that operates only online must also offer a web form or online portal for these requests, not just an email address. The Assembly passed it 49-14. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1725723,
+      "measure_id": "SB 1250",
+      "vote_date": "2026-08-24",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1250, which requires Caltrans to plan for wildlife crossings on state highways. With each four-year revision of its asset management plan, Caltrans must publish a list of wildlife connectivity improvements, and send it to the California Transportation Commission for comment before the final version goes out. Caltrans must assess what blocks animals from crossing when it builds its inventory of connectivity needs, and must give the public a chance to submit data and comments. It must refresh that inventory every two years using priority road segments named by the Department of Fish and Wildlife, and carry wildlife connectivity as an objective in its State Highway System Management Plan. The Assembly passed it 59-15. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "nay_description": "Voted against passing Senate Bill 1250, which requires Caltrans to plan for wildlife crossings on state highways. With each four-year revision of its asset management plan, Caltrans must publish a list of wildlife connectivity improvements, and send it to the California Transportation Commission for comment before the final version goes out. Caltrans must assess what blocks animals from crossing when it builds its inventory of connectivity needs, and must give the public a chance to submit data and comments. It must refresh that inventory every two years using priority road segments named by the Department of Fish and Wildlife, and carry wildlife connectivity as an objective in its State Highway System Management Plan. The Assembly passed it 59-15. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1726173,
+      "measure_id": "AB 2247",
+      "vote_date": "2026-08-26",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 2247, which creates a pilot program paying for mental health and counseling care for young survivors of gun violence in Los Angeles County. A survivor, or a parent for a minor, may simply state what happened without producing paperwork about the shooting, and may choose any licensed provider or peer support specialist, whether or not that provider takes insurance. Their treatment records are confidential and closed to public records requests. The program runs only if the Legislature funds it, and it ends on January 1, 2032. The Assembly agreed 60-16. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 2247, which creates a pilot program paying for mental health and counseling care for young survivors of gun violence in Los Angeles County. A survivor, or a parent for a minor, may simply state what happened without producing paperwork about the shooting, and may choose any licensed provider or peer support specialist, whether or not that provider takes insurance. Their treatment records are confidential and closed to public records requests. The program runs only if the Legislature funds it, and it ends on January 1, 2032. The Assembly agreed 60-16. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602281,
+      "measure_id": "SB 613",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 613, which would have directed state agencies to give priority to cutting methane emissions, including methane from imported oil and gas, where doing so is workable and cost effective. It would have told the Air Resources Board to encourage the state to buy natural gas certified as low-methane, subject to what the Public Utilities Commission judges to be in ratepayers' interest. Agencies could have applied approved measuring and verification rules to methane programs they already run. The bill stated that it required no new oil or gas buying and was not meant to interfere with state efforts to cut fossil fuel use. The Assembly passed it 54-14, but the governor vetoed it, so it did not become law.",
+      "nay_description": "Voted against passing Senate Bill 613, which would have directed state agencies to give priority to cutting methane emissions, including methane from imported oil and gas, where doing so is workable and cost effective. It would have told the Air Resources Board to encourage the state to buy natural gas certified as low-methane, subject to what the Public Utilities Commission judges to be in ratepayers' interest. Agencies could have applied approved measuring and verification rules to methane programs they already run. The bill stated that it required no new oil or gas buying and was not meant to interfere with state efforts to cut fossil fuel use. The Assembly passed it 54-14, but the governor vetoed it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602105,
+      "measure_id": "SB 629",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 629, which would have widened California's fire hazard maps and created post-wildfire safety areas. The hazard maps would have had to account for recently burned land, for places where buildings themselves can carry embers beyond wildland, and for farmland that affects fire risk. Any area burned by a wildfire on or after January 1, 2025, that covered 1,000 acres, destroyed more than 10 structures, or killed someone would have been mapped as one. State fire building standards would have taken effect there 30 days after the State Fire Marshal sent the map to the local government, which would have had 10 business days to post public notice. Local general plan safety rules would have had to be updated for the new areas. The Fire Marshal would also have had to publish the model and method behind its hazard maps at least 60 days before making them final, and these designations would have been exempt from the usual state rulemaking process. The Assembly passed it 59-18, but the governor vetoed it, so it did not become law.",
+      "nay_description": "Voted against passing Senate Bill 629, which would have widened California's fire hazard maps and created post-wildfire safety areas. The hazard maps would have had to account for recently burned land, for places where buildings themselves can carry embers beyond wildland, and for farmland that affects fire risk. Any area burned by a wildfire on or after January 1, 2025, that covered 1,000 acres, destroyed more than 10 structures, or killed someone would have been mapped as one. State fire building standards would have taken effect there 30 days after the State Fire Marshal sent the map to the local government, which would have had 10 business days to post public notice. Local general plan safety rules would have had to be updated for the new areas. The Fire Marshal would also have had to publish the model and method behind its hazard maps at least 60 days before making them final, and these designations would have been exempt from the usual state rulemaking process. The Assembly passed it 59-18, but the governor vetoed it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
