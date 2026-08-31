@@ -260,3 +260,84 @@ three measures' records), and a convergence dry run of all 1,457 `unchanged`. Ro
    (rewrite: 1,457, `…T05:52:15.034Z`), `import-plain-language-fix-report.json` = this review fix
    (rewrite: 459, `…T06:18:11.691Z`). Rule for next time: after any re-run, check the report's own
    `actions` before committing it as a ledger — the filename is not proof of what ran.
+
+## Claim-by-claim audit 2026-08-31
+
+Every factual claim in all 12 measures was re-checked against its OLR Public Act Summary. **Nine of
+the twelve had at least one error.** Two earlier review rounds had already caught seven scope losses
+in this batch, so the point of this pass was to stop finding them one PR at a time.
+
+Wording only again: labels, dates and the closing tally sentence are byte-identical on all 17, and
+`import-claim-audit-report.json` (verified by its own `actions`, not its filename) records
+**1,205 rewrites / 252 unchanged**, with a convergence dry run of all 1,457 `unchanged`. Records
+stayed 2,040 and tags 1,543.
+
+### Misstatements — the law said something other than what we published
+
+| measure | was | is |
+|---|---|---|
+| Senate Bill 1 | "creates a program to help child care workers pay for health insurance" | the act orders Access Health CT to **study the need first**, then set up a program **for the 2027 budget year** |
+| Senate Bill 1 | "**Districts** must produce a guide for families" | the **state education department** produces it — wrong actor |
+| Senate Bill 3 | price gouging is "charging an **unfairly high** price" | the statutory standard is "**unconscionably excessive**", a far higher bar |
+| Senate Bill 1234 | deals that "**stop** them from lending and operating normally" | deals that "**prevent, limit or restrict**" the tasks the act lists — "stop" covered only the first |
+| Senate Bill 1234 | "**other states** with at least seven million people" | "**one or more** other states" — a single qualifying state fires the trigger |
+| House Bill 7042 | "bars those businesses from advertising in ways that promote illegal sales" | the ban requires acting "**purposely and knowingly**", and also covers "an unreasonable public safety risk" |
+| House Bill 6913 | "bars nursing homes and assisted living communities" | the ban binds the facilities **and their staff** |
+| Senate Bill 9 | "requires **home** insurers" | the duty covers insurers who sell **home or renters** policies, and the insurer and lender duties are different |
+
+### Omissions that changed the meaning
+
+- **Senate Bill 1444** — the summary review is not a rubber stamp. The town still checks that the site
+  plan follows its zoning rules and that public health and safety will not be substantially hurt.
+  Leaving that out made the law sound like it removed all review.
+- **House Bill 7042** — the self-defense carve-out also covers defending **someone else**.
+- **Senate Bill 1358** — the act also raises **Medicaid** rates for these providers by the same
+  amount, unless federal Medicaid rules forbid it. That is a co-equal operative provision.
+- **House Bill 7066** — the act also **bars putting a deadly weapon on a drone or aircraft**.
+
+### What this says about the method
+
+Every one of these survived a jargon scan, a 45-word lint, and a numeric diff. Only one involved a
+number. The errors live in verbs ("stop" vs "prevent, limit or restrict"), in actors (districts vs
+the state), in mental-state qualifiers ("purposely and knowingly"), and in legal standards
+("unfairly high" vs "unconscionably excessive"). **The only check that finds them is reading the
+source summary against the description clause by clause.** Automation narrows where to look; it does
+not substitute for the read.
+
+### Readability
+
+Seven long sentences were split at conjunctions, with a machine check that no content word was lost
+(only the connectors "such", "which" and "an" changed). Reading level moved **10.1 → 9.9** and mean
+sentence length 16.9 → 16.4 words; lint stays 0 warnings.
+
+Grade ~9 is the honest floor for this batch. Getting to 7 would mean replacing the terms these laws
+are built on — "community correctional centers", "gender identity or expression", "unconscionably
+excessive" — and that is exactly the substitution that produced the errors above. Batch-02 reads at
+7.7 because sewer liens and bail agents are plainer subjects, not because it was written better.
+
+### Audit round 2 (PR #983 review): two more in HB 5004, one introduced by the audit itself
+
+Both review findings were real, and checking the flagged sentence's neighbor found a third error the
+review missed. **307 records rewritten** (155 on House Bill 5004's two rolls, 152 on House Bill
+7066's), convergence all 1,457 `unchanged`, ledger `import-claim-audit-round2-report.json` verified
+by its own `actions`.
+
+- **House Bill 5004 claimed the law set up programs it only ordered plans or guidance for.** "Sets up
+  a rebate plan for heat pumps" — the act orders the state's energy department to write a plan for
+  making heat pumps affordable and report it to lawmakers; no rebate program exists. "Directs the
+  state to buy in more environmentally sustainable ways" — the act orders a model policy that towns
+  **may choose** to use, posted online; nothing binds the state's own buying. This is the Senate
+  Bill 1 failure shape again (a study or plan described as a live program), found in a measure the
+  first audit pass marked clean.
+- **The neighbor was wrong too:** "buy land to keep as open space" — the act does not direct any land
+  purchase; it widens what existing open-space land grants can pay for, including turning open space
+  into urban farms.
+- **House Bill 7066's weapons sentence overstated a qualified ban — and the first audit round wrote
+  it.** That sentence was added as an omission fix, and in adding it we dropped "with certain
+  exceptions" (the armed forces exemption among them) and narrowed "deadly weapon, dangerous
+  instrument, firearm, ammunition, or an explosive or incendiary device" to "a deadly weapon". Now:
+  "With some exceptions, it bars arming an aircraft or drone with a deadly weapon or certain other
+  dangerous devices." The lesson applies recursively: a sentence written to fix an omission needs the
+  same clause-by-clause read as any other sentence.
+
+Wording only, as before: labels, dates and tally sentences byte-identical on all 17.
