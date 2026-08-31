@@ -1,0 +1,118 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2143",
+      "roll": 1556465,
+      "measure_id": "SB 289",
+      "vote_date": "2025-04-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 289, which bars Indiana public schools, colleges and other public employers from using race, sex, religion, color, national origin or ancestry to decide who is hired, promoted, admitted or given aid, unless a job truly calls for it. It also bars them from making people sign, or sit through training that says, that one group is better than another. It closes three state scholarships for minority teachers to new applicants, but lets people who already have one keep it. The Indiana House backed the final version 64-26, and it became law.",
+      "nay_description": "Voted against Senate Bill 289, which bars Indiana public schools, colleges and other public employers from using race, sex, religion, color, national origin or ancestry to decide who is hired, promoted, admitted or given aid, unless a job truly calls for it. It also bars them from making people sign, or sit through training that says, that one group is better than another. It closes three state scholarships for minority teachers to new applicants, but lets people who already have one keep it. The Indiana House backed the final version 64-26, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "Conference committee report, which is the enacted text. The earlier House third reading of 2025-04-14 (roll 1547488, 67-27) was on the House committee version and is not in this batch."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "senate",
+      "session": "2143",
+      "roll": 1556839,
+      "measure_id": "SB 289",
+      "vote_date": "2025-04-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 289, which bars Indiana public schools, colleges and other public employers from using race, sex, religion, color, national origin or ancestry to decide who is hired, promoted, admitted or given aid, unless a job truly calls for it. It also bars them from making people sign, or sit through training that says, that one group is better than another. It closes three state scholarships for minority teachers to new applicants, but lets people who already have one keep it. The Indiana Senate backed the final version 34-16, and it became law.",
+      "nay_description": "Voted against Senate Bill 289, which bars Indiana public schools, colleges and other public employers from using race, sex, religion, color, national origin or ancestry to decide who is hired, promoted, admitted or given aid, unless a job truly calls for it. It also bars them from making people sign, or sit through training that says, that one group is better than another. It closes three state scholarships for minority teachers to new applicants, but lets people who already have one keep it. The Indiana Senate backed the final version 34-16, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "Conference committee report, which is the enacted text. The earlier Senate third reading of 2025-02-06 (roll 1483504, 34-13) was on the introduced version and is not in this batch."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2143",
+      "roll": 1549534,
+      "measure_id": "HB 1393",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1393, which tells an Indiana jail to alert the county sheriff when it books someone. The alert is required if the arrest was for a crime and there is good reason to believe the person is in the country unlawfully. The sheriff must then pass that word to the proper agency. The law does not change who can be arrested, and only adds a report after an arrest has happened. The Indiana House agreed to the Senate's version 58-19, and it became law.",
+      "nay_description": "Voted against House Bill 1393, which tells an Indiana jail to alert the county sheriff when it books someone. The alert is required if the arrest was for a crime and there is good reason to believe the person is in the country unlawfully. The sheriff must then pass that word to the proper agency. The law does not change who can be arrested, and only adds a report after an arrest has happened. The Indiana House agreed to the Senate's version 58-19, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "The House agreed to the Senate's version, which became law (HEA 1393 - Concur). The earlier House third reading of 2025-02-04 (roll 1479606, 67-26) was on an earlier version and is not in this batch."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "senate",
+      "session": "2143",
+      "roll": 1524754,
+      "measure_id": "HB 1393",
+      "vote_date": "2025-03-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1393, which tells an Indiana jail to alert the county sheriff when it books someone. The alert is required if the arrest was for a crime and there is good reason to believe the person is in the country unlawfully. The sheriff must then pass that word to the proper agency. The law does not change who can be arrested, and only adds a report after an arrest has happened. The Indiana Senate passed it 37-10, and it became law.",
+      "nay_description": "Voted against House Bill 1393, which tells an Indiana jail to alert the county sheriff when it books someone. The alert is required if the arrest was for a crime and there is good reason to believe the person is in the country unlawfully. The sheriff must then pass that word to the proper agency. The law does not change who can be arrested, and only adds a report after an arrest has happened. The Indiana Senate passed it 37-10, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "The Senate's engrossed version is the text the House then agreed to, so this roll is on the text that became law."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2143",
+      "roll": 1556843,
+      "measure_id": "SB 475",
+      "vote_date": "2025-04-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 475, which bans new deals that stop a doctor from working for a rival after leaving a hospital. The ban covers deals first signed on or after July 1, 2025, and any such deal is void. Older deals still hold, and renewing one does not count as signing a new one. Hospitals may still guard trade secrets, bar a departing doctor from recruiting staff for a year, and write such terms into the sale of a practice the doctor mostly owned. The Indiana House backed the final version 65-21, and it became law.",
+      "nay_description": "Voted against Senate Bill 475, which bans new deals that stop a doctor from working for a rival after leaving a hospital. The ban covers deals first signed on or after July 1, 2025, and any such deal is void. Older deals still hold, and renewing one does not count as signing a new one. Hospitals may still guard trade secrets, bar a departing doctor from recruiting staff for a year, and write such terms into the sale of a practice the doctor mostly owned. The Indiana House backed the final version 65-21, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "note": "Conference committee report, which is the enacted text. The earlier House third reading of 2025-04-09 (roll 1541701, 71-23) was on the House committee version and is not in this batch."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2143",
+      "roll": 1491965,
+      "measure_id": "HB 1041",
+      "vote_date": "2025-02-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1041, which tells Indiana public colleges, and private colleges that play them, to label each sports team as men's, women's or mixed. It bars anyone who is male, based on their sex at birth, from playing on a women's team. Colleges must set up a complaint process and may not punish a student for speaking up. A student who loses a spot on a team may sue for a court order, legal costs, and the greater of their real losses or $1,000. The Indiana House passed it 71-25, and it became law.",
+      "nay_description": "Voted against House Bill 1041, which tells Indiana public colleges, and private colleges that play them, to label each sports team as men's, women's or mixed. It bars anyone who is male, based on their sex at birth, from playing on a women's team. Colleges must set up a complaint process and may not punish a student for speaking up. A student who loses a spot on a team may sue for a court order, legal costs, and the greater of their real losses or $1,000. The Indiana House passed it 71-25, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "The only divided roll on this measure. The operative chapter of the version the House passed on 2025-02-13 was diffed against the enrolled act and is the same, so no version split is needed."
+    }
+  ]
+}
