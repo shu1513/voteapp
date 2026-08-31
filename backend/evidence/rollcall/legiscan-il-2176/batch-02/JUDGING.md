@@ -182,3 +182,17 @@ were audited and then held out), and the README's claim that the stale-text
 votes were "unanimous" (H.B. 5090 was 101-1 and H.B. 1836 was 107-6; what
 kept them out of the pool is the divided gate's 25%-minority threshold, not
 unanimity).
+
+## Plain-language rewrite (2026-08-30)
+
+All 54 yea and nay descriptions were rewritten from committed evidence. No
+vote date or official-date override changed. Judge dry and real runs passed;
+the importer rewrote 3,319 local records with stamp
+`2026-08-31T06:51:53.919Z`, and convergence reported all 3,319 unchanged.
+The original `import-report.json` remains unchanged. Prod remains untouched.
+
+Current-judge later-roll acknowledgments: 1718440→1718442,
+1719876→1719877, and 1562456→1582743.
+
+A final jargon-definition pass rewrote 121 HB 1836 records at
+`2026-08-31T07:27:36.724Z`; the next dry run reported all 3,319 unchanged.

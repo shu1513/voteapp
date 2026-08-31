@@ -160,3 +160,17 @@ The discipline that made this batch safe, for whoever picks up the next one:
 the sentences replicate ~120 times each, so they get read before they are
 written, not after. Every figure in a description was checked against the
 section-by-section analysis, never the sponsor statement above it.
+
+## Plain-language rewrite (2026-08-30)
+
+All 25 yea and nay descriptions were rewritten from this committed evidence.
+The judge dry run and real run both passed. The importer then rewrote 1,620
+local candidate records with stamp `2026-08-31T06:32:32.572Z`; a final dry run
+reported all 1,620 unchanged. The original `import-report.json` remains
+unchanged. Prod remains untouched.
+
+The current judge requires explicit acknowledgment when a later same-chamber
+floor roll is intentionally left outside this batch. Acknowledged roll pairs:
+1483210→1557913, 1578072→1582920, 1550482→1579565, 1580073→1582991,
+1571446→1587503, 1578076→1582754, 1523046→1585648, 1522908→1588929,
+1579978→1582956, 1523169→1583924, and 1550655→1585606.

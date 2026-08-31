@@ -247,3 +247,15 @@ enrolled texts before acting; 361 records rewritten in place
 Batch 03, from the 716 divided actions still untouched. The discipline is
 unchanged: each sentence replicates ~114 times on the house side, so it gets
 read against the statute before it is written, never after.
+
+## Plain-language rewrite (2026-08-30)
+
+All 27 yea and nay descriptions were rewritten from this committed evidence.
+The judge dry run and real run both passed. The importer then rewrote 1,741
+local candidate records with stamp `2026-08-31T06:34:30.300Z`; a final dry run
+reported all 1,741 unchanged. The original `import-report.json` remains
+unchanged. Prod remains untouched.
+
+Later-roll acknowledgments required by the current judge are:
+1570293→1582993, 1570131→1581601, 1570671→1584058, 1529212→1583939,
+1592100→1592101, 1579859→1582596, 1568579→1585434, and 1575103→1581603.

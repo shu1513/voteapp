@@ -100,3 +100,17 @@ select right(origin_run_id, 24) as stamp, count(*)
 - **62 distinct candidates, not the 63 in the crosswalk.** Nathan Boyles (HD-003, people_id 26477) won the June 2025 special election and first appears in a roll call on 2025-06-16, after every vote in this batch. Not a fan-out gap — the Texas Speaker-Burrows finding in a different shape.
 
 Queue after judging: 11 approved / 895 pending of 906 stored FL rows.
+
+## Plain-language rewrite (2026-08-31)
+
+All 11 yea and nay descriptions were rewritten from committed evidence. Judge
+dry and real runs passed. The importer rewrote 385 local records with stamp
+`2026-08-31T07:04:17.041Z`; convergence reported all 385 unchanged. The
+original `import-report.json` remains unchanged.
+Prod remains untouched.
+
+Current-judge later-roll acknowledgments: 1555216→1564581,
+1558940→1563783, and 1560643→1560642.
+
+A final jargon-definition pass rewrote 65 records at
+`2026-08-31T07:28:47.100Z`; the next dry run reported all 385 unchanged.

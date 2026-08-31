@@ -115,3 +115,21 @@ This is the same explanation batch 02 recorded.
 
 Texas total after this batch: **4,328 candidate records, local only.** Prod is
 untouched.
+
+## Plain-language rewrite (2026-08-30)
+
+All 12 yea and nay descriptions were rewritten from committed evidence. Roll
+1556014 remains pending because its stored SB 2024 tally and voter list conflict
+with the already-committed Texas Senate Journal evidence; its 13 retired records
+were not revived. The other 11 judgments passed dry and real judging.
+
+The importer rewrote 954 local candidate records with stamp
+`2026-08-31T06:35:02.565Z`; a final dry run reported all 954 unchanged and one
+not-approved roll. The original `import-report.json` remains unchanged. Prod
+remains untouched.
+
+Later-roll acknowledgments required by the current judge are:
+1567009→1582159, 1568356→1580234, and 1539641→1538969.
+
+A final jargon-definition pass rewrote 113 SB 2835 records at
+`2026-08-31T07:26:46.791Z`; the next dry run reported all 954 unchanged.

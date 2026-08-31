@@ -1,191 +1,211 @@
 {
- "judgments": [
-  {
-   "jurisdiction": "FL",
-   "chamber": "house",
-   "session": "2135",
-   "roll": 1555400,
-   "measure_id": "H 351",
-   "vote_date": "2025-04-23",
-   "review_status": "approved",
-   "yea_description": "Voted for HB 351, which created the criminal offense of dangerous excessive speeding \u2014 driving 50 miles per hour or more over the limit, or at 100 miles per hour or more in a manner that threatened people or property \u2014 punishable by up to 30 days in jail and a $500 fine for a first conviction and up to 90 days and $1,000 for a repeat, revoked the driving privilege for 180 days to a year on a second conviction within five years, and required a driver cited for exceeding the limit by more than 50 miles per hour to appear at a mandatory hearing. The Florida House passed it 75-38 and it became law.",
-   "nay_description": "Voted against HB 351, which created the criminal offense of dangerous excessive speeding \u2014 driving 50 miles per hour or more over the limit, or at 100 miles per hour or more in a manner that threatened people or property \u2014 punishable by up to 30 days in jail and a $500 fine for a first conviction and up to 90 days and $1,000 for a repeat, revoked the driving privilege for 180 days to a year on a second conviction within five years, and required a driver cited for exceeding the limit by more than 50 miles per hour to appear at a mandatory hearing. The Florida House passed it 75-38 and it became law.",
-   "labels": [
+  "judgments": [
     {
-     "slug": "public_safety_and_crime_control",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "FL",
-   "chamber": "house",
-   "session": "2135",
-   "roll": 1555216,
-   "measure_id": "H 875",
-   "vote_date": "2025-04-23",
-   "review_status": "approved",
-   "yea_description": "Voted for the House version of HB 875, which directed the Department of Education to convene a workgroup to revise the Florida Educator Accomplished Practices, required the State Board of Education to adopt a uniform core curriculum for every type of teacher preparation program, created the Coaching for Educator Readiness and Teaching competency-based certification pathway, and standardized the requirements for teacher mentors and clinical educators. The Florida House passed it 84-27; the version that became law also named the two courses every candidate must complete, established the Florida Center for Teaching Excellence at Miami-Dade College, and kept the general knowledge examination requirement for certification.",
-   "nay_description": "Voted against the House version of HB 875, which directed the Department of Education to convene a workgroup to revise the Florida Educator Accomplished Practices, required the State Board of Education to adopt a uniform core curriculum for every type of teacher preparation program, created the Coaching for Educator Readiness and Teaching competency-based certification pathway, and standardized the requirements for teacher mentors and clinical educators. The Florida House passed it 84-27; the version that became law also named the two courses every candidate must complete, established the Florida Center for Teaching Excellence at Miami-Dade College, and kept the general knowledge examination requirement for certification.",
-   "labels": [
+      "jurisdiction": "FL",
+      "chamber": "house",
+      "session": "2135",
+      "roll": 1555400,
+      "measure_id": "H 351",
+      "vote_date": "2025-04-23",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 351. Dangerous excessive speeding means driving at least 50 miles per hour over the limit or at least 100 miles per hour while threatening people or property; first penalties reach 30 days and $500, then 90 days and $1,000. A second conviction within five years suspends driving for 180 days to one year, and anyone cited for more than 50 miles per hour over must attend a hearing. The Florida House passed it 75-38, and it became law.",
+      "nay_description": "Voted against House Bill 351. Dangerous excessive speeding means driving at least 50 miles per hour over the limit or at least 100 miles per hour while threatening people or property; first penalties reach 30 days and $500, then 90 days and $1,000. A second conviction within five years suspends driving for 180 days to one year, and anyone cited for more than 50 miles per hour over must attend a hearing. The Florida House passed it 75-38, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "public_education_quality",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "FL",
-   "chamber": "house",
-   "session": "2135",
-   "roll": 1549690,
-   "measure_id": "H 903",
-   "vote_date": "2025-04-16",
-   "review_status": "approved",
-   "yea_description": "Voted for HB 903, which required prisoners to exhaust all available administrative remedies before bringing an action over the conditions of their confinement, barred such actions for mental or emotional injury without a showing of physical injury or a specified sexual act, required petitions and tort actions by indigent prisoners to be brought within one year, subjected a challenge to a prison disciplinary report to a lien on the prisoner's trust account for the full court costs and fees, made the mandatory minimum firearm sentences under 10-20-Life run consecutively, and allowed a death sentence to be carried out by any method not held unconstitutional if the chemicals for lethal injection become impossible or impractical to obtain. The Florida House passed it 83-33 and it became law.",
-   "nay_description": "Voted against HB 903, which required prisoners to exhaust all available administrative remedies before bringing an action over the conditions of their confinement, barred such actions for mental or emotional injury without a showing of physical injury or a specified sexual act, required petitions and tort actions by indigent prisoners to be brought within one year, subjected a challenge to a prison disciplinary report to a lien on the prisoner's trust account for the full court costs and fees, made the mandatory minimum firearm sentences under 10-20-Life run consecutively, and allowed a death sentence to be carried out by any method not held unconstitutional if the chemicals for lethal injection become impossible or impractical to obtain. The Florida House passed it 83-33 and it became law.",
-   "labels": [
+      "jurisdiction": "FL",
+      "chamber": "house",
+      "session": "2135",
+      "roll": 1555216,
+      "measure_id": "H 875",
+      "vote_date": "2025-04-23",
+      "review_status": "approved",
+      "yea_description": "Voted for the House version of House Bill 875. It orders updated teaching standards, one core teacher-training curriculum, a skills-based certification route called Coaching for Educator Readiness and Teaching, and common mentor rules. The House passed it 84-27; the final law also names two required courses, creates the Florida Center for Teaching Excellence at Miami-Dade College, and keeps the general-knowledge exam.",
+      "nay_description": "Voted against the House version of House Bill 875. It orders updated teaching standards, one core teacher-training curriculum, a skills-based certification route called Coaching for Educator Readiness and Teaching, and common mentor rules. The House passed it 84-27; the final law also names two required courses, creates the Florida Center for Teaching Excellence at Miami-Dade College, and keeps the general-knowledge exam.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1564581
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "against"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "FL",
-   "chamber": "senate",
-   "session": "2135",
-   "roll": 1560643,
-   "measure_id": "H 903",
-   "vote_date": "2025-04-29",
-   "review_status": "approved",
-   "yea_description": "Voted for HB 903, which required prisoners to exhaust all available administrative remedies before bringing an action over the conditions of their confinement, barred such actions for mental or emotional injury without a showing of physical injury or a specified sexual act, required petitions and tort actions by indigent prisoners to be brought within one year, subjected a challenge to a prison disciplinary report to a lien on the prisoner's trust account for the full court costs and fees, made the mandatory minimum firearm sentences under 10-20-Life run consecutively, and allowed a death sentence to be carried out by any method not held unconstitutional if the chemicals for lethal injection become impossible or impractical to obtain. The Florida Senate passed it 26-11 and it became law.",
-   "nay_description": "Voted against HB 903, which required prisoners to exhaust all available administrative remedies before bringing an action over the conditions of their confinement, barred such actions for mental or emotional injury without a showing of physical injury or a specified sexual act, required petitions and tort actions by indigent prisoners to be brought within one year, subjected a challenge to a prison disciplinary report to a lien on the prisoner's trust account for the full court costs and fees, made the mandatory minimum firearm sentences under 10-20-Life run consecutively, and allowed a death sentence to be carried out by any method not held unconstitutional if the chemicals for lethal injection become impossible or impractical to obtain. The Florida Senate passed it 26-11 and it became law.",
-   "labels": [
+      "jurisdiction": "FL",
+      "chamber": "house",
+      "session": "2135",
+      "roll": 1549690,
+      "measure_id": "H 903",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 903. Prisoners must finish prison appeals before suing, cannot claim only mental harm without physical injury or a listed sexual act, and have one year for poor-person petitions and injury suits. Discipline challenges create account liens for court costs; 10-20-Life gun terms run one after another, and another constitutional execution method may replace lethal injection if its chemicals become unavailable or impractical. The Florida House passed it 83-33, and it became law.",
+      "nay_description": "Voted against House Bill 903. Prisoners must finish prison appeals before suing, cannot claim only mental harm without physical injury or a listed sexual act, and have one year for poor-person petitions and injury suits. Discipline challenges create account liens for court costs; 10-20-Life gun terms run one after another, and another constitutional execution method may replace lethal injection if its chemicals become unavailable or impractical. The Florida House passed it 83-33, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "against"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "FL",
-   "chamber": "senate",
-   "session": "2135",
-   "roll": 1557039,
-   "measure_id": "H 1219",
-   "vote_date": "2025-04-24",
-   "review_status": "approved",
-   "yea_description": "Voted for HB 1219, which created the CHOICE Act, which let an employer and an employee earning more than twice the average wage of the relevant Florida county \u2014 health care practitioners excluded \u2014 enter garden leave or noncompete agreements running up to four years, declared those agreements not to be a restraint of trade, and required a court asked to enforce one to preliminarily enjoin the employee from working for anyone else unless the employee showed by clear and convincing evidence that the work would not be similar or that the employer had stopped paying the agreed salary and benefits. The Florida Senate passed it 28-9 and it became law.",
-   "nay_description": "Voted against HB 1219, which created the CHOICE Act, which let an employer and an employee earning more than twice the average wage of the relevant Florida county \u2014 health care practitioners excluded \u2014 enter garden leave or noncompete agreements running up to four years, declared those agreements not to be a restraint of trade, and required a court asked to enforce one to preliminarily enjoin the employee from working for anyone else unless the employee showed by clear and convincing evidence that the work would not be similar or that the employer had stopped paying the agreed salary and benefits. The Florida Senate passed it 28-9 and it became law.",
-   "labels": [
+      "jurisdiction": "FL",
+      "chamber": "senate",
+      "session": "2135",
+      "roll": 1560643,
+      "measure_id": "H 903",
+      "vote_date": "2025-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 903. Prisoners must finish prison appeals before suing, cannot claim only mental harm without physical injury or a listed sexual act, and have one year for poor-person petitions and injury suits. Discipline challenges create account liens for court costs; 10-20-Life gun terms run one after another, and another constitutional execution method may replace lethal injection if its chemicals become unavailable or impractical. The Florida Senate passed it 26-11, and it became law.",
+      "nay_description": "Voted against House Bill 903. Prisoners must finish prison appeals before suing, cannot claim only mental harm without physical injury or a listed sexual act, and have one year for poor-person petitions and injury suits. Discipline challenges create account liens for court costs; 10-20-Life gun terms run one after another, and another constitutional execution method may replace lethal injection if its chemicals become unavailable or impractical. The Florida Senate passed it 26-11, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1560642
+      ]
+    },
     {
-     "slug": "corporate_accountability",
-     "yea": "against"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "FL",
-   "chamber": "house",
-   "session": "2135",
-   "roll": 1550259,
-   "measure_id": "H 6025",
-   "vote_date": "2025-04-16",
-   "review_status": "approved",
-   "yea_description": "Voted for HB 6025, which repealed the statute that automatically barred selling firearms or ammunition, displaying them for sale, and carrying a firearm in a public place during a locally declared state of emergency arising from violence or public disorder; the repealed section also held the clause providing that the chapter did not authorize seizing lawfully possessed firearms. The Florida House passed it 86-28 and it became law.",
-   "nay_description": "Voted against HB 6025, which repealed the statute that automatically barred selling firearms or ammunition, displaying them for sale, and carrying a firearm in a public place during a locally declared state of emergency arising from violence or public disorder; the repealed section also held the clause providing that the chapter did not authorize seizing lawfully possessed firearms. The Florida House passed it 86-28 and it became law.",
-   "labels": [
+      "jurisdiction": "FL",
+      "chamber": "senate",
+      "session": "2135",
+      "roll": 1557039,
+      "measure_id": "H 1219",
+      "vote_date": "2025-04-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1219. The CHOICE Act lets non-health workers earning over twice their county's average wage sign deals lasting up to four years that pay them to avoid rivals or bar rival work, and says these are not trade restraints. Courts must temporarily stop similar work unless strong evidence shows it differs or the employer stopped agreed pay and benefits. The Florida Senate passed it 28-9, and it became law.",
+      "nay_description": "Voted against House Bill 1219. The CHOICE Act lets non-health workers earning over twice their county's average wage sign deals lasting up to four years that pay them to avoid rivals or bar rival work, and says these are not trade restraints. Courts must temporarily stop similar work unless strong evidence shows it differs or the employer stopped agreed pay and benefits. The Florida Senate passed it 28-9, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "gun_control",
-     "yea": "against"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "FL",
-   "chamber": "senate",
-   "session": "2135",
-   "roll": 1535606,
-   "measure_id": "S 56",
-   "vote_date": "2025-04-03",
-   "review_status": "approved",
-   "yea_description": "Voted for SB 56, which made it a third-degree felony to inject, release, or disperse any chemical, compound, substance, or apparatus into the atmosphere within Florida for the express purpose of affecting temperature, weather, climate, or the intensity of sunlight \u2014 up to five years in prison and a fine of up to $100,000, or up to $5,000 for aircraft operators and controllers \u2014 required operators of publicly owned airports to report aircraft equipped for such releases, directed the Department of Environmental Protection to take and investigate public reports, and repealed the state's existing weather modification licensing statutes along with the department's authority to research weather modification. The Florida Senate passed it 28-9 and it became law.",
-   "nay_description": "Voted against SB 56, which made it a third-degree felony to inject, release, or disperse any chemical, compound, substance, or apparatus into the atmosphere within Florida for the express purpose of affecting temperature, weather, climate, or the intensity of sunlight \u2014 up to five years in prison and a fine of up to $100,000, or up to $5,000 for aircraft operators and controllers \u2014 required operators of publicly owned airports to report aircraft equipped for such releases, directed the Department of Environmental Protection to take and investigate public reports, and repealed the state's existing weather modification licensing statutes along with the department's authority to research weather modification. The Florida Senate passed it 28-9 and it became law.",
-   "labels": [
+      "jurisdiction": "FL",
+      "chamber": "house",
+      "session": "2135",
+      "roll": 1550259,
+      "measure_id": "H 6025",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 6025. It repeals the automatic ban on selling, displaying, or publicly carrying guns and ammunition during a local emergency caused by violence or disorder. The repealed section also said it did not authorize taking lawfully owned guns. The Florida House passed it 86-28, and it became law.",
+      "nay_description": "Voted against House Bill 6025. It repeals the automatic ban on selling, displaying, or publicly carrying guns and ammunition during a local emergency caused by violence or disorder. The repealed section also said it did not authorize taking lawfully owned guns. The Florida House passed it 86-28, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "environment_and_public_health",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "FL",
-   "chamber": "house",
-   "session": "2135",
-   "roll": 1562557,
-   "measure_id": "S 56",
-   "vote_date": "2025-04-30",
-   "review_status": "approved",
-   "yea_description": "Voted for SB 56, which made it a third-degree felony to inject, release, or disperse any chemical, compound, substance, or apparatus into the atmosphere within Florida for the express purpose of affecting temperature, weather, climate, or the intensity of sunlight \u2014 up to five years in prison and a fine of up to $100,000, or up to $5,000 for aircraft operators and controllers \u2014 required operators of publicly owned airports to report aircraft equipped for such releases, directed the Department of Environmental Protection to take and investigate public reports, and repealed the state's existing weather modification licensing statutes along with the department's authority to research weather modification. The Florida House passed it 82-28 and it became law.",
-   "nay_description": "Voted against SB 56, which made it a third-degree felony to inject, release, or disperse any chemical, compound, substance, or apparatus into the atmosphere within Florida for the express purpose of affecting temperature, weather, climate, or the intensity of sunlight \u2014 up to five years in prison and a fine of up to $100,000, or up to $5,000 for aircraft operators and controllers \u2014 required operators of publicly owned airports to report aircraft equipped for such releases, directed the Department of Environmental Protection to take and investigate public reports, and repealed the state's existing weather modification licensing statutes along with the department's authority to research weather modification. The Florida House passed it 82-28 and it became law.",
-   "labels": [
+      "jurisdiction": "FL",
+      "chamber": "senate",
+      "session": "2135",
+      "roll": 1535606,
+      "measure_id": "S 56",
+      "vote_date": "2025-04-03",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 56. Purposely releasing material into Florida's air to change weather, climate, temperature, or sunlight becomes a third-degree felony, with up to five years and $100,000, or up to $5,000 for aircraft workers. Public airports must report equipped aircraft, environmental officials must investigate reports, and Florida ends its weather-modification licenses and research power. The Florida Senate passed it 28-9, and it became law.",
+      "nay_description": "Voted against Senate Bill 56. Purposely releasing material into Florida's air to change weather, climate, temperature, or sunlight becomes a third-degree felony, with up to five years and $100,000, or up to $5,000 for aircraft workers. Public airports must report equipped aircraft, environmental officials must investigate reports, and Florida ends its weather-modification licenses and research power. The Florida Senate passed it 28-9, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "environment_and_public_health",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "FL",
-   "chamber": "house",
-   "session": "2135",
-   "roll": 1561772,
-   "measure_id": "S 492",
-   "vote_date": "2025-04-30",
-   "review_status": "approved",
-   "yea_description": "Voted for SB 492, which replaced case-by-case agency determinations of when mitigation bank credits may be released with a fixed schedule \u2014 30 percent on recording a conservation easement and posting financial assurances, 30 percent after initial construction, 20 percent at interim performance criteria and 20 percent at final success criteria, or the full amount up front for preservation-only banks \u2014 allowed credits for freshwater wetland creation to be released before all success criteria were met, and entitled a permit applicant to a one-time use of credits from outside the mitigation service area when the needed credits were unavailable within it. The Florida House passed it 87-26 and it became law.",
-   "nay_description": "Voted against SB 492, which replaced case-by-case agency determinations of when mitigation bank credits may be released with a fixed schedule \u2014 30 percent on recording a conservation easement and posting financial assurances, 30 percent after initial construction, 20 percent at interim performance criteria and 20 percent at final success criteria, or the full amount up front for preservation-only banks \u2014 allowed credits for freshwater wetland creation to be released before all success criteria were met, and entitled a permit applicant to a one-time use of credits from outside the mitigation service area when the needed credits were unavailable within it. The Florida House passed it 87-26 and it became law.",
-   "labels": [
+      "jurisdiction": "FL",
+      "chamber": "house",
+      "session": "2135",
+      "roll": 1562557,
+      "measure_id": "S 56",
+      "vote_date": "2025-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 56. Purposely releasing material into Florida's air to change weather, climate, temperature, or sunlight becomes a third-degree felony, with up to five years and $100,000, or up to $5,000 for aircraft workers. Public airports must report equipped aircraft, environmental officials must investigate reports, and Florida ends its weather-modification licenses and research power. The Florida House passed it 82-28, and it became law.",
+      "nay_description": "Voted against Senate Bill 56. Purposely releasing material into Florida's air to change weather, climate, temperature, or sunlight becomes a third-degree felony, with up to five years and $100,000, or up to $5,000 for aircraft workers. Public airports must report equipped aircraft, environmental officials must investigate reports, and Florida ends its weather-modification licenses and research power. The Florida House passed it 82-28, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "environment_and_public_health",
-     "yea": "against"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "FL",
-   "chamber": "senate",
-   "session": "2135",
-   "roll": 1558940,
-   "measure_id": "S 1080",
-   "vote_date": "2025-04-28",
-   "review_status": "approved",
-   "yea_description": "Voted for the Senate version of SB 1080, which required local governments to specify the minimum information needed for certain zoning applications, to process development permit and order applications within set timeframes, to refund application fees when they miss those timeframes, and not to cap the number of hearings held each month where the cap would delay an application, created an administrative approval route for development on agricultural enclaves, and limited extraordinary increases to impact fees. The Florida Senate passed it 26-8; the version that became law also provided that a comprehensive plan amendment not passed within 180 days after its second hearing is deemed withdrawn and let local governments spend building-code fees and fines on the process of obtaining or finalizing a building permit.",
-   "nay_description": "Voted against the Senate version of SB 1080, which required local governments to specify the minimum information needed for certain zoning applications, to process development permit and order applications within set timeframes, to refund application fees when they miss those timeframes, and not to cap the number of hearings held each month where the cap would delay an application, created an administrative approval route for development on agricultural enclaves, and limited extraordinary increases to impact fees. The Florida Senate passed it 26-8; the version that became law also provided that a comprehensive plan amendment not passed within 180 days after its second hearing is deemed withdrawn and let local governments spend building-code fees and fines on the process of obtaining or finalizing a building permit.",
-   "labels": [
+      "jurisdiction": "FL",
+      "chamber": "house",
+      "session": "2135",
+      "roll": 1561772,
+      "measure_id": "S 492",
+      "vote_date": "2025-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 492. Wetland banks release credits on a fixed schedule: 30 percent after land protection and funding, 30 percent after construction, 20 percent at an interim target, and 20 percent at final success, or all credits for preservation-only banks. Created-wetland credits may come early, and applicants get one use of credits outside the service area when none are available inside it. The Florida House passed it 87-26, and it became law.",
+      "nay_description": "Voted against Senate Bill 492. Wetland banks release credits on a fixed schedule: 30 percent after land protection and funding, 30 percent after construction, 20 percent at an interim target, and 20 percent at final success, or all credits for preservation-only banks. Created-wetland credits may come early, and applicants get one use of credits outside the service area when none are available inside it. The Florida House passed it 87-26, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "housing_affordability",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "FL",
-   "chamber": "house",
-   "session": "2135",
-   "roll": 1562037,
-   "measure_id": "S 1080",
-   "vote_date": "2025-04-30",
-   "review_status": "approved",
-   "yea_description": "Voted for SB 1080, which required local governments to specify the minimum information needed for certain zoning applications, to process development permit and order applications within set timeframes, to refund application fees when they miss those timeframes, and not to cap the number of hearings held each month where the cap would delay an application, created an administrative approval route for development on agricultural enclaves, and limited extraordinary increases to impact fees, provided that a comprehensive plan amendment not passed within 180 days after its second hearing is deemed withdrawn and let local governments spend building-code fees and fines on the process of obtaining or finalizing a building permit. The Florida House passed it 84-29 and it became law.",
-   "nay_description": "Voted against SB 1080, which required local governments to specify the minimum information needed for certain zoning applications, to process development permit and order applications within set timeframes, to refund application fees when they miss those timeframes, and not to cap the number of hearings held each month where the cap would delay an application, created an administrative approval route for development on agricultural enclaves, and limited extraordinary increases to impact fees, provided that a comprehensive plan amendment not passed within 180 days after its second hearing is deemed withdrawn and let local governments spend building-code fees and fines on the process of obtaining or finalizing a building permit. The Florida House passed it 84-29 and it became law.",
-   "labels": [
+      "jurisdiction": "FL",
+      "chamber": "senate",
+      "session": "2135",
+      "roll": 1558940,
+      "measure_id": "S 1080",
+      "vote_date": "2025-04-28",
+      "review_status": "approved",
+      "yea_description": "Voted for the Senate version of Senate Bill 1080. It standardizes zoning details, deadlines, and fee refunds; bars hearing limits that cause delay; speeds building on farmland surrounded by development; and limits steep increases in impact fees, which fund public services. The Senate passed it 26-8; the final law also withdraws plan changes unfinished within 180 days after a second hearing and allows code fees for permit work.",
+      "nay_description": "Voted against the Senate version of Senate Bill 1080. It standardizes zoning details, deadlines, and fee refunds; bars hearing limits that cause delay; speeds building on farmland surrounded by development; and limits steep increases in impact fees, which fund public services. The Senate passed it 26-8; the final law also withdraws plan changes unfinished within 180 days after a second hearing and allows code fees for permit work.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1563783
+      ]
+    },
     {
-     "slug": "housing_affordability",
-     "yea": "for"
+      "jurisdiction": "FL",
+      "chamber": "house",
+      "session": "2135",
+      "roll": 1562037,
+      "measure_id": "S 1080",
+      "vote_date": "2025-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1080. It standardizes zoning details, deadlines, and fee refunds; bars hearing limits that cause delay; speeds building on farmland surrounded by development; and limits steep increases in impact fees, which fund public services. It also withdraws plan changes unfinished within 180 days after a second hearing and allows building-code fees and fines to pay for permit work. The Florida House passed it 84-29, and it became law.",
+      "nay_description": "Voted against Senate Bill 1080. It standardizes zoning details, deadlines, and fee refunds; bars hearing limits that cause delay; speeds building on farmland surrounded by development; and limits steep increases in impact fees, which fund public services. It also withdraws plan changes unfinished within 180 days after a second hearing and allows building-code fees and fines to pay for permit work. The Florida House passed it 84-29, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
     }
-   ]
-  }
- ]
+  ]
 }

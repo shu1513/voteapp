@@ -75,3 +75,11 @@ local only**, so prod needs it before any Illinois promotion.
 Descriptions were built through the batch-03 guard that asserts `", The "`
 appears in no description, the rule recorded after the comma splice shipped in
 both batch-01 and batch-02.
+
+## Plain-language rewrite (2026-08-30)
+
+All 3 yea and nay descriptions were rewritten from committed evidence. No
+vote date or official-date override changed. Judge dry and real runs passed;
+the importer rewrote 157 local records with stamp
+`2026-08-31T06:52:38.069Z`, and convergence reported all 157 unchanged.
+The original `import-report.json` remains unchanged. Prod remains untouched.
