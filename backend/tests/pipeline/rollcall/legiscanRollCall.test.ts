@@ -421,6 +421,57 @@ describe("Kentucky's two sessions read the same words differently", () => {
   });
 });
 
+describe("Indiana 2025's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS.IN!;
+  const inRoll = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+
+  it("keeps the measured final-action spellings, scheduling prefix and all", () => {
+    expect(inRoll("House - Third reading", 100)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(inRoll("Senate - Third reading", 50, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(inRoll("House - House concurred with Senate amendments", 100).questionClass).toBe("concurrence");
+    expect(inRoll("House - Rules Suspended. House concurred with Senate amendments", 100).questionClass).toBe(
+      "concurrence"
+    );
+    expect(inRoll("Senate - Concurrence failed for lack of constitutional majority", 50, "senate").questionClass).toBe(
+      "concurrence"
+    );
+    expect(inRoll("Senate - Conference Committee Report 1", 50, "senate").questionClass).toBe("conference_report");
+    expect(inRoll("House - Rules Suspended. Conference Committee Report 2", 100).questionClass).toBe(
+      "conference_report"
+    );
+  });
+
+  it("excludes each surveyed procedural family", () => {
+    for (const desc of [
+      "House - Amendment #1 (Burton) failed",
+      "Senate - Amendment #12 (Ford Jon) prevailed",
+      "House - Appeal the ruling of the chair (Pryor)",
+      "House - Second reading",
+      "House - Referred to Committee on Education pursuant to House Rule 126.4",
+    ]) {
+      expect(inRoll(desc, 100)).toMatchObject({ isFloorVote: false });
+    }
+  });
+
+  // Ten House rolls carry the literal desc `House -` with no question after
+  // the dash. The bill histories show they are five third readings, two
+  // concurrences, one failed amendment and two appeals of the chair, so no
+  // pattern can recover the question from the desc — they must surface for a
+  // human rather than be guessed at. See the config comment and
+  // evidence/rollcall/legiscan-in-2143/CODE-FINDINGS.md.
+  it("surfaces the blank-question rolls instead of guessing them", () => {
+    expect(inRoll("House -", 100)).toMatchObject({
+      isFloorVote: null,
+      questionClass: null,
+      reason: "unknown_question",
+    });
+  });
+});
+
 describe("getLegiscanStateConfig", () => {
   it("serves only surveyed states; an unsurveyed state is refused by name", () => {
     expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual([
@@ -439,6 +490,7 @@ describe("getLegiscanStateConfig", () => {
       "MD-2240",
       "KY",
       "KY-2247",
+      "IN",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
@@ -456,6 +508,7 @@ describe("getLegiscanStateConfig", () => {
       "MO",
       "MD",
       "KY",
+      "IN",
     ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);

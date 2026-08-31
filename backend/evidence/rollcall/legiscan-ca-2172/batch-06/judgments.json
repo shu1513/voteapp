@@ -1,0 +1,94 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602563,
+      "measure_id": "AB 263",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 263, which keeps the emergency rules protecting water flows in the Scott and Shasta rivers in force until January 1, 2031, or until permanent flow rules for those rivers are adopted, whichever comes first. The State Water Resources Control Board must report publicly each year on how its work toward permanent flow rules is going, and take public comment as it does. The California State Assembly agreed 58-20, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 263, which keeps the emergency rules protecting water flows in the Scott and Shasta rivers in force until January 1, 2031, or until permanent flow rules for those rivers are adopted, whichever comes first. The State Water Resources Control Board must report publicly each year on how its work toward permanent flow rules is going, and take public comment as it does. The California State Assembly agreed 58-20, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1616312,
+      "measure_id": "SB 25",
+      "vote_date": "2026-01-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 25, the California Uniform Antitrust Premerger Notification Act, which requires companies that already report a merger to federal antitrust regulators to file a copy of that federal form with California's Attorney General within one business day. It applies to a company whose main place of business is in California, or whose California sales of the goods or services in the deal reach at least a fifth of the federal reporting threshold. A company based in California must include the extra documents federal law requires with its filing. A company covered only by its California sales sends them within seven business days of the Attorney General asking for them. The Attorney General may not make the filed information public and may seek a civil penalty from a company that fails to file. The requirement covers merger notices filed on or after January 1, 2027. It passed the California State Assembly 52-17 and became law.",
+      "nay_description": "Voted against passing Senate Bill 25, the California Uniform Antitrust Premerger Notification Act, which requires companies that already report a merger to federal antitrust regulators to file a copy of that federal form with California's Attorney General within one business day. It applies to a company whose main place of business is in California, or whose California sales of the goods or services in the deal reach at least a fifth of the federal reporting threshold. A company based in California must include the extra documents federal law requires with its filing. A company covered only by its California sales sends them within seven business days of the Attorney General asking for them. The Attorney General may not make the filed information public and may seek a civil penalty from a company that fails to file. The requirement covers merger notices filed on or after January 1, 2027. It passed the California State Assembly 52-17 and became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602358,
+      "measure_id": "AB 1084",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 1084, which lets an adult change their name to match their gender identity without anyone being able to object, starting July 1, 2026. The court must grant the petition without a hearing within six weeks of filing. A child's petition signed by every living parent is granted the same way, within six weeks and without a hearing. If a parent has not signed, the court issues an order setting out the required information, and the petition and order must be served on that parent within four weeks. A hearing is set only if someone files an objection on time and shows good reason to oppose the change. The law also drops the old requirement to file the judgment within 30 days. The California State Assembly agreed 58-16, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 1084, which lets an adult change their name to match their gender identity without anyone being able to object, starting July 1, 2026. The court must grant the petition without a hearing within six weeks of filing. A child's petition signed by every living parent is granted the same way, within six weeks and without a hearing. If a parent has not signed, the court issues an order setting out the required information, and the petition and order must be served on that parent within four weeks. A hearing is set only if someone files an objection on time and shows good reason to oppose the change. The law also drops the old requirement to file the judgment within 30 days. The California State Assembly agreed 58-16, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601320,
+      "measure_id": "AB 435",
+      "vote_date": "2025-09-08",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 435, which sets a clear physical test, starting January 1, 2027, for when a child is big enough to ride using only the car's seat belt instead of a child seat or booster. The child must sit all the way back against the seat, with their knees bending over the edge of it. The shoulder belt must cross the middle of their chest and shoulder rather than their neck, and the lap belt must sit low, touching their thighs. They must be able to stay seated that way for the whole trip. The California State Assembly agreed 49-13, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 435, which sets a clear physical test, starting January 1, 2027, for when a child is big enough to ride using only the car's seat belt instead of a child seat or booster. The child must sit all the way back against the seat, with their knees bending over the edge of it. The shoulder belt must cross the middle of their chest and shoulder rather than their neck, and the lap belt must sit low, touching their thighs. They must be able to stay seated that way for the whole trip. The California State Assembly agreed 49-13, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602416,
+      "measure_id": "SB 709",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 709, which requires self-storage rental agreements signed on or after January 1, 2026 to spell out what the renter will actually pay. The agreement must say whether the quoted rent is a discount or a promotional rate, whether the rent can be raised, and the highest rent the owner could charge during the first 12 months. It passed the California State Assembly 57-17 and became law.",
+      "nay_description": "Voted against passing Senate Bill 709, which requires self-storage rental agreements signed on or after January 1, 2026 to spell out what the renter will actually pay. The agreement must say whether the quoted rent is a discount or a promotional rate, whether the rent can be raised, and the highest rent the owner could charge during the first 12 months. It passed the California State Assembly 57-17 and became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
