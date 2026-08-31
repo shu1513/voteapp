@@ -92,23 +92,29 @@ so every vote in this batch was cast on the enrolled text and no description nee
 
 ## Batches
 
-- `batch-01/` — 20 rolls / 10 measures / **729 records**.
-- `batch-02/` — 24 rolls / 12 measures / **859 records**. First `civil_rights`, `election_integrity`.
-- `batch-03/` — 18 rolls / 9 measures / **645 records**. First `social_programs_and_welfare`.
-- `batch-04/` — 21 rolls / 11 measures / **806 records**. First `womens_reproductive_rights`,
-  `data_privacy`.
-- `batch-05/` — 13 rolls / 7 measures / **509 records**. Closes the both-chamber seam.
+- `batch-01/` 20 rolls / 10 measures / **729 records** · `batch-02/` 24 / 12 / **859** ·
+  `batch-03/` 18 / 9 / **645** · `batch-04/` 21 / 11 / **806** · `batch-05/` 13 / 7 / **509**
+  (both-chamber seam closed) · `batch-06/` 5 / 5 / **311** (one-chamber tail begins).
 
-California total: **3,548 roll-call records across 80 candidates**, 49 measures, 13 of the 27
-research areas. All descriptions plain English, American-spelled, every enacted qualification kept.
+California total: **3,859 roll-call records across 80 candidates**, 54 measures, 13 of 27 research
+areas. All descriptions plain English, American-spelled, every enacted qualification kept.
 
-**The both-chamber seam is closed.** Every measure in the 227-measure divided-and-enacted universe
-that is divided in BOTH chambers has now been judged or dropped with a recorded reason:
-49 judged + 29 dropped under filter 5 + 36 excluded by standing rule (budget acts, trailer bills,
-single-jurisdiction) + 113 one-chamber = 227.
+## The dataset refreshed on 2026-08-30 — and the trigger was wrong
 
-**What remains.** The **113 one-chamber measures**, each worth a single roll (~68 records in the
-Assembly, ~11 in the Senate). Separately, 430 divided rolls sat on measures still awaiting the
-governor when this dataset was cut (2026-08-23); LegiScan was still serving that same cut on
-2026-08-30, so a genuinely refreshed dataset in the autumn is the trigger for that seam — verify
-`dataset_hash` before re-downloading.
+Earlier notes said a refreshed LegiScan cut was the trigger for the pending seam. The refresh landed
+(hash `c150cc01b198`, at `/Users/shu/legiscan-data/ca-2172-0830/`) and it is **not** the trigger:
+
+| | 08-23 cut | 08-30 cut |
+| --- | --- | --- |
+| roll calls | 19,942 | 21,158 |
+| divided floor votes | 972 | 1,153 |
+| divided **and enacted** | 441 / 227 measures | **445 / 229** |
+| enrolled, awaiting the governor | 232 | **728** |
+
+The final week's votes arrived, but those bills are enrolled, not signed. **The real trigger is
+signing: watch the status-3 count fall, not the `dataset_hash` change.** Signing runs into the
+autumn.
+
+**What remains.** **83 one-chamber measures** actionable (12 Assembly-only at ~68 records each, 71
+Senate-only at ~11), plus the **728 enrolled bills** once signed. Two one-chamber measures are
+permanently unavailable: AB 863 and AB 483 have only pre-amendment divided votes.
