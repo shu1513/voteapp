@@ -178,8 +178,10 @@ Before re-import, the existing Maryland tag set had 1,303 rows and MD5
 The real rerun (`import-rerun-report.json`) reported 1,446 `unchanged` and 19
 `insert`; the convergence dry run reported 1,465 `unchanged`. Current local
 total: 1,465 records across 160 candidates and 1,315 tags. `import-report.json`
-was copied to `import-pre-roster-report.json` before the real rerun. Production
-remains untouched.
+was untouched by the rerun — the importer writes a rerun to
+`import-rerun-report.json` when the insert ledger already exists, so the
+precautionary pre-run copy proved redundant (byte-identical) and is not
+committed. Production remains untouched.
 
 ## Nay repair (2026-08-30): authored nay stances, 143 mechanically flipped tags dropped
 
