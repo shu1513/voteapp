@@ -987,13 +987,18 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     ],
   },
 
-  // Alabama Legislature, 2025 Regular Session (Feb 4 - May 14 2025).
+  // Alabama Legislature, 2025 Regular Session (Feb 4 - May 14 2025). The
+  // 2026 sessions (LegiScan 2218 regular, 2262 special) are NOT registered
+  // here: each needs its own survey and an `AL-2218`-style compound key
+  // (the MO/MD pattern) in a follow-up PR.
   // Vocabulary measured from the full dataset survey 2026-08-31: 1,449
   // bills, 2,851 roll calls, 139 people (105 House + 35 Senate seats).
   //
   // What the survey established:
-  // - Every desc carries a trailing ` - Roll Call <n>`, sometimes followed
-  //   by an amendment code or a bill-page URL, so no pattern anchors at the
+  // - 1,439 of the 2,851 descs carry a trailing ` - Roll Call <n>` —
+  //   every passage desc does, but the BIR / `Third Reading` captions and
+  //   a few concurrences do not. The suffix is sometimes followed by an
+  //   amendment code or a bill-page URL, so no kept pattern anchors at the
   //   end. Passage descs also carry an OPTIONAL sponsor-name prefix (SB 54
   //   roll 164 is `Roberts motion to Read a Third Time and Pass as
   //   Amended`), so the passage pattern does not anchor at the start
