@@ -14,10 +14,13 @@ a person's race, religion, colour, sex, national origin or ancestry. An employme
 excepted where it rests on a bona fide occupational qualification; that limit is stated in
 the description because dropping it would overstate the ban. It also bars requiring a
 licence applicant to affirm, or a public employee to sit through training asserting, that
-one group is inherently superior or should be blamed for the past. Separately it closes
-three named scholarships for minority teachers to new applicants while letting people
-already awarded one before 1 July 2025 keep it, and it creates a private lawsuit for
-compensatory damages, an injunction, costs and attorney's fees.
+one group is inherently superior or should be blamed for the past. Separately it rewrites the
+eligibility of three named teacher scholarships: the requirement to be a minority is
+struck, and in its place a new applicant must come from, live in or agree to teach in one
+of five named counties (Allen, Marion, Lake, St. Joseph and Vanderburgh, which the act
+calls underserved counties). Renewals for people awarded a scholarship before 1 July
+2025 are preserved by the new article's own exception. The act also creates a private
+lawsuit for compensatory damages, an injunction, costs and attorney's fees.
 
 The direction follows the settled precedent for this class of act: Ohio SB 1, Texas SB 12
 and Tennessee SB 1084 were all recorded as `civil_rights` with a yes vote scoring
@@ -95,6 +98,37 @@ Because of this, the tag count is 254, exactly the number of yea-side records, n
 - Each roll's own tally appears in both its yes and its no sentence, which the judge's
   approval gate requires.
 - The member list of all six rolls was verified against the official Indiana roll-call PDF.
+
+## Review response, 2026-08-31
+
+Two findings on the first review of this batch, both checked against the enrolled acts and
+both real. 180 records were rewritten in place (SB 289's 93 and HB 1041's 87); the other
+159 were untouched, and the convergence dry run afterwards reported all 339 `unchanged`.
+The rewrite ledger is `import-rewrite-report.json`; the original insert ledger
+`import-report.json` is unchanged, since a repeat real run now writes its report to
+`import-rerun-report.json`.
+
+**SB 289 scholarships (P1, accepted).** The first description said the act "closes three
+state scholarships for minority teachers to new applicants". That is wrong. The enrolled
+act's amendment marks — which `pdftotext` renders as plain text, so the pages had to be
+rendered and read — show the words "meet the definition of a minority" struck and
+underserved-county requirements added in their place, in all three programs. The act
+converts the eligibility from minority status to a tie with five named counties; it does
+not close anything. The mistaken sentence came from over-reading the new article's
+renewal exception, which protects renewals for pre-July-2025 recipients and says nothing
+about new applicants. This is the struck-text hazard Georgia and Maine recorded, and it
+bit here on the one measure where the stance itself did not hinge on struck text, so the
+page-render step was skipped. The lesson: **render the pages for every claim that rests on
+what an amendment removed, not only for claims the stance depends on.**
+
+**HB 1041 damages (P2, accepted).** The description said a student may recover "the
+greater of their real losses or $1,000", dropping the act's cap wording: liquidated
+damages are "not more than one thousand dollars", and the court *may* award them. The
+first draft had "up to $1,000" correctly, and the wording pass that shortened the
+sentences dropped it — the same simplification regression Pennsylvania and Connecticut
+documented, caught here by review rather than by the pre-import diff. The text now reads
+"up to $1,000, if a court grants them". JUDGING.md itself already had the correct wording,
+which is how the reviewer knew the JSON had drifted from its own analysis.
 
 ## Import ledger
 
