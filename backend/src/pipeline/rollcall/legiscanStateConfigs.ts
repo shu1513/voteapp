@@ -986,6 +986,154 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       /^decision of the chair upheld$/,
     ],
   },
+
+  // Kentucky General Assembly, 2025 Regular Session (the 30-day short
+  // session; sine die 2025-03-28). Vocabulary measured from the full
+  // dataset survey 2026-08-31: 1,441 bills, 701 roll calls, 138 people —
+  // exactly the 100 House and 38 Senate seats.
+  //
+  // What the survey established:
+  // - EVERY desc carries a per-roll sequence suffix, and the two chambers
+  //   spell it DIFFERENTLY: the House prints ` RCS# <n>` (Roll Call
+  //   Sequence) and the Senate ` RSN# <n>`. All 701 descs carry one, so
+  //   the patterns REQUIRE it — a future desc without a suffix surfaces
+  //   for review instead of silently classifying. Folding the suffix
+  //   collapses 701 raw descs to 36 families.
+  // - Every tally is a whole-chamber tally (exactly 100 House, 38 Senate;
+  //   `total` counts the seats, not the votes cast). The dataset holds NO
+  //   committee votes at all, so nothing lands in the small-tally bucket.
+  // - The Senate writes its VERSION CHECK into the desc: `Senate: Third
+  //   Reading W/scs1 sfa1 scta1` names the committee substitute and floor
+  //   amendments folded into the text being voted on. Only Pennsylvania's
+  //   printer's numbers match this.
+  // - Kentucky's veto override needs only a SIMPLE MAJORITY of each
+  //   chamber, so the legislature overrides routinely: 28 bills were
+  //   vetoed and overridden in this session. Both chambers' override rolls
+  //   are in the feed for 25 of them (HB 2, HB 4 and HB 6 are House-only).
+  //
+  // *** THE `desc` IS LEGISCAN'S CLAIM ABOUT THE QUESTION, NOT KENTUCKY'S,
+  // AND IT IS WRONG. *** `House: Veto Override` appears 7 times and NOT ONE
+  // of them is a veto override. Checked against Kentucky's own vote record
+  // (see below), the seven are: Previous Question (SB 2 RCS# 308, HB 495
+  // RCS# 304, HB 695 RCS# 306), Reconsider (SB 120 RCS# 283, SB 65
+  // RCS# 333), Strike Enacting Clause (HB 398 RCS# 85) and a floor
+  // amendment (HJR 15 RCS# 36). The REAL override votes are worded `Third
+  // Reading` in both chambers, exactly like an ordinary passage. So this
+  // config excludes `veto override` BY RULE — which also removes seven
+  // procedural votes that would otherwise be stored as passages — and the
+  // stored `questionClass` on every kept Kentucky roll is report metadata
+  // only, never a claim to show a reader.
+  //
+  // GROUND TRUTH for what a roll decided is Kentucky's own vote record:
+  // https://apps.legislature.ky.gov/record/25rs/<bill>/vote_history.pdf
+  // — one PDF per bill giving every roll's RCS#/RSN#, the question in plain
+  // words (`Final Passage`, `Reconsider`, `Previous Question`, `Override
+  // Veto Final Passage`, `Strike enacting clause`), the date and time, and
+  // the full member lists. Question AND version in one document, which is
+  // better than Florida's equivalent. Verify every selected roll against it.
+  //
+  // Two more measured facts, recorded so a later session does not re-derive
+  // them: 672 of the 701 roll tallies appear verbatim in their own bill's
+  // history, and the 29 that do not are all procedural votes for which
+  // Kentucky prints no tally — not a data defect. And the bill history's
+  // `chamber` label is INVERTED on the override lines (HB 4's House
+  // override, 79-19, is filed under S; its Senate override, 32-6, under H),
+  // so a roll's chamber must be read from the roll, never from the history.
+  KY: {
+    jurisdiction: "KY",
+    sessionId: 2179,
+    chamberSizes: { house: 100, senate: 38 },
+    keptQuestions: [
+      // The House's only substantive floor wording, covering passage,
+      // concurrence in the other chamber's changes, and veto override
+      // alike — Kentucky does not distinguish them here, and the official
+      // vote record is what tells the three apart.
+      { pattern: /^house: third reading rcs# \d+$/, questionClass: "passage" },
+      // A joint resolution is ADOPTED, not passed. Bare `Adopt` is the
+      // resolution question; simple and concurrent resolutions carry it
+      // too, but the shared kept-types list drops those before this
+      // config is consulted, so only joint resolutions survive.
+      { pattern: /^house: adopt rcs# \d+$/, questionClass: "passage" },
+      // `Senate: Third Reading RSN# 3362`, and the same question with the
+      // adopted committee substitute and floor amendments named:
+      // `Senate: Third Reading W/scs1 sfa1 scta1 RSN# 3501`.
+      { pattern: /^senate: third reading(?: w\/[a-z0-9 ]+?)? rsn# \d+$/, questionClass: "passage" },
+    ],
+    excludedQuestions: [
+      // Floor and committee amendments, in both chambers: `House: Adopt
+      // HFA 1`, `House: Adopt HCS 1`, `House: Adopt SCS 1`, `Senate:
+      // Adopt SFA 5`. Checked before the bare `Adopt` kept pattern.
+      /^(?:house|senate): adopt (?:hfa|hcs|hfta|scs|sfa|sfta|scta) ?\d+ (?:rcs|rsn)# \d+$/,
+      // Scheduling and debate motions.
+      /^house: suspend the rules rcs# \d+$/,
+      /^house: table rcs# \d+$/,
+      /^house: lay on the clerks desk rcs# \d+$/,
+      // NOT a veto override — see the block comment above. Seven rolls,
+      // every one of them a previous question, a reconsideration, a
+      // motion to strike the enacting clause, or a floor amendment.
+      /^house: veto override rcs# \d+$/,
+    ],
+  },
+
+  // Kentucky General Assembly, 2026 Regular Session (the 60-day session;
+  // adjourned April 2026, dataset dated 2026-07-12 and complete).
+  // Vocabulary measured from its own full dataset survey 2026-08-31: 1,737
+  // bills, 917 roll calls, 138 people. 917 raw descs fold to 19 families.
+  //
+  // *** THIS SESSION'S PATTERNS ARE NOT THE 2025 PATTERNS, AND THE
+  // DIFFERENCE IS NOT COSMETIC. *** LegiScan's Kentucky desc vocabulary
+  // FLIPS between sessions: in 2026 `House: Veto Override` is the House's
+  // DOMINANT family at 415 rolls — its label for every substantive House
+  // floor vote, passage and concurrence and genuine override alike — while
+  // `House: Third Reading` falls to 29. Applying the 2025 entry's rules
+  // here would drop 415 House votes and keep 29 duplicates. Verified
+  // against Kentucky's own record: HB 398 RCS# 46 is `Pass`, RCS# 373 is
+  // `Final Passage`, HB 2 RCS# 455 is `Veto Override` — all three arrive
+  // under the single label `House: Veto Override`. Never carry a Kentucky
+  // desc rule across sessions; survey each one.
+  //
+  // The 2026 feed also holds 31 DUPLICATE rolls that 2025 does not: the
+  // same (chamber, sequence number) under two roll_call_ids with identical
+  // bill, date and tally, each pair naming `House: Veto Override` plus one
+  // of `House: Third Reading` (29), `House: Adopt HFA 1` (1) or `House:
+  // Co-Sponsor` (1). The shared identity key includes `desc`, so it does
+  // NOT collapse them. Excluding the three partner spellings resolves 29 of
+  // the 31 by rule; the remaining two keep the `Veto Override` copy of what
+  // is really a floor amendment and a co-sponsor vote, so they must be
+  // caught by the per-roll check against the official vote record that
+  // every selected roll gets anyway. Recorded in the evidence directory's
+  // CODE-FINDINGS.md. 2025 has ZERO duplicates (701 distinct pairs).
+  //
+  // Ground truth is the same document as 2025 under the 26rs path:
+  // https://apps.legislature.ky.gov/record/26rs/<bill>/vote_history.pdf
+  "KY-2247": {
+    jurisdiction: "KY",
+    sessionId: 2247,
+    chamberSizes: { house: 100, senate: 38 },
+    keptQuestions: [
+      // The House's substantive floor family for this session, despite the
+      // name. `questionClass` stays report metadata: this label covers
+      // passage, final passage and genuine overrides indiscriminately.
+      { pattern: /^house: veto override rcs# \d+$/, questionClass: "passage" },
+      { pattern: /^house: adopt rcs# \d+$/, questionClass: "passage" },
+      { pattern: /^senate: third reading rsn# \d+$/, questionClass: "passage" },
+      // The Senate, unlike the House, does name its override question in
+      // this session: 30 of these 36 rolls sit on a bill whose history
+      // records an override.
+      { pattern: /^senate: veto override rsn# \d+$/, questionClass: "veto_override" },
+      // Joint resolution adoption, with the adopted committee substitute
+      // and amendments named: `Senate: Adopt W/ SCS 1, SCA 1 (T)`.
+      { pattern: /^senate: adopt(?: w\/ [a-z0-9 ,()]+?)? rsn# \d+$/, questionClass: "passage" },
+    ],
+    excludedQuestions: [
+      /^house: adopt (?:hfa|hcs|hfta|scs|sfa|sfta|scta) ?\d+ rcs# \d+$/,
+      // The stale duplicate copy of an already-kept House roll — see the
+      // block comment. In THIS session only; in 2025 it is the kept family.
+      /^house: third reading rcs# \d+$/,
+      // A vote to add co-sponsors, on a simple resolution.
+      /^house: co-sponsor rcs# \d+$/,
+    ],
+  },
 };
 
 export const LEGISCAN_CONFIG_KEYS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);
