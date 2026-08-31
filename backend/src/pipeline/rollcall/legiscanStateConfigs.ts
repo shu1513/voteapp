@@ -1016,11 +1016,21 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   // chamber amended is worded `3rd Reading Passed as Amended by Senate` (or
   // `by House`).
   //
-  // Data note: 42 roll calls in this dataset fail to parse because their
-  // reported tallies are multiples of their own member lists (one claims 500
-  // votes in a 100-seat chamber). ALL 42 are committee rolls, so none could
-  // ever be queued; the fetch run reports them and exits non-zero. Recorded
-  // in the state's CODE-FINDINGS.md.
+  // Data notes (both written up in
+  // backend/evidence/rollcall/legiscan-mt-2159/CODE-FINDINGS.md):
+  // - 42 roll calls in this dataset fail to parse because their reported
+  //   tallies are multiples of their own member lists (one claims 500 votes
+  //   in a 100-seat chamber). ALL 42 are committee rolls, so none could ever
+  //   be queued; the fetch run reports them and exits non-zero. That exit
+  //   code is a signal, not a rollback — every valid roll is stored and the
+  //   import is unaffected.
+  // - LegiScan's `passed` flag is a bare majority check, so on the eight
+  //   rolls where a constitutional-amendment bill won a majority but missed
+  //   Montana's two-thirds requirement (HB 316, HB 821, HB 822, HB 921,
+  //   SB 185) the stored `result` says Passed while the desc — Montana's own
+  //   words — says Failed. The desc is right. `result` mirrors LegiScan's
+  //   claim; treat it like Florida's question fields and never trust it in a
+  //   judgment — the official action trail is the ground truth.
   MT: {
     jurisdiction: "MT",
     sessionId: 2159,
