@@ -7,7 +7,6 @@ import {
   ADDRESS_FIELD_PRIVACY_NOTE,
   PRE_SEARCH_AGREEMENT_PARAGRAPHS,
   PRE_SEARCH_CHECKBOX_LABEL,
-  PRIVACY_NOTICE,
   RENEWAL_CHECKBOX_LABEL,
   SIGNUP_CHECKBOX_LABEL,
   TERMS_VERSION,
@@ -59,7 +58,6 @@ describe("legal copy matches docs/legal/checkbox-copy.md", () => {
     ["pre-search label", PRE_SEARCH_CHECKBOX_LABEL],
     ["signup label", SIGNUP_CHECKBOX_LABEL],
     ["renewal label", RENEWAL_CHECKBOX_LABEL],
-    ["privacy notice", PRIVACY_NOTICE],
     ["short privacy note", ADDRESS_FIELD_PRIVACY_NOTE],
     ["results verification line", VERIFY_WITH_OFFICIALS_NOTE],
     ...PRE_SEARCH_AGREEMENT_PARAGRAPHS.map(
@@ -73,11 +71,43 @@ describe("legal copy matches docs/legal/checkbox-copy.md", () => {
     expect(normalizedDoc).toContain(`Checkbox and notice copy — Version ${TERMS_VERSION}`);
   });
 
-  it("keeps the full privacy disclosure separate from the short address-field note", () => {
-    expect(PRIVACY_NOTICE).not.toBe(ADDRESS_FIELD_PRIVACY_NOTE);
-    expect(PRIVACY_NOTICE).toContain("account information");
-    expect(PRIVACY_NOTICE).toContain("device and usage information");
-    expect(PRIVACY_NOTICE).toContain("Privacy Policy");
+  // The anonymous gate and the account acceptances differ on arbitration ON
+  // PURPOSE, and each direction is a separate mistake waiting to be made — one
+  // reintroduces the scare copy the gate was trimmed of, the other quietly
+  // strips a named clause from the acceptances the DB actually records. Both
+  // are pinned. The reasoning is in legalCopy.ts above each constant.
+  it("leaves arbitration out of the anonymous pre-search gate", () => {
+    for (const copy of [PRE_SEARCH_CHECKBOX_LABEL, ...PRE_SEARCH_AGREEMENT_PARAGRAPHS]) {
+      expect(copy).not.toContain("arbitration");
+      expect(copy).not.toContain("class-action");
+    }
+  });
+
+  it.each([
+    ["signup", SIGNUP_CHECKBOX_LABEL],
+    ["renewal", RENEWAL_CHECKBOX_LABEL],
+  ])("names arbitration in the recorded %s acceptance", (_name, copy) => {
+    expect(copy).toContain("binding individual arbitration");
+    expect(copy).toContain("class-action");
+    expect(copy).toContain("Section 12");
+    expect(copy).toContain("opt out");
+  });
+
+  // Dropping the arbitration callout leaves the linked documents carrying the
+  // whole of the notice, so every label must still name all three — the
+  // dialogs hard-code that same list as links beside it.
+  it.each([
+    ["pre-search", PRE_SEARCH_CHECKBOX_LABEL],
+    ["signup", SIGNUP_CHECKBOX_LABEL],
+    ["renewal", RENEWAL_CHECKBOX_LABEL],
+  ])("names all three documents in the %s label", (_name, copy) => {
+    for (const title of [
+      "Terms of Use",
+      "Privacy Policy",
+      "AI Research and Election Information Disclaimer",
+    ]) {
+      expect(copy).toContain(title);
+    }
   });
 });
 
