@@ -314,3 +314,30 @@ Grade ~9 is the honest floor for this batch. Getting to 7 would mean replacing t
 are built on — "community correctional centers", "gender identity or expression", "unconscionably
 excessive" — and that is exactly the substitution that produced the errors above. Batch-02 reads at
 7.7 because sewer liens and bail agents are plainer subjects, not because it was written better.
+
+### Audit round 2 (PR #983 review): two more in HB 5004, one introduced by the audit itself
+
+Both review findings were real, and checking the flagged sentence's neighbor found a third error the
+review missed. **307 records rewritten** (155 on House Bill 5004's two rolls, 152 on House Bill
+7066's), convergence all 1,457 `unchanged`, ledger `import-claim-audit-round2-report.json` verified
+by its own `actions`.
+
+- **House Bill 5004 claimed the law set up programs it only ordered plans or guidance for.** "Sets up
+  a rebate plan for heat pumps" — the act orders the state's energy department to write a plan for
+  making heat pumps affordable and report it to lawmakers; no rebate program exists. "Directs the
+  state to buy in more environmentally sustainable ways" — the act orders a model policy that towns
+  **may choose** to use, posted online; nothing binds the state's own buying. This is the Senate
+  Bill 1 failure shape again (a study or plan described as a live program), found in a measure the
+  first audit pass marked clean.
+- **The neighbor was wrong too:** "buy land to keep as open space" — the act does not direct any land
+  purchase; it widens what existing open-space land grants can pay for, including turning open space
+  into urban farms.
+- **House Bill 7066's weapons sentence overstated a qualified ban — and the first audit round wrote
+  it.** That sentence was added as an omission fix, and in adding it we dropped "with certain
+  exceptions" (the armed forces exemption among them) and narrowed "deadly weapon, dangerous
+  instrument, firearm, ammunition, or an explosive or incendiary device" to "a deadly weapon". Now:
+  "With some exceptions, it bars arming an aircraft or drone with a deadly weapon or certain other
+  dangerous devices." The lesson applies recursively: a sentence written to fix an omission needs the
+  same clause-by-clause read as any other sentence.
+
+Wording only, as before: labels, dates and tally sentences byte-identical on all 17.
