@@ -1,0 +1,433 @@
+{
+ "jurisdiction": "ME",
+ "session": "2181",
+ "batch": "batch-05",
+ "rolls": [
+  {
+   "measure_id": "LD 1117",
+   "roll": 1584137,
+   "chamber": "senate",
+   "vote_date": "2025-06-03",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 24,
+   "nay": 8,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Strengthen Maine's Workforce Through Certified Preapprenticeship Training Programs",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 1117",
+   "roll": 1585332,
+   "chamber": "house",
+   "vote_date": "2025-06-04",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 108,
+   "nay": 34,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Strengthen Maine's Workforce Through Certified Preapprenticeship Training Programs",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 1145",
+   "roll": 1585732,
+   "chamber": "senate",
+   "vote_date": "2025-06-05",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 25,
+   "nay": 7,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Protect Residents Living in Mobile Home Parks",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1587065
+   ]
+  },
+  {
+   "measure_id": "LD 1145",
+   "roll": 1586788,
+   "chamber": "house",
+   "vote_date": "2025-06-09",
+   "question": "Acc Maj Otp As Amended Rep",
+   "question_class": "passage",
+   "yea": 81,
+   "nay": 64,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Protect Residents Living in Mobile Home Parks",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 1519",
+   "roll": 1682143,
+   "chamber": "house",
+   "vote_date": "2026-04-14",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 75,
+   "nay": 68,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Create a Stewardship Program for Electronic Smoking Devices and Related Products",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 1519",
+   "roll": 1682144,
+   "chamber": "senate",
+   "vote_date": "2026-04-14",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 21,
+   "nay": 13,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Create a Stewardship Program for Electronic Smoking Devices and Related Products",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 1723",
+   "roll": 1590351,
+   "chamber": "house",
+   "vote_date": "2025-06-13",
+   "question": "Acc Maj Otp As Amended Rep",
+   "question_class": "passage",
+   "yea": 78,
+   "nay": 67,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Amend the Laws Governing Manufactured Housing Communities to Prevent Excessive Rent and Fees Increases",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 1723",
+   "roll": 1590627,
+   "chamber": "senate",
+   "vote_date": "2025-06-13",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 20,
+   "nay": 12,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Amend the Laws Governing Manufactured Housing Communities to Prevent Excessive Rent and Fees Increases",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 1730",
+   "roll": 1664130,
+   "chamber": "senate",
+   "vote_date": "2026-03-17",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 25,
+   "nay": 8,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Make Small Plug-in Solar Generation Devices Accessible for All Maine Residents to Address the Energy Affordability Crisis",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1665424
+   ]
+  },
+  {
+   "measure_id": "LD 1730",
+   "roll": 1668608,
+   "chamber": "house",
+   "vote_date": "2026-03-24",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 79,
+   "nay": 65,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Make Small Plug-in Solar Generation Devices Accessible for All Maine Residents to Address the Energy Affordability Crisis",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 1849",
+   "roll": 1591991,
+   "chamber": "house",
+   "vote_date": "2025-06-17",
+   "question": "Acc Maj Otp As Amended Rep",
+   "question_class": "passage",
+   "yea": 76,
+   "nay": 71,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Establish a Minimum Age at Which Conduct Constitutes a Juvenile Crime and to Confer Jurisdiction to the Juvenile Courts Over Any Criminal Offense Under Maine Law Committed by a Juvenile",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 1849",
+   "roll": 1591992,
+   "chamber": "senate",
+   "vote_date": "2025-06-17",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 20,
+   "nay": 15,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Establish a Minimum Age at Which Conduct Constitutes a Juvenile Crime and to Confer Jurisdiction to the Juvenile Courts Over Any Criminal Offense Under Maine Law Committed by a Juvenile",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 1934",
+   "roll": 1588849,
+   "chamber": "senate",
+   "vote_date": "2025-06-11",
+   "question": "Passage To Be Engrossed As Amended",
+   "question_class": "passage",
+   "yea": 24,
+   "nay": 7,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Promote Responsible Outdoor Lighting",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1588848
+   ]
+  },
+  {
+   "measure_id": "LD 1934",
+   "roll": 1590321,
+   "chamber": "house",
+   "vote_date": "2025-06-13",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 74,
+   "nay": 72,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Promote Responsible Outdoor Lighting",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 2146",
+   "roll": 1676026,
+   "chamber": "senate",
+   "vote_date": "2026-04-02",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 23,
+   "nay": 10,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Increase Access to Critical Vaccinations",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 2146",
+   "roll": 1676325,
+   "chamber": "house",
+   "vote_date": "2026-04-02",
+   "question": "Acc Maj Otp As Amended Rep",
+   "question_class": "passage",
+   "yea": 86,
+   "nay": 58,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Increase Access to Critical Vaccinations",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 785",
+   "roll": 1680940,
+   "chamber": "senate",
+   "vote_date": "2026-04-13",
+   "question": "Accept Report 'a' Ought To Pass As Amended",
+   "question_class": "passage",
+   "yea": 22,
+   "nay": 11,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Amend Certain Tax Laws Regarding the Wabanaki Nations",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 785",
+   "roll": 1680941,
+   "chamber": "house",
+   "vote_date": "2026-04-13",
+   "question": "Report A Otp-am By Ca-a",
+   "question_class": "passage",
+   "yea": 83,
+   "nay": 64,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Amend Certain Tax Laws Regarding the Wabanaki Nations",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 911",
+   "roll": 1590624,
+   "chamber": "senate",
+   "vote_date": "2025-06-13",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 21,
+   "nay": 13,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Clarify Procedures for When a Candidate Withdraws from an Election Determined by Ranked-choice Voting or When a Candidate Dies or Becomes Disqualified in an Election Determined by Ranked-choice Voting",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": null
+  },
+  {
+   "measure_id": "LD 911",
+   "roll": 1590626,
+   "chamber": "house",
+   "vote_date": "2025-06-13",
+   "question": "Acc Maj Otp As Amended Rep",
+   "question_class": "passage",
+   "yea": 74,
+   "nay": 68,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Clarify Procedures for When a Candidate Withdraws from an Election Determined by Ranked-choice Voting or When a Candidate Dies or Becomes Disqualified in an Election Determined by Ranked-choice Voting",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": null
+  }
+ ]
+}
