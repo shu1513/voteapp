@@ -95,7 +95,7 @@ export function ResearchAreasSection() {
       {/* Choose-then-drag, matching the actual interaction: grid cards
           select on click; only the ranked rows above the grid drag. */}
       <p className="mt-1 text-sm text-ink">
-        Choose the issues that matter most to you and drag them into priority order. Choose
+        Choose the issues that matter most to you and drag to arrange them into priority order. Choose
         &ldquo;Must&rdquo; if you will absolutely not accept a candidate or ballot measure that
         takes the opposite stance from yours.
       </p>
