@@ -110,6 +110,20 @@ export function HomePage() {
     return () => document.removeEventListener("keydown", redirectStrayTyping);
   }, [termsOpen]);
 
+  // Desktop keeps the Google-style cursor-in-box on load, but via an effect
+  // rather than the autoFocus prop: React SSRs autoFocus as a real autofocus
+  // attribute, which browsers honor before hydration — on phones that meant
+  // a focused box underneath the search glyph (the pre-hydration focus never
+  // reaches React's focused state) plus a server/client markup mismatch. The
+  // markup is now identical everywhere and focus is applied only where it is
+  // wanted: at phone widths the box stays idle so the glyph shows —
+  // Google's mobile pattern (no keyboard over the page).
+  useEffect(() => {
+    if (!isPhoneWidth()) {
+      document.getElementById("address")?.focus();
+    }
+  }, []);
+
   const resolve = useMutation({
     mutationFn: (input: {
       address: string;
@@ -281,12 +295,6 @@ export function HomePage() {
                 setRegionUnsupported(granularity === "region" && !region);
               }}
               onRetrievePendingChange={setRetrievePending}
-              // Phones ignore autoFocus (no keyboard over the page), so at
-              // phone widths the box shows the search glyph instead of a
-              // cursor — Google's mobile pattern. Evaluated once at mount:
-              // jsdom and SSR report no match, keeping the desktop default.
-              // 639px aligns with the glyph's sm:hidden boundary.
-              autoFocus={!isPhoneWidth()}
               searchIconWhenIdle
             />
             {/* text-sm + the deep brand step: the 12px/rausch-dark pairing

@@ -33,8 +33,6 @@ type AddressAutocompleteProps = {
   onRetrievePendingChange?: (pending: boolean) => void;
   inputId: string;
   placeholder?: string;
-  /** Focus the input on mount (landing page: empty field, blinking cursor). */
-  autoFocus?: boolean;
   /** Phone-width affordance (landing page): a grey magnifying glass inside
    * the left edge of the empty, unfocused box — the mobile stand-in for the
    * blinking cursor phones never show (they ignore autoFocus so the keyboard
@@ -50,7 +48,6 @@ export function AddressAutocomplete({
   onRetrievePendingChange,
   inputId,
   placeholder,
-  autoFocus,
   searchIconWhenIdle,
 }: AddressAutocompleteProps) {
   // Drives the idle search glyph only; suggestion machinery has its own
@@ -128,7 +125,6 @@ export function AddressAutocomplete({
             showSearchIcon ? "pl-10 pr-3 sm:px-3" : "px-3"
           }`}
           placeholder={placeholder}
-          autoFocus={autoFocus}
           autoComplete="street-address"
           value={value}
           onChange={(event) => {
