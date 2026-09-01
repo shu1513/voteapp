@@ -88,10 +88,10 @@ describe("FinanceSummaryCard", () => {
     ).toBeInTheDocument();
     // Industry money flows into the groups, not necessarily onto this race —
     // the heading and note must not present it as candidate-specific spend.
-    expect(screen.getByText("Industries that gave money to groups supporting this candidate")).toBeInTheDocument();
-    expect(screen.getByText("Industries that gave money to groups opposing this candidate")).toBeInTheDocument();
+    expect(screen.getByText("Donations to groups supporting this candidate, by donor industry")).toBeInTheDocument();
+    expect(screen.getByText("Donations to groups opposing this candidate, by donor industry")).toBeInTheDocument();
     expect(
-      screen.getByText("Industry amounts show what each industry gave to these groups, not what the groups spent on this candidate.")
+      screen.getByText("Industry amounts are donations to these groups, sorted by each donor's industry. They are not what the groups spent on this candidate.")
     ).toBeInTheDocument();
     // Source enum renders as a display label with the provenance link; the
     // sync date lives at the top of the card now.

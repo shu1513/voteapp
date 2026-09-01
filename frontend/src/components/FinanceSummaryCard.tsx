@@ -172,7 +172,7 @@ function OutsideSection({
               is candidate-specific expenditure — an industry can have given
               a group more than the group spent on this race. The heading and
               the section's shared note keep the two from being conflated. */}
-          <h5 className="text-xs font-medium text-ink-soft">Industries that gave money to groups {directionLabel} this candidate</h5>
+          <h5 className="text-xs font-medium text-ink-soft">Donations to groups {directionLabel} this candidate, by donor industry</h5>
           <ul className="mt-2 space-y-1.5">
             {industries.map((row) => (
               <OutsideIndustryRow key={row.category_name} industry={row} />
@@ -440,8 +440,8 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
           <UnallocatedOutsideEdges edges={outside.unallocated_candidate_edges ?? []} />
           {supportingIndustries.length > 0 || outside.top_opposing_industries.length > 0 ? (
             <p className="mt-1 text-xs text-ink-soft">
-              Industry amounts show what each industry gave to these groups, not what the groups
-              spent on this candidate.
+              Industry amounts are donations to these groups, sorted by each donor's industry. They
+              are not what the groups spent on this candidate.
             </p>
           ) : null}
         </div>

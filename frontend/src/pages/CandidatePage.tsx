@@ -170,14 +170,27 @@ export async function loader({ params, request }: LoaderFunctionArgs): Promise<C
 // Finance for an election the candidate is currently in, server-fetched by
 // the loader so crawlers see it. Renders its own section so there is no
 // orphan heading when the election has no finance coverage.
-function OngoingElectionFinance({ election, summary }: { election: CandidateElection; summary: FinanceSummary | null }) {
+function OngoingElectionFinance({
+  election,
+  summary,
+  showElection,
+}: {
+  election: CandidateElection;
+  summary: FinanceSummary | null;
+  // True when the candidate is in more than one ongoing race: the
+  // placeholder then names its race, or two of them are indistinguishable.
+  showElection: boolean;
+}) {
   if (!hasFinanceContent(summary)) {
     // Quiet placeholder where the disclosure row would sit, so a reader who
     // saw finance on another candidate knows this one is not hiding it.
     // "Not available", not "not found": the gap is usually a source we do
     // not cover (or a failed fetch), not proof the candidate filed nothing.
     return (
-      <p className="mt-6 text-sm text-ink-soft">Campaign finance information not available</p>
+      <p className="mt-6 text-sm text-ink-soft">
+        Campaign finance information not available
+        {showElection ? ` · ${election.official_ballot_title}` : ""}
+      </p>
     );
   }
   return (
@@ -934,6 +947,7 @@ export function CandidatePage() {
             key={election.candidate_election_id}
             election={election}
             summary={ongoingFinance[election.candidate_election_id] ?? null}
+            showElection={ongoingElections.length > 1}
           />
         ))}
 
