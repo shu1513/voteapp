@@ -258,8 +258,14 @@ function PoolAreaCard({
       // one in the row, so a short name next to a wrapped two-line neighbor
       // would otherwise sit at the top with a blank strip under it; centering
       // splits that slack evenly.
-      className={`flex flex-col justify-center touch-manipulation select-none rounded-lg border transition hover:border-green-700 ${
-        selected ? "border-green-700 bg-green-50" : "cursor-grab bg-white"
+      // Resting shadow + hover lift + press-down: flat white boxes read as
+      // labels, not controls. The inline dnd transform (only set while
+      // dragging) overrides the hover translate, so the lift never fights a
+      // drag.
+      className={`flex flex-col justify-center touch-manipulation select-none rounded-lg border transition hover:border-green-700 active:translate-y-0 active:shadow-sm ${
+        selected
+          ? "border-green-700 bg-green-50 shadow-none hover:shadow-sm"
+          : "cursor-grab bg-white shadow-sm hover:-translate-y-0.5 hover:shadow-md"
       } ${isDragging ? "z-10 border-green-700 shadow-md" : selected ? "" : "border-line"}`}
     >
       <span className="flex items-stretch">
