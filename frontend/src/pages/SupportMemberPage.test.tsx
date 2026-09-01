@@ -47,7 +47,7 @@ describe("SupportMemberPage", () => {
       "href",
       "/register?next=%2Fsupport%2Fmember"
     );
-    expect(screen.queryByRole("button", { name: "Become a member" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Become an honorary member" })).not.toBeInTheDocument();
   });
 
   it("carries a Stripe return outcome through the login round-trip", async () => {
@@ -67,7 +67,7 @@ describe("SupportMemberPage", () => {
     renderPage();
 
     expect(await screen.findByRole("heading", { name: "Verify your email" })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Become a member" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Become an honorary member" })).not.toBeInTheDocument();
   });
 
   it("shows only the monthly form, with a $10 default, to a verified non-member", async () => {
@@ -78,7 +78,7 @@ describe("SupportMemberPage", () => {
     renderPage();
 
     expect(await screen.findByLabelText(/Monthly amount/)).toHaveValue(10);
-    expect(screen.getByRole("button", { name: "Become a member" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Become an honorary member" })).toBeEnabled();
     // The one-time form does not compete here — the visitor already chose.
     expect(screen.queryByLabelText(/One-time support/)).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Terms of Use" })).toHaveAttribute("href", "/terms");
@@ -95,7 +95,7 @@ describe("SupportMemberPage", () => {
       await screen.findByText(/Monthly supporter: \$5\.00\/month since August 15, 2026/)
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Manage membership" })).toBeEnabled();
-    expect(screen.queryByRole("button", { name: "Become a member" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Become an honorary member" })).not.toBeInTheDocument();
   });
 
   it("thanks the supporter returning from Checkout and locks the form", async () => {
@@ -106,7 +106,7 @@ describe("SupportMemberPage", () => {
     renderPage("?membership=success");
 
     expect(await screen.findByText(/Thank you for your support!/)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Become a member" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Become an honorary member" })).toBeDisabled();
   });
 
   it("shows an unavailable notice instead of a dead form when Stripe is not configured", async () => {
@@ -117,6 +117,6 @@ describe("SupportMemberPage", () => {
     renderPage();
 
     expect(await screen.findByText(/Payments are temporarily unavailable/)).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Become a member" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Become an honorary member" })).not.toBeInTheDocument();
   });
 });
