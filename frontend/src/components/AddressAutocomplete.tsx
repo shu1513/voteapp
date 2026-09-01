@@ -33,6 +33,8 @@ type AddressAutocompleteProps = {
   onRetrievePendingChange?: (pending: boolean) => void;
   inputId: string;
   placeholder?: string;
+  /** Focus the input on mount (landing page: empty field, blinking cursor). */
+  autoFocus?: boolean;
 };
 
 export function AddressAutocomplete({
@@ -41,6 +43,7 @@ export function AddressAutocomplete({
   onRetrievePendingChange,
   inputId,
   placeholder,
+  autoFocus,
 }: AddressAutocompleteProps) {
   const { suggestions, enabled, onInputChanged, selectSuggestion, clearSuggestions, warmup } =
     useAddressSuggestions();
@@ -109,6 +112,7 @@ export function AddressAutocomplete({
           id={inputId}
           className="mt-1 w-full rounded-md border border-line px-3 py-3 shadow-sm focus:border-ink focus:outline-none"
           placeholder={placeholder}
+          autoFocus={autoFocus}
           autoComplete="street-address"
           value={value}
           onChange={(event) => {
