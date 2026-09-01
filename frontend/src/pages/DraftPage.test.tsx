@@ -13,6 +13,7 @@ function renderDraft() {
       { path: "/", element: <p>Home placeholder</p> },
       { path: "/me/picks", element: <p>Picks placeholder</p> },
       { path: "/elections/:electionId", element: <p>Election page</p> },
+      { path: "/candidates/:candidateId", element: <p>Candidate page</p> },
     ],
     "/draft"
   );
@@ -184,6 +185,43 @@ describe("DraftPage", () => {
     // The stored ballot's own card still renders alongside.
     expect(screen.getByRole("link", { name: "Governor — no pick yet" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Sign up free to save your picks" })).toBeInTheDocument();
+  });
+
+  it("links pick names to candidate profiles with the draft back state", async () => {
+    // One pick on the date card (PickedLine with the draft nav state) and one
+    // outside the ballot (DraftChoiceRows) — both names must link out.
+    seedDraft({
+      district_ids: ["dddddddd-1111-4111-8111-111111111111"],
+      target: { election_date: "2026-11-03", election_ids: ["e-1"] },
+      choices: {
+        "e-1": draftChoice(),
+        "e-9": draftChoice({
+          election_id: "e-9",
+          official_ballot_title: "Springfield Mayor",
+          picks: [{ candidate_id: "c-9", display_name: "Pat Elsewhere", candidacy_status: "active" }],
+        }),
+      },
+    });
+    stubApiRoutes({
+      ...GUEST,
+      "/api/ballot": { body: ballotSummary([electionSummary()]) },
+    });
+    const user = (await import("@testing-library/user-event")).default.setup({
+      advanceTimers: vi.advanceTimersByTime,
+    });
+    const { router } = renderDraft();
+
+    expect(await screen.findByRole("link", { name: "Jane Smith" })).toHaveAttribute(
+      "href",
+      "/candidates/c-1"
+    );
+    await user.click(screen.getByRole("link", { name: "Pat Elsewhere" }));
+
+    expect(router.state.location.pathname).toBe("/candidates/c-9");
+    expect(router.state.location.state).toEqual({
+      backTo: { path: "/draft", label: "My Ballot Draft" },
+      electionId: "e-9",
+    });
   });
 
   it("lists picks without any ballot context and points at the address search", async () => {

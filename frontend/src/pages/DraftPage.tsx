@@ -5,7 +5,7 @@ import { apiRequest, formatElectionDate, useMe } from "@voteapp/api-client";
 import type { BallotSummary, ElectionChoice, ElectionSummary } from "@voteapp/api-client";
 import { BallotPreviewSheets, BallotViewToggle } from "../components/BallotPreview";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
-import type { ElectionNavState } from "../lib/detailNavContext";
+import type { CandidateNavState, ElectionNavState } from "../lib/detailNavContext";
 import { draftChoicesByElectionId, draftPickCount, useBallotDraft } from "../lib/ballotDraft";
 import { PickDateCard } from "./PicksPage";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
@@ -50,7 +50,25 @@ function DraftChoiceRows({ rows }: { rows: ElectionChoice[] }) {
               ? choice.measure_position === "yes"
                 ? "Yes"
                 : "No"
-              : choice.picks.map((pick) => pick.display_name).join(", ")}
+              : choice.picks.map((pick, index) => (
+                  <span key={pick.candidate_id}>
+                    {index > 0 ? ", " : null}
+                    {/* Same as the date cards' picked lines: the name links to
+                        the candidate's profile, back link returns here. */}
+                    <Link
+                      to={`/candidates/${pick.candidate_id}`}
+                      state={
+                        {
+                          backTo: DRAFT_NAV_STATE.backTo,
+                          electionId: choice.election_id,
+                        } satisfies CandidateNavState
+                      }
+                      className="hover:text-rausch"
+                    >
+                      {pick.display_name}
+                    </Link>
+                  </span>
+                ))}
           </span>
         </li>
       ))}

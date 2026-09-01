@@ -786,4 +786,16 @@ describe("PicksPage nav context", () => {
     expect(router.state.location.pathname).toBe("/elections/e-1");
     expect(router.state.location.state).toEqual(MY_PICKS_STATE);
   });
+
+  it("links pick names to the candidate profile with picks back state", async () => {
+    const user = userEvent.setup();
+    stubApiRoutes(verifiedRoutes());
+    const { router } = renderPicks();
+
+    await user.click(await screen.findByRole("link", { name: "Jane Smith" }));
+
+    expect(router.state.location.pathname).toBe("/candidates/c-1");
+    // electionId scopes the profile's candidacy context to the picked race.
+    expect(router.state.location.state).toEqual({ ...MY_PICKS_STATE, electionId: "e-1" });
+  });
 });

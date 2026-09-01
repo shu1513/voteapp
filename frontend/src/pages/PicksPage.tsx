@@ -7,7 +7,7 @@ import { AutoPickFillControl, reasonLabel } from "../components/AutoPickFillCont
 import { RemoveStrandedPickButton } from "../components/ElectionChoiceControls";
 import { BallotPreviewSheets, BallotViewToggle } from "../components/BallotPreview";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
-import type { ElectionNavState } from "../lib/detailNavContext";
+import type { CandidateNavState, ElectionNavState } from "../lib/detailNavContext";
 import { ShareButton } from "../components/ShareButton";
 import { VerifyPrompt } from "../components/VerifyPrompt";
 import { SITE_ORIGIN } from "../lib/pageMeta";
@@ -135,7 +135,15 @@ function autoChip() {
   );
 }
 
-function PickedLine({ choice, election }: { choice: ElectionChoice; election?: ElectionSummary }) {
+function PickedLine({
+  choice,
+  election,
+  navState = PICKS_NAV_STATE,
+}: {
+  choice: ElectionChoice;
+  election?: ElectionSummary;
+  navState?: ElectionNavState;
+}) {
   // The canonical result reaches this line two ways: via the ballot summary
   // while the race is still carded, and via the choice itself afterwards
   // (attached on the choices list read) — so PastPicks keeps showing an
@@ -159,7 +167,17 @@ function PickedLine({ choice, election }: { choice: ElectionChoice; election?: E
       {choice.picks.map((pick, index) => (
         <span key={pick.candidate_id}>
           {index > 0 ? ", " : null}
-          {pick.display_name}
+          {/* Same destination as the election page's roster: the pick IS the
+              candidate, so the name goes to their profile. Back link comes
+              from this page's own nav state; electionId scopes the profile's
+              candidacy context to this race. */}
+          <Link
+            to={`/candidates/${pick.candidate_id}`}
+            state={{ backTo: navState.backTo, electionId: choice.election_id } satisfies CandidateNavState}
+            className="hover:text-rausch"
+          >
+            {pick.display_name}
+          </Link>
           {/* candidacy_status (certified won/lost, withdrawn) outranks the
               result-derived chip — never both. */}
           {pickStatusChip(pick.candidacy_status) ??
@@ -331,7 +349,7 @@ export function PickDateCard({
                     {election.official_ballot_title}
                   </Link>
                   <span className="text-ink-soft"> — </span>
-                  <PickedLine choice={choice} election={election} />
+                  <PickedLine choice={choice} election={election} navState={navState} />
                   {autoResult?.outcome === "picked" &&
                   autoResult.reason === "tie" &&
                   (choice?.picks.length ?? 0) < (choice?.seats_to_fill ?? 1) ? (
