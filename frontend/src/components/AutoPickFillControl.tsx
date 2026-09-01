@@ -14,8 +14,9 @@ import {
 import type { AutoPickElectionResult, ElectionChoice, ElectionSummary } from "@voteapp/api-client";
 
 // Per-date auto-pick controls for the My Picks page
-// (docs/plans/auto-pick-by-issues.md): each election-date card (and ballot
-// sheet) gets its own "Auto-fill empty picks by my issues" button that
+// (docs/plans/auto-pick-by-issues.md): each election-date card (list view
+// only — the ballot preview imitates a paper ballot and stays free of app
+// machinery) gets its own "Auto-fill empty picks by my issues" button that
 // runs POST /api/me/auto-picks in fill_empty mode over THAT date's undecided
 // races only, and — once that date has engine-owned rows — a "Clear auto
 // picks" button that DELETEs with ?election_date= so other dates' auto picks

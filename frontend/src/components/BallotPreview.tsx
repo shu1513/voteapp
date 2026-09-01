@@ -1,6 +1,5 @@
 import type {
   AutoPickElectionResult, ElectionChoice, ElectionPreviewCandidate, ElectionSummary } from "@voteapp/api-client";
-import type { ReactNode } from "react";
 import { formatElectionDate } from "@voteapp/api-client";
 import { reasonLabel } from "./AutoPickFillControl";
 
@@ -182,13 +181,11 @@ function BallotSheet({
   date,
   elections,
   choiceByElectionId,
-  extras,
   autoResultFor,
 }: {
   date: string;
   elections: ElectionSummary[];
   choiceByElectionId: Map<string, ElectionChoice> | undefined;
-  extras?: ReactNode;
   autoResultFor?: (date: string, electionId: string) => AutoPickElectionResult | undefined;
 }) {
   return (
@@ -201,7 +198,6 @@ function BallotSheet({
         <h3 className="text-base font-bold text-ink">Ballot preview — {formatElectionDate(date)}</h3>
         <p className="text-xs text-ink-soft">Not an official ballot</p>
       </header>
-      {extras}
       <div className="mt-3 space-y-3">
         {elections.map((election) => (
           <ContestBox
@@ -234,15 +230,11 @@ export function BallotPreviewSheets({
   elections,
   choiceByElectionId,
   today,
-  renderSheetExtras,
   autoResultFor,
 }: {
   elections: ElectionSummary[];
   choiceByElectionId: Map<string, ElectionChoice> | undefined;
   today: string;
-  /** Optional per-sheet slot under the header (My Picks puts its per-date
-   * auto-pick controls here; the guest draft page passes nothing). */
-  renderSheetExtras?: (date: string, elections: ElectionSummary[]) => ReactNode;
   /** Fill-run feedback per contest, owned by the page so it survives a
    * list/ballot view toggle. Absent on the guest draft page. */
   autoResultFor?: (date: string, electionId: string) => AutoPickElectionResult | undefined;
@@ -270,7 +262,6 @@ export function BallotPreviewSheets({
           date={date}
           elections={byDate.get(date) ?? []}
           choiceByElectionId={choiceByElectionId}
-          extras={renderSheetExtras?.(date, byDate.get(date) ?? [])}
           autoResultFor={autoResultFor}
         />
       ))}
