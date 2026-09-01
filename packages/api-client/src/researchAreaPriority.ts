@@ -28,22 +28,36 @@ const RESEARCH_AREA_PRIORITY: readonly string[] = [
   "peaceful_foreign_policy",
 ];
 
-const rankBySlug = new Map(RESEARCH_AREA_PRIORITY.map((slug, index) => [slug, index]));
+// Slugs pinned to the very end of every list, after even the unranked ones.
+// Candidate Ethics is a per-candidate trait rather than a policy issue, so it
+// always closes the picker (product call, 2026-09-01).
+const RESEARCH_AREA_TRAILING: readonly string[] = ["integrity_and_ethics"];
+
+const UNRANKED_RANK = RESEARCH_AREA_PRIORITY.length;
+const TRAILING_BASE_RANK = UNRANKED_RANK + 1;
+
+const rankBySlug = new Map<string, number>([
+  ...RESEARCH_AREA_PRIORITY.map((slug, index): [string, number] => [slug, index]),
+  ...RESEARCH_AREA_TRAILING.map((slug, index): [string, number] => [
+    slug,
+    TRAILING_BASE_RANK + index,
+  ]),
+]);
 
 /**
  * Compares two research areas by public-salience priority (highest first).
  * Slugs outside the ranking — the judicial criteria (impartiality, legal
- * competence, integrity and ethics), the "general" catch-all, and any area
- * added later — sink below every ranked one, alphabetically so their order
- * is still deterministic. Exported on its own so personalized sorts can use
- * it as their tiebreak.
+ * competence), the "general" catch-all, and any area added later — sink
+ * below every ranked one, alphabetically so their order is still
+ * deterministic. Trailing slugs (Candidate Ethics) sink below even those.
+ * Exported on its own so personalized sorts can use it as their tiebreak.
  */
 export function compareByResearchAreaPriority(
   a: { slug: string; name: string },
   b: { slug: string; name: string }
 ): number {
-  const rankA = rankBySlug.get(a.slug) ?? Number.POSITIVE_INFINITY;
-  const rankB = rankBySlug.get(b.slug) ?? Number.POSITIVE_INFINITY;
+  const rankA = rankBySlug.get(a.slug) ?? UNRANKED_RANK;
+  const rankB = rankBySlug.get(b.slug) ?? UNRANKED_RANK;
   if (rankA !== rankB) {
     return rankA - rankB;
   }
