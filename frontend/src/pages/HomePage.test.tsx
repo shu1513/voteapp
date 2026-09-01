@@ -116,6 +116,26 @@ describe("HomePage pre-search clickwrap", () => {
     expect(input).not.toHaveFocus();
   });
 
+  it("leaves typing alone inside dialog overlays the page does not own", async () => {
+    const user = userEvent.setup();
+    renderHome();
+    const input = screen.getByLabelText(ADDRESS_LABEL);
+    // Stand-in for the overlays that can cover the landing (TermsRenewalGate,
+    // the signed-in chat panel): a modal with a focused non-editable control.
+    const dialog = document.createElement("div");
+    dialog.setAttribute("role", "dialog");
+    const button = document.createElement("button");
+    button.textContent = "Agree";
+    dialog.appendChild(button);
+    document.body.appendChild(dialog);
+    button.focus();
+    await user.keyboard("h");
+    // Focus must stay in the modal, never drop behind it into the form.
+    expect(button).toHaveFocus();
+    expect(input).not.toHaveFocus();
+    document.body.removeChild(dialog);
+  });
+
   it("keeps the privacy note beside the address field, where collection starts", () => {
     renderHome();
     // The autocomplete forwards what is typed before Search is ever pressed,

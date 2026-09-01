@@ -63,8 +63,12 @@ export function HomePage() {
   //  - no Cmd/Ctrl/Alt chords, no IME composition, nothing already handled,
   //  - never while typing in an input/textarea/select/contenteditable (the
   //    address box itself, the chat widget),
-  //  - never while the terms dialog is open — it would pull focus out of a
-  //    modal.
+  //  - never from inside any role="dialog" overlay — this page does not own
+  //    them all (TermsRenewalGate for stale signed-in terms, the chat panel
+  //    for signed-in visitors), and a letter pressed on a modal's button must
+  //    not drop focus behind the overlay,
+  //  - never while the terms dialog is open (belt for the case above while
+  //    its focus trap is still settling).
   // Registered per-render but removed on cleanup, so the listener exists
   // only while the landing page is mounted.
   useEffect(() => {
@@ -84,7 +88,8 @@ export function HomePage() {
         (target.tagName === "INPUT" ||
           target.tagName === "TEXTAREA" ||
           target.tagName === "SELECT" ||
-          target.isContentEditable)
+          target.isContentEditable ||
+          target.closest('[role="dialog"]') !== null)
       ) {
         return;
       }
