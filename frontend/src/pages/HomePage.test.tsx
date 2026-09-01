@@ -136,6 +136,24 @@ describe("HomePage pre-search clickwrap", () => {
     document.body.removeChild(dialog);
   });
 
+  it("shows the idle search glyph and clears it on focus or text", async () => {
+    const user = userEvent.setup();
+    renderHome();
+    const input = screen.getByLabelText(ADDRESS_LABEL);
+    // jsdom reports desktop width, so the box autofocuses; blur to reach the
+    // idle state a phone lands in (phones ignore autoFocus). The glyph is
+    // desktop-hidden by CSS only (sm:hidden), so jsdom still renders it.
+    await user.click(screen.getByRole("heading", { level: 1 }));
+    expect(screen.getByTestId("address-search-hint")).toBeInTheDocument();
+    // Tapping the box clears it, Google-style...
+    await user.click(input);
+    expect(screen.queryByTestId("address-search-hint")).not.toBeInTheDocument();
+    // ...and text keeps it away even after focus leaves.
+    await user.type(input, "9");
+    await user.click(screen.getByRole("heading", { level: 1 }));
+    expect(screen.queryByTestId("address-search-hint")).not.toBeInTheDocument();
+  });
+
   it("keeps the privacy note beside the address field, where collection starts", () => {
     renderHome();
     // The autocomplete forwards what is typed before Search is ever pressed,

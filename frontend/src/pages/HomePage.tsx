@@ -11,6 +11,17 @@ import { clearPendingDistrictIds, savePendingDistrictIds } from "../lib/pendingD
 import { useMe } from "@voteapp/api-client";
 import { TERMS_VERSION } from "@voteapp/api-client";
 import { hasCurrentTermsAcceptance, rememberTermsAcceptance } from "../lib/termsAcceptance";
+
+// Below Tailwind's sm breakpoint the landing swaps the autofocused cursor
+// for the in-box search glyph. matchMedia is absent in SSR and jsdom, where
+// the answer must be "not a phone": the prerendered HTML keeps the autofocus
+// attr and tests keep the desktop default.
+function isPhoneWidth(): boolean {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return false;
+  }
+  return window.matchMedia("(max-width: 639px)").matches;
+}
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 export function HomePage() {
@@ -222,7 +233,7 @@ export function HomePage() {
           the landing reads as one white canvas — the grey band and its border
           are gone, and there is one brand mark, not a big one plus a small
           duplicate in the corner. */}
-      <div className="mx-auto max-w-2xl px-4 pt-12 text-center sm:pt-16">
+      <div className="mx-auto max-w-2xl px-4 pt-6 text-center sm:pt-8">
         {/* Not a link (it would link to this page) and not a heading (the h1
             is the pitch, and two h1-ish marks would fight). text-wordmark
             interpolates 32 -> 52px — a text wordmark this long can't carry
@@ -270,7 +281,13 @@ export function HomePage() {
                 setRegionUnsupported(granularity === "region" && !region);
               }}
               onRetrievePendingChange={setRetrievePending}
-              autoFocus
+              // Phones ignore autoFocus (no keyboard over the page), so at
+              // phone widths the box shows the search glyph instead of a
+              // cursor — Google's mobile pattern. Evaluated once at mount:
+              // jsdom and SSR report no match, keeping the desktop default.
+              // 639px aligns with the glyph's sm:hidden boundary.
+              autoFocus={!isPhoneWidth()}
+              searchIconWhenIdle
             />
             {/* text-sm + the deep brand step: the 12px/rausch-dark pairing
                 failed APCA for an error the visitor must act on. */}
