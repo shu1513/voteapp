@@ -14,26 +14,22 @@ export const TERMS_VERSION = "1.4";
 // clickwrap cases reward (Meyer v. Uber; Berman v. Freedom Financial; Sellers
 // v. JustAnswer).
 //
-// This label deliberately does NOT name arbitration; SIGNUP_CHECKBOX_LABEL and
-// RENEWAL_CHECKBOX_LABEL still do, and that asymmetry is the point:
+// No label in this file names arbitration — not this one, not
+// SIGNUP_CHECKBOX_LABEL, not RENEWAL_CHECKBOX_LABEL. Section 12 lives in the
+// Terms of Use, and restating it beside every checkbox repeated a linked
+// document and put a lawsuit warning on screens people came to for something
+// else. What the clickwrap cases require is conspicuous notice of the TERMS
+// plus an unambiguous act of assent, not a callout of any particular clause:
+// the registration screen enforced in Meyer v. Uber, 868 F.3d 66 (2d Cir.
+// 2017) said only "By creating an Uber account, you agree to the TERMS OF
+// SERVICE & PRIVACY POLICY"; the word "arbitration" was nowhere on it. An
+// empty checkbox that gates the action clears that bar by a wider margin than
+// Uber's click-to-continue did.
 //
-// - What the clickwrap cases require is conspicuous notice of the TERMS plus
-//   an unambiguous act of assent, not a callout of any particular clause. The
-//   registration screen enforced in Meyer v. Uber, 868 F.3d 66 (2d Cir. 2017)
-//   said only "By creating an Uber account, you agree to the TERMS OF SERVICE
-//   & PRIVACY POLICY"; the word "arbitration" was nowhere on it. An empty
-//   checkbox that gates the action clears that bar by a wider margin than
-//   Uber's click-to-continue did.
-// - Anonymous acceptance is never recorded server-side (see
-//   docs/legal/checkbox-copy.md), so this gate was never the evidence a
-//   Section 12 motion would rest on. The account acceptance ledger is, and the
-//   signup label spells arbitration out in full before a row is written.
-// - The cost was real and one-sided: it is the first screen a stranger sees
-//   after typing their address to look up a ballot.
-//
-// What must NOT be dropped is the Terms of Use link beside this label. The
-// notice is the named, linked document at the moment of assent; that link is
-// the whole basis on which Section 12 binds an anonymous searcher.
+// What must NOT be dropped is the Terms of Use link beside each label. With no
+// clause called out anywhere, the named, linked document at the moment of
+// assent IS the notice; those links are the whole basis on which Section 12
+// binds anyone.
 export const PRE_SEARCH_CHECKBOX_LABEL =
   "I have read and agree to the Terms of Use, Privacy Policy, and AI Research and Election Information " +
   "Disclaimer.";
@@ -46,24 +42,20 @@ export const PRE_SEARCH_AGREEMENT_PARAGRAPHS = [
     "information with official election authorities before relying on it.",
 ] as const;
 
-// Arbitration IS named here and in the renewal label, and both must keep
-// naming it. These are the acceptances the DB records against a terms version
-// (user_terms_acceptances), so they are the ones a Section 12 motion would be
-// argued from, and an account holder is committing to a relationship rather
-// than looking one thing up. The pre-search gate is the lighter-touch case;
-// see PRE_SEARCH_CHECKBOX_LABEL for why the two differ on purpose.
+// These are the acceptances the DB records against a terms version
+// (user_terms_acceptances). They bind through the three named, linked
+// documents — no clause restatement here either; see PRE_SEARCH_CHECKBOX_LABEL
+// for the reasoning, which now applies to every gate.
 export const SIGNUP_CHECKBOX_LABEL =
   "I am at least 18 years old, and I have read and agree to the Terms of Use, Privacy Policy, and AI " +
   "Research and Election Information Disclaimer. I consent to enter this agreement electronically. I " +
   "understand that Elections Simplified is not an official election source, does not register voters or cast ballots, " +
   "and may display AI-assisted content that must be independently verified with official election " +
-  "authorities. I agree that disputes are resolved by binding individual arbitration with a class-action " +
-  "waiver as described in Section 12 of the Terms of Use, unless I opt out as described there.";
+  "authorities.";
 
 export const RENEWAL_CHECKBOX_LABEL =
   "I have read and agree to the updated Terms of Use, Privacy Policy, and AI Research and Election " +
-  "Information Disclaimer, including the agreement to resolve disputes by binding individual arbitration " +
-  "with a class-action waiver (Terms of Use Section 12), unless I opt out as described there.";
+  "Information Disclaimer.";
 
 /**
  * Sits beside the address field, where collection actually begins: the
