@@ -223,10 +223,11 @@ function RankedDropZone({ empty, children }: { empty: boolean; children: React.R
 // Compact pool card: name only, with the description behind an ⓘ toggle —
 // a tap target, not a title tooltip, because touch never sees tooltips.
 // Tap the name to add; press-and-hold (touch) or drag (mouse) to drop it
-// into the ranked panel. Drag listeners sit on the <li>, and the keyboard
-// activator attributes are deliberately NOT spread: they would turn
-// Enter/Space on the add button into "start dragging" and swallow the click.
-// Keyboard users add by clicking; sorting afterwards is keyboard-accessible.
+// into the ranked panel. Drag listeners sit on the <li>, minus the keyboard
+// one: with no activator node gating it, dnd-kit would treat Enter/Space
+// on the buttons inside (bubbled to the li) as "start dragging" and swallow
+// the press. Pool cards have no keyboard drag — Enter/Space adds, and
+// ranking afterwards is keyboard-accessible on the rows.
 // Chosen cards stay put — tinted green with a rank badge, tap to unselect —
 // so the grid never reflows mid-selection; only unchosen cards drag (the
 // chosen issue already has a draggable row in the ranked panel).
@@ -247,12 +248,17 @@ function PoolAreaCard({
     id: `${POOL_ID_PREFIX}${area.id}`,
     disabled: disabled || selected,
   });
+  const { onKeyDown: _keyboardDrag, ...dragListeners } = listeners ?? {};
   return (
     <li
       ref={setNodeRef}
-      {...(selected ? {} : listeners)}
+      {...(selected ? {} : dragListeners)}
       style={{ transform: CSS.Translate.toString(transform) }}
-      className={`touch-manipulation select-none rounded-lg border transition hover:border-green-700 ${
+      // flex-col justify-center: grid rows stretch every card to the tallest
+      // one in the row, so a short name next to a wrapped two-line neighbor
+      // would otherwise sit at the top with a blank strip under it; centering
+      // splits that slack evenly.
+      className={`flex flex-col justify-center touch-manipulation select-none rounded-lg border transition hover:border-green-700 ${
         selected ? "border-green-700 bg-green-50" : "cursor-grab bg-white"
       } ${isDragging ? "z-10 border-green-700 shadow-md" : selected ? "" : "border-line"}`}
     >
