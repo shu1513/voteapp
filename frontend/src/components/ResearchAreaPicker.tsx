@@ -32,11 +32,13 @@ import { newRankedResearchArea, type RankedResearchArea } from "../lib/rankedRes
 // (welcome). List position is the rank: first = rank 1. No cap on length.
 //
 // Two panels, side by side from lg up: the ranked list (a drop zone) and the
-// pool of unchosen issues. Tapping a pool card appends it — that path, not
-// drag, is the accessible one — and dragging a card onto the ranked panel
-// inserts it where it drops. Chosen issues leave the pool, so the pool only
-// ever shrinks under the user, never reflows a growing list above it (the
-// complaint with the old stacked layout).
+// pool of issues. Tapping a pool card appends it — that path, not drag, is
+// the accessible one — and dragging an unchosen card onto the ranked panel
+// inserts it where it drops. Chosen issues stay in the pool (tinted, with a
+// rank badge; tapping again unselects), so the grid never reflows under the
+// user mid-selection — and the ranked list growing beside it, not above it,
+// no longer pushes the choices down (the complaint with the old stacked
+// layout).
 
 export type ResearchAreaOption = {
   id: string;
@@ -53,6 +55,7 @@ type ResearchAreaPickerProps = {
 };
 
 const RANKED_PANEL_ID = "ranked-panel";
+const POOL_ID_PREFIX = "pool-";
 
 export function ResearchAreaPicker({ areas, ranked, disabled, onChange }: ResearchAreaPickerProps) {
   // Mouse: drag starts after 4px of movement, so the buttons stay plain
@@ -69,6 +72,10 @@ export function ResearchAreaPicker({ areas, ranked, disabled, onChange }: Resear
   const areaById = new Map(areas.map((area) => [area.id, area]));
   const orderedIds = ranked.map((row) => row.research_area_id);
 
+  // Pool draggables carry a "pool-" prefix: a chosen issue exists in BOTH
+  // panels (sortable row + tinted pool card), and dnd-kit ids must be unique
+  // per context.
+  //
   // Reorders resolve against row/panel centers so keyboard sorting (which has
   // no pointer) keeps working — minus the panel itself, whose large center
   // could otherwise beat the intended row and turn a reorder into a no-op.
@@ -76,13 +83,13 @@ export function ResearchAreaPicker({ areas, ranked, disabled, onChange }: Resear
   // would return SOME target even for a card dropped back in the pool, which
   // would add it.
   const collisionDetection: CollisionDetection = (args) => {
-    if (orderedIds.includes(String(args.active.id))) {
-      return closestCenter({
-        ...args,
-        droppableContainers: args.droppableContainers.filter((c) => c.id !== RANKED_PANEL_ID),
-      });
+    if (String(args.active.id).startsWith(POOL_ID_PREFIX)) {
+      return pointerWithin(args);
     }
-    return pointerWithin(args);
+    return closestCenter({
+      ...args,
+      droppableContainers: args.droppableContainers.filter((c) => c.id !== RANKED_PANEL_ID),
+    });
   };
 
   function addAt(id: string, index: number) {
@@ -98,23 +105,24 @@ export function ResearchAreaPicker({ areas, ranked, disabled, onChange }: Resear
     }
     const activeId = String(active.id);
     const overId = String(over.id);
-    const from = orderedIds.indexOf(activeId);
-    if (from >= 0) {
+    if (activeId.startsWith(POOL_ID_PREFIX)) {
+      // Pool card: dropped on a ranked row takes that row's rank; dropped on
+      // the panel's empty space appends.
+      const areaId = activeId.slice(POOL_ID_PREFIX.length);
       const to = orderedIds.indexOf(overId);
-      if (to < 0 || from === to) {
-        return;
+      if (to >= 0) {
+        addAt(areaId, to);
+      } else if (overId === RANKED_PANEL_ID) {
+        addAt(areaId, ranked.length);
       }
-      onChange(arrayMove(ranked, from, to));
       return;
     }
-    // Pool card: dropped on a ranked row takes that row's rank; dropped on
-    // the panel's empty space appends.
+    const from = orderedIds.indexOf(activeId);
     const to = orderedIds.indexOf(overId);
-    if (to >= 0) {
-      addAt(activeId, to);
-    } else if (overId === RANKED_PANEL_ID) {
-      addAt(activeId, ranked.length);
+    if (from < 0 || to < 0 || from === to) {
+      return;
     }
+    onChange(arrayMove(ranked, from, to));
   }
 
   function remove(id: string) {
@@ -170,16 +178,18 @@ export function ResearchAreaPicker({ areas, ranked, disabled, onChange }: Resear
               same ranking the election and candidate pages use, so the issues
               most users pick first sit at the top of the grid. */}
           <ul className="mt-2 grid grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] gap-2">
-            {sortByResearchAreaPriority(areas)
-              .filter((area) => !orderedIds.includes(area.id))
-              .map((area) => (
+            {sortByResearchAreaPriority(areas).map((area) => {
+              const rank = orderedIds.indexOf(area.id);
+              return (
                 <PoolAreaCard
                   key={area.id}
                   area={area}
+                  rank={rank}
                   disabled={disabled}
-                  onAdd={() => addAt(area.id, ranked.length)}
+                  onToggle={() => (rank >= 0 ? remove(area.id) : addAt(area.id, ranked.length))}
                 />
-              ))}
+              );
+            })}
           </ul>
         </div>
       </div>
@@ -217,34 +227,53 @@ function RankedDropZone({ empty, children }: { empty: boolean; children: React.R
 // activator attributes are deliberately NOT spread: they would turn
 // Enter/Space on the add button into "start dragging" and swallow the click.
 // Keyboard users add by clicking; sorting afterwards is keyboard-accessible.
+// Chosen cards stay put — tinted green with a rank badge, tap to unselect —
+// so the grid never reflows mid-selection; only unchosen cards drag (the
+// chosen issue already has a draggable row in the ranked panel).
 function PoolAreaCard({
   area,
+  rank,
   disabled,
-  onAdd,
+  onToggle,
 }: {
   area: ResearchAreaOption;
+  rank: number;
   disabled: boolean;
-  onAdd: () => void;
+  onToggle: () => void;
 }) {
   const [showInfo, setShowInfo] = useState(false);
-  const { setNodeRef, listeners, transform, isDragging } = useDraggable({ id: area.id, disabled });
+  const selected = rank >= 0;
+  const { setNodeRef, listeners, transform, isDragging } = useDraggable({
+    id: `${POOL_ID_PREFIX}${area.id}`,
+    disabled: disabled || selected,
+  });
   return (
     <li
       ref={setNodeRef}
-      {...listeners}
+      {...(selected ? {} : listeners)}
       style={{ transform: CSS.Translate.toString(transform) }}
-      className={`cursor-grab touch-manipulation select-none rounded-lg border bg-white transition hover:border-green-700 ${
-        isDragging ? "z-10 border-green-700 shadow-md" : "border-line"
-      }`}
+      className={`touch-manipulation select-none rounded-lg border transition hover:border-green-700 ${
+        selected ? "border-green-700 bg-green-50" : "cursor-grab bg-white"
+      } ${isDragging ? "z-10 border-green-700 shadow-md" : selected ? "" : "border-line"}`}
     >
       <span className="flex items-stretch">
         <button
           type="button"
           disabled={disabled}
-          onClick={onAdd}
-          className="min-w-0 flex-1 px-3 py-2 text-left text-sm font-medium text-ink disabled:cursor-not-allowed disabled:opacity-50"
+          aria-pressed={selected}
+          aria-label={selected ? `${area.name}, rank ${rank + 1}. Click to remove.` : undefined}
+          onClick={onToggle}
+          className="flex min-w-0 flex-1 items-center gap-2 px-3 py-2 text-left text-sm font-medium text-ink disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {area.name}
+          <span className="min-w-0 flex-1">{area.name}</span>
+          {selected ? (
+            <span
+              aria-hidden
+              className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-700 text-[11px] font-semibold text-white"
+            >
+              {rank + 1}
+            </span>
+          ) : null}
         </button>
         {area.description ? (
           <button

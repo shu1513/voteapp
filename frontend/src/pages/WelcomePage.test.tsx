@@ -69,8 +69,8 @@ describe("WelcomePage", () => {
     await user.click(screen.getByRole("button", { name: "Environment" }));
     expect(screen.getByText("#1")).toBeInTheDocument();
     expect(screen.getByText("#2")).toBeInTheDocument();
-    // Chosen issues leave the pool instead of piling a second copy on top.
-    expect(screen.queryByRole("button", { name: "Housing" })).not.toBeInTheDocument();
+    // Chosen issues stay in the pool as tinted, rank-badged toggles.
+    expect(screen.getByRole("button", { name: "Housing, rank 1. Click to remove." })).toBeInTheDocument();
 
     await user.click(saveButton);
     expect(await screen.findByText("Saved ballot placeholder")).toBeInTheDocument();
