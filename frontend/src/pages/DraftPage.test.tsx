@@ -110,7 +110,7 @@ describe("DraftPage", () => {
       choices: { "e-1": draftChoice() },
     });
     // ONE fetch serves both views: the preview payload is also the list
-    // payload, so List and Ballot view share the same order by design.
+    // payload, so List and Ballot preview share the same order by design.
     const fetchMock = stubApiRoutes({
       ...GUEST,
       "/api/ballot": {
@@ -139,14 +139,14 @@ describe("DraftPage", () => {
     });
     renderDraft();
 
-    await user.click(await screen.findByRole("button", { name: "Ballot view" }));
+    await user.click(await screen.findByRole("button", { name: "Ballot preview" }));
 
     expect(await screen.findByRole("heading", { name: /Ballot preview — November 3, 2026/ })).toBeInTheDocument();
     expect(screen.getByText("Not an official ballot")).toBeInTheDocument();
     expect(screen.getByText("My pick")).toBeInTheDocument();
     // Guest preview rides the PUBLIC endpoint with the same ordering
     // contract — and toggling views must NOT refetch: one payload backs
-    // both List and Ballot view.
+    // both List and Ballot preview.
     const ballotCalls = fetchMock.mock.calls.filter(([input]) => String(input).includes("/api/ballot?"));
     expect(ballotCalls).toHaveLength(1);
     expect(String(ballotCalls[0][0])).toContain("district_ids=dddddddd-1111-4111-8111-111111111111");

@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { formatElectionDate } from "@voteapp/api-client";
 import { reasonLabel } from "./AutoPickFillControl";
 
-// Ballot view of My Picks / My Ballot Draft: a paper-ballot-shaped render of
+// Ballot preview of My Picks / My Ballot Draft: a paper-ballot-shaped render of
 // the same races the date cards list — contest boxes in state-baseline ballot
 // order (the payload must be fetched with include=preview &
 // sort=state_baseline & followed_first=false), fill-in ovals, the user's
@@ -287,7 +287,7 @@ export function BallotPreviewSheets({
   );
 }
 
-// The List / Ballot view switch shared by /me/picks and /draft. Plain
+// The List / Ballot preview switch shared by /me/picks and /draft. Plain
 // buttons, not a router concern: the view is page-local state.
 export function BallotViewToggle({
   view,
@@ -306,7 +306,7 @@ export function BallotViewToggle({
         List view
       </button>
       <button type="button" aria-pressed={view === "ballot"} className={buttonClass(view === "ballot")} onClick={() => onChange("ballot")}>
-        Ballot view
+        Ballot preview
       </button>
     </div>
   );

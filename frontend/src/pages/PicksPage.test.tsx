@@ -440,7 +440,7 @@ describe("PicksPage", () => {
     const fetchMock = stubApiRoutes(
       verifiedRoutes({
         // ONE fetch serves both views: the preview payload is also the list
-        // payload, so List and Ballot view share the same order by design.
+        // payload, so List and Ballot preview share the same order by design.
         "/api/me/ballot": {
           body: ballotSummary([
                   electionSummary({
@@ -512,11 +512,11 @@ describe("PicksPage", () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     renderPicks();
 
-    await user.click(await screen.findByRole("button", { name: "Ballot view" }));
+    await user.click(await screen.findByRole("button", { name: "Ballot preview" }));
 
     // The fetch pins its own ordering contract — the user's saved list sort
     // must never reorder this page — and toggling views must NOT refetch:
-    // one payload backs both List and Ballot view.
+    // one payload backs both List and Ballot preview.
     const ballotCalls = fetchMock.mock.calls.filter(([input]) => String(input).includes("/api/me/ballot?"));
     expect(ballotCalls).toHaveLength(1);
     expect(String(ballotCalls[0][0])).toContain("include=preview");
@@ -746,7 +746,7 @@ describe("PicksPage", () => {
     await user.click(button);
     await screen.findByRole("link", { name: /auto pick: not enough evidence/ });
 
-    await user.click(screen.getByRole("button", { name: "Ballot view" }));
+    await user.click(screen.getByRole("button", { name: "Ballot preview" }));
 
     expect(await screen.findByText("Auto pick left this open: not enough evidence.")).toBeInTheDocument();
   });
