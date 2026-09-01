@@ -522,6 +522,85 @@ describe("North Carolina's measured desc vocabulary", () => {
   });
 });
 
+describe("Alabama's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS.AL!;
+  const al = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType, config });
+
+  it("keeps passage with or without a sponsor prefix or an ` as Amended` tail", () => {
+    expect(al("Motion to Read a Third Time and Pass - Roll Call 376", 105)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(al("Motion to Read a Third Time and Pass as Amended - Roll Call 130", 34, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // SB 54 roll 164: a real passage vote printed under its sponsor's name,
+    // which is why the passage pattern cannot anchor at the start.
+    expect(al("Roberts motion to Read a Third Time and Pass as Amended - Roll Call 164", 34, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+  });
+
+  it("classes the concurrence spellings, and the conference report ahead of them", () => {
+    expect(al("Garrett Concur In and Adopt - Roll Call 1188", 103).questionClass).toBe("concurrence");
+    expect(al("Concur In and Senate Amendment", 103).questionClass).toBe("concurrence");
+    expect(al("Senate Concurs In House Amendment -", 34, "senate").questionClass).toBe("concurrence");
+    expect(al("Hassell Motion to Concur In and Adopt", 104).questionClass).toBe("concurrence");
+    expect(al("Concur In and Adopt Conference Committee Report YMYZ96N-1", 103).questionClass).toBe(
+      "conference_report"
+    );
+  });
+
+  it("excludes the Budget Isolation Resolution under BOTH of its captions", () => {
+    // Alabama votes a Budget Isolation Resolution before taking up most
+    // bills, and LegiScan files that one vote twice. The second caption
+    // reads like passage but is the same tally and the same member list, so
+    // keeping it would double every Alabama record.
+    for (const desc of [
+      "HBIR: Passed by House of Origin",
+      "HBIR: Passed by Second House",
+      "SBIR: Passed by House of Origin",
+      "SBIR: Passed by Second House",
+      "Third Reading in House of Origin",
+      "Third Reading in Second House",
+      "Motion to Adopt BIR- Failed",
+    ]) {
+      expect(al(desc, 105)).toMatchObject({ isFloorVote: false, questionClass: null });
+    }
+  });
+
+  it("excludes each surveyed procedural family", () => {
+    for (const desc of [
+      "Albritton motion to Adopt - Roll Call 27 F2Z4DCC-1",
+      "Carns motion to Table - Roll Call 1143 SLMKI78-1",
+      "Waggoner Petition to Cease Debate",
+      "Petition to Close Debate",
+      "Stadthagen Previous Question",
+      "Motion to Add Cosponsor",
+      "LocalCertificationResolutionAdopted",
+      "Orr Local Certification Resolution",
+      "In Conference Committee",
+      "Chambliss Reconsider",
+      "Underwood motion to Non-Concur and Appoint Conference Committee",
+    ]) {
+      expect(al(desc, 105)).toMatchObject({ isFloorVote: false, questionClass: null });
+    }
+  });
+
+  it("keeps a county delegation's local-bill vote, because its roll is still chamber-sized", () => {
+    // SB 314 (Shelby County) passed the House 10-3 with 90 members recorded
+    // as not voting, so `total` is 103 and no tally rule separates a local
+    // act from a statewide one. Selection has to drop these by subject.
+    expect(al("Motion to Read a Third Time and Pass - Roll Call 978", 103)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+  });
+});
+
 describe("getLegiscanStateConfig", () => {
   it("serves only surveyed states; an unsurveyed state is refused by name", () => {
     expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual([
@@ -541,6 +620,7 @@ describe("getLegiscanStateConfig", () => {
       "IN",
       "MT",
       "NC",
+      "AL",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
@@ -560,6 +640,7 @@ describe("getLegiscanStateConfig", () => {
       "IN",
       "MT",
       "NC",
+      "AL",
     ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);

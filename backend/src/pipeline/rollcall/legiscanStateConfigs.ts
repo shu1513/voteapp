@@ -1281,6 +1281,98 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       /\bnot concur\b/,
     ],
   },
+
+  // Alabama Legislature, 2025 Regular Session (Feb 4 - May 14 2025). The
+  // 2026 sessions (LegiScan 2218 regular, 2262 special) are NOT registered
+  // here: each needs its own survey and an `AL-2218`-style compound key
+  // (the MO/MD pattern) in a follow-up PR.
+  // Vocabulary measured from the full dataset survey 2026-08-31: 1,449
+  // bills, 2,851 roll calls, 139 people (105 House + 35 Senate seats).
+  //
+  // What the survey established:
+  // - 1,439 of the 2,851 descs carry a trailing ` - Roll Call <n>` —
+  //   every passage desc does, but the BIR / `Third Reading` captions and
+  //   a few concurrences do not. The suffix is sometimes followed by an
+  //   amendment code or a bill-page URL, so no kept pattern anchors at the
+  //   end. Passage descs also carry an OPTIONAL sponsor-name prefix (SB 54
+  //   roll 164 is `Roberts motion to Read a Third Time and Pass as
+  //   Amended`), so the passage pattern does not anchor at the start
+  //   either. 1,453 raw desc rows fold to 513 families.
+  // - THE BUDGET ISOLATION RESOLUTION IS PRINTED TWICE, AND ITS SECOND
+  //   CAPTION LOOKS LIKE PASSAGE. Alabama's constitution bars most bills
+  //   from being taken up before the budgets pass unless the chamber first
+  //   adopts a Budget Isolation Resolution by a three-fifths vote. LegiScan
+  //   files that one vote as TWO roll calls: `HBIR:`/`SBIR: Passed by House
+  //   of Origin|Second House` AND `Third Reading in House of Origin|Second
+  //   House`. All 698 pairs in this session are identical in tally AND in
+  //   member list (1 lone BIR, 0 lone `Third Reading`), so the
+  //   `Third Reading ...` caption is never a vote on the bill and BOTH
+  //   families are excluded. The vote that passes an Alabama bill is
+  //   `Motion to Read a Third Time and Pass[ as Amended]`.
+  // - Concurrence in the other chamber's amendments is `<sponsor> Concur In
+  //   and Adopt`, `Concur In and Senate Amendment` or `Senate Concurs In
+  //   House Amendment`; the session holds exactly one conference-report
+  //   vote (`Concur In and Adopt Conference Committee Report`), which is
+  //   listed before the concurrence rule so it keeps its own class.
+  // - `<sponsor> motion to Adopt` is AMENDMENT adoption (417 of 422 sit on
+  //   bills), so the family is excluded. The 5 that sit on joint
+  //   resolutions are ceremonial commendations, every one unanimous, so
+  //   nothing the campaign would judge is lost.
+  // - LOCAL ACTS ARE NOT FILTERED HERE, AND NO TALLY RULE CATCHES THEM.
+  //   Alabama passes county bills on the votes of that county's delegation
+  //   alone, but the roll still lists the whole chamber with everyone else
+  //   recorded as not voting, so `total` is floor-sized and the row is
+  //   stored as a floor vote (SB 314, Shelby County: 10-3 with 90 not
+  //   voting, total 103). They are 175 of the 917 kept rolls but only 2 of
+  //   the 34 divided ones, and selection drops them on the
+  //   nameable-subject filter, not here.
+  // - The dataset carries NO committee votes: every whole-chamber tally is
+  //   34-35 (Senate) or 103-105 (House). Feed health is the cleanest tier —
+  //   0 repeated roll_call_ids, 0 summary-only rolls, 0 tally mismatches.
+  // - Alabama proposes CONSTITUTIONAL AMENDMENTS as ordinary bills (the
+  //   dataset holds only types B, JR and R), so Georgia's resolution-typed
+  //   amendment gap does not recur here.
+  AL: {
+    jurisdiction: "AL",
+    sessionId: 2148,
+    chamberSizes: { house: 105, senate: 35 },
+    keptQuestions: [
+      // The session's one conference-report vote. Listed first so the
+      // concurrence rule below cannot claim it.
+      { pattern: /concur in and adopt conference committee report/, questionClass: "conference_report" },
+      // `<sponsor> Concur In and Adopt - Roll Call 1188`,
+      // `Concur In and Senate Amendment`, `Senate Concurs In House
+      // Amendment`, `<sponsor> Motion to Concur In and Adopt`.
+      { pattern: /\bconcur(?:s)? in\b/, questionClass: "concurrence" },
+      // Alabama's passage question, with or without a sponsor prefix and
+      // with or without ` as Amended`.
+      { pattern: /\bmotion to read a third time and pass\b/, questionClass: "passage" },
+    ],
+    excludedQuestions: [
+      // The Budget Isolation Resolution, under both of its captions.
+      /^[hs]bir:/,
+      /^third reading in (?:house of origin|second house)$/,
+      /\bmotion to adopt bir\b/,
+      // Floor adoption of an amendment or substitute — `<sponsor> motion to
+      // Adopt - Roll Call 27 F2Z4DCC-1`. Written without a start anchor
+      // because the sponsor prefix is not optional in practice, and with a
+      // word boundary so `motion to Concur In and Adopt` is untouched.
+      /\bmotion to adopt\b/,
+      // Tabling an amendment, and the two debate-cutoff motions.
+      /\bmotion to table\b/,
+      /\bpetition to (?:cease|close) debate\b/,
+      /\bprevious question\b/,
+      // Housekeeping: adding a cosponsor, and the local-bill certification
+      // resolution (spelled with and without spaces).
+      /\badd cosponsor\b/,
+      /local ?certification ?resolution/,
+      // Procedural steps around a conference: sending a bill to one,
+      // refusing to concur, and reconsidering a completed vote.
+      /^in conference committee$/,
+      /\bnon-concur\b/,
+      /\breconsider\b/,
+    ],
+  },
 };
 
 export const LEGISCAN_CONFIG_KEYS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);
