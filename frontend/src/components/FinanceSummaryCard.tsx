@@ -28,8 +28,8 @@ import {
 // headings say "disclosed" / "reporting", and outside committees are
 // "outside groups" (state terminology differs; not every one is a Super PAC).
 //
-// The card keeps a brief default view: top occupations (first few, rest
-// behind a disclosure), size buckets largest-first, and outside spending
+// The card keeps a brief default view: top occupations (top five only),
+// size buckets largest-first, and outside spending
 // with a plain-language explanation. Employers stay hidden. Direct-donor
 // industries render only when occupations are unavailable, avoiding duplicate
 // views while preserving the only trustworthy classification some states have.
@@ -38,8 +38,8 @@ import {
 // uses the same definition); re-exported here for this component's callers.
 export { hasFinanceContent };
 
-// How many direct-breakdown rows show before the rest collapse behind "Show more".
-const VISIBLE_DIRECT_BREAKDOWNS = 4;
+// How many direct-breakdown rows show; anything past this is not rendered.
+const VISIBLE_DIRECT_BREAKDOWNS = 5;
 
 function MoneyStat({ label, amount }: { label: string; amount: number | null }) {
   if (amount === null) {
@@ -85,26 +85,17 @@ function BreakdownList({
 }: {
   heading: string;
   rows: FinanceBreakdown[];
-  /** When set, rows beyond this count collapse behind a "Show more" disclosure. */
+  /** When set, rows beyond this count are not rendered. */
   visibleCount?: number;
 }) {
   if (rows.length === 0) {
     return null;
   }
   const visible = visibleCount !== undefined ? rows.slice(0, visibleCount) : rows;
-  const hidden = visibleCount !== undefined ? rows.slice(visibleCount) : [];
   return (
     <div className="mt-3">
       <h4 className="text-xs font-semibold uppercase tracking-wide text-ink-soft">{heading}</h4>
       <BreakdownRows rows={visible} />
-      {hidden.length > 0 ? (
-        <details className="mt-1">
-          <summary className="cursor-pointer select-none text-xs text-ink-soft underline hover:text-ink">
-            Show {hidden.length} more
-          </summary>
-          <BreakdownRows rows={hidden} />
-        </details>
-      ) : null}
     </div>
   );
 }
