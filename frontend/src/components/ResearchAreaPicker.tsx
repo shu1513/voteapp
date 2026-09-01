@@ -139,7 +139,7 @@ export function ResearchAreaPicker({ areas, ranked, disabled, onChange }: Resear
         <div>
           <p className="text-sm font-medium text-ink">
             Your priorities{" "}
-            <span className="font-normal text-ink-soft">(top = most important)</span>
+            <span className="font-normal text-ink-soft">(drag to arrange, top matters most)</span>
           </p>
           <RankedDropZone empty={ranked.length === 0}>
             {ranked.length > 0 ? (
@@ -164,7 +164,7 @@ export function ResearchAreaPicker({ areas, ranked, disabled, onChange }: Resear
               </SortableContext>
             ) : (
               <p className="px-4 py-8 text-center text-sm text-ink-soft">
-                Tap an issue to add it here, or drag it over — then drag to rank.
+                Tap an issue to add it here, or drag it over.
               </p>
             )}
           </RankedDropZone>

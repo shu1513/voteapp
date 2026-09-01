@@ -25,7 +25,7 @@ describe("ResearchAreaPicker", () => {
     );
 
     expect(
-      screen.getByText("Tap an issue to add it here, or drag it over — then drag to rank.")
+      screen.getByText("Tap an issue to add it here, or drag it over.")
     ).toBeInTheDocument();
     const names = screen.getAllByRole("button").map((button) => button.textContent);
     expect(names).toEqual([
