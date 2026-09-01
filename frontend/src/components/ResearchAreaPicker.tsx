@@ -164,7 +164,7 @@ export function ResearchAreaPicker({ areas, ranked, disabled, onChange }: Resear
               </SortableContext>
             ) : (
               <p className="px-4 py-8 text-center text-sm text-ink-soft">
-                Tap an issue to add it here, or drag it over.
+                Tap an issue to add it here.
               </p>
             )}
           </RankedDropZone>
