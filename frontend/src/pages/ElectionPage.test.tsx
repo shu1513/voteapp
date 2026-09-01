@@ -530,7 +530,7 @@ describe("ElectionPage", () => {
     // PDF as the official-measure link; both election sources are covered, so
     // the "Election sources" section (and its duplicate source line) is gone.
     expect(screen.getAllByRole("link", { name: "sos.example.gov" })).toHaveLength(1);
-    expect(screen.queryByRole("heading", { name: "Election sources" })).not.toBeInTheDocument();
+    expect(screen.getAllByText(/^Sources?:/)).toHaveLength(1);
     expect(screen.getAllByRole("button", { name: /^Report an issue/ })).toHaveLength(1);
   });
 
@@ -557,9 +557,35 @@ describe("ElectionPage", () => {
     );
 
     await screen.findByText("Yes approves the bond.");
-    expect(screen.getByRole("heading", { name: "Election sources" })).toBeInTheDocument();
+    // The measure's own footnote plus one election-level footnote for the
+    // county notice the measure did not cite.
+    expect(screen.getAllByText(/^Sources?:/)).toHaveLength(2);
     expect(screen.getAllByRole("link", { name: "sos.example.gov" })).toHaveLength(1);
     expect(screen.getByRole("link", { name: "county.example.gov" })).toBeInTheDocument();
+  });
+
+  it("names a source site once and links its further pages as numbered footnotes", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        sources: [
+          "https://elections.ny.gov/certification-2026",
+          "https://elections.ny.gov/ballot-certifications",
+          "https://ballotpedia.org/New_York",
+        ],
+      })
+    );
+
+    const first = await screen.findByRole("link", { name: "elections.ny.gov" });
+    expect(first).toHaveAttribute("href", "https://elections.ny.gov/certification-2026");
+    expect(screen.getByRole("link", { name: "elections.ny.gov, page 2" })).toHaveAttribute(
+      "href",
+      "https://elections.ny.gov/ballot-certifications"
+    );
+    expect(screen.getByRole("link", { name: "ballotpedia.org" })).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /elections\.ny\.gov/ })).toHaveLength(2);
+    expect(screen.getByText(/^Sources:/)).toBeInTheDocument();
+    expect(screen.queryByText("Election sources")).not.toBeInTheDocument();
   });
 
   it("renders candidate stance chips as +N/-N colored by direction", async () => {
