@@ -31,9 +31,13 @@ was trimmed the day before: Section 12 is stated in the linked Terms of Use,
 and restating it beside the checkbox repeated a linked document as scare copy.
 The version again did NOT bump — the three pinned documents are byte-identical,
 so the agreement entered is the same agreement. Boundary for the acceptance
-ledger: user_terms_acceptances rows for 1.4 written before 2026-08-31 came
-from labels naming arbitration in full; rows after came from this file's
-current text.
+ledger: it is a per-client DEPLOY boundary, not a calendar line, and the rows
+do not record label text, so a 1.4 row alone cannot say which wording was on
+screen. Web flipped with the 2026-08-31 deploy; a mobile binary built earlier
+keeps showing the old labels until the app updates, so 1.4 rows dated after
+2026-08-31 may come from either wording. The ambiguity only runs the safe way:
+the old labels are the current text PLUS an arbitration sentence, so every 1.4
+acceptor saw at least the current wording — some saw more notice, none less.
 
 Clickwrap requirements (Meyer v. Uber; Nguyen v. Barnes & Noble; Berman v.
 Freedom Financial Network):
