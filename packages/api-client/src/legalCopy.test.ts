@@ -71,26 +71,22 @@ describe("legal copy matches docs/legal/checkbox-copy.md", () => {
     expect(normalizedDoc).toContain(`Checkbox and notice copy — Version ${TERMS_VERSION}`);
   });
 
-  // The anonymous gate and the account acceptances differ on arbitration ON
-  // PURPOSE, and each direction is a separate mistake waiting to be made — one
-  // reintroduces the scare copy the gate was trimmed of, the other quietly
-  // strips a named clause from the acceptances the DB actually records. Both
-  // are pinned. The reasoning is in legalCopy.ts above each constant.
-  it("leaves arbitration out of the anonymous pre-search gate", () => {
-    for (const copy of [PRE_SEARCH_CHECKBOX_LABEL, ...PRE_SEARCH_AGREEMENT_PARAGRAPHS]) {
-      expect(copy).not.toContain("arbitration");
-      expect(copy).not.toContain("class-action");
-    }
-  });
-
+  // No checkbox restates Section 12: arbitration binds through the linked
+  // Terms of Use, and repeating it beside every box was scare copy on screens
+  // people came to for something else (2026-08-30 trimmed the pre-search gate,
+  // 2026-08-31 the signup and renewal labels). Pinned so the restatement does
+  // not creep back one label at a time. The reasoning is in legalCopy.ts above
+  // PRE_SEARCH_CHECKBOX_LABEL.
   it.each([
-    ["signup", SIGNUP_CHECKBOX_LABEL],
-    ["renewal", RENEWAL_CHECKBOX_LABEL],
-  ])("names arbitration in the recorded %s acceptance", (_name, copy) => {
-    expect(copy).toContain("binding individual arbitration");
-    expect(copy).toContain("class-action");
-    expect(copy).toContain("Section 12");
-    expect(copy).toContain("opt out");
+    ["pre-search label", PRE_SEARCH_CHECKBOX_LABEL],
+    ["signup label", SIGNUP_CHECKBOX_LABEL],
+    ["renewal label", RENEWAL_CHECKBOX_LABEL],
+    ...PRE_SEARCH_AGREEMENT_PARAGRAPHS.map(
+      (paragraph, index) => [`full-agreement paragraph ${index + 1}`, paragraph] as const
+    ),
+  ])("leaves arbitration out of the %s", (_name, copy) => {
+    expect(copy).not.toContain("arbitration");
+    expect(copy).not.toContain("class-action");
   });
 
   // Dropping the arbitration callout leaves the linked documents carrying the
