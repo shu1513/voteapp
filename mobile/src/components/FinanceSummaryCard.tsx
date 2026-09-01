@@ -30,13 +30,13 @@ import { openExternalUrl } from "../lib/openExternalUrl";
 // is a Super PAC). "Anything to render" gating (hasFinanceContent) lives in
 // the shared package.
 //
-// Same brief-by-default policy as the web card: top occupations collapse
-// past the first few, size buckets sort largest-first, outside spending gets
+// Same brief-by-default policy as the web card: only the top five
+// occupations show, size buckets sort largest-first, outside spending gets
 // a plain-language explanation. Employers stay hidden. Direct-donor industries
 // render only when occupations are unavailable, avoiding duplicate views.
 
-// How many direct-breakdown rows show before the rest collapse behind "Show more".
-const VISIBLE_DIRECT_BREAKDOWNS = 4;
+// How many direct-breakdown rows show; anything past this is not rendered.
+const VISIBLE_DIRECT_BREAKDOWNS = 5;
 
 function MoneyStat({ label, amount }: { label: string; amount: number | null }) {
   if (amount === null) {
@@ -83,30 +83,17 @@ function BreakdownList({
 }: {
   heading: string;
   rows: FinanceBreakdown[];
-  /** When set, rows beyond this count collapse behind a "Show more" toggle. */
+  /** When set, rows beyond this count are not rendered. */
   visibleCount?: number;
 }) {
-  const [expanded, setExpanded] = useState(false);
   if (rows.length === 0) {
     return null;
   }
-  const hiddenCount = visibleCount !== undefined ? Math.max(rows.length - visibleCount, 0) : 0;
-  const visible = hiddenCount > 0 && !expanded ? rows.slice(0, visibleCount) : rows;
+  const visible = visibleCount !== undefined ? rows.slice(0, visibleCount) : rows;
   return (
     <View className="mt-3">
       <Text className="text-xs font-semibold uppercase tracking-wide text-ink-soft">{heading}</Text>
       <BreakdownRows rows={visible} />
-      {hiddenCount > 0 ? (
-        <Pressable
-          onPress={() => setExpanded((value) => !value)}
-          accessibilityRole="button"
-          accessibilityState={{ expanded }}
-        >
-          <Text className="mt-1 text-xs text-ink-soft underline">
-            {expanded ? "Show fewer" : `Show ${hiddenCount} more`}
-          </Text>
-        </Pressable>
-      ) : null}
     </View>
   );
 }

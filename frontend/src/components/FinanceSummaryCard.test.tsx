@@ -361,7 +361,7 @@ describe("FinanceSummaryCard", () => {
     expect(container.querySelectorAll(".bg-red-50")).toHaveLength(1);
   });
 
-  it("collapses occupations past the first four behind a Show more disclosure", () => {
+  it("shows only the top five occupations with no Show more disclosure", () => {
     const summary = emptyFinanceSummary();
     summary.direct_campaign.top_occupations = [
       { category_name: "Retired", amount: 60000, contributor_count: null, source_url: null },
@@ -373,11 +373,10 @@ describe("FinanceSummaryCard", () => {
     ];
     render(<FinanceSummaryCard summary={summary} />);
 
-    const disclosure = screen.getByText("Show 2 more");
-    expect(disclosure).toBeInTheDocument();
-    // The overflow rows live inside the (closed) disclosure, not the top list.
-    expect(screen.getByText("Teacher").closest("details")).not.toBeNull();
-    expect(screen.getByText("Retired").closest("details")).toBeNull();
+    // The fifth row renders in the top list; the sixth is dropped entirely.
+    expect(screen.getByText("Teacher")).toBeInTheDocument();
+    expect(screen.queryByText("Homemaker")).toBeNull();
+    expect(screen.queryByText(/Show \d+ more/)).toBeNull();
   });
 
   it("orders size buckets largest-first regardless of payload order", () => {
