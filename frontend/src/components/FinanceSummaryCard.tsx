@@ -146,29 +146,34 @@ function OutsideSection({
   const shownTotal = total !== null && total > 0 ? total : null;
   // Support/opposition are color-coded (green/red tint, same palette as the
   // ballot-measure YES/NO boxes) so the two directions read apart at a
-  // glance. Labels say what the money did ("spent supporting/opposing this
-  // candidate") — "reported support" was disclosure jargon.
+  // glance. Vertical rhythm inside the box steps down with hierarchy:
+  // blocks (heading / industries / groups) sit 16-20px apart, rows inside
+  // a block 6-16px, a group's own name and label 4px — so the eye reads
+  // three blocks, not one undifferentiated list. The heading is a plain sentence with the actor first ("Outside
+  // groups spent $X to support this candidate"): "outside money" and
+  // "reported support" both lost readers who never learned the terms.
   const isSupport = direction === "support";
   const directionLabel = isSupport ? "supporting" : "opposing";
+  const verb = isSupport ? "support" : "oppose";
   return (
     <div
-      className={`mt-2 rounded border p-2 ${
+      className={`mt-3 rounded border px-7 py-5 ${
         isSupport ? "border-green-200 bg-green-50" : "border-red-200 bg-red-50"
       }`}
     >
-      <p className={`text-sm font-medium ${isSupport ? "text-green-900" : "text-red-900"}`}>
-        Outside money spent {directionLabel} this candidate
-        {shownTotal !== null ? `: ${formatMoney(shownTotal)}` : ""}
+      <p className={`text-base font-medium ${isSupport ? "text-green-900" : "text-red-900"}`}>
+        Outside groups spent {shownTotal !== null ? formatMoney(shownTotal) : "money"} to {verb}{" "}
+        this candidate.
       </p>
       {industries.length > 0 ? (
-        <div className="mt-2">
+        <div className="mt-4">
           {/* These amounts are contributions INTO the groups (aggregated
               from committee income across the cycle), while the total above
               is candidate-specific expenditure — an industry can have given
               a group more than the group spent on this race. The heading and
               the section's shared note keep the two from being conflated. */}
-          <h5 className="text-xs font-medium text-ink-soft">Industries funding these {directionLabel} groups</h5>
-          <ul className="mt-1 space-y-1">
+          <h5 className="text-xs font-medium text-ink-soft">Industries that gave money to groups {directionLabel} this candidate</h5>
+          <ul className="mt-2 space-y-1.5">
             {industries.map((row) => (
               <OutsideIndustryRow key={row.category_name} industry={row} />
             ))}
@@ -179,11 +184,11 @@ function OutsideSection({
         // Open by default: the group list is the substance of this section,
         // not secondary detail — but it stays a <details> so readers can
         // collapse a long list out of the way.
-        <details className="mt-2" open>
+        <details className="mt-5" open>
           <summary className="cursor-pointer select-none text-sm font-medium text-ink hover:underline">
             Groups that spent money {directionLabel} this candidate ({groups.length})
           </summary>
-          <ul className="mt-1 space-y-2">
+          <ul className="mt-3 space-y-4">
             {groups.map((row) => (
               <li key={row.committee_id} className="text-sm">
                 <div className="flex justify-between gap-3">
@@ -199,7 +204,7 @@ function OutsideSection({
                     to. The label is a factual claim, so the evidence behind
                     it rides along as quiet host links. */}
                 {row.label ? (
-                  <p className="mt-0.5 text-sm text-ink-mid">
+                  <p className="mt-1 text-sm text-ink-mid">
                     {row.label}
                     {(row.label_source_urls ?? []).map((url) => (
                       <span key={url} className="text-xs text-ink-soft">
@@ -230,15 +235,15 @@ function UnallocatedOutsideEdges({ edges }: { edges: FinanceUnallocatedOutsideEd
     return null;
   }
   return (
-    <div className="mt-2 rounded border border-line p-2">
-      <p className="text-sm font-medium text-ink">
-        Outside spending reported without a candidate amount
+    <div className="mt-3 rounded border border-line px-7 py-5">
+      <p className="text-base font-medium text-ink">
+        Outside spending with no amount reported for this candidate
       </p>
       <p className="mt-1 text-xs text-ink-soft">
-        These filings identify this candidate as supported or opposed, but do not report how much
-        of the filing&apos;s spending applies to this candidate.
+        These filings name this candidate as supported or opposed but do not report how much of
+        the spending applied to this candidate.
       </p>
-      <ul className="mt-2 space-y-2">
+      <ul className="mt-3 space-y-4">
         {edges.map((edge) => {
           const reportDate = formatElectionDate(edge.report_date);
           return (
@@ -283,13 +288,13 @@ function MemberCommunicationsSection({
 }) {
   const rows = [
     {
-      direction: "supporting",
+      verb: "support",
       amount: supportTotal,
       boxClass: "border-green-200 bg-green-50",
       textClass: "text-green-900",
     },
     {
-      direction: "opposing",
+      verb: "oppose",
       amount: opposeTotal,
       boxClass: "border-red-200 bg-red-50",
       textClass: "text-red-900",
@@ -304,14 +309,14 @@ function MemberCommunicationsSection({
         Member communications
       </h4>
       <p className="mt-1 text-xs text-ink-soft">
-        Money organizations — such as unions or trade associations — reported spending to talk to
-        their own members about this candidate. Disclosed separately from outside spending, and it
-        does not go to the candidate.
+        Organizations such as unions or trade associations spent this money to talk to their own
+        members about this candidate. It is reported separately from outside spending and does not
+        go to the candidate.
       </p>
       {rows.map((row) => (
-        <div key={row.direction} className={`mt-2 rounded border p-2 ${row.boxClass}`}>
-          <p className={`text-sm font-medium ${row.textClass}`}>
-            Spent {row.direction} this candidate: {formatMoney(row.amount ?? 0)}
+        <div key={row.verb} className={`mt-3 rounded border px-7 py-5 ${row.boxClass}`}>
+          <p className={`text-base font-medium ${row.textClass}`}>
+            These organizations spent {formatMoney(row.amount ?? 0)} to {row.verb} this candidate.
           </p>
         </div>
       ))}
@@ -365,14 +370,14 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
       ) : null}
       {hasLoans ? (
         <p className="mt-1 text-xs text-ink-soft">
-          Loans are borrowed money the campaign reported receiving — often from the candidate
-          themselves — and are not counted in Raised.
+          Loans are money the campaign borrowed, often from the candidate. Raised does not include
+          them.
         </p>
       ) : null}
       {spendingExceedsCycleFunds(summary) ? (
         <p className="mt-1 text-xs text-ink-soft">
-          Spent can be higher than Raised because campaigns can also use money not counted in
-          Raised, like funds from earlier years or loans.
+          Spent can be higher than Raised because campaigns can also use money that Raised does not
+          count, like loans or funds from earlier years.
         </p>
       ) : null}
 
@@ -408,9 +413,8 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
             Spending by outside groups
           </h4>
           <p className="mt-1 text-xs text-ink-soft">
-            Money spent on this race by outside groups — such as PACs and super PACs — not by the
-            candidate's own campaign. This spending is not coordinated with the candidate's campaign
-            and does not go directly to the candidate.
+            Outside groups, such as PACs and super PACs, spend this money on the race. The
+            candidate's campaign does not spend it, and none of it goes to the candidate.
           </p>
           {/* Stated with the outside evidence, not in the footnote: a reader
               needs the source's known coverage gap beside the claim it
@@ -436,8 +440,8 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
           <UnallocatedOutsideEdges edges={outside.unallocated_candidate_edges ?? []} />
           {supportingIndustries.length > 0 || outside.top_opposing_industries.length > 0 ? (
             <p className="mt-1 text-xs text-ink-soft">
-              Industry amounts are contributions to these groups, not amounts necessarily spent on this
-              candidate.
+              Industry amounts show what each industry gave to these groups, not what the groups
+              spent on this candidate.
             </p>
           ) : null}
         </div>
