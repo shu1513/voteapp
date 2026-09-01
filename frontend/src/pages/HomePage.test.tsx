@@ -77,6 +77,16 @@ describe("HomePage pre-search clickwrap", () => {
     expect(screen.getByRole("dialog")).toBeInTheDocument();
   });
 
+  it("lands the visitor on an empty, focused address field", () => {
+    renderHome();
+    // Google-style entry: no example address to clear away, just a cursor.
+    // Focus proves AddressAutocomplete still forwards autoFocus to the
+    // real input; the wrapper swallowing the prop is the silent regression.
+    const input = screen.getByLabelText(ADDRESS_LABEL);
+    expect(input).toHaveFocus();
+    expect(input).not.toHaveAttribute("placeholder");
+  });
+
   it("keeps the privacy note beside the address field, where collection starts", () => {
     renderHome();
     // The autocomplete forwards what is typed before Search is ever pressed,

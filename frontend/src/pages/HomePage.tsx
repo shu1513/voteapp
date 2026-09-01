@@ -221,7 +221,7 @@ export function HomePage() {
                 setRegionUnsupported(granularity === "region" && !region);
               }}
               onRetrievePendingChange={setRetrievePending}
-              placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
+              autoFocus
             />
             {/* text-sm + the deep brand step: the 12px/rausch-dark pairing
                 failed APCA for an error the visitor must act on. */}
