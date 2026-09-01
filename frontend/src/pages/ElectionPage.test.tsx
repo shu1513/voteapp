@@ -290,6 +290,82 @@ describe("ElectionPage", () => {
     expect(screen.getByText("Indy Other")).toBeInTheDocument();
   });
 
+  it("clears the party filter when auto-pick chooses a candidate the filter hid", async () => {
+    // The engine scores the whole roster, not the filtered view the button
+    // sits under. Filtered to Democrats, a Republican pick must not land on
+    // a hidden card.
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/election-choices": { body: { choices: [] } },
+      "/api/me/research-area-preferences": {
+        body: {
+          preferences: [
+            { research_area_id: "a-1", slug: "housing", name: "Housing", description: null, rank: 1 },
+            { research_area_id: "a-2", slug: "health", name: "Health", description: null, rank: 2 },
+            { research_area_id: "a-3", slug: "safety", name: "Safety", description: null, rank: 3 },
+          ],
+        },
+      },
+      "/api/me/auto-picks": {
+        body: {
+          results: [
+            {
+              election_id: "e-1",
+              race_type: "office",
+              outcome: "picked",
+              reason: null,
+              picked_candidate_ids: ["c-2"],
+              measure_position: null,
+              shortlist_candidate_ids: [],
+              candidates: [],
+              measure_per_issue: [],
+              unresearched: [],
+            },
+          ],
+        },
+      },
+    });
+    const user = userEvent.setup();
+    renderElection(() =>
+      electionDetail({
+        candidates: [
+          {
+            candidate_id: "c-1",
+            display_name: "Dana Democrat",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "active",
+            summary: null,
+            finance_summary: null,
+            records: [],
+          },
+          {
+            candidate_id: "c-2",
+            display_name: "Riley Republican",
+            party: "Republican",
+            is_incumbent: false,
+            status: "active",
+            summary: null,
+            finance_summary: null,
+            records: [],
+          },
+        ],
+      })
+    );
+
+    await user.click(await screen.findByRole("button", { name: "Democrats (1)" }));
+    expect(screen.queryByText("Riley Republican")).not.toBeInTheDocument();
+
+    const autoPick = await screen.findByRole("button", { name: "Auto-pick by my issues" });
+    await waitFor(() => expect(autoPick).toBeEnabled());
+    await user.click(autoPick);
+
+    expect(await screen.findByText("Riley Republican")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "All (2)" })).toHaveAttribute("aria-pressed", "true");
+  });
+
   it("resets the party filter when navigating to a different election", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     const user = userEvent.setup();

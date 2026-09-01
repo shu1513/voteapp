@@ -35,9 +35,13 @@ type AutoPickControlProps = {
   /** Smaller pill (measure section's mid-page placement) — the Yes/No pair
    * on the sticky card stays the page's loud control. */
   compact?: boolean;
+  /** Fires after a run that made a pick. The engine scores the whole
+   * roster, not the party-filtered view the button sits under — the page
+   * uses this to clear its filter so the picked card is never hidden. */
+  onPicked?: () => void;
 };
 
-export function AutoPickControl({ electionId, seatsToFill, compact = false }: AutoPickControlProps) {
+export function AutoPickControl({ electionId, seatsToFill, compact = false, onPicked }: AutoPickControlProps) {
   const { me } = useMe();
   const { preferences, isLoading: preferencesLoading, isError: preferencesError } = useMyResearchAreas();
   const autoPick = useAutoPick();
@@ -69,7 +73,15 @@ export function AutoPickControl({ electionId, seatsToFill, compact = false }: Au
     setPrompt(null);
     autoPick.mutate(
       { election_ids: [electionId], mode: "replace" },
-      { onSuccess: (response) => setResult(response.results[0] ?? null) }
+      {
+        onSuccess: (response) => {
+          const first = response.results[0] ?? null;
+          setResult(first);
+          if (first?.outcome === "picked") {
+            onPicked?.();
+          }
+        },
+      }
     );
   }
 

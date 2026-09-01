@@ -913,10 +913,18 @@ export function ElectionPage() {
                 only answer "No pick". Placed under the party chips so the
                 narrowing controls read first and the one action last; the
                 former "Has a record on my issues" chip was dropped — this
-                button already answers "who matches my issues". */}
+                button already answers "who matches my issues". The engine
+                ignores the party filter (whole roster), so a pick clears
+                it: otherwise "Democrats" + auto-pick could choose a
+                Republican whose card stays hidden. */}
             {data.candidates.length > 0 && showChoiceControls && data.race_type !== "ballot_measure" ? (
               <div className="mt-3">
-                <AutoPickControl key={data.id} electionId={data.id} seatsToFill={data.seats_to_fill ?? null} />
+                <AutoPickControl
+                  key={data.id}
+                  electionId={data.id}
+                  seatsToFill={data.seats_to_fill ?? null}
+                  onPicked={() => setPartyPick({ electionId: data.id, bucket: "all" })}
+                />
               </div>
             ) : null}
             <div className="mt-3 space-y-3">
