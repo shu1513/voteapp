@@ -93,7 +93,7 @@ describe("SettingsPage", () => {
     expect(await screen.findByRole("heading", { name: "Support Elections Simplified" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Support monthly" })).toBeInTheDocument();
     // Non-member: the Profile box invites, pointing at the mission page.
-    expect(screen.getByRole("link", { name: "Become a member" })).toHaveAttribute("href", "/support/member");
+    expect(screen.getByRole("link", { name: "Become an honorary member" })).toHaveAttribute("href", "/support/member");
     expect(screen.queryByText(/Thank you for being a supporting member/)).not.toBeInTheDocument();
   });
 
@@ -122,7 +122,7 @@ describe("SettingsPage", () => {
 
     expect(await screen.findByText(/Thank you for being a supporting member/)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Manage membership" })).toHaveAttribute("href", "#support");
-    expect(screen.queryByRole("link", { name: "Become a member" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Become an honorary member" })).not.toBeInTheDocument();
   });
 
   it("stays quiet in the Profile box for a nonterminal but non-active subscription", async () => {
@@ -152,7 +152,7 @@ describe("SettingsPage", () => {
 
     expect(await screen.findByText("Monthly membership pending: $5.00/month")).toBeInTheDocument();
     expect(screen.queryByText(/Thank you for being a supporting member/)).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "Become a member" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Become an honorary member" })).not.toBeInTheDocument();
   });
 
   it("swaps password-gated sections for the add-a-password hint on Google-only accounts", async () => {
