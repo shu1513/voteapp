@@ -91,11 +91,22 @@ describe("HomePage pre-search clickwrap", () => {
   it("lands the visitor on an empty, focused address field", () => {
     renderHome();
     // Google-style entry: no example address to clear away, just a cursor.
-    // Focus proves AddressAutocomplete still forwards autoFocus to the
-    // real input; the wrapper swallowing the prop is the silent regression.
+    // Focus comes from HomePage's mount effect, never the autoFocus prop:
+    // that prop SSRs as a real autofocus attribute, which phones honor
+    // before hydration and end up with a focused box under the search glyph.
     const input = screen.getByLabelText(ADDRESS_LABEL);
     expect(input).toHaveFocus();
+    expect(input).not.toHaveAttribute("autofocus");
     expect(input).not.toHaveAttribute("placeholder");
+  });
+
+  it("keeps the box idle at phone widths so the glyph, not the cursor, greets", () => {
+    // jsdom has no matchMedia; a phone-width stub flips the mount effect off.
+    vi.stubGlobal("matchMedia", vi.fn().mockReturnValue({ matches: true }));
+    renderHome();
+    const input = screen.getByLabelText(ADDRESS_LABEL);
+    expect(input).not.toHaveFocus();
+    expect(screen.getByTestId("address-search-hint")).toBeInTheDocument();
   });
 
   it("catches stray typing after a click on empty space, Google-style", async () => {
@@ -134,6 +145,24 @@ describe("HomePage pre-search clickwrap", () => {
     expect(button).toHaveFocus();
     expect(input).not.toHaveFocus();
     document.body.removeChild(dialog);
+  });
+
+  it("shows the idle search glyph and clears it on focus or text", async () => {
+    const user = userEvent.setup();
+    renderHome();
+    const input = screen.getByLabelText(ADDRESS_LABEL);
+    // jsdom reports desktop width, so the box autofocuses; blur to reach the
+    // idle state a phone lands in (phones ignore autoFocus). The glyph is
+    // desktop-hidden by CSS only (sm:hidden), so jsdom still renders it.
+    await user.click(screen.getByRole("heading", { level: 1 }));
+    expect(screen.getByTestId("address-search-hint")).toBeInTheDocument();
+    // Tapping the box clears it, Google-style...
+    await user.click(input);
+    expect(screen.queryByTestId("address-search-hint")).not.toBeInTheDocument();
+    // ...and text keeps it away even after focus leaves.
+    await user.type(input, "9");
+    await user.click(screen.getByRole("heading", { level: 1 }));
+    expect(screen.queryByTestId("address-search-hint")).not.toBeInTheDocument();
   });
 
   it("keeps the privacy note beside the address field, where collection starts", () => {
