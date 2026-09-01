@@ -1,11 +1,16 @@
+import { useState } from "react";
 import {
   closestCenter,
   DndContext,
   KeyboardSensor,
   MouseSensor,
+  pointerWithin,
   TouchSensor,
+  useDraggable,
+  useDroppable,
   useSensor,
   useSensors,
+  type CollisionDetection,
   type DragEndEvent,
 } from "@dnd-kit/core";
 import {
@@ -25,6 +30,13 @@ import { newRankedResearchArea, type RankedResearchArea } from "../lib/rankedRes
 // must) comes back as one complete next list through onChange,
 // so the parent can save per-edit (settings) or batch into a single save
 // (welcome). List position is the rank: first = rank 1. No cap on length.
+//
+// Two panels, side by side from lg up: the ranked list (a drop zone) and the
+// pool of unchosen issues. Tapping a pool card appends it — that path, not
+// drag, is the accessible one — and dragging a card onto the ranked panel
+// inserts it where it drops. Chosen issues leave the pool, so the pool only
+// ever shrinks under the user, never reflows a growing list above it (the
+// complaint with the old stacked layout).
 
 export type ResearchAreaOption = {
   id: string;
@@ -40,10 +52,12 @@ type ResearchAreaPickerProps = {
   onChange: (next: RankedResearchArea[]) => void;
 };
 
+const RANKED_PANEL_ID = "ranked-panel";
+
 export function ResearchAreaPicker({ areas, ranked, disabled, onChange }: ResearchAreaPickerProps) {
-  // Mouse: drag starts after 4px of movement, so the remove button stays a
-  // plain click. Touch: press-and-hold (200ms) then drag, so the list does
-  // not hijack page scrolling. Keyboard sorting stays for accessibility.
+  // Mouse: drag starts after 4px of movement, so the buttons stay plain
+  // clicks. Touch: press-and-hold (200ms) then drag, so the lists do not
+  // hijack page scrolling. Keyboard sorting stays for accessibility.
   // MouseSensor + TouchSensor deliberately, not PointerSensor: PointerSensor
   // also claims touch input, which would bypass the press-and-hold delay.
   const sensors = useSensors(
@@ -55,17 +69,52 @@ export function ResearchAreaPicker({ areas, ranked, disabled, onChange }: Resear
   const areaById = new Map(areas.map((area) => [area.id, area]));
   const orderedIds = ranked.map((row) => row.research_area_id);
 
+  // Reorders resolve against row/panel centers so keyboard sorting (which has
+  // no pointer) keeps working — minus the panel itself, whose large center
+  // could otherwise beat the intended row and turn a reorder into a no-op.
+  // Pool drags demand the pointer actually inside a target: closest-center
+  // would return SOME target even for a card dropped back in the pool, which
+  // would add it.
+  const collisionDetection: CollisionDetection = (args) => {
+    if (orderedIds.includes(String(args.active.id))) {
+      return closestCenter({
+        ...args,
+        droppableContainers: args.droppableContainers.filter((c) => c.id !== RANKED_PANEL_ID),
+      });
+    }
+    return pointerWithin(args);
+  };
+
+  function addAt(id: string, index: number) {
+    const next = [...ranked];
+    next.splice(index, 0, newRankedResearchArea(id));
+    onChange(next);
+  }
+
   function onDragEnd(event: DragEndEvent) {
     const { active, over } = event;
-    if (!over || active.id === over.id) {
+    if (!over) {
       return;
     }
-    const from = orderedIds.indexOf(String(active.id));
-    const to = orderedIds.indexOf(String(over.id));
-    if (from < 0 || to < 0) {
+    const activeId = String(active.id);
+    const overId = String(over.id);
+    const from = orderedIds.indexOf(activeId);
+    if (from >= 0) {
+      const to = orderedIds.indexOf(overId);
+      if (to < 0 || from === to) {
+        return;
+      }
+      onChange(arrayMove(ranked, from, to));
       return;
     }
-    onChange(arrayMove(ranked, from, to));
+    // Pool card: dropped on a ranked row takes that row's rank; dropped on
+    // the panel's empty space appends.
+    const to = orderedIds.indexOf(overId);
+    if (to >= 0) {
+      addAt(activeId, to);
+    } else if (overId === RANKED_PANEL_ID) {
+      addAt(activeId, ranked.length);
+    }
   }
 
   function remove(id: string) {
@@ -77,91 +126,147 @@ export function ResearchAreaPicker({ areas, ranked, disabled, onChange }: Resear
   }
 
   return (
-    <div>
-      {ranked.length > 0 ? (
-        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-          <SortableContext items={orderedIds} strategy={verticalListSortingStrategy}>
-            <ol className="mt-3 space-y-1.5">
-              {ranked.map((row, index) => {
-                const area = areaById.get(row.research_area_id);
-                return (
-                  <SortableAreaRow
-                    key={row.research_area_id}
-                    row={row}
-                    index={index}
-                    name={area?.name ?? "Unknown area"}
-                    isEthics={area?.slug === INTEGRITY_ETHICS_SLUG}
-                    disabled={disabled}
-                    onChange={(patch) => update(row.research_area_id, patch)}
-                    onRemove={() => remove(row.research_area_id)}
-                  />
-                );
-              })}
-            </ol>
-          </SortableContext>
-        </DndContext>
-      ) : (
-        <p className="mt-3 text-sm text-ink-soft">Nothing selected yet — pick below.</p>
-      )}
-      <p className="mt-4 text-sm font-medium text-ink">
-        Choose issues{" "}
-        <span className="font-normal text-ink-soft">({ranked.length} selected)</span>
-      </p>
-      {/* Full cards with the description visible, not a title tooltip: the
-          welcome step is many users' first contact with these labels, and
-          touch devices never see tooltips. */}
-      {/* Public-salience order, not the catalog's alphabetical order — the
-          same ranking the election and candidate pages use, so the issues
-          most users pick first sit at the top of the grid. */}
-      {/* Selected areas stay in the grid (tinted, with a rank badge) instead
-          of disappearing into the top list, so the grid never reflows under
-          the user mid-selection. Clicking a selected card unselects it. */}
-      <ul className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
-        {sortByResearchAreaPriority(areas).map((area) => {
-          const rank = orderedIds.indexOf(area.id);
-          const selected = rank >= 0;
-          return (
-            <li key={area.id}>
-              <button
-                type="button"
-                disabled={disabled}
-                aria-pressed={selected}
-                aria-label={selected ? `${area.name}, rank ${rank + 1}. Click to remove.` : undefined}
-                onClick={() =>
-                  selected ? remove(area.id) : onChange([...ranked, newRankedResearchArea(area.id)])
-                }
-                // h-full + items-start: every card in a grid row stretches to
-                // the tallest card, so mixed-length descriptions no longer
-                // leave ragged gaps between rows.
-                // Selected = the app's affirmative green (the YES-vote box and
-                // the chosen-pick button use the same border-green-700 /
-                // bg-green-50 pair); rausch red stays for destructive controls.
-                className={`flex h-full w-full items-start gap-2 rounded-lg border px-3 py-2 text-left transition disabled:cursor-not-allowed disabled:opacity-50 ${
-                  selected
-                    ? "border-green-700 bg-green-50"
-                    : "border-line bg-white hover:border-green-700"
-                }`}
-              >
-                <span className="min-w-0 flex-1">
-                  <span className="block text-sm font-medium text-ink">{area.name}</span>
-                  {area.description ? (
-                    <span className="mt-0.5 block text-xs text-ink-soft">{area.description}</span>
-                  ) : null}
-                </span>
-                {selected ? (
-                  <span
-                    aria-hidden
-                    className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-700 text-[11px] font-semibold text-white"
-                  >
-                    {rank + 1}
-                  </span>
-                ) : null}
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+    <DndContext sensors={sensors} collisionDetection={collisionDetection} onDragEnd={onDragEnd}>
+      <div className="mt-3 gap-x-6 lg:grid lg:grid-cols-2 lg:items-start">
+        <div>
+          <p className="text-sm font-medium text-ink">
+            Your priorities{" "}
+            <span className="font-normal text-ink-soft">(top = most important)</span>
+          </p>
+          <RankedDropZone empty={ranked.length === 0}>
+            {ranked.length > 0 ? (
+              <SortableContext items={orderedIds} strategy={verticalListSortingStrategy}>
+                <ol className="space-y-1.5">
+                  {ranked.map((row, index) => {
+                    const area = areaById.get(row.research_area_id);
+                    return (
+                      <SortableAreaRow
+                        key={row.research_area_id}
+                        row={row}
+                        index={index}
+                        name={area?.name ?? "Unknown area"}
+                        isEthics={area?.slug === INTEGRITY_ETHICS_SLUG}
+                        disabled={disabled}
+                        onChange={(patch) => update(row.research_area_id, patch)}
+                        onRemove={() => remove(row.research_area_id)}
+                      />
+                    );
+                  })}
+                </ol>
+              </SortableContext>
+            ) : (
+              <p className="px-4 py-8 text-center text-sm text-ink-soft">
+                Tap an issue to add it here, or drag it over — then drag to rank.
+              </p>
+            )}
+          </RankedDropZone>
+        </div>
+        <div className="mt-6 lg:mt-0">
+          <p className="text-sm font-medium text-ink">
+            Choose issues{" "}
+            <span className="font-normal text-ink-soft">({ranked.length} selected)</span>
+          </p>
+          {/* Public-salience order, not the catalog's alphabetical order — the
+              same ranking the election and candidate pages use, so the issues
+              most users pick first sit at the top of the grid. */}
+          <ul className="mt-2 grid grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] gap-2">
+            {sortByResearchAreaPriority(areas)
+              .filter((area) => !orderedIds.includes(area.id))
+              .map((area) => (
+                <PoolAreaCard
+                  key={area.id}
+                  area={area}
+                  disabled={disabled}
+                  onAdd={() => addAt(area.id, ranked.length)}
+                />
+              ))}
+          </ul>
+        </div>
+      </div>
+    </DndContext>
+  );
+}
+
+// The whole left panel accepts pool-card drops, so a drop does not have to
+// land exactly on a row — and the empty state has a target at all.
+function RankedDropZone({ empty, children }: { empty: boolean; children: React.ReactNode }) {
+  const { setNodeRef, isOver } = useDroppable({ id: RANKED_PANEL_ID });
+  return (
+    <div
+      ref={setNodeRef}
+      // lg:pb-10: from lg up the panels sit side by side, so the zone keeps
+      // an (invisible) catch area under the rows — dropping a card into the
+      // empty left-column space right below the list appends instead of
+      // dying. Stacked (below lg) the pool sits directly underneath, where
+      // that padding would just be a gap.
+      className={`mt-2 rounded-lg ${
+        empty
+          ? `border border-dashed ${isOver ? "border-green-700 bg-green-50" : "border-line"}`
+          : `lg:pb-10 ${isOver ? "bg-green-50 ring-2 ring-green-700/40" : ""}`
+      }`}
+    >
+      {children}
     </div>
+  );
+}
+
+// Compact pool card: name only, with the description behind an ⓘ toggle —
+// a tap target, not a title tooltip, because touch never sees tooltips.
+// Tap the name to add; press-and-hold (touch) or drag (mouse) to drop it
+// into the ranked panel. Drag listeners sit on the <li>, and the keyboard
+// activator attributes are deliberately NOT spread: they would turn
+// Enter/Space on the add button into "start dragging" and swallow the click.
+// Keyboard users add by clicking; sorting afterwards is keyboard-accessible.
+function PoolAreaCard({
+  area,
+  disabled,
+  onAdd,
+}: {
+  area: ResearchAreaOption;
+  disabled: boolean;
+  onAdd: () => void;
+}) {
+  const [showInfo, setShowInfo] = useState(false);
+  const { setNodeRef, listeners, transform, isDragging } = useDraggable({ id: area.id, disabled });
+  return (
+    <li
+      ref={setNodeRef}
+      {...listeners}
+      style={{ transform: CSS.Translate.toString(transform) }}
+      className={`cursor-grab touch-manipulation select-none rounded-lg border bg-white transition hover:border-green-700 ${
+        isDragging ? "z-10 border-green-700 shadow-md" : "border-line"
+      }`}
+    >
+      <span className="flex items-stretch">
+        <button
+          type="button"
+          disabled={disabled}
+          onClick={onAdd}
+          className="min-w-0 flex-1 px-3 py-2 text-left text-sm font-medium text-ink disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {area.name}
+        </button>
+        {area.description ? (
+          <button
+            type="button"
+            aria-expanded={showInfo}
+            aria-label={`About ${area.name}`}
+            onClick={() => setShowInfo((open) => !open)}
+            className="px-2 text-ink-soft hover:text-ink"
+          >
+            <span
+              aria-hidden
+              className="flex h-4 w-4 items-center justify-center rounded-full border border-current text-[10px] font-serif italic"
+            >
+              i
+            </span>
+          </button>
+        ) : null}
+      </span>
+      {showInfo && area.description ? (
+        <p className="px-3 pb-2 text-xs text-ink-soft">{area.description}</p>
+      ) : null}
+    </li>
   );
 }
 

@@ -60,13 +60,17 @@ describe("WelcomePage", () => {
     const saveButton = await screen.findByRole("button", { name: "Save and continue" });
     expect(saveButton).toBeDisabled();
 
-    // Card descriptions are visible, not tucked into a tooltip.
+    // Descriptions sit behind a tap-to-open ⓘ toggle, not a title tooltip.
+    expect(screen.queryByText("Climate, energy, land use.")).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "About Environment" }));
     expect(screen.getByText("Climate, energy, land use.")).toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: /Housing/ }));
-    await user.click(screen.getByRole("button", { name: /Environment/ }));
+    await user.click(screen.getByRole("button", { name: "Housing" }));
+    await user.click(screen.getByRole("button", { name: "Environment" }));
     expect(screen.getByText("#1")).toBeInTheDocument();
     expect(screen.getByText("#2")).toBeInTheDocument();
+    // Chosen issues leave the pool instead of piling a second copy on top.
+    expect(screen.queryByRole("button", { name: "Housing" })).not.toBeInTheDocument();
 
     await user.click(saveButton);
     expect(await screen.findByText("Saved ballot placeholder")).toBeInTheDocument();
