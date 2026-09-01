@@ -177,13 +177,6 @@ export function ElectionPage() {
     electionId: "",
     bucket: "all",
   });
-  // "Has a record on my issues" — same per-race keying as the party pick,
-  // for the same reason: it hides candidates, so it must not travel to the
-  // next election this mounted component renders.
-  const [recordsPick, setRecordsPick] = useState<{ electionId: string; on: boolean }>({
-    electionId: "",
-    on: false,
-  });
 
   const data = useLoaderData<typeof loader>();
   const chosenPartyFilter = partyPick.electionId === data.id ? partyPick.bucket : "all";
@@ -208,27 +201,6 @@ export function ElectionPage() {
     partyFilter === "all"
       ? data.candidates
       : data.candidates.filter((candidate) => partyBucket(candidate.party) === partyFilter);
-  // "Has a record on my issues": the exact relevance scoring the "my issues
-  // first" sort uses — score > 0 means at least one stance-bearing record on
-  // a saved area (relevance, not agreement). Applied after the party filter.
-  // While the toggle is OFF it appears only when it could change the current
-  // view: signed-in with saved areas, and the party-filtered set splits into
-  // matched + unmatched. While ON it stays visible and keeps applying — even
-  // when that empties the current party view ("N hidden · Show all" explains
-  // the empty list) — because an active filter that silently stops applying
-  // would show a full roster the viewer believes is filtered. Only a viewer
-  // with no saved areas gets the pick ignored (the scoring is meaningless
-  // without them), same as the sort.
-  const chosenRecordsFilter = recordsPick.electionId === data.id ? recordsPick.on : false;
-  const matchedOnMyIssues = partyFilteredCandidates.filter(
-    (candidate) => scoreStanceRelevance(aggregateRecordAreaStances(candidate.records), weights).score > 0
-  );
-  const recordsFilterOn = hasSaved && chosenRecordsFilter;
-  const showRecordsFilter =
-    recordsFilterOn ||
-    (hasSaved && matchedOnMyIssues.length > 0 && matchedOnMyIssues.length < partyFilteredCandidates.length);
-  const visibleCandidates = recordsFilterOn ? matchedOnMyIssues : partyFilteredCandidates;
-  const hiddenByRecordsFilter = partyFilteredCandidates.length - matchedOnMyIssues.length;
   const measure = data.ballot_measure;
   // Election-level sources the measure section did NOT already show. A
   // measure election's sources are usually the same page the measure was
@@ -408,7 +380,7 @@ export function ElectionPage() {
   // Computed once, before render: the roster links hand the candidate page
   // this exact displayed order (sort + party + records filters applied), so
   // the JSX and the state payload must come from the same array.
-  const orderedCandidates = sortCandidatesByStance(visibleCandidates, candidateSort, weights);
+  const orderedCandidates = sortCandidatesByStance(partyFilteredCandidates, candidateSort, weights);
   const candidateNavState: CandidateNavState = {
     backTo: { path: `/elections/${data.id}`, label: data.official_ballot_title },
     // The election page's own incoming context rides along so the back hop
@@ -886,22 +858,6 @@ export function ElectionPage() {
                 </label>
               ) : null}
             </div>
-            {/* Race-level "Pick by my issues": one engine run for this election
-                (mode replace — a re-run refreshes the pick), with its "Why
-                this pick" panel below the button. Guests get a sign-in
-                prompt inside the control, matching the per-candidate
-                buttons' visibility gate. key: this route element stays
-                mounted across sibling rail walks, so without a remount the
-                previous election's panel (or an in-flight run's result)
-                would surface under the next election. length: in the
-                stranded-only state (section open, every candidacy
-                withdrawn) the engine has nobody to pick — the button could
-                only answer "No pick". */}
-            {data.candidates.length > 0 && showChoiceControls && data.race_type !== "ballot_measure" ? (
-              <div className="mt-3">
-                <AutoPickControl key={data.id} electionId={data.id} seatsToFill={data.seats_to_fill ?? null} />
-              </div>
-            ) : null}
             {/* Stranded picks have no candidate card below (ballotLookup
                 filters withdrawn candidacies out), yet still count toward
                 the seat cap — surface them here, with their removal
@@ -944,37 +900,23 @@ export function ElectionPage() {
                 ))}
               </div>
             ) : null}
-            {showRecordsFilter ? (
-              <div className="mt-3 flex flex-wrap items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setRecordsPick({ electionId: data.id, on: !recordsFilterOn })}
-                  aria-pressed={recordsFilterOn}
-                  className={`rounded-full border px-3 py-1 text-sm font-medium transition ${
-                    recordsFilterOn
-                      ? "border-ink bg-ink text-white"
-                      : "border-line bg-white text-ink hover:bg-surface"
-                  }`}
-                >
-                  Has a record on my issues
-                </button>
-                {recordsFilterOn && hiddenByRecordsFilter > 0 ? (
-                  // The hidden count is always visible while the filter hides
-                  // anyone: no records ≠ no stances (rosters are unevenly
-                  // researched), so the filtered list must never look like the
-                  // full roster. At 0 hidden there is nothing concealed and
-                  // the pressed chip alone carries the state.
-                  <span className="text-xs text-ink-soft">
-                    {hiddenByRecordsFilter} candidate{hiddenByRecordsFilter === 1 ? "" : "s"} hidden ·{" "}
-                    <button
-                      type="button"
-                      onClick={() => setRecordsPick({ electionId: data.id, on: false })}
-                      className="font-medium underline decoration-dotted underline-offset-2 hover:text-ink"
-                    >
-                      Show all
-                    </button>
-                  </span>
-                ) : null}
+            {/* Race-level "Pick by my issues": one engine run for this election
+                (mode replace — a re-run refreshes the pick), with its "Why
+                this pick" panel below the button. Guests get a sign-in
+                prompt inside the control, matching the per-candidate
+                buttons' visibility gate. key: this route element stays
+                mounted across sibling rail walks, so without a remount the
+                previous election's panel (or an in-flight run's result)
+                would surface under the next election. length: in the
+                stranded-only state (section open, every candidacy
+                withdrawn) the engine has nobody to pick — the button could
+                only answer "No pick". Placed under the party chips so the
+                narrowing controls read first and the one action last; the
+                former "Has a record on my issues" chip was dropped — this
+                button already answers "who matches my issues". */}
+            {data.candidates.length > 0 && showChoiceControls && data.race_type !== "ballot_measure" ? (
+              <div className="mt-3">
+                <AutoPickControl key={data.id} electionId={data.id} seatsToFill={data.seats_to_fill ?? null} />
               </div>
             ) : null}
             <div className="mt-3 space-y-3">
@@ -1000,9 +942,11 @@ export function ElectionPage() {
                           <Link
                             to={`/candidates/${candidate.candidate_id}`}
                             state={candidateNavState}
-                            // rausch-deep, not -dark: AA contrast on the tinted card
-                            // bg — see ElectionCard's title.
-                            className="transition after:absolute after:inset-0 group-hover:text-rausch-deep"
+                            // Brand red at rest, not only on hover — black
+                            // names read as plain headings, not links.
+                            // rausch-deep, not -dark: AA contrast on the
+                            // tinted card bg — see ElectionCard's title.
+                            className="text-rausch-deep transition after:absolute after:inset-0 group-hover:text-rausch-deep"
                           >
                             {candidate.display_name}
                           </Link>
@@ -1114,6 +1058,21 @@ export function ElectionPage() {
                         ))}
                       </p>
                     ) : null}
+                    {/* Visible affordance: at rest nothing said the card was
+                        a link (hover styling only). Underlined navy, not
+                        brand red — the red name is the title, a second red
+                        line was too much red next to the GOP party label;
+                        not ink-mid either, which vanished into the summary
+                        text. Navy is the palette's inert dark blue (dusky,
+                        unlike the saturated dem-blue label). aria-hidden —
+                        the name Link already carries the target, a second
+                        link would double it for screen readers. */}
+                    <span
+                      aria-hidden="true"
+                      className="mt-2 block text-sm font-medium text-navy underline underline-offset-2 transition group-hover:text-rausch-deep"
+                    >
+                      See full profile →
+                    </span>
                   </div>
                 </div>
               ))}

@@ -111,6 +111,11 @@ canonicalize spelling, never reject an unknown party, never call AI.
 
 ## Phase 2 — "Has a record on my issues" filter (ElectionPage + mobile)
 
+> **Removed from the web ElectionPage 2026-09-01.** Three chip rows stacked
+> under "Candidates" read as clutter, and "Auto-pick by my issues" already
+> answers "who matches my issues". The auto-pick button now sits below the
+> party chips. Mobile still has the chip; drop it there for parity.
+
 Signed-in users with saved research areas only (anonymous users have no
 saved areas; the control simply doesn't render).
 
