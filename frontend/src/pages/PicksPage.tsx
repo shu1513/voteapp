@@ -628,21 +628,14 @@ export function PicksPage() {
             ) : null}
             {view === "ballot" ? (
               // Same settled payload as the cards — no second fetch, no
-              // loading state of its own. Each sheet carries its own
-              // auto-pick controls, scoped to that date's races.
+              // loading state of its own. No auto-pick controls here: the
+              // sheet imitates a paper ballot, so app machinery stays in
+              // list view. Fill-run annotations still carry over so a run
+              // made in list view keeps its "why" notes after a toggle.
               <BallotPreviewSheets
                 elections={ballot.data?.elections ?? []}
                 choiceByElectionId={choiceByElectionId}
                 today={today}
-                renderSheetExtras={(date, dateElections) => (
-                  <AutoPickFillControl
-                    date={date}
-                    elections={dateElections}
-                    choices={choices ?? []}
-                    choiceByElectionId={choiceByElectionId}
-                    onResults={handleAutoResults(date)}
-                  />
-                )}
                 autoResultFor={(date, electionId) => autoResultsByDate.get(date)?.get(electionId)}
               />
             ) : (
