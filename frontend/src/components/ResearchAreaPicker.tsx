@@ -139,7 +139,7 @@ export function ResearchAreaPicker({ areas, ranked, disabled, onChange }: Resear
         <div>
           <p className="text-sm font-medium text-ink">
             Your priorities{" "}
-            <span className="font-normal text-ink-soft">(drag to arrange, top matters most)</span>
+            <span className="font-normal text-ink-soft">(drag to arrange)</span>
           </p>
           <RankedDropZone empty={ranked.length === 0}>
             {ranked.length > 0 ? (
