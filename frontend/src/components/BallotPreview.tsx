@@ -191,11 +191,11 @@ function BallotSheet({
   return (
     <section className="rounded-sm border border-line bg-white p-4 shadow-sm">
       <header className="border-b-2 border-ink pb-2 text-center">
-        {/* Static text-base on purpose, not a fluid role token: this sheet
+        {/* Static text-lg on purpose, not a fluid role token: this sheet
             imitates a paper ballot and is printed via ballot-print-area, so
             its header must keep the document's fixed proportions rather than
             scale with the viewport. */}
-        <h3 className="text-base font-bold text-ink">Ballot preview — {formatElectionDate(date)}</h3>
+        <h3 className="text-lg font-bold text-ink">Ballot preview — {formatElectionDate(date)}</h3>
         <p className="text-xs text-ink-soft">Not an official ballot</p>
       </header>
       <div className="mt-3 space-y-3">
