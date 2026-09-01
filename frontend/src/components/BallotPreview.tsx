@@ -1,10 +1,9 @@
 import type {
   AutoPickElectionResult, ElectionChoice, ElectionPreviewCandidate, ElectionSummary } from "@voteapp/api-client";
-import type { ReactNode } from "react";
 import { formatElectionDate } from "@voteapp/api-client";
 import { reasonLabel } from "./AutoPickFillControl";
 
-// Ballot view of My Picks / My Ballot Draft: a paper-ballot-shaped render of
+// Ballot preview of My Picks / My Ballot Draft: a paper-ballot-shaped render of
 // the same races the date cards list — contest boxes in state-baseline ballot
 // order (the payload must be fetched with include=preview &
 // sort=state_baseline & followed_first=false), fill-in ovals, the user's
@@ -182,26 +181,23 @@ function BallotSheet({
   date,
   elections,
   choiceByElectionId,
-  extras,
   autoResultFor,
 }: {
   date: string;
   elections: ElectionSummary[];
   choiceByElectionId: Map<string, ElectionChoice> | undefined;
-  extras?: ReactNode;
   autoResultFor?: (date: string, electionId: string) => AutoPickElectionResult | undefined;
 }) {
   return (
     <section className="rounded-sm border border-line bg-white p-4 shadow-sm">
       <header className="border-b-2 border-ink pb-2 text-center">
-        {/* Static text-base on purpose, not a fluid role token: this sheet
+        {/* Static text-lg on purpose, not a fluid role token: this sheet
             imitates a paper ballot and is printed via ballot-print-area, so
             its header must keep the document's fixed proportions rather than
             scale with the viewport. */}
-        <h3 className="text-base font-bold text-ink">Ballot preview — {formatElectionDate(date)}</h3>
+        <h3 className="text-lg font-bold text-ink">Ballot preview — {formatElectionDate(date)}</h3>
         <p className="text-xs text-ink-soft">Not an official ballot</p>
       </header>
-      {extras}
       <div className="mt-3 space-y-3">
         {elections.map((election) => (
           <ContestBox
@@ -234,15 +230,11 @@ export function BallotPreviewSheets({
   elections,
   choiceByElectionId,
   today,
-  renderSheetExtras,
   autoResultFor,
 }: {
   elections: ElectionSummary[];
   choiceByElectionId: Map<string, ElectionChoice> | undefined;
   today: string;
-  /** Optional per-sheet slot under the header (My Picks puts its per-date
-   * auto-pick controls here; the guest draft page passes nothing). */
-  renderSheetExtras?: (date: string, elections: ElectionSummary[]) => ReactNode;
   /** Fill-run feedback per contest, owned by the page so it survives a
    * list/ballot view toggle. Absent on the guest draft page. */
   autoResultFor?: (date: string, electionId: string) => AutoPickElectionResult | undefined;
@@ -270,7 +262,6 @@ export function BallotPreviewSheets({
           date={date}
           elections={byDate.get(date) ?? []}
           choiceByElectionId={choiceByElectionId}
-          extras={renderSheetExtras?.(date, byDate.get(date) ?? [])}
           autoResultFor={autoResultFor}
         />
       ))}
@@ -287,7 +278,7 @@ export function BallotPreviewSheets({
   );
 }
 
-// The List / Ballot view switch shared by /me/picks and /draft. Plain
+// The List / Ballot preview switch shared by /me/picks and /draft. Plain
 // buttons, not a router concern: the view is page-local state.
 export function BallotViewToggle({
   view,
@@ -306,7 +297,7 @@ export function BallotViewToggle({
         List view
       </button>
       <button type="button" aria-pressed={view === "ballot"} className={buttonClass(view === "ballot")} onClick={() => onChange("ballot")}>
-        Ballot view
+        Ballot preview
       </button>
     </div>
   );
