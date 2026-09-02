@@ -18,7 +18,7 @@ and what remains does not survive the filters.
 | LD 21 | school threat assessment and student supports | public_safety_and_crime_control / for | S 1575341, H 1576079 |
 | LD 1949 | utility regulator must weigh household affordability | cost_of_living_reduction / for | S 1655394, H 1664341 |
 
-Eight areas. **`cost_of_living_reduction` is new to Maine**, and **LD 215 is
+Seven areas. **`cost_of_living_reduction` is new to Maine**, and **LD 215 is
 only the second `against` in the whole campaign** after batch-01's LD 556 — it
 is a real one, not a manufactured balance: the Act cuts the general-assistance
 ceiling for residents of large recovery homes to 70 percent.

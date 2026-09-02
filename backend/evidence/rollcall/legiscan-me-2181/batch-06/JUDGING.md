@@ -93,3 +93,33 @@ Three `related` flags, all same-date false positives about other bills
 (LD 1022, LD 2064, LD 2164). No duplicates, no retirements, 0 ambiguous.
 
 PROD UNTOUCHED.
+
+## Review fixes, 2026-09-02
+
+Three findings, all real, all accepted. Two are the same failure I have made
+before and clearly not yet cured: writing from a partial read of the Act.
+
+- **LD 784 (P1)** — the description said any denial of a listed screening
+  triggers the presumption. Enacted §4313(15) attaches it only to a denial of
+  **covered** specialized risk screening, for a first responder **whose provider
+  has determined** the screening is medically appropriate with meaningful
+  potential for preventive clinical benefit. All three qualifiers were missing
+  because I read the clause up to the page break and not past it. Now carried.
+- **LD 1966 (P1)** — the description covered Section 1 of a seven-section Act
+  and called it a bill about "hidden fees", a phrase the statute never uses.
+  The Act also requires bills to show the consumer-assistance number, bars
+  labelling recoverable costs as "public policy charges" and requires objective
+  descriptions, lets regulators order corrections of misleading bill inserts,
+  sets billing and savings-disclosure standards for shared solar with Unfair
+  Trade Practices Act enforcement, directs procurement of up to 4 megawatts from
+  small solar projects owned by low- and moderate-income customers or their
+  cooperatives, and relaxes some net-energy-billing limits for customers who own
+  a share of a project. The lead is now neutral and the body names every strand.
+  The label stays `corporate_accountability`/for — the consumer-protection
+  strands are the bulk of the Act and every strand points the same way.
+- **PLAN.md (P3)** — "Eight areas" corrected to seven; the table has seven
+  distinct research areas.
+
+251 records rewritten in place (124 LD 784 + 127 LD 1966), rows unchanged at
+1,137, convergence all unchanged. Rewrite ledger stamp
+`2026-09-02T01:35:32.739Z`, committed as `import-rerun-report.json`.
