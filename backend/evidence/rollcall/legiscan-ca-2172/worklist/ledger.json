@@ -459,94 +459,94 @@
    "reason": null
   },
   "AB 2484": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "San Diego Metropolitan Transit System: transactions and use tax: voter initiatives.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-15 read",
+   "reason": "single-county procedural bill \u2014 ballot access for a San Diego transit tax; same class as the Santa Cruz and Fresno drops"
   },
   "AB 2494": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "State forests: forest management.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-15 read",
+   "reason": "cuts both ways \u2014 moves state forests toward ecology while preserving commercial logging, adding a sawmill preference and repealing the camping fee cap"
   },
   "AB 2531": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Public health: abortion services.",
-   "batch": null,
+   "batch": "batch-15",
    "reason": null
   },
   "AB 2646": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Employment: minimum wages: agricultural workers.",
-   "batch": null,
+   "batch": "batch-15",
    "reason": null
   },
   "AB 399": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "vetoed",
    "value": 7,
    "title": "Coastal resources: coastal development permits: blue carbon demonstration projects.",
-   "batch": null,
+   "batch": "batch-15",
    "reason": null
   },
   "AB 40": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "California Environmental Quality Act: environmental impact reports: coal handling, storage, and export.",
-   "batch": null,
+   "batch": "batch-15",
    "reason": null
   },
   "AB 604": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Redistricting: congressional districts.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-15 read",
+   "reason": "adopts a legislature-drawn congressional map; no available research area fits without asserting a contested political claim \u2014 see ACA 8"
   },
   "AB 679": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Department of Parks and Recreation: Big Basin Redwoods, A\u00f1o Nuevo, and Butano State Parks.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-15 read",
+   "reason": "cuts both ways and a three-park special bill \u2014 removes Public Works Board review while adding appraisal and public-notice duties"
   },
   "AB 695": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "vetoed",
    "value": 7,
    "title": "California Community Colleges Access and Continuity for Deported Students Act.",
-   "batch": null,
+   "batch": "batch-15",
    "reason": null
   },
   "AB 699": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "vetoed",
    "value": 7,
    "title": "Elections: local tax measures.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-15 read",
+   "reason": "cuts both ways \u2014 lets the tax rate and revenue estimate leave the ballot question while requiring fuller disclosure in the voter guide"
   },
   "AB 7": {
    "status": "judged",
@@ -729,94 +729,94 @@
    "reason": "budget trailer \u2014 central move is taking the managed care tax outside the voter-approved Proposition 35 spending conditions"
   },
   "SB 127": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Climate change.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-15 read",
+   "reason": "budget trailer from the Committee on Budget and Fiscal Review; nine unrelated changes pushing opposite ways on clean energy"
   },
   "SB 1349": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Taxation: tax expenditures: Legislative Analyst\u2019s Office: assessment, report, and recommendation.",
-   "batch": null,
+   "batch": "batch-15",
    "reason": null
   },
   "SB 1371": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Solid waste handling services: labor dispute.",
-   "batch": null,
+   "batch": "batch-15",
    "reason": null
   },
   "SB 1379": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "County of Riverside: separation of county offices: in-custody reports.",
-   "batch": null,
+   "batch": "batch-15",
    "reason": null
   },
   "SB 1406": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Sales and Use Tax Law: vehicles: shell companies.",
-   "batch": null,
+   "batch": "batch-15",
    "reason": null
   },
   "SB 1408": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Contra Costa Transportation Authority: transactions and use tax.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-15 read",
+   "reason": "single-county procedural bill \u2014 authorizes a Contra Costa transportation tax above the state cap"
   },
   "SB 1414": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "County of San Bernardino Citizens Redistricting Commission.",
-   "batch": null,
+   "batch": "batch-15",
    "reason": null
   },
   "SB 1425": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "High-Speed Rail Authority: property: operating right-of-way.",
-   "batch": null,
+   "batch": "batch-15",
    "reason": null
   },
   "SB 158": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Land use.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-15 read",
+   "reason": "budget trailer from the Committee on Budget and Fiscal Review; bundles housing finance, planning reports and five CEQA changes that cut both ways"
   },
   "SB 164": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Health.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-15 read",
+   "reason": "budget trailer from the Committee on Budget and Fiscal Review; 20 digest items that tighten and loosen immigrant Medi-Cal coverage in the same bill"
   },
   "SB 168": {
    "status": "open",
