@@ -33,6 +33,7 @@ import {
 } from "./kansasCandidateFilerResolver.js";
 import {
   KANSAS_FINANCE_ELIGIBLE_OFFICE_KEYS,
+  kansasCfrCycleStart,
   kansasCfrFiledDateWindow,
   kansasCfrOfficeForRace,
   type KansasCfrOffice,
@@ -296,6 +297,13 @@ export async function autoLinkKansasCandidateFinanceForCandidateElection(input: 
     if (districtNumber === null) {
       return { ...base, status: "unmatched", reason: "district_unparseable" };
     }
+  }
+
+  // A race whose cycle window has not opened (a 2028 House race inside the
+  // 730-day lookahead during late 2026) has nothing to enumerate yet; report
+  // it instead of running an inverted-date search.
+  if (input.now < kansasCfrCycleStart(office, candidate.electionYear)) {
+    return { ...base, status: "unmatched", reason: "cycle_not_started" };
   }
 
   const rows = await input.loadFilerPool(office, candidate.electionYear);

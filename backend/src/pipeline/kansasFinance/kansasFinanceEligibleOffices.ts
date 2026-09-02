@@ -112,21 +112,31 @@ export function formatKansasCfrDate(date: Date): string {
   return `${month}/${day}/${date.getUTCFullYear()}`;
 }
 
+/** January 1 (UTC) of the first year of the office's cycle for an election year. */
+export function kansasCfrCycleStart(office: KansasCfrOffice, electionYear: number): Date {
+  if (!Number.isSafeInteger(electionYear) || electionYear < 2000 || electionYear > 2100) {
+    throw new Error(`Invalid Kansas election year: ${electionYear}`);
+  }
+  return new Date(Date.UTC(electionYear - office.cycleYearsBefore, 0, 1));
+}
+
 /**
  * Filed-date window for enumerating an office's filers: the cycle window
- * opening (January 1 of the cycle's first year) through today. Filers who
- * last filed before the window are outside the cycle by construction.
+ * opening through today. Filers who last filed before the window are outside
+ * the cycle by construction. A cycle that has not opened yet (a 2028 House
+ * race seen in late 2026) has no window — callers check
+ * kansasCfrCycleStart first; an inverted range here is a programming error.
  */
 export function kansasCfrFiledDateWindow(input: {
   office: KansasCfrOffice;
   electionYear: number;
   now: Date;
 }): { startDate: string; endDate: string } {
-  if (!Number.isSafeInteger(input.electionYear) || input.electionYear < 2000 || input.electionYear > 2100) {
-    throw new Error(`Invalid Kansas election year: ${input.electionYear}`);
+  const start = kansasCfrCycleStart(input.office, input.electionYear);
+  if (Number.isNaN(input.now.getTime()) || input.now < start) {
+    throw new Error(
+      `Kansas ${input.office.label} cycle for ${input.electionYear} opens ${formatKansasCfrDate(start)}, after ${formatKansasCfrDate(input.now)}`
+    );
   }
-  return {
-    startDate: `01/01/${input.electionYear - input.office.cycleYearsBefore}`,
-    endDate: formatKansasCfrDate(input.now),
-  };
+  return { startDate: formatKansasCfrDate(start), endDate: formatKansasCfrDate(input.now) };
 }

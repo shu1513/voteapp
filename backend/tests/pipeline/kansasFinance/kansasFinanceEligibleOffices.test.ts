@@ -4,6 +4,7 @@ import {
   formatKansasCfrDate,
   isKansasFinanceEligibleOffice,
   KANSAS_FINANCE_ELIGIBLE_OFFICE_KEYS,
+  kansasCfrCycleStart,
   kansasCfrFiledDateWindow,
   kansasCfrOfficeForRace,
 } from "../../../src/pipeline/kansasFinance/kansasFinanceEligibleOffices.js";
@@ -54,5 +55,18 @@ describe("kansasFinanceEligibleOffices", () => {
     const governor = kansasCfrOfficeForRace({ officeScope: "statewide", officeCanonicalName: "Governor" })!;
     expect(kansasCfrFiledDateWindow({ office: governor, electionYear: 2026, now })).toEqual({ startDate: "01/01/2023", endDate: "09/01/2026" });
     expect(() => kansasCfrFiledDateWindow({ office: house, electionYear: 1999, now })).toThrow("Invalid Kansas election year");
+  });
+
+  it("refuses an inverted window for a cycle that has not opened", () => {
+    const house = kansasCfrOfficeForRace({ officeScope: "state_lower", officeCanonicalName: "State Lower Chamber Legislator" })!;
+    expect(kansasCfrCycleStart(house, 2028).toISOString()).toBe("2027-01-01T00:00:00.000Z");
+    // A Nov-2028 House race seen on 2026-11-08 has no cycle window yet.
+    expect(() => kansasCfrFiledDateWindow({ office: house, electionYear: 2028, now: new Date("2026-11-08T12:00:00.000Z") })).toThrow(
+      "opens 01/01/2027, after 11/08/2026"
+    );
+    expect(kansasCfrFiledDateWindow({ office: house, electionYear: 2028, now: new Date("2027-01-01T00:00:00.000Z") })).toEqual({
+      startDate: "01/01/2027",
+      endDate: "01/01/2027",
+    });
   });
 });

@@ -17,12 +17,13 @@
 // - full-name evidence through the shared middle-name gate with one-sided
 //   roster->filing nickname expansion; a bare surname never links;
 // - every filing whose name aligns with the candidate is the same person
-//   UNLESS two aligned spellings contradict each other on middle names or
-//   generational suffix — then nothing links (ambiguous);
+//   UNLESS two aligned spellings contradict each other on first name
+//   (roster "Pat" aligns with both PATRICK and PATRICIA — two people),
+//   middle names, or generational suffix — then nothing links (ambiguous);
 // - a candidate whose only aligned filings lack a district goes to manual
 //   review, never to an automatic link.
 
-import { firstNameVariants } from "../finance/personFirstNameNicknames.js";
+import { firstNamesConflict, firstNameVariants } from "../finance/personFirstNameNicknames.js";
 import {
   hasMiddleNameConflict,
   personNamesMatchWithMiddleEvidence,
@@ -205,12 +206,13 @@ export function resolveKansasCandidateFiler(input: {
 
   const spellings = sortByFrequency([...confirmed.values()]);
   // Every aligned spelling is one person unless two of them contradict each
-  // other (middle initials "T" vs "B", or Jr vs Sr). Spellings that differ
-  // only in first-name form ("STEVEN"/"STEVE") do not align with each other
-  // and so carry no evidence either way.
+  // other: first names outside one nickname family ("PATRICK" vs "PATRICIA"
+  // both satisfy roster "Pat" yet are two people; "STEVEN"/"STEVE" are one),
+  // middle initials ("T" vs "B"), or generations (Jr vs Sr).
   for (let left = 0; left < spellings.length; left += 1) {
     for (let right = left + 1; right < spellings.length; right += 1) {
       if (
+        firstNamesConflict(spellings[left]!.firstName, spellings[right]!.firstName) ||
         hasMiddleNameConflict({
           candidateName: spellings[left]!.commaForm,
           rowNames: [spellings[right]!.commaForm],

@@ -132,6 +132,28 @@ describe("resolveKansasCandidateFiler", () => {
     expect(generations).toMatchObject({ status: "ambiguous" });
   });
 
+  it("reports ambiguity when a roster nickname aligns with two different legal names", () => {
+    // "Pat" expands to both PATRICK and PATRICIA: two people, no link.
+    const resolution = resolveKansasCandidateFiler({
+      candidateName: "Pat Sandoval",
+      districtNumber: 85,
+      rows: [row({ filedName: "SANDOVAL PATRICK" }), row({ filedName: "SANDOVAL PATRICK" }), row({ filedName: "SANDOVAL PATRICIA" })],
+    });
+    expect(resolution).toEqual({
+      status: "ambiguous",
+      reason: "conflicting_filed_names",
+      filedNames: ["SANDOVAL PATRICK", "SANDOVAL PATRICIA"],
+    });
+    // One nickname family ("BILL"/"WILLIAM") is still one person.
+    expect(
+      resolveKansasCandidateFiler({
+        candidateName: "Bill Sandoval",
+        districtNumber: 85,
+        rows: [row({ filedName: "SANDOVAL BILL" }), row({ filedName: "SANDOVAL WILLIAM" })],
+      })
+    ).toMatchObject({ status: "matched", match: { filedNames: ["SANDOVAL BILL", "SANDOVAL WILLIAM"], confidence: "name_nickname" } });
+  });
+
   it("sends blank-district-only matches to manual review", () => {
     const resolution = resolveKansasCandidateFiler({
       candidateName: "Margaret Holloway",

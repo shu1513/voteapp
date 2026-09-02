@@ -157,6 +157,19 @@ describe("autoLinkMissingKansasCandidateFinanceLinks", () => {
     expect(db.query).not.toHaveBeenCalled();
   });
 
+  it("reports a race whose cycle has not opened without touching the viewer", async () => {
+    const loadFilerPool = vi.fn();
+    const results = await autoLinkMissingKansasCandidateFinanceLinks({
+      db: linkWritingDb(),
+      ...runOptions,
+      now: new Date("2026-11-08T12:00:00.000Z"),
+      candidateElections: [candidateElection({ electionYear: 2028 })],
+      loadFilerPool,
+    });
+    expect(results[0]).toMatchObject({ status: "unmatched", reason: "cycle_not_started" });
+    expect(loadFilerPool).not.toHaveBeenCalled();
+  });
+
   it("resolves without writing in dry-run mode", async () => {
     const db = linkWritingDb();
     const results = await autoLinkMissingKansasCandidateFinanceLinks({
@@ -204,8 +217,8 @@ describe("createKansasFilerPoolLoader", () => {
     );
     expect(search.mock.calls[0]![0]).toMatchObject({ office: house, startDate: "01/01/2025", endDate: "09/01/2026" });
     expect(first.map((row) => row.filingKind)).toEqual(["report", "appointment_of_treasurer", "affidavit"]);
-    // A different year is a different pool.
-    await load(house, 2028);
+    // A different year is a different pool (an in-cycle one; 2028 has no window yet).
+    await load(house, 2024);
     expect(search).toHaveBeenCalledTimes(6);
   });
 
