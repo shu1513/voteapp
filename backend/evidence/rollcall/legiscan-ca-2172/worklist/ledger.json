@@ -819,31 +819,31 @@
    "reason": "budget trailer from the Committee on Budget and Fiscal Review; 20 digest items that tighten and loosen immigrant Medi-Cal coverage in the same bill"
   },
   "SB 168": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Public Resources.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-16/17 read",
+   "reason": "budget trailer from the Committee on Budget and Fiscal Review; commissioner pay, cap-and-trade procurement, EV rebates and utility ratemaking in one bill, cutting both ways"
   },
   "SB 170": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Governor\u2019s Reorganization Plan No. 1 of 2025: codification.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-16/17 read",
+   "reason": "codification of a governor reorganization plan \u2014 118 sections of cross-reference cleanup with essentially no policy content to take a stance on"
   },
   "SB 171": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Labor.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-16/17 read",
+   "reason": "budget trailer; narrows injured-worker access to the subsequent injuries fund while tightening on employers and adding a $3 billion pension payment"
   },
   "SB 177": {
    "status": "open",
@@ -855,22 +855,22 @@
    "reason": null
   },
   "SB 280": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Elections.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-16/17 read",
+   "reason": "cuts both ways on election administration \u2014 expands signature relief and drop-off minimums while waiving the 131-day notice, cutting public review to 8 days and allowing polling-place consolidation"
   },
   "SB 281": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Pleas: immigration advisement.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-17 read",
+   "reason": "cuts both ways \u2014 requires a verbatim immigration advisement at plea but bars using that failure to reopen any plea taken before 2026"
   },
   "SB 327": {
    "status": "open",
@@ -882,22 +882,22 @@
    "reason": null
   },
   "SB 333": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Transactions and use taxes: San Luis Obispo Council of Governments.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-17 read",
+   "reason": "single-county tax authorization (San Luis Obispo) above the state cap; procedural class already dropped elsewhere"
   },
   "SB 354": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Insurance Information and Privacy Protection Act.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-17 read",
+   "reason": "cuts both ways \u2014 a large insurance privacy rewrite that also caps consumer remedies, grants disclosure immunity, preempts inconsistent state privacy law and exempts whole lines of insurance"
   },
   "SB 36": {
    "status": "open",
@@ -909,93 +909,93 @@
    "reason": null
   },
   "SB 418": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "vetoed",
    "value": 7,
    "title": "Health care coverage: prescription hormone therapy and nondiscrimination.",
-   "batch": null,
+   "batch": "batch-16",
    "reason": null
   },
   "SB 437": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "California State University: claim eligibility: genealogy and descendancy.",
-   "batch": null,
+   "batch": "batch-16",
    "reason": null
   },
   "SB 477": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "California Fair Employment and Housing Act: enforcement procedures.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-16 read",
+   "reason": "cuts both ways \u2014 pauses deadlines for complainants but forces an individual to wait for a related group case to finish before getting a right-to-sue notice"
   },
   "SB 512": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "vetoed",
    "value": 7,
    "title": "District elections: initiatives.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-16 read",
+   "reason": "procedural tax-ballot bill \u2014 lets voters initiate a district transportation sales tax; same class as the other ballot-access drops"
   },
   "SB 541": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "vetoed",
    "value": 7,
    "title": "Electricity: load shifting.",
-   "batch": null,
+   "batch": "batch-16",
    "reason": null
   },
   "SB 551": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Corrections and rehabilitation: state policy.",
-   "batch": null,
+   "batch": "batch-16",
    "reason": null
   },
   "SB 57": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Electrical corporations: data centers: report.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-16 read",
+   "reason": "no operative duty \u2014 the utilities commission may assess data center cost shifting but is not required to, and the section sunsets in 2031"
   },
   "SB 608": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Sexual health.",
-   "batch": null,
+   "batch": "batch-16",
    "reason": null
   },
   "SB 63": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "San Francisco Bay area: local revenue measure: public transit funding.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-16 read",
+   "reason": "cuts both ways \u2014 a 14-year regional transit sales tax paired with efficiency conditions and a committee that can withhold funds from the same operators"
   },
   "SB 630": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "State parks: real property: acquisitions and leases.",
-   "batch": null,
+   "batch": "batch-16",
    "reason": null
   },
   "SB 633": {
