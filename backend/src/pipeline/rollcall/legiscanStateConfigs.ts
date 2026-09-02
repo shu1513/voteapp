@@ -86,11 +86,21 @@ const MISSOURI_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
   /^senate: emergency clause$/,
 ];
 
-// Alabama's floor-question vocabulary, shared by its 2025 and 2026 regular
-// sessions. Both were surveyed separately and print the SAME families, so
-// they share one definition rather than two copies that could drift apart.
-// The 2026 session adds two spellings, both harmless no-ops against 2025
-// (verified: zero 2025 rolls match either).
+// Alabama's MODERN floor-question vocabulary, shared by the 2025 and 2026
+// regular sessions and the 2026 first special session. Each was surveyed
+// separately and prints the SAME families, so they share one definition
+// rather than three copies that could drift apart. The 2026 session adds two
+// spellings, both harmless no-ops against 2025 (verified: zero 2025 rolls
+// match either).
+//
+// ⚠ THIS VOCABULARY DOES NOT DESCRIBE ALABAMA BEFORE 2025. The feed rewrote
+// its captions twice. The 2023 sessions print a third, older set, and 2024
+// prints BOTH systems side by side inside one session. Two further
+// definitions below cover them, and the same string can mean opposite things
+// across them: `Passed House Of Origin` is the 2024 feed's PASSAGE vote,
+// while 2025's `SBIR: Passed by House of Origin` is a Budget Isolation
+// Resolution. Never reuse one session's patterns on another without
+// surveying it first.
 const ALABAMA_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
   // Conference-report votes. Listed first so the concurrence rule below
   // cannot claim them.
@@ -136,6 +146,110 @@ const ALABAMA_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
   /^in conference committee$/,
   /\bnon-concur\b/,
   /\breconsider\b/,
+];
+
+// Alabama's 2023 vocabulary, shared by the 2023 regular session and both
+// 2023 special sessions. Surveyed separately 2026-09-02; all three print the
+// same families and nothing is left unmatched.
+//
+// Two things make it unlike the modern one. First, the passage question
+// carries NO `Motion to` prefix — it is plainly `Read a Third Time and Pass`,
+// in four casings and with or without ` as Amended`. Applying the modern
+// patterns here matches almost nothing and reports a false empty pool.
+// Second, THERE ARE NO BUDGET ISOLATION RESOLUTION ROLL CALLS AT ALL. The
+// bill history records `On Third Reading in House of Origin` as a stage line
+// with no vote attached, so 2023 took those resolutions by voice. The only
+// `Passed by House of Origin` rolls in 2023 are on SPECIAL ORDER CALENDAR
+// resolutions, a procedural question, and they are excluded by name.
+const ALABAMA_2023_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // `Read a Third Time and Pass`, `Read A Third Time And Passed As Amended`,
+  // `Read Again a Third Time and Pass as Amended`, `READ A THIRD TIME AND
+  // PASSED`. Anchored at the end so a tabling or reconsideration motion
+  // naming the same stage cannot match.
+  { pattern: /\bread (?:again )?a third time and pass(?:ed)?(?: as amended)?$/, questionClass: "passage" },
+  // The second chamber accepting the other's changes: `Concur In and Adopt`,
+  // the 2023 first special session's `House Concur and Adopt`, and the bare
+  // `Concur`.
+  { pattern: /^(?:house )?concur(?: in)? and adopt$/, questionClass: "concurrence" },
+  { pattern: /^concur$/, questionClass: "concurrence" },
+];
+const ALABAMA_2023_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
+  // Refusing to concur and sending the bill to a conference committee.
+  // Listed first so the concurrence rule above cannot claim it.
+  /\bnon concur\b/,
+  // Adoption of a SPECIAL ORDER CALENDAR resolution — the chamber setting
+  // its own order of business, not a vote on a measure.
+  /^passed by (?:house of origin|second house)$/,
+  // Floor adoption of an amendment or substitute (`Adopt`, `Adopt 4XDG33-1`)
+  // and tabling one. Start-anchored, so `Concur In and Adopt` is untouched.
+  /^adopt\b/,
+  /^table\b/,
+  // Housekeeping and procedure.
+  /\badd cosponsor\b/,
+  /^accede$/,
+  /^local certification resolution$/,
+  /\bprevious question\b/,
+  /\bpetition to cease debate\b/,
+  /\bcarry over to the call of the chair\b/,
+  /\breconsider\b/,
+];
+
+// Alabama's 2024 vocabulary. THIS SESSION USES TWO CAPTION SYSTEMS AT ONCE,
+// which is the single most important thing to know about it. Surveyed
+// 2026-09-02 over 1,229 bills and 2,147 roll calls; 111 families, nothing
+// left unmatched.
+//
+// System A is the older style, with no roll call number in the desc:
+//   `Third Reading House of Origin`   = the Budget Isolation Resolution
+//   `Passed House Of Origin`          = THE PASSAGE VOTE
+// System B is the modern style, with ` - Roll Call <n>` in the desc:
+//   `Third Reading in House of Origin`          = the Budget Isolation Resolution
+//   `Motion to Read a Third Time and Pass`      = the passage vote
+//
+// The two BIR captions differ by one word (`in`), and the System A passage
+// caption looks like a stage marker. Proof, from SB 47: the bill history
+// records `Third Reading in House of Origin` and then `Motion to Read a
+// Third Time and Pass - Adopted Roll Call 108`, while the stored rolls are
+// captioned `Third Reading House of Origin` (34-0) and `Passed House Of
+// Origin` (34-0). The passage vote is there; only its caption changed.
+// Reading `Passed House Of Origin` as a Budget Isolation Resolution — which
+// is what it is in 2025 — hides 176 real passage votes and understates the
+// divided pool by more than half.
+const ALABAMA_2024_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // Conference-report votes, in four spellings. Listed first so the
+  // concurrence rule below cannot claim them.
+  {
+    pattern: /\bconcur in and adopt (?:conference committee report|conf rpt|concurrence request)/,
+    questionClass: "conference_report",
+  },
+  // `Reed Concur In and Adopt House Amendment`, plain `Concur In and Adopt`.
+  { pattern: /\bconcur in and adopt\b/, questionClass: "concurrence" },
+  // Accepting a change the Governor sent back with the bill.
+  { pattern: /\bmotion to concur in executive amendment\b/, questionClass: "concurrence" },
+  // System B passage.
+  { pattern: /\bmotion to read (?:again )?a third time and pass(?: as amended)?\b/, questionClass: "passage" },
+  // System A passage. End-anchored: nothing else in the session ends this
+  // way, and the anchor keeps it from swallowing a longer caption.
+  { pattern: /^passed (?:house of origin|second house)$/, questionClass: "passage" },
+];
+const ALABAMA_2024_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
+  // Refusing to concur. First, so the concurrence rules cannot claim it.
+  /\bnon concur\b/,
+  // THE BUDGET ISOLATION RESOLUTION under both of this session's captions.
+  // The optional `in` is the whole difference between them.
+  /^third reading (?:in )?(?:house of origin|second house)$/,
+  // Floor adoption of an amendment or substitute, and tabling one. System B
+  // spells these `<sponsor> motion to Adopt`; System A spells them
+  // `<sponsor> amendment <code>`, `<sponsor> substitution <code>` and
+  // `Instrument Change[ Tabled]`.
+  /\bmotion to adopt\b/,
+  /\bmotion to table\b/,
+  /^[a-z.'-]+ (?:amendment|substitution)\b/,
+  /^instrument change\b/,
+  // Housekeeping and procedure.
+  /^local_?certification/,
+  /^in conference committee$/,
+  /\bsuspend rule\b/,
 ];
 
 export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {
@@ -1600,6 +1714,65 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     chamberSizes: { house: 105, senate: 35 },
     keptQuestions: ALABAMA_KEPT_QUESTIONS,
     excludedQuestions: ALABAMA_EXCLUDED_QUESTIONS,
+  },
+
+  // Alabama Legislature, 2023 Regular Session. The same legislators as the
+  // 2025 and 2026 sessions: Alabama elects its whole legislature to
+  // four-year terms, so the members elected in November 2022 sit through
+  // 2026 and are the people on the November 2026 ballot. Vocabulary measured
+  // from the full dataset survey 2026-09-02: 1,255 bills, 1,485 roll calls,
+  // 140 people, nothing left unmatched.
+  //
+  // This session predates the caption rewrite, so it uses the 2023
+  // definitions above, NOT the modern ones. It also has no Budget Isolation
+  // Resolution roll calls at all, which is why it stores far fewer votes
+  // than 2024 or 2025 while passing a comparable number of bills.
+  //
+  // 1,003 kept floor votes, of which 28 are divided and 21 of those are on
+  // measures that became law — the largest divided-and-enacted pool of any
+  // Alabama session in scope.
+  "AL-2014": {
+    jurisdiction: "AL",
+    sessionId: 2014,
+    chamberSizes: { house: 105, senate: 35 },
+    keptQuestions: ALABAMA_2023_KEPT_QUESTIONS,
+    excludedQuestions: ALABAMA_2023_EXCLUDED_QUESTIONS,
+  },
+
+  // Alabama Legislature, 2023 Second Special Session (July 2023), called to
+  // redraw the congressional map after Allen v. Milligan. Surveyed
+  // 2026-09-02: 39 bills, 26 roll calls, 138 people, nothing unmatched under
+  // the 2023 definitions.
+  //
+  // Only 10 kept floor votes, 4 divided, and 2 of those on the one measure
+  // that became law: SB 5, the reapportionment act, which the Senate passed
+  // 24-8 and then re-passed 24-6 after the House amended it.
+  //
+  // The 2023 FIRST special session (LegiScan 2048) was surveyed the same day
+  // and is deliberately NOT registered: 32 bills, 6 roll calls, 6 kept floor
+  // votes and ZERO divided ones, so it can never contribute a record.
+  "AL-2060": {
+    jurisdiction: "AL",
+    sessionId: 2060,
+    chamberSizes: { house: 105, senate: 35 },
+    keptQuestions: ALABAMA_2023_KEPT_QUESTIONS,
+    excludedQuestions: ALABAMA_2023_EXCLUDED_QUESTIONS,
+  },
+
+  // Alabama Legislature, 2024 Regular Session — the transition year, and the
+  // only Alabama session that prints two caption systems at once. See the
+  // 2024 vocabulary above for what that means and why it matters. Vocabulary
+  // measured from the full dataset survey 2026-09-02: 1,229 bills, 2,147
+  // roll calls, 139 people, nothing left unmatched across 111 families.
+  //
+  // 838 kept floor votes, of which 31 are divided and 10 of those are on
+  // measures that became law.
+  "AL-2103": {
+    jurisdiction: "AL",
+    sessionId: 2103,
+    chamberSizes: { house: 105, senate: 35 },
+    keptQuestions: ALABAMA_2024_KEPT_QUESTIONS,
+    excludedQuestions: ALABAMA_2024_EXCLUDED_QUESTIONS,
   },
 };
 
