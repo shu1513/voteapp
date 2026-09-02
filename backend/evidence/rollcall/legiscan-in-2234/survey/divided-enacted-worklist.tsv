@@ -1,20 +1,20 @@
 bill	type	status	chamber	date	roll	journal	yea	nay	desc	title	disposition
-HB1001	B	4	house	2026-02-25	1644741	372	72	21	House - House concurred with Senate amendments	Housing matters.	candidate: unbatched
-HB1001	B	4	senate	2026-02-24	1642852	223	35	13	Senate - Third reading	Housing matters.	candidate: unbatched
-HB1003	B	4	house	2026-02-27	1648339	422	69	28	House - Rules Suspended. Conference Committee Report 1	Boards and commissions.	candidate: unbatched
-HB1003	B	4	house	2026-02-02	1620750	188	67	29	House - Third reading	Boards and commissions.	candidate: unbatched
-HB1004	B	4	house	2026-02-27	1647631	407	66	29	House - House concurred with Senate amendments	Various education matters.	candidate: unbatched
-HB1004	B	4	house	2026-01-28	1618640	148	67	26	House - Third reading	Various education matters.	candidate: unbatched
-HB1004	B	4	senate	2026-02-24	1642581	225	28	20	Senate - Third reading	Various education matters.	candidate: unbatched
-HB1033	B	4	house	2026-02-26	1646003	389	59	27	House - House concurred with Senate amendments	Various judicial matters.	candidate: unbatched
-HB1038	B	4	house	2026-02-27	1647630	405	56	37	House - Rules Suspended. Conference Committee Report 1	Gaming matters.	candidate: unbatched
-HB1038	B	4	house	2026-02-02	1621114	199	67	30	House - Third reading	Gaming matters.	candidate: unbatched
-HB1038	B	4	senate	2026-02-27	1648340	312	34	16	Senate - Rules Suspended. Conference Committee Report 1	Gaming matters.	candidate: unbatched
-HB1038	B	4	senate	2026-02-24	1642883	229	26	22	Senate - Third reading	Gaming matters.	candidate: unbatched
+HB1001	B	4	house	2026-02-25	1644741	372	72	21	House - House concurred with Senate amendments	Housing matters.	batch-03
+HB1001	B	4	senate	2026-02-24	1642852	223	35	13	Senate - Third reading	Housing matters.	batch-03
+HB1003	B	4	house	2026-02-27	1648339	422	69	28	House - Rules Suspended. Conference Committee Report 1	Boards and commissions.	batch-03
+HB1003	B	4	house	2026-02-02	1620750	188	67	29	House - Third reading	Boards and commissions.	dropped: version trap, the Senate and the conference committee reworked the bill after this roll; the 2026-02-27 conference report is in batch-03
+HB1004	B	4	house	2026-02-27	1647631	407	66	29	House - House concurred with Senate amendments	Various education matters.	dropped: filter 5, a recodification of the education title with substantive riders, 27,000 words of change and no single direction
+HB1004	B	4	house	2026-01-28	1618640	148	67	26	House - Third reading	Various education matters.	dropped: filter 5, a recodification of the education title with substantive riders, 27,000 words of change and no single direction
+HB1004	B	4	senate	2026-02-24	1642581	225	28	20	Senate - Third reading	Various education matters.	dropped: filter 5, a recodification of the education title with substantive riders, 27,000 words of change and no single direction
+HB1033	B	4	house	2026-02-26	1646003	389	59	27	House - House concurred with Senate amendments	Various judicial matters.	dropped: filter 5, the act adds a suitability screen before a judge may stand for retention while deleting the morality standard, the diversity factor and the bar associations’ seats, so more vetting and more political control are both defensible readings
+HB1038	B	4	house	2026-02-27	1647630	405	56	37	House - Rules Suspended. Conference Committee Report 1	Gaming matters.	dropped: filter 5, casino licensing maps to no research area
+HB1038	B	4	house	2026-02-02	1621114	199	67	30	House - Third reading	Gaming matters.	dropped: filter 5, casino licensing maps to no research area
+HB1038	B	4	senate	2026-02-27	1648340	312	34	16	Senate - Rules Suspended. Conference Committee Report 1	Gaming matters.	dropped: filter 5, casino licensing maps to no research area
+HB1038	B	4	senate	2026-02-24	1642883	229	26	22	Senate - Third reading	Gaming matters.	dropped: filter 5, casino licensing maps to no research area
 HB1042	B	4	house	2026-02-25	1643911	370	59	33	House - House concurred with Senate amendments	Regulation and investment of cryptocurrency.	dropped: filter 5, a public pension crypto option and a bar on state and local rules about digital assets fit no research area
 HB1042	B	4	house	2026-01-22	1615974	66	53	42	House - Third reading	Regulation and investment of cryptocurrency.	dropped: filter 5, a public pension crypto option and a bar on state and local rules about digital assets fit no research area
 HB1042	B	4	senate	2026-02-19	1639191	198	35	10	Senate - Third reading	Regulation and investment of cryptocurrency.	dropped: filter 5, a public pension crypto option and a bar on state and local rules about digital assets fit no research area
-HB1052	B	4	house	2026-02-26	1646506	398	68	21	House - Conference Committee Report 1	Various administrative law matters.	candidate: unbatched
+HB1052	B	4	house	2026-02-26	1646506	398	68	21	House - Conference Committee Report 1	Various administrative law matters.	dropped: filter 5, horse racing housekeeping, an internet sweepstakes penalty, alcohol permits and tobacco certificates in one act
 HB1062	B	4	senate	2026-02-19	1639167	199	34	11	Senate - Third reading	Wake boarding and wake surfing.	dropped: filter 5, no research area maps a defensible direction for this subject, a time and place restriction on wake boarding is recreational boating regulation
 HB1115	B	4	senate	2026-02-27	1648342	331	37	10	Senate - Rules Suspended. Conference Committee Report 1	Homeowners association governance.	dropped: filter 5, no research area maps a defensible direction for this subject, the act is about homeowners association governance procedure, not housing supply or cost
 HB1150	B	4	house	2026-02-18	1637695	275	72	19	House - House concurred with Senate amendments	Local regulation.	batch-02
@@ -29,7 +29,7 @@ HB1266	B	4	senate	2026-02-27	1648350	334	28	19	Senate - Rules Suspended. Confere
 HB1273	B	4	house	2026-02-25	1643905	368	72	20	House - House concurred with Senate amendments	Requirements for proxy advisors.	batch-02
 HB1273	B	4	house	2026-01-20	1614519	63	67	21	House - Third reading	Requirements for proxy advisors.	dropped: version trap, the enrolled act exempts banks acting as trustees and small charities and neither exemption was in this text; the 2026-02-25 concurrence is in batch-02
 HB1274	B	4	house	2026-01-28	1618337	129	69	25	House - Third reading	Insurance mandated gun free zone notices.	batch-01
-HB1302	B	4	house	2026-02-26	1645961	394	69	25	House - House concurred with Senate amendments	Various labor and safety matters.	candidate: unbatched
+HB1302	B	4	house	2026-02-26	1645961	394	69	25	House - House concurred with Senate amendments	Various labor and safety matters.	dropped: filter 5, two unrelated halves, repealing the public database of employers of minors and separately abolishing the coal mine belt examiner certificate
 HB1343	B	4	house	2026-02-27	1648314	409	65	29	House - Conference Committee Report 1	Public safety matters.	candidate: unbatched
 HB1343	B	4	house	2026-01-28	1618347	121	67	29	House - Third reading	Public safety matters.	candidate: unbatched
 HB1343	B	4	senate	2026-02-27	1648313	318	37	11	Senate - Rules Suspended. Conference Committee Report 1	Public safety matters.	candidate: unbatched
@@ -53,8 +53,8 @@ SB0001	B	4	house	2026-02-23	1640645	302	62	31	House - Third reading	Human servic
 SB0003	B	4	house	2026-02-16	1634176	245	63	22	House - Third reading	Constitutional amendment ballot language.	dropped: filter 5, a vote to put a constitutional amendment on the ballot is not a vote on the amendment itself, so no stance can be attributed
 SB0003	B	4	senate	2026-01-22	1616261	45	36	9	Senate - Third reading	Constitutional amendment ballot language.	dropped: filter 5, a vote to put a constitutional amendment on the ballot is not a vote on the amendment itself, so no stance can be attributed
 SB0012	B	4	house	2026-02-17	1635266	259	58	30	House - Third reading	Prohibition of ranked choice voting.	dropped: filter 5, a ban on ranked choice voting argues in both directions inside election_integrity and neither is defensible on its own
-SB0023	B	4	house	2026-02-16	1634114	247	66	22	House - Third reading	Alcoholic beverage permits for county fairs.	candidate: unbatched
-SB0023	B	4	senate	2026-01-27	1617775	89	36	9	Senate - Third reading	Alcoholic beverage permits for county fairs.	candidate: unbatched
+SB0023	B	4	house	2026-02-16	1634114	247	66	22	House - Third reading	Alcoholic beverage permits for county fairs.	dropped: filter 5, alcohol licensing for county fair grounds maps to no research area
+SB0023	B	4	senate	2026-01-27	1617775	89	36	9	Senate - Third reading	Alcoholic beverage permits for county fairs.	dropped: filter 5, alcohol licensing for county fair grounds maps to no research area
 SB0076	B	4	house	2026-02-12	1631741	240	61	28	House - Third reading	Immigration matters.	batch-02
 SB0076	B	4	senate	2026-02-25	1645175	271	37	11	Senate - Senate concurred with House amendments	Immigration matters.	batch-02
 SB0078	B	4	senate	2026-02-25	1645121	291	36	12	Senate - Senate concurred with House amendments	Wireless communication device policy.	batch-02
@@ -67,7 +67,7 @@ SB0091	B	4	senate	2026-01-27	1617759	93	33	13	Senate - Third reading	Syringe exc
 SB0112	B	4	house	2026-02-10	1628208	234	72	24	House - Third reading	Candidacy documents.	batch-01
 SB0176	B	4	house	2026-02-27	1647622	403	67	25	House - Rules Suspended. Conference Committee Report 1	Shooting ranges.	dropped: filter 5, no research area maps a defensible direction for this subject, the act is zoning preemption for shooting ranges and sporting goods stores, and does not regulate firearm access
 SB0176	B	4	house	2026-02-16	1634173	252	66	24	House - Third reading	Shooting ranges.	dropped: the member-list check failed, LegiScan records a member on the wrong side against the official roll-call PDF; a flagged roll is unusable whichever direction the error runs; SB 0176 keeps its conference report roll, but the measure was dropped under filter 5
-SB0179	B	4	house	2026-02-24	1642625	345	72	23	House - Third reading	Indiana department of transportation.	candidate: unbatched
+SB0179	B	4	house	2026-02-24	1642625	345	72	23	House - Third reading	Indiana department of transportation.	dropped: filter 5, an omnibus of five unrelated subjects, and its only usable roll is also a version trap: the House passed a design-build procurement package, a county earmark ban and a township finance package, none of which became law
 SB0199	B	4	house	2026-02-27	1647600	404	62	32	House - Rules Suspended. Conference Committee Report 1	Various education matters.	candidate: unbatched
 SB0199	B	4	house	2026-02-17	1635300	266	67	28	House - Third reading	Various education matters.	candidate: unbatched
 SB0199	B	4	senate	2026-02-27	1648326	310	34	14	Senate - Rules Suspended. Conference Committee Report 1	Various education matters.	candidate: unbatched
@@ -87,9 +87,9 @@ SB0258	B	4	senate	2026-01-22	1616240	61	36	9	Senate - Third reading	Nuclear faci
 SB0270	B	4	house	2026-02-24	1642577	353	61	35	House - Third reading	Township mergers.	dropped: the member-list check failed, LegiScan records a member on the wrong side against the official roll-call PDF; a flagged roll is unusable whichever direction the error runs; SB 0270 keeps its 2026-02-26 concurrence, which is in batch-02
 SB0270	B	4	senate	2026-02-26	1647209	301	34	15	Senate - Senate concurred with House amendments	Township mergers.	batch-02
 SB0271	B	4	house	2026-02-24	1642587	354	75	22	House - Third reading	Telecommunications wire and valuable metal dealers.	dropped: the member-list check failed, LegiScan records a member on the wrong side against the official roll-call PDF; a flagged roll is unusable whichever direction the error runs; SB 0271 has no other divided roll, so the measure is lost
-SB0277	B	4	house	2026-02-24	1642560	356	53	45	House - Third reading	Indiana department of environmental management.	candidate: unbatched
-SB0277	B	4	senate	2026-02-25	1645191	296	26	21	Senate - Senate concurred with House amendments	Indiana department of environmental management.	candidate: unbatched
-SB0277	B	4	senate	2026-01-29	1619043	141	29	19	Senate - Third reading	Indiana department of environmental management.	candidate: unbatched
+SB0277	B	4	house	2026-02-24	1642560	356	53	45	House - Third reading	Indiana department of environmental management.	batch-03
+SB0277	B	4	senate	2026-02-25	1645191	296	26	21	Senate - Senate concurred with House amendments	Indiana department of environmental management.	batch-03
+SB0277	B	4	senate	2026-01-29	1619043	141	29	19	Senate - Third reading	Indiana department of environmental management.	dropped: version trap, this text also repealed the nuclear facility permit chapter and turned four more agency duties into choices, and lacked the federal risk values restriction; the 2026-02-25 concurrence is in batch-03
 SB0284	B	4	house	2026-02-24	1642646	358	70	25	House - Third reading	Law enforcement civilian oversight boards.	batch-01
 SB0285	B	4	house	2026-02-24	1642738	359	53	44	House - Third reading	Housing matters.	batch-01
 SB0285	B	4	senate	2026-02-26	1646484	303	28	22	Senate - Senate concurred with House amendments	Housing matters.	batch-01

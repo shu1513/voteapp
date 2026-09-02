@@ -175,13 +175,17 @@ That roll is excluded as procedural, so it costs nothing, but it is the same def
 
 ## State of the work
 
-Batches 01 and 02 are imported on the local `voteapp` database: **1,041 records across 104
-candidates with 808 area tags, over fourteen measures and nineteen rolls.** Indiana now holds
-**1,861 live roll-call records across 104 candidates with 1,474 area tags** across both
-sessions. **Production still holds no Indiana records.**
+Batches 01 to 03 are imported on the local `voteapp` database: **1,327 records across 104
+candidates with 1,078 area tags, over seventeen measures and twenty-four rolls.** Across both
+Indiana sessions the total is **2,147 live roll-call records**. **Production still holds no
+Indiana records.**
 
-`survey/divided-enacted-worklist.tsv` started at **95 rolls over 47 measures**. It now stands
-at 8 in batch-01, 11 in batch-02, 25 dropped, 3 superseded, and 48 unbatched.
+`survey/divided-enacted-worklist.tsv` started at **95 rolls over 47 measures**. It now stands at
+8 in batch-01, 11 in batch-02, 5 in batch-03, 40 dropped, 3 superseded, and 28 unbatched.
+
+The keep rate is falling as expected. Batch-01 kept six of ten measures, batch-02 eight of
+fourteen, and batch-03 three of ten. What remains is the session's omnibus work: most of the 28
+unbatched rolls sit on measures titled "Various education matters" or similar.
 
 ## Files
 
