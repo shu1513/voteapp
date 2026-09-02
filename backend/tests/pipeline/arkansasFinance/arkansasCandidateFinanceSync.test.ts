@@ -29,7 +29,7 @@ function registration(overrides: Partial<ArkansasFilerRegistrationRow> = {}): Ar
     suffix: null,
     committeeName: null,
     office: "State Representative",
-    officeDistrictName: "District 59",
+    officeDistrictName: "59",
     jurisdictionName: "Arkansas",
     politicalParty: "Republican",
     electionYear: 2026,
@@ -84,6 +84,7 @@ function baseInput(db: { query: unknown; connect: unknown }, rows: ArkansasTrans
       electionId: ELECTION_ID,
       candidateName: "Jane Doe",
       electionYear: 2026,
+      officeScope: "state_lower",
       officeName: "State Lower Chamber Legislator",
       district: "State House District 59",
       link: {
@@ -100,28 +101,62 @@ function baseInput(db: { query: unknown; connect: unknown }, rows: ArkansasTrans
   };
 }
 
+const HOUSE_59 = { cfisOfficeName: "State Representative", district: "59" };
+
 describe("selectArkansasCandidateRegistration", () => {
-  it("picks the one candidate registration for the entity and cycle", () => {
+  it("picks the one candidate registration for the entity, office, district and cycle", () => {
     const rows = [
       registration({ electionYear: 2024, registrationGuid: OTHER_GUID }),
       registration({ filerTypeCode: "SFIFILER", registrationGuid: OTHER_GUID }),
       registration(),
     ];
-    expect(selectArkansasCandidateRegistration(rows, 7968, 2026).registrationGuid).toBe(REGISTRATION_GUID);
-    expect(() => selectArkansasCandidateRegistration(rows, 7968, 2028)).toThrow(/no candidate registration/);
-    expect(() => selectArkansasCandidateRegistration([...rows, registration()], 7968, 2026)).toThrow(/2 times/);
+    expect(selectArkansasCandidateRegistration(rows, 7968, 2026, HOUSE_59).registrationGuid).toBe(REGISTRATION_GUID);
+    expect(() => selectArkansasCandidateRegistration(rows, 7968, 2028, HOUSE_59)).toThrow(/no candidate registration/);
+    expect(() => selectArkansasCandidateRegistration([...rows, registration()], 7968, 2026, HOUSE_59)).toThrow(
+      /2 times/
+    );
   });
 
-  it("falls back to the entity's year-less registration only when no cycle row exists", () => {
-    const yearless = registration({ electionYear: null, registrationGuid: OTHER_GUID });
-    expect(selectArkansasCandidateRegistration([yearless], 7968, 2026).registrationGuid).toBe(OTHER_GUID);
-    expect(selectArkansasCandidateRegistration([yearless, registration()], 7968, 2026).registrationGuid).toBe(
+  it("ignores the entity's registrations for another office or district", () => {
+    const mayor = registration({ office: "Mayor", officeDistrictName: null, registrationGuid: OTHER_GUID });
+    const house60 = registration({ officeDistrictName: "60", registrationGuid: OTHER_GUID });
+    expect(() => selectArkansasCandidateRegistration([mayor, house60], 7968, 2026, HOUSE_59)).toThrow(
+      /no candidate registration for entity 7968 as State Representative district 59/
+    );
+    expect(selectArkansasCandidateRegistration([mayor, house60, registration()], 7968, 2026, HOUSE_59).registrationGuid).toBe(
       REGISTRATION_GUID
     );
-    expect(() => selectArkansasCandidateRegistration([yearless, yearless], 7968, 2026)).toThrow(/2 times/);
+    expect(
+      selectArkansasCandidateRegistration([mayor], 7968, 2026, { cfisOfficeName: "Mayor", district: null }).registrationGuid
+    ).toBe(OTHER_GUID);
+  });
+
+  it("falls back to the office's year-less registration only when no cycle row exists", () => {
+    const yearless = registration({ electionYear: null, registrationGuid: OTHER_GUID });
+    expect(selectArkansasCandidateRegistration([yearless], 7968, 2026, HOUSE_59).registrationGuid).toBe(OTHER_GUID);
+    expect(selectArkansasCandidateRegistration([yearless, registration()], 7968, 2026, HOUSE_59).registrationGuid).toBe(
+      REGISTRATION_GUID
+    );
+    expect(() => selectArkansasCandidateRegistration([yearless, yearless], 7968, 2026, HOUSE_59)).toThrow(/2 times/);
     expect(() =>
-      selectArkansasCandidateRegistration([registration({ electionYear: 2024, registrationGuid: OTHER_GUID })], 7968, 2026)
+      selectArkansasCandidateRegistration(
+        [registration({ electionYear: 2024, registrationGuid: OTHER_GUID })],
+        7968,
+        2026,
+        HOUSE_59
+      )
     ).toThrow(/no candidate registration/);
+    // A year-less registration for a different office never stands in for the linked race.
+    const yearlessMayor = registration({
+      electionYear: null,
+      filingYear: 2028,
+      office: "Mayor",
+      officeDistrictName: null,
+      registrationGuid: OTHER_GUID,
+    });
+    expect(() => selectArkansasCandidateRegistration([yearlessMayor], 7968, 2026, HOUSE_59)).toThrow(
+      /no candidate registration/
+    );
   });
 });
 
@@ -210,7 +245,7 @@ describe("syncArkansasCandidateFinance", () => {
     const { input, fetchTransactions } = baseInput(db, [receipt()]);
 
     await expect(syncArkansasCandidateFinance({ ...input, electionYear: 2028 })).rejects.toThrow(
-      /no candidate registration for entity 7968 in the 2028 cycle/
+      /no candidate registration for entity 7968 as State Representative district 59 in the 2028 cycle/
     );
     expect(fetchTransactions).not.toHaveBeenCalled();
     expect(client.query).not.toHaveBeenCalled();

@@ -136,7 +136,8 @@ registration-scoped `GetTransactionDetails` (TCON) path:
   active 2026 candidates (Holladay HD70 $80.6k, Teeter HD44, Rankin Baker
   HD99, Heron HD14) and Wilson (11847, the Phase 0 loan-heavy gold filer).
   Auto-link never matches them (no cycle evidence); the sync accepts an
-  entity's single year-less registration once a link pins the cycle.
+  entity's single year-less registration for the linked office and
+  district once a link pins the cycle.
 
 ## Phase 4 live run (2026-09-02, local)
 
