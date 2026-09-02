@@ -111,7 +111,7 @@ Migrations, `IDAHO_CAMPAIGN_FINANCE_ENABLED` in render.yaml, `id_*` pg_dump prom
 
 ## Validation gates (import refuses to write on failure)
 
-- grid row present and `electionYear` matches the link's cycle; status may be Terminated (money stays public);
+- grid row present and `electionYear` matches the link's cycle; the auto-link only creates links to Active registrations (a lone Terminated/Inactive one is reported for manual review), but an existing link keeps syncing after its registration terminates — the money stays public;
 - Σ contribution rows for the registration guid ≥ grid `totalRaised` only when returned contributions exist in the bulk export for that entity; otherwise must equal to the cent;
 - every IE row selected carries stance Support or Oppose and a date inside the window;
 - artifact sha256 matches the manifest before any snapshot write.

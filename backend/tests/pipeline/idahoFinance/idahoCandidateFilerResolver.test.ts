@@ -240,11 +240,19 @@ describe("resolveIdahoCandidateFiler", () => {
     }
   });
 
-  it("prefers the single Active registration over a terminated re-registration, else reports ambiguity", () => {
+  it("links only an Active registration: skips a terminated re-registration, reports lone non-Active and double-Active", () => {
     const terminated = registration({ registrationGuid: GUID_A, filerRegistrationId: 321, status: "Terminated", statusCode: "TERMN" });
     const active = registration({ registrationGuid: GUID_B, filerRegistrationId: 2748 });
     const resolved = resolveIdahoCandidateFiler({ ...SENATE_16, candidateNames: ["Todd Achilles"], registrations: [active, terminated] });
     expect(resolved.status === "matched" && resolved.match.registrationGuid).toBe(GUID_B);
+
+    // A lone terminated or inactive registration never links automatically.
+    for (const lone of [terminated, registration({ registrationGuid: GUID_C, status: "Inactive", statusCode: "INACT" })]) {
+      expect(resolveIdahoCandidateFiler({ ...SENATE_16, candidateNames: ["Todd Achilles"], registrations: [lone] })).toEqual({
+        status: "unmatched",
+        reason: "no_active_registration",
+      });
+    }
 
     const secondActive = registration({ registrationGuid: GUID_C, filerRegistrationId: 2968 });
     const ambiguous = resolveIdahoCandidateFiler({
@@ -254,7 +262,7 @@ describe("resolveIdahoCandidateFiler", () => {
     });
     expect(ambiguous.status).toBe("ambiguous");
     expect(ambiguous.status === "ambiguous" && ambiguous.matches.map((match) => match.filerRegistrationId)).toEqual([
-      321, 2748, 2968,
+      2748, 2968,
     ]);
   });
 

@@ -77,9 +77,13 @@ function parseLegislativeDistrict(value: string | null): number | null {
   return parsed > 0 ? parsed : null;
 }
 
+// No default cap: unmatched and ambiguous candidates never receive a link, so
+// they stay at the front of this ordered list on every run and a fixed LIMIT
+// would starve everyone behind them. The roster is small and the grid is one
+// request either way; maxCandidates is an operator valve, null = all.
 export async function listIdahoCandidateElectionsMissingFinanceLinks(
   db: Queryable,
-  input: { now: Date; maxCandidates: number; electionLookbackDays: number; electionLookaheadDays: number }
+  input: { now: Date; maxCandidates: number | null; electionLookbackDays: number; electionLookaheadDays: number }
 ): Promise<IdahoFinanceAutoLinkCandidateElection[]> {
   const result = await db.query<CandidateElectionQueryRow>(
     `
@@ -222,7 +226,7 @@ export async function autoLinkIdahoCandidateFinanceForCandidateElection(input: {
 export async function autoLinkMissingIdahoCandidateFinanceLinks(input: {
   db: Queryable;
   now: Date;
-  maxCandidates: number;
+  maxCandidates: number | null;
   electionLookbackDays: number;
   electionLookaheadDays: number;
   dryRun?: boolean;

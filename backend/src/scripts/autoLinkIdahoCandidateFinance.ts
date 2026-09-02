@@ -10,7 +10,8 @@ import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 export type AutoLinkIdahoCandidateFinanceScriptOptions = {
   force: boolean;
   dryRun: boolean;
-  maxCandidates: number;
+  /** null = every due candidate (see listIdahoCandidateElectionsMissingFinanceLinks). */
+  maxCandidates: number | null;
   electionLookbackDays: number;
   electionLookaheadDays: number;
 };
@@ -18,7 +19,7 @@ export type AutoLinkIdahoCandidateFinanceScriptOptions = {
 const BOOLEAN_FLAGS = new Set(["--force", "--dry-run"]);
 const VALUE_FLAGS = new Set(["--max-candidates", "--lookback-days", "--lookahead-days"]);
 
-function parsePositiveInteger(args: readonly string[], name: string, fallback: number): number {
+function parsePositiveInteger<T extends number | null>(args: readonly string[], name: string, fallback: T): number | T {
   const values: string[] = [];
   const prefix = `${name}=`;
   for (let index = 0; index < args.length; index += 1) {
@@ -46,7 +47,7 @@ export function parseAutoLinkIdahoCandidateFinanceScriptArgs(
   return {
     force: args.includes("--force"),
     dryRun: args.includes("--dry-run"),
-    maxCandidates: parsePositiveInteger(args, "--max-candidates", 25),
+    maxCandidates: parsePositiveInteger(args, "--max-candidates", null),
     electionLookbackDays: parsePositiveInteger(args, "--lookback-days", 98),
     electionLookaheadDays: parsePositiveInteger(args, "--lookahead-days", 730),
   };

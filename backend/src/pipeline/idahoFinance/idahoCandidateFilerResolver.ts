@@ -13,9 +13,10 @@
 //   roster->grid nickname expansion; the grid's quoted call name
 //   ("Bertling, Timothy 'Tim' Paul") is offered as an alias; a bare surname
 //   never links;
-// - several registrations of the same entity in one year are normal (a
-//   terminated re-registration): exactly one Active registration links,
-//   anything else is ambiguous and goes to manual review;
+// - only an Active registration links automatically: a terminated
+//   re-registration beside the live one is skipped, a lone terminated or
+//   inactive registration is reported for manual review, and two live
+//   registrations are ambiguous;
 // - never link from committeeName text.
 
 import { firstNameVariants } from "../finance/personFirstNameNicknames.js";
@@ -60,7 +61,12 @@ export type IdahoCandidateFilerResolution =
   | { status: "ambiguous"; reason: "multiple_active_registrations"; matches: IdahoCandidateFilerMatch[] }
   | {
       status: "unmatched";
-      reason: "missing_candidate_name" | "unsupported_office" | "missing_required_district" | "no_registration_match";
+      reason:
+        | "missing_candidate_name"
+        | "unsupported_office"
+        | "missing_required_district"
+        | "no_registration_match"
+        | "no_active_registration";
     };
 
 /** Match-time person-name normalization (generational suffixes stripped). */
@@ -239,14 +245,17 @@ export function resolveIdahoCandidateFiler(input: IdahoCandidateFilerResolverInp
   if (sorted.length === 0) {
     return { status: "unmatched", reason: "no_registration_match" };
   }
-  if (sorted.length === 1) {
-    return { status: "matched", match: sorted[0]! };
-  }
-  // A terminated re-registration next to the live one is the common shape;
-  // two live registrations for one race are a filing problem, not ours to pick.
+  // Only a live registration links automatically. A terminated
+  // re-registration beside the live one is the common shape; a lone
+  // terminated or inactive registration goes to manual review (an operator
+  // can still link it — the money stays public); two live registrations for
+  // one race are a filing problem, not ours to pick.
   const active = sorted.filter((match) => match.status === "Active");
   if (active.length === 1) {
     return { status: "matched", match: active[0]! };
   }
-  return { status: "ambiguous", reason: "multiple_active_registrations", matches: sorted };
+  if (active.length === 0) {
+    return { status: "unmatched", reason: "no_active_registration" };
+  }
+  return { status: "ambiguous", reason: "multiple_active_registrations", matches: active };
 }

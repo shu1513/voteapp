@@ -7,7 +7,7 @@ describe("parseAutoLinkIdahoCandidateFinanceScriptArgs", () => {
     expect(parseAutoLinkIdahoCandidateFinanceScriptArgs([])).toEqual({
       force: false,
       dryRun: false,
-      maxCandidates: 25,
+      maxCandidates: null,
       electionLookbackDays: 98,
       electionLookaheadDays: 730,
     });

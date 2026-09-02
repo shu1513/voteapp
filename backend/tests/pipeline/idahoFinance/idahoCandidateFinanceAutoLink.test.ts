@@ -37,7 +37,7 @@ function fakeDb(onInsert?: () => Promise<never>) {
 
 const baseInput = {
   now: NOW,
-  maxCandidates: 25,
+  maxCandidates: null,
   electionLookbackDays: 98,
   electionLookaheadDays: 730,
 };
