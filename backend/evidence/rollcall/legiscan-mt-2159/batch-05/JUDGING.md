@@ -116,11 +116,11 @@ The bar reaches only the court's fallback pick, not the four legislative
 appointments, and only contributions to major party candidates for state or
 federal office.
 
-Area `impartiality`, yes vote **for**. The measure narrows the pool for the one
-tiebreaking seat to people who have not recently funded a major party. This is
-the first use of `impartiality` in the roll-call corpus; nothing prior sets a
-direction, so the reasoning is stated here in full rather than resting on
-precedent.
+Area `election_integrity`, yes vote **for**. The measure narrows the pool for
+the one tiebreaking seat to people who have not recently funded a major party,
+which goes directly to the area's stated aim of elections "trusted by the
+public". It was first tagged `impartiality`; see the note at the end of this
+file on why that was wrong and how it was fixed.
 
 ## HB 719 — date of birth on registration and ballot envelopes
 
@@ -181,8 +181,11 @@ procedure by October 1, 2025 and send it to every district judge by October 15,
 geographically while still remaining random. Section 1 takes effect October 1,
 2025; the rest on passage.
 
-Area `impartiality`, yes vote **for**. Random assignment closes off the choice of
-a favourable replacement, which is the whole point of the section.
+Area `anti_corruption`, yes vote **for**. Random assignment closes off the choice
+of a favourable replacement, whether by the judge stepping aside or by a litigant
+angling for one. That is an ethics rule against steering public office to a
+chosen outcome, which is what the area's description covers. It was first
+tagged `impartiality`; see the note at the end of this file.
 
 ## SB 105 — wider ban on campaigning near voters
 
@@ -253,5 +256,30 @@ vote.
 - The import reconciles three ways: the insert ledger records 597 rows across 14
   rolls, the database holds 597 rows at run stamp `2026-09-02T06:26:57.985Z`, and
   the dry run beforehand wrote 0 rows.
+- After the relabel below, a second import run reported all 597 records unchanged
+  (no description moved) and synced their tags to the new labels: 47 records on
+  HB 711 now carry `election_integrity`, 46 on SB 41 carry `anti_corruption`, and
+  no Montana record carries `impartiality`. That run is `import-rewrite-report.json`;
+  the original insert ledger is untouched in `import-report.json`.
+
+## Correction: `impartiality` is not a legislative area
+
+HB 711 and SB 41 were first tagged `impartiality`. Review pointed out, and the
+code confirms, that this area exists only for judges. Migration 073 created it as
+a judicial research area, migration 125 set `is_user_selectable = false` on it
+(the only other such area is `general`), and migration 159 puts it in the judge
+office core sets and nowhere else. A legislator tagged with it gets a stance
+that no election-scoped view shows and no voter's ranking can weigh. So the
+label was not wrong about the bills; it was invisible.
+
+Both measures were re-read against the catalogue's policy areas. HB 711 is about
+who chairs the body that draws districts, which is election administration and
+public trust in it, so `election_integrity`. SB 41 removes the ability to steer a
+case to a chosen judge, which is an ethics rule against abuse of office, so
+`anti_corruption`. Neither direction changed. The judgments file, the tags and
+this document were all updated together.
+
+The general rule, now in the campaign checkpoint: `impartiality`,
+`legal_competence` and `general` are never valid labels for a roll-call record.
 - Montana's jurisdiction total is now 2,813 records across 87 candidates and
   1,639 area tags.

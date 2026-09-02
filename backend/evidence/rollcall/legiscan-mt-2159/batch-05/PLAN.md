@@ -9,9 +9,9 @@ law. Three more measures were read in full and dropped; they are written up in
 | HB 39 party money for judicial candidates | 16 | anti_corruption | against | 57-43 | 25-23 |
 | HB 201 paid signature gatherers must identify themselves | 239 | election_integrity | for | 57-42 | 27-22 |
 | HB 413 residence test for temporary residents | 278 | election_integrity | for | 56-42 | 30-18 |
-| HB 711 no recent party donor may chair redistricting | 508 | impartiality | for | 57-42 | 29-19 |
+| HB 711 no recent party donor may chair redistricting | 508 | election_integrity | for | 57-42 | 29-19 |
 | HB 719 date of birth on registration and ballot envelopes | 472 | election_integrity | for | 57-42 | 32-18 |
-| SB 41 random selection of a replacement judge | 353 | impartiality | for | 56-43 | 32-17 |
+| SB 41 random selection of a replacement judge | 353 | anti_corruption | for | 56-43 | 32-17 |
 | SB 105 wider ban on campaigning near voters | 342 | election_integrity | for | 77-21 | 36-13 |
 
 ## Why these seven belong together
@@ -30,8 +30,10 @@ HB 711 and SB 41 pull the other way on the same theme. HB 711 bars the Supreme
 Court from picking anyone who gave to a major party candidate in the past ten
 years as the tiebreaking chair of the redistricting commission. SB 41 requires a
 replacement district judge to be drawn at random, which closes off judge
-shopping. Both score for `impartiality`, which is the first use of that area
-anywhere in the roll-call corpus.
+shopping. HB 711 scores for `election_integrity` and SB 41 for
+`anti_corruption`. Both were first tagged `impartiality`; review caught that
+`impartiality` is a judicial-candidate area the product hides from every
+legislative view, and the tags were rewritten. See JUDGING.md.
 
 ## Three measures read and dropped
 

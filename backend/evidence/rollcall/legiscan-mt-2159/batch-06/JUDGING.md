@@ -207,4 +207,4 @@ Senate version, not the original passage votes.
   `import-rewrite-report.json`; the original insert ledger is untouched in
   `import-report.json`.
 - Montana's jurisdiction total is now 3,155 records across 87 candidates and
-  1,827 area tags in 15 research areas.
+  1,827 area tags in 14 research areas.

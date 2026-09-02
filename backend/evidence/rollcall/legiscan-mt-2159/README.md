@@ -111,7 +111,7 @@ records.**
 | batch-04 | 8 | 16 | 682 | environment, civil rights, immigration, anti-corruption |
 | batch-05 | 7 | 14 | 597 | elections, courts, anti-corruption |
 | batch-06 | 4 | 8 | 342 | property tax, civil rights, reproductive rights |
-| **total** | **37** | **74** | **3,155** | 15 areas, 87 candidates, 1,827 tags |
+| **total** | **37** | **74** | **3,155** | 14 areas, 87 candidates, 1,827 tags |
 
 533 divided-and-enacted rolls remain unbatched, 5 are held on HB 231 (below)
 and 21 are dropped under filter 5;

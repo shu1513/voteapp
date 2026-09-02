@@ -1,7 +1,7 @@
-# Montana batch-06 — four measures, and four read and set aside
+# Montana batch-06 — four measures, and five read and set aside
 
 Four measures, eight roll calls, 342 candidate records. All four became law.
-Four more were read in full and either dropped under filter 5 or deferred; the
+Five more were read in full and either dropped under filter 5 or deferred; the
 reasons are in `../survey/filter-5-drops.md` and below.
 
 | Measure | Chapter | Area | Yes vote means | House | Senate |
@@ -11,13 +11,13 @@ reasons are in `../survey/filter-5-drops.md` and below.
 | HB 638 ban on diversity statements in government | 331 | civil_rights | against | 57-41 | 31-19 |
 | HB 723 reporting on infants born alive after an abortion | 517 | womens_reproductive_rights | against | 58-41 | 31-19 |
 
-The batch is small on purpose. Ten measures were read; six did not survive.
+The batch is small on purpose. Nine measures were read; five did not survive.
 
 ## Why the tail is thinner
 
 Batches 1 through 3 dropped two measures out of twenty, because the clearest
 cases were worked first. Batch-05 dropped three of ten. This batch dropped or
-deferred four of eight. That is the expected shape of the remaining work, and it
+deferred five of nine. That is the expected shape of the remaining work, and it
 is worth recording so a later session does not treat it as a failure.
 
 ## What was set aside, and why

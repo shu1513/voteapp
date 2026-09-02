@@ -120,7 +120,7 @@
       "nay_description": "Voted against House Bill 711, which is about who may chair the commission that redraws Montana's district lines. Four commissioners are named by legislative leaders, and those four pick a fifth member to preside. If they cannot agree in time, the Supreme Court picks the fifth member instead. The court may no longer choose anyone who has given money in the past ten years to a major party candidate for state or federal office. The Montana House passed it 57-42, and it became law.",
       "labels": [
         {
-          "slug": "impartiality",
+          "slug": "election_integrity",
           "yea": "for",
           "nay": null
         }
@@ -138,7 +138,7 @@
       "nay_description": "Voted against House Bill 711, which is about who may chair the commission that redraws Montana's district lines. Four commissioners are named by legislative leaders, and those four pick a fifth member to preside. If they cannot agree in time, the Supreme Court picks the fifth member instead. The court may no longer choose anyone who has given money in the past ten years to a major party candidate for state or federal office. The Montana Senate passed it 29-19, and it became law.",
       "labels": [
         {
-          "slug": "impartiality",
+          "slug": "election_integrity",
           "yea": "for",
           "nay": null
         }
@@ -192,7 +192,7 @@
       "nay_description": "Voted against Senate Bill 41, which changes how a replacement judge is chosen. When a district judge is removed from a case, disqualified, or steps aside, the next judge must now be picked at random. The state court administrator writes the procedure and had to send it to every district judge by October 15, 2025. The method must still keep the replacement judge reasonably close by, while staying random. The Montana House passed it 56-43, and it became law.",
       "labels": [
         {
-          "slug": "impartiality",
+          "slug": "anti_corruption",
           "yea": "for",
           "nay": null
         }
@@ -210,7 +210,7 @@
       "nay_description": "Voted against Senate Bill 41, which changes how a replacement judge is chosen. When a district judge is removed from a case, disqualified, or steps aside, the next judge must now be picked at random. The state court administrator writes the procedure and had to send it to every district judge by October 15, 2025. The method must still keep the replacement judge reasonably close by, while staying random. The Montana Senate passed it 32-17, and it became law.",
       "labels": [
         {
-          "slug": "impartiality",
+          "slug": "anti_corruption",
           "yea": "for",
           "nay": null
         }
