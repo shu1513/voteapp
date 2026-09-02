@@ -130,12 +130,14 @@ async function requestAllPages<TRow>(
       // The portal exhausted its own list below its advertised count. Seen
       // live 2026-09-01 on committee 7460's filings (totalRecords 17, 16 rows
       // at every page size, page 3 empty) — a count that includes a row the
-      // list never renders, not a truncated read, so the rows are complete.
+      // list never renders. Tolerated only for a one-row shortfall; anything
+      // larger is treated as a truncated read.
       exhausted = true;
       break;
     }
   }
-  if (expected !== null && rows.length < expected && !exhausted) {
+  const shortfall = expected === null ? 0 : expected - rows.length;
+  if (shortfall > 0 && !(exhausted && shortfall === 1)) {
     throw new AlabamaFcpaClientError(
       "bad_response",
       `Alabama FCPA page ${page} returned ${rows.length} of ${expected} rows`

@@ -266,6 +266,22 @@ describe("syncAlabamaCandidateFinance", () => {
     });
   });
 
+  it("replaces a stored cash on hand with null instead of preserving the old balance", async () => {
+    const { db, client } = writingDb();
+    await syncAlabamaCandidateFinance({
+      ...baseInput(db),
+      loadCycleCovers: coversLoader({ openingBalanceCents: -12_590 }),
+      loadOfficeRaceContext: officeContext([raceRow({ ENDINGFUNDS: -45.9 })]),
+      loadCashRows: cashLoader({ 2026: [cashRow({})] }),
+    });
+    const summaryUpsert = client.query.mock.calls
+      .map((call) => String(call[0]))
+      .find((sql) => sql.includes("INSERT INTO public.al_candidate_finance_summaries"));
+    expect(summaryUpsert).toBeDefined();
+    expect(summaryUpsert).toContain("cash_on_hand = EXCLUDED.cash_on_hand");
+    expect(summaryUpsert).not.toContain("COALESCE(EXCLUDED.cash_on_hand");
+  });
+
   it("throws and writes nothing when the covers cannot be loaded", async () => {
     const { db, client } = writingDb();
     await expect(

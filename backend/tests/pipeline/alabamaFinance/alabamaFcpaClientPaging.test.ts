@@ -27,6 +27,16 @@ describe("Alabama FCPA list paging", () => {
     expect(fetchImpl).toHaveBeenCalledTimes(2);
   });
 
+  it("rejects a list the portal closes more than one row short", async () => {
+    // 20 of 100 then an empty page is a truncated read, not a count quirk.
+    const fetchImpl = vi.fn(async (url: string) =>
+      envelope(100, pageNumberOf(url) === 1 ? Array.from({ length: 20 }, (_, i) => i + 1) : [])
+    );
+    await expect(getAlabamaCommitteeFilings(1, { fetchImpl: fetchImpl as never })).rejects.toThrow(
+      "returned 20 of 100 rows"
+    );
+  });
+
   it("keeps paging past a short page and still rejects a count that moves", async () => {
     // A short non-empty page proves nothing (only an empty page proves
     // exhaustion), so paging continues; a changed totalRecords stays fatal.
