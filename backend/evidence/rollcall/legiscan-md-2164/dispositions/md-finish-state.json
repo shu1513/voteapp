@@ -2808,60 +2808,6 @@
    "batch": null
   },
   {
-   "measure": "SB 49",
-   "family": [
-    "HB 107",
-    "SB 49"
-   ],
-   "title": "Consumer Protection - Automatic Renewals",
-   "chapter": "Approved by the Governor - Chapter 204",
-   "chaptered_file": "CH_204_sb0049e.pdf",
-   "rolls": [
-    {
-     "chamber": "house",
-     "roll": 1546844,
-     "date": "2025-04-07",
-     "yeas": 106,
-     "nays": 29,
-     "q": "Third Reading Passed"
-    }
-   ],
-   "status": "defer",
-   "decision": "defer",
-   "area": null,
-   "yea": null,
-   "nay": null,
-   "batch": null,
-   "reason": "cross-file twin of HB 107, which is deferred: only divided roll is superseded by a later non-divided House vote (115-20); attributing it would repeat the SB 255 error"
-  },
-  {
-   "measure": "SB 63",
-   "family": [
-    "HB 292",
-    "SB 63"
-   ],
-   "title": "Cooperative Housing Corporations, Condominiums, and Homeowners Associations \u2013 Funding of Reserve Accounts and Preparation of Funding Plans",
-   "chapter": "Approved by the Governor - Chapter 518",
-   "chaptered_file": "CH_518_sb0063t.pdf",
-   "rolls": [
-    {
-     "chamber": "house",
-     "roll": 1537993,
-     "date": "2025-04-01",
-     "yeas": 100,
-     "nays": 36,
-     "q": "Third Reading Passed"
-    }
-   ],
-   "status": "defer",
-   "decision": "defer",
-   "area": null,
-   "yea": null,
-   "nay": null,
-   "batch": null,
-   "reason": "cross-file twin of HB 292, which is deferred: runs both ways: adds reserve funding plans but allows hardship deviation"
-  },
-  {
    "measure": "SB 93",
    "family": [
     "SB 93"
@@ -3606,33 +3552,6 @@
    "nay": null,
    "reason": "administrative fund governance; repeals some reporting (recorded in batch-02)",
    "batch": null
-  },
-  {
-   "measure": "SB 930",
-   "family": [
-    "HB 1296",
-    "SB 930"
-   ],
-   "title": "Environment - Managed Aquifer Recharge Pilot Program - Establishment",
-   "chapter": "Approved by the Governor - Chapter 475",
-   "chaptered_file": "CH_475_sb0930t.pdf",
-   "rolls": [
-    {
-     "chamber": "house",
-     "roll": 1546834,
-     "date": "2025-04-07",
-     "yeas": 104,
-     "nays": 34,
-     "q": "Third Reading Passed"
-    }
-   ],
-   "status": "defer",
-   "decision": "defer",
-   "area": null,
-   "yea": null,
-   "nay": null,
-   "batch": null,
-   "reason": "cross-file twin of HB 1296, which is deferred: narrow pilot permitting programme"
   }
  ],
  "2240": [
@@ -6435,84 +6354,6 @@
    "batch": null
   },
   {
-   "measure": "SB 18",
-   "family": [
-    "HB 769",
-    "SB 18"
-   ],
-   "title": "State Board of Social Work Examiners - Provisional License to Practice Social Work - Established",
-   "chapter": "Approved by the Governor - Chapter 226",
-   "chaptered_file": "CH_226_sb0018e.pdf",
-   "rolls": [
-    {
-     "chamber": "house",
-     "roll": 1676562,
-     "date": "2026-04-02",
-     "yeas": 98,
-     "nays": 36,
-     "q": "Third Reading Passed"
-    },
-    {
-     "chamber": "house",
-     "roll": 1684002,
-     "date": "2026-04-13",
-     "yeas": 105,
-     "nays": 29,
-     "q": "Third Reading Passed"
-    },
-    {
-     "chamber": "senate",
-     "roll": 1683110,
-     "date": "2026-04-13",
-     "yeas": 33,
-     "nays": 14,
-     "q": "Third Reading Passed"
-    }
-   ],
-   "status": "defer",
-   "decision": "defer",
-   "area": null,
-   "yea": null,
-   "nay": null,
-   "batch": null,
-   "reason": "cross-file twin of HB 769, which is deferred: licensing pathway; no area fits"
-  },
-  {
-   "measure": "SB 28",
-   "family": [
-    "HB 604",
-    "SB 28"
-   ],
-   "title": "Arbitration Reform for State Employees Act of 2026",
-   "chapter": "Approved by the Governor, assigned a chapter number, enactment subject to constitutional referendum - Chapter 156",
-   "chaptered_file": "CH_156_sb0028t.pdf",
-   "rolls": [
-    {
-     "chamber": "senate",
-     "roll": 1672653,
-     "date": "2026-03-19",
-     "yeas": 34,
-     "nays": 11,
-     "q": "Third Reading Passed"
-    },
-    {
-     "chamber": "house",
-     "roll": 1683120,
-     "date": "2026-04-10",
-     "yeas": 99,
-     "nays": 34,
-     "q": "Third Reading Passed"
-    }
-   ],
-   "status": "defer",
-   "decision": "defer",
-   "area": null,
-   "yea": null,
-   "nay": null,
-   "batch": null,
-   "reason": "cross-file twin of HB 604, which is deferred: public employer arbitration; corporate_accountability means companies (recorded in batch-03)"
-  },
-  {
    "measure": "SB 94",
    "family": [
     "SB 94"
@@ -6743,33 +6584,6 @@
    "nay": "against",
    "reason": null,
    "batch": null
-  },
-  {
-   "measure": "SB 253",
-   "family": [
-    "HB 388",
-    "SB 253"
-   ],
-   "title": "Baltimore County Public Library - Collective Bargaining - Supervisory Employees",
-   "chapter": "Approved by the Governor - Chapter 756",
-   "chaptered_file": "CH_756_sb0253t.pdf",
-   "rolls": [
-    {
-     "chamber": "house",
-     "roll": 1680723,
-     "date": "2026-04-08",
-     "yeas": 96,
-     "nays": 31,
-     "q": "Third Reading Passed"
-    }
-   ],
-   "status": "defer",
-   "decision": "defer",
-   "area": null,
-   "yea": null,
-   "nay": null,
-   "batch": null,
-   "reason": "cross-file twin of HB 388, which is deferred: local public-employer bargaining (Baltimore County library)"
   },
   {
    "measure": "SB 279",
@@ -7070,33 +6884,6 @@
    "batch": null
   },
   {
-   "measure": "SB 366",
-   "family": [
-    "HB 107",
-    "SB 366"
-   ],
-   "title": "Motor Vehicles - Intelligent Speed Assistance System Pilot Program - Establishment",
-   "chapter": "Enacted under Article II, Section 17(c) of the Maryland Constitution - Chapter 869",
-   "chaptered_file": "CH_869_sb0366e.pdf",
-   "rolls": [
-    {
-     "chamber": "house",
-     "roll": 1684024,
-     "date": "2026-04-13",
-     "yeas": 99,
-     "nays": 33,
-     "q": "Third Reading Passed"
-    }
-   ],
-   "status": "defer",
-   "decision": "defer",
-   "area": null,
-   "yea": null,
-   "nay": null,
-   "batch": null,
-   "reason": "cross-file twin of HB 107, which is deferred: traffic safety pilot; no research area fits"
-  },
-  {
    "measure": "SB 396",
    "family": [
     "SB 396"
@@ -7147,33 +6934,6 @@
    "nay": null,
    "reason": "programme codification",
    "batch": null
-  },
-  {
-   "measure": "SB 420",
-   "family": [
-    "HB 6",
-    "SB 420"
-   ],
-   "title": "Public Institutions of Higher Education - Pregnant and Parenting Students - Plan and Reporting",
-   "chapter": "Approved by the Governor - Chapter 734",
-   "chaptered_file": "CH_734_sb0420e.pdf",
-   "rolls": [
-    {
-     "chamber": "house",
-     "roll": 1684220,
-     "date": "2026-04-13",
-     "yeas": 103,
-     "nays": 33,
-     "q": "Third Reading Passed"
-    }
-   ],
-   "status": "defer",
-   "decision": "defer",
-   "area": null,
-   "yea": null,
-   "nay": null,
-   "batch": null,
-   "reason": "cross-file twin of HB 6, which is deferred: mostly data collection and reporting (recorded in batch-03)"
   },
   {
    "measure": "SB 439",
@@ -7440,41 +7200,6 @@
    "nay": "against",
    "reason": null,
    "batch": null
-  },
-  {
-   "measure": "SB 822",
-   "family": [
-    "HB 467",
-    "SB 822"
-   ],
-   "title": "Correctional Services - Maryland Parole Commission and Erroneously Convicted Individuals - Improvements in Transparency and Equity",
-   "chapter": "Approved by the Governor - Chapter 431",
-   "chaptered_file": "CH_431_sb0822t.pdf",
-   "rolls": [
-    {
-     "chamber": "senate",
-     "roll": 1672762,
-     "date": "2026-03-20",
-     "yeas": 31,
-     "nays": 11,
-     "q": "Third Reading Passed"
-    },
-    {
-     "chamber": "house",
-     "roll": 1678558,
-     "date": "2026-04-07",
-     "yeas": 101,
-     "nays": 35,
-     "q": "Third Reading Passed"
-    }
-   ],
-   "status": "defer",
-   "decision": "defer",
-   "area": null,
-   "yea": null,
-   "nay": null,
-   "batch": null,
-   "reason": "cross-file twin of HB 467, which is deferred: contested direction: parole commission changes (recorded in batch-03)"
   },
   {
    "measure": "SB 828",
