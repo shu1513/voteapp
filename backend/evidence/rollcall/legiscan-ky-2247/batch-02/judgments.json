@@ -1,0 +1,622 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1663923,
+      "measure_id": "HB 1",
+      "vote_date": "2026-03-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1. It enrolls Kentucky in a new federal tax credit that rewards people who donate to organizations awarding elementary and secondary school scholarships. The Secretary of State identifies the organizations that qualify, reports Kentucky's choice to the United States Treasury each year, and covers the cost with fees on those organizations or private donations. The Kentucky House voted 77-14, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 1. It enrolls Kentucky in a new federal tax credit that rewards people who donate to organizations awarding elementary and secondary school scholarships. The Secretary of State identifies the organizations that qualify, reports Kentucky's choice to the United States Treasury each year, and covers the cost with fees on those organizations or private donations. The Kentucky House voted 77-14, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1626655,
+      "measure_id": "HB 7",
+      "vote_date": "2026-02-09",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 7, as the House passed it. It lets school districts put cameras on school bus stop arms and fine the owner of any vehicle that passes a stopped bus, with the money going to the school district. It also requires traffic coming the other way to stop for a school or church bus unless the road is split by a raised barrier or unpaved median. The Kentucky House voted 78-15, and the Governor signed the bill into law.",
+      "nay_description": "Voted against House Bill 7, as the House passed it. It lets school districts put cameras on school bus stop arms and fine the owner of any vehicle that passes a stopped bus, with the money going to the school district. It also requires traffic coming the other way to stop for a school or church bus unless the road is split by a raised barrier or unpaved median. The Kentucky House voted 78-15, and the Governor signed the bill into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1674508
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1669300,
+      "measure_id": "HB 189",
+      "vote_date": "2026-03-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 189. It makes it illegal to sit, kneel, lie down, stand, or stay still anywhere on a state road right-of-way that is not marked for people on foot, including shoulders, medians, ramps, and the grass beside them. Medical and vehicle emergencies, emergency and utility workers, and marked sidewalks, crosswalks, and transit stops are exempt, and a city or county may pass an ordinance allowing limited exceptions. The Kentucky Senate voted 31-6, and the bill became law without the Governor's signature.",
+      "nay_description": "Voted against House Bill 189. It makes it illegal to sit, kneel, lie down, stand, or stay still anywhere on a state road right-of-way that is not marked for people on foot, including shoulders, medians, ramps, and the grass beside them. Medical and vehicle emergencies, emergency and utility workers, and marked sidewalks, crosswalks, and transit stops are exempt, and a city or county may pass an ordinance allowing limited exceptions. The Kentucky Senate voted 31-6, and the bill became law without the Governor's signature.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1682849,
+      "measure_id": "HB 355",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 355. It gives a person one year from the day an appraisal report is delivered to sue a licensed real property appraiser or appraisal company for damages, and five years for fraud or knowing misrepresentation. It also replaces the Real Estate Appraisers Board with an independent seven-member board, requires investigators to hold the same credential as the appraiser they investigate, and lets the board hand violations to prosecutors instead of filing its own case. The Kentucky House voted 79-15, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 355. It gives a person one year from the day an appraisal report is delivered to sue a licensed real property appraiser or appraisal company for damages, and five years for fraud or knowing misrepresentation. It also replaces the Real Estate Appraisers Board with an independent seven-member board, requires investigators to hold the same credential as the appraiser they investigate, and lets the board hand violations to prosecutors instead of filing its own case. The Kentucky House voted 79-15, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1682850,
+      "measure_id": "HB 355",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 355. It gives a person one year from the day an appraisal report is delivered to sue a licensed real property appraiser or appraisal company for damages, and five years for fraud or knowing misrepresentation. It also replaces the Real Estate Appraisers Board with an independent seven-member board, requires investigators to hold the same credential as the appraiser they investigate, and lets the board hand violations to prosecutors instead of filing its own case. The Kentucky Senate voted 30-6, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 355. It gives a person one year from the day an appraisal report is delivered to sue a licensed real property appraiser or appraisal company for damages, and five years for fraud or knowing misrepresentation. It also replaces the Real Estate Appraisers Board with an independent seven-member board, requires investigators to hold the same credential as the appraiser they investigate, and lets the board hand violations to prosecutors instead of filing its own case. The Kentucky Senate voted 30-6, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1682889,
+      "measure_id": "HB 387",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 387. It says a Kentucky veterinarian who prescribes, gives, or dispenses controlled substances to animals does not have to report any of it to the state's drug monitoring system or to any government body except the Board of Veterinary Examiners. It also drops an emergency medicine physician and an acute care nurse from the Controlled Substances Prescribing Council and adds two veterinarians in their place. The Kentucky House voted 83-16, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 387. It says a Kentucky veterinarian who prescribes, gives, or dispenses controlled substances to animals does not have to report any of it to the state's drug monitoring system or to any government body except the Board of Veterinary Examiners. It also drops an emergency medicine physician and an acute care nurse from the Controlled Substances Prescribing Council and adds two veterinarians in their place. The Kentucky House voted 83-16, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1682890,
+      "measure_id": "HB 387",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 387. It says a Kentucky veterinarian who prescribes, gives, or dispenses controlled substances to animals does not have to report any of it to the state's drug monitoring system or to any government body except the Board of Veterinary Examiners. It also drops an emergency medicine physician and an acute care nurse from the Controlled Substances Prescribing Council and adds two veterinarians in their place. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 387. It says a Kentucky veterinarian who prescribes, gives, or dispenses controlled substances to animals does not have to report any of it to the state's drug monitoring system or to any government body except the Board of Veterinary Examiners. It also drops an emergency medicine physician and an acute care nurse from the Controlled Substances Prescribing Council and adds two veterinarians in their place. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1682824,
+      "measure_id": "HB 490",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 490. It lets the governing board of a Kentucky public college or university remove a faculty member for financial reasons, which include low enrollment in a program or major and a mismatch between revenue and costs in a college, department, or program. Each board must publish its removal process by October 1, 2026, and give the faculty member 30 days' written notice and a hearing before the board. The Kentucky House voted 80-19, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 490. It lets the governing board of a Kentucky public college or university remove a faculty member for financial reasons, which include low enrollment in a program or major and a mismatch between revenue and costs in a college, department, or program. Each board must publish its removal process by October 1, 2026, and give the faculty member 30 days' written notice and a hearing before the board. The Kentucky House voted 80-19, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1682825,
+      "measure_id": "HB 490",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 490. It lets the governing board of a Kentucky public college or university remove a faculty member for financial reasons, which include low enrollment in a program or major and a mismatch between revenue and costs in a college, department, or program. Each board must publish its removal process by October 1, 2026, and give the faculty member 30 days' written notice and a hearing before the board. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 490. It lets the governing board of a Kentucky public college or university remove a faculty member for financial reasons, which include low enrollment in a program or major and a mismatch between revenue and costs in a college, department, or program. Each board must publish its removal process by October 1, 2026, and give the faculty member 30 days' written notice and a hearing before the board. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1674574,
+      "measure_id": "HB 627",
+      "vote_date": "2026-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 627. It caps what an auto insurer pays for a crash victim's medical care at the workers' compensation fee schedule and bars providers from billing the patient for the difference or hurting the patient's credit over it. It also raises the weekly payment for lost work and other losses from $200 to $500 and lets the Attorney General prosecute insurance fraud. The Kentucky House voted 75-14, and the bill became law without the Governor's signature.",
+      "nay_description": "Voted against House Bill 627. It caps what an auto insurer pays for a crash victim's medical care at the workers' compensation fee schedule and bars providers from billing the patient for the difference or hurting the patient's credit over it. It also raises the weekly payment for lost work and other losses from $200 to $500 and lets the Attorney General prosecute insurance fraud. The Kentucky House voted 75-14, and the bill became law without the Governor's signature.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1671862,
+      "measure_id": "HB 627",
+      "vote_date": "2026-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 627. It caps what an auto insurer pays for a crash victim's medical care at the workers' compensation fee schedule and bars providers from billing the patient for the difference or hurting the patient's credit over it. It also raises the weekly payment for lost work and other losses from $200 to $500 and lets the Attorney General prosecute insurance fraud. The Kentucky Senate voted 24-8, and the bill became law without the Governor's signature.",
+      "nay_description": "Voted against House Bill 627. It caps what an auto insurer pays for a crash victim's medical care at the workers' compensation fee schedule and bars providers from billing the patient for the difference or hurting the patient's credit over it. It also raises the weekly payment for lost work and other losses from $200 to $500 and lets the Attorney General prosecute insurance fraud. The Kentucky Senate voted 24-8, and the bill became law without the Governor's signature.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1671539,
+      "measure_id": "SB 29",
+      "vote_date": "2026-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 29. It bars a Kentucky county or waste district from charging a fee or requiring a permit from a landfill in another county that handles waste generated in it, unless a franchise agreement says otherwise. It also takes certain industrial waste sites owned by the company that produced the waste, and expansions of them, out of the rules for municipal solid waste facilities. The Kentucky House voted 70-19, and the Governor signed the bill into law.",
+      "nay_description": "Voted against Senate Bill 29. It bars a Kentucky county or waste district from charging a fee or requiring a permit from a landfill in another county that handles waste generated in it, unless a franchise agreement says otherwise. It also takes certain industrial waste sites owned by the company that produced the waste, and expansions of them, out of the rules for municipal solid waste facilities. The Kentucky House voted 70-19, and the Governor signed the bill into law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1682939,
+      "measure_id": "SB 65",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 65. It cancels several state rules that lawmakers found deficient during the session and bars the agencies from writing the same rules again until June 1, 2027. The rules cover the Medicaid outpatient pharmacy program, tobacco and vapor product licenses, online insurance verification, controlled substance monitoring, and services for relative and kinship caregivers. The Kentucky House voted 79-19, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 65. It cancels several state rules that lawmakers found deficient during the session and bars the agencies from writing the same rules again until June 1, 2027. The rules cover the Medicaid outpatient pharmacy program, tobacco and vapor product licenses, online insurance verification, controlled substance monitoring, and services for relative and kinship caregivers. The Kentucky House voted 79-19, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1682938,
+      "measure_id": "SB 65",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 65. It cancels several state rules that lawmakers found deficient during the session and bars the agencies from writing the same rules again until June 1, 2027. The rules cover the Medicaid outpatient pharmacy program, tobacco and vapor product licenses, online insurance verification, controlled substance monitoring, and services for relative and kinship caregivers. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 65. It cancels several state rules that lawmakers found deficient during the session and bars the agencies from writing the same rules again until June 1, 2027. The rules cover the Medicaid outpatient pharmacy program, tobacco and vapor product licenses, online insurance verification, controlled substance monitoring, and services for relative and kinship caregivers. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1655689,
+      "measure_id": "SB 137",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 137. It lets a doctor licensed in another country get a provisional Kentucky medical license if an employer in a medically underserved area hires them, they completed a residency, and they worked as a physician there for at least five years. The provisional license becomes a regular license after three years with that employer. The Kentucky Senate voted 30-7, and the Governor signed the bill into law.",
+      "nay_description": "Voted against Senate Bill 137. It lets a doctor licensed in another country get a provisional Kentucky medical license if an employer in a medically underserved area hires them, they completed a residency, and they worked as a physician there for at least five years. The provisional license becomes a regular license after three years with that employer. The Kentucky Senate voted 30-7, and the Governor signed the bill into law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1671526,
+      "measure_id": "SB 195",
+      "vote_date": "2026-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 195. Once a government accepts a finished road project, the Act presumes the contractor followed the plans and met its duty, and the contractor and designer cannot be sued for injury or death arising from that work except in narrow cases. It also presumes that a driver who was impaired, driving recklessly, or going at least 25 miles per hour over the limit substantially caused their own injuries. The Kentucky House voted 66-25, and the bill became law without the Governor's signature.",
+      "nay_description": "Voted against Senate Bill 195. Once a government accepts a finished road project, the Act presumes the contractor followed the plans and met its duty, and the contractor and designer cannot be sued for injury or death arising from that work except in narrow cases. It also presumes that a driver who was impaired, driving recklessly, or going at least 25 miles per hour over the limit substantially caused their own injuries. The Kentucky House voted 66-25, and the bill became law without the Governor's signature.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1674572,
+      "measure_id": "SB 195",
+      "vote_date": "2026-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 195. Once a government accepts a finished road project, the Act presumes the contractor followed the plans and met its duty, and the contractor and designer cannot be sued for injury or death arising from that work except in narrow cases. It also presumes that a driver who was impaired, driving recklessly, or going at least 25 miles per hour over the limit substantially caused their own injuries. The Kentucky Senate voted 29-9, and the bill became law without the Governor's signature.",
+      "nay_description": "Voted against Senate Bill 195. Once a government accepts a finished road project, the Act presumes the contractor followed the plans and met its duty, and the contractor and designer cannot be sued for injury or death arising from that work except in narrow cases. It also presumes that a driver who was impaired, driving recklessly, or going at least 25 miles per hour over the limit substantially caused their own injuries. The Kentucky Senate voted 29-9, and the bill became law without the Governor's signature.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1674515,
+      "measure_id": "SB 219",
+      "vote_date": "2026-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 219. It raises the most a customer may owe on payday loans at one time from $500 to $600, and has the state adjust that limit every year for inflation up to a ceiling of $850. It also lets a payday lender keep collecting on a loan the state database shows as closed when the customer's payment bounced, even after the usual deadlines have passed. The Kentucky Senate voted 32-6, and the bill became law without the Governor's signature.",
+      "nay_description": "Voted against Senate Bill 219. It raises the most a customer may owe on payday loans at one time from $500 to $600, and has the state adjust that limit every year for inflation up to a ceiling of $850. It also lets a payday lender keep collecting on a loan the state database shows as closed when the customer's payment bounced, even after the usual deadlines have passed. The Kentucky Senate voted 32-6, and the bill became law without the Governor's signature.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1682841,
+      "measure_id": "SB 291",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 291. It requires every scrap metal recycler in Kentucky to hold a license from the Motor Vehicle Commission for each location, renewed every year. It also requires recyclers to enter every metals transaction into the LeadsOnline database and keep a register, and treats an intentional failure to do so as evidence that the recycler knew the metal was stolen. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 291. It requires every scrap metal recycler in Kentucky to hold a license from the Motor Vehicle Commission for each location, renewed every year. It also requires recyclers to enter every metals transaction into the LeadsOnline database and keep a register, and treats an intentional failure to do so as evidence that the recycler knew the metal was stolen. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1683991,
+      "measure_id": "SB 324",
+      "vote_date": "2026-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 324. It lets any unused part of Kentucky's $75 million yearly film tax credit cap carry forward into the next year for large film and entertainment productions. It also adds video games, music videos, and commercials to the productions that qualify, and raises the minimum a company must spend in Kentucky from $250,000 to $400,000. The Kentucky House voted 80-15, and the Governor signed the bill into law.",
+      "nay_description": "Voted against Senate Bill 324. It lets any unused part of Kentucky's $75 million yearly film tax credit cap carry forward into the next year for large film and entertainment productions. It also adds video games, music videos, and commercials to the productions that qualify, and raises the minimum a company must spend in Kentucky from $250,000 to $400,000. The Kentucky House voted 80-15, and the Governor signed the bill into law.",
+      "labels": [
+        {
+          "slug": "government_spending_reduction",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1682834,
+      "measure_id": "HB 10",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 10. In the 180 days before a Governor is sworn in, it requires the Attorney General to approve any state agency settlement of a lawsuit worth more than $1 million before the agency may sign it. It also shields a person from criminal charges and ethics penalties for wrongdoing around a change of administration if they give evidence that helps convict or sanction the official who directed it. The Kentucky House voted 79-19, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 10. In the 180 days before a Governor is sworn in, it requires the Attorney General to approve any state agency settlement of a lawsuit worth more than $1 million before the agency may sign it. It also shields a person from criminal charges and ethics penalties for wrongdoing around a change of administration if they give evidence that helps convict or sanction the official who directed it. The Kentucky House voted 79-19, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1682835,
+      "measure_id": "HB 10",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 10. In the 180 days before a Governor is sworn in, it requires the Attorney General to approve any state agency settlement of a lawsuit worth more than $1 million before the agency may sign it. It also shields a person from criminal charges and ethics penalties for wrongdoing around a change of administration if they give evidence that helps convict or sanction the official who directed it. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 10. In the 180 days before a Governor is sworn in, it requires the Attorney General to approve any state agency settlement of a lawsuit worth more than $1 million before the agency may sign it. It also shields a person from criminal charges and ethics penalties for wrongdoing around a change of administration if they give evidence that helps convict or sanction the official who directed it. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1682893,
+      "measure_id": "HB 139",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 139. It bars Kentucky from buying voting equipment that uses barcodes, QR codes, or other machine-only markings to record or count a vote, while letting counties keep the equipment they already have until they replace it. It also orders the courts to send the State Board of Elections a complete list of people with felony convictions, including those whose appeals are still pending, so ineligible names can be taken off the voter rolls. The Kentucky House voted 80-20, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 139. It bars Kentucky from buying voting equipment that uses barcodes, QR codes, or other machine-only markings to record or count a vote, while letting counties keep the equipment they already have until they replace it. It also orders the courts to send the State Board of Elections a complete list of people with felony convictions, including those whose appeals are still pending, so ineligible names can be taken off the voter rolls. The Kentucky House voted 80-20, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1682894,
+      "measure_id": "HB 139",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 139. It bars Kentucky from buying voting equipment that uses barcodes, QR codes, or other machine-only markings to record or count a vote, while letting counties keep the equipment they already have until they replace it. It also orders the courts to send the State Board of Elections a complete list of people with felony convictions, including those whose appeals are still pending, so ineligible names can be taken off the voter rolls. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 139. It bars Kentucky from buying voting equipment that uses barcodes, QR codes, or other machine-only markings to record or count a vote, while letting counties keep the equipment they already have until they replace it. It also orders the courts to send the State Board of Elections a complete list of people with felony convictions, including those whose appeals are still pending, so ineligible names can be taken off the voter rolls. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1671561,
+      "measure_id": "HB 398",
+      "vote_date": "2026-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 398. It confirms that the Public Service Commission may let a utility start charging customers for a power plant's shutdown, removal, and salvage costs before the commission has approved retiring the plant, spread over the plant's remaining useful life. It also says approving those charges does not count as approving or supporting the plant's retirement. The Kentucky Senate voted 30-6, and the bill became law without the Governor's signature.",
+      "nay_description": "Voted against House Bill 398. It confirms that the Public Service Commission may let a utility start charging customers for a power plant's shutdown, removal, and salvage costs before the commission has approved retiring the plant, spread over the plant's remaining useful life. It also says approving those charges does not count as approving or supporting the plant's retirement. The Kentucky Senate voted 30-6, and the bill became law without the Governor's signature.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1675554,
+      "measure_id": "HB 677",
+      "vote_date": "2026-04-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 677. It sets up Kentucky's permit system for storing carbon dioxide underground, including a state permit, fees, and proof that the operator can pay for the site's long-term care. It also lets the Energy and Environment Cabinet add the underground space of owners who will not agree into a storage project, once the operator has bargained with them in good faith. The Kentucky House voted 61-28, and the bill became law without the Governor's signature.",
+      "nay_description": "Voted against House Bill 677. It sets up Kentucky's permit system for storing carbon dioxide underground, including a state permit, fees, and proof that the operator can pay for the site's long-term care. It also lets the Energy and Environment Cabinet add the underground space of owners who will not agree into a storage project, once the operator has bargained with them in good faith. The Kentucky House voted 61-28, and the bill became law without the Governor's signature.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1682885,
+      "measure_id": "SB 1",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1. It applies state rules on school board and superintendent duties to any county school district in a county with a consolidated local government or at least 500,000 residents. It caps the superintendent's budget line transfers at $250,000 for all transfers in a quarter, rather than for each transfer, and requires a quarterly report to the board. The Kentucky House voted 79-20, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 1. It applies state rules on school board and superintendent duties to any county school district in a county with a consolidated local government or at least 500,000 residents. It caps the superintendent's budget line transfers at $250,000 for all transfers in a quarter, rather than for each transfer, and requires a quarterly report to the board. The Kentucky House voted 79-20, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1682884,
+      "measure_id": "SB 1",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1. It applies state rules on school board and superintendent duties to any county school district in a county with a consolidated local government or at least 500,000 residents. It caps the superintendent's budget line transfers at $250,000 for all transfers in a quarter, rather than for each transfer, and requires a quarterly report to the board. The Kentucky Senate voted 31-7, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 1. It applies state rules on school board and superintendent duties to any county school district in a county with a consolidated local government or at least 500,000 residents. It caps the superintendent's budget line transfers at $250,000 for all transfers in a quarter, rather than for each transfer, and requires a quarterly report to the board. The Kentucky Senate voted 31-7, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1682832,
+      "measure_id": "SB 4",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 4. It creates a leadership practicum that Kentucky principals must complete starting in the 2027-2028 school year, run by the Department of Education. It also defines a large school district, bars its board members from holding certain school jobs, and redraws the Jefferson County school board into five elected divisions drawn within 5 percent of equal population. The Kentucky House voted 78-19, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 4. It creates a leadership practicum that Kentucky principals must complete starting in the 2027-2028 school year, run by the Department of Education. It also defines a large school district, bars its board members from holding certain school jobs, and redraws the Jefferson County school board into five elected divisions drawn within 5 percent of equal population. The Kentucky House voted 78-19, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1682831,
+      "measure_id": "SB 4",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 4. It creates a leadership practicum that Kentucky principals must complete starting in the 2027-2028 school year, run by the Department of Education. It also defines a large school district, bars its board members from holding certain school jobs, and redraws the Jefferson County school board into five elected divisions drawn within 5 percent of equal population. The Kentucky Senate voted 30-8, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 4. It creates a leadership practicum that Kentucky principals must complete starting in the 2027-2028 school year, run by the Department of Education. It also defines a large school district, bars its board members from holding certain school jobs, and redraws the Jefferson County school board into five elected divisions drawn within 5 percent of equal population. The Kentucky Senate voted 30-8, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1684100,
+      "measure_id": "SB 66",
+      "vote_date": "2026-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 66. It adds clonazepam, cyclobenzaprine, and fentanyl to the drugs that make driving illegal when any amount is found in a driver's blood. It also says refusing a blood test still suspends a license but cannot be used in court to prove impaired driving, and if police skip the required warnings, no refusal may be used against the driver or suspend the license at arraignment. The Kentucky House voted 79-15, and the Governor signed the bill into law.",
+      "nay_description": "Voted against Senate Bill 66. It adds clonazepam, cyclobenzaprine, and fentanyl to the drugs that make driving illegal when any amount is found in a driver's blood. It also says refusing a blood test still suspends a license but cannot be used in court to prove impaired driving, and if police skip the required warnings, no refusal may be used against the driver or suspend the license at arraignment. The Kentucky House voted 79-15, and the Governor signed the bill into law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1671519,
+      "measure_id": "SB 101",
+      "vote_date": "2026-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 101. It requires a school board to expel a student in grades 6 through 12 for at least 12 months for intentionally injuring or trying to injure a school employee, or for recklessly injuring one with a weapon or dangerous object. The expelled student is taught in an off-site program with no transportation provided and no school activities, and may ask to return after 26 weeks. The Kentucky Senate voted 32-6, and the Governor signed the bill into law.",
+      "nay_description": "Voted against Senate Bill 101. It requires a school board to expel a student in grades 6 through 12 for at least 12 months for intentionally injuring or trying to injure a school employee, or for recklessly injuring one with a weapon or dangerous object. The expelled student is taught in an off-site program with no transportation provided and no school activities, and may ask to return after 26 weeks. The Kentucky Senate voted 32-6, and the Governor signed the bill into law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1670413,
+      "measure_id": "SB 104",
+      "vote_date": "2026-03-25",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 104. It creates the crime of impeding a first responder: after a spoken warning, knowingly coming or staying within 25 feet of one on duty with the intent to interfere, threaten, or harass. The first offense is a low-level misdemeanor, the second and third are higher misdemeanors, and every later offense is a felony. The Kentucky House voted 79-16, and the bill became law without the Governor's signature.",
+      "nay_description": "Voted against Senate Bill 104. It creates the crime of impeding a first responder: after a spoken warning, knowingly coming or staying within 25 feet of one on duty with the intent to interfere, threaten, or harass. The first offense is a low-level misdemeanor, the second and third are higher misdemeanors, and every later offense is a felony. The Kentucky House voted 79-16, and the bill became law without the Governor's signature.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1670410
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1674599,
+      "measure_id": "SB 104",
+      "vote_date": "2026-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 104. It creates the crime of impeding a first responder: after a spoken warning, knowingly coming or staying within 25 feet of one on duty with the intent to interfere, threaten, or harass. The first offense is a low-level misdemeanor, the second and third are higher misdemeanors, and every later offense is a felony. The Kentucky Senate voted 32-6, and the bill became law without the Governor's signature.",
+      "nay_description": "Voted against Senate Bill 104. It creates the crime of impeding a first responder: after a spoken warning, knowingly coming or staying within 25 feet of one on duty with the intent to interfere, threaten, or harass. The first offense is a low-level misdemeanor, the second and third are higher misdemeanors, and every later offense is a felony. The Kentucky Senate voted 32-6, and the bill became law without the Governor's signature.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
