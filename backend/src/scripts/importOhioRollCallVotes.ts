@@ -44,6 +44,7 @@ import {
 } from "../pipeline/rollcall/rollCallFanOut.js";
 import { rollCallUrlKey } from "../pipeline/rollcall/rollCallRecordUrls.js";
 import { createCandidateRecordUpdateNotificationEvents } from "../pipeline/users/candidateFollowNotificationEvents.js";
+import { reportPath } from "../pipeline/rollcall/rollCallReportPaths.js";
 import { usLatestLocalDateIso } from "../utils/usLocalDate.js";
 import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
@@ -420,9 +421,9 @@ async function main(): Promise<void> {
     startedAt: startedAt.toISOString(),
     finishedAt: new Date().toISOString(),
     generalAssembly,
-    evidenceDir,
+    evidenceDir: reportPath(evidenceDir),
     scopeFrom,
-    crosswalkFile: resolve(crosswalkFileRaw),
+    crosswalkFile: reportPath(crosswalkFileRaw),
     crosswalkEntries: crosswalk.byLpid.size,
     rosterFile: resolve(rosterFileRaw),
     rosterMembers: roster.length,

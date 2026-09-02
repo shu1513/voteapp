@@ -22,6 +22,7 @@ import {
   type OhioAction,
 } from "../pipeline/rollcall/ohioRollCall.js";
 import type { LegislativeVoteChamber } from "../pipeline/rollcall/legislativeVotes.js";
+import { reportPath } from "../pipeline/rollcall/rollCallReportPaths.js";
 import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 import { DEFAULT_SCOPE_FROM } from "./resolveRollCallMembers.js";
@@ -237,12 +238,12 @@ async function main(): Promise<void> {
     startedAt: startedAt.toISOString(),
     finishedAt: new Date().toISOString(),
     generalAssembly,
-    evidenceDir,
+    evidenceDir: reportPath(evidenceDir),
     scopeFrom,
     rosterSource,
     rosterMembers: roster.length,
     candidatePool: candidatesPool.length,
-    crosswalkFile: crosswalkFile === null ? null : resolve(crosswalkFile),
+    crosswalkFile: crosswalkFile === null ? null : reportPath(crosswalkFile),
     crosswalkEntries: crosswalk === null ? null : crosswalk.byLpid.size,
     crosswalkLpidsNotInRoster,
     proposals: proposals.proposals,

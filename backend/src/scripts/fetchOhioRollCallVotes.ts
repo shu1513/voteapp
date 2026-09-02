@@ -31,6 +31,7 @@ import {
   type OhioQuestionClass,
   type OhioVoteEvidence,
 } from "../pipeline/rollcall/ohioRollCall.js";
+import { reportPath } from "../pipeline/rollcall/rollCallReportPaths.js";
 import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 
@@ -475,7 +476,7 @@ async function main(): Promise<void> {
     dryRun,
     startedAt: startedAt.toISOString(),
     finishedAt: new Date().toISOString(),
-    evidenceDir,
+    evidenceDir: reportPath(evidenceDir),
     requestedBills: bills.length,
     billsFetched,
     billsWithoutVotes,
