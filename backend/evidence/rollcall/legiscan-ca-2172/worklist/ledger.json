@@ -1,0 +1,2208 @@
+{
+ "generated": "2026-09-02",
+ "source": "worklist/worklist.json",
+ "total_live": 244,
+ "legend": {
+  "open": "not yet worked",
+  "judged": "imported",
+  "dropped": "read and excluded, reason recorded"
+ },
+ "measures": {
+  "AB 1049": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "California Food Assistance Program: sponsor deeming rules.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 117": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Transit and Intercity Rail Capital Program: loans: transit operating purposes: San Francisco Bay area.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1201": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Family reunification services.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1223": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Local Transportation Authority and Improvement Act: Sacramento Transportation Authority.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1336": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "Farmworkers: benefits.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 137": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "State government.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1376": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Wards: probation.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 143": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Developmental services.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 144": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Health.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1441": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "County of Merced Citizens Redistricting Commission.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1448": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Coastal resources: California Coastal Sanctuary: tidelands and submerged lands: oil and gas development.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1457": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "General plan: environmental justice element: disadvantaged communities.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1633": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Taxation: private detention facilities.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1650": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Rental vehicles: law enforcement.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1661": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Oil and gas: low-production wells: Baldwin Hills Conservancy: Equitable Community Repair and Reinvestment Account: health impacts.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1664": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Elections: law enforcement investigations of election records or voting technology.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1743": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Firearms.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1758": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Sellers of travel.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1768": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Transactions and use taxes: Counties of Contra Costa and Los Angeles.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1770": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Arbitration: health care service plans: Lindalee\u2019s Law.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1801": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Public agencies: approval: detention facilities.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1806": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Department of Justice.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1807": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Immigration enforcement: use of state-owned property.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 182": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "November 3, 2026, statewide general election: ballot measures.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1854": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Legally protected health care activities.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1876": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Health care coverage: nondiscrimination.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1886": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Wards: probation.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1905": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Juveniles: custodial interrogation.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1917": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Criminal procedure: information.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1919": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Santa Cruz Metropolitan Transit District: transactions and use tax: qualified voter initiative.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1923": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Local ballot measures: County of Fresno.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1930": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Abortion or gender-affirming health care services: subpoenas, discovery requests, or other requests for information.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1973": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Abortion: authorized procedures.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2084": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Corporation Tax Law: tax-exempt organizations: revocation of tax-exempt status.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2122": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Infractions: warrants and penalties.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2128": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Housing authorities: term limits and work requirements.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2142": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "School districts: community college districts: short-term employees: classified service.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2157": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Workforce development: Displaced Oil and Gas Worker Pilot Program: extension.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2168": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Active Transportation Program: guidelines.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2186": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Personal Income Tax Law: exclusions: reparations programs.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2195": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Child support: license suspensions.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2227": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Farm labor contractors: surety bonds.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2257": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Corrections: jail administrators.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2313": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Gas corporations: gas distribution service line replacements: alternatives.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2318": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Law enforcement: facilitating medical care.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2393": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "False imprisonment: false arrest: remedies.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2405": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Mental health.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2428": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Criminal fees.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2448": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Medical information: confidentiality.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2465": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "State government: benefits.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2484": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "San Diego Metropolitan Transit System: transactions and use tax: voter initiatives.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2494": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "State forests: forest management.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2531": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Public health: abortion services.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2646": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Employment: minimum wages: agricultural workers.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 399": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "Coastal resources: coastal development permits: blue carbon demonstration projects.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 40": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "California Environmental Quality Act: environmental impact reports: coal handling, storage, and export.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 604": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Redistricting: congressional districts.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 679": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Department of Parks and Recreation: Big Basin Redwoods, A\u00f1o Nuevo, and Butano State Parks.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 695": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "California Community Colleges Access and Continuity for Deported Students Act.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 699": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "Elections: local tax measures.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 7": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "Postsecondary education: admissions preference: descendants of slavery.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 742": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "Department of Consumer Affairs: licensing: applicants who are descendants of slaves.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 747": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Service of Process Accountability, Reform and Equity (SPARE) Act.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 761": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Monterey-Salinas Transit District: sales and special taxes.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 762": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Disposable, battery-embedded vapor inhalation device: prohibition and penalties.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 766": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "State agencies and departments: strategic plans: diversity, equity, and inclusion.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 93": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "Water resources: data centers.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 930": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Elections and voting procedures.",
+   "batch": null,
+   "reason": null
+  },
+  "ACA 8": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Congressional redistricting.",
+   "batch": null,
+   "reason": null
+  },
+  "AJR 29": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Voting by mail.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1004": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Law enforcement: masks.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1037": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Health care coverage: rate review.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1093": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Mobilehome parks: disaster assistance.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1105": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Law enforcement.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1135": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "California Wildlife Coexistence Act.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1164": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Elections.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1173": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Jury instructions: lesser related offenses.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 122": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Taxation.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1237": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Civil Rights Department.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 125": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Medi-Cal: managed care organization provider tax.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 127": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Climate change.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1349": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Taxation: tax expenditures: Legislative Analyst\u2019s Office: assessment, report, and recommendation.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1371": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Solid waste handling services: labor dispute.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1379": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "County of Riverside: separation of county offices: in-custody reports.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1406": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Sales and Use Tax Law: vehicles: shell companies.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1408": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Contra Costa Transportation Authority: transactions and use tax.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1414": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "County of San Bernardino Citizens Redistricting Commission.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1425": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "High-Speed Rail Authority: property: operating right-of-way.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 158": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Land use.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 164": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Health.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 168": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Public Resources.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 170": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Governor\u2019s Reorganization Plan No. 1 of 2025: codification.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 171": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Labor.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 177": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Medi-Cal: Fair Share from Big Corporations Act.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 280": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Elections.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 281": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Pleas: immigration advisement.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 327": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Public utilities: review of accounts: electrical and gas corporations: rates: political influence activities.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 333": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Transactions and use taxes: San Luis Obispo Council of Governments.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 354": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Insurance Information and Privacy Protection Act.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 36": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "Price gouging: state of emergency.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 418": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "Health care coverage: prescription hormone therapy and nondiscrimination.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 437": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "California State University: claim eligibility: genealogy and descendancy.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 477": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "California Fair Employment and Housing Act: enforcement procedures.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 512": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "District elections: initiatives.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 541": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "Electricity: load shifting.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 551": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Corrections and rehabilitation: state policy.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 57": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Electrical corporations: data centers: report.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 608": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Sexual health.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 63": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "San Francisco Bay area: local revenue measure: public transit funding.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 630": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "State parks: real property: acquisitions and leases.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 633": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Plastic beverage containers: recycling.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 642": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Employment: payment of wages.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 675": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Imperial County Air Pollution Control District: members and duties.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 7": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "Employment: automated decision systems.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 747": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Civil rights: deprivation of federal constitutional rights, privileges, and immunities.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 770": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Common interest developments: EV charging stations.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 786": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Planning and zoning: general plan: judicial challenges.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 838": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Housing Accountability Act: housing development projects.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 873": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Courthouses: privilege from civil arrest.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 934": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Sexual orientation or gender identity change efforts.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 937": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Law enforcement: flash-bang grenades and explosive breaching charges.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 938": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Peace officers: training requirements.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 948": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Firearms: safety certificates.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 954": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "California Environmental Quality Act: advanced manufacturing facilities: exemption.",
+   "batch": null,
+   "reason": null
+  },
+  "SJR 18": {
+   "status": "open",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Campaign finance reform.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 128": {
+   "status": "open",
+   "chambers": "A",
+   "bill_status": "chaptered",
+   "value": 6,
+   "title": "Transportation.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 155": {
+   "status": "open",
+   "chambers": "A",
+   "bill_status": "chaptered",
+   "value": 6,
+   "title": "Governor\u2019s Office of Business and Economic Development: California Civic Media Program.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 162": {
+   "status": "open",
+   "chambers": "A",
+   "bill_status": "chaptered",
+   "value": 6,
+   "title": "Elections.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 172": {
+   "status": "open",
+   "chambers": "A",
+   "bill_status": "chaptered",
+   "value": 6,
+   "title": "State government.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 274": {
+   "status": "open",
+   "chambers": "A",
+   "bill_status": "vetoed",
+   "value": 6,
+   "title": "Automated license plate recognition systems.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 499": {
+   "status": "open",
+   "chambers": "A",
+   "bill_status": "chaptered",
+   "value": 6,
+   "title": "Residential projects: fees and charges.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 647": {
+   "status": "open",
+   "chambers": "A",
+   "bill_status": "vetoed",
+   "value": 6,
+   "title": "Energy: Equitable Building Decarbonization Program: Low-Income Oversight Board: membership.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 682": {
+   "status": "open",
+   "chambers": "A",
+   "bill_status": "vetoed",
+   "value": 6,
+   "title": "Environmental health: product safety: perfluoroalkyl and polyfluoroalkyl substances.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 830": {
+   "status": "open",
+   "chambers": "A",
+   "bill_status": "chaptered",
+   "value": 6,
+   "title": "Public Transit Revenue Measure District: revenue measure: election procedures.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 851": {
+   "status": "open",
+   "chambers": "A",
+   "bill_status": "chaptered",
+   "value": 6,
+   "title": "Elections.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1136": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Employment: immigration and work authorization.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1235": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "California State University: skilled and trained workforce requirement.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1258": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Deferred entry of judgment pilot program.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1296": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Local educational agencies: reserve funds.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1303": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Communications: lifeline telephone service program.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1329": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Workers\u2019 Compensation: Subsequent injuries payments.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 134": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Public Safety.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1348": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Average daily attendance: emergencies: immigration enforcement activity: independent study plans.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 138": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "State employment: state bargaining units.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1417": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Energy: Voluntary Offshore Wind and Coastal Resources Protection Program: community capacity funding activities and grants.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1439": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Public retirement systems: development projects: labor standards.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 152": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Human services.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1525": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Attorneys: discipline: sensitive services.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1539": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Presidential elections: qualifications for office.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1577": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Data centers: reporting.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1595": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Criminal procedure: writs of habeas corpus and motions to vacate.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1629": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Dental coverage.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1647": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Juveniles: transfer to criminal court: criminal procedure.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1655": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "CalWORKs: temporary absence: immigration detention.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1679": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Local pop-up small business program.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 179": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Housing.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1792": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Pupil instruction: health framework: sexual health.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1803": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Employment: sexual harassment training and education: anti-hate speech training.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1809": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Public contracts: school and community college districts.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1818": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "California State University: employer-employee relations: meeting and conferring.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1820": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Electric vehicle charging stations: permit fees.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1837": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Video imaging of parking violations.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1838": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Public contracts: local agencies: responsive bidders.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1944": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Zero-emission transit buses: axle weight.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1977": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Notaries public.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 1979": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Health care services: artificial intelligence.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2011": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Nonquantitative treatment limitations.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2015": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Department of Transportation: third-party navigation applications: study and report.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2161": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Medi-Cal eligibility: work or community engagement.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2164": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Legally protected activities.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2308": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Redevelopment: successor agency debt: City and County of San Francisco.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2395": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Child support: compromise of arrears program.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2495": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Unlawful immigration-related practices.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2510": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "CalWORKs.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2599": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Slavery: corporate disclosures.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2619": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Water resources: data centers.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2634": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Workforce development: High road training partnerships: scoring preference.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 2682": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Transportation network company drivers: labor relations: appeals.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 288": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Employment: labor organization and unfair practices.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 321": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Misdemeanors.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 339": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Local public employee organizations: notice requirements.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 361": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Best value procurement: school districts.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 373": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Dependency proceedings: counsel.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 378": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Education finance: Classified School Employee Summer Assistance Program.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 39": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "General plans: Local Electrification Planning Act.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 393": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Personal services contracts: state employees: physician and psychologist positions.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 419": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Educational equity: immigration enforcement.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 43": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Wild and scenic rivers.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 439": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "California Coastal Act of 1976: local planning and reporting.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 450": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Public social services: support for older and aging immigrants.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 461": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Truancy.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 499": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Robert F. Kennedy Farm Workers Medical Plan.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 52": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Farmer equity: advisory committees.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 538": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Public works: payroll records.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 57": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "California Dream for All Program: descendants of formerly enslaved people.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 632": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Local ordinances: administrative fines or penalties.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 681": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "California DREAM Loan Program: limits.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 690": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Criminal procedure: indigent defense compensation.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 713": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Public postsecondary education: student employment.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 723": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Real estate: digitally altered images: disclosure.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 734": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Environmental protection: biological resources data: State Energy Resources Conservation and Development Commission: powerplants: power lines: applica",
+   "batch": null,
+   "reason": null
+  },
+  "AB 749": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Youth Sports for All Act.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 797": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Community Stabilization Act: Counties of Los Angeles and Ventura.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 801": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Nondiscrimination.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 812": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Recall and resentencing: incarcerated firefighters.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 82": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Health care: legally protected health care activity.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 851": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Real property transactions: Counties of Los Angeles and Ventura wildfires: unsolicited offers.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 86": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Instructional materials: health education.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 893": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Housing development projects: objective standards: campus development zone.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 935": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "State agencies: complaints: demographic data.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 956": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Accessory dwelling units and junior accessory dwelling units.",
+   "batch": null,
+   "reason": null
+  },
+  "AB 963": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Public works: prevailing wages: access to records.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1014": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Development projects: preliminary estimate of required improvements: onsite and offsite improvements.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1154": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Public contracts: best value procurement: community college districts.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1166": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Alameda-Contra Costa Transit District: employee relations.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1194": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Immigration Legal Fellowship Project.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1196": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Small energization projects: electrical service connections.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1255": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Postsecondary education: Designation of California Hispanic-Serving Institutions.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1323": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Health care providers: patient access: immigration enforcement.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1328": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Public postsecondary education: Equity in Higher Education Act: campus contact.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1354": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "The military: defense of the state.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 1388": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Affordable Housing Risk Reduction Program.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 24": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Public utilities: review of accounts: electrical and gas corporations: rates: political influence activities.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 313": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Vital records: birth certificates.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 388": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "California Latino Commission.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 403": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "End of Life Option Act: sunset.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 450": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Adoption.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 501": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Responsible Battery Recycling Act of 2022: covered batteries.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 513": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Personnel records.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 515": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Local government: collection of demographic data.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 578": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "California Workplace Outreach Program.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 610": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Disaster assistance: tenants, mobilehome parks, and mortgages.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 703": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Ports: truck drivers.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 762": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Transactions and use taxes: various jurisdictions.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 787": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Energy: equitable clean energy supply chains and industrial policy in California.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 809": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Employees and independent contractors: construction trucking.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 827": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Local agency officials: training.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 909": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Public works.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 98": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Elementary, secondary, and postsecondary education: immigration enforcement: notification.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 983": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "San Diego Unified Port District: job order contracting: pilot program.",
+   "batch": null,
+   "reason": null
+  },
+  "SB 998": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Educational equity: discrimination prevention coordinators.",
+   "batch": null,
+   "reason": null
+  },
+  "SJR 12": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Proposed 2026\u20132031 National Outer Continental Shelf Oil and Gas Leasing Program: opposition.",
+   "batch": null,
+   "reason": null
+  },
+  "SJR 7": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Tariffs.",
+   "batch": null,
+   "reason": null
+  },
+  "SJR 9": {
+   "status": "open",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Immigrants in California: mass immigration raids.",
+   "batch": null,
+   "reason": null
+  }
+ }
+}
