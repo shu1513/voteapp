@@ -130,14 +130,21 @@ Under the new rule that changes the description, not whether the vote is usable 
 ("would require") and must move to the indicative ("requires") if signed, or to "would have
 required … but the governor vetoed it" if not.
 
-**Enrolled measures awaiting that rewrite** (6): SB 923, SB 1250, AB 2247 (batch-07); SB 1220,
-SB 1418 (batch-08); SB 1125 (batch-09). Check `status` in the next dataset cut's bill JSON, or
+**Enrolled measures awaiting that rewrite** (7): SB 923, SB 1250, AB 2247 (batch-07); SB 1220,
+SB 1418 (batch-08); SB 1125 (batch-09); AB 1116 (batch-10). Check `status` in the next dataset cut's bill JSON, or
 the leginfo history page for each bill.
 
 Checked on leginfo 2026-09-01: none acted on. SB 1220 was presented to the governor 08-30, SB 1250
 and SB 1125 on 08-31; SB 923, SB 1418 and AB 2247 were still in engrossing and enrolling. Bills in
 the governor's hands after the 08-31 adjournment get 30 days, so the **last day to act is
 2026-09-30**. Look after that date at the latest.
+
+## The whole pool is now triaged once, in `worklist/`
+
+`worklist/worklist.json` ranks every open measure so the version check and the budget-package
+screen are paid once for the campaign instead of once per batch. 328 open -> 266 after the version
+check -> 262 after dropping procedural-only rolls -> **244 live**, of which 135 carry an Assembly roll. Work it top-down. The per-batch numbers
+below are the original 08-30 measurement and are kept for history.
 
 ## The open pool, measured on the 08-30 cut
 

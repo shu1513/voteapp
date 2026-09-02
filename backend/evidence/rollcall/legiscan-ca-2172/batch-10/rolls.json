@@ -1,0 +1,86 @@
+{
+ "rolls": [
+  {
+   "measure": "AB 1078",
+   "status": "chaptered",
+   "chamber": "house",
+   "roll": 1602447,
+   "date": "2025-09-11",
+   "yea": 57,
+   "nay": 20,
+   "title": "Firearms.",
+   "retracted": "2026-09-02: filter 5, see JUDGING.md; 78 records retired"
+  },
+  {
+   "measure": "AB 1078",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601537,
+   "date": "2025-09-09",
+   "yea": 29,
+   "nay": 10,
+   "title": "Firearms.",
+   "retracted": "2026-09-02: filter 5, see JUDGING.md; 78 records retired"
+  },
+  {
+   "measure": "AB 1116",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1725928,
+   "date": "2026-08-25",
+   "yea": 59,
+   "nay": 19,
+   "title": "Elections: voter registration."
+  },
+  {
+   "measure": "AB 1116",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725801,
+   "date": "2026-08-24",
+   "yea": 29,
+   "nay": 9,
+   "title": "Elections: voter registration."
+  },
+  {
+   "measure": "AB 1249",
+   "status": "chaptered",
+   "chamber": "house",
+   "roll": 1602402,
+   "date": "2025-09-10",
+   "yea": 60,
+   "nay": 18,
+   "title": "Early voting: satellite locations."
+  },
+  {
+   "measure": "AB 1249",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601555,
+   "date": "2025-09-09",
+   "yea": 30,
+   "nay": 10,
+   "title": "Early voting: satellite locations."
+  },
+  {
+   "measure": "AB 1324",
+   "status": "vetoed",
+   "chamber": "house",
+   "roll": 1602460,
+   "date": "2025-09-11",
+   "yea": 60,
+   "nay": 15,
+   "title": "CalWORKs."
+  },
+  {
+   "measure": "AB 1324",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1601801,
+   "date": "2025-09-10",
+   "yea": 30,
+   "nay": 10,
+   "title": "CalWORKs."
+  }
+ ]
+}
