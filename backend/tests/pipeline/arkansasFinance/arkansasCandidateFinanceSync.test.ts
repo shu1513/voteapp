@@ -111,6 +111,18 @@ describe("selectArkansasCandidateRegistration", () => {
     expect(() => selectArkansasCandidateRegistration(rows, 7968, 2028)).toThrow(/no candidate registration/);
     expect(() => selectArkansasCandidateRegistration([...rows, registration()], 7968, 2026)).toThrow(/2 times/);
   });
+
+  it("falls back to the entity's year-less registration only when no cycle row exists", () => {
+    const yearless = registration({ electionYear: null, registrationGuid: OTHER_GUID });
+    expect(selectArkansasCandidateRegistration([yearless], 7968, 2026).registrationGuid).toBe(OTHER_GUID);
+    expect(selectArkansasCandidateRegistration([yearless, registration()], 7968, 2026).registrationGuid).toBe(
+      REGISTRATION_GUID
+    );
+    expect(() => selectArkansasCandidateRegistration([yearless, yearless], 7968, 2026)).toThrow(/2 times/);
+    expect(() =>
+      selectArkansasCandidateRegistration([registration({ electionYear: 2024, registrationGuid: OTHER_GUID })], 7968, 2026)
+    ).toThrow(/no candidate registration/);
+  });
 });
 
 describe("syncArkansasCandidateFinance", () => {

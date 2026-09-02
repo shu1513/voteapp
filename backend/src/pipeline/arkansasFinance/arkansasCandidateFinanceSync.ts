@@ -91,9 +91,16 @@ export function selectArkansasCandidateRegistration(
   filingEntityId: number,
   electionYear: number
 ): ArkansasFilerRegistrationRow {
-  const matches = rows.filter(
-    (row) => row.filerEntityId === filingEntityId && row.electionYear === electionYear && row.filerTypeCode === "CAN"
-  );
+  const entityRows = rows.filter((row) => row.filerEntityId === filingEntityId && row.filerTypeCode === "CAN");
+  let matches = entityRows.filter((row) => row.electionYear === electionYear);
+  if (matches.length === 0) {
+    // Some live 2026 registrations carry no electionYear at all (61 of 480
+    // legislative candidate rows on 2026-09-02, e.g. Holladay HD70, Teeter
+    // HD44, Wilson SD1). The link already pins the entity to this cycle, so
+    // the entity's single year-less registration stands in; a registration
+    // for a different cycle never does.
+    matches = entityRows.filter((row) => row.electionYear === null);
+  }
   if (matches.length === 0) {
     throw new Error(`Arkansas CFIS has no candidate registration for entity ${filingEntityId} in the ${electionYear} cycle`);
   }
