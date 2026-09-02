@@ -35,9 +35,12 @@ committee the same day. Only the history distinguishes them.
 The bare `Recede` family is confirmed correctly excluded, which validates the
 PR #934 review fix: of the five divided-and-enacted `Recede` rolls, **two are
 motions that FAILED** (LD 1968 69-77, LD 297 49-94), one is a chamber receding
-from its own engrossment to adopt an amendment (LD 2155), and one is the Senate
+from its own engrossment to adopt an amendment (LD 2155), one is the Senate
 receding from its acceptance of an Ought Not To Pass report — undoing its own
-kill of LD 613. None is a concurrence.
+kill of LD 613, and one is the House receding from its own prior position on
+LD 143 (73-66), where the passage chain only completed when the Senate later
+receded and concurred; that roll is held as `ambiguous_recede`, and LD 143 is
+excluded anyway as a pure appropriation. None is a concurrence.
 
 ## Why the nine are not imported
 
