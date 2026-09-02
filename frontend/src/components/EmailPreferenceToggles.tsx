@@ -33,6 +33,12 @@ const ALL_LABELS: Array<{ key: keyof EmailPreferences; label: string; descriptio
     label: "Updates about the issues you saved",
     description: "Occasional emails when there is something important about the issues that matter most to you.",
   },
+  {
+    key: "email_member_newsletter",
+    label: "Member newsletter",
+    description:
+      "Our member-only analysis reports and newsletters, for supporting members. Turning this off does not affect your membership.",
+  },
 ];
 
 export function EmailPreferenceToggles({ only }: { only?: Array<keyof EmailPreferences> }) {

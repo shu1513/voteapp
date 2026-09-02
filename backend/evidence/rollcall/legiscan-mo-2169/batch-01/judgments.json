@@ -1,0 +1,234 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MO",
+   "chamber": "house",
+   "session": "2169",
+   "roll": 1551715,
+   "measure_id": "HJR 73",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted for House Joint Resolution 73, which would repeal the reproductive-freedom right Missouri voters added to the state constitution in 2024. It would allow abortion only for a medical emergency, a fetal anomaly, rape or incest, and only through 12 weeks of pregnancy in cases of rape or incest. It would let the legislature regulate abortion providers and facilities, bar public funding except for a medical emergency, rape or incest, and require consent from both a minor and a parent. It would also ban gender transition surgery, cross-sex hormones and puberty blockers for anyone under 18. The Missouri House passed it 103-51. It takes effect only if Missouri voters approve it; a joint resolution needs no governor's signature.",
+   "nay_description": "Voted against House Joint Resolution 73, which would repeal the reproductive-freedom right Missouri voters added to the state constitution in 2024. It would allow abortion only for a medical emergency, a fetal anomaly, rape or incest, and only through 12 weeks of pregnancy in cases of rape or incest. It would let the legislature regulate abortion providers and facilities, bar public funding except for a medical emergency, rape or incest, and require consent from both a minor and a parent. It would also ban gender transition surgery, cross-sex hormones and puberty blockers for anyone under 18. The Missouri House passed it 103-51. It takes effect only if Missouri voters approve it; a joint resolution needs no governor's signature.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "against",
+     "nay": null
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MO",
+   "chamber": "senate",
+   "session": "2169",
+   "roll": 1578547,
+   "measure_id": "HJR 73",
+   "vote_date": "2025-05-14",
+   "review_status": "approved",
+   "yea_description": "Voted for House Joint Resolution 73, which would repeal the reproductive-freedom right Missouri voters added to the state constitution in 2024. It would allow abortion only for a medical emergency, a fetal anomaly, rape or incest, and only through 12 weeks of pregnancy in cases of rape or incest. It would let the legislature regulate abortion providers and facilities, bar public funding except for a medical emergency, rape or incest, and require consent from both a minor and a parent. It would also ban gender transition surgery, cross-sex hormones and puberty blockers for anyone under 18. The Missouri Senate passed it 21-11. It takes effect only if Missouri voters approve it; a joint resolution needs no governor's signature.",
+   "nay_description": "Voted against House Joint Resolution 73, which would repeal the reproductive-freedom right Missouri voters added to the state constitution in 2024. It would allow abortion only for a medical emergency, a fetal anomaly, rape or incest, and only through 12 weeks of pregnancy in cases of rape or incest. It would let the legislature regulate abortion providers and facilities, bar public funding except for a medical emergency, rape or incest, and require consent from both a minor and a parent. It would also ban gender transition surgery, cross-sex hormones and puberty blockers for anyone under 18. The Missouri Senate passed it 21-11. It takes effect only if Missouri voters approve it; a joint resolution needs no governor's signature.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "against",
+     "nay": null
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MO",
+   "chamber": "house",
+   "session": "2169",
+   "roll": 1567074,
+   "measure_id": "HB 594",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 594, which cut personal income tax by letting individuals deduct 100 percent of their capital gains starting with the 2025 tax year. The same deduction reaches corporations only if Missouri's top individual income tax rate first falls to 4.5 percent or less. The bill also exempted diapers, incontinence products and feminine hygiene products from state sales tax, and raised and inflation-indexed the property tax credit for seniors and disabled veterans. It let counties, ambulance districts and fire protection districts ask their own voters for higher local sales taxes. The Missouri House adopted the Senate's version 102-41 and it became law.",
+   "nay_description": "Voted against House Bill 594, which cut personal income tax by letting individuals deduct 100 percent of their capital gains starting with the 2025 tax year. The same deduction reaches corporations only if Missouri's top individual income tax rate first falls to 4.5 percent or less. The bill also exempted diapers, incontinence products and feminine hygiene products from state sales tax, and raised and inflation-indexed the property tax credit for seniors and disabled veterans. It let counties, ambulance districts and fire protection districts ask their own voters for higher local sales taxes. The Missouri House adopted the Senate's version 102-41 and it became law.",
+   "labels": [
+    {
+     "slug": "personal_income_tax_reduction",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MO",
+   "chamber": "house",
+   "session": "2169",
+   "roll": 1517204,
+   "measure_id": "HB 567",
+   "vote_date": "2025-03-13",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 567, which repealed Missouri's earned paid sick time law in full, the law voters approved as Proposition A in November 2024. It also ended the automatic inflation adjustment of the state minimum wage after 2024 and struck the yearly increases scheduled from 2027 on; the $13.75 rate for 2025 and the $15.00 rate for 2026 stayed in place. In the other direction, it extended the minimum wage law to public employers for the first time. The Missouri House passed it 96-51 and it became law.",
+   "nay_description": "Voted against House Bill 567, which repealed Missouri's earned paid sick time law in full, the law voters approved as Proposition A in November 2024. It also ended the automatic inflation adjustment of the state minimum wage after 2024 and struck the yearly increases scheduled from 2027 on; the $13.75 rate for 2025 and the $15.00 rate for 2026 stayed in place. In the other direction, it extended the minimum wage law to public employers for the first time. The Missouri House passed it 96-51 and it became law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "against",
+     "nay": null
+    },
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MO",
+   "chamber": "senate",
+   "session": "2169",
+   "roll": 1571781,
+   "measure_id": "HB 567",
+   "vote_date": "2025-05-14",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 567, which repealed Missouri's earned paid sick time law in full, the law voters approved as Proposition A in November 2024. It also ended the automatic inflation adjustment of the state minimum wage after 2024 and struck the yearly increases scheduled from 2027 on; the $13.75 rate for 2025 and the $15.00 rate for 2026 stayed in place. In the other direction, it extended the minimum wage law to public employers for the first time. The Missouri Senate gave it final approval 22-11 and it became law.",
+   "nay_description": "Voted against House Bill 567, which repealed Missouri's earned paid sick time law in full, the law voters approved as Proposition A in November 2024. It also ended the automatic inflation adjustment of the state minimum wage after 2024 and struck the yearly increases scheduled from 2027 on; the $13.75 rate for 2025 and the $15.00 rate for 2026 stayed in place. In the other direction, it extended the minimum wage law to public employers for the first time. The Missouri Senate gave it final approval 22-11 and it became law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "against",
+     "nay": null
+    },
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MO",
+   "chamber": "house",
+   "session": "2169",
+   "roll": 1569572,
+   "measure_id": "HB 145",
+   "vote_date": "2025-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 145, which closed several kinds of government records under Missouri's Sunshine Law. It closed individually identifiable information about minors held by cities, towns, villages and park boards, and the customer usage and billing records of municipal utilities. It also closed camping and lodging reservation details for public parks and the locations of endangered or imperiled species. Names, billing addresses and service dates for commercial utility accounts stay public. The bill widened the officials who can have their personal information stripped from public records to include prosecutors' employees, court clerks and juvenile officers. It also lets an agency treat a records request as withdrawn if the requester does not pay the fees within 90 days, or 150 days when the fees top $1,000. The Missouri House gave it final approval 107-50 and it became law.",
+   "nay_description": "Voted against House Bill 145, which closed several kinds of government records under Missouri's Sunshine Law. It closed individually identifiable information about minors held by cities, towns, villages and park boards, and the customer usage and billing records of municipal utilities. It also closed camping and lodging reservation details for public parks and the locations of endangered or imperiled species. Names, billing addresses and service dates for commercial utility accounts stay public. The bill widened the officials who can have their personal information stripped from public records to include prosecutors' employees, court clerks and juvenile officers. It also lets an agency treat a records request as withdrawn if the requester does not pay the fees within 90 days, or 150 days when the fees top $1,000. The Missouri House gave it final approval 107-50 and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    },
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MO",
+   "chamber": "house",
+   "session": "2169",
+   "roll": 1572256,
+   "measure_id": "SB 152",
+   "vote_date": "2025-05-15",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 152, which barred foreign nationals from funding or steering Missouri ballot measure campaigns. A foreign national may not contribute to, spend on, give in-kind support to, solicit money for, or take part in the decisions of a committee working on a ballot measure. Committees must get a written affirmation from anyone giving more than $2,000 that the donor is not a foreign national. Violators can be ordered to refund or hand over the money, committee officers can be held personally liable, and damages can reach twice the amount, or three times that for a knowing violation. The Attorney General enforces the new sections, and the law switches off the Missouri Ethics Commission's usual complaint process for them. It also gives donors to tax-exempt organizations a right of privacy that limits what the Attorney General may collect or disclose. The Missouri House passed it 94-47 and it became law.",
+   "nay_description": "Voted against Senate Bill 152, which barred foreign nationals from funding or steering Missouri ballot measure campaigns. A foreign national may not contribute to, spend on, give in-kind support to, solicit money for, or take part in the decisions of a committee working on a ballot measure. Committees must get a written affirmation from anyone giving more than $2,000 that the donor is not a foreign national. Violators can be ordered to refund or hand over the money, committee officers can be held personally liable, and damages can reach twice the amount, or three times that for a knowing violation. The Attorney General enforces the new sections, and the law switches off the Missouri Ethics Commission's usual complaint process for them. It also gives donors to tax-exempt organizations a right of privacy that limits what the Attorney General may collect or disclose. The Missouri House passed it 94-47 and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MO",
+   "chamber": "house",
+   "session": "2169",
+   "roll": 1565418,
+   "measure_id": "HB 595",
+   "vote_date": "2025-05-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 595, which stopped Missouri cities and counties from passing several kinds of renter protection. They may no longer bar a landlord from refusing a tenant because the tenant's lawful income includes housing assistance. They may no longer limit how a landlord uses income tests, credit scores, credit reports, eviction or property damage history, or criminal history. They may no longer cap a security deposit or require that tenants get a right of first refusal. Cities and counties may still bar discrimination against people who receive veterans' benefits, and they keep their authority over property they own, voluntary subsidized-rent agreements and homes assisted with federal community development block grant money. A separate section requires a real estate broker acting for a buyer or tenant to sign a written agency agreement before acting, not while acting. The Missouri House passed the conference version 103-37 and it became law.",
+   "nay_description": "Voted against House Bill 595, which stopped Missouri cities and counties from passing several kinds of renter protection. They may no longer bar a landlord from refusing a tenant because the tenant's lawful income includes housing assistance. They may no longer limit how a landlord uses income tests, credit scores, credit reports, eviction or property damage history, or criminal history. They may no longer cap a security deposit or require that tenants get a right of first refusal. Cities and counties may still bar discrimination against people who receive veterans' benefits, and they keep their authority over property they own, voluntary subsidized-rent agreements and homes assisted with federal community development block grant money. A separate section requires a real estate broker acting for a buyer or tenant to sign a written agency agreement before acting, not while acting. The Missouri House passed the conference version 103-37 and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "against",
+     "nay": null
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MO",
+   "chamber": "senate",
+   "session": "2169",
+   "roll": 1578662,
+   "measure_id": "HB 595",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 595, which stopped Missouri cities and counties from passing several kinds of renter protection. They may no longer bar a landlord from refusing a tenant because the tenant's lawful income includes housing assistance. They may no longer limit how a landlord uses income tests, credit scores, credit reports, eviction or property damage history, or criminal history. They may no longer cap a security deposit or require that tenants get a right of first refusal. Cities and counties may still bar discrimination against people who receive veterans' benefits, and they keep their authority over property they own, voluntary subsidized-rent agreements and homes assisted with federal community development block grant money. A separate section requires a real estate broker acting for a buyer or tenant to sign a written agency agreement before acting, not while acting. The Missouri Senate gave it final approval 23-10 and it became law.",
+   "nay_description": "Voted against House Bill 595, which stopped Missouri cities and counties from passing several kinds of renter protection. They may no longer bar a landlord from refusing a tenant because the tenant's lawful income includes housing assistance. They may no longer limit how a landlord uses income tests, credit scores, credit reports, eviction or property damage history, or criminal history. They may no longer cap a security deposit or require that tenants get a right of first refusal. Cities and counties may still bar discrimination against people who receive veterans' benefits, and they keep their authority over property they own, voluntary subsidized-rent agreements and homes assisted with federal community development block grant money. A separate section requires a real estate broker acting for a buyer or tenant to sign a written agency agreement before acting, not while acting. The Missouri Senate gave it final approval 23-10 and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "against",
+     "nay": null
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MO",
+   "chamber": "house",
+   "session": "2169",
+   "roll": 1563728,
+   "measure_id": "SB 71",
+   "vote_date": "2025-05-01",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 71, which made it burglary in the second degree to break into a motor vehicle or into a restricted area of a commercial business, and a class C felony when a firearm is involved or stolen. It created a new class A misdemeanor for trying the handles of one vehicle after another to get in and steal. It required fingerprint-based state and federal criminal background checks for applicants to about forty licensing boards and for peace officer training. It created tuition awards for public safety workers and their dependents and extended the line-of-duty death benefit. It also let public retirement systems close records tied to their investments and business dealings, and let the local government retirement board debate investments in closed session. It dropped the rule that that board's investment counselor be registered with the Securities and Exchange Commission. The Missouri House passed it 112-33 and it became law.",
+   "nay_description": "Voted against Senate Bill 71, which made it burglary in the second degree to break into a motor vehicle or into a restricted area of a commercial business, and a class C felony when a firearm is involved or stolen. It created a new class A misdemeanor for trying the handles of one vehicle after another to get in and steal. It required fingerprint-based state and federal criminal background checks for applicants to about forty licensing boards and for peace officer training. It created tuition awards for public safety workers and their dependents and extended the line-of-duty death benefit. It also let public retirement systems close records tied to their investments and business dealings, and let the local government retirement board debate investments in closed session. It dropped the rule that that board's investment counselor be registered with the Securities and Exchange Commission. The Missouri House passed it 112-33 and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

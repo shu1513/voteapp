@@ -1,0 +1,2251 @@
+{
+  "runId": "rollcall-legiscan-fetch-in-20260831T060803Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "IN",
+  "startedAt": "2026-08-31T06:08:03.512Z",
+  "finishedAt": "2026-08-31T06:08:03.997Z",
+  "datasetDir": "/Users/shu/legiscan-data/in-2143/IN/2025-2025_Regular_Session",
+  "bills": 1489,
+  "votes": 1010,
+  "people": 151,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "senate",
+      "desc": "Senate - Third reading",
+      "count": 304,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB0080",
+        "SB0127",
+        "SB0199"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Third reading",
+      "count": 285,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB1347",
+        "HB1050",
+        "HB1118"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - House concurred with Senate amendments",
+      "count": 66,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1137",
+        "HB1626",
+        "HB1088"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Rules Suspended. Conference Committee Report 1",
+      "count": 50,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0073",
+        "SB0433",
+        "HB1081"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Senate concurred with House amendments",
+      "count": 49,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0120",
+        "SB0314",
+        "SB0424"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Rules Suspended. Conference Committee Report 1",
+      "count": 38,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1125",
+        "SB0255",
+        "HB1689"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Conference Committee Report 1",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1053",
+        "SB0073",
+        "SB0433"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Second reading",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR0002",
+        "HCR0003",
+        "HCR0005"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House -",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB1115",
+        "HB1275",
+        "HB1634"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #1 (Qaddoura) failed",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0146",
+        "SB0001",
+        "SB0453"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #2 (DeLaney) failed",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1002",
+        "HB1601",
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #1 (Ford J.D.) failed",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0010",
+        "SB0287",
+        "HB1041"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #1 (DeLaney) failed",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1498",
+        "SB0516",
+        "SB0365"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #1 (Errington) failed",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1052",
+        "HB1681",
+        "HB1230"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #3 (Pierce M) failed",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB1007",
+        "SJR0021",
+        "SB0425"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #2 (Qaddoura) failed",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0146",
+        "SB0518",
+        "HB1474"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #1 (Campbell) failed",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0003",
+        "SB0001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #1 (Pierce M) failed",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1007",
+        "SB0004"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #2 (Errington) failed",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0287",
+        "SB0442"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #2 (Pryor) failed",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1459",
+        "SB0001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #3 (Hamilton) failed",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1253",
+        "SB0371"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #9 (DeLaney) failed",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001",
+        "SB0001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Conference Committee Report 1",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0026",
+        "HB1053"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Rules Suspended. Conference Committee Report 2",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0464",
+        "HB1014"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #1 (Pol) failed",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1114",
+        "HB1006"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #13 (Qaddoura) failed",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0518",
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #14 (Qaddoura) failed",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0518",
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #15 (Qaddoura) failed",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0518",
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #2 (Ford J.D.) failed",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1041",
+        "HB1680"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #2 (Young M) failed",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0001",
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #3 (Qaddoura) failed",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0518",
+        "HB1474"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #3 (Young M) failed",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0001",
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #4 (Qaddoura) failed",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0518",
+        "HB1515"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Rules Suspended. Conference Committee Report 2",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0464",
+        "HB1014"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Second reading",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "SCR0024",
+        "SCR0026"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #1 (Bauer) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0211"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #1 (Boy) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0287"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #1 (Burton) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1531"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #1 (Garcia Wilburn) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0002"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #1 (Hamilton) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1459"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #1 (Hatcher) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0453"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #1 (Ireland) prevailed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0326"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #1 (Johnson B) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1008"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #1 (Pfaff) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1500"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #1 (Porter) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1312"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #1 (Summers) prevailed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0231"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #10 (DeLaney) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0002"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #11 (DeLaney) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #11 (Porter) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #12 (DeLaney) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0002"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #12 (Klinker) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #14 (Garcia Wilburn) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #14 (Porter) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #15 (Andrade) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #15 (Porter) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #16 (Bauer) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #16 (Errington) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1643"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #16 (Porter) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #19 (Porter) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #2 (Bartlett) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1489"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #2 (Boy) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0010"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #2 (Campbell) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0004"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #2 (Hamilton) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR0021"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #2 (Lopez) prevailed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0005"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #2 (Shackleford) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0002"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #20 (Porter) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #22 (Hamilton) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #22 (Porter) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #24 (Porter) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #26 (Porter) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #3 (DeLaney) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1002"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #3 (Errington) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0010"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #3 (Jackson C) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #3 (Shackleford) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0002"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #36 (Thompson) prevailed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #4 (Bauer) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1393"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #4 (Boy) prevailed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1679"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #4 (Dvorak) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1008"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #4 (Gore) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1041"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #4 (Shackleford) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0002"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #5 (Boy) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1643"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #5 (DeLaney) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #5 (Hamilton) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1041"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #5 (Lehman) prevailed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0005"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #5 (Pryor) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1459"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #5 (Shackleford) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0002"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #5 (Smith V) prevailed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1002"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #6 (Andrade) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1393"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #6 (Burton) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1531"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #6 (DeLaney) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #6 (Shackleford) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0002"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #6 (Smith V) prevailed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1002"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #7 (DeLaney) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #7 (Klinker) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1002"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #8 (DeLaney) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #8 (Dvorak) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1531"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #8 (Porter) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0002"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #8 (Pryor) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1643"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Amendment #9 (Behning) prevailed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1002"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Appeal the ruling of the chair (Garcia Wilburn)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1393"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Appeal the ruling of the chair (Jackson C)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1679"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Appeal the ruling of the chair (Miller K)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1056"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Appeal the ruling of the chair (Pryor)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1679"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Referred to Committee on Education pursuant to House Rule 126.4",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0287"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Rules Suspended. House concurred with Senate amendments",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1007"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #1 (Campbell) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #1 (Hunley) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0137"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #1 (Walker K) prevailed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1197"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #1 (Young M) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #10 (Ford J.D.) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #10 (Pol) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1461"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #11 (Ford J.D.) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #11 (Pol) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1461"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #12 (Hunley) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0518"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #15 (Yoder) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1002"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #17 (Hunley) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0518"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #17 (Qaddoura) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #18 (Qaddoura) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #2 (Goode) prevailed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0382"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #2 (Pol) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0157"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #20 (Hunley) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0518"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #21 (Ford J.D.) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1002"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #22 (Ford J.D.) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #22 (Hunley) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0518"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #24 (Yoder) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #3 (Ford J.D.) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1041"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #31 (Qaddoura) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #32 (Qaddoura) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #33 (Qaddoura) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #34 (Qaddoura) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #4 (Ford J.D.) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1041"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #4 (Young M) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #42 (Young M) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #44 (Jackson) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #5 (Hunley) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0289"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #5 (Pol) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0419"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #5 (Qaddoura) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0518"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #5 (Yoder) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1007"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #5 (Young M) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #50 (Hunley) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #59 (Qaddoura) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #6 (Pol) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #6 (Qaddoura) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0518"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #60 (Qaddoura) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #61 (Qaddoura) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #62 (Qaddoura) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #66 (Hunley) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #7 (Ford J.D.) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #7 (Qaddoura) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0002"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #8 (Hunley) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0518"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #8 (Qaddoura) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0002"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #9 (Ford J.D.) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1002"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #9 (Yoder) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1004"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Amendment #9 (Young M) failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1461"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Concurrence failed for lack of constitutional majority",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0366"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 1229,
+    "CR": 94,
+    "JR": 21,
+    "R": 145
+  },
+  "sessionIds": {
+    "2143": 1489
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}

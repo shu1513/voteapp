@@ -142,6 +142,26 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
     expect(prompt).not.toContain("Prefer records that reveal a stance or governing record");
   });
 
+  it("includes the identity rule on every route", () => {
+    const identityRule =
+      "- Every record must be about this exact person; a name match is not proof. Tie it to this candidate with a hard identifier: office or district held, employer, license or docket number, or reporting that states the identification. On a page covering several candidates, take the fact next to this candidate's name. If only the name matches, omit the record.";
+
+    const routes = [
+      baseInput,
+      { ...baseInput, hasHeldPublicOffice: true },
+      { ...baseInput, hasHeldPublicOffice: false },
+      {
+        ...baseInput,
+        officialBallotTitle: "Judge of the Superior Court",
+        discoveryContestFamily: "judicial_office" as const,
+      },
+    ];
+
+    for (const route of routes) {
+      expect(buildCandidateRecordDiscoveryPrompt(route)).toContain(identityRule);
+    }
+  });
+
   it("omits state for presidential United States prompts", () => {
     const prompt = buildCandidateRecordDiscoveryPrompt({
       candidateDisplayName: "Jane President",

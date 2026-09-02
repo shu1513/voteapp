@@ -24,16 +24,30 @@ off stale web tabs and any old mobile build at registration, search, and
 re-acceptance). This version must be LIVE before STRIPE_SECRET_KEY is ever set in
 production. Cancellation copy matches the plan: portal cancel is
 end-of-period; account deletion cancels immediately.
+Section 14.5 (member communications) added 2026-08-28 (1.2 -> 1.3): monthly
+members may receive member-only newsletters/analysis reports, so 14.1's
+"no additional content, features, or influence" carve-out now excepts 14.5
+while keeping the no-influence shield absolute. Substance change - the
+bundle bumps to 1.3 (disclaimer.md, CURRENT_TERMS_VERSION, TERMS_VERSION),
+GRACE_TERMS_VERSIONS ships listing "1.2", and signed-in users re-accept
+once. Must be LIVE before the first member-only communication is sent.
+Operator change 2026-08-29 (1.3 -> 1.4): the operator and contracting party
+is now Elections Simplified Inc., a Delaware corporation (previously
+impactperdollar). Principal place of business remains California, so the
+Section 12.1/12.8 assumptions are unchanged. A change of contracting party
+is material — the bundle bumps to 1.4 (disclaimer.md, privacy-policy.md,
+CURRENT_TERMS_VERSION, TERMS_VERSION), GRACE_TERMS_VERSIONS ships listing
+"1.3", and signed-in users re-accept once.
 -->
 
 # Elections Simplified Terms of Use
 
-**Last updated:** August 21, 2026
-**Version:** 1.2
+**Last updated:** August 29, 2026
+**Version:** 1.4
 
 ## 1. Acceptance of these Terms
 
-These Terms of Use ("Terms") are an agreement between you and impactperdollar, the operator of the Elections Simplified service ("Elections Simplified," "we," "us," or "our") governing your use of the Elections Simplified website and services (the "Service"). By checking an agreement box, creating an account, submitting an address or search, or otherwise using the Service, you accept these Terms, the [Privacy Policy](/privacy), and the [AI Research and Election Information Disclaimer](/disclaimer) (the "Disclaimer"), which is incorporated into these Terms by reference. You consent to entering this agreement electronically.
+These Terms of Use ("Terms") are an agreement between you and Elections Simplified Inc., a Delaware corporation and the operator of the Elections Simplified service ("Elections Simplified," "we," "us," or "our") governing your use of the Elections Simplified website and services (the "Service"). By checking an agreement box, creating an account, submitting an address or search, or otherwise using the Service, you accept these Terms, the [Privacy Policy](/privacy), and the [AI Research and Election Information Disclaimer](/disclaimer) (the "Disclaimer"), which is incorporated into these Terms by reference. You consent to entering this agreement electronically.
 
 **Electronic communications and notices.** You consent to receive communications from us electronically — by email to your account address or by posting in the Service — and you agree that all agreements, notices, disclosures, and other communications we provide electronically satisfy any legal requirement that they be in writing. Notices to you are effective when posted in the Service or sent to your account email; notices to us must be sent to contact@electionssimplified.com.
 
@@ -121,13 +135,15 @@ If any provision of these Terms is held unenforceable, the remainder stays in ef
 
 ## 14. Support payments and memberships
 
-**14.1 What payments are — and are not.** You may choose to support the Service with a one-time payment or a recurring monthly membership. Payments are entirely optional and fund the operation of the Service. They are **not** contributions to, and do not benefit, any candidate, campaign, political committee, party, or charity; they provide no additional content, features, or influence over the Service's information; and they are not charitable contributions — do not treat them as deductible.
+**14.1 What payments are — and are not.** You may choose to support the Service with a one-time payment or a recurring monthly membership. Payments are entirely optional and fund the operation of the Service. They are **not** contributions to, and do not benefit, any candidate, campaign, political committee, party, or charity; except for the member communications described in Section 14.5, they provide no additional content or features, and they never provide influence over the Service's information; and they are not charitable contributions — do not treat them as deductible.
 
 **14.2 Billing.** Payments are processed by Stripe, and you must provide accurate payment information. A monthly membership charges the amount you selected (at or above the posted minimum) to your payment method each month, starting when you subscribe and continuing until canceled. Amounts are in U.S. dollars and exclude any taxes that may apply. We may change posted minimums prospectively; your existing membership amount does not change unless you change it.
 
 **14.3 Cancellation.** You can cancel your membership at any time from account settings (via the Stripe billing portal). Cancellation takes effect at the end of the current billing period; you will not be charged again after cancellation, and no partial-month refund is owed. Deleting your account cancels any active membership immediately. If a recurring charge fails, we may treat the membership as lapsed after Stripe's retries are exhausted.
 
 **14.4 Refunds.** Except where required by law, payments are non-refundable; we may issue refunds in our discretion (for example, for duplicate or mistaken charges). Contact contact@electionssimplified.com for billing questions.
+
+**14.5 Member communications.** Monthly members may receive member-only communications from us at the email address on their account, such as newsletters or analysis reports. These communications are informational only and are part of the Service: the Disclaimer applies to them, and they reflect our independent editorial judgment. No payment gives any person influence over the Service's information or over what these communications say. We choose their content, format, and frequency, and we may change or discontinue them at any time; their availability, timing, or discontinuation does not create a right to a refund beyond Section 14.4.
 
 ## 15. Contact
 

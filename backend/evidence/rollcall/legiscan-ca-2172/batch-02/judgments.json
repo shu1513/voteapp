@@ -1,0 +1,412 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602196,
+      "measure_id": "AB 572",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 572, which makes every police agency and prosecutor's office adopt rules, by January 1, 2027, for interviewing the family of someone a police officer killed or badly hurt. Before that first formal interview, the officer or prosecutor must give their name and agency, show identification in person, tell the family what happened to their relative, and say the interview is part of an investigation. They must also tell the family they can bring someone they trust, and can choose whether to come to the station. These steps can be skipped if an officer reasonably believes waiting would lose or destroy evidence or put the public in immediate danger, or if the family member has already been given the same warnings or a Miranda warning. The law separately bars threats, lies, fake evidence, and misleading statements to press someone into an interview or during one. The California State Assembly agreed 42-22, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 572, which makes every police agency and prosecutor's office adopt rules, by January 1, 2027, for interviewing the family of someone a police officer killed or badly hurt. Before that first formal interview, the officer or prosecutor must give their name and agency, show identification in person, tell the family what happened to their relative, and say the interview is part of an investigation. They must also tell the family they can bring someone they trust, and can choose whether to come to the station. These steps can be skipped if an officer reasonably believes waiting would lose or destroy evidence or put the public in immediate danger, or if the family member has already been given the same warnings or a Miranda warning. The law separately bars threats, lies, fake evidence, and misleading statements to press someone into an interview or during one. The California State Assembly agreed 42-22, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1602195,
+      "measure_id": "AB 572",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 572, which makes every police agency and prosecutor's office adopt rules, by January 1, 2027, for interviewing the family of someone a police officer killed or badly hurt. Before that first formal interview, the officer or prosecutor must give their name and agency, show identification in person, tell the family what happened to their relative, and say the interview is part of an investigation. They must also tell the family they can bring someone they trust, and can choose whether to come to the station. These steps can be skipped if an officer reasonably believes waiting would lose or destroy evidence or put the public in immediate danger, or if the family member has already been given the same warnings or a Miranda warning. The law separately bars threats, lies, fake evidence, and misleading statements to press someone into an interview or during one. It passed the California State Senate 22-10 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 572, which makes every police agency and prosecutor's office adopt rules, by January 1, 2027, for interviewing the family of someone a police officer killed or badly hurt. Before that first formal interview, the officer or prosecutor must give their name and agency, show identification in person, tell the family what happened to their relative, and say the interview is part of an investigation. They must also tell the family they can bring someone they trust, and can choose whether to come to the station. These steps can be skipped if an officer reasonably believes waiting would lose or destroy evidence or put the public in immediate danger, or if the family member has already been given the same warnings or a Miranda warning. The law separately bars threats, lies, fake evidence, and misleading statements to press someone into an interview or during one. It passed the California State Senate 22-10 and became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602345,
+      "measure_id": "AB 1071",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 1071, which helps a defendant who says the state pursued their conviction or sentence because of their race, ethnicity, or national origin. They can ask the court to order the release of all the evidence bearing on that claim. A judge who finds such a violation can also fix it with any remedy another law does not forbid. The California State Assembly agreed 42-21, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 1071, which helps a defendant who says the state pursued their conviction or sentence because of their race, ethnicity, or national origin. They can ask the court to order the release of all the evidence bearing on that claim. A judge who finds such a violation can also fix it with any remedy another law does not forbid. The California State Assembly agreed 42-21, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601943,
+      "measure_id": "AB 1071",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1071, which helps a defendant who says the state pursued their conviction or sentence because of their race, ethnicity, or national origin. They can ask the court to order the release of all the evidence bearing on that claim. A judge who finds such a violation can also fix it with any remedy another law does not forbid. It passed the California State Senate 25-11 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 1071, which helps a defendant who says the state pursued their conviction or sentence because of their race, ethnicity, or national origin. They can ask the court to order the release of all the evidence bearing on that claim. A judge who finds such a violation can also fix it with any remedy another law does not forbid. It passed the California State Senate 25-11 and became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1725474,
+      "measure_id": "AB 2624",
+      "vote_date": "2026-08-19",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 2624, which lets people who provide immigration support services keep their home address private when they face threats or harassment because of that work. Their employees and volunteers are covered too, and the program starts on October 1, 2027. It keeps a participant's address out of answers to public records requests. The law also bars selling or trading their personal details or photo online to stir up violence against them, and bars posting that information with the specific intent that someone attack them straight away. The California State Assembly agreed 59-19, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 2624, which lets people who provide immigration support services keep their home address private when they face threats or harassment because of that work. Their employees and volunteers are covered too, and the program starts on October 1, 2027. It keeps a participant's address out of answers to public records requests. The law also bars selling or trading their personal details or photo online to stir up violence against them, and bars posting that information with the specific intent that someone attack them straight away. The California State Assembly agreed 59-19, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1725364,
+      "measure_id": "AB 2624",
+      "vote_date": "2026-08-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 2624, which lets people who provide immigration support services keep their home address private when they face threats or harassment because of that work. Their employees and volunteers are covered too, and the program starts on October 1, 2027. It keeps a participant's address out of answers to public records requests. The law also bars selling or trading their personal details or photo online to stir up violence against them, and bars posting that information with the specific intent that someone attack them straight away. It passed the California State Senate 30-10 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 2624, which lets people who provide immigration support services keep their home address private when they face threats or harassment because of that work. Their employees and volunteers are covered too, and the program starts on October 1, 2027. It keeps a participant's address out of answers to public records requests. The law also bars selling or trading their personal details or photo online to stir up violence against them, and bars posting that information with the specific intent that someone attack them straight away. It passed the California State Senate 30-10 and became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601541,
+      "measure_id": "AB 1318",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 1318, an urgent measure that took effect at once. Wherever state law looks at a charity's federal tax-exempt status to decide who can receive a state grant, contract, or payment, state tax-exempt status now counts as well. The same change reaches the charities that run state programs for refugees and immigrants, which pay for immigration lawyers, emergency help, and resettlement support for people granted asylum. The California State Assembly agreed 60-19, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 1318, an urgent measure that took effect at once. Wherever state law looks at a charity's federal tax-exempt status to decide who can receive a state grant, contract, or payment, state tax-exempt status now counts as well. The same change reaches the charities that run state programs for refugees and immigrants, which pay for immigration lawyers, emergency help, and resettlement support for people granted asylum. The California State Assembly agreed 60-19, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601264,
+      "measure_id": "AB 1318",
+      "vote_date": "2025-09-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1318, an urgent measure that took effect at once. Wherever state law looks at a charity's federal tax-exempt status to decide who can receive a state grant, contract, or payment, state tax-exempt status now counts as well. The same change reaches the charities that run state programs for refugees and immigrants, which pay for immigration lawyers, emergency help, and resettlement support for people granted asylum. It passed the California State Senate 29-10 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 1318, an urgent measure that took effect at once. Wherever state law looks at a charity's federal tax-exempt status to decide who can receive a state grant, contract, or payment, state tax-exempt status now counts as well. The same change reaches the charities that run state programs for refugees and immigrants, which pay for immigration lawyers, emergency help, and resettlement support for people granted asylum. It passed the California State Senate 29-10 and became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601531,
+      "measure_id": "SB 30",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 30, which stops a public agency from selling, donating, or handing on diesel rail equipment for further use once the agency retires it. An agency may pass it on only if it approves the deal at a public meeting and the equipment qualifies. Equipment qualifies if it meets one of the cleaner federal engine grades, pollutes no more than equipment in those grades, or has had its diesel engine taken out. It passed the California State Assembly 53-22 and became law.",
+      "nay_description": "Voted against passing Senate Bill 30, which stops a public agency from selling, donating, or handing on diesel rail equipment for further use once the agency retires it. An agency may pass it on only if it approves the deal at a public meeting and the equipment qualifies. Equipment qualifies if it meets one of the cleaner federal engine grades, pollutes no more than equipment in those grades, or has had its diesel engine taken out. It passed the California State Assembly 53-22 and became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601722,
+      "measure_id": "SB 30",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 30, which stops a public agency from selling, donating, or handing on diesel rail equipment for further use once the agency retires it. An agency may pass it on only if it approves the deal at a public meeting and the equipment qualifies. Equipment qualifies if it meets one of the cleaner federal engine grades, pollutes no more than equipment in those grades, or has had its diesel engine taken out. The California State Senate agreed 29-10, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 30, which stops a public agency from selling, donating, or handing on diesel rail equipment for further use once the agency retires it. An agency may pass it on only if it approves the deal at a public meeting and the equipment qualifies. Equipment qualifies if it meets one of the cleaner federal engine grades, pollutes no more than equipment in those grades, or has had its diesel engine taken out. The California State Senate agreed 29-10, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602510,
+      "measure_id": "AB 1037",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 1037, which widens access to overdose-reversal drugs such as naloxone. Standing prescriptions and the right to carry one now cover any overdose, not only an opioid overdose, and anyone in a position to help a person at risk may hold one and pass it on. It drops the rule that a person be trained before receiving or carrying one. Someone who gives the drug in good faith, and is not paid for it, is generally not liable for civil damages, trained or not, unless they were grossly negligent or acted wilfully. The California State Assembly agreed 53-21, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 1037, which widens access to overdose-reversal drugs such as naloxone. Standing prescriptions and the right to carry one now cover any overdose, not only an opioid overdose, and anyone in a position to help a person at risk may hold one and pass it on. It drops the rule that a person be trained before receiving or carrying one. Someone who gives the drug in good faith, and is not paid for it, is generally not liable for civil damages, trained or not, unless they were grossly negligent or acted wilfully. The California State Assembly agreed 53-21, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601620,
+      "measure_id": "AB 1037",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1037, which widens access to overdose-reversal drugs such as naloxone. Standing prescriptions and the right to carry one now cover any overdose, not only an opioid overdose, and anyone in a position to help a person at risk may hold one and pass it on. It drops the rule that a person be trained before receiving or carrying one. Someone who gives the drug in good faith, and is not paid for it, is generally not liable for civil damages, trained or not, unless they were grossly negligent or acted wilfully. It passed the California State Senate 30-10 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 1037, which widens access to overdose-reversal drugs such as naloxone. Standing prescriptions and the right to carry one now cover any overdose, not only an opioid overdose, and anyone in a position to help a person at risk may hold one and pass it on. It drops the rule that a person be trained before receiving or carrying one. Someone who gives the drug in good faith, and is not paid for it, is generally not liable for civil damages, trained or not, unless they were grossly negligent or acted wilfully. It passed the California State Senate 30-10 and became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602541,
+      "measure_id": "AB 858",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 858, which keeps a job recall law running until January 1, 2027. It covers hotels, private clubs, event centers, airport food and service companies, and the firms that clean and maintain office and retail buildings. Those employers must tell workers they laid off about openings the workers are qualified for, and offer the jobs in an order of preference. It protects workers with at least six months on the job who were laid off for reasons tied to the COVID-19 pandemic, and bars punishing a worker for claiming these rights. The California State Assembly agreed 49-19, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 858, which keeps a job recall law running until January 1, 2027. It covers hotels, private clubs, event centers, airport food and service companies, and the firms that clean and maintain office and retail buildings. Those employers must tell workers they laid off about openings the workers are qualified for, and offer the jobs in an order of preference. It protects workers with at least six months on the job who were laid off for reasons tied to the COVID-19 pandemic, and bars punishing a worker for claiming these rights. The California State Assembly agreed 49-19, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601757,
+      "measure_id": "AB 858",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 858, which keeps a job recall law running until January 1, 2027. It covers hotels, private clubs, event centers, airport food and service companies, and the firms that clean and maintain office and retail buildings. Those employers must tell workers they laid off about openings the workers are qualified for, and offer the jobs in an order of preference. It protects workers with at least six months on the job who were laid off for reasons tied to the COVID-19 pandemic, and bars punishing a worker for claiming these rights. It passed the California State Senate 29-10 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 858, which keeps a job recall law running until January 1, 2027. It covers hotels, private clubs, event centers, airport food and service companies, and the firms that clean and maintain office and retail buildings. Those employers must tell workers they laid off about openings the workers are qualified for, and offer the jobs in an order of preference. It protects workers with at least six months on the job who were laid off for reasons tied to the COVID-19 pandemic, and bars punishing a worker for claiming these rights. It passed the California State Senate 29-10 and became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602306,
+      "measure_id": "SB 763",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 763, which raises the top fines for illegal deals that restrain trade under California's antitrust law. A company can now be fined up to $6 million, up from $1 million, and a person up to $1 million, up from $250,000, or more if the court ties the fine to the money made or the losses caused. The law also adds a penalty of up to $1 million for each violation, which the Attorney General or a district attorney can seek in a civil case. It passed the California State Assembly 53-20 and became law.",
+      "nay_description": "Voted against passing Senate Bill 763, which raises the top fines for illegal deals that restrain trade under California's antitrust law. A company can now be fined up to $6 million, up from $1 million, and a person up to $1 million, up from $250,000, or more if the court ties the fine to the money made or the losses caused. The law also adds a penalty of up to $1 million for each violation, which the Attorney General or a district attorney can seek in a civil case. It passed the California State Assembly 53-20 and became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1602893,
+      "measure_id": "SB 763",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 763, which raises the top fines for illegal deals that restrain trade under California's antitrust law. A company can now be fined up to $6 million, up from $1 million, and a person up to $1 million, up from $250,000, or more if the court ties the fine to the money made or the losses caused. The law also adds a penalty of up to $1 million for each violation, which the Attorney General or a district attorney can seek in a civil case. The California State Senate agreed 29-8, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 763, which raises the top fines for illegal deals that restrain trade under California's antitrust law. A company can now be fined up to $6 million, up from $1 million, and a person up to $1 million, up from $250,000, or more if the court ties the fine to the money made or the losses caused. The law also adds a penalty of up to $1 million for each violation, which the Attorney General or a district attorney can seek in a civil case. The California State Senate agreed 29-8, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601404,
+      "measure_id": "SB 82",
+      "vote_date": "2025-09-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 82, which stops the fine print in a consumer contract from reaching disputes that have nothing to do with that contract. Its terms for settling disputes can cover only arguments about the product, service, money, or credit the contract itself provides. A clause signing away that protection has no force, and courts must read the rule in the consumer's favor. The law adds to other consumer protections rather than replacing them. It passed the California State Assembly 55-18 and became law.",
+      "nay_description": "Voted against passing Senate Bill 82, which stops the fine print in a consumer contract from reaching disputes that have nothing to do with that contract. Its terms for settling disputes can cover only arguments about the product, service, money, or credit the contract itself provides. A clause signing away that protection has no force, and courts must read the rule in the consumer's favor. The law adds to other consumer protections rather than replacing them. It passed the California State Assembly 55-18 and became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1586421,
+      "measure_id": "SB 82",
+      "vote_date": "2025-06-02",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 82, which stops the fine print in a consumer contract from reaching disputes that have nothing to do with that contract. Its terms for settling disputes can cover only arguments about the product, service, money, or credit the contract itself provides. A clause signing away that protection has no force, and courts must read the rule in the consumer's favor. The law adds to other consumer protections rather than replacing them. It passed the California State Senate 28-10 and became law.",
+      "nay_description": "Voted against passing Senate Bill 82, which stops the fine print in a consumer contract from reaching disputes that have nothing to do with that contract. Its terms for settling disputes can cover only arguments about the product, service, money, or credit the contract itself provides. A clause signing away that protection has no force, and courts must read the rule in the consumer's favor. The law adds to other consumer protections rather than replacing them. It passed the California State Senate 28-10 and became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602572,
+      "measure_id": "SB 596",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 596, which tightens the fines hospitals face for breaking nurse-to-patient staffing limits. A hospital escapes a fine if it has used up its on-call list of nurses, and the law now spells out what that list is. Calling nurses who were not scheduled on call, and who are not in the backup pool for that ward and shift, does not count as using it up. The health department must also treat a breach on each separate day as its own violation. It passed the California State Assembly 48-19 and became law.",
+      "nay_description": "Voted against passing Senate Bill 596, which tightens the fines hospitals face for breaking nurse-to-patient staffing limits. A hospital escapes a fine if it has used up its on-call list of nurses, and the law now spells out what that list is. Calling nurses who were not scheduled on call, and who are not in the backup pool for that ward and shift, does not count as using it up. The health department must also treat a breach on each separate day as its own violation. It passed the California State Assembly 48-19 and became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1602214,
+      "measure_id": "SB 596",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 596, which tightens the fines hospitals face for breaking nurse-to-patient staffing limits. A hospital escapes a fine if it has used up its on-call list of nurses, and the law now spells out what that list is. Calling nurses who were not scheduled on call, and who are not in the backup pool for that ward and shift, does not count as using it up. The health department must also treat a breach on each separate day as its own violation. The California State Senate agreed 21-10, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 596, which tightens the fines hospitals face for breaking nurse-to-patient staffing limits. A hospital escapes a fine if it has used up its on-call list of nurses, and the law now spells out what that list is. Calling nurses who were not scheduled on call, and who are not in the backup pool for that ward and shift, does not count as using it up. The health department must also treat a breach on each separate day as its own violation. The California State Senate agreed 21-10, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601300,
+      "measure_id": "AB 1061",
+      "vote_date": "2025-09-08",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 1061, which narrows a historic-buildings rule that had been keeping small housing projects and lot splits out of fast-track approval. Before, any site inside a listed historic district was shut out; now only a building that actually contributes to such a district, or a property listed as a landmark in its own right, is. Cities and counties may still set clear standards to protect the character of a district on the state historic register. A lot split still may not require tearing down or altering the buildings the law names. The California State Assembly agreed 46-18, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 1061, which narrows a historic-buildings rule that had been keeping small housing projects and lot splits out of fast-track approval. Before, any site inside a listed historic district was shut out; now only a building that actually contributes to such a district, or a property listed as a landmark in its own right, is. Cities and counties may still set clear standards to protect the character of a district on the state historic register. A lot split still may not require tearing down or altering the buildings the law names. The California State Assembly agreed 46-18, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1600931,
+      "measure_id": "AB 1061",
+      "vote_date": "2025-09-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1061, which narrows a historic-buildings rule that had been keeping small housing projects and lot splits out of fast-track approval. Before, any site inside a listed historic district was shut out; now only a building that actually contributes to such a district, or a property listed as a landmark in its own right, is. Cities and counties may still set clear standards to protect the character of a district on the state historic register. A lot split still may not require tearing down or altering the buildings the law names. It passed the California State Senate 24-10 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 1061, which narrows a historic-buildings rule that had been keeping small housing projects and lot splits out of fast-track approval. Before, any site inside a listed historic district was shut out; now only a building that actually contributes to such a district, or a property listed as a landmark in its own right, is. Cities and counties may still set clear standards to protect the character of a district on the state historic register. A lot split still may not require tearing down or altering the buildings the law names. It passed the California State Senate 24-10 and became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1701449,
+      "measure_id": "SB 73",
+      "vote_date": "2026-05-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 73, which bars police officers from interfering with the running of an election and lets named officials sue to enforce that. No one may let a law enforcement agent see, disturb, change, or take voter rosters or voter lists without a court order, unless they are investigating certain voting fraud. For certified voting machines the rule is stricter: a court order is needed, with no fraud exception. Under either rule, officers may still help with logistics, transport, or security if the elections official has signed a written agreement with their agency. The Attorney General must publish guidance on answering law enforcement requests to enter rooms where ballots are kept. Taking a package of voted ballots from an elections official is now a crime, and an observer may not challenge a signature the voter has already confirmed. It passed the California State Assembly 57-19 and became law.",
+      "nay_description": "Voted against passing Senate Bill 73, which bars police officers from interfering with the running of an election and lets named officials sue to enforce that. No one may let a law enforcement agent see, disturb, change, or take voter rosters or voter lists without a court order, unless they are investigating certain voting fraud. For certified voting machines the rule is stricter: a court order is needed, with no fraud exception. Under either rule, officers may still help with logistics, transport, or security if the elections official has signed a written agreement with their agency. The Attorney General must publish guidance on answering law enforcement requests to enter rooms where ballots are kept. Taking a package of voted ballots from an elections official is now a crime, and an observer may not challenge a signature the voter has already confirmed. It passed the California State Assembly 57-19 and became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1702119,
+      "measure_id": "SB 73",
+      "vote_date": "2026-05-26",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 73, which bars police officers from interfering with the running of an election and lets named officials sue to enforce that. No one may let a law enforcement agent see, disturb, change, or take voter rosters or voter lists without a court order, unless they are investigating certain voting fraud. For certified voting machines the rule is stricter: a court order is needed, with no fraud exception. Under either rule, officers may still help with logistics, transport, or security if the elections official has signed a written agreement with their agency. The Attorney General must publish guidance on answering law enforcement requests to enter rooms where ballots are kept. Taking a package of voted ballots from an elections official is now a crime, and an observer may not challenge a signature the voter has already confirmed. The California State Senate agreed 29-8, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 73, which bars police officers from interfering with the running of an election and lets named officials sue to enforce that. No one may let a law enforcement agent see, disturb, change, or take voter rosters or voter lists without a court order, unless they are investigating certain voting fraud. For certified voting machines the rule is stricter: a court order is needed, with no fraud exception. Under either rule, officers may still help with logistics, transport, or security if the elections official has signed a written agreement with their agency. The Attorney General must publish guidance on answering law enforcement requests to enter rooms where ballots are kept. Taking a package of voted ballots from an elections official is now a crime, and an observer may not challenge a signature the voter has already confirmed. The California State Senate agreed 29-8, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for"
+        }
+      ]
+    }
+  ]
+}

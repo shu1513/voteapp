@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Link } from "react-router";
 import {
   ApiError,
+  joinNames,
+  MIN_AUTO_PICK_ISSUES,
+  summarizeAutoPick,
   useAutoPick,
   useElectionChoiceSaving,
   useMe,
@@ -13,12 +16,15 @@ import type { AutoPickCandidateReport, AutoPickElectionResult } from "@voteapp/a
 // (POST /api/me/auto-picks, mode replace) and opens a "Why this pick" panel
 // built from the response — winner, per-issue alignment, vetoed and
 // unresearched candidates, and the honest "no pick" reason when nothing
-// qualified. Spec: docs/plans/auto-pick-by-issues.md.
+// qualified. Spec: docs/plans/auto-pick-by-issues.md. The issue floor and
+// the headline copy live in @voteapp/api-client (shared with the mobile
+// port); this file keeps the web widgets.
 //
-// Mirrors the server's UX floor (MIN_AUTO_PICK_ISSUES): below 3 ranked
-// issues the button explains what to do instead of calling the API. Guests
-// get a sign-in prompt — issue preferences are account-only.
-export const MIN_AUTO_PICK_ISSUES = 3;
+// Below the issue floor the button explains what to do instead of calling
+// the API. Guests see nothing at all — issue preferences are account-only,
+// and a control a new visitor can't use is pure noise on an already-dense
+// election page.
+export { MIN_AUTO_PICK_ISSUES };
 
 type AutoPickControlProps = {
   electionId: string;
@@ -29,32 +35,33 @@ type AutoPickControlProps = {
   /** Smaller pill (measure section's mid-page placement) — the Yes/No pair
    * on the sticky card stays the page's loud control. */
   compact?: boolean;
+  /** Fires after a run that made a pick. The engine scores the whole
+   * roster, not the party-filtered view the button sits under — the page
+   * uses this to clear its filter so the picked card is never hidden. */
+  onPicked?: () => void;
 };
 
-function joinNames(names: string[]): string {
-  if (names.length <= 1) {
-    return names[0] ?? "";
-  }
-  return `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
-}
-
-export function AutoPickControl({ electionId, seatsToFill, compact = false }: AutoPickControlProps) {
+export function AutoPickControl({ electionId, seatsToFill, compact = false, onPicked }: AutoPickControlProps) {
   const { me } = useMe();
   const { preferences, isLoading: preferencesLoading, isError: preferencesError } = useMyResearchAreas();
   const autoPick = useAutoPick();
   const saving = useElectionChoiceSaving();
-  const [prompt, setPrompt] = useState<"sign_in" | "rank_issues" | null>(null);
+  const [prompt, setPrompt] = useState<"rank_issues" | null>(null);
   const [result, setResult] = useState<AutoPickElectionResult | null>(null);
 
   const areaNames = new Map(preferences.map((preference) => [preference.research_area_id, preference.name]));
   const areaName = (researchAreaId: string) => areaNames.get(researchAreaId) ?? "one of your issues";
 
+  // Signed-out (null) and still-resolving (undefined) sessions render
+  // nothing: guests can't rank issues, so the button would only add clutter
+  // for brand-new visitors, and rendering during the resolve would flash it
+  // at them. Signed-in users get it once the session loads.
+  if (me == null) {
+    return null;
+  }
+
   function onClick() {
     setResult(null);
-    if (me === null) {
-      setPrompt("sign_in");
-      return;
-    }
     // The issue-floor prompt only fires on a LOADED list: a failed fetch
     // returns the same empty array, and telling a user with five ranked
     // issues to go rank issues would be wrong — on error the backend's
@@ -66,7 +73,15 @@ export function AutoPickControl({ electionId, seatsToFill, compact = false }: Au
     setPrompt(null);
     autoPick.mutate(
       { election_ids: [electionId], mode: "replace" },
-      { onSuccess: (response) => setResult(response.results[0] ?? null) }
+      {
+        onSuccess: (response) => {
+          const first = response.results[0] ?? null;
+          setResult(first);
+          if (first?.outcome === "picked") {
+            onPicked?.();
+          }
+        },
+      }
     );
   }
 
@@ -88,18 +103,6 @@ export function AutoPickControl({ electionId, seatsToFill, compact = false }: Au
           {autoPick.isPending ? "Picking…" : "Auto-pick by my issues"}
         </button>
       </span>
-      {prompt === "sign_in" ? (
-        <p role="status" className="w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink-mid">
-          Sign up for free to see which candidates align with the issues important to me.{" "}
-          <Link to="/register" className="font-medium underline decoration-dotted underline-offset-2 hover:text-ink">
-            Sign up
-          </Link>{" "}
-          or{" "}
-          <Link to="/login" className="font-medium underline decoration-dotted underline-offset-2 hover:text-ink">
-            sign in
-          </Link>
-        </p>
-      ) : null}
       {prompt === "rank_issues" ? (
         <p role="status" className="w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink-mid">
           Rank at least {MIN_AUTO_PICK_ISSUES} issues first, so the pick reflects what matters to you.{" "}
@@ -136,76 +139,6 @@ type WhyThisPickPanelProps = {
   areaName: (researchAreaId: string) => string;
   onDismiss: () => void;
 };
-
-function candidateName(result: AutoPickElectionResult, candidateId: string): string {
-  return (
-    result.candidates.find((report) => report.candidate_id === candidateId)?.display_name ?? "a candidate"
-  );
-}
-
-// Headline sentence per outcome/reason — the honest summary the spec
-// requires ("no pick" is a normal outcome, and saying why is the feature).
-function summarize(result: AutoPickElectionResult, seatsToFill: number | null): string {
-  // Race-type-independent "couldn't run" reasons come before the fork: a
-  // measure result carries them too (with an empty per-issue list), and
-  // letting the measure branch see one would mislabel a rank-your-issues
-  // problem as a tagging gap.
-  if (result.reason === "too_few_issues") {
-    return `Rank at least ${MIN_AUTO_PICK_ISSUES} issues first, so the pick reflects what matters to you.`;
-  }
-  if (result.reason === "election_closed") {
-    return "This election is no longer open for picks.";
-  }
-  const shortlist = joinNames(result.shortlist_candidate_ids.map((id) => candidateName(result, id)));
-  if (result.race_type === "ballot_measure") {
-    if (result.reason === "veto") {
-      return "Vote No — this measure goes against an issue you drew a line on.";
-    }
-    if (result.measure_position === "yes") {
-      return "Vote Yes — this measure supports your issues overall.";
-    }
-    if (result.measure_position === "no") {
-      return "Vote No — this measure goes against your issues overall.";
-    }
-    // Two distinct "no answer" cases, and the user deserves to know which:
-    // an empty per-issue list means the measure shares no tags with their
-    // ranked issues; a non-empty list with no position means the weighted
-    // sides cancelled out (the chips below show the split).
-    if (result.measure_per_issue.length === 0) {
-      return "No answer — this measure isn't tagged with any of your issues yet.";
-    }
-    return "No answer — this measure helps some of your issues and hurts others about equally, so it's your call.";
-  }
-  if (result.outcome === "picked") {
-    const picked = joinNames(result.picked_candidate_ids.map((id) => candidateName(result, id)));
-    // Multi-seat races can fill fewer seats than they have (a tie or a lack
-    // of evidence for the rest): a "picked" summary that hides the open
-    // seats would read as a finished race.
-    const openSeats = (seatsToFill ?? 1) - result.picked_candidate_ids.length;
-    if (result.reason === "by_elimination") {
-      return `Picked ${picked} by elimination — the rest have records against your issues, and nothing known counts against ${picked}.`;
-    }
-    if (result.reason === "tie") {
-      return `Picked ${picked}; the ${openSeats === 1 ? "last seat is" : `remaining ${openSeats} seats are`} a tie between ${shortlist} — that part is your call.`;
-    }
-    if (openSeats > 0) {
-      return `Picked ${picked} — the best match for your issues. ${openSeats === 1 ? "One seat is" : `${openSeats} seats are`} still open: nothing known separates the other candidates, so those picks are yours to make.`;
-    }
-    return `Picked ${picked} — the best match for your issues.`;
-  }
-  switch (result.reason) {
-    case "tie":
-      return `It's a tie between ${shortlist} on your issues — your call between them.`;
-    case "only_negative_evidence":
-      return result.shortlist_candidate_ids.length > 0
-        ? `Couldn't pick one — narrowed to ${shortlist}: nothing known against them, but nothing for them either.`
-        : "No pick: every candidate with a record here works against your issues.";
-    case "all_vetoed":
-      return "No pick: every candidate goes against one of your musts.";
-    default:
-      return "No pick: none of these candidates has a record on your issues yet.";
-  }
-}
 
 function PerIssueChips({
   perIssue,
@@ -252,7 +185,7 @@ function WhyThisPickPanel({ result, seatsToFill, areaName, onDismiss }: WhyThisP
       className="w-full rounded-xl border border-line bg-surface/50 p-4 text-sm text-ink"
     >
       <div className="flex items-start justify-between gap-2">
-        <p className="font-medium">{summarize(result, seatsToFill)}</p>
+        <p className="font-medium">{summarizeAutoPick(result, seatsToFill)}</p>
         <button
           type="button"
           onClick={onDismiss}

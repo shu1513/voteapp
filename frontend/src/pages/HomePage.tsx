@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@voteapp/api-client";
+import { APP_NAME, apiRequest } from "@voteapp/api-client";
 import type { AddressLocation, AddressResolution } from "@voteapp/api-client";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import { FullAddressExplanation } from "../components/FullAddressExplanation";
@@ -11,6 +11,17 @@ import { clearPendingDistrictIds, savePendingDistrictIds } from "../lib/pendingD
 import { useMe } from "@voteapp/api-client";
 import { TERMS_VERSION } from "@voteapp/api-client";
 import { hasCurrentTermsAcceptance, rememberTermsAcceptance } from "../lib/termsAcceptance";
+
+// Below Tailwind's sm breakpoint the landing swaps the autofocused cursor
+// for the in-box search glyph. matchMedia is absent in SSR and jsdom, where
+// the answer must be "not a phone": the prerendered HTML keeps the autofocus
+// attr and tests keep the desktop default.
+function isPhoneWidth(): boolean {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return false;
+  }
+  return window.matchMedia("(max-width: 639px)").matches;
+}
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 export function HomePage() {
@@ -52,6 +63,66 @@ export function HomePage() {
       navigate("/me/ballot", { replace: true });
     }
   }, [me, oneOffSearch, navigate]);
+
+  // Google-style stray-typing catch: a click on empty page space moves focus
+  // off the address box, and the next keystrokes would silently go nowhere.
+  // A printable key pressed outside any editable field refocuses the box and
+  // the browser then inserts the character there natively (no preventDefault,
+  // no manual value writing). Deliberately narrow:
+  //  - single printable characters only; space is excluded (it scrolls the
+  //    page or activates a focused button, and hijacking it breaks both),
+  //  - no Cmd/Ctrl/Alt chords, no IME composition, nothing already handled,
+  //  - never while typing in an input/textarea/select/contenteditable (the
+  //    address box itself, the chat widget),
+  //  - never from inside any role="dialog" overlay — this page does not own
+  //    them all (TermsRenewalGate for stale signed-in terms, the chat panel
+  //    for signed-in visitors), and a letter pressed on a modal's button must
+  //    not drop focus behind the overlay,
+  //  - never while the terms dialog is open (belt for the case above while
+  //    its focus trap is still settling).
+  // Registered per-render but removed on cleanup, so the listener exists
+  // only while the landing page is mounted.
+  useEffect(() => {
+    function redirectStrayTyping(e: KeyboardEvent) {
+      if (termsOpen || e.defaultPrevented || e.isComposing) {
+        return;
+      }
+      if (e.metaKey || e.ctrlKey || e.altKey) {
+        return;
+      }
+      if (e.key.length !== 1 || e.key === " ") {
+        return;
+      }
+      const target = e.target instanceof HTMLElement ? e.target : null;
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.tagName === "SELECT" ||
+          target.isContentEditable ||
+          target.closest('[role="dialog"]') !== null)
+      ) {
+        return;
+      }
+      document.getElementById("address")?.focus();
+    }
+    document.addEventListener("keydown", redirectStrayTyping);
+    return () => document.removeEventListener("keydown", redirectStrayTyping);
+  }, [termsOpen]);
+
+  // Desktop keeps the Google-style cursor-in-box on load, but via an effect
+  // rather than the autoFocus prop: React SSRs autoFocus as a real autofocus
+  // attribute, which browsers honor before hydration — on phones that meant
+  // a focused box underneath the search glyph (the pre-hydration focus never
+  // reaches React's focused state) plus a server/client markup mismatch. The
+  // markup is now identical everywhere and focus is applied only where it is
+  // wanted: at phone widths the box stays idle so the glyph shows —
+  // Google's mobile pattern (no keyboard over the page).
+  useEffect(() => {
+    if (!isPhoneWidth()) {
+      document.getElementById("address")?.focus();
+    }
+  }, []);
 
   const resolve = useMutation({
     mutationFn: (input: {
@@ -171,29 +242,32 @@ export function HomePage() {
 
   return (
     <>
-      <div className="border-b border-line bg-surface">
-        <div className="mx-auto max-w-2xl px-4 py-10">
-          {/* One sentence, no sub-line: the promise is the whole pitch, and a
-              second paragraph under it only pushed the address field down.
-              text-title interpolates 22 -> 32px with the viewport, so a phone
-              never sees the 30px+ size that once ran six lines and pushed the
-              address field off the fold — and there is no breakpoint jump. */}
-          <h1 className="text-title font-bold">
-            Find out which elections you can vote in — and who the candidates really are by their
-            track records instead of slogans.
-          </h1>
-          {/* What the service is, where a first-time visitor actually looks.
-              It used to sit in the footer, under the fold, where it repeated
-              the disclaimer link beside it and told nobody anything. */}
-          {/* Left-aligned like the headline and the form: one alignment axis
-              for the whole hero (a lone centred line under a left rag read as
-              a mistake). Size and ink-mid — not alignment — set it apart as a
-              standalone claim; ink-soft was too faint for a line that has to
-              be read in full (APCA Lc 74 at 14px). */}
-          <p className="mt-3 text-base font-medium text-ink-mid">
-            Independent, nonpartisan, AI-assisted election research with linked sources.
-          </p>
-        </div>
+      {/* Google-style masthead: the wordmark moved out of the shared header
+          (App.tsx hides it on "/" only) and sits centred above the pitch, so
+          the landing reads as one white canvas — the grey band and its border
+          are gone, and there is one brand mark, not a big one plus a small
+          duplicate in the corner. */}
+      <div className="mx-auto max-w-2xl px-4 pt-6 text-center sm:pt-8">
+        {/* Not a link (it would link to this page) and not a heading (the h1
+            is the pitch, and two h1-ish marks would fight). text-wordmark
+            interpolates 32 -> 52px — a text wordmark this long can't carry
+            Google's ~90px image-logo scale without wrapping on phones. */}
+        <p className="text-wordmark font-extrabold tracking-tight text-rausch">{APP_NAME}</p>
+        {/* One sentence, still the whole pitch. text-title (22 -> 32px) keeps
+            a clear step below the wordmark; text-balance stops the centred
+            wrap from ragging into a one-word last line. */}
+        <h1 className="mt-6 text-balance text-title font-bold">
+          See how much power your vote has and who the candidates really are by their track
+          records instead of their marketing.
+        </h1>
+        {/* What the service is, where a first-time visitor actually looks.
+            Centred with the rest of the masthead — one alignment axis for
+            mark, pitch, and claim; the form below keeps its own left-aligned
+            label/input convention. Size and ink-mid set it apart as a
+            standalone claim (ink-soft failed APCA for a must-read line). */}
+        <p className="mt-3 text-base font-medium text-ink-mid">
+          Independent, nonpartisan, AI-assisted election research with linked sources.
+        </p>
       </div>
       <div className="mx-auto max-w-2xl px-4 py-8">
         <form onSubmit={onSubmit} className="space-y-4">
@@ -221,7 +295,7 @@ export function HomePage() {
                 setRegionUnsupported(granularity === "region" && !region);
               }}
               onRetrievePendingChange={setRetrievePending}
-              placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
+              searchIconWhenIdle
             />
             {/* text-sm + the deep brand step: the 12px/rausch-dark pairing
                 failed APCA for an error the visitor must act on. */}

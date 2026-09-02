@@ -1,7 +1,16 @@
 import type { FinanceSummary } from "./types";
 
 const FINANCE_SOURCE_HOME_URLS: Partial<Record<FinanceSummary["source"], string>> = {
+  // Alabama FCPA committee pages are POST/session driven, so the card's
+  // provenance fallback points at the portal home page instead.
+  ALABAMA_FCPA: "https://fcpa.alabamavotes.gov/",
   MISSOURI_MEC: "https://www.mec.mo.gov/MEC/Campaign_Finance/",
+  // Montana CERS deep links are POST/session driven, so the card's
+  // provenance fallback points at the COPP home page instead.
+  MONTANA_COPP: "https://politicalpractices.mt.gov/",
+  // Nevada filers with loans get no breakdown rows (loan rows are unflagged in
+  // the CSV), so the card needs this portal fallback for its provenance link.
+  NEVADA_AURORA: "https://www.nvsos.gov/SOSCandidateServices/AnonymousAccess/CEFDSearchUU/Search.aspx",
   NEW_HAMPSHIRE_CFS: "https://cfs.sos.nh.gov/",
 };
 

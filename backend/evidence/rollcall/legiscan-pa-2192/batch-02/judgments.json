@@ -1,0 +1,580 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1587838,
+   "measure_id": "HB 1088",
+   "vote_date": "2025-06-10",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1088. It would have made health insurers cover a blood pressure monitor for a patient who is pregnant or has just given birth, once per pregnancy, when a doctor says it is needed. The Pennsylvania House passed it 143-60. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1088. It would have made health insurers cover a blood pressure monitor for a patient who is pregnant or has just given birth, once per pregnancy, when a doctor says it is needed. The Pennsylvania House passed it 143-60. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1597017,
+   "measure_id": "HB 1234",
+   "vote_date": "2025-07-01",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1234. It would have made Medicaid and the state children's health plan give a patient a home blood pressure monitor for each pregnancy, and for the period after giving birth, when a doctor says it is needed. The Pennsylvania House passed it 147-55. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1234. It would have made Medicaid and the state children's health plan give a patient a home blood pressure monitor for each pregnancy, and for the period after giving birth, when a doctor says it is needed. The Pennsylvania House passed it 147-55. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1689869,
+   "measure_id": "HB 1104",
+   "vote_date": "2026-04-27",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1104. It would have capped at $200 what a patient can be charged for an electronic copy of their own medical records. The Pennsylvania House passed it 133-67. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1104. It would have capped at $200 what a patient can be charged for an electronic copy of their own medical records. The Pennsylvania House passed it 133-67. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1594990,
+   "measure_id": "HB 1445",
+   "vote_date": "2025-06-25",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1445. It would have stopped health insurers refusing to cover care just because a student got it at school. Insurers could still say no if the provider was not licensed, or was doing work they are not trained for. They could also say no if the care was not medically needed, if it broke the insurer's own paperwork rules, or if the school was already required by law to provide it for a student with a disability. The Pennsylvania House passed it 102-101. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1445. It would have stopped health insurers refusing to cover care just because a student got it at school. Insurers could still say no if the provider was not licensed, or was doing work they are not trained for. They could also say no if the care was not medically needed, if it broke the insurer's own paperwork rules, or if the school was already required by law to provide it for a student with a disability. The Pennsylvania House passed it 102-101. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1525865,
+   "measure_id": "HB 404",
+   "vote_date": "2025-03-25",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 404. It would have put into state law the right to stay on a parent's health insurance until age 26. Unmarried children who cannot support themselves because of a disability would stay covered with no age limit. It was a backup in case the matching federal rule is repealed or goes unenforced. The Pennsylvania House passed it 123-79. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 404. It would have put into state law the right to stay on a parent's health insurance until age 26. Unmarried children who cannot support themselves because of a disability would stay covered with no age limit. It was a backup in case the matching federal rule is repealed or goes unenforced. The Pennsylvania House passed it 123-79. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1525888,
+   "measure_id": "HB 535",
+   "vote_date": "2025-03-25",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 535. It would have barred insurers from capping how much they pay out for core benefits in a year or over a lifetime. It was a backup: it would only kick in if the matching federal protection were repealed, struck down or left unenforced. The insurance commissioner could fine a company up to $5,000 per violation, or $10,000 if it was deliberate. The Pennsylvania House passed it 121-81. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 535. It would have barred insurers from capping how much they pay out for core benefits in a year or over a lifetime. It was a backup: it would only kick in if the matching federal protection were repealed, struck down or left unenforced. The insurance commissioner could fine a company up to $5,000 per violation, or $10,000 if it was deliberate. The Pennsylvania House passed it 121-81. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1526102,
+   "measure_id": "HB 618",
+   "vote_date": "2025-03-25",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 618. It would have barred insurers from using a health problem someone already has to decide who can enroll, to deny a covered benefit, or to charge more than other similar customers pay. It was a backup: it would only kick in if the matching federal protection were repealed, struck down or left unenforced. The Pennsylvania House passed it 125-77. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 618. It would have barred insurers from using a health problem someone already has to decide who can enroll, to deny a covered benefit, or to charge more than other similar customers pay. It was a backup: it would only kick in if the matching federal protection were repealed, struck down or left unenforced. The Pennsylvania House passed it 125-77. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1526055,
+   "measure_id": "HB 755",
+   "vote_date": "2025-03-25",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 755. It would have made health plans cover preventive care at no cost to the patient. That means no copay, no deductible and no coinsurance. Covered care included screenings that the federal preventive services task force rates highly. It also included shots the federal vaccine advisory board recommends, plus federal care guidelines for women, infants and children. The rule was a backup. It would only start if the matching federal rule were repealed, struck down or left unenforced. The Pennsylvania House passed it 133-69. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 755. It would have made health plans cover preventive care at no cost to the patient. That means no copay, no deductible and no coinsurance. Covered care included screenings that the federal preventive services task force rates highly. It also included shots the federal vaccine advisory board recommends, plus federal care guidelines for women, infants and children. The rule was a backup. It would only start if the matching federal rule were repealed, struck down or left unenforced. The Pennsylvania House passed it 133-69. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1604367,
+   "measure_id": "HB 1828",
+   "vote_date": "2025-10-29",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1828. It would have made health insurers cover certain vaccines at no cost to the patient, with no copay, deductible or coinsurance. The insurance department, working with the health department, could add or drop a vaccine and set how often it is given. The Pennsylvania House passed it 104-99. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1828. It would have made health insurers cover certain vaccines at no cost to the patient, with no copay, deductible or coinsurance. The insurance department, working with the health department, could add or drop a vaccine and set how often it is given. The Pennsylvania House passed it 104-99. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1594240,
+   "measure_id": "HB 583",
+   "vote_date": "2025-06-24",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 583. It would have made the state restore adult dental coverage under Medicaid for people 21 and older, at least back to what was covered before September 2011. If money ran short, the state could cover fewer services until funding was there. The Pennsylvania House passed it 154-49. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 583. It would have made the state restore adult dental coverage under Medicaid for people 21 and older, at least back to what was covered before September 2011. If money ran short, the state could cover fewer services until funding was there. The Pennsylvania House passed it 154-49. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1584057,
+   "measure_id": "HB 282",
+   "vote_date": "2025-06-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 282. It would have used Medicaid to start addiction treatment and case management for people in county jails in the weeks before they get out. Counties could join if they wanted, and the federal government had to approve it first. The Pennsylvania House passed it 153-50. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 282. It would have used Medicaid to start addiction treatment and case management for people in county jails in the weeks before they get out. Counties could join if they wanted, and the federal government had to approve it first. The Pennsylvania House passed it 153-50. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1710973,
+   "measure_id": "HB 1127",
+   "vote_date": "2026-06-23",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1127. It would have joined Pennsylvania to a multi-state agreement that lets dentists and dental hygienists licensed in another member state work here. To join, the state had to share licensing data, run criminal background checks, and look into complaints about those dentists and hygienists. The Pennsylvania House passed it 136-66. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1127. It would have joined Pennsylvania to a multi-state agreement that lets dentists and dental hygienists licensed in another member state work here. To join, the state had to share licensing data, run criminal background checks, and look into complaints about those dentists and hygienists. The Pennsylvania House passed it 136-66. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1610617,
+   "measure_id": "HB 1881",
+   "vote_date": "2025-12-16",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1881. It would have given pharmacy technicians who have worked at least a year more time before they must register with the state board. It would also have let the federal Centers for Disease Control and Prevention, or another approved body, set the rules pharmacists follow when giving shots. Any state health decision had to rest on medical evidence and improve public health. The Pennsylvania House passed it 106-97. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1881. It would have given pharmacy technicians who have worked at least a year more time before they must register with the state board. It would also have let the federal Centers for Disease Control and Prevention, or another approved body, set the rules pharmacists follow when giving shots. Any state health decision had to rest on medical evidence and improve public health. The Pennsylvania House passed it 106-97. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1583926,
+   "measure_id": "HB 1140",
+   "vote_date": "2025-06-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1140. It would have made health insurers, Medicaid and the state children's health plan cover birth control. It also covered sterilization for adults who choose it. Coverage applied when a doctor says it is needed. It reached every birth control drug, device and product approved by the federal Food and Drug Administration that a patient can get a prescription for. Over-the-counter emergency and daily pills were included. The Pennsylvania House passed it 116-87. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1140. It would have made health insurers, Medicaid and the state children's health plan cover birth control. It also covered sterilization for adults who choose it. Coverage applied when a doctor says it is needed. It reached every birth control drug, device and product approved by the federal Food and Drug Administration that a patient can get a prescription for. Over-the-counter emergency and daily pills were included. The Pennsylvania House passed it 116-87. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1610729,
+   "measure_id": "HB 1957",
+   "vote_date": "2025-12-17",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1957. It was a proposed change to the state constitution. It would have written into the state's bill of rights a basic right to decide your own reproductive care. That covers preventing, continuing or ending a pregnancy, and choosing or refusing birth control and fertility treatment. The state could still regulate abortion once a fetus could survive outside the womb, but not when the pregnant person's life or health was at risk. A change to Pennsylvania's constitution must pass the legislature in two sessions in a row and then be approved by voters. This was the first of the two. The Pennsylvania House passed it 102-101. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1957. It was a proposed change to the state constitution. It would have written into the state's bill of rights a basic right to decide your own reproductive care. That covers preventing, continuing or ending a pregnancy, and choosing or refusing birth control and fertility treatment. The state could still regulate abortion once a fetus could survive outside the womb, but not when the pregnant person's life or health was at risk. A change to Pennsylvania's constitution must pass the legislature in two sessions in a row and then be approved by voters. This was the first of the two. The Pennsylvania House passed it 102-101. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1708697,
+   "measure_id": "HB 836",
+   "vote_date": "2026-06-09",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 836. It would have barred state agencies from adopting any policy that gets in the way of fertility treatment. That includes in vitro fertilization and similar procedures used to help someone get pregnant. The Pennsylvania House passed it 147-55. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 836. It would have barred state agencies from adopting any policy that gets in the way of fertility treatment. That includes in vitro fertilization and similar procedures used to help someone get pregnant. The Pennsylvania House passed it 147-55. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1595333,
+   "measure_id": "HB 1100",
+   "vote_date": "2025-06-26",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1100. It would have made two state departments ask the federal government for permission, if federal rules ever change to allow it. The permission would let people on food stamps, and on the WIC program for women, infants and children, use their benefits to buy diapers and period products. The Pennsylvania House passed it 138-64. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1100. It would have made two state departments ask the federal government for permission, if federal rules ever change to allow it. The permission would let people on food stamps, and on the WIC program for women, infants and children, use their benefits to buy diapers and period products. The Pennsylvania House passed it 138-64. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1603652,
+   "measure_id": "HB 145",
+   "vote_date": "2025-10-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 145. It would have let workers who are off the job because of a strike or lockout collect unemployment benefits. It said those workers have not quit voluntarily, and it removed the current limits on their eligibility. The Pennsylvania House passed it 106-97. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 145. It would have let workers who are off the job because of a strike or lockout collect unemployment benefits. It said those workers have not quit voluntarily, and it removed the current limits on their eligibility. The Pennsylvania House passed it 106-97. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1566384,
+   "measure_id": "HB 265",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 265. It would have let school support staff, such as aides, bus drivers and cafeteria workers, collect unemployment benefits over summer break. Right now they cannot, if they have been told they will have their job back in the fall. The Pennsylvania House passed it 105-98. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 265. It would have let school support staff, such as aides, bus drivers and cafeteria workers, collect unemployment benefits over summer break. Right now they cannot, if they have been told they will have their job back in the fall. The Pennsylvania House passed it 105-98. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1669744,
+   "measure_id": "HB 200",
+   "vote_date": "2026-03-25",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 200. It would have created a state family and medical leave law, requiring employers to give covered workers family and medical leave benefits. The state labor department would run it, and the definition of worker included self-employed people. The Pennsylvania House passed it 107-92. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 200. It would have created a state family and medical leave law, requiring employers to give covered workers family and medical leave benefits. The state labor department would run it, and the definition of worker included self-employed people. The Pennsylvania House passed it 107-92. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1518370,
+   "measure_id": "HB 111",
+   "vote_date": "2025-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 111. It would have stopped life insurers acting against someone just because records show they picked up a prescription for naloxone, the overdose antidote. An insurer could not deny, cancel or refuse to renew coverage, cut it back, or charge that person a different price. Breaking the rule would count as unfair discrimination. The Pennsylvania House passed it 153-49. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 111. It would have stopped life insurers acting against someone just because records show they picked up a prescription for naloxone, the overdose antidote. An insurer could not deny, cancel or refuse to renew coverage, cut it back, or charge that person a different price. Breaking the rule would count as unfair discrimination. The Pennsylvania House passed it 153-49. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1603197,
+   "measure_id": "HB 1593",
+   "vote_date": "2025-09-30",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1593. It would have required a background check on every private gun sale. Today the check is required only for handguns and other short-barreled guns. The bill deleted that exception, so a private sale would face the same check as a sale by a licensed dealer. The Pennsylvania House passed it 104-99. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1593. It would have required a background check on every private gun sale. Today the check is required only for handguns and other short-barreled guns. The bill deleted that exception, so a private sale would face the same check as a sale by a licensed dealer. The Pennsylvania House passed it 104-99. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1603195,
+   "measure_id": "HB 1099",
+   "vote_date": "2025-09-30",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1099. It would have made it a felony, the most serious class of crime, to make, import, sell, ship, deliver, own, transfer or receive an undetectable gun. That means a gun made entirely of non-metal parts. It also means one with so little metal in the barrel, slide, cylinder, frame or receiver that a walk-through metal detector or normal airport screening would miss it. The measure failed in the Pennsylvania House 101-102.",
+   "nay_description": "Voted against House Bill 1099. It would have made it a felony, the most serious class of crime, to make, import, sell, ship, deliver, own, transfer or receive an undetectable gun. That means a gun made entirely of non-metal parts. It also means one with so little metal in the barrel, slide, cylinder, frame or receiver that a walk-through metal detector or normal airport screening would miss it. The measure failed in the Pennsylvania House 101-102.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1603200,
+   "measure_id": "HB 1859",
+   "vote_date": "2025-09-30",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1859. It would have created what are often called red flag orders. A judge could bar someone from having, buying or receiving a gun after finding they pose a serious risk of killing themselves, or of killing or badly hurting someone else. The bill said who could ask the court for an order and how the hearing would work. The measure failed in the Pennsylvania House 101-102.",
+   "nay_description": "Voted against House Bill 1859. It would have created what are often called red flag orders. A judge could bar someone from having, buying or receiving a gun after finding they pose a serious risk of killing themselves, or of killing or badly hurting someone else. The bill said who could ask the court for an order and how the hearing would work. The measure failed in the Pennsylvania House 101-102.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1603202,
+   "measure_id": "HB 1866",
+   "vote_date": "2025-10-01",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1866. It would have banned machine gun conversion devices by adding them to the list of illegal weapons. Those are parts that make a semiautomatic gun fire as fast as a machine gun. Making, repairing, selling, dealing in, using or possessing one would have been a crime carrying up to five years in prison. The measure failed in the Pennsylvania House 101-102.",
+   "nay_description": "Voted against House Bill 1866. It would have banned machine gun conversion devices by adding them to the list of illegal weapons. Those are parts that make a semiautomatic gun fire as fast as a machine gun. Making, repairing, selling, dealing in, using or possessing one would have been a crime carrying up to five years in prison. The measure failed in the Pennsylvania House 101-102.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1669620,
+   "measure_id": "HB 1800",
+   "vote_date": "2026-03-25",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1800. It would have defined marriage in state law as a contract between two people. It would also have repealed the section of state law that still bars marriage between two people of the same sex. The Pennsylvania House passed it 127-72. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1800. It would have defined marriage in state law as a contract between two people. It would also have repealed the section of state law that still bars marriage between two people of the same sex. The Pennsylvania House passed it 127-72. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1690438,
+   "measure_id": "HB 2103",
+   "vote_date": "2026-04-28",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 2103. It would have banned discrimination in jobs, housing and public places like stores and restaurants. The ban covered a person's sexual orientation and their gender identity or expression, whether real or assumed. It would also have closed a loophole for private clubs. A club could no longer bar members by race, color, national origin or ancestry in order to shut people out. Churches and other tax-exempt religious groups were protected by a religious freedom clause. Rented rooms in someone's home, rooming houses where the landlord lives, and single-sex dorm rooms were left out. Employers could still set dress and grooming rules. But a worker had to be allowed to follow the version that matched their gender identity or expression. The Pennsylvania House passed it 101-100. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 2103. It would have banned discrimination in jobs, housing and public places like stores and restaurants. The ban covered a person's sexual orientation and their gender identity or expression, whether real or assumed. It would also have closed a loophole for private clubs. A club could no longer bar members by race, color, national origin or ancestry in order to shut people out. Churches and other tax-exempt religious groups were protected by a religious freedom clause. Rented rooms in someone's home, rooming houses where the landlord lives, and single-sex dorm rooms were left out. Employers could still set dress and grooming rules. But a worker had to be allowed to follow the version that matched their gender identity or expression. The Pennsylvania House passed it 101-100. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1593902,
+   "measure_id": "HB 350",
+   "vote_date": "2025-06-23",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 350. It would have set one clear set of rules for deciding who counts as a child's legal parent. The rules would apply the same to every child, whatever the parents' marital status or gender, and however the child was born. It also covered signing up as a parent voluntarily, genetic testing, and court cases to settle parentage. The Pennsylvania House passed it 112-91. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 350. It would have set one clear set of rules for deciding who counts as a child's legal parent. The rules would apply the same to every child, whatever the parents' marital status or gender, and however the child was born. It also covered signing up as a parent voluntarily, genetic testing, and court cases to settle parentage. The Pennsylvania House passed it 112-91. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1564857,
+   "measure_id": "HB 630",
+   "vote_date": "2025-05-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 630. It would have widened the state equal pay law to cover pay gaps based on race and ethnicity. It also dropped an exemption for workers already covered by federal wage law. The bill listed when a pay gap is still allowed, such as a seniority or merit system. It would have stopped employers from barring workers from talking about their own pay. It would also have stopped them using a job seeker's past pay to set an offer. The Pennsylvania House passed it 102-101. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 630. It would have widened the state equal pay law to cover pay gaps based on race and ethnicity. It also dropped an exemption for workers already covered by federal wage law. The bill listed when a pay gap is still allowed, such as a seniority or merit system. It would have stopped employers from barring workers from talking about their own pay. It would also have stopped them using a job seeker's past pay to set an offer. The Pennsylvania House passed it 102-101. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1691559,
+   "measure_id": "HB 72",
+   "vote_date": "2026-04-29",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 72. It would have let a tenant who is a victim of violence break a lease early, get the locks changed, and be protected from landlord retaliation. The tenant had to qualify, need to move because of the crime, and give the landlord notice on a form from the state Office of Victim Advocate. The Pennsylvania House passed it 118-83. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 72. It would have let a tenant who is a victim of violence break a lease early, get the locks changed, and be protected from landlord retaliation. The tenant had to qualify, need to move because of the crime, and give the landlord notice on a form from the state Office of Victim Advocate. The Pennsylvania House passed it 118-83. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1610620,
+   "measure_id": "HB 1825",
+   "vote_date": "2025-12-16",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1825. It would have required employers to write down their policies for preventing harassment, discrimination and retaliation at work. The state Human Relations Commission would publish model policies and look into complaints. A first violation drew a fine of $500 to $1,000, waived if the employer fixed it quickly. Later violations drew $1,000 to $5,000. A second fine would be waived only if the problem was failing to update a policy after the law changed. The Pennsylvania House passed it 110-93. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1825. It would have required employers to write down their policies for preventing harassment, discrimination and retaliation at work. The state Human Relations Commission would publish model policies and look into complaints. A first violation drew a fine of $500 to $1,000, waived if the employer fixed it quickly. Later violations drew $1,000 to $5,000. A second fine would be waived only if the problem was failing to update a policy after the law changed. The Pennsylvania House passed it 110-93. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1588926,
+   "measure_id": "HB 1549",
+   "vote_date": "2025-06-11",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1549. It would have raised Pennsylvania's minimum wage above the $7.25 federal floor for the first time since 2007. The new rate depended on the county. Philadelphia would reach $15 an hour in 2026. Larger counties would go from $12 to $15 by 2028. The rest of the state would go from $10 to $12 by 2028. Starting in 2029 the rates would rise with inflation each year. Tipped workers were guaranteed 60% of their county's rate. The Pennsylvania House passed it 102-101. As of August 2026 the Senate had not voted on it.",
+   "nay_description": "Voted against House Bill 1549. It would have raised Pennsylvania's minimum wage above the $7.25 federal floor for the first time since 2007. The new rate depended on the county. Philadelphia would reach $15 an hour in 2026. Larger counties would go from $12 to $15 by 2028. The rest of the state would go from $10 to $12 by 2028. Starting in 2029 the rates would rise with inflation each year. Tipped workers were guaranteed 60% of their county's rate. The Pennsylvania House passed it 102-101. As of August 2026 the Senate had not voted on it.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

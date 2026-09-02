@@ -16,6 +16,7 @@ import {
   formatSourceHost,
   formatVotePowerLabel,
   formatWinnerNames,
+  groupSourcesByHost,
   sortContributionSizeBuckets,
 } from "./format";
 import type { FinanceOutsideIndustryEvidence } from "./types";
@@ -100,6 +101,26 @@ describe("formatSourceHost", () => {
   });
 });
 
+describe("groupSourcesByHost", () => {
+  it("names each host once in first-seen order and keeps every distinct URL", () => {
+    expect(
+      groupSourcesByHost([
+        "https://elections.ny.gov/certification-2026",
+        "https://ballotpedia.org/New_York",
+        "https://elections.ny.gov/certification-2026",
+        "https://www.elections.ny.gov/ballot-certifications",
+      ])
+    ).toEqual([
+      {
+        host: "elections.ny.gov",
+        urls: ["https://elections.ny.gov/certification-2026", "https://www.elections.ny.gov/ballot-certifications"],
+      },
+      { host: "ballotpedia.org", urls: ["https://ballotpedia.org/New_York"] },
+    ]);
+    expect(groupSourcesByHost([])).toEqual([]);
+  });
+});
+
 describe("formatVotePowerLabel", () => {
   it("maps known labels and passes unknown ones through untouched", () => {
     expect(formatVotePowerLabel("very_low")).toBe("Very low");
@@ -151,9 +172,14 @@ describe("financeSourceLabel", () => {
     expect(financeSourceLabel("NORTH_CAROLINA_SBE")).toBe("North Carolina State Board of Elections");
     expect(financeSourceLabel("GEORGIA_ETHICS")).toBe("Georgia Ethics Commission");
     expect(financeSourceLabel("MISSOURI_MEC")).toBe("Missouri Ethics Commission");
+    expect(financeSourceLabel("MONTANA_COPP")).toBe("Montana Commissioner of Political Practices");
+    expect(financeSourceLabel("ALABAMA_FCPA")).toBe("Alabama FCPA Reporting System");
+    expect(financeSourceLabel("DELAWARE_CFRS")).toBe("Delaware Campaign Finance Reporting System");
+    expect(financeSourceLabel("NEVADA_AURORA")).toBe("Nevada Secretary of State");
     expect(financeSourceLabel("NEW_HAMPSHIRE_CFS")).toBe("New Hampshire Campaign Finance System");
     expect(financeSourceLabel("MISSISSIPPI_SOS")).toBe("Mississippi Secretary of State");
     expect(financeSourceLabel("RHODE_ISLAND_ERTS")).toBe("Rhode Island Board of Elections");
+    expect(financeSourceLabel("SOUTH_CAROLINA_CAMPAIGN_FINANCE")).toBe("South Carolina State Ethics Commission");
     expect(financeSourceLabel("SAN_FRANCISCO_ETHICS")).toBe("San Francisco Ethics Commission");
     expect(financeSourceLabel("PHOENIX_CITY_CLERK")).toBe("City of Phoenix City Clerk Department");
     expect(financeSourceLabel("SAN_DIEGO_CITY_CLERK")).toBe("City of San Diego Office of the City Clerk");

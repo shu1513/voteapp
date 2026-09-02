@@ -3,6 +3,32 @@ import { apiRequest } from "./client";
 import type { AutoPickRequest, AutoPicksResult, ElectionChoice, ElectionChoicesResult, ElectionChoiceUpdate } from "./types";
 import { useMe } from "./useMe";
 
+/** A race counts as decided with at least one candidate pick or a measure
+ * position — the one shared definition behind the pick-progress counters,
+ * the district gate's decided-race safety valve, and the ballot cards'
+ * "My pick" chips, on both platforms. */
+export function isDecidedChoice(choice: ElectionChoice | undefined): boolean {
+  return choice !== undefined && (choice.picks.length > 0 || choice.measure_position !== null);
+}
+
+// "My pick: Jane Doe" / "My picks: Jane Doe, John Roe" (multi-seat) /
+// "My pick: Yes" on a measure. First person throughout, because these labels
+// echo the controls that set them — MeasureChoiceButtons is headed "My
+// pick:" and the candidate button reads "My pick". A pick whose candidate
+// has since withdrawn gets flagged inline instead of vanishing.
+export function formatChoiceLabel(choice: ElectionChoice): string | null {
+  if (choice.measure_position !== null) {
+    return `My pick: ${choice.measure_position === "yes" ? "Yes" : "No"}`;
+  }
+  if (choice.picks.length === 0) {
+    return null;
+  }
+  const names = choice.picks
+    .map((pick) => (pick.candidacy_status === "withdrawn" ? `${pick.display_name} (withdrew)` : pick.display_name))
+    .join(", ");
+  return `${choice.picks.length === 1 ? "My pick" : "My picks"}: ${names}`;
+}
+
 /**
  * The session holder's planned votes ("my choice"), keyed by election.
  * Unlike follows this endpoint is not verification-gated: any logged-in

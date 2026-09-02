@@ -1,0 +1,611 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "CA",
+  "entries": [
+    {
+      "people_id": 1507,
+      "candidate_id": null,
+      "note": "Anna Caballero: no Nov-2026 candidacy on file; senate-14 has other candidates on file"
+    },
+    {
+      "people_id": 1551,
+      "candidate_id": "c4a5a088-851e-4770-a126-b62af1f6050a",
+      "note": null
+    },
+    {
+      "people_id": 1603,
+      "candidate_id": "34b907e0-9937-404c-8e81-3343b11a130e",
+      "note": null
+    },
+    {
+      "people_id": 11611,
+      "candidate_id": null,
+      "note": "Shannon Grove: no Nov-2026 candidacy on file; senate-12 has other candidates on file"
+    },
+    {
+      "people_id": 14116,
+      "candidate_id": null,
+      "note": "Al Muratsuchi: no Nov-2026 candidacy on file; house-66 has other candidates on file"
+    },
+    {
+      "people_id": 14118,
+      "candidate_id": null,
+      "note": "Sharon Quirk-Silva: no Nov-2026 candidacy on file; house-67 has no election on file"
+    },
+    {
+      "people_id": 16221,
+      "candidate_id": null,
+      "note": "Brian Jones: no Nov-2026 candidacy on file; senate-40 has other candidates on file"
+    },
+    {
+      "people_id": 16287,
+      "candidate_id": null,
+      "note": "James Gallagher: no Nov-2026 candidacy on file; house-3 has no election on file"
+    },
+    {
+      "people_id": 16288,
+      "candidate_id": null,
+      "note": "Mike Gipson: no Nov-2026 candidacy on file; house-65 has no election on file"
+    },
+    {
+      "people_id": 16291,
+      "candidate_id": null,
+      "note": "Jacqui Irwin: no Nov-2026 candidacy on file; house-42 has other candidates on file"
+    },
+    {
+      "people_id": 16293,
+      "candidate_id": null,
+      "note": "Tom Lackey: no Nov-2026 candidacy on file; house-34 has no election on file"
+    },
+    {
+      "people_id": 16304,
+      "candidate_id": null,
+      "note": "Benjamin Allen: no Nov-2026 candidacy on file; senate-24 has other candidates on file"
+    },
+    {
+      "people_id": 16308,
+      "candidate_id": null,
+      "note": "Mike McGuire: no Nov-2026 candidacy on file; senate-2 has other candidates on file"
+    },
+    {
+      "people_id": 18063,
+      "candidate_id": null,
+      "note": "Steven Choi: no Nov-2026 candidacy on file; senate-37 has no election on file"
+    },
+    {
+      "people_id": 18064,
+      "candidate_id": null,
+      "note": "Eloise Reyes: no Nov-2026 candidacy on file; senate-29 has no election on file"
+    },
+    {
+      "people_id": 18065,
+      "candidate_id": "0b5304b3-e505-4b86-bc15-8e5ca7116800",
+      "note": null
+    },
+    {
+      "people_id": 18066,
+      "candidate_id": "6078d6ce-42b4-45e9-81ad-18fe7a0fd4ee",
+      "note": null
+    },
+    {
+      "people_id": 18067,
+      "candidate_id": "8106a6ea-2e7e-4e63-82d3-b74525c1e223",
+      "note": null
+    },
+    {
+      "people_id": 18068,
+      "candidate_id": null,
+      "note": "Scott Wiener: no Nov-2026 candidacy on file; senate-11 has no election on file"
+    },
+    {
+      "people_id": 18069,
+      "candidate_id": "229f63b1-7a68-4bf6-9280-49b0598e999f",
+      "note": null
+    },
+    {
+      "people_id": 18070,
+      "candidate_id": null,
+      "note": "Henry Stern: no Nov-2026 candidacy on file; senate-27 has no election on file"
+    },
+    {
+      "people_id": 18072,
+      "candidate_id": null,
+      "note": "Tim Grayson: no Nov-2026 candidacy on file; senate-9 has no election on file"
+    },
+    {
+      "people_id": 18073,
+      "candidate_id": "25a3e855-56f4-46a8-88fa-6d1943fef103",
+      "note": null
+    },
+    {
+      "people_id": 18075,
+      "candidate_id": null,
+      "note": "Monique Limon: no Nov-2026 candidacy on file; senate-19 has no election on file"
+    },
+    {
+      "people_id": 18078,
+      "candidate_id": "74ae7b3a-f166-4eb7-827b-f7edad73ca29",
+      "note": null
+    },
+    {
+      "people_id": 18079,
+      "candidate_id": null,
+      "note": "Sabrina Cervantes: no Nov-2026 candidacy on file; senate-31 has no election on file"
+    },
+    {
+      "people_id": 19459,
+      "candidate_id": null,
+      "note": "Joaquin Arambula: no Nov-2026 candidacy on file; house-31 has no election on file"
+    },
+    {
+      "people_id": 19658,
+      "candidate_id": "bcbba1ad-b4ba-4501-94fa-f4efafddf8f2",
+      "note": null
+    },
+    {
+      "people_id": 19716,
+      "candidate_id": "ecc3ffa4-db78-4cf7-a7b6-051d6db2ebe9",
+      "note": null
+    },
+    {
+      "people_id": 19717,
+      "candidate_id": "2a1fe152-dd7b-4f22-81aa-bdeee7e5659a",
+      "note": null
+    },
+    {
+      "people_id": 19719,
+      "candidate_id": "bf147fda-d76f-41ae-81ce-bd4d469e1556",
+      "note": null
+    },
+    {
+      "people_id": 19720,
+      "candidate_id": "02ca88c5-195e-4d78-8743-ecba14135220",
+      "note": null
+    },
+    {
+      "people_id": 19721,
+      "candidate_id": "76269876-e00e-47cf-9e54-38d604ef8b10",
+      "note": null
+    },
+    {
+      "people_id": 19723,
+      "candidate_id": "1651f437-ce1e-4615-8fd1-145b0672bd33",
+      "note": null
+    },
+    {
+      "people_id": 19725,
+      "candidate_id": "a35be13d-df31-461a-acf7-6e13096b3900",
+      "note": null
+    },
+    {
+      "people_id": 19726,
+      "candidate_id": null,
+      "note": "Maria Durazo: no Nov-2026 candidacy on file; senate-26 has other candidates on file"
+    },
+    {
+      "people_id": 19727,
+      "candidate_id": "25688081-7b87-4e7e-b5d1-a88c400d6828",
+      "note": null
+    },
+    {
+      "people_id": 19728,
+      "candidate_id": null,
+      "note": "Tom Umberg: no Nov-2026 candidacy on file; senate-34 has other candidates on file"
+    },
+    {
+      "people_id": 19733,
+      "candidate_id": "ac78f2fc-1915-45c3-a74f-d3f681f3de61",
+      "note": null
+    },
+    {
+      "people_id": 21374,
+      "candidate_id": null,
+      "note": "Lena Gonzalez: no Nov-2026 candidacy on file; senate-33 has no election on file"
+    },
+    {
+      "people_id": 21440,
+      "candidate_id": null,
+      "note": "Megan Dahle: no Nov-2026 candidacy on file; senate-1 has no election on file"
+    },
+    {
+      "people_id": 21717,
+      "candidate_id": "0cecc2ec-4e41-4258-bbc9-b7c94deedab6",
+      "note": null
+    },
+    {
+      "people_id": 21718,
+      "candidate_id": "9f1f0e91-ba9f-4fff-9f23-eb908a05ff6b",
+      "note": null
+    },
+    {
+      "people_id": 21719,
+      "candidate_id": "ea263b64-eb25-473f-9148-36dbc7b71215",
+      "note": null
+    },
+    {
+      "people_id": 21720,
+      "candidate_id": "fcb0f46c-8f3e-4434-ac46-b5df7648f3e0",
+      "note": null
+    },
+    {
+      "people_id": 21723,
+      "candidate_id": "00f6786f-982e-43ef-b780-4f1742df419d",
+      "note": null
+    },
+    {
+      "people_id": 21724,
+      "candidate_id": null,
+      "note": "Josh Becker: no Nov-2026 candidacy on file; senate-13 has no election on file"
+    },
+    {
+      "people_id": 21725,
+      "candidate_id": null,
+      "note": "Dave Cortese: no Nov-2026 candidacy on file; senate-15 has no election on file"
+    },
+    {
+      "people_id": 21726,
+      "candidate_id": null,
+      "note": "John Laird: no Nov-2026 candidacy on file; senate-17 has no election on file"
+    },
+    {
+      "people_id": 21728,
+      "candidate_id": null,
+      "note": "Rosilicie Ochoa Bogh: no Nov-2026 candidacy on file; senate-23 has no election on file"
+    },
+    {
+      "people_id": 22654,
+      "candidate_id": "569276ba-7407-4e73-a15a-56082d7bd4cd",
+      "note": null
+    },
+    {
+      "people_id": 22918,
+      "candidate_id": null,
+      "note": "Akilah Weber Pierson: no Nov-2026 candidacy on file; senate-39 has no election on file"
+    },
+    {
+      "people_id": 22932,
+      "candidate_id": "b1b67bb3-64ff-417f-b5c7-b1349d35dc95",
+      "note": null
+    },
+    {
+      "people_id": 22948,
+      "candidate_id": "060256d0-2eb4-498a-b275-db4a4439061e",
+      "note": null
+    },
+    {
+      "people_id": 23099,
+      "candidate_id": "aa8014f4-8277-459b-ab2f-424f0acdfe37",
+      "note": null
+    },
+    {
+      "people_id": 23128,
+      "candidate_id": "4b0fa996-a4ca-44f0-8eff-7f413ec3ef48",
+      "note": null
+    },
+    {
+      "people_id": 23137,
+      "candidate_id": "3083219d-5d0f-4695-970c-8467ef6822af",
+      "note": null
+    },
+    {
+      "people_id": 23152,
+      "candidate_id": "dc2a403d-9c34-4932-88f9-7c82955d2417",
+      "note": null
+    },
+    {
+      "people_id": 23155,
+      "candidate_id": "e660d7dc-1a99-4955-bece-2de29561060c",
+      "note": null
+    },
+    {
+      "people_id": 23202,
+      "candidate_id": "3ba217c2-c1e2-47c0-8f33-49db397627e3",
+      "note": null
+    },
+    {
+      "people_id": 23203,
+      "candidate_id": "6647fb94-029f-4559-b14b-363ad68f9d60",
+      "note": null
+    },
+    {
+      "people_id": 23204,
+      "candidate_id": null,
+      "note": "Jasmeet Bains: no Nov-2026 candidacy on file; house-35 has no election on file"
+    },
+    {
+      "people_id": 23205,
+      "candidate_id": "4942dbcf-dc2d-44a1-adbd-d3bca51600a4",
+      "note": "Damon Connolly: sitting house HD-012 member running for state_upper: State Senate District 2 (2024) (confirmed off current_office)"
+    },
+    {
+      "people_id": 23206,
+      "candidate_id": null,
+      "note": "Diane Dixon: no Nov-2026 candidacy on file; house-72 has other candidates on file"
+    },
+    {
+      "people_id": 23207,
+      "candidate_id": null,
+      "note": "Bill Essayli: no Nov-2026 candidacy on file; house-63 has no election on file"
+    },
+    {
+      "people_id": 23208,
+      "candidate_id": "0163f2b0-c108-4e4c-9493-0fd3edbdaf29",
+      "note": null
+    },
+    {
+      "people_id": 23209,
+      "candidate_id": "73ad5040-db86-4599-a338-7a6d1bc3a0a8",
+      "note": null
+    },
+    {
+      "people_id": 23210,
+      "candidate_id": "f55b049e-7d9c-4e89-acea-fec11e57ea78",
+      "note": null
+    },
+    {
+      "people_id": 23211,
+      "candidate_id": "8098208a-37b6-4f70-9bed-595857b3ca26",
+      "note": null
+    },
+    {
+      "people_id": 23212,
+      "candidate_id": "58163f77-e07a-4ba2-bb0d-06d0e1562a5d",
+      "note": null
+    },
+    {
+      "people_id": 23213,
+      "candidate_id": "95aa0722-197f-4cc7-be72-da9cff9b0493",
+      "note": null
+    },
+    {
+      "people_id": 23214,
+      "candidate_id": "148eba89-5d13-45e0-b82d-12cac8d841ce",
+      "note": null
+    },
+    {
+      "people_id": 23215,
+      "candidate_id": "fa2bc34d-d04a-4214-b92f-3cf2a0e18574",
+      "note": null
+    },
+    {
+      "people_id": 23216,
+      "candidate_id": "36cd7262-ea7b-4ecb-b94e-d7084e99802b",
+      "note": null
+    },
+    {
+      "people_id": 23217,
+      "candidate_id": "e9e6df70-5075-4a88-9022-7c5534f3f87b",
+      "note": null
+    },
+    {
+      "people_id": 23218,
+      "candidate_id": "d33a37d6-2490-40bc-9a92-03b9e791d18e",
+      "note": null
+    },
+    {
+      "people_id": 23219,
+      "candidate_id": "07d3db1c-eefd-4114-83b0-d6af436a39e2",
+      "note": null
+    },
+    {
+      "people_id": 23220,
+      "candidate_id": "dd1e9567-ed7e-451a-96ca-9981bd9ff35d",
+      "note": "Esmeralda Soria: sitting house HD-027 member running for state_upper: State Senate District 14 (2024) (confirmed off current_office)"
+    },
+    {
+      "people_id": 23221,
+      "candidate_id": "78c9dc70-f7d3-4f18-8083-5b6e0d0f57c5",
+      "note": null
+    },
+    {
+      "people_id": 23222,
+      "candidate_id": "f2916b87-ad03-4b01-81c4-b41603d5d771",
+      "note": null
+    },
+    {
+      "people_id": 23223,
+      "candidate_id": "16c514c1-ea8d-43db-9191-1aafef129090",
+      "note": "Avelino Valencia: sitting house HD-068 member running for state_upper: State Senate District 34 (2024) (confirmed off current_office)"
+    },
+    {
+      "people_id": 23224,
+      "candidate_id": "64145804-c079-49ce-9c8e-cda6017b5951",
+      "note": null
+    },
+    {
+      "people_id": 23225,
+      "candidate_id": null,
+      "note": "Marie Alvarado-Gil: no Nov-2026 candidacy on file; senate-4 has other candidates on file"
+    },
+    {
+      "people_id": 23226,
+      "candidate_id": "28ab7728-b70f-4b4b-880c-a735e535ff3d",
+      "note": null
+    },
+    {
+      "people_id": 23227,
+      "candidate_id": "c70107d0-6063-4728-88f5-117efacea0ff",
+      "note": null
+    },
+    {
+      "people_id": 23228,
+      "candidate_id": "95cdcad5-93df-43fc-86ba-b7cb0232fd7e",
+      "note": null
+    },
+    {
+      "people_id": 23229,
+      "candidate_id": "61508840-5fea-46e1-9805-3ab7af708d1a",
+      "note": null
+    },
+    {
+      "people_id": 23230,
+      "candidate_id": "1946e4c4-7bf9-4bfd-8bb2-7702c0750e03",
+      "note": null
+    },
+    {
+      "people_id": 23231,
+      "candidate_id": null,
+      "note": "Aisha Wahab: no Nov-2026 candidacy on file; senate-10 has other candidates on file"
+    },
+    {
+      "people_id": 23906,
+      "candidate_id": "4a4a3eab-bd11-40fd-8548-efe63aa49c41",
+      "note": null
+    },
+    {
+      "people_id": 25331,
+      "candidate_id": "8a25582c-d648-4024-875c-81f91fd0bca1",
+      "note": null
+    },
+    {
+      "people_id": 25332,
+      "candidate_id": "5759958c-39ec-4896-b077-efac1145371e",
+      "note": null
+    },
+    {
+      "people_id": 25333,
+      "candidate_id": "2c15487c-e51f-41cf-91b2-09edc17fc8ce",
+      "note": null
+    },
+    {
+      "people_id": 25334,
+      "candidate_id": "978623f5-d204-4eeb-97cd-9e4e0655077c",
+      "note": null
+    },
+    {
+      "people_id": 25335,
+      "candidate_id": "3fc0d11a-6a87-489d-a4a2-04fc56365ed2",
+      "note": null
+    },
+    {
+      "people_id": 25336,
+      "candidate_id": "39cf4507-e2b7-40b8-b1d4-dde3343d5c5c",
+      "note": null
+    },
+    {
+      "people_id": 25337,
+      "candidate_id": "1b6e047a-ee10-4cdc-beca-d2746eeb5f74",
+      "note": null
+    },
+    {
+      "people_id": 25338,
+      "candidate_id": "20a6ffb7-b4ab-4ca8-8d49-d16e4330ea5e",
+      "note": null
+    },
+    {
+      "people_id": 25339,
+      "candidate_id": "8affdb09-e4a2-4c35-9fb3-31ab443430cf",
+      "note": null
+    },
+    {
+      "people_id": 25340,
+      "candidate_id": "0d0fe560-6db0-438d-81c3-78897d99ab8e",
+      "note": null
+    },
+    {
+      "people_id": 25341,
+      "candidate_id": "114418df-f2b3-4334-b602-39e7ed30a2e8",
+      "note": null
+    },
+    {
+      "people_id": 25342,
+      "candidate_id": "ee615da7-8541-4f3f-96d9-041b9f9fc3ad",
+      "note": null
+    },
+    {
+      "people_id": 25343,
+      "candidate_id": "2f12eede-913a-4372-ac19-bafb00a5e300",
+      "note": null
+    },
+    {
+      "people_id": 25344,
+      "candidate_id": "34fb0716-b4bc-4be6-9d9c-9019f213214a",
+      "note": null
+    },
+    {
+      "people_id": 25345,
+      "candidate_id": "65f43e95-daa7-432c-9b8a-68b9835da7c5",
+      "note": null
+    },
+    {
+      "people_id": 25346,
+      "candidate_id": "d2b18ea9-7fb7-44d5-bd00-6c9b460bf8eb",
+      "note": null
+    },
+    {
+      "people_id": 25347,
+      "candidate_id": "85e50a36-1017-4953-8ff9-118aeba1e2c7",
+      "note": null
+    },
+    {
+      "people_id": 25348,
+      "candidate_id": null,
+      "note": "Nick Schultz: no Nov-2026 candidacy on file; house-44 has no election on file"
+    },
+    {
+      "people_id": 25349,
+      "candidate_id": "f08d385c-ab54-4bb1-9b4f-eccaf65debed",
+      "note": null
+    },
+    {
+      "people_id": 25350,
+      "candidate_id": "546f136f-add0-47f3-abc6-0482a19c8e36",
+      "note": null
+    },
+    {
+      "people_id": 25351,
+      "candidate_id": "548d04e6-0bac-48a5-a232-2a5ea28e083a",
+      "note": null
+    },
+    {
+      "people_id": 25352,
+      "candidate_id": "a7f1d0ea-2704-45a0-beea-93918e46701e",
+      "note": null
+    },
+    {
+      "people_id": 25353,
+      "candidate_id": null,
+      "note": "Jesse Arreguin: no Nov-2026 candidacy on file; senate-7 has no election on file"
+    },
+    {
+      "people_id": 25354,
+      "candidate_id": null,
+      "note": "Christopher Cabaldon: no Nov-2026 candidacy on file; senate-3 has no election on file"
+    },
+    {
+      "people_id": 25355,
+      "candidate_id": null,
+      "note": "Jerry McNerney: no Nov-2026 candidacy on file; senate-5 has no election on file"
+    },
+    {
+      "people_id": 25356,
+      "candidate_id": null,
+      "note": "Sasha Renee Perez: no Nov-2026 candidacy on file; senate-25 has no election on file"
+    },
+    {
+      "people_id": 25357,
+      "candidate_id": null,
+      "note": "Laura Richardson: no Nov-2026 candidacy on file; senate-35 has no election on file"
+    },
+    {
+      "people_id": 25358,
+      "candidate_id": null,
+      "note": "Suzette Valladares: no Nov-2026 candidacy on file; senate-23 has no election on file"
+    },
+    {
+      "people_id": 25359,
+      "candidate_id": "488f53ee-ab3c-49b9-acbb-8849616dc913",
+      "note": null
+    },
+    {
+      "people_id": 26421,
+      "candidate_id": null,
+      "note": "Stan Ellis: no Nov-2026 candidacy on file; house-32 has other candidates on file"
+    },
+    {
+      "people_id": 26495,
+      "candidate_id": "efd64419-3499-490a-9188-fbc534a34164",
+      "note": null
+    }
+  ]
+}

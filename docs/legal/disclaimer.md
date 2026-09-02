@@ -8,16 +8,20 @@ monitored before launch.
 terms-of-use.md 1.2 added the support-payments section
 (docs/plans/membership-contributions.md), and this version string must match
 CURRENT_TERMS_VERSION.
+1.2 → 1.3 (2026-08-28): no content change. The bundle version moved because
+terms-of-use.md 1.3 added Section 14.5 (member communications).
+1.3 → 1.4 (2026-08-29): operator named as Elections Simplified Inc., a
+Delaware corporation (previously impactperdollar); tracks the Terms 1.4 bump.
 -->
 
 # Elections Simplified AI Research and Election Information Disclaimer
 
-**Last updated:** August 21, 2026
-**Version:** 1.2
+**Last updated:** August 29, 2026
+**Version:** 1.4
 
 ## 1. Informational purposes only
 
-The Elections Simplified service and its operator, impactperdollar ("Elections Simplified," "we," "us," or "our"), provide information about elections, candidates, ballot measures, campaign finance, voting districts, and related civic data for general informational, educational, and civic-research purposes only.
+The Elections Simplified service and its operator, Elections Simplified Inc., a Delaware corporation ("Elections Simplified," "we," "us," or "our"), provide information about elections, candidates, ballot measures, campaign finance, voting districts, and related civic data for general informational, educational, and civic-research purposes only.
 
 Elections Simplified is not a government agency, election office, political committee, campaign, law firm, financial adviser, tax adviser, or professional adviser. Elections Simplified does not provide legal, election-law, campaign-finance, political, financial, tax, voting-eligibility, ballot-casting, or professional advice. Use of Elections Simplified does not create an attorney-client, fiduciary, advisory, representative, agency, or professional relationship.
 

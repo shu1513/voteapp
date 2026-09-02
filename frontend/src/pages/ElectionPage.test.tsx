@@ -290,6 +290,82 @@ describe("ElectionPage", () => {
     expect(screen.getByText("Indy Other")).toBeInTheDocument();
   });
 
+  it("clears the party filter when auto-pick chooses a candidate the filter hid", async () => {
+    // The engine scores the whole roster, not the filtered view the button
+    // sits under. Filtered to Democrats, a Republican pick must not land on
+    // a hidden card.
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/election-choices": { body: { choices: [] } },
+      "/api/me/research-area-preferences": {
+        body: {
+          preferences: [
+            { research_area_id: "a-1", slug: "housing", name: "Housing", description: null, rank: 1 },
+            { research_area_id: "a-2", slug: "health", name: "Health", description: null, rank: 2 },
+            { research_area_id: "a-3", slug: "safety", name: "Safety", description: null, rank: 3 },
+          ],
+        },
+      },
+      "/api/me/auto-picks": {
+        body: {
+          results: [
+            {
+              election_id: "e-1",
+              race_type: "office",
+              outcome: "picked",
+              reason: null,
+              picked_candidate_ids: ["c-2"],
+              measure_position: null,
+              shortlist_candidate_ids: [],
+              candidates: [],
+              measure_per_issue: [],
+              unresearched: [],
+            },
+          ],
+        },
+      },
+    });
+    const user = userEvent.setup();
+    renderElection(() =>
+      electionDetail({
+        candidates: [
+          {
+            candidate_id: "c-1",
+            display_name: "Dana Democrat",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "active",
+            summary: null,
+            finance_summary: null,
+            records: [],
+          },
+          {
+            candidate_id: "c-2",
+            display_name: "Riley Republican",
+            party: "Republican",
+            is_incumbent: false,
+            status: "active",
+            summary: null,
+            finance_summary: null,
+            records: [],
+          },
+        ],
+      })
+    );
+
+    await user.click(await screen.findByRole("button", { name: "Democrats (1)" }));
+    expect(screen.queryByText("Riley Republican")).not.toBeInTheDocument();
+
+    const autoPick = await screen.findByRole("button", { name: "Auto-pick by my issues" });
+    await waitFor(() => expect(autoPick).toBeEnabled());
+    await user.click(autoPick);
+
+    expect(await screen.findByText("Riley Republican")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "All (2)" })).toHaveAttribute("aria-pressed", "true");
+  });
+
   it("resets the party filter when navigating to a different election", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     const user = userEvent.setup();
@@ -454,7 +530,7 @@ describe("ElectionPage", () => {
     // PDF as the official-measure link; both election sources are covered, so
     // the "Election sources" section (and its duplicate source line) is gone.
     expect(screen.getAllByRole("link", { name: "sos.example.gov" })).toHaveLength(1);
-    expect(screen.queryByRole("heading", { name: "Election sources" })).not.toBeInTheDocument();
+    expect(screen.getAllByText(/^Sources?:/)).toHaveLength(1);
     expect(screen.getAllByRole("button", { name: /^Report an issue/ })).toHaveLength(1);
   });
 
@@ -481,9 +557,35 @@ describe("ElectionPage", () => {
     );
 
     await screen.findByText("Yes approves the bond.");
-    expect(screen.getByRole("heading", { name: "Election sources" })).toBeInTheDocument();
+    // The measure's own footnote plus one election-level footnote for the
+    // county notice the measure did not cite.
+    expect(screen.getAllByText(/^Sources?:/)).toHaveLength(2);
     expect(screen.getAllByRole("link", { name: "sos.example.gov" })).toHaveLength(1);
     expect(screen.getByRole("link", { name: "county.example.gov" })).toBeInTheDocument();
+  });
+
+  it("names a source site once and links its further pages as numbered footnotes", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        sources: [
+          "https://elections.ny.gov/certification-2026",
+          "https://elections.ny.gov/ballot-certifications",
+          "https://ballotpedia.org/New_York",
+        ],
+      })
+    );
+
+    const first = await screen.findByRole("link", { name: "elections.ny.gov" });
+    expect(first).toHaveAttribute("href", "https://elections.ny.gov/certification-2026");
+    expect(screen.getByRole("link", { name: "elections.ny.gov, page 2" })).toHaveAttribute(
+      "href",
+      "https://elections.ny.gov/ballot-certifications"
+    );
+    expect(screen.getByRole("link", { name: "ballotpedia.org" })).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /elections\.ny\.gov/ })).toHaveLength(2);
+    expect(screen.getByText(/^Sources:/)).toBeInTheDocument();
+    expect(screen.queryByText("Election sources")).not.toBeInTheDocument();
   });
 
   it("renders candidate stance chips as +N/-N colored by direction", async () => {
@@ -737,9 +839,9 @@ describe("ElectionPage", () => {
     // mid-page buttons are gone).
     const yes = await screen.findByRole("button", { name: "Yes" });
     expect(screen.getAllByRole("button", { name: "Yes" })).toHaveLength(1);
-    // Auto-pick moved off the sticky card into the measure section (after
-    // the yes/no explainer boxes) — still exactly one on the page.
-    expect(screen.getAllByRole("button", { name: "Auto-pick by my issues" })).toHaveLength(1);
+    // Auto-pick is account-only and hides entirely from guests — no button
+    // anywhere on the page for this anonymous session.
+    expect(screen.queryByRole("button", { name: "Auto-pick by my issues" })).not.toBeInTheDocument();
     // Nothing to confirm before the pick.
     expect(screen.queryByRole("link", { name: /My Draft/ })).not.toBeInTheDocument();
     await userEvent.setup().click(yes);
@@ -806,6 +908,139 @@ describe("ElectionPage", () => {
       expect(fetchMock.mock.calls.some(([, init]) => (init as RequestInit | undefined)?.method === "PUT")).toBe(true)
     );
     expect(screen.queryByRole("link", { name: "Sign up" })).not.toBeInTheDocument();
+  });
+
+  it("surfaces a withdrawn pick with a remove control and PUTs chosen: false", async () => {
+    // ballotLookup filters withdrawn candidacies out of the payload, so a
+    // withdrawn pick has no candidate card (and no pick button) here while
+    // still counting toward the seat cap — the notice is this page's only
+    // removal path.
+    const puts: unknown[] = [];
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/election-choices": (_url, init) => {
+        if (init?.method === "PUT") {
+          puts.push(JSON.parse(String(init.body)));
+          return { status: 200, body: { choice: null } };
+        }
+        return {
+          status: 200,
+          body: {
+            choices: [
+              {
+                election_id: "e-1",
+                race_type: "office",
+                official_ballot_title: "Governor",
+                election_date: "2026-11-03",
+                seats_to_fill: 2,
+                picks: [
+                  {
+                    candidate_id: "c-withdrawn",
+                    display_name: "Quinn Quitter",
+                    candidacy_status: "withdrawn",
+                  },
+                ],
+                measure_position: null,
+                updated_at: "2026-08-01T00:00:00.000Z",
+              },
+            ],
+          },
+        };
+      },
+    });
+    renderElection(() => electionDetail({ seats_to_fill: 2 }));
+
+    expect(
+      await screen.findByText(/withdrew from this race/)
+    ).toBeInTheDocument();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Remove pick: Quinn Quitter" }));
+    await waitFor(() =>
+      expect(puts).toEqual([{ election_id: "e-1", candidate_id: "c-withdrawn", chosen: false }])
+    );
+  });
+
+  it("keeps the stranded-pick notice when every candidacy withdrew, without the auto-pick button", async () => {
+    // An all-withdrawn roster arrives as an empty candidates list; the
+    // section must still open (the notice is the only removal control for a
+    // pick that keeps counting toward the seat cap), but auto-pick has
+    // nobody left to pick and must not render its dead-end button.
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/election-choices": {
+        body: {
+          choices: [
+            {
+              election_id: "e-1",
+              race_type: "office",
+              official_ballot_title: "Governor",
+              election_date: "2026-11-03",
+              seats_to_fill: 2,
+              picks: [
+                {
+                  candidate_id: "c-withdrawn",
+                  display_name: "Quinn Quitter",
+                  candidacy_status: "withdrawn",
+                },
+              ],
+              measure_position: null,
+              updated_at: "2026-08-01T00:00:00.000Z",
+            },
+          ],
+        },
+      },
+    });
+    renderElection(() => electionDetail({ candidates: [], seats_to_fill: 2 }));
+
+    expect(await screen.findByText(/withdrew from this race/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Remove pick: Quinn Quitter" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Auto-pick by my issues" })).not.toBeInTheDocument();
+  });
+
+  it("frees a guest's seat slot held by a draft pick that left the roster", async () => {
+    // Guest draft rows are always stored candidacy_status "active", so the
+    // withdrawn-status path can't fire — roster absence is the guest signal.
+    // With the cap full (ghost + Jordan on a 2-seat race), Riley's button is
+    // the trap's visible symptom: disabled until the ghost pick is removed.
+    clearBallotDraft();
+    setDraftBallotContext([DISTRICT.id], null);
+    setDraftCandidateChoice({
+      electionId: "e-1",
+      raceTitle: "Governor",
+      electionDate: "2026-11-03",
+      seatsToFill: 2,
+      candidateId: "c-gone",
+      candidateName: "Quinn Quitter",
+      chosen: true,
+    });
+    setDraftCandidateChoice({
+      electionId: "e-1",
+      raceTitle: "Governor",
+      electionDate: "2026-11-03",
+      seatsToFill: 2,
+      candidateId: "c-1",
+      candidateName: "Jordan Voter",
+      chosen: true,
+    });
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => electionDetail({ seats_to_fill: 2 }));
+
+    expect(await screen.findByText(/is no longer listed in this race/)).toBeInTheDocument();
+    // The still-rostered pick is not flagged, and the cap holds Riley shut.
+    expect(screen.getByRole("button", { name: "✓ My pick: Jordan Voter" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Make my pick: Riley Runner" })).toBeDisabled();
+
+    await userEvent.setup().click(screen.getByRole("button", { name: "Remove pick: Quinn Quitter" }));
+
+    // The removal is a local draft write: notice gone, seat freed.
+    await waitFor(() =>
+      expect(screen.queryByText(/is no longer listed in this race/)).not.toBeInTheDocument()
+    );
+    expect(readBallotDraft().choices["e-1"].picks.map((pick) => pick.candidate_id)).toEqual(["c-1"]);
+    expect(screen.getByRole("button", { name: "Make my pick: Riley Runner" })).toBeEnabled();
   });
 
   it("pulls pick buttons once the guest's ballot context says the race is foreign", async () => {
@@ -1051,228 +1286,6 @@ describe("ElectionPage", () => {
     const riley = screen.getByText("Riley Runner");
     const jordan = screen.getByText("Jordan Voter");
     expect(riley.compareDocumentPosition(jordan) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-  });
-
-  describe("records filter", () => {
-    const SAVED_HOUSING = {
-      "/api/me": { body: ME_VERIFIED },
-      "/api/me/districts": { body: MY_DISTRICTS },
-      "/api/me/candidate-follows": { body: { follows: [] } },
-      "/api/me/research-area-preferences": {
-        body: {
-          preferences: [
-            { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", description: null, rank: 1 },
-          ],
-        },
-      },
-    };
-    const candidate = (id: string, name: string, party: string, records: ReturnType<typeof housingRecord>[] = []) => ({
-      candidate_id: id,
-      display_name: name,
-      party,
-      is_incumbent: false,
-      status: "active",
-      summary: null,
-      finance_summary: null,
-      records,
-    });
-    const housingRecord = (id: string) => ({
-      id,
-      description: "A record.",
-      source_url: "https://example.gov/record",
-      event_date: "2025-01-15",
-      created_at: "2025-02-01T00:00:00.000Z",
-      research_area_tags: [
-        { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", stance: "for" as const },
-      ],
-    });
-
-    it("hides the control for signed-out viewers", async () => {
-      stubApiRoutes({ ...ANONYMOUS });
-      const detail = electionDetail();
-      detail.candidates[0].records = [housingRecord("r-1")];
-      renderElection(() => detail);
-
-      await screen.findByRole("heading", { name: "Candidates" });
-      expect(screen.queryByRole("button", { name: "Has a record on my issues" })).not.toBeInTheDocument();
-    });
-
-    it("hides the control when the viewer has no saved areas", async () => {
-      stubApiRoutes({
-        "/api/me": { body: ME_VERIFIED },
-        "/api/me/districts": { body: MY_DISTRICTS },
-        "/api/me/candidate-follows": { body: { follows: [] } },
-        "/api/me/research-area-preferences": { body: { preferences: [] } },
-      });
-      const detail = electionDetail();
-      detail.candidates[0].records = [housingRecord("r-1")];
-      renderElection(() => detail);
-
-      await screen.findByRole("heading", { name: "Candidates" });
-      expect(screen.queryByRole("button", { name: "Has a record on my issues" })).not.toBeInTheDocument();
-    });
-
-    it("hides the control when no candidate matches", async () => {
-      stubApiRoutes({ ...SAVED_HOUSING });
-      // Default fixture: no candidate has records → filtering would empty
-      // the list, so the (off) toggle has nothing to offer.
-      renderElection(() => electionDetail());
-
-      // The sort dropdown proves the async preferences have arrived.
-      await screen.findByRole("combobox");
-      expect(screen.queryByRole("button", { name: "Has a record on my issues" })).not.toBeInTheDocument();
-    });
-
-    it("hides the control when every candidate matches", async () => {
-      stubApiRoutes({ ...SAVED_HOUSING });
-      // All-match: filtering would be a no-op, so the (off) toggle has
-      // nothing to offer either.
-      renderElection(() =>
-        electionDetail({
-          candidates: [
-            candidate("c-1", "Casey Record", "Independent", [housingRecord("r-1")]),
-            candidate("c-2", "Jamie Record", "Independent", [housingRecord("r-2")]),
-          ],
-        })
-      );
-
-      await screen.findByRole("combobox");
-      expect(screen.queryByRole("button", { name: "Has a record on my issues" })).not.toBeInTheDocument();
-    });
-
-    it("filters to matching candidates, shows the hidden count, and clears with Show all", async () => {
-      stubApiRoutes({ ...SAVED_HOUSING });
-      const user = userEvent.setup();
-      renderElection(() =>
-        electionDetail({
-          candidates: [
-            candidate("c-1", "Casey Record", "Independent", [housingRecord("r-1")]),
-            candidate("c-2", "Jamie Quiet", "Independent"),
-            candidate("c-3", "Robin Quiet", "Independent"),
-          ],
-        })
-      );
-
-      const toggle = await screen.findByRole("button", { name: "Has a record on my issues" });
-      expect(toggle).toHaveAttribute("aria-pressed", "false");
-
-      await user.click(toggle);
-      expect(screen.getByText("Casey Record")).toBeInTheDocument();
-      expect(screen.queryByText("Jamie Quiet")).not.toBeInTheDocument();
-      expect(screen.queryByText("Robin Quiet")).not.toBeInTheDocument();
-      // The hidden count keeps the filtered list from looking like the full
-      // roster — no records ≠ no stances.
-      expect(screen.getByText(/2 candidates hidden/)).toBeInTheDocument();
-
-      await user.click(screen.getByRole("button", { name: "Show all" }));
-      expect(screen.getByText("Jamie Quiet")).toBeInTheDocument();
-      expect(screen.getByText("Robin Quiet")).toBeInTheDocument();
-      expect(screen.queryByText(/hidden/)).not.toBeInTheDocument();
-    });
-
-    it("composes with the party filter and counts hidden within the party view", async () => {
-      stubApiRoutes({ ...SAVED_HOUSING });
-      const user = userEvent.setup();
-      renderElection(() =>
-        electionDetail({
-          candidates: [
-            candidate("c-1", "Dana Record", "Democratic", [housingRecord("r-1")]),
-            candidate("c-2", "Devon Quiet", "Democratic"),
-            candidate("c-3", "Riley Record", "Republican", [housingRecord("r-2")]),
-            candidate("c-4", "Rory Quiet", "Republican"),
-          ],
-        })
-      );
-
-      await user.click(await screen.findByRole("button", { name: "Democrats (2)" }));
-      await user.click(screen.getByRole("button", { name: "Has a record on my issues" }));
-      expect(screen.getByText("Dana Record")).toBeInTheDocument();
-      expect(screen.queryByText("Devon Quiet")).not.toBeInTheDocument();
-      // Count is relative to the party view: one Democrat hidden, not three
-      // candidates — the party chips already account for their own hiding.
-      expect(screen.getByText(/1 candidate hidden/)).toBeInTheDocument();
-
-      // The toggle is a per-race choice, not a per-party one: it stays on
-      // across a party switch within the same race.
-      await user.click(screen.getByRole("button", { name: "Republicans (2)" }));
-      expect(screen.getByText("Riley Record")).toBeInTheDocument();
-      expect(screen.queryByText("Rory Quiet")).not.toBeInTheDocument();
-      expect(screen.getByText(/1 candidate hidden/)).toBeInTheDocument();
-    });
-
-    it("keeps an active filter applied when a party switch leaves no matches", async () => {
-      stubApiRoutes({ ...SAVED_HOUSING });
-      const user = userEvent.setup();
-      // Only Democrats have matching records. An active filter must not
-      // silently stop applying when the view moves to Republicans — that
-      // would show a full roster the viewer believes is filtered. It stays
-      // visible and honestly empties the view, with the hidden count and
-      // Show all explaining the empty list.
-      renderElection(() =>
-        electionDetail({
-          candidates: [
-            candidate("c-1", "Dana Record", "Democratic", [housingRecord("r-1")]),
-            candidate("c-2", "Devon Quiet", "Democratic"),
-            candidate("c-3", "Rory Quiet", "Republican"),
-            candidate("c-4", "Robin Quiet", "Republican"),
-          ],
-        })
-      );
-
-      await user.click(await screen.findByRole("button", { name: "Democrats (2)" }));
-      await user.click(screen.getByRole("button", { name: "Has a record on my issues" }));
-      expect(screen.getByText("Dana Record")).toBeInTheDocument();
-
-      await user.click(screen.getByRole("button", { name: "Republicans (2)" }));
-      // Toggle still visible and pressed; every Republican is hidden.
-      expect(screen.getByRole("button", { name: "Has a record on my issues" })).toHaveAttribute(
-        "aria-pressed",
-        "true"
-      );
-      expect(screen.queryByText("Rory Quiet")).not.toBeInTheDocument();
-      expect(screen.queryByText("Robin Quiet")).not.toBeInTheDocument();
-      expect(screen.getByText(/2 candidates hidden/)).toBeInTheDocument();
-
-      await user.click(screen.getByRole("button", { name: "Show all" }));
-      expect(screen.getByText("Rory Quiet")).toBeInTheDocument();
-      expect(screen.getByText("Robin Quiet")).toBeInTheDocument();
-    });
-
-    it("resets the records filter when navigating to a different election", async () => {
-      stubApiRoutes({ ...SAVED_HOUSING });
-      const user = userEvent.setup();
-      // Both rosters split into matched + unmatched, so a leaked pick WOULD
-      // apply on e-2 — and must not.
-      const { router } = renderElection(({ params }) =>
-        params.electionId === "e-2"
-          ? electionDetail({
-              id: "e-2",
-              candidates: [
-                candidate("c-3", "Casey Second", "Independent", [housingRecord("r-2")]),
-                candidate("c-4", "Robin Second", "Independent"),
-              ],
-            })
-          : electionDetail({
-              id: "e-1",
-              candidates: [
-                candidate("c-1", "Dana First", "Independent", [housingRecord("r-1")]),
-                candidate("c-2", "Riley First", "Independent"),
-              ],
-            })
-      );
-
-      await user.click(await screen.findByRole("button", { name: "Has a record on my issues" }));
-      expect(screen.queryByText("Riley First")).not.toBeInTheDocument();
-
-      await router.navigate("/elections/e-2");
-      // Fresh election, fresh filter: both candidates visible, toggle off.
-      expect(await screen.findByText("Robin Second")).toBeInTheDocument();
-      expect(screen.getByText("Casey Second")).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: "Has a record on my issues" })).toHaveAttribute(
-        "aria-pressed",
-        "false"
-      );
-    });
   });
 
   it("renders measure result rows, including election-night outcomes", async () => {

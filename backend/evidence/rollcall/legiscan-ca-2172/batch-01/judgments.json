@@ -1,0 +1,344 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602370,
+      "measure_id": "SB 79",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 79, which makes cities and counties allow apartment buildings near major transit stops, on land already zoned for homes, shops, or a mix of the two. The closer a site sits to the stop, the taller and denser the law lets a building be. Builders must include homes people on lower incomes can afford, follow rules that limit tearing down existing homes and protect tenants from being forced out, and meet pay standards for construction work. A city or county can adopt its own plan for building near transit instead of following the state rules. It passed the California State Assembly 43-19 and became law.",
+      "nay_description": "Voted against passing Senate Bill 79, which makes cities and counties allow apartment buildings near major transit stops, on land already zoned for homes, shops, or a mix of the two. The closer a site sits to the stop, the taller and denser the law lets a building be. Builders must include homes people on lower incomes can afford, follow rules that limit tearing down existing homes and protect tenants from being forced out, and meet pay standards for construction work. A city or county can adopt its own plan for building near transit instead of following the state rules. It passed the California State Assembly 43-19 and became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1602275,
+      "measure_id": "SB 79",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 79, which makes cities and counties allow apartment buildings near major transit stops, on land already zoned for homes, shops, or a mix of the two. The closer a site sits to the stop, the taller and denser the law lets a building be. Builders must include homes people on lower incomes can afford, follow rules that limit tearing down existing homes and protect tenants from being forced out, and meet pay standards for construction work. A city or county can adopt its own plan for building near transit instead of following the state rules. The California State Senate agreed 21-8, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 79, which makes cities and counties allow apartment buildings near major transit stops, on land already zoned for homes, shops, or a mix of the two. The closer a site sits to the stop, the taller and denser the law lets a building be. Builders must include homes people on lower incomes can afford, follow rules that limit tearing down existing homes and protect tenants from being forced out, and meet pay standards for construction work. A city or county can adopt its own plan for building near transit instead of following the state rules. The California State Senate agreed 21-8, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601634,
+      "measure_id": "SB 627",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 627, which makes it a crime for a law enforcement officer to wear a face covering that hides who they are while on duty. The rule reaches federal agents and officers from other states working in California, and the offense is an infraction or a misdemeanor. Officers may still cover their faces while working undercover, during tactical operations, where health and safety law requires it, to protect their identity during a prosecution, or as a disability accommodation. Every agency working in the state must post a written face-covering policy by July 1, 2026, and officers whose agency posts one that follows the law cannot be charged. It passed the California State Assembly 45-23 and became law.",
+      "nay_description": "Voted against passing Senate Bill 627, which makes it a crime for a law enforcement officer to wear a face covering that hides who they are while on duty. The rule reaches federal agents and officers from other states working in California, and the offense is an infraction or a misdemeanor. Officers may still cover their faces while working undercover, during tactical operations, where health and safety law requires it, to protect their identity during a prosecution, or as a disability accommodation. Every agency working in the state must post a written face-covering policy by July 1, 2026, and officers whose agency posts one that follows the law cannot be charged. It passed the California State Assembly 45-23 and became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601939,
+      "measure_id": "SB 627",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 627, which makes it a crime for a law enforcement officer to wear a face covering that hides who they are while on duty. The rule reaches federal agents and officers from other states working in California, and the offense is an infraction or a misdemeanor. Officers may still cover their faces while working undercover, during tactical operations, where health and safety law requires it, to protect their identity during a prosecution, or as a disability accommodation. Every agency working in the state must post a written face-covering policy by July 1, 2026, and officers whose agency posts one that follows the law cannot be charged. The California State Senate agreed 28-11, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 627, which makes it a crime for a law enforcement officer to wear a face covering that hides who they are while on duty. The rule reaches federal agents and officers from other states working in California, and the offense is an infraction or a misdemeanor. Officers may still cover their faces while working undercover, during tactical operations, where health and safety law requires it, to protect their identity during a prosecution, or as a disability accommodation. Every agency working in the state must post a written face-covering policy by July 1, 2026, and officers whose agency posts one that follows the law cannot be charged. The California State Senate agreed 28-11, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601776,
+      "measure_id": "AB 495",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 495, the Family Preparedness Plan Act, which lets more relatives sign the form that allows an adult to enroll a child in school and approve school-related medical care. A court can name an adult the parent chooses as a joint guardian when that parent will be unavailable for a time, including because of an immigration case, and those guardianship files stay private. School districts must keep their policies on immigration enforcement current with the Attorney General's guidance. Licensed child care centers may not collect information about a child's or family's immigration status, and must report requests from law enforcement for records or for entry to the center. It passed the California State Senate 29-10 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 495, the Family Preparedness Plan Act, which lets more relatives sign the form that allows an adult to enroll a child in school and approve school-related medical care. A court can name an adult the parent chooses as a joint guardian when that parent will be unavailable for a time, including because of an immigration case, and those guardianship files stay private. School districts must keep their policies on immigration enforcement current with the Attorney General's guidance. Licensed child care centers may not collect information about a child's or family's immigration status, and must report requests from law enforcement for records or for entry to the center. It passed the California State Senate 29-10 and became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602457,
+      "measure_id": "AB 495",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 495, the Family Preparedness Plan Act, which lets more relatives sign the form that allows an adult to enroll a child in school and approve school-related medical care. A court can name an adult the parent chooses as a joint guardian when that parent will be unavailable for a time, including because of an immigration case, and those guardianship files stay private. School districts must keep their policies on immigration enforcement current with the Attorney General's guidance. Licensed child care centers may not collect information about a child's or family's immigration status, and must report requests from law enforcement for records or for entry to the center. The California State Assembly agreed 60-20, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 495, the Family Preparedness Plan Act, which lets more relatives sign the form that allows an adult to enroll a child in school and approve school-related medical care. A court can name an adult the parent chooses as a joint guardian when that parent will be unavailable for a time, including because of an immigration case, and those guardianship files stay private. School districts must keep their policies on immigration enforcement current with the Attorney General's guidance. Licensed child care centers may not collect information about a child's or family's immigration status, and must report requests from law enforcement for records or for entry to the center. The California State Assembly agreed 60-20, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601453,
+      "measure_id": "SB 580",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 580, which orders the Attorney General to publish model rules, by July 1, 2026, for how state and local agencies deal with immigration authorities. The Attorney General must also publish guidance and audit standards for limiting how far the information in government databases can be reached for immigration enforcement. Every state and local agency must adopt the model rules, or its own equivalent, by January 1, 2027. It passed the California State Assembly 58-19 and became law.",
+      "nay_description": "Voted against passing Senate Bill 580, which orders the Attorney General to publish model rules, by July 1, 2026, for how state and local agencies deal with immigration authorities. The Attorney General must also publish guidance and audit standards for limiting how far the information in government databases can be reached for immigration enforcement. Every state and local agency must adopt the model rules, or its own equivalent, by January 1, 2027. It passed the California State Assembly 58-19 and became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601770,
+      "measure_id": "SB 580",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 580, which orders the Attorney General to publish model rules, by July 1, 2026, for how state and local agencies deal with immigration authorities. The Attorney General must also publish guidance and audit standards for limiting how far the information in government databases can be reached for immigration enforcement. Every state and local agency must adopt the model rules, or its own equivalent, by January 1, 2027. The California State Senate agreed 30-10, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 580, which orders the Attorney General to publish model rules, by July 1, 2026, for how state and local agencies deal with immigration authorities. The Attorney General must also publish guidance and audit standards for limiting how far the information in government databases can be reached for immigration enforcement. Every state and local agency must adopt the model rules, or its own equivalent, by January 1, 2027. The California State Senate agreed 30-10, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601396,
+      "measure_id": "SB 704",
+      "vote_date": "2025-09-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 704, which requires gun barrels to be sold or handed over in person through a licensed gun dealer. The rule does not cover sales to police agencies, the military, licensed dealers, or collectors of antique guns. It also leaves out transfers from someone's estate, a barrel already attached to a gun, and a barrel bought in the same sale as a gun that gets its own background check. Holding barrels with plans to sell them is also barred unless the seller is a licensed dealer. From July 1, 2027 the dealer must check whether the buyer is allowed to own a gun, for a fee of up to $5, and keep a record of the sale. A first or second offense is a misdemeanor, and later ones can be charged as felonies. It passed the California State Assembly 57-20 and became law.",
+      "nay_description": "Voted against passing Senate Bill 704, which requires gun barrels to be sold or handed over in person through a licensed gun dealer. The rule does not cover sales to police agencies, the military, licensed dealers, or collectors of antique guns. It also leaves out transfers from someone's estate, a barrel already attached to a gun, and a barrel bought in the same sale as a gun that gets its own background check. Holding barrels with plans to sell them is also barred unless the seller is a licensed dealer. From July 1, 2027 the dealer must check whether the buyer is allowed to own a gun, for a fee of up to $5, and keep a record of the sale. A first or second offense is a misdemeanor, and later ones can be charged as felonies. It passed the California State Assembly 57-20 and became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601640,
+      "measure_id": "SB 704",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 704, which requires gun barrels to be sold or handed over in person through a licensed gun dealer. The rule does not cover sales to police agencies, the military, licensed dealers, or collectors of antique guns. It also leaves out transfers from someone's estate, a barrel already attached to a gun, and a barrel bought in the same sale as a gun that gets its own background check. Holding barrels with plans to sell them is also barred unless the seller is a licensed dealer. From July 1, 2027 the dealer must check whether the buyer is allowed to own a gun, for a fee of up to $5, and keep a record of the sale. A first or second offense is a misdemeanor, and later ones can be charged as felonies. The California State Senate agreed 29-10, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 704, which requires gun barrels to be sold or handed over in person through a licensed gun dealer. The rule does not cover sales to police agencies, the military, licensed dealers, or collectors of antique guns. It also leaves out transfers from someone's estate, a barrel already attached to a gun, and a barrel bought in the same sale as a gun that gets its own background check. Holding barrels with plans to sell them is also barred unless the seller is a licensed dealer. From July 1, 2027 the dealer must check whether the buyer is allowed to own a gun, for a fee of up to $5, and keep a record of the sale. A first or second offense is a misdemeanor, and later ones can be charged as felonies. The California State Senate agreed 29-10, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601916,
+      "measure_id": "AB 325",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 325, which makes it easier to bring a price-fixing case under California's antitrust law. A complaint can go forward if the facts it sets out make a conspiracy to restrain trade plausible, and it no longer has to rule out the chance the companies acted on their own. The law also bars using or handing out a shared pricing algorithm as part of such a conspiracy, or pressuring another business into charging the price the algorithm suggests. It passed the California State Senate 29-9 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 325, which makes it easier to bring a price-fixing case under California's antitrust law. A complaint can go forward if the facts it sets out make a conspiracy to restrain trade plausible, and it no longer has to rule out the chance the companies acted on their own. The law also bars using or handing out a shared pricing algorithm as part of such a conspiracy, or pressuring another business into charging the price the algorithm suggests. It passed the California State Senate 29-9 and became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602313,
+      "measure_id": "AB 325",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 325, which makes it easier to bring a price-fixing case under California's antitrust law. A complaint can go forward if the facts it sets out make a conspiracy to restrain trade plausible, and it no longer has to rule out the chance the companies acted on their own. The law also bars using or handing out a shared pricing algorithm as part of such a conspiracy, or pressuring another business into charging the price the algorithm suggests. The California State Assembly agreed 54-18, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 325, which makes it easier to bring a price-fixing case under California's antitrust law. A complaint can go forward if the facts it sets out make a conspiracy to restrain trade plausible, and it no longer has to rule out the chance the companies acted on their own. The law also bars using or handing out a shared pricing algorithm as part of such a conspiracy, or pressuring another business into charging the price the algorithm suggests. The California State Assembly agreed 54-18, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601772,
+      "measure_id": "AB 692",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 692, which bars employers from making a worker sign a contract, from January 1, 2026 on, that leaves the worker owing money if the job ends. These stay-or-pay deals can require paying back an employer, a training company, or a debt collector. Some are still allowed: government loan-repayment programs, tuition for a credential the worker can take to another job, approved apprenticeships, certain signing bonuses, and contracts to rent or buy a home. A banned term counts as an illegal restraint on a person's right to work, and a worker can sue over it, for themselves or for others in the same position, and collect penalties. It passed the California State Senate 25-11 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 692, which bars employers from making a worker sign a contract, from January 1, 2026 on, that leaves the worker owing money if the job ends. These stay-or-pay deals can require paying back an employer, a training company, or a debt collector. Some are still allowed: government loan-repayment programs, tuition for a credential the worker can take to another job, approved apprenticeships, certain signing bonuses, and contracts to rent or buy a home. A banned term counts as an illegal restraint on a person's right to work, and a worker can sue over it, for themselves or for others in the same position, and collect penalties. It passed the California State Senate 25-11 and became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602504,
+      "measure_id": "AB 692",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 692, which bars employers from making a worker sign a contract, from January 1, 2026 on, that leaves the worker owing money if the job ends. These stay-or-pay deals can require paying back an employer, a training company, or a debt collector. Some are still allowed: government loan-repayment programs, tuition for a credential the worker can take to another job, approved apprenticeships, certain signing bonuses, and contracts to rent or buy a home. A banned term counts as an illegal restraint on a person's right to work, and a worker can sue over it, for themselves or for others in the same position, and collect penalties. The California State Assembly agreed 46-20, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 692, which bars employers from making a worker sign a contract, from January 1, 2026 on, that leaves the worker owing money if the job ends. These stay-or-pay deals can require paying back an employer, a training company, or a debt collector. Some are still allowed: government loan-repayment programs, tuition for a credential the worker can take to another job, approved apprenticeships, certain signing bonuses, and contracts to rent or buy a home. A banned term counts as an illegal restraint on a person's right to work, and a worker can sue over it, for themselves or for others in the same position, and collect penalties. The California State Assembly agreed 46-20, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601163,
+      "measure_id": "AB 1415",
+      "vote_date": "2025-09-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1415, which extends the state's health care cost watchdog to cover the management companies that run medical practices behind the scenes. It writes hedge funds and similar investor owners into the law by name. Those management companies must report data to the office, and must give it advance written notice of mergers and other deals involving them or the companies that own them. It passed the California State Senate 26-10 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 1415, which extends the state's health care cost watchdog to cover the management companies that run medical practices behind the scenes. It writes hedge funds and similar investor owners into the law by name. Those management companies must report data to the office, and must give it advance written notice of mergers and other deals involving them or the companies that own them. It passed the California State Senate 26-10 and became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1601306,
+      "measure_id": "AB 1415",
+      "vote_date": "2025-09-08",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 1415, which extends the state's health care cost watchdog to cover the management companies that run medical practices behind the scenes. It writes hedge funds and similar investor owners into the law by name. Those management companies must report data to the office, and must give it advance written notice of mergers and other deals involving them or the companies that own them. The California State Assembly agreed 51-19, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 1415, which extends the state's health care cost watchdog to cover the management companies that run medical practices behind the scenes. It writes hedge funds and similar investor owners into the law by name. Those management companies must report data to the office, and must give it advance written notice of mergers and other deals involving them or the companies that own them. The California State Assembly agreed 51-19, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601758,
+      "measure_id": "AB 1319",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1319, which makes it illegal in California to bring in, send out, carry, sell, buy, or hold for sale any fish, wildlife, or plant taken in breach of a state or federal wildlife law. It measures those laws as they stood on January 19, 2025, so later cuts to federal protection do not narrow it, and anything seized is forfeited on conviction. The Department of Fish and Wildlife must also add a species to a temporary candidate list when federal protection for it is reduced. The rules stop working at the end of 2031, and a business is not liable while it follows a federal permit that allows some harm to a protected species. It passed the California State Senate 25-10 and became law.",
+      "nay_description": "Voted against passing Assembly Bill 1319, which makes it illegal in California to bring in, send out, carry, sell, buy, or hold for sale any fish, wildlife, or plant taken in breach of a state or federal wildlife law. It measures those laws as they stood on January 19, 2025, so later cuts to federal protection do not narrow it, and anything seized is forfeited on conviction. The Department of Fish and Wildlife must also add a species to a temporary candidate list when federal protection for it is reduced. The rules stop working at the end of 2031, and a business is not liable while it follows a federal permit that allows some harm to a protected species. It passed the California State Senate 25-10 and became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602473,
+      "measure_id": "AB 1319",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 1319, which makes it illegal in California to bring in, send out, carry, sell, buy, or hold for sale any fish, wildlife, or plant taken in breach of a state or federal wildlife law. It measures those laws as they stood on January 19, 2025, so later cuts to federal protection do not narrow it, and anything seized is forfeited on conviction. The Department of Fish and Wildlife must also add a species to a temporary candidate list when federal protection for it is reduced. The rules stop working at the end of 2031, and a business is not liable while it follows a federal permit that allows some harm to a protected species. The California State Assembly agreed 51-19, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 1319, which makes it illegal in California to bring in, send out, carry, sell, buy, or hold for sale any fish, wildlife, or plant taken in breach of a state or federal wildlife law. It measures those laws as they stood on January 19, 2025, so later cuts to federal protection do not narrow it, and anything seized is forfeited on conviction. The Department of Fish and Wildlife must also add a species to a temporary candidate list when federal protection for it is reduced. The rules stop working at the end of 2031, and a business is not liable while it follows a federal permit that allows some harm to a protected species. The California State Assembly agreed 51-19, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602272,
+      "measure_id": "SB 42",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 42, the California Fair Elections Act, which lifts the state ban on candidates using public money to run for office. Only candidates who accept spending limits and meet the qualifying rules could take it. Public money could not pay legal bills or pay a candidate back for loans to their own campaign, and the fine for taking money from a foreign government goes up. Because the bill changes a law the voters passed, it takes effect only if voters approve it at the election on November 3, 2026. It passed the California State Assembly 59-20 and became law.",
+      "nay_description": "Voted against passing Senate Bill 42, the California Fair Elections Act, which lifts the state ban on candidates using public money to run for office. Only candidates who accept spending limits and meet the qualifying rules could take it. Public money could not pay legal bills or pay a candidate back for loans to their own campaign, and the fine for taking money from a foreign government goes up. Because the bill changes a law the voters passed, it takes effect only if voters approve it at the election on November 3, 2026. It passed the California State Assembly 59-20 and became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1602930,
+      "measure_id": "SB 42",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 42, the California Fair Elections Act, which lifts the state ban on candidates using public money to run for office. Only candidates who accept spending limits and meet the qualifying rules could take it. Public money could not pay legal bills or pay a candidate back for loans to their own campaign, and the fine for taking money from a foreign government goes up. Because the bill changes a law the voters passed, it takes effect only if voters approve it at the election on November 3, 2026. The California State Senate agreed 29-8, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 42, the California Fair Elections Act, which lifts the state ban on candidates using public money to run for office. Only candidates who accept spending limits and meet the qualifying rules could take it. Public money could not pay legal bills or pay a candidate back for loans to their own campaign, and the fine for taking money from a foreign government goes up. Because the bill changes a law the voters passed, it takes effect only if voters approve it at the election on November 3, 2026. The California State Senate agreed 29-8, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,257 @@
+bill	roll	chamber	date	tally	outcome	question_class	disposition	reason
+HB102	1603210	house	2025-10-01	137-66	passed	passage	batch-04	public_safety_and_crime_control/for
+HB1030	1570681	house	2025-05-13	150-53	passed	passage	dropped	trivia: designates Hershey’s Kisses the official state candy
+HB1042	1667909	house	2026-03-23	149-50	passed	passage	superseded	an earlier vote on the same measure in the same chamber; the later, decisive vote was judged instead
+HB1042	1715679	senate	2026-07-12	28-22	passed	passage	superseded	an earlier vote on the same measure in the same chamber; the later, decisive vote was judged instead
+HB1042	1715680	senate	2026-07-12	30-20	passed	passage	batch-04	public_safety_and_crime_control/for
+HB1042	1715952	house	2026-07-23	102-100	passed	concurrence	batch-04	public_safety_and_crime_control/for
+HB1045	1704111	house	2026-06-01	130-71	passed	passage	batch-04	environment_and_public_health/for
+HB1048	1593967	house	2025-06-23	113-90	passed	passage	batch-03	public_infrastructure/for
+HB1062	1569645	house	2025-05-12	125-78	passed	passage	batch-04	housing_affordability/for (relabelled from corporate_accountability for the same reason as HB273)
+HB1077	1692983	house	2026-05-04	150-51	passed	passage	dropped	dropped: creates an advisory Commission on Children's Vision and nothing else, no honest direction
+HB1088	1587838	house	2025-06-10	143-60	passed	passage	dropped	no defensible direction after reading the official analysis
+HB1089	1584783	house	2025-06-04	102-100	passed	passage	batch-03	environment_and_public_health/for
+HB1093	1597787	house	2025-07-08	151-52	passed	passage	batch-03	public_safety_and_crime_control/for
+HB1095	1593910	house	2025-06-23	105-98	passed	passage	batch-03	housing_affordability/for
+HB1099	1603195	house	2025-09-30	101-102	failed	passage	dropped	no defensible direction after reading the official analysis
+HB1100	1595333	house	2025-06-26	138-64	passed	passage	dropped	no defensible direction after reading the official analysis
+HB1104	1689869	house	2026-04-27	133-67	passed	passage	dropped	no defensible direction after reading the official analysis
+HB111	1518370	house	2025-03-17	153-49	passed	passage	dropped	no defensible direction after reading the official analysis
+HB1127	1710973	house	2026-06-23	136-66	passed	passage	dropped	no defensible direction after reading the official analysis
+HB1139	1681996	house	2026-04-14	102-99	passed	passage	batch-03	environment_and_public_health/for
+HB1140	1583926	house	2025-06-03	116-87	passed	passage	dropped	no defensible direction after reading the official analysis
+HB118	1524694	house	2025-03-24	117-85	passed	passage	batch-03	corporate_accountability/for
+HB1189	1587567	house	2025-06-10	102-101	passed	passage	batch-03	government_efficiency/for
+HB1191	1669857	house	2026-03-25	120-79	passed	passage	batch-03	public_safety_and_crime_control/for
+HB1200	1567634	house	2025-05-07	102-101	passed	passage	batch-05	general (no stance) on user direction 2026-08-30: legalisation is argued as criminal justice, public health and tax policy at once, so the vote is recorded topically with no direction
+HB1216	1593914	house	2025-06-23	108-95	passed	passage	batch-03	corporate_accountability/for
+HB1233	1609483	house	2025-11-18	111-91	passed	passage	batch-03	environment_and_public_health/for
+HB1234	1597017	house	2025-07-01	147-55	passed	passage	dropped	no defensible direction after reading the official analysis
+HB1239	1713330	house	2026-07-01	109-93	passed	passage	batch-03	environment_and_public_health/for
+HB1250	1587693	house	2025-06-10	144-59	passed	passage	batch-03	housing_affordability/for
+HB1260	1667911	house	2026-03-23	101-98	passed	passage	batch-03	environment_and_public_health/for
+HB1262	1708680	house	2026-06-10	105-97	passed	passage	batch-03	anti_corruption/for
+HB1263	1570505	house	2025-05-13	102-101	passed	passage	batch-03	reduce_wealth_gap/for
+HB1282	1593905	house	2025-06-23	132-71	passed	passage	batch-03	environment_and_public_health/for
+HB129	1597043	house	2025-07-01	159-43	passed	passage	batch-03	corporate_accountability/for
+HB1319	1597643	house	2025-07-07	116-87	passed	passage	dropped	narrow: mechanics lien definition of materials
+HB1330	1598197	house	2025-07-14	105-97	passed	passage	dropped	appropriations: General Appropriations Act for 2025-26
+HB1347	1594711	house	2025-06-24	149-54	passed	passage	dropped	no area: tourism improvement districts
+HB1358	1597638	house	2025-07-07	109-94	passed	passage	batch-03	corporate_accountability/for
+HB1364	1591460	house	2025-06-17	107-96	passed	passage	batch-03	public_infrastructure/for
+HB1396	1570575	house	2025-05-13	102-101	passed	passage	batch-04	election_integrity/for
+HB1412	1597640	house	2025-07-07	102-101	passed	passage	dropped	narrow: standard for modifying a custody order
+HB1428	1587694	house	2025-06-10	143-60	passed	passage	dropped	narrow: PSERS membership eligibility
+HB144	1623230	house	2026-02-04	153-45	passed	passage	batch-03	public_safety_and_crime_control/for
+HB1445	1594990	house	2025-06-25	102-101	passed	passage	dropped	no defensible direction after reading the official analysis
+HB145	1603652	house	2025-10-07	106-97	passed	passage	dropped	no defensible direction after reading the official analysis
+HB1460	1587899	house	2025-06-10	121-82	passed	passage	batch-03	corporate_accountability/for
+HB150	1610728	house	2025-12-17	111-92	passed	passage	batch-03	public_safety_and_crime_control/for
+HB1500	1584699	house	2025-06-04	104-98	passed	passage	dropped	school-choice financing: cyber charter funding reform (TX SB 2 / GA SB 82 precedent, same call as PA SB 315)
+HB1512	1604236	house	2025-10-27	110-93	passed	passage	batch-03	corporate_accountability/for
+HB1522	1683274	house	2026-04-15	107-94	passed	passage	batch-03	environment_and_public_health/for
+HB1526	1618398	house	2026-01-28	110-89	passed	passage	batch-03	environment_and_public_health/for
+HB1532	1597080	house	2025-07-01	102-100	passed	passage	dropped	dropped: municipal specific plans under the planning code, no research area carries a direction
+HB1534	1594981	house	2025-06-25	128-75	passed	passage	batch-03	cost_of_living_reduction/for
+HB1549	1588926	house	2025-06-11	102-101	passed	passage	dropped	no defensible direction after reading the official analysis
+HB1553	1596503	house	2025-06-30	102-101	passed	passage	batch-03	corporate_accountability/for
+HB1556	1622248	house	2026-02-03	104-93	passed	passage	dropped	no defensible direction: PA EDGE tax credit package
+HB1558	1681901	house	2026-04-14	102-99	passed	passage	dropped	narrow: diaper changing stations
+HB1572	1596478	house	2025-06-30	141-62	passed	passage	dropped	no defensible direction: historic preservation tax credit
+HB1573	1598324	house	2025-07-14	102-100	passed	passage	dropped	no defensible direction: inventory of youth delinquency programs
+HB1574	1597021	house	2025-07-01	160-42	passed	passage	batch-04	housing_affordability/for
+HB1575	1597632	house	2025-07-07	114-89	passed	passage	dropped	no defensible direction: factory and mill rehabilitation tax credit
+HB1576	1597977	house	2025-07-09	106-97	passed	passage	dropped	no defensible direction: county reimbursement for juvenile court costs
+HB1577	1597990	house	2025-07-09	108-95	passed	passage	batch-03	public_safety_and_crime_control/for
+HB1593	1603197	house	2025-09-30	104-99	passed	passage	dropped	no defensible direction after reading the official analysis
+HB1599	1597057	house	2025-07-01	159-43	passed	passage	dropped	no defensible direction: regional transmission organization membership and vote reporting
+HB1610	1594987	house	2025-06-25	104-99	passed	passage	dropped	omnibus: Tax Reform Code omnibus with strands in several directions
+HB1650	1595347	house	2025-06-26	122-80	passed	passage	batch-03	housing_affordability/for
+HB1663	1610736	house	2025-12-17	116-87	passed	passage	batch-03	public_education_quality/for
+HB1668	1597794	house	2025-07-08	107-96	passed	passage	dropped	no defensible direction: sprinkler retrofit property tax relief
+HB1678	1708681	house	2026-06-09	139-63	passed	passage	dropped	no defensible direction: gross receipts tax
+HB1697	1598006	house	2025-07-09	136-67	passed	passage	batch-03	anti_corruption/for
+HB1701	1603787	house	2025-10-08	103-100	passed	passage	batch-03	public_education_quality/for
+HB1702	1603761	house	2025-10-08	150-53	passed	passage	dropped	narrow: premixed cocktails on draft
+HB1706	1683158	house	2026-04-15	107-94	passed	passage	batch-04	public_education_quality/for
+HB1718	1669647	house	2026-03-25	142-57	passed	passage	batch-03	corporate_accountability/for
+HB1788	1599279	house	2025-08-11	108-95	passed	passage	batch-03	public_infrastructure/for
+HB1800	1669620	house	2026-03-25	127-72	passed	passage	dropped	no defensible direction after reading the official analysis
+HB1814	1704052	house	2026-06-01	126-75	passed	passage	batch-03	public_education_quality/for
+HB1825	1610620	house	2025-12-16	110-93	passed	passage	dropped	no defensible direction after reading the official analysis
+HB1828	1604367	house	2025-10-29	104-99	passed	passage	dropped	no defensible direction after reading the official analysis
+HB183	1538529	house	2025-04-07	118-85	passed	passage	batch-03	social_programs_and_welfare/for
+HB1834	1668847	house	2026-03-24	104-95	passed	passage	dropped	no defensible direction: data centre regulatory framework, runs as both consumer protection and industry accommodation
+HB1859	1603200	house	2025-09-30	101-102	failed	passage	dropped	no defensible direction after reading the official analysis
+HB1866	1603202	house	2025-10-01	101-102	failed	passage	dropped	no defensible direction after reading the official analysis
+HB1871	1609574	house	2025-11-18	107-95	passed	passage	dropped	narrow: electrified security fences
+HB1874	1603764	house	2025-10-08	143-60	passed	passage	dropped	narrow: transit revitalization districts
+HB1881	1610617	house	2025-12-16	106-97	passed	passage	dropped	no defensible direction after reading the official analysis
+HB1882	1604283	house	2025-10-28	104-99	passed	passage	batch-03	corporate_accountability/for
+HB190	1478681	house	2025-02-03	161-41	passed	passage	dropped	narrow: eating disorder awareness materials
+HB1909	1620705	house	2026-02-02	104-94	passed	passage	batch-03	public_safety_and_crime_control/for
+HB1923	1623089	house	2026-02-04	122-76	passed	passage	batch-03	corporate_accountability/for
+HB193	1564873	house	2025-05-05	150-53	passed	passage	batch-03	environment_and_public_health/for
+HB1935	1621918	house	2026-02-03	152-45	passed	passage	batch-03	public_safety_and_crime_control/for
+HB1936	1623475	house	2026-02-04	111-87	passed	passage	batch-03	public_safety_and_crime_control/for
+HB1957	1610729	house	2025-12-17	102-101	passed	passage	dropped	no defensible direction after reading the official analysis
+HB1967	1709957	house	2026-06-17	102-100	passed	passage	dropped	trivia: designates a scenic byway
+HB1980	1609378	house	2025-11-17	131-71	passed	passage	dropped	narrow: one hour of nutrition continuing education
+HB1995	1609373	house	2025-11-17	121-81	passed	passage	batch-03	social_programs_and_welfare/for
+HB200	1669744	house	2026-03-25	107-92	passed	passage	dropped	no defensible direction after reading the official analysis
+HB201	1478686	house	2025-02-03	155-47	passed	passage	dropped	narrow: lets intermediate units own buildings
+HB2037	1712206	house	2026-06-29	131-71	passed	passage	batch-03	anti_corruption/for
+HB2042	1689964	house	2026-04-27	121-79	passed	passage	batch-04	environment_and_public_health/for
+HB205	1593979	house	2025-06-23	132-71	passed	passage	batch-03	corporate_accountability/for
+HB2076	1692933	house	2026-05-04	118-83	passed	passage	batch-03	environment_and_public_health/for
+HB2084	1709508	house	2026-06-15	119-83	passed	passage	batch-03	public_education_quality/for
+HB2103	1690438	house	2026-04-28	101-100	passed	passage	dropped	no defensible direction after reading the official analysis
+HB2109	1706793	house	2026-06-08	123-78	passed	passage	batch-03	housing_affordability/for
+HB2150	1681902	house	2026-04-13	133-68	passed	passage	batch-03	environment_and_public_health/for
+HB2151	1681903	house	2026-04-13	124-77	passed	passage	batch-03	environment_and_public_health/for
+HB2176	1689897	house	2026-04-27	115-85	passed	passage	batch-03	public_education_quality/for
+HB2186	1704041	house	2026-06-01	139-62	passed	passage	batch-03	housing_affordability/for
+HB2189	1668594	house	2026-03-24	104-95	passed	passage	batch-04	reduce_wealth_gap/for
+HB2218	1691424	house	2026-04-29	106-95	passed	passage	batch-03	public_education_quality/for
+HB2246	1689887	house	2026-04-27	116-84	passed	passage	batch-04	environment_and_public_health/for
+HB2264	1709647	house	2026-06-16	107-95	passed	passage	batch-03	environment_and_public_health/for
+HB2274	1704162	house	2026-06-01	121-80	passed	passage	dropped	trivia: default speed limit on dirt and gravel roads
+HB2300	1706755	house	2026-06-08	153-48	passed	passage	batch-03	anti_corruption/for
+HB2302	1694548	house	2026-05-06	114-87	passed	passage	dropped	narrow: crane operator licensure
+HB2333	1683200	house	2026-04-15	107-94	passed	passage	dropped	procedural: Public Utility Code reauthorization
+HB2347	1692903	house	2026-05-04	106-95	passed	passage	dropped	procedural: renames the energy authority
+HB2365	1704582	house	2026-06-02	105-96	passed	passage	dropped	narrow: youth hunter licences
+HB2391	1706602	house	2026-06-08	117-84	passed	passage	batch-03	corporate_accountability/for
+HB2429	1708692	house	2026-06-10	110-92	passed	passage	batch-03	environment_and_public_health/for
+HB2446	1706834	house	2026-06-08	105-96	passed	passage	dropped	narrow: fire company transfers
+HB2455	1712645	house	2026-06-30	106-96	passed	passage	dropped	local: collective bargaining for Pittsburgh school administrators
+HB2544	1710662	house	2026-06-22	141-61	passed	passage	dropped	narrow: school administrator compensation agreements
+HB2558	1713310	house	2026-07-01	103-99	passed	passage	batch-03	corporate_accountability/for
+HB257	1599302	senate	2025-08-12	27-22	passed	passage	dropped	narrow: interactive gaming tax and transit provisions
+HB2632	1710655	house	2026-06-22	105-97	passed	passage	dropped	school-choice financing: educational improvement tax credits
+HB265	1566384	house	2025-05-06	105-98	passed	passage	dropped	no defensible direction after reading the official analysis
+HB2650	1711506	house	2026-06-24	134-68	passed	passage	dropped	dropped: replaces the data center tax certification with a new standards framework, reads as both a tax break and an accountability measure
+HB273	1555171	house	2025-04-23	110-93	passed	passage	batch-04	housing_affordability/for (relabelled from corporate_accountability on review: blight enforcement applies to all property owners, and the grant program and mitigation fund target blighted housing)
+HB276	1588746	house	2025-06-11	108-95	passed	passage	batch-03	corporate_accountability/for
+HB282	1584057	house	2025-06-03	153-50	passed	passage	dropped	no defensible direction after reading the official analysis
+HB308	1541711	house	2025-04-09	111-92	passed	passage	batch-03	corporate_accountability/for
+HB316	1553637	house	2025-04-22	114-89	passed	passage	batch-03	corporate_accountability/for
+HB350	1593902	house	2025-06-23	112-91	passed	passage	dropped	no defensible direction after reading the official analysis
+HB359	1571369	house	2025-05-14	102-101	passed	passage	batch-03	housing_affordability/for
+HB37	1708695	house	2026-06-09	103-99	passed	passage	batch-03	election_integrity/for
+HB375	1588877	house	2025-06-11	108-95	passed	passage	dropped	narrow: subdivision signage
+HB393	1571076	house	2025-05-14	120-83	passed	passage	dropped	narrow: township fire/EMS tax maximums
+HB404	1525865	house	2025-03-25	123-79	passed	passage	dropped	no defensible direction after reading the official analysis
+HB411	1541768	house	2025-04-09	131-72	passed	passage	dropped	narrow: PSERS and SERS cost-of-living adjustments
+HB441	1603632	house	2025-10-07	102-101	passed	passage	batch-04	environment_and_public_health/for
+HB458	1610588	house	2025-12-16	102-101	passed	passage	batch-04	public_safety_and_crime_control/for
+HB460	1623251	house	2026-02-04	105-93	passed	passage	batch-03	public_education_quality/for
+HB462	1586753	house	2025-06-09	122-80	passed	passage	batch-03	public_safety_and_crime_control/for
+HB464	1586687	house	2025-06-09	138-64	passed	passage	batch-03	public_safety_and_crime_control/for
+HB490	1623129	house	2026-02-04	100-98	passed	passage	dropped	procedural: agency adjudication provisions
+HB497	1708696	house	2026-06-09	146-56	passed	passage	batch-03	anti_corruption/for
+HB500	1571087	house	2025-05-14	108-95	passed	passage	dropped	no defensible direction: PA EDGE tax credit changes
+HB504	1567516	house	2025-05-07	114-89	passed	passage	batch-03	environment_and_public_health/for
+HB505	1610719	house	2025-12-17	102-101	passed	passage	batch-03	environment_and_public_health/for
+HB506	1595001	house	2025-06-25	113-90	passed	passage	batch-03	social_programs_and_welfare/for
+HB535	1525888	house	2025-03-25	121-81	passed	passage	dropped	no defensible direction after reading the official analysis
+HB558	1692973	house	2026-05-04	148-53	passed	passage	batch-03	housing_affordability/for
+HB583	1594240	house	2025-06-24	154-49	passed	passage	dropped	no defensible direction after reading the official analysis
+HB589	1603156	house	2025-09-29	152-51	passed	passage	dropped	narrow: landslide and sinkhole insurance program
+HB618	1526102	house	2025-03-25	125-77	passed	passage	dropped	no defensible direction after reading the official analysis
+HB630	1564857	house	2025-05-05	102-101	passed	passage	dropped	no defensible direction after reading the official analysis
+HB643	1556945	house	2025-04-24	112-91	passed	passage	batch-03	housing_affordability/for
+HB660	1620740	house	2026-02-02	101-97	passed	passage	batch-03	environment_and_public_health/for
+HB664	1603758	house	2025-10-08	104-99	passed	passage	batch-03	environment_and_public_health/for
+HB67	1570280	house	2025-05-13	128-75	passed	passage	batch-03	environment_and_public_health/for
+HB681	1588762	house	2025-06-11	158-45	passed	passage	dropped	narrow: school height and weight measurement rules
+HB72	1691559	house	2026-04-29	118-83	passed	passage	dropped	no defensible direction after reading the official analysis
+HB721	1570197	house	2025-05-13	113-90	passed	passage	batch-03	corporate_accountability/for
+HB722	1603540	house	2025-10-01	152-51	passed	passage	dropped	narrow: statutory rules of construction
+HB734	1564868	house	2025-05-05	106-97	passed	passage	batch-03	housing_affordability/for
+HB743	1555383	house	2025-04-23	115-88	passed	passage	batch-03	housing_affordability/for
+HB754	1567375	house	2025-05-07	120-83	passed	passage	dropped	narrow: county pension cost-of-living cap
+HB755	1526055	house	2025-03-25	133-69	passed	passage	dropped	no defensible direction after reading the official analysis
+HB764	1541749	house	2025-04-09	112-91	passed	passage	batch-03	social_programs_and_welfare/for
+HB77	1480808	house	2025-02-05	150-52	passed	passage	batch-03	environment_and_public_health/for
+HB78	1603388	house	2025-10-01	127-76	passed	passage	batch-03	data_privacy/for
+HB789	1566343	house	2025-05-06	107-96	passed	passage	batch-03	environment_and_public_health/for
+HB81	1565682	house	2025-05-06	123-80	passed	passage	batch-03	corporate_accountability/for
+HB819	1542174	house	2025-04-09	131-72	passed	passage	batch-03	public_education_quality/for
+HB830	1691580	house	2026-04-29	136-65	passed	passage	batch-04	public_education_quality/for
+HB836	1708697	house	2026-06-09	147-55	passed	passage	dropped	no defensible direction after reading the official analysis
+HB846	1586755	house	2025-06-09	126-76	passed	passage	batch-04	corporate_accountability/for
+HB852	1584025	house	2025-06-03	102-101	passed	passage	dropped	narrow: delinquent business tax collection fees
+HB853	1583885	house	2025-06-03	102-101	passed	passage	dropped	narrow: delinquent per capita tax collection fees
+HB916	1706584	house	2026-06-08	157-44	passed	passage	batch-03	environment_and_public_health/for
+HB926	1566376	house	2025-05-06	124-79	passed	passage	batch-03	corporate_accountability/for
+HB937	1571290	house	2025-05-14	103-100	passed	passage	dropped	narrow: county fee schedule
+HB938	1598327	house	2025-07-14	106-96	passed	passage	dropped	narrow: PASSHE board membership
+HB95	1709926	house	2026-06-17	124-78	passed	passage	batch-03	corporate_accountability/for
+HB956	1597090	house	2025-07-01	122-80	passed	passage	batch-03	public_safety_and_crime_control/for
+HB960	1583106	house	2025-06-02	115-88	passed	passage	dropped	narrow: commercial driver licence reinstatement
+HB967	1588583	house	2025-06-11	108-95	passed	passage	batch-03	corporate_accountability/for
+HB97	1603165	house	2025-09-29	121-82	passed	passage	dropped	narrow: companion animals in divorce
+HB986	1567427	house	2025-05-07	153-50	passed	passage	batch-03	corporate_accountability/for
+HB994	1594439	house	2025-06-24	127-76	passed	passage	batch-03	environment_and_public_health/for
+HB997	1603461	house	2025-10-01	112-91	passed	passage	batch-03	data_privacy/for
+SB1040	1603752	senate	2025-10-08	29-20	passed	passage	dropped	narrow: waives interest on budget impasse loans
+SB1068	1604091	senate	2025-10-22	33-17	passed	passage	batch-03	environment_and_public_health/against
+SB114	1601432	senate	2025-09-09	34-15	passed	passage	superseded	an earlier vote on the same measure in the same chamber; the later, decisive vote was judged instead
+SB114	1601433	senate	2025-09-09	31-18	passed	passage	batch-04	healthcare_affordability/for
+SB1236	1704969	senate	2026-06-03	30-20	passed	passage	batch-04	environment_and_public_health/against
+SB1260	1708032	senate	2026-06-10	37-13	passed	passage	dropped	dropped: electrician licensure board, narrow
+SB1260	1708033	senate	2026-06-10	36-14	passed	passage	dropped	dropped: electrician licensure board, narrow
+SB1279	1704973	senate	2026-06-03	30-20	passed	passage	batch-03	housing_affordability/for
+SB1286	1694603	senate	2026-05-06	34-16	passed	passage	dropped	narrow: driver licence suspension provisions
+SB1293	1687409	senate	2026-04-22	30-17	passed	passage	batch-03	civil_rights/against
+SB1295	1694551	senate	2026-05-06	32-18	passed	passage	dropped	narrow: commercial driver licence provisions
+SB1298	1694555	senate	2026-05-06	29-21	passed	passage	batch-03	environment_and_public_health/against
+SB1400	1711969	senate	2026-06-25	31-19	passed	passage	superseded	an earlier vote on the same measure in the same chamber; the later, decisive vote was judged instead
+SB1400	1711970	senate	2026-06-25	30-20	passed	passage	batch-04	public_safety_and_crime_control/for
+SB149	1478775	senate	2025-02-03	28-20	passed	passage	batch-03	environment_and_public_health/against
+SB153	1476134	senate	2025-01-29	29-20	passed	passage	batch-04	social_programs_and_welfare/against
+SB155	1476138	senate	2025-01-29	30-19	passed	passage	batch-04	government_efficiency/for
+SB156	1476142	senate	2025-01-29	30-19	passed	passage	batch-04	government_efficiency/for
+SB157	1476146	senate	2025-01-29	29-20	passed	passage	dropped	dropped: an annual report to legislative committees, too thin to carry a direction
+SB186	1479826	senate	2025-02-04	31-18	passed	passage	batch-03	environment_and_public_health/against
+SB187	1478740	senate	2025-02-03	27-21	passed	passage	retracted	government_efficiency/for withdrawn on review 2026-08-30: a new $1.25M/yr energy policy-analysis office fits no part of the area definition; 14 records retired, roll returned to pending
+SB226	1569515	senate	2025-05-12	29-21	passed	passage	batch-03	anti_corruption/for
+SB227	1569470	senate	2025-05-12	29-21	passed	passage	batch-04	anti_corruption/for
+SB241	1601699	senate	2025-09-10	28-22	passed	passage	dropped	narrow: expunges COVID-era liquor citations
+SB250	1693097	senate	2026-05-04	36-13	passed	passage	dropped	symbolic: display of the Pennsylvania Constitution preamble in schools
+SB311	1588640	senate	2025-06-11	34-15	passed	passage	batch-03	environment_and_public_health/against
+SB333	1587536	senate	2025-06-10	27-23	passed	passage	batch-03	government_efficiency/for
+SB347	1533024	senate	2025-04-01	38-11	passed	passage	dropped	dropped: criminalizes overdose prevention centers, a contested public-health question rather than a clear direction
+SB35	1478771	senate	2025-02-03	27-21	passed	passage	batch-03	environment_and_public_health/against
+SB403	1528195	senate	2025-03-26	29-20	passed	passage	dropped	dropped: continuous maintenance permit for stream work, reads as both efficiency and weaker waterway protection
+SB404	1528096	senate	2025-03-26	35-14	passed	passage	dropped	dropped: emergency stream reconstruction permits for conservation districts, same two readings as SB 403
+SB444	1587527	senate	2025-06-10	27-23	passed	passage	batch-03	government_efficiency/for
+SB460	1601442	senate	2025-09-09	35-14	passed	passage	dropped	trivia: governor disability procedure
+SB471	1531153	senate	2025-03-31	31-18	passed	passage	batch-03	immigration/against
+SB472	1533966	senate	2025-04-02	27-22	passed	passage	dropped	dropped: limits on acting department heads, a separation-of-powers question with no research area
+SB481	1567010	senate	2025-05-07	36-14	passed	passage	dropped	trivia: oversize permit during manufacture
+SB482	1711502	senate	2026-06-24	27-23	passed	passage	batch-04	social_programs_and_welfare/for
+SB49	1707969	senate	2026-06-10	23-27	failed	passage	batch-05	general (no stance) on user direction 2026-08-30: creates a Cannabis Control Board over the medical marijuana system, not a recreational legalisation companion to HB 1200
+SB490	1531337	senate	2025-03-31	32-17	passed	passage	batch-04	public_safety_and_crime_control/for
+SB527	1593996	senate	2025-06-23	29-21	passed	passage	dropped	dropped: Philadelphia wage tax carve-out for certain nonresidents, narrow and local
+SB598	1692975	senate	2026-05-04	38-11	passed	passage	dropped	symbolic: display of the United States Constitution preamble in schools
+SB6	1604089	senate	2025-10-22	28-22	passed	passage	batch-03	government_efficiency/for
+SB614	1668597	senate	2026-03-24	26-23	passed	passage	batch-03	healthcare_affordability/for
+SB64	1601444	senate	2025-09-09	37-12	passed	passage	dropped	trivia: veteran-owned business logotype
+SB682	1583900	senate	2025-06-03	27-22	passed	passage	dropped	dropped: renames the Department of Environmental Protection and expressly changes no duty
+SB686	1584619	senate	2025-06-04	31-18	passed	passage	batch-04	anti_corruption/for
+SB704	1623107	senate	2026-02-04	28-20	passed	passage	batch-03	environment_and_public_health/against
+SB712	1623046	senate	2026-02-04	32-16	passed	passage	batch-04	environment_and_public_health/for
+SB713	1601688	senate	2025-09-10	28-22	passed	passage	dropped	trivia: illuminated lighting display
+SB755	1604234	senate	2025-10-27	27-23	passed	passage	dropped	dropped: abolishes boards including the Climate Change Advisory Committee and reshapes the Human Relations Commission, so it is not a clean efficiency measure
+SB780	1594913	senate	2025-06-25	34-16	passed	passage	dropped	dropped: encampment removal actions against municipalities, contested between neighbors' relief and the welfare of unhoused people
+SB822	1694587	senate	2026-05-06	30-20	passed	passage	batch-03	gun_control/against
+SB840	1594939	senate	2025-06-25	26-24	passed	passage	dropped	narrow: gaming board regulatory procedure
+SB9	1566021	senate	2025-05-06	32-18	passed	passage	batch-03	civil_rights/against
+SB908	1707980	senate	2026-06-10	37-13	passed	passage	batch-04	corporate_accountability/against
+SB92	1533130	senate	2025-04-01	33-16	passed	passage	batch-03	public_safety_and_crime_control/for
+SB922	1601440	senate	2025-09-09	31-18	passed	passage	dropped	dropped: conditional licensure and emergency permits for private academic schools, no honest direction
+SB952	1601815	senate	2025-09-10	26-24	passed	passage	dropped	dropped: SEPTA performance criteria plus public-private partnerships, reads as both accountability and privatization
+SB96	1532471	senate	2025-04-01	37-12	passed	passage	batch-03	public_safety_and_crime_control/for
+SB990	1663400	senate	2026-03-16	28-22	passed	passage	batch-03	environment_and_public_health/against

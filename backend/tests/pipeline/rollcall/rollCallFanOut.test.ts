@@ -35,29 +35,57 @@ describe("memberVoteSide", () => {
 });
 
 describe("parseRollCallLabels / labelsForSide", () => {
-  it("accepts stance areas with a yea stance and non-stance areas with null, and flips for nay voters", () => {
+  it("takes the authored stance per side and never inverts yea for nay voters", () => {
     const labels = parseRollCallLabels(
       [
-        { slug: "immigration", yea: "for" },
-        { slug: "Gun_Control", yea: "against" },
+        { slug: "immigration", yea: "for", nay: "against" },
+        { slug: "Gun_Control", yea: "against", nay: null },
         { slug: "general" },
       ],
       SLUGS
     );
     expect(labels).toEqual([
-      { slug: "immigration", yea: "for" },
-      { slug: "gun_control", yea: "against" },
-      { slug: "general", yea: null },
+      { slug: "immigration", yea: "for", nay: "against" },
+      { slug: "gun_control", yea: "against", nay: null },
+      { slug: "general", yea: null, nay: null },
     ]);
     expect(labelsForSide(labels, "yea")).toEqual([
       { researchAreaSlug: "immigration", stance: "for" },
       { researchAreaSlug: "gun_control", stance: "against" },
       { researchAreaSlug: "general", stance: null },
     ]);
+    // The nay side takes only what the judgment stated: gun_control's nay
+    // is null, so nay voters get NO gun_control tag — not the inverse of
+    // yea. The non-stance area still tags both sides topically.
     expect(labelsForSide(labels, "nay")).toEqual([
       { researchAreaSlug: "immigration", stance: "against" },
-      { researchAreaSlug: "gun_control", stance: "for" },
       { researchAreaSlug: "general", stance: null },
+    ]);
+  });
+
+  it("reads a pre-nay stored label as an unstated nay side, never as the old inversion", () => {
+    const labels = parseRollCallLabels([{ slug: "immigration", yea: "for" }, { slug: "general" }], SLUGS);
+    expect(labels).toEqual([
+      { slug: "immigration", yea: "for", nay: null },
+      { slug: "general", yea: null, nay: null },
+    ]);
+    expect(labelsForSide(labels, "nay")).toEqual([{ researchAreaSlug: "general", stance: null }]);
+    // A judgment whose only label is a stance area leaves nay voters with
+    // no tags at all — an untagged record, not a flipped claim.
+    expect(labelsForSide(parseRollCallLabels([{ slug: "immigration", yea: "for" }], SLUGS), "nay")).toEqual([]);
+  });
+
+  it("requires an explicit nay decision on stance areas when the authoring gate asks for it", () => {
+    const explicit = { requireExplicitNay: true };
+    expect(() => parseRollCallLabels([{ slug: "immigration", yea: "for" }], SLUGS, explicit)).toThrow(
+      /\[0\]\.nay must be stated for immigration/
+    );
+    // Non-stance areas have no nay decision to state.
+    expect(
+      parseRollCallLabels([{ slug: "immigration", yea: "for", nay: null }, { slug: "general" }], SLUGS, explicit)
+    ).toEqual([
+      { slug: "immigration", yea: "for", nay: null },
+      { slug: "general", yea: null, nay: null },
     ]);
   });
 
@@ -67,6 +95,10 @@ describe("parseRollCallLabels / labelsForSide", () => {
     expect(() => parseRollCallLabels(["immigration"], SLUGS)).toThrow(/\[0\] is not an object/);
     expect(() => parseRollCallLabels([{ yea: "for" }], SLUGS)).toThrow(/\[0\]\.slug is not a string/);
     expect(() => parseRollCallLabels([{ slug: "immigration", yea: "yes" }], SLUGS)).toThrow(/\[0\]\.yea must be/);
+    expect(() => parseRollCallLabels([{ slug: "immigration", yea: "for", nay: "no" }], SLUGS)).toThrow(/\[0\]\.nay must be/);
+    expect(() => parseRollCallLabels([{ slug: "immigration", yea: "for", nay: "for" }], SLUGS)).toThrow(
+      /\[0\]\.nay restates yea/
+    );
     expect(() =>
       parseRollCallLabels(
         [
@@ -81,6 +113,9 @@ describe("parseRollCallLabels / labelsForSide", () => {
       /invalid for yea voters: .*requires stance/
     );
     expect(() => parseRollCallLabels([{ slug: "general", yea: "for" }], SLUGS)).toThrow(/must not include stance/);
+    expect(() => parseRollCallLabels([{ slug: "general", nay: "for" }], SLUGS)).toThrow(
+      /invalid for nay voters: .*must not include stance/
+    );
   });
 });
 
@@ -229,17 +264,36 @@ describe("database writes", () => {
         { candidate_id: "c2", id: "r3", description: "d", source_url: "u", record_identity_key: "k3", retired_at: null },
       ],
     });
-    const loaded = await loadExistingRecordsForDate({ query }, ["c1", "c2", "c3"], "2025-05-22");
-    expect(query.mock.calls[0]?.[1]).toEqual([["c1", "c2", "c3"], "2025-05-22"]);
+    const loaded = await loadExistingRecordsForDate(
+      { query },
+      ["c1", "c2", "c3"],
+      ["2025-05-22", "2025-05-21"],
+      "rollcall:US:house:119-1:145:"
+    );
+    expect(query.mock.calls[0]?.[1]).toEqual([["c1", "c2", "c3"], ["2025-05-22", "2025-05-21"], "rollcall:US:house:119-1:145:"]);
     expect([...loaded.keys()]).toEqual(["c1", "c2"]);
     expect(loaded.get("c1")?.map((record) => record.id)).toEqual(["r1", "r2"]);
     const columns = migrationTableColumns("candidate_records");
     const sql = query.mock.calls[0]?.[0] as string;
-    for (const column of ["candidate_id", "id", "description", "source_url", "record_identity_key", "retired_at", "event_date"]) {
+    for (const column of [
+      "candidate_id",
+      "id",
+      "description",
+      "source_url",
+      "record_identity_key",
+      "retired_at",
+      "event_date",
+      "origin",
+      "origin_run_id",
+    ]) {
       expect(sql).toContain(column);
       expect(columns.has(column), column).toBe(true);
     }
-    expect(await loadExistingRecordsForDate({ query }, [], "2025-05-22")).toEqual(new Map());
+    // The run-id prefix net: a changed or cleared official-date override
+    // leaves this pipeline's rows on a date outside the scan window, and
+    // they must still be found so the plan rewrites instead of inserting.
+    expect(sql).toMatch(/event_date = ANY\(\$2::date\[\]\)\s+OR \(origin = 'rollcall_import' AND starts_with\(origin_run_id, \$3\)\)/);
+    expect(await loadExistingRecordsForDate({ query }, [], ["2025-05-22"], "rollcall:US:house:119-1:145:")).toEqual(new Map());
     expect(query).toHaveBeenCalledTimes(1);
   });
 
@@ -260,8 +314,19 @@ describe("database writes", () => {
     expect(updateSql).toMatch(/UPDATE public\.candidate_records/);
     expect(updateSql).toMatch(/origin = 'rollcall_import'/);
     expect(updateSql).toMatch(/WHERE id = \$1\s+AND record_identity_key = \$2\s+AND retired_at IS NULL/);
-    expect(updateSql).not.toMatch(/event_date/);
-    expect(updateParams).toEqual(["old-id", "v3_old", content.description, content.sourceUrl, "v3_new", content.originRunId]);
+    // The date moves with the content: identity keys embed event_date, so a
+    // row found on the raw source date after an official-date override lands
+    // on the official date.
+    expect(updateSql).toMatch(/event_date = \$5::date/);
+    expect(updateParams).toEqual([
+      "old-id",
+      "v3_old",
+      content.description,
+      content.sourceUrl,
+      "2025-05-22",
+      "v3_new",
+      content.originRunId,
+    ]);
     const [transitionSql, transitionParams] = query.mock.calls[1]!;
     expect(transitionSql).toMatch(/candidate_record_identity_transitions/);
     expect(transitionParams).toEqual(["cand-1", "v3_old", "v3_new", "rollcall_normalization"]);

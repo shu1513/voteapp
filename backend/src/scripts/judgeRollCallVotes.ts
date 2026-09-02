@@ -9,7 +9,7 @@ import {
   type LegislativeVoteJudgment,
   type LegislativeVoteJudgmentOutcome,
 } from "../pipeline/rollcall/legislativeVoteStore.js";
-import { LEGISCAN_STATE_JURISDICTIONS } from "../pipeline/rollcall/legiscanStateConfigs.js";
+import { LEGISCAN_RECORD_JURISDICTIONS } from "../pipeline/rollcall/legiscanStateConfigs.js";
 import { LEGISLATIVE_VOTE_CHAMBERS, type LegislativeVoteChamber } from "../pipeline/rollcall/legislativeVotes.js";
 import { parseRollCallLabels } from "../pipeline/rollcall/rollCallFanOut.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
@@ -30,7 +30,11 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
 // judgments.json (a federal entry names congress + session; a state entry
 // names jurisdiction + the source's session key instead, and its roll is
 // the stored surrogate roll number — for Ohio, the vote's occurred
-// timestamp in epoch seconds, printed by the fetch report):
+// timestamp in epoch seconds, printed by the fetch report). An entry may
+// carry an optional official_vote_date when the source stamped the
+// legislative day instead of the calendar day (an overnight sine-die vote):
+// vote_date stays what the source file says, and the records fan out on the
+// official date. Cite the official record that dates it in the run's notes:
 //   {
 //     "judgments": [
 //       {
@@ -39,24 +43,36 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
 //         "review_status": "approved",
 //         "yea_description": "Voted to pass H.R. 1, ... It passed the House 215-214.",
 //         "nay_description": "Voted against passing H.R. 1, ... It passed the House 215-214.",
-//         "labels": [{ "slug": "personal_income_tax_reduction", "yea": "for" }, { "slug": "general" }]
+//         "labels": [{ "slug": "personal_income_tax_reduction", "yea": "for", "nay": null }, { "slug": "general" }]
 //       },
 //       {
 //         "jurisdiction": "OH", "chamber": "house", "session": "136",
 //         "roll": 1744207254, "measure_id": "HB 96", "vote_date": "2025-04-09",
 //         "review_status": "approved",
 //         "yea_description": "...", "nay_description": "...",
-//         "labels": [{ "slug": "government_spending_reduction", "yea": "against" }]
+//         "labels": [{ "slug": "government_spending_reduction", "yea": "against", "nay": "for" }]
 //       }
 //     ]
 //   }
+//
+// Each stance label states BOTH sides: `yea` as before, and `nay` — the
+// stance a no vote actually evidences, or null when it evidences none (nay
+// voters then get no tag on that slug). `nay` is never inferred by
+// inverting `yea`. Approval is additionally gated at apply time: each
+// description must close with this roll call's own tally (`<yeas>-<nays>`),
+// and a roll call cannot be approved while a LATER kept floor vote on the
+// same measure in the same chamber sits in legislative_votes (judge the
+// final action instead — a first-passage record beside an unmentioned
+// concurrence reads as the member's final position on the bill). To approve
+// an earlier stage anyway, list the later roll numbers under
+// "acknowledge_later_rolls": [<roll>, ...].
 
 const FEDERAL_JURISDICTION = "US";
 // State entries name their jurisdiction explicitly; only sources with a
 // fetcher are accepted, so a typo cannot write a judgment nothing imports:
 // the Ohio pilot's own feed, plus every state registered in the LegiScan
 // config registry (whose session id is the entry's session key).
-const STATE_JURISDICTIONS = new Set(["OH", ...LEGISCAN_STATE_JURISDICTIONS]);
+const STATE_JURISDICTIONS = new Set(["OH", ...LEGISCAN_RECORD_JURISDICTIONS]);
 const REVIEW_STATUSES = ["pending", "approved"] as const;
 
 function fail(index: number, message: string): never {
@@ -136,6 +152,13 @@ export function parseJudgmentsFile(raw: unknown, allowedSlugs: ReadonlySet<strin
     if (typeof voteDate !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(voteDate)) {
       fail(index, "vote_date must be an ISO date (YYYY-MM-DD)");
     }
+    const officialVoteDate = entry.official_vote_date ?? null;
+    if (officialVoteDate !== null && (typeof officialVoteDate !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(officialVoteDate))) {
+      fail(index, "official_vote_date must be an ISO date (YYYY-MM-DD), or omitted");
+    }
+    if (officialVoteDate === voteDate) {
+      fail(index, "official_vote_date equals vote_date; omit it unless the source stamped a different day");
+    }
     const reviewStatus = entry.review_status;
     if (typeof reviewStatus !== "string" || !(REVIEW_STATUSES as readonly string[]).includes(reviewStatus)) {
       fail(index, `review_status must be one of ${REVIEW_STATUSES.join(", ")}`);
@@ -147,9 +170,16 @@ export function parseJudgmentsFile(raw: unknown, allowedSlugs: ReadonlySet<strin
     }
     let labels;
     try {
-      labels = parseRollCallLabels(entry.labels, allowedSlugs);
+      labels = parseRollCallLabels(entry.labels, allowedSlugs, { requireExplicitNay: true });
     } catch (error) {
       fail(index, (error instanceof Error ? error.message : String(error)).replace(/^labels_json/, "labels"));
+    }
+    const acknowledgeLaterRolls = entry.acknowledge_later_rolls ?? [];
+    if (
+      !Array.isArray(acknowledgeLaterRolls) ||
+      acknowledgeLaterRolls.some((roll) => typeof roll !== "number" || !Number.isSafeInteger(roll) || roll < 1)
+    ) {
+      fail(index, "acknowledge_later_rolls must be an array of positive roll numbers");
     }
     const key = `${jurisdiction}:${chamber}:${sessionKey}:${roll}`;
     if (seen.has(key)) {
@@ -163,9 +193,11 @@ export function parseJudgmentsFile(raw: unknown, allowedSlugs: ReadonlySet<strin
       rollNumber: roll,
       measureId: measureId === null ? null : measureId.trim(),
       voteDate,
+      officialVoteDate,
       yeaDescription,
       nayDescription,
       labels,
+      acknowledgeLaterRolls: acknowledgeLaterRolls as number[],
       reviewStatus: reviewStatus as "pending" | "approved",
     });
   }

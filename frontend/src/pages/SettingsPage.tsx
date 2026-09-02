@@ -64,9 +64,12 @@ function MembershipProfileLine({ me }: { me: Me }) {
     );
   }
   return (
-    <p className="mt-1 text-sm">
-      <Link to="/mission" className="font-medium underline hover:text-ink">
-        Become a member
+    <p className="mt-2 text-sm">
+      <Link
+        to="/support/member"
+        className="inline-block rounded-lg bg-green-700 px-4 py-2 font-semibold text-white transition hover:bg-green-800"
+      >
+        Become an honorary member
       </Link>
     </p>
   );

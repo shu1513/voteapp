@@ -1,0 +1,1128 @@
+{
+  "importerVersion": "rollcall-legiscan-resolve-v1",
+  "startedAt": "2026-08-27T01:44:11.497Z",
+  "finishedAt": "2026-08-27T01:44:15.409Z",
+  "jurisdiction": "CA",
+  "sessionId": 2172,
+  "evidenceDir": "/Users/shu/legiscan-data/ca-2172-evidence",
+  "scopeFrom": "2026-11-01",
+  "peopleSource": "/Users/shu/legiscan-data/ca-2172/CA/2025-2026_Regular_Session",
+  "peopleMembers": 121,
+  "candidatePool": 88,
+  "crosswalkFile": "/Users/shu/voteApp/.claude/worktrees/hungry-engelbart-5b1814/backend/evidence/rollcall/legiscan-ca-2172/crosswalk.json",
+  "crosswalkEntries": 121,
+  "crosswalkPeopleNotInSnapshot": [],
+  "proposals": [
+    {
+      "peopleId": 1551,
+      "rosterName": "Roger Niello",
+      "rosterSeat": "senate SD-006",
+      "candidateId": "c4a5a088-851e-4770-a126-b62af1f6050a",
+      "candidateName": "Roger Niello",
+      "candidacy": "state_upper: State Senate District 6 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 1603,
+      "rosterName": "Tony Strickland",
+      "rosterSeat": "senate SD-036",
+      "candidateId": "34b907e0-9937-404c-8e81-3343b11a130e",
+      "candidateName": "Tony Strickland",
+      "candidacy": "state_upper: State Senate District 36 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18078,
+      "rosterName": "Blanca Rubio",
+      "rosterSeat": "house HD-048",
+      "candidateId": "74ae7b3a-f166-4eb7-827b-f7edad73ca29",
+      "candidateName": "Blanca Rubio",
+      "candidacy": "state_lower: Assembly District 48 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19658,
+      "rosterName": "Jesse Gabriel",
+      "rosterSeat": "house HD-046",
+      "candidateId": "bcbba1ad-b4ba-4501-94fa-f4efafddf8f2",
+      "candidateName": "Jesse Gabriel",
+      "candidacy": "state_lower: Assembly District 46 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19717,
+      "rosterName": "Tasha Boerner Horvath",
+      "rosterSeat": "house HD-077",
+      "candidateId": "2a1fe152-dd7b-4f22-81aa-bdeee7e5659a",
+      "candidateName": "Tasha Boerner Horvath",
+      "candidacy": "state_lower: Assembly District 77 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19725,
+      "rosterName": "Bob Archuleta",
+      "rosterSeat": "senate SD-030",
+      "candidateId": "a35be13d-df31-461a-acf7-6e13096b3900",
+      "candidateName": "Bob Archuleta",
+      "candidacy": "state_upper: State Senate District 30 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19727,
+      "rosterName": "Melissa Hurtado",
+      "rosterSeat": "senate SD-016",
+      "candidateId": "25688081-7b87-4e7e-b5d1-a88c400d6828",
+      "candidateName": "Melissa Hurtado",
+      "candidacy": "state_upper: State Senate District 16 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19733,
+      "rosterName": "Susan Rubio",
+      "rosterSeat": "senate SD-022",
+      "candidateId": "ac78f2fc-1915-45c3-a74f-d3f681f3de61",
+      "candidateName": "Susan Rubio",
+      "candidacy": "state_upper: State Senate District 22 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21718,
+      "rosterName": "Laurie Davies",
+      "rosterSeat": "house HD-074",
+      "candidateId": "9f1f0e91-ba9f-4fff-9f23-eb908a05ff6b",
+      "candidateName": "Laurie Davies",
+      "candidacy": "state_lower: Assembly District 74 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21720,
+      "rosterName": "Kelly Seyarto",
+      "rosterSeat": "senate SD-032",
+      "candidateId": "fcb0f46c-8f3e-4434-ac46-b5df7648f3e0",
+      "candidateName": "Kelly Seyarto",
+      "candidacy": "state_upper: State Senate District 32 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21723,
+      "rosterName": "Chris Ward",
+      "rosterSeat": "house HD-078",
+      "candidateId": "00f6786f-982e-43ef-b780-4f1742df419d",
+      "candidateName": "Christopher Ward",
+      "candidacy": "state_lower: Assembly District 78 (2024); California",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23128,
+      "rosterName": "Lori Wilson",
+      "rosterSeat": "house HD-011",
+      "candidateId": "4b0fa996-a4ca-44f0-8eff-7f413ec3ef48",
+      "candidateName": "Lori Wilson",
+      "candidacy": "state_lower: Assembly District 11 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23137,
+      "rosterName": "Matt Haney",
+      "rosterSeat": "house HD-017",
+      "candidateId": "3083219d-5d0f-4695-970c-8467ef6822af",
+      "candidateName": "Matt Haney",
+      "candidacy": "state_lower: Assembly District 17 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23152,
+      "rosterName": "David Alvarez",
+      "rosterSeat": "house HD-080",
+      "candidateId": "dc2a403d-9c34-4932-88f9-7c82955d2417",
+      "candidateName": "David Alvarez",
+      "candidacy": "state_lower: Assembly District 80 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23205,
+      "rosterName": "Damon Connolly",
+      "rosterSeat": "house HD-012",
+      "candidateId": "4942dbcf-dc2d-44a1-adbd-d3bca51600a4",
+      "candidateName": "Damon Connolly",
+      "candidacy": "state_upper: State Senate District 2 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 23209,
+      "rosterName": "Josh Hoover",
+      "rosterSeat": "house HD-007",
+      "candidateId": "73ad5040-db86-4599-a338-7a6d1bc3a0a8",
+      "candidateName": "Josh Hoover",
+      "candidacy": "state_lower: Assembly District 7 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23210,
+      "rosterName": "Corey Jackson",
+      "rosterSeat": "house HD-060",
+      "candidateId": "f55b049e-7d9c-4e89-acea-fec11e57ea78",
+      "candidateName": "Corey Jackson",
+      "candidacy": "state_lower: Assembly District 60 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23215,
+      "rosterName": "Blanca Pacheco",
+      "rosterSeat": "house HD-064",
+      "candidateId": "fa2bc34d-d04a-4214-b92f-3cf2a0e18574",
+      "candidateName": "Blanca Pacheco",
+      "candidacy": "state_lower: Assembly District 64 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23220,
+      "rosterName": "Esmeralda Soria",
+      "rosterSeat": "house HD-027",
+      "candidateId": "dd1e9567-ed7e-451a-96ca-9981bd9ff35d",
+      "candidateName": "Esmeralda Soria",
+      "candidacy": "state_upper: State Senate District 14 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 23221,
+      "rosterName": "Stephanie Nguyen",
+      "rosterSeat": "house HD-010",
+      "candidateId": "78c9dc70-f7d3-4f18-8083-5b6e0d0f57c5",
+      "candidateName": "Stephanie Nguyen",
+      "candidacy": "state_lower: Assembly District 10 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23222,
+      "rosterName": "Tri Ta",
+      "rosterSeat": "house HD-070",
+      "candidateId": "f2916b87-ad03-4b01-81c4-b41603d5d771",
+      "candidateName": "Tri Ta",
+      "candidacy": "state_lower: Assembly District 70 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23223,
+      "rosterName": "Avelino Valencia",
+      "rosterSeat": "house HD-068",
+      "candidateId": "16c514c1-ea8d-43db-9191-1aafef129090",
+      "candidateName": "Avelino Valencia",
+      "candidacy": "state_upper: State Senate District 34 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 23226,
+      "rosterName": "Angelique Ashby",
+      "rosterSeat": "senate SD-008",
+      "candidateId": "28ab7728-b70f-4b4b-880c-a735e535ff3d",
+      "candidateName": "Angelique Ashby",
+      "candidacy": "state_upper: State Senate District 8 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23227,
+      "rosterName": "Catherine Blakespear",
+      "rosterSeat": "senate SD-038",
+      "candidateId": "c70107d0-6063-4728-88f5-117efacea0ff",
+      "candidateName": "Catherine Blakespear",
+      "candidacy": "state_upper: State Senate District 38 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23228,
+      "rosterName": "Caroline Menjivar",
+      "rosterSeat": "senate SD-020",
+      "candidateId": "95cdcad5-93df-43fc-86ba-b7cb0232fd7e",
+      "candidateName": "Caroline Menjivar",
+      "candidacy": "state_upper: State Senate District 20 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23229,
+      "rosterName": "Steve Padilla",
+      "rosterSeat": "senate SD-018",
+      "candidateId": "61508840-5fea-46e1-9805-3ab7af708d1a",
+      "candidateName": "Steve Padilla",
+      "candidacy": "state_upper: State Senate District 18 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23230,
+      "rosterName": "Lola Smallwood-Cuevas",
+      "rosterSeat": "senate SD-028",
+      "candidateId": "1946e4c4-7bf9-4bfd-8bb2-7702c0750e03",
+      "candidateName": "Lola Smallwood-Cuevas",
+      "candidacy": "state_upper: State Senate District 28 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23906,
+      "rosterName": "Greg Wallis",
+      "rosterSeat": "house HD-047",
+      "candidateId": "4a4a3eab-bd11-40fd-8548-efe63aa49c41",
+      "candidateName": "Greg Wallis",
+      "candidacy": "state_lower: Assembly District 47 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25332,
+      "rosterName": "Jessica Caloza",
+      "rosterSeat": "house HD-052",
+      "candidateId": "5759958c-39ec-4896-b077-efac1145371e",
+      "candidateName": "Jessica Caloza",
+      "candidacy": "state_lower: Assembly District 52 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25333,
+      "rosterName": "Leticia Castillo",
+      "rosterSeat": "house HD-058",
+      "candidateId": "2c15487c-e51f-41cf-91b2-09edc17fc8ce",
+      "candidateName": "Leticia Castillo",
+      "candidacy": "state_lower: Assembly District 58 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25338,
+      "rosterName": "Mark Gonzalez",
+      "rosterSeat": "house HD-054",
+      "candidateId": "20a6ffb7-b4ab-4ca8-8d49-d16e4330ea5e",
+      "candidateName": "Mark Gonzalez",
+      "candidacy": "state_lower: Assembly District 54 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25343,
+      "rosterName": "Darshana Patel",
+      "rosterSeat": "house HD-076",
+      "candidateId": "2f12eede-913a-4372-ac19-bafb00a5e300",
+      "candidateName": "Darshana Patel",
+      "candidacy": "state_lower: Assembly District 76 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25350,
+      "rosterName": "Jose Solache",
+      "rosterSeat": "house HD-062",
+      "candidateId": "546f136f-add0-47f3-abc6-0482a19c8e36",
+      "candidateName": "Jose Solache",
+      "candidacy": "state_lower: Assembly District 62 (2024); California",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    }
+  ],
+  "unmatchedPeople": [
+    {
+      "peopleId": 11611,
+      "name": "Shannon Grove",
+      "seat": "senate SD-012"
+    },
+    {
+      "peopleId": 14116,
+      "name": "Al Muratsuchi",
+      "seat": "house HD-066"
+    },
+    {
+      "peopleId": 14118,
+      "name": "Sharon Quirk-Silva",
+      "seat": "house HD-067"
+    },
+    {
+      "peopleId": 1507,
+      "name": "Anna Caballero",
+      "seat": "senate SD-014"
+    },
+    {
+      "peopleId": 16221,
+      "name": "Brian Jones",
+      "seat": "senate SD-040"
+    },
+    {
+      "peopleId": 16287,
+      "name": "James Gallagher",
+      "seat": "house HD-003"
+    },
+    {
+      "peopleId": 16288,
+      "name": "Mike Gipson",
+      "seat": "house HD-065"
+    },
+    {
+      "peopleId": 16291,
+      "name": "Jacqui Irwin",
+      "seat": "house HD-042"
+    },
+    {
+      "peopleId": 16293,
+      "name": "Tom Lackey",
+      "seat": "house HD-034"
+    },
+    {
+      "peopleId": 16304,
+      "name": "Benjamin Allen",
+      "seat": "senate SD-024"
+    },
+    {
+      "peopleId": 16308,
+      "name": "Mike McGuire",
+      "seat": "senate SD-002"
+    },
+    {
+      "peopleId": 18063,
+      "name": "Steven Choi",
+      "seat": "senate SD-037"
+    },
+    {
+      "peopleId": 18064,
+      "name": "Eloise Reyes",
+      "seat": "senate SD-029"
+    },
+    {
+      "peopleId": 18065,
+      "name": "Ash Kalra",
+      "seat": "house HD-025"
+    },
+    {
+      "peopleId": 18066,
+      "name": "Phillip Chen",
+      "seat": "house HD-059"
+    },
+    {
+      "peopleId": 18067,
+      "name": "Cecilia Aguiar-Curry",
+      "seat": "house HD-004"
+    },
+    {
+      "peopleId": 18068,
+      "name": "Scott Wiener",
+      "seat": "senate SD-011"
+    },
+    {
+      "peopleId": 18069,
+      "name": "Heath Flora",
+      "seat": "house HD-009"
+    },
+    {
+      "peopleId": 18070,
+      "name": "Henry Stern",
+      "seat": "senate SD-027"
+    },
+    {
+      "peopleId": 18072,
+      "name": "Tim Grayson",
+      "seat": "senate SD-009"
+    },
+    {
+      "peopleId": 18073,
+      "name": "Marc Berman",
+      "seat": "house HD-023"
+    },
+    {
+      "peopleId": 18075,
+      "name": "Monique Limon",
+      "seat": "senate SD-019"
+    },
+    {
+      "peopleId": 18079,
+      "name": "Sabrina Cervantes",
+      "seat": "senate SD-031"
+    },
+    {
+      "peopleId": 19459,
+      "name": "Joaquin Arambula",
+      "seat": "house HD-031"
+    },
+    {
+      "peopleId": 19716,
+      "name": "Rebecca Bauer-Kahan",
+      "seat": "house HD-016"
+    },
+    {
+      "peopleId": 19719,
+      "name": "Cottie Petrie-Norris",
+      "seat": "house HD-073"
+    },
+    {
+      "peopleId": 19720,
+      "name": "James Ramos",
+      "seat": "house HD-045"
+    },
+    {
+      "peopleId": 19721,
+      "name": "Robert Rivas",
+      "seat": "house HD-029"
+    },
+    {
+      "peopleId": 19723,
+      "name": "Buffy Wicks",
+      "seat": "house HD-014"
+    },
+    {
+      "peopleId": 19726,
+      "name": "Maria Durazo",
+      "seat": "senate SD-026"
+    },
+    {
+      "peopleId": 19728,
+      "name": "Tom Umberg",
+      "seat": "senate SD-034"
+    },
+    {
+      "peopleId": 21374,
+      "name": "Lena Gonzalez",
+      "seat": "senate SD-033"
+    },
+    {
+      "peopleId": 21440,
+      "name": "Megan Dahle",
+      "seat": "senate SD-001"
+    },
+    {
+      "peopleId": 21717,
+      "name": "Steve Bennett",
+      "seat": "house HD-038"
+    },
+    {
+      "peopleId": 21719,
+      "name": "Alex Lee",
+      "seat": "house HD-024"
+    },
+    {
+      "peopleId": 21724,
+      "name": "Josh Becker",
+      "seat": "senate SD-013"
+    },
+    {
+      "peopleId": 21725,
+      "name": "Dave Cortese",
+      "seat": "senate SD-015"
+    },
+    {
+      "peopleId": 21726,
+      "name": "John Laird",
+      "seat": "senate SD-017"
+    },
+    {
+      "peopleId": 21728,
+      "name": "Rosilicie Ochoa Bogh",
+      "seat": "senate SD-023"
+    },
+    {
+      "peopleId": 22654,
+      "name": "Lisa Calderon",
+      "seat": "house HD-056"
+    },
+    {
+      "peopleId": 22918,
+      "name": "Akilah Weber Pierson",
+      "seat": "senate SD-039"
+    },
+    {
+      "peopleId": 22932,
+      "name": "Isaac Bryan",
+      "seat": "house HD-055"
+    },
+    {
+      "peopleId": 22948,
+      "name": "Mia Bonta",
+      "seat": "house HD-018"
+    },
+    {
+      "peopleId": 23099,
+      "name": "Mike Fong",
+      "seat": "house HD-049"
+    },
+    {
+      "peopleId": 23155,
+      "name": "Tina McKinnor",
+      "seat": "house HD-061"
+    },
+    {
+      "peopleId": 23202,
+      "name": "Dawn Addis",
+      "seat": "house HD-030"
+    },
+    {
+      "peopleId": 23203,
+      "name": "Juan Alanis",
+      "seat": "house HD-022"
+    },
+    {
+      "peopleId": 23204,
+      "name": "Jasmeet Bains",
+      "seat": "house HD-035"
+    },
+    {
+      "peopleId": 23206,
+      "name": "Diane Dixon",
+      "seat": "house HD-072"
+    },
+    {
+      "peopleId": 23207,
+      "name": "Bill Essayli",
+      "seat": "house HD-063"
+    },
+    {
+      "peopleId": 23208,
+      "name": "Gregg Hart",
+      "seat": "house HD-037"
+    },
+    {
+      "peopleId": 23211,
+      "name": "Joe Patterson",
+      "seat": "house HD-005"
+    },
+    {
+      "peopleId": 23212,
+      "name": "Juan Carrillo",
+      "seat": "house HD-039"
+    },
+    {
+      "peopleId": 23213,
+      "name": "Josh Lowenthal",
+      "seat": "house HD-069"
+    },
+    {
+      "peopleId": 23214,
+      "name": "Liz Ortega",
+      "seat": "house HD-020"
+    },
+    {
+      "peopleId": 23216,
+      "name": "Diane Papan",
+      "seat": "house HD-021"
+    },
+    {
+      "peopleId": 23217,
+      "name": "Gail Pellerin",
+      "seat": "house HD-028"
+    },
+    {
+      "peopleId": 23218,
+      "name": "Kate Sanchez",
+      "seat": "house HD-071"
+    },
+    {
+      "peopleId": 23219,
+      "name": "Pilar Schiavo",
+      "seat": "house HD-040"
+    },
+    {
+      "peopleId": 23224,
+      "name": "Rick Zbur",
+      "seat": "house HD-051"
+    },
+    {
+      "peopleId": 23225,
+      "name": "Marie Alvarado-Gil",
+      "seat": "senate SD-004"
+    },
+    {
+      "peopleId": 23231,
+      "name": "Aisha Wahab",
+      "seat": "senate SD-010"
+    },
+    {
+      "peopleId": 25331,
+      "name": "Patrick Ahrens",
+      "seat": "house HD-026"
+    },
+    {
+      "peopleId": 25334,
+      "name": "Carl DeMaio",
+      "seat": "house HD-075"
+    },
+    {
+      "peopleId": 25335,
+      "name": "Anamarie Farias",
+      "seat": "house HD-015"
+    },
+    {
+      "peopleId": 25336,
+      "name": "Robert Garcia",
+      "seat": "house HD-050"
+    },
+    {
+      "peopleId": 25337,
+      "name": "Jeff Gonzalez",
+      "seat": "house HD-036"
+    },
+    {
+      "peopleId": 25339,
+      "name": "Heather Hadwick",
+      "seat": "house HD-001"
+    },
+    {
+      "peopleId": 25340,
+      "name": "John Harabedian",
+      "seat": "house HD-041"
+    },
+    {
+      "peopleId": 25341,
+      "name": "Maggy Krell",
+      "seat": "house HD-006"
+    },
+    {
+      "peopleId": 25342,
+      "name": "Alexandra Macedo",
+      "seat": "house HD-033"
+    },
+    {
+      "peopleId": 25344,
+      "name": "Rhodesia Ransom",
+      "seat": "house HD-013"
+    },
+    {
+      "peopleId": 25345,
+      "name": "Celeste Rodriguez",
+      "seat": "house HD-043"
+    },
+    {
+      "peopleId": 25346,
+      "name": "Michelle Rodriguez",
+      "seat": "house HD-053"
+    },
+    {
+      "peopleId": 25347,
+      "name": "Chris Rogers",
+      "seat": "house HD-002"
+    },
+    {
+      "peopleId": 25348,
+      "name": "Nick Schultz",
+      "seat": "house HD-044"
+    },
+    {
+      "peopleId": 25349,
+      "name": "LaShae Sharp-Collins",
+      "seat": "house HD-079"
+    },
+    {
+      "peopleId": 25351,
+      "name": "Catherine Stefani",
+      "seat": "house HD-019"
+    },
+    {
+      "peopleId": 25352,
+      "name": "David Tangipa",
+      "seat": "house HD-008"
+    },
+    {
+      "peopleId": 25353,
+      "name": "Jesse Arreguin",
+      "seat": "senate SD-007"
+    },
+    {
+      "peopleId": 25354,
+      "name": "Christopher Cabaldon",
+      "seat": "senate SD-003"
+    },
+    {
+      "peopleId": 25355,
+      "name": "Jerry McNerney",
+      "seat": "senate SD-005"
+    },
+    {
+      "peopleId": 25356,
+      "name": "Sasha Renee Perez",
+      "seat": "senate SD-025"
+    },
+    {
+      "peopleId": 25357,
+      "name": "Laura Richardson",
+      "seat": "senate SD-035"
+    },
+    {
+      "peopleId": 25358,
+      "name": "Suzette Valladares",
+      "seat": "senate SD-023"
+    },
+    {
+      "peopleId": 25359,
+      "name": "Sade Elhawary",
+      "seat": "house HD-057"
+    },
+    {
+      "peopleId": 26421,
+      "name": "Stan Ellis",
+      "seat": "house HD-032"
+    },
+    {
+      "peopleId": 26495,
+      "name": "Natasha Johnson",
+      "seat": "house HD-063"
+    }
+  ],
+  "unmatchedCandidates": [
+    {
+      "candidateId": "4642af53-4141-4918-9f73-589e297b0022",
+      "name": "Alejandro Galicia",
+      "scope": "state_lower",
+      "districtName": "Assembly District 80 (2024); California"
+    },
+    {
+      "candidateId": "d9881069-85bc-47be-ae91-bc0282252a4d",
+      "name": "Alexandra Briseno",
+      "scope": "state_lower",
+      "districtName": "Assembly District 54 (2024); California"
+    },
+    {
+      "candidateId": "0ea9dcee-6fa1-4de5-8957-d88e732c79d0",
+      "name": "Alexandra Duarte",
+      "scope": "state_upper",
+      "districtName": "State Senate District 4 (2024); California"
+    },
+    {
+      "candidateId": "19e67902-feb1-496d-bf23-526374665e19",
+      "name": "Amy Slavensky",
+      "scope": "state_lower",
+      "districtName": "Assembly District 7 (2024); California"
+    },
+    {
+      "candidateId": "bf6f0ac1-23cf-46ac-b074-dbdfd3fe74f5",
+      "name": "Andrea Lee Anderson",
+      "scope": "state_lower",
+      "districtName": "Assembly District 52 (2024); California"
+    },
+    {
+      "candidateId": "70a4e720-73fa-43c6-9702-98b83c41dc08",
+      "name": "Araceli Martinez",
+      "scope": "state_upper",
+      "districtName": "State Senate District 30 (2024); California"
+    },
+    {
+      "candidateId": "6d2629ce-9513-4a2d-aff7-022507730113",
+      "name": "Art Hodges",
+      "scope": "state_upper",
+      "districtName": "State Senate District 18 (2024); California"
+    },
+    {
+      "candidateId": "7f01327d-3d1b-426c-bf65-3299056182db",
+      "name": "Brian Goldsmith",
+      "scope": "state_upper",
+      "districtName": "State Senate District 24 (2024); California"
+    },
+    {
+      "candidateId": "b49ad321-7813-4990-922e-c4bcec1e7f70",
+      "name": "Brian Pacheco",
+      "scope": "state_lower",
+      "districtName": "Assembly District 27 (2024); California"
+    },
+    {
+      "candidateId": "176da63b-1784-400b-8282-f42255e8066f",
+      "name": "Carrie Espinoza Villanueva",
+      "scope": "state_lower",
+      "districtName": "Assembly District 76 (2024); California"
+    },
+    {
+      "candidateId": "396fd40c-e202-4e73-8d79-f4bd9610ee7a",
+      "name": "Chris Duncan",
+      "scope": "state_upper",
+      "districtName": "State Senate District 36 (2024); California"
+    },
+    {
+      "candidateId": "f222903b-69cd-4b50-ae4d-e725291f3712",
+      "name": "Chris Kluwe",
+      "scope": "state_lower",
+      "districtName": "Assembly District 72 (2024); California"
+    },
+    {
+      "candidateId": "df142980-0917-46fe-981c-34b3de95c58a",
+      "name": "Clarissa Cervantes",
+      "scope": "state_lower",
+      "districtName": "Assembly District 58 (2024); California"
+    },
+    {
+      "candidateId": "92dbfec0-126e-4c9d-9ea3-1183b3b44a3e",
+      "name": "Dan Tran",
+      "scope": "state_lower",
+      "districtName": "Assembly District 48 (2024); California"
+    },
+    {
+      "candidateId": "83b497f4-b910-4094-907d-806107599729",
+      "name": "Darin DuPont",
+      "scope": "state_upper",
+      "districtName": "State Senate District 14 (2024); California"
+    },
+    {
+      "candidateId": "3d4df55e-9cf7-4688-9446-05a1b16eab6f",
+      "name": "David Couch",
+      "scope": "state_lower",
+      "districtName": "Assembly District 32 (2024); California"
+    },
+    {
+      "candidateId": "2e10b73d-36e5-4c44-aaaf-388d10d64068",
+      "name": "David Penaloza",
+      "scope": "state_lower",
+      "districtName": "Assembly District 68 (2024); California"
+    },
+    {
+      "candidateId": "18657ff6-4334-424c-97b3-b623f988b3bd",
+      "name": "Deborah Klein Lopez",
+      "scope": "state_lower",
+      "districtName": "Assembly District 42 (2024); California"
+    },
+    {
+      "candidateId": "dbfc28a2-f2a6-468c-a46e-ca2a69ea061d",
+      "name": "Ed Delgado",
+      "scope": "state_lower",
+      "districtName": "Assembly District 60 (2024); California"
+    },
+    {
+      "candidateId": "0c43ab39-8c29-422d-ab49-bbe078dc310f",
+      "name": "Gracey Van Der Mark",
+      "scope": "state_lower",
+      "districtName": "Assembly District 72 (2024); California"
+    },
+    {
+      "candidateId": "acd007ea-1428-4c36-9e27-46a5b05ee018",
+      "name": "Guillermo Gonzalez",
+      "scope": "state_upper",
+      "districtName": "State Senate District 16 (2024); California"
+    },
+    {
+      "candidateId": "73e2beeb-4590-4811-89f5-db1db2fbdac6",
+      "name": "Jaron Brandon",
+      "scope": "state_upper",
+      "districtName": "State Senate District 4 (2024); California"
+    },
+    {
+      "candidateId": "8310ded2-e94e-4ca3-8fe7-0fe6e07a33cc",
+      "name": "Jenny Callison",
+      "scope": "state_lower",
+      "districtName": "Assembly District 11 (2024); California"
+    },
+    {
+      "candidateId": "124ec9ff-949e-4316-974c-bb75af86f27f",
+      "name": "Jessie Lopez",
+      "scope": "state_lower",
+      "districtName": "Assembly District 68 (2024); California"
+    },
+    {
+      "candidateId": "4a44bf30-7eaf-4094-af01-3852d2750d5a",
+      "name": "Joe Lisuzzo",
+      "scope": "state_upper",
+      "districtName": "State Senate District 28 (2024); California"
+    },
+    {
+      "candidateId": "a8134165-9dc1-42fc-ac08-ecfca1c8f062",
+      "name": "John M. Erickson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 24 (2024); California"
+    },
+    {
+      "candidateId": "937293ab-8e9a-437c-a828-419124e3119f",
+      "name": "Kristie Bruce-Lane",
+      "scope": "state_upper",
+      "districtName": "State Senate District 40 (2024); California"
+    },
+    {
+      "candidateId": "7bcd8a0f-9917-4c7b-a4ee-660e2f918b78",
+      "name": "Laura Bassett",
+      "scope": "state_upper",
+      "districtName": "State Senate District 38 (2024); California"
+    },
+    {
+      "candidateId": "ecb710ac-40e5-4d10-a0fc-1d68a0858a68",
+      "name": "Leila Namvar",
+      "scope": "state_lower",
+      "districtName": "Assembly District 47 (2024); California"
+    },
+    {
+      "candidateId": "4b9f18e6-7aaf-43d4-9d4e-038b6c1964df",
+      "name": "Linda Price",
+      "scope": "state_upper",
+      "districtName": "State Senate District 10 (2024); California"
+    },
+    {
+      "candidateId": "ede0bdbd-0444-49ce-b756-83c658982218",
+      "name": "Mara Elliott",
+      "scope": "state_upper",
+      "districtName": "State Senate District 40 (2024); California"
+    },
+    {
+      "candidateId": "c4ae44e5-3deb-4536-b344-468c640064dd",
+      "name": "Mike Murphy",
+      "scope": "state_lower",
+      "districtName": "Assembly District 27 (2024); California"
+    },
+    {
+      "candidateId": "b43d3576-495b-43bf-9878-33da4698c5d6",
+      "name": "Mike Netter",
+      "scope": "state_upper",
+      "districtName": "State Senate District 22 (2024); California"
+    },
+    {
+      "candidateId": "622d1f13-889c-48a1-a24c-b76145949e6e",
+      "name": "Nathan Magsig",
+      "scope": "state_upper",
+      "districtName": "State Senate District 12 (2024); California"
+    },
+    {
+      "candidateId": "f5d0a06f-c66f-44cf-b95b-9aff41d4f979",
+      "name": "Paul Irving Jones",
+      "scope": "state_lower",
+      "districtName": "Assembly District 62 (2024); California"
+    },
+    {
+      "candidateId": "5cde31e7-3619-4680-b69c-2cef75feb9cc",
+      "name": "Paul Seo",
+      "scope": "state_lower",
+      "districtName": "Assembly District 66 (2024); California"
+    },
+    {
+      "candidateId": "3d1a28db-14f3-4152-a8f9-0608d9d8d5c1",
+      "name": "Paula Swift",
+      "scope": "state_lower",
+      "districtName": "Assembly District 70 (2024); California"
+    },
+    {
+      "candidateId": "d8b4779b-ef81-4a3f-8676-526faaf2b7a1",
+      "name": "Payton Galvez",
+      "scope": "state_lower",
+      "districtName": "Assembly District 78 (2024); California"
+    },
+    {
+      "candidateId": "fe421907-7777-43fa-954f-7abe86ccffb8",
+      "name": "Raul Ortiz Jr.",
+      "scope": "state_lower",
+      "districtName": "Assembly District 64 (2024); California"
+    },
+    {
+      "candidateId": "00c050f9-83da-492b-8384-bb54ef666e0f",
+      "name": "Rhonda Shader",
+      "scope": "state_upper",
+      "districtName": "State Senate District 34 (2024); California"
+    },
+    {
+      "candidateId": "a930d712-367a-4f37-85e3-090d7361c157",
+      "name": "Sara Deen",
+      "scope": "state_lower",
+      "districtName": "Assembly District 66 (2024); California"
+    },
+    {
+      "candidateId": "6d9f9a63-0e13-4ee7-82ae-460c4ca560d6",
+      "name": "Sara Hernandez",
+      "scope": "state_upper",
+      "districtName": "State Senate District 26 (2024); California"
+    },
+    {
+      "candidateId": "3bbfd474-15ec-4dea-a494-486bbe6681a5",
+      "name": "Sarah Rascón",
+      "scope": "state_upper",
+      "districtName": "State Senate District 26 (2024); California"
+    },
+    {
+      "candidateId": "ff5f23cb-bbc0-4e8e-9f3b-72906ae51988",
+      "name": "Scott Sakakihara",
+      "scope": "state_upper",
+      "districtName": "State Senate District 10 (2024); California"
+    },
+    {
+      "candidateId": "b7f2a722-9e1b-4d00-b5f0-453373221bc2",
+      "name": "Sean Frame",
+      "scope": "state_upper",
+      "districtName": "State Senate District 6 (2024); California"
+    },
+    {
+      "candidateId": "d418f3d3-5aa7-45df-a5e7-532de3fb8468",
+      "name": "Sergio Farias",
+      "scope": "state_lower",
+      "districtName": "Assembly District 74 (2024); California"
+    },
+    {
+      "candidateId": "c63923c2-e185-4a2a-aa68-4ac9499ce63c",
+      "name": "Susan Mason",
+      "scope": "state_upper",
+      "districtName": "State Senate District 8 (2024); California"
+    },
+    {
+      "candidateId": "bde1b1c3-24e2-4516-8fcc-9bd5c1a5fbda",
+      "name": "Ted Nordblum",
+      "scope": "state_lower",
+      "districtName": "Assembly District 42 (2024); California"
+    },
+    {
+      "candidateId": "75b8173b-4e58-4005-9807-1ca45cefc4a7",
+      "name": "Tief Gibbs",
+      "scope": "state_upper",
+      "districtName": "State Senate District 2 (2024); California"
+    },
+    {
+      "candidateId": "4baa86da-a58c-4b90-b279-5616a84f7e63",
+      "name": "Tiffanie Tate",
+      "scope": "state_upper",
+      "districtName": "State Senate District 32 (2024); California"
+    },
+    {
+      "candidateId": "7a5d3269-1e47-4b76-99d6-f4ce36d72905",
+      "name": "Tony Rodriguez",
+      "scope": "state_upper",
+      "districtName": "State Senate District 20 (2024); California"
+    },
+    {
+      "candidateId": "184ebb66-ab04-4c04-8f07-7f951a24bf75",
+      "name": "Tracey Schroeder",
+      "scope": "state_lower",
+      "districtName": "Assembly District 46 (2024); California"
+    },
+    {
+      "candidateId": "20cceaf9-3c76-4c4c-bb05-ec1dd214f6b9",
+      "name": "Trinity Hannaway",
+      "scope": "state_lower",
+      "districtName": "Assembly District 77 (2024); California"
+    },
+    {
+      "candidateId": "b1ccc3f1-148e-4f27-81cb-3919852c81d1",
+      "name": "Vinaya Singh",
+      "scope": "state_lower",
+      "districtName": "Assembly District 10 (2024); California"
+    },
+    {
+      "candidateId": "0fe26863-2920-4821-9e19-5083ddfc49f0",
+      "name": "William Brown Jr.",
+      "scope": "state_upper",
+      "districtName": "State Senate District 12 (2024); California"
+    }
+  ],
+  "files": 5328,
+  "fileErrors": 0,
+  "counts": {
+    "unmatched_reviewed": 218740,
+    "matched": 84648
+  },
+  "rollsOmitted": 5328
+}

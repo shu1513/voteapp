@@ -4258,6 +4258,7 @@ describe("email preferences and unsubscribe endpoints", () => {
     email_election_reminders: true,
     email_new_election_alerts: false,
     email_issue_updates: true,
+    email_member_newsletter: true,
   };
 
   it("serves and stores email preferences via GET and PUT /api/me/email-preferences", async () => {

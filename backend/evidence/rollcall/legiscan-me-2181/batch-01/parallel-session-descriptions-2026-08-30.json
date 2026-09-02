@@ -1,0 +1,46 @@
+{
+ "note": "Descriptions found in local voteapp for 4 Maine rolls at stamp 2026-08-30T03:57:07.640Z, written by a PARALLEL session (not this one) after batch-02's import. Captured before this session's plain-language pass overwrote them, so the text is recoverable. Their judgments file was never committed to the repo.",
+ "stamp": "2026-08-30T03:57:07.640Z",
+ "rolls": {
+  "1594835": [
+   {
+    "count": 50,
+    "description": "Voted yes to accept the Senate's version of LD 1126, a gun serial-number bill. The Maine House agreed 73-67, then enacted the bill the same day. It became law without the governor's signature in January 2026, as Public Law Chapter 537. The law bars knowingly having, bringing into Maine, or transferring a gun, frame, or receiver with no serial number. Buying a serial-numbered frame or receiver requires a background check. Antique guns, collector items, permanently disabled guns, and guns made before 1968 are exempt. Making, selling, or knowingly having a gun that security screening cannot detect is also a crime. Penalties start January 1, 2027."
+   },
+   {
+    "count": 49,
+    "description": "Voted no on accepting the Senate's version of LD 1126, a gun serial-number bill. The Maine House agreed 73-67 anyway and enacted the bill the same day. It became law without the governor's signature in January 2026, as Public Law Chapter 537. The law bars knowingly having, bringing into Maine, or transferring a gun, frame, or receiver with no serial number. Buying a serial-numbered frame or receiver requires a background check. Antique guns, collector items, permanently disabled guns, and guns made before 1968 are exempt. Making, selling, or knowingly having a gun that security screening cannot detect is also a crime. Penalties start January 1, 2027."
+   }
+  ],
+  "1587268": [
+   {
+    "count": 52,
+    "description": "Voted to accept the Senate's version of LD 598, giving up a House amendment the Senate had refused. The law makes an employer with at least 10 regular workers pay a worker who reports for a shift the employer then cancels or cuts short. The pay is two hours at the worker's regular rate, or the scheduled shift's pay if that is less. An employer who made a documented good-faith try to reach the worker owes nothing. Bad weather, disasters, worker illness, and workplace injury are also excepted. Seasonal workers and union public employees are not covered. The House agreed 76-69, and the bill became law without the governor's signature as Public Law Chapter 418."
+   },
+   {
+    "count": 50,
+    "description": "Voted against accepting the Senate's version of LD 598 and against dropping the House's own amendment. The bill makes an employer with at least 10 regular workers pay a worker who shows up for a shift the employer then cancels or cuts short. The pay is two hours at the regular rate, or the scheduled shift's pay if that is less. Bad weather, disasters, worker illness, and workplace injury are excepted, as is a documented good-faith try to reach the worker. The House agreed 76-69, and the bill became law without the governor's signature as Public Law Chapter 418."
+   }
+  ],
+  "1587988": [
+   {
+    "count": 52,
+    "description": "Voted to accept the committee's ought-to-pass report on LD 1016, the step that moved the bill toward passage. The bill charges the buyer of a manufactured housing community or mobile home park $10,000 for each lot. The buyer pays when the deed is recorded, and the money goes to a new state fund. That fund helps homeowners, resident co-ops, and nonprofits buy these parks and keep them affordable. State and city housing authorities are exempt, as are co-ops of the home owners and buyers worth under $50 million. The version voted on here started the fee on January 1, 2026. The House then amended it to drop that start date and to require a sworn net-worth statement. The report was accepted 75-65 and the bill became law as Public Law Chapter 398."
+   },
+   {
+    "count": 49,
+    "description": "Voted against accepting the committee's ought-to-pass report on LD 1016. The bill charges the buyer of a manufactured housing community or mobile home park $10,000 for each lot, paid when the deed is recorded. The money goes to a state fund that helps homeowners, resident co-ops, and nonprofits buy these parks and keep them affordable. Housing authorities, co-ops of the home owners, and buyers worth under $50 million do not pay. The version voted on here would have started the fee on January 1, 2026, a date the House later removed. The report was accepted 75-65 and the bill became law as Public Law Chapter 398."
+   }
+  ],
+  "1588941": [
+   {
+    "count": 14,
+    "description": "Voted to accept the House's final version of LD 1016, the last contested vote on the bill. It charges the buyer of a manufactured housing community or mobile home park $10,000 for each lot, paid when the deed is recorded. The money goes to a state fund that helps homeowners, resident co-ops, and nonprofits buy these parks and keep them affordable. State and city housing authorities are exempt, as are co-ops made up of the home owners. Buyers worth under $50 million are exempt too, counting related companies, and must file a sworn statement of net worth. The Senate agreed 18-15, and the governor signed it as Public Law Chapter 398."
+   },
+   {
+    "count": 11,
+    "description": "Voted against accepting the House's final version of LD 1016. The bill charges the buyer of a manufactured housing community or mobile home park $10,000 for each lot when the deed is recorded. That money funds a state program helping homeowners, resident co-ops, and nonprofits buy these parks and keep them affordable. Housing authorities and co-ops of the home owners do not pay. Buyers worth under $50 million, counting related companies, are also exempt if they file a sworn statement of net worth. The Senate agreed 18-15, and the governor signed it as Public Law Chapter 398."
+   }
+  ]
+ }
+}

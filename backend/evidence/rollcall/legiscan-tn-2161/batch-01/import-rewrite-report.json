@@ -1,0 +1,434 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": false,
+  "skipExisting": false,
+  "startedAt": "2026-08-27T20:44:47.015Z",
+  "finishedAt": "2026-08-27T20:44:50.514Z",
+  "jurisdiction": "TN",
+  "sessionId": 2161,
+  "evidenceDir": "/Users/shu/legiscan-data/tn-2161-evidence",
+  "scopeFrom": "2026-08-01",
+  "crosswalkFile": "/Users/shu/voteApp/.claude/worktrees/jolly-blackburn-f55cfc/backend/evidence/rollcall/legiscan-tn-2161/crosswalk.json",
+  "crosswalkEntries": 136,
+  "peopleFile": "/Users/shu/voteApp/.claude/worktrees/jolly-blackburn-f55cfc/backend/evidence/rollcall/legiscan-tn-2161/legiscan-people-tn-2161.json",
+  "peopleMembers": 136,
+  "files": 8648,
+  "outcomes": {
+    "not_approved": 8634,
+    "imported": 14
+  },
+  "actions": {
+    "unchanged": 185,
+    "rewrite": 14
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-tn-house-2161-roll1535748.json",
+      "state": "TN",
+      "chamber": "house",
+      "sessionId": 2161,
+      "roll": 1535748,
+      "outcome": "imported",
+      "legislativeVoteId": "d9c3bcc2-42fb-442e-8e5d-9668d6f12273",
+      "reviewStatus": "approved",
+      "bill": "HB0749",
+      "voteDate": "2025-04-03",
+      "measureId": "HB 749",
+      "question": "FLOOR VOTE: REGULAR CALENDAR PASSAGE ON THIRD CONSIDERATION",
+      "originRunId": "rollcall:TN:house:2161:1535748:2026-08-27T20:44:47.015Z",
+      "members": 89,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 76,
+        "matched": 13
+      },
+      "actions": {
+        "unchanged": 13
+      },
+      "notified": 0,
+      "candidates": 13,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-tn-house-2161-roll1548823.json",
+      "state": "TN",
+      "chamber": "house",
+      "sessionId": 2161,
+      "roll": 1548823,
+      "outcome": "imported",
+      "legislativeVoteId": "7cf3b12c-b72f-4db1-b146-14beb87c64a4",
+      "reviewStatus": "approved",
+      "bill": "SB1360",
+      "voteDate": "2025-04-15",
+      "measureId": "SB 1360",
+      "question": "FLOOR VOTE: REGULAR CALENDAR PASSAGE ON THIRD CONSIDERATION",
+      "originRunId": "rollcall:TN:house:2161:1548823:2026-08-27T20:44:47.015Z",
+      "members": 92,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 78,
+        "matched": 14
+      },
+      "actions": {
+        "unchanged": 14
+      },
+      "notified": 0,
+      "candidates": 14,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-tn-house-2161-roll1553646.json",
+      "state": "TN",
+      "chamber": "house",
+      "sessionId": 2161,
+      "roll": 1553646,
+      "outcome": "imported",
+      "legislativeVoteId": "f97c3043-30e5-4f7d-bc36-dc1693a3c15d",
+      "reviewStatus": "approved",
+      "bill": "SB0670",
+      "voteDate": "2025-04-21",
+      "measureId": "SB 670",
+      "question": "FLOOR VOTE: REGULAR CALENDAR PASSAGE ON THIRD CONSIDERATION",
+      "originRunId": "rollcall:TN:house:2161:1553646:2026-08-27T20:44:47.015Z",
+      "members": 92,
+      "notVoting": 1,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 77,
+        "matched": 15
+      },
+      "actions": {
+        "unchanged": 15
+      },
+      "notified": 0,
+      "candidates": 15,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-tn-house-2161-roll1554040.json",
+      "state": "TN",
+      "chamber": "house",
+      "sessionId": 2161,
+      "roll": 1554040,
+      "outcome": "imported",
+      "legislativeVoteId": "82a64e52-5795-47c6-91c8-5a23eed3c42d",
+      "reviewStatus": "approved",
+      "bill": "SB1084",
+      "voteDate": "2025-04-22",
+      "measureId": "SB 1084",
+      "question": "FLOOR VOTE: REGULAR CALENDAR PASSAGE ON THIRD CONSIDERATION",
+      "originRunId": "rollcall:TN:house:2161:1554040:2026-08-27T20:44:47.015Z",
+      "members": 97,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 83,
+        "matched": 14
+      },
+      "actions": {
+        "unchanged": 14
+      },
+      "notified": 0,
+      "candidates": 14,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-tn-house-2161-roll1657505.json",
+      "state": "TN",
+      "chamber": "house",
+      "sessionId": 2161,
+      "roll": 1657505,
+      "outcome": "imported",
+      "legislativeVoteId": "863b4721-63ec-4a4a-a480-cd3dd6f34b57",
+      "reviewStatus": "approved",
+      "bill": "SB0336",
+      "voteDate": "2026-03-09",
+      "measureId": "SB 336",
+      "question": "FLOOR VOTE: REGULAR CALENDAR AS AMENDED PASSAGE ON THIRD CONSIDERATION",
+      "originRunId": "rollcall:TN:house:2161:1657505:2026-08-27T20:44:47.015Z",
+      "members": 88,
+      "notVoting": 5,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 73,
+        "matched": 15
+      },
+      "actions": {
+        "unchanged": 15
+      },
+      "notified": 0,
+      "candidates": 15,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-tn-house-2161-roll1661430.json",
+      "state": "TN",
+      "chamber": "house",
+      "sessionId": 2161,
+      "roll": 1661430,
+      "outcome": "imported",
+      "legislativeVoteId": "57480b00-5fdb-4a9d-bc1d-34977f56c2f1",
+      "reviewStatus": "approved",
+      "bill": "HB2070",
+      "voteDate": "2026-03-12",
+      "measureId": "HB 2070",
+      "question": "FLOOR VOTE: REGULAR CALENDAR PASSAGE ON THIRD CONSIDERATION",
+      "originRunId": "rollcall:TN:house:2161:1661430:2026-08-27T20:44:47.015Z",
+      "members": 87,
+      "notVoting": 1,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 74,
+        "matched": 13
+      },
+      "actions": {
+        "unchanged": 13
+      },
+      "notified": 0,
+      "candidates": 13,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-tn-house-2161-roll1666206.json",
+      "state": "TN",
+      "chamber": "house",
+      "sessionId": 2161,
+      "roll": 1666206,
+      "outcome": "imported",
+      "legislativeVoteId": "2f21eb71-373f-4049-b613-02007421608c",
+      "reviewStatus": "approved",
+      "bill": "HB2185",
+      "voteDate": "2026-03-19",
+      "measureId": "HB 2185",
+      "question": "FLOOR VOTE: REGULAR CALENDAR PASSAGE ON THIRD CONSIDERATION",
+      "originRunId": "rollcall:TN:house:2161:1666206:2026-08-27T20:44:47.015Z",
+      "members": 90,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 75,
+        "matched": 15
+      },
+      "actions": {
+        "unchanged": 15
+      },
+      "notified": 0,
+      "candidates": 15,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-tn-house-2161-roll1681950.json",
+      "state": "TN",
+      "chamber": "house",
+      "sessionId": 2161,
+      "roll": 1681950,
+      "outcome": "imported",
+      "legislativeVoteId": "8640fab3-e72b-4d56-8efc-27f23310f996",
+      "reviewStatus": "approved",
+      "bill": "SB2348",
+      "voteDate": "2026-04-14",
+      "measureId": "SB 2348",
+      "question": "FLOOR VOTE: REGULAR CALENDAR PASSAGE ON THIRD CONSIDERATION",
+      "originRunId": "rollcall:TN:house:2161:1681950:2026-08-27T20:44:47.015Z",
+      "members": 94,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 80,
+        "matched": 14
+      },
+      "actions": {
+        "unchanged": 14
+      },
+      "notified": 0,
+      "candidates": 14,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-tn-house-2161-roll1687306.json",
+      "state": "TN",
+      "chamber": "house",
+      "sessionId": 2161,
+      "roll": 1687306,
+      "outcome": "imported",
+      "legislativeVoteId": "1f44ff11-89be-42cb-a673-7143baab11a8",
+      "reviewStatus": "approved",
+      "bill": "SB1915",
+      "voteDate": "2026-04-21",
+      "measureId": "SB 1915",
+      "question": "FLOOR VOTE: REGULAR CALENDAR AS AMENDED PASSAGE ON THIRD CONSIDERATION",
+      "originRunId": "rollcall:TN:house:2161:1687306:2026-08-27T20:44:47.015Z",
+      "members": 94,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 80,
+        "matched": 14
+      },
+      "actions": {
+        "unchanged": 14
+      },
+      "notified": 0,
+      "candidates": 14,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-tn-house-2161-roll1687321.json",
+      "state": "TN",
+      "chamber": "house",
+      "sessionId": 2161,
+      "roll": 1687321,
+      "outcome": "imported",
+      "legislativeVoteId": "e4c365fa-4e44-4713-b841-bb2e514c0dbe",
+      "reviewStatus": "approved",
+      "bill": "SB1713",
+      "voteDate": "2026-04-21",
+      "measureId": "SB 1713",
+      "question": "FLOOR VOTE: REGULAR CALENDAR AS AMENDED PASSAGE ON THIRD CONSIDERATION",
+      "originRunId": "rollcall:TN:house:2161:1687321:2026-08-27T20:44:47.015Z",
+      "members": 86,
+      "notVoting": 1,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 73,
+        "matched": 13
+      },
+      "actions": {
+        "unchanged": 13
+      },
+      "notified": 0,
+      "candidates": 13,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-tn-senate-2161-roll1543982.json",
+      "state": "TN",
+      "chamber": "senate",
+      "sessionId": 2161,
+      "roll": 1543982,
+      "outcome": "imported",
+      "legislativeVoteId": "0f474573-a1a3-4452-b874-415e36a0cbf0",
+      "reviewStatus": "approved",
+      "bill": "SB0336",
+      "voteDate": "2025-04-10",
+      "measureId": "SB 336",
+      "question": "FLOOR VOTE: as Amended Third Consideration",
+      "originRunId": "rollcall:TN:senate:2161:1543982:2026-08-27T20:44:47.015Z",
+      "members": 32,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 17,
+        "matched": 15
+      },
+      "actions": {
+        "unchanged": 15
+      },
+      "notified": 0,
+      "candidates": 15,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-tn-senate-2161-roll1556833.json",
+      "state": "TN",
+      "chamber": "senate",
+      "sessionId": 2161,
+      "roll": 1556833,
+      "outcome": "imported",
+      "legislativeVoteId": "24ff50ef-19e3-4847-ba66-cdc1eec9a9f1",
+      "reviewStatus": "approved",
+      "bill": "HB1093",
+      "voteDate": "2025-04-22",
+      "measureId": "HB 1093",
+      "question": "FLOOR VOTE: Third Consideration",
+      "originRunId": "rollcall:TN:senate:2161:1556833:2026-08-27T20:44:47.015Z",
+      "members": 31,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 17,
+        "matched": 14
+      },
+      "actions": {
+        "rewrite": 14
+      },
+      "notified": 0,
+      "candidates": 14,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-tn-senate-2161-roll1686179.json",
+      "state": "TN",
+      "chamber": "senate",
+      "sessionId": 2161,
+      "roll": 1686179,
+      "outcome": "imported",
+      "legislativeVoteId": "5652400e-bce8-4acd-a03c-e2741c1ecd55",
+      "reviewStatus": "approved",
+      "bill": "SB2040",
+      "voteDate": "2026-04-20",
+      "measureId": "SB 2040",
+      "question": "FLOOR VOTE: as Amended Third Consideration",
+      "originRunId": "rollcall:TN:senate:2161:1686179:2026-08-27T20:44:47.015Z",
+      "members": 33,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 17,
+        "matched": 16
+      },
+      "actions": {
+        "unchanged": 16
+      },
+      "notified": 0,
+      "candidates": 16,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-tn-senate-2161-roll1688578.json",
+      "state": "TN",
+      "chamber": "senate",
+      "sessionId": 2161,
+      "roll": 1688578,
+      "outcome": "imported",
+      "legislativeVoteId": "e9d95a1a-6aa0-468c-b7e9-1a9766d43957",
+      "reviewStatus": "approved",
+      "bill": "SB1915",
+      "voteDate": "2026-04-22",
+      "measureId": "SB 1915",
+      "question": "FLOOR VOTE: Motion to Concur House Amendment # 1",
+      "originRunId": "rollcall:TN:senate:2161:1688578:2026-08-27T20:44:47.015Z",
+      "members": 30,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 16,
+        "matched": 14
+      },
+      "actions": {
+        "unchanged": 14
+      },
+      "notified": 0,
+      "candidates": 14,
+      "error": null,
+      "related": 1
+    }
+  ],
+  "rollsOmitted": "the 8,634 pending (not_approved) rolls are omitted here; the full report stays outside the repo at /Users/shu/legiscan-data/tn-2161-evidence/"
+}

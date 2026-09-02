@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { apiRequest, formatElectionDate, useElectionChoices, useMe } from "@voteapp/api-client";
-import type { AutoPickElectionResult, BallotSummary, ElectionChoice, ElectionSummary, PickCardShare } from "@voteapp/api-client";
+import { useQuery } from "@tanstack/react-query";
+import { apiRequest, formatElectionDate, useElectionChoices, useMe, useMintPickCardShare } from "@voteapp/api-client";
+import type { AutoPickElectionResult, BallotSummary, ElectionChoice, ElectionSummary } from "@voteapp/api-client";
 import { AutoPickFillControl, reasonLabel } from "../components/AutoPickFillControl";
+import { RemoveStrandedPickButton } from "../components/ElectionChoiceControls";
 import { BallotPreviewSheets, BallotViewToggle } from "../components/BallotPreview";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
-import type { ElectionNavState } from "../lib/detailNavContext";
+import type { CandidateNavState, ElectionNavState } from "../lib/detailNavContext";
 import { ShareButton } from "../components/ShareButton";
 import { VerifyPrompt } from "../components/VerifyPrompt";
 import { SITE_ORIGIN } from "../lib/pageMeta";
@@ -134,7 +135,15 @@ function autoChip() {
   );
 }
 
-function PickedLine({ choice, election }: { choice: ElectionChoice; election?: ElectionSummary }) {
+function PickedLine({
+  choice,
+  election,
+  navState = PICKS_NAV_STATE,
+}: {
+  choice: ElectionChoice;
+  election?: ElectionSummary;
+  navState?: ElectionNavState;
+}) {
   // The canonical result reaches this line two ways: via the ballot summary
   // while the race is still carded, and via the choice itself afterwards
   // (attached on the choices list read) — so PastPicks keeps showing an
@@ -158,12 +167,40 @@ function PickedLine({ choice, election }: { choice: ElectionChoice; election?: E
       {choice.picks.map((pick, index) => (
         <span key={pick.candidate_id}>
           {index > 0 ? ", " : null}
-          {pick.display_name}
+          {/* Same destination as the election page's roster: the pick IS the
+              candidate, so the name goes to their profile. Back link comes
+              from this page's own nav state; electionId scopes the profile's
+              candidacy context to this race. */}
+          <Link
+            to={`/candidates/${pick.candidate_id}`}
+            state={{ backTo: navState.backTo, electionId: choice.election_id } satisfies CandidateNavState}
+            className="hover:text-rausch"
+          >
+            {pick.display_name}
+          </Link>
           {/* candidacy_status (certified won/lost, withdrawn) outranks the
               result-derived chip — never both. */}
           {pickStatusChip(pick.candidacy_status) ??
             pickResultChip(resultOutcome, resultWinners, pick.candidate_id)}
           {pick.origin === "auto" ? autoChip() : null}
+          {/* A withdrawn pick on an upcoming race is otherwise unremovable:
+              the election page's roster no longer lists the candidacy, yet
+              the pick still counts toward the seat cap. Date-gated because
+              the backend rejects writes to past elections, and guest-safe
+              by construction — draft rows never carry "withdrawn". */}
+          {pick.candidacy_status === "withdrawn" && choice.election_date >= usLatestLocalDate() ? (
+            <>
+              {" "}
+              <RemoveStrandedPickButton
+                electionId={choice.election_id}
+                candidateId={pick.candidate_id}
+                candidateName={pick.display_name}
+                raceTitle={choice.official_ballot_title}
+                electionDate={choice.election_date}
+                seatsToFill={choice.seats_to_fill}
+              />
+            </>
+          ) : null}
         </span>
       ))}
     </span>
@@ -182,13 +219,7 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
   // in the name itself. Same label on both control shapes (mint button,
   // then ShareButton) so the control keeps one identity across the swap.
   const shareLabel = `Share my ${formatElectionDate(electionDate)} picks`;
-  const mint = useMutation({
-    mutationFn: () =>
-      apiRequest<{ share: PickCardShare }>("/api/me/pick-card-shares", {
-        method: "POST",
-        body: { election_date: electionDate },
-      }),
-  });
+  const mint = useMintPickCardShare();
 
   if (mint.isSuccess) {
     const path = `/picks/${mint.data.share.token}`;
@@ -235,7 +266,7 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
       <button
         type="button"
         disabled={mint.isPending}
-        onClick={() => mint.mutate()}
+        onClick={() => mint.mutate(electionDate)}
         aria-label={shareLabel}
         className="rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink transition hover:border-ink disabled:opacity-50"
       >
@@ -318,7 +349,7 @@ export function PickDateCard({
                     {election.official_ballot_title}
                   </Link>
                   <span className="text-ink-soft"> — </span>
-                  <PickedLine choice={choice} election={election} />
+                  <PickedLine choice={choice} election={election} navState={navState} />
                   {autoResult?.outcome === "picked" &&
                   autoResult.reason === "tie" &&
                   (choice?.picks.length ?? 0) < (choice?.seats_to_fill ?? 1) ? (
@@ -597,21 +628,14 @@ export function PicksPage() {
             ) : null}
             {view === "ballot" ? (
               // Same settled payload as the cards — no second fetch, no
-              // loading state of its own. Each sheet carries its own
-              // auto-pick controls, scoped to that date's races.
+              // loading state of its own. No auto-pick controls here: the
+              // sheet imitates a paper ballot, so app machinery stays in
+              // list view. Fill-run annotations still carry over so a run
+              // made in list view keeps its "why" notes after a toggle.
               <BallotPreviewSheets
                 elections={ballot.data?.elections ?? []}
                 choiceByElectionId={choiceByElectionId}
                 today={today}
-                renderSheetExtras={(date, dateElections) => (
-                  <AutoPickFillControl
-                    date={date}
-                    elections={dateElections}
-                    choices={choices ?? []}
-                    choiceByElectionId={choiceByElectionId}
-                    onResults={handleAutoResults(date)}
-                  />
-                )}
                 autoResultFor={(date, electionId) => autoResultsByDate.get(date)?.get(electionId)}
               />
             ) : (

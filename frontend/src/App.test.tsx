@@ -49,6 +49,22 @@ describe("App account nav", () => {
     expect(header.querySelector('a[href="/mission"]')).toBeNull();
   });
 
+  it("drops the header wordmark on the landing page, where the masthead carries it", async () => {
+    stubApiRoutes({ "/api/me": apiError(401, "unauthorized", "Not logged in") });
+    renderApp();
+    await screen.findByRole("link", { name: "Log in" });
+    // HomePage's big centred wordmark is the landing's only brand mark; a
+    // small duplicate in the header corner would read as two logos.
+    expect(within(screen.getByRole("banner")).queryByText("Elections Simplified")).toBeNull();
+  });
+
+  it("keeps the header wordmark link home on every other page", async () => {
+    stubApiRoutes({ "/api/me": apiError(401, "unauthorized", "Not logged in") });
+    renderApp("/elections/e-1");
+    const wordmark = await screen.findByRole("link", { name: "Elections Simplified" });
+    expect(wordmark).toHaveAttribute("href", "/");
+  });
+
   it("shows the draft link once the guest has looked at a ballot — but never on the search landing", async () => {
     stubApiRoutes({ "/api/me": apiError(401, "unauthorized", "Not logged in") });
     window.localStorage.setItem(
@@ -105,7 +121,7 @@ describe("App account nav", () => {
     // a link that unmounts with the panel, it returns to the trigger
     // instead of dropping to <body>.
     await userEvent.tab();
-    expect(header.getByRole("link", { name: "Mission" })).toHaveFocus();
+    expect(header.getByRole("link", { name: "My Elections" })).toHaveFocus();
     await userEvent.keyboard("{Escape}");
     expect(screen.queryByRole("link", { name: "My Elections" })).not.toBeInTheDocument();
     expect(trigger).toHaveFocus();

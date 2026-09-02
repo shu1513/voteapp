@@ -3,21 +3,36 @@
 // must track docs/legal/disclaimer.md and the backend's
 // CURRENT_TERMS_VERSION in lockstep.
 
-export const TERMS_VERSION = "1.2";
+export const TERMS_VERSION = "1.4";
 
-// The pre-search clickwrap is split in two: a one-sentence label that names
-// every document and the arbitration clause, plus a dialog holding the detail
-// that used to sit inline. Three paragraphs of small print above the Search
-// button was skimmed past, which is the failure mode a clickwrap cannot
-// afford; a summary the visitor actually reads, with the full text one click
-// away and re-shown at the moment of agreement, is the pattern the clickwrap
-// cases reward (Meyer v. Uber; Berman v. Freedom Financial; Sellers v.
-// JustAnswer). Nothing was dropped — every sentence removed from the label
-// appears in PRE_SEARCH_AGREEMENT_PARAGRAPHS below.
+// The pre-search clickwrap is split in two: a one-sentence label naming every
+// document, plus a dialog holding the two sentences a first-time visitor has
+// to read before results mean anything. Three paragraphs of small print above
+// the Search button was skimmed past, which is the failure mode a clickwrap
+// cannot afford; a summary the visitor actually reads, with the full text one
+// click away and re-shown at the moment of agreement, is the pattern the
+// clickwrap cases reward (Meyer v. Uber; Berman v. Freedom Financial; Sellers
+// v. JustAnswer).
+//
+// No label in this file names arbitration — not this one, not
+// SIGNUP_CHECKBOX_LABEL, not RENEWAL_CHECKBOX_LABEL. Section 12 lives in the
+// Terms of Use, and restating it beside every checkbox repeated a linked
+// document and put a lawsuit warning on screens people came to for something
+// else. What the clickwrap cases require is conspicuous notice of the TERMS
+// plus an unambiguous act of assent, not a callout of any particular clause:
+// the registration screen enforced in Meyer v. Uber, 868 F.3d 66 (2d Cir.
+// 2017) said only "By creating an Uber account, you agree to the TERMS OF
+// SERVICE & PRIVACY POLICY"; the word "arbitration" was nowhere on it. An
+// empty checkbox that gates the action clears that bar by a wider margin than
+// Uber's click-to-continue did.
+//
+// What must NOT be dropped is the Terms of Use link beside each label. With no
+// clause called out anywhere, the named, linked document at the moment of
+// assent IS the notice; those links are the whole basis on which Section 12
+// binds anyone.
 export const PRE_SEARCH_CHECKBOX_LABEL =
   "I have read and agree to the Terms of Use, Privacy Policy, and AI Research and Election Information " +
-  "Disclaimer — including binding individual arbitration with a class-action waiver (Terms of Use " +
-  "Section 12), unless I opt out as described there.";
+  "Disclaimer.";
 
 /** Body of the "full agreement" dialog behind the pre-search checkbox. */
 export const PRE_SEARCH_AGREEMENT_PARAGRAPHS = [
@@ -25,34 +40,37 @@ export const PRE_SEARCH_AGREEMENT_PARAGRAPHS = [
     "source, and results may be inaccurate, incomplete, outdated, or misleading.",
   "You must verify voting, registration, ballot, district, polling-place, deadline, and election-result " +
     "information with official election authorities before relying on it.",
-  "Disputes are resolved by binding individual arbitration with a class-action waiver, as described in " +
-    "Section 12 of the Terms of Use, unless you opt out as described there.",
 ] as const;
 
+// These are the acceptances the DB records against a terms version
+// (user_terms_acceptances). They bind through the three named, linked
+// documents — no clause restatement here either; see PRE_SEARCH_CHECKBOX_LABEL
+// for the reasoning, which now applies to every gate.
 export const SIGNUP_CHECKBOX_LABEL =
   "I am at least 18 years old, and I have read and agree to the Terms of Use, Privacy Policy, and AI " +
   "Research and Election Information Disclaimer. I consent to enter this agreement electronically. I " +
   "understand that Elections Simplified is not an official election source, does not register voters or cast ballots, " +
   "and may display AI-assisted content that must be independently verified with official election " +
-  "authorities. I agree that disputes are resolved by binding individual arbitration with a class-action " +
-  "waiver as described in Section 12 of the Terms of Use, unless I opt out as described there.";
+  "authorities.";
 
 export const RENEWAL_CHECKBOX_LABEL =
   "I have read and agree to the updated Terms of Use, Privacy Policy, and AI Research and Election " +
-  "Information Disclaimer, including the agreement to resolve disputes by binding individual arbitration " +
-  "with a class-action waiver (Terms of Use Section 12), unless I opt out as described there.";
-
-export const PRIVACY_NOTICE =
-  "Privacy notice: we collect the address you enter, account information if you sign up, and device and " +
-  "usage information, to generate results, operate and secure the Service, and comply with law — as " +
-  "described in our Privacy Policy. Your address is used to find your districts and is not sold.";
+  "Information Disclaimer.";
 
 /**
  * Sits beside the address field, where collection actually begins: the
  * autocomplete forwards what is typed after three characters, long before
  * anyone presses Search, and notice has to arrive at or before collection.
- * Keep this short and address-specific; the full PRIVACY_NOTICE belongs in
- * the consent dialog, while this line belongs beside every address field.
+ * Also the only privacy line in the pre-search dialog.
+ *
+ * It replaced a longer PRIVACY_NOTICE that summarised the whole of Privacy
+ * Policy Section 1 — address, account data, device and usage data, the
+ * purposes, the law. That summary was a second copy of a linked document, and
+ * its first clause ("we collect the address you enter") read as retention when
+ * the truth is narrower and better: the address goes to the Census geocoder,
+ * an anonymous 14-day cache holds the normalised form, and what lands on an
+ * account is a list of district ids. Say the narrow true thing here; the full
+ * disclosure stays one click away in the Privacy Policy.
  */
 export const ADDRESS_FIELD_PRIVACY_NOTE =
   "The address is only used to find voting districts. We don’t save it to your account.";

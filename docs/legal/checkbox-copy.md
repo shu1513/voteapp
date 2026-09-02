@@ -10,6 +10,35 @@ cancel-anytime — CA BPC §17602; see docs/plans/membership-contributions.md).
 That checkout copy lives in the backend session-creation call, not here,
 because Stripe renders it.
 
+1.4 presentation revision (2026-08-30), PRE-SEARCH GATE ONLY. The anonymous
+dialog dropped two paragraphs — the arbitration restatement and the long
+privacy notice — and its checkbox label was cut to the three document names.
+The version did NOT bump, and that is the right call rather than an oversight:
+terms-of-use.md, privacy-policy.md and disclaimer.md are byte-identical (the
+pinned SHA-256 values in legalCopy.test.ts did not move), so the agreement a
+visitor enters is the same agreement, presented shorter. A bump would have
+forced every account through re-acceptance for a change to nothing they
+accepted. What did change is that "1.4" now covers two pre-search screens, so
+the boundary is recorded here: acceptances before 2026-08-30 saw the
+four-paragraph dialog naming arbitration; acceptances after saw this file's
+current text. Rationale for the removals is in "Why arbitration is not
+named on any checkbox screen" and under the short privacy note.
+
+1.4 presentation revision (2026-08-31), SIGNUP AND RE-ACCEPTANCE. The signup
+label dropped its closing arbitration sentence and the re-acceptance label its
+"including the agreement..." clause, for the same reason the pre-search gate
+was trimmed the day before: Section 12 is stated in the linked Terms of Use,
+and restating it beside the checkbox repeated a linked document as scare copy.
+The version again did NOT bump — the three pinned documents are byte-identical,
+so the agreement entered is the same agreement. Boundary for the acceptance
+ledger: it is a per-client DEPLOY boundary, not a calendar line, and the rows
+do not record label text, so a 1.4 row alone cannot say which wording was on
+screen. Web flipped with the 2026-08-31 deploy; a mobile binary built earlier
+keeps showing the old labels until the app updates, so 1.4 rows dated after
+2026-08-31 may come from either wording. The ambiguity only runs the safe way:
+the old labels are the current text PLUS an arbitration sentence, so every 1.4
+acceptor saw at least the current wording — some saw more notice, none less.
+
 Clickwrap requirements (Meyer v. Uber; Nguyen v. Barnes & Noble; Berman v.
 Freedom Financial Network):
 - Checkbox UNCHECKED by default; the action button stays disabled until
@@ -17,6 +46,10 @@ Freedom Financial Network):
 - Checkbox sits directly above the action button it gates.
 - [Terms of Use] / [Privacy Policy] / [Disclaimer] render as clearly visible
   links right next to the checkbox — no tiny gray text, no footer-only links.
+  On every gate this is now the ENTIRE notice, since no clause is called out
+  anywhere any more (see the 2026-08-30 and 2026-08-31 revision notes above),
+  so weakening those links is the one edit that would actually cost us
+  Section 12.
 - Signup acceptance is recorded server-side: POST /api/auth/register requires
   accepted_terms_version matching CURRENT_TERMS_VERSION
   (backend/src/constants/legal.ts); stored on the user row with a timestamp.
@@ -64,28 +97,31 @@ Freedom Financial Network):
   the version check enforces. Remembering may ONLY decide whether the dialog
   opens. When a dialog opens its checkbox starts empty — a pre-ticked box shows
   assent nobody gave, and that is the thing that must never come back.
-- The privacy notice must stay beside the address field, not only inside the
+- The privacy note must stay beside the address field, not only inside the
   dialog: the autocomplete forwards typed fragments after three characters, so
   collection begins before Search is ever pressed and notice has to arrive at
   or before collection.
 - The pre-search checkbox label is a SUMMARY; the sentences it does not carry
-  appear above it in the dialog. All of this copy lives in
-  packages/api-client/src/legalCopy.ts, and legalCopy.test.ts asserts every
-  string still appears in this file.
+  appear above it in the dialog. It names the three documents and nothing else
+  — see "Why arbitration is not named on any checkbox screen" below, and do
+  not add a clause callout back to any label without reading that section
+  first.
+- All of this copy lives in packages/api-client/src/legalCopy.ts, and
+  legalCopy.test.ts asserts every string still appears in this file. That suite
+  also pins arbitration and the class-action waiver OUT of every label, so the
+  restatement cannot creep back one screen at a time.
 -->
 
-# Checkbox and notice copy — Version 1.2
+# Checkbox and notice copy — Version 1.4
 
 ## Pre-search terms dialog (anonymous address search)
 
 Opened by pressing **Search**. Heading: **Before we search**. Body, in order:
-the paragraphs below, the full privacy notice, then the checkbox and its three
-document links, then **Cancel** and **Agree and search**.
+the two paragraphs below, the short privacy note, then the checkbox and its
+three document links, then **Cancel** and **Agree and search**.
 
 > [ ] I have read and agree to the [Terms of Use], [Privacy Policy], and
-> [AI Research and Election Information Disclaimer] — including binding
-> individual arbitration with a class-action waiver (Terms of Use Section 12),
-> unless I opt out as described there.
+> [AI Research and Election Information Disclaimer].
 
 Rules for the dialog: the box is empty every time it opens; **Agree and search**
 stays disabled until it is ticked and names what it does rather than saying
@@ -103,10 +139,31 @@ forced scrolling through the documents.
 > You must verify voting, registration, ballot, district, polling-place,
 > deadline, and election-result information with official election authorities
 > before relying on it.
->
-> Disputes are resolved by binding individual arbitration with a class-action
-> waiver, as described in Section 12 of the Terms of Use, unless you opt out as
-> described there.
+
+### Why arbitration is not named on any checkbox screen
+
+No label in this file — pre-search, signup, or re-acceptance — mentions
+arbitration or the class-action waiver, and that is deliberate:
+
+- What the clickwrap cases require is conspicuous notice of the **documents**
+  plus an unambiguous act of assent, not a callout of any one clause. The Uber
+  registration screen upheld in *Meyer v. Uber Technologies*, 868 F.3d 66 (2d
+  Cir. 2017) read "By creating an Uber account, you agree to the TERMS OF
+  SERVICE & PRIVACY POLICY" and never used the word "arbitration". An empty
+  checkbox that gates the action clears that bar by a wider margin than Uber's
+  click-to-continue did.
+- Section 12 is stated once, in the Terms of Use. Restating it beside a
+  checkbox repeats a linked document as a lawsuit warning on a screen someone
+  came to for something else — a ballot lookup, an account, a version bump.
+- What a Section 12 motion rests on is the assent evidence, not a clause
+  restatement: for accounts, the `user_terms_acceptances` rows recording
+  acceptance of the named documents; for anonymous searchers, this file plus
+  the deployed gate.
+
+The Terms of Use link beside each checkbox is what carries the whole of the
+notice. It is not optional and it may not be demoted to the footer: the link,
+named and adjacent at the moment of assent, is the basis on which Section 12
+binds at all.
 
 ## Signup checkbox (account registration)
 
@@ -115,38 +172,33 @@ forced scrolling through the documents.
 > Disclaimer]. I consent to enter this agreement electronically. I understand
 > that Elections Simplified is not an official election source, does not register voters
 > or cast ballots, and may display AI-assisted content that must be
-> independently verified with official election authorities. I agree that
-> disputes are resolved by binding individual arbitration with a class-action
-> waiver as described in Section 12 of the Terms of Use, unless I opt out as
-> described there.
+> independently verified with official election authorities.
 
 ## Re-acceptance checkbox (signed-in interstitial after a version bump)
 
 > [ ] I have read and agree to the updated [Terms of Use], [Privacy Policy],
-> and [AI Research and Election Information Disclaimer], including the
-> agreement to resolve disputes by binding individual arbitration with a
-> class-action waiver (Terms of Use Section 12), unless I opt out as
-> described there.
+> and [AI Research and Election Information Disclaimer].
 
-## Privacy notice (full — shown inside the pre-search dialog)
+## Short privacy note (beside every address input, and in the pre-search dialog)
 
-> Privacy notice: we collect the address you enter, account information if
-> you sign up, and device and usage information, to generate results, operate
-> and secure the Service, and comply with law — as described in our
-> [Privacy Policy]. Your address is used to find your districts and is not
-> sold.
+This carries the address-specific points that matter at collection. It carries
+no Privacy Policy link of its own: the footer links the policy on every page,
+the explainer beside this note links it directly, and the pre-search dialog
+links it in the row under the checkbox — so a second inline copy sat next to
+the question people actually ask and crowded it out. The 14-day lookup cache
+and the "not sold" assurance are carried by Privacy Policy Section 1 rather
+than repeated here, to keep this line to the two facts a visitor weighs while
+typing — what the address is used for, and that it does not end up on their
+account.
 
-## Short privacy note (beside every address input)
-
-This carries the address-specific points that matter at collection without
-repeating the full consent-dialog disclosure beside the field. It carries no
-Privacy Policy link of its own: the footer links the policy on every page, and
-the explainer beside this note links it directly, so a second inline copy sat
-next to the question people actually ask and crowded it out. The 14-day lookup
-cache and the "not sold" assurance are carried by the Privacy Policy and by
-the full notice above rather than repeated here, to keep this line to the two
-facts a visitor weighs while typing — what the address is used for, and that
-it does not end up on their account.
+This line also replaced the longer privacy paragraph the pre-search dialog used
+to carry. That paragraph summarised the whole of Privacy Policy Section 1 —
+address, account data, device and usage data, purposes, legal compliance — one
+click away from the policy it was summarising, and its opening clause ("we
+collect the address you enter") implied retention the system does not perform:
+the address is sent to the Census geocoder, held in an anonymous 14-day cache
+in its normalised form, and never written to the database or attached to an
+account, which stores district ids only.
 
 > The address is only used to find voting districts. We don’t save it to
 > your account.

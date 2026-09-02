@@ -191,6 +191,30 @@ export const LEGISCAN_VOTE_NAY = 2;
 export const LEGISCAN_VOTE_NV = 3;
 export const LEGISCAN_VOTE_ABSENT = 4;
 
+// Chamber codes that name a COMMITTEE body rather than one of the two
+// chambers. Connecticut's General Assembly is the joint-committee
+// legislature: its standing committees seat both chambers, so LegiScan has
+// no chamber to file their tallies under and prints `J` (measured
+// 2026-08-29 on CT session 2174: 1,774 of 2,625 roll calls carry `J`, ALL
+// of them chamber_id 108, ALL of them worded `… Vote Tally Sheet (Joint
+// Favorable…)` / `(Vote to Draft)` / `(Change of Reference)`, and the
+// largest seats 54 against a 151-seat House). A committee vote is rejected
+// before the queue in every state; the only thing special here is that the
+// rejection has to happen on the chamber code, because there is no chamber
+// to size the tally against. Recognising the code is NOT the same as
+// keeping the vote: these roll calls are counted and dropped, never stored.
+export const LEGISCAN_COMMITTEE_CHAMBER_CODES: ReadonlySet<string> = new Set(["J"]);
+
+/**
+ * Whether a raw dataset roll_call element is a committee body's vote, read
+ * from the chamber code alone — checked BEFORE parsing, since such a roll
+ * has no chamber and parsing it would (correctly) fail loudly.
+ */
+export function isLegiscanCommitteeChamberRollCall(raw: Record<string, unknown>): boolean {
+  const chamber = raw.chamber;
+  return typeof chamber === "string" && LEGISCAN_COMMITTEE_CHAMBER_CODES.has(chamber.trim().toUpperCase());
+}
+
 export type LegiscanRollCall = {
   rollCallId: number;
   billId: number;
@@ -228,8 +252,14 @@ export function parseLegiscanRollCall(raw: Record<string, unknown>): LegiscanRol
     throw new Error(`${where}: date is not YYYY-MM-DD: ${date}`);
   }
   const chamberRaw = readString(raw, "chamber", where);
-  if (chamberRaw !== "H" && chamberRaw !== "S") {
-    throw new Error(`${where}: chamber is not H or S: ${chamberRaw}`);
+  // LegiScan prints the chamber as the state's own abbreviation for it, so
+  // the lower chamber is `H` in most states and `A` where it is called the
+  // Assembly (California, measured 2026-08-26: all 9,948 of CA 2172's lower
+  // chamber rolls carry `A`; also NV/NJ/NY/WI). Both map to `house`, our
+  // single lower-chamber key — the state's own name for the body is a
+  // display fact, never a data one. A third letter must still fail loudly.
+  if (chamberRaw !== "H" && chamberRaw !== "A" && chamberRaw !== "S") {
+    throw new Error(`${where}: chamber is not H, A or S: ${chamberRaw}`);
   }
   if (raw.passed !== 0 && raw.passed !== 1 && raw.passed !== true && raw.passed !== false) {
     throw new Error(`${where}: passed is not a 0/1 flag`);
@@ -272,7 +302,7 @@ export function parseLegiscanRollCall(raw: Record<string, unknown>): LegiscanRol
     absent: readNonNegativeInt(raw, "absent", where),
     total: readNonNegativeInt(raw, "total", where),
     passed: raw.passed === 1 || raw.passed === true,
-    chamber: chamberRaw === "H" ? "house" : "senate",
+    chamber: chamberRaw === "S" ? "senate" : "house",
     votes,
   };
   // An EMPTY member list beside non-zero tallies is a real publication

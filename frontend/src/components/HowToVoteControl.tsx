@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@voteapp/api-client";
 import type { StateVotingResources, StateVotingResourcesResult } from "@voteapp/api-client";
@@ -118,14 +118,20 @@ function StateResourcesSection({ state, showStateName }: { state: string; showSt
 export function HowToVoteControl({ states }: { states: string[] }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const uniqueStates = [...new Set(states)];
   if (uniqueStates.length === 0) {
     return null;
   }
 
+  // ml-auto keeps the control on the right edge even when the toolbar row
+  // wraps and this becomes the only item on its line — justify-between on
+  // the parent would otherwise drop it to the left, and items-end would
+  // then shove the trigger sideways the moment the wider panel opens.
   return (
-    <div className="flex flex-col items-end gap-2">
+    <div className="ml-auto flex flex-col items-end gap-2">
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen(!open)}
         aria-expanded={open}
@@ -142,7 +148,26 @@ export function HowToVoteControl({ states }: { states: string[] }) {
         How to vote{uniqueStates.length === 1 ? ` in ${uniqueStates[0]}` : ""}
       </button>
       {open ? (
-        <div id={panelId} className="flex w-72 max-w-full flex-col gap-4 rounded-lg border border-line bg-white p-3">
+        <div
+          id={panelId}
+          className="relative flex w-72 max-w-full flex-col gap-4 rounded-lg border border-line bg-white p-3 pr-9"
+        >
+          {/* Explicit close affordance — the trigger also toggles, but a
+              panel with no visible way out reads as stuck. Focus returns to
+              the trigger so a keyboard user isn't dropped at the top. */}
+          <button
+            type="button"
+            aria-label="Close"
+            onClick={() => {
+              setOpen(false);
+              triggerRef.current?.focus();
+            }}
+            className="absolute right-2 top-2 rounded p-1 text-ink-soft transition hover:bg-surface hover:text-ink"
+          >
+            <svg aria-hidden="true" viewBox="0 0 12 12" className="h-3.5 w-3.5">
+              <path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+          </button>
           {uniqueStates.map((state) => (
             <StateResourcesSection key={state} state={state} showStateName={uniqueStates.length > 1} />
           ))}

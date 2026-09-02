@@ -3,6 +3,7 @@ import type {
   CandidateElection,
   CandidateRecord,
   FinanceSummary,
+  RecordAreaStance,
   ResearchAreaPreference,
 } from "@voteapp/api-client";
 import { partyColorClass, profilePartyLabel } from "@voteapp/api-client";
@@ -10,17 +11,30 @@ import {
   ApiError,
   apiRequest,
   candidateProfileLinks,
+  classifyStanceSummary,
+  compareByResearchAreaPriority,
   formatDistrictName,
   formatElectionDate,
   hasFinanceContent,
+  isDecidedChoice,
   UNRANKED_RESEARCH_AREA_RANK,
+  useElectionChoices,
   useFollows,
+  useMe,
+  useMyAccountDistricts,
   useMyResearchAreas,
 } from "@voteapp/api-client";
 import { useQuery } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { AddressNudge } from "../../components/AddressNudge";
+import {
+  CandidatePickButton,
+  CandidatePickRow,
+  LogInToPlanLine,
+} from "../../components/ElectionChoiceControls";
 import { FinanceSummaryCard } from "../../components/FinanceSummaryCard";
 import { FollowButton } from "../../components/FollowButton";
 import { NotFoundNotice } from "../../components/NotFoundNotice";
@@ -29,25 +43,33 @@ import { SortChips } from "../../components/SortChips";
 import { SourceLine } from "../../components/SourceLine";
 import { ErrorNotice, LoadingNotice } from "../../components/Status";
 import { openExternalUrl } from "../../lib/openExternalUrl";
+import { usLatestLocalDate } from "../../lib/usLatestLocalDate";
 
-type RecordView = "by_issue" | "my_issues" | "newest";
+type RecordView = "my_issues" | "newest";
 
 type RecordGroup = {
   /** null for the untagged "Other records" pseudo-group. */
   areaId: string | null;
+  areaSlug: string | null;
   areaName: string;
   records: CandidateRecord[];
 };
 
 // Records grouped by research area (a record with several tags appears under
 // each; untagged records fall into "Other records"). Same logic as the web
-// CandidatePage.
+// CandidatePage: groups order by public salience (the same ranking the
+// stance summary above uses, so the two surfaces agree), not alphabetically;
+// "Other records" stays last.
 function groupRecords(records: CandidateRecord[]): RecordGroup[] {
   const groups = new Map<string | null, RecordGroup>();
   for (const record of records) {
     const areas = record.research_area_tags.length
-      ? record.research_area_tags.map((tag) => ({ areaId: tag.research_area_id, areaName: tag.name }))
-      : [{ areaId: null, areaName: "Other records" }];
+      ? record.research_area_tags.map((tag) => ({
+          areaId: tag.research_area_id,
+          areaSlug: tag.slug,
+          areaName: tag.name,
+        }))
+      : [{ areaId: null, areaSlug: null, areaName: "Other records" }];
     for (const area of areas) {
       const group = groups.get(area.areaId) ?? { ...area, records: [] };
       group.records.push(record);
@@ -55,13 +77,20 @@ function groupRecords(records: CandidateRecord[]): RecordGroup[] {
     }
   }
   return [...groups.values()].sort((a, b) =>
-    a.areaId === null ? 1 : b.areaId === null ? -1 : a.areaName.localeCompare(b.areaName)
+    a.areaId === null || a.areaSlug === null
+      ? 1
+      : b.areaId === null || b.areaSlug === null
+        ? -1
+        : compareByResearchAreaPriority(
+            { slug: a.areaSlug, name: a.areaName },
+            { slug: b.areaSlug, name: b.areaName }
+          )
   );
 }
 
 // "My issues first": saved-area groups move to the front ordered by the
 // user's rank (unranked saved areas after ranked ones), everything else
-// keeps the alphabetical order groupRecords produced.
+// keeps the public-salience order groupRecords produced.
 function orderGroupsByPreference(
   groups: RecordGroup[],
   preferences: readonly ResearchAreaPreference[]
@@ -87,15 +116,6 @@ function orderGroupsByPreference(
 function candidateShareText(candidate: { display_name: string; party: string; state: string }): string {
   const context = [profilePartyLabel(candidate.party), candidate.state].filter(Boolean).join(", ");
   return context ? `${candidate.display_name} (${context})` : candidate.display_name;
-}
-
-// Election dates are YYYY-MM-DD calendar strings; "today" is the last US
-// clock still on a given date — Pacific/Honolulu, UTC-10, no DST — mirroring
-// the backend's US_LATEST_LOCAL_DATE_SQL: an election counts as past only
-// once the entire United States has finished that day. en-CA formats as
-// YYYY-MM-DD. Same logic as the web CandidatePage.
-function usLatestLocalDate(): string {
-  return new Intl.DateTimeFormat("en-CA", { timeZone: "Pacific/Honolulu" }).format(new Date());
 }
 
 // Narrow per-candidate finance endpoint (mirrors the web CandidatePage):
@@ -192,18 +212,97 @@ function PastElectionFinance({
   );
 }
 
+// Port of the web CandidatePage's page-top stance summary (classification
+// rules live in @voteapp/api-client classifyStanceSummary): green what the
+// record supports, red what it opposes, amber where it splits — same box
+// idiom as the measure screen's "A YES vote means" pair, stacked vertically
+// on a phone. Only the border, fill, and heading carry the color; the area
+// list itself is plain ink. Renders nothing when no area classifies, so a
+// record-less or judicial-only profile gets no empty shell.
+function StanceSummary({
+  candidateName,
+  records,
+  preferences,
+}: {
+  candidateName: string;
+  records: CandidateRecord[];
+  preferences: readonly ResearchAreaPreference[];
+}) {
+  const { supports, opposes, mixed } = classifyStanceSummary(records, preferences);
+  if (supports.length === 0 && opposes.length === 0 && mixed.length === 0) {
+    return null;
+  }
+  // The viewer's saved areas render semibold so their issues stand out from
+  // the rest of the list, mirroring the front-of-list ordering.
+  const savedAreaIds = new Set(preferences.map((preference) => preference.research_area_id));
+  // Comma-separated text, not boxed chips (boxes read as buttons — same
+  // rule as the web summary and the roster rows).
+  const areaList = (areas: RecordAreaStance[], label: (area: RecordAreaStance) => string) =>
+    areas.map((area, index) => (
+      <Text
+        key={area.research_area_id}
+        className={savedAreaIds.has(area.research_area_id) ? "font-semibold" : undefined}
+      >
+        {index > 0 ? ", " : ""}
+        {label(area)}
+      </Text>
+    ));
+  const countLabel = (area: RecordAreaStance) => {
+    const count = area.for_count + area.against_count;
+    return `${area.name} (${count} record${count === 1 ? "" : "s"})`;
+  };
+  return (
+    <View className="mt-4" accessibilityLabel={`Where ${candidateName} stands, based on their records`}>
+      <Text className="text-sm text-ink-soft">Where they stand, based on their records:</Text>
+      {supports.length > 0 ? (
+        <View className="mt-2 rounded border border-green-200 bg-green-50 p-3">
+          <Text className="text-sm font-semibold text-green-900">Supports</Text>
+          <Text className="mt-1 text-sm text-ink">{areaList(supports, countLabel)}</Text>
+        </View>
+      ) : null}
+      {opposes.length > 0 ? (
+        <View className="mt-2 rounded border border-red-200 bg-red-50 p-3">
+          <Text className="text-sm font-semibold text-red-900">Opposes</Text>
+          <Text className="mt-1 text-sm text-ink">{areaList(opposes, countLabel)}</Text>
+        </View>
+      ) : null}
+      {mixed.length > 0 ? (
+        <View className="mt-2 rounded border border-amber-200 bg-amber-50 p-3">
+          <Text className="text-sm font-semibold text-amber-900">Mixed record</Text>
+          {/* Same "N support · N oppose" phrasing as the web summary and the
+              record group headers, so the surfaces can't drift apart. */}
+          <Text className="mt-1 text-sm text-ink">
+            {areaList(mixed, (area) => `${area.name} (${area.for_count} support · ${area.against_count} oppose)`)}
+          </Text>
+        </View>
+      ) : null}
+    </View>
+  );
+}
+
 /**
  * Port of the web CandidatePage. SSR loader becomes plain useQuery;
  * follow/report controls arrive with the auth chunk.
  */
 export default function CandidateScreen() {
   const { candidateId } = useLocalSearchParams<{ candidateId: string }>();
-  const { hasSaved, preferences } = useMyResearchAreas();
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const { preferences } = useMyResearchAreas();
+  // "My choice" state, all loaded before any control renders (no-flash rule,
+  // like FollowButton). me is undefined while the session loads — the guest
+  // login line must not flash for a viewer who turns out to be signed in.
+  const { me } = useMe();
+  const { choiceByElectionId, canChoose } = useElectionChoices();
+  const { districtIds, isLoading: districtsLoading } = useMyAccountDistricts();
   // Follow state comes from the follows list (only fetched for verified
   // users); the button renders only once that list has loaded — before then
   // a followed candidate would briefly show as unfollowed. Same as the web.
   const { follows, canFollow } = useFollows();
-  const [recordView, setRecordView] = useState<RecordView>("by_issue");
+  // "My issues first" is the only grouped view: with no saved areas the
+  // preference reorder is a no-op, so it degrades to the public-salience
+  // order. Same as the web.
+  const [recordView, setRecordView] = useState<RecordView>("my_issues");
 
   const detail = useQuery({
     queryKey: ["candidate", candidateId],
@@ -244,9 +343,7 @@ export default function CandidateScreen() {
 
   const candidate = detail.data.candidate;
   const profileLinks = candidateProfileLinks(candidate);
-  const baseGroups = groupRecords(candidate.records);
-  const recordGroups =
-    recordView === "my_issues" ? orderGroupsByPreference(baseGroups, preferences) : baseGroups;
+  const recordGroups = orderGroupsByPreference(groupRecords(candidate.records), preferences);
   const today = usLatestLocalDate();
   const ongoingElections = candidate.elections.filter((election) => election.election_date >= today);
   // The history list splits on the same date boundary as the web page: "is
@@ -258,14 +355,60 @@ export default function CandidateScreen() {
   const activeOngoingElections = ongoingElections.filter((election) => !isExitedCandidacy(election));
   const exitedOngoingElections = ongoingElections.filter(isExitedCandidacy);
   const pastElections = candidate.elections.filter((election) => election.election_date < today);
+  // "My choice" rows: one per ongoing OFFICE candidacy the candidate hasn't
+  // withdrawn or lost — a candidate can be in several races at once (and
+  // have past ones), so each row names its election and only pickable
+  // candidacies get a button. Gates copied from the web CandidatePage;
+  // district gate + decided-choice safety valve as on the election screen.
+  const isGuest = me === null;
+  const choiceForElection = (electionId: string) => choiceByElectionId?.get(electionId);
+  const choicesSettled = canChoose && choiceByElectionId !== undefined;
+  const officeCandidacies = ongoingElections.filter(
+    (election) => election.race_type === "office" && election.status !== "withdrawn" && election.status !== "lost"
+  );
+  const pickableElections =
+    choicesSettled && !districtsLoading
+      ? officeCandidacies.filter(
+          (election) =>
+            districtIds?.has(election.district.id) === true ||
+            isDecidedChoice(choiceForElection(election.election_id))
+        )
+      : [];
+  // State 3 of the gate: districts unknown (settled) with an UNDECIDED race
+  // on the screen — a conversion nudge replaces the controls. Decided races
+  // keep their controls via the safety valve and get no nudge.
+  const showAddressNudge =
+    choicesSettled &&
+    !districtsLoading &&
+    districtIds === undefined &&
+    officeCandidacies.some((election) => !isDecidedChoice(choiceForElection(election.election_id)));
+  // Logged out with an ongoing office candidacy on the screen: one quiet
+  // login line where the rows would sit — mobile has no guest ballot draft.
+  const showGuestLoginLine = isGuest && officeCandidacies.length > 0;
+  // The screen's primary action, in the footer card — only when the
+  // candidate is in exactly one pickable race: the card's button names no
+  // race, so with several races the screen relies on the self-describing
+  // inline rows instead.
+  const primaryPickElection = pickableElections.length === 1 ? pickableElections[0] : null;
+  // Whether THIS candidate holds (one of) the pick(s) for the card's race —
+  // gates the card's post-pick back link. True on arrival too, not only
+  // right after tapping.
+  const isPrimaryPicked =
+    primaryPickElection !== null &&
+    (choiceForElection(primaryPickElection.election_id)?.picks ?? []).some(
+      (pick) => pick.candidate_id === candidate.candidate_id
+    );
   const viewOptions = [
-    { value: "by_issue" as const, label: "By issue" },
-    ...(hasSaved ? [{ value: "my_issues" as const, label: "My issues first" }] : []),
+    { value: "my_issues" as const, label: "My issues first" },
     { value: "newest" as const, label: "Newest first" },
   ];
 
   return (
-    <ScrollView className="flex-1 bg-white" contentContainerClassName="px-4 py-8">
+    // Root View + footer sibling (not an absolute overlay): RN has no
+    // position:sticky, and a plain flex sibling below the ScrollView can
+    // never cover content.
+    <View className="flex-1 bg-white">
+      <ScrollView className="flex-1" contentContainerClassName="px-4 py-8">
       <Stack.Screen options={{ title: candidate.display_name }} />
       <View className="flex-row flex-wrap items-center justify-between gap-3">
         <Text className="flex-1 text-2xl font-bold text-ink">{candidate.display_name}</Text>
@@ -309,6 +452,51 @@ export default function CandidateScreen() {
         </View>
       ) : null}
       {candidate.summary ? <Text className="mt-3 text-ink">{candidate.summary}</Text> : null}
+
+      {/* Directly after the summary, same slot as the web page. */}
+      <StanceSummary
+        candidateName={candidate.display_name}
+        records={candidate.records}
+        // Personalized order/emphasis only in the "my issues first" view,
+        // so the summary always matches the record groups below it.
+        preferences={recordView === "my_issues" ? preferences : []}
+      />
+
+      {/* Districts unknown: the address nudge takes the pick controls'
+          in-body slot (single-race screens get it here too — a passive
+          sentence doesn't earn the footer card's pinning). Guests get the
+          login line in the same slot. */}
+      {showAddressNudge ? (
+        <View className="mt-4">
+          <AddressNudge />
+        </View>
+      ) : null}
+      {showGuestLoginLine ? (
+        <View className="mt-4">
+          <LogInToPlanLine />
+        </View>
+      ) : null}
+
+      {/* In-body rows only when the footer card can't act: with several
+          concurrent races the card's bare "Make my pick" can't say which
+          race it would pick, so each race keeps its self-describing row.
+          Single-race screens leave picking to the footer card alone. */}
+      {primaryPickElection === null && pickableElections.length > 0 ? (
+        <View className="mt-4 gap-2">
+          {pickableElections.map((election) => (
+            <CandidatePickRow
+              key={election.candidate_election_id}
+              electionId={election.election_id}
+              candidateId={candidate.candidate_id}
+              candidateName={candidate.display_name}
+              raceName={election.official_ballot_title}
+              dateLabel={formatElectionDate(election.election_date)}
+              choice={choiceForElection(election.election_id)}
+              seatsToFill={election.seats_to_fill ?? null}
+            />
+          ))}
+        </View>
+      ) : null}
 
       {ongoingElections.map((election) => (
         <OngoingElectionFinance
@@ -403,7 +591,41 @@ export default function CandidateScreen() {
           Profile last researched {formatElectionDate(candidate.last_researched.slice(0, 10))}.
         </Text>
       ) : null}
-    </ScrollView>
+      </ScrollView>
+      {/* The screen's primary action ("Add to cart"): the footer pick card,
+          only when the candidate is in exactly one pickable race (see
+          primaryPickElection). No caption naming the race: the screen itself
+          is the context. Safe-area-aware sibling below the scroll area — the
+          web pins the same card with sticky. */}
+      {primaryPickElection ? (
+        <View
+          className="border-t border-line bg-white px-4 pt-3"
+          style={{ paddingBottom: Math.max(insets.bottom, 12) }}
+        >
+          <CandidatePickButton
+            electionId={primaryPickElection.election_id}
+            candidateId={candidate.candidate_id}
+            candidateName={candidate.display_name}
+            choice={choiceForElection(primaryPickElection.election_id)}
+            seatsToFill={primaryPickElection.seats_to_fill ?? null}
+            fullWidth
+          />
+          {/* Post-pick continuation: back to where this candidate came from
+              (election roster or ballot list). Only once THIS candidate
+              holds a pick, and only when there is somewhere to go back to
+              (deep links have no stack). */}
+          {isPrimaryPicked && router.canGoBack() ? (
+            <Text
+              className="mt-2 text-center text-sm text-ink-soft underline"
+              accessibilityRole="link"
+              onPress={() => router.back()}
+            >
+              Back
+            </Text>
+          ) : null}
+        </View>
+      ) : null}
+    </View>
   );
 }
 

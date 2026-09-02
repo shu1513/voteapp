@@ -5,11 +5,14 @@ import {
   BALLOT_SORT_DESCRIPTIONS,
   BALLOT_SORTS,
   deriveBallotFilters,
+  myDraftLabel,
+  useElectionChoices,
+  useMe,
   useMyResearchAreas,
 } from "@voteapp/api-client";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "expo-router";
-import { useEffect, useRef, useState } from "react";
+import { useNavigation, useRouter } from "expo-router";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { AccountGate } from "../../components/AccountGate";
 import { BallotFiltersControl } from "../../components/BallotFiltersControl";
@@ -21,6 +24,7 @@ import { EmptyNotice, ErrorNotice, LoadingNotice } from "../../components/Status
 import { VerifyPrompt } from "../../components/VerifyPrompt";
 import { clearPendingDistrictIds, readPendingDistrictIds } from "../../lib/pendingDistricts";
 import { registerForPushRequestingPermission } from "../../lib/pushNotifications";
+import { useMyPicksProgress } from "../../lib/useMyPicksProgress";
 
 type SavedBallot = BallotSummary & { matched_address?: string };
 
@@ -141,6 +145,10 @@ function SavedBallotBody({ email }: { email: string }) {
     staleTime: 60_000,
   });
   const { savedAreaIds, hasSaved } = useMyResearchAreas();
+  // The viewer's picks, for the cards' "My pick" chips — progress at a
+  // glance down the saved-ballot list. Cards render without waiting for
+  // this: a late chip appearing beats blocking the ballot on it.
+  const { choiceByElectionId } = useElectionChoices();
   // Filters: local state like the anonymous ballot's sort — the tab stays
   // mounted under a stack push, so the choices survive navigating into an
   // election and back. Deliberately NOT account preferences — hiding races
@@ -182,6 +190,10 @@ function SavedBallotBody({ email }: { email: string }) {
         await clearPendingDistrictIds();
         setHandoffState("done");
         void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
+        // The pick gate's district set (useMyAccountDistricts) was just
+        // initialized — refetch it or stale ids keep gating pick buttons.
+        // Not needed in the 400 branch: a rejected payload changes nothing.
+        void queryClient.invalidateQueries({ queryKey: ["me", "districts"] });
         // The anonymous search just became a saved ballot — same prompt
         // moment as the explicit address save below.
         void registerForPushRequestingPermission();
@@ -301,7 +313,12 @@ function SavedBallotBody({ email }: { email: string }) {
         // Show all" line above explains the empty view.
         <View className="mt-4 gap-3">
           {filtersView.visibleElections.map((election) => (
-            <ElectionCard key={election.id} election={election} savedAreaIds={savedAreaIds} />
+            <ElectionCard
+              key={election.id}
+              election={election}
+              savedAreaIds={savedAreaIds}
+              myChoice={choiceByElectionId?.get(election.id)}
+            />
           ))}
         </View>
       )}
@@ -324,7 +341,37 @@ function SavedBallotBody({ email }: { email: string }) {
   );
 }
 
+// Header entry to the My Draft screen (no fifth tab; tab real estate is
+// scarce). The label carries live progress over the nearest election day —
+// "My Draft" → "My Draft 4/13" → "My Picks ✓" — from the shared hook, the
+// same vocabulary as the web header nav. Hidden while logged out or the
+// session is still loading: a draft link for a viewer with no draft is
+// noise (mobile has no guest draft).
+function DraftHeaderLink() {
+  const router = useRouter();
+  const progress = useMyPicksProgress();
+  return (
+    <Pressable
+      onPress={() => router.push("/my-draft")}
+      accessibilityRole="link"
+      className="mr-4 rounded-full border border-line bg-white px-3 py-1.5 active:border-ink"
+    >
+      <Text className="text-sm font-medium text-ink">{myDraftLabel(progress)}</Text>
+    </Pressable>
+  );
+}
+
 export default function MyBallotScreen() {
+  // navigation.setOptions, not a <Tabs.Screen options> element: the
+  // dynamic-options composition API is only documented for Stack routes;
+  // setOptions is the navigator-agnostic contract. DraftHeaderLink carries
+  // its own hooks, so once mounted it live-updates without re-setting.
+  const navigation = useNavigation();
+  const { me } = useMe();
+  const signedIn = me != null;
+  useLayoutEffect(() => {
+    navigation.setOptions({ headerRight: signedIn ? () => <DraftHeaderLink /> : undefined });
+  }, [navigation, signedIn]);
   return (
     <AccountGate signedOutText="Log in to see your saved ballot.">
       {(me) => <SavedBallotBody email={me.email} />}

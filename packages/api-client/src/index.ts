@@ -6,6 +6,7 @@
 // crypto.randomUUID (useAddressSuggestions; expo-crypto provides it).
 
 export * from "./types";
+export * from "./autoPick";
 export * from "./ballotFilters";
 export * from "./brand";
 export * from "./chatbot";
@@ -15,8 +16,10 @@ export * from "./format";
 export * from "./legalCopy";
 export * from "./partyBucket";
 export * from "./partyLabel";
+export * from "./pickProgress";
 export * from "./profileLinks";
 export * from "./railSort";
+export * from "./rankedResearchAreas";
 export * from "./researchAreaPriority";
 export * from "./researchAreaScoring";
 export * from "./resultBadges";
@@ -25,4 +28,6 @@ export * from "./useCandidateSearch";
 export * from "./useElectionChoices";
 export * from "./useFollows";
 export * from "./useMe";
+export * from "./useMyAccountDistricts";
 export * from "./useMyResearchAreas";
+export * from "./usePickCardShare";

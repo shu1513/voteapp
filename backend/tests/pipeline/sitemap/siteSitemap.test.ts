@@ -65,6 +65,9 @@ describe("site sitemap", () => {
     expect(urls).toEqual([
       { path: "/" },
       { path: "/mission" },
+      { path: "/support" },
+      { path: "/support/member" },
+      { path: "/support/once" },
       { path: "/disclaimer" },
       { path: "/terms" },
       { path: "/privacy" },

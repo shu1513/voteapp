@@ -1,0 +1,747 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": true,
+  "skipExisting": false,
+  "startedAt": "2026-08-29T22:28:26.648Z",
+  "finishedAt": "2026-08-29T22:28:39.532Z",
+  "jurisdiction": "CA",
+  "sessionId": 2172,
+  "evidenceDir": "/Users/shu/legiscan-data/ca-2172-evidence",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "/Users/shu/voteApp/.claude/worktrees/hungry-engelbart-5b1814/backend/evidence/rollcall/legiscan-ca-2172/crosswalk.json",
+  "crosswalkEntries": 121,
+  "peopleFile": "/Users/shu/voteApp/.claude/worktrees/hungry-engelbart-5b1814/backend/evidence/rollcall/legiscan-ca-2172/legiscan-people-ca-2172.json",
+  "peopleMembers": 121,
+  "files": 5328,
+  "outcomes": {
+    "not_approved": 5266,
+    "dry_run": 62
+  },
+  "actions": {
+    "unchanged": 2233
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-ca-house-2172-roll1601300.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1601300,
+      "outcome": "dry_run",
+      "legislativeVoteId": "13e9071d-383b-4594-916b-84d661b0c5dc",
+      "reviewStatus": "approved",
+      "bill": "AB1061",
+      "voteDate": "2025-09-08",
+      "officialVoteDate": null,
+      "measureId": "AB 1061",
+      "question": "AB 1061 Quirk-Silva Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1601300:2026-08-29T22:28:26.648Z",
+      "members": 64,
+      "notVoting": 0,
+      "absent": 16,
+      "resolution": {
+        "unmatched_reviewed": 9,
+        "matched": 55
+      },
+      "actions": {
+        "unchanged": 55
+      },
+      "notified": 0,
+      "candidates": 55,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1601404.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1601404,
+      "outcome": "dry_run",
+      "legislativeVoteId": "04de6f7c-77c1-402c-87c5-f4b36e096e75",
+      "reviewStatus": "approved",
+      "bill": "SB82",
+      "voteDate": "2025-09-08",
+      "officialVoteDate": null,
+      "measureId": "SB 82",
+      "question": "SB 82 Umberg Senate Third Reading By Connolly",
+      "originRunId": "rollcall:CA:house:2172:1601404:2026-08-29T22:28:26.648Z",
+      "members": 73,
+      "notVoting": 0,
+      "absent": 7,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 63
+      },
+      "actions": {
+        "unchanged": 63
+      },
+      "notified": 0,
+      "candidates": 63,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1601531.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1601531,
+      "outcome": "dry_run",
+      "legislativeVoteId": "e647d2ce-afd0-408d-b3fc-f22cf284182b",
+      "reviewStatus": "approved",
+      "bill": "SB30",
+      "voteDate": "2025-09-09",
+      "officialVoteDate": null,
+      "measureId": "SB 30",
+      "question": "SB 30 Cortese Senate Third Reading By Wilson",
+      "originRunId": "rollcall:CA:house:2172:1601531:2026-08-29T22:28:26.648Z",
+      "members": 75,
+      "notVoting": 0,
+      "absent": 5,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 65
+      },
+      "actions": {
+        "unchanged": 65
+      },
+      "notified": 0,
+      "candidates": 65,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1601541.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1601541,
+      "outcome": "dry_run",
+      "legislativeVoteId": "556b0a83-5228-48ce-b257-beaab47a5238",
+      "reviewStatus": "approved",
+      "bill": "AB1318",
+      "voteDate": "2025-09-09",
+      "officialVoteDate": null,
+      "measureId": "AB 1318",
+      "question": "AB 1318 Bonta Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1601541:2026-08-29T22:28:26.648Z",
+      "members": 79,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 11,
+        "matched": 68
+      },
+      "actions": {
+        "unchanged": 68
+      },
+      "notified": 0,
+      "candidates": 68,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602196.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602196,
+      "outcome": "dry_run",
+      "legislativeVoteId": "31c8202b-ead4-4e04-b2c3-a63386c36a99",
+      "reviewStatus": "approved",
+      "bill": "AB572",
+      "voteDate": "2025-09-13",
+      "officialVoteDate": null,
+      "measureId": "AB 572",
+      "question": "AB 572 Kalra Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1602196:2026-08-29T22:28:26.648Z",
+      "members": 64,
+      "notVoting": 0,
+      "absent": 16,
+      "resolution": {
+        "unmatched_reviewed": 8,
+        "matched": 56
+      },
+      "actions": {
+        "unchanged": 56
+      },
+      "notified": 0,
+      "candidates": 56,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602306.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602306,
+      "outcome": "dry_run",
+      "legislativeVoteId": "33d90643-f28c-458b-94bd-b8a7d61b2654",
+      "reviewStatus": "approved",
+      "bill": "SB763",
+      "voteDate": "2025-09-12",
+      "officialVoteDate": null,
+      "measureId": "SB 763",
+      "question": "SB 763 Hurtado Senate Third Reading By Kalra",
+      "originRunId": "rollcall:CA:house:2172:1602306:2026-08-29T22:28:26.648Z",
+      "members": 73,
+      "notVoting": 0,
+      "absent": 7,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 63
+      },
+      "actions": {
+        "unchanged": 63
+      },
+      "notified": 0,
+      "candidates": 63,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602345.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602345,
+      "outcome": "dry_run",
+      "legislativeVoteId": "71b9fbca-e5b1-42cd-be39-e7615e879333",
+      "reviewStatus": "approved",
+      "bill": "AB1071",
+      "voteDate": "2025-09-13",
+      "officialVoteDate": null,
+      "measureId": "AB 1071",
+      "question": "AB 1071 Kalra Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1602345:2026-08-29T22:28:26.648Z",
+      "members": 63,
+      "notVoting": 0,
+      "absent": 17,
+      "resolution": {
+        "unmatched_reviewed": 8,
+        "matched": 55
+      },
+      "actions": {
+        "unchanged": 55
+      },
+      "notified": 0,
+      "candidates": 55,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602510.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602510,
+      "outcome": "dry_run",
+      "legislativeVoteId": "5f743653-0902-4c98-9c5d-c8429309ca53",
+      "reviewStatus": "approved",
+      "bill": "AB1037",
+      "voteDate": "2025-09-10",
+      "officialVoteDate": null,
+      "measureId": "AB 1037",
+      "question": "AB 1037 Elhawary Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1602510:2026-08-29T22:28:26.648Z",
+      "members": 74,
+      "notVoting": 0,
+      "absent": 6,
+      "resolution": {
+        "unmatched_reviewed": 11,
+        "matched": 63
+      },
+      "actions": {
+        "unchanged": 63
+      },
+      "notified": 0,
+      "candidates": 63,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602541.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602541,
+      "outcome": "dry_run",
+      "legislativeVoteId": "f40cf246-257b-41a5-8b69-db2f7cbad4a8",
+      "reviewStatus": "approved",
+      "bill": "AB858",
+      "voteDate": "2025-09-11",
+      "officialVoteDate": null,
+      "measureId": "AB 858",
+      "question": "AB 858 Lee Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1602541:2026-08-29T22:28:26.648Z",
+      "members": 68,
+      "notVoting": 0,
+      "absent": 12,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 58
+      },
+      "actions": {
+        "unchanged": 58
+      },
+      "notified": 0,
+      "candidates": 58,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1602572.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1602572,
+      "outcome": "dry_run",
+      "legislativeVoteId": "513d2ba1-57e0-4533-bd9c-e9fea07d386e",
+      "reviewStatus": "approved",
+      "bill": "SB596",
+      "voteDate": "2025-09-11",
+      "officialVoteDate": null,
+      "measureId": "SB 596",
+      "question": "SB 596 Menjivar Senate Third Reading By Schiavo",
+      "originRunId": "rollcall:CA:house:2172:1602572:2026-08-29T22:28:26.648Z",
+      "members": 67,
+      "notVoting": 0,
+      "absent": 13,
+      "resolution": {
+        "unmatched_reviewed": 9,
+        "matched": 58
+      },
+      "actions": {
+        "unchanged": 58
+      },
+      "notified": 0,
+      "candidates": 58,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1701449.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1701449,
+      "outcome": "dry_run",
+      "legislativeVoteId": "61997470-1db8-4f26-8e57-ff0369125926",
+      "reviewStatus": "approved",
+      "bill": "SB73",
+      "voteDate": "2026-05-22",
+      "officialVoteDate": null,
+      "measureId": "SB 73",
+      "question": "SB 73 Cervantes Third Reading Urgency By Pellerin",
+      "originRunId": "rollcall:CA:house:2172:1701449:2026-08-29T22:28:26.648Z",
+      "members": 76,
+      "notVoting": 0,
+      "absent": 4,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 66
+      },
+      "actions": {
+        "unchanged": 66
+      },
+      "notified": 0,
+      "candidates": 66,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1725474.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1725474,
+      "outcome": "dry_run",
+      "legislativeVoteId": "cfb35e08-fda4-4e38-8b3b-c1f2f328f9f0",
+      "reviewStatus": "approved",
+      "bill": "AB2624",
+      "voteDate": "2026-08-19",
+      "officialVoteDate": null,
+      "measureId": "AB 2624",
+      "question": "AB 2624 Bonta Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1725474:2026-08-29T22:28:26.648Z",
+      "members": 78,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 68
+      },
+      "actions": {
+        "unchanged": 68
+      },
+      "notified": 0,
+      "candidates": 68,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1586421.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1586421,
+      "outcome": "dry_run",
+      "legislativeVoteId": "1a2e10fd-ac74-422c-a164-25ed24707049",
+      "reviewStatus": "approved",
+      "bill": "SB82",
+      "voteDate": "2025-06-02",
+      "officialVoteDate": null,
+      "measureId": "SB 82",
+      "question": "Senate 3rd Reading SB82 Umberg",
+      "originRunId": "rollcall:CA:senate:2172:1586421:2026-08-29T22:28:26.648Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 28,
+        "matched": 10
+      },
+      "actions": {
+        "unchanged": 10
+      },
+      "notified": 0,
+      "candidates": 10,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1600931.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1600931,
+      "outcome": "dry_run",
+      "legislativeVoteId": "9fdff8eb-7050-4422-99d5-c36fa17be99b",
+      "reviewStatus": "approved",
+      "bill": "AB1061",
+      "voteDate": "2025-09-03",
+      "officialVoteDate": null,
+      "measureId": "AB 1061",
+      "question": "Assembly 3rd Reading AB1061 Quirk-Silva et al. By Wiener",
+      "originRunId": "rollcall:CA:senate:2172:1600931:2026-08-29T22:28:26.648Z",
+      "members": 34,
+      "notVoting": 0,
+      "absent": 6,
+      "resolution": {
+        "unmatched_reviewed": 25,
+        "matched": 9
+      },
+      "actions": {
+        "unchanged": 9
+      },
+      "notified": 0,
+      "candidates": 9,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601264.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601264,
+      "outcome": "dry_run",
+      "legislativeVoteId": "624463ab-76c5-4f8b-b16e-a740b3f923ac",
+      "reviewStatus": "approved",
+      "bill": "AB1318",
+      "voteDate": "2025-09-08",
+      "officialVoteDate": null,
+      "measureId": "AB 1318",
+      "question": "Assembly 3rd Reading AB1318 Bonta et al. By McNerney Urgency Clause",
+      "originRunId": "rollcall:CA:senate:2172:1601264:2026-08-29T22:28:26.648Z",
+      "members": 39,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 28,
+        "matched": 11
+      },
+      "actions": {
+        "unchanged": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601620.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601620,
+      "outcome": "dry_run",
+      "legislativeVoteId": "3de16890-9c78-43ba-9384-4679af41e2af",
+      "reviewStatus": "approved",
+      "bill": "AB1037",
+      "voteDate": "2025-09-09",
+      "officialVoteDate": null,
+      "measureId": "AB 1037",
+      "question": "Assembly 3rd Reading AB1037 Elhawary By Menjivar",
+      "originRunId": "rollcall:CA:senate:2172:1601620:2026-08-29T22:28:26.648Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 29,
+        "matched": 11
+      },
+      "actions": {
+        "unchanged": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601722.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601722,
+      "outcome": "dry_run",
+      "legislativeVoteId": "fd7b2e6f-af3b-4387-92e9-66c4ae019dce",
+      "reviewStatus": "approved",
+      "bill": "SB30",
+      "voteDate": "2025-09-10",
+      "officialVoteDate": null,
+      "measureId": "SB 30",
+      "question": "Unfinished Business SB30 Cortese et al. Concurrence",
+      "originRunId": "rollcall:CA:senate:2172:1601722:2026-08-29T22:28:26.648Z",
+      "members": 39,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 28,
+        "matched": 11
+      },
+      "actions": {
+        "unchanged": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601757.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601757,
+      "outcome": "dry_run",
+      "legislativeVoteId": "609aa96e-6016-4e9b-ab39-0c4e3b0d4ef3",
+      "reviewStatus": "approved",
+      "bill": "AB858",
+      "voteDate": "2025-09-10",
+      "officialVoteDate": null,
+      "measureId": "AB 858",
+      "question": "Assembly 3rd Reading AB858 Lee et al. By Durazo",
+      "originRunId": "rollcall:CA:senate:2172:1601757:2026-08-29T22:28:26.648Z",
+      "members": 39,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 29,
+        "matched": 10
+      },
+      "actions": {
+        "unchanged": 10
+      },
+      "notified": 0,
+      "candidates": 10,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1601943.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1601943,
+      "outcome": "dry_run",
+      "legislativeVoteId": "b4086395-356f-4e8f-bf6f-bc288ad8c0f7",
+      "reviewStatus": "approved",
+      "bill": "AB1071",
+      "voteDate": "2025-09-11",
+      "officialVoteDate": null,
+      "measureId": "AB 1071",
+      "question": "Assembly 3rd Reading AB1071 Kalra By Arreguín",
+      "originRunId": "rollcall:CA:senate:2172:1601943:2026-08-29T22:28:26.648Z",
+      "members": 36,
+      "notVoting": 0,
+      "absent": 4,
+      "resolution": {
+        "unmatched_reviewed": 26,
+        "matched": 10
+      },
+      "actions": {
+        "unchanged": 10
+      },
+      "notified": 0,
+      "candidates": 10,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1602195.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1602195,
+      "outcome": "dry_run",
+      "legislativeVoteId": "213e652f-24e7-436c-a1b9-a4a2b1191252",
+      "reviewStatus": "approved",
+      "bill": "AB572",
+      "voteDate": "2025-09-12",
+      "officialVoteDate": null,
+      "measureId": "AB 572",
+      "question": "Assembly 3rd Reading AB572 Kalra et al. By Cortese",
+      "originRunId": "rollcall:CA:senate:2172:1602195:2026-08-29T22:28:26.648Z",
+      "members": 32,
+      "notVoting": 0,
+      "absent": 8,
+      "resolution": {
+        "unmatched_reviewed": 24,
+        "matched": 8
+      },
+      "actions": {
+        "unchanged": 8
+      },
+      "notified": 0,
+      "candidates": 8,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1602214.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1602214,
+      "outcome": "dry_run",
+      "legislativeVoteId": "49d1fb62-c4ba-4e2a-896f-4533421f9601",
+      "reviewStatus": "approved",
+      "bill": "SB596",
+      "voteDate": "2025-09-12",
+      "officialVoteDate": null,
+      "measureId": "SB 596",
+      "question": "Unfinished Business SB596 Menjivar Concurrence",
+      "originRunId": "rollcall:CA:senate:2172:1602214:2026-08-29T22:28:26.648Z",
+      "members": 31,
+      "notVoting": 0,
+      "absent": 9,
+      "resolution": {
+        "unmatched_reviewed": 22,
+        "matched": 9
+      },
+      "actions": {
+        "unchanged": 9
+      },
+      "notified": 0,
+      "candidates": 9,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1602893.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1602893,
+      "outcome": "dry_run",
+      "legislativeVoteId": "22128ac3-e5e3-4886-a872-3ec05fc10453",
+      "reviewStatus": "approved",
+      "bill": "SB763",
+      "voteDate": "2025-09-13",
+      "officialVoteDate": null,
+      "measureId": "SB 763",
+      "question": "Unfinished Business SB763 Hurtado Concurrence",
+      "originRunId": "rollcall:CA:senate:2172:1602893:2026-08-29T22:28:26.648Z",
+      "members": 37,
+      "notVoting": 0,
+      "absent": 3,
+      "resolution": {
+        "unmatched_reviewed": 26,
+        "matched": 11
+      },
+      "actions": {
+        "unchanged": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1702119.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1702119,
+      "outcome": "dry_run",
+      "legislativeVoteId": "02704629-11d6-4dbd-be79-5ce2f7f14825",
+      "reviewStatus": "approved",
+      "bill": "SB73",
+      "voteDate": "2026-05-26",
+      "officialVoteDate": null,
+      "measureId": "SB 73",
+      "question": "Unfinished Business SB73 Cervantes et al. Urgency Clause Concurrence",
+      "originRunId": "rollcall:CA:senate:2172:1702119:2026-08-29T22:28:26.648Z",
+      "members": 37,
+      "notVoting": 0,
+      "absent": 3,
+      "resolution": {
+        "unmatched_reviewed": 27,
+        "matched": 10
+      },
+      "actions": {
+        "unchanged": 10
+      },
+      "notified": 0,
+      "candidates": 10,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-senate-2172-roll1725364.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1725364,
+      "outcome": "dry_run",
+      "legislativeVoteId": "7c87632a-864f-46fc-a81f-f175c8b93ea5",
+      "reviewStatus": "approved",
+      "bill": "AB2624",
+      "voteDate": "2026-08-18",
+      "officialVoteDate": null,
+      "measureId": "AB 2624",
+      "question": "Assembly 3rd Reading AB2624 Bonta et al. By Gonzalez",
+      "originRunId": "rollcall:CA:senate:2172:1725364:2026-08-29T22:28:26.648Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 29,
+        "matched": 11
+      },
+      "actions": {
+        "unchanged": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    }
+  ],
+  "rollsScopedToBatch": true
+}

@@ -6,6 +6,7 @@ import {
   type CandidateRecordAreaLabelInput,
   type CandidateRecordAreaStance,
 } from "../candidates/candidateRecordAreaTagging.js";
+import { isNonStanceResearchAreaSlug } from "../candidates/candidateRecordResearchAreaPolicy.js";
 import { recordIdentityTransition } from "../candidates/candidateRecordStore.js";
 import type { FederalMeasure } from "./federalMeasures.js";
 import { citesAnyRollCall, citesSameRollCall, descriptionMentionsMeasure, looksLikeVoteClaim } from "./rollCallRecordUrls.js";
@@ -43,32 +44,49 @@ export function memberVoteSide(vote: string): RollCallVoteSide | null {
   return side;
 }
 
-// One element of legislative_votes.labels_json: the research area and
-// which stance a YEA vote takes on it (null only for the non-stance areas).
-export type RollCallLabel = { slug: string; yea: CandidateRecordAreaStance | null };
+// One element of legislative_votes.labels_json: the research area and the
+// stance each side's vote takes on it (null on `yea` only for the non-stance
+// areas). `nay` is authored, never inverted from `yea`: a no vote is not
+// automatically the opposite stance on the area's whole goal (a no on one
+// election bill is not "Opposes Election Integrity"), so on a stance area a
+// null/absent `nay` means nay voters get NO tag for that slug. Non-stance
+// areas carry null on both sides and tag both sides topically, as before.
+export type RollCallLabel = { slug: string; yea: CandidateRecordAreaStance | null; nay: CandidateRecordAreaStance | null };
 
 export type RollCallSideLabel = { researchAreaSlug: string; stance: CandidateRecordAreaStance | null };
 
-function flip(stance: CandidateRecordAreaStance | null): CandidateRecordAreaStance | null {
-  return stance === "for" ? "against" : stance === "against" ? "for" : null;
-}
-
-/** The tags a record on `side` gets: yea voters take the label as written, nay voters the opposite. */
+/**
+ * The tags a record on `side` gets: yea voters take every label as written;
+ * nay voters take a stance area only where the judgment stated a nay stance
+ * (an unstated nay side is silence, not the opposite claim), plus the
+ * non-stance areas topically.
+ */
 export function labelsForSide(labels: readonly RollCallLabel[], side: RollCallVoteSide): RollCallSideLabel[] {
-  return labels.map((label) => ({
-    researchAreaSlug: label.slug,
-    stance: side === "yea" ? label.yea : flip(label.yea),
-  }));
+  if (side === "yea") {
+    return labels.map((label) => ({ researchAreaSlug: label.slug, stance: label.yea }));
+  }
+  return labels
+    .filter((label) => label.nay !== null || isNonStanceResearchAreaSlug(label.slug))
+    .map((label) => ({ researchAreaSlug: label.slug, stance: label.nay }));
 }
 
 /**
  * Reads and checks labels_json. The DB only guarantees a non-empty array on
  * an approved row (migration 251); element shape — the slug exists, the
- * stance value is for/against/null, non-stance areas carry null and stance
- * areas do not — is checked here with the same rule the manual writer uses,
- * once for each side, since a bad label would replicate across every record.
+ * stance values are for/against/null, non-stance areas carry null and stance
+ * areas do not, and `nay` never restates `yea` — is checked here with the
+ * same rule the manual writer uses, once for each side, since a bad label
+ * would replicate across every record. Rows judged before `nay` existed
+ * carry no `nay` key: read as null (nay voters untagged, never the old
+ * auto-inversion). `requireExplicitNay` — the authoring gate in
+ * rollcall:judge — additionally refuses an absent `nay` on a stance area,
+ * so every NEW judgment states the nay side on purpose.
  */
-export function parseRollCallLabels(labelsJson: unknown, allowedSlugs: ReadonlySet<string>): RollCallLabel[] {
+export function parseRollCallLabels(
+  labelsJson: unknown,
+  allowedSlugs: ReadonlySet<string>,
+  options?: { requireExplicitNay?: boolean }
+): RollCallLabel[] {
   if (!Array.isArray(labelsJson) || labelsJson.length === 0) {
     throw new Error("labels_json is not a non-empty array");
   }
@@ -78,19 +96,30 @@ export function parseRollCallLabels(labelsJson: unknown, allowedSlugs: ReadonlyS
     if (typeof element !== "object" || element === null || Array.isArray(element)) {
       throw new Error(`labels_json[${index}] is not an object`);
     }
-    const { slug, yea } = element as { slug?: unknown; yea?: unknown };
+    const { slug, yea, nay } = element as { slug?: unknown; yea?: unknown; nay?: unknown };
     if (typeof slug !== "string" || slug.trim().length === 0) {
       throw new Error(`labels_json[${index}].slug is not a string`);
     }
     if (yea !== "for" && yea !== "against" && yea !== null && yea !== undefined) {
       throw new Error(`labels_json[${index}].yea must be "for", "against", or null`);
     }
+    if (nay !== "for" && nay !== "against" && nay !== null && nay !== undefined) {
+      throw new Error(`labels_json[${index}].nay must be "for", "against", or null`);
+    }
     const normalizedSlug = slug.trim().toLowerCase();
     if (seen.has(normalizedSlug)) {
       throw new Error(`labels_json names ${normalizedSlug} twice`);
     }
+    if (nay !== null && nay !== undefined && nay === yea) {
+      throw new Error(`labels_json[${index}].nay restates yea; one roll call cannot evidence the same stance for both sides`);
+    }
+    if (options?.requireExplicitNay && nay === undefined && !isNonStanceResearchAreaSlug(normalizedSlug)) {
+      throw new Error(
+        `labels_json[${index}].nay must be stated for ${normalizedSlug}: "for", "against", or null (null = nay voters get no tag)`
+      );
+    }
     seen.add(normalizedSlug);
-    labels.push({ slug: normalizedSlug, yea: yea ?? null });
+    labels.push({ slug: normalizedSlug, yea: yea ?? null, nay: nay ?? null });
   }
   for (const side of ["yea", "nay"] as const) {
     const validation = validateCandidateRecordAreaLabels(
@@ -226,11 +255,21 @@ export function shouldNotifyForVoteDate(voteDate: string, todayIso: string): boo
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
-/** Every candidate_records row (live or retired) of the given candidates on one date, grouped by candidate. */
+/**
+ * Every candidate_records row (live or retired) of the given candidates that
+ * may be this roll call, grouped by candidate. Two nets, both needed:
+ * the given dates — the effective date (official_vote_date ?? vote_date)
+ * plus the raw source date — catch hand-written rows, which carry no run id;
+ * the origin_run_id roll prefix catches this pipeline's own rows on ANY
+ * date, since a changed or cleared official-date override leaves them on a
+ * date no longer in the scan window and they must still rewrite in place
+ * instead of duplicating.
+ */
 export async function loadExistingRecordsForDate(
   db: Queryable,
   candidateIds: readonly string[],
-  eventDate: string
+  eventDates: readonly string[],
+  originRunIdPrefix: string
 ): Promise<Map<string, ExistingCandidateRecord[]>> {
   const byCandidate = new Map<string, ExistingCandidateRecord[]>();
   if (candidateIds.length === 0) {
@@ -241,10 +280,13 @@ export async function loadExistingRecordsForDate(
       SELECT candidate_id, id, description, source_url, record_identity_key, retired_at::text AS retired_at
       FROM public.candidate_records
       WHERE candidate_id = ANY($1::uuid[])
-        AND event_date = $2::date
+        AND (
+          event_date = ANY($2::date[])
+          OR (origin = 'rollcall_import' AND starts_with(origin_run_id, $3))
+        )
       ORDER BY created_at, id
     `,
-    [candidateIds, eventDate]
+    [candidateIds, eventDates, originRunIdPrefix]
   );
   for (const { candidate_id: candidateId, ...record } of result.rows) {
     const records = byCandidate.get(candidateId) ?? [];
@@ -287,6 +329,9 @@ export async function insertRollCallRecord(client: Queryable, record: RollCallRe
  * so its tags' history and notification events stay attached, with the
  * identity transition that lets research:promote follow the re-key. Guarded
  * on the old key so a row edited since the plan was made is left alone.
+ * event_date moves with the content: identity keys embed it, so a row found
+ * on the raw source date after an official-date override was set lands on
+ * the official date (same-date rewrites just restate it).
  */
 export async function rewriteRollCallRecord(
   client: Queryable,
@@ -297,15 +342,24 @@ export async function rewriteRollCallRecord(
       UPDATE public.candidate_records
       SET description = $3,
           source_url = $4,
-          record_identity_key = $5,
+          event_date = $5::date,
+          record_identity_key = $6,
           origin = 'rollcall_import',
-          origin_run_id = $6,
+          origin_run_id = $7,
           updated_at = now()
       WHERE id = $1
         AND record_identity_key = $2
         AND retired_at IS NULL
     `,
-    [record.recordId, record.oldIdentityKey, record.description, record.sourceUrl, record.identityKey, record.originRunId]
+    [
+      record.recordId,
+      record.oldIdentityKey,
+      record.description,
+      record.sourceUrl,
+      record.eventDate,
+      record.identityKey,
+      record.originRunId,
+    ]
   );
   if (result.rowCount !== 1) {
     throw new Error(`record ${record.recordId} changed under the rewrite (key ${record.oldIdentityKey})`);

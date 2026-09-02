@@ -311,15 +311,20 @@ async function main(): Promise<void> {
         if (!rollCallKey) {
           throw new Error(`machine_url ${vote.machineUrl} is not a recognized roll-call URL`);
         }
-        const originRunId = `rollcall:${OHIO_JURISDICTION}:${evidence.chamber}:${session}:${evidence.roll}:${startedAt.toISOString()}`;
+        const originRunPrefix = `rollcall:${OHIO_JURISDICTION}:${evidence.chamber}:${session}:${evidence.roll}:`;
+        const originRunId = `${originRunPrefix}${startedAt.toISOString()}`;
         row.originRunId = originRunId;
 
         const resolutions = resolveOhioMembers(votes, crosswalk, rosterByLpid, candidatesById);
         const voters = collectOhioVoters(resolutions, row.resolution);
+        // The effective and raw dates catch hand-written rows; the run-id
+        // prefix catches this pipeline's own rows on any date, so a changed
+        // or cleared override still rewrites them instead of duplicating.
         const existingByCandidate = await loadExistingRecordsForDate(
           pool,
           voters.map((voter) => voter.candidateId),
-          vote.voteDate
+          [...new Set([vote.officialVoteDate ?? vote.voteDate, vote.voteDate])],
+          originRunPrefix
         );
         const work = voters.map((voter) => {
           const template = templates[voter.side];
@@ -357,7 +362,7 @@ async function main(): Promise<void> {
           continue;
         }
 
-        const notify = shouldNotifyForVoteDate(vote.voteDate, today);
+        const notify = shouldNotifyForVoteDate(vote.officialVoteDate ?? vote.voteDate, today);
         const client: PoolClient = await pool.connect();
         try {
           await client.query("BEGIN");

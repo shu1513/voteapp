@@ -86,6 +86,26 @@ describe("finance source provenance and coverage notes", () => {
     expect(firstFinanceSourceUrl(summary)).toBe("https://cfs.sos.nh.gov/");
   });
 
+  it("falls back to the Alabama FCPA portal when no breakdown URL exists", () => {
+    const summary = emptySummary();
+    summary.source = "ALABAMA_FCPA";
+    expect(firstFinanceSourceUrl(summary)).toBe("https://fcpa.alabamavotes.gov/");
+  });
+
+  it("falls back to the Montana COPP home page when no breakdown URL exists", () => {
+    const summary = emptySummary();
+    summary.source = "MONTANA_COPP";
+    expect(firstFinanceSourceUrl(summary)).toBe("https://politicalpractices.mt.gov/");
+  });
+
+  it("falls back to the Nevada AURORA portal when no breakdown URL exists", () => {
+    const summary = emptySummary();
+    summary.source = "NEVADA_AURORA";
+    expect(firstFinanceSourceUrl(summary)).toBe(
+      "https://www.nvsos.gov/SOSCandidateServices/AnonymousAccess/CEFDSearchUU/Search.aspx"
+    );
+  });
+
   it("shows Missouri's totals note for disclosed zeroes without changing breakdown-only notes", () => {
     const missouri = emptySummary();
     missouri.source = "MISSOURI_MEC";

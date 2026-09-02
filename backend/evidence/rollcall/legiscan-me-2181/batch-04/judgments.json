@@ -1,0 +1,44 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1590925,
+   "measure_id": "LD 613",
+   "vote_date": "2025-06-16",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 613, a bill about the waiting period in Maine's Death with Dignity law. Maine's Death with Dignity Act lets a terminally ill adult who meets the law's conditions ask a doctor for medication to end their own life. The patient must make two spoken requests at least 15 days apart and sign a written request. At least 48 hours must pass between signing that request and the doctor writing the prescription. Under this bill a doctor may shorten part of that wait if, in the doctor's medical opinion, it is in the patient's best interest given their condition. The total wait can never fall below 7 days, and the doctor must record what was shortened and why. The two chambers had passed different versions. This vote accepted the Senate's wording. The Maine House agreed 79-62 and the bill became law.",
+   "nay_description": "Voted no on LD 613, a bill about the waiting period in Maine's Death with Dignity law. Maine's Death with Dignity Act lets a terminally ill adult who meets the law's conditions ask a doctor for medication to end their own life. The patient must make two spoken requests at least 15 days apart and sign a written request. At least 48 hours must pass between signing that request and the doctor writing the prescription. Under this bill a doctor may shorten part of that wait if, in the doctor's medical opinion, it is in the patient's best interest given their condition. The total wait can never fall below 7 days, and the doctor must record what was shortened and why. The two chambers had passed different versions. This vote accepted the Senate's wording. The Maine House agreed 79-62 and the bill became law.",
+   "labels": [
+    {
+     "slug": "general",
+     "yea": null,
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1590127,
+   "measure_id": "LD 613",
+   "vote_date": "2025-06-12",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 613, a bill about the waiting period in Maine's Death with Dignity law. Maine's Death with Dignity Act lets a terminally ill adult who meets the law's conditions ask a doctor for medication to end their own life. The patient must make two spoken requests at least 15 days apart and sign a written request. At least 48 hours must pass between signing that request and the doctor writing the prescription. Under this bill a doctor may shorten part of that wait if, in the doctor's medical opinion, it is in the patient's best interest given their condition. The total wait can never fall below 7 days, and the doctor must record what was shortened and why. The Senate had rejected this bill three days earlier and reversed itself. The Maine Senate passed it 18-15 and it became law.",
+   "nay_description": "Voted no on LD 613, a bill about the waiting period in Maine's Death with Dignity law. Maine's Death with Dignity Act lets a terminally ill adult who meets the law's conditions ask a doctor for medication to end their own life. The patient must make two spoken requests at least 15 days apart and sign a written request. At least 48 hours must pass between signing that request and the doctor writing the prescription. Under this bill a doctor may shorten part of that wait if, in the doctor's medical opinion, it is in the patient's best interest given their condition. The total wait can never fall below 7 days, and the doctor must record what was shortened and why. The Senate had rejected this bill three days earlier and reversed itself. The Maine Senate passed it 18-15 and it became law.",
+   "labels": [
+    {
+     "slug": "general",
+     "yea": null,
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1590121,
+    1590123
+   ]
+  }
+ ]
+}

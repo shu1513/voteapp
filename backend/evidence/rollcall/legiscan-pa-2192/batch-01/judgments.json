@@ -1,0 +1,102 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1567196,
+   "measure_id": "HB 103",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 103. It set rules for boats left abandoned, sunk or falling apart in Pennsylvania waters. Towns and police could look into a boat and haul it away. The owner has to pay to remove, store or scrap it. An owner who ignores a proper notice faces a small criminal charge. The charge gets more serious if the cost is over $2,500. The Pennsylvania House passed this version 148-55. The Senate then tightened the definitions, and the House backed that final version 201-2. It became law as Act 28 of 2025.",
+   "nay_description": "Voted against House Bill 103. It set rules for boats left abandoned, sunk or falling apart in Pennsylvania waters. Towns and police could look into a boat and haul it away. The owner has to pay to remove, store or scrap it. An owner who ignores a proper notice faces a small criminal charge. The charge gets more serious if the cost is over $2,500. The Pennsylvania House passed this version 148-55. The Senate then tightened the definitions, and the House backed that final version 201-2. It became law as Act 28 of 2025.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1596525
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1583943,
+   "measure_id": "HB 858",
+   "vote_date": "2025-06-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 858. It makes every county keep a contact list for property the owner does not live in. A buyer must file contact details within 30 days. Towns must collect them whenever they cite a property for a code violation. A business or LLC must also name a person who can actually fix the problem. The list is private, and a town must show a real need to see it and promise not to use it for commercial purposes. A county can fine an owner up to $500 for giving false information. The Pennsylvania House passed it 132-71 and it became law.",
+   "nay_description": "Voted against House Bill 858. It makes every county keep a contact list for property the owner does not live in. A buyer must file contact details within 30 days. Towns must collect them whenever they cite a property for a code violation. A business or LLC must also name a person who can actually fix the problem. The list is private, and a town must show a real need to see it and promise not to use it for commercial purposes. A county can fine an owner up to $500 for giving false information. The Pennsylvania House passed it 132-71 and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1596825,
+   "measure_id": "SB 95",
+   "vote_date": "2025-06-30",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 95. It changed the state pharmacy law in three ways. If a customer asks, the pharmacist must say what the drug costs at that store and what the customer will pay, for both the brand name and the generic, and where to sign up for health coverage. A pharmacy that refuses faces a fine of up to $500. Ambulance crews may hand one sealed dose of naloxone, the overdose antidote, to a family member or friend. That is voluntary and carries no liability. The state pharmacy board could also give 180-day temporary licenses to pharmacists already licensed in another state. The Pennsylvania House passed it 126-77 and it became law.",
+   "nay_description": "Voted against Senate Bill 95. It changed the state pharmacy law in three ways. If a customer asks, the pharmacist must say what the drug costs at that store and what the customer will pay, for both the brand name and the generic, and where to sign up for health coverage. A pharmacy that refuses faces a fine of up to $500. Ambulance crews may hand one sealed dose of naloxone, the overdose antidote, to a family member or friend. That is voluntary and carries no liability. The state pharmacy board could also give 180-day temporary licenses to pharmacists already licensed in another state. The Pennsylvania House passed it 126-77 and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1610608,
+   "measure_id": "HB 1425",
+   "vote_date": "2025-12-16",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 1425. It set up a state list of nicotine vapes that may be sold here. Makers must certify their products every year, post a bond of at least $50,000, and pay listing fees. Once the list has been public for 120 days, only listed products can be sold. The attorney general and the revenue department can inspect sellers, raise fines up to pulling a license, and destroy illegal products at the owner's cost. The same law raised the markup stores must add to cigarettes, which sets the lowest legal price, from 7% to 8.5% and then 9.5%. The Pennsylvania House agreed to the Senate's version 147-56 and it became law.",
+   "nay_description": "Voted against House Bill 1425. It set up a state list of nicotine vapes that may be sold here. Makers must certify their products every year, post a bond of at least $50,000, and pay listing fees. Once the list has been public for 120 days, only listed products can be sold. The attorney general and the revenue department can inspect sellers, raise fines up to pulling a license, and destroy illegal products at the owner's cost. The same law raised the markup stores must add to cigarettes, which sets the lowest legal price, from 7% to 8.5% and then 9.5%. The Pennsylvania House agreed to the Senate's version 147-56 and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "PA",
+   "chamber": "house",
+   "session": "2192",
+   "roll": 1689892,
+   "measure_id": "SB 375",
+   "vote_date": "2026-04-27",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 375. It set new defibrillator rules for schools. A defibrillator checks a person's heart rhythm and can give an electric shock to bring back a normal heartbeat. Within three years, a school with sports teams must keep one within easy reach at games and practices. It must also write a plan for cardiac emergencies and run a drill each year. Every school building needs at least one person trained in CPR and defibrillator use on site each school day. Nurses, coaches, band directors, gym teachers and athletic trainers must take that training. Up to $2.5 million from the school safety fund would help private schools pay for it. The Pennsylvania House passed it 141-59 and it became law.",
+   "nay_description": "Voted against Senate Bill 375. It set new defibrillator rules for schools. A defibrillator checks a person's heart rhythm and can give an electric shock to bring back a normal heartbeat. Within three years, a school with sports teams must keep one within easy reach at games and practices. It must also write a plan for cardiac emergencies and run a drill each year. Every school building needs at least one person trained in CPR and defibrillator use on site each school day. Nurses, coaches, band directors, gym teachers and athletic trainers must take that training. Up to $2.5 million from the school safety fund would help private schools pay for it. The Pennsylvania House passed it 141-59 and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

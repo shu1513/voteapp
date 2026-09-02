@@ -1,0 +1,202 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1531612,
+      "measure_id": "SB 69",
+      "vote_date": "2025-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's change to Senate Bill 69 and send it to the governor. This was the Georgia House's last vote on the bill. The House agreed 120-42, and it became law as Act 10. The law makes companies that pay for other people's lawsuits register with the state banking department. People with certain foreign or sovereign wealth fund ties may not be such funders. Funders may not steer the cases they pay for, pay or take referral fees, or advertise falsely. They may not collect more than the plaintiffs' share of the winnings after legal fees and costs. Funding deals must be written, must disclose terms, and must let the customer cancel. Deals of $25,000 or more can be demanded as evidence in a lawsuit. Such a funder can also be made to help pay costs and penalties in a groundless case. The Senate's change added a separate seat belt rule, so this vote covered it. Courts may now hear that a crash victim wore no seat belt, which can cut their damages.",
+      "nay_description": "Voted against accepting the Senate's change to Senate Bill 69 at the House's last vote on it. The House agreed anyway, 120-42, and the bill became law as Act 10. The law makes companies that pay for other people's lawsuits register with the state banking department. People with certain foreign or sovereign wealth fund ties may not be such funders. Funders may not steer the cases they pay for, pay or take referral fees, or advertise falsely. They may not collect more than the plaintiffs' share of the winnings after legal fees and costs. Funding deals must be written, must disclose terms, and must let the customer cancel. Deals of $25,000 or more can be demanded as evidence in a lawsuit. Such a funder can also be made to help pay costs and penalties in a groundless case. The Senate's change added a separate seat belt rule, so this vote covered it. Courts may now hear that a crash victim wore no seat belt, which can cut their damages.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1535196,
+      "measure_id": "SB 40",
+      "vote_date": "2025-04-02",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's change to Georgia's scrap metal bill and send it to the governor. This was the Georgia House's last vote on Senate Bill 40. The House agreed 91-63, and it became law as Act 278. The Senate's change did one thing. It added nonmetal waste from shredding cars and appliances to a $1 per ton fee. Host local governments must charge that fee at privately run landfills and keep the money. The rest of the bill, written and passed by the House earlier, targets metal theft. It brings used, detached catalytic converters under the scrap metal recycler law. Those are car exhaust parts that hold valuable metals. It keeps a $100 limit on cash paid to a seller per deal, and two deals per seller a day. It bans cash entirely for catalytic converters, coils, used utility wire, communications copper, copper wire, and batteries. Recyclers pay the sheriff $200 to register and $200 a year to renew. The bill deleted the old rule that split each $200 fee between the Georgia Sheriffs' Association and the county. A sheriff may instead pay a county or city to handle registrations and log them in a Sheriffs' Association registry.",
+      "nay_description": "Voted against accepting the Senate's change to Georgia's scrap metal bill, Senate Bill 40. The House agreed anyway, 91-63, at its last vote on the bill, and it became law as Act 278. The Senate's change did one thing. It added nonmetal waste from shredding cars and appliances to a $1 per ton fee. Host local governments must charge that fee at privately run landfills and keep the money. The rest of the bill, written and passed by the House earlier, targets metal theft. It brings used, detached catalytic converters under the scrap metal recycler law. Those are car exhaust parts that hold valuable metals. It keeps a $100 limit on cash paid to a seller per deal, and two deals per seller a day. It bans cash entirely for catalytic converters, coils, used utility wire, communications copper, copper wire, and batteries. Recyclers pay the sheriff $200 to register and $200 a year to renew. The bill deleted the old rule that split each $200 fee between the Georgia Sheriffs' Association and the county. A sheriff may instead pay a county or city to handle registrations and log them in a Sheriffs' Association registry.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "house",
+      "session": "2160",
+      "roll": 1582092,
+      "measure_id": "HB 121",
+      "vote_date": "2025-05-30",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's version of House Bill 121, a Texas school safety bill. This was the House's last vote on it. The House agreed 97-38, the governor signed it, and it took effect September 1, 2025. Texas already required an armed peace officer at each school campus during school hours. A district that cannot meet that rule may claim a good cause exception and use another plan. This law makes that exception expire after one year, so the school board must review and renew it. An alternative plan may use a school marshal or a trained, armed district employee or contractor. New security staff get 90 days to finish the required training, instead of 180. Texas Education Agency inspectors became peace officers, but only for safety monitoring and emergency coordination. A threat assessment team reviewing a special education student must include someone who knows that student's disability. A threat assessment is a review of whether a student may be dangerous. Teams must report a serious risk of violence to the superintendent right away. Districts may spend state school safety money on security staff, building upgrades, and suicide prevention. The Senate had dropped the House's new child abuse reporting rules for school employees.",
+      "nay_description": "Voted against accepting the Senate's version of House Bill 121, a Texas school safety bill. At the House's last vote on it, the House agreed anyway, 97-38. The governor signed it and it took effect September 1, 2025. Texas already required an armed peace officer at each school campus during school hours. A district that cannot meet that rule may claim a good cause exception and use another plan. This law makes that exception expire after one year, so the school board must review and renew it. An alternative plan may use a school marshal or a trained, armed district employee or contractor. New security staff get 90 days to finish the required training, instead of 180. Texas Education Agency inspectors became peace officers, but only for safety monitoring and emergency coordination. A threat assessment team reviewing a special education student must include someone who knows that student's disability. A threat assessment is a review of whether a student may be dangerous. Teams must report a serious risk of violence to the superintendent right away. Districts may spend state school safety money on security staff, building upgrades, and suicide prevention. The Senate had dropped the House's new child abuse reporting rules for school employees.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OH",
+      "chamber": "house",
+      "session": "136",
+      "roll": 1781207418,
+      "measure_id": "HB 173",
+      "vote_date": "2026-06-10",
+      "review_status": "approved",
+      "yea_description": "Voted yes on accepting the Senate's changes to House Bill 173. The Ohio House agreed 56-35, and the bill went to the governor. The bill covered companies that resell electric service to tenants and condominium owners through a building's own meters, called submetering. It took those companies out of the state's legal definition of a public utility. They would no longer be regulated by the Public Utilities Commission of Ohio. The Senate version still made them register with the commission, file compliance plans, and bill tenants at least 3 percent below the electric utility's own rate. The House had passed its own version 74-23 in March 2026. The governor vetoed the bill on June 24, 2026, so none of it took effect.",
+      "nay_description": "Voted no on accepting the Senate's changes to House Bill 173. The House agreed anyway, 56-35, and sent the bill to the governor. The bill covered companies that resell electric service to tenants and condominium owners through a building's own meters, called submetering. It took those companies out of the state's legal definition of a public utility. They would no longer be regulated by the Public Utilities Commission of Ohio. The Senate version still made them register with the commission, file compliance plans, and bill tenants at least 3 percent below the electric utility's own rate. The House had passed its own version 74-23 in March 2026. The governor vetoed the bill on June 24, 2026, so none of it took effect.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1676416,
+      "measure_id": "HB 463",
+      "vote_date": "2026-04-02",
+      "review_status": "approved",
+      "yea_description": "Voted yes as the Georgia House agreed 104-71 to the Senate's rewrite of House Bill 463. The Senate had replaced the bill's entire text. House Bill 463 started as a property tax break for senior citizens who volunteer for local governments. The version voted on here was a state income tax package instead, titled the Georgia Economic Growth and Tax Relief Act of 2026. It cut the personal income tax rate from 5.19 percent to 4.99 percent starting in 2026. Later yearly cuts rose from 0.10 to 0.125 points and now run down to 3.99 percent. It also cut corporate and partnership income tax rates. The exemption for each dependent rose from $4,000 to $5,000, and the standard deduction for a single filer from $12,000 to $15,000. Up to $1,750 of overtime pay and $1,750 of cash tips became free of state income tax. People 65 and older may leave out more retirement income. The law repealed tax breaks for alternative-fuel and zero-emission vehicles, data center equipment, and high-technology computer equipment. It became law as Act 465, effective May 11, 2026.",
+      "nay_description": "Voted no as the Georgia House agreed 104-71 to the Senate's rewrite of House Bill 463. The Senate had replaced the bill's entire text. House Bill 463 started as a property tax break for senior citizens who volunteer for local governments. The version voted on here was a state income tax package instead, titled the Georgia Economic Growth and Tax Relief Act of 2026. It cut the personal income tax rate from 5.19 percent to 4.99 percent starting in 2026. Later yearly cuts rose from 0.10 to 0.125 points and now run down to 3.99 percent. It also cut corporate and partnership income tax rates. The exemption for each dependent rose from $4,000 to $5,000, and the standard deduction for a single filer from $12,000 to $15,000. Up to $1,750 of overtime pay and $1,750 of cash tips became free of state income tax. People 65 and older may leave out more retirement income. The law repealed tax breaks for alternative-fuel and zero-emission vehicles, data center equipment, and high-technology computer equipment. It became law as Act 465, effective May 11, 2026.",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1674280,
+      "measure_id": "HB 1185",
+      "vote_date": "2026-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted yes, 97-65, on the House's last vote on House Bill 1185, accepting the Senate's changes. The law makes it harder for shareholders to sue companies and to see company records. Lawsuits over a public company's internal affairs now go to Georgia's State-wide Business Court. Other companies can send such suits there through their bylaws or charter. Investors in listed companies must meet a share-ownership minimum, up to 1 percent, to sue on the company's behalf. Judges may no longer award legal fees when a shareholder case wins only extra disclosures. The governor signed it as Act 460, effective July 1, 2026.",
+      "nay_description": "Voted no, 97-65, as the House accepted the Senate's changes to House Bill 1185 and sent it to the governor. This vote sided with keeping shareholders' current power to sue companies and inspect their records. The new law routes internal lawsuits against public companies to Georgia's State-wide Business Court. It also lets companies require that court in their bylaws or charter. It sets a share-ownership minimum, up to 1 percent, for investors suing on a listed company's behalf. It bars legal-fee awards when a shareholder case produces only extra disclosures. It became Act 460 and took effect July 1, 2026.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "TX",
+      "chamber": "house",
+      "session": "2160",
+      "roll": 1582405,
+      "measure_id": "SB 37",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted yes, 83-47, to adopt the final House-Senate compromise on Senate Bill 37, the last House vote on the bill. The law requires each public university's governing board to review the required core courses at least every five years. Boards may overturn campus decisions that change those courses. Boards must approve or deny provost hires and may overturn the hiring of a vice president or dean. Only a board may create a faculty senate, and that senate can only give advice. The law also creates a state higher education ombudsman, a complaint officer named by the governor. The governor signed it and it took effect September 1, 2025.",
+      "nay_description": "Voted no, 83-47, on the final House-Senate compromise version of Senate Bill 37, which the House adopted anyway. The law gives university governing boards more control over campus decisions. Boards must review the required core courses at least every five years and may reverse course changes. Boards also rule on hires of provosts, vice presidents, and deans. Faculty senates become advice-only groups that only the board may create. A governor-named ombudsman takes complaints about schools. The governor signed the bill, and it took effect September 1, 2025.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "senate",
+      "session": "2167",
+      "roll": 1676417,
+      "measure_id": "HB 463",
+      "vote_date": "2026-04-02",
+      "review_status": "approved",
+      "yea_description": "Voted yes, 33-20, on the final version of House Bill 463, the last vote before it became law. The bill began as a property-tax break for senior citizens who volunteer; the Senate replaced that text with a tax-cut package. The law cut Georgia's personal income tax rate from 5.19 percent to 4.99 percent for 2026. Companies pay the same rate, so their tax fell too. Later yearly cuts grew from 0.10 to 0.125 points and now run down to 3.99 percent instead of stopping at 4.99. It raised the single-filer standard deduction to $15,000 and the deduction for each dependent to $5,000. Up to $1,750 of overtime pay and $1,750 of cash tips are now tax free. It also repealed tax credits for zero-emission vehicles and sales-tax breaks for data center equipment. It became Act 465, signed May 11, 2026.",
+      "nay_description": "Voted no, 33-20, on the final version of House Bill 463, which the Senate approved and sent to the governor. House Bill 463 started as a property-tax break for senior volunteers before the Senate swapped in a tax-cut package. The law dropped the personal income tax rate from 5.19 percent to 4.99 percent, and the corporate rate with it. It sped up future yearly cuts, from 0.10 to 0.125 points, and let the rate fall as low as 3.99 percent. It raised the standard deduction for a single filer to $15,000 and the dependent deduction to $5,000. It left up to $1,750 of overtime pay and up to $1,750 of cash tips out of taxable income. It also ended credits for electric and other clean vehicles and sales-tax breaks for data centers. It became law as Act 465.",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "senate",
+      "session": "2167",
+      "roll": 1665920,
+      "measure_id": "SB 220",
+      "vote_date": "2026-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted yes, 38-14, when the Georgia Senate accepted the House rewrite of Senate Bill 220, the Putting Georgia's Patients First Act. The law renamed low THC oil as medical cannabis and let registered patients get the plant itself, oils, and extracts. It dropped the old 5 percent limit on THC, the drug's main active ingredient. Patients may instead hold products totaling 12,000 milligrams of THC, with no package over 1,200 milligrams. Smoking or burning it stays illegal, but patients over 21 may now vaporize it, except in public places. Any cancer except non-spreading skin cancer now qualifies, and inflammatory bowel disease, HIV, and lupus were added. A patient may name any adult as a caregiver, or a health care institution treating them. Sellers still may not advertise to the public, but may now give patients safe-use information. Patient cards last five years. The House agreed to the Senate's changes and it became law as Act 712.",
+      "nay_description": "Voted no, 38-14, when the Georgia Senate accepted the House rewrite of Senate Bill 220, the Putting Georgia's Patients First Act. The Senate accepted it anyway. The law renamed low THC oil as medical cannabis and let registered patients get the plant itself, oils, and extracts. It dropped the old 5 percent limit on THC, the drug's main active ingredient. Patients may instead hold products totaling 12,000 milligrams of THC, with no package over 1,200 milligrams. Smoking or burning it stays illegal, but patients over 21 may now vaporize it, except in public places. Any cancer except non-spreading skin cancer now qualifies, and inflammatory bowel disease, HIV, and lupus were added. A patient may name any adult as a caregiver, or a health care institution treating them. Sellers still may not advertise to the public, but may now give patients safe-use information. Patient cards last five years. The House agreed to the Senate's changes and it became law as Act 712.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "senate",
+      "session": "2167",
+      "roll": 1537730,
+      "measure_id": "SB 244",
+      "vote_date": "2025-04-04",
+      "review_status": "approved",
+      "yea_description": "Voted yes, 35-18, when the Georgia Senate accepted the House rewrite of Senate Bill 244. The House rewrite added the Wrongful Conviction and Incarceration Compensation Act, which the Senate's own earlier version did not contain. A person who served prison time for a felony they did not commit may file a claim with a state hearings office. Their conviction must first have been reversed, thrown out, or pardoned because they were innocent. They must show innocence is more likely true than not. The award is $75,000 for each year in prison, plus $25,000 for each year spent awaiting a death sentence. Awards also cover legal fees and repay fines and restitution, paid from a new state trust fund. The law also makes the prosecutor's office pay a defendant's legal fees when that prosecutor is removed for misconduct and the case is dropped. It became law as Act 361.",
+      "nay_description": "Voted no, 35-18, when the Georgia Senate accepted the House rewrite of Senate Bill 244. The Senate accepted it anyway. The House rewrite added the Wrongful Conviction and Incarceration Compensation Act, which the Senate's own earlier version did not contain. A person who served prison time for a felony they did not commit may file a claim with a state hearings office. Their conviction must first have been reversed, thrown out, or pardoned because they were innocent. They must show innocence is more likely true than not. The award is $75,000 for each year in prison, plus $25,000 for each year spent awaiting a death sentence. Awards also cover legal fees and repay fines and restitution, paid from a new state trust fund. The law also makes the prosecutor's office pay a defendant's legal fees when that prosecutor is removed for misconduct and the case is dropped. It became law as Act 361.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "senate",
+      "session": "2167",
+      "roll": 1672157,
+      "measure_id": "SB 472",
+      "vote_date": "2026-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted yes, 29-17, when the Georgia Senate accepted the House rewrite of Senate Bill 472. The law lets the State Board of Education ask the governor to suspend local school board members, with pay. That follows state auditors putting a district under the highest level of monitoring, or finding financial mismanagement or misconduct. In districts labeled high risk, a superintendent's contract may be extended only 12 months at a time. Certain auditor findings become grounds for firing a superintendent for cause. The state may advance a district no more than half its prior year's funding outside the normal schedule. Every local school system and state charter school must get a yearly financial and compliance audit. The House rewrite also cut the voter petition needed to force an election on dissolving a city school system from one-fourth of voters to 10 percent. It became law as Act 722.",
+      "nay_description": "Voted no, 29-17, when the Georgia Senate accepted the House rewrite of Senate Bill 472. The Senate accepted it anyway. The law lets the State Board of Education ask the governor to suspend local school board members, with pay. That follows state auditors putting a district under the highest level of monitoring, or finding financial mismanagement or misconduct. In districts labeled high risk, a superintendent's contract may be extended only 12 months at a time. Certain auditor findings become grounds for firing a superintendent for cause. The state may advance a district no more than half its prior year's funding outside the normal schedule. Every local school system and state charter school must get a yearly financial and compliance audit. The House rewrite also cut the voter petition needed to force an election on dissolving a city school system from one-fourth of voters to 10 percent. It became law as Act 722.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

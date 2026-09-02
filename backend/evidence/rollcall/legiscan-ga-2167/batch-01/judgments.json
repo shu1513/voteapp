@@ -1,0 +1,310 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1523850,
+      "measure_id": "SB 68",
+      "vote_date": "2025-03-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 68, which limited how counsel may argue the monetary value of noneconomic damages, required courts to rule on a motion to dismiss within 90 days of briefing, allowed voluntary dismissal only before the 60th day after an answer is served, limited recovery of attorney's fees and litigation costs to avoid double recovery, made failure to wear a seat belt admissible as evidence in negligence cases, required clear and convincing evidence of prior similar wrongful conduct for a property owner to be liable for negligent security, limited medical damages to the reasonable value of necessary care, and allowed bifurcated trials in specified cases. The Georgia House passed it 91-82 and the bill became law.",
+      "nay_description": "Voted against passing SB 68, which limited how counsel may argue the monetary value of noneconomic damages, required courts to rule on a motion to dismiss within 90 days of briefing, allowed voluntary dismissal only before the 60th day after an answer is served, limited recovery of attorney's fees and litigation costs to avoid double recovery, made failure to wear a seat belt admissible as evidence in negligence cases, required clear and convincing evidence of prior similar wrongful conduct for a property owner to be liable for negligent security, limited medical damages to the reasonable value of necessary care, and allowed bifurcated trials in specified cases. The Georgia House passed it 91-82 and the bill became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "senate",
+      "session": "2167",
+      "roll": 1524305,
+      "measure_id": "SB 68",
+      "vote_date": "2025-03-21",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the final version of SB 68, which limited how counsel may argue the monetary value of noneconomic damages, required courts to rule on a motion to dismiss within 90 days of briefing, allowed voluntary dismissal only before the 60th day after an answer is served, limited recovery of attorney's fees and litigation costs to avoid double recovery, made failure to wear a seat belt admissible as evidence in negligence cases, required clear and convincing evidence of prior similar wrongful conduct for a property owner to be liable for negligent security, limited medical damages to the reasonable value of necessary care, and allowed bifurcated trials in specified cases. The Georgia Senate agreed 34-21 and the bill became law.",
+      "nay_description": "Voted against agreeing to the final version of SB 68, which limited how counsel may argue the monetary value of noneconomic damages, required courts to rule on a motion to dismiss within 90 days of briefing, allowed voluntary dismissal only before the 60th day after an answer is served, limited recovery of attorney's fees and litigation costs to avoid double recovery, made failure to wear a seat belt admissible as evidence in negligence cases, required clear and convincing evidence of prior similar wrongful conduct for a property owner to be liable for negligent security, limited medical damages to the reasonable value of necessary care, and allowed bifurcated trials in specified cases. The Georgia Senate agreed 34-21 and the bill became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1531583,
+      "measure_id": "SB 1",
+      "vote_date": "2025-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 1, the 'Fair and Safe Athletic Opportunities Act,' which required public schools, local school systems, private schools in competition with them, and postsecondary institutions to designate every team, competition, and athletic event as male, female, or coed, required restrooms and changing areas separated by sex at athletic events with reasonable accommodations for individuals unwilling or unable to use the area designated for their sex, required sleeping arrangements on school trips to be separated by sex, and replaced the term 'gender' with 'sex' throughout the Code. The Georgia House passed it 100-64 and the bill became law.",
+      "nay_description": "Voted against passing SB 1, the 'Fair and Safe Athletic Opportunities Act,' which required public schools, local school systems, private schools in competition with them, and postsecondary institutions to designate every team, competition, and athletic event as male, female, or coed, required restrooms and changing areas separated by sex at athletic events with reasonable accommodations for individuals unwilling or unable to use the area designated for their sex, required sleeping arrangements on school trips to be separated by sex, and replaced the term 'gender' with 'sex' throughout the Code. The Georgia House passed it 100-64 and the bill became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "senate",
+      "session": "2167",
+      "roll": 1531585,
+      "measure_id": "SB 1",
+      "vote_date": "2025-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the final version of SB 1, the 'Fair and Safe Athletic Opportunities Act,' which required public schools, local school systems, private schools in competition with them, and postsecondary institutions to designate every team, competition, and athletic event as male, female, or coed, required restrooms and changing areas separated by sex at athletic events with reasonable accommodations for individuals unwilling or unable to use the area designated for their sex, required sleeping arrangements on school trips to be separated by sex, and replaced the term 'gender' with 'sex' throughout the Code. The Georgia Senate agreed 34-20 and the bill became law.",
+      "nay_description": "Voted against agreeing to the final version of SB 1, the 'Fair and Safe Athletic Opportunities Act,' which required public schools, local school systems, private schools in competition with them, and postsecondary institutions to designate every team, competition, and athletic event as male, female, or coed, required restrooms and changing areas separated by sex at athletic events with reasonable accommodations for individuals unwilling or unable to use the area designated for their sex, required sleeping arrangements on school trips to be separated by sex, and replaced the term 'gender' with 'sex' throughout the Code. The Georgia Senate agreed 34-20 and the bill became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "senate",
+      "session": "2167",
+      "roll": 1504026,
+      "measure_id": "SB 185",
+      "vote_date": "2025-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 185, which barred the use of state funds or resources for sex reassignment surgeries, hormone replacement therapies, or sex-characteristic-altering cosmetic procedures or prosthetics for state inmates, while allowing exceptions for medically necessary treatment of conditions unrelated to sex reassignment or gender dysphoria, for inmates with a sex development disorder or partial androgen insensitivity syndrome, and for inmates already receiving hormone therapy before the effective date so that they can transition off it. The Georgia Senate passed it 37-15 and the bill became law.",
+      "nay_description": "Voted against passing SB 185, which barred the use of state funds or resources for sex reassignment surgeries, hormone replacement therapies, or sex-characteristic-altering cosmetic procedures or prosthetics for state inmates, while allowing exceptions for medically necessary treatment of conditions unrelated to sex reassignment or gender dysphoria, for inmates with a sex development disorder or partial androgen insensitivity syndrome, and for inmates already receiving hormone therapy before the effective date so that they can transition off it. The Georgia Senate passed it 37-15 and the bill became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1508201,
+      "measure_id": "HB 111",
+      "vote_date": "2025-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 111, which lowered Georgia's individual income tax rate from 5.39 percent to 5.19 percent, effective January 1, 2025. The Georgia House passed it 110-60 and the bill became law.",
+      "nay_description": "Voted against passing HB 111, which lowered Georgia's individual income tax rate from 5.39 percent to 5.19 percent, effective January 1, 2025. The Georgia House passed it 110-60 and the bill became law.",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "senate",
+      "session": "2167",
+      "roll": 1523866,
+      "measure_id": "HB 111",
+      "vote_date": "2025-03-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 111, which lowered Georgia's individual income tax rate from 5.39 percent to 5.19 percent, effective January 1, 2025. The Georgia Senate passed it 30-23 and the bill became law.",
+      "nay_description": "Voted against passing HB 111, which lowered Georgia's individual income tax rate from 5.39 percent to 5.19 percent, effective January 1, 2025. The Georgia Senate passed it 30-23 and the bill became law.",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "senate",
+      "session": "2167",
+      "roll": 1505591,
+      "measure_id": "SB 144",
+      "vote_date": "2025-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 144, which made a pesticide label approved by the U.S. Environmental Protection Agency, or consistent with the federal Insecticide, Fungicide, and Rodenticide Act human health risk assessment, a sufficient warning of health risk, so that a manufacturer cannot be held liable for failing to warn beyond it, except where the EPA has determined that the manufacturer knowingly withheld, misrepresented, concealed, or destroyed material information about the pesticide's human health risks in order to obtain or keep label approval. The Georgia Senate passed it 42-12 and the bill became law.",
+      "nay_description": "Voted against passing SB 144, which made a pesticide label approved by the U.S. Environmental Protection Agency, or consistent with the federal Insecticide, Fungicide, and Rodenticide Act human health risk assessment, a sufficient warning of health risk, so that a manufacturer cannot be held liable for failing to warn beyond it, except where the EPA has determined that the manufacturer knowingly withheld, misrepresented, concealed, or destroyed material information about the pesticide's human health risks in order to obtain or keep label approval. The Georgia Senate passed it 42-12 and the bill became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1517793,
+      "measure_id": "SB 144",
+      "vote_date": "2025-03-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 144, which made a pesticide label approved by the U.S. Environmental Protection Agency, or consistent with the federal Insecticide, Fungicide, and Rodenticide Act human health risk assessment, a sufficient warning of health risk, so that a manufacturer cannot be held liable for failing to warn beyond it, except where the EPA has determined that the manufacturer knowingly withheld, misrepresented, concealed, or destroyed material information about the pesticide's human health risks in order to obtain or keep label approval. The Georgia House passed it 101-58 and the bill became law.",
+      "nay_description": "Voted against passing SB 144, which made a pesticide label approved by the U.S. Environmental Protection Agency, or consistent with the federal Insecticide, Fungicide, and Rodenticide Act human health risk assessment, a sufficient warning of health risk, so that a manufacturer cannot be held liable for failing to warn beyond it, except where the EPA has determined that the manufacturer knowingly withheld, misrepresented, concealed, or destroyed material information about the pesticide's human health risks in order to obtain or keep label approval. The Georgia House passed it 101-58 and the bill became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "senate",
+      "session": "2167",
+      "roll": 1508337,
+      "measure_id": "SB 212",
+      "vote_date": "2025-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 212, which barred public schools from disclosing public student directory information for political use, barred disclosure of confidential voter registration record information to unauthorized persons, and required a person who tells students on public school property about registering to vote or about Selective Service registration, or who helps them register, to attest in writing that he or she is not acting on behalf of and will not give student directory information to a candidate, campaign committee, political action committee, or political organization, exempting school personnel performing official duties. The Georgia Senate passed it 33-19 and the bill became law.",
+      "nay_description": "Voted against passing SB 212, which barred public schools from disclosing public student directory information for political use, barred disclosure of confidential voter registration record information to unauthorized persons, and required a person who tells students on public school property about registering to vote or about Selective Service registration, or who helps them register, to attest in writing that he or she is not acting on behalf of and will not give student directory information to a candidate, campaign committee, political action committee, or political organization, exempting school personnel performing official duties. The Georgia Senate passed it 33-19 and the bill became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1531712,
+      "measure_id": "SB 212",
+      "vote_date": "2025-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 212, which barred public schools from disclosing public student directory information for political use, barred disclosure of confidential voter registration record information to unauthorized persons, required a person who tells students on public school property about registering to vote or about Selective Service registration and who helps them register to attest in writing that he or she will not give student directory information to a candidate, campaign committee, political action committee, or political organization, and exempted school personnel performing official duties and people attending events open to the general public. The Georgia House passed it 98-66 and the bill became law.",
+      "nay_description": "Voted against passing SB 212, which barred public schools from disclosing public student directory information for political use, barred disclosure of confidential voter registration record information to unauthorized persons, required a person who tells students on public school property about registering to vote or about Selective Service registration and who helps them register to attest in writing that he or she will not give student directory information to a candidate, campaign committee, political action committee, or political organization, and exempted school personnel performing official duties and people attending events open to the general public. The Georgia House passed it 98-66 and the bill became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1676408,
+      "measure_id": "HB 1247",
+      "vote_date": "2026-04-02",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the final version of HB 1247, the 'Georgia Bureaucratic Deference Elimination Act,' which barred courts from deferring to a state agency's interpretation of laws and regulations, created the 'Red Tape Rollback Act of 2026' with revised rulemaking procedures and a required agency report to the Office of Planning and Budget analyzing each of the agency's rules, provided for claims of unlawful employment practices against a member of the General Assembly in specified instances, and let qualifying privately funded organizations that shelter or serve homeless individuals act as authorizing agencies for the Georgia Homeless Management Information System. The Georgia House agreed 98-70 and the bill became law.",
+      "nay_description": "Voted against agreeing to the final version of HB 1247, the 'Georgia Bureaucratic Deference Elimination Act,' which barred courts from deferring to a state agency's interpretation of laws and regulations, created the 'Red Tape Rollback Act of 2026' with revised rulemaking procedures and a required agency report to the Office of Planning and Budget analyzing each of the agency's rules, provided for claims of unlawful employment practices against a member of the General Assembly in specified instances, and let qualifying privately funded organizations that shelter or serve homeless individuals act as authorizing agencies for the Georgia Homeless Management Information System. The Georgia House agreed 98-70 and the bill became law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "senate",
+      "session": "2167",
+      "roll": 1676409,
+      "measure_id": "HB 1247",
+      "vote_date": "2026-04-03",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the final version of HB 1247, the 'Georgia Bureaucratic Deference Elimination Act,' which barred courts from deferring to a state agency's interpretation of laws and regulations, created the 'Red Tape Rollback Act of 2026' with revised rulemaking procedures and a required agency report to the Office of Planning and Budget analyzing each of the agency's rules, provided for claims of unlawful employment practices against a member of the General Assembly in specified instances, and let qualifying privately funded organizations that shelter or serve homeless individuals act as authorizing agencies for the Georgia Homeless Management Information System. The Georgia Senate agreed 34-18 and the bill became law.",
+      "nay_description": "Voted against agreeing to the final version of HB 1247, the 'Georgia Bureaucratic Deference Elimination Act,' which barred courts from deferring to a state agency's interpretation of laws and regulations, created the 'Red Tape Rollback Act of 2026' with revised rulemaking procedures and a required agency report to the Office of Planning and Budget analyzing each of the agency's rules, provided for claims of unlawful employment practices against a member of the General Assembly in specified instances, and let qualifying privately funded organizations that shelter or serve homeless individuals act as authorizing agencies for the Georgia Homeless Management Information System. The Georgia Senate agreed 34-18 and the bill became law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "senate",
+      "session": "2167",
+      "roll": 1652181,
+      "measure_id": "SB 443",
+      "vote_date": "2026-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 443, which made purposely or recklessly obstructing a highway or street a high and aggravated misdemeanor, left obstruction of a sidewalk or other public passage a misdemeanor, and made a person who violates the section civilly liable for damages resulting from the offense. The Georgia Senate passed it 35-17 and the bill became law.",
+      "nay_description": "Voted against passing SB 443, which made purposely or recklessly obstructing a highway or street a high and aggravated misdemeanor, left obstruction of a sidewalk or other public passage a misdemeanor, and made a person who violates the section civilly liable for damages resulting from the offense. The Georgia Senate passed it 35-17 and the bill became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1668391,
+      "measure_id": "SB 443",
+      "vote_date": "2026-03-23",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 443, which made purposely or recklessly obstructing a highway or street a high and aggravated misdemeanor, left obstruction of a sidewalk or other public passage a misdemeanor, and made a person who violates the section civilly liable for damages resulting from the offense. The Georgia House passed it 96-69 and the bill became law.",
+      "nay_description": "Voted against passing SB 443, which made purposely or recklessly obstructing a highway or street a high and aggravated misdemeanor, left obstruction of a sidewalk or other public passage a misdemeanor, and made a person who violates the section civilly liable for damages resulting from the offense. The Georgia House passed it 96-69 and the bill became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1674325,
+      "measure_id": "SB 552",
+      "vote_date": "2026-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 552, the 'True Patriotism and Universal Student Access (TPUSA) Act,' which let public school students organize partisan and nonpartisan political activities and groups before, during, and after school to the same extent they may organize other noncurricular groups during noninstructional time, and required a school that permits such meetings to give those groups the same access to school facilities and the same opportunity to announce meetings as other groups, provided the school uniformly ensures the meetings are voluntary, student initiated, and do not substantially interfere with educational activities, attendance, and discipline. The Georgia House passed it 95-68 and the bill became law.",
+      "nay_description": "Voted against passing SB 552, the 'True Patriotism and Universal Student Access (TPUSA) Act,' which let public school students organize partisan and nonpartisan political activities and groups before, during, and after school to the same extent they may organize other noncurricular groups during noninstructional time, and required a school that permits such meetings to give those groups the same access to school facilities and the same opportunity to announce meetings as other groups, provided the school uniformly ensures the meetings are voluntary, student initiated, and do not substantially interfere with educational activities, attendance, and discipline. The Georgia House passed it 95-68 and the bill became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "house",
+      "session": "2167",
+      "roll": 1670665,
+      "measure_id": "SB 472",
+      "vote_date": "2026-03-25",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 472, which let the State Board of Education recommend that the governor suspend local school board members with pay when the state auditor places the district under the highest level of financial monitoring or issues findings of financial mismanagement or misconduct, limited superintendent contracts in financially high-risk systems to 12-month renewals and made certain auditor findings grounds for termination for cause, capped advances of state funds outside normal allotments at 50 percent of the prior year's allotment absent an auditor recommendation and monitoring plan, and required annual financial and compliance audits of every local school system and state charter school. The Georgia House passed it 96-58 and the bill became law.",
+      "nay_description": "Voted against passing SB 472, which let the State Board of Education recommend that the governor suspend local school board members with pay when the state auditor places the district under the highest level of financial monitoring or issues findings of financial mismanagement or misconduct, limited superintendent contracts in financially high-risk systems to 12-month renewals and made certain auditor findings grounds for termination for cause, capped advances of state funds outside normal allotments at 50 percent of the prior year's allotment absent an auditor recommendation and monitoring plan, and required annual financial and compliance audits of every local school system and state charter school. The Georgia House passed it 96-58 and the bill became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "GA",
+      "chamber": "senate",
+      "session": "2167",
+      "roll": 1672157,
+      "measure_id": "SB 472",
+      "vote_date": "2026-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the final version of SB 472, which let the State Board of Education recommend that the governor suspend local school board members with pay when the state auditor places the district under the highest level of financial monitoring or issues findings of financial mismanagement or misconduct, limited superintendent contracts in financially high-risk systems to 12-month renewals and made certain auditor findings grounds for termination for cause, capped advances of state funds outside normal allotments at 50 percent of the prior year's allotment absent an auditor recommendation and monitoring plan, and required annual financial and compliance audits of every local school system and state charter school. The Georgia Senate agreed 29-17 and the bill became law.",
+      "nay_description": "Voted against agreeing to the final version of SB 472, which let the State Board of Education recommend that the governor suspend local school board members with pay when the state auditor places the district under the highest level of financial monitoring or issues findings of financial mismanagement or misconduct, limited superintendent contracts in financially high-risk systems to 12-month renewals and made certain auditor findings grounds for termination for cause, capped advances of state funds outside normal allotments at 50 percent of the prior year's allotment absent an auditor recommendation and monitoring plan, and required annual financial and compliance audits of every local school system and state charter school. The Georgia Senate agreed 29-17 and the bill became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for"
+        }
+      ]
+    }
+  ]
+}

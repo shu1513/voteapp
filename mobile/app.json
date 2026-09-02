@@ -9,13 +9,13 @@
     "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/expo.icon",
-      "bundleIdentifier": "com.impactperdollar.voteapp",
+      "bundleIdentifier": "com.electionssimplified.voteapp",
       "associatedDomains": [
         "applinks:electionssimplified.com"
       ]
     },
     "android": {
-      "package": "com.impactperdollar.voteapp",
+      "package": "com.electionssimplified.voteapp",
       "intentFilters": [
         {
           "action": "VIEW",
@@ -78,7 +78,8 @@
       "expo-secure-store",
       "expo-notifications",
       "@sentry/react-native",
-      "expo-image"
+      "expo-image",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true,

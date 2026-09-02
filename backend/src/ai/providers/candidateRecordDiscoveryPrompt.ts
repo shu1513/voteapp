@@ -109,6 +109,11 @@ export function buildCandidateRecordDiscoveryPrompt(input: CandidateRecordDiscov
     "- If neither action/event date nor publication date is available, omit that record.",
     "- Use one row per concrete record; do not duplicate the same source/event.",
     RECORD_DESCRIPTION_SUBSTANCE_RULE,
+    // Identity gate. Applies to every route (officeholder, never-held,
+    // self-decide, judicial), so it lives in the shared rule list. A record
+    // attached to a same-named other person is the costliest error this stage
+    // can ship, and no validator checks it.
+    "- Every record must be about this exact person; a name match is not proof. Tie it to this candidate with a hard identifier: office or district held, employer, license or docket number, or reporting that states the identification. On a page covering several candidates, take the fact next to this candidate's name. If only the name matches, omit the record.",
     "- source_url must not be a social/UGC platform or a personal blog/self-published page (Reddit, X/Twitter, Facebook, YouTube, Medium, Substack, and similar); the importer rejects known platform domains.",
     "- For damaging claims, require official/legal sources or reputable news (the importer rejects damaging claims cited to other domains) and do not state allegations as proven facts.",
     ...PLAIN_LANGUAGE_STYLE_RULES,

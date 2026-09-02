@@ -14,12 +14,20 @@ const ENTRY = {
   review_status: "approved",
   yea_description: "Voted to pass H.R. 1. It passed the House 215-214.",
   nay_description: "Voted against passing H.R. 1. It passed the House 215-214.",
-  labels: [{ slug: "immigration", yea: "for" }, { slug: "general" }],
+  labels: [{ slug: "immigration", yea: "for", nay: "against" }, { slug: "general" }],
 };
 
 describe("parseJudgmentsFile", () => {
   it("accepts null for a vote with no measure", () => {
     expect(parseJudgmentsFile({ judgments: [{ ...ENTRY, measure_id: null, review_status: "pending" }] }, SLUGS)[0]?.measureId).toBeNull();
+  });
+
+  it("carries an official_vote_date override, defaulting to none", () => {
+    expect(parseJudgmentsFile({ judgments: [ENTRY] }, SLUGS)[0]?.officialVoteDate).toBeNull();
+    expect(parseJudgmentsFile({ judgments: [{ ...ENTRY, official_vote_date: null }] }, SLUGS)[0]?.officialVoteDate).toBeNull();
+    expect(
+      parseJudgmentsFile({ judgments: [{ ...ENTRY, official_vote_date: "2025-05-23" }] }, SLUGS)[0]?.officialVoteDate
+    ).toBe("2025-05-23");
   });
 
   it("turns a file entry into the store's judgment shape", () => {
@@ -31,15 +39,32 @@ describe("parseJudgmentsFile", () => {
         rollNumber: 145,
         measureId: "H R 1",
         voteDate: "2025-05-22",
+        officialVoteDate: null,
         yeaDescription: ENTRY.yea_description,
         nayDescription: ENTRY.nay_description,
         labels: [
-          { slug: "immigration", yea: "for" },
-          { slug: "general", yea: null },
+          { slug: "immigration", yea: "for", nay: "against" },
+          { slug: "general", yea: null, nay: null },
         ],
+        acknowledgeLaterRolls: [],
         reviewStatus: "approved",
       },
     ]);
+  });
+
+  it("requires each stance label to state its nay side, and carries later-roll acknowledgments", () => {
+    expect(() =>
+      parseJudgmentsFile({ judgments: [{ ...ENTRY, labels: [{ slug: "immigration", yea: "for" }] }] }, SLUGS)
+    ).toThrow(/labels\[0\]\.nay must be stated for immigration/);
+    expect(
+      parseJudgmentsFile({ judgments: [{ ...ENTRY, acknowledge_later_rolls: [201] }] }, SLUGS)[0]?.acknowledgeLaterRolls
+    ).toEqual([201]);
+    expect(() => parseJudgmentsFile({ judgments: [{ ...ENTRY, acknowledge_later_rolls: [0] }] }, SLUGS)).toThrow(
+      /acknowledge_later_rolls must be an array of positive roll numbers/
+    );
+    expect(() => parseJudgmentsFile({ judgments: [{ ...ENTRY, acknowledge_later_rolls: "201" }] }, SLUGS)).toThrow(
+      /acknowledge_later_rolls must be an array of positive roll numbers/
+    );
   });
 
   it("rejects every malformed entry with its index, before anything is written", () => {
@@ -54,11 +79,13 @@ describe("parseJudgmentsFile", () => {
       [{ judgments: [{ ...ENTRY, measure_id: undefined }] }, /measure_id must be a non-empty string, or null/],
       [{ judgments: [{ ...ENTRY, measure_id: " " }] }, /measure_id must be a non-empty string, or null/],
       [{ judgments: [{ ...ENTRY, vote_date: "May 22, 2025" }] }, /vote_date must be an ISO date/],
+      [{ judgments: [{ ...ENTRY, official_vote_date: "6/1/2026" }] }, /official_vote_date must be an ISO date/],
+      [{ judgments: [{ ...ENTRY, official_vote_date: "2025-05-22" }] }, /official_vote_date equals vote_date/],
       [{ judgments: [{ ...ENTRY, review_status: "rejected" }] }, /review_status must be one of pending, approved/],
       [{ judgments: [{ ...ENTRY, nay_description: " " }] }, /nay_description must be a non-empty string/],
       [{ judgments: [{ ...ENTRY, nay_description: ENTRY.yea_description.toUpperCase() }] }, /same sentence/],
       [{ judgments: [{ ...ENTRY, labels: [] }] }, /judgments\[0\]: labels is not a non-empty array/],
-      [{ judgments: [{ ...ENTRY, labels: [{ slug: "housing", yea: "for" }] }] }, /'housing' is not allowed/],
+      [{ judgments: [{ ...ENTRY, labels: [{ slug: "housing", yea: "for", nay: null }] }] }, /'housing' is not allowed/],
       [{ judgments: [{ ...ENTRY, labels: [{ slug: "general", yea: "for" }] }] }, /must not include stance/],
       [{ judgments: [ENTRY, { ...ENTRY, review_status: "pending" }] }, /judgments\[1\]: US:house:119-1:145 appears more than once/],
     ];

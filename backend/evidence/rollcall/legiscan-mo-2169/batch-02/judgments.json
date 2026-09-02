@@ -1,0 +1,72 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MO",
+   "chamber": "house",
+   "session": "2169",
+   "roll": 1516040,
+   "measure_id": "HB 495",
+   "vote_date": "2025-03-12",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 495, which put the St. Louis police department back under a state Board of Police Commissioners, whose members the governor appoints with the Senate's consent. It requires the city to spend a rising share of its general revenue on the force, reaching 25 percent in 2028. It requires every police agency in Missouri to report an arrested person's citizenship or immigration status to the state. It widened who can be paid for a wrongful conviction by dropping the rule that limited payments to DNA cases, and raised the amount to $179 a day, up to $65,000 a year. It capped jail and prison phone calls at 12 cents a minute, limited the restraint of pregnant and postpartum inmates, and added racial profiling, implicit bias and de-escalation training for new officers. The same act created a street-takeover offense, made organized retail theft a felony, and banned facilities for supervised drug use. It also repealed the rioting offense and the law letting the state bill prisoners for the cost of their incarceration. The Missouri House gave it final approval 113-39 and it became law.",
+   "nay_description": "Voted against House Bill 495, which put the St. Louis police department back under a state Board of Police Commissioners, whose members the governor appoints with the Senate's consent. It requires the city to spend a rising share of its general revenue on the force, reaching 25 percent in 2028. It requires every police agency in Missouri to report an arrested person's citizenship or immigration status to the state. It widened who can be paid for a wrongful conviction by dropping the rule that limited payments to DNA cases, and raised the amount to $179 a day, up to $65,000 a year. It capped jail and prison phone calls at 12 cents a minute, limited the restraint of pregnant and postpartum inmates, and added racial profiling, implicit bias and de-escalation training for new officers. The same act created a street-takeover offense, made organized retail theft a felony, and banned facilities for supervised drug use. It also repealed the rioting offense and the law letting the state bill prisoners for the cost of their incarceration. The Missouri House gave it final approval 113-39 and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1516039,
+    1516041
+   ],
+   "note": "Missouri prints several questions under one desc (see ../CODE-FINDINGS.md \u00a71). On 2025-03-12 roll 1516039 (111-42) is 'House Adopts SS#2 SCS', roll 1516040 (113-39) is Truly Agreed To And Finally Passed, and roll 1516041 (113-36) is the emergency clause. 1516040 is the decisive vote on the enacted text; the higher roll number is not a later stage."
+  },
+  {
+   "jurisdiction": "MO",
+   "chamber": "house",
+   "session": "2169",
+   "roll": 1517041,
+   "measure_id": "SB 4",
+   "vote_date": "2025-03-13",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 4, which let electric utilities charge customers for new natural gas power plants while the plants are still being built. That money must be refunded with interest if the spending turns out to be imprudent or the plant is not finished in a reasonable time. Gas, water and sewer utilities may now set rates from a forecast of the coming year instead of a past year. The act tightened the cap on how much a single rate case can raise revenue, from 2.5 to 2.25 percent. If the federal corporate income tax falls before 2030, regulators gain one-time authority to pass the savings through to electric rates; until they act, or instead of acting, the savings are set aside and credited in the utility's next rate case. Utilities themselves stay barred from the heating and cooling business, and the act struck the old affiliate exception from that ban. Affiliates and contractors may still sell those services under rules that keep utility assets and money separate, and a utility that hires heating and cooling contractors must open its qualification process to every contractor. It widened the ban on shutting off service in hot weather, added a cold-weather ban, and let regulators approve a discount for households with high utility bills. The Missouri House passed it 96-44 and it became law.",
+   "nay_description": "Voted against Senate Bill 4, which let electric utilities charge customers for new natural gas power plants while the plants are still being built. That money must be refunded with interest if the spending turns out to be imprudent or the plant is not finished in a reasonable time. Gas, water and sewer utilities may now set rates from a forecast of the coming year instead of a past year. The act tightened the cap on how much a single rate case can raise revenue, from 2.5 to 2.25 percent. If the federal corporate income tax falls before 2030, regulators gain one-time authority to pass the savings through to electric rates; until they act, or instead of acting, the savings are set aside and credited in the utility's next rate case. Utilities themselves stay barred from the heating and cooling business, and the act struck the old affiliate exception from that ban. Affiliates and contractors may still sell those services under rules that keep utility assets and money separate, and a utility that hires heating and cooling contractors must open its qualification process to every contractor. It widened the ban on shutting off service in hot weather, added a cold-weather ban, and let regulators approve a discount for households with high utility bills. The Missouri House passed it 96-44 and it became law.",
+   "labels": [
+    {
+     "slug": "general",
+     "nay": null,
+     "yea": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1517040
+   ],
+   "note": "Roll 1517040 (99-44) is the PREVIOUS QUESTION motion on the same calendar heading; roll 1517041 (96-44, House roll-call PDF 039.021) is the passage vote. See ../CODE-FINDINGS.md \u00a71 \u2014 a higher roll number is not a later stage in Missouri."
+  },
+  {
+   "jurisdiction": "MO",
+   "chamber": "senate",
+   "session": "2169",
+   "roll": 1498338,
+   "measure_id": "SB 4",
+   "vote_date": "2025-02-24",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 4, which let electric utilities charge customers for new natural gas power plants while the plants are still being built. That money must be refunded with interest if the spending turns out to be imprudent or the plant is not finished in a reasonable time. Gas, water and sewer utilities may now set rates from a forecast of the coming year instead of a past year. The act tightened the cap on how much a single rate case can raise revenue, from 2.5 to 2.25 percent. If the federal corporate income tax falls before 2030, regulators gain one-time authority to pass the savings through to electric rates; until they act, or instead of acting, the savings are set aside and credited in the utility's next rate case. Utilities themselves stay barred from the heating and cooling business, and the act struck the old affiliate exception from that ban. Affiliates and contractors may still sell those services under rules that keep utility assets and money separate, and a utility that hires heating and cooling contractors must open its qualification process to every contractor. It widened the ban on shutting off service in hot weather, added a cold-weather ban, and let regulators approve a discount for households with high utility bills. The Missouri Senate passed it 22-11 and it became law.",
+   "nay_description": "Voted against Senate Bill 4, which let electric utilities charge customers for new natural gas power plants while the plants are still being built. That money must be refunded with interest if the spending turns out to be imprudent or the plant is not finished in a reasonable time. Gas, water and sewer utilities may now set rates from a forecast of the coming year instead of a past year. The act tightened the cap on how much a single rate case can raise revenue, from 2.5 to 2.25 percent. If the federal corporate income tax falls before 2030, regulators gain one-time authority to pass the savings through to electric rates; until they act, or instead of acting, the savings are set aside and credited in the utility's next rate case. Utilities themselves stay barred from the heating and cooling business, and the act struck the old affiliate exception from that ban. Affiliates and contractors may still sell those services under rules that keep utility assets and money separate, and a utility that hires heating and cooling contractors must open its qualification process to every contractor. It widened the ban on shutting off service in hot weather, added a cold-weather ban, and let regulators approve a discount for households with high utility bills. The Missouri Senate passed it 22-11 and it became law.",
+   "labels": [
+    {
+     "slug": "general",
+     "nay": null,
+     "yea": null
+    }
+   ]
+  }
+ ]
+}

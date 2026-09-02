@@ -11,6 +11,7 @@ import type {
 import type { BackTo, ElectionNavState } from "../lib/detailNavContext";
 import {
   buildResultChipParts,
+  formatChoiceLabel,
   formatDistrictName,
   formatElectionDate,
   formatRosterStatus,
@@ -20,27 +21,6 @@ import {
 } from "@voteapp/api-client";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { votePowerBadgeClass } from "../lib/votePowerBadge";
-
-// "My pick: Jane Doe" / "My picks: Jane Doe, John Roe" (multi-seat) /
-// "My pick: Yes" on a measure. First person throughout, because both chips
-// render side by side in one ballot list and because these labels echo the
-// controls that set them — MeasureChoiceButtons is headed "My pick:" and
-// the candidate button reads "My pick" (ElectionChoiceControls.tsx). It also
-// matches the rest of the signed-in surface ("My Elections", "My
-// Candidates", "My issues first"). A pick whose candidate has since
-// withdrawn gets flagged inline instead of vanishing.
-function formatChoiceLabel(choice: ElectionChoice): string | null {
-  if (choice.measure_position !== null) {
-    return `My pick: ${choice.measure_position === "yes" ? "Yes" : "No"}`;
-  }
-  if (choice.picks.length === 0) {
-    return null;
-  }
-  const names = choice.picks
-    .map((pick) => (pick.candidacy_status === "withdrawn" ? `${pick.display_name} (withdrew)` : pick.display_name))
-    .join(", ");
-  return `${choice.picks.length === 1 ? "My pick" : "My picks"}: ${names}`;
-}
 
 // Same green/red as the election page's candidate result badges (and the
 // measure No chip's red) — one color language for "called" across surfaces.
@@ -300,9 +280,9 @@ function ElectionCard({
           card answers "how much does my vote matter, and who's running?" on
           its first line. */}
       <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-        {/* rausch-deep, not -dark: 16px semibold needs 4.5:1 on the card's
+        {/* rausch-deep, not -dark: 16-17px semibold needs 4.5:1 on the card's
             tinted bg, and rausch-dark is 4.41:1 there. */}
-        <h3 className="font-semibold text-ink transition group-hover:text-rausch-deep">
+        <h3 className="text-subheading font-semibold text-ink transition group-hover:text-rausch-deep">
           {election.official_ballot_title}
         </h3>
         {/* The group wraps between chip and count on very narrow screens;

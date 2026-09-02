@@ -77,8 +77,10 @@ export type BallotLookupFinanceSummary = {
     | "COLORADO_TRACER"
     | "DENVER_CLERK_RECORDER"
     | "CONNECTICUT_ECRIS"
+    | "DELAWARE_CFRS"
     | "INDIANA_CAMPAIGN_FINANCE"
     | "NEBRASKA_NADC"
+    | "NEVADA_AURORA"
     | "NEW_HAMPSHIRE_CFS"
     | "NEW_JERSEY_ELEC"
     | "NEW_MEXICO_CFIS"
@@ -112,8 +114,11 @@ export type BallotLookupFinanceSummary = {
     | "NORTH_CAROLINA_SBE"
     | "GEORGIA_ETHICS"
     | "MISSOURI_MEC"
+    | "MONTANA_COPP"
     | "MISSISSIPPI_SOS"
-    | "RHODE_ISLAND_ERTS";
+    | "RHODE_ISLAND_ERTS"
+    | "SOUTH_CAROLINA_CAMPAIGN_FINANCE"
+    | "ALABAMA_FCPA";
   cycle: number;
   fec_candidate_id: string | null;
   controlled_committee_id?: string | null;
@@ -192,8 +197,10 @@ export const FINANCE_SUMMARY_SOURCES = [
   "COLORADO_TRACER",
   "DENVER_CLERK_RECORDER",
   "CONNECTICUT_ECRIS",
+  "DELAWARE_CFRS",
   "INDIANA_CAMPAIGN_FINANCE",
   "NEBRASKA_NADC",
+  "NEVADA_AURORA",
   "NEW_HAMPSHIRE_CFS",
   "NEW_JERSEY_ELEC",
   "NEW_MEXICO_CFIS",
@@ -227,8 +234,11 @@ export const FINANCE_SUMMARY_SOURCES = [
   "NORTH_CAROLINA_SBE",
   "GEORGIA_ETHICS",
   "MISSOURI_MEC",
+  "MONTANA_COPP",
   "MISSISSIPPI_SOS",
   "RHODE_ISLAND_ERTS",
+  "SOUTH_CAROLINA_CAMPAIGN_FINANCE",
+  "ALABAMA_FCPA",
 ] as const satisfies readonly BallotLookupFinanceSummary["source"][];
 
 // Compile-time exhaustiveness: never = a union member is missing above.

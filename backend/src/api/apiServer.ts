@@ -2043,7 +2043,9 @@ async function dispatchApiRequest(
           ? "election reminder emails"
           : preference === "issue_updates"
             ? "emails about your saved issues"
-            : "candidate update digest emails";
+            : preference === "member_newsletter"
+              ? "member newsletter emails"
+              : "candidate update digest emails";
     const formAction = `${EMAIL_UNSUBSCRIBE_PATH}?token=${encodeURIComponent(token)}&pref=${encodeURIComponent(preference)}`;
     const confirmPage =
       "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Unsubscribe</title></head><body>" +

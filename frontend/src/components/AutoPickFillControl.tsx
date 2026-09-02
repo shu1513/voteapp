@@ -1,69 +1,33 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   ApiError,
-  apiRequest,
+  hasClearableAutoPicks,
+  isDecidedChoice,
+  MIN_AUTO_PICK_ISSUES,
+  reasonLabel,
+  useAutoPickFill,
+  useClearAutoPicks,
   useElectionChoiceSaving,
   useMyResearchAreas,
 } from "@voteapp/api-client";
-import type {
-  AutoPickElectionResult,
-  AutoPickReason,
-  AutoPicksClearResult,
-  AutoPicksResult,
-  ElectionChoice,
-  ElectionSummary,
-} from "@voteapp/api-client";
-import { MIN_AUTO_PICK_ISSUES } from "./AutoPickControl";
+import type { AutoPickElectionResult, ElectionChoice, ElectionSummary } from "@voteapp/api-client";
 
 // Per-date auto-pick controls for the My Picks page
-// (docs/plans/auto-pick-by-issues.md): each election-date card (and ballot
-// sheet) gets its own "Auto-fill empty picks by my issues" button that
+// (docs/plans/auto-pick-by-issues.md): each election-date card (list view
+// only — the ballot preview imitates a paper ballot and stays free of app
+// machinery) gets its own "Auto-fill empty picks by my issues" button that
 // runs POST /api/me/auto-picks in fill_empty mode over THAT date's undecided
 // races only, and — once that date has engine-owned rows — a "Clear auto
 // picks" button that DELETEs with ?election_date= so other dates' auto picks
-// survive. No result list here: the caller gets the per-election results via
-// onResults and annotates its own race rows ("auto pick: not enough
-// evidence"); per-race "why" details live on each election page's panel.
+// survive. The mutations, chunking, and reason copy live in
+// @voteapp/api-client (shared with the mobile port). No result list here:
+// the caller gets the per-election results via onResults and annotates its
+// own race rows ("auto pick: not enough evidence"); per-race "why" details
+// live on each election page's panel.
 
-// Server-side cap on election_ids per request (MAX_AUTO_PICK_ELECTION_IDS);
-// larger ballots run in sequential chunks.
-const MAX_IDS_PER_REQUEST = 200;
-
-// A choice that still renders a decision — the same predicate PicksPage's
-// cards use to label a race decided vs "no pick yet".
-function hasPick(choice: ElectionChoice | undefined): boolean {
-  return choice !== undefined && (choice.picks.length > 0 || choice.measure_position !== null);
-}
-
-// Whether the engine has rows left to clear ON THIS DATE — display gating
-// only. The clear itself is one server-side DELETE scoped to origin =
-// 'auto' and this election date, so stale cache here can never unpick a
-// row the user has since re-picked manually in another tab.
-function hasClearableAutoPicks(choices: ElectionChoice[], date: string): boolean {
-  return choices.some(
-    (choice) =>
-      choice.election_date === date &&
-      (choice.picks.some((pick) => pick.origin === "auto") ||
-        (choice.measure_position !== null && choice.measure_origin === "auto"))
-  );
-}
-
-const REASON_LABELS: Record<AutoPickReason, string> = {
-  insufficient_evidence: "not enough evidence",
-  only_negative_evidence: "only unknowns left",
-  tie: "a tie",
-  all_vetoed: "all crossed your line",
-  veto: "crossed your line",
-  by_elimination: "picked by elimination",
-  too_few_issues: `fewer than ${MIN_AUTO_PICK_ISSUES} ranked issues`,
-  election_closed: "no longer open",
-};
-
-export function reasonLabel(reason: AutoPickReason | null): string {
-  return reason === null ? "not enough evidence" : REASON_LABELS[reason];
-}
+// Kept for the existing import sites (PicksPage, BallotPreview).
+export { reasonLabel };
 
 export function AutoPickFillControl({
   date,
@@ -83,50 +47,17 @@ export function AutoPickFillControl({
    * The caller annotates its race rows from this; nothing renders here. */
   onResults?: (byElectionId: Map<string, AutoPickElectionResult> | null) => void;
 }) {
-  const queryClient = useQueryClient();
   const { preferences, isLoading: preferencesLoading, isError: preferencesError } = useMyResearchAreas();
   const saving = useElectionChoiceSaving();
   const [prompt, setPrompt] = useState(false);
 
   const emptyElectionIds = elections
-    .filter((election) => !hasPick(choiceByElectionId?.get(election.id)))
+    .filter((election) => !isDecidedChoice(choiceByElectionId?.get(election.id)))
     .map((election) => election.id);
   const clearable = hasClearableAutoPicks(choices, date);
 
-  const fill = useMutation({
-    // Shares the choice-write key so every pick control disables together.
-    mutationKey: ["set-election-choice"],
-    // Drop the previous run's annotations up front: during the request (and
-    // after a failure, whose partial writes the onSettled refetch surfaces)
-    // an old "not enough evidence" must not read as the latest result.
-    onMutate: () => onResults?.(null),
-    mutationFn: async (electionIds: string[]) => {
-      const all: AutoPickElectionResult[] = [];
-      for (let start = 0; start < electionIds.length; start += MAX_IDS_PER_REQUEST) {
-        const response = await apiRequest<AutoPicksResult>("/api/me/auto-picks", {
-          method: "POST",
-          body: { election_ids: electionIds.slice(start, start + MAX_IDS_PER_REQUEST), mode: "fill_empty" },
-        });
-        all.push(...response.results);
-      }
-      return all;
-    },
-    // onSettled, not onSuccess: the batch commits election by election, so a
-    // failure partway through can leave real writes behind.
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["me", "election-choices"] }),
-    onSuccess: (all) => onResults?.(new Map(all.map((result) => [result.election_id, result]))),
-  });
-
-  const clear = useMutation({
-    mutationKey: ["set-election-choice"],
-    mutationFn: () =>
-      apiRequest<AutoPicksClearResult>(
-        `/api/me/auto-picks?election_date=${encodeURIComponent(date)}`,
-        { method: "DELETE" }
-      ),
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["me", "election-choices"] }),
-    onSuccess: () => onResults?.(null),
-  });
+  const fill = useAutoPickFill(onResults);
+  const clear = useClearAutoPicks(onResults);
 
   function onFill() {
     // Same rule as AutoPickControl: the issue-floor prompt only fires on a
@@ -161,7 +92,7 @@ export function AutoPickFillControl({
           <button
             type="button"
             disabled={saving}
-            onClick={() => clear.mutate()}
+            onClick={() => clear.mutate(date)}
             className="rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink transition hover:border-ink disabled:opacity-50"
           >
             {clear.isPending ? "Clearing…" : "Clear auto picks"}

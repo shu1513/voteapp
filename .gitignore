@@ -14,3 +14,8 @@ scratch/north-carolina-campaign-finance/
 # re-downloadable from the portals. Parser fixtures are committed separately
 # under backend/tests/fixtures/georgiaFinance/.
 scratch/georgia-campaign-finance/
+scratch/montana-campaign-finance/
+
+# Kansas SOS/KPDC artifact cache (scanned PDFs, viewer exports with
+# contributor PII under K.S.A. 25-4154(d)) — never commit.
+scratch/kansas-campaign-finance/

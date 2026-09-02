@@ -1,5 +1,6 @@
-import type { ElectionSummary } from "@voteapp/api-client";
+import type { ElectionChoice, ElectionSummary } from "@voteapp/api-client";
 import {
+  formatChoiceLabel,
   formatDistrictName,
   formatDistrictType,
   formatElectionDate,
@@ -12,6 +13,7 @@ import {
 import type { ResultChipTone } from "@voteapp/api-client";
 import { useRouter } from "expo-router";
 import { Pressable, Text, View } from "react-native";
+import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 
 // Same green/red as the election page's candidate result badges — one color
 // language for "called" across surfaces. Mirrors the web ElectionCard.
@@ -29,11 +31,19 @@ const RESULT_CHIP_CLASSES: Record<ResultChipTone, string> = {
 export function ElectionCard({
   election,
   savedAreaIds,
+  myChoice,
 }: {
   election: ElectionSummary;
   savedAreaIds?: Set<string>;
+  /** The viewer's planned vote for this election, when they have one. */
+  myChoice?: ElectionChoice;
 }) {
   const router = useRouter();
+  // The viewer's planned vote, shown only on upcoming races: a past
+  // election's choice is history. Races WITHOUT a pick show nothing — the
+  // absence of a green chip already marks them. Same rule as the web card.
+  const isUpcoming = election.election_date >= usLatestLocalDate();
+  const choiceLabel = myChoice && isUpcoming ? formatChoiceLabel(myChoice) : null;
   return (
     <Pressable
       onPress={() => router.push(`/elections/${election.id}`)}
@@ -49,6 +59,21 @@ export function ElectionCard({
         {election.office ? <> · {election.office.canonical_name}</> : null}
       </Text>
       <View className="mt-2 flex-row flex-wrap items-center gap-2">
+        {choiceLabel ? (
+          // Leads the chip row: the voter's own decision outranks the other
+          // signals. A "No" measure pick renders red to match the measure
+          // screen's "A NO vote means" box — a green "My pick: No" read as
+          // a contradiction. Same styling as the web card's chip.
+          <Text
+            className={
+              myChoice?.measure_position === "no"
+                ? "rounded border border-red-700 bg-red-50 px-2 py-0.5 text-xs font-medium text-red-900"
+                : "rounded border border-green-700 bg-green-50 px-2 py-0.5 text-xs font-medium text-green-900"
+            }
+          >
+            {choiceLabel}
+          </Text>
+        ) : null}
         {election.followed_candidates && election.followed_candidates.length > 0 ? (
           <Text className="rounded bg-rausch px-2 py-0.5 text-xs font-medium text-white">
             You follow {election.followed_candidates.map((candidate) => candidate.display_name).join(", ")}

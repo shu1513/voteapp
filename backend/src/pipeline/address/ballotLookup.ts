@@ -36,6 +36,7 @@ import {
   INTEGRITY_AND_ETHICS_RESEARCH_AREA_SLUG,
 } from "../candidates/candidateRecordResearchAreaPolicy.js";
 import { loadKentuckyCandidateFinanceSummariesByCandidateElection } from "../kentuckyFinance/kentuckyBallotLookupFinanceLoader.js";
+import { loadAlabamaCandidateFinanceSummariesByCandidateElection } from "../alabamaFinance/alabamaBallotLookupFinanceLoader.js";
 import { loadAlaskaCandidateFinanceSummariesByCandidateElection } from "../alaskaFinance/alaskaCandidateFinanceBallotLookup.js";
 import { loadArizonaCandidateFinanceSummariesByCandidateElection } from "../arizonaFinance/arizonaFinanceBallotLookup.js";
 import { loadFloridaCandidateFinanceSummariesByCandidateElection } from "../floridaFinance/floridaFinanceBallotSummary.js";
@@ -57,6 +58,7 @@ import { loadOhioCandidateFinanceSummariesByCandidateElection } from "../ohioFin
 import { loadNorthCarolinaCandidateFinanceSummariesByCandidateElection } from "../northCarolinaFinance/northCarolinaBallotLookupFinanceLoader.js";
 import { loadGeorgiaCandidateFinanceSummariesByCandidateElection } from "../georgiaFinance/georgiaBallotLookupFinanceLoader.js";
 import { loadMissouriCandidateFinanceSummariesByCandidateElection } from "../missouriFinance/missouriBallotLookupFinanceLoader.js";
+import { loadMontanaCandidateFinanceSummariesByCandidateElection } from "../montanaFinance/montanaBallotLookupFinanceLoader.js";
 import { loadRhodeIslandCandidateFinanceSummariesByCandidateElection } from "../rhodeIslandFinance/rhodeIslandBallotLookupFinanceLoader.js";
 import { loadMichiganCandidateFinanceSummariesByCandidateElection } from "../michiganFinance/michiganBallotLookupFinanceLoader.js";
 import { loadMassachusettsCandidateFinanceSummariesByCandidateElection } from "../massachusettsFinance/massachusettsBallotLookupFinanceLoader.js";
@@ -71,10 +73,12 @@ import { loadHoustonCandidateFinanceSummariesByCandidateElection } from "../hous
 import { loadAustinCandidateFinanceSummariesByCandidateElection } from "../austinFinance/austinBallotLookupFinanceLoader.js";
 import { loadNewMexicoCandidateFinanceSummariesByCandidateElection } from "../newMexicoFinance/newMexicoBallotLookupFinanceLoader.js";
 import { loadNewHampshireCandidateFinanceSummariesByCandidateElection } from "../newHampshireFinance/newHampshireBallotLookupFinanceLoader.js";
+import { loadNevadaCandidateFinanceSummariesByCandidateElection } from "../nevadaFinance/nevadaBallotLookupFinanceLoader.js";
 import { loadIndianaCandidateFinanceSummariesByCandidateElection } from "../indianaFinance/indianaBallotLookupFinanceLoader.js";
 import { loadOklahomaCandidateFinanceSummariesByCandidateElection } from "../oklahomaFinance/oklahomaBallotLookupFinanceLoader.js";
 import { loadNebraskaCandidateFinanceSummariesByCandidateElection } from "../nebraskaFinance/nebraskaBallotLookupFinanceLoader.js";
 import { loadConnecticutCandidateFinanceSummariesByCandidateElection } from "../connecticutFinance/connecticutBallotLookupFinanceLoader.js";
+import { loadDelawareCandidateFinanceSummariesByCandidateElection } from "../delawareFinance/delawareBallotLookupFinanceLoader.js";
 import { loadColoradoCandidateFinanceSummariesByCandidateElection } from "../coloradoFinance/coloradoBallotLookupFinanceLoader.js";
 import { loadDenverCandidateFinanceSummariesByCandidateElection } from "../denverFinance/denverBallotLookupFinanceLoader.js";
 import { loadCaliforniaCandidateFinanceSummariesByCandidateElection } from "../californiaFinance/californiaBallotLookupFinanceLoader.js";
@@ -83,6 +87,7 @@ import { loadPhoenixCandidateFinanceSummariesByCandidateElection } from "../phoe
 import { loadSanDiegoCityCandidateFinanceSummariesByCandidateElection } from "../sanDiegoCityFinance/sanDiegoCityBallotLookupFinanceLoader.js";
 import { loadSanFranciscoCandidateFinanceSummariesByCandidateElection } from "../sanFranciscoFinance/sanFranciscoBallotLookupFinanceLoader.js";
 import { loadSanJoseCandidateFinanceSummariesByCandidateElection } from "../sanJoseFinance/sanJoseBallotLookupFinanceLoader.js";
+import { loadSouthCarolinaCandidateFinanceSummariesByCandidateElection } from "../southCarolinaFinance/southCarolinaBallotLookupFinanceLoader.js";
 import {
 } from "../../config/featureFlags.js";
 
@@ -1067,11 +1072,13 @@ const STATE_FINANCE_LOOKUP_ADAPTERS: readonly StateFinanceLookupAdapter[] = [
   { state: "IN", load: loadIndianaCandidateFinanceSummariesByCandidateElection },
   { state: "NE", load: loadNebraskaCandidateFinanceSummariesByCandidateElection },
   { state: "OK", load: loadOklahomaCandidateFinanceSummariesByCandidateElection },
+  { state: "NV", load: loadNevadaCandidateFinanceSummariesByCandidateElection },
   { state: "NH", load: loadNewHampshireCandidateFinanceSummariesByCandidateElection },
   { state: "NJ", load: loadNewJerseyCandidateFinanceSummariesByCandidateElection },
   { state: "NM", load: loadNewMexicoCandidateFinanceSummariesByCandidateElection },
   { state: "NY", load: loadCombinedNewYorkCandidateFinanceSummariesByCandidateElection },
   { state: "CT", load: loadConnecticutCandidateFinanceSummariesByCandidateElection },
+  { state: "DE", load: loadDelawareCandidateFinanceSummariesByCandidateElection },
   { state: "CO", load: loadColoradoCandidateFinanceSummariesByCandidateElection },
   // Denver municipal filers are not in TRACER, so the two CO adapters can
   // never both return a summary for one candidate/election (the CA pattern,
@@ -1086,8 +1093,11 @@ const STATE_FINANCE_LOOKUP_ADAPTERS: readonly StateFinanceLookupAdapter[] = [
   { state: "NC", load: loadNorthCarolinaCandidateFinanceSummariesByCandidateElection },
   { state: "GA", load: loadGeorgiaCandidateFinanceSummariesByCandidateElection },
   { state: "MO", load: loadMissouriCandidateFinanceSummariesByCandidateElection },
+  { state: "MT", load: loadMontanaCandidateFinanceSummariesByCandidateElection },
   { state: "MS", load: loadManualCandidateFinanceSummariesByCandidateElection },
   { state: "RI", load: loadRhodeIslandCandidateFinanceSummariesByCandidateElection },
+  { state: "SC", load: loadSouthCarolinaCandidateFinanceSummariesByCandidateElection },
+  { state: "AL", load: loadAlabamaCandidateFinanceSummariesByCandidateElection },
 ];
 
 // Fault-isolated sources swallow errors that previously reached the API

@@ -3,7 +3,7 @@
     "apps": [],
     "details": [
       {
-        "appIDs": ["TEAMID.com.impactperdollar.voteapp"],
+        "appIDs": ["TEAMID.com.electionssimplified.voteapp"],
         "components": [
           { "/": "/verify-email" },
           { "/": "/verify-email-change" },

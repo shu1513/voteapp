@@ -1,0 +1,231 @@
+{
+ "_provenance": "CandidateDetails.aspx harvested live 2026-08-26. Grid columns: Report Name | Year | File Date | Office | Report Link (Year = period/election year, NOT filing year). 'office' field on the profile = the filer's CURRENT office, which can differ from the 2026 candidacy (see cannizzaro). Report rows below are a selected subset (2026 cycle + cited amended pairs), not the full lists.",
+ "lombardo": {
+  "o": "NZZn4mEHsNMU0L1EsD6oJg%253d%253d",
+  "name": "Joseph Lombardo",
+  "party": "Republican Party",
+  "profile_office": "Governor",
+  "total_reports": 62,
+  "reports": [
+   [
+    "CE Report 2",
+    "2026",
+    "7/15/2026",
+    "Governor",
+    "VIaXpzflhK1ypCoLWITo6w%253d%253d"
+   ],
+   [
+    "CE Report 2 (Legal Defense Fund)",
+    "2026",
+    "7/15/2026",
+    "Governor",
+    "ouXIVy61l2K6K5Hjk8kKTA%253d%253d"
+   ],
+   [
+    "CE Report 1 (Legal Defense Fund)",
+    "2026",
+    "4/15/2026",
+    "Governor",
+    "Ki30Xx4ZrU7Vtmnolz41ZA%253d%253d"
+   ],
+   [
+    "CE Report 1",
+    "2026",
+    "4/15/2026",
+    "Governor",
+    "qGTObzyvO2%252bhDKsj7rBViQ%253d%253d"
+   ],
+   [
+    "2026 Annual CE Filing (Legal Defense Fund)",
+    "2025",
+    "1/15/2026",
+    "Governor",
+    "vklQ3rLlHqTLM%252bANL9LlrQ%253d%253d"
+   ],
+   [
+    "2026 Annual CE Filing",
+    "2025",
+    "1/15/2026",
+    "Governor",
+    "VGhlK5fd7GOvZBiGs2jb%252fQ%253d%253d"
+   ],
+   [
+    "2025 Annual CE Filing",
+    "2024",
+    "1/13/2025",
+    "Governor",
+    "PmAUrNdKMZ9KE4vXcrmugQ%253d%253d"
+   ],
+   [
+    "2024 Annual CE Filing",
+    "2023",
+    "1/16/2024",
+    "Governor",
+    "C2bnV5uhmvwF9OlsqKEQuA%253d%253d"
+   ]
+  ]
+ },
+ "cannizzaro": {
+  "o": "%252bAJSltE8jf8rUWM%252bt%252fq5UQ%253d%253d",
+  "name": "Nicole Jeanette Cannizzaro",
+  "party": "Democratic Party",
+  "profile_office": "State Senate, District 6",
+  "office_note": "2026 candidacy is Attorney General per the 2026 report rows' Office column; profile office is her current seat.",
+  "total_reports": 45,
+  "reports": [
+   [
+    "2026 Annual CE Filing (Amended)",
+    "2025",
+    "8/25/2026",
+    "Attorney General",
+    "LolLUyWgBI0jVQ68PO4I5g%253d%253d"
+   ],
+   [
+    "CE Report 2",
+    "2026",
+    "7/15/2026",
+    "Attorney General",
+    "mzPvWm2U7s4rhGbtdSVrAA%253d%253d"
+   ],
+   [
+    "CE Report 1",
+    "2026",
+    "4/15/2026",
+    "Attorney General",
+    "7QfFDqzFp37vhEVXq9tkkg%253d%253d"
+   ],
+   [
+    "2026 Annual CE Filing",
+    "2025",
+    "1/15/2026",
+    "Attorney General",
+    "H33hKEHOyydot7Rdkhr07A%253d%253d"
+   ],
+   [
+    "CE Report 1 (Amended)",
+    "2024",
+    "4/26/2024",
+    "State Senate, District 6",
+    "d2teC%252f8eawXVToUuEe5DsA%253d%253d"
+   ],
+   [
+    "CE Report 1",
+    "2024",
+    "4/15/2024",
+    "State Senate, District 6",
+    "ZrDbOS8Cg8OhdnHeacxy0Q%253d%253d"
+   ]
+  ]
+ },
+ "hansen": {
+  "o": "MbR7gDi8KG3mIggtQGDs%252bw%253d%253d",
+  "name": "Alexis M Hansen",
+  "party": "Republican Party",
+  "profile_office": "State Assembly, District 32",
+  "total_reports": 39,
+  "reports": [
+   [
+    "CE Report 2",
+    "2026",
+    "7/15/2026",
+    "State Assembly, District 32",
+    "lprHC6FfIoXeStbp1YA8Hg%253d%253d"
+   ],
+   [
+    "CE Report 1",
+    "2026",
+    "4/15/2026",
+    "State Assembly, District 32",
+    "%252fVQjy2ZzxYgbqo7keLZd6A%253d%253d"
+   ],
+   [
+    "2026 Annual CE Filing",
+    "2025",
+    "1/15/2026",
+    "State Assembly, District 32",
+    "IIEpUtd54KElj23xrXqfOg%253d%253d"
+   ],
+   [
+    "CE Report 4 (Amended)",
+    "2024",
+    "1/10/2026",
+    "State Assembly, District 32",
+    "GobBBA%252buBToYQQlTM08bvQ%253d%253d"
+   ],
+   [
+    "CE Report 4",
+    "2024",
+    "1/15/2025",
+    "State Assembly, District 32",
+    "Uwqc5XHzC%252fH6IcXNvX0%252bxw%253d%253d"
+   ]
+  ]
+ },
+ "krasner": {
+  "o": "y0r1dJXRVnCKo5P0EY6Inw%253d%253d",
+  "name": "Lisa Krasner",
+  "party": "Republican Party",
+  "profile_office": "State Senate, District 16",
+  "total_reports": 57,
+  "reports": [
+   [
+    "CE Report 2",
+    "2026",
+    "7/11/2026",
+    "State Senate, District 16",
+    "QKsgCQxbZObEnMW5lk1cdg%253d%253d"
+   ],
+   [
+    "CE Report 1",
+    "2026",
+    "4/15/2026",
+    "State Senate, District 16",
+    "O5eXHaVmUTvwDTRb77YkpQ%253d%253d"
+   ],
+   [
+    "2026 Annual CE Filing",
+    "2025",
+    "1/15/2026",
+    "State Senate, District 16",
+    "O083lNfnZ14ngG4vGFlgmw%253d%253d"
+   ],
+   [
+    "2022 Annual CE Filing",
+    "2021",
+    "1/15/2022",
+    "State Assembly, District 26",
+    "IdlfOsS2y6ibKPcy6SAuhg%253d%253d"
+   ]
+  ]
+ },
+ "herndon": {
+  "o": "G9VjoW6CJKcOLNWVdKPjrA%253d%253d",
+  "name": "Douglas W Herndon",
+  "party": "Nonpartisan",
+  "profile_office": "Supreme Court Justice, Seat D",
+  "total_reports": 30,
+  "reports": [
+   [
+    "CE Report 2",
+    "2026",
+    "7/14/2026",
+    "Supreme Court Justice, Seat D",
+    "Nnl2mJDoNoQiQu5rh49bgw%253d%253d"
+   ],
+   [
+    "CE Report 1",
+    "2026",
+    "4/10/2026",
+    "Supreme Court Justice, Seat D",
+    "J4KXTfGIQG5QrqiLM1Sm%252bg%253d%253d"
+   ],
+   [
+    "2026 Annual CE Filing",
+    "2025",
+    "1/15/2026",
+    "Supreme Court Justice, Seat D",
+    "AQWFIUEV2Qi28RGul0ebvQ%253d%253d"
+   ]
+  ]
+ }
+}

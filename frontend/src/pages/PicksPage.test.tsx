@@ -118,6 +118,63 @@ describe("PicksPage", () => {
     expect(section).not.toHaveTextContent("Governor");
   });
 
+  it("offers removal on a withdrawn upcoming pick and PUTs chosen: false", async () => {
+    // A withdrawn candidacy vanishes from election payloads, so no pick
+    // button anywhere can toggle it off — this page's remove control is the
+    // only way a multi-seat slot held by a withdrawn pick gets freed.
+    const puts: unknown[] = [];
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/election-choices": (_url: URL, init?: RequestInit) => {
+          if (init?.method === "PUT") {
+            puts.push(JSON.parse(String(init.body)));
+            return { status: 200, body: { choice: electionChoice({ picks: [] }) } };
+          }
+          return {
+            body: {
+              choices: [
+                electionChoice({
+                  picks: [{ candidate_id: "c-1", display_name: "Jane Smith", candidacy_status: "withdrawn" }],
+                }),
+              ],
+            },
+          };
+        },
+      })
+    );
+    renderPicks();
+
+    expect(await screen.findByText("(withdrew)")).toBeInTheDocument();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Remove pick: Jane Smith" }));
+    await waitFor(() =>
+      expect(puts).toEqual([{ election_id: "e-1", candidate_id: "c-1", chosen: false }])
+    );
+  });
+
+  it("offers no removal on a withdrawn pick from a past election", async () => {
+    // The backend rejects choice writes to past elections — a dead button
+    // whose only outcome is an error must not render.
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/election-choices": {
+          body: {
+            choices: [
+              electionChoice({
+                election_id: "e-past",
+                election_date: "2026-05-05",
+                picks: [{ candidate_id: "c-1", display_name: "Jane Smith", candidacy_status: "withdrawn" }],
+              }),
+            ],
+          },
+        },
+      })
+    );
+    renderPicks();
+
+    expect(await screen.findByText("(withdrew)")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Remove pick/ })).not.toBeInTheDocument();
+  });
+
   it("asks for an address when the empty ballot has no districts", async () => {
     stubApiRoutes(
       verifiedRoutes({
@@ -383,7 +440,7 @@ describe("PicksPage", () => {
     const fetchMock = stubApiRoutes(
       verifiedRoutes({
         // ONE fetch serves both views: the preview payload is also the list
-        // payload, so List and Ballot view share the same order by design.
+        // payload, so List and Ballot preview share the same order by design.
         "/api/me/ballot": {
           body: ballotSummary([
                   electionSummary({
@@ -455,11 +512,11 @@ describe("PicksPage", () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     renderPicks();
 
-    await user.click(await screen.findByRole("button", { name: "Ballot view" }));
+    await user.click(await screen.findByRole("button", { name: "Ballot preview" }));
 
     // The fetch pins its own ordering contract — the user's saved list sort
     // must never reorder this page — and toggling views must NOT refetch:
-    // one payload backs both List and Ballot view.
+    // one payload backs both List and Ballot preview.
     const ballotCalls = fetchMock.mock.calls.filter(([input]) => String(input).includes("/api/me/ballot?"));
     expect(ballotCalls).toHaveLength(1);
     expect(String(ballotCalls[0][0])).toContain("include=preview");
@@ -689,7 +746,7 @@ describe("PicksPage", () => {
     await user.click(button);
     await screen.findByRole("link", { name: /auto pick: not enough evidence/ });
 
-    await user.click(screen.getByRole("button", { name: "Ballot view" }));
+    await user.click(screen.getByRole("button", { name: "Ballot preview" }));
 
     expect(await screen.findByText("Auto pick left this open: not enough evidence.")).toBeInTheDocument();
   });
@@ -728,5 +785,17 @@ describe("PicksPage nav context", () => {
 
     expect(router.state.location.pathname).toBe("/elections/e-1");
     expect(router.state.location.state).toEqual(MY_PICKS_STATE);
+  });
+
+  it("links pick names to the candidate profile with picks back state", async () => {
+    const user = userEvent.setup();
+    stubApiRoutes(verifiedRoutes());
+    const { router } = renderPicks();
+
+    await user.click(await screen.findByRole("link", { name: "Jane Smith" }));
+
+    expect(router.state.location.pathname).toBe("/candidates/c-1");
+    // electionId scopes the profile's candidacy context to the picked race.
+    expect(router.state.location.state).toEqual({ ...MY_PICKS_STATE, electionId: "e-1" });
   });
 });

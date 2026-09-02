@@ -61,6 +61,23 @@ export function formatSourceHost(url: string): string {
   }
 }
 
+export type SourceHostGroup = { host: string; urls: string[] };
+
+// Source lists show the host, not the URL, so two pages from one site
+// (an index page and the detail page it led to — the normal research
+// trail) read as the same line twice. Group by display host, first-seen
+// order, exact-URL dedupe, so a footnote can name each site once.
+export function groupSourcesByHost(urls: readonly string[]): SourceHostGroup[] {
+  const groups: SourceHostGroup[] = [];
+  for (const url of new Set(urls)) {
+    const host = formatSourceHost(url);
+    const group = groups.find((entry) => entry.host === host);
+    if (group) group.urls.push(url);
+    else groups.push({ host, urls: [url] });
+  }
+  return groups;
+}
+
 // Display scale reads Very low / Below average / Normal / High / Very high:
 // "low" as a verdict on the voter and "medium" as a size word both misread,
 // so they ship as "Below average" and "Normal". Wire values stay unchanged.
@@ -255,13 +272,16 @@ export function formatFinanceCategory(categoryName: string): string {
 // never reach the screen.
 const FINANCE_SOURCE_LABELS: Record<string, string> = {
   FEC: "FEC",
+  ALABAMA_FCPA: "Alabama FCPA Reporting System",
   ARIZONA_SOS: "Arizona Secretary of State",
   CALIFORNIA_SOS: "California Secretary of State",
   COLORADO_TRACER: "Colorado TRACER",
   DENVER_CLERK_RECORDER: "Denver Office of the Clerk and Recorder",
   CONNECTICUT_ECRIS: "Connecticut eCRIS",
+  DELAWARE_CFRS: "Delaware Campaign Finance Reporting System",
   INDIANA_CAMPAIGN_FINANCE: "Indiana Campaign Finance",
   NEBRASKA_NADC: "Nebraska NADC",
+  NEVADA_AURORA: "Nevada Secretary of State",
   NEW_HAMPSHIRE_CFS: "New Hampshire Campaign Finance System",
   NEW_JERSEY_ELEC: "New Jersey ELEC",
   NEW_MEXICO_CFIS: "New Mexico CFIS",
@@ -275,10 +295,12 @@ const FINANCE_SOURCE_LABELS: Record<string, string> = {
   GEORGIA_ETHICS: "Georgia Ethics Commission",
   MISSOURI_MEC: "Missouri Ethics Commission",
   MISSISSIPPI_SOS: "Mississippi Secretary of State",
+  MONTANA_COPP: "Montana Commissioner of Political Practices",
   PHOENIX_CITY_CLERK: "City of Phoenix City Clerk Department",
   SAN_DIEGO_CITY_CLERK: "City of San Diego Office of the City Clerk",
   SAN_FRANCISCO_ETHICS: "San Francisco Ethics Commission",
   SAN_JOSE_CITY_CLERK: "City of San José Office of the City Clerk",
+  SOUTH_CAROLINA_CAMPAIGN_FINANCE: "South Carolina State Ethics Commission",
   UTAH_DISCLOSURES: "Utah Financial Disclosures",
   HAWAII_CSC: "Hawaii Campaign Spending Commission",
   VIRGINIA_CFREPORTS: "Virginia CFReports",

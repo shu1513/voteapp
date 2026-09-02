@@ -7,8 +7,9 @@ type Queryable = Pick<Pool, "query">;
 
 // The columns the fetcher owns on public.legislative_votes (migration 251).
 // Judgment columns (yea_description, nay_description, labels_json,
-// review_status, reviewed_at) are written only by applyLegislativeVoteJudgment
-// (rollcall:judge) and read by the importer (loadLegislativeVote).
+// official_vote_date, review_status, reviewed_at) are written only by
+// applyLegislativeVoteJudgment (rollcall:judge) and read by the importer
+// (loadLegislativeVote).
 export type LegislativeVoteSourceRow = {
   jurisdiction: string;
   chamber: LegislativeVoteChamber;
@@ -193,6 +194,7 @@ export async function upsertLegislativeVoteSource(
             yea_description = NULL,
             nay_description = NULL,
             labels_json = NULL,
+            official_vote_date = NULL,
             review_status = 'pending',
             reviewed_at = NULL`
     : "";
@@ -242,6 +244,10 @@ export async function upsertLegislativeVoteSource(
 export type LegislativeVoteForImport = {
   id: string;
   voteDate: string;
+  // The reviewed override for a source that stamped the legislative day
+  // (migration 257). The fan-out's event_date is officialVoteDate ??
+  // voteDate; every evidence-vs-row check stays on voteDate.
+  officialVoteDate: string | null;
   measureId: string | null;
   exactQuestion: string;
   isFloorVote: boolean | null;
@@ -262,6 +268,7 @@ export async function loadLegislativeVote(
   const result = await db.query<{
     id: string;
     vote_date: string;
+    official_vote_date: string | null;
     measure_id: string | null;
     exact_question: string;
     is_floor_vote: boolean | null;
@@ -276,6 +283,7 @@ export async function loadLegislativeVote(
   }>(
     `SELECT id,
             vote_date::text AS vote_date,
+            official_vote_date::text AS official_vote_date,
             measure_id,
             exact_question,
             is_floor_vote,
@@ -301,6 +309,7 @@ export async function loadLegislativeVote(
   return {
     id: row.id,
     voteDate: row.vote_date,
+    officialVoteDate: row.official_vote_date,
     measureId: row.measure_id,
     exactQuestion: row.exact_question,
     isFloorVote: row.is_floor_vote,
@@ -326,11 +335,12 @@ export async function assertLegislativeVoteStillApproved(db: Queryable, vote: Le
   const result = await db.query<{
     review_status: LegislativeVoteReviewStatus;
     source_sha256: string;
+    official_vote_date: string | null;
     yea_description: string | null;
     nay_description: string | null;
     labels_json: unknown;
   }>(
-    `SELECT review_status, source_sha256, yea_description, nay_description, labels_json
+    `SELECT review_status, source_sha256, official_vote_date::text AS official_vote_date, yea_description, nay_description, labels_json
        FROM legislative_votes
       WHERE id = $1
       FOR SHARE`,
@@ -345,6 +355,7 @@ export async function assertLegislativeVoteStillApproved(db: Queryable, vote: Le
   }
   if (
     row.source_sha256 !== vote.sourceSha256 ||
+    row.official_vote_date !== vote.officialVoteDate ||
     row.yea_description !== vote.yeaDescription ||
     row.nay_description !== vote.nayDescription ||
     JSON.stringify(row.labels_json) !== JSON.stringify(vote.labelsJson)
@@ -363,10 +374,19 @@ export type LegislativeVoteJudgment = {
   // measureId compares as a parsed measure (`H R 1` and `H.R. 1` agree).
   measureId: string | null;
   voteDate: string;
+  // The official record's date, when the source stamped the legislative day
+  // instead (an overnight sine-die vote). null = no override; the whole
+  // judgment is written as given, so re-applying with null clears one.
+  officialVoteDate: string | null;
   yeaDescription: string;
   nayDescription: string;
-  // Already shape-checked (see parseRollCallLabels); stored as given.
-  labels: readonly { slug: string; yea: "for" | "against" | null }[];
+  // Already shape-checked (see parseRollCallLabels); stored as given. `nay`
+  // is the authored nay-side stance (null = nay voters get no tag on that
+  // slug), never an inversion of `yea`.
+  labels: readonly { slug: string; yea: "for" | "against" | null; nay: "for" | "against" | null }[];
+  // Later kept floor votes on the same measure+chamber the operator has
+  // seen and still wants to approve past (see the superseded-stage gate).
+  acknowledgeLaterRolls: readonly number[];
   reviewStatus: "pending" | "approved";
 };
 
@@ -385,8 +405,8 @@ function canonicalLabels(value: unknown): string {
   }
   return JSON.stringify(
     value.map((element) => {
-      const { slug, yea } = (element ?? {}) as { slug?: unknown; yea?: unknown };
-      return [slug ?? null, yea ?? null];
+      const { slug, yea, nay } = (element ?? {}) as { slug?: unknown; yea?: unknown; nay?: unknown };
+      return [slug ?? null, yea ?? null, nay ?? null];
     })
   );
 }
@@ -422,12 +442,15 @@ export async function applyLegislativeVoteJudgment(
     is_floor_vote: boolean | null;
     measure_id: string | null;
     vote_date: string;
+    official_vote_date: string | null;
     review_status: LegislativeVoteReviewStatus;
+    yeas: number;
+    nays: number;
     yea_description: string | null;
     nay_description: string | null;
     labels_json: unknown;
   }>(
-    `SELECT id, is_floor_vote, measure_id, vote_date::text AS vote_date, review_status, yea_description, nay_description, labels_json
+    `SELECT id, is_floor_vote, measure_id, vote_date::text AS vote_date, official_vote_date::text AS official_vote_date, review_status, yeas, nays, yea_description, nay_description, labels_json
        FROM legislative_votes
       WHERE jurisdiction = $1
         AND chamber = $2
@@ -470,9 +493,98 @@ export async function applyLegislativeVoteJudgment(
   const sameJudgment =
     row.yea_description === judgment.yeaDescription &&
     row.nay_description === judgment.nayDescription &&
+    row.official_vote_date === judgment.officialVoteDate &&
     canonicalLabels(row.labels_json) === canonicalLabels(judgment.labels);
   if (sameJudgment && row.review_status === judgment.reviewStatus) {
     return "unchanged";
+  }
+  // Approval gates for the two authoring failures the data actually showed
+  // (2026-08-29). Both run only when this apply would change something, so
+  // re-applying a committed pre-gate judgments file verbatim stays a no-op.
+  if (judgment.reviewStatus === "approved") {
+    // 1. Each sentence must cite THIS roll call's tally. The closing tally
+    //    sentence is already the template (plan §3); making it a gate stops
+    //    a sentence written about a different stage of the same bill (PA
+    //    HB 103: first-passage prose approved while the members' final
+    //    position was the 201-2 concurrence) and plain mistyped tallies.
+    //    Boundary-anchored: a bare substring test would let 215-14 satisfy
+    //    a required 15-1.
+    const tally = `${row.yeas}-${row.nays}`;
+    const tallyPattern = new RegExp(`(?<![\\d-])${row.yeas}-${row.nays}(?!\\d)`);
+    for (const [field, text] of [
+      ["yea_description", judgment.yeaDescription],
+      ["nay_description", judgment.nayDescription],
+    ] as const) {
+      if (!tallyPattern.test(text)) {
+        throw new Error(`${name}: ${field} does not cite this roll call's tally ${tally}; describe the vote being approved`);
+      }
+    }
+    // 2. Superseded-stage gate: another kept floor vote on the same measure
+    //    in the same chamber, on or after this one's date, means this vote
+    //    may not be the chamber's final action, and a record citing only
+    //    the earlier stage reads as the member's final position on the
+    //    bill. Same-day peers count — re-votes after a motion to
+    //    reconsider land on the same date, and within a day the sources
+    //    give no reliable order. Judge the decisive vote instead, or list
+    //    the other roll numbers in acknowledge_later_rolls to approve this
+    //    one on purpose. Scoped to this bill's session: measure numbers
+    //    repeat across sessions (H.R. 1 exists in every Congress). A
+    //    federal bill lives across both calendar sessions of its Congress,
+    //    so US scans both; a state session key already spans the term.
+    if (row.measure_id !== null) {
+      // A malformed US session key would derive scan keys that match
+      // nothing and silently skip the gate, so it fails loud instead
+      // (rollcall:judge always builds `<congress>-<1|2>`; this guards
+      // direct callers and malformed rows).
+      if (judgment.jurisdiction === "US" && !/^\d+-[12]$/.test(judgment.session)) {
+        throw new Error(`${name}: US session '${judgment.session}' is not <congress>-<1|2>`);
+      }
+      const sessions =
+        judgment.jurisdiction === "US"
+          ? [1, 2].map((half) => `${judgment.session.split("-")[0]}-${half}`)
+          : [judgment.session];
+      const later = await db.query<{
+        session: string;
+        roll_number: number;
+        vote_date: string;
+        measure_id: string;
+        exact_question: string;
+      }>(
+        `SELECT session, roll_number, vote_date::text AS vote_date, measure_id, exact_question
+           FROM legislative_votes
+          WHERE jurisdiction = $1
+            AND chamber = $2
+            AND session = ANY($3::text[])
+            AND is_floor_vote = true
+            -- The OR admits a peer whose source stamped the legislative
+            -- day: an overnight vote raw-dated 6/30 with official date
+            -- 7/1 must still block a 7/1 roll call. It only ever widens
+            -- the scan; the boundary stays this row's raw vote_date.
+            AND (vote_date >= $4::date OR COALESCE(official_vote_date, vote_date) >= $4::date)
+            AND measure_id IS NOT NULL
+            AND id <> $5`,
+        [judgment.jurisdiction, judgment.chamber, sessions, row.vote_date, row.id]
+      );
+      // An acknowledged number covers any session in the scan on purpose:
+      // the cross-session peer (a next-calendar-session concurrence) is
+      // half the reason US scans both, and the error below names every
+      // unacknowledged vote with its session, so the operator sees exactly
+      // what a number will cover before writing it.
+      const superseding = later.rows.filter(
+        (candidate) =>
+          sameMeasure(candidate.measure_id, row.measure_id) &&
+          !judgment.acknowledgeLaterRolls.includes(candidate.roll_number)
+      );
+      if (superseding.length > 0) {
+        const listed = superseding
+          .map((vote) => `${vote.session} roll ${vote.roll_number} on ${vote.vote_date} (${vote.exact_question})`)
+          .join("; ");
+        throw new Error(
+          `${name} may not be this chamber's final kept floor vote on ${row.measure_id}: ${listed}. ` +
+            "Judge the decisive vote instead, or list the other roll numbers in acknowledge_later_rolls to approve this one anyway."
+        );
+      }
+    }
   }
   if (row.review_status === "approved" && !sameJudgment) {
     await db.query(
@@ -488,10 +600,11 @@ export async function applyLegislativeVoteJudgment(
         SET yea_description = $2,
             nay_description = $3,
             labels_json = $4::jsonb,
-            review_status = $5,
-            reviewed_at = CASE WHEN $5 = 'approved' THEN now() ELSE NULL END
+            official_vote_date = $5::date,
+            review_status = $6,
+            reviewed_at = CASE WHEN $6 = 'approved' THEN now() ELSE NULL END
       WHERE id = $1`,
-    [row.id, judgment.yeaDescription, judgment.nayDescription, labelsJson, judgment.reviewStatus]
+    [row.id, judgment.yeaDescription, judgment.nayDescription, labelsJson, judgment.officialVoteDate, judgment.reviewStatus]
   );
   return "updated";
 }

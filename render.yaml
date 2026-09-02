@@ -153,6 +153,8 @@ services:
       # The matching *_SYNC_ENABLED / *_RAW_DATA_REFRESH_ENABLED flags are
       # deliberately NOT here: those fetch from state disclosure sites and
       # can get us rate-limited or blocked, so they stay opt-in per run.
+      - key: ALABAMA_CAMPAIGN_FINANCE_ENABLED
+        value: "false"
       - key: ALASKA_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: ARIZONA_CAMPAIGN_FINANCE_ENABLED
@@ -167,6 +169,8 @@ services:
         value: "true"
       - key: CONNECTICUT_CAMPAIGN_FINANCE_ENABLED
         value: "true"
+      - key: DELAWARE_CAMPAIGN_FINANCE_ENABLED
+        value: "false"
       - key: DENVER_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_ENABLED
@@ -201,7 +205,11 @@ services:
         value: "true"
       - key: MINNESOTA_CAMPAIGN_FINANCE_ENABLED
         value: "true"
+      - key: MONTANA_CAMPAIGN_FINANCE_ENABLED
+        value: "true"
       - key: NEBRASKA_CAMPAIGN_FINANCE_ENABLED
+        value: "true"
+      - key: NEVADA_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: NEW_JERSEY_CAMPAIGN_FINANCE_ENABLED
         value: "true"
@@ -230,6 +238,8 @@ services:
       - key: SAN_FRANCISCO_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: SAN_JOSE_CAMPAIGN_FINANCE_ENABLED
+        value: "true"
+      - key: SOUTH_CAROLINA_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: TENNESSEE_CAMPAIGN_FINANCE_ENABLED
         value: "true"

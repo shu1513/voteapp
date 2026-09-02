@@ -39,6 +39,23 @@ describe("sortByResearchAreaPriority", () => {
     ]);
   });
 
+  it("pins Candidate Ethics last, below even the unranked areas", () => {
+    const sorted = sortByResearchAreaPriority([
+      // "Candidate Ethics" sorts alphabetically before every other name here,
+      // so this only passes if the trailing pin is doing the work.
+      area("integrity_and_ethics", "Candidate Ethics"),
+      area("legal_competence", "Legal Competence"),
+      area("peaceful_foreign_policy", "Peaceful Foreign Policy"),
+      area("healthcare_affordability", "Healthcare Affordability"),
+    ]);
+    expect(sorted.map((a) => a.slug)).toEqual([
+      "healthcare_affordability",
+      "peaceful_foreign_policy",
+      "legal_competence",
+      "integrity_and_ethics",
+    ]);
+  });
+
   it("does not mutate the input array", () => {
     const input = [area("gun_control", "Gun Control"), area("immigration", "Immigration")];
     const copy = [...input];

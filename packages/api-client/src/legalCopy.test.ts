@@ -7,7 +7,6 @@ import {
   ADDRESS_FIELD_PRIVACY_NOTE,
   PRE_SEARCH_AGREEMENT_PARAGRAPHS,
   PRE_SEARCH_CHECKBOX_LABEL,
-  PRIVACY_NOTICE,
   RENEWAL_CHECKBOX_LABEL,
   SIGNUP_CHECKBOX_LABEL,
   TERMS_VERSION,
@@ -59,7 +58,6 @@ describe("legal copy matches docs/legal/checkbox-copy.md", () => {
     ["pre-search label", PRE_SEARCH_CHECKBOX_LABEL],
     ["signup label", SIGNUP_CHECKBOX_LABEL],
     ["renewal label", RENEWAL_CHECKBOX_LABEL],
-    ["privacy notice", PRIVACY_NOTICE],
     ["short privacy note", ADDRESS_FIELD_PRIVACY_NOTE],
     ["results verification line", VERIFY_WITH_OFFICIALS_NOTE],
     ...PRE_SEARCH_AGREEMENT_PARAGRAPHS.map(
@@ -73,11 +71,39 @@ describe("legal copy matches docs/legal/checkbox-copy.md", () => {
     expect(normalizedDoc).toContain(`Checkbox and notice copy — Version ${TERMS_VERSION}`);
   });
 
-  it("keeps the full privacy disclosure separate from the short address-field note", () => {
-    expect(PRIVACY_NOTICE).not.toBe(ADDRESS_FIELD_PRIVACY_NOTE);
-    expect(PRIVACY_NOTICE).toContain("account information");
-    expect(PRIVACY_NOTICE).toContain("device and usage information");
-    expect(PRIVACY_NOTICE).toContain("Privacy Policy");
+  // No checkbox restates Section 12: arbitration binds through the linked
+  // Terms of Use, and repeating it beside every box was scare copy on screens
+  // people came to for something else (2026-08-30 trimmed the pre-search gate,
+  // 2026-08-31 the signup and renewal labels). Pinned so the restatement does
+  // not creep back one label at a time. The reasoning is in legalCopy.ts above
+  // PRE_SEARCH_CHECKBOX_LABEL.
+  it.each([
+    ["pre-search label", PRE_SEARCH_CHECKBOX_LABEL],
+    ["signup label", SIGNUP_CHECKBOX_LABEL],
+    ["renewal label", RENEWAL_CHECKBOX_LABEL],
+    ...PRE_SEARCH_AGREEMENT_PARAGRAPHS.map(
+      (paragraph, index) => [`full-agreement paragraph ${index + 1}`, paragraph] as const
+    ),
+  ])("leaves arbitration out of the %s", (_name, copy) => {
+    expect(copy).not.toContain("arbitration");
+    expect(copy).not.toContain("class-action");
+  });
+
+  // Dropping the arbitration callout leaves the linked documents carrying the
+  // whole of the notice, so every label must still name all three — the
+  // dialogs hard-code that same list as links beside it.
+  it.each([
+    ["pre-search", PRE_SEARCH_CHECKBOX_LABEL],
+    ["signup", SIGNUP_CHECKBOX_LABEL],
+    ["renewal", RENEWAL_CHECKBOX_LABEL],
+  ])("names all three documents in the %s label", (_name, copy) => {
+    for (const title of [
+      "Terms of Use",
+      "Privacy Policy",
+      "AI Research and Election Information Disclaimer",
+    ]) {
+      expect(copy).toContain(title);
+    }
   });
 });
 
@@ -102,8 +128,18 @@ const PINNED_DOCUMENTS = [
     // Substance change — bundle bumps to 1.2 (CURRENT_TERMS_VERSION,
     // TERMS_VERSION, disclaimer.md) and signed-in users re-accept once.
     // Required BEFORE STRIPE_SECRET_KEY in prod.
-    version: "1.2",
-    sha256: "a54f13b8ab788310b64f099210c009f153e32a8dc635bcc4d9412a4ee2f4d312",
+    // 1.2 → 1.3 (2026-08-28): Section 14.5 member communications (member-only
+    // newsletters/analysis reports); 14.1 carve-out excepts 14.5 while the
+    // no-influence shield stays absolute. Substance change — bundle bumps to
+    // 1.3, GRACE_TERMS_VERSIONS ships ["1.2"], signed-in users re-accept
+    // once. Required BEFORE the first member-only communication is sent.
+    // 1.3 → 1.4 (2026-08-29): operator/contracting party is now Elections
+    // Simplified Inc., a Delaware corporation (previously impactperdollar).
+    // Party-identity change is material — bundle bumps to 1.4,
+    // GRACE_TERMS_VERSIONS ships ["1.3", "1.2"] (the 1.3 rollout was only a
+    // day old), signed-in users re-accept once.
+    version: "1.4",
+    sha256: "82f7321b2b2d4856e0a5e41b0dab39813e4fd763c596f2fec4a1b6ae70cc1fc5",
   },
   {
     filename: "privacy-policy.md",
@@ -117,15 +153,21 @@ const PINNED_DOCUMENTS = [
     // entry, payment data in Section 1, payment-record retention after
     // account deletion in Section 4). Ships with the Terms 1.2 bump.
     // Required BEFORE STRIPE_SECRET_KEY in prod.
-    version: "1.3",
-    sha256: "e49c8c1f273500f2a55a03ea3794f16a9888595d3c597c5fc5dd2409b7519e0d",
+    // 1.3 → 1.4 (2026-08-29): operator named as Elections Simplified Inc., a
+    // Delaware corporation. Ships with the Terms 1.4 bump.
+    version: "1.4",
+    sha256: "bf9f7f47b87d676282d19f65c525443dd39900e8ac0e0890ed20a2ac186f2098",
   },
   {
     filename: "disclaimer.md",
     // 1.1 → 1.2 (2026-08-21): no content change; version string tracks
     // CURRENT_TERMS_VERSION, which moved for the Terms 1.2 payments section.
-    version: "1.2",
-    sha256: "eb4c9d3f0e6a0ef48068ec62e4ac1bc0f82ca00cc49669a5c6453cf5abdf2b46",
+    // 1.2 → 1.3 (2026-08-28): no content change; tracks the Terms 1.3 bump
+    // (Section 14.5 member communications).
+    // 1.3 → 1.4 (2026-08-29): operator named as Elections Simplified Inc., a
+    // Delaware corporation; tracks the Terms 1.4 bump.
+    version: "1.4",
+    sha256: "0af5f6adf2e3192d2a94fc3bb2de2e26e4418bae066c60c4d533e34253a9324c",
   },
 ] as const;
 

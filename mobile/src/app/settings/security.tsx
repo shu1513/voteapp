@@ -1,3 +1,4 @@
+import type { Me } from "@voteapp/api-client";
 import { Stack, useRouter } from "expo-router";
 import { useState } from "react";
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from "react-native";
@@ -8,6 +9,9 @@ import { useChangePassword, useDeleteAccount, useLogoutAll } from "../../lib/aut
 
 // Port of the web settings Change password / Sign out / Delete account
 // sections. All three work unverified — the backend gates none of them.
+// has_password split, same as the web page: an account signed up with
+// Google on the website has no password, so the change and delete forms
+// (both password-confirmed) give way to AddPasswordSection until one is set.
 
 function PasswordSection() {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -65,6 +69,33 @@ function PasswordSection() {
           <ErrorNotice error={change.error} />
         </View>
       ) : null}
+    </View>
+  );
+}
+
+// Port of the web AddPasswordSection: the password-reset email doubles as
+// the set-a-password flow for Google-only accounts, so this just routes to
+// the existing forgot-password screen.
+function AddPasswordSection({ me }: { me: Me }) {
+  const router = useRouter();
+  return (
+    <View className="rounded-xl border border-line bg-white p-4">
+      <Text className="text-lg font-semibold text-ink">Add a password</Text>
+      <Text className="mt-1 text-sm text-ink-soft">
+        You signed in with Google, so this account has no password yet. Changing your email or deleting your
+        account requires one.
+      </Text>
+      <Text className="mt-2 text-sm text-ink-soft">
+        We&apos;ll email a link to <Text className="font-semibold text-ink">{me.email}</Text> that lets you set
+        one.
+      </Text>
+      <Pressable
+        onPress={() => router.push("/auth/forgot-password")}
+        accessibilityRole="button"
+        className="mt-3 self-start rounded-lg border border-line bg-white px-4 py-2 active:border-rausch"
+      >
+        <Text className="text-sm font-semibold text-ink">Add a password</Text>
+      </Pressable>
     </View>
   );
 }
@@ -180,11 +211,13 @@ export default function SecurityScreen() {
     <KeyboardAvoidingView className="flex-1 bg-white" behavior={Platform.OS === "ios" ? "padding" : undefined}>
       <Stack.Screen options={{ title: "Security" }} />
       <AccountGate signedOutText="Log in to manage your account." allowUnverified>
-        {() => (
+        {(me) => (
           <ScrollView keyboardShouldPersistTaps="handled" contentContainerClassName="gap-4 px-4 py-8">
-            <PasswordSection />
+            {me.has_password ? <PasswordSection /> : <AddPasswordSection me={me} />}
             <SignOutSection />
-            <DangerSection />
+            {/* Deletion is password-confirmed; AddPasswordSection above
+                explains the way in. Same gate as the web page. */}
+            {me.has_password ? <DangerSection /> : null}
           </ScrollView>
         )}
       </AccountGate>

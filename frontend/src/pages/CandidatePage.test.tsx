@@ -296,7 +296,7 @@ describe("CandidatePage", () => {
           records: [
             // Relevance-only tag (null stance) and an untagged record: no
             // position is claimed anywhere, so no boxes and no lead-in.
-            record("r-1", [{ areaId: "a-ie", slug: "integrity_and_ethics", name: "Integrity and Ethics", stance: null }]),
+            record("r-1", [{ areaId: "a-ie", slug: "integrity_and_ethics", name: "Candidate Ethics", stance: null }]),
             record("r-2", []),
           ],
         })
@@ -365,13 +365,14 @@ describe("CandidatePage", () => {
         })
       );
 
-      // Saved areas load async; the personalized view is the default once
-      // they arrive (same gate as the record groups below the summary).
-      await screen.findByRole("option", { name: "My issues first" });
+      // Saved areas load async; the personalized order applies once they
+      // arrive. Saved Gun Control then leads despite Healthcare outranking
+      // it publicly; the unsaved rest keep salience order.
+      await waitFor(() => {
+        const text = boxText("Supports") ?? "";
+        expect(text.indexOf("Gun Control")).toBeLessThan(text.indexOf("Healthcare Affordability"));
+      });
       const text = boxText("Supports") ?? "";
-      // Saved Gun Control leads despite Healthcare outranking it publicly;
-      // the unsaved rest keep salience order.
-      expect(text.indexOf("Gun Control")).toBeLessThan(text.indexOf("Healthcare Affordability"));
       expect(text.indexOf("Healthcare Affordability")).toBeLessThan(text.indexOf("Housing Affordability"));
       // Only the saved area's name-and-count node is emphasized (the box
       // heading has its own font-semibold, hence the `p` scope).
@@ -424,7 +425,7 @@ describe("CandidatePage", () => {
     ]);
   });
 
-  it("defaults the record view to \"My issues first\" once saved areas load", async () => {
+  it("defaults the record view to \"My issues first\" and personalizes once saved areas load", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
       "/api/me/districts": { body: MY_DISTRICTS },
@@ -454,72 +455,23 @@ describe("CandidatePage", () => {
       })
     );
 
-    // The option only exists for users with saved areas, and it becomes the
-    // default selection — the saved Gun Control group leads even though
+    // "My issues first" is the default view; saved areas load async, and
+    // once they arrive the saved Gun Control group leads even though
     // Environment outranks it publicly.
     const select = await screen.findByRole("combobox");
-    await screen.findByRole("option", { name: "My issues first" });
     expect(select).toHaveValue("my_issues");
-    const headings = screen
-      .getAllByRole("heading", { level: 3 })
-      .map((heading) => heading.textContent);
-    expect(headings).toEqual([
-      // "Supports" is the stance summary's box heading; the group reorder
-      // under test only concerns the Track record headings below it.
-      "Supports",
-      "Track record — Gun Control",
-      "Track record — Environment and Public Health",
-    ]);
-  });
-
-  it("keeps a group the reader opened open across a view switch that reorders groups", async () => {
-    stubApiRoutes({
-      "/api/me": { body: ME_VERIFIED },
-      "/api/me/districts": { body: MY_DISTRICTS },
-      "/api/me/candidate-follows": { body: { follows: [] } },
-      "/api/me/research-area-preferences": {
-        body: {
-          preferences: [
-            { research_area_id: "a-gun", slug: "gun_control", name: "Gun Control", description: null, rank: 1 },
-          ],
-        },
-      },
+    await waitFor(() => {
+      const headings = screen
+        .getAllByRole("heading", { level: 3 })
+        .map((heading) => heading.textContent);
+      expect(headings).toEqual([
+        // "Supports" is the stance summary's box heading; the group reorder
+        // under test only concerns the Track record headings below it.
+        "Supports",
+        "Track record — Gun Control",
+        "Track record — Environment and Public Health",
+      ]);
     });
-    const record = (id: string, areaId: string, slug: string, name: string) => ({
-      id,
-      description: `Did a thing (${id}).`,
-      source_url: "https://example.gov/record",
-      event_date: "2026-05-01",
-      created_at: "2026-05-02T00:00:00.000Z",
-      research_area_tags: [{ research_area_id: areaId, slug, name, stance: "for" as const }],
-    });
-    renderCandidate(() =>
-      candidateDetail({
-        records: [
-          record("r-1", "a-env", "environment_and_public_health", "Environment and Public Health"),
-          record("r-2", "a-gun", "gun_control", "Gun Control"),
-        ],
-      })
-    );
-
-    // "My issues first" is the default once saved areas load; Environment
-    // sits second there but first under "By issue" (public salience), so
-    // switching views reorders the groups.
-    const select = await screen.findByRole("combobox");
-    await screen.findByRole("option", { name: "My issues first" });
-    const groupDetails = (name: string) =>
-      screen.getByText(name).closest("details") as HTMLDetailsElement;
-    expect(groupDetails("Environment and Public Health").open).toBe(false);
-
-    const user = userEvent.setup();
-    await user.click(screen.getByText("Environment and Public Health"));
-    expect(groupDetails("Environment and Public Health").open).toBe(true);
-
-    // No `open` prop means React re-applies no default on reorder — the
-    // reader's toggle must survive the switch.
-    await user.selectOptions(select, "by_issue");
-    expect(groupDetails("Environment and Public Health").open).toBe(true);
-    expect(groupDetails("Gun Control").open).toBe(false);
   });
 
   it("collapses campaign finance by default while keeping it in the DOM", async () => {

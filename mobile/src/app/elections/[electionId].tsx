@@ -13,9 +13,13 @@ import {
   formatRosterStatus,
   formatVotePowerLabel,
   hasFinanceContent,
+  isDecidedChoice,
   partyBucket,
   scoreStanceRelevance,
+  useElectionChoices,
   useFollows,
+  useMe,
+  useMyAccountDistricts,
   useMyResearchAreas,
 } from "@voteapp/api-client";
 import type { CandidateResultBadge } from "@voteapp/api-client";
@@ -23,14 +27,25 @@ import { useQuery } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { AddressNudge } from "../../components/AddressNudge";
+import { AutoPickControl } from "../../components/AutoPickControls";
+import {
+  CandidatePickButton,
+  LogInToPlanLine,
+  MeasureChoiceButtons,
+  StrandedPicksNotice,
+} from "../../components/ElectionChoiceControls";
 import { FinanceSummaryCard } from "../../components/FinanceSummaryCard";
 import { FollowButton } from "../../components/FollowButton";
 import { NotFoundNotice } from "../../components/NotFoundNotice";
 import { ShareButton } from "../../components/ShareButton";
 import { SortChips } from "../../components/SortChips";
+import { SourceFootnote } from "../../components/SourceFootnote";
 import { SourceLine } from "../../components/SourceLine";
 import { ErrorNotice, LoadingNotice } from "../../components/Status";
 import { openExternalUrl } from "../../lib/openExternalUrl";
+import { usLatestLocalDate } from "../../lib/usLatestLocalDate";
 
 // "alphabetical" is the payload's own order: the API sorts candidates by
 // display name (there is no true ballot-position data). "my_issues" is the
@@ -57,7 +72,15 @@ const PARTY_FILTER_OPTIONS: { bucket: PartyBucket; label: string }[] = [
  */
 export default function ElectionScreen() {
   const { electionId } = useLocalSearchParams<{ electionId: string }>();
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { savedAreaIds, weights, hasSaved } = useMyResearchAreas();
+  // "My choice" state, all loaded before any control renders (no-flash rule,
+  // like FollowButton). me is undefined while the session loads — the guest
+  // login line must not flash for a viewer who turns out to be signed in.
+  const { me } = useMe();
+  const { choiceByElectionId, canChoose } = useElectionChoices();
+  const { districtIds, isLoading: districtsLoading } = useMyAccountDistricts();
   // Election payload candidates carry no follow state; derive it from the
   // follows list (only fetched for verified users). Controls render only
   // once that list has loaded. Same as the web.
@@ -125,6 +148,37 @@ export default function ElectionScreen() {
 
   const data = election.data;
   const measure = data.ballot_measure;
+  // Election-level sources the measure section did not already show (its
+  // source_urls plus the official-measure link), mirroring the web page.
+  const measureShownSources = new Set<string>(
+    measure ? [...measure.source_urls, ...(measure.official_measure_url ? [measure.official_measure_url] : [])] : []
+  );
+  const electionOnlySources = data.sources.filter((url) => !measureShownSources.has(url));
+  // Pick gates, copied from the web ElectionPage. Controls render on
+  // upcoming elections only (the backend rejects writes to past ones), and
+  // only once the signed-in viewer's choices list is loaded. District gate
+  // (docs/plans/pick-district-gate.md): controls only for a race in the
+  // viewer's own districts; the decided-choice clause is the safety valve —
+  // an existing pick always keeps its controls, so an imperfect geocode can
+  // never lock someone out of changing it.
+  const isGuest = me === null;
+  const myChoice = choiceByElectionId?.get(data.id);
+  const choicesSettled = canChoose && choiceByElectionId !== undefined;
+  const isUpcoming = data.election_date >= usLatestLocalDate();
+  const showChoiceControls =
+    choicesSettled &&
+    !districtsLoading &&
+    isUpcoming &&
+    (districtIds?.has(data.district.id) === true || isDecidedChoice(myChoice));
+  // State 3 of the gate: districts unknown (settled) on an upcoming race — a
+  // conversion nudge sits where the controls would. Districts known but
+  // foreign renders neither (state 2: clean read-only screen).
+  const showAddressNudge =
+    choicesSettled && !districtsLoading && isUpcoming && districtIds === undefined && !isDecidedChoice(myChoice);
+  // Logged out on an upcoming race: one quiet login line where a control
+  // would sit — mobile has no guest ballot draft. Logged-out past races
+  // render nothing.
+  const showGuestLoginLine = isGuest && isUpcoming;
   const chosenPartyFilter = partyPick.electionId === data.id ? partyPick.bucket : "all";
   // Data-driven visibility, same rules and resilience as the web
   // ElectionPage: render the filter only when the roster spans >= 2
@@ -168,9 +222,15 @@ export default function ElectionScreen() {
   // outcome's own signal proves the race decided — live in
   // deriveCandidateResultBadges. Mirrors the web election page.
   const resultBadges = deriveCandidateResultBadges(data.results, data.candidates, data.seats_to_fill ?? null);
+  // Same predicate as StrandedPicksNotice: a pick whose candidacy withdrew.
+  const hasStrandedPicks = (myChoice?.picks ?? []).some((pick) => pick.candidacy_status === "withdrawn");
 
   return (
-    <ScrollView className="flex-1 bg-white" contentContainerClassName="px-4 py-8">
+    // Root View + footer sibling (not an absolute overlay): RN has no
+    // position:sticky, and a plain flex sibling below the ScrollView can
+    // never cover content.
+    <View className="flex-1 bg-white">
+      <ScrollView className="flex-1" contentContainerClassName="px-4 py-8">
       <Stack.Screen options={{ title: data.official_ballot_title }} />
       <View className="flex-row flex-wrap items-center justify-between gap-3">
         <Text className="flex-1 text-2xl font-bold text-ink">{data.official_ballot_title}</Text>
@@ -242,6 +302,16 @@ export default function ElectionScreen() {
               <Text className="mt-1 text-sm text-red-900">{measure.what_no_means}</Text>
             </View>
           </View>
+          {/* Auto-pick sits here, not on the footer card: right after
+              reading what Yes and No mean is where "answer from my issues"
+              helps. Compact so the Yes/No pair stays the loud control; same
+              gate as the card, and keyed to the election because this
+              mounted screen can render another race after a push. */}
+          {data.race_type === "ballot_measure" && showChoiceControls ? (
+            <View className="mt-3">
+              <AutoPickControl key={data.id} electionId={data.id} seatsToFill={null} compact />
+            </View>
+          ) : null}
           {measure.result ? (
             <Text className="mt-3 text-sm font-medium text-ink">
               Result:{" "}
@@ -260,17 +330,71 @@ export default function ElectionScreen() {
                 : "More about this measure"}
             </Text>
           ) : null}
-          {measure.source_urls
-            .filter((url) => url !== measure.official_measure_url)
-            .map((url) => (
-              <SourceLine key={url} url={url} />
-            ))}
+          <SourceFootnote
+            urls={measure.source_urls.filter((url) => url !== measure.official_measure_url)}
+            className="mt-1"
+          />
         </View>
       ) : null}
 
-      {data.candidates.length > 0 ? (
+      {/* Districts unknown on a measure: the nudge takes the footer card's
+          slot (plain, not pinned — a passive sentence doesn't earn viewport
+          pinning). measure !== null like the footer card: a TBD measure
+          renders no pick UI of any kind. Same slot for the guest login
+          line. */}
+      {measure !== null && data.race_type === "ballot_measure" && showAddressNudge ? (
+        <View className="mt-4">
+          <AddressNudge />
+        </View>
+      ) : null}
+      {measure !== null && data.race_type === "ballot_measure" && showGuestLoginLine ? (
+        <View className="mt-4">
+          <LogInToPlanLine />
+        </View>
+      ) : null}
+
+      {/* hasStrandedPicks keeps this section alive when EVERY candidacy
+          withdrew: the payload then lists no candidates, but the stranded
+          notice below is the screen's only removal control. */}
+      {data.candidates.length > 0 || (showChoiceControls && hasStrandedPicks) ? (
         <View className="mt-6">
           <Text className="text-lg font-semibold text-ink">Candidates</Text>
+          {/* Multi-seat hint, same copy as the web page header. */}
+          {showChoiceControls && data.seats_to_fill != null && data.seats_to_fill > 1 ? (
+            <Text className="mt-1 text-xs text-ink-soft">
+              This election fills {data.seats_to_fill} seats — pick up to {data.seats_to_fill} candidates.
+            </Text>
+          ) : null}
+          {/* Race-level "Pick by my issues": one engine run for this
+              election (mode replace — a re-run refreshes the pick), with
+              its "Why this pick" panel below the button. key: this mounted
+              screen can render another race after a push, and without a
+              remount the previous election's panel (or an in-flight run's
+              result) would surface under the next one. length: in the
+              stranded-only state (section open, every candidacy withdrawn)
+              the engine has nobody to pick. */}
+          {data.candidates.length > 0 && showChoiceControls && data.race_type !== "ballot_measure" ? (
+            <View className="mt-2">
+              <AutoPickControl key={data.id} electionId={data.id} seatsToFill={data.seats_to_fill ?? null} />
+            </View>
+          ) : null}
+          {/* Stranded picks have no candidate card below (withdrawn
+              candidacies are filtered out of the payload), yet still count
+              toward the seat cap and disable the remaining buttons —
+              surface them here with their removal control, like the web. */}
+          {showChoiceControls ? <StrandedPicksNotice electionId={data.id} choice={myChoice} /> : null}
+          {/* Districts unknown: the nudge takes the controls' slot at the
+              top of the candidate list; guests get the login line there. */}
+          {showAddressNudge && data.race_type !== "ballot_measure" ? (
+            <View className="mt-2">
+              <AddressNudge />
+            </View>
+          ) : null}
+          {showGuestLoginLine && data.race_type !== "ballot_measure" ? (
+            <View className="mt-2">
+              <LogInToPlanLine />
+            </View>
+          ) : null}
           {hasSaved && data.candidates.length > 1 ? (
             <View className="mt-2">
               <SortChips
@@ -351,6 +475,22 @@ export default function ElectionScreen() {
                     />
                   ) : null
                 }
+                pickControl={
+                  // Withdrawn candidacies never reach this payload for
+                  // upcoming races, but the writer also rejects
+                  // withdrawn/lost — don't render a button whose only
+                  // outcome is an error. Same guard as the web page.
+                  showChoiceControls && candidate.status !== "withdrawn" && candidate.status !== "lost" ? (
+                    <CandidatePickButton
+                      electionId={data.id}
+                      candidateId={candidate.candidate_id}
+                      candidateName={candidate.display_name}
+                      choice={myChoice}
+                      seatsToFill={data.seats_to_fill ?? null}
+                      size="sm"
+                    />
+                  ) : null
+                }
               />
             ))}
           </View>
@@ -400,15 +540,38 @@ export default function ElectionScreen() {
         </View>
       ) : null}
 
-      {data.sources.length > 0 ? (
-        <View className="mt-6">
-          <Text className="text-sm font-semibold text-ink">Election sources</Text>
-          {data.sources.map((url) => (
-            <SourceLine key={url} url={url} />
-          ))}
+      {/* One footnote line, no heading, minus anything the measure section
+          already cited (same rule as the web page). */}
+      <SourceFootnote urls={electionOnlySources} className="mt-6" />
+      </ScrollView>
+      {/* The measure screen's ONE pick control, in a safe-area-aware footer
+          below the scroll area (the web pins the same card with sticky).
+          measure !== null too, not just the race type: an upcoming measure
+          election can exist before its ballot-measure row (details TBD), and
+          a Yes/No pair with no explanation of what either vote means would
+          be worse than none. */}
+      {measure !== null && data.race_type === "ballot_measure" && showChoiceControls ? (
+        <View
+          className="border-t border-line bg-white px-4 pt-3"
+          style={{ paddingBottom: Math.max(insets.bottom, 12) }}
+        >
+          <MeasureChoiceButtons electionId={data.id} choice={myChoice} />
+          {/* Post-pick continuation: back to the list this race came from.
+              Only after a recorded position (the "added to cart" moment) and
+              only when there is somewhere to go back to (deep links have no
+              stack). */}
+          {myChoice?.measure_position != null && router.canGoBack() ? (
+            <Text
+              className="mt-2 text-center text-sm text-ink-soft underline"
+              accessibilityRole="link"
+              onPress={() => router.back()}
+            >
+              Back
+            </Text>
+          ) : null}
         </View>
       ) : null}
-    </ScrollView>
+    </View>
   );
 }
 
@@ -418,6 +581,7 @@ function CandidateCard({
   savedAreaIds,
   resultBadge,
   followButton,
+  pickControl,
 }: {
   candidate: ElectionDetail["candidates"][number];
   stances: ReturnType<typeof aggregateRecordAreaStances>;
@@ -425,6 +589,8 @@ function CandidateCard({
   /** Won / Advanced / Lost / … once a decisive result is recorded. */
   resultBadge?: CandidateResultBadge;
   followButton?: React.ReactNode;
+  /** The "Make my pick" button when the viewer can pick in this race. */
+  pickControl?: React.ReactNode;
 }) {
   const router = useRouter();
   const [financeOpen, setFinanceOpen] = useState(false);
@@ -503,6 +669,11 @@ function CandidateCard({
             ))}
           </View>
         ) : null}
+        {/* Nested pressable like the follow button: the pick tap wins over
+            the card's navigation. Own row at the card's foot — a small
+            inline button next to the name is too cramped a touch target on
+            a phone. */}
+        {pickControl ? <View className="mt-3 flex-row">{pickControl}</View> : null}
       </Pressable>
       {hasFinanceContent(candidate.finance_summary) ? (
         // Same per-card disclosure as the web page's <details>; a separate
