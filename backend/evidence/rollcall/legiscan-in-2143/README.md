@@ -98,23 +98,23 @@ be read without rendering pages as images. See `CODE-FINDINGS.md` section 4.
 for every printed version, so the version a roll actually voted on can be identified by date
 instead of by guessing a filename. See `CODE-FINDINGS.md` section 5.
 
-## State of the work
+## State of the work — the 2025 session is complete
+
+**Every one of the 68 divided-and-enacted measures in this session has been read in full and
+dispositioned.** No roll is left unbatched.
 
 Batches 01 to 03 and 05 to 09 are imported on the local `voteapp` database: **1,394 records
-across 102 candidates, over twenty-one measures and thirty-two rolls.** Batch-04 read twelve
-measures and kept none. **Production holds no Indiana records.**
+across 102 candidates, over twenty-one measures and thirty-two rolls.** Batches 04 and 10 read
+fourteen more measures between them and kept none. **Production holds no Indiana records.**
 
 Across both Indiana sessions the total is **2,721 live roll-call records over 104 candidates
 with 2,159 area tags**.
 
-Only two measures remain open: **HB 1001, the state budget, and SB 1, local government finance**,
-carrying five rolls between them. Everything else in the session has been read in full and
-dispositioned.
-
-The tail was worth working after all, though not evenly. Batches 05 to 09 read 30 measures and
-kept 10, and the keeps clustered: the two health cost acts in batch-07, the elections act in
-batch-08 and the reading act in batch-09 are all bills whose titles look like omnibus work and
-whose contents are not. The lesson for a later state is that "Various ... matters" is a
-prompt to read, not a reason to drop.
+The tail was worth working, and the early prediction that it would not be was wrong. Batches 05
+to 10 read 32 measures and kept 10, and the keeps clustered in bills whose titles look like
+omnibus work and whose contents are not: HB 1003 and HB 1004 on health costs, HB 1680 on
+elections, SB 358 on reading. The measures that genuinely had no single direction were the ones
+that said so in their own text, not in their titles: the budget, SB 1, HB 1461 on road funding,
+HB 1427, HB 1515. **"Various ... matters" is a prompt to read, not a reason to drop.**
 
 The 2026 Regular Session (LegiScan session 2234) is complete and has never been surveyed.
