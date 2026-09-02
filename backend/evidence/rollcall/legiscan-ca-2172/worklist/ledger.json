@@ -1539,184 +1539,184 @@
    "reason": null
   },
   "AB 2308": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Redevelopment: successor agency debt: City and County of San Francisco.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-21 read",
+   "reason": "single-jurisdiction San Francisco bill that only clarifies an existing borrowing power; no new duty on anyone"
   },
   "AB 2395": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Child support: compromise of arrears program.",
-   "batch": null,
+   "batch": "batch-21",
    "reason": null
   },
   "AB 2495": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Unlawful immigration-related practices.",
-   "batch": null,
+   "batch": "batch-21",
    "reason": null
   },
   "AB 2510": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "CalWORKs.",
-   "batch": null,
+   "batch": "batch-21",
    "reason": null
   },
   "AB 2599": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Slavery: corporate disclosures.",
-   "batch": null,
+   "batch": "batch-21",
    "reason": null
   },
   "AB 2619": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Water resources: data centers.",
-   "batch": null,
+   "batch": "batch-21",
    "reason": null
   },
   "AB 2634": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Workforce development: High road training partnerships: scoring preference.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-21 read",
+   "reason": "no research area fits \u2014 a scoring preference for union-linked applicants inside one grant program"
   },
   "AB 2682": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Transportation network company drivers: labor relations: appeals.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-21 read",
+   "reason": "party-neutral procedure \u2014 the new court appeal runs equally to rideshare companies and to drivers, so it carries no labor stance"
   },
   "AB 288": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Employment: labor organization and unfair practices.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-21 read",
+   "reason": "two bills in one vehicle \u2014 state takeover of labor enforcement plus a separate change to the farm labor board precedent duty, and it exempts supporting evidence from the public records act"
   },
   "AB 321": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Misdemeanors.",
-   "batch": null,
+   "batch": "batch-21",
    "reason": null
   },
   "AB 339": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Local public employee organizations: notice requirements.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-21 read",
+   "reason": "no research area fits \u2014 notice to unions before a public agency contracts out covered work"
   },
   "AB 361": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Best value procurement: school districts.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-21 read",
+   "reason": "cuts both ways on oversight \u2014 deletes Los Angeles Unified reporting while imposing reporting on every other district newly allowed to use the method"
   },
   "AB 373": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Dependency proceedings: counsel.",
-   "batch": null,
+   "batch": "batch-21",
    "reason": null
   },
   "AB 378": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Education finance: Classified School Employee Summer Assistance Program.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-21 read",
+   "reason": "trivial definitional expansion \u2014 adds joint powers authorities to an existing summer pay program"
   },
   "AB 39": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "General plans: Local Electrification Planning Act.",
-   "batch": null,
+   "batch": "batch-21",
    "reason": null
   },
   "AB 393": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "vetoed",
    "value": 1,
    "title": "Personal services contracts: state employees: physician and psychologist positions.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-21 read",
+   "reason": "no research area fits \u2014 a cost comparison and civil service preference before contracting out prison and state hospital clinician jobs"
   },
   "AB 419": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Educational equity: immigration enforcement.",
-   "batch": null,
+   "batch": "batch-21",
    "reason": null
   },
   "AB 43": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Wild and scenic rivers.",
-   "batch": null,
+   "batch": "batch-21",
    "reason": null
   },
   "AB 439": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "California Coastal Act of 1976: local planning and reporting.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-21 read",
+   "reason": "cuts both ways \u2014 de minimis coastal plan changes take effect faster while enforcement reporting drops from annual to every five years, though its contents widen"
   },
   "AB 450": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Public social services: support for older and aging immigrants.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-21 read",
+   "reason": "study only \u2014 a panel, a report and recommendations, all conditional on an appropriation the bill does not make, self-repealing in 2029"
   },
   "AB 461": {
    "status": "open",
