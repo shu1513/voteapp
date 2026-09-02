@@ -5,7 +5,12 @@
 // Headline totals are the grid's official per-registration figures
 // (totalRaised / totalSpent / balanceOfFunds) — never recomputed from rows,
 // because returned contributions are subtracted by the state and are not
-// served by the search. Rows feed only the breakdowns:
+// served by the search. The grid totalRaised equals the state's
+// totalContributions (loans excluded), so it fills both totalReceipts and
+// directContributionTotal: the shared loader shows directContributionTotal
+// as "Raised", and the official figure must be the one on screen. The row
+// sum stays a diagnostic (directContributionRowTotal). Rows feed only the
+// breakdowns:
 // - contribution_size: itemized rows (ITMY, INKIND) in the shared size
 //   buckets; unitemized rows (NITMY, ANYMS) as one lump;
 // - contributor_source_type: every direct row by the filer-declared source
@@ -72,6 +77,7 @@ export type IdahoContributionAggregationInput = {
 
 export type IdahoDirectFinanceSummary = {
   totalReceipts: number;
+  /** Same official grid figure as totalReceipts (see header). */
   directContributionTotal: number;
   totalDisbursements: number;
   /** Signed; the grid reports negative balances for indebted campaigns. */
@@ -104,6 +110,8 @@ export type IdahoContributionAggregationResult = {
   unitemizedRowCount: number;
   nonDirectReceiptRowCount: number;
   nonPositiveRowCount: number;
+  /** Dollars. Sum of positive direct rows — diagnostic only, not the stored total. */
+  directContributionRowTotal: number;
   /** Dollars. Sum of every registration row (signed, interest included) — the grid's own basis. */
   rowTotal: number;
   gridTotalRaised: number;
@@ -233,7 +241,7 @@ export function aggregateIdahoContributions(input: IdahoContributionAggregationI
 
   const aggregates = new Map<string, Aggregate>();
   let rowTotalCents = 0;
-  let directContributionTotalCents = 0;
+  let directContributionRowTotalCents = 0;
   let directContributionRowCount = 0;
   let itemizedRowCount = 0;
   let unitemizedRowCount = 0;
@@ -253,7 +261,7 @@ export function aggregateIdahoContributions(input: IdahoContributionAggregationI
     }
 
     directContributionRowCount += 1;
-    directContributionTotalCents += amountCents;
+    directContributionRowTotalCents += amountCents;
     if (IDAHO_ITEMIZED_CONTRIBUTION_SUBTYPE_CODES.has(row.transactionSubTypeCode)) {
       itemizedRowCount += 1;
       addAggregate(aggregates, "contribution_size", contributionSizeBucket(amountCents), amountCents);
@@ -274,7 +282,7 @@ export function aggregateIdahoContributions(input: IdahoContributionAggregationI
   return {
     summary: {
       totalReceipts: gridTotalRaisedCents / 100,
-      directContributionTotal: directContributionTotalCents / 100,
+      directContributionTotal: gridTotalRaisedCents / 100,
       totalDisbursements: totalDisbursementsCents / 100,
       cashOnHand: cashOnHandCents / 100,
       sourceUrl,
@@ -287,6 +295,7 @@ export function aggregateIdahoContributions(input: IdahoContributionAggregationI
     unitemizedRowCount,
     nonDirectReceiptRowCount,
     nonPositiveRowCount,
+    directContributionRowTotal: directContributionRowTotalCents / 100,
     rowTotal: rowTotalCents / 100,
     gridTotalRaised: gridTotalRaisedCents / 100,
     rowCoverage,

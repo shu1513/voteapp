@@ -39,7 +39,7 @@ describe("aggregateIdahoContributions", () => {
 
     expect(result.summary).toEqual({
       totalReceipts: 1986.25,
-      directContributionTotal: 2001,
+      directContributionTotal: 1986.25,
       totalDisbursements: 50,
       cashOnHand: -12.5,
       sourceUrl: PROFILE_URL,
@@ -67,6 +67,7 @@ describe("aggregateIdahoContributions", () => {
       unitemizedRowCount: 3,
       nonDirectReceiptRowCount: 1,
       nonPositiveRowCount: 1,
+      directContributionRowTotal: 2001,
       rowTotal: 1986.25,
       gridTotalRaised: 1986.25,
       rowCoverage: "exact",
@@ -81,8 +82,10 @@ describe("aggregateIdahoContributions", () => {
       sourceUrl: " https://example.test/filing ",
     });
     expect(returned).toMatchObject({ rowCoverage: "rows_exceed_grid", rowTotal: 100, gridTotalRaised: 90 });
+    // Both stored totals are the official grid figure; the row sum is diagnostic.
     expect(returned.summary.totalReceipts).toBe(90);
-    expect(returned.summary.directContributionTotal).toBe(100);
+    expect(returned.summary.directContributionTotal).toBe(90);
+    expect(returned.directContributionRowTotal).toBe(100);
     expect(returned.summary.sourceUrl).toBe("https://example.test/filing");
     expect(returned.directBreakdowns[0]?.sourceUrl).toBe("https://example.test/filing");
 
