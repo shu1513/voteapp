@@ -9,8 +9,10 @@
 // - schedule totals: Schedule A lblTotalItemized/lblTotalUnitemized/
 //   lblPoliticalMaterials/lblContributorUnknown/lblTotalReceipts; Schedule C
 //   lblTotalItemizedExpenditures/lblTotalUnitemized/lblTotalExpenditures;
-//   Schedule B lblTotalItemized/lblTotalUnitemized/lblTotalInKind. Itemized
-//   ROW parsing is deliberately absent — Phase 0 needs only the totals.
+//   Schedule B lblTotalItemized/lblTotalUnitemized/lblTotalInKind.
+// - Schedule A itemized rows (Phase 2): one <tr> of seven <td>s per row;
+//   only the address/zip carry id-stamped spans (Repeater2_lblAddress_N,
+//   Repeater2_lblZip_N), everything else is free text inside the cells.
 // - contribution export: one <span id="lblField_N"> set per row.
 // - candidate-filings grids: e-filed rows carry lblDate_N and postback name
 //   links; paper rows carry lblOriginalDate_N, an <img id="..._paper_N"
@@ -312,6 +314,128 @@ export function parseKansasScheduleCTotals(html: string): KansasScheduleCTotals 
 }
 
 // ---------------------------------------------------------------------------
+// Schedule A itemized rows (Phase 2).
+//
+// Live shape (Helwig HD1, 2026-09-01): each itemized receipt is one <tr> of
+// seven <td>s — date, name+address, type of payment, occupation, primary
+// total, general total, amount. The name is the free text before the cell's
+// first <br />; a person filed through the form's separate first/last fields
+// renders as two source lines ("Corky \nZahm"), an entity as one, but that
+// is a hint, not a classification. The address and zip are the only
+// id-stamped spans (Repeater2_lblAddress_N / Repeater2_lblZip_N), so the
+// span index anchors the row. "Primary Total"/"General Total" are the
+// contributor's running phase aggregates, not row money — the row's money
+// is the "Amount" column, and the sum of every Amount must equal
+// lblTotalItemized cent-exact or the schedule is quarantined.
+//
+// Contributor names and addresses stay in restricted raw staging only
+// (K.S.A. 25-4154(d)); nothing here is a published surface.
+
+export type KansasScheduleARow = {
+  /** Repeater2 row index from the address/zip span ids. */
+  index: number;
+  /** As rendered ("07/23/26"). */
+  date: string;
+  contributorName: string;
+  /** Address lines after the name, one per rendered line (street, suite, "City ST zip"). */
+  addressLines: string[];
+  zip: string;
+  /** "Cash", "Check", "Loan", "E-funds", "Other" as rendered. */
+  tenderType: string;
+  /** Free text; "" when the cell is blank (not required at or under $150). */
+  occupation: string;
+  primaryTotalCents: number | null;
+  generalTotalCents: number | null;
+  amountCents: number | null;
+};
+
+export type KansasScheduleARows = {
+  rows: KansasScheduleARow[];
+  /** <tr>s that carried a Repeater2 span but not the seven expected cells (structural drift). */
+  malformedRowCount: number;
+};
+
+const SCHEDULE_A_CELL_COUNT = 7;
+const CELL_LINE_BREAK = String.fromCharCode(0);
+
+/**
+ * Rendered lines of a table cell: <br /> breaks lines, every other tag is
+ * dropped, source newlines inside a line are just whitespace (the viewer
+ * emits "Leawood&nbsp;\nKS&nbsp;\n<span>66211</span>" as one visual line).
+ */
+function cellLines(cellHtml: string): string[] {
+  return decodeKansasHtmlText(cellHtml.replace(/<br\s*\/?>/gi, CELL_LINE_BREAK).replace(/<[^>]+>/g, ""))
+    .split(CELL_LINE_BREAK)
+    .map((line) => line.replace(/\s+/g, " ").trim())
+    .filter((line) => line !== "");
+}
+
+function cellInnerHtmls(rowHtml: string): string[] {
+  return [...rowHtml.matchAll(/<td(?:\s[^>]*)?>([\s\S]*?)<\/td>/gi)].map((match) => match[1]!);
+}
+
+export function parseKansasScheduleARows(html: string): KansasScheduleARows {
+  const rows: KansasScheduleARow[] = [];
+  let malformedRowCount = 0;
+  for (const rowMatch of html.matchAll(/<tr(?:\s[^>]*)?>([\s\S]*?)<\/tr>/gi)) {
+    const rowHtml = rowMatch[1]!;
+    const indexMatch = /id="Repeater2_lblAddress_(\d+)"/.exec(rowHtml);
+    if (!indexMatch) continue;
+    const cells = cellInnerHtmls(rowHtml);
+    if (cells.length !== SCHEDULE_A_CELL_COUNT) {
+      malformedRowCount += 1;
+      continue;
+    }
+    const [dateCell, contributorCell, tenderCell, occupationCell, primaryCell, generalCell, amountCell] = cells as [
+      string, string, string, string, string, string, string,
+    ];
+    const contributorLines = cellLines(contributorCell);
+    const zipMatch = /<span id="Repeater2_lblZip_\d+"[^>]*>([^<]*)<\/span>/.exec(contributorCell);
+    rows.push({
+      index: Number.parseInt(indexMatch[1]!, 10),
+      date: cellLines(dateCell).join(" "),
+      contributorName: contributorLines[0] ?? "",
+      addressLines: contributorLines.slice(1),
+      zip: zipMatch ? decodeKansasHtmlText(zipMatch[1]!).trim() : "",
+      tenderType: cellLines(tenderCell).join(" "),
+      occupation: cellLines(occupationCell).join(" "),
+      primaryTotalCents: parseKansasMoneyCents(cellLines(primaryCell).join("")),
+      generalTotalCents: parseKansasMoneyCents(cellLines(generalCell).join("")),
+      amountCents: parseKansasMoneyCents(cellLines(amountCell).join("")),
+    });
+  }
+  return { rows, malformedRowCount };
+}
+
+export type KansasScheduleACheck = {
+  /** Every row had seven cells and a parseable Amount. */
+  rowsParsed: boolean;
+  /** Sum of row Amounts equals lblTotalItemized cent-exact. */
+  itemizedSumMatchesTotal: boolean;
+  /** Form identity: itemized + unitemized + political materials + unknown = total receipts. */
+  totalsArithmeticOk: boolean;
+};
+
+/** Schedule A self-check; a schedule failing any line is quarantined, never aggregated. */
+export function checkKansasScheduleA(parsed: KansasScheduleARows, totals: KansasScheduleATotals): KansasScheduleACheck {
+  const rowsParsed = parsed.malformedRowCount === 0 && parsed.rows.every((row) => row.amountCents !== null);
+  const rowSum = parsed.rows.reduce((sum, row) => sum + (row.amountCents ?? 0), 0);
+  const { totalItemizedCents, totalUnitemizedCents, politicalMaterialsCents, contributorUnknownCents, totalReceiptsCents } =
+    totals;
+  return {
+    rowsParsed,
+    itemizedSumMatchesTotal: rowsParsed && totalItemizedCents !== null && rowSum === totalItemizedCents,
+    totalsArithmeticOk:
+      totalItemizedCents !== null &&
+      totalUnitemizedCents !== null &&
+      politicalMaterialsCents !== null &&
+      contributorUnknownCents !== null &&
+      totalReceiptsCents !== null &&
+      totalItemizedCents + totalUnitemizedCents + politicalMaterialsCents + contributorUnknownCents === totalReceiptsCents,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Candidate-filings grids.
 
 export type KansasCfrGridRow = {
@@ -319,6 +443,8 @@ export type KansasCfrGridRow = {
   /** lblDate_N (e-filed rows) or lblOriginalDate_N (paper rows). */
   fileDate: string;
   amendmentDate: string;
+  /** lblAmendmentNo_N on the Appointment of Treasurer grid: "" on an original appointment. */
+  amendmentNo: string;
   name: string;
   officeSought: string;
   district: string;
@@ -382,6 +508,7 @@ export function parseKansasCfrGridRows(html: string, gridId: string): KansasCfrG
         index,
         fileDate: rowFields.get("lblDate") ?? rowFields.get("lblOriginalDate") ?? "",
         amendmentDate: rowFields.get("lblAmendmentDate") ?? "",
+        amendmentNo: rowFields.get("lblAmendmentNo") ?? "",
         name: names.join(" "),
         officeSought: rowFields.get("labelOfficeSought") ?? "",
         district: (rowFields.get("lblDistrictNumber") ?? "").replace(/^\/\s*/, ""),

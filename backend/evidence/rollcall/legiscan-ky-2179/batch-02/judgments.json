@@ -1,0 +1,331 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1529618,
+      "measure_id": "HB 2",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2. It declares void any state notice saying that sales or use tax is owed on currency or bullion sold on or after August 1, 2024, and lets buyers sue the state, individually or as a class, for a refund. Winners may also collect interest, attorney's fees, and $1,000 for each day a notice stayed in force, paid out of the budget of the Finance Cabinet, the revenue department or the Governor's office. The Kentucky House voted 80-19, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 2. It declares void any state notice saying that sales or use tax is owed on currency or bullion sold on or after August 1, 2024, and lets buyers sue the state, individually or as a class, for a refund. Winners may also collect interest, attorney's fees, and $1,000 for each day a notice stayed in force, paid out of the budget of the Finance Cabinet, the revenue department or the Governor's office. The Kentucky House voted 80-19, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1518159,
+      "measure_id": "HB 2",
+      "vote_date": "2025-03-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2. It declares void any state notice saying that sales or use tax is owed on currency or bullion sold on or after August 1, 2024, and lets buyers sue the state, individually or as a class, for a refund. Winners may also collect interest, attorney's fees, and $1,000 for each day a notice stayed in force, paid out of the budget of the Finance Cabinet, the revenue department or the Governor's office. The Kentucky Senate voted 30-6, and the bill later became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 2. It declares void any state notice saying that sales or use tax is owed on currency or bullion sold on or after August 1, 2024, and lets buyers sue the state, individually or as a class, for a refund. Winners may also collect interest, attorney's fees, and $1,000 for each day a notice stayed in force, paid out of the budget of the Finance Cabinet, the revenue department or the Governor's office. The Kentucky Senate voted 30-6, and the bill later became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1529575,
+      "measure_id": "HB 6",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 6. It bars Kentucky state agencies from issuing any new or amended regulation after March 31, 2025, unless the agency certifies that the rule falls into one of six exceptions, such as an emergency, a court order, or a cost under $500,000. For 25 named executive bodies, the Governor must certify the same thing as well, and a regulation filed without the certifications is void. The Kentucky House voted 80-20, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 6. It bars Kentucky state agencies from issuing any new or amended regulation after March 31, 2025, unless the agency certifies that the rule falls into one of six exceptions, such as an emergency, a court order, or a cost under $500,000. For 25 named executive bodies, the Governor must certify the same thing as well, and a regulation filed without the certifications is void. The Kentucky House voted 80-20, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1517669,
+      "measure_id": "HB 6",
+      "vote_date": "2025-03-13",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 6. It bars Kentucky state agencies from issuing any new or amended regulation after March 31, 2025, unless the agency certifies that the rule falls into one of six exceptions, such as an emergency, a court order, or a cost under $500,000. For 25 named executive bodies, the Governor must certify the same thing as well, and a regulation filed without the certifications is void. The Kentucky Senate voted 29-6, and the bill later became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 6. It bars Kentucky state agencies from issuing any new or amended regulation after March 31, 2025, unless the agency certifies that the rule falls into one of six exceptions, such as an emergency, a court order, or a cost under $500,000. For 25 named executive bodies, the Governor must certify the same thing as well, and a regulation filed without the certifications is void. The Kentucky Senate voted 29-6, and the bill later became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1515347,
+      "measure_id": "HB 45",
+      "vote_date": "2025-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 45. It bars foreign nationals from giving money to, or spending money on, campaigns for and against Kentucky ballot questions, and from directing anyone else's spending on them. Committees must certify that donors are not foreign nationals and have not taken more than $100,000 in total from foreign nationals in the past four years, and the state registry may sue to enforce the ban and claw the money back. The Kentucky Senate voted 29-6, and the Governor signed the bill into law.",
+      "nay_description": "Voted against House Bill 45. It bars foreign nationals from giving money to, or spending money on, campaigns for and against Kentucky ballot questions, and from directing anyone else's spending on them. Committees must certify that donors are not foreign nationals and have not taken more than $100,000 in total from foreign nationals in the past four years, and the state registry may sue to enforce the ban and claw the money back. The Kentucky Senate voted 29-6, and the Governor signed the bill into law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1493834,
+      "measure_id": "HB 137",
+      "vote_date": "2025-02-19",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 137. It says an air pollution enforcement action in Kentucky may rest only on data gathered by a method the federal Environmental Protection Agency has approved or accepts for enforcement. Data collected any other way cannot be used or even considered, including in a case brought by a private citizen. The Kentucky House voted 73-16, and the bill became law without the Governor's signature.",
+      "nay_description": "Voted against House Bill 137. It says an air pollution enforcement action in Kentucky may rest only on data gathered by a method the federal Environmental Protection Agency has approved or accepts for enforcement. Data collected any other way cannot be used or even considered, including in a case brought by a private citizen. The Kentucky House voted 73-16, and the bill became law without the Governor's signature.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1516636,
+      "measure_id": "HB 137",
+      "vote_date": "2025-03-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 137. It says an air pollution enforcement action in Kentucky may rest only on data gathered by a method the federal Environmental Protection Agency has approved or accepts for enforcement. Data collected any other way cannot be used or even considered, including in a case brought by a private citizen. The Kentucky Senate voted 31-6, and the bill became law without the Governor's signature.",
+      "nay_description": "Voted against House Bill 137. It says an air pollution enforcement action in Kentucky may rest only on data gathered by a method the federal Environmental Protection Agency has approved or accepts for enforcement. Data collected any other way cannot be used or even considered, including in a case brought by a private citizen. The Kentucky Senate voted 31-6, and the bill became law without the Governor's signature.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1529812,
+      "measure_id": "HB 216",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 216. Kentucky's ethics law bars a public servant from holding or bidding on a contract awarded by the agency that employs them. This Act exempts Department of Agriculture employees who work outside the Kentucky Office of Agricultural Policy, so they may apply for and receive farm funds, awards and contracts the department hands out, and it makes the exemption retroactive to March 12, 2021. The Kentucky House voted 79-15, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 216. Kentucky's ethics law bars a public servant from holding or bidding on a contract awarded by the agency that employs them. This Act exempts Department of Agriculture employees who work outside the Kentucky Office of Agricultural Policy, so they may apply for and receive farm funds, awards and contracts the department hands out, and it makes the exemption retroactive to March 12, 2021. The Kentucky House voted 79-15, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1529813,
+      "measure_id": "HB 216",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 216. Kentucky's ethics law bars a public servant from holding or bidding on a contract awarded by the agency that employs them. This Act exempts Department of Agriculture employees who work outside the Kentucky Office of Agricultural Policy, so they may apply for and receive farm funds, awards and contracts the department hands out, and it makes the exemption retroactive to March 12, 2021. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 216. Kentucky's ethics law bars a public servant from holding or bidding on a contract awarded by the agency that employs them. This Act exempts Department of Agriculture employees who work outside the Kentucky Office of Agricultural Policy, so they may apply for and receive farm funds, awards and contracts the department hands out, and it makes the exemption retroactive to March 12, 2021. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1529584,
+      "measure_id": "HB 424",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 424. It adds failure to meet a college or university's performance and productivity requirements to the list of reasons a public college may remove a president or a faculty member, including one with tenure, and requires an evaluation at least every four years. It also lengthens the written notice a person must get before removal from 10 days to 30 days, and lets boards hand appointment and removal decisions to the president. The Kentucky House voted 80-20, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 424. It adds failure to meet a college or university's performance and productivity requirements to the list of reasons a public college may remove a president or a faculty member, including one with tenure, and requires an evaluation at least every four years. It also lengthens the written notice a person must get before removal from 10 days to 30 days, and lets boards hand appointment and removal decisions to the president. The Kentucky House voted 80-20, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1529585,
+      "measure_id": "HB 424",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 424. It adds failure to meet a college or university's performance and productivity requirements to the list of reasons a public college may remove a president or a faculty member, including one with tenure, and requires an evaluation at least every four years. It also lengthens the written notice a person must get before removal from 10 days to 30 days, and lets boards hand appointment and removal decisions to the president. The Kentucky Senate voted 29-9, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 424. It adds failure to meet a college or university's performance and productivity requirements to the list of reasons a public college may remove a president or a faculty member, including one with tenure, and requires an evaluation at least every four years. It also lengthens the written notice a person must get before removal from 10 days to 30 days, and lets boards hand appointment and removal decisions to the president. The Kentucky Senate voted 29-9, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1518196,
+      "measure_id": "HB 455",
+      "vote_date": "2025-03-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 455. It creates a Unit of Election Investigations and Security inside Kentucky's Attorney General's office to take complaints about election law, run its own investigations, issue subpoenas, and operate the voter fraud hotline. The unit must refer possible crimes to prosecutors and publish a yearly report listing each investigation, the law involved, the county, and where the case stands. The Kentucky House voted 71-17, and the Governor signed the bill into law.",
+      "nay_description": "Voted against House Bill 455. It creates a Unit of Election Investigations and Security inside Kentucky's Attorney General's office to take complaints about election law, run its own investigations, issue subpoenas, and operate the voter fraud hotline. The unit must refer possible crimes to prosecutors and publish a yearly report listing each investigation, the law involved, the county, and where the case stands. The Kentucky House voted 71-17, and the Governor signed the bill into law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1529619,
+      "measure_id": "HB 495",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 495. It bars Kentucky's Medicaid program and its managed care companies from spending Medicaid money on cross-sex hormones above normal levels or on gender reassignment surgery. It also cancels the Governor's Executive Order 2024-632, which dealt with conversion therapy, and blocks any rule or order that is the same or nearly the same until January 1, 2028. The Kentucky House voted 78-20, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 495. It bars Kentucky's Medicaid program and its managed care companies from spending Medicaid money on cross-sex hormones above normal levels or on gender reassignment surgery. It also cancels the Governor's Executive Order 2024-632, which dealt with conversion therapy, and blocks any rule or order that is the same or nearly the same until January 1, 2028. The Kentucky House voted 78-20, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1529620,
+      "measure_id": "HB 495",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 495. It bars Kentucky's Medicaid program and its managed care companies from spending Medicaid money on cross-sex hormones above normal levels or on gender reassignment surgery. It also cancels the Governor's Executive Order 2024-632, which dealt with conversion therapy, and blocks any rule or order that is the same or nearly the same until January 1, 2028. The Kentucky Senate voted 31-6, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 495. It bars Kentucky's Medicaid program and its managed care companies from spending Medicaid money on cross-sex hormones above normal levels or on gender reassignment surgery. It also cancels the Governor's Executive Order 2024-632, which dealt with conversion therapy, and blocks any rule or order that is the same or nearly the same until January 1, 2028. The Kentucky Senate voted 31-6, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1530633,
+      "measure_id": "HB 662",
+      "vote_date": "2025-03-28",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 662. It lets a judge, or a member of a judge's immediate family, send a written request to any Kentucky government agency to take their personal details off public view, and the agency must remove them within 72 hours. Protected details include home address, phone numbers, date of birth, Social Security number, and the schools a judge's children attend. The Kentucky House voted 77-17, and the Governor signed the bill into law.",
+      "nay_description": "Voted against House Bill 662. It lets a judge, or a member of a judge's immediate family, send a written request to any Kentucky government agency to take their personal details off public view, and the agency must remove them within 72 hours. Protected details include home address, phone numbers, date of birth, Social Security number, and the schools a judge's children attend. The Kentucky House voted 77-17, and the Governor signed the bill into law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1492901,
+      "measure_id": "SB 2",
+      "vote_date": "2025-02-18",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 2. It bars any public money in Kentucky from paying for cosmetic or elective procedures for people held in correctional facilities, and defines those to include cross-sex hormones above normal levels and gender reassignment surgery. A doctor who has already started such treatment may taper it off if stopping at once would harm the person. The Kentucky Senate voted 31-6, and the bill became law without the Governor's signature.",
+      "nay_description": "Voted against Senate Bill 2. It bars any public money in Kentucky from paying for cosmetic or elective procedures for people held in correctional facilities, and defines those to include cross-sex hormones above normal levels and gender reassignment surgery. A doctor who has already started such treatment may taper it off if stopping at once would harm the person. The Kentucky Senate voted 31-6, and the bill became law without the Governor's signature.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1529599,
+      "measure_id": "SB 65",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 65. It cancels five proposed changes to Kentucky regulations that legislative committees had found deficient, covering community mental health services under Medicaid, coal mine bonding, and the conduct of credit unions. The agencies may not propose the same or nearly the same changes again until June 1, 2026. The Kentucky House voted 75-18, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 65. It cancels five proposed changes to Kentucky regulations that legislative committees had found deficient, covering community mental health services under Medicaid, coal mine bonding, and the conduct of credit unions. The agencies may not propose the same or nearly the same changes again until June 1, 2026. The Kentucky House voted 75-18, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1529597
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1529596,
+      "measure_id": "SB 65",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 65. It cancels five proposed changes to Kentucky regulations that legislative committees had found deficient, covering community mental health services under Medicaid, coal mine bonding, and the conduct of credit unions. The agencies may not propose the same or nearly the same changes again until June 1, 2026. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 65. It cancels five proposed changes to Kentucky regulations that legislative committees had found deficient, covering community mental health services under Medicaid, coal mine bonding, and the conduct of credit unions. The agencies may not propose the same or nearly the same changes again until June 1, 2026. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

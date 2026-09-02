@@ -40,6 +40,7 @@ import {
 } from "../pipeline/rollcall/rollCallFanOut.js";
 import { rollCallUrlKey } from "../pipeline/rollcall/rollCallRecordUrls.js";
 import { createCandidateRecordUpdateNotificationEvents } from "../pipeline/users/candidateFollowNotificationEvents.js";
+import { reportPath } from "../pipeline/rollcall/rollCallReportPaths.js";
 import { usLatestLocalDateIso } from "../utils/usLocalDate.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
@@ -496,7 +497,7 @@ async function main(): Promise<void> {
     skipExisting,
     startedAt: startedAt.toISOString(),
     finishedAt: new Date().toISOString(),
-    evidenceDir,
+    evidenceDir: reportPath(evidenceDir),
     scopeFrom,
     legislatorsSha: legislators.sha,
     files: files.length,

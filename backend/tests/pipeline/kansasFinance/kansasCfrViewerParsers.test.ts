@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  checkKansasScheduleA,
   parseKansasCfrGridCurrentPage,
   parseKansasCfrGridRows,
   parseKansasContributionExportRows,
@@ -9,6 +10,7 @@ import {
   parseKansasOcrMoneyCents,
   parseKansasRecordCount,
   parseKansasReportCover,
+  parseKansasScheduleARows,
   parseKansasScheduleATotals,
   parseKansasScheduleCTotals,
   reconcileKansasCoverArithmetic,
@@ -208,6 +210,233 @@ describe("schedule totals", () => {
   });
 });
 
+// Synthetic Schedule A page mirroring the live e-filed shape (entity row with
+// a one-line name and blank occupation; person row with the form's two source
+// lines and a voluntary occupation; accounting-style refund). Names and
+// addresses are invented — never paste live contributor rows (25-4154(d)).
+const SCHEDULE_A_HTML = `
+<table width='98%' cellpadding='2' cellspacing='0' border='1' >
+<tr>
+<th align="left" class="bold10" rowspan="2" valign='middle'>Date</th>
+<th class='bold10' align='left' valign='middle' rowspan='2'>Name and Address<br />of Contributor</th>
+<th class='bold10' align='left' valign='middle' colspan='1'>Type of Payment</th>
+<th class='bold10' align='left' valign='middle' rowspan='2'>Occupation of Individual Giving<br /> More Than $150</th>
+<th class='bold10' align='left' valign='middle' rowspan='2'>Primary Total</th>
+<th class='bold10'  align='left' valign='middle' rowspan='2'>General Total</th>
+<th class='bold10' align='left' valign='middle' rowspan='2'>Amount</th>
+</tr>
+<tr>
+<td valign='top' align='left' class='plain9'>Cash, Check, Loan, E-funds, Other</td>
+</tr>
+<tr>
+<td align="left" class="plain8" valign="middle" width="80px">
+07/23/26</td>
+<td valign='middle' align='left' class='plain8' width="220px">
+Prairie Wind Growers &amp; Millers PAC
+<br />
+<span id="Repeater2_lblAddress_0">100 Example Pkwy<br /></span>
+Suite 4<br />
+Sampleton&nbsp;
+KS&nbsp;
+<span id="Repeater2_lblZip_0">66000</span>
+</td>
+<td valign='middle' align='left' class='plain8' width="180px">
+Check
+</td>
+<td valign='middle' align='left' class='plain8' width="175px">
+<br />
+</td>
+<td valign='middle' align='right' class='plain8'  style="width:160px">$1,000.00</td>
+<td valign='middle' align='right' class='plain8'  style="width:160px">$0.00</td>
+<td valign='middle' align='right' class='plain8'  style="width:160px">
+$500.00
+</td>
+</tr>
+<tr>
+<td align="left" class="plain8" valign="middle" width="80px">
+07/07/26</td>
+<td valign='middle' align='left' class='plain8' width="220px">
+Testy
+Fixture
+<br />
+<span id="Repeater2_lblAddress_1">201 Placeholder Rd</span>
+<br />
+Sampleton&nbsp;
+KS&nbsp;
+<span id="Repeater2_lblZip_1">66000</span>
+</td>
+<td valign='middle' align='left' class='plain8' width="180px">
+Cash
+</td>
+<td valign='middle' align='left' class='plain8' width="175px">
+Retired<br />
+</td>
+<td valign='middle' align='right' class='plain8'  style="width:160px">$100.00</td>
+<td valign='middle' align='right' class='plain8'  style="width:160px">$0.00</td>
+<td valign='middle' align='right' class='plain8'  style="width:160px">
+$100.00
+</td>
+</tr>
+<tr>
+<td align="left" class="plain8" valign="middle" width="80px">
+06/30/26</td>
+<td valign='middle' align='left' class='plain8' width="220px">
+Sample
+Donor
+<br />
+<span id="Repeater2_lblAddress_2">1 Nowhere Ln</span>
+<br />
+Sampleton&nbsp;
+KS&nbsp;
+<span id="Repeater2_lblZip_2">66000</span>
+</td>
+<td valign='middle' align='left' class='plain8' width="180px">
+E-funds
+</td>
+<td valign='middle' align='left' class='plain8' width="175px">
+Farmer<br />
+</td>
+<td valign='middle' align='right' class='plain8'  style="width:160px">$200.00</td>
+<td valign='middle' align='right' class='plain8'  style="width:160px">$0.00</td>
+<td valign='middle' align='right' class='plain8'  style="width:160px">
+($50.00)
+</td>
+</tr>
+</table>
+<table width='98%' border='1' cellpadding='2' cellspacing='0'>
+<tr>
+<td align="left"  class="bold9" colspan="9" valign="top">Total Itemized Receipts for Period</td>
+<td align="right" class="plain10" valign="top" width="110px">
+$<span id="lblTotalItemized" title="Total Itemized Receipts for Period">550.00</span>
+</td>
+</tr>
+<tr>
+<td align='left' class='bold9' colspan='9' valign=top>Total Unitemized Contributions ($50 or less)</td>
+<td class='plain10' align='right' valign='top' width="110px">
+$<span id="lblTotalUnitemized" title="Total Unitemized Contributions ($50 or less)">25.00</span>
+</td>
+</tr>
+<tr>
+<td align="left" class="bold9" colspan="9" valign="top">Sale of Political Materials (Unitemized)</td>
+<td align="right" class="plain10" valign="top" width="110px">
+$<span id="lblPoliticalMaterials" title="Sale of Political Materials (Unitemized)">0</span>
+</td>
+</tr>
+<tr>
+<td align="left" class="bold9" colspan="9" valign="top">Total Contributions When Contributor Not Known</td>
+<td align="right" class="plain10" valign="top" width="110px">
+$<span id="lblContributorUnknown" title="Total Contributions When Contributor Not Known">0</span>
+</td>
+</tr>
+<tr>
+<td align='left' class='bold9' colspan='9' valign='middle' bgcolor='#bbbbbb'>TOTAL RECEIPTS THIS PERIOD</td>
+<td align='right' class='plain10' valign='top' width="110px">
+$<span id="lblTotalReceipts" title="Total Receipts This Period">575.00</span>
+</td>
+</tr>
+</table>`;
+
+describe("parseKansasScheduleARows", () => {
+  it("parses the live row shape: entity and person names, blank/voluntary occupation, refunds", () => {
+    const parsed = parseKansasScheduleARows(SCHEDULE_A_HTML);
+    expect(parsed.malformedRowCount).toBe(0);
+    expect(parsed.rows).toEqual([
+      {
+        index: 0,
+        date: "07/23/26",
+        contributorName: "Prairie Wind Growers & Millers PAC",
+        addressLines: ["100 Example Pkwy", "Suite 4", "Sampleton KS 66000"],
+        zip: "66000",
+        tenderType: "Check",
+        occupation: "",
+        primaryTotalCents: 100000,
+        generalTotalCents: 0,
+        amountCents: 50000,
+      },
+      {
+        index: 1,
+        date: "07/07/26",
+        contributorName: "Testy Fixture",
+        addressLines: ["201 Placeholder Rd", "Sampleton KS 66000"],
+        zip: "66000",
+        tenderType: "Cash",
+        occupation: "Retired",
+        primaryTotalCents: 10000,
+        generalTotalCents: 0,
+        amountCents: 10000,
+      },
+      {
+        index: 2,
+        date: "06/30/26",
+        contributorName: "Sample Donor",
+        addressLines: ["1 Nowhere Ln", "Sampleton KS 66000"],
+        zip: "66000",
+        tenderType: "E-funds",
+        occupation: "Farmer",
+        primaryTotalCents: 20000,
+        generalTotalCents: 0,
+        amountCents: -5000,
+      },
+    ]);
+  });
+
+  it("ignores header rows and reports a row with the wrong cell count as malformed", () => {
+    const html = `
+      <tr><th>Date</th><th>Name and Address<br />of Contributor</th></tr>
+      <tr>
+        <td>07/01/26</td>
+        <td>Someone<br /><span id="Repeater2_lblAddress_0">1 St</span><br />Town&nbsp;KS&nbsp;<span id="Repeater2_lblZip_0">66000</span></td>
+        <td>Check</td>
+        <td><br /></td>
+        <td>$10.00</td>
+        <td>$10.00</td>
+      </tr>`;
+    expect(parseKansasScheduleARows(html)).toEqual({ rows: [], malformedRowCount: 1 });
+  });
+
+  it("returns no rows for an empty schedule (totals only)", () => {
+    const html = `<table><tr><th>Date</th></tr></table>
+      <span id="lblTotalItemized">0</span><span id="lblTotalUnitemized">0</span>`;
+    expect(parseKansasScheduleARows(html)).toEqual({ rows: [], malformedRowCount: 0 });
+  });
+});
+
+describe("checkKansasScheduleA", () => {
+  it("passes when the row sum equals lblTotalItemized and the totals identity holds", () => {
+    const parsed = parseKansasScheduleARows(SCHEDULE_A_HTML);
+    const totals = parseKansasScheduleATotals(SCHEDULE_A_HTML);
+    expect(totals.totalItemizedCents).toBe(55000);
+    expect(checkKansasScheduleA(parsed, totals)).toEqual({
+      rowsParsed: true,
+      itemizedSumMatchesTotal: true,
+      totalsArithmeticOk: true,
+    });
+  });
+
+  it("fails the sum check by one cent and the identity check when a line is missing", () => {
+    const parsed = parseKansasScheduleARows(SCHEDULE_A_HTML);
+    const totals = parseKansasScheduleATotals(SCHEDULE_A_HTML);
+    expect(checkKansasScheduleA(parsed, { ...totals, totalItemizedCents: 55001 })).toMatchObject({
+      rowsParsed: true,
+      itemizedSumMatchesTotal: false,
+    });
+    expect(checkKansasScheduleA(parsed, { ...totals, politicalMaterialsCents: null })).toMatchObject({
+      totalsArithmeticOk: false,
+    });
+  });
+
+  it("fails closed when a row amount does not parse or a row is malformed", () => {
+    const totals = parseKansasScheduleATotals(SCHEDULE_A_HTML);
+    const unparsed = parseKansasScheduleARows(SCHEDULE_A_HTML.replace("($50.00)", "TBD"));
+    expect(unparsed.rows[2]!.amountCents).toBeNull();
+    expect(checkKansasScheduleA(unparsed, totals)).toMatchObject({ rowsParsed: false, itemizedSumMatchesTotal: false });
+    expect(checkKansasScheduleA({ rows: [], malformedRowCount: 1 }, totals)).toMatchObject({
+      rowsParsed: false,
+      itemizedSumMatchesTotal: false,
+    });
+  });
+});
+
 describe("parseKansasCfrGridRows", () => {
   it("classifies e-filed and paper rows (live grid shapes)", () => {
     const html = `
@@ -220,7 +449,8 @@ describe("parseKansasCfrGridRows", () => {
       <span id="grdviewCfrResults_lblOriginalDate_1">07/27/2026</span>
       <span id="grdviewCfrResults_lblAmendmentDate_1">08/06/2026</span>
       <a id="grdviewCfrResults_LinkButton1_1" title="open filing with Adobe Acrobat in a new window" href="javascript:__doPostBack(&#39;grdviewCfrResults$ctl03$LinkButton1&#39;,&#39;&#39;)">HENDERSON FRANK</a>
-      <img id="grdviewCfrResults_paper_1" title="Paper Filing" src="../../images/pdficon_small.gif" />`;
+      <img id="grdviewCfrResults_paper_1" title="Paper Filing" src="../../images/pdficon_small.gif" />
+      <span id="grdviewCfrResults_lblAmendmentNo_1">2</span>`;
     const rows = parseKansasCfrGridRows(html, "grdviewCfrResults");
     expect(rows).toHaveLength(2);
     expect(rows[0]).toMatchObject({
@@ -228,6 +458,7 @@ describe("parseKansasCfrGridRows", () => {
       name: "Helwig Dale",
       officeSought: "STATE REPRESENTATIVE",
       district: "1",
+      amendmentNo: "",
       channel: "efile",
       postbackTarget: "grdviewCfrResults$ctl02$lnkbtnLastName",
     });
@@ -235,6 +466,7 @@ describe("parseKansasCfrGridRows", () => {
       fileDate: "07/27/2026",
       amendmentDate: "08/06/2026",
       name: "HENDERSON FRANK",
+      amendmentNo: "2",
       channel: "paper",
       postbackTarget: "grdviewCfrResults$ctl03$LinkButton1",
     });

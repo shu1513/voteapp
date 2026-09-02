@@ -1,6 +1,6 @@
 # Idaho campaign finance — build plan
 
-Status: rev 1 — Phase 0 BUILT 2026-09-01 (client, CSV parser, reconciliation module, probe script, sanitized fixtures; live probe results below). Next = Phase 1.
+Status: rev 2 — Phase 0 MERGED (#1025, 2026-09-02); Phase 1 BUILT 2026-09-02 (migration 268, flags, source label, eligible offices, filer resolver, auto-link + `--dry-run` script, per-registration artifact cache, snapshot writer; unit tests only, no live run). Next = Phase 2a.
 Source facts: `backend/docs/idaho-campaign-finance.md` (endpoints, quirks, and the two findings that shaped this plan; committed with Phase 0).
 Template module: `backend/src/pipeline/newHampshireFinance/` (same Civix CFIS vendor; same JSON envelope, pagination, bulk-export endpoint, client error model).
 Writer: `createStandardStateFinanceSnapshotWriter` (`pipeline/finance/standardStateFinanceSnapshotWriter.ts`), as NH/Montana.
@@ -32,20 +32,24 @@ Consequences: no 20 MB artifact cache; the raw artifact per link is the registra
 - `idahoCfsClient.ts` (Phase 0) — anonymous JSON client. Bulk export, candidate grid (one page of 5,000 covers the whole grid), contribution search by name (`sortBy TransactionDate desc`, `filerRegistrationGuid` in the body is ignored server-side), IE search (one page of 10,000 covers all-time today; paginated anyway). Edge rejects library user agents: send `Mozilla/5.0` + SPA Origin/Referer (NH precedent).
 - `idahoCfsCsv.ts` (Phase 0) — windows-1252 decode; exact 28/34-column headers (expenditure header has a trailing space on `Filing Entity Name `); records split by raw newlines are re-joined; unrepairable rows quarantined (never thrown); `assertIdahoCsvQuarantineTolerance` fails closed above 1%; `idahoCsvElectionYear`/`idahoCsvElectionStage` absorb the swapped election columns.
 - `idahoPhaseZero.ts` (Phase 0) — reconciliation + IE summary, no DB.
-- `idahoCandidateFilerResolver.ts` (Phase 1) — roster candidate → grid registration for the cycle year: exact last name + first-name token + office family + district/jurisdiction; multiple registrations per entity are normal (one per cycle), pick `electionYear == cycle year`; same-year duplicates (11 entities today, usually a terminated re-registration) → prefer Active, else review queue. Never link from `committeeName` text.
+- `idahoFinanceEligibleOffices.ts` (Phase 1) — VoteApp `scope::canonical_name` → grid `office` + district kind. 16 keys: 7 statewide (Comptroller → "State Controller"), State Senator, State Lower Chamber Legislator → "State Representative", and 7 county keys (Commissioner, Treasurer, Assessor, Coroner, Sheriff; both "County Clerk" and "Clerk of Court" → "Clerk", the county clerk being clerk of the district court ex officio). Judges, prosecutors, and special districts stay out until the roster carries them.
+- `idahoCandidateFilerResolver.ts` (Phase 1) — roster candidate → grid registration, pure: grid `electionYear` == race year, exact grid office, district evidence by kind (legislative district number from the district geoid, House seat kept as a label only; county from the district name; commissioner seat from the ballot title "County Commissioner District N" against grid `seatZone`), then full-name evidence through the shared middle-name gate (`personNamesMatchWithMiddleEvidence`) with one-sided roster→grid nickname expansion; the grid's quoted call name becomes a parenthetical alias; display name tried first, structured "First Last" second. Several registrations of one entity in the race year: exactly one Active links, otherwise ambiguous (manual review). Never links from `committeeName` text. Known misses that stay manual: roster spellings outside the nickname table ("Rod W. Beck" vs grid "Rodney William") and people who go by their middle name ("Eric Myricks" vs grid "William Eric Myricks II").
+- `idahoCandidateFinanceAutoLink.ts` (Phase 1) — lists Nov-2026 Idaho candidate elections in eligible offices with no active link, pulls the grid once (one 5,000-row page), resolves, writes links only (`link_source = 'sunshine_grid'`, deep-link `sourceUrl`); `npm run idaho-candidates:finance:auto-link -- --dry-run` reports without writing. Gated by the sync flag (live API).
+- `idahoRegistrationArtifactCache.ts` (Phase 1) — one JSON per registration guid (grid row + its contribution rows + the IE rows targeting it) under `scratch/idaho-campaign-finance/registrations/` (gitignored), sha256 manifest, 0700/0600, identity checked on store and read (every row must carry the key's guid).
+- `idahoFinanceWriter.ts` (Phase 1) — `createStandardStateFinanceSnapshotWriter` over the `id_*` tables; link identity `registration_guid`, outside identity `filer_key`, signed cash on hand, manual-link protection, `sunshine_grid` supersession.
 - `idahoContributionAggregator.ts` (Phase 2a) — direct money.
 - `idahoOutsideSpendingAggregator.ts` (Phase 2b) — outside money.
 - writer + sync + due-list + scheduler (Phase 2/3) — clone NH/Montana shapes.
 
 ## DB (Phase 1)
 
-Migration `<next>_add_idaho_campaign_finance_tables.sql`: five `id_candidate_finance_*` tables cloned from migration 249's `nh_candidate_finance_*` set. Link row identity = `registration_guid` (uuid, unique) with `filer_entity_id`, `filer_registration_id`, `election_year` alongside; `link_source IN ('manual','sunshine_grid')`. Identifiers ≤63 chars; never renumber.
+Migration `268_add_idaho_campaign_finance_tables.sql` (267 is claimed by the open West Virginia PR): five `id_candidate_finance_*` tables cloned from migration 249's `nh_candidate_finance_*` set. Link row identity = `registration_guid` (lowercase uuid **text** with a regex CHECK, so the standard writer/loader compare it like every other state's committee id) + `filer_name`; no extra entity/registration-id columns — the standard writer's link insert is fixed and the sync re-pulls the grid by guid anyway. `link_source IN ('manual','sunshine_grid')`; `election_year` 2026+; direct `category_type IN ('contribution_size','contributor_source_type')` (Vermont precedent — Idaho has no occupation/employer; in-state share has no standard category and is a Phase 2a UI decision); outside identity `filer_key` (filer registration guid when registered, else a name-derived key Phase 2b defines) + `filer_name`; `cash_on_hand` signed (grid `balanceOfFunds` goes negative). Identifiers ≤63 chars; never renumber. DDL validated against the local schema in a rolled-back transaction 2026-09-02; not applied.
 
 Source enum `IDAHO_SUNSHINE` in `ballotLookupFinanceShared.ts`; label `IDAHO_SUNSHINE: "Idaho Secretary of State Sunshine Portal"` in `packages/api-client/src/format.ts` `FINANCE_SOURCE_LABELS` (+ `format.test.ts`); homepage `https://sunshine.voteidaho.gov` in `FINANCE_SOURCE_HOME_URLS` (`packages/api-client/src/finance.ts`, + test). `sourceUrl` on links/summaries = `https://sunshine.voteidaho.gov/public/cf/candidateprofile?guid=<registrationGuid>&tabName=CAN&isLegacy=false` (verified deep link).
 
 ## Flags (Phase 1)
 
-Code defaults `false` in `featureFlags.ts`; add all three to `backend/.env.example`, the read flag to `render.yaml`, and set them ON in local `backend/.env` per [voteapp-new-state-finance-checklist] (free read-side flags stay on; raw refresh hits the live API and stays off unless a batch run is intended):
+Code defaults `false` in `featureFlags.ts` (done); all three in `backend/.env.example` and the read flag in `render.yaml` at `"false"` until Phase 4 (done). Set the read flag ON in the local `backend/.env` of the main checkout per [voteapp-new-state-finance-checklist] once migration 268 is applied (free read-side flags stay on; sync and raw refresh hit the live API and stay off unless a batch run is intended):
 
 ```text
 IDAHO_CAMPAIGN_FINANCE_ENABLED
@@ -77,18 +81,16 @@ Live results 2026-09-01 (`npm run idaho-candidates:finance:phase-zero`, exit 0, 
 - 2026 candidate-target IE money: $3,403,243.20 support / $849,889.46 oppose (API) vs $3,144,754.32 / $674,202.03 in the bulk TEXP (version-1 subset, registered filers only);
 - one IE transaction = one parent row + one allocation row per target; `amountApplied` is the per-target figure; 87 of 735 transaction groups allocate less than the transaction amount (partial allocation is legitimate); identical allocation rows recur (225 all-time) and the state counts them — keep them.
 
-### Phase 1 — schema, flags, source label, filer resolver, artifact cache, writer
+### Phase 1 — schema, flags, source label, filer resolver, artifact cache, writer (BUILT 2026-09-02)
 
-- migration + flags + label/home-URL entries above (checklist items 1–2);
-- resolver against the grid (rules above) with a `--dry-run` report;
-- per-registration JSON artifact cache (grid row + contribution rows + IE rows), sha256 + manifest, `scratch/idaho-campaign-finance/` gitignored;
-- snapshot writer via `createStandardStateFinanceSnapshotWriter`;
-- unit tests on sanitized fixtures; no live run.
+Built: migration 268; `IDAHO_CAMPAIGN_FINANCE_{ENABLED,SYNC_ENABLED,RAW_DATA_REFRESH_ENABLED}` (+ `.env.example`, `render.yaml`); source `IDAHO_SUNSHINE` + label + home URL (+ tests); `backend/src/pipeline/idahoFinance/{idahoFinanceEligibleOffices,idahoCandidateFilerResolver,idahoCandidateFinanceAutoLink,idahoRegistrationArtifactCache,idahoFinanceWriter}.ts`; `backend/src/scripts/autoLinkIdahoCandidateFinance.ts` (`npm run idaho-candidates:finance:auto-link`, `--dry-run`, `--force`, `--max-candidates`, `--lookback-days`, `--lookahead-days`); grid row contract gains `seatZone`; tests under `backend/tests/pipeline/idahoFinance/` (shared factories in `idahoTestFixtures.ts`), `backend/tests/scripts/`, `backend/tests/config/`. No live run, no data written.
+
+Resolver rules are pinned by tests against the real grid shapes (Senate district, House seat label "16B", commissioner seat "Ada 2", both clerk spellings, statewide null district, call-name alias, nickname expansion, middle-initial corroboration, middle conflict rejection, Active-over-Terminated, two-Active ambiguity, wrong-year exclusion).
 
 ### Phase 2a — direct money
 
 - summary: raised = grid `totalRaised`, spent = grid `totalSpent`, cash on hand = grid `balanceOfFunds`, as-of = latest `filedDate` among rows (fallback: sync time);
-- breakdowns from the registration's contribution rows: size buckets over itemized rows (`ITMY`, `INKIND`), unitemized lump = Σ `NITMY` rows (+ `ANYMS`), donor type from `transactionSourceTypeCode` (TIND/TSELF/TCAN → individual; TBSN/TPAC/TCENC → organization), in-state share from `stateType` (INST/OTST);
+- breakdowns from the registration's contribution rows: size buckets over itemized rows (`ITMY`, `INKIND`), unitemized lump = Σ `NITMY` rows (+ `ANYMS`), donor type from `transactionSourceTypeCode` (TIND/TSELF/TCAN → individual; TBSN/TPAC/TCENC → organization) stored as `contributor_source_type`; in-state share from `stateType` (INST/OTST) has no standard category type or card slot — decide (new category + loader/UI, or a coverage note) before writing it;
 - coverage note: itemized share = Σ rows / grid total (returns make grid < rows; show "state total" as the headline and never let a breakdown exceed it);
 - occupation chart null with the Idaho footnote (not collected by the state).
 
@@ -101,7 +103,7 @@ Live results 2026-09-01 (`npm run idaho-candidates:finance:phase-zero`, exit 0, 
 
 ### Phase 3 — local live run
 
-Nov-2026 rosters → resolver → sync all links → validation report (grid/search match rate must be 100% for linked registrations; anything else quarantines the link). Record results in this doc and the findings doc.
+Nov-2026 rosters → `idaho-candidates:finance:auto-link` (dry-run first, then write; ambiguous/unmatched → manual links) → sync all links → validation report. Roster reality 2026-09-02: 212 Idaho Nov-2026 general elections locally, 57 with candidates (120 links) — State Senator 72, federal 12, statewide 26, county ~20, State Representative none — so the roster gap, not the pipeline, caps this phase. (grid/search match rate must be 100% for linked registrations; anything else quarantines the link). Record results in this doc and the findings doc.
 
 ### Phase 4 — prod
 
@@ -109,7 +111,7 @@ Migrations, `IDAHO_CAMPAIGN_FINANCE_ENABLED` in render.yaml, `id_*` pg_dump prom
 
 ## Validation gates (import refuses to write on failure)
 
-- grid row present and `electionYear` matches the link's cycle; status may be Terminated (money stays public);
+- grid row present and `electionYear` matches the link's cycle; the auto-link only creates links to Active registrations (a lone Terminated/Inactive one is reported for manual review), but an existing link keeps syncing after its registration terminates — the money stays public;
 - Σ contribution rows for the registration guid ≥ grid `totalRaised` only when returned contributions exist in the bulk export for that entity; otherwise must equal to the cent;
 - every IE row selected carries stance Support or Oppose and a date inside the window;
 - artifact sha256 matches the manifest before any snapshot write.

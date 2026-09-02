@@ -93,6 +93,7 @@ export type BallotLookupFinanceSummary = {
     | "FLORIDA_DOS"
     | "UTAH_DISCLOSURES"
     | "HAWAII_CSC"
+    | "IDAHO_SUNSHINE"
     | "VIRGINIA_CFREPORTS"
     | "TENNESSEE_CAMP"
     | "WASHINGTON_PDC"
@@ -118,7 +119,8 @@ export type BallotLookupFinanceSummary = {
     | "MISSISSIPPI_SOS"
     | "RHODE_ISLAND_ERTS"
     | "SOUTH_CAROLINA_CAMPAIGN_FINANCE"
-    | "ALABAMA_FCPA";
+    | "ALABAMA_FCPA"
+    | "WEST_VIRGINIA_CFRS";
   cycle: number;
   fec_candidate_id: string | null;
   controlled_committee_id?: string | null;
@@ -213,6 +215,7 @@ export const FINANCE_SUMMARY_SOURCES = [
   "FLORIDA_DOS",
   "UTAH_DISCLOSURES",
   "HAWAII_CSC",
+  "IDAHO_SUNSHINE",
   "VIRGINIA_CFREPORTS",
   "TENNESSEE_CAMP",
   "WASHINGTON_PDC",
@@ -239,6 +242,7 @@ export const FINANCE_SUMMARY_SOURCES = [
   "RHODE_ISLAND_ERTS",
   "SOUTH_CAROLINA_CAMPAIGN_FINANCE",
   "ALABAMA_FCPA",
+  "WEST_VIRGINIA_CFRS",
 ] as const satisfies readonly BallotLookupFinanceSummary["source"][];
 
 // Compile-time exhaustiveness: never = a union member is missing above.

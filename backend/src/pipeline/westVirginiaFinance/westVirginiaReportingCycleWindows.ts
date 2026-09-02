@@ -1,0 +1,121 @@
+// Candidacy windows from REPS cycle membership (plan hard fact 5: no
+// guessed dates). The Reporting Schedules bulk files list, per
+// ReportingCycle, every reporting period with its begin/end dates. The
+// "<year> Candidate Election Cycle" rows are spread across THREE yearly
+// files (verified live 2026-09-01 for 2026: the 2025 file holds 2025 Q3,
+// the 2026 file holds 2025 Q4 through the General report, and the 2027 file
+// holds the post-general 2026 Q4 period, 2026-10-19 -> 2026-12-31), so the
+// window is the union of the cycle's periods across the election year's
+// neighbors. Committee-cycle and non-partisan cycles are separate strings
+// and never mix in.
+
+import type { WestVirginiaReportingScheduleCsvRow } from "./westVirginiaCfrsCsv.js";
+
+const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
+export type WestVirginiaCycleWindow = {
+  reportingCycle: string;
+  /** ISO dates, inclusive. */
+  windowStart: string;
+  windowEnd: string;
+  periods: Array<{
+    description: string;
+    beginDate: string;
+    endDate: string;
+    dueDate: string;
+  }>;
+};
+
+export class WestVirginiaCycleWindowError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "WestVirginiaCycleWindowError";
+  }
+}
+
+/** Exact REPS ReportingCycle string for a candidate election year. */
+export function westVirginiaCandidateReportingCycle(electionYear: number): string {
+  return `${electionYear} Candidate Election Cycle`;
+}
+
+/** Schedule-file years that can carry the cycle's periods. */
+export function westVirginiaScheduleYearsForElection(electionYear: number): number[] {
+  return [electionYear - 1, electionYear, electionYear + 1];
+}
+
+export function resolveWestVirginiaCandidateCycleWindow(input: {
+  scheduleRows: readonly WestVirginiaReportingScheduleCsvRow[];
+  electionYear: number;
+}): WestVirginiaCycleWindow {
+  if (!Number.isInteger(input.electionYear) || input.electionYear < 2000 || input.electionYear > 2100) {
+    throw new WestVirginiaCycleWindowError(`invalid election year: ${input.electionYear}`);
+  }
+  const reportingCycle = westVirginiaCandidateReportingCycle(input.electionYear);
+  const seen = new Set<string>();
+  const periods: WestVirginiaCycleWindow["periods"] = [];
+  for (const row of input.scheduleRows) {
+    if (row.reportingCycle !== reportingCycle) {
+      continue;
+    }
+    if (!ISO_DATE_PATTERN.test(row.beginDate) || !ISO_DATE_PATTERN.test(row.endDate) || row.beginDate > row.endDate) {
+      throw new WestVirginiaCycleWindowError(
+        `${reportingCycle} period "${row.reportingPeriodDescription}" has invalid dates ${row.beginDate}..${row.endDate}`
+      );
+    }
+    // The same period can appear once per schedule file; identical rows
+    // collapse, a same-named period with different dates is a conflict.
+    const key = `${row.reportingPeriodDescription}\u0000${row.beginDate}\u0000${row.endDate}`;
+    if (seen.has(key)) {
+      continue;
+    }
+    if (periods.some((period) => period.description === row.reportingPeriodDescription)) {
+      throw new WestVirginiaCycleWindowError(
+        `${reportingCycle} period "${row.reportingPeriodDescription}" is listed with conflicting dates`
+      );
+    }
+    seen.add(key);
+    periods.push({
+      description: row.reportingPeriodDescription,
+      beginDate: row.beginDate,
+      endDate: row.endDate,
+      dueDate: row.dueDate,
+    });
+  }
+  if (periods.length === 0) {
+    throw new WestVirginiaCycleWindowError(`no reporting periods found for ${reportingCycle}`);
+  }
+  periods.sort((left, right) => left.beginDate.localeCompare(right.beginDate) || left.endDate.localeCompare(right.endDate));
+  for (let index = 1; index < periods.length; index += 1) {
+    if (periods[index]!.beginDate <= periods[index - 1]!.endDate) {
+      throw new WestVirginiaCycleWindowError(
+        `${reportingCycle} periods overlap: "${periods[index - 1]!.description}" and "${periods[index]!.description}"`
+      );
+    }
+  }
+  return {
+    reportingCycle,
+    windowStart: periods[0]!.beginDate,
+    windowEnd: periods[periods.length - 1]!.endDate,
+    periods,
+  };
+}
+
+/** Transaction-artifact years the window spans. */
+export function westVirginiaCycleWindowYears(window: Pick<WestVirginiaCycleWindow, "windowStart" | "windowEnd">): number[] {
+  const startYear = Number.parseInt(window.windowStart.slice(0, 4), 10);
+  const endYear = Number.parseInt(window.windowEnd.slice(0, 4), 10);
+  const years: number[] = [];
+  for (let year = startYear; year <= endYear; year += 1) {
+    years.push(year);
+  }
+  return years;
+}
+
+/** Inclusive ISO-date window test; accepts "YYYY-MM-DD" and "YYYY-MM-DDTHH:MM:SS". */
+export function isWestVirginiaDateInWindow(
+  date: string,
+  window: Pick<WestVirginiaCycleWindow, "windowStart" | "windowEnd">
+): boolean {
+  const day = date.slice(0, 10);
+  return ISO_DATE_PATTERN.test(day) && day >= window.windowStart && day <= window.windowEnd;
+}

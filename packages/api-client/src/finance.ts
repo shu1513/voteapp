@@ -4,6 +4,7 @@ const FINANCE_SOURCE_HOME_URLS: Partial<Record<FinanceSummary["source"], string>
   // Alabama FCPA committee pages are POST/session driven, so the card's
   // provenance fallback points at the portal home page instead.
   ALABAMA_FCPA: "https://fcpa.alabamavotes.gov/",
+  IDAHO_SUNSHINE: "https://sunshine.voteidaho.gov/",
   MISSOURI_MEC: "https://www.mec.mo.gov/MEC/Campaign_Finance/",
   // Montana CERS deep links are POST/session driven, so the card's
   // provenance fallback points at the COPP home page instead.
@@ -12,6 +13,9 @@ const FINANCE_SOURCE_HOME_URLS: Partial<Record<FinanceSummary["source"], string>
   // the CSV), so the card needs this portal fallback for its provenance link.
   NEVADA_AURORA: "https://www.nvsos.gov/SOSCandidateServices/AnonymousAccess/CEFDSearchUU/Search.aspx",
   NEW_HAMPSHIRE_CFS: "https://cfs.sos.nh.gov/",
+  // West Virginia CFRS is a single-page app whose committee views are
+  // reached through POST APIs, so the provenance fallback is the portal home.
+  WEST_VIRGINIA_CFRS: "https://cfrs.wvsos.gov/",
 };
 
 // Shared by the web and mobile FinanceSummaryCard so "is there anything to

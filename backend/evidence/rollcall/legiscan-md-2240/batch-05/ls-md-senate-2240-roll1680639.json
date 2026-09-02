@@ -1,0 +1,261 @@
+{
+  "jurisdiction": "MD",
+  "sessionId": 2240,
+  "chamber": "senate",
+  "rollNumber": 1680639,
+  "bill": "HB1135",
+  "measureId": "HB 1135",
+  "machineUrl": "https://legiscan.com/MD/rollcall/HB1135/id/1680639",
+  "fetchedAt": "2026-09-02T06:31:05.351Z",
+  "rollCall": {
+    "roll_call_id": 1680639,
+    "bill_id": 2113955,
+    "date": "2026-04-08",
+    "desc": "Third Reading Passed",
+    "yea": 33,
+    "nay": 9,
+    "nv": 2,
+    "absent": 3,
+    "total": 47,
+    "passed": 1,
+    "chamber": "S",
+    "chamber_id": 50,
+    "votes": [
+      {
+        "people_id": 4527,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 4553,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 4562,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 4575,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 4596,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 4597,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 4636,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 4639,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 4682,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 4689,
+        "vote_id": 3,
+        "vote_text": "NV"
+      },
+      {
+        "people_id": 4718,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 4731,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 11448,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 11453,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 11917,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 11972,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 11975,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 15140,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 17170,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 17171,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 17243,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 17246,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 17248,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 17313,
+        "vote_id": 4,
+        "vote_text": "Absent"
+      },
+      {
+        "people_id": 17321,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 17322,
+        "vote_id": 4,
+        "vote_text": "Absent"
+      },
+      {
+        "people_id": 17375,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 17376,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 17377,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 17380,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 17402,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 17422,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 17425,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 19527,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 20529,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 20532,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 20862,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 20865,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 20930,
+        "vote_id": 4,
+        "vote_text": "Absent"
+      },
+      {
+        "people_id": 20931,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 20934,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 20955,
+        "vote_id": 3,
+        "vote_text": "NV"
+      },
+      {
+        "people_id": 20956,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 21427,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 21442,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 24534,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 24543,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      }
+    ]
+  }
+}

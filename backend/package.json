@@ -404,6 +404,7 @@
     "massachusetts-candidates:finance:live-probe": "tsx src/scripts/probeMassachusettsCandidateFinance.ts",
     "missouri-candidates:finance:probe": "tsx src/scripts/probeMissouriCandidateFinance.ts",
     "arkansas-candidates:finance:phase-zero": "tsx src/scripts/probeArkansasCampaignFinance.ts",
+    "arkansas-candidates:finance:auto-link": "tsx src/scripts/autoLinkArkansasCandidateFinance.ts",
     "montana-candidates:finance:probe": "tsx src/scripts/probeMontanaCandidateFinance.ts",
     "montana-candidates:finance:auto-link": "tsx src/scripts/autoLinkMontanaCandidateFinance.ts",
     "montana-candidates:finance:sync-due": "tsx src/scripts/syncDueMontanaCandidateFinance.ts",
@@ -430,6 +431,7 @@
     "north-dakota-candidates:finance:auto-link": "tsx src/scripts/autoLinkNorthDakotaCandidateFinance.ts",
     "new-hampshire-candidates:finance:raw:refresh": "tsx src/scripts/refreshNewHampshireCampaignFinanceRawData.ts",
     "idaho-candidates:finance:phase-zero": "tsx src/scripts/probeIdahoCampaignFinance.ts",
+    "idaho-candidates:finance:auto-link": "tsx src/scripts/autoLinkIdahoCandidateFinance.ts",
     "alabama-candidates:finance:phase-zero": "tsx src/scripts/probeAlabamaCampaignFinance.ts",
     "alabama-candidates:finance:raw:refresh": "tsx src/scripts/refreshAlabamaCampaignFinanceRawData.ts",
     "alabama-candidates:finance:auto-link": "tsx src/scripts/autoLinkAlabamaCandidateFinance.ts",
@@ -453,7 +455,10 @@
     "pennsylvania-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertPennsylvaniaCandidateFinanceSyncScheduler.ts",
     "pennsylvania-candidates:finance:scheduler:worker": "tsx src/scripts/runPennsylvaniaCandidateFinanceSyncSchedulerWorker.ts",
     "pennsylvania-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerPennsylvaniaCandidateFinanceSync.ts",
-    "west-virginia-candidates:finance:probe": "tsx src/scripts/probeWestVirginiaCandidateFinance.ts"
+    "west-virginia-candidates:finance:probe": "tsx src/scripts/probeWestVirginiaCandidateFinance.ts",
+    "west-virginia-candidates:finance:raw:refresh": "tsx src/scripts/refreshWestVirginiaCampaignFinanceRawData.ts",
+    "west-virginia-candidates:finance:auto-link": "tsx src/scripts/autoLinkWestVirginiaCandidateFinance.ts",
+    "west-virginia-candidates:finance:sync-due": "tsx src/scripts/syncDueWestVirginiaCandidateFinance.ts"
   },
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.1078.0",

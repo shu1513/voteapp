@@ -130,6 +130,7 @@ describe("Idaho CFS Phase 0", () => {
       districtType: "Legislative",
       district: "Legislative District 16",
       jurisdiction: "Idaho State",
+      seatZone: "B",
       party: "Democratic Party",
       partyCode: "DEM",
       electionYear: 2026,

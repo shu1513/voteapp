@@ -17,6 +17,7 @@ import {
 } from "../pipeline/rollcall/legislativeVoteStore.js";
 import { LEGISLATIVE_VOTE_CHAMBERS, type LegislativeVoteChamber } from "../pipeline/rollcall/legislativeVotes.js";
 import { classifyFederalRollCall, type RollCallQuestionClass } from "../pipeline/rollcall/rollCallQuestionClass.js";
+import { reportPath } from "../pipeline/rollcall/rollCallReportPaths.js";
 import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 
@@ -311,7 +312,7 @@ async function main(): Promise<void> {
     dryRun,
     startedAt: startedAt.toISOString(),
     finishedAt: new Date().toISOString(),
-    evidenceDir,
+    evidenceDir: reportPath(evidenceDir),
     requestedRolls: rolls.length,
     floorVotes,
     counts,

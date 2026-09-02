@@ -89,6 +89,20 @@ district, party, electionYear, filingCycleId, treasurer, status, entityGuid.
   Blanksma; Bruno; Boyle 2024 + 2026; Ackerman). Registrations with returned
   contributions show grid < Σ rows (the state subtracts returns, which the
   search does not serve) — take the grid figure, never recompute it.
+- Grid identity fields used by the Phase 1 resolver (all 729 election-year-2026
+  rows inspected 2026-09-01): `office` (exact text: "State Senator", "State
+  Representative", "County Commissioner", "Clerk", "Assessor", "Coroner",
+  "County Treasurer", "Sheriff", "Governor", "State Controller", ...),
+  `districtType` ("State" / "Legislative" / "County" / "Judicial" / ...),
+  `cityDistrict` ("Statewide", "Legislative District 16", "Ada County"),
+  `jurisdiction` ("Idaho State" or the bare county name "Ada"), and `seatZone`
+  (House seat "A"/"B"; commissioner district "1"–"3"; null elsewhere).
+  `firstName`/`middleName`/`lastName` are always filled; `filerName` is
+  "Last, First Middle" and quotes call names ("Bertling, Timothy 'Tim' Paul");
+  generational suffixes live in `lastName` ("Myricks II"). `filerTypeCode` is
+  `CAN` on every grid row. 5 entities carry two 2026 registrations (two
+  Active for the same race in 3 cases, Terminated + Active in 1, two offices
+  in 1). `balanceOfFunds` can be negative (Hernandez 2026: −$1,321.99).
 
 ## Per-registration transaction search (cracked 2026-09-01 via the SPA)
 

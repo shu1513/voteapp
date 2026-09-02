@@ -1,5 +1,6 @@
-// Phase 0 only: pure summarization/reconciliation helpers behind the probe
-// script. No database, cache, scheduler, or published snapshot.
+// Pure summarization/reconciliation helpers behind the Phase 0 probe script.
+// No database, cache, scheduler, or published snapshot here; the Phase 1 sync
+// reuses apiAmountToCents and reconcileWestVirginiaCommittee as its gate.
 
 import type {
   WestVirginiaCommitteeRow,

@@ -1,0 +1,292 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1487964,
+      "measure_id": "HB 214",
+      "vote_date": "2025-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 214, which is about people held for federal immigration reasons. Montana may now charge such a person with a state crime. The state may hand the person to federal officers, or keep them until the state case ends. A local prosecutor who is thinking of dropping a case like this must first tell the state attorney general. That gives the attorney general time to step in and bring the charge instead. The Montana House passed it 58-42, and it became law.",
+      "nay_description": "Voted against House Bill 214, which is about people held for federal immigration reasons. Montana may now charge such a person with a state crime. The state may hand the person to federal officers, or keep them until the state case ends. A local prosecutor who is thinking of dropping a case like this must first tell the state attorney general. That gives the attorney general time to step in and bring the charge instead. The Montana House passed it 58-42, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1525087,
+      "measure_id": "HB 214",
+      "vote_date": "2025-03-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 214, which is about people held for federal immigration reasons. Montana may now charge such a person with a state crime. The state may hand the person to federal officers, or keep them until the state case ends. A local prosecutor who is thinking of dropping a case like this must first tell the state attorney general. That gives the attorney general time to step in and bring the charge instead. The Montana Senate passed it 32-18, and it became law.",
+      "nay_description": "Voted against House Bill 214, which is about people held for federal immigration reasons. Montana may now charge such a person with a state crime. The state may hand the person to federal officers, or keep them until the state case ends. A local prosecutor who is thinking of dropping a case like this must first tell the state attorney general. That gives the attorney general time to step in and bring the charge instead. The Montana Senate passed it 32-18, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1548641,
+      "measure_id": "HB 285",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 285, which rewrites the Montana Environmental Policy Act. That law sets how the state studies the environmental effects of projects it permits. The law repeals the act's broad statement of state environmental policy and the rule that other state laws be read in line with it. It also drops the duty to study long-range harm. A study is now meant to inform the public and lawmakers, and an agency may not deny a permit or add conditions to it because of what a study found. Lawsuits must be filed in the county where the project would happen. The Montana House backed the Senate's version 63-34, and it became law.",
+      "nay_description": "Voted against House Bill 285, which rewrites the Montana Environmental Policy Act. That law sets how the state studies the environmental effects of projects it permits. The law repeals the act's broad statement of state environmental policy and the rule that other state laws be read in line with it. It also drops the duty to study long-range harm. A study is now meant to inform the public and lawmakers, and an agency may not deny a permit or add conditions to it because of what a study found. Lawsuits must be filed in the county where the project would happen. The Montana House backed the Senate's version 63-34, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1537318,
+      "measure_id": "HB 285",
+      "vote_date": "2025-04-04",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 285, which rewrites the Montana Environmental Policy Act. That law sets how the state studies the environmental effects of projects it permits. The law repeals the act's broad statement of state environmental policy and the rule that other state laws be read in line with it. It also drops the duty to study long-range harm. A study is now meant to inform the public and lawmakers, and an agency may not deny a permit or add conditions to it because of what a study found. Lawsuits must be filed in the county where the project would happen. The Montana Senate passed it 31-18, and it became law.",
+      "nay_description": "Voted against House Bill 285, which rewrites the Montana Environmental Policy Act. That law sets how the state studies the environmental effects of projects it permits. The law repeals the act's broad statement of state environmental policy and the rule that other state laws be read in line with it. It also drops the duty to study long-range harm. A study is now meant to inform the public and lawmakers, and an agency may not deny a permit or add conditions to it because of what a study found. Lawsuits must be filed in the county where the project would happen. The Montana Senate passed it 31-18, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1496472,
+      "measure_id": "HB 400",
+      "vote_date": "2025-02-21",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 400, the Free to Speak Act, which is about names and pronouns in public schools and state offices. A student may not be punished for refusing to say what pronouns they use. A student also may not be punished for refusing to call someone by a name or pronoun that does not match that person's sex. School staff and anyone dealing with a state or local agency get the same protection. A person punished anyway may sue for money, legal fees, and a court order, within two years. The Montana House passed it 56-42, and it became law.",
+      "nay_description": "Voted against House Bill 400, the Free to Speak Act, which is about names and pronouns in public schools and state offices. A student may not be punished for refusing to say what pronouns they use. A student also may not be punished for refusing to call someone by a name or pronoun that does not match that person's sex. School staff and anyone dealing with a state or local agency get the same protection. A person punished anyway may sue for money, legal fees, and a court order, within two years. The Montana House passed it 56-42, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1546074,
+      "measure_id": "HB 400",
+      "vote_date": "2025-04-11",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 400, the Free to Speak Act, which is about names and pronouns in public schools and state offices. A student may not be punished for refusing to say what pronouns they use. A student also may not be punished for refusing to call someone by a name or pronoun that does not match that person's sex. School staff and anyone dealing with a state or local agency get the same protection. A person punished anyway may sue for money, legal fees, and a court order, within two years. The Montana Senate passed it 28-20, and it became law.",
+      "nay_description": "Voted against House Bill 400, the Free to Speak Act, which is about names and pronouns in public schools and state offices. A student may not be punished for refusing to say what pronouns they use. A student also may not be punished for refusing to call someone by a name or pronoun that does not match that person's sex. School staff and anyone dealing with a state or local agency get the same protection. A person punished anyway may sue for money, legal fees, and a court order, within two years. The Montana Senate passed it 28-20, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1507017,
+      "measure_id": "HB 471",
+      "vote_date": "2025-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 471, which changes the rules for school lessons about sexual orientation and gender identity. The law calls these lessons identity instruction. A school may not let a child attend them unless a parent agrees in writing first. Before, a parent could pull a child out but did not have to give permission. Parents must also get notice five to fourteen school days ahead, instead of the old 48 hours. If school trustees find that someone broke these rules on purpose or again and again, they must report it to the Board of Public Education. The Montana House passed it 56-42, and it became law.",
+      "nay_description": "Voted against House Bill 471, which changes the rules for school lessons about sexual orientation and gender identity. The law calls these lessons identity instruction. A school may not let a child attend them unless a parent agrees in writing first. Before, a parent could pull a child out but did not have to give permission. Parents must also get notice five to fourteen school days ahead, instead of the old 48 hours. If school trustees find that someone broke these rules on purpose or again and again, they must report it to the Board of Public Education. The Montana House passed it 56-42, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1543602,
+      "measure_id": "HB 471",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 471, which changes the rules for school lessons about sexual orientation and gender identity. The law calls these lessons identity instruction. A school may not let a child attend them unless a parent agrees in writing first. Before, a parent could pull a child out but did not have to give permission. Parents must also get notice five to fourteen school days ahead, instead of the old 48 hours. If school trustees find that someone broke these rules on purpose or again and again, they must report it to the Board of Public Education. The Montana Senate passed it 28-20, and it became law.",
+      "nay_description": "Voted against House Bill 471, which changes the rules for school lessons about sexual orientation and gender identity. The law calls these lessons identity instruction. A school may not let a child attend them unless a parent agrees in writing first. Before, a parent could pull a child out but did not have to give permission. Parents must also get notice five to fourteen school days ahead, instead of the old 48 hours. If school trustees find that someone broke these rules on purpose or again and again, they must report it to the Board of Public Education. The Montana Senate passed it 28-20, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1562328,
+      "measure_id": "HB 682",
+      "vote_date": "2025-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 682, which is about gender transition treatment. It gives people who had that treatment as children much longer to sue over harm from it. They may sue until age 25, or two years after they learn of the harm and its cause, with a final cutoff at age 30. Montana's usual deadline for suing a doctor is much shorter. The law also says a health plan that covers gender transition treatment must cover treatment to reverse it, on the same terms. A plan can escape that duty by dropping gender transition coverage for everyone. The law starts October 1, 2026. The Montana House adopted the final compromise version 57-43, and it became law.",
+      "nay_description": "Voted against House Bill 682, which is about gender transition treatment. It gives people who had that treatment as children much longer to sue over harm from it. They may sue until age 25, or two years after they learn of the harm and its cause, with a final cutoff at age 30. Montana's usual deadline for suing a doctor is much shorter. The law also says a health plan that covers gender transition treatment must cover treatment to reverse it, on the same terms. A plan can escape that duty by dropping gender transition coverage for everyone. The law starts October 1, 2026. The Montana House adopted the final compromise version 57-43, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1562329,
+      "measure_id": "HB 682",
+      "vote_date": "2025-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 682, which is about gender transition treatment. It gives people who had that treatment as children much longer to sue over harm from it. They may sue until age 25, or two years after they learn of the harm and its cause, with a final cutoff at age 30. Montana's usual deadline for suing a doctor is much shorter. The law also says a health plan that covers gender transition treatment must cover treatment to reverse it, on the same terms. A plan can escape that duty by dropping gender transition coverage for everyone. The law starts October 1, 2026. The Montana Senate adopted the final compromise version 32-18, and it became law.",
+      "nay_description": "Voted against House Bill 682, which is about gender transition treatment. It gives people who had that treatment as children much longer to sue over harm from it. They may sue until age 25, or two years after they learn of the harm and its cause, with a final cutoff at age 30. Montana's usual deadline for suing a doctor is much shorter. The law also says a health plan that covers gender transition treatment must cover treatment to reverse it, on the same terms. A plan can escape that duty by dropping gender transition coverage for everyone. The law starts October 1, 2026. The Montana Senate adopted the final compromise version 32-18, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1508453,
+      "measure_id": "HB 685",
+      "vote_date": "2025-03-07",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 685, which changes the rule protecting Montana water that is cleaner than the law requires. To get permission to make such water dirtier, an applicant used to have to prove four things. One was that the project's benefits to people outweighed the cost to society of the added pollution. The law removes that test. The other three tests stay, and so do the public comment period and the right to appeal. The law also renames the permission a feasibility allowance. The Montana House passed it 56-43, and it became law.",
+      "nay_description": "Voted against House Bill 685, which changes the rule protecting Montana water that is cleaner than the law requires. To get permission to make such water dirtier, an applicant used to have to prove four things. One was that the project's benefits to people outweighed the cost to society of the added pollution. The law removes that test. The other three tests stay, and so do the public comment period and the right to appeal. The law also renames the permission a feasibility allowance. The Montana House passed it 56-43, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1552308,
+      "measure_id": "HB 685",
+      "vote_date": "2025-04-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 685, which changes the rule protecting Montana water that is cleaner than the law requires. To get permission to make such water dirtier, an applicant used to have to prove four things. One was that the project's benefits to people outweighed the cost to society of the added pollution. The law removes that test. The other three tests stay, and so do the public comment period and the right to appeal. The law also renames the permission a feasibility allowance. The Montana Senate passed it 33-17, and it became law.",
+      "nay_description": "Voted against House Bill 685, which changes the rule protecting Montana water that is cleaner than the law requires. To get permission to make such water dirtier, an applicant used to have to prove four things. One was that the project's benefits to people outweighed the cost to society of the added pollution. The law removes that test. The other three tests stay, and so do the public comment period and the right to appeal. The law also renames the permission a feasibility allowance. The Montana Senate passed it 33-17, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1552229,
+      "measure_id": "HB 759",
+      "vote_date": "2025-04-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 759, which limits how business firms may give money to candidates. A candidate may take a gift from a limited liability company or a partnership in one case only. The firm must be taxed as a sole proprietorship or as a partnership. A firm taxed as a corporation may no longer give at all. Any such gift must be reported under the name of the member or partner who really gave it. That person's own yearly limit then applies. So it is now harder to give more than the personal limit by routing money through a firm. The Montana House backed the Senate's version 59-39, and it became law.",
+      "nay_description": "Voted against House Bill 759, which limits how business firms may give money to candidates. A candidate may take a gift from a limited liability company or a partnership in one case only. The firm must be taxed as a sole proprietorship or as a partnership. A firm taxed as a corporation may no longer give at all. Any such gift must be reported under the name of the member or partner who really gave it. That person's own yearly limit then applies. So it is now harder to give more than the personal limit by routing money through a firm. The Montana House backed the Senate's version 59-39, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1546667,
+      "measure_id": "HB 759",
+      "vote_date": "2025-04-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 759, which limits how business firms may give money to candidates. A candidate may take a gift from a limited liability company or a partnership in one case only. The firm must be taxed as a sole proprietorship or as a partnership. A firm taxed as a corporation may no longer give at all. Any such gift must be reported under the name of the member or partner who really gave it. That person's own yearly limit then applies. So it is now harder to give more than the personal limit by routing money through a firm. The Montana Senate passed it 40-10, and it became law.",
+      "nay_description": "Voted against House Bill 759, which limits how business firms may give money to candidates. A candidate may take a gift from a limited liability company or a partnership in one case only. The firm must be taxed as a sole proprietorship or as a partnership. A firm taxed as a corporation may no longer give at all. Any such gift must be reported under the name of the member or partner who really gave it. That person's own yearly limit then applies. So it is now harder to give more than the personal limit by routing money through a firm. The Montana Senate passed it 40-10, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1552110,
+      "measure_id": "SB 91",
+      "vote_date": "2025-04-18",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 91, which puts a citizenship mark on Montana driver's licenses and state identification cards. Starting January 1, 2026, a card issued to a United States citizen carries a picture of an eagle. Cards issued to people who are not citizens do not carry it. So the card itself shows whether the holder is a citizen. The rule applies only to cards issued on or after that date, so older cards keep their current look. The Montana House passed it 58-40, and it became law.",
+      "nay_description": "Voted against Senate Bill 91, which puts a citizenship mark on Montana driver's licenses and state identification cards. Starting January 1, 2026, a card issued to a United States citizen carries a picture of an eagle. Cards issued to people who are not citizens do not carry it. So the card itself shows whether the holder is a citizen. The rule applies only to cards issued on or after that date, so older cards keep their current look. The Montana House passed it 58-40, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1508004,
+      "measure_id": "SB 91",
+      "vote_date": "2025-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 91, which puts a citizenship mark on Montana driver's licenses and state identification cards. Starting January 1, 2026, a card issued to a United States citizen carries a picture of an eagle. Cards issued to people who are not citizens do not carry it. So the card itself shows whether the holder is a citizen. The rule applies only to cards issued on or after that date, so older cards keep their current look. The Montana Senate passed it 33-16, and it became law.",
+      "nay_description": "Voted against Senate Bill 91, which puts a citizenship mark on Montana driver's licenses and state identification cards. Starting January 1, 2026, a card issued to a United States citizen carries a picture of an eagle. Cards issued to people who are not citizens do not carry it. So the card itself shows whether the holder is a citizen. The rule applies only to cards issued on or after that date, so older cards keep their current look. The Montana Senate passed it 33-16, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

@@ -50,6 +50,8 @@ export type IdahoCandidateRegistrationRow = {
   districtType: string | null;
   district: string | null;
   jurisdiction: string | null;
+  // House seat (A/B) or county-commissioner district number; null elsewhere.
+  seatZone: string | null;
   party: string | null;
   partyCode: string | null;
   electionYear: number;
@@ -334,6 +336,7 @@ function parseCandidateRegistrationRow(value: unknown): IdahoCandidateRegistrati
     districtType: nullableString(row.districtType),
     district: nullableString(row.cityDistrict),
     jurisdiction: nullableString(row.jurisdiction),
+    seatZone: nullableString(row.seatZone),
     party: nullableString(row.politicalParty),
     partyCode: nullableString(row.politicalPartyCode),
     electionYear: requiredYear(row.electionYear, "candidate-registration electionYear"),
@@ -562,4 +565,21 @@ export function idahoRegistrationSearchName(registration: {
     (part): part is string => part !== null && part.length > 0
   );
   return parts.length > 0 ? parts.join(" ") : registration.filerName;
+}
+
+const REGISTRATION_GUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+
+// The grid serves guids lowercase; lowercase defensively so link identity,
+// artifact paths, and IE target comparisons never split on case.
+export function normalizeIdahoRegistrationGuid(value: string): string {
+  const normalized = value.trim().toLowerCase();
+  if (!REGISTRATION_GUID_PATTERN.test(normalized)) {
+    throw new Error(`Invalid Idaho registration guid: ${JSON.stringify(value)}`);
+  }
+  return normalized;
+}
+
+// Public candidate profile for one registration (deep link verified live).
+export function idahoRegistrationProfileUrl(registrationGuid: string): string {
+  return `${IDAHO_CFS_PUBLIC_SITE_URL}/public/cf/candidateprofile?guid=${normalizeIdahoRegistrationGuid(registrationGuid)}&tabName=CAN&isLegacy=false`;
 }

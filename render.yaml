@@ -154,7 +154,7 @@ services:
       # deliberately NOT here: those fetch from state disclosure sites and
       # can get us rate-limited or blocked, so they stay opt-in per run.
       - key: ALABAMA_CAMPAIGN_FINANCE_ENABLED
-        value: "false"
+        value: "true"
       - key: ALASKA_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: ARIZONA_CAMPAIGN_FINANCE_ENABLED
@@ -183,6 +183,8 @@ services:
         value: "true"
       - key: HOUSTON_CAMPAIGN_FINANCE_ENABLED
         value: "true"
+      - key: IDAHO_CAMPAIGN_FINANCE_ENABLED
+        value: "false"
       - key: ILLINOIS_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: INDIANA_CAMPAIGN_FINANCE_ENABLED
@@ -253,6 +255,8 @@ services:
         value: "true"
       - key: WASHINGTON_CAMPAIGN_FINANCE_ENABLED
         value: "true"
+      - key: WEST_VIRGINIA_CAMPAIGN_FINANCE_ENABLED
+        value: "false"
       - key: WISCONSIN_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - fromGroup: voteapp-shared
