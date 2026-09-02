@@ -19,12 +19,13 @@ MIN_X_OVERLAP = 0.5       # a word counts as struck when most of it sits under t
 
 
 def _strike_spans(page):
-    """Horizontal hairlines, as (top, x0, x1) — these are the strike-through rules."""
+    """Horizontal hairlines, as (top, x0, x1) -- these are the strike-through rules.
+
+    Anything taller than the rule is a table border or a box and is left out; the top edge
+    of a box can run through a line of text and would otherwise mark it as deleted."""
     spans = []
     for shape in list(page.curves) + list(page.lines) + list(page.rects):
-        if shape["height"] > STRIKE_MAX_HEIGHT and shape["width"] > 1:
-            spans.append((shape["top"], shape["x0"], shape["x1"]))
-        elif shape["height"] <= STRIKE_MAX_HEIGHT and shape["width"] > 1:
+        if shape["height"] <= STRIKE_MAX_HEIGHT and shape["width"] > 1:
             spans.append((shape["top"], shape["x0"], shape["x1"]))
     return spans
 
@@ -49,13 +50,19 @@ def annotate(pdf_path):
             out.append(f"\n--- page {page_no} ---")
             line, last_top, state = [], None, None
 
-            def flush():
+            def end_line():
+                # close any open marker first, so no line ends inside <<...>> or [[...]]
+                if state == "add":
+                    line.append(">>")
+                elif state == "del":
+                    line.append("]]")
                 if line:
                     out.append(" ".join(line))
 
             for w in words:
                 if last_top is None or abs(w["top"] - last_top) > 3:
-                    flush(); line, state = [], None
+                    end_line()
+                    line, state = [], None
                     last_top = w["top"]
                 if _is_struck(w, spans):
                     kind = "del"
@@ -70,9 +77,7 @@ def annotate(pdf_path):
                     elif kind == "del": line.append("[[")
                     state = kind
                 line.append(w["text"])
-            if state == "add": line.append(">>")
-            elif state == "del": line.append("]]")
-            flush()
+            end_line()
     text = "\n".join(out)
     # the markers were appended as separate words; close them up so the text reads normally
     return text.replace("<< ", "<<").replace(" >>", ">>").replace("[[ ", "[[").replace(" ]]", "]]")
