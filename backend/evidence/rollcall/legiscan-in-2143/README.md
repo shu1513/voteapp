@@ -82,5 +82,10 @@ passed this check name by name.
 
 ## State of the work
 
-Batch-01 is imported on the local `voteapp` database only. **Production holds no Indiana
-records.**
+Batches 01 and 02 are imported on the local `voteapp` database only: **434 records across
+101 candidates with 324 area tags, over 5 measures and 8 rolls.** **Production holds no
+Indiana records.**
+
+63 measures and 119 divided-and-enacted rolls remain, each dispositioned in
+`survey/divided-enacted-worklist.tsv`. The 2026 Regular Session (LegiScan session 2234) is
+complete and has never been surveyed.
