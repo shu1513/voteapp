@@ -5,5 +5,6 @@ export * from "./idahoCfsCsv.js";
 export * from "./idahoContributionAggregator.js";
 export * from "./idahoFinanceEligibleOffices.js";
 export * from "./idahoFinanceWriter.js";
+export * from "./idahoOutsideSpendingAggregator.js";
 export * from "./idahoPhaseZero.js";
 export * from "./idahoRegistrationArtifactCache.js";
