@@ -1,0 +1,118 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": false,
+  "skipExisting": false,
+  "startedAt": "2026-09-02T01:17:16.104Z",
+  "finishedAt": "2026-09-02T01:17:56.085Z",
+  "jurisdiction": "CA",
+  "sessionId": 2172,
+  "evidenceDir": "/Users/shu/legiscan-data/ca-2172-evidence",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "/Users/shu/voteApp/.claude/worktrees/hungry-engelbart-5b1814/backend/evidence/rollcall/legiscan-ca-2172/crosswalk.json",
+  "crosswalkEntries": 121,
+  "peopleFile": "/Users/shu/voteApp/.claude/worktrees/hungry-engelbart-5b1814/backend/evidence/rollcall/legiscan-ca-2172/legiscan-people-ca-2172.json",
+  "peopleMembers": 121,
+  "files": 6454,
+  "outcomes": {
+    "not_approved": 6327,
+    "imported": 127
+  },
+  "actions": {
+    "unchanged": 4342,
+    "rewrite": 218
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-ca-house-2172-roll1725723.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1725723,
+      "outcome": "imported",
+      "legislativeVoteId": "d71300b9-bfe2-4223-ba8a-eeb28f90e670",
+      "reviewStatus": "approved",
+      "bill": "SB1250",
+      "voteDate": "2026-08-24",
+      "officialVoteDate": null,
+      "measureId": "SB 1250",
+      "question": "SB 1250 Cortese Senate Third Reading By HART",
+      "originRunId": "rollcall:CA:house:2172:1725723:2026-09-02T01:17:16.104Z",
+      "members": 74,
+      "notVoting": 0,
+      "absent": 5,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 64
+      },
+      "actions": {
+        "rewrite": 64
+      },
+      "notified": 0,
+      "candidates": 64,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1726173.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1726173,
+      "outcome": "imported",
+      "legislativeVoteId": "ef1ee452-f8a9-4a85-a562-e8ca7c6a197a",
+      "reviewStatus": "approved",
+      "bill": "AB2247",
+      "voteDate": "2026-08-26",
+      "officialVoteDate": null,
+      "measureId": "AB 2247",
+      "question": "AB 2247 Elhawary Concurrence in Senate Amendments",
+      "originRunId": "rollcall:CA:house:2172:1726173:2026-09-02T01:17:16.104Z",
+      "members": 76,
+      "notVoting": 0,
+      "absent": 3,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 66
+      },
+      "actions": {
+        "rewrite": 66
+      },
+      "notified": 0,
+      "candidates": 66,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ca-house-2172-roll1726337.json",
+      "state": "CA",
+      "chamber": "house",
+      "sessionId": 2172,
+      "roll": 1726337,
+      "outcome": "imported",
+      "legislativeVoteId": "3f4b92d2-8d7d-420e-80b2-8b3ce8b9ef2f",
+      "reviewStatus": "approved",
+      "bill": "SB923",
+      "voteDate": "2026-08-26",
+      "officialVoteDate": null,
+      "measureId": "SB 923",
+      "question": "SB 923 Becker Senate Third Reading By Schiavo",
+      "originRunId": "rollcall:CA:house:2172:1726337:2026-09-02T01:17:16.104Z",
+      "members": 63,
+      "notVoting": 0,
+      "absent": 16,
+      "resolution": {
+        "unmatched_reviewed": 8,
+        "matched": 55
+      },
+      "actions": {
+        "rewrite": 55
+      },
+      "notified": 0,
+      "candidates": 55,
+      "error": null,
+      "related": 0
+    }
+  ],
+  "rollsScopedToBatch": true
+}

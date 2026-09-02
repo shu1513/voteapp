@@ -1,0 +1,1418 @@
+{
+  "judgments": [
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 39,
+      "measure_id": "H R 5",
+      "vote_date": "2021-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 5, which added sexual orientation and gender identity to the categories protected from discrimination in employment, housing, credit, education, jury service, and businesses open to the public. The House passed it 224-206.",
+      "nay_description": "Voted against H.R. 5, which added sexual orientation and gender identity to the categories protected from discrimination in employment, housing, credit, education, jury service, and businesses open to the public. The House passed it 224-206.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 45,
+      "measure_id": "H R 803",
+      "vote_date": "2021-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 803, the Protecting America's Wilderness and Public Lands Act, which designated new wilderness, conservation, and recreation areas on federal land across eight states and the Virgin Islands. The House passed it 227-200.",
+      "nay_description": "Voted against H.R. 803, the Protecting America's Wilderness and Public Lands Act, which designated new wilderness, conservation, and recreation areas on federal land across eight states and the Virgin Islands. The House passed it 227-200.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 60,
+      "measure_id": "H R 1280",
+      "vote_date": "2021-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 1280, which restricted chokeholds and no-knock warrants, made it easier to sue officers for misconduct, and created national standards and misconduct reporting for police. The House passed it 220-212.",
+      "nay_description": "Voted against H.R. 1280, which restricted chokeholds and no-knock warrants, made it easier to sue officers for misconduct, and created national standards and misconduct reporting for police. The House passed it 220-212.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 72,
+      "measure_id": "H R 1319",
+      "vote_date": "2021-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted to send H.R. 1319, the American Rescue Plan Act, to the President, agreeing to the Senate's version of the $1.9 trillion COVID-19 relief package that sent $1,400 payments to most households, extended jobless benefits, expanded the child tax credit, and funded vaccines and schools. The House passed it 220-211.",
+      "nay_description": "Voted against sending H.R. 1319, the American Rescue Plan Act, to the President, which agreed to the Senate's version of the $1.9 trillion COVID-19 relief package that sent $1,400 payments to most households, extended jobless benefits, expanded the child tax credit, and funded vaccines and schools. The House passed it 220-211.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 75,
+      "measure_id": "H R 8",
+      "vote_date": "2021-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 8, the Bipartisan Background Checks Act, which required a licensed dealer to run a background check on nearly every private firearm sale or transfer, including at gun shows and online. The House passed it 227-203.",
+      "nay_description": "Voted against H.R. 8, the Bipartisan Background Checks Act, which required a licensed dealer to run a background check on nearly every private firearm sale or transfer, including at gun shows and online. The House passed it 227-203.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 77,
+      "measure_id": "H R 1446",
+      "vote_date": "2021-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 1446, the Enhanced Background Checks Act, which extended the time a dealer must wait for a completed background check from three business days to at least ten, closing the so-called Charleston loophole. The House passed it 219-210.",
+      "nay_description": "Voted against H.R. 1446, the Enhanced Background Checks Act, which extended the time a dealer must wait for a completed background check from three business days to at least ten, closing the so-called Charleston loophole. The House passed it 219-210.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 82,
+      "measure_id": "H J RES 17",
+      "vote_date": "2021-03-17",
+      "review_status": "approved",
+      "yea_description": "Voted for H.J.Res. 17, which removed the deadline for states to approve the Equal Rights Amendment, which would bar discrimination based on sex. The House passed it 222-204.",
+      "nay_description": "Voted against H.J.Res. 17, which removed the deadline for states to approve the Equal Rights Amendment, which would bar discrimination based on sex. The House passed it 222-204.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 86,
+      "measure_id": "H R 1620",
+      "vote_date": "2021-03-17",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 1620, the Violence Against Women Act Reauthorization, which renewed federal programs against domestic violence, sexual assault, and stalking through 2026 and added housing protections and firearm restrictions for convicted abusers. The House passed it 244-172.",
+      "nay_description": "Voted against H.R. 1620, the Violence Against Women Act Reauthorization, which renewed federal programs against domestic violence, sexual assault, and stalking through 2026 and added housing protections and firearm restrictions for convicted abusers. The House passed it 244-172.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 91,
+      "measure_id": "H R 6",
+      "vote_date": "2021-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 6, the American Dream and Promise Act, which offered green cards to immigrants brought to the country as children and people protected by temporary programs that prevent deportation. The House passed it 228-197.",
+      "nay_description": "Voted against H.R. 6, the American Dream and Promise Act, which offered green cards to immigrants brought to the country as children and people protected by temporary programs that prevent deportation. The House passed it 228-197.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 93,
+      "measure_id": "H R 1603",
+      "vote_date": "2021-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 1603, the Farm Workforce Modernization Act, which created legal status and a path to permanent residence for undocumented farmworkers, and reworked the H-2A program for seasonal farmworkers. The House passed it 247-174.",
+      "nay_description": "Voted against H.R. 1603, the Farm Workforce Modernization Act, which created legal status and a path to permanent residence for undocumented farmworkers, and reworked the H-2A program for seasonal farmworkers. The House passed it 247-174.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 96,
+      "measure_id": "H R 1868",
+      "vote_date": "2021-03-19",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 1868, which paused automatic Medicare budget cuts through the end of 2021. The House passed it 246-175.",
+      "nay_description": "Voted against H.R. 1868, which paused automatic Medicare budget cuts through the end of 2021. The House passed it 246-175.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 108,
+      "measure_id": "H R 7",
+      "vote_date": "2021-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 7, which narrowed the defenses an employer can raise for paying men and women differently, barred retaliation against workers who discuss pay, and strengthened workers' legal options in wage discrimination cases. The House passed it 217-210.",
+      "nay_description": "Voted against H.R. 7, which narrowed the defenses an employer can raise for paying men and women differently, barred retaliation against workers who discuss pay, and strengthened workers' legal options in wage discrimination cases. The House passed it 217-210.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 127,
+      "measure_id": "H R 1333",
+      "vote_date": "2021-04-21",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 1333, the NO BAN Act, which limited the President's power to bar entry to the United States and barred religious discrimination in visa and immigration decisions. The House passed it 218-208.",
+      "nay_description": "Voted against H.R. 1333, the NO BAN Act, which limited the President's power to bar entry to the United States and barred religious discrimination in visa and immigration decisions. The House passed it 218-208.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 129,
+      "measure_id": "H R 1573",
+      "vote_date": "2021-04-21",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 1573, the Access to Counsel Act, which gave citizens, green card holders, visa holders, and returning refugees the right to consult a lawyer when held for extra screening at the border or an airport. The House passed it 217-207.",
+      "nay_description": "Voted against H.R. 1573, the Access to Counsel Act, which gave citizens, green card holders, visa holders, and returning refugees the right to consult a lawyer when held for extra screening at the border or an airport. The House passed it 217-207.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 134,
+      "measure_id": "H R 1629",
+      "vote_date": "2021-05-11",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 1629, the Fairness in Orphan Drug Exclusivity Act, which limited seven years of sole-sales rights for rare-disease drugs to those not expected to make a profit. It failed 250-168 under a fast-track process needing two-thirds support, so it did not become law.",
+      "nay_description": "Voted against H.R. 1629, the Fairness in Orphan Drug Exclusivity Act, which limited seven years of sole-sales rights for rare-disease drugs to those not expected to make a profit. It failed 250-168 under a fast-track process needing two-thirds support, so it did not become law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 141,
+      "measure_id": "H R 2547",
+      "vote_date": "2021-05-13",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 2547, the Comprehensive Debt Collection Improvement Act, which restricted debt collection practices, extended student loan protections to private loans, and limited collection on servicemembers and medical debt. The House passed it 215-207.",
+      "nay_description": "Voted against H.R. 2547, the Comprehensive Debt Collection Improvement Act, which restricted debt collection practices, extended student loan protections to private loans, and limited collection on servicemembers and medical debt. The House passed it 215-207.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 143,
+      "measure_id": "H R 1065",
+      "vote_date": "2021-05-14",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 1065, the Pregnant Workers Fairness Act, which required employers to make reasonable work changes for workers affected by pregnancy or childbirth. The House passed it 315-101.",
+      "nay_description": "Voted against H.R. 1065, the Pregnant Workers Fairness Act, which required employers to make reasonable work changes for workers affected by pregnancy or childbirth. The House passed it 315-101.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 169,
+      "measure_id": "H R 1187",
+      "vote_date": "2021-06-16",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 1187, the Corporate Governance Improvement and Investor Protection Act, which required public companies to disclose climate risk, political spending, executive pay, and other environmental, social, and governance measures. The House passed it 215-214.",
+      "nay_description": "Voted against H.R. 1187, the Corporate Governance Improvement and Investor Protection Act, which required public companies to disclose climate risk, political spending, executive pay, and other environmental, social, and governance measures. The House passed it 215-214.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 172,
+      "measure_id": "H R 256",
+      "vote_date": "2021-06-17",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 256, which repealed the 2002 law allowing military force against Iraq, withdrawing the standing legal basis for military action there. The House passed it 268-161.",
+      "nay_description": "Voted against H.R. 256, which repealed the 2002 law allowing military force against Iraq, withdrawing the standing legal basis for military action there. The House passed it 268-161.",
+      "labels": [
+        {
+          "slug": "peaceful_foreign_policy",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 180,
+      "measure_id": "H R 2062",
+      "vote_date": "2021-06-23",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 2062, the Protecting Older Workers Against Discrimination Act, which let workers win an age discrimination claim by showing age was a motivating factor rather than the sole cause. The House passed it 247-178.",
+      "nay_description": "Voted against H.R. 2062, the Protecting Older Workers Against Discrimination Act, which let workers win an age discrimination claim by showing age was a motivating factor rather than the sole cause. The House passed it 247-178.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 181,
+      "measure_id": "S J RES 15",
+      "vote_date": "2021-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted for sending S.J.Res. 15 to the President to cancel the federal bank regulator's true lender rule, a rule that let national banks be named as lender on loans funded by others and so shield them from state interest rate caps. The House passed it 218-208.",
+      "nay_description": "Voted against sending S.J.Res. 15 to the President to cancel the federal bank regulator's true lender rule, a rule that let national banks be named as lender on loans funded by others and so shield them from state interest rate caps. The House passed it 218-208.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 182,
+      "measure_id": "H R 1443",
+      "vote_date": "2021-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 1443, the LGBTQ Business Equal Credit Enforcement and Investment Act, which required lenders to report credit application data for LGBTQ-owned businesses so fair lending laws can be enforced. The House passed it 252-176.",
+      "nay_description": "Voted against H.R. 1443, the LGBTQ Business Equal Credit Enforcement and Investment Act, which required lenders to report credit application data for LGBTQ-owned businesses so fair lending laws can be enforced. The House passed it 252-176.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 183,
+      "measure_id": "S J RES 13",
+      "vote_date": "2021-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted for sending S.J.Res. 13 to the President to cancel the federal workplace rights rule requiring the agency to give employers evidence and legal reasons for a discrimination finding before settlement talks. The House passed it 219-210.",
+      "nay_description": "Voted against sending S.J.Res. 13 to the President to cancel the federal workplace rights rule requiring the agency to give employers evidence and legal reasons for a discrimination finding before settlement talks. The House passed it 219-210.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 184,
+      "measure_id": "H R 239",
+      "vote_date": "2021-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 239, the Equal Access to Contraception for Veterans Act, which barred the federal veterans agency from charging veterans copays for contraceptives that private insurance must cover for free. The House passed it 245-181.",
+      "nay_description": "Voted against H.R. 239, the Equal Access to Contraception for Veterans Act, which barred the federal veterans agency from charging veterans copays for contraceptives that private insurance must cover for free. The House passed it 245-181.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 185,
+      "measure_id": "S J RES 14",
+      "vote_date": "2021-06-25",
+      "review_status": "approved",
+      "yea_description": "Voted for sending S.J.Res. 14 to the President to cancel the 2020 EPA rule that had removed methane emission limits from new and modified oil and gas sources, restoring those standards. The House passed it 229-191.",
+      "nay_description": "Voted against sending S.J.Res. 14 to the President to cancel the 2020 EPA rule that had removed methane emission limits from new and modified oil and gas sources, restoring those standards. The House passed it 229-191.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 195,
+      "measure_id": "H R 2662",
+      "vote_date": "2021-06-29",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 2662, the Inspector General Independence and Empowerment Act, which limited the President's power to remove inspectors general, required reasons be given to Congress, and strengthened their subpoena and reporting authority. The House passed it 221-182.",
+      "nay_description": "Voted against H.R. 2662, the Inspector General Independence and Empowerment Act, which limited the President's power to remove inspectors general, required reasons be given to Congress, and strengthened their subpoena and reporting authority. The House passed it 221-182.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 214,
+      "measure_id": "H R 2668",
+      "vote_date": "2021-07-20",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 2668, which restored the Federal Trade Commission's power to go to court for refunds and repayment from companies engaged in fraud, false advertising, or conduct that blocks competition. The House passed it 221-205.",
+      "nay_description": "Voted against H.R. 2668, which restored the Federal Trade Commission's power to go to court for refunds and repayment from companies engaged in fraud, false advertising, or conduct that blocks competition. The House passed it 221-205.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 217,
+      "measure_id": "H R 2467",
+      "vote_date": "2021-07-21",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 2467, which directed the federal environmental agency to label long-lasting PFAS chemicals hazardous, set drinking water limits, and fund cleanup of contaminated sites. The House passed it 241-183.",
+      "nay_description": "Voted against H.R. 2467, which directed the federal environmental agency to label long-lasting PFAS chemicals hazardous, set drinking water limits, and fund cleanup of contaminated sites. The House passed it 241-183.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 260,
+      "measure_id": "H R 4",
+      "vote_date": "2021-08-24",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 4, the John R. Lewis Voting Rights Advancement Act, which restored the requirement that states and localities with a record of discrimination get federal approval before changing voting practices. The House passed it 219-212.",
+      "nay_description": "Voted against H.R. 4, the John R. Lewis Voting Rights Advancement Act, which restored the requirement that states and localities with a record of discrimination get federal approval before changing voting practices. The House passed it 219-212.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 293,
+      "measure_id": "H R 4350",
+      "vote_date": "2021-09-23",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 4350, the National Defense Authorization Act for Fiscal Year 2022, which set defense policy and approved Defense Department programs, military construction, and related national security activities. The House passed it 316-113.",
+      "nay_description": "Voted against H.R. 4350, the National Defense Authorization Act for Fiscal Year 2022, which set defense policy and approved Defense Department programs, military construction, and related national security activities. The House passed it 316-113.",
+      "labels": [
+        {
+          "slug": "national_defense",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 295,
+      "measure_id": "H R 3755",
+      "vote_date": "2021-09-24",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 3755, the Women's Health Protection Act, which created a right under federal law to provide and receive abortion care and barred state restrictions such as waiting periods, mandatory tests, and telemedicine bans. The House passed it 218-211.",
+      "nay_description": "Voted against H.R. 3755, the Women's Health Protection Act, which created a right under federal law to provide and receive abortion care and barred state restrictions such as waiting periods, mandatory tests, and telemedicine bans. The House passed it 218-211.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 331,
+      "measure_id": "H R 3110",
+      "vote_date": "2021-10-22",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 3110, the PUMP for Nursing Mothers Act, which extended the right to break time and a private space to pump breast milk at work to salaried and other workers the existing law left out. The House passed it 276-149.",
+      "nay_description": "Voted against H.R. 3110, the PUMP for Nursing Mothers Act, which extended the right to break time and a private space to pump breast milk at work to salaried and other workers the existing law left out. The House passed it 276-149.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 336,
+      "measure_id": "H R 2119",
+      "vote_date": "2021-10-26",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 2119, the Family Violence Prevention and Services Improvement Act, which renewed and expanded federal funding for emergency shelters and support services for domestic violence victims through 2026. The House passed it 228-200.",
+      "nay_description": "Voted against H.R. 2119, the Family Violence Prevention and Services Improvement Act, which renewed and expanded federal funding for emergency shelters and support services for domestic violence victims through 2026. The House passed it 228-200.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 369,
+      "measure_id": "H R 3684",
+      "vote_date": "2021-11-05",
+      "review_status": "approved",
+      "yea_description": "Voted to send H.R. 3684, the Infrastructure Investment and Jobs Act, to the President, agreeing to the Senate version that put roughly $1 trillion into roads, bridges, rail, transit, broadband, ports, airports, water systems, and the power grid. The House passed it 228-206.",
+      "nay_description": "Voted against sending H.R. 3684, the Infrastructure Investment and Jobs Act, to the President, which agreed to the Senate version that put roughly $1 trillion into roads, bridges, rail, transit, broadband, ports, airports, water systems, and the power grid. The House passed it 228-206.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 404,
+      "measure_id": "S 610",
+      "vote_date": "2021-12-07",
+      "review_status": "approved",
+      "yea_description": "Voted for S. 610, the Protecting Medicare and American Farmers from Sequester Cuts Act, which delayed automatic Medicare payment cuts through March 2022 and eased other scheduled reductions. The House passed it 222-212.",
+      "nay_description": "Voted against S. 610, the Protecting Medicare and American Farmers from Sequester Cuts Act, which delayed automatic Medicare payment cuts through March 2022 and eased other scheduled reductions. The House passed it 222-212.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 440,
+      "measure_id": "H R 5314",
+      "vote_date": "2021-12-09",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 5314, the Protecting Our Democracy Act, which tightened limits on presidential pardons and emergency powers, strengthened enforcement of congressional subpoenas, and added transparency requirements for the executive branch. The House passed it 220-208.",
+      "nay_description": "Voted against H.R. 5314, the Protecting Our Democracy Act, which tightened limits on presidential pardons and emergency powers, strengthened enforcement of congressional subpoenas, and added transparency requirements for the executive branch. The House passed it 220-208.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 33,
+      "measure_id": "H R 4445",
+      "vote_date": "2022-02-07",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 4445, which let people alleging sexual assault or harassment take their claim to court despite a contract requiring private arbitration instead of court. The House passed it 335-97, and it became law.",
+      "nay_description": "Voted against H.R. 4445, which let people alleging sexual assault or harassment take their claim to court despite a contract requiring private arbitration instead of court. The House passed it 335-97, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 38,
+      "measure_id": "H R 3076",
+      "vote_date": "2022-02-08",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 3076, which ended the requirement that the Postal Service save in advance for retiree health benefits, moved postal retirees into a new health plan tied to Medicare, and required six-day delivery. The House passed it 342-92, and it became law.",
+      "nay_description": "Voted against H.R. 3076, which ended the requirement that the Postal Service save in advance for retiree health benefits, moved postal retirees into a new health plan tied to Medicare, and required six-day delivery. The House passed it 342-92, and it became law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 43,
+      "measure_id": "H R 3485",
+      "vote_date": "2022-02-09",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 3485, which imposed entry bans on people from other countries responsible for human rights abuses against people because of their sexual orientation or gender identity. The House passed it 227-206.",
+      "nay_description": "Voted against H.R. 3485, which imposed entry bans on people from other countries responsible for human rights abuses against people because of their sexual orientation or gender identity. The House passed it 227-206.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 57,
+      "measure_id": "H R 3967",
+      "vote_date": "2022-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 3967, which expanded veterans' health care and disability benefits for veterans exposed to burn pits and other toxic substances by presuming their illnesses were caused by military service. The House passed it 256-174.",
+      "nay_description": "Voted against H.R. 3967, which expanded veterans' health care and disability benefits for veterans exposed to burn pits and other toxic substances by presuming their illnesses were caused by military service. The House passed it 256-174.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 81,
+      "measure_id": "H R 963",
+      "vote_date": "2022-03-17",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 963, the FAIR Act, which let people reject forced private arbitration in employment, consumer, competition law, and civil rights disputes. The House passed it 222-209.",
+      "nay_description": "Voted against H.R. 963, the FAIR Act, which let people reject forced private arbitration in employment, consumer, competition law, and civil rights disputes. The House passed it 222-209.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 82,
+      "measure_id": "H R 2116",
+      "vote_date": "2022-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 2116, the CROWN Act, which barred discrimination based on hair texture or hairstyles commonly associated with a particular race or national origin in employment, housing, education, and federally funded programs. The House passed it 235-189.",
+      "nay_description": "Voted against H.R. 2116, the CROWN Act, which barred discrimination based on hair texture or hairstyles commonly associated with a particular race or national origin in employment, housing, education, and federally funded programs. The House passed it 235-189.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 109,
+      "measure_id": "H R 1916",
+      "vote_date": "2022-04-04",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 1916, which required private health plans to cover diagnosis and treatment of birth defects and other conditions present at birth, including rebuilding surgery. The House passed it 310-110.",
+      "nay_description": "Voted against H.R. 1916, which required private health plans to cover diagnosis and treatment of birth defects and other conditions present at birth, including rebuilding surgery. The House passed it 310-110.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 182,
+      "measure_id": "H R 5129",
+      "vote_date": "2022-05-13",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 5129, the Community Services Block Grant Modernization Act, which renewed through 2032 federal grants for local antipoverty services and raised the income eligibility threshold. The House passed it 246-169.",
+      "nay_description": "Voted against H.R. 5129, the Community Services Block Grant Modernization Act, which renewed through 2032 federal grants for local antipoverty services and raised the income eligibility threshold. The House passed it 246-169.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 221,
+      "measure_id": "H R 350",
+      "vote_date": "2022-05-18",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 350, the Domestic Terrorism Prevention Act, which created domestic terrorism teams at the FBI, Justice Department, and Homeland Security and required regular reporting on domestic terrorist threats. The House passed it 222-203.",
+      "nay_description": "Voted against H.R. 350, the Domestic Terrorism Prevention Act, which created domestic terrorism teams at the FBI, Justice Department, and Homeland Security and required regular reporting on domestic terrorist threats. The House passed it 222-203.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 232,
+      "measure_id": "H R 7688",
+      "vote_date": "2022-05-19",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 7688, the Consumer Fuel Price Gouging Prevention Act, which barred selling fuel at grossly unfair prices during a declared energy emergency and let the FTC enforce the ban. The House passed it 217-207.",
+      "nay_description": "Voted against H.R. 7688, the Consumer Fuel Price Gouging Prevention Act, which barred selling fuel at grossly unfair prices during a declared energy emergency and let the FTC enforce the ban. The House passed it 217-207.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 245,
+      "measure_id": "H R 7910",
+      "vote_date": "2022-06-08",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 7910, the Protecting Our Kids Act, which raised the purchase age for many semiautomatic rifles to 21, banned new large-capacity magazines, tightened rules on untraceable firearms, and required safe storage. The House passed it 223-204.",
+      "nay_description": "Voted against H.R. 7910, the Protecting Our Kids Act, which raised the purchase age for many semiautomatic rifles to 21, banned new large-capacity magazines, tightened rules on untraceable firearms, and required safe storage. The House passed it 223-204.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 255,
+      "measure_id": "H R 2377",
+      "vote_date": "2022-06-09",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 2377, the Federal Extreme Risk Protection Order Act, which let federal courts temporarily bar someone found to be a danger from having firearms and funded state red flag laws. The House passed it 224-202.",
+      "nay_description": "Voted against H.R. 2377, the Federal Extreme Risk Protection Order Act, which let federal courts temporarily bar someone found to be a danger from having firearms and funded state red flag laws. The House passed it 224-202.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 267,
+      "measure_id": "H R 2773",
+      "vote_date": "2022-06-14",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 2773, the Recovering America's Wildlife Act, which sent dedicated federal funding to states and tribes to conserve and restore wildlife and plant species of greatest conservation need. The House passed it 231-190.",
+      "nay_description": "Voted against H.R. 2773, the Recovering America's Wildlife Act, which sent dedicated federal funding to states and tribes to conserve and restore wildlife and plant species of greatest conservation need. The House passed it 231-190.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 275,
+      "measure_id": "H R 2543",
+      "vote_date": "2022-06-15",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 2543, the Financial Services Racial Equity, Inclusion, and Economic Justice Act, which widened access to credit, mortgages, and banking, strengthened lending discrimination rules, and made racial equity one of the Federal Reserve's duties. The House passed it 215-207.",
+      "nay_description": "Voted against H.R. 2543, the Financial Services Racial Equity, Inclusion, and Economic Justice Act, which widened access to credit, mortgages, and banking, strengthened lending discrimination rules, and made racial equity one of the Federal Reserve's duties. The House passed it 215-207.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 277,
+      "measure_id": "H R 7606",
+      "vote_date": "2022-06-16",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 7606, the Lower Food and Fuel Costs Act, which funded nutrient management and technology-guided farming, expanded biofuel infrastructure, and strengthened oversight of meat and poultry markets. The House passed it 221-204.",
+      "nay_description": "Voted against H.R. 7606, the Lower Food and Fuel Costs Act, which funded nutrient management and technology-guided farming, expanded biofuel infrastructure, and strengthened oversight of meat and poultry markets. The House passed it 221-204.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 296,
+      "measure_id": "H R 4176",
+      "vote_date": "2022-06-23",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 4176, the LGBTQI+ Data Inclusion Act, which required federal government surveys to offer voluntary questions on sexual orientation and gender identity. The House passed it 220-201.",
+      "nay_description": "Voted against H.R. 4176, the LGBTQI+ Data Inclusion Act, which required federal government surveys to offer voluntary questions on sexual orientation and gender identity. The House passed it 220-201.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 307,
+      "measure_id": "H R 6538",
+      "vote_date": "2022-07-13",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 6538, the Active Shooter Alert Act, which created a national alert network, run by a Justice Department coordinator, to warn the public during an active shooter emergency. The House passed it 260-169.",
+      "nay_description": "Voted against H.R. 6538, the Active Shooter Alert Act, which created a national alert network, run by a Justice Department coordinator, to warn the public during an active shooter emergency. The House passed it 260-169.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 309,
+      "measure_id": "S 3373",
+      "vote_date": "2022-07-13",
+      "review_status": "approved",
+      "yea_description": "Voted for S. 3373, the final version of the Honoring our PACT Act, which expanded veterans' health care and disability benefits for veterans exposed to burn pits and other toxic substances. The House passed it 342-88, and it became law.",
+      "nay_description": "Voted against S. 3373, the final version of the Honoring our PACT Act, which expanded veterans' health care and disability benefits for veterans exposed to burn pits and other toxic substances. The House passed it 342-88, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 350,
+      "measure_id": "H R 7900",
+      "vote_date": "2022-07-14",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 7900, the National Defense Authorization Act for Fiscal Year 2023, which set defense policy and approved Defense Department programs, purchases, and military construction. The House passed it 329-101.",
+      "nay_description": "Voted against H.R. 7900, the National Defense Authorization Act for Fiscal Year 2023, which set defense policy and approved Defense Department programs, purchases, and military construction. The House passed it 329-101.",
+      "labels": [
+        {
+          "slug": "national_defense",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 360,
+      "measure_id": "H R 8296",
+      "vote_date": "2022-07-15",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 8296, the Women's Health Protection Act of 2022, which created a right under federal law to provide and receive abortion care after the Supreme Court overturned Roe v. Wade. The House passed it 219-210.",
+      "nay_description": "Voted against H.R. 8296, the Women's Health Protection Act of 2022, which created a right under federal law to provide and receive abortion care after the Supreme Court overturned Roe v. Wade. The House passed it 219-210.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 362,
+      "measure_id": "H R 8297",
+      "vote_date": "2022-07-15",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 8297, which barred states from interfering with a person's ability to travel across state lines for abortion care or with anyone who helps them. The House passed it 223-205.",
+      "nay_description": "Voted against H.R. 8297, which barred states from interfering with a person's ability to travel across state lines for abortion care or with anyone who helps them. The House passed it 223-205.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 385,
+      "measure_id": "H R 8373",
+      "vote_date": "2022-07-21",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 8373, the Right to Contraception Act, which wrote into federal law the right to obtain contraception and the right of providers to supply it. The House passed it 228-195.",
+      "nay_description": "Voted against H.R. 8373, the Right to Contraception Act, which wrote into federal law the right to obtain contraception and the right of providers to supply it. The House passed it 228-195.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 410,
+      "measure_id": "H R 1808",
+      "vote_date": "2022-07-29",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 1808, the Assault Weapons Ban of 2022, which made it a crime to import, sell, manufacture, or transfer semiautomatic assault weapons and large capacity magazines, with exceptions for existing ones. The House passed it 217-213.",
+      "nay_description": "Voted against H.R. 1808, the Assault Weapons Ban of 2022, which made it a crime to import, sell, manufacture, or transfer semiautomatic assault weapons and large capacity magazines, with exceptions for existing ones. The House passed it 217-213.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 414,
+      "measure_id": "H R 5118",
+      "vote_date": "2022-07-29",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 5118, the Wildfire Response and Drought Resiliency Act, which funded wildfire mitigation, forest and watershed restoration, and drought planning, and raised pay for federal wildland firefighters. The House passed it 218-199.",
+      "nay_description": "Voted against H.R. 5118, the Wildfire Response and Drought Resiliency Act, which funded wildfire mitigation, forest and watershed restoration, and drought planning, and raised pay for federal wildland firefighters. The House passed it 218-199.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 420,
+      "measure_id": "H R 5376",
+      "vote_date": "2022-08-12",
+      "review_status": "approved",
+      "yea_description": "Voted to send H.R. 5376, the Inflation Reduction Act, to the President, agreeing to the Senate version that let Medicare negotiate drug prices, capped insulin costs for seniors, funded clean energy tax credits, and set a 15 percent minimum tax on large corporations. The House passed it 220-207.",
+      "nay_description": "Voted against sending H.R. 5376, the Inflation Reduction Act, to the President, which let Medicare negotiate drug prices, capped insulin costs for seniors, funded clean energy tax credits, and set a 15 percent minimum tax on large corporations. The House passed it 220-207.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 437,
+      "measure_id": "H R 2988",
+      "vote_date": "2022-09-15",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 2988, the Whistleblower Protection Improvement Act, which strengthened protections for federal employees who report wrongdoing, shielded their identity, and barred retaliatory personnel actions. The House passed it 221-203.",
+      "nay_description": "Voted against H.R. 2988, the Whistleblower Protection Improvement Act, which strengthened protections for federal employees who report wrongdoing, shielded their identity, and barred retaliatory personnel actions. The House passed it 221-203.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 449,
+      "measure_id": "H R 8873",
+      "vote_date": "2022-09-21",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 8873, the Presidential Election Reform Act, which rewrote how electoral votes are cast and counted, requiring electors to be chosen under state law set before election day and narrowing grounds for objections in Congress. The House passed it 229-203.",
+      "nay_description": "Voted against H.R. 8873, the Presidential Election Reform Act, which rewrote how electoral votes are cast and counted, requiring electors to be chosen under state law set before election day and narrowing grounds for objections in Congress. The House passed it 229-203.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 453,
+      "measure_id": "H R 4118",
+      "vote_date": "2022-09-22",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 4118, the Break the Cycle of Violence Act, which funded community violence intervention programs and job training in neighborhoods with high rates of gun violence. The House passed it 220-207.",
+      "nay_description": "Voted against H.R. 4118, the Break the Cycle of Violence Act, which funded community violence intervention programs and job training in neighborhoods with high rates of gun violence. The House passed it 220-207.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 454,
+      "measure_id": "H R 5768",
+      "vote_date": "2022-09-22",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 5768, which funded state, local, and tribal investigators and prosecutors to raise the share of cases solved for murders and other violent crimes. The House passed it 250-178.",
+      "nay_description": "Voted against H.R. 5768, which funded state, local, and tribal investigators and prosecutors to raise the share of cases solved for murders and other violent crimes. The House passed it 250-178.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 460,
+      "measure_id": "H R 3843",
+      "vote_date": "2022-09-29",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 3843, the Merger Filing Fee Modernization Act, which raised fees for the largest corporate mergers to fund anti-monopoly enforcement and required disclosure of foreign subsidies in merger filings. The House passed it 242-184.",
+      "nay_description": "Voted against H.R. 3843, the Merger Filing Fee Modernization Act, which raised fees for the largest corporate mergers to fund anti-monopoly enforcement and required disclosure of foreign subsidies in merger filings. The House passed it 242-184.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 480,
+      "measure_id": "S 4524",
+      "vote_date": "2022-11-16",
+      "review_status": "approved",
+      "yea_description": "Voted for S. 4524, which made contract terms that bar sharing facts or criticism signed before a dispute unenforceable in sexual assault and sexual harassment cases. The House passed it 315-109, and it became law.",
+      "nay_description": "Voted against S. 4524, which made contract terms that bar sharing facts or criticism signed before a dispute unenforceable in sexual assault and sexual harassment cases. The House passed it 315-109, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 492,
+      "measure_id": "H R 3372",
+      "vote_date": "2022-12-01",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 3372, the One Stop Shop Community Reentry Program Act, which funded community organizations that help people leaving prison find housing, jobs, and services. The House passed it 259-167.",
+      "nay_description": "Voted against H.R. 3372, the One Stop Shop Community Reentry Program Act, which funded community organizations that help people leaving prison find housing, jobs, and services. The House passed it 259-167.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 503,
+      "measure_id": "H R 7946",
+      "vote_date": "2022-12-06",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 7946, the Veteran Service Recognition Act, which let Homeland Security grant green cards to noncitizen military veterans facing deportation and required review of veterans already removed. The House passed it 220-208.",
+      "nay_description": "Voted against H.R. 7946, the Veteran Service Recognition Act, which let Homeland Security grant green cards to noncitizen military veterans facing deportation and required review of veterans already removed. The House passed it 220-208.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 513,
+      "measure_id": "H R 8404",
+      "vote_date": "2022-12-08",
+      "review_status": "approved",
+      "yea_description": "Voted for sending H.R. 8404, the Respect for Marriage Act, to the President, agreeing to the Senate version that repealed the federal definition of marriage as between a man and a woman and required states to recognize valid same-sex and interracial marriages. The House passed it 258-169, and it became law.",
+      "nay_description": "Voted against sending H.R. 8404, the Respect for Marriage Act, to the President, which repealed the federal definition of marriage as between a man and a woman and required states to recognize valid same-sex and interracial marriages. The House passed it 258-169, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 524,
+      "measure_id": "S 3905",
+      "vote_date": "2022-12-14",
+      "review_status": "approved",
+      "yea_description": "Voted for S. 3905, which required federal purchasing rules to be rewritten to identify and limit conflicts between contractors' private interests and government work. The House passed it 219-205, and it became law.",
+      "nay_description": "Voted against S. 3905, which required federal purchasing rules to be rewritten to identify and limit conflicts between contractors' private interests and government work. The House passed it 219-205, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 525,
+      "measure_id": "S 4003",
+      "vote_date": "2022-12-14",
+      "review_status": "approved",
+      "yea_description": "Voted for S. 4003, the Law Enforcement De-Escalation Training Act, which funded real-life police training to calm tense situations, avoid force, and respond to people in a mental health crisis. The House passed it 264-162, and it became law.",
+      "nay_description": "Voted against S. 4003, the Law Enforcement De-Escalation Training Act, which funded real-life police training to calm tense situations, avoid force, and respond to people in a mental health crisis. The House passed it 264-162, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 2,
+      "roll": 539,
+      "measure_id": "H R 9640",
+      "vote_date": "2022-12-22",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 9640, which required audits of every sitting president's tax return and public release of the returns and findings. The House passed it 222-201.",
+      "nay_description": "Voted against H.R. 9640, which required audits of every sitting president's tax return and public release of the returns and findings. The House passed it 222-201.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 118,
+      "session": 1,
+      "roll": 705,
+      "measure_id": "H J RES 88",
+      "vote_date": "2023-12-07",
+      "review_status": "approved",
+      "yea_description": "Voted for H.J.Res. 88 to cancel the Education Department's SAVE plan, the student loan plan that lowered payments based on income. The House passed it 210-189.",
+      "nay_description": "Voted against H.J.Res. 88 to cancel the Education Department's SAVE plan, the student loan plan that lowered payments based on income. The House passed it 210-189.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 119,
+      "session": 1,
+      "roll": 153,
+      "measure_id": "H R 2931",
+      "vote_date": "2025-06-05",
+      "review_status": "approved",
+      "yea_description": "Voted for H.R. 2931, the Save SBA from Sanctuary Cities Act, which required the federal small-business agency to move any office located in a sanctuary area out of that area within 60 days. The House passed it 211-199.",
+      "nay_description": "Voted against H.R. 2931, the Save SBA from Sanctuary Cities Act, which required the federal small-business agency to move any office located in a sanctuary area out of that area within 60 days. The House passed it 211-199.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 119,
+      "session": 1,
+      "roll": 224,
+      "measure_id": "H J RES 104",
+      "vote_date": "2025-09-03",
+      "review_status": "approved",
+      "yea_description": "Voted for H.J.Res. 104 to cancel the federal land agency plan for the Miles City field office in eastern Montana, reopening those federal lands to coal leasing. The House passed it 211-208.",
+      "nay_description": "Voted against H.J.Res. 104 to cancel the federal land agency plan for the Miles City field office in eastern Montana, reopening those federal lands to coal leasing. The House passed it 211-208.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 225,
+      "measure_id": "S.J.Res. 49",
+      "vote_date": "2025-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted for S.J.Res. 49, which would end the April 2, 2025 emergency used to place a 10 percent tariff on most imports and higher tariffs on some trading partners. The Senate tied 49-49, so it did not become law.",
+      "nay_description": "Voted against S.J.Res. 49, which would end the April 2, 2025 emergency used to place a 10 percent tariff on most imports and higher tariffs on some trading partners. The Senate tied 49-49, so it did not become law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 632,
+      "measure_id": "H.J.Res. 131",
+      "vote_date": "2025-12-04",
+      "review_status": "approved",
+      "yea_description": "Voted for sending H.J.Res. 131 to the President to cancel the federal land agency decision limiting the coastal plain oil and gas leasing program and open more of the Arctic National Wildlife Refuge to drilling. The Senate passed it 49-45.",
+      "nay_description": "Voted against sending H.J.Res. 131 to the President to cancel the federal land agency decision limiting the coastal plain oil and gas leasing program and open more of the Arctic National Wildlife Refuge to drilling. The Senate passed it 49-45.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    }
+  ]
+}

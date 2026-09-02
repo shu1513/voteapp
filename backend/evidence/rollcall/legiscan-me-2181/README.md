@@ -129,18 +129,20 @@ single judged measure reaches ~126 candidates across the two chambers.
 
 ## Status
 
-Batches 01-05 are imported on the LOCAL `voteapp` database only — **5,812
-records across 131 candidates**. **Production has zero Maine roll-call
+**The Maine campaign is complete.** Batches 01-06 are imported on the LOCAL
+`voteapp` database only — **6,949 records across 131 candidates and 15 research
+areas**. **Production has zero Maine roll-call
 records.** See each batch's `JUDGING.md` for what was judged, what was dropped
 and why.
 
 `survey/divided-enacted-worklist.tsv` is the ledger: 463 divided rolls on
 measures that reached the governor, **433 of them on measures that became
-law**. 92 are judged (24 in batch-01, 22 in batch-02, 24 in batch-03, LD 613's 2 in
-batch-04, and 20 in batch-05), leaving **341 rolls on 169 unjudged measures**.
-What remains is thin: mostly appropriations, study resolves, technical utility
-and procurement bills, and contested-direction measures the fifth filter
-excludes.
+law**. **110 are judged across 55 measures** (24 in batch-01, 22 in batch-02, 24 in
+batch-03, LD 613's 2 in batch-04, 20 in batch-05, 18 in batch-06). The
+remaining **323 rolls on 160 measures do not clear the filters**: appropriations
+and study resolves, procedural measures, technical utility and tax bills, and
+contested-direction measures dispositioned with reasons in the batch PLAN files.
+`batch-06/PLAN.md` sets out why the campaign stops there.
 
 **batch-04 is a single measure, LD 613**, the Death with Dignity waiting
 period — the most-voted measure in the pool, imported under `general` with **no

@@ -1,0 +1,697 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "KY",
+  "note": "Reviewed people_id to candidate map for Kentucky. LegiScan people_ids are stable across sessions, so this one file serves both the 2025 and the 2026 Regular Session. Every member of the 2025 session appears exactly once: a candidate id where a human confirmed the identity, or null where a human confirmed there is no candidate to map.",
+  "entries": [
+    {
+      "people_id": 1141,
+      "candidate_id": "af4f0855-5665-4bcc-ad59-2cd91703ba67",
+      "note": "proposer: Myron Dossett house HD-009 -> Myron Dossett (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 1151,
+      "candidate_id": "47cd0698-3367-4fc2-bca1-7158aa749317",
+      "note": "proposer: Jim Gooch house HD-012 -> Jim Gooch Jr. (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 1169,
+      "candidate_id": "0b633f88-d80c-4170-8086-74fc7472ea49",
+      "note": "proposer: Mary Marzian house HD-041 -> Mary Lou Marzian (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 1179,
+      "candidate_id": "7aa3f2e6-a3e9-4111-ae4b-ba9ab71ad1a6",
+      "note": "proposer: David Osborne house HD-059 -> David Osborne (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 1191,
+      "candidate_id": "8ae4a3fd-9dce-4a73-8598-9213713225db",
+      "note": "proposer: Steven Rudy house HD-001 -> Steven Rudy (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 1207,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates, so they are not seeking the seat again."
+    },
+    {
+      "people_id": 1223,
+      "candidate_id": null,
+      "note": "reviewed, no candidate. Kentucky staggers its Senate: only the even-numbered districts are on the November 2026 ballot, so this seat has no candidate to map. Not a roster gap."
+    },
+    {
+      "people_id": 1226,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates, so they are not seeking the seat again."
+    },
+    {
+      "people_id": 1232,
+      "candidate_id": null,
+      "note": "reviewed, no candidate. Kentucky staggers its Senate: only the even-numbered districts are on the November 2026 ballot, so this seat has no candidate to map. Not a roster gap."
+    },
+    {
+      "people_id": 1241,
+      "candidate_id": "9e4aa91a-4a29-4880-a606-95bfe351d786",
+      "note": "proposer: Brandon Smith senate SD-030 -> Brandon Smith (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 1244,
+      "candidate_id": null,
+      "note": "reviewed, no candidate. Kentucky staggers its Senate: only the even-numbered districts are on the November 2026 ballot, so this seat has no candidate to map. Not a roster gap."
+    },
+    {
+      "people_id": 1249,
+      "candidate_id": "57248526-0b1a-4b6c-9644-9b460905d3aa",
+      "note": "proposer: Robin Webb senate SD-018 -> Robin Webb (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 11083,
+      "candidate_id": "96d2f3f1-f97c-4b3a-88ef-d0f239e2304c",
+      "note": "proposer: Julie Raque Adams senate SD-036 -> Julie Raque Adams (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 11085,
+      "candidate_id": "36d9da99-bbbd-440d-a43c-23b052261c92",
+      "note": "proposer: Kim King house HD-055 -> Kim King (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 11086,
+      "candidate_id": "da8d2ee3-3f37-453b-b6bf-f51d35199313",
+      "note": "proposer: Michael Meredith house HD-019 -> Michael Meredith (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 11087,
+      "candidate_id": "ff53efea-0822-4773-9a5d-48513b6f896c",
+      "note": "hand-added. LegiScan first_name is the legal name Michael; the roster and the ballot use the nickname Mike. Senate District 38 agrees."
+    },
+    {
+      "people_id": 11094,
+      "candidate_id": "702b8065-f1d3-482a-98ee-d8db1254ac96",
+      "note": "proposer: Jared Carpenter senate SD-034 -> Jared Carpenter (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 11095,
+      "candidate_id": "cbb1aadd-52e9-4ad2-9511-1f5b6b72e5b4",
+      "note": "proposer: Mike Wilson senate SD-032 -> Mike Wilson (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 14422,
+      "candidate_id": "6ca30947-5e8f-4263-a70e-1ccbfe186ca9",
+      "note": "proposer: David Meade house HD-080 -> David Meade (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 14434,
+      "candidate_id": null,
+      "note": "reviewed, no candidate. Kentucky staggers its Senate: only the even-numbered districts are on the November 2026 ballot, so this seat has no candidate to map. Not a roster gap."
+    },
+    {
+      "people_id": 16110,
+      "candidate_id": "b578f5e1-d313-44eb-a86a-7a2b3018f999",
+      "note": "proposer: Suzanne Miles house HD-007 -> Suzanne Miles (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 16111,
+      "candidate_id": null,
+      "note": "reviewed, no candidate. Kentucky staggers its Senate: only the even-numbered districts are on the November 2026 ballot, so this seat has no candidate to map. Not a roster gap."
+    },
+    {
+      "people_id": 16603,
+      "candidate_id": "e97455bd-67b1-4ba0-9c62-069b5bee9f91",
+      "note": "hand-added. LegiScan first_name George, middle Maxwell, nickname Max. Senate District 16 agrees."
+    },
+    {
+      "people_id": 16606,
+      "candidate_id": "f69db37c-172b-470e-aeda-1645c7e13489",
+      "note": "proposer: Danny Carroll senate SD-002 -> Danny Carroll (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 16640,
+      "candidate_id": "69b8a386-0c18-4c4d-858a-f33ac3bf7cc1",
+      "note": "proposer: George Brown house HD-077 -> George A. Brown Jr. (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 16667,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates, so they are not seeking the seat again."
+    },
+    {
+      "people_id": 16669,
+      "candidate_id": "776bca7e-05ce-4b1c-ac17-6bbb5b46fe70",
+      "note": "proposer: James Tipton house HD-053 -> James A. Tipton (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 17672,
+      "candidate_id": null,
+      "note": "reviewed, no candidate. Kentucky staggers its Senate: only the even-numbered districts are on the November 2026 ballot, so this seat has no candidate to map. Not a roster gap."
+    },
+    {
+      "people_id": 17926,
+      "candidate_id": "9bcd8e9e-8b31-4699-96eb-e761bbe69859",
+      "note": "proposer: Daniel Elliott house HD-054 -> Daniel Elliott (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 18251,
+      "candidate_id": "3a258396-d9d8-4002-9573-ce7b83f92287",
+      "note": "proposer: Mark Hart house HD-078 -> Mark Hart (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 18252,
+      "candidate_id": null,
+      "note": "reviewed, no candidate. Kentucky staggers its Senate: only the even-numbered districts are on the November 2026 ballot, so this seat has no candidate to map. Not a roster gap."
+    },
+    {
+      "people_id": 18253,
+      "candidate_id": null,
+      "note": "reviewed, no candidate. Kentucky staggers its Senate: only the even-numbered districts are on the November 2026 ballot, so this seat has no candidate to map. Not a roster gap."
+    },
+    {
+      "people_id": 18339,
+      "candidate_id": "8247c689-0d24-41d4-a85a-f0bf642fd610",
+      "note": "hand-added. LegiScan first_name Robert, nickname Robby. Senate District 4 agrees."
+    },
+    {
+      "people_id": 18392,
+      "candidate_id": "b112da94-168f-4805-9ad1-d101067202b9",
+      "note": "hand-added. LegiScan writes DJ without periods, the roster writes D.J. House District 13 agrees."
+    },
+    {
+      "people_id": 18427,
+      "candidate_id": "a568f72d-99ab-456d-97f5-06eda0f50829",
+      "note": "proposer: Walker Thomas house HD-008 -> Walker Thomas (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 18428,
+      "candidate_id": "6c9b5506-da7f-4bc6-b7d0-5a84a9f5783d",
+      "note": "proposer: Kimberly Moser house HD-064 -> Kimberly Moser (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 18430,
+      "candidate_id": "6996e7e5-d534-43e6-9e8a-cfddbc89db90",
+      "note": "proposer: Alan Gentry house HD-046 -> Alan Gentry (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 18431,
+      "candidate_id": "4b8bbe26-df7c-4818-973f-38e5108eb6f2",
+      "note": "proposer: John Blanton house HD-092 -> John Blanton (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 18432,
+      "candidate_id": "f7d821ee-cfb3-45fc-8180-0ef3f8450dae",
+      "note": "proposer: Chris Fugate house HD-084 -> Chris Fugate (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 18489,
+      "candidate_id": "33737f49-36dd-4679-9088-768fc104f5ab",
+      "note": "proposer: Jason Petrie house HD-016 -> Jason Petrie (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 18493,
+      "candidate_id": "a21bcc13-00ec-4379-b109-6c22e4338fb9",
+      "note": "proposer: Steve Riley house HD-023 -> Steve Riley (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 18494,
+      "candidate_id": "8f98e0ad-5ed0-4711-b019-64c493a03ea1",
+      "note": "proposer: Ken Fleming house HD-048 -> Ken Fleming (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 19375,
+      "candidate_id": "643fc0e1-8747-4912-9320-60583cdd5e48",
+      "note": "proposer: Jason Nemes house HD-033 -> Jason Michael Nemes (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 20269,
+      "candidate_id": "0c859ce0-6b51-4f58-a77b-458f5264aef3",
+      "note": "proposer: Lisa Willner house HD-035 -> Lisa Willner (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 20373,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates, so they are not seeking the seat again."
+    },
+    {
+      "people_id": 20387,
+      "candidate_id": "b620d9b7-ef58-4aba-bba3-2f7e8f7f78ac",
+      "note": "proposer: Matthew Koch house HD-072 -> Matthew Koch (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 20389,
+      "candidate_id": "cec25b47-5694-4292-a2bf-8489758dfa33",
+      "note": "proposer: Chris Freeland house HD-006 -> Chris Freeland (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 20473,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates, so they are not seeking the seat again."
+    },
+    {
+      "people_id": 20474,
+      "candidate_id": "0cbcba1f-73c0-4ab3-8ac5-2410c5cadf74",
+      "note": "proposer: Bobby McCool house HD-097 -> Bobby McCool (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 20477,
+      "candidate_id": "2e38a089-52f1-4520-9361-60b813b14e69",
+      "note": "proposer: Deanna Frazier Gordon house HD-081 -> Deanna Frazier Gordon (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 20482,
+      "candidate_id": "f1d18786-7648-431f-825d-94b25a21d601",
+      "note": "proposer: Nima Kulkarni house HD-040 -> Nima Kulkarni (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 20483,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates, so they are not seeking the seat again."
+    },
+    {
+      "people_id": 20485,
+      "candidate_id": "252b9708-0f41-4883-b6ce-020add28fb48",
+      "note": "hand-added. LegiScan first_name Randall, nickname Randy. House District 3 agrees."
+    },
+    {
+      "people_id": 20486,
+      "candidate_id": "f0d77099-ce56-45e2-9d0e-17759350247a",
+      "note": "proposer: Tina Bojanowski house HD-032 -> Tina Bojanowski (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 20489,
+      "candidate_id": "a85a0a06-bd99-4650-855e-284f305ccc3f",
+      "note": "proposer: Thomas Huff house HD-049 -> Thomas Huff (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 20555,
+      "candidate_id": "be1807aa-b8fd-41ed-9a5f-c7ae7df5293d",
+      "note": "proposer: Adam Bowling house HD-087 -> Adam Bowling (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 20556,
+      "candidate_id": "4f83066c-fd3a-4446-9894-d32918d985af",
+      "note": "proposer: Derek Lewis house HD-090 -> Derek Lewis (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 20557,
+      "candidate_id": "602038f6-994d-4748-a621-8ed4ef6f0a15",
+      "note": "proposer: Savannah Maddox house HD-061 -> Savannah Maddox (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 21348,
+      "candidate_id": null,
+      "note": "reviewed, no candidate. Kentucky staggers its Senate: only the even-numbered districts are on the November 2026 ballot, so this seat has no candidate to map. Not a roster gap."
+    },
+    {
+      "people_id": 21423,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates, so they are not seeking the seat again."
+    },
+    {
+      "people_id": 21424,
+      "candidate_id": "3b8b8573-b1d6-441a-a969-36771e16231d",
+      "note": "proposer: Samara Heavrin house HD-018 -> Samara Heavrin (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 21616,
+      "candidate_id": "0e3d4ece-9841-4928-8a80-c18496464e74",
+      "note": "proposer: Richard White house HD-099 -> Richard White (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 22050,
+      "candidate_id": "2b355ed7-2501-45b1-8ff9-09b125991c1f",
+      "note": "hand-added. The candidate name begins with an initial, so its first token is R. rather than Shane. House District 85 agrees."
+    },
+    {
+      "people_id": 22051,
+      "candidate_id": "1189dcc5-e907-44fa-9f72-1db5454bffe8",
+      "note": "proposer: Joshua Branscum house HD-083 -> Joshua Branscum (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 22052,
+      "candidate_id": "e41277de-5f4e-4858-b7e1-6e4b178a5eb0",
+      "note": "proposer: Josh Bray house HD-071 -> Josh Bray (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 22053,
+      "candidate_id": "3619e923-8963-477a-b7f9-512830844613",
+      "note": "proposer: Josh Calloway house HD-010 -> Josh Calloway (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 22054,
+      "candidate_id": "19ceb6f7-6747-489b-85d9-19014b39e725",
+      "note": "hand-added. LegiScan last_name is the two-part Henson Decker; the roster carries only Decker. House District 58 agrees."
+    },
+    {
+      "people_id": 22056,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates, so they are not seeking the seat again."
+    },
+    {
+      "people_id": 22057,
+      "candidate_id": "73c5f983-b02e-430b-a16b-7fb40c2be1cc",
+      "note": "proposer: Daniel Fister house HD-056 -> Daniel Fister (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 22058,
+      "candidate_id": "3126937a-c5c8-4851-92a9-15b1ecfbf11f",
+      "note": "proposer: Patrick Flannery house HD-096 -> Patrick Flannery (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 22059,
+      "candidate_id": "25cd8eff-cf07-4d45-b35e-01c0c8f0070a",
+      "note": "proposer: Mary Imes house HD-005 -> Mary Imes (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 22061,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates, so they are not seeking the seat again."
+    },
+    {
+      "people_id": 22062,
+      "candidate_id": "04380716-5f29-4636-9612-56fdb7fdcb14",
+      "note": "proposer: Matt Lockett house HD-039 -> Matt Lockett (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 22063,
+      "candidate_id": "44f55767-934e-41de-9fdd-bf6745eb2ff1",
+      "note": "proposer: Shawn McPherson house HD-022 -> Shawn McPherson (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 22064,
+      "candidate_id": "717bd6c8-4273-4c8b-8a10-ec70b4e95083",
+      "note": "proposer: Felicia Rabourn house HD-047 -> Felicia Rabourn (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 22065,
+      "candidate_id": "ba9d1ff1-019c-4720-84d0-dac0992eeb81",
+      "note": "proposer: Scott Sharp house HD-100 -> Scott Sharp (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 22066,
+      "candidate_id": "4b1cae5e-0c4c-44d7-93ab-43b22d30e78b",
+      "note": "proposer: Tom Smith house HD-086 -> Tom Smith (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 22067,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates, so they are not seeking the seat again."
+    },
+    {
+      "people_id": 22069,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates, so they are not seeking the seat again."
+    },
+    {
+      "people_id": 22070,
+      "candidate_id": null,
+      "note": "reviewed, no candidate. Kentucky staggers its Senate: only the even-numbered districts are on the November 2026 ballot, so this seat has no candidate to map. Not a roster gap."
+    },
+    {
+      "people_id": 22071,
+      "candidate_id": null,
+      "note": "reviewed, no candidate. Kentucky staggers its Senate: only the even-numbered districts are on the November 2026 ballot, so this seat has no candidate to map. Not a roster gap."
+    },
+    {
+      "people_id": 22179,
+      "candidate_id": "24191bf3-a103-435c-ba3a-367de0ed5c5d",
+      "note": "proposer: Karen Berg senate SD-026 -> Karen Berg (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 22180,
+      "candidate_id": "1f9b744f-1dea-4d7e-a77a-21dd51d33d80",
+      "note": "hand-added. Sitting Senator for District 37 who left the Senate in October 2025 to become Jefferson County Clerk, and is the Democratic nominee for a full term in November 2026. He voted in every 2025 roll call. Confirmed from our own candidate summary; the proposer cannot reach him because he is not in the state-legislative pool."
+    },
+    {
+      "people_id": 23010,
+      "candidate_id": "71c0c98e-8f2c-44b1-afd3-b3c777c86eb8",
+      "note": "proposer: Michael Pollock house HD-051 -> Michael Pollock (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23011,
+      "candidate_id": "9a624646-e50d-443d-8ad7-c879ac2ec43c",
+      "note": "hand-added. LegiScan first_name Timothy, nickname Timmy. House District 89 agrees."
+    },
+    {
+      "people_id": 23014,
+      "candidate_id": "13a1ae2b-e0fe-4cb2-a645-a2d2a6a5ffac",
+      "note": "proposer: Donald Douglas senate SD-022 -> Donald Douglas (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23103,
+      "candidate_id": null,
+      "note": "reviewed, no candidate. Kentucky staggers its Senate: only the even-numbered districts are on the November 2026 ballot, so this seat has no candidate to map. Not a roster gap."
+    },
+    {
+      "people_id": 23560,
+      "candidate_id": "ab67de68-a1af-490c-9986-6de412332cb5",
+      "note": "proposer: Gary Boswell senate SD-008 -> Gary Boswell (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23561,
+      "candidate_id": "f50860c8-5c8c-45c6-8446-c41bf20caace",
+      "note": "proposer: Kevin Jackson house HD-020 -> Kevin Jackson (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23562,
+      "candidate_id": "04123026-4ade-41fa-91ea-e692798b5981",
+      "note": "proposer: Robert Duvall house HD-017 -> Robert Duvall (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23563,
+      "candidate_id": null,
+      "note": "reviewed, no candidate. Kentucky staggers its Senate: only the even-numbered districts are on the November 2026 ballot, so this seat has no candidate to map. Not a roster gap."
+    },
+    {
+      "people_id": 23564,
+      "candidate_id": "800cb5f5-8318-490a-abd2-4c2eb65d8fb9",
+      "note": "proposer: Lindsey Tichenor senate SD-006 -> Lindsey Tichenor (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23565,
+      "candidate_id": "841638e0-f574-4dc2-ae81-68e0ad0202b5",
+      "note": "hand-added. LegiScan first_name Jay, nickname Gex, suffix III. Senate District 20 agrees."
+    },
+    {
+      "people_id": 23566,
+      "candidate_id": "48163d71-b15f-4044-ba19-eb2b2d3b16e9",
+      "note": "proposer: Wade Williams house HD-004 -> D. Wade Williams (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23617,
+      "candidate_id": "2e4b830e-5b89-4fd6-ad01-777dd61748c2",
+      "note": "proposer: Jared Bauman house HD-028 -> Jared Bauman (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23618,
+      "candidate_id": "43dc38da-4347-42a0-aa37-831bcdd53dc3",
+      "note": "proposer: Chad Aull house HD-079 -> Chad Aull (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23619,
+      "candidate_id": "482c7133-5165-4ab3-856a-acffc760484a",
+      "note": "proposer: Candy Massaroni house HD-050 -> Candy Massaroni (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23620,
+      "candidate_id": "517b9919-8e92-423f-ae99-02e02e422371",
+      "note": "proposer: John Hodgson house HD-036 -> John Hodgson (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23621,
+      "candidate_id": "9205cc64-956b-4d87-abd5-215a2242f867",
+      "note": "proposer: Lindsey Burke house HD-075 -> Lindsey Burke (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23622,
+      "candidate_id": "56aed0ec-1914-478f-a75f-beeb536e1933",
+      "note": "proposer: Marianne Proctor house HD-060 -> Marianne Proctor (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23623,
+      "candidate_id": "f93bfc47-4b90-4cf1-9e29-054c2893f23f",
+      "note": "proposer: Rebecca Raymer house HD-015 -> Rebecca Raymer (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23624,
+      "candidate_id": "9ffaca9c-9bc0-4360-bb9e-44d6fd5dc5a2",
+      "note": "proposer: Rachel Roarx house HD-038 -> Rachel Roarx (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23625,
+      "candidate_id": "e7c90e64-9848-4a79-9136-fbc1411aad08",
+      "note": "proposer: Steve Bratcher house HD-025 -> Steve Bratcher (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23626,
+      "candidate_id": "7c785fbf-119f-44e9-9c0b-d8bb4fe69d20",
+      "note": "proposer: Stephanie Dietz house HD-065 -> Stephanie A. Dietz (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23627,
+      "candidate_id": "ca0eb66b-3e89-404c-8f5d-00e82eedb638",
+      "note": "hand-added. LegiScan last_name is the two-part Mays Bledsoe; the roster carries only Bledsoe. Senate District 12 agrees."
+    },
+    {
+      "people_id": 23628,
+      "candidate_id": "62f7fa96-3f00-4c50-a3a7-e1671eabd1da",
+      "note": "proposer: Matthew Deneen senate SD-010 -> Matthew Deneen (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23689,
+      "candidate_id": "9c439ffb-c945-4c0c-b702-e88066ae18e4",
+      "note": "proposer: Emily Callaway house HD-037 -> Emily Callaway (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23690,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates, so they are not seeking the seat again."
+    },
+    {
+      "people_id": 23691,
+      "candidate_id": "f4bc9acf-bf8a-4ed7-86b7-e793505abd26",
+      "note": "proposer: Mike Clines house HD-068 -> Mike Clines (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23692,
+      "candidate_id": "78b3053d-377c-4ed8-bb40-f98ba0323b01",
+      "note": "proposer: Steven Doan house HD-069 -> Steven Doan (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23693,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates, so they are not seeking the seat again."
+    },
+    {
+      "people_id": 23695,
+      "candidate_id": "37835b22-29e0-4ea5-902b-668aebd0691e",
+      "note": "proposer: Amy Neighbors house HD-021 -> Amy Neighbors (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23696,
+      "candidate_id": "ce053c78-9870-41a2-badc-0f93f21c678b",
+      "note": "proposer: Sarah Stalker house HD-034 -> Sarah Stalker (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23698,
+      "candidate_id": "d6430c76-4b49-4781-b265-65eed545ef1e",
+      "note": "hand-added. LegiScan first_name Nicolas, nickname Nick; nick is not a prefix of nicolas. House District 82 agrees."
+    },
+    {
+      "people_id": 23699,
+      "candidate_id": "3514924b-3976-454b-9f94-3a2b58453b12",
+      "note": "proposer: Susan Tyler Witten house HD-031 -> Susan Tyler Witten (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23721,
+      "candidate_id": "0534d7d9-307f-4ea0-aef6-4303fd7bb4a9",
+      "note": "proposer: Shelley Frommeyer senate SD-024 -> Shelley Funke Frommeyer (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 24909,
+      "candidate_id": null,
+      "note": "reviewed, no candidate. Kentucky staggers its Senate: only the even-numbered districts are on the November 2026 ballot, so this seat has no candidate to map. Not a roster gap."
+    },
+    {
+      "people_id": 25002,
+      "candidate_id": "4ebe7fd6-3fe1-4205-9b54-afe7ca018d0a",
+      "note": "proposer: Greg Elkins senate SD-028 -> Greg Elkins (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25003,
+      "candidate_id": "e7f701da-5716-4952-9fdf-d21b741d157c",
+      "note": "proposer: Adrielle Camuel house HD-093 -> Adrielle Camuel (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25184,
+      "candidate_id": "341fe179-9d57-497c-9121-8b66ad09bc83",
+      "note": "proposer: Peyton Griffee house HD-026 -> Peyton Griffee (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25769,
+      "candidate_id": "8eb8e6e3-8268-4129-b127-16b841782dfe",
+      "note": "proposer: Ryan Bivens house HD-024 -> Ryan Bivens (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25770,
+      "candidate_id": "d48fc484-989b-468a-9f2b-6e38b0ac164f",
+      "note": "proposer: Anne Donworth house HD-076 -> Anne Donworth (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25771,
+      "candidate_id": "d0d1205a-640f-4f95-a5b4-aedc689f351d",
+      "note": "proposer: Vanessa Grossl house HD-088 -> Vanessa Grossl (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25772,
+      "candidate_id": "010117b1-7f57-42f7-924c-b78d0ac29444",
+      "note": "proposer: Tony Hampton house HD-062 -> Tony Hampton (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25773,
+      "candidate_id": "3741f513-8ead-480c-a43b-b0043693e997",
+      "note": "proposer: Erika Hancock house HD-057 -> Erika Hancock (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25774,
+      "candidate_id": "337be603-302c-486a-8e40-a891ff6130e9",
+      "note": "proposer: Kimberly Holloway house HD-002 -> Kimberly Holloway (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25775,
+      "candidate_id": "bcbd4c01-6a0f-4470-8853-7129ff63498b",
+      "note": "proposer: Matthew Lehman house HD-067 -> Matthew Lehman (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25776,
+      "candidate_id": "593ef6cd-f04c-4051-8ffb-df97d0856683",
+      "note": "proposer: Chris Lewis house HD-029 -> Chris Lewis (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25777,
+      "candidate_id": "13d707f4-6828-4a3b-8a5d-526c22374f28",
+      "note": "proposer: Adam Moore house HD-045 -> Adam Moore (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25778,
+      "candidate_id": "50273521-4e9e-4efc-9744-6197ed9fbab6",
+      "note": "proposer: J.T. Payne house HD-011 -> J.T. Payne (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25779,
+      "candidate_id": "368b5029-3d23-451c-9cad-286796dfb701",
+      "note": "proposer: T.J. Roberts house HD-066 -> T.J. Roberts (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25780,
+      "candidate_id": "0c547e19-41f3-4a94-b0db-9a482bb493cf",
+      "note": "proposer: Aaron Thompson house HD-098 -> Aaron Thompson (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25781,
+      "candidate_id": "7db9da04-b3de-4361-87f0-c6962959c3f9",
+      "note": "proposer: Joshua Watkins house HD-042 -> Joshua Watkins (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25782,
+      "candidate_id": "88d9b857-074c-4dc0-a0f8-295c9e66423f",
+      "note": "proposer: Mitch Whitaker house HD-094 -> Mitchum Whitaker (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25783,
+      "candidate_id": null,
+      "note": "reviewed, no candidate. Kentucky staggers its Senate: only the even-numbered districts are on the November 2026 ballot, so this seat has no candidate to map. Not a roster gap."
+    },
+    {
+      "people_id": 25784,
+      "candidate_id": null,
+      "note": "reviewed, no candidate. Kentucky staggers its Senate: only the even-numbered districts are on the November 2026 ballot, so this seat has no candidate to map. Not a roster gap."
+    },
+    {
+      "people_id": 25785,
+      "candidate_id": null,
+      "note": "reviewed, no candidate. Kentucky staggers its Senate: only the even-numbered districts are on the November 2026 ballot, so this seat has no candidate to map. Not a roster gap."
+    },
+    {
+      "people_id": 25786,
+      "candidate_id": null,
+      "note": "reviewed, no candidate. Kentucky staggers its Senate: only the even-numbered districts are on the November 2026 ballot, so this seat has no candidate to map. Not a roster gap."
+    }
+  ]
+}

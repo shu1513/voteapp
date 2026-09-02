@@ -1,0 +1,95 @@
+{
+  "batch": "batch-09",
+  "chamber": "senate",
+  "note": "Senate-only tail, second batch.",
+  "rolls": [
+    {
+      "measure": "AB 1050",
+      "roll": 1601779,
+      "vote_date": "2025-09-10",
+      "last_amended": "2025-09-05",
+      "bill_status": "chaptered",
+      "tally": "31-9",
+      "area": "housing_affordability",
+      "version_check": "vote is after the last amendment",
+      "screen_note": "earlier 09-03 roll was RESCINDED by the Senate, then the bill was amended"
+    },
+    {
+      "measure": "SB 294",
+      "roll": 1602931,
+      "vote_date": "2025-09-13",
+      "last_amended": "2025-09-04",
+      "bill_status": "chaptered",
+      "tally": "29-8",
+      "area": "civil_rights",
+      "version_check": "vote is after the last amendment",
+      "screen_note": "duplicate-date twin: 09-12 roll is the Assembly's own third reading"
+    },
+    {
+      "measure": "SB 1125",
+      "roll": 1726371,
+      "vote_date": "2026-08-26",
+      "last_amended": "2026-08-19",
+      "bill_status": "enrolled",
+      "tally": "31-9",
+      "area": "social_programs_and_welfare",
+      "version_check": "vote is after the last amendment",
+      "screen_note": "earlier 05-27 roll predates the Assembly amendments"
+    },
+    {
+      "measure": "SB 655",
+      "roll": 1601874,
+      "vote_date": "2025-09-11",
+      "last_amended": "2025-09-04",
+      "bill_status": "chaptered",
+      "tally": "31-8",
+      "area": "environment_and_public_health",
+      "version_check": "vote is after the last amendment",
+      "screen_note": ""
+    },
+    {
+      "measure": "AB 1108",
+      "roll": 1602273,
+      "vote_date": "2025-09-12",
+      "last_amended": "2025-09-05",
+      "bill_status": "chaptered",
+      "tally": "29-9",
+      "area": "public_safety_and_crime_control",
+      "version_check": "vote is after the last amendment",
+      "screen_note": ""
+    },
+    {
+      "measure": "SB 464",
+      "roll": 1601735,
+      "vote_date": "2025-09-10",
+      "last_amended": "2025-09-05",
+      "bill_status": "chaptered",
+      "tally": "30-10",
+      "area": "corporate_accountability",
+      "version_check": "vote is after the last amendment",
+      "screen_note": "earlier 06-02 roll predates the Assembly amendments"
+    },
+    {
+      "measure": "AB 507",
+      "roll": 1601792,
+      "vote_date": "2025-09-10",
+      "last_amended": "2025-09-05",
+      "bill_status": "chaptered",
+      "tally": "30-9",
+      "area": "housing_affordability",
+      "version_check": "vote is after the last amendment",
+      "screen_note": ""
+    },
+    {
+      "measure": "AB 260",
+      "roll": 1601536,
+      "vote_date": "2025-09-09",
+      "last_amended": "2025-09-05",
+      "bill_status": "chaptered",
+      "tally": "30-8",
+      "area": "womens_reproductive_rights",
+      "version_check": "vote is after the last amendment",
+      "screen_note": ""
+    }
+  ]
+}

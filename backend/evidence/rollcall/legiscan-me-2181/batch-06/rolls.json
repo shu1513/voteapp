@@ -1,0 +1,367 @@
+{
+ "jurisdiction": "ME",
+ "session": "2181",
+ "batch": "batch-06",
+ "rolls": [
+  {
+   "measure_id": "LD 1768",
+   "roll": 1583357,
+   "chamber": "senate",
+   "vote_date": "2025-06-02",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 23,
+   "nay": 11,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Protect Residents of Mobile Home Parks by Amending the Real Estate Transfer Tax",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "measure_id": "LD 1768",
+   "roll": 1584131,
+   "chamber": "house",
+   "vote_date": "2025-06-03",
+   "question": "Acc Maj Otp As Amended Rep",
+   "question_class": "passage",
+   "yea": 79,
+   "nay": 69,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Protect Residents of Mobile Home Parks by Amending the Real Estate Transfer Tax",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "measure_id": "LD 1949",
+   "roll": 1655394,
+   "chamber": "senate",
+   "vote_date": "2026-03-05",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 21,
+   "nay": 12,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act Regarding Energy Fairness",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "measure_id": "LD 1949",
+   "roll": 1664341,
+   "chamber": "house",
+   "vote_date": "2026-03-17",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 86,
+   "nay": 56,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act Regarding Energy Fairness",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "measure_id": "LD 1966",
+   "roll": 1677077,
+   "chamber": "senate",
+   "vote_date": "2026-04-06",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 20,
+   "nay": 12,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Increase Disclosure of Utility Charges and Improve Access to Distributed Generation Resources in the State",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "measure_id": "LD 1966",
+   "roll": 1677418,
+   "chamber": "house",
+   "vote_date": "2026-04-07",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 77,
+   "nay": 70,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Increase Disclosure of Utility Charges and Improve Access to Distributed Generation Resources in the State",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "measure_id": "LD 2057",
+   "roll": 1668516,
+   "chamber": "senate",
+   "vote_date": "2026-03-24",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 22,
+   "nay": 13,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Support Rehabilitation and Development of Affordable Housing",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "measure_id": "LD 2057",
+   "roll": 1669503,
+   "chamber": "house",
+   "vote_date": "2026-03-25",
+   "question": "Acc Maj Otp-am By Ca \"a\"",
+   "question_class": "passage",
+   "yea": 74,
+   "nay": 67,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Support Rehabilitation and Development of Affordable Housing",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "measure_id": "LD 2058",
+   "roll": 1673194,
+   "chamber": "senate",
+   "vote_date": "2026-03-30",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 20,
+   "nay": 12,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Clarify the Requirement That Municipal and County Jails Be Available at All Times for Detention of Arrested Persons",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "measure_id": "LD 2058",
+   "roll": 1676321,
+   "chamber": "house",
+   "vote_date": "2026-04-02",
+   "question": "Enactment",
+   "question_class": "passage",
+   "yea": 77,
+   "nay": 71,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Clarify the Requirement That Municipal and County Jails Be Available at All Times for Detention of Arrested Persons",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "measure_id": "LD 21",
+   "roll": 1575341,
+   "chamber": "senate",
+   "vote_date": "2025-05-21",
+   "question": "Accept Majority Ought To Pass Report",
+   "question_class": "passage",
+   "yea": 18,
+   "nay": 14,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Update the Provision of Law Concerning Student Codes of Conduct in Order to Reflect Best Practices Regarding Behavioral Threat Assessment and Response",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "measure_id": "LD 21",
+   "roll": 1576079,
+   "chamber": "house",
+   "vote_date": "2025-05-22",
+   "question": "Acc Maj Ought To Pass Rep",
+   "question_class": "passage",
+   "yea": 79,
+   "nay": 65,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Update the Provision of Law Concerning Student Codes of Conduct in Order to Reflect Best Practices Regarding Behavioral Threat Assessment and Response",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "measure_id": "LD 2107",
+   "roll": 1668769,
+   "chamber": "house",
+   "vote_date": "2026-03-24",
+   "question": "Acc Maj Otp As Amended Rep",
+   "question_class": "passage",
+   "yea": 76,
+   "nay": 68,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Establish the Maine Nonprofit Security Grant Program",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "measure_id": "LD 2107",
+   "roll": 1669869,
+   "chamber": "senate",
+   "vote_date": "2026-03-25",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 21,
+   "nay": 14,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Establish the Maine Nonprofit Security Grant Program",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "measure_id": "LD 215",
+   "roll": 1589170,
+   "chamber": "house",
+   "vote_date": "2025-06-11",
+   "question": "Acc Maj Otp As Amended Rep",
+   "question_class": "passage",
+   "yea": 76,
+   "nay": 65,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act Regarding Large Recovery Residences",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "measure_id": "LD 215",
+   "roll": 1590154,
+   "chamber": "senate",
+   "vote_date": "2025-06-12",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 22,
+   "nay": 13,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act Regarding Large Recovery Residences",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "measure_id": "LD 784",
+   "roll": 1574113,
+   "chamber": "senate",
+   "vote_date": "2025-05-20",
+   "question": "Accept Majority Ought To Pass As Amended Report",
+   "question_class": "passage",
+   "yea": 20,
+   "nay": 12,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Create a Rebuttable Presumption Related to Specialized Risk Screening for First Responders",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "measure_id": "LD 784",
+   "roll": 1579017,
+   "chamber": "house",
+   "vote_date": "2025-05-27",
+   "question": "Acc Maj Otp As Amended Rep",
+   "question_class": "passage",
+   "yea": 78,
+   "nay": 62,
+   "passed": 1,
+   "bill_status": "became law (LegiScan status 4)",
+   "title": "An Act to Create a Rebuttable Presumption Related to Specialized Risk Screening for First Responders",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

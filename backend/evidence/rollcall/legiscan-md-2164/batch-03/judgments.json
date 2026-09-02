@@ -1,0 +1,313 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1518348,
+   "measure_id": "HB 1045",
+   "vote_date": "2025-03-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1045, which extended Maryland's medical privacy shield to gender-affirming care. State law protects records about abortion and other sensitive health services from being handed to another state. The bill adds gender-affirming care to the definitions of legally protected health care and sensitive health services, so those records get the same protection. It also updates the state Family Planning Program's references to federal law from 2016 to December 31, 2024, and gives the Insurance Commissioner and the Maryland Commission on Civil Rights shared power to enforce the ban on discrimination in health insurance. A yes vote extended those privacy and enforcement protections. The Maryland House of Delegates passed it 102-37 and it was signed into law as Chapter 469 of 2025.",
+   "nay_description": "Voted against passing HB 1045, which extended Maryland's medical privacy shield to gender-affirming care. State law protects records about abortion and other sensitive health services from being handed to another state. The bill adds gender-affirming care to the definitions of legally protected health care and sensitive health services, so those records get the same protection. It also updates the state Family Planning Program's references to federal law from 2016 to December 31, 2024, and gives the Insurance Commissioner and the Maryland Commission on Civil Rights shared power to enforce the ban on discrimination in health insurance. A no vote opposed extending them. The Maryland House of Delegates passed it 102-37 over these votes and it was signed into law as Chapter 469 of 2025.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2164",
+   "roll": 1561561,
+   "measure_id": "HB 1045",
+   "vote_date": "2025-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1045, which extended Maryland's medical privacy shield to gender-affirming care. State law protects records about abortion and other sensitive health services from being handed to another state. The bill adds gender-affirming care to the definitions of legally protected health care and sensitive health services, so those records get the same protection. It also updates the state Family Planning Program's references to federal law from 2016 to December 31, 2024, and gives the Insurance Commissioner and the Maryland Commission on Civil Rights shared power to enforce the ban on discrimination in health insurance. A yes vote extended those privacy and enforcement protections. The Maryland Senate passed it 35-11 and it was signed into law as Chapter 469 of 2025.",
+   "nay_description": "Voted against passing HB 1045, which extended Maryland's medical privacy shield to gender-affirming care. State law protects records about abortion and other sensitive health services from being handed to another state. The bill adds gender-affirming care to the definitions of legally protected health care and sensitive health services, so those records get the same protection. It also updates the state Family Planning Program's references to federal law from 2016 to December 31, 2024, and gives the Insurance Commissioner and the Maryland Commission on Civil Rights shared power to enforce the ban on discrimination in health insurance. A no vote opposed extending them. The Maryland Senate passed it 35-11 over these votes and it was signed into law as Chapter 469 of 2025.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1518402,
+   "measure_id": "HB 1082",
+   "vote_date": "2025-03-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1082, which set up state subsidies to cushion a coming rise in health plan premiums. Federal tax credits hold down what people pay for health plans bought on the state exchange, and the share of income households owe was set to rise in 2026 and 2027. The Maryland Health Benefit Exchange must build a state-funded subsidy program, within available money, aimed at the people that increase hits. The exchange has to track spending monthly and publish it. If Congress extends the federal credits for those two years, the whole program ends. A yes vote created that state backstop. The Maryland House of Delegates passed it 102-37 and it was signed into law as Chapter 468 of 2025.",
+   "nay_description": "Voted against passing HB 1082, which set up state subsidies to cushion a coming rise in health plan premiums. Federal tax credits hold down what people pay for health plans bought on the state exchange, and the share of income households owe was set to rise in 2026 and 2027. The Maryland Health Benefit Exchange must build a state-funded subsidy program, within available money, aimed at the people that increase hits. The exchange has to track spending monthly and publish it. If Congress extends the federal credits for those two years, the whole program ends. A no vote opposed creating it. The Maryland House of Delegates passed it 102-37 over these votes and it was signed into law as Chapter 468 of 2025.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2164",
+   "roll": 1561841,
+   "measure_id": "HB 1082",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1082, which set up state subsidies to cushion a coming rise in health plan premiums. Federal tax credits hold down what people pay for health plans bought on the state exchange, and the share of income households owe was set to rise in 2026 and 2027. The Maryland Health Benefit Exchange must build a state-funded subsidy program, within available money, aimed at the people that increase hits. The exchange has to track spending monthly and publish it. If Congress extends the federal credits for those two years, the whole program ends. A yes vote created that state backstop. The Maryland Senate passed it 34-12 and it was signed into law as Chapter 468 of 2025.",
+   "nay_description": "Voted against passing HB 1082, which set up state subsidies to cushion a coming rise in health plan premiums. Federal tax credits hold down what people pay for health plans bought on the state exchange, and the share of income households owe was set to rise in 2026 and 2027. The Maryland Health Benefit Exchange must build a state-funded subsidy program, within available money, aimed at the people that increase hits. The exchange has to track spending monthly and publish it. If Congress extends the federal credits for those two years, the whole program ends. A no vote opposed creating it. The Maryland Senate passed it 34-12 over these votes and it was signed into law as Chapter 468 of 2025.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1518056,
+   "measure_id": "HB 1380",
+   "vote_date": "2025-03-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1380, which made minimum childbirth care standards a condition of a hospital's license. The Maryland Department of Health, working with the state's emergency medical services institute, must write rules setting minimum perinatal care standards — the care around pregnancy and birth — that meet or beat the existing Maryland Perinatal System Standards. The rules were due by October 1, 2026. Every hospital that delivers babies and every freestanding birthing center must meet them to keep its license. A yes vote made those standards mandatory. The Maryland House of Delegates passed it 101-39 and it was signed into law as Chapter 709 of 2025.",
+   "nay_description": "Voted against passing HB 1380, which made minimum childbirth care standards a condition of a hospital's license. The Maryland Department of Health, working with the state's emergency medical services institute, must write rules setting minimum perinatal care standards — the care around pregnancy and birth — that meet or beat the existing Maryland Perinatal System Standards. The rules were due by October 1, 2026. Every hospital that delivers babies and every freestanding birthing center must meet them to keep its license. A no vote opposed making them mandatory. The Maryland House of Delegates passed it 101-39 over these votes and it was signed into law as Chapter 709 of 2025.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2164",
+   "roll": 1560780,
+   "measure_id": "HB 1380",
+   "vote_date": "2025-04-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1380, which made minimum childbirth care standards a condition of a hospital's license. The Maryland Department of Health, working with the state's emergency medical services institute, must write rules setting minimum perinatal care standards — the care around pregnancy and birth — that meet or beat the existing Maryland Perinatal System Standards. The rules were due by October 1, 2026. Every hospital that delivers babies and every freestanding birthing center must meet them to keep its license. A yes vote made those standards mandatory. The Maryland Senate passed it 35-12 and it was signed into law as Chapter 709 of 2025.",
+   "nay_description": "Voted against passing HB 1380, which made minimum childbirth care standards a condition of a hospital's license. The Maryland Department of Health, working with the state's emergency medical services institute, must write rules setting minimum perinatal care standards — the care around pregnancy and birth — that meet or beat the existing Maryland Perinatal System Standards. The rules were due by October 1, 2026. Every hospital that delivers babies and every freestanding birthing center must meet them to keep its license. A no vote opposed making them mandatory. The Maryland Senate passed it 35-12 over these votes and it was signed into law as Chapter 709 of 2025.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1506759,
+   "measure_id": "HB 249",
+   "vote_date": "2025-03-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 249, which stopped local governments from punishing people for calling 911. Some counties and towns had rules that treated a rental home as a nuisance once police or emergency crews were called there a set number of times, and that let them penalize the owner or the tenant. The bill bars a county or town from enforcing any such rule, and the ban applies even when someone other than the tenant made the call. It took effect July 1, 2025. A yes vote ended those local penalties for seeking help. The Maryland House of Delegates passed it 96-37 and it was signed into law as Chapter 476 of 2025.",
+   "nay_description": "Voted against passing HB 249, which stopped local governments from punishing people for calling 911. Some counties and towns had rules that treated a rental home as a nuisance once police or emergency crews were called there a set number of times, and that let them penalize the owner or the tenant. The bill bars a county or town from enforcing any such rule, and the ban applies even when someone other than the tenant made the call. It took effect July 1, 2025. A no vote opposed overriding those local rules. The Maryland House of Delegates passed it 96-37 over these votes and it was signed into law as Chapter 476 of 2025.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1546862,
+   "measure_id": "HB 431",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 431, which voided contract clauses that shorten a consumer's time to sue. If a consumer contract gives a person less time to bring a claim than state law allows, that clause is now against state policy, illegal and void. The rule does not reach contracts from businesses operating under a state license or franchise, services regulated by the Maryland Public Service Commission or the federal communications or energy regulators, or licensed security system providers. A yes vote struck down those shortened deadlines. The Maryland House of Delegates passed it 101-38 and it was signed into law as Chapter 194 of 2025.",
+   "nay_description": "Voted against passing HB 431, which voided contract clauses that shorten a consumer's time to sue. If a consumer contract gives a person less time to bring a claim than state law allows, that clause is now against state policy, illegal and void. The rule does not reach contracts from businesses operating under a state license or franchise, services regulated by the Maryland Public Service Commission or the federal communications or energy regulators, or licensed security system providers. A no vote opposed voiding them. The Maryland House of Delegates passed it 101-38 over these votes and it was signed into law as Chapter 194 of 2025.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1522925,
+   "measure_id": "HB 881",
+   "vote_date": "2025-03-14",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 881, which sends more collected child support straight to families on cash assistance. When a parent on the Family Investment Program is owed child support, the state collects it and has kept part of it. Starting in fiscal 2028 the share passed through to the family rises each year, and from fiscal 2031 the family gets 100% of what is collected that month. The money passed through is also ignored when the state works out the family's benefit, so it does not cut their assistance. A yes vote sent that money to the families. The Maryland House of Delegates passed it 106-31 and it was signed into law as Chapter 373 of 2025.",
+   "nay_description": "Voted against passing HB 881, which sends more collected child support straight to families on cash assistance. When a parent on the Family Investment Program is owed child support, the state collects it and has kept part of it. Starting in fiscal 2028 the share passed through to the family rises each year, and from fiscal 2031 the family gets 100% of what is collected that month. The money passed through is also ignored when the state works out the family's benefit, so it does not cut their assistance. A no vote opposed the change. The Maryland House of Delegates passed it 106-31 over these votes and it was signed into law as Chapter 373 of 2025.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2164",
+   "roll": 1572861,
+   "measure_id": "HB 881",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 881, which sends more collected child support straight to families on cash assistance. When a parent on the Family Investment Program is owed child support, the state collects it and has kept part of it. Starting in fiscal 2028 the share passed through to the family rises each year, and from fiscal 2031 the family gets 100% of what is collected that month. The money passed through is also ignored when the state works out the family's benefit, so it does not cut their assistance. A yes vote sent that money to the families. The Maryland Senate passed it 33-13 and it was signed into law as Chapter 373 of 2025.",
+   "nay_description": "Voted against passing HB 881, which sends more collected child support straight to families on cash assistance. When a parent on the Family Investment Program is owed child support, the state collects it and has kept part of it. Starting in fiscal 2028 the share passed through to the family rises each year, and from fiscal 2031 the family gets 100% of what is collected that month. The money passed through is also ignored when the state works out the family's benefit, so it does not cut their assistance. A no vote opposed the change. The Maryland Senate passed it 33-13 over these votes and it was signed into law as Chapter 373 of 2025.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1572860
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1517929,
+   "measure_id": "HB 933",
+   "vote_date": "2025-03-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 933, which put nursing home spending under yearly state review. The Maryland Department of Health must review the cost reports and other data every Medicaid nursing home files. The review covers how much revenue goes to contracted nursing services and how much goes to the pay of front-line staff. That includes nurse aides, licensed practical nurses, registered nurses, housekeepers, dietary workers and clerical staff who deal with residents. Each year through 2029 the department must report what it found to the Governor and two legislative committees. A yes vote required this look at where nursing home money goes. The Maryland House of Delegates passed it 99-38 and it was signed into law as Chapter 733 of 2025.",
+   "nay_description": "Voted against passing HB 933, which put nursing home spending under yearly state review. The Maryland Department of Health must review the cost reports and other data every Medicaid nursing home files. The review covers how much revenue goes to contracted nursing services and how much goes to the pay of front-line staff. That includes nurse aides, licensed practical nurses, registered nurses, housekeepers, dietary workers and clerical staff who deal with residents. Each year through 2029 the department must report what it found to the Governor and two legislative committees. A no vote opposed the requirement. The Maryland House of Delegates passed it 99-38 over these votes and it was signed into law as Chapter 733 of 2025.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2164",
+   "roll": 1561863,
+   "measure_id": "HB 933",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 933, which put nursing home spending under yearly state review. The Maryland Department of Health must review the cost reports and other data every Medicaid nursing home files. The review covers how much revenue goes to contracted nursing services and how much goes to the pay of front-line staff. That includes nurse aides, licensed practical nurses, registered nurses, housekeepers, dietary workers and clerical staff who deal with residents. Each year through 2029 the department must report what it found to the Governor and two legislative committees. A yes vote required this look at where nursing home money goes. The Maryland Senate passed it 34-13 and it was signed into law as Chapter 733 of 2025.",
+   "nay_description": "Voted against passing HB 933, which put nursing home spending under yearly state review. The Maryland Department of Health must review the cost reports and other data every Medicaid nursing home files. The review covers how much revenue goes to contracted nursing services and how much goes to the pay of front-line staff. That includes nurse aides, licensed practical nurses, registered nurses, housekeepers, dietary workers and clerical staff who deal with residents. Each year through 2029 the department must report what it found to the Governor and two legislative committees. A no vote opposed the requirement. The Maryland Senate passed it 34-13 over these votes and it was signed into law as Chapter 733 of 2025.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1546864,
+   "measure_id": "HB 974",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 974, which locked in no-cost coverage of preventive care as the federal rules stood at the end of 2024. Insurers must already cover certain preventive services with no copay, coinsurance or deductible. The bill makes the Insurance Commissioner enforce that using the federal recommendations in effect on December 31, 2024, so a rollback in Washington would not shrink the list. The Commissioner may add later federal recommendations that help consumers. A high-deductible plan may still apply its deductible to these services unless the Commissioner decides otherwise, and the existing religious exemption from contraceptive coverage still applies. A yes vote locked in that no-cost preventive coverage. The Maryland House of Delegates passed it 100-37 and it was signed into law as Chapter 745 of 2025.",
+   "nay_description": "Voted against passing HB 974, which locked in no-cost coverage of preventive care as the federal rules stood at the end of 2024. Insurers must already cover certain preventive services with no copay, coinsurance or deductible. The bill makes the Insurance Commissioner enforce that using the federal recommendations in effect on December 31, 2024, so a rollback in Washington would not shrink the list. The Commissioner may add later federal recommendations that help consumers. A high-deductible plan may still apply its deductible to these services unless the Commissioner decides otherwise, and the existing religious exemption from contraceptive coverage still applies. A no vote opposed locking it in. The Maryland House of Delegates passed it 100-37 over these votes and it was signed into law as Chapter 745 of 2025.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2164",
+   "roll": 1531912,
+   "measure_id": "SB 154",
+   "vote_date": "2025-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 154, which kept paying for tenants' lawyers in eviction cases. Maryland gives many tenants facing eviction a right to a lawyer, funded through the Access to Counsel in Evictions fund. The bill extends through fiscal 2028 both the $14.0 million a year moved into that fund from unclaimed property and the Governor's duty to budget that same $14.0 million out to the Maryland Legal Services Corporation. It also moves the program's task force from the Attorney General's office to the housing department, which may now pay some members. A yes vote kept the eviction-lawyer money flowing. The Maryland Senate passed it 35-11 and it was signed into law as Chapter 457 of 2025.",
+   "nay_description": "Voted against passing SB 154, which kept paying for tenants' lawyers in eviction cases. Maryland gives many tenants facing eviction a right to a lawyer, funded through the Access to Counsel in Evictions fund. The bill extends through fiscal 2028 both the $14.0 million a year moved into that fund from unclaimed property and the Governor's duty to budget that same $14.0 million out to the Maryland Legal Services Corporation. It also moves the program's task force from the Attorney General's office to the housing department, which may now pay some members. A no vote opposed extending it. The Maryland Senate passed it 35-11 over these votes and it was signed into law as Chapter 457 of 2025.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1546848,
+   "measure_id": "SB 154",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 154, which kept paying for tenants' lawyers in eviction cases. Maryland gives many tenants facing eviction a right to a lawyer, funded through the Access to Counsel in Evictions fund. The bill extends through fiscal 2028 both the $14.0 million a year moved into that fund from unclaimed property and the Governor's duty to budget that same $14.0 million out to the Maryland Legal Services Corporation. It also moves the program's task force from the Attorney General's office to the housing department, which may now pay some members. A yes vote kept the eviction-lawyer money flowing. The Maryland House of Delegates passed it 99-40 and it was signed into law as Chapter 457 of 2025.",
+   "nay_description": "Voted against passing SB 154, which kept paying for tenants' lawyers in eviction cases. Maryland gives many tenants facing eviction a right to a lawyer, funded through the Access to Counsel in Evictions fund. The bill extends through fiscal 2028 both the $14.0 million a year moved into that fund from unclaimed property and the Governor's duty to budget that same $14.0 million out to the Maryland Legal Services Corporation. It also moves the program's task force from the Attorney General's office to the housing department, which may now pay some members. A no vote opposed extending it. The Maryland House of Delegates passed it 99-40 over these votes and it was signed into law as Chapter 457 of 2025.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2164",
+   "roll": 1531850,
+   "measure_id": "SB 425",
+   "vote_date": "2025-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 425, which tightened the fees and rules on coal ash. Coal combustion by-products are the ash and residue left from burning coal. The yearly fee their producers pay the Maryland Department of the Environment must now take account of how much they have in storage. The department used to have to cut the fee the next year whenever it collected more than the program cost; instead it must spend the extra on reusing the ash and on reducing the harm to people and the environment from releases at priority sites. The department must also update its rules, and a new statewide committee oversees the work. A yes vote tightened those fees and duties. The Maryland Senate passed it 35-11 and it was signed into law as Chapter 529 of 2025.",
+   "nay_description": "Voted against passing SB 425, which tightened the fees and rules on coal ash. Coal combustion by-products are the ash and residue left from burning coal. The yearly fee their producers pay the Maryland Department of the Environment must now take account of how much they have in storage. The department used to have to cut the fee the next year whenever it collected more than the program cost; instead it must spend the extra on reusing the ash and on reducing the harm to people and the environment from releases at priority sites. The department must also update its rules, and a new statewide committee oversees the work. A no vote opposed tightening them. The Maryland Senate passed it 35-11 over these votes and it was signed into law as Chapter 529 of 2025.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1546825,
+   "measure_id": "SB 425",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 425, which tightened the fees and rules on coal ash. Coal combustion by-products are the ash and residue left from burning coal. The yearly fee their producers pay the Maryland Department of the Environment must now take account of how much they have in storage. The department used to have to cut the fee the next year whenever it collected more than the program cost; instead it must spend the extra on reusing the ash and on reducing the harm to people and the environment from releases at priority sites. The department must also update its rules, and a new statewide committee oversees the work. A yes vote tightened those fees and duties. The Maryland House of Delegates passed it 98-33 and it was signed into law as Chapter 529 of 2025.",
+   "nay_description": "Voted against passing SB 425, which tightened the fees and rules on coal ash. Coal combustion by-products are the ash and residue left from burning coal. The yearly fee their producers pay the Maryland Department of the Environment must now take account of how much they have in storage. The department used to have to cut the fee the next year whenever it collected more than the program cost; instead it must spend the extra on reusing the ash and on reducing the harm to people and the environment from releases at priority sites. The department must also update its rules, and a new statewide committee oversees the work. A no vote opposed tightening them. The Maryland House of Delegates passed it 98-33 over these votes and it was signed into law as Chapter 529 of 2025.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  }
+ ]
+}
