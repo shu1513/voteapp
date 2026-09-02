@@ -98,6 +98,12 @@ describe("finance source provenance and coverage notes", () => {
     expect(firstFinanceSourceUrl(summary)).toBe("https://fcpa.alabamavotes.gov/");
   });
 
+  it("falls back to the Arkansas CFIS home page when no breakdown URL exists", () => {
+    const summary = emptySummary();
+    summary.source = "ARKANSAS_CFIS";
+    expect(firstFinanceSourceUrl(summary)).toBe("https://ethics-disclosures.sos.arkansas.gov/");
+  });
+
   it("falls back to the West Virginia CFRS home page when no breakdown URL exists", () => {
     const summary = emptySummary();
     summary.source = "WEST_VIRGINIA_CFRS";

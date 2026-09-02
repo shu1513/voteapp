@@ -1,0 +1,153 @@
+// Arkansas finance batch sync: optional auto-link pass, then the due list,
+// then a per-candidate sync. One full CFIS registration sweep is shared by
+// auto-link and every sync in the batch (the memoizing loader); each
+// candidate then costs one windowed receipt pull. Per-candidate failures are
+// recorded and the batch continues (fail-visible, never fail-silent). Every
+// step is injectable for tests.
+
+import type { Pool, PoolClient } from "pg";
+
+import {
+  autoLinkMissingArkansasCandidateFinanceLinks,
+  createArkansasRegistrationSweepLoader,
+  type ArkansasFinanceAutoLinkResult,
+} from "./arkansasCandidateFinanceAutoLink.js";
+import {
+  listDueArkansasCandidateFinanceSyncRows,
+  type ArkansasCandidateFinanceDueRow,
+} from "./arkansasCandidateFinanceDueList.js";
+import {
+  syncArkansasCandidateFinance,
+  type ArkansasCandidateFinanceSyncResult,
+} from "./arkansasCandidateFinanceSync.js";
+import type { ArkansasCfisClientOptions } from "./arkansasCfisClient.js";
+
+type Queryable = Pick<Pool | PoolClient, "query">;
+type ConnectableQueryable = Queryable & { connect: () => Promise<PoolClient> };
+
+const DEFAULT_MAX_CANDIDATES = 10;
+const DEFAULT_STALE_AFTER_DAYS = 7;
+// A candidate's final report is due 30 days after the general election
+// (A.C.A. § 7-6-207), so the lookback keeps a just-finished election in scope
+// until that report has been picked up.
+const ARKANSAS_POST_ELECTION_REPORT_DUE_DAYS = 30;
+const DEFAULT_ELECTION_LOOKAHEAD_DAYS = 730;
+
+export type ArkansasCandidateFinanceBatchSyncInput = {
+  db: ConnectableQueryable;
+  now?: Date;
+  maxCandidates?: number;
+  staleAfterDays?: number;
+  electionLookbackDays?: number;
+  electionLookaheadDays?: number;
+  dryRun?: boolean;
+  autoLinkMissingLinks?: boolean;
+  clientOptions?: ArkansasCfisClientOptions;
+  log?: (message: string) => void;
+  autoLinkFn?: typeof autoLinkMissingArkansasCandidateFinanceLinks;
+  listDueRowsFn?: typeof listDueArkansasCandidateFinanceSyncRows;
+  syncCandidateFn?: typeof syncArkansasCandidateFinance;
+};
+
+export type ArkansasCandidateFinanceBatchSyncResult = {
+  dryRun: boolean;
+  autoLinkResults: ArkansasFinanceAutoLinkResult[];
+  totalDueRows: number;
+  attempted: number;
+  succeeded: number;
+  failed: number;
+  candidates: {
+    row: ArkansasCandidateFinanceDueRow;
+    ok: boolean;
+    result?: ArkansasCandidateFinanceSyncResult;
+    error?: string;
+  }[];
+};
+
+export async function syncDueArkansasCandidateFinance(
+  input: ArkansasCandidateFinanceBatchSyncInput
+): Promise<ArkansasCandidateFinanceBatchSyncResult> {
+  const now = input.now ?? new Date();
+  const log = input.log ?? ((message: string) => console.log(message));
+  const maxCandidates = input.maxCandidates ?? DEFAULT_MAX_CANDIDATES;
+  const staleAfterDays = input.staleAfterDays ?? DEFAULT_STALE_AFTER_DAYS;
+  const electionLookbackDays =
+    input.electionLookbackDays ?? ARKANSAS_POST_ELECTION_REPORT_DUE_DAYS + staleAfterDays + 1;
+  const electionLookaheadDays = input.electionLookaheadDays ?? DEFAULT_ELECTION_LOOKAHEAD_DAYS;
+  const dryRun = input.dryRun === true;
+
+  // Shared across auto-link AND sync so the registry is swept once per batch.
+  const loadRegistrations = createArkansasRegistrationSweepLoader({ clientOptions: input.clientOptions });
+
+  let autoLinkResults: ArkansasFinanceAutoLinkResult[] = [];
+  if (!dryRun && input.autoLinkMissingLinks !== false) {
+    const autoLink = input.autoLinkFn ?? autoLinkMissingArkansasCandidateFinanceLinks;
+    try {
+      autoLinkResults = await autoLink({
+        db: input.db,
+        now,
+        maxCandidates,
+        electionLookbackDays,
+        electionLookaheadDays,
+        loadRegistrations,
+        clientOptions: input.clientOptions,
+      });
+    } catch (error) {
+      log(
+        `Arkansas auto-link pass failed (continuing with existing links): ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
+  }
+
+  const listDueRows = input.listDueRowsFn ?? listDueArkansasCandidateFinanceSyncRows;
+  const due = await listDueRows(input.db, {
+    now,
+    staleAfterDays,
+    maxCandidates,
+    electionLookbackDays,
+    electionLookaheadDays,
+  });
+
+  const syncCandidate = input.syncCandidateFn ?? syncArkansasCandidateFinance;
+  const candidates: ArkansasCandidateFinanceBatchSyncResult["candidates"] = [];
+  let succeeded = 0;
+  for (const row of due.rows) {
+    try {
+      const result = await syncCandidate({
+        db: input.db,
+        candidateId: row.candidateId,
+        electionId: row.electionId,
+        candidateName: row.candidateName,
+        electionYear: row.electionYear,
+        officeName: row.officeName,
+        district: row.district,
+        link: {
+          filingEntityId: row.filingEntityId,
+          filerName: row.filerName,
+          linkSource: row.linkSource,
+          sourceUrl: row.sourceUrl,
+        },
+        now,
+        dryRun,
+        clientOptions: input.clientOptions,
+        loadRegistrations,
+      });
+      succeeded += 1;
+      candidates.push({ row, ok: true, result });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      log(`Arkansas finance sync failed for ${row.candidateName} (filer entity ${row.filingEntityId}): ${message}`);
+      candidates.push({ row, ok: false, error: message });
+    }
+  }
+
+  return {
+    dryRun,
+    autoLinkResults,
+    totalDueRows: due.totalDueRows,
+    attempted: due.rows.length,
+    succeeded,
+    failed: due.rows.length - succeeded,
+    candidates,
+  };
+}
