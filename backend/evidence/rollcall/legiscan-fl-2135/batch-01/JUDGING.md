@@ -128,12 +128,15 @@ text and s. 542.43, F.S.:
   The CHOICE Act excludes only "health care practitioners" as defined in
   s. 456.001 (licensed practitioners), not everyone in health care.
 
-Six descriptions changed (yea and nay for three rolls). Local reimport still
-pending for these three rolls.
+Six descriptions changed (yea and nay for three rolls). Local reimport was
+still pending when these judgment changes were committed; see below.
 
 Reimport for the two review fixes ran 2026-09-02 on local `voteapp`: judge
 dry run planned 3 of 11, real run updated 3; importer dry run planned 66
 rewrites (roll 1562557: 48, 1535606: 9, 1557039: 9) and 319 unchanged; real
 run at stamp `2026-09-02T01:45:26.924Z` rewrote those 66, 0 notified; the
 convergence dry run reported all 385 unchanged. Zero local records still
-carry "aircraft workers" or "non-health workers". Prod untouched.
+carry "aircraft workers" or "non-health workers". Prod untouched. The real
+run's ledger is `import-review-fix-report.json`; `import-rerun-report.json`
+keeps the 2026-08-31 jargon-pass run, and `import-dry-run-rerun-report.json`
+is the latest convergence dry run.
