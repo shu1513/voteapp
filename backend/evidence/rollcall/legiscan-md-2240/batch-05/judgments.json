@@ -1,0 +1,1120 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1683953,
+   "measure_id": "HB 1016",
+   "vote_date": "2026-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1016, which voided noncompete clauses for architects at out-of-state firms. A noncompete or conflict of interest clause in an employment contract is void where it binds a licensed architect, if two things are true. The employer had more than 30 employees on the architect's first day, most of them based in Maryland or working remotely from here. And when the employer tries to enforce the clause, it neither has its principal place of business in Maryland nor has most of its employees based or working remotely here. A yes vote voided those clauses. The Maryland House of Delegates passed it 101-29 and it was signed into law as Chapter 301 of 2026.",
+   "nay_description": "Voted against passing HB 1016, which voided noncompete clauses for architects at out-of-state firms. A noncompete or conflict of interest clause in an employment contract is void where it binds a licensed architect, if two things are true. The employer had more than 30 employees on the architect's first day, most of them based in Maryland or working remotely from here. And when the employer tries to enforce the clause, it neither has its principal place of business in Maryland nor has most of its employees based or working remotely here. A no vote opposed voiding them. The Maryland House of Delegates passed it 101-29 over these votes and it was signed into law as Chapter 301 of 2026.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1680639,
+   "measure_id": "HB 1135",
+   "vote_date": "2026-04-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1135, which let pharmacists order a vaccine without giving it themselves. A pharmacist may order a vaccine for anyone at least three years old without administering it, so someone else can give it. Where the patient is under 18, whether the pharmacist gives the vaccine or an adult caregiver does, the pharmacist must explain the importance of visits with a pediatric primary care provider and refer the patient to one where appropriate. A yes vote gave pharmacists that authority. The Maryland Senate passed it 33-9 and it was signed into law as Chapter 270 of 2026.",
+   "nay_description": "Voted against passing HB 1135, which let pharmacists order a vaccine without giving it themselves. A pharmacist may order a vaccine for anyone at least three years old without administering it, so someone else can give it. Where the patient is under 18, whether the pharmacist gives the vaccine or an adult caregiver does, the pharmacist must explain the importance of visits with a pediatric primary care provider and refer the patient to one where appropriate. A no vote opposed giving it. The Maryland Senate passed it 33-9 over these votes and it was signed into law as Chapter 270 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1682279,
+   "measure_id": "HB 1135",
+   "vote_date": "2026-04-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1135, which let pharmacists order a vaccine without giving it themselves. A pharmacist may order a vaccine for anyone at least three years old without administering it, so someone else can give it. Where the patient is under 18, whether the pharmacist gives the vaccine or an adult caregiver does, the pharmacist must explain the importance of visits with a pediatric primary care provider and refer the patient to one where appropriate. A yes vote gave pharmacists that authority. The Maryland House of Delegates passed it 103-29 and it was signed into law as Chapter 270 of 2026.",
+   "nay_description": "Voted against passing HB 1135, which let pharmacists order a vaccine without giving it themselves. A pharmacist may order a vaccine for anyone at least three years old without administering it, so someone else can give it. Where the patient is under 18, whether the pharmacist gives the vaccine or an adult caregiver does, the pharmacist must explain the importance of visits with a pediatric primary care provider and refer the patient to one where appropriate. A no vote opposed giving it. The Maryland House of Delegates passed it 103-29 over these votes and it was signed into law as Chapter 270 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1671156,
+   "measure_id": "HB 1148",
+   "vote_date": "2026-03-18",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1148, which helped heirs keep a home out of tax sale. The State Tax Sale Ombudsman's services now reach the estate or personal representative of a dead homeowner and their heirs and legatees. The bill creates the Legacy Protection Program in the state assessments department, funded by $250,000 a year from the state and $500,000 a year from the counties. An heir who is not on the title may receive the homeowners' and homestead property tax credits for up to three tax years if they otherwise qualify. A yes vote created those protections for heirs. The Maryland House of Delegates passed it 99-34 and it was signed into law as Chapter 718 of 2026.",
+   "nay_description": "Voted against passing HB 1148, which helped heirs keep a home out of tax sale. The State Tax Sale Ombudsman's services now reach the estate or personal representative of a dead homeowner and their heirs and legatees. The bill creates the Legacy Protection Program in the state assessments department, funded by $250,000 a year from the state and $500,000 a year from the counties. An heir who is not on the title may receive the homeowners' and homestead property tax credits for up to three tax years if they otherwise qualify. A no vote opposed creating them. The Maryland House of Delegates passed it 99-34 over these votes and it was signed into law as Chapter 718 of 2026.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1671754,
+   "measure_id": "HB 1249",
+   "vote_date": "2026-03-23",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1249, which stopped recovery homes turning away people on addiction medication. Medication-assisted treatment uses prescribed medicine, such as buprenorphine or methadone, to treat opioid use disorder. The rules a credentialing body sets for certified recovery residences must now bar a residence from refusing services to someone because they are receiving that treatment, and from requiring anyone to stop or change how they receive it as a condition of being admitted. A yes vote barred that exclusion. The Maryland House of Delegates passed it 102-33 and it was signed into law as Chapter 793 of 2026.",
+   "nay_description": "Voted against passing HB 1249, which stopped recovery homes turning away people on addiction medication. Medication-assisted treatment uses prescribed medicine, such as buprenorphine or methadone, to treat opioid use disorder. The rules a credentialing body sets for certified recovery residences must now bar a residence from refusing services to someone because they are receiving that treatment, and from requiring anyone to stop or change how they receive it as a condition of being admitted. A no vote opposed barring it. The Maryland House of Delegates passed it 102-33 over these votes and it was signed into law as Chapter 793 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1692303,
+   "measure_id": "HB 1249",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1249, which stopped recovery homes turning away people on addiction medication. Medication-assisted treatment uses prescribed medicine, such as buprenorphine or methadone, to treat opioid use disorder. The rules a credentialing body sets for certified recovery residences must now bar a residence from refusing services to someone because they are receiving that treatment, and from requiring anyone to stop or change how they receive it as a condition of being admitted. A yes vote barred that exclusion. The Maryland Senate passed it 36-10 and it was signed into law as Chapter 793 of 2026.",
+   "nay_description": "Voted against passing HB 1249, which stopped recovery homes turning away people on addiction medication. Medication-assisted treatment uses prescribed medicine, such as buprenorphine or methadone, to treat opioid use disorder. The rules a credentialing body sets for certified recovery residences must now bar a residence from refusing services to someone because they are receiving that treatment, and from requiring anyone to stop or change how they receive it as a condition of being admitted. A no vote opposed barring it. The Maryland Senate passed it 36-10 over these votes and it was signed into law as Chapter 793 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1670806,
+   "measure_id": "HB 1490",
+   "vote_date": "2026-03-18",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1490, which stopped cash assistance being cut off over child support. The Family Investment Program may no longer deny, reduce or end assistance where someone has good cause for not cooperating with child support enforcement, under criteria the Secretary of Human Services sets. The program must find good cause where cooperating may be against the child's best interest, and a caseworker granting it may not contact the parent the support would come from. A yes vote protected those families' assistance. The Maryland House of Delegates passed it 103-30 and it was signed into law as Chapter 763 of 2026.",
+   "nay_description": "Voted against passing HB 1490, which stopped cash assistance being cut off over child support. The Family Investment Program may no longer deny, reduce or end assistance where someone has good cause for not cooperating with child support enforcement, under criteria the Secretary of Human Services sets. The program must find good cause where cooperating may be against the child's best interest, and a caseworker granting it may not contact the parent the support would come from. A no vote opposed the protection. The Maryland House of Delegates passed it 103-30 over these votes and it was signed into law as Chapter 763 of 2026.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1683428,
+   "measure_id": "HB 1490",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1490, which stopped cash assistance being cut off over child support. The Family Investment Program may no longer deny, reduce or end assistance where someone has good cause for not cooperating with child support enforcement, under criteria the Secretary of Human Services sets. The program must find good cause where cooperating may be against the child's best interest, and a caseworker granting it may not contact the parent the support would come from. A yes vote protected those families' assistance. The Maryland Senate passed it 35-12 and it was signed into law as Chapter 763 of 2026.",
+   "nay_description": "Voted against passing HB 1490, which stopped cash assistance being cut off over child support. The Family Investment Program may no longer deny, reduce or end assistance where someone has good cause for not cooperating with child support enforcement, under criteria the Secretary of Human Services sets. The program must find good cause where cooperating may be against the child's best interest, and a caseworker granting it may not contact the parent the support would come from. A no vote opposed the protection. The Maryland Senate passed it 35-12 over these votes and it was signed into law as Chapter 763 of 2026.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1671137,
+   "measure_id": "HB 1530",
+   "vote_date": "2026-03-18",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1530, which shortened the residency proof for in-state tuition under the Dream Act. The Maryland Dream Act lets some undocumented students pay in-state rather than out-of-state tuition if they or a parent or guardian filed Maryland income tax returns for a set number of years beforehand. The bill cuts that from three years to two. It took effect July 1, 2026. A yes vote widened who qualifies. The Maryland House of Delegates passed it 97-36 and it was signed into law as Chapter 799 of 2026.",
+   "nay_description": "Voted against passing HB 1530, which shortened the residency proof for in-state tuition under the Dream Act. The Maryland Dream Act lets some undocumented students pay in-state rather than out-of-state tuition if they or a parent or guardian filed Maryland income tax returns for a set number of years beforehand. The bill cuts that from three years to two. It took effect July 1, 2026. A no vote opposed widening it. The Maryland House of Delegates passed it 97-36 over these votes and it was signed into law as Chapter 799 of 2026.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1683113,
+   "measure_id": "HB 1530",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1530, which shortened the residency proof for in-state tuition under the Dream Act. The Maryland Dream Act lets some undocumented students pay in-state rather than out-of-state tuition if they or a parent or guardian filed Maryland income tax returns for a set number of years beforehand. The bill cuts that from three years to two. It took effect July 1, 2026. A yes vote widened who qualifies. The Maryland Senate passed it 33-14 and it was signed into law as Chapter 799 of 2026.",
+   "nay_description": "Voted against passing HB 1530, which shortened the residency proof for in-state tuition under the Dream Act. The Maryland Dream Act lets some undocumented students pay in-state rather than out-of-state tuition if they or a parent or guardian filed Maryland income tax returns for a set number of years beforehand. The bill cuts that from three years to two. It took effect July 1, 2026. A no vote opposed widening it. The Maryland Senate passed it 33-14 over these votes and it was signed into law as Chapter 799 of 2026.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1671980,
+   "measure_id": "HB 1578",
+   "vote_date": "2026-03-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1578, a departmental bill extending Maryland's minority business contracting program. The Minority Business Enterprise program, which sets participation goals for minority-owned firms in state contracting, was due to end and now runs to July 1, 2031. The bill replaces the legislature's existing findings on disparity in state contracting with new ones, adds quarterly reporting for certain procurement programs, changes annual reporting deadlines, requires rules for reviewing small business certification, and counts joint ventures as small businesses. A yes vote extended the program five more years. The Maryland House of Delegates passed it 98-32 and it was signed into law as Chapter 82 of 2026.",
+   "nay_description": "Voted against passing HB 1578, a departmental bill extending Maryland's minority business contracting program. The Minority Business Enterprise program, which sets participation goals for minority-owned firms in state contracting, was due to end and now runs to July 1, 2031. The bill replaces the legislature's existing findings on disparity in state contracting with new ones, adds quarterly reporting for certain procurement programs, changes annual reporting deadlines, requires rules for reviewing small business certification, and counts joint ventures as small businesses. A no vote opposed extending it. The Maryland House of Delegates passed it 98-32 over these votes and it was signed into law as Chapter 82 of 2026.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1683284,
+   "measure_id": "HB 168",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 168, which opened state housing funds to housing built for teachers. Three housing programs run by the state housing department — the Housing Innovation Fund, the Housing Innovation Pilot Program and the Neighborhood and Community Assistance Program — may now fund educator workforce housing, and the bill widens who may receive that money. It took effect July 1, 2026. A yes vote opened those funds to educator housing. The Maryland Senate passed it 34-10 and it was signed into law as Chapter 678 of 2026.",
+   "nay_description": "Voted against passing HB 168, which opened state housing funds to housing built for teachers. Three housing programs run by the state housing department — the Housing Innovation Fund, the Housing Innovation Pilot Program and the Neighborhood and Community Assistance Program — may now fund educator workforce housing, and the bill widens who may receive that money. It took effect July 1, 2026. A no vote opposed it. The Maryland Senate passed it 34-10 over these votes and it was signed into law as Chapter 678 of 2026.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1685509,
+   "measure_id": "HB 168",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 168, which opened state housing funds to housing built for teachers. Three housing programs run by the state housing department — the Housing Innovation Fund, the Housing Innovation Pilot Program and the Neighborhood and Community Assistance Program — may now fund educator workforce housing, and the bill widens who may receive that money. It took effect July 1, 2026. A yes vote opened those funds to educator housing. The Maryland House of Delegates passed it 89-32 and it was signed into law as Chapter 678 of 2026.",
+   "nay_description": "Voted against passing HB 168, which opened state housing funds to housing built for teachers. Three housing programs run by the state housing department — the Housing Innovation Fund, the Housing Innovation Pilot Program and the Neighborhood and Community Assistance Program — may now fund educator workforce housing, and the bill widens who may receive that money. It took effect July 1, 2026. A no vote opposed it. The Maryland House of Delegates passed it 89-32 over these votes and it was signed into law as Chapter 678 of 2026.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1656497,
+   "measure_id": "HB 200",
+   "vote_date": "2026-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 200, which required home sellers to disclose flood risk. From July 1, 2027, and with exceptions, someone selling residential property with four or fewer single-family units must give the buyer set flood-risk information before they sign a contract. The Maryland Department of the Environment had to publish the disclosure form to be used by June 1, 2027. A yes vote required the flood disclosure. The Maryland House of Delegates passed it 94-35 and it was signed into law as Chapter 776 of 2026.",
+   "nay_description": "Voted against passing HB 200, which required home sellers to disclose flood risk. From July 1, 2027, and with exceptions, someone selling residential property with four or fewer single-family units must give the buyer set flood-risk information before they sign a contract. The Maryland Department of the Environment had to publish the disclosure form to be used by June 1, 2027. A no vote opposed requiring it. The Maryland House of Delegates passed it 94-35 over these votes and it was signed into law as Chapter 776 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1644170,
+   "measure_id": "HB 220",
+   "vote_date": "2026-02-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 220, which capped what landlords can charge tenants for water. Building owners, and the managers or contractors they hire, may install individual water submeters in apartments, dwelling units and mobile homes. An owner who uses those submeters to bill for bulk water service may not charge a unit any water or sewer cost beyond what the water provider actually charged. The bill also sets record-keeping duties, a method for billing when a submeter reads badly, and conditions a landlord must meet first. A yes vote tied those bills to actual cost. The Maryland House of Delegates passed it 95-34 and it was signed into law as Chapter 262 of 2026.",
+   "nay_description": "Voted against passing HB 220, which capped what landlords can charge tenants for water. Building owners, and the managers or contractors they hire, may install individual water submeters in apartments, dwelling units and mobile homes. An owner who uses those submeters to bill for bulk water service may not charge a unit any water or sewer cost beyond what the water provider actually charged. The bill also sets record-keeping duties, a method for billing when a submeter reads badly, and conditions a landlord must meet first. A no vote opposed the limit. The Maryland House of Delegates passed it 95-34 over these votes and it was signed into law as Chapter 262 of 2026.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1681395,
+   "measure_id": "HB 220",
+   "vote_date": "2026-04-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 220, which capped what landlords can charge tenants for water. Building owners, and the managers or contractors they hire, may install individual water submeters in apartments, dwelling units and mobile homes. An owner who uses those submeters to bill for bulk water service may not charge a unit any water or sewer cost beyond what the water provider actually charged. The bill also sets record-keeping duties, a method for billing when a submeter reads badly, and conditions a landlord must meet first. A yes vote tied those bills to actual cost. The Maryland Senate passed it 31-11 and it was signed into law as Chapter 262 of 2026.",
+   "nay_description": "Voted against passing HB 220, which capped what landlords can charge tenants for water. Building owners, and the managers or contractors they hire, may install individual water submeters in apartments, dwelling units and mobile homes. An owner who uses those submeters to bill for bulk water service may not charge a unit any water or sewer cost beyond what the water provider actually charged. The bill also sets record-keeping duties, a method for billing when a submeter reads badly, and conditions a landlord must meet first. A no vote opposed the limit. The Maryland Senate passed it 31-11 over these votes and it was signed into law as Chapter 262 of 2026.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1670997,
+   "measure_id": "HB 250",
+   "vote_date": "2026-03-18",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 250, which gave the environment department teeth on water and dam violations. The Maryland Department of the Environment may now impose an administrative penalty for breaking the rules on appropriating or using waters, reservoirs and dams. The bill also widens the department's power to issue orders over waterway construction and dam safety, standardizes the notice and hearing steps, and requires certain steps before the department moves to recover a penalty. It took effect July 1, 2026. A yes vote created that enforcement power. The Maryland House of Delegates passed it 96-37 and it was signed into law as Chapter 273 of 2026.",
+   "nay_description": "Voted against passing HB 250, which gave the environment department teeth on water and dam violations. The Maryland Department of the Environment may now impose an administrative penalty for breaking the rules on appropriating or using waters, reservoirs and dams. The bill also widens the department's power to issue orders over waterway construction and dam safety, standardizes the notice and hearing steps, and requires certain steps before the department moves to recover a penalty. It took effect July 1, 2026. A no vote opposed creating it. The Maryland House of Delegates passed it 96-37 over these votes and it was signed into law as Chapter 273 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1680506,
+   "measure_id": "HB 250",
+   "vote_date": "2026-04-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 250, which gave the environment department teeth on water and dam violations. The Maryland Department of the Environment may now impose an administrative penalty for breaking the rules on appropriating or using waters, reservoirs and dams. The bill also widens the department's power to issue orders over waterway construction and dam safety, standardizes the notice and hearing steps, and requires certain steps before the department moves to recover a penalty. It took effect July 1, 2026. A yes vote created that enforcement power. The Maryland Senate passed it 32-12 and it was signed into law as Chapter 273 of 2026.",
+   "nay_description": "Voted against passing HB 250, which gave the environment department teeth on water and dam violations. The Maryland Department of the Environment may now impose an administrative penalty for breaking the rules on appropriating or using waters, reservoirs and dams. The bill also widens the department's power to issue orders over waterway construction and dam safety, standardizes the notice and hearing steps, and requires certain steps before the department moves to recover a penalty. It took effect July 1, 2026. A no vote opposed creating it. The Maryland Senate passed it 32-12 over these votes and it was signed into law as Chapter 273 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1660453,
+   "measure_id": "HB 252",
+   "vote_date": "2026-03-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 252, which let the state require insurance from lead paint removal contractors. State rules accredit the businesses that strip lead paint from older homes. The bill lets the Maryland Department of the Environment write rules requiring anyone it accredits for lead abatement to carry a reasonable performance bond or reasonable liability insurance. It took effect July 1, 2026. A yes vote allowed that requirement. The Maryland House of Delegates passed it 92-37 and it was signed into law as Chapter 359 of 2026.",
+   "nay_description": "Voted against passing HB 252, which let the state require insurance from lead paint removal contractors. State rules accredit the businesses that strip lead paint from older homes. The bill lets the Maryland Department of the Environment write rules requiring anyone it accredits for lead abatement to carry a reasonable performance bond or reasonable liability insurance. It took effect July 1, 2026. A no vote opposed it. The Maryland House of Delegates passed it 92-37 over these votes and it was signed into law as Chapter 359 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1680838,
+   "measure_id": "HB 252",
+   "vote_date": "2026-04-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 252, which let the state require insurance from lead paint removal contractors. State rules accredit the businesses that strip lead paint from older homes. The bill lets the Maryland Department of the Environment write rules requiring anyone it accredits for lead abatement to carry a reasonable performance bond or reasonable liability insurance. It took effect July 1, 2026. A yes vote allowed that requirement. The Maryland Senate passed it 32-11 and it was signed into law as Chapter 359 of 2026.",
+   "nay_description": "Voted against passing HB 252, which let the state require insurance from lead paint removal contractors. State rules accredit the businesses that strip lead paint from older homes. The bill lets the Maryland Department of the Environment write rules requiring anyone it accredits for lead abatement to carry a reasonable performance bond or reasonable liability insurance. It took effect July 1, 2026. A no vote opposed it. The Maryland Senate passed it 32-11 over these votes and it was signed into law as Chapter 359 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1671033,
+   "measure_id": "HB 254",
+   "vote_date": "2026-03-18",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 254, the Supporting Inclusive Community Adaptation Act. The Department of Natural Resources must bring communities into the planning and development of its projects. The bill sets up a grant fund the department runs, aimed at climate change resilience, alongside other departmental work on it. It also loosens an existing loan fund for shore erosion control projects by removing certain funding limits and allowing part of a loan to be forgiven. A yes vote created that community role and funding. The Maryland House of Delegates passed it 98-35 and it was signed into law as Chapter 76 of 2026.",
+   "nay_description": "Voted against passing HB 254, the Supporting Inclusive Community Adaptation Act. The Department of Natural Resources must bring communities into the planning and development of its projects. The bill sets up a grant fund the department runs, aimed at climate change resilience, alongside other departmental work on it. It also loosens an existing loan fund for shore erosion control projects by removing certain funding limits and allowing part of a loan to be forgiven. A no vote opposed it. The Maryland House of Delegates passed it 98-35 over these votes and it was signed into law as Chapter 76 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1681646,
+   "measure_id": "HB 254",
+   "vote_date": "2026-04-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 254, the Supporting Inclusive Community Adaptation Act. The Department of Natural Resources must bring communities into the planning and development of its projects. The bill sets up a grant fund the department runs, aimed at climate change resilience, alongside other departmental work on it. It also loosens an existing loan fund for shore erosion control projects by removing certain funding limits and allowing part of a loan to be forgiven. A yes vote created that community role and funding. The Maryland Senate passed it 24-10 and it was signed into law as Chapter 76 of 2026.",
+   "nay_description": "Voted against passing HB 254, the Supporting Inclusive Community Adaptation Act. The Department of Natural Resources must bring communities into the planning and development of its projects. The bill sets up a grant fund the department runs, aimed at climate change resilience, alongside other departmental work on it. It also loosens an existing loan fund for shore erosion control projects by removing certain funding limits and allowing part of a loan to be forgiven. A no vote opposed it. The Maryland Senate passed it 24-10 over these votes and it was signed into law as Chapter 76 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1654465,
+   "measure_id": "HB 263",
+   "vote_date": "2026-02-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 263, which made buses stop at the door of early voting centers. Where an early voting center sits within half a mile of a fixed local bus route, every bus on that route must let passengers get on and off at the center's entrance on days it is open for voting. That holds as far as practicable and consistent with accessibility rules. It applies only to a fixed local route paid for by a county or town and run by them or their contractor, not to express or commuter routes. A yes vote required those stops. The Maryland House of Delegates passed it 107-27 and it was signed into law as Chapter 106 of 2026.",
+   "nay_description": "Voted against passing HB 263, which made buses stop at the door of early voting centers. Where an early voting center sits within half a mile of a fixed local bus route, every bus on that route must let passengers get on and off at the center's entrance on days it is open for voting. That holds as far as practicable and consistent with accessibility rules. It applies only to a fixed local route paid for by a county or town and run by them or their contractor, not to express or commuter routes. A no vote opposed requiring them. The Maryland House of Delegates passed it 107-27 over these votes and it was signed into law as Chapter 106 of 2026.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1660926,
+   "measure_id": "HB 280",
+   "vote_date": "2026-03-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 280, which wrote federal mental health parity rules into Maryland law. Parity means a health plan must treat mental health and substance use care no worse than physical care. The bill puts parts of the 2024 federal parity rule into state law. Insurers may not use discriminatory factors or evidence standards when designing limits that are not simple dollar caps. They must collect and act on outcome data for those limits, and must offer meaningful mental health and substance use benefits on par with medical and surgical ones. It took effect July 1, 2026. A yes vote made those parity rules state law. The Maryland House of Delegates passed it 93-35 and it was signed into law as Chapter 11 of 2026.",
+   "nay_description": "Voted against passing HB 280, which wrote federal mental health parity rules into Maryland law. Parity means a health plan must treat mental health and substance use care no worse than physical care. The bill puts parts of the 2024 federal parity rule into state law. Insurers may not use discriminatory factors or evidence standards when designing limits that are not simple dollar caps. They must collect and act on outcome data for those limits, and must offer meaningful mental health and substance use benefits on par with medical and surgical ones. It took effect July 1, 2026. A no vote opposed doing so. The Maryland House of Delegates passed it 93-35 over these votes and it was signed into law as Chapter 11 of 2026.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1671896,
+   "measure_id": "HB 405",
+   "vote_date": "2026-03-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 405, which stopped condo and HOA rules blocking EV chargers. The governing documents of a condominium or homeowners association may no longer bar or unreasonably restrict installing electric vehicle charging equipment in common or limited common parking spaces. Such an installation goes through the same budget process as a comparable common-area renovation of similar cost, and the governing body must assess community parking capacity first. The body may grant a license for a space, renewable at its discretion. A yes vote cleared those barriers to chargers. The Maryland House of Delegates passed it 94-28 and it was signed into law as Chapter 753 of 2026.",
+   "nay_description": "Voted against passing HB 405, which stopped condo and HOA rules blocking EV chargers. The governing documents of a condominium or homeowners association may no longer bar or unreasonably restrict installing electric vehicle charging equipment in common or limited common parking spaces. Such an installation goes through the same budget process as a comparable common-area renovation of similar cost, and the governing body must assess community parking capacity first. The body may grant a license for a space, renewable at its discretion. A no vote opposed clearing them. The Maryland House of Delegates passed it 94-28 over these votes and it was signed into law as Chapter 753 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1683024,
+   "measure_id": "HB 405",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 405, which stopped condo and HOA rules blocking EV chargers. The governing documents of a condominium or homeowners association may no longer bar or unreasonably restrict installing electric vehicle charging equipment in common or limited common parking spaces. Such an installation goes through the same budget process as a comparable common-area renovation of similar cost, and the governing body must assess community parking capacity first. The body may grant a license for a space, renewable at its discretion. A yes vote cleared those barriers to chargers. The Maryland Senate passed it 32-11 and it was signed into law as Chapter 753 of 2026.",
+   "nay_description": "Voted against passing HB 405, which stopped condo and HOA rules blocking EV chargers. The governing documents of a condominium or homeowners association may no longer bar or unreasonably restrict installing electric vehicle charging equipment in common or limited common parking spaces. Such an installation goes through the same budget process as a comparable common-area renovation of similar cost, and the governing body must assess community parking capacity first. The body may grant a license for a space, renewable at its discretion. A no vote opposed clearing them. The Maryland Senate passed it 32-11 over these votes and it was signed into law as Chapter 753 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1662530,
+   "measure_id": "HB 480",
+   "vote_date": "2026-03-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 480, which gave ride-hailing drivers an appeal when they are cut off. Deactivation is when a company switches off a driver's access to its app, ending their ability to earn. A transportation network company must now keep and follow a written deactivation policy setting out the procedures it uses, including an internal appeal process for the driver. It took effect January 1, 2027. A yes vote required that policy and appeal. The Maryland House of Delegates passed it 98-38 and it was signed into law as Chapter 232 of 2026.",
+   "nay_description": "Voted against passing HB 480, which gave ride-hailing drivers an appeal when they are cut off. Deactivation is when a company switches off a driver's access to its app, ending their ability to earn. A transportation network company must now keep and follow a written deactivation policy setting out the procedures it uses, including an internal appeal process for the driver. It took effect January 1, 2027. A no vote opposed requiring them. The Maryland House of Delegates passed it 98-38 over these votes and it was signed into law as Chapter 232 of 2026.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1683172,
+   "measure_id": "HB 497",
+   "vote_date": "2026-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 497, which extended how long an emergency protective order lasts. A temporary protective order is the short-term order a judge issues to keep an alleged abuser away before a full hearing. It now lasts up to 14 days from when it is issued, rather than 7 days from when it is served, and the final hearing must be held no later than 14 days after issuance rather than 7 days after service. A yes vote lengthened that protection. The Maryland House of Delegates passed it 101-31 and it was signed into law as Chapter 791 of 2026.",
+   "nay_description": "Voted against passing HB 497, which extended how long an emergency protective order lasts. A temporary protective order is the short-term order a judge issues to keep an alleged abuser away before a full hearing. It now lasts up to 14 days from when it is issued, rather than 7 days from when it is served, and the final hearing must be held no later than 14 days after issuance rather than 7 days after service. A no vote opposed lengthening it. The Maryland House of Delegates passed it 101-31 over these votes and it was signed into law as Chapter 791 of 2026.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1683005,
+   "measure_id": "HB 548",
+   "vote_date": "2026-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 548, the Maryland Housing Certainty Act. A housing project application must now be judged only against the laws and regulations in force when a complete application was filed, so later rule changes cannot be applied to it. Once approved, the developer has a vested right to the approved use for five years, or longer if the local jurisdiction or the regional planning commission sets a longer period. A county or town may not collect development impact fees or excise taxes on a residential project until construction is finished. A yes vote gave housing projects that certainty. The Maryland Senate passed it 34-12 and it was signed into law as Chapter 591 of 2026.",
+   "nay_description": "Voted against passing HB 548, the Maryland Housing Certainty Act. A housing project application must now be judged only against the laws and regulations in force when a complete application was filed, so later rule changes cannot be applied to it. Once approved, the developer has a vested right to the approved use for five years, or longer if the local jurisdiction or the regional planning commission sets a longer period. A county or town may not collect development impact fees or excise taxes on a residential project until construction is finished. A no vote opposed the change. The Maryland Senate passed it 34-12 over these votes and it was signed into law as Chapter 591 of 2026.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1656495,
+   "measure_id": "HB 557",
+   "vote_date": "2026-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 557, which let people check a criminal record against a license before applying. Someone can now ask a state department to review their criminal history in advance and say whether it would disqualify them from the occupational license or certificate they want. The department uses existing resources but may charge up to $100 for the review, and the fee must be waived for anyone whose income is at or below three times the federal poverty level, as determined by the District Court. A yes vote created that advance review. The Maryland House of Delegates passed it 96-28 and it was signed into law as Chapter 302 of 2026.",
+   "nay_description": "Voted against passing HB 557, which let people check a criminal record against a license before applying. Someone can now ask a state department to review their criminal history in advance and say whether it would disqualify them from the occupational license or certificate they want. The department uses existing resources but may charge up to $100 for the review, and the fee must be waived for anyone whose income is at or below three times the federal poverty level, as determined by the District Court. A no vote opposed creating it. The Maryland House of Delegates passed it 96-28 over these votes and it was signed into law as Chapter 302 of 2026.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1680526,
+   "measure_id": "HB 571",
+   "vote_date": "2026-04-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 571, which extended a housing tax exemption to nonprofit subsidiaries. Subsidiary entities of housing authorities are already exempt from state and local taxes. The bill changes the definition of a nonprofit housing corporation and gives that same exemption to the subsidiaries such corporations set up. It took effect July 1, 2026. A yes vote extended the exemption. The Maryland Senate passed it 24-17 and it was signed into law as Chapter 727 of 2026.",
+   "nay_description": "Voted against passing HB 571, which extended a housing tax exemption to nonprofit subsidiaries. Subsidiary entities of housing authorities are already exempt from state and local taxes. The bill changes the definition of a nonprofit housing corporation and gives that same exemption to the subsidiaries such corporations set up. It took effect July 1, 2026. A no vote opposed extending it. The Maryland Senate passed it 24-17 over these votes and it was signed into law as Chapter 727 of 2026.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1684711,
+   "measure_id": "HB 571",
+   "vote_date": "2026-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 571, which extended a housing tax exemption to nonprofit subsidiaries. Subsidiary entities of housing authorities are already exempt from state and local taxes. The bill changes the definition of a nonprofit housing corporation and gives that same exemption to the subsidiaries such corporations set up. It took effect July 1, 2026. A yes vote extended the exemption. The Maryland House of Delegates passed it 96-33 and it was signed into law as Chapter 727 of 2026.",
+   "nay_description": "Voted against passing HB 571, which extended a housing tax exemption to nonprofit subsidiaries. Subsidiary entities of housing authorities are already exempt from state and local taxes. The bill changes the definition of a nonprofit housing corporation and gives that same exemption to the subsidiaries such corporations set up. It took effect July 1, 2026. A no vote opposed extending it. The Maryland House of Delegates passed it 96-33 over these votes and it was signed into law as Chapter 727 of 2026.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1682211,
+   "measure_id": "HB 578",
+   "vote_date": "2026-04-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 578, which tightened Maryland's endangered species protections. The bill defines foreseeable future and harm in the state's endangered and threatened species laws and changes how species are listed and delisted. It lets the state designate essential habitats for those species and adopt management rules for them. It also requires specific authorization before black vultures may be taken if federal migratory bird protection for them is removed. A yes vote strengthened those protections. The Maryland House of Delegates passed it 99-34 and it was signed into law as Chapter 211 of 2026.",
+   "nay_description": "Voted against passing HB 578, which tightened Maryland's endangered species protections. The bill defines foreseeable future and harm in the state's endangered and threatened species laws and changes how species are listed and delisted. It lets the state designate essential habitats for those species and adopt management rules for them. It also requires specific authorization before black vultures may be taken if federal migratory bird protection for them is removed. A no vote opposed strengthening them. The Maryland House of Delegates passed it 99-34 over these votes and it was signed into law as Chapter 211 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1671836,
+   "measure_id": "HB 637",
+   "vote_date": "2026-03-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 637, an Administration bill giving Maryland its own vaccine and screening recommendations. The Secretary of Health must now issue, publish and distribute recommendations for immunizations, screenings and preventive services, so the state has its own list rather than depending on federal advice. A pharmacist may give a vaccine the Secretary recommends to anyone at least seven years old. The bill also changes what health insurance must cover for those immunizations, screenings and preventive services. It took effect July 1, 2026 and applies to plans issued or renewed on or after January 1, 2027. A yes vote created the state's own recommendations. The Maryland House of Delegates passed it 98-32 and it was signed into law as Chapter 7 of 2026.",
+   "nay_description": "Voted against passing HB 637, an Administration bill giving Maryland its own vaccine and screening recommendations. The Secretary of Health must now issue, publish and distribute recommendations for immunizations, screenings and preventive services, so the state has its own list rather than depending on federal advice. A pharmacist may give a vaccine the Secretary recommends to anyone at least seven years old. The bill also changes what health insurance must cover for those immunizations, screenings and preventive services. It took effect July 1, 2026 and applies to plans issued or renewed on or after January 1, 2027. A no vote opposed creating them. The Maryland House of Delegates passed it 98-32 over these votes and it was signed into law as Chapter 7 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1680665,
+   "measure_id": "HB 637",
+   "vote_date": "2026-04-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 637, an Administration bill giving Maryland its own vaccine and screening recommendations. The Secretary of Health must now issue, publish and distribute recommendations for immunizations, screenings and preventive services, so the state has its own list rather than depending on federal advice. A pharmacist may give a vaccine the Secretary recommends to anyone at least seven years old. The bill also changes what health insurance must cover for those immunizations, screenings and preventive services. It took effect July 1, 2026 and applies to plans issued or renewed on or after January 1, 2027. A yes vote created the state's own recommendations. The Maryland Senate passed it 31-13 and it was signed into law as Chapter 7 of 2026.",
+   "nay_description": "Voted against passing HB 637, an Administration bill giving Maryland its own vaccine and screening recommendations. The Secretary of Health must now issue, publish and distribute recommendations for immunizations, screenings and preventive services, so the state has its own list rather than depending on federal advice. A pharmacist may give a vaccine the Secretary recommends to anyone at least seven years old. The bill also changes what health insurance must cover for those immunizations, screenings and preventive services. It took effect July 1, 2026 and applies to plans issued or renewed on or after January 1, 2027. A no vote opposed creating them. The Maryland Senate passed it 31-13 over these votes and it was signed into law as Chapter 7 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1671918,
+   "measure_id": "HB 734",
+   "vote_date": "2026-03-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 734, which kept a farm tax break available for solar on farmland. Farmland gets a lower property tax assessment. A community solar project had to win Public Service Commission approval by December 31, 2025 to keep that assessment; the bill pushes the deadline to December 31, 2030. It also lets the state assessments department decide before construction whether an agrivoltaics project — farming and solar on the same land — will qualify, with the power to rescind that decision in set circumstances and to charge an application fee. A yes vote extended the tax break. The Maryland House of Delegates passed it 101-27 and it was signed into law as Chapter 45 of 2026.",
+   "nay_description": "Voted against passing HB 734, which kept a farm tax break available for solar on farmland. Farmland gets a lower property tax assessment. A community solar project had to win Public Service Commission approval by December 31, 2025 to keep that assessment; the bill pushes the deadline to December 31, 2030. It also lets the state assessments department decide before construction whether an agrivoltaics project — farming and solar on the same land — will qualify, with the power to rescind that decision in set circumstances and to charge an application fee. A no vote opposed extending it. The Maryland House of Delegates passed it 101-27 over these votes and it was signed into law as Chapter 45 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1677562,
+   "measure_id": "HB 734",
+   "vote_date": "2026-04-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 734, which kept a farm tax break available for solar on farmland. Farmland gets a lower property tax assessment. A community solar project had to win Public Service Commission approval by December 31, 2025 to keep that assessment; the bill pushes the deadline to December 31, 2030. It also lets the state assessments department decide before construction whether an agrivoltaics project — farming and solar on the same land — will qualify, with the power to rescind that decision in set circumstances and to charge an application fee. A yes vote extended the tax break. The Maryland Senate passed it 34-10 and it was signed into law as Chapter 45 of 2026.",
+   "nay_description": "Voted against passing HB 734, which kept a farm tax break available for solar on farmland. Farmland gets a lower property tax assessment. A community solar project had to win Public Service Commission approval by December 31, 2025 to keep that assessment; the bill pushes the deadline to December 31, 2030. It also lets the state assessments department decide before construction whether an agrivoltaics project — farming and solar on the same land — will qualify, with the power to rescind that decision in set circumstances and to charge an application fee. A no vote opposed extending it. The Maryland Senate passed it 34-10 over these votes and it was signed into law as Chapter 45 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1654634,
+   "measure_id": "HB 85",
+   "vote_date": "2026-02-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 85, which created a legal path to permanently affordable co-op housing. A limited equity housing co-op is one where resale prices are capped so the homes stay affordable. The bill lets a Maryland nonstock corporation convert into one and sets out how. A county or town may not restrict such a co-op, including by restricting the sale of rental buildings to a nonstock corporation that plans to convert. The housing department may add rights and requirements and may run a grant program to encourage them. A yes vote created that path. The Maryland House of Delegates passed it 103-33 and it was signed into law as Chapter 260 of 2026.",
+   "nay_description": "Voted against passing HB 85, which created a legal path to permanently affordable co-op housing. A limited equity housing co-op is one where resale prices are capped so the homes stay affordable. The bill lets a Maryland nonstock corporation convert into one and sets out how. A county or town may not restrict such a co-op, including by restricting the sale of rental buildings to a nonstock corporation that plans to convert. The housing department may add rights and requirements and may run a grant program to encourage them. A no vote opposed creating it. The Maryland House of Delegates passed it 103-33 over these votes and it was signed into law as Chapter 260 of 2026.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1684719,
+   "measure_id": "HB 963",
+   "vote_date": "2026-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 963, which removed a citizenship barrier to settling a relative's estate. Letters of administration are the court's authorization for someone to administer a dead person's estate. State law had barred granting them to a non-citizen unless the person was a permanent resident and the deceased's spouse, ancestor, descendant or sibling. The bill repeals that restriction. A yes vote removed the restriction. The Maryland House of Delegates passed it 99-32 and it was signed into law as Chapter 537 of 2026.",
+   "nay_description": "Voted against passing HB 963, which removed a citizenship barrier to settling a relative's estate. Letters of administration are the court's authorization for someone to administer a dead person's estate. State law had barred granting them to a non-citizen unless the person was a permanent resident and the deceased's spouse, ancestor, descendant or sibling. The bill repeals that restriction. A no vote opposed removing it. The Maryland House of Delegates passed it 99-32 over these votes and it was signed into law as Chapter 537 of 2026.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1681648,
+   "measure_id": "HB 969",
+   "vote_date": "2026-04-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 969, which set measurement rules for public EV charging. Electricity sold at retail as vehicle fuel must be measured and sold in kilowatt-hours, and a customer may be charged only for what the bill specifies during a charging session. The owner of the charging equipment must display clearly, on or beside it, the name, address and phone number of a local person responsible for it. A yes vote set those charging standards. The Maryland Senate passed it 24-9 and it was signed into law as Chapter 281 of 2026.",
+   "nay_description": "Voted against passing HB 969, which set measurement rules for public EV charging. Electricity sold at retail as vehicle fuel must be measured and sold in kilowatt-hours, and a customer may be charged only for what the bill specifies during a charging session. The owner of the charging equipment must display clearly, on or beside it, the name, address and phone number of a local person responsible for it. A no vote opposed setting them. The Maryland Senate passed it 24-9 over these votes and it was signed into law as Chapter 281 of 2026.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1681425,
+   "measure_id": "HB 994",
+   "vote_date": "2026-04-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 994, which required travel sellers to carry insurance. Sellers of travel services and independent agents must file proof each year with the Maryland Department of Labor of professional liability and errors and omissions insurance of at least $1,000,000. The department must tell consumers and sellers about the requirement, enforce it, and write rules covering registration and enforcement. The bill also creates a registration fund the department administers. A yes vote required that insurance. The Maryland Senate passed it 28-14 and it was signed into law as Chapter 611 of 2026.",
+   "nay_description": "Voted against passing HB 994, which required travel sellers to carry insurance. Sellers of travel services and independent agents must file proof each year with the Maryland Department of Labor of professional liability and errors and omissions insurance of at least $1,000,000. The department must tell consumers and sellers about the requirement, enforce it, and write rules covering registration and enforcement. The bill also creates a registration fund the department administers. A no vote opposed requiring it. The Maryland Senate passed it 28-14 over these votes and it was signed into law as Chapter 611 of 2026.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1682956,
+   "measure_id": "HB 994",
+   "vote_date": "2026-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 994, which required travel sellers to carry insurance. Sellers of travel services and independent agents must file proof each year with the Maryland Department of Labor of professional liability and errors and omissions insurance of at least $1,000,000. The department must tell consumers and sellers about the requirement, enforce it, and write rules covering registration and enforcement. The bill also creates a registration fund the department administers. A yes vote required that insurance. The Maryland House of Delegates passed it 97-34 and it was signed into law as Chapter 611 of 2026.",
+   "nay_description": "Voted against passing HB 994, which required travel sellers to carry insurance. Sellers of travel services and independent agents must file proof each year with the Maryland Department of Labor of professional liability and errors and omissions insurance of at least $1,000,000. The department must tell consumers and sellers about the requirement, enforce it, and write rules covering registration and enforcement. The bill also creates a registration fund the department administers. A no vote opposed requiring it. The Maryland House of Delegates passed it 97-34 over these votes and it was signed into law as Chapter 611 of 2026.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1684397,
+   "measure_id": "SB 12",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 12, which required landlords to provide air conditioning in summer. A landlord of an apartment building with 10 or more units must provide air conditioning each year from June 1 through September 30, unless the bill exempts the unit. It starts June 1, 2026 for newly built units and for units where the landlord had already provided air conditioning or the lease required it at any point on or after January 1, 2025, and October 1, 2026 for existing units undergoing renovation. A yes vote made summer cooling a landlord duty. The Maryland House of Delegates passed it 101-34 and it was signed into law as Chapter 664 of 2026.",
+   "nay_description": "Voted against passing SB 12, which required landlords to provide air conditioning in summer. A landlord of an apartment building with 10 or more units must provide air conditioning each year from June 1 through September 30, unless the bill exempts the unit. It starts June 1, 2026 for newly built units and for units where the landlord had already provided air conditioning or the lease required it at any point on or after January 1, 2025, and October 1, 2026 for existing units undergoing renovation. A no vote opposed the requirement. The Maryland House of Delegates passed it 101-34 over these votes and it was signed into law as Chapter 664 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1692009,
+   "measure_id": "SB 12",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 12, which required landlords to provide air conditioning in summer. A landlord of an apartment building with 10 or more units must provide air conditioning each year from June 1 through September 30, unless the bill exempts the unit. It starts June 1, 2026 for newly built units and for units where the landlord had already provided air conditioning or the lease required it at any point on or after January 1, 2025, and October 1, 2026 for existing units undergoing renovation. A yes vote made summer cooling a landlord duty. The Maryland Senate passed it 35-11 and it was signed into law as Chapter 664 of 2026.",
+   "nay_description": "Voted against passing SB 12, which required landlords to provide air conditioning in summer. A landlord of an apartment building with 10 or more units must provide air conditioning each year from June 1 through September 30, unless the bill exempts the unit. It starts June 1, 2026 for newly built units and for units where the landlord had already provided air conditioning or the lease required it at any point on or after January 1, 2025, and October 1, 2026 for existing units undergoing renovation. A no vote opposed the requirement. The Maryland Senate passed it 35-11 over these votes and it was signed into law as Chapter 664 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1684027,
+   "measure_id": "SB 187",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 187, an emergency bill on prerelease services for incarcerated women. A prerelease facility prepares people for life after prison with work, education and reentry services. The bill reclassifies the women's prerelease unit in the Division of Correction as a prerelease facility for eligible individuals and changes the requirements and timelines around it, including the timeline for providing the comprehensive rehabilitative services it is required to offer. From June 1, 2027 the Correctional Ombudsman must check and verify the corrections department's progress each year and report findings to legislative committees. A yes vote pressed the state to deliver those services. The Maryland House of Delegates passed it 101-36 and it became law without the Governor's signature as Chapter 876 of 2026.",
+   "nay_description": "Voted against passing SB 187, an emergency bill on prerelease services for incarcerated women. A prerelease facility prepares people for life after prison with work, education and reentry services. The bill reclassifies the women's prerelease unit in the Division of Correction as a prerelease facility for eligible individuals and changes the requirements and timelines around it, including the timeline for providing the comprehensive rehabilitative services it is required to offer. From June 1, 2027 the Correctional Ombudsman must check and verify the corrections department's progress each year and report findings to legislative committees. A no vote opposed the change. The Maryland House of Delegates passed it 101-36 over these votes and it became law without the Governor's signature as Chapter 876 of 2026.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1691971,
+   "measure_id": "SB 187",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 187, an emergency bill on prerelease services for incarcerated women. A prerelease facility prepares people for life after prison with work, education and reentry services. The bill reclassifies the women's prerelease unit in the Division of Correction as a prerelease facility for eligible individuals and changes the requirements and timelines around it, including the timeline for providing the comprehensive rehabilitative services it is required to offer. From June 1, 2027 the Correctional Ombudsman must check and verify the corrections department's progress each year and report findings to legislative committees. A yes vote pressed the state to deliver those services. The Maryland Senate passed it 32-13 and it became law without the Governor's signature as Chapter 876 of 2026.",
+   "nay_description": "Voted against passing SB 187, an emergency bill on prerelease services for incarcerated women. A prerelease facility prepares people for life after prison with work, education and reentry services. The bill reclassifies the women's prerelease unit in the Division of Correction as a prerelease facility for eligible individuals and changes the requirements and timelines around it, including the timeline for providing the comprehensive rehabilitative services it is required to offer. From June 1, 2027 the Correctional Ombudsman must check and verify the corrections department's progress each year and report findings to legislative committees. A no vote opposed the change. The Maryland Senate passed it 32-13 over these votes and it became law without the Governor's signature as Chapter 876 of 2026.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1682134,
+   "measure_id": "SB 237",
+   "vote_date": "2026-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 237, which bound Maryland's presidential electors to their pledge. Presidential electors formally cast the state's votes for President and Vice President. The bill requires each elector to pledge to vote in line with the party or unaffiliated candidate that nominated them, and sets out how a substitute is appointed if the office falls vacant. An elector vacates the office by refusing to present a ballot, presenting a blank one, or presenting one marked against their pledge. A yes vote bound electors to their pledge. The Maryland Senate passed it 32-10 and it was signed into law as Chapter 469 of 2026.",
+   "nay_description": "Voted against passing SB 237, which bound Maryland's presidential electors to their pledge. Presidential electors formally cast the state's votes for President and Vice President. The bill requires each elector to pledge to vote in line with the party or unaffiliated candidate that nominated them, and sets out how a substitute is appointed if the office falls vacant. An elector vacates the office by refusing to present a ballot, presenting a blank one, or presenting one marked against their pledge. A no vote opposed binding them. The Maryland Senate passed it 32-10 over these votes and it was signed into law as Chapter 469 of 2026.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1685422,
+   "measure_id": "SB 249",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 249, which required a separate state license to sell vapes. Anyone holding a cigarette or other tobacco products license who wants to make, distribute or sell electronic smoking devices must now get a separate license for those devices. An applicant for a device retailer or vape shop license pays no extra fee if they already hold certain cigarette or tobacco licenses. Businesses already holding cigarette or tobacco licenses as of September 30, 2026 are excluded from the requirement. A yes vote created the separate license. The Maryland House of Delegates passed it 106-30 and it was signed into law as Chapter 415 of 2026.",
+   "nay_description": "Voted against passing SB 249, which required a separate state license to sell vapes. Anyone holding a cigarette or other tobacco products license who wants to make, distribute or sell electronic smoking devices must now get a separate license for those devices. An applicant for a device retailer or vape shop license pays no extra fee if they already hold certain cigarette or tobacco licenses. Businesses already holding cigarette or tobacco licenses as of September 30, 2026 are excluded from the requirement. A no vote opposed creating it. The Maryland House of Delegates passed it 106-30 over these votes and it was signed into law as Chapter 415 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1682963,
+   "measure_id": "SB 305",
+   "vote_date": "2026-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 305, which extended funding for reentry job training. For one more year, through fiscal 2029, the Governor may include $1.0 million in the budget to be used only as an operating grant to qualifying non-profits that train formerly incarcerated people in automotive repair. It took effect July 1, 2026. A yes vote extended that funding. The Maryland House of Delegates passed it 98-34 and it was signed into law as Chapter 403 of 2026.",
+   "nay_description": "Voted against passing SB 305, which extended funding for reentry job training. For one more year, through fiscal 2029, the Governor may include $1.0 million in the budget to be used only as an operating grant to qualifying non-profits that train formerly incarcerated people in automotive repair. It took effect July 1, 2026. A no vote opposed extending it. The Maryland House of Delegates passed it 98-34 over these votes and it was signed into law as Chapter 403 of 2026.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1660583,
+   "measure_id": "SB 322",
+   "vote_date": "2026-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 322, which restored jury eligibility after a sentence is served. State law disqualified anyone who had ever received a sentence of more than a year in prison from serving on a jury, for life. The bill replaces that: a person is disqualified only while actually serving such a sentence, including parole or probation. It separately disqualifies anyone convicted of perjury, witness or jury intimidation, or a related offense. A yes vote restored jury service after a sentence ends. The Maryland Senate passed it 32-11 and it became law without the Governor's signature as Chapter 875 of 2026.",
+   "nay_description": "Voted against passing SB 322, which restored jury eligibility after a sentence is served. State law disqualified anyone who had ever received a sentence of more than a year in prison from serving on a jury, for life. The bill replaces that: a person is disqualified only while actually serving such a sentence, including parole or probation. It separately disqualifies anyone convicted of perjury, witness or jury intimidation, or a related offense. A no vote opposed restoring it. The Maryland Senate passed it 32-11 over these votes and it became law without the Governor's signature as Chapter 875 of 2026.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1685426,
+   "measure_id": "SB 322",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 322, which restored jury eligibility after a sentence is served. State law disqualified anyone who had ever received a sentence of more than a year in prison from serving on a jury, for life. The bill replaces that: a person is disqualified only while actually serving such a sentence, including parole or probation. It separately disqualifies anyone convicted of perjury, witness or jury intimidation, or a related offense. A yes vote restored jury service after a sentence ends. The Maryland House of Delegates passed it 97-36 and it became law without the Governor's signature as Chapter 875 of 2026.",
+   "nay_description": "Voted against passing SB 322, which restored jury eligibility after a sentence is served. State law disqualified anyone who had ever received a sentence of more than a year in prison from serving on a jury, for life. The bill replaces that: a person is disqualified only while actually serving such a sentence, including parole or probation. It separately disqualifies anyone convicted of perjury, witness or jury intimidation, or a related offense. A no vote opposed restoring it. The Maryland House of Delegates passed it 97-36 over these votes and it became law without the Governor's signature as Chapter 875 of 2026.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1660657,
+   "measure_id": "SB 439",
+   "vote_date": "2026-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 439, which protected firefighters and medics who use medical cannabis. An employer of a fire and rescue public safety employee may not discipline, discharge or otherwise discriminate against them over pay, terms or conditions of employment because they hold a valid medical cannabis certification or test positive for cannabis while holding one. The employer also may not limit, segregate or classify employees in a way that would deprive such an employee of opportunities or harm their status. The protections are subject to the exceptions the bill sets out. A yes vote created those job protections. The Maryland Senate passed it 33-11 and it was signed into law as Chapter 183 of 2026.",
+   "nay_description": "Voted against passing SB 439, which protected firefighters and medics who use medical cannabis. An employer of a fire and rescue public safety employee may not discipline, discharge or otherwise discriminate against them over pay, terms or conditions of employment because they hold a valid medical cannabis certification or test positive for cannabis while holding one. The employer also may not limit, segregate or classify employees in a way that would deprive such an employee of opportunities or harm their status. The protections are subject to the exceptions the bill sets out. A no vote opposed creating them. The Maryland Senate passed it 33-11 over these votes and it was signed into law as Chapter 183 of 2026.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1683092,
+   "measure_id": "SB 523",
+   "vote_date": "2026-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 523, which put Maryland's vernal pools on a map. A vernal pool is a seasonal wetland that dries out part of the year and is a breeding ground for amphibians. The Department of Natural Resources, working with the environment department, must build and maintain a list of them. Environment department staff must be designated and trained to identify them, and where trained staff spot a possible vernal pool while doing their existing nontidal wetlands work, they must tell natural resources so it can be considered for the list. A yes vote created the list and the training. The Maryland House of Delegates passed it 97-36 and it was signed into law as Chapter 164 of 2026.",
+   "nay_description": "Voted against passing SB 523, which put Maryland's vernal pools on a map. A vernal pool is a seasonal wetland that dries out part of the year and is a breeding ground for amphibians. The Department of Natural Resources, working with the environment department, must build and maintain a list of them. Environment department staff must be designated and trained to identify them, and where trained staff spot a possible vernal pool while doing their existing nontidal wetlands work, they must tell natural resources so it can be considered for the list. A no vote opposed creating them. The Maryland House of Delegates passed it 97-36 over these votes and it was signed into law as Chapter 164 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1684466,
+   "measure_id": "SB 729",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 729, which extended free eviction lawyers to mobile home park residents. Maryland's Access to Counsel in Evictions program, run by the Maryland Legal Services Corporation, gives tenants facing eviction a lawyer. The bill expands the program to cover residents of mobile home parks. A yes vote extended that right to counsel. The Maryland House of Delegates passed it 101-35 and it was signed into law as Chapter 754 of 2026.",
+   "nay_description": "Voted against passing SB 729, which extended free eviction lawyers to mobile home park residents. Maryland's Access to Counsel in Evictions program, run by the Maryland Legal Services Corporation, gives tenants facing eviction a lawyer. The bill expands the program to cover residents of mobile home parks. A no vote opposed extending it. The Maryland House of Delegates passed it 101-35 over these votes and it was signed into law as Chapter 754 of 2026.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1684953,
+   "measure_id": "SB 775",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 775, which required guns handed in at buybacks to be destroyed. A federal firearms licensee or law enforcement agency running a gun buyback program must destroy every firearm surrendered to it, including every attached component and part. That does not apply where a law enforcement agency finds the gun is stolen or is evidence of a crime. Breaking the rule costs up to $10,000 a violation, and a licensed dealer who does so has their license revoked by the head of the State Police. A yes vote required the guns be destroyed. The Maryland House of Delegates passed it 96-36 and it was signed into law as Chapter 430 of 2026.",
+   "nay_description": "Voted against passing SB 775, which required guns handed in at buybacks to be destroyed. A federal firearms licensee or law enforcement agency running a gun buyback program must destroy every firearm surrendered to it, including every attached component and part. That does not apply where a law enforcement agency finds the gun is stolen or is evidence of a crime. Breaking the rule costs up to $10,000 a violation, and a licensed dealer who does so has their license revoked by the head of the State Police. A no vote opposed the requirement. The Maryland House of Delegates passed it 96-36 over these votes and it was signed into law as Chapter 430 of 2026.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1683232,
+   "measure_id": "SB 792",
+   "vote_date": "2026-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 792, which made hospitals plan for immigration enforcement on site. Every hospital must adopt a policy setting out what it does when there is an immigration enforcement action at the hospital, consistent with the Attorney General's guidance. The hospital must make the policy available to all staff and train them on it every year so they know and understand it. It took effect June 1, 2026. A yes vote required those policies and training. The Maryland House of Delegates passed it 99-33 and it was signed into law as Chapter 162 of 2026.",
+   "nay_description": "Voted against passing SB 792, which made hospitals plan for immigration enforcement on site. Every hospital must adopt a policy setting out what it does when there is an immigration enforcement action at the hospital, consistent with the Attorney General's guidance. The hospital must make the policy available to all staff and train them on it every year so they know and understand it. It took effect June 1, 2026. A no vote opposed requiring them. The Maryland House of Delegates passed it 99-33 over these votes and it was signed into law as Chapter 162 of 2026.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1680477,
+   "measure_id": "SB 831",
+   "vote_date": "2026-04-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 831, which strengthened Maryland's labor protections. An Executive Branch unit may not ask the federal government to waive any Fair Labor Standards Act provision that applies to it, even where federal law would allow the waiver. Employers may not form employee involvement organizations that fall outside the National Labor Relations Act and the federal labor board's jurisdiction. The Commissioner of Labor and Industry may impose a civil penalty for breaking specified child labor laws, and the Public Employee Relations Board's jurisdiction is widened. A yes vote strengthened those protections. The Maryland House of Delegates passed it 99-36 and it was signed into law as Chapter 167 of 2026.",
+   "nay_description": "Voted against passing SB 831, which strengthened Maryland's labor protections. An Executive Branch unit may not ask the federal government to waive any Fair Labor Standards Act provision that applies to it, even where federal law would allow the waiver. Employers may not form employee involvement organizations that fall outside the National Labor Relations Act and the federal labor board's jurisdiction. The Commissioner of Labor and Industry may impose a civil penalty for breaking specified child labor laws, and the Public Employee Relations Board's jurisdiction is widened. A no vote opposed strengthening them. The Maryland House of Delegates passed it 99-36 over these votes and it was signed into law as Chapter 167 of 2026.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1685496,
+   "measure_id": "SB 872",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 872, which widened which rentals fall under the lead paint law. Maryland's Reduction of Lead Risk in Housing law covers residential rental property built before 1978. A rental dwelling unit had to be a single independent habitable unit with permanent provisions for living, sleeping, eating, cooking and sanitation. The bill drops the word independent and now counts a unit that either has those provisions or has access to them, bringing more rentals under the law. A yes vote widened the law's reach. The Maryland House of Delegates passed it 99-36 and it was signed into law as Chapter 225 of 2026.",
+   "nay_description": "Voted against passing SB 872, which widened which rentals fall under the lead paint law. Maryland's Reduction of Lead Risk in Housing law covers residential rental property built before 1978. A rental dwelling unit had to be a single independent habitable unit with permanent provisions for living, sleeping, eating, cooking and sanitation. The bill drops the word independent and now counts a unit that either has those provisions or has access to them, bringing more rentals under the law. A no vote opposed widening it. The Maryland House of Delegates passed it 99-36 over these votes and it was signed into law as Chapter 225 of 2026.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1672573,
+   "measure_id": "SB 94",
+   "vote_date": "2026-03-19",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 94, which banned tips on pay advances and consumer loans. Consumer loan lenders, commercial loan lenders and earned wage access providers may not ask for or take a tip, and must return any tip they collect within seven days. They must tell consumers that they are barred from asking for or accepting one. The bill also brings earned wage access providers under the consumer protection and non-discrimination rules that already govern other consumer and commercial lending. A yes vote banned those tips. The Maryland Senate passed it 32-13 and it was signed into law as Chapter 170 of 2026.",
+   "nay_description": "Voted against passing SB 94, which banned tips on pay advances and consumer loans. Consumer loan lenders, commercial loan lenders and earned wage access providers may not ask for or take a tip, and must return any tip they collect within seven days. They must tell consumers that they are barred from asking for or accepting one. The bill also brings earned wage access providers under the consumer protection and non-discrimination rules that already govern other consumer and commercial lending. A no vote opposed the ban. The Maryland Senate passed it 32-13 over these votes and it was signed into law as Chapter 170 of 2026.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1685506,
+   "measure_id": "SB 94",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 94, which banned tips on pay advances and consumer loans. Consumer loan lenders, commercial loan lenders and earned wage access providers may not ask for or take a tip, and must return any tip they collect within seven days. They must tell consumers that they are barred from asking for or accepting one. The bill also brings earned wage access providers under the consumer protection and non-discrimination rules that already govern other consumer and commercial lending. A yes vote banned those tips. The Maryland House of Delegates passed it 100-36 and it was signed into law as Chapter 170 of 2026.",
+   "nay_description": "Voted against passing SB 94, which banned tips on pay advances and consumer loans. Consumer loan lenders, commercial loan lenders and earned wage access providers may not ask for or take a tip, and must return any tip they collect within seven days. They must tell consumers that they are barred from asking for or accepting one. The bill also brings earned wage access providers under the consumer protection and non-discrimination rules that already govern other consumer and commercial lending. A no vote opposed the ban. The Maryland House of Delegates passed it 100-36 over these votes and it was signed into law as Chapter 170 of 2026.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1683604,
+   "measure_id": "SB 949",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 949, an emergency bill setting absentee ballot deadlines in law. The bill writes into statute requirements much like the State Board of Elections regulations already governing when an absentee ballot counts as timely. It adds rules for when federal law or a federal court sets a different deadline for ballots carrying federal contests. Votes in non-federal contests on ballots meeting state timeliness rules must still be counted. The board must also adopt canvass regulations that comply with the federal deadline. A yes vote fixed those deadlines in law. The Maryland Senate passed it 35-10 and it was signed into law as Chapter 440 of 2026.",
+   "nay_description": "Voted against passing SB 949, an emergency bill setting absentee ballot deadlines in law. The bill writes into statute requirements much like the State Board of Elections regulations already governing when an absentee ballot counts as timely. It adds rules for when federal law or a federal court sets a different deadline for ballots carrying federal contests. Votes in non-federal contests on ballots meeting state timeliness rules must still be counted. The board must also adopt canvass regulations that comply with the federal deadline. A no vote opposed doing so. The Maryland Senate passed it 35-10 over these votes and it was signed into law as Chapter 440 of 2026.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1685987,
+   "measure_id": "SB 949",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 949, an emergency bill setting absentee ballot deadlines in law. The bill writes into statute requirements much like the State Board of Elections regulations already governing when an absentee ballot counts as timely. It adds rules for when federal law or a federal court sets a different deadline for ballots carrying federal contests. Votes in non-federal contests on ballots meeting state timeliness rules must still be counted. The board must also adopt canvass regulations that comply with the federal deadline. A yes vote fixed those deadlines in law. The Maryland House of Delegates passed it 96-36 and it was signed into law as Chapter 440 of 2026.",
+   "nay_description": "Voted against passing SB 949, an emergency bill setting absentee ballot deadlines in law. The bill writes into statute requirements much like the State Board of Elections regulations already governing when an absentee ballot counts as timely. It adds rules for when federal law or a federal court sets a different deadline for ballots carrying federal contests. Votes in non-federal contests on ballots meeting state timeliness rules must still be counted. The board must also adopt canvass regulations that comply with the federal deadline. A no vote opposed doing so. The Maryland House of Delegates passed it 96-36 over these votes and it was signed into law as Chapter 440 of 2026.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
