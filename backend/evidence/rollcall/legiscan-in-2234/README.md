@@ -173,19 +173,22 @@ That roll is excluded as procedural, so it costs nothing, but it is the same def
 - `batch-01/` and later — the judgments, the roll evidence files, the import ledgers and the
   selection notes for each batch.
 
-## State of the work
+## State of the work — the 2026 session is complete
+
+**Every one of the 47 divided-and-enacted measures in this session has been read in full and
+dispositioned.** No roll is left unbatched.
 
 Batches 01 to 03 are imported on the local `voteapp` database: **1,327 records across 104
-candidates with 1,078 area tags, over seventeen measures and twenty-four rolls.** Across both
-Indiana sessions the total is **2,147 live roll-call records**. **Production still holds no
-Indiana records.**
+candidates with 1,078 area tags, over seventeen measures and twenty-four rolls.** Batch-04 read
+eleven more measures and kept none of them. Across both Indiana sessions the total is **2,432
+live roll-call records**. **Production still holds no Indiana records.**
 
-`survey/divided-enacted-worklist.tsv` started at **95 rolls over 47 measures**. It now stands at
-8 in batch-01, 11 in batch-02, 5 in batch-03, 40 dropped, 3 superseded, and 28 unbatched.
+The worklist's 95 rolls end as 8 in batch-01, 11 in batch-02, 5 in batch-03, 68 dropped and 3
+superseded.
 
-The keep rate is falling as expected. Batch-01 kept six of ten measures, batch-02 eight of
-fourteen, and batch-03 three of ten. What remains is the session's omnibus work: most of the 28
-unbatched rolls sit on measures titled "Various education matters" or similar.
+The keep rate fell as the omnibus work came up: six measures of ten in batch-01, eight of
+fourteen in batch-02, three of ten in batch-03, none of eleven in batch-04. Batch-04's own
+notes explain each drop.
 
 ## Files
 
