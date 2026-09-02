@@ -71,6 +71,16 @@ $0) until an authoritative year-end filing lands, with the static coverage note
 explaining the timing — see the plan's hard fact 2. An empty 2026 candidate
 slice is expected, not a defect.
 
+**Shape of the year-end lumps (verified 2026-09-01):** in the 2025 file they are
+the 562 rows with `ExpenditureType` = `Monetary`, all dated 2025-12-31, blank
+recipient type/name, and an `ExpenditurePurpose` category (Advertising,
+Campaign Loan Repayment, Miscellaneous, Operations, Travel) — 301 candidate
+committee rows ($465,165.32, the exact "Candidate/Candidate Committee" slice of
+the portal chart), 60 PAC, 201 party. The portal's "By Purpose Type" chart
+series ($786,064.54) is exactly these rows. Candidate committees never appear
+in the itemized/lump-sum types. So candidate `totalDisbursements` becomes
+publishable from the year-end file as the sum of these category lumps.
+
 ## Registry / auto-link
 
 `POST /api/Public-Service/Committee/getPublicCandidatesCommitteeDataList`
@@ -92,7 +102,10 @@ lump rows; cover-sheet reconciliation possible via Filed reports PDFs if wanted)
   expenditures), or `"IE"` **plus `orgTypeCode: "104"`** (52 IE rows — without
   orgTypeCode, `"IE"` falls through to all 6,027 transactions). Codes from the
   SPA enums: category CON/EXP/IE; orgTypeCode 101 candidate cmte / 102 SPAC /
-  103 PAC / 104 IE cmte / 105 ECC. Unknown members 400 with a
+  103 PAC / 104 IE cmte / 105 ECC — but live rows show `1030…` registrants
+  with orgType "Party Committee" (2026-09-01), so codes are query selectors
+  only; classify rows from their own `orgType`/`transactionTypeDesc` fields.
+  Unknown members 400 with a
   could-not-find-member error naming them; unknown VALUES silently return the
   default dataset — distinguish 0-rows from filter-ignored by checking a known
   fixture. Contribution rows carry `employerOccupation` (populated on $5k+
@@ -106,22 +119,27 @@ lump rows; cover-sheet reconciliation possible via Filed reports PDFs if wanted)
   52 rows, 52 distinct transactionIDs, 3 committees, 26 candidates, all
   Support.
 - IE chart: `GET .../getIndependentExpenditureChartData`.
-- **Gotcha: `transactionTotalYTD` is the REPORT total, not year-to-date.**
-  StrongND Fund has two filings: May 29 ($44,281.36, one row, control
-  44,281.36) and June 4 (25 rows, control 153,999.98). Each filing's rows sum
-  to its OWN control cent-exact; the committee's true 2026 total is the sum of
-  unique rows across filings ($198,281.34), which no single "YTD" value
-  reports. Reconciliation rule: group rows by `s3ReportFilePath`, require
-  sum(rows) == that report's `transactionTotalYTD`; committee totals = sum of
-  unique `transactionID`s.
+- **Gotcha: `transactionTotalYTD` is the committee x PAYEE year-to-date
+  aggregate** (corrected 2026-09-01 by the Phase 0A probe; the earlier
+  "report total" reading fit StrongND only because each of its filings used a
+  different vendor). North Dakotans for Public Schools paid one vendor across
+  three filings and the control climbs 2,414.57 -> 4,332.23 -> 6,716.09;
+  StrongND's May 29 ($44,281.36, Targeted Creative) and June 4 ($153,999.98,
+  Edgerton) filings each equal their own vendor total. On contribution rows
+  the same field is the donor's running aggregate to that committee.
+  Reconciliation rule: per (committee, payee) within a year, max
+  `transactionTotalYTD` == sum of unique rows (4/4 groups cent-exact live);
+  committee totals = sum of unique `transactionID`s; never publish any single
+  YTD value as a committee total.
 - **Rows are per-candidate ALLOCATIONS (corrected 2026-08-26 after review).**
-  StrongND Fund's rows sum exactly to the filing's YTD control: 7 × $16,857.14 +
+  StrongND Fund's June rows sum exactly to the vendor's YTD control: 7 × $16,857.14 +
   18 × $2,000 = $153,999.98 = `transactionTotalYTD`, each row with its own
   sequential `transactionID`. The equal amounts are an even split of one buy
   ($117,999.98 / 7), so summing rows once per row identity IS the committee
   total. Rules: sum unique `transactionID`s; never dedupe by
   spender+vendor+date+amount (equal slate allocations are legitimate);
-  `transactionTotalYTD` is a reconciliation control, never a spend row.
+  `transactionTotalYTD` is a per-payee reconciliation control, never a spend
+  row.
 - IE CSV is not in the data-download list; the API/portal is the source.
 
 ## Donor occupation — YES at $5,000+ (API only, not CSV)
@@ -152,9 +170,93 @@ is always null). Verified 2026-08-26 against statute + FAQ + live API:
   exclude sub-$5k donors from any Unknown bucket (their occupation was never
   required). See `plan-north-dakota-finance.md` hard fact 3.
 
+## Portal chart endpoints (reconciliation controls)
+
+Bare `GET` on `/api/Public-Service/CommitteeTransactions/getContributionChartData`,
+`getExpenditureChartData`, `getIndependentExpenditureChartData` (POST 405s; any
+query parameter 400s). Each returns `responseData: [{ name, totalAmount,
+data: [{ description, amount }] }]` with ALL-YEARS totals (2025 + 2026 today)
+sliced "By Contributor Type" / "By Recipient Type" (blank CSV counterparty type
+= chart "Lumpsum"), "By Committee Type" (registry `orgType` of the registrant),
+"By Contribution Type" (CSV `TransactionCategory`) and, for expenditures, "By
+Purpose Type" (the year-end `Monetary` lumps by purpose). Every slice matched the
+summed bulk CSVs to the cent on 2026-09-01 — see the probe results below.
+
 ## Other public endpoints (mapped from `publicEndpoints-*.js` bundle)
 
 Transaction search, contributor/payee search, filed-report list + PDFs
 (`getAllFiledReportDataListForPublic`, `getDataDownloadfile` pattern), election/
 office/district/party lists, violations. Full list in the bundle chunk
 `assets/publicEndpoints-*.js`.
+
+## Phase 0A probe results (run 2026-09-01, all seven gates green)
+
+`npm run north-dakota-candidates:finance:phase-zero` (client + parsers +
+phaseZero helpers in `backend/src/pipeline/northDakotaFinance/`, 45 unit
+tests). One live run, ~2 s between requests, JSON report with `ok` +
+`gate_failures`, exit 1 on any failure:
+
+- **Gate 1 transport (local Node):** default trust fails with
+  `UNABLE_TO_VERIFY_LEAF_SIGNATURE`, the bundled Sectigo OV R36 intermediate
+  fallback engaged on all 20 requests (leaf served twice, valid to 2026-12-05;
+  intermediate to 2036-03-21); browser UA + portal Origin/Referer (curl UA →
+  403 HTML). Catalog 19 artifacts (Contributions/Expenditures 2025–2026, Filed
+  reports 2026, Registrations 2014–2026, Reporting Schedules 2026–2027; a bare
+  `{}` body returns only 10). Presign envelope carries CloudFront fields plus
+  `fileUrl` (S3 us-gov-west-1, 3600 s). Repeated mint+download byte-identical.
+  Production-runtime replay still open (local-acquisition model by default).
+- **Gate 2 IE contract:** `transactionCategory: "IE"` + `orgTypeCode: "104"` →
+  52 rows / 52 distinct `transactionID`s / 3 committees / 26 candidates, all
+  Support, all typed "Independent Expenditures"; without `orgTypeCode` → 6,027
+  rows (silent fall-through confirmed); unknown category value `ZZZ` silently
+  returns the EXP dataset (635); unknown member → 400 naming it. Unique-row
+  total $208,647.42 == IE chart total; per-payee YTD control 4/4.
+- **Gate 3 CSV schema + vocabulary + checksums:** all four bulk files parse with
+  0 errors (CON 2025 2,914 rows / $4,150,792.03; CON 2026 5,340 /
+  $4,218,948.64; EXP 2025 1,093 / $2,486,667.48, 9 recovered bad-width rows;
+  EXP 2026 635 / $1,674,944.06, 5 recovered), pure ASCII, CRLF. Pinned
+  vocabularies: contributions Monetary / In-Kind / Reimbursement of Expenditure
+  / Total - $200 or less / Total - $100 or less; expenditures Itemized -
+  greater than $200 / Itemized - greater than $100 / Lumpsum - $200 or less /
+  Lumpsum - $100 or less / Monetary (year-end lumps). Chart reconciliation:
+  contributions $8,369,740.67 and expenditures $4,161,611.54 cent-exact, every
+  slice of every compared series cent-exact.
+- **Gate 4 cycle window:** Reporting Schedules map "2025 REPORTING CYCLE" and
+  "2026 Reporting Cycle" to "2026 Election - Statewide" (4 periods, 2025-01-01
+  → 2026-12-31); 103 candidate committees with 2025 activity, all registered to
+  "2026 Election - Statewide" (0 other). 2025 rows belong to the 2026 candidacy
+  → factory `minElectionYear` 2026.
+- **Gate 5 identity + amendments:** the API CON dataset equals the bulk file
+  row for row (2,914 / 5,340 per year, same category labels). Nine
+  committee-years reconciled CSV↔API cent-exact and multiset-exact, including
+  committees with 1, 1, 1 and 7 Amended filings on record (Filed reports 2026:
+  807 CFS Original / 92 Amended, 194 48-hour Original / 15 Amended, 6 IE) →
+  **the daily CSV holds current-version rows only**; the 232 / 337
+  byte-identical duplicate rows are legitimate repeats. API `amendedFlag` is
+  rare (5 rows 2025, 2 rows 2026) and did not mark the amended committees'
+  rows. IE `transactionID` digest recorded for cross-day stability
+  (`dad36398…`). Donor-YTD check on CON rows: 2,188/2,215 (2025) and
+  2,678/2,742 (2026) committee×donor groups match; mismatches are lump rows
+  (no counterparty identity) and a few name-keyed donors — pin in Phase 0B.
+- **Gate 6 occupation:** 2026 individual Monetary/In-Kind rows to candidate
+  committees, aggregated per committee×donor for the year (periods are
+  cumulative from Jan 1, so the year aggregate is the period aggregate).
+  Donors ≥ $5,000: statewide 16, only **2 with occupation** ($26,069 of
+  $176,026); legislative 16, 12 with occupation ($73,405 of $97,905);
+  **judicial 2 of 2 WITH occupation** ($44,295.87) — judicial filers supply
+  occupation despite the statutory exemption, so the "statutory-unavailable"
+  assumption is wrong as a data claim. 22 distinct labels (Retired 36,
+  Attorney/Legal 21, Business Owner 20, Agriculture 10, …, "Unknown" 3).
+  Display gate (≥20% of individual dollars + ≥3 occupation donors): 1 of 12
+  statewide, 10 of 89 legislative, 0 of 3 judicial committees pass today.
+- **Gate 7 resolver gold set:** registry 601 orgs (376 candidate committees,
+  125 PAC, 97 party, 3 IE); 579 on "2026 Election - Statewide", 22 null. All
+  376 current-cycle candidate committees carry office + election (+ district
+  for the 278 legislative seats); 33 statewide across 12 offices, 65 judicial
+  (District Court Judge, Supreme Court Justice), 363 Active. CSV registrants
+  join the registry 422/422.
+
+Not in Phase 0A (deliberately): filed-report PDF download (verified once via
+`Common-Service/AmazonCloudFront/getDownloadLinkWithoutCookies` with
+`{ s3FilePath }` → presigned URL), the 48-hour overlap (Phase 0B, after
+Sep 25–Oct 2), any schema or publication.

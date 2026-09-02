@@ -131,7 +131,13 @@ Under the new rule that changes the description, not whether the vote is usable 
 required … but the governor vetoed it" if not.
 
 **Enrolled measures awaiting that rewrite** (6): SB 923, SB 1250, AB 2247 (batch-07); SB 1220,
-SB 1418 (batch-08); SB 1125 (batch-09). Check `status` in the next dataset cut's bill JSON.
+SB 1418 (batch-08); SB 1125 (batch-09). Check `status` in the next dataset cut's bill JSON, or
+the leginfo history page for each bill.
+
+Checked on leginfo 2026-09-01: none acted on. SB 1220 was presented to the governor 08-30, SB 1250
+and SB 1125 on 08-31; SB 923, SB 1418 and AB 2247 were still in engrossing and enrolling. Bills in
+the governor's hands after the 08-31 adjournment get 30 days, so the **last day to act is
+2026-09-30**. Look after that date at the latest.
 
 ## The open pool, measured on the 08-30 cut
 

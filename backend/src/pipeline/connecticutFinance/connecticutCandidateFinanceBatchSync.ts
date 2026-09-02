@@ -12,6 +12,15 @@ import {
   type ConnecticutEcrisArtifactRow,
 } from "./connecticutEcrisArtifactReader.js";
 import {
+  getConnecticutEcrisIndependentExpenditureCachePath,
+  readConnecticutEcrisIndependentExpenditureCache,
+} from "./connecticutEcrisIndependentExpenditureCache.js";
+import type { ConnecticutEcrisIndependentExpenditureRow } from "./connecticutEcrisIndependentExpenditureParsers.js";
+import {
+  connecticutOutsideSpendingIdentityKey,
+  findConnecticutAmbiguousOutsideSpendingIdentities,
+} from "./connecticutOutsideSpendingAggregator.js";
+import {
   syncConnecticutCandidateFinance,
   type ConnecticutCandidateFinanceSyncResult,
 } from "./connecticutCandidateFinanceSync.js";
@@ -44,6 +53,13 @@ export type ConnecticutEcrisReceiptDataForYear = {
   rowsByCommitteeId: Map<string, ConnecticutEcrisArtifactRow[]>;
 };
 
+export type ConnecticutEcrisIndependentExpenditureDataForYear = {
+  year: number;
+  filePath: string;
+  sourceUrl: string;
+  rows: readonly ConnecticutEcrisIndependentExpenditureRow[];
+};
+
 export type ConnecticutCandidateFinanceBatchSyncInput = {
   db: Queryable;
   now?: Date;
@@ -54,6 +70,7 @@ export type ConnecticutCandidateFinanceBatchSyncInput = {
   electionLookaheadDays?: number;
   rawDataCacheDir?: string;
   receiptDataByYear?: ReadonlyMap<number, ConnecticutEcrisReceiptDataForYear>;
+  independentExpenditureDataByYear?: ReadonlyMap<number, ConnecticutEcrisIndependentExpenditureDataForYear>;
   autoLinkMissingLinks?: boolean;
   syncConnecticutCandidateFinanceFn?: typeof syncConnecticutCandidateFinance;
 };
@@ -231,6 +248,91 @@ async function loadReceiptDataForYear(input: {
       }),
     rowsByCommitteeId: groupReceiptRowsByCommittee(rows),
   };
+}
+
+function resolveRawDataCacheDir(rawDataCacheDir: string | undefined): string {
+  return rawDataCacheDir ?? (process.env.CONNECTICUT_ECRIS_CACHE_DIR?.trim() || DEFAULT_CONNECTICUT_ECRIS_CACHE_DIR);
+}
+
+/**
+ * The year's cached independent-expenditure artifact, or null when none has
+ * been refreshed yet. A missing artifact is not an error: direct receipts
+ * still sync and stored outside-spending data is left untouched.
+ */
+async function loadIndependentExpenditureDataForYear(input: {
+  year: number;
+  rawDataCacheDir?: string;
+}): Promise<ConnecticutEcrisIndependentExpenditureDataForYear | null> {
+  const cacheDir = resolveRawDataCacheDir(input.rawDataCacheDir);
+  const artifact = await readConnecticutEcrisIndependentExpenditureCache({ cacheDir, year: input.year });
+  if (!artifact) {
+    return null;
+  }
+  return {
+    year: input.year,
+    filePath: getConnecticutEcrisIndependentExpenditureCachePath({ cacheDir, year: input.year }),
+    sourceUrl: artifact.sourceUrl,
+    rows: artifact.rows,
+  };
+}
+
+type ConnecticutRosterIdentityRow = {
+  election_year: number;
+  candidate_name: string;
+  office_name: string;
+};
+
+/**
+ * Per election year, the outside-spending identities (office + name) that
+ * two or more Connecticut candidates share. Every candidate of the year is
+ * considered, whatever their link or status: a namesake who lost a primary
+ * is still a valid eCRIS target and would otherwise receive this candidate's
+ * spending.
+ */
+async function listAmbiguousOutsideSpendingIdentitiesByYear(
+  db: Queryable,
+  years: readonly number[]
+): Promise<Map<number, Set<string>>> {
+  const result = await db.query<ConnecticutRosterIdentityRow>(
+    `
+      SELECT
+        date_part('year', election.election_date)::int AS election_year,
+        COALESCE(
+          NULLIF(trim(candidate.display_name), ''),
+          NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), '')
+        ) AS candidate_name,
+        office.canonical_name AS office_name
+      FROM public.candidate_elections AS candidate_election
+      JOIN public.candidates AS candidate
+        ON candidate.id = candidate_election.candidate_id
+      JOIN public.elections AS election
+        ON election.id = candidate_election.election_id
+      JOIN public.districts AS district
+        ON district.id = election.district_id
+      JOIN public.offices AS office
+        ON office.id = election.office_id
+      WHERE district.state = 'CT'
+        AND election.race_type = 'office'
+        AND candidate.deleted_at IS NULL
+        AND date_part('year', election.election_date)::int = ANY($1::int[])
+    `,
+    [years]
+  );
+  const rowsByYear = new Map<number, ConnecticutRosterIdentityRow[]>();
+  for (const row of result.rows) {
+    if (!row.candidate_name || !row.office_name) continue;
+    const rows = rowsByYear.get(row.election_year) ?? [];
+    rows.push(row);
+    rowsByYear.set(row.election_year, rows);
+  }
+  return new Map(
+    [...rowsByYear.entries()].map(([year, rows]) => [
+      year,
+      findConnecticutAmbiguousOutsideSpendingIdentities(
+        rows.map((row) => ({ officeName: row.office_name, candidateName: row.candidate_name }))
+      ),
+    ])
+  );
 }
 
 async function loadAutoLinkReceiptRowsForYear(input: {
@@ -443,6 +545,9 @@ export async function syncDueConnecticutCandidateFinance(
     input.receiptDataByYear ? [...input.receiptDataByYear.entries()] : []
   );
   const receiptDataLoadErrorsByYear = new Map<number, string>();
+  const independentExpenditureDataByYear = new Map<number, ConnecticutEcrisIndependentExpenditureDataForYear>(
+    input.independentExpenditureDataByYear ? [...input.independentExpenditureDataByYear.entries()] : []
+  );
   for (const [year, rows] of groupDueRowsByYear(due.rows).entries()) {
     if (!receiptDataByYear.has(year)) {
       try {
@@ -458,7 +563,29 @@ export async function syncDueConnecticutCandidateFinance(
         receiptDataLoadErrorsByYear.set(year, error instanceof Error ? error.message : String(error));
       }
     }
+    if (!independentExpenditureDataByYear.has(year)) {
+      try {
+        const data = await loadIndependentExpenditureDataForYear({ year, rawDataCacheDir: input.rawDataCacheDir });
+        if (data) {
+          independentExpenditureDataByYear.set(year, data);
+        } else {
+          console.warn(
+            `Connecticut eCRIS independent expenditure artifact not found for ${year}; outside spending left untouched`
+          );
+        }
+      } catch (error) {
+        console.warn(
+          `Connecticut eCRIS independent expenditure artifact unreadable for ${year}; outside spending left untouched:`,
+          error instanceof Error ? error.message : error
+        );
+      }
+    }
   }
+
+  const ambiguousIdentitiesByYear =
+    independentExpenditureDataByYear.size > 0
+      ? await listAmbiguousOutsideSpendingIdentitiesByYear(input.db, [...independentExpenditureDataByYear.keys()])
+      : new Map<number, Set<string>>();
 
   const results: ConnecticutCandidateFinanceBatchSyncItemResult[] = [];
   for (const row of due.rows) {
@@ -476,6 +603,19 @@ export async function syncDueConnecticutCandidateFinance(
     }
 
     const receiptData = receiptDataByYear.get(row.electionYear);
+    let independentExpenditureData = independentExpenditureDataByYear.get(row.electionYear);
+    if (
+      independentExpenditureData &&
+      ambiguousIdentitiesByYear
+        .get(row.electionYear)
+        ?.has(connecticutOutsideSpendingIdentityKey({ officeName: row.officeName, candidateName: row.candidateName }))
+    ) {
+      console.warn(
+        `Connecticut outside spending skipped for ${row.candidateName} (${row.officeName}, ${row.electionYear}): ` +
+          `another ${row.electionYear} candidate for that office shares the name and eCRIS names no district`
+      );
+      independentExpenditureData = undefined;
+    }
     const committeeKey = normalizeCommitteeId(row.committeeId);
     try {
       const result = await syncFn({
@@ -489,6 +629,8 @@ export async function syncDueConnecticutCandidateFinance(
         sourceUrl: row.sourceUrl,
         receiptRows: receiptData?.rowsByCommitteeId.get(committeeKey) ?? [],
         receiptSourceUrl: receiptData?.sourceUrl,
+        independentExpenditureRows: independentExpenditureData?.rows,
+        independentExpenditureSourceUrl: independentExpenditureData?.sourceUrl,
         dryRun,
         now,
       });

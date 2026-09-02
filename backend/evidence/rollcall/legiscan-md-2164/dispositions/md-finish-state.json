@@ -1,0 +1,7351 @@
+{
+ "2164": [
+  {
+   "measure": "HB 4",
+   "family": [
+    "HB 4",
+    "SB 120"
+   ],
+   "title": "Restrictions on Use - Solar Collector Systems - Alteration",
+   "chapter": "Approved by the Governor - Chapter 517",
+   "chaptered_file": "CH_517_hb0004t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1490372,
+     "date": "2025-02-13",
+     "yeas": 100,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561522,
+     "date": "2025-04-02",
+     "yeas": 34,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 12",
+   "family": [
+    "HB 12",
+    "SB 214"
+   ],
+   "title": "Cannabis - Sale and Distribution - Tetrahydrocannabinol Offenses",
+   "chapter": "Approved by the Governor - Chapter 57",
+   "chaptered_file": "CH_57_hb0012t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1508505,
+     "date": "2025-03-06",
+     "yeas": 96,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "contested direction: cannabis/THC enforcement runs both ways",
+   "batch": null
+  },
+  {
+   "measure": "HB 15",
+   "family": [
+    "HB 15",
+    "SB 144"
+   ],
+   "title": "Corporations and Associations - Limited Worker Cooperative Associations - Authorization (Maryland Limited Worker Cooperative Association Act)",
+   "chapter": "Approved by the Governor - Chapter 198",
+   "chaptered_file": "CH_198_hb0015e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1522844,
+     "date": "2025-03-17",
+     "yeas": 100,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1546802,
+     "date": "2025-04-07",
+     "yeas": 102,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "reduce_wealth_gap",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 18",
+   "family": [
+    "HB 18"
+   ],
+   "title": "Vehicle Laws - Noise Abatement Monitoring Systems Pilot Program - Inspection and Extension",
+   "chapter": "Approved by the Governor - Chapter 712",
+   "chaptered_file": "CH_712_hb0018t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1522532,
+     "date": "2025-03-17",
+     "yeas": 102,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "local pilot (Montgomery/PG) plus administrative extension",
+   "batch": null
+  },
+  {
+   "measure": "HB 25",
+   "family": [
+    "HB 25",
+    "SB 265"
+   ],
+   "title": "Environment \u2013 Reservoir Augmentation Permit \u2013 Establishment",
+   "chapter": "Approved by the Governor - Chapter 441",
+   "chaptered_file": "CH_441_hb0025e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1544207,
+     "date": "2025-04-02",
+     "yeas": 109,
+     "nays": 30,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "permitting framework; no honest direction on reservoir augmentation",
+   "batch": null
+  },
+  {
+   "measure": "HB 33",
+   "family": [
+    "HB 33",
+    "SB 248"
+   ],
+   "title": "Department of Service and Civic Innovation - Maryland Corps Program Service Year Option Pathways - Revisions",
+   "chapter": "Approved by the Governor - Chapter 93",
+   "chaptered_file": "CH_93_hb0033t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1500255,
+     "date": "2025-02-20",
+     "yeas": 101,
+     "nays": 33,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative changes to Maryland Corps",
+   "batch": null
+  },
+  {
+   "measure": "HB 40",
+   "family": [
+    "HB 40",
+    "SB 258"
+   ],
+   "title": "Natural Resources - Fishing Licenses and Stamps - Alterations",
+   "chapter": "Approved by the Governor - Chapter 45",
+   "chaptered_file": "CH_45_hb0040t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1490368,
+     "date": "2025-02-13",
+     "yeas": 96,
+     "nays": 40,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561656,
+     "date": "2025-04-02",
+     "yeas": 34,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "fee schedule; no area carries a direction",
+   "batch": null
+  },
+  {
+   "measure": "HB 49",
+   "family": [
+    "HB 49"
+   ],
+   "title": "Environment - Building Energy Performance Standards - Alterations and Analysis",
+   "chapter": "Enacted under Article II, Section 17(c) of the Maryland Constitution - Chapter 844",
+   "chaptered_file": "CH_844_hb0049e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1522506,
+     "date": "2025-03-17",
+     "yeas": 101,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1546904,
+     "date": "2025-04-07",
+     "yeas": 101,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "departmental BEPS changes; a no vote is likely more opposed to the standards, not less",
+   "batch": null
+  },
+  {
+   "measure": "HB 102",
+   "family": [
+    "HB 102"
+   ],
+   "title": "Family and Medical Leave Insurance Program - Revisions",
+   "chapter": "Approved by the Governor - Chapter 363",
+   "chaptered_file": "CH_363_hb0102t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1533870,
+     "date": "2025-03-28",
+     "yeas": 95,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "social_programs_and_welfare",
+   "yea": "against",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 107",
+   "family": [
+    "HB 107",
+    "SB 49"
+   ],
+   "title": "Consumer Protection - Automatic Renewals",
+   "chapter": "Approved by the Governor - Chapter 205",
+   "chaptered_file": "CH_205_hb0107e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1502457,
+     "date": "2025-02-25",
+     "yeas": 101,
+     "nays": 32,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "only divided roll is superseded by a later non-divided House vote (115-20); attributing it would repeat the SB 255 error",
+   "batch": null
+  },
+  {
+   "measure": "HB 114",
+   "family": [
+    "HB 114"
+   ],
+   "title": "Pesticide and Pest Control - Revisions to Pesticide Applicator's Law and Repeal of Obsolete Provisions",
+   "chapter": "Approved by the Governor - Chapter 41",
+   "chaptered_file": "CH_41_hb0114t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1517928,
+     "date": "2025-03-11",
+     "yeas": 107,
+     "nays": 31,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "technical pesticide licensing",
+   "batch": null
+  },
+  {
+   "measure": "HB 150",
+   "family": [
+    "HB 150"
+   ],
+   "title": "Child Care Centers - Certificated Staff Ratio Requirement - Alteration",
+   "chapter": "Approved by the Governor - Chapter 319",
+   "chaptered_file": "CH_319_hb0150t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1518403,
+     "date": "2025-03-12",
+     "yeas": 108,
+     "nays": 31,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative: moves a staffing ratio from statute to regulation",
+   "batch": null
+  },
+  {
+   "measure": "HB 161",
+   "family": [
+    "HB 161"
+   ],
+   "title": "County Boards of Education - Curriculum Guides and Courses of Study - Discrepancies",
+   "chapter": "Approved by the Governor - Chapter 245",
+   "chaptered_file": "CH_245_hb0161e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1493622,
+     "date": "2025-02-14",
+     "yeas": 95,
+     "nays": 39,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1559663,
+     "date": "2025-04-03",
+     "yeas": 33,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1545522,
+     "date": "2025-04-05",
+     "yeas": 97,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "public_education_quality",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 182",
+   "family": [
+    "HB 182"
+   ],
+   "title": "Motor Vehicles - Speed Monitoring Systems - Penalties",
+   "chapter": "Approved by the Governor - Chapter 505",
+   "chaptered_file": "CH_505_hb0182e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1522288,
+     "date": "2025-03-14",
+     "yeas": 101,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1544205,
+     "date": "2025-04-02",
+     "yeas": 100,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561692,
+     "date": "2025-04-02",
+     "yeas": 35,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "speed-camera penalties; no research area fits",
+   "batch": null
+  },
+  {
+   "measure": "HB 199",
+   "family": [
+    "HB 199",
+    "SB 257"
+   ],
+   "title": "Election Law - Notice to Permanent Absentee Voters",
+   "chapter": "Approved by the Governor - Chapter 280",
+   "chaptered_file": "CH_280_hb0199t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1490375,
+     "date": "2025-02-13",
+     "yeas": 104,
+     "nays": 33,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1559912,
+     "date": "2025-04-03",
+     "yeas": 36,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "election_integrity",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 208",
+   "family": [
+    "HB 208"
+   ],
+   "title": "Consumer Protection \u2013 False Advertising \u2013 Digital Goods",
+   "chapter": "Approved by the Governor - Chapter 206",
+   "chaptered_file": "CH_206_hb0208e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1502468,
+     "date": "2025-02-25",
+     "yeas": 99,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "only divided roll is superseded by a later non-divided House vote (114-21)",
+   "batch": null
+  },
+  {
+   "measure": "HB 260",
+   "family": [
+    "HB 260"
+   ],
+   "title": "Criminal Law - Drug Paraphernalia - Prohibitions and Penalties",
+   "chapter": "Approved by the Governor - Chapter 180",
+   "chaptered_file": "CH_180_hb0260t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1517936,
+     "date": "2025-03-11",
+     "yeas": 105,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561868,
+     "date": "2025-04-04",
+     "yeas": 33,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "contested direction: paraphernalia penalty reduction (recorded in batch-01)",
+   "batch": null
+  },
+  {
+   "measure": "HB 277",
+   "family": [
+    "HB 277",
+    "SB 96"
+   ],
+   "title": "Environment - Water Bottle Filling Stations - Requirement",
+   "chapter": "Approved by the Governor - Chapter 547",
+   "chaptered_file": "CH_547_hb0277t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1499848,
+     "date": "2025-02-20",
+     "yeas": 105,
+     "nays": 30,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1560002,
+     "date": "2025-04-03",
+     "yeas": 33,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 286",
+   "family": [
+    "HB 286",
+    "SB 266"
+   ],
+   "title": "Local Comprehensive Planning and State Economic Growth, Resource Protection, and Planning Policy - Planning Principles",
+   "chapter": "Approved by the Governor - Chapter 63",
+   "chaptered_file": "CH_63_hb0286t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1518060,
+     "date": "2025-03-11",
+     "yeas": 96,
+     "nays": 39,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561650,
+     "date": "2025-04-02",
+     "yeas": 37,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative rewrite of local planning framework",
+   "batch": null
+  },
+  {
+   "measure": "HB 288",
+   "family": [
+    "HB 288",
+    "SB 210"
+   ],
+   "title": "Maryland Transportation Authority \u2013 Tolls, Fees, and Other Charges \u2013 Temporary Adjustments",
+   "chapter": "Approved by the Governor - Chapter 55",
+   "chaptered_file": "CH_55_hb0288t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1522083,
+     "date": "2025-03-13",
+     "yeas": 102,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative: extends emergency toll adjustment window",
+   "batch": null
+  },
+  {
+   "measure": "HB 292",
+   "family": [
+    "HB 292",
+    "SB 63"
+   ],
+   "title": "Cooperative Housing Corporations, Condominiums, and Homeowners Associations - Funding of Reserve Accounts and Preparation of Funding Plans",
+   "chapter": "Approved by the Governor - Chapter 519",
+   "chaptered_file": "CH_519_hb0292e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1508405,
+     "date": "2025-03-06",
+     "yeas": 102,
+     "nays": 33,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1546981,
+     "date": "2025-04-07",
+     "yeas": 107,
+     "nays": 32,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "runs both ways: adds reserve funding plans but allows hardship deviation",
+   "batch": null
+  },
+  {
+   "measure": "HB 297",
+   "family": [
+    "HB 297",
+    "SB 5"
+   ],
+   "title": "Maryland Health Benefit Exchange - State-Based Young Adult Health Insurance Subsidies Pilot Program - Sunset Repeal",
+   "chapter": "Approved by the Governor - Chapter 721",
+   "chaptered_file": "CH_721_hb0297t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1499807,
+     "date": "2025-02-20",
+     "yeas": 98,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "healthcare_affordability",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 322",
+   "family": [
+    "HB 322"
+   ],
+   "title": "Election Law - Municipal Elections - Administration",
+   "chapter": "Approved by the Governor - Chapter 124",
+   "chaptered_file": "CH_124_hb0322t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1505604,
+     "date": "2025-02-27",
+     "yeas": 99,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative election-services agreements with municipalities",
+   "batch": null
+  },
+  {
+   "measure": "HB 325",
+   "family": [
+    "HB 325",
+    "SB 451"
+   ],
+   "title": "Adult Education - High School Diploma by Examination - Requirements and Study",
+   "chapter": "Approved by the Governor - Chapter 328",
+   "chaptered_file": "CH_328_hb0325e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1505627,
+     "date": "2025-02-28",
+     "yeas": 99,
+     "nays": 31,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "only divided roll is superseded by a later non-divided House vote (114-24)",
+   "batch": null
+  },
+  {
+   "measure": "HB 343",
+   "family": [
+    "HB 343",
+    "SB 390"
+   ],
+   "title": "Motor Vehicles - Speed Monitoring Systems - Statements and Certificates of Violations",
+   "chapter": "Approved by the Governor - Chapter 467",
+   "chaptered_file": "CH_467_hb0343t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1521150,
+     "date": "2025-03-13",
+     "yeas": 105,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561546,
+     "date": "2025-04-02",
+     "yeas": 36,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "speed-camera administration",
+   "batch": null
+  },
+  {
+   "measure": "HB 349",
+   "family": [
+    "HB 349"
+   ],
+   "title": "Prince George's County - Speed Monitoring Systems - Maryland Route 210 PG 306-25",
+   "chapter": "Approved by the Governor - Chapter 596",
+   "chaptered_file": "CH_596_hb0349e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1525830,
+     "date": "2025-03-17",
+     "yeas": 100,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1544091,
+     "date": "2025-04-02",
+     "yeas": 100,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "local speed-camera penalties (Prince George's)",
+   "batch": null
+  },
+  {
+   "measure": "HB 350",
+   "family": [
+    "HB 350"
+   ],
+   "title": "Budget Bill (Fiscal Year 2026)",
+   "chapter": "Approved by the Governor - Chapter 602 (Line Item Veto)",
+   "chaptered_file": "CH_602_hb0350e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1535830,
+     "date": "2025-03-26",
+     "yeas": 100,
+     "nays": 39,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1559692,
+     "date": "2025-04-01",
+     "yeas": 33,
+     "nays": 14,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1565669,
+     "date": "2025-04-07",
+     "yeas": 33,
+     "nays": 14,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1546837,
+     "date": "2025-04-07",
+     "yeas": 101,
+     "nays": 39,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "appropriations: no honest area for a fund-the-government vote",
+   "batch": null
+  },
+  {
+   "measure": "HB 352",
+   "family": [
+    "HB 352"
+   ],
+   "title": "Budget Reconciliation and Financing Act of 2025",
+   "chapter": "Approved by the Governor - Chapter 604",
+   "chaptered_file": "CH_604_hb0352e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1535704,
+     "date": "2025-03-26",
+     "yeas": 93,
+     "nays": 46,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1559748,
+     "date": "2025-04-01",
+     "yeas": 29,
+     "nays": 18,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1565870,
+     "date": "2025-04-07",
+     "yeas": 29,
+     "nays": 18,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1546855,
+     "date": "2025-04-07",
+     "yeas": 94,
+     "nays": 46,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "budget reconciliation omnibus",
+   "batch": null
+  },
+  {
+   "measure": "HB 367",
+   "family": [
+    "HB 367",
+    "SB 72"
+   ],
+   "title": "Health Occupations Boards - English Proficiency Requirements and Licensure by Endorsement for Nursing",
+   "chapter": "Approved by the Governor - Chapter 731",
+   "chaptered_file": "CH_731_hb0367t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1505661,
+     "date": "2025-02-27",
+     "yeas": 107,
+     "nays": 27,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561539,
+     "date": "2025-04-02",
+     "yeas": 33,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "civil_rights",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 413",
+   "family": [
+    "HB 413"
+   ],
+   "title": "Criminal Law - Controlled Dangerous Substances and Firearms",
+   "chapter": "Approved by the Governor - Chapter 136",
+   "chaptered_file": "CH_136_hb0413t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1521476,
+     "date": "2025-03-13",
+     "yeas": 101,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "omnibus and contested: cannabis sentencing plus firearms offense changes",
+   "batch": null
+  },
+  {
+   "measure": "HB 452",
+   "family": [
+    "HB 452"
+   ],
+   "title": "Outdoor Lighting - Guidance and Use of State Funds",
+   "chapter": "Approved by the Governor - Chapter 389",
+   "chaptered_file": "CH_389_hb0452t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1559843,
+     "date": "2025-04-03",
+     "yeas": 36,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 502",
+   "family": [
+    "HB 502"
+   ],
+   "title": "Office of Disability Employment Advancement and Policy and Maryland as a Model Employer Initiative - Established",
+   "chapter": "Approved by the Governor - Chapter 1",
+   "chaptered_file": "CH_1_hb0502e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1521885,
+     "date": "2025-03-13",
+     "yeas": 106,
+     "nays": 33,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1560051,
+     "date": "2025-04-03",
+     "yeas": 35,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1546877,
+     "date": "2025-04-07",
+     "yeas": 102,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "civil_rights",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 504",
+   "family": [
+    "HB 504"
+   ],
+   "title": "Excellence in Maryland Public Schools Act",
+   "chapter": "Approved by the Governor - Chapter 237",
+   "chaptered_file": "CH_237_hb0504e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1518028,
+     "date": "2025-03-11",
+     "yeas": 100,
+     "nays": 39,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1560069,
+     "date": "2025-04-01",
+     "yeas": 33,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561732,
+     "date": "2025-04-07",
+     "yeas": 34,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1547018,
+     "date": "2025-04-07",
+     "yeas": 101,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "runs both ways: cuts per-pupil funding and delays mandates while adding grant programs (recorded in batch-01)",
+   "batch": null
+  },
+  {
+   "measure": "HB 517",
+   "family": [
+    "HB 517"
+   ],
+   "title": "Workgroup on the Reorganization of the Maryland Transit Administration",
+   "chapter": "Approved by the Governor - Chapter 462",
+   "chaptered_file": "CH_462_hb0517e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1525858,
+     "date": "2025-03-17",
+     "yeas": 106,
+     "nays": 32,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1546830,
+     "date": "2025-04-07",
+     "yeas": 105,
+     "nays": 33,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "workgroup only",
+   "batch": null
+  },
+  {
+   "measure": "HB 527",
+   "family": [
+    "HB 527"
+   ],
+   "title": "Maryland Transit Administration - Purple Line - Free Ridership and Promotional Materials and Services",
+   "chapter": "Approved by the Governor - Chapter 494",
+   "chaptered_file": "CH_494_hb0527t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1517887,
+     "date": "2025-03-11",
+     "yeas": 103,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1560388,
+     "date": "2025-04-03",
+     "yeas": 35,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "promotional program, not a policy direction",
+   "batch": null
+  },
+  {
+   "measure": "HB 541",
+   "family": [
+    "HB 541",
+    "SB 365"
+   ],
+   "title": "Department of Commerce - Nonprofit Organizations Navigator - Established",
+   "chapter": "Approved by the Governor - Chapter 315",
+   "chaptered_file": "CH_315_hb0541t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1562996,
+     "date": "2025-04-07",
+     "yeas": 32,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1547560,
+     "date": "2025-04-07",
+     "yeas": 100,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative: establishes a navigator position",
+   "batch": null
+  },
+  {
+   "measure": "HB 575",
+   "family": [
+    "HB 575"
+   ],
+   "title": "Maryland Protecting Opportunities and Regional Trade (PORT) Act \u2013 Reports of Attorney General \u2013 Frequency",
+   "chapter": "Approved by the Governor - Chapter 99",
+   "chaptered_file": "CH_99_hb0575t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1562662,
+     "date": "2025-04-02",
+     "yeas": 35,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative: reduces an Attorney General reporting frequency",
+   "batch": null
+  },
+  {
+   "measure": "HB 577",
+   "family": [
+    "HB 577",
+    "SB 664"
+   ],
+   "title": "Business Regulation - Enforcement for Miscellaneous State Business Licenses - Study",
+   "chapter": "Approved by the Governor - Chapter 633",
+   "chaptered_file": "CH_633_hb0577t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1522997,
+     "date": "2025-03-17",
+     "yeas": 102,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "study only",
+   "batch": null
+  },
+  {
+   "measure": "HB 586",
+   "family": [
+    "HB 586"
+   ],
+   "title": "Election Law - Election Judges - Compensation",
+   "chapter": "Approved by the Governor - Chapter 390",
+   "chaptered_file": "CH_390_hb0586e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1506003,
+     "date": "2025-02-27",
+     "yeas": 99,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1546988,
+     "date": "2025-04-07",
+     "yeas": 110,
+     "nays": 29,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative: election judge payment timing and a student service option",
+   "batch": null
+  },
+  {
+   "measure": "HB 599",
+   "family": [
+    "HB 599",
+    "SB 373"
+   ],
+   "title": "State Personnel - BWI Airport Fire and Rescue Department - Collective Bargaining and Arbitration Processes",
+   "chapter": "Approved by the Governor - Chapter 654",
+   "chaptered_file": "CH_654_hb0599e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1521930,
+     "date": "2025-03-13",
+     "yeas": 109,
+     "nays": 30,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1547058,
+     "date": "2025-04-07",
+     "yeas": 103,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "public employer (airport fire and rescue); corporate_accountability means companies",
+   "batch": null
+  },
+  {
+   "measure": "HB 634",
+   "family": [
+    "HB 634",
+    "SB 295"
+   ],
+   "title": "Income Tax - Income Tax Reconciliation Program - Established (Maryland Fair Taxation for Justice-Involved Individuals Act)",
+   "chapter": "Approved by the Governor - Chapter 734",
+   "chaptered_file": "CH_734_hb0634e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1522044,
+     "date": "2025-03-13",
+     "yeas": 103,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1546875,
+     "date": "2025-04-07",
+     "yeas": 103,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "reduce_wealth_gap",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 666",
+   "family": [
+    "HB 666",
+    "SB 60"
+   ],
+   "title": "Maryland Medical Assistance Program and Health Insurance - Required Coverage for Calcium Score Testing",
+   "chapter": "Approved by the Governor - Chapter 684",
+   "chaptered_file": "CH_684_hb0666t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1518351,
+     "date": "2025-03-12",
+     "yeas": 108,
+     "nays": 31,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "healthcare_affordability",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 672",
+   "family": [
+    "HB 672"
+   ],
+   "title": "School Health and Wellness Personnel Assessment and Maryland Council on Advancement of School-Based Health Centers",
+   "chapter": "Approved by the Governor - Chapter 345",
+   "chaptered_file": "CH_345_hb0672t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1518310,
+     "date": "2025-03-12",
+     "yeas": 102,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1559980,
+     "date": "2025-04-03",
+     "yeas": 33,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "workforce assessment and reporting only",
+   "batch": null
+  },
+  {
+   "measure": "HB 716",
+   "family": [
+    "HB 716"
+   ],
+   "title": "Housing and Community Development - Statewide Rental Assistance Voucher Program Eligibility - Alterations",
+   "chapter": "Approved by the Governor - Chapter 234",
+   "chaptered_file": "CH_234_hb0716e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1523033,
+     "date": "2025-03-17",
+     "yeas": 103,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1560369,
+     "date": "2025-04-03",
+     "yeas": 33,
+     "nays": 13,
+     "q": "Third Readings Passed with Amendments"
+    },
+    {
+     "chamber": "house",
+     "roll": 1547028,
+     "date": "2025-04-07",
+     "yeas": 101,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "runs both ways: prioritises vulnerable applicants but loosens inspections annual to biennial (recorded in batch-01)",
+   "batch": null
+  },
+  {
+   "measure": "HB 717",
+   "family": [
+    "HB 717"
+   ],
+   "title": "Natural Resources - Public Lands - Acquisition, Staffing, Operations, and Funding",
+   "chapter": "Approved by the Governor - Chapter 443",
+   "chaptered_file": "CH_443_hb0717e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1521096,
+     "date": "2025-03-13",
+     "yeas": 102,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561651,
+     "date": "2025-04-05",
+     "yeas": 32,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1546878,
+     "date": "2025-04-07",
+     "yeas": 101,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative land management and Program Open Space funding mechanics",
+   "batch": null
+  },
+  {
+   "measure": "HB 718",
+   "family": [
+    "HB 718"
+   ],
+   "title": "Maryland Health Insurance Coverage Protection Commission - Established",
+   "chapter": "Approved by the Governor - Chapter 696",
+   "chaptered_file": "CH_696_hb0718e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1517938,
+     "date": "2025-03-11",
+     "yeas": 101,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1560178,
+     "date": "2025-04-03",
+     "yeas": 35,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1546095,
+     "date": "2025-04-05",
+     "yeas": 98,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "monitoring commission only; creates no coverage",
+   "batch": null
+  },
+  {
+   "measure": "HB 719",
+   "family": [
+    "HB 719"
+   ],
+   "title": "Natural Resources - State Boat Act - Alterations",
+   "chapter": "Approved by the Governor - Chapter 433",
+   "chaptered_file": "CH_433_hb0719t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1518312,
+     "date": "2025-03-12",
+     "yeas": 100,
+     "nays": 39,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561169,
+     "date": "2025-04-03",
+     "yeas": 34,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "State Boat Act fees and definitions",
+   "batch": null
+  },
+  {
+   "measure": "HB 728",
+   "family": [
+    "HB 728",
+    "SB 495"
+   ],
+   "title": "Opioid Restitution Fund - Authorized Uses",
+   "chapter": "Approved by the Governor - Chapter 700",
+   "chaptered_file": "CH_700_hb0728t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1521159,
+     "date": "2025-03-14",
+     "yeas": 103,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1559729,
+     "date": "2025-04-03",
+     "yeas": 34,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "contested: diverts opioid settlement money to enforcement operations rather than treatment",
+   "batch": null
+  },
+  {
+   "measure": "HB 731",
+   "family": [
+    "HB 731"
+   ],
+   "title": "Wildlife - Protections and Highway Crossings",
+   "chapter": "Approved by the Governor - Chapter 549",
+   "chaptered_file": "CH_549_hb0731t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1525718,
+     "date": "2025-03-17",
+     "yeas": 101,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561540,
+     "date": "2025-04-02",
+     "yeas": 34,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 767",
+   "family": [
+    "HB 767"
+   ],
+   "title": "Real Property - Landlord and Tenant - Procedures for Failure to Pay Rent, Breach of Lease, and Tenant Holding Over",
+   "chapter": "Approved by the Governor - Chapter 563",
+   "chaptered_file": "CH_563_hb0767e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1522900,
+     "date": "2025-03-17",
+     "yeas": 93,
+     "nays": 42,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561714,
+     "date": "2025-04-04",
+     "yeas": 32,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1547072,
+     "date": "2025-04-07",
+     "yeas": 97,
+     "nays": 41,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "RETRACTED in batch-01: eviction procedure, no research area fits",
+   "batch": null
+  },
+  {
+   "measure": "HB 774",
+   "family": [
+    "HB 774"
+   ],
+   "title": "Higher Education - Hunger-Free Campus Grant Program - Alterations",
+   "chapter": "Approved by the Governor - Chapter 323",
+   "chaptered_file": "CH_323_hb0774e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1522425,
+     "date": "2025-03-14",
+     "yeas": 103,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1559660,
+     "date": "2025-04-03",
+     "yeas": 35,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1546827,
+     "date": "2025-04-07",
+     "yeas": 102,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "thin: extends only the designation to private colleges and bars them from grant money (recorded in batch-03)",
+   "batch": null
+  },
+  {
+   "measure": "HB 785",
+   "family": [
+    "HB 785"
+   ],
+   "title": "Common Ownership Communities and Zoning Authorities - Operation of Family Child Care Homes - Limitations",
+   "chapter": "Approved by the Governor - Chapter 375",
+   "chaptered_file": "CH_375_hb0785t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1517947,
+     "date": "2025-03-11",
+     "yeas": 99,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "no area cleanly fits home-based child care zoning",
+   "batch": null
+  },
+  {
+   "measure": "HB 795",
+   "family": [
+    "HB 795"
+   ],
+   "title": "Federal Public Service Loan Forgiveness Program - Employee Certification and Awareness Materials",
+   "chapter": "Approved by the Governor - Chapter 324",
+   "chaptered_file": "CH_324_hb0795t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1562559,
+     "date": "2025-04-02",
+     "yeas": 33,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "reduce_wealth_gap",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 796",
+   "family": [
+    "HB 796",
+    "SB 566"
+   ],
+   "title": "Real Property \u2013 Filing Fee for Residential Mortgage Foreclosure \u2013 Increase",
+   "chapter": "Approved by the Governor - Chapter 581",
+   "chaptered_file": "CH_581_hb0796t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1522458,
+     "date": "2025-03-14",
+     "yeas": 95,
+     "nays": 40,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561541,
+     "date": "2025-04-02",
+     "yeas": 33,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "fee increase with no clear direction",
+   "batch": null
+  },
+  {
+   "measure": "HB 825",
+   "family": [
+    "HB 825",
+    "SB 41"
+   ],
+   "title": "Maryland Small Business Retirement Savings Board - Membership - Alteration",
+   "chapter": "Approved by the Governor - Chapter 291",
+   "chaptered_file": "CH_291_hb0825t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1502787,
+     "date": "2025-02-25",
+     "yeas": 98,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "trivia: adds one member to a board",
+   "batch": null
+  },
+  {
+   "measure": "HB 853",
+   "family": [
+    "HB 853"
+   ],
+   "title": "Postconviction Review - Procedure to Reduce Duration of Sentence (Maryland Second Look Act)",
+   "chapter": "Approved by the Governor - Chapter 96",
+   "chaptered_file": "CH_96_hb0853e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1522881,
+     "date": "2025-03-17",
+     "yeas": 89,
+     "nays": 49,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1544245,
+     "date": "2025-04-03",
+     "yeas": 89,
+     "nays": 47,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1559765,
+     "date": "2025-04-03",
+     "yeas": 31,
+     "nays": 16,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "contested direction: Second Look resentencing (recorded in batch-01)",
+   "batch": null
+  },
+  {
+   "measure": "HB 859",
+   "family": [
+    "HB 859"
+   ],
+   "title": "Access to Health Insurance for Child Care Professionals - Outreach",
+   "chapter": "Approved by the Governor - Chapter 679",
+   "chaptered_file": "CH_679_hb0859t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1523051,
+     "date": "2025-03-17",
+     "yeas": 109,
+     "nays": 29,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "outreach mandate only",
+   "batch": null
+  },
+  {
+   "measure": "HB 872",
+   "family": [
+    "HB 872",
+    "SB 606"
+   ],
+   "title": "Residential Real Property - Tenants' Right of First Refusal",
+   "chapter": "Approved by the Governor - Chapter 524",
+   "chaptered_file": "CH_524_hb0872t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1505872,
+     "date": "2025-02-28",
+     "yeas": 104,
+     "nays": 26,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "technical liability clarification (recorded in batch-01)",
+   "batch": null
+  },
+  {
+   "measure": "HB 913",
+   "family": [
+    "HB 913"
+   ],
+   "title": "Baltimore City - Speed Monitoring Systems - Interstate 83",
+   "chapter": "Approved by the Governor - Chapter 567",
+   "chaptered_file": "CH_567_hb0913e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1522485,
+     "date": "2025-03-17",
+     "yeas": 101,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1559702,
+     "date": "2025-04-03",
+     "yeas": 35,
+     "nays": 11,
+     "q": "Third Readings Passed with Amendments"
+    },
+    {
+     "chamber": "house",
+     "roll": 1546846,
+     "date": "2025-04-07",
+     "yeas": 102,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "local speed cameras (Baltimore City)",
+   "batch": null
+  },
+  {
+   "measure": "HB 939",
+   "family": [
+    "HB 939",
+    "SB 674"
+   ],
+   "title": "Maryland Commission for Women - Maryland Collaborative to Advance Implementation of Coverage of Over-the-Counter Birth Control",
+   "chapter": "Approved by the Governor - Chapter 294",
+   "chaptered_file": "CH_294_hb0939t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1508502,
+     "date": "2025-03-06",
+     "yeas": 102,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561548,
+     "date": "2025-04-02",
+     "yeas": 33,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "collaborative and reports only; creates no coverage",
+   "batch": null
+  },
+  {
+   "measure": "HB 984",
+   "family": [
+    "HB 984"
+   ],
+   "title": "Public Utilities - Electric Cooperatives - Rate Proceedings",
+   "chapter": "Approved by the Governor - Chapter 502",
+   "chaptered_file": "CH_502_hb0984t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1517941,
+     "date": "2025-03-11",
+     "yeas": 107,
+     "nays": 31,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "technical utility ratemaking",
+   "batch": null
+  },
+  {
+   "measure": "HB 988",
+   "family": [
+    "HB 988"
+   ],
+   "title": "Montgomery County - Speed Monitoring Systems - Maryland Route 200 (Intercounty Connector) MC 10-25",
+   "chapter": "Approved by the Governor - Chapter 587",
+   "chaptered_file": "CH_587_hb0988t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1523159,
+     "date": "2025-03-17",
+     "yeas": 103,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561867,
+     "date": "2025-04-07",
+     "yeas": 37,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "local speed cameras (Montgomery)",
+   "batch": null
+  },
+  {
+   "measure": "HB 1035",
+   "family": [
+    "HB 1035",
+    "SB 937"
+   ],
+   "title": "Electricity and Gas - Emissions Reductions, Rate Regulation, Cost Recovery, Infrastructure, Planning, Renewable Energy Portfolio Standard, and Energy Assistance Programs (Next Generation Energy Act)",
+   "chapter": "Approved by the Governor - Chapter 626",
+   "chaptered_file": "CH_626_hb1035t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1546059,
+     "date": "2025-04-05",
+     "yeas": 96,
+     "nays": 40,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "energy omnibus (recorded in batch-03)",
+   "batch": null
+  },
+  {
+   "measure": "HB 1036",
+   "family": [
+    "HB 1036",
+    "SB 931"
+   ],
+   "title": "Public Utilities - Generating Stations - Generation and Siting (Renewable Energy Certainty Act)",
+   "chapter": "Approved by the Governor - Chapter 624",
+   "chaptered_file": "CH_624_hb1036t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1546080,
+     "date": "2025-04-05",
+     "yeas": 97,
+     "nays": 40,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561687,
+     "date": "2025-04-07",
+     "yeas": 35,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "omnibus with a local-control strand running against its own area (recorded in batch-02)",
+   "batch": null
+  },
+  {
+   "measure": "HB 1046",
+   "family": [
+    "HB 1046"
+   ],
+   "title": "Mechanical Repair Contracts - Technical Service Bulletins",
+   "chapter": "Approved by the Governor - Chapter 207",
+   "chaptered_file": "CH_207_hb1046e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1522426,
+     "date": "2025-03-17",
+     "yeas": 103,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1547377,
+     "date": "2025-04-07",
+     "yeas": 100,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "corporate_accountability",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 1066",
+   "family": [
+    "HB 1066"
+   ],
+   "title": "Commission on Behavioral Health Care Treatment and Access - Workgroups",
+   "chapter": "Approved by the Governor - Chapter 763",
+   "chaptered_file": "CH_763_hb1066t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1521175,
+     "date": "2025-03-14",
+     "yeas": 110,
+     "nays": 30,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1559891,
+     "date": "2025-04-03",
+     "yeas": 35,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "workgroup only",
+   "batch": null
+  },
+  {
+   "measure": "HB 1076",
+   "family": [
+    "HB 1076"
+   ],
+   "title": "Residential Real Property - Landlord and Tenant - Notice of Landlord Entry",
+   "chapter": "Approved by the Governor - Chapter 564",
+   "chaptered_file": "CH_564_hb1076t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1525720,
+     "date": "2025-03-17",
+     "yeas": 101,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1562001,
+     "date": "2025-04-07",
+     "yeas": 36,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "tenant entry procedure; no area fits (HB 767 precedent)",
+   "batch": null
+  },
+  {
+   "measure": "HB 1078",
+   "family": [
+    "HB 1078"
+   ],
+   "title": "Prince George's County - Federal Bureau of Investigation Headquarters - Mandated Appropriation",
+   "chapter": "Approved by the Governor - Chapter 561",
+   "chaptered_file": "CH_561_hb1078e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1522495,
+     "date": "2025-03-14",
+     "yeas": 100,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1562276,
+     "date": "2025-04-05",
+     "yeas": 31,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1547030,
+     "date": "2025-04-07",
+     "yeas": 101,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "mandated appropriation for a single local project",
+   "batch": null
+  },
+  {
+   "measure": "HB 1098",
+   "family": [
+    "HB 1098"
+   ],
+   "title": "Insurance - Automobile Insurance - Maryland Automobile Insurance Fund and Affordability Study",
+   "chapter": "Approved by the Governor - Chapter 395",
+   "chaptered_file": "CH_395_hb1098t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1525744,
+     "date": "2025-03-17",
+     "yeas": 107,
+     "nays": 31,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "technical insurance capital regulation",
+   "batch": null
+  },
+  {
+   "measure": "HB 1100",
+   "family": [
+    "HB 1100"
+   ],
+   "title": "Public Health - Health Equity Dashboard",
+   "chapter": "Approved by the Governor - Chapter 663",
+   "chaptered_file": "CH_663_hb1100t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1518004,
+     "date": "2025-03-11",
+     "yeas": 111,
+     "nays": 29,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "data dashboard and reporting only",
+   "batch": null
+  },
+  {
+   "measure": "HB 1104",
+   "family": [
+    "HB 1104"
+   ],
+   "title": "Maryland Department of Health - AHEAD Model Implementation - Electronic Health Care Transactions and Population Health Improvement Fund",
+   "chapter": "Approved by the Governor - Chapter 615",
+   "chaptered_file": "CH_615_hb1104e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1521465,
+     "date": "2025-03-13",
+     "yeas": 102,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1546850,
+     "date": "2025-04-07",
+     "yeas": 103,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "technical health-financing model implementation",
+   "batch": null
+  },
+  {
+   "measure": "HB 1111",
+   "family": [
+    "HB 1111"
+   ],
+   "title": "Public Utilities - Solar Energy Generating Systems - Systems Located on or Over Water Retention Ponds, Quarries, or Brownfields",
+   "chapter": "Approved by the Governor - Chapter 458",
+   "chaptered_file": "CH_458_hb1111t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1525730,
+     "date": "2025-03-17",
+     "yeas": 101,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 1123",
+   "family": [
+    "HB 1123"
+   ],
+   "title": "Correctional Services - Geriatric and Medical Parole",
+   "chapter": "Approved by the Governor - Chapter 103",
+   "chaptered_file": "CH_103_hb1123e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1521027,
+     "date": "2025-03-14",
+     "yeas": 102,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561392,
+     "date": "2025-04-03",
+     "yeas": 36,
+     "nays": 9,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1547751,
+     "date": "2025-04-07",
+     "yeas": 101,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "contested direction: geriatric and medical parole (recorded in batch-01)",
+   "batch": null
+  },
+  {
+   "measure": "HB 1152",
+   "family": [
+    "HB 1152"
+   ],
+   "title": "Real Property - Residential Rental Property - Pet Policy Disclosure (Pet Policy Transparency Act)",
+   "chapter": "Approved by the Governor - Chapter 490",
+   "chaptered_file": "CH_490_hb1152e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1544232,
+     "date": "2025-04-02",
+     "yeas": 111,
+     "nays": 28,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "narrow disclosure requirement; no area fits",
+   "batch": null
+  },
+  {
+   "measure": "HB 1162",
+   "family": [
+    "HB 1162"
+   ],
+   "title": "Heating, Ventilation, Air-Conditioning, or Refrigeration Contractors - Equipment Sales",
+   "chapter": "Approved by the Governor - Chapter 386",
+   "chaptered_file": "CH_386_hb1162t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1525766,
+     "date": "2025-03-17",
+     "yeas": 101,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1572932,
+     "date": "2025-04-07",
+     "yeas": 35,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "occupational licensing restriction on equipment sales",
+   "batch": null
+  },
+  {
+   "measure": "HB 1173",
+   "family": [
+    "HB 1173"
+   ],
+   "title": "Montgomery County - Speed Monitoring Systems - High-Risk Highways MC 17-25",
+   "chapter": "Approved by the Governor - Chapter 590",
+   "chaptered_file": "CH_590_hb1173e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1523153,
+     "date": "2025-03-17",
+     "yeas": 103,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561759,
+     "date": "2025-04-04",
+     "yeas": 35,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1547024,
+     "date": "2025-04-07",
+     "yeas": 102,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "local speed cameras (Montgomery)",
+   "batch": null
+  },
+  {
+   "measure": "HB 1207",
+   "family": [
+    "HB 1207"
+   ],
+   "title": "Montgomery County - Board of Education - Student Member Compensation MC 7-25",
+   "chapter": "Approved by the Governor - Chapter 426",
+   "chaptered_file": "CH_426_hb1207t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1525829,
+     "date": "2025-03-17",
+     "yeas": 100,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "local trivia: student board member compensation",
+   "batch": null
+  },
+  {
+   "measure": "HB 1253",
+   "family": [
+    "HB 1253"
+   ],
+   "title": "Department of Social and Economic Mobility - Established",
+   "chapter": "Approved by the Governor - Chapter 605",
+   "chaptered_file": "CH_605_hb1253t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1525775,
+     "date": "2025-03-17",
+     "yeas": 101,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1572612,
+     "date": "2025-04-07",
+     "yeas": 33,
+     "nays": 14,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "agency reorganization",
+   "batch": null
+  },
+  {
+   "measure": "HB 1294",
+   "family": [
+    "HB 1294"
+   ],
+   "title": "Commercial Law - Credit Regulation - Earned Wage Access and Credit Modernization",
+   "chapter": "Enacted under Article II, Section 17(c) of the Maryland Constitution - Chapter 847",
+   "chaptered_file": "CH_847_hb1294t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1522294,
+     "date": "2025-03-14",
+     "yeas": 99,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561941,
+     "date": "2025-04-07",
+     "yeas": 28,
+     "nays": 17,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "corporate_accountability",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 1296",
+   "family": [
+    "HB 1296",
+    "SB 930"
+   ],
+   "title": "Environment - Managed Aquifer Recharge Pilot Program - Establishment",
+   "chapter": "Approved by the Governor - Chapter 474",
+   "chaptered_file": "CH_474_hb1296t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1525764,
+     "date": "2025-03-17",
+     "yeas": 104,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "narrow pilot permitting programme",
+   "batch": null
+  },
+  {
+   "measure": "HB 1310",
+   "family": [
+    "HB 1310"
+   ],
+   "title": "Prescription Drug Repository Program - Revisions",
+   "chapter": "Approved by the Governor - Chapter 705",
+   "chaptered_file": "CH_705_hb1310e.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1561920,
+     "date": "2025-04-04",
+     "yeas": 33,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "healthcare_affordability",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 1464",
+   "family": [
+    "HB 1464"
+   ],
+   "title": "Motor Vehicles \u2013 Rental Fleet Vehicles \u2013 Registration",
+   "chapter": "Approved by the Governor - Chapter 526",
+   "chaptered_file": "CH_526_hb1464t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1525863,
+     "date": "2025-03-17",
+     "yeas": 106,
+     "nays": 32,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative vehicle registration",
+   "batch": null
+  },
+  {
+   "measure": "HB 1502",
+   "family": [
+    "HB 1502"
+   ],
+   "title": "Baltimore City - AIDS Prevention Sterile Needle and Syringe Exchange Pilot Program - Revisions",
+   "chapter": "Approved by the Governor - Chapter 758",
+   "chaptered_file": "CH_758_hb1502t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1522457,
+     "date": "2025-03-17",
+     "yeas": 101,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1563141,
+     "date": "2025-04-07",
+     "yeas": 33,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "local (Baltimore City) syringe services programme",
+   "batch": null
+  },
+  {
+   "measure": "HB 1503",
+   "family": [
+    "HB 1503"
+   ],
+   "title": "State Personnel - Paid Family and Medical Leave",
+   "chapter": "Approved by the Governor - Chapter 606",
+   "chaptered_file": "CH_606_hb1503e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1522439,
+     "date": "2025-03-17",
+     "yeas": 101,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1562092,
+     "date": "2025-04-05",
+     "yeas": 29,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1546883,
+     "date": "2025-04-07",
+     "yeas": 102,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "public-employer benefit; no area carries an honest direction (recorded in batch-01)",
+   "batch": null
+  },
+  {
+   "measure": "HB 1516",
+   "family": [
+    "HB 1516"
+   ],
+   "title": "Financial Institutions - Consumer Credit - Application of Licensing Requirements (Maryland Secondary Market Stability Act of 2025)",
+   "chapter": "Approved by the Governor - Chapter 119",
+   "chaptered_file": "CH_119_hb1516e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1523095,
+     "date": "2025-03-17",
+     "yeas": 99,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "technical licensing exemption plus a workgroup",
+   "batch": null
+  },
+  {
+   "measure": "SB 93",
+   "family": [
+    "SB 93"
+   ],
+   "title": "Election Law - Absentee Ballots - Notice to Request Application",
+   "chapter": "Approved by the Governor - Chapter 310",
+   "chaptered_file": "CH_310_sb0093t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1546800,
+     "date": "2025-04-07",
+     "yeas": 104,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1547104,
+     "date": "2025-04-07",
+     "yeas": 104,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "election_integrity",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "SB 120",
+   "family": [
+    "HB 4",
+    "SB 120",
+    "SB 49"
+   ],
+   "title": "Restrictions on Use - Solar Collector Systems - Alteration",
+   "chapter": "Approved by the Governor - Chapter 516",
+   "chaptered_file": "CH_516_sb0120t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1522888,
+     "date": "2025-03-12",
+     "yeas": 33,
+     "nays": 14,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1546826,
+     "date": "2025-04-07",
+     "yeas": 100,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "cross-file twin of HB 4, which is judged in this campaign",
+   "batch": null
+  },
+  {
+   "measure": "SB 156",
+   "family": [
+    "SB 156"
+   ],
+   "title": "Workgroup on Newborn Home Visiting Services - Establishment",
+   "chapter": "Approved by the Governor - Chapter 720",
+   "chaptered_file": "CH_720_sb0156e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1537956,
+     "date": "2025-03-31",
+     "yeas": 102,
+     "nays": 30,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "workgroup only",
+   "batch": null
+  },
+  {
+   "measure": "SB 181",
+   "family": [
+    "SB 181"
+   ],
+   "title": "Correctional Services - Geriatric and Medical Parole",
+   "chapter": "Approved by the Governor - Chapter 102",
+   "chaptered_file": "CH_102_sb0181e.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1523185,
+     "date": "2025-03-13",
+     "yeas": 36,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1543856,
+     "date": "2025-04-03",
+     "yeas": 101,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1562016,
+     "date": "2025-04-07",
+     "yeas": 35,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1546831,
+     "date": "2025-04-07",
+     "yeas": 104,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "cross-file twin of HB 1123; contested parole direction",
+   "batch": null
+  },
+  {
+   "measure": "SB 215",
+   "family": [
+    "SB 215"
+   ],
+   "title": "Cannabis Reform - Revisions",
+   "chapter": "Approved by the Governor - Chapter 120",
+   "chaptered_file": "CH_120_sb0215t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1531916,
+     "date": "2025-03-17",
+     "yeas": 31,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1547007,
+     "date": "2025-04-07",
+     "yeas": 101,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "omnibus cannabis industry changes with contested direction",
+   "batch": null
+  },
+  {
+   "measure": "SB 231",
+   "family": [
+    "SB 231"
+   ],
+   "title": "State Government - Public Employee Relations Act - Alterations",
+   "chapter": "Approved by the Governor - Chapter 607",
+   "chaptered_file": "CH_607_sb0231t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1479452,
+     "date": "2025-01-30",
+     "yeas": 35,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "public employer administrative changes",
+   "batch": null
+  },
+  {
+   "measure": "SB 250",
+   "family": [
+    "SB 250"
+   ],
+   "title": "Department of the Environment - Fees, Penalties, Funding, and Regulation",
+   "chapter": "Approved by the Governor - Chapter 432",
+   "chaptered_file": "CH_432_sb0250t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1531942,
+     "date": "2025-03-17",
+     "yeas": 33,
+     "nays": 14,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1547015,
+     "date": "2025-04-07",
+     "yeas": 96,
+     "nays": 44,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "SB 338",
+   "family": [
+    "SB 338"
+   ],
+   "title": "Baltimore County - Speed Monitoring Systems - Interstate 695 and Interstate 83",
+   "chapter": "Approved by the Governor - Chapter 582",
+   "chaptered_file": "CH_582_sb0338e.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1531982,
+     "date": "2025-03-17",
+     "yeas": 33,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1538109,
+     "date": "2025-03-31",
+     "yeas": 103,
+     "nays": 30,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561874,
+     "date": "2025-04-07",
+     "yeas": 30,
+     "nays": 17,
+     "q": "Conference Committee Report 903525/1 Adopted"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1561875,
+     "date": "2025-04-07",
+     "yeas": 34,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1547147,
+     "date": "2025-04-07",
+     "yeas": 101,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "local speed cameras (Baltimore County)",
+   "batch": null
+  },
+  {
+   "measure": "SB 399",
+   "family": [
+    "SB 399"
+   ],
+   "title": "Natural Resources - Wildland Areas - Overhead Transmission Lines",
+   "chapter": "Approved by the Governor - Chapter 572",
+   "chaptered_file": "CH_572_sb0399e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1546813,
+     "date": "2025-04-07",
+     "yeas": 109,
+     "nays": 29,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "runs both ways: removes wildland protection for transmission lines but requires mitigation",
+   "batch": null
+  },
+  {
+   "measure": "SB 431",
+   "family": [
+    "SB 431"
+   ],
+   "title": "Registered Apprenticeship Investments for a Stronger Economy (RAISE) Act",
+   "chapter": "Approved by the Governor - Chapter 2",
+   "chaptered_file": "CH_2_sb0431t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1532442,
+     "date": "2025-03-17",
+     "yeas": 33,
+     "nays": 9,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1538177,
+     "date": "2025-04-01",
+     "yeas": 104,
+     "nays": 31,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "office and programme creation; no area carries the direction cleanly",
+   "batch": null
+  },
+  {
+   "measure": "SB 522",
+   "family": [
+    "SB 522"
+   ],
+   "title": "Home Builders - New Home Sales - Notice of Appliance Warranty Registration",
+   "chapter": "Approved by the Governor - Chapter 295",
+   "chaptered_file": "CH_295_sb0522t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1538095,
+     "date": "2025-04-01",
+     "yeas": 99,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "narrow disclosure at closing",
+   "batch": null
+  },
+  {
+   "measure": "SB 529",
+   "family": [
+    "SB 529"
+   ],
+   "title": "Business Occupations and Professions - Professional Engineers - Examination",
+   "chapter": "Approved by the Governor - Chapter 338",
+   "chaptered_file": "CH_338_sb0529t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1523344,
+     "date": "2025-03-12",
+     "yeas": 35,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "technical licensing exam sequencing",
+   "batch": null
+  },
+  {
+   "measure": "SB 599",
+   "family": [
+    "SB 599"
+   ],
+   "title": "Behavioral Health Crisis Response Grant Program - Funding",
+   "chapter": "Approved by the Governor - Chapter 666",
+   "chaptered_file": "CH_666_sb0599t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1532329,
+     "date": "2025-03-17",
+     "yeas": 31,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "social_programs_and_welfare",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "SB 600",
+   "family": [
+    "SB 600"
+   ],
+   "title": "Baltimore City and Takoma Park - Stop Sign Monitoring Systems - Authorization of Pilot Program",
+   "chapter": "Approved by the Governor - Chapter 571",
+   "chaptered_file": "CH_571_sb0600e.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1572586,
+     "date": "2025-04-07",
+     "yeas": 37,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1546899,
+     "date": "2025-04-07",
+     "yeas": 103,
+     "nays": 37,
+     "q": "Third Reading Passed with Amendments"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "local stop-sign cameras",
+   "batch": null
+  },
+  {
+   "measure": "SB 666",
+   "family": [
+    "SB 666"
+   ],
+   "title": "Maryland Community Action Agencies - Funding",
+   "chapter": "Approved by the Governor - Chapter 288",
+   "chaptered_file": "CH_288_sb0666t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1547601,
+     "date": "2025-04-07",
+     "yeas": 109,
+     "nays": 30,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "social_programs_and_welfare",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "SB 680",
+   "family": [
+    "SB 680"
+   ],
+   "title": "Real Estate Commission - Continuing Education Requirements - Alterations",
+   "chapter": "Approved by the Governor - Chapter 398",
+   "chaptered_file": "CH_398_sb0680t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1538018,
+     "date": "2025-04-01",
+     "yeas": 107,
+     "nays": 29,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "technical continuing education requirements",
+   "batch": null
+  },
+  {
+   "measure": "SB 695",
+   "family": [
+    "SB 695"
+   ],
+   "title": "Labor and Employment - Uninsured Employers' Fund Board - Membership and Reserves",
+   "chapter": "Approved by the Governor - Chapter 309",
+   "chaptered_file": "CH_309_sb0695t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1544265,
+     "date": "2025-04-02",
+     "yeas": 104,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative board membership and reserves",
+   "batch": null
+  },
+  {
+   "measure": "SB 767",
+   "family": [
+    "SB 767"
+   ],
+   "title": "Calvert County Sheriff - Deputy Sheriffs and Correctional Deputies - Collective Bargaining",
+   "chapter": "Approved by the Governor - Chapter 132",
+   "chaptered_file": "CH_132_sb0767t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1547040,
+     "date": "2025-04-07",
+     "yeas": 108,
+     "nays": 27,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "local public-employer collective bargaining (Calvert County)",
+   "batch": null
+  },
+  {
+   "measure": "SB 789",
+   "family": [
+    "SB 789"
+   ],
+   "title": "Higher Education - Hunger-Free Campus Grant Program - Alterations",
+   "chapter": "Approved by the Governor - Chapter 322",
+   "chaptered_file": "CH_322_sb0789t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1546839,
+     "date": "2025-04-07",
+     "yeas": 106,
+     "nays": 33,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "cross-file twin of HB 774; thin",
+   "batch": null
+  },
+  {
+   "measure": "SB 820",
+   "family": [
+    "SB 820"
+   ],
+   "title": "Municipalities - Enforcement of Ordinances and Resolutions",
+   "chapter": "Approved by the Governor - Chapter 570",
+   "chaptered_file": "CH_570_sb0820t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1532307,
+     "date": "2025-03-17",
+     "yeas": 35,
+     "nays": 9,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1547578,
+     "date": "2025-04-07",
+     "yeas": 104,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "raises municipal fine ceiling; no area direction",
+   "batch": null
+  },
+  {
+   "measure": "SB 842",
+   "family": [
+    "SB 842"
+   ],
+   "title": "Electronic Smoking Devices - Seizure and Wholesaler Record-Keeping Requirements",
+   "chapter": "Approved by the Governor - Chapter 305",
+   "chaptered_file": "CH_305_sb0842e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1547122,
+     "date": "2025-04-07",
+     "yeas": 105,
+     "nays": 33,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "SB 856",
+   "family": [
+    "SB 856"
+   ],
+   "title": "Mold - Landlord Requirements and Regulations (Maryland Tenant Mold Protection Act)",
+   "chapter": "Approved by the Governor - Chapter 539",
+   "chaptered_file": "CH_539_sb0856e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1546789,
+     "date": "2025-04-07",
+     "yeas": 103,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "SB 867",
+   "family": [
+    "SB 867"
+   ],
+   "title": "Cyber Maryland Program - Revisions",
+   "chapter": "Approved by the Governor - Chapter 218",
+   "chaptered_file": "CH_218_sb0867e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1547785,
+     "date": "2025-04-07",
+     "yeas": 100,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "programme transfer and funding changes",
+   "batch": null
+  },
+  {
+   "measure": "SB 894",
+   "family": [
+    "SB 894"
+   ],
+   "title": "Office of Social Equity - Community Reinvestment and Repair Fund - Modifications",
+   "chapter": "Approved by the Governor - Chapter 195",
+   "chaptered_file": "CH_195_sb0894t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1532282,
+     "date": "2025-03-17",
+     "yeas": 30,
+     "nays": 14,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1547526,
+     "date": "2025-04-07",
+     "yeas": 101,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative fund governance; repeals some reporting (recorded in batch-02)",
+   "batch": null
+  }
+ ],
+ "2240": [
+  {
+   "measure": "HB 6",
+   "family": [
+    "HB 6",
+    "SB 420"
+   ],
+   "title": "Public Institutions of Higher Education - Pregnant and Parenting Students - Plan and Reporting",
+   "chapter": "Approved by the Governor - Chapter 735",
+   "chaptered_file": "CH_735_hb0006e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1654179,
+     "date": "2026-02-26",
+     "yeas": 101,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1684897,
+     "date": "2026-04-13",
+     "yeas": 90,
+     "nays": 33,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "mostly data collection and reporting (recorded in batch-03)",
+   "batch": null
+  },
+  {
+   "measure": "HB 85",
+   "family": [
+    "HB 85"
+   ],
+   "title": "Corporations and Associations - Cooperative Limited Equity Housing Corporations - Establishment",
+   "chapter": "Approved by the Governor - Chapter 260",
+   "chaptered_file": "CH_260_hb0085t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1654634,
+     "date": "2026-02-26",
+     "yeas": 103,
+     "nays": 33,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "housing_affordability",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 107",
+   "family": [
+    "HB 107",
+    "SB 366"
+   ],
+   "title": "Motor Vehicles - Intelligent Speed Assistance System Pilot Program - Establishment",
+   "chapter": "Enacted under Article II, Section 17(c) of the Maryland Constitution - Chapter 870",
+   "chaptered_file": "CH_870_hb0107e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1659978,
+     "date": "2026-03-04",
+     "yeas": 99,
+     "nays": 30,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1681751,
+     "date": "2026-04-09",
+     "yeas": 31,
+     "nays": 9,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1683985,
+     "date": "2026-04-13",
+     "yeas": 99,
+     "nays": 31,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "traffic safety pilot; no research area fits",
+   "batch": null
+  },
+  {
+   "measure": "HB 141",
+   "family": [
+    "HB 141"
+   ],
+   "title": "State Personnel - Collective Bargaining - Graduate Assistants",
+   "chapter": "Approved by the Governor - Chapter 774",
+   "chaptered_file": "CH_774_hb0141e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671083,
+     "date": "2026-03-18",
+     "yeas": 98,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1681408,
+     "date": "2026-04-09",
+     "yeas": 29,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1685462,
+     "date": "2026-04-13",
+     "yeas": 95,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1691969,
+     "date": "2026-04-13",
+     "yeas": 32,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "public university employer; corporate_accountability means companies (recorded in batch-02)",
+   "batch": null
+  },
+  {
+   "measure": "HB 168",
+   "family": [
+    "HB 168"
+   ],
+   "title": "Housing and Community Development - Affordable Housing - Educator Workforce Housing and Municipal Corporations",
+   "chapter": "Approved by the Governor - Chapter 678",
+   "chaptered_file": "CH_678_hb0168e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1685509,
+     "date": "2026-04-13",
+     "yeas": 89,
+     "nays": 32,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1683284,
+     "date": "2026-04-13",
+     "yeas": 34,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "housing_affordability",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 200",
+   "family": [
+    "HB 200"
+   ],
+   "title": "Sale of Residential Real Property - Required Flood Risk Disclosure",
+   "chapter": "Approved by the Governor - Chapter 776",
+   "chaptered_file": "CH_776_hb0200t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1656497,
+     "date": "2026-03-05",
+     "yeas": 94,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 220",
+   "family": [
+    "HB 220",
+    "SB 130"
+   ],
+   "title": "Environment - Water - Individual Submeters",
+   "chapter": "Approved by the Governor - Chapter 262",
+   "chaptered_file": "CH_262_hb0220t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1644170,
+     "date": "2026-02-20",
+     "yeas": 95,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1681395,
+     "date": "2026-04-09",
+     "yeas": 31,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "corporate_accountability",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 227",
+   "family": [
+    "HB 227",
+    "SB 228"
+   ],
+   "title": "Maryland Environmental Service - Authorizations and Requirements - Alterations",
+   "chapter": "Approved by the Governor - Chapter 77",
+   "chaptered_file": "CH_77_hb0227t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1654226,
+     "date": "2026-02-26",
+     "yeas": 101,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative changes to the Maryland Environmental Service",
+   "batch": null
+  },
+  {
+   "measure": "HB 229",
+   "family": [
+    "HB 229",
+    "SB 188"
+   ],
+   "title": "Maryland Transportation Authority - Revenue Bond Limit - Increase",
+   "chapter": "Approved by the Governor - Chapter 114",
+   "chaptered_file": "CH_114_hb0229t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1635625,
+     "date": "2026-02-13",
+     "yeas": 96,
+     "nays": 33,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "debt capacity increase",
+   "batch": null
+  },
+  {
+   "measure": "HB 238",
+   "family": [
+    "HB 238",
+    "SB 226"
+   ],
+   "title": "Maryland Heritage Area Authority and Heritage Areas - Alterations",
+   "chapter": "Approved by the Governor - Chapter 123",
+   "chaptered_file": "CH_123_hb0238t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671013,
+     "date": "2026-03-18",
+     "yeas": 103,
+     "nays": 30,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative heritage area changes",
+   "batch": null
+  },
+  {
+   "measure": "HB 243",
+   "family": [
+    "HB 243",
+    "SB 197"
+   ],
+   "title": "Land Use - Comprehensive and General Plans - Alteration of Elements",
+   "chapter": "Approved by the Governor - Chapter 110",
+   "chaptered_file": "CH_110_hb0243t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1664150,
+     "date": "2026-03-12",
+     "yeas": 94,
+     "nays": 39,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative planning framework reorganization",
+   "batch": null
+  },
+  {
+   "measure": "HB 246",
+   "family": [
+    "HB 246"
+   ],
+   "title": "Video Tolls - Class G (Trailer) Vehicles - Liability",
+   "chapter": "Approved by the Governor - Chapter 482",
+   "chaptered_file": "CH_482_hb0246t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1660968,
+     "date": "2026-03-04",
+     "yeas": 93,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative toll liability",
+   "batch": null
+  },
+  {
+   "measure": "HB 247",
+   "family": [
+    "HB 247"
+   ],
+   "title": "Chesapeake and Atlantic Coastal Bays Critical Area Protection Program - Variances - Alterations",
+   "chapter": "Approved by the Governor - Chapter 79",
+   "chaptered_file": "CH_79_hb0247t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671132,
+     "date": "2026-03-18",
+     "yeas": 96,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "variance standards; direction unclear",
+   "batch": null
+  },
+  {
+   "measure": "HB 250",
+   "family": [
+    "HB 250"
+   ],
+   "title": "Environment - Appropriation or Use of Water and Dam Safety - Enforcement",
+   "chapter": "Approved by the Governor - Chapter 273",
+   "chaptered_file": "CH_273_hb0250t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1670997,
+     "date": "2026-03-18",
+     "yeas": 96,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1680506,
+     "date": "2026-04-08",
+     "yeas": 32,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 252",
+   "family": [
+    "HB 252"
+   ],
+   "title": "Environment \u2013 Lead Paint Abatement Services \u2013 Performance Bond and Liability Insurance",
+   "chapter": "Approved by the Governor - Chapter 359",
+   "chaptered_file": "CH_359_hb0252t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1660453,
+     "date": "2026-03-04",
+     "yeas": 92,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1680838,
+     "date": "2026-04-08",
+     "yeas": 32,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 254",
+   "family": [
+    "HB 254"
+   ],
+   "title": "Supporting Inclusive Community Adaptation Act",
+   "chapter": "Approved by the Governor - Chapter 76",
+   "chaptered_file": "CH_76_hb0254t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671033,
+     "date": "2026-03-18",
+     "yeas": 98,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1681646,
+     "date": "2026-04-09",
+     "yeas": 24,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 260",
+   "family": [
+    "HB 260",
+    "SB 11"
+   ],
+   "title": "Campaign Financing - Campaign Finance Reporting Deadline and Fair Campaign Financing Fund Distributions",
+   "chapter": "Approved by the Governor - Chapter 443",
+   "chaptered_file": "CH_443_hb0260e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1654567,
+     "date": "2026-02-26",
+     "yeas": 103,
+     "nays": 33,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1681769,
+     "date": "2026-04-09",
+     "yeas": 32,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1683981,
+     "date": "2026-04-11",
+     "yeas": 94,
+     "nays": 31,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative campaign finance deadlines",
+   "batch": null
+  },
+  {
+   "measure": "HB 263",
+   "family": [
+    "HB 263",
+    "SB 100"
+   ],
+   "title": "Election Law - Early Voting Centers - Bus Stops",
+   "chapter": "Approved by the Governor - Chapter 106",
+   "chaptered_file": "CH_106_hb0263t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1654465,
+     "date": "2026-02-26",
+     "yeas": 107,
+     "nays": 27,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "election_integrity",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 278",
+   "family": [
+    "HB 278",
+    "SB 113"
+   ],
+   "title": "Human Services - Department of Aging and Commission on Aging (The Longevity Ready Maryland Act)",
+   "chapter": "Approved by the Governor - Chapter 93",
+   "chaptered_file": "CH_93_hb0278t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1640180,
+     "date": "2026-02-19",
+     "yeas": 102,
+     "nays": 32,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "plan codification and reporting",
+   "batch": null
+  },
+  {
+   "measure": "HB 280",
+   "family": [
+    "HB 280",
+    "SB 205"
+   ],
+   "title": "Health Insurance - Mental Health and Substance Use Disorders - Codification of Federal Requirements",
+   "chapter": "Approved by the Governor - Chapter 11",
+   "chaptered_file": "CH_11_hb0280t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1660926,
+     "date": "2026-03-04",
+     "yeas": 93,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "healthcare_affordability",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 288",
+   "family": [
+    "HB 288",
+    "SB 218"
+   ],
+   "title": "State Superintendent of Schools - Prolonged State of Emergency - Authority to Declare",
+   "chapter": "Approved by the Governor - Chapter 599",
+   "chaptered_file": "CH_599_hb0288t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671139,
+     "date": "2026-03-18",
+     "yeas": 96,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative transfer of emergency declaration authority",
+   "batch": null
+  },
+  {
+   "measure": "HB 293",
+   "family": [
+    "HB 293",
+    "SB 56"
+   ],
+   "title": "Maryland Longitudinal Data System Center - External Data Sharing With Third-Party Data Centers for Multistate Reporting - Authorization",
+   "chapter": "Approved by the Governor - Chapter 100",
+   "chaptered_file": "CH_100_hb0293t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1670961,
+     "date": "2026-03-18",
+     "yeas": 98,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1681432,
+     "date": "2026-04-09",
+     "yeas": 32,
+     "nays": 9,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "runs both ways: authorizes wider student data sharing while adding safeguards",
+   "batch": null
+  },
+  {
+   "measure": "HB 330",
+   "family": [
+    "HB 330",
+    "SB 252"
+   ],
+   "title": "Maryland Legal Services Corporation - Board of Directors - Membership",
+   "chapter": "Approved by the Governor - Chapter 661",
+   "chaptered_file": "CH_661_hb0330t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1640179,
+     "date": "2026-02-19",
+     "yeas": 97,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "trivia: board size",
+   "batch": null
+  },
+  {
+   "measure": "HB 343",
+   "family": [
+    "HB 343"
+   ],
+   "title": "Housing Development Projects - Housing Counseling Services",
+   "chapter": "Approved by the Governor - Chapter 64",
+   "chaptered_file": "CH_64_hb0343t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1664362,
+     "date": "2026-03-12",
+     "yeas": 96,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1677812,
+     "date": "2026-04-03",
+     "yeas": 32,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "narrow information requirement",
+   "batch": null
+  },
+  {
+   "measure": "HB 388",
+   "family": [
+    "HB 388",
+    "SB 253"
+   ],
+   "title": "Baltimore County Public Library - Collective Bargaining - Supervisory Employees",
+   "chapter": "Approved by the Governor - Chapter 757",
+   "chaptered_file": "CH_757_hb0388t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1670973,
+     "date": "2026-03-18",
+     "yeas": 99,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "local public-employer bargaining (Baltimore County library)",
+   "batch": null
+  },
+  {
+   "measure": "HB 405",
+   "family": [
+    "HB 405"
+   ],
+   "title": "Condominiums and Homeowners Associations - Governing Documents - Electric Vehicle Recharging Equipment",
+   "chapter": "Approved by the Governor - Chapter 753",
+   "chaptered_file": "CH_753_hb0405t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671896,
+     "date": "2026-03-21",
+     "yeas": 94,
+     "nays": 28,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1683024,
+     "date": "2026-04-13",
+     "yeas": 32,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 427",
+   "family": [
+    "HB 427"
+   ],
+   "title": "Task Force on Responsible Use of Natural Psychedelic Substances - Extension and Membership",
+   "chapter": "Approved by the Governor - Chapter 207",
+   "chaptered_file": "CH_207_hb0427e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1681921,
+     "date": "2026-04-10",
+     "yeas": 104,
+     "nays": 29,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "task force extension",
+   "batch": null
+  },
+  {
+   "measure": "HB 451",
+   "family": [
+    "HB 451"
+   ],
+   "title": "Maryland Zero Emission Electric Vehicle Infrastructure Council - Membership, Duties, and Sunset Repeal",
+   "chapter": "Approved by the Governor - Chapter 540",
+   "chaptered_file": "CH_540_hb0451e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1660137,
+     "date": "2026-03-04",
+     "yeas": 94,
+     "nays": 33,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1680662,
+     "date": "2026-04-08",
+     "yeas": 33,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1681693,
+     "date": "2026-04-09",
+     "yeas": 95,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "makes an advisory council permanent",
+   "batch": null
+  },
+  {
+   "measure": "HB 457",
+   "family": [
+    "HB 457"
+   ],
+   "title": "Institutions of Higher Education - Provision of Menstrual Hygiene Products - Requirement",
+   "chapter": "Approved by the Governor - Chapter 722",
+   "chaptered_file": "CH_722_hb0457t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1662356,
+     "date": "2026-03-11",
+     "yeas": 106,
+     "nays": 30,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1681743,
+     "date": "2026-04-09",
+     "yeas": 24,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "no research area cleanly fits menstrual product provision",
+   "batch": null
+  },
+  {
+   "measure": "HB 467",
+   "family": [
+    "HB 467",
+    "SB 822"
+   ],
+   "title": "Correctional Services - Maryland Parole Commission and Erroneously Convicted Individuals - Improvements in Transparency and Equity",
+   "chapter": "Approved by the Governor - Chapter 432",
+   "chaptered_file": "CH_432_hb0467e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671807,
+     "date": "2026-03-23",
+     "yeas": 100,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1682263,
+     "date": "2026-04-09",
+     "yeas": 27,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1682264,
+     "date": "2026-04-09",
+     "yeas": 96,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "contested direction: parole commission changes (recorded in batch-03)",
+   "batch": null
+  },
+  {
+   "measure": "HB 480",
+   "family": [
+    "HB 480",
+    "SB 740"
+   ],
+   "title": "Transportation Network Companies - Deactivation of Operators",
+   "chapter": "Approved by the Governor - Chapter 232",
+   "chaptered_file": "CH_232_hb0480t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1662530,
+     "date": "2026-03-11",
+     "yeas": 98,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "corporate_accountability",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 483",
+   "family": [
+    "HB 483",
+    "SB 354"
+   ],
+   "title": "Business Regulation - Charitable Organizations - Audit and Review Thresholds",
+   "chapter": "Approved by the Governor - Chapter 393",
+   "chaptered_file": "CH_393_hb0483t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1664518,
+     "date": "2026-03-12",
+     "yeas": 96,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "runs both ways: raises audit thresholds, easing oversight and burden together",
+   "batch": null
+  },
+  {
+   "measure": "HB 497",
+   "family": [
+    "HB 497"
+   ],
+   "title": "Family Law - Temporary and Final Protective Orders - Duration",
+   "chapter": "Approved by the Governor - Chapter 791",
+   "chaptered_file": "CH_791_hb0497e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1672357,
+     "date": "2026-03-23",
+     "yeas": 98,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1683172,
+     "date": "2026-04-10",
+     "yeas": 101,
+     "nays": 31,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "public_safety_and_crime_control",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 503",
+   "family": [
+    "HB 503"
+   ],
+   "title": "Baltimore City Sheriff's Office - Collective Bargaining - Compensation",
+   "chapter": "Approved by the Governor - Chapter 568",
+   "chaptered_file": "CH_568_hb0503t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671669,
+     "date": "2026-03-20",
+     "yeas": 104,
+     "nays": 26,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "local public-employer bargaining (Baltimore City Sheriff)",
+   "batch": null
+  },
+  {
+   "measure": "HB 548",
+   "family": [
+    "HB 503",
+    "HB 548",
+    "SB 325"
+   ],
+   "title": "Land Use - Permitting - Development Rights (Maryland Housing Certainty Act)",
+   "chapter": "Approved by the Governor - Chapter 591",
+   "chaptered_file": "CH_591_hb0548e.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1683005,
+     "date": "2026-04-10",
+     "yeas": 34,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "housing_affordability",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 557",
+   "family": [
+    "HB 557"
+   ],
+   "title": "Occupational Licensing and Certification - Criminal History - Predetermination Review Process",
+   "chapter": "Approved by the Governor - Chapter 302",
+   "chaptered_file": "CH_302_hb0557t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1656495,
+     "date": "2026-03-05",
+     "yeas": 96,
+     "nays": 28,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "civil_rights",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 561",
+   "family": [
+    "HB 561"
+   ],
+   "title": "Maryland Child Care Credential Program - Extension of Funding",
+   "chapter": "Approved by the Governor - Chapter 623",
+   "chaptered_file": "CH_623_hb0561e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1662373,
+     "date": "2026-03-11",
+     "yeas": 104,
+     "nays": 32,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "only divided roll is superseded by a later non-divided House vote (118-13)",
+   "batch": null
+  },
+  {
+   "measure": "HB 571",
+   "family": [
+    "HB 571"
+   ],
+   "title": "Nonprofit Housing Corporations - Taxes and Special Assessments Exemptions - Alterations",
+   "chapter": "Approved by the Governor - Chapter 727",
+   "chaptered_file": "CH_727_hb0571e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1672536,
+     "date": "2026-03-23",
+     "yeas": 99,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1680526,
+     "date": "2026-04-08",
+     "yeas": 24,
+     "nays": 17,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1684711,
+     "date": "2026-04-11",
+     "yeas": 96,
+     "nays": 33,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "housing_affordability",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 578",
+   "family": [
+    "HB 578"
+   ],
+   "title": "Fish and Wildlife - Endangered and Threatened Species and Migratory Birds - Regulations, Lists, Petitions, Essential Habitats, and Takings",
+   "chapter": "Approved by the Governor - Chapter 211",
+   "chaptered_file": "CH_211_hb0578e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1664167,
+     "date": "2026-03-12",
+     "yeas": 104,
+     "nays": 28,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1682211,
+     "date": "2026-04-09",
+     "yeas": 99,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 597",
+   "family": [
+    "HB 597"
+   ],
+   "title": "Montgomery County - Community Choice Aggregation Pilot Program - Alterations MC 17-26",
+   "chapter": "Approved by the Governor - Chapter 347",
+   "chaptered_file": "CH_347_hb0597t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1682543,
+     "date": "2026-04-09",
+     "yeas": 25,
+     "nays": 8,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "local pilot programme (Montgomery)",
+   "batch": null
+  },
+  {
+   "measure": "HB 601",
+   "family": [
+    "HB 601"
+   ],
+   "title": "Montgomery County - Stop Sign Monitoring Systems Pilot Program - Gaithersburg and Rockville MC 5-26",
+   "chapter": "Approved by the Governor - Chapter 557",
+   "chaptered_file": "CH_557_hb0601t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1660923,
+     "date": "2026-03-04",
+     "yeas": 95,
+     "nays": 28,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1692247,
+     "date": "2026-04-13",
+     "yeas": 32,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "local stop-sign cameras (Gaithersburg and Rockville)",
+   "batch": null
+  },
+  {
+   "measure": "HB 604",
+   "family": [
+    "HB 604",
+    "SB 28"
+   ],
+   "title": "Arbitration Reform for State Employees Act of 2026",
+   "chapter": "Approved by the Governor, assigned a chapter number, enactment subject to constitutional referendum - Chapter 155",
+   "chaptered_file": "CH_155_hb0604t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671632,
+     "date": "2026-03-20",
+     "yeas": 93,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1683482,
+     "date": "2026-04-10",
+     "yeas": 35,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "public employer arbitration; corporate_accountability means companies (recorded in batch-03)",
+   "batch": null
+  },
+  {
+   "measure": "HB 622",
+   "family": [
+    "HB 622"
+   ],
+   "title": "Cannabis - Licensees - Dispensary Licenses, Micro Dispensary Employees, and Cannabis Agent Training Programs",
+   "chapter": "Approved by the Governor - Chapter 375",
+   "chaptered_file": "CH_375_hb0622e.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1681447,
+     "date": "2026-04-09",
+     "yeas": 30,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1682960,
+     "date": "2026-04-10",
+     "yeas": 100,
+     "nays": 31,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "cannabis industry administrative changes",
+   "batch": null
+  },
+  {
+   "measure": "HB 625",
+   "family": [
+    "HB 625",
+    "SB 585"
+   ],
+   "title": "Human-Relevant Research Fund - Collection of Contributions - Responsible Entity",
+   "chapter": "Approved by the Governor - Chapter 385",
+   "chaptered_file": "CH_385_hb0625t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1661009,
+     "date": "2026-03-04",
+     "yeas": 93,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1683147,
+     "date": "2026-04-13",
+     "yeas": 34,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative: moves contribution collection between departments",
+   "batch": null
+  },
+  {
+   "measure": "HB 637",
+   "family": [
+    "HB 637",
+    "SB 385"
+   ],
+   "title": "Public Health - Recommendations for Immunizations, Screenings, and Preventive Services - Pharmacist Administration and Required Health Insurance Coverage (The Vax Act)",
+   "chapter": "Approved by the Governor - Chapter 7",
+   "chaptered_file": "CH_7_hb0637t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671836,
+     "date": "2026-03-21",
+     "yeas": 98,
+     "nays": 32,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1680665,
+     "date": "2026-04-08",
+     "yeas": 31,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 660",
+   "family": [
+    "HB 597",
+    "HB 660"
+   ],
+   "title": "Public Libraries - State Library Resource Center - Funding",
+   "chapter": "Approved by the Governor - Chapter 703",
+   "chaptered_file": "CH_703_hb0660t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1670876,
+     "date": "2026-03-18",
+     "yeas": 103,
+     "nays": 30,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "funding formula; no research area fits public library aid",
+   "batch": null
+  },
+  {
+   "measure": "HB 661",
+   "family": [
+    "HB 661"
+   ],
+   "title": "General Provisions - Commemorative Months - Muslim American Heritage and Jewish American Heritage Months",
+   "chapter": "Approved by the Governor - Chapter 358",
+   "chaptered_file": "CH_358_hb0661t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1683449,
+     "date": "2026-04-10",
+     "yeas": 33,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "commemorative proclamations with no operative effect",
+   "batch": null
+  },
+  {
+   "measure": "HB 663",
+   "family": [
+    "HB 663"
+   ],
+   "title": "Department of the Environment - Federal Environmental Policy - Reporting",
+   "chapter": "Approved by the Governor - Chapter 322",
+   "chaptered_file": "CH_322_hb0663t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1662338,
+     "date": "2026-03-11",
+     "yeas": 98,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1681773,
+     "date": "2026-04-09",
+     "yeas": 28,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1683114,
+     "date": "2026-04-13",
+     "yeas": 34,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "reporting only",
+   "batch": null
+  },
+  {
+   "measure": "HB 734",
+   "family": [
+    "HB 734",
+    "SB 344"
+   ],
+   "title": "Property Tax - Agricultural Use Assessment - Community Solar Energy Generating Systems",
+   "chapter": "Approved by the Governor - Chapter 45",
+   "chaptered_file": "CH_45_hb0734t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671918,
+     "date": "2026-03-21",
+     "yeas": 101,
+     "nays": 27,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1677562,
+     "date": "2026-04-03",
+     "yeas": 34,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 769",
+   "family": [
+    "HB 769",
+    "SB 18"
+   ],
+   "title": "State Board of Social Work Examiners - Provisional License to Practice Social Work - Established",
+   "chapter": "Approved by the Governor - Chapter 227",
+   "chaptered_file": "CH_227_hb0769e.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1683025,
+     "date": "2026-04-13",
+     "yeas": 33,
+     "nays": 14,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "licensing pathway; no area fits",
+   "batch": null
+  },
+  {
+   "measure": "HB 804",
+   "family": [
+    "HB 804",
+    "SB 860"
+   ],
+   "title": "Department of Aging - Aging Resilience Fund - Establishment",
+   "chapter": "Approved by the Governor - Chapter 15",
+   "chaptered_file": "CH_15_hb0804t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1662606,
+     "date": "2026-03-11",
+     "yeas": 100,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "fund establishment only",
+   "batch": null
+  },
+  {
+   "measure": "HB 811",
+   "family": [
+    "HB 811"
+   ],
+   "title": "Aging-in-Place Programs - Grants - Multigenerational Third Places ( Village Multigenerational Third Places Act)",
+   "chapter": "Approved by the Governor - Chapter 759",
+   "chaptered_file": "CH_759_hb0811e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1684624,
+     "date": "2026-04-11",
+     "yeas": 101,
+     "nays": 30,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "grant authorization only",
+   "batch": null
+  },
+  {
+   "measure": "HB 816",
+   "family": [
+    "HB 816",
+    "SB 469"
+   ],
+   "title": "Maryland Automobile Insurance Fund - Affordability Program and Industry Automobile Insurance Association Assessments",
+   "chapter": "Approved by the Governor - Chapter 741",
+   "chaptered_file": "CH_741_hb0816t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1672363,
+     "date": "2026-03-23",
+     "yeas": 98,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "technical insurance assessment and affordability mechanics",
+   "batch": null
+  },
+  {
+   "measure": "HB 870",
+   "family": [
+    "HB 870"
+   ],
+   "title": "Environment - Permit Applications for New Buildings - Notice (Large Buildings for Tomorrow Act)",
+   "chapter": "Approved by the Governor - Chapter 412",
+   "chaptered_file": "CH_412_hb0870t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671645,
+     "date": "2026-03-19",
+     "yeas": 92,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "narrow permit notice requirement",
+   "batch": null
+  },
+  {
+   "measure": "HB 882",
+   "family": [
+    "HB 882"
+   ],
+   "title": "Consumer Health Information - Termination Date and Mandatory Funding for the State's Consumer Health Information Hub - Repeal",
+   "chapter": "Approved by the Governor - Chapter 657",
+   "chaptered_file": "CH_657_hb0882t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1654185,
+     "date": "2026-02-26",
+     "yeas": 98,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "runs both ways: keeps the hub but repeals its mandated funding",
+   "batch": null
+  },
+  {
+   "measure": "HB 956",
+   "family": [
+    "HB 956"
+   ],
+   "title": "Condominiums - Buildings More Than 40 Years Old - Study",
+   "chapter": "Approved by the Governor - Chapter 779",
+   "chaptered_file": "CH_779_hb0956t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671047,
+     "date": "2026-03-18",
+     "yeas": 95,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1683610,
+     "date": "2026-04-13",
+     "yeas": 33,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "study only",
+   "batch": null
+  },
+  {
+   "measure": "HB 963",
+   "family": [
+    "HB 963"
+   ],
+   "title": "Registers of Wills - Appointment of Personal Representatives",
+   "chapter": "Approved by the Governor - Chapter 537",
+   "chaptered_file": "CH_537_hb0963e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1684719,
+     "date": "2026-04-11",
+     "yeas": 99,
+     "nays": 32,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "civil_rights",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 969",
+   "family": [
+    "HB 969",
+    "SB 649"
+   ],
+   "title": "Electric Vehicle Fuel Sold at Retail - Equipment Requirements, Units of Measure, and Fees",
+   "chapter": "Approved by the Governor - Chapter 281",
+   "chaptered_file": "CH_281_hb0969t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1681648,
+     "date": "2026-04-09",
+     "yeas": 24,
+     "nays": 9,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "corporate_accountability",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 994",
+   "family": [
+    "HB 994"
+   ],
+   "title": "Business Regulation - Travel Services - Special Fund, Fees, and Surety Requirement (Don't You Worry (Wurie) Act)",
+   "chapter": "Approved by the Governor - Chapter 611",
+   "chaptered_file": "CH_611_hb0994e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1672430,
+     "date": "2026-03-23",
+     "yeas": 105,
+     "nays": 28,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1681425,
+     "date": "2026-04-09",
+     "yeas": 28,
+     "nays": 14,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1682956,
+     "date": "2026-04-10",
+     "yeas": 97,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "corporate_accountability",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 1016",
+   "family": [
+    "HB 1016"
+   ],
+   "title": "Noncompete and Conflict of Interest Clauses - Licensed Architects - Employer Workforce Relocation and Out-of-State Employers",
+   "chapter": "Approved by the Governor - Chapter 301",
+   "chaptered_file": "CH_301_hb1016e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671768,
+     "date": "2026-03-21",
+     "yeas": 94,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1683953,
+     "date": "2026-04-11",
+     "yeas": 101,
+     "nays": 29,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "corporate_accountability",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 1026",
+   "family": [
+    "HB 1026",
+    "SB 893"
+   ],
+   "title": "Business Regulation - Rounding Cash Transactions - Authorization",
+   "chapter": "Approved by the Governor - Chapter 515",
+   "chaptered_file": "CH_515_hb1026e.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1681746,
+     "date": "2026-04-09",
+     "yeas": 32,
+     "nays": 11,
+     "q": "Third Readings Passed with Amendments"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative cash rounding",
+   "batch": null
+  },
+  {
+   "measure": "HB 1081",
+   "family": [
+    "HB 1081",
+    "SB 947"
+   ],
+   "title": "Maryland Transit Administration Reform Act",
+   "chapter": "Approved by the Governor - Chapter 420",
+   "chaptered_file": "CH_420_hb1081e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671086,
+     "date": "2026-03-18",
+     "yeas": 97,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1684458,
+     "date": "2026-04-13",
+     "yeas": 101,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "transit governance reorganization",
+   "batch": null
+  },
+  {
+   "measure": "HB 1109",
+   "family": [
+    "HB 1109"
+   ],
+   "title": "Public Health Reform Act",
+   "chapter": "Approved by the Governor - Chapter 190",
+   "chaptered_file": "CH_190_hb1109e.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1683510,
+     "date": "2026-04-13",
+     "yeas": 33,
+     "nays": 13,
+     "q": "Third Readings Passed with Amendments"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "structural commission and workforce changes",
+   "batch": null
+  },
+  {
+   "measure": "HB 1135",
+   "family": [
+    "HB 1135",
+    "SB 773"
+   ],
+   "title": "Health Occupations - Pharmacists - Vaccination Orders",
+   "chapter": "Approved by the Governor - Chapter 270",
+   "chaptered_file": "CH_270_hb1135e.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1680639,
+     "date": "2026-04-08",
+     "yeas": 33,
+     "nays": 9,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1682279,
+     "date": "2026-04-09",
+     "yeas": 103,
+     "nays": 29,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 1137",
+   "family": [
+    "HB 1137",
+    "SB 829"
+   ],
+   "title": "Residential-in-Commercial-Zone Laws - Study (Bring Back Main Street Act)",
+   "chapter": "Approved by the Governor - Chapter 726",
+   "chaptered_file": "CH_726_hb1137t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671763,
+     "date": "2026-03-23",
+     "yeas": 101,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "study only",
+   "batch": null
+  },
+  {
+   "measure": "HB 1142",
+   "family": [
+    "HB 1142"
+   ],
+   "title": "Task Force to Modernize County and Municipal Revenue Structures",
+   "chapter": "Approved by the Governor - Chapter 17",
+   "chaptered_file": "CH_17_hb1142t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671977,
+     "date": "2026-03-23",
+     "yeas": 106,
+     "nays": 27,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1677780,
+     "date": "2026-04-03",
+     "yeas": 34,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "task force only",
+   "batch": null
+  },
+  {
+   "measure": "HB 1148",
+   "family": [
+    "HB 1148",
+    "SB 765"
+   ],
+   "title": "Property Taxes - Tax Sales, Legacy Protection Program, and Tax Credits",
+   "chapter": "Approved by the Governor - Chapter 718",
+   "chaptered_file": "CH_718_hb1148t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671156,
+     "date": "2026-03-18",
+     "yeas": 99,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "housing_affordability",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 1165",
+   "family": [
+    "HB 1165",
+    "SB 673"
+   ],
+   "title": "State Procurement - Apprenticeship Program Accountability and Completion",
+   "chapter": "Approved by the Governor - Chapter 533",
+   "chaptered_file": "CH_533_hb1165t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671947,
+     "date": "2026-03-21",
+     "yeas": 97,
+     "nays": 28,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1677635,
+     "date": "2026-04-03",
+     "yeas": 35,
+     "nays": 9,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "runs both ways: adds a completion standard but raises the contract threshold",
+   "batch": null
+  },
+  {
+   "measure": "HB 1171",
+   "family": [
+    "HB 1171"
+   ],
+   "title": "Howard County Board of Education - Student Member - Voting Ho. Co. 7-26",
+   "chapter": "Approved by the Governor - Chapter 578",
+   "chaptered_file": "CH_578_hb1171t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671646,
+     "date": "2026-03-20",
+     "yeas": 104,
+     "nays": 26,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "local school board voting rights (Howard County)",
+   "batch": null
+  },
+  {
+   "measure": "HB 1216",
+   "family": [
+    "HB 1216"
+   ],
+   "title": "Insurance \u2013 Certificates of Guarantee for County Bond Requirements \u2013 All Counties",
+   "chapter": "Approved by the Governor - Chapter 749",
+   "chaptered_file": "CH_749_hb1216t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671734,
+     "date": "2026-03-20",
+     "yeas": 94,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative county bond guarantee",
+   "batch": null
+  },
+  {
+   "measure": "HB 1218",
+   "family": [
+    "HB 1218",
+    "SB 941"
+   ],
+   "title": "Safe and Healthy Homes for All Act",
+   "chapter": "Approved by the Governor - Chapter 632",
+   "chaptered_file": "CH_632_hb1218t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1672382,
+     "date": "2026-03-23",
+     "yeas": 99,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1681719,
+     "date": "2026-04-09",
+     "yeas": 24,
+     "nays": 9,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "plan and report only",
+   "batch": null
+  },
+  {
+   "measure": "HB 1219",
+   "family": [
+    "HB 1219",
+    "SB 739"
+   ],
+   "title": "Climate Change, Homeowner's Insurance, and Emergency Management - Study",
+   "chapter": "Approved by the Governor - Chapter 697",
+   "chaptered_file": "CH_697_hb1219e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1672393,
+     "date": "2026-03-23",
+     "yeas": 100,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1681403,
+     "date": "2026-04-09",
+     "yeas": 28,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1682952,
+     "date": "2026-04-10",
+     "yeas": 97,
+     "nays": 33,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "study only",
+   "batch": null
+  },
+  {
+   "measure": "HB 1248",
+   "family": [
+    "HB 1248"
+   ],
+   "title": "Workgroup for an Inclusive State Workplace - Established",
+   "chapter": "Approved by the Governor - Chapter 386",
+   "chaptered_file": "CH_386_hb1248e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671855,
+     "date": "2026-03-21",
+     "yeas": 97,
+     "nays": 27,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1685297,
+     "date": "2026-04-13",
+     "yeas": 98,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1683551,
+     "date": "2026-04-13",
+     "yeas": 35,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "workgroup only",
+   "batch": null
+  },
+  {
+   "measure": "HB 1249",
+   "family": [
+    "HB 1249"
+   ],
+   "title": "Certified Recovery Residences - Refusing Services to Individuals Receiving Medication-Assisted Treatment - Prohibition",
+   "chapter": "Approved by the Governor - Chapter 793",
+   "chaptered_file": "CH_793_hb1249t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671754,
+     "date": "2026-03-23",
+     "yeas": 102,
+     "nays": 33,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1692303,
+     "date": "2026-04-13",
+     "yeas": 36,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 1280",
+   "family": [
+    "HB 1280",
+    "SB 809"
+   ],
+   "title": "Supporting Our Caregiver Infrastructure Program - Feasibility Study",
+   "chapter": "Approved by the Governor - Chapter 704",
+   "chaptered_file": "CH_704_hb1280t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1670812,
+     "date": "2026-03-18",
+     "yeas": 99,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "feasibility study only",
+   "batch": null
+  },
+  {
+   "measure": "HB 1367",
+   "family": [
+    "HB 1367"
+   ],
+   "title": "Commission on Re-Imagining Health Care in Maryland",
+   "chapter": "Approved by the Governor - Chapter 244",
+   "chaptered_file": "CH_244_hb1367e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1670817,
+     "date": "2026-03-18",
+     "yeas": 98,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1681656,
+     "date": "2026-04-10",
+     "yeas": 32,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1683948,
+     "date": "2026-04-11",
+     "yeas": 96,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "commission and reports only",
+   "batch": null
+  },
+  {
+   "measure": "HB 1473",
+   "family": [
+    "HB 1473"
+   ],
+   "title": "Economic Development - Maryland's Future Board - Establishment",
+   "chapter": "Approved by the Governor - Chapter 378",
+   "chaptered_file": "CH_378_hb1473e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1683488,
+     "date": "2026-04-10",
+     "yeas": 103,
+     "nays": 26,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "board and fund creation",
+   "batch": null
+  },
+  {
+   "measure": "HB 1490",
+   "family": [
+    "HB 1490"
+   ],
+   "title": "Family Investment Program - Temporary Cash Assistance - Good Cause and Adequate Reason Exceptions",
+   "chapter": "Approved by the Governor - Chapter 763",
+   "chaptered_file": "CH_763_hb1490t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1670806,
+     "date": "2026-03-18",
+     "yeas": 103,
+     "nays": 30,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1683428,
+     "date": "2026-04-13",
+     "yeas": 35,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "social_programs_and_welfare",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 1530",
+   "family": [
+    "HB 1530"
+   ],
+   "title": "Higher Education - Undocumented Students - Out-of-State Tuition Exemption Eligibility",
+   "chapter": "Approved by the Governor - Chapter 799",
+   "chaptered_file": "CH_799_hb1530t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671137,
+     "date": "2026-03-18",
+     "yeas": 97,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1683113,
+     "date": "2026-04-13",
+     "yeas": 33,
+     "nays": 14,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "immigration",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 1532",
+   "family": [
+    "HB 1532"
+   ],
+   "title": "Utility RELIEF (Reducing Energy Load Inflation for Everyday Families) Act",
+   "chapter": "Approved by the Governor - Chapter 353",
+   "chaptered_file": "CH_353_hb1532e.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1683293,
+     "date": "2026-04-13",
+     "yeas": 35,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1683292,
+     "date": "2026-04-13",
+     "yeas": 33,
+     "nays": 11,
+     "q": "Conference Committee Report 583123/1 Adopted"
+    },
+    {
+     "chamber": "house",
+     "roll": 1684213,
+     "date": "2026-04-13",
+     "yeas": 105,
+     "nays": 27,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "energy omnibus (recorded in batch-03)",
+   "batch": null
+  },
+  {
+   "measure": "HB 1578",
+   "family": [
+    "HB 1578"
+   ],
+   "title": "State Procurement - Procurement Preferences - Reauthorization and Revisions",
+   "chapter": "Approved by the Governor - Chapter 82",
+   "chaptered_file": "CH_82_hb1578t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671980,
+     "date": "2026-03-21",
+     "yeas": 98,
+     "nays": 32,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "civil_rights",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "HB 1581",
+   "family": [
+    "HB 1581"
+   ],
+   "title": "Economic Development - Horse Racing Facilities, Prince George's County Blue Line Corridor Facilities, and Bus Rapid Transit - Alterations",
+   "chapter": "Approved by the Governor - Chapter 376",
+   "chaptered_file": "CH_376_hb1581e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1671858,
+     "date": "2026-03-21",
+     "yeas": 94,
+     "nays": 31,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1684736,
+     "date": "2026-04-13",
+     "yeas": 103,
+     "nays": 33,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "project-specific economic development",
+   "batch": null
+  },
+  {
+   "measure": "HB 1582",
+   "family": [
+    "HB 1582"
+   ],
+   "title": "Education - Program of Educational Accountability - Alterations (Comprehensive Outcomes and Measures of Progress for Supporting Schools (COMPASS Act))",
+   "chapter": "Approved by the Governor - Chapter 593",
+   "chaptered_file": "CH_593_hb1582t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1676544,
+     "date": "2026-04-01",
+     "yeas": 98,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1683173,
+     "date": "2026-04-13",
+     "yeas": 36,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "accountability reporting alterations",
+   "batch": null
+  },
+  {
+   "measure": "HB 2100",
+   "family": [
+    "HB 2100"
+   ],
+   "title": "Election Districts - General Assembly and Representatives in Congress",
+   "chapter": "Approved by the Governor, assigned a chapter number, enactment subject to constitutional referendum - Chapter 881",
+   "chaptered_file": "CH_881_hb2100t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1716590,
+     "date": "2026-08-04",
+     "yeas": 32,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1716610,
+     "date": "2026-08-04",
+     "yeas": 96,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "mid-decade redistricting; election_integrity carries no honest direction (recorded in batch-02)",
+   "batch": null
+  },
+  {
+   "measure": "HB 2101",
+   "family": [
+    "HB 2101"
+   ],
+   "title": "Arbitration Reform for State Employees Act of 2026 - Withdraw and Repeal of Duplicate Proposed Constitutional Amendment",
+   "chapter": "Approved by the Governor - Chapter 882",
+   "chaptered_file": "CH_882_hb2101t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1716613,
+     "date": "2026-08-04",
+     "yeas": 90,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "technical cleanup of a duplicate constitutional amendment",
+   "batch": null
+  },
+  {
+   "measure": "SB 6",
+   "family": [
+    "SB 6"
+   ],
+   "title": "State Personnel - Collective Bargaining - Nontenure Track Faculty",
+   "chapter": "Approved by the Governor - Chapter 695",
+   "chaptered_file": "CH_695_sb0006t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1672473,
+     "date": "2026-03-19",
+     "yeas": 32,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1678475,
+     "date": "2026-04-06",
+     "yeas": 96,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "public university employer (recorded in batch-03)",
+   "batch": null
+  },
+  {
+   "measure": "SB 10",
+   "family": [
+    "SB 10"
+   ],
+   "title": "State Highway Administration - Speed Monitoring Systems - Application Approval",
+   "chapter": "Approved by the Governor - Chapter 534",
+   "chaptered_file": "CH_534_sb0010t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1685336,
+     "date": "2026-04-13",
+     "yeas": 98,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "speed camera application administration",
+   "batch": null
+  },
+  {
+   "measure": "SB 12",
+   "family": [
+    "SB 12"
+   ],
+   "title": "Residential Rental Apartments - Air-Conditioning Requirement",
+   "chapter": "Approved by the Governor - Chapter 664",
+   "chaptered_file": "CH_664_sb0012e.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1673050,
+     "date": "2026-03-19",
+     "yeas": 33,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1692009,
+     "date": "2026-04-13",
+     "yeas": 35,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1684397,
+     "date": "2026-04-13",
+     "yeas": 101,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "SB 94",
+   "family": [
+    "SB 94"
+   ],
+   "title": "Commercial Law - Earned Wage Access - Revisions",
+   "chapter": "Approved by the Governor - Chapter 170",
+   "chaptered_file": "CH_170_sb0094t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1672573,
+     "date": "2026-03-19",
+     "yeas": 32,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1685506,
+     "date": "2026-04-13",
+     "yeas": 100,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "corporate_accountability",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "SB 125",
+   "family": [
+    "SB 125"
+   ],
+   "title": "Vehicle Laws - Transfer of Used Vehicles - Repeal of Notarized Bill of Sale Requirement",
+   "chapter": "Approved by the Governor - Chapter 119",
+   "chaptered_file": "CH_119_sb0125t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1679117,
+     "date": "2026-04-07",
+     "yeas": 94,
+     "nays": 42,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative repeal of a notarized bill of sale",
+   "batch": null
+  },
+  {
+   "measure": "SB 136",
+   "family": [
+    "SB 136"
+   ],
+   "title": "Collective Bargaining - Alcohol, Tobacco, and Cannabis Commission - Police Officers",
+   "chapter": "Approved by the Governor - Chapter 65",
+   "chaptered_file": "CH_65_sb0136t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1680735,
+     "date": "2026-04-08",
+     "yeas": 99,
+     "nays": 33,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "public employer collective bargaining",
+   "batch": null
+  },
+  {
+   "measure": "SB 153",
+   "family": [
+    "SB 153"
+   ],
+   "title": "Election Law - Campaign Finance Entities - Oversight and Control of Campaign Funds",
+   "chapter": "Approved by the Governor - Chapter 441",
+   "chaptered_file": "CH_441_sb0153e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1684727,
+     "date": "2026-04-13",
+     "yeas": 104,
+     "nays": 33,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "administrative campaign fund management",
+   "batch": null
+  },
+  {
+   "measure": "SB 162",
+   "family": [
+    "SB 162"
+   ],
+   "title": "Criminal Procedure - Motion to Reduce Duration of Sentence - Repeal of Sentencing Date Limitation",
+   "chapter": "Approved by the Governor - Chapter 498",
+   "chaptered_file": "CH_498_sb0162t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1678553,
+     "date": "2026-04-07",
+     "yeas": 99,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "contested direction: sentence reduction eligibility",
+   "batch": null
+  },
+  {
+   "measure": "SB 187",
+   "family": [
+    "SB 187"
+   ],
+   "title": "Correctional Services - Comprehensive Rehabilitative Prerelease Services - Female Incarcerated Individuals (Monica Cooper Prerelease Act)",
+   "chapter": "Enacted under Article II, Section 17(c) of the Maryland Constitution - Chapter 876",
+   "chaptered_file": "CH_876_sb0187e.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1673037,
+     "date": "2026-03-23",
+     "yeas": 31,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1691971,
+     "date": "2026-04-13",
+     "yeas": 32,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1684027,
+     "date": "2026-04-13",
+     "yeas": 101,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "civil_rights",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "SB 237",
+   "family": [
+    "SB 237"
+   ],
+   "title": "Election Law - Presidential Electors - Selection and Voting",
+   "chapter": "Approved by the Governor - Chapter 469",
+   "chaptered_file": "CH_469_sb0237e.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1682134,
+     "date": "2026-04-10",
+     "yeas": 32,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "election_integrity",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "SB 249",
+   "family": [
+    "SB 249"
+   ],
+   "title": "Tobacco Product Licensees - Additional Licensure for Electronic Smoking Devices",
+   "chapter": "Approved by the Governor - Chapter 415",
+   "chaptered_file": "CH_415_sb0249t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1685422,
+     "date": "2026-04-13",
+     "yeas": 106,
+     "nays": 30,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "SB 279",
+   "family": [
+    "SB 249",
+    "SB 279"
+   ],
+   "title": "Baltimore City - Cigarettes, Other Tobacco Products, and Electronic Smoking Devices - Enforcement and Licensure",
+   "chapter": "Approved by the Governor - Chapter 387",
+   "chaptered_file": "CH_387_sb0279t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1685471,
+     "date": "2026-04-13",
+     "yeas": 95,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "local tobacco enforcement (Baltimore City)",
+   "batch": null
+  },
+  {
+   "measure": "SB 284",
+   "family": [
+    "SB 284"
+   ],
+   "title": "Budget Reconciliation and Financing Act of 2026",
+   "chapter": "Approved by the Governor - Chapter 6",
+   "chaptered_file": "CH_6_sb0284e.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1672453,
+     "date": "2026-03-18",
+     "yeas": 34,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1672467,
+     "date": "2026-03-26",
+     "yeas": 98,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1675771,
+     "date": "2026-03-30",
+     "yeas": 31,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1676541,
+     "date": "2026-03-30",
+     "yeas": 92,
+     "nays": 23,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "budget reconciliation omnibus",
+   "batch": null
+  },
+  {
+   "measure": "SB 305",
+   "family": [
+    "SB 305"
+   ],
+   "title": "Qualifying Nonprofit Organizations - Incarcerated Individual Training and Reentry Grant Fund - Extension",
+   "chapter": "Approved by the Governor - Chapter 403",
+   "chaptered_file": "CH_403_sb0305t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1682963,
+     "date": "2026-04-10",
+     "yeas": 98,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "social_programs_and_welfare",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "SB 311",
+   "family": [
+    "SB 311"
+   ],
+   "title": "Education - The Blueprint for Maryland's Future - Revisions",
+   "chapter": "Approved by the Governor - Chapter 602",
+   "chaptered_file": "CH_602_sb0311e.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1673076,
+     "date": "2026-03-20",
+     "yeas": 30,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1681789,
+     "date": "2026-04-09",
+     "yeas": 96,
+     "nays": 37,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1684926,
+     "date": "2026-04-13",
+     "yeas": 100,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1683144,
+     "date": "2026-04-13",
+     "yeas": 33,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "omnibus education funding changes",
+   "batch": null
+  },
+  {
+   "measure": "SB 322",
+   "family": [
+    "SB 322"
+   ],
+   "title": "Courts - Jury Service - Disqualification",
+   "chapter": "Enacted under Article II, Section 17(c) of the Maryland Constitution - Chapter 875",
+   "chaptered_file": "CH_875_sb0322t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1660583,
+     "date": "2026-03-05",
+     "yeas": 32,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1685426,
+     "date": "2026-04-13",
+     "yeas": 97,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "civil_rights",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "SB 323",
+   "family": [
+    "SB 323"
+   ],
+   "title": "Juvenile Court - Jurisdiction, Detention, and Confinement (Youth Charging Reform Act)",
+   "chapter": "Approved by the Governor - Chapter 609",
+   "chaptered_file": "CH_609_sb0323t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1660469,
+     "date": "2026-03-06",
+     "yeas": 32,
+     "nays": 12,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1678481,
+     "date": "2026-04-06",
+     "yeas": 92,
+     "nays": 39,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "contested direction: juvenile charging reform (recorded in batch-03)",
+   "batch": null
+  },
+  {
+   "measure": "SB 325",
+   "family": [
+    "HB 548",
+    "SB 325"
+   ],
+   "title": "Land Use - Permitting - Development Rights (Maryland Housing Certainty Act)",
+   "chapter": "Approved by the Governor - Chapter 590",
+   "chaptered_file": "CH_590_sb0325e.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1673042,
+     "date": "2026-03-19",
+     "yeas": 35,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1682236,
+     "date": "2026-04-10",
+     "yeas": 106,
+     "nays": 29,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "cross-file twin of HB 548, judged in this campaign",
+   "batch": null
+  },
+  {
+   "measure": "SB 346",
+   "family": [
+    "SB 346"
+   ],
+   "title": "Civil Actions - Violation of Constitutional Rights (No Kings Act)",
+   "chapter": "Approved by the Governor - Chapter 460",
+   "chaptered_file": "CH_460_sb0346e.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1672916,
+     "date": "2026-03-20",
+     "yeas": 30,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1681832,
+     "date": "2026-04-09",
+     "yeas": 96,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1681833,
+     "date": "2026-04-10",
+     "yeas": 31,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "cross-file twin of HB 351, judged in batch-02",
+   "batch": null
+  },
+  {
+   "measure": "SB 396",
+   "family": [
+    "SB 396"
+   ],
+   "title": "Anne Arundel County - Board of License Commissioners - Chief Inspector - Compensation",
+   "chapter": "Approved by the Governor - Chapter 856",
+   "chaptered_file": "CH_856_sb0396t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1685943,
+     "date": "2026-04-13",
+     "yeas": 96,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "local trivia: one county employee pay schedule",
+   "batch": null
+  },
+  {
+   "measure": "SB 412",
+   "family": [
+    "SB 412"
+   ],
+   "title": "Maryland Department of Health - Forensic Review Boards and Community Forensic Aftercare Program",
+   "chapter": "Approved by the Governor - Chapter 237",
+   "chaptered_file": "CH_237_sb0412e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1680771,
+     "date": "2026-04-08",
+     "yeas": 99,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "programme codification",
+   "batch": null
+  },
+  {
+   "measure": "SB 439",
+   "family": [
+    "SB 439"
+   ],
+   "title": "Employment Discrimination - Fire and Rescue Public Safety Employees - Use of Medical Cannabis",
+   "chapter": "Approved by the Governor - Chapter 183",
+   "chaptered_file": "CH_183_sb0439t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1660657,
+     "date": "2026-03-06",
+     "yeas": 33,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "civil_rights",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "SB 487",
+   "family": [
+    "SB 487"
+   ],
+   "title": "Motor Vehicles - Speed Monitoring Systems - Safety Corridors (Vulnerable Road User Protection Act of 2026)",
+   "chapter": "Approved by the Governor - Chapter 285",
+   "chaptered_file": "CH_285_sb0487e.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1672668,
+     "date": "2026-03-23",
+     "yeas": 33,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1680642,
+     "date": "2026-04-08",
+     "yeas": 98,
+     "nays": 34,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "senate",
+     "roll": 1681644,
+     "date": "2026-04-09",
+     "yeas": 31,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "speed cameras",
+   "batch": null
+  },
+  {
+   "measure": "SB 523",
+   "family": [
+    "SB 523"
+   ],
+   "title": "Department of Natural Resources - Water Resources - Identification of Vernal Pools (Jack Cover Vernal Pools Act of 2026)",
+   "chapter": "Approved by the Governor - Chapter 164",
+   "chaptered_file": "CH_164_sb0523e.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1683092,
+     "date": "2026-04-10",
+     "yeas": 97,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "SB 524",
+   "family": [
+    "SB 524"
+   ],
+   "title": "Juvenile Records - Access by Baltimore City Mayor's Office",
+   "chapter": "Approved by the Governor - Chapter 733",
+   "chaptered_file": "CH_733_sb0524t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1682103,
+     "date": "2026-04-10",
+     "yeas": 95,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "local and runs both ways: widens access to juvenile records",
+   "batch": null
+  },
+  {
+   "measure": "SB 594",
+   "family": [
+    "SB 594"
+   ],
+   "title": "Cannabis - Advertising - Alterations",
+   "chapter": "Approved by the Governor - Chapter 416",
+   "chaptered_file": "CH_416_sb0594e.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1672921,
+     "date": "2026-03-20",
+     "yeas": 30,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1685425,
+     "date": "2026-04-13",
+     "yeas": 87,
+     "nays": 41,
+     "q": "Third Reading Passed with Amendments"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "cannabis advertising administrative changes",
+   "batch": null
+  },
+  {
+   "measure": "SB 729",
+   "family": [
+    "SB 729"
+   ],
+   "title": "Real Property - Access to Counsel in Evictions Program - Expansion",
+   "chapter": "Approved by the Governor - Chapter 754",
+   "chaptered_file": "CH_754_sb0729t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1684466,
+     "date": "2026-04-13",
+     "yeas": 101,
+     "nays": 35,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "housing_affordability",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "SB 757",
+   "family": [
+    "SB 757"
+   ],
+   "title": "Economic Development - Local Sourcing Database",
+   "chapter": "Approved by the Governor - Chapter 423",
+   "chaptered_file": "CH_423_sb0757t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1672885,
+     "date": "2026-03-20",
+     "yeas": 30,
+     "nays": 11,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1685295,
+     "date": "2026-04-13",
+     "yeas": 96,
+     "nays": 38,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "no research area fits a local sourcing portal",
+   "batch": null
+  },
+  {
+   "measure": "SB 775",
+   "family": [
+    "SB 775"
+   ],
+   "title": "Public Safety - Gun Buyback Programs - Destruction of Firearms",
+   "chapter": "Approved by the Governor - Chapter 430",
+   "chaptered_file": "CH_430_sb0775t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1684953,
+     "date": "2026-04-13",
+     "yeas": 96,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "gun_control",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "SB 792",
+   "family": [
+    "SB 792"
+   ],
+   "title": "Hospitals - Immigration Enforcement Action - Policy Requirement",
+   "chapter": "Approved by the Governor - Chapter 162",
+   "chaptered_file": "CH_162_sb0792t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1683232,
+     "date": "2026-04-10",
+     "yeas": 99,
+     "nays": 33,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "immigration",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "SB 828",
+   "family": [
+    "SB 828"
+   ],
+   "title": "State Finance - Delinquent Federal Funds (Federal Obligations Enforcement Act)",
+   "chapter": "Approved by the Governor - Chapter 248",
+   "chaptered_file": "CH_248_sb0828t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1672495,
+     "date": "2026-03-19",
+     "yeas": 32,
+     "nays": 13,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1685292,
+     "date": "2026-04-13",
+     "yeas": 92,
+     "nays": 33,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "state-federal fiscal dispute mechanism; no area fits",
+   "batch": null
+  },
+  {
+   "measure": "SB 831",
+   "family": [
+    "SB 831"
+   ],
+   "title": "Labor Law - Child Labor Penalties, Private Sector Employee Labor Relations, and State Employee Labor Standards",
+   "chapter": "Approved by the Governor - Chapter 167",
+   "chaptered_file": "CH_167_sb0831t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1680477,
+     "date": "2026-04-08",
+     "yeas": 99,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "corporate_accountability",
+   "yea": "for",
+   "nay": "against",
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "SB 872",
+   "family": [
+    "SB 872"
+   ],
+   "title": "Reduction of Lead Risk in Housing - Rental Dwelling Unit - Definition",
+   "chapter": "Approved by the Governor - Chapter 225",
+   "chaptered_file": "CH_225_sb0872t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1685496,
+     "date": "2026-04-13",
+     "yeas": 99,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "environment_and_public_health",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  },
+  {
+   "measure": "SB 877",
+   "family": [
+    "SB 877"
+   ],
+   "title": "Baltimore City - Stop Sign Monitoring Systems Pilot Program - 41st Legislative District",
+   "chapter": "Approved by the Governor - Chapter 569",
+   "chaptered_file": "CH_569_sb0877t.pdf",
+   "rolls": [
+    {
+     "chamber": "house",
+     "roll": 1685307,
+     "date": "2026-04-13",
+     "yeas": 96,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "defer",
+   "decision": "defer",
+   "area": null,
+   "yea": null,
+   "nay": null,
+   "reason": "local stop-sign cameras (Baltimore City)",
+   "batch": null
+  },
+  {
+   "measure": "SB 949",
+   "family": [
+    "SB 949"
+   ],
+   "title": "Election Law - Absentee Ballots - State and Federal Requirements",
+   "chapter": "Approved by the Governor - Chapter 440",
+   "chaptered_file": "CH_440_sb0949t.pdf",
+   "rolls": [
+    {
+     "chamber": "senate",
+     "roll": 1683604,
+     "date": "2026-04-13",
+     "yeas": 35,
+     "nays": 10,
+     "q": "Third Reading Passed"
+    },
+    {
+     "chamber": "house",
+     "roll": 1685987,
+     "date": "2026-04-13",
+     "yeas": 96,
+     "nays": 36,
+     "q": "Third Reading Passed"
+    }
+   ],
+   "status": "judge",
+   "decision": "judge",
+   "area": "election_integrity",
+   "yea": "for",
+   "nay": null,
+   "reason": null,
+   "batch": null
+  }
+ ]
+}

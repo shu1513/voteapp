@@ -19,6 +19,8 @@ import {
   type ConnecticutEcrisArtifactRefreshResult,
   type ConnecticutEcrisArtifactTransactionType,
 } from "../pipeline/connecticutFinance/connecticutEcrisArtifactCache.js";
+import { writeConnecticutEcrisIndependentExpenditureCache } from "../pipeline/connecticutFinance/connecticutEcrisIndependentExpenditureCache.js";
+import { fetchConnecticutEcrisIndependentExpenditures } from "../pipeline/connecticutFinance/connecticutEcrisIndependentExpenditureClient.js";
 
 export const CONNECTICUT_ECRIS_RAW_DATA_REFRESH_JOB_NAME = "connecticut_ecris_raw_data_refresh";
 export const CONNECTICUT_ECRIS_RAW_DATA_REFRESH_DAILY_SCHEDULER_ID =
@@ -38,6 +40,10 @@ export type ConnecticutEcrisRawDataRefreshJobData = {
   requestedAt?: string;
 };
 
+export type ConnecticutEcrisIndependentExpenditureRefreshJobResult =
+  | { status: "refreshed"; filePath: string; rowCount: number; fetchedAt: string }
+  | { status: "failed"; error: string };
+
 export type ConnecticutEcrisRawDataRefreshJobResult = {
   enabled: boolean;
   force: boolean;
@@ -45,6 +51,12 @@ export type ConnecticutEcrisRawDataRefreshJobResult = {
   year: number;
   status: "disabled" | ConnecticutEcrisArtifactRefreshResult["status"];
   refresh: ConnecticutEcrisArtifactRefreshResult | null;
+  /**
+   * The year's SEEC Form 40 independent-expenditure artifact, refreshed after
+   * the candidate receipts CSV (null when the job targets another artifact or
+   * is disabled). A failed search never undoes the receipts refresh.
+   */
+  independentExpenditures: ConnecticutEcrisIndependentExpenditureRefreshJobResult | null;
 };
 
 type RawDataRefreshSchedulerRuntimeConfig = {
@@ -241,6 +253,7 @@ export async function runConnecticutEcrisRawDataRefreshJob(
       year: normalized.year,
       status: "disabled",
       refresh: null,
+      independentExpenditures: null,
     };
   }
 
@@ -256,6 +269,11 @@ export async function runConnecticutEcrisRawDataRefreshJob(
     timeoutMs: normalized.timeoutMs,
   });
 
+  const independentExpenditures =
+    normalized.transactionType === "receipts" && normalized.committeeType === "candidate_exploratory"
+      ? await refreshIndependentExpenditures({ year: normalized.year, cacheDir: normalized.cacheDir, timeoutMs: normalized.timeoutMs })
+      : null;
+
   return {
     enabled: true,
     force,
@@ -263,7 +281,29 @@ export async function runConnecticutEcrisRawDataRefreshJob(
     year: normalized.year,
     status: refresh.status,
     refresh,
+    independentExpenditures,
   };
+}
+
+async function refreshIndependentExpenditures(input: {
+  year: number;
+  cacheDir: string;
+  timeoutMs: number;
+}): Promise<ConnecticutEcrisIndependentExpenditureRefreshJobResult> {
+  try {
+    const fetchResult = await fetchConnecticutEcrisIndependentExpenditures({ year: input.year, timeoutMs: input.timeoutMs });
+    const written = await writeConnecticutEcrisIndependentExpenditureCache({ cacheDir: input.cacheDir, fetchResult });
+    return {
+      status: "refreshed",
+      filePath: written.filePath,
+      rowCount: written.artifact.rowCount,
+      fetchedAt: written.artifact.fetchedAt,
+    };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(`Connecticut eCRIS independent expenditure refresh failed for ${input.year}:`, message);
+    return { status: "failed", error: message };
+  }
 }
 
 export function createConnecticutEcrisRawDataRefreshWorker(): Worker<

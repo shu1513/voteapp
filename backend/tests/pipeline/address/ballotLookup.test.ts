@@ -3189,6 +3189,8 @@ describe("lookupElectionDetailById", () => {
       outside_spending: {
         support_total: null,
         oppose_total: null,
+        outside_coverage_note:
+          "Connecticut totals count independent expenditures that SEEC Form 40 filers reported as paid and tied to this one candidate; expenditures not yet paid, lines naming several candidates at once, and spending reported on other SEEC forms (party and PAC statements, and reports by spenders that are not committees) are not included.",
         top_supporting_groups: [],
         top_opposing_groups: [],
         top_supporting_industries: [],
@@ -3207,10 +3209,11 @@ describe("lookupElectionDetailById", () => {
         top_outside_supporting_industries: [],
       },
     });
-    expect(query).toHaveBeenCalledTimes(10);
+    expect(query).toHaveBeenCalledTimes(11);
     expect(query.mock.calls[7]?.[0]).toContain("public.ct_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.ct_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'industry')");
+    expect(query.mock.calls[9]?.[0]).toContain("public.ct_candidate_finance_outside_groups");
     expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.co_candidate_finance");
     expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.ca_candidate_finance");
     expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.candidate_finance_summaries");

@@ -56,7 +56,9 @@ which never say WHICH report — a yea might pass the bill or kill it — and th
 other 12 are the bare `Recede` rolls, kept out for the reason above; all are
 left for a human. That bucket earned its keep immediately: LD 2231's 2026-03-10
 Senate `Accept Report` (18-13) turns out to be acceptance of a committee's
-study report before referral, not a vote on the bill.
+study report before referral, not a vote on the bill. **All 31 have since been
+matched to the Maine journal and dispositioned — see `surfaced/`, and
+`CODE-FINDINGS.md` §4 for the nine that are substantive but unreachable.**
 
 ## Roster reach
 

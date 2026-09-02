@@ -255,6 +255,8 @@ services:
         value: "true"
       - key: WASHINGTON_CAMPAIGN_FINANCE_ENABLED
         value: "true"
+      - key: WEST_VIRGINIA_CAMPAIGN_FINANCE_ENABLED
+        value: "false"
       - key: WISCONSIN_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - fromGroup: voteapp-shared

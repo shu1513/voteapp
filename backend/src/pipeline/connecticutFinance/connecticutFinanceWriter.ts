@@ -40,18 +40,32 @@ export type ConnecticutFinanceDirectBreakdownInput = {
   sourceUrl?: string | null;
 };
 
+export type ConnecticutFinanceSupportOppose = "support" | "oppose";
+
+export type ConnecticutFinanceOutsideGroupInput = {
+  committeeId: string;
+  committeeName: string;
+  supportOppose: ConnecticutFinanceSupportOppose;
+  amount: number;
+  sourceUrl?: string | null;
+};
+
 export type ConnecticutFinanceSnapshotInput = {
   db: Queryable;
   link: ConnecticutFinanceLinkInput;
   syncedAt?: Date;
   summary?: ConnecticutFinanceSummaryInput;
+  /** Omit when unavailable; pass [] after a successful aggregation with no breakdowns. */
   directBreakdowns?: readonly ConnecticutFinanceDirectBreakdownInput[];
+  /** Omit when unavailable; pass [] after a successful aggregation with no outside groups. */
+  outsideGroups?: readonly ConnecticutFinanceOutsideGroupInput[];
 };
 
 export type ConnecticutFinanceSnapshotWriteResult = {
   linkId: string;
   summaryWritten: boolean;
   directBreakdownsWritten: number;
+  outsideGroupsWritten: number;
 };
 
 function requireNonEmpty(value: string, fieldName: string): string {
@@ -329,6 +343,86 @@ async function deleteStaleDirectBreakdowns(input: {
   );
 }
 
+function normalizeOutsideGroupKey(group: ConnecticutFinanceOutsideGroupInput): {
+  committee_id: string;
+  support_oppose: ConnecticutFinanceSupportOppose;
+} {
+  if (group.supportOppose !== "support" && group.supportOppose !== "oppose") {
+    throw new Error(`Invalid Connecticut finance outside group stance: ${String(group.supportOppose)}`);
+  }
+  return {
+    committee_id: requireNonEmpty(group.committeeId, "Connecticut outside group committee id"),
+    support_oppose: group.supportOppose,
+  };
+}
+
+async function upsertOutsideGroup(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  group: ConnecticutFinanceOutsideGroupInput;
+  syncedAt: Date;
+}): Promise<void> {
+  const key = normalizeOutsideGroupKey(input.group);
+  await input.db.query(
+    `
+      INSERT INTO public.ct_candidate_finance_outside_groups (
+        link_id,
+        election_year,
+        committee_id,
+        committee_name,
+        support_oppose,
+        amount,
+        source_url,
+        last_synced_at
+      )
+      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8::timestamptz)
+      ON CONFLICT (link_id, election_year, committee_id, support_oppose)
+      DO UPDATE SET
+        committee_name = EXCLUDED.committee_name,
+        amount = EXCLUDED.amount,
+        source_url = EXCLUDED.source_url,
+        last_synced_at = EXCLUDED.last_synced_at
+    `,
+    [
+      requireNonEmpty(input.linkId, "Connecticut finance link id"),
+      normalizeElectionYear(input.electionYear),
+      key.committee_id,
+      requireNonEmpty(input.group.committeeName, "Connecticut outside group committee name"),
+      key.support_oppose,
+      normalizeAmount(input.group.amount, "outside group amount"),
+      normalizeOptionalText(input.group.sourceUrl),
+      input.syncedAt.toISOString(),
+    ]
+  );
+}
+
+async function deleteStaleOutsideGroups(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  groups: readonly ConnecticutFinanceOutsideGroupInput[];
+}): Promise<void> {
+  const keys = input.groups.map(normalizeOutsideGroupKey);
+  await input.db.query(
+    `
+      DELETE FROM public.ct_candidate_finance_outside_groups
+      WHERE link_id = $1::uuid
+        AND election_year = $2
+        AND NOT EXISTS (
+          SELECT 1
+          FROM jsonb_to_recordset($3::jsonb) AS keep(
+            committee_id text,
+            support_oppose text
+          )
+          WHERE keep.committee_id = ct_candidate_finance_outside_groups.committee_id
+            AND keep.support_oppose = ct_candidate_finance_outside_groups.support_oppose
+        )
+    `,
+    [requireNonEmpty(input.linkId, "Connecticut finance link id"), normalizeElectionYear(input.electionYear), JSON.stringify(keys)]
+  );
+}
+
 export async function replaceConnecticutCandidateFinanceSnapshot(
   input: ConnecticutFinanceSnapshotInput
 ): Promise<ConnecticutFinanceSnapshotWriteResult> {
@@ -352,10 +446,18 @@ export async function replaceConnecticutCandidateFinanceSnapshot(
       await deleteStaleDirectBreakdowns({ db, linkId, electionYear, breakdowns: input.directBreakdowns });
     }
 
+    for (const group of input.outsideGroups ?? []) {
+      await upsertOutsideGroup({ db, linkId, electionYear, group, syncedAt });
+    }
+    if (input.outsideGroups) {
+      await deleteStaleOutsideGroups({ db, linkId, electionYear, groups: input.outsideGroups });
+    }
+
     return {
       linkId,
       summaryWritten: Boolean(input.summary),
       directBreakdownsWritten: input.directBreakdowns?.length ?? 0,
+      outsideGroupsWritten: input.outsideGroups?.length ?? 0,
     };
   });
 }

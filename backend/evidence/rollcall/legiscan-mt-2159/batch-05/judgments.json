@@ -1,0 +1,256 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1481006,
+      "measure_id": "HB 39",
+      "vote_date": "2025-01-15",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 39, which lets political parties give money to candidates for judge. Montana law had banned party gifts to judicial candidates outright, and that ban is now repealed. Judges in Montana still run on a nonpartisan ballot, with no party label beside their names. The change also reaches justices of the peace, who had been covered by the same ban. The Montana House passed it 57-43, and it became law.",
+      "nay_description": "Voted against House Bill 39, which lets political parties give money to candidates for judge. Montana law had banned party gifts to judicial candidates outright, and that ban is now repealed. Judges in Montana still run on a nonpartisan ballot, with no party label beside their names. The change also reaches justices of the peace, who had been covered by the same ban. The Montana House passed it 57-43, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1490713,
+      "measure_id": "HB 39",
+      "vote_date": "2025-02-15",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 39, which lets political parties give money to candidates for judge. Montana law had banned party gifts to judicial candidates outright, and that ban is now repealed. Judges in Montana still run on a nonpartisan ballot, with no party label beside their names. The change also reaches justices of the peace, who had been covered by the same ban. The Montana Senate passed it 25-23, and it became law.",
+      "nay_description": "Voted against House Bill 39, which lets political parties give money to candidates for judge. Montana law had banned party gifts to judicial candidates outright, and that ban is now repealed. Judges in Montana still run on a nonpartisan ballot, with no party label beside their names. The change also reaches justices of the peace, who had been covered by the same ban. The Montana Senate passed it 25-23, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1532267,
+      "measure_id": "HB 201",
+      "vote_date": "2025-04-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 201, which is about people paid to collect signatures for ballot petitions. A paid gatherer must now say out loud that they are paid, give their first name, and name the state where they legally live. They must say this to everyone they approach about signing. They must also wear a badge showing the same details, with their full first name and last initial. The law took effect at once. The Montana House adopted the final compromise version 57-42, and it became law.",
+      "nay_description": "Voted against House Bill 201, which is about people paid to collect signatures for ballot petitions. A paid gatherer must now say out loud that they are paid, give their first name, and name the state where they legally live. They must say this to everyone they approach about signing. They must also wear a badge showing the same details, with their full first name and last initial. The law took effect at once. The Montana House adopted the final compromise version 57-42, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1537129,
+      "measure_id": "HB 201",
+      "vote_date": "2025-04-04",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 201, which is about people paid to collect signatures for ballot petitions. A paid gatherer must now say out loud that they are paid, give their first name, and name the state where they legally live. They must say this to everyone they approach about signing. They must also wear a badge showing the same details, with their full first name and last initial. The law took effect at once. The Montana Senate adopted the final compromise version 27-22, and it became law.",
+      "nay_description": "Voted against House Bill 201, which is about people paid to collect signatures for ballot petitions. A paid gatherer must now say out loud that they are paid, give their first name, and name the state where they legally live. They must say this to everyone they approach about signing. They must also wear a badge showing the same details, with their full first name and last initial. The law took effect at once. The Montana Senate adopted the final compromise version 27-22, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1501539,
+      "measure_id": "HB 413",
+      "vote_date": "2025-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 413, which tightens the test for where a person counts as living for voting. A person does not gain residence in a county or in Montana by relocating there for a temporary purpose. The law names temporary work, training, and an educational program as examples. The test is whether the person means to make the place their permanent home once that work or program ends. The other residence rules are unchanged. The Montana House passed it 56-42, and it became law.",
+      "nay_description": "Voted against House Bill 413, which tightens the test for where a person counts as living for voting. A person does not gain residence in a county or in Montana by relocating there for a temporary purpose. The law names temporary work, training, and an educational program as examples. The test is whether the person means to make the place their permanent home once that work or program ends. The other residence rules are unchanged. The Montana House passed it 56-42, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1545872,
+      "measure_id": "HB 413",
+      "vote_date": "2025-04-11",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 413, which tightens the test for where a person counts as living for voting. A person does not gain residence in a county or in Montana by relocating there for a temporary purpose. The law names temporary work, training, and an educational program as examples. The test is whether the person means to make the place their permanent home once that work or program ends. The other residence rules are unchanged. The Montana Senate passed it 30-18, and it became law.",
+      "nay_description": "Voted against House Bill 413, which tightens the test for where a person counts as living for voting. A person does not gain residence in a county or in Montana by relocating there for a temporary purpose. The law names temporary work, training, and an educational program as examples. The test is whether the person means to make the place their permanent home once that work or program ends. The other residence rules are unchanged. The Montana Senate passed it 30-18, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1508630,
+      "measure_id": "HB 711",
+      "vote_date": "2025-03-07",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 711, which is about who may chair the commission that redraws Montana's district lines. Four commissioners are named by legislative leaders, and those four pick a fifth member to preside. If they cannot agree in time, the Supreme Court picks the fifth member instead. The court may no longer choose anyone who has given money in the past ten years to a major party candidate for state or federal office. The Montana House passed it 57-42, and it became law.",
+      "nay_description": "Voted against House Bill 711, which is about who may chair the commission that redraws Montana's district lines. Four commissioners are named by legislative leaders, and those four pick a fifth member to preside. If they cannot agree in time, the Supreme Court picks the fifth member instead. The court may no longer choose anyone who has given money in the past ten years to a major party candidate for state or federal office. The Montana House passed it 57-42, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1547715,
+      "measure_id": "HB 711",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 711, which is about who may chair the commission that redraws Montana's district lines. Four commissioners are named by legislative leaders, and those four pick a fifth member to preside. If they cannot agree in time, the Supreme Court picks the fifth member instead. The court may no longer choose anyone who has given money in the past ten years to a major party candidate for state or federal office. The Montana Senate passed it 29-19, and it became law.",
+      "nay_description": "Voted against House Bill 711, which is about who may chair the commission that redraws Montana's district lines. Four commissioners are named by legislative leaders, and those four pick a fifth member to preside. If they cannot agree in time, the Supreme Court picks the fifth member instead. The court may no longer choose anyone who has given money in the past ten years to a major party candidate for state or federal office. The Montana Senate passed it 29-19, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1508609,
+      "measure_id": "HB 719",
+      "vote_date": "2025-03-07",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 719, which adds date of birth to Montana's voting paperwork. A person registering to vote must give a date of birth as well as an identification number. Someone voting by absentee or mail ballot must write it on the signature envelope. Election staff must check that date against the record before counting the ballot as a regular one. If it is missing or does not match, the voter is notified and has until 8 p.m. on election day to fix it. A ballot not fixed in time is treated as provisional. The Montana House passed it 57-42, and it became law.",
+      "nay_description": "Voted against House Bill 719, which adds date of birth to Montana's voting paperwork. A person registering to vote must give a date of birth as well as an identification number. Someone voting by absentee or mail ballot must write it on the signature envelope. Election staff must check that date against the record before counting the ballot as a regular one. If it is missing or does not match, the voter is notified and has until 8 p.m. on election day to fix it. A ballot not fixed in time is treated as provisional. The Montana House passed it 57-42, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1554827,
+      "measure_id": "HB 719",
+      "vote_date": "2025-04-22",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 719, which adds date of birth to Montana's voting paperwork. A person registering to vote must give a date of birth as well as an identification number. Someone voting by absentee or mail ballot must write it on the signature envelope. Election staff must check that date against the record before counting the ballot as a regular one. If it is missing or does not match, the voter is notified and has until 8 p.m. on election day to fix it. A ballot not fixed in time is treated as provisional. The Montana Senate passed it 32-18, and it became law.",
+      "nay_description": "Voted against House Bill 719, which adds date of birth to Montana's voting paperwork. A person registering to vote must give a date of birth as well as an identification number. Someone voting by absentee or mail ballot must write it on the signature envelope. Election staff must check that date against the record before counting the ballot as a regular one. If it is missing or does not match, the voter is notified and has until 8 p.m. on election day to fix it. A ballot not fixed in time is treated as provisional. The Montana Senate passed it 32-18, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1546344,
+      "measure_id": "SB 41",
+      "vote_date": "2025-04-11",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 41, which changes how a replacement judge is chosen. When a district judge is removed from a case, disqualified, or steps aside, the next judge must now be picked at random. The state court administrator writes the procedure and had to send it to every district judge by October 15, 2025. The method must still keep the replacement judge reasonably close by, while staying random. The Montana House passed it 56-43, and it became law.",
+      "nay_description": "Voted against Senate Bill 41, which changes how a replacement judge is chosen. When a district judge is removed from a case, disqualified, or steps aside, the next judge must now be picked at random. The state court administrator writes the procedure and had to send it to every district judge by October 15, 2025. The method must still keep the replacement judge reasonably close by, while staying random. The Montana House passed it 56-43, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1481224,
+      "measure_id": "SB 41",
+      "vote_date": "2025-01-29",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 41, which changes how a replacement judge is chosen. When a district judge is removed from a case, disqualified, or steps aside, the next judge must now be picked at random. The state court administrator writes the procedure and had to send it to every district judge by October 15, 2025. The method must still keep the replacement judge reasonably close by, while staying random. The Montana Senate passed it 32-17, and it became law.",
+      "nay_description": "Voted against Senate Bill 41, which changes how a replacement judge is chosen. When a district judge is removed from a case, disqualified, or steps aside, the next judge must now be picked at random. The state court administrator writes the procedure and had to send it to every district judge by October 15, 2025. The method must still keep the replacement judge reasonably close by, while staying random. The Montana Senate passed it 32-17, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1531112,
+      "measure_id": "SB 105",
+      "vote_date": "2025-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 105, which widens Montana's ban on campaigning near voters. The ban used to apply on election day at polling places. It now applies at any place where a person may get or cast a ballot, for all the hours that place is open. That covers the whole stretch when absentee ballots are available. The 100-foot boundary is unchanged, and so is the rule barring candidates and their campaigns from handing out food, drink, or anything of value to voters inside it. The Montana House passed it 77-21, and it became law.",
+      "nay_description": "Voted against Senate Bill 105, which widens Montana's ban on campaigning near voters. The ban used to apply on election day at polling places. It now applies at any place where a person may get or cast a ballot, for all the hours that place is open. That covers the whole stretch when absentee ballots are available. The 100-foot boundary is unchanged, and so is the rule barring candidates and their campaigns from handing out food, drink, or anything of value to voters inside it. The Montana House passed it 77-21, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1537120,
+      "measure_id": "SB 105",
+      "vote_date": "2025-04-04",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 105, which widens Montana's ban on campaigning near voters. The ban used to apply on election day at polling places. It now applies at any place where a person may get or cast a ballot, for all the hours that place is open. That covers the whole stretch when absentee ballots are available. The 100-foot boundary is unchanged, and so is the rule barring candidates and their campaigns from handing out food, drink, or anything of value to voters inside it. The Montana Senate backed the House's version 36-13, and it became law.",
+      "nay_description": "Voted against Senate Bill 105, which widens Montana's ban on campaigning near voters. The ban used to apply on election day at polling places. It now applies at any place where a person may get or cast a ballot, for all the hours that place is open. That covers the whole stretch when absentee ballots are available. The 100-foot boundary is unchanged, and so is the rule barring candidates and their campaigns from handing out food, drink, or anything of value to voters inside it. The Montana Senate backed the House's version 36-13, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import {
   type ConnecticutDirectContributionAggregationResult,
 } from "./connecticutDirectContributionAggregator.js";
 import type { ConnecticutEcrisArtifactRow } from "./connecticutEcrisArtifactReader.js";
+import type { ConnecticutEcrisIndependentExpenditureRow } from "./connecticutEcrisIndependentExpenditureParsers.js";
 import {
   normalizeConnecticutCandidateNameKeys,
   resolveConnecticutCandidateCommittee,
@@ -14,6 +15,10 @@ import {
   replaceConnecticutCandidateFinanceSnapshot,
   type ConnecticutFinanceLinkInput,
 } from "./connecticutFinanceWriter.js";
+import {
+  aggregateConnecticutOutsideSpending,
+  type ConnecticutOutsideSpendingAggregationResult,
+} from "./connecticutOutsideSpendingAggregator.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -28,9 +33,18 @@ export type ConnecticutCandidateFinanceSyncInput = {
   receiptRows: readonly ConnecticutEcrisArtifactRow[];
   sourceUrl?: string | null;
   receiptSourceUrl?: string | null;
+  /**
+   * The year's SEEC Form 40 independent-expenditure lines. Omit when the
+   * yearly artifact is unavailable: stored outside-spending data is then left
+   * untouched. Pass the full year (even []) after a successful fetch: that is
+   * authoritative and clears superseded groups and totals.
+   */
+  independentExpenditureRows?: readonly ConnecticutEcrisIndependentExpenditureRow[];
+  independentExpenditureSourceUrl?: string | null;
   now?: Date;
   dryRun?: boolean;
   directMaxBreakdownsPerCategory?: number;
+  maxOutsideGroupsPerStance?: number;
 };
 
 export type ConnecticutCandidateFinanceSyncResult = {
@@ -42,10 +56,14 @@ export type ConnecticutCandidateFinanceSyncResult = {
   linkWritten: boolean;
   summaryWritten: boolean;
   directBreakdownsWritten: number;
+  outsideGroupsWritten: number;
   totalReceipts: number | null;
+  outsideSupportTotal: number | null;
+  outsideOpposeTotal: number | null;
   matchedReceiptRowCount: number;
   includedReceiptRowCount: number;
   skippedReceiptRowCount: number;
+  outsideAggregation: ConnecticutOutsideSpendingAggregationResult | null;
 };
 
 function requireNonEmpty(value: string, fieldName: string): string {
@@ -148,10 +166,14 @@ export async function syncConnecticutCandidateFinance(
       linkWritten: false,
       summaryWritten: false,
       directBreakdownsWritten: 0,
+      outsideGroupsWritten: 0,
       totalReceipts: null,
+      outsideSupportTotal: null,
+      outsideOpposeTotal: null,
       matchedReceiptRowCount: 0,
       includedReceiptRowCount: 0,
       skippedReceiptRowCount: 0,
+      outsideAggregation: null,
     };
   }
 
@@ -162,6 +184,25 @@ export async function syncConnecticutCandidateFinance(
     receiptSourceUrl: input.receiptSourceUrl ?? resolution.sourceUrl,
     maxBreakdownsPerCategory: input.directMaxBreakdownsPerCategory,
   });
+  const outsideAggregation = input.independentExpenditureRows
+    ? aggregateConnecticutOutsideSpending({
+        candidateName,
+        officeName,
+        electionYear,
+        expenditureRows: input.independentExpenditureRows,
+        sourceUrl: input.independentExpenditureSourceUrl ?? null,
+        maxGroupsPerStance: input.maxOutsideGroupsPerStance,
+      })
+    : null;
+  const outsideGroups = outsideAggregation
+    ? outsideAggregation.summary.groups.map((group) => ({
+        committeeId: group.committeeId,
+        committeeName: group.committeeName,
+        supportOppose: group.supportOppose,
+        amount: group.amount,
+        sourceUrl: group.sourceUrl,
+      }))
+    : undefined;
   const link = toFinanceLink({
     candidateId,
     electionId,
@@ -180,8 +221,13 @@ export async function syncConnecticutCandidateFinance(
       db: input.db,
       link,
       syncedAt,
-      summary: directFinance.summary,
+      summary: {
+        ...directFinance.summary,
+        outsideSupportTotal: outsideAggregation?.summary.supportTotal ?? null,
+        outsideOpposeTotal: outsideAggregation?.summary.opposeTotal ?? null,
+      },
       directBreakdowns: directFinance.directBreakdowns,
+      outsideGroups,
     });
   }
 
@@ -194,9 +240,13 @@ export async function syncConnecticutCandidateFinance(
     linkWritten: !input.dryRun,
     summaryWritten: !input.dryRun,
     directBreakdownsWritten: input.dryRun ? 0 : directFinance.directBreakdowns.length,
+    outsideGroupsWritten: input.dryRun ? 0 : outsideGroups?.length ?? 0,
     totalReceipts: directFinance.summary.totalReceipts,
+    outsideSupportTotal: outsideAggregation?.summary.supportTotal ?? null,
+    outsideOpposeTotal: outsideAggregation?.summary.opposeTotal ?? null,
     matchedReceiptRowCount: directFinance.matchedReceiptRowCount,
     includedReceiptRowCount: directFinance.includedReceiptRowCount,
     skippedReceiptRowCount: directFinance.skippedReceiptRowCount,
+    outsideAggregation,
   };
 }
