@@ -89,6 +89,17 @@ the clearest case: three quarters of the bill is a gang-related sentencing
 enhancement with no immigration element, so a member voting no is not thereby
 tagged as taking an immigration position.
 
+## No description claims finality
+
+The 2025-2026 biennium had not adjourned when the dataset was cut on
+2026-08-30; the feed holds a House vote from 2026-08-04. So no bill here is
+provably dead. H936 is in a conference committee that has not reported. S1082
+is in House Rules and the election it names has not happened. Every description
+uses the present tense — "has not voted", "is not law", "has not gone to
+voters" — and states the position as of the dataset date. An earlier draft
+said "died" and "did not become law"; that was a claim about the future and
+was rewritten before review closed.
+
 ## Reading level
 
 Every description was measured. All 30 fall between grade 5.1 and grade 6.9 on

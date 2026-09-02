@@ -2,7 +2,7 @@
 
 Batches 01 and 02 worked the divided votes on bills that became law. Batch 03
 opened the other pool and took the vetoed measures. Batch 04 takes what is left:
-bills that passed one chamber on a divided vote and then died there.
+bills that passed one chamber on a divided vote and went no further.
 
 A member's vote is a real, recorded position whether or not the bill survived,
 so these belong in the record. Pennsylvania batch-02 set the same precedent.
@@ -10,7 +10,7 @@ so these belong in the record. Pennsylvania batch-02 set the same precedent.
 ## The pool
 
 49 rolls, one per measure. Every one is LegiScan status 2, meaning the bill
-passed a single chamber and went no further. All 49 were marked
+passed a single chamber and, as of the 2026-08-30 dataset, went no further. All 49 were marked
 `candidate:batch-04-unbatched` in `../survey/divided-not-enacted-worklist.tsv`.
 
 That worklist is now fully dispositioned. Across its 82 rolls: 19 judged,
@@ -75,10 +75,12 @@ finding 4 in `../CODE-FINDINGS.md`. The roll sits in `held-rolls/`.
 
 ## Two things the descriptions get right on purpose
 
-**S1082 never reached the ballot.** The Senate voted 30-16 to send the amendment
-to voters on 2026-11-03. The House never voted, so the question did not go to
-voters. A description saying North Carolina will vote on right-to-work would be
-wrong. This is also why S1082 carries `acknowledge_later_rolls`: its second and
+**S1082 has not reached the ballot.** The Senate voted 30-16 to send the
+amendment to voters on 2026-11-03. The House has not acted, so the question has
+not gone to voters. A description saying North Carolina will vote on
+right-to-work would be wrong, and so would one saying the matter is closed:
+the biennium has not adjourned, so every description in this batch describes
+status as of the dataset date and claims no finality. This is also why S1082 carries `acknowledge_later_rolls`: its second and
 third readings are both kept votes on the same day with the identical 30-16
 tally, and only the third reading is imported.
 
