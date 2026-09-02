@@ -153,9 +153,20 @@ Implemented: grid paging (`collectKansasCfrGridPages`), `kansasKpdcIndexClient` 
 - **KPDC trees carry dead-host links**: 91 of the House tree's 810 links (all `amend*`, all `Aff*`, a few reports) are absolute `http://ethics.ks.gov/CFAScanned/...` URLs; the artifacts are live at `www.kansas.gov/ethics/CFAScanned/...` (verified), so the client rewrites those hosts instead of dropping them. Filename grammar classified all 810 live House links with zero unknowns (AT 261+5 amend, report 377+78 amend, PLF 78, Aff 10, Term 1); IE tree = 27 links incl. Oct (`_2610`) filings.
 - **Cache**: byte-identical re-store is a no-op keeping the original manifest; changed bytes write a new immutable version with `supersedes` = prior sha; sha256 verified on every read; 0700/0600 modes (exports carry 25-4154(d) PII).
 
-### Phase 2 — parsers + inventory
+### Phase 2 — parsers + inventory — IN PROGRESS
 
 Every parsed report carries: period, type, amendment relation, filing channel (viewer-html | kpdc-pdf), extraction confidence. Period ledger driven by the official due-date calendar above.
+
+**Step 1 DONE 2026-09-01 — Schedule A itemized rows** (`parseKansasScheduleARows` + `checkKansasScheduleA` in `kansasCfrViewerParsers.ts`). Validated live on 11 e-filed reports (8 House, 3 statewide incl. a 3,349-row / 4.5 MB Governor schedule), every one cent-exact: row Amounts = `lblTotalItemized`; itemized + unitemized + political materials + unknown = `lblTotalReceipts` = cover line 2. Test fixtures use invented names only (25-4154(d)). Facts locked in live:
+
+- Schedule A renders ALL rows on one page (no pager at 3,349 rows). One `<tr>` of seven `<td>`s per row; only address/zip carry id-stamped spans (`Repeater2_lblAddress_N` / `Repeater2_lblZip_N`); the name is the free text before the first `<br />` (a person filed through the form's first/last fields renders as two source lines, an entity as one — a hint, not a classification).
+- "Primary Total" / "General Total" are the contributor's running phase aggregates; row money is the "Amount" column only.
+- Tender values seen: `Cash`, `Check`, `Credit Card`, `E Funds`, `Loan`, `Other`, `Refund`. `Refund` rows are POSITIVE receipts (vendor money back to the campaign; 14 rows / $2,951.42 on one Governor report, no occupation) and `Loan` rows are candidate loans — both count in receipts but are not contributions, so Phase 4 classifies by tender before occupation/size buckets. No negative Amount was seen on Schedule A.
+- A report can carry every receipt on "Sale of Political Materials (Unitemized)" with zero itemized rows (HD116, $2,538.28).
+- Candidate last-minute reports appear in the "Receipts and Expenditures Report" grid as ordinary rows whose cover period is the PLF window (HD5, 7/24–7/29/2026) — the ledger classifies a filing by its cover period, never by grid filing type.
+- The results page's hidden state stays valid for successive row postbacks (11 covers opened from one results page) — a sync needs one search per candidate, then one postback + one schedule GET per report.
+
+Remaining: Schedule B rows (in-kind individuals) and Schedule C rows (only for the Phase 5 PAC path); period ledger `kansasReportInventory.ts` from the 25-4148 calendar; KPDC PDF classification (cover recovery exists from Phase 0; itemized rows from OCR are out of scope — paper filers get totals only and no breakdowns).
 
 ### Phase 3 — resolver + auto-link — DONE 2026-09-01 (live dry run + real run green)
 
