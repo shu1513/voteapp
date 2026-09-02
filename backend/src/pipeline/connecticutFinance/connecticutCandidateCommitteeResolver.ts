@@ -156,14 +156,20 @@ function candidateNameFromReceiptRow(row: ConnecticutEcrisArtifactRow): string {
     .join(" ");
 }
 
-function rowMatchesCandidateName(input: {
-  row: ConnecticutEcrisArtifactRow;
+/**
+ * Whether an eCRIS-sourced person name is the VoteApp candidate.
+ * `candidateNameKeys` must come from normalizeConnecticutCandidateNameKeys
+ * with `expandNicknames: true` (the VoteApp side); the eCRIS name keys
+ * literally. Shared by the committee resolver (receipt rows) and the
+ * outside-spending aggregator (independent-expenditure target names).
+ */
+export function connecticutCandidateNameMatches(input: {
   candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
+  ecrisName: string;
 }): boolean {
-  const rowName = candidateNameFromReceiptRow(input.row);
   let keyMatched = false;
-  for (const key of normalizeConnecticutCandidateNameKeys(rowName)) {
+  for (const key of normalizeConnecticutCandidateNameKeys(input.ecrisName)) {
     if (input.candidateNameKeys.has(key)) {
       keyMatched = true;
       break;
@@ -180,10 +186,22 @@ function rowMatchesCandidateName(input: {
   // VoteApp side only.
   return !hasMiddleNameConflict({
     candidateName: input.candidateName,
-    rowNames: [rowName],
+    rowNames: [input.ecrisName],
     normalizePersonName,
     firstNamesEquivalent: (candidateFirst, rowFirst) =>
       candidateFirst === rowFirst || firstNameVariants(candidateFirst).includes(rowFirst),
+  });
+}
+
+function rowMatchesCandidateName(input: {
+  row: ConnecticutEcrisArtifactRow;
+  candidateName: string;
+  candidateNameKeys: ReadonlySet<string>;
+}): boolean {
+  return connecticutCandidateNameMatches({
+    candidateName: input.candidateName,
+    candidateNameKeys: input.candidateNameKeys,
+    ecrisName: candidateNameFromReceiptRow(input.row),
   });
 }
 
