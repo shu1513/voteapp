@@ -86,6 +86,58 @@ const MISSOURI_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
   /^senate: emergency clause$/,
 ];
 
+// Alabama's floor-question vocabulary, shared by its 2025 and 2026 regular
+// sessions. Both were surveyed separately and print the SAME families, so
+// they share one definition rather than two copies that could drift apart.
+// The 2026 session adds two spellings, both harmless no-ops against 2025
+// (verified: zero 2025 rolls match either).
+const ALABAMA_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // Conference-report votes. Listed first so the concurrence rule below
+  // cannot claim them.
+  { pattern: /concur[ -]in and adopt conference committee report/, questionClass: "conference_report" },
+  // `<sponsor> Concur In and Adopt - Roll Call 1188`, `Concur In and Senate
+  // Amendment`, `Senate Concurs In House Amendment`, `<sponsor> Motion to
+  // Concur In and Adopt`, and the 2026 session's hyphenated
+  // `<sponsor> Concur-In and Adopt Executive Amendment` — the vote to accept
+  // a change the GOVERNOR sent back with the bill.
+  { pattern: /\bconcur(?:s)?[ -]in\b/, questionClass: "concurrence" },
+  // Alabama's passage question, with or without a sponsor prefix and with or
+  // without ` as Amended`.
+  { pattern: /\bmotion to read a third time and pass\b/, questionClass: "passage" },
+];
+const ALABAMA_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
+  // THE BUDGET ISOLATION RESOLUTION, under all FOUR of its captions. The
+  // first two are the pair every taken-up bill carries (identical tally and
+  // member list — see the AL entry's note). The last two are how a FAILED
+  // Budget Isolation Resolution prints, and the 2026 spelling is the
+  // dangerous one: the desc says only `Lost in House of Origin`, which reads
+  // like a failed passage vote, while the bill history line that records the
+  // same action says `BIR Lost in House of Origin` (HB 583 of 2026, 47-37 —
+  // it needed three fifths). Always take the history's word, not the desc's.
+  /^[hs]bir:/,
+  /^third reading in (?:house of origin|second house)$/,
+  /\bmotion to adopt bir\b/,
+  /^lost in (?:house of origin|second house)$/,
+  // Floor adoption of an amendment or substitute — `<sponsor> motion to
+  // Adopt - Roll Call 27 F2Z4DCC-1`. Written without a start anchor because
+  // the sponsor prefix is not optional in practice, and with a word boundary
+  // so `motion to Concur In and Adopt` is untouched.
+  /\bmotion to adopt\b/,
+  // Tabling an amendment, and the two debate-cutoff motions.
+  /\bmotion to table\b/,
+  /\bpetition to (?:cease|close) debate\b/,
+  /\bprevious question\b/,
+  // Housekeeping: adding a cosponsor, and the local-bill certification
+  // resolution (spelled with and without spaces).
+  /\badd cosponsor\b/,
+  /local ?certification ?resolution/,
+  // Procedural steps around a conference: sending a bill to one, refusing to
+  // concur, and reconsidering a completed vote.
+  /^in conference committee$/,
+  /\bnon-concur\b/,
+  /\breconsider\b/,
+];
+
 export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {
   // Georgia General Assembly, 2025-2026 Regular Session (both years, sine
   // die 2026-04-03). Vocabulary measured from the full dataset survey
@@ -1437,10 +1489,12 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     ],
   },
 
-  // Alabama Legislature, 2025 Regular Session (Feb 4 - May 14 2025). The
-  // 2026 sessions (LegiScan 2218 regular, 2262 special) are NOT registered
-  // here: each needs its own survey and an `AL-2218`-style compound key
-  // (the MO/MD pattern) in a follow-up PR.
+  // Alabama Legislature, 2025 Regular Session (Feb 4 - May 14 2025).
+  // Alabama sits in ANNUAL sessions, so each later one is a separate
+  // LegiScan session with its own compound key (the MO/MD pattern): the
+  // 2026 Regular Session is `AL-2218` and the 2026 First Special Session
+  // is `AL-2262`, both registered below and both sharing this state's one
+  // vocabulary definition.
   // Vocabulary measured from the full dataset survey 2026-08-31: 1,449
   // bills, 2,851 roll calls, 139 people (105 House + 35 Senate seats).
   //
@@ -1491,42 +1545,61 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     jurisdiction: "AL",
     sessionId: 2148,
     chamberSizes: { house: 105, senate: 35 },
-    keptQuestions: [
-      // The session's one conference-report vote. Listed first so the
-      // concurrence rule below cannot claim it.
-      { pattern: /concur in and adopt conference committee report/, questionClass: "conference_report" },
-      // `<sponsor> Concur In and Adopt - Roll Call 1188`,
-      // `Concur In and Senate Amendment`, `Senate Concurs In House
-      // Amendment`, `<sponsor> Motion to Concur In and Adopt`.
-      { pattern: /\bconcur(?:s)? in\b/, questionClass: "concurrence" },
-      // Alabama's passage question, with or without a sponsor prefix and
-      // with or without ` as Amended`.
-      { pattern: /\bmotion to read a third time and pass\b/, questionClass: "passage" },
-    ],
-    excludedQuestions: [
-      // The Budget Isolation Resolution, under both of its captions.
-      /^[hs]bir:/,
-      /^third reading in (?:house of origin|second house)$/,
-      /\bmotion to adopt bir\b/,
-      // Floor adoption of an amendment or substitute — `<sponsor> motion to
-      // Adopt - Roll Call 27 F2Z4DCC-1`. Written without a start anchor
-      // because the sponsor prefix is not optional in practice, and with a
-      // word boundary so `motion to Concur In and Adopt` is untouched.
-      /\bmotion to adopt\b/,
-      // Tabling an amendment, and the two debate-cutoff motions.
-      /\bmotion to table\b/,
-      /\bpetition to (?:cease|close) debate\b/,
-      /\bprevious question\b/,
-      // Housekeeping: adding a cosponsor, and the local-bill certification
-      // resolution (spelled with and without spaces).
-      /\badd cosponsor\b/,
-      /local ?certification ?resolution/,
-      // Procedural steps around a conference: sending a bill to one,
-      // refusing to concur, and reconsidering a completed vote.
-      /^in conference committee$/,
-      /\bnon-concur\b/,
-      /\breconsider\b/,
-    ],
+    keptQuestions: ALABAMA_KEPT_QUESTIONS,
+    excludedQuestions: ALABAMA_EXCLUDED_QUESTIONS,
+  },
+
+  // Alabama Legislature, 2026 Regular Session — a separate LegiScan session
+  // from 2025 because Alabama sits in annual regular sessions. Vocabulary
+  // measured from the full dataset survey 2026-09-01: 1,531 bills, 3,541
+  // roll calls, 140 people. It classifies with the shared Alabama
+  // vocabulary above and NOTHING left unmatched once the two 2026-only
+  // spellings were added (the hyphenated executive-amendment concurrence and
+  // the failed Budget Isolation Resolution's `Lost in House of Origin`).
+  //
+  // Feed health matches 2025's, the cleanest tier: 0 repeated roll call ids,
+  // 0 summary-only rolls, 0 tally mismatches, and no roll call id collides
+  // with the 2025 session. 1,080 kept floor votes, of which 27 are divided
+  // and 18 of those are on measures that became law.
+  //
+  // The people file overlaps 2025 by 135 of 140, so the 2025 crosswalk
+  // carries over and only the five new members needed review.
+  "AL-2218": {
+    jurisdiction: "AL",
+    sessionId: 2218,
+    chamberSizes: { house: 105, senate: 35 },
+    keptQuestions: ALABAMA_KEPT_QUESTIONS,
+    excludedQuestions: ALABAMA_EXCLUDED_QUESTIONS,
+  },
+
+  // Alabama Legislature, 2026 First Special Session (May 4 - May 12 2026),
+  // called to redraw districts. Tiny and entirely conventional: 9 bills, 9
+  // roll calls, and a people file identical to the 2026 regular session's,
+  // so that session's crosswalk covers it unchanged and no roll call id
+  // collides with either regular session. Surveyed 2026-09-02 — every
+  // description matches a kept or excluded pattern already defined above,
+  // with NOTHING left unmatched, which is why this entry adds no rules of
+  // its own.
+  //
+  // Only 3 of the 9 rolls are floor votes on a measure, and all three are
+  // divided and on measures that became law: the House and Senate votes on
+  // HB 1 and the Senate vote on SB 1, both authorising special primary
+  // elections after redistricting. The other six are amendment adoptions
+  // and previous-question motions, all correctly excluded.
+  //
+  // ⚠ FEED GAP: SB 1's HOUSE passage vote is missing from the dataset. The
+  // bill history records `Motion to Read a Third Time and Pass - Adopted
+  // Roll Call 4` in the House on 2026-05-08, but no such roll call exists
+  // in the vote files; what the dataset holds for that chamber and day is
+  // the previous-question motion (Roll Call 3). Missouri's feed had the
+  // same shape. Nothing here can recover the missing vote, so SB 1 is
+  // represented by its Senate vote only.
+  "AL-2262": {
+    jurisdiction: "AL",
+    sessionId: 2262,
+    chamberSizes: { house: 105, senate: 35 },
+    keptQuestions: ALABAMA_KEPT_QUESTIONS,
+    excludedQuestions: ALABAMA_EXCLUDED_QUESTIONS,
   },
 };
 

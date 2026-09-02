@@ -1,0 +1,26 @@
+[
+ {
+  "recordId": "79bba991-3b1a-41bc-8da2-4cb51bc9da01",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama one-chamber batch: this hand-written record describes the same vote as HB 30 roll 1519986 on 2025-03-18 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2148/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "18e7f4e6-72b3-40cc-969b-5d4bc70544c0",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama one-chamber batch: this hand-written record describes the same vote as HB 30 roll 1519986 on 2025-03-18 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2148/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "60ec02d9-fee9-46a2-8e02-49bdcc4031e1",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama one-chamber batch: this hand-written record describes the same vote as HB 30 roll 1519986 on 2025-03-18 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2148/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "0b1b9ef3-c341-4b83-b42f-2333b2c45dfb",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama one-chamber batch: this hand-written record describes the same vote as HB 7 roll 1551126 on 2025-04-17 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2148/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "061926a8-1804-4992-9dd7-a72bbed863b0",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama one-chamber batch: this hand-written record describes the same vote as HB 7 roll 1551126 on 2025-04-17 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2148/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "780d93a0-e1fc-4326-a42d-3d3b390eae21",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama one-chamber batch: this hand-written record describes the same vote as HB 7 roll 1551126 on 2025-04-17 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2148/batch-02/JUDGING.md."
+ }
+]

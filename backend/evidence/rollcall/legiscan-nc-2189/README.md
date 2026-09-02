@@ -30,14 +30,19 @@ written from. The important facts:
   no summary-only rolls, no committee votes, and every roll's parts add up to
   its total. That is not the same as the tallies being right. Every 2026 House
   roll is short two seated members and reports a tally North Carolina's own
-  transcript contradicts, seven for seven where checked. 2025 rolls and 2026
-  Senate rolls match the transcripts. No 2026 House roll may be imported; see
-  finding 3 in `CODE-FINDINGS.md`.
+  transcript contradicts, seven for seven where checked, so no 2026 House roll
+  may be imported. A complete member list is not a clean bill of health either:
+  a 2025 House roll with all 120 members present still had one member's nay
+  stored as a non-vote, and the wrong tally with it. Read the official
+  transcript for every roll before importing it. See findings 3 and 4 in
+  `CODE-FINDINGS.md`.
 
 Fetch stored 1,452 rows: 972 floor votes and 480 rolls on excluded questions.
 Of the floor votes, 247 are divided and 165 are divided and enacted, across 58
 measures. `survey/divided-enacted-worklist.tsv` carries one line per divided and
-enacted roll with its disposition.
+enacted roll with its disposition, and `survey/divided-not-enacted-worklist.tsv`
+does the same for the 82 divided rolls on measures that did not become law.
+Both worklists are now fully dispositioned; no North Carolina pool remains.
 
 ## Crosswalk
 
@@ -80,4 +85,5 @@ The session law is the ground truth. The summary is an index into it.
 - `batch-01/` — seven of the twelve bills enacted over the governor's veto (the other five failed the stance filter)
 - `batch-02/` — ten measures from the rest of the divided-and-enacted pool, including the two constitutional amendments on the November 2026 ballot
 - `batch-03/` — three vetoed bills that never became law, the first batch from the not-enacted pool
+- `batch-04/` — fifteen measures that passed one chamber and went no further, which finishes the not-enacted pool
 - `CODE-FINDINGS.md` — defects found in the feed, recorded rather than fixed

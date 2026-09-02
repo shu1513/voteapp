@@ -126,13 +126,19 @@ function parseCoverAmounts<TKey extends string>(
     // Labels appear in document order; "Itemized Expenditures" would otherwise
     // also match inside "...Line of Credit Expenditures", so search forward
     // from the previous label only.
-    const labelIndex = text.indexOf(`${label} $`, cursor);
-    const negativeIndex = text.indexOf(`${label} -$`, cursor);
-    const start = labelIndex >= 0 && (negativeIndex < 0 || labelIndex < negativeIndex) ? labelIndex : negativeIndex;
-    if (start < 0) throw new Error(`Filing detail cover is missing ${JSON.stringify(label)}`);
-    const amountMatch = /^-?\$[\d,]+\.\d{2}/.exec(text.slice(start + label.length + 1));
+    // Negative balances render accounting-style, "($220.23)" (live 2026-09-01,
+    // nine committees), alongside the "-$" form.
+    const candidates = [`${label} $`, `${label} -$`, `${label} ($`]
+      .map((needle) => text.indexOf(needle, cursor))
+      .filter((index) => index >= 0);
+    if (candidates.length === 0) throw new Error(`Filing detail cover is missing ${JSON.stringify(label)}`);
+    const start = Math.min(...candidates);
+    const amountMatch = /^(?:-?\$[\d,]+\.\d{2}|\(\$[\d,]+\.\d{2}\))/.exec(text.slice(start + label.length + 1));
     if (!amountMatch) throw new Error(`Filing detail cover has no amount for ${JSON.stringify(label)}`);
-    amounts[key] = parseAlabamaDollarsCents(amountMatch[0]);
+    const raw = amountMatch[0];
+    amounts[key] = raw.startsWith("(")
+      ? -parseAlabamaDollarsCents(raw.slice(1, -1))
+      : parseAlabamaDollarsCents(raw);
     cursor = start + label.length;
   }
   return amounts;
@@ -164,6 +170,11 @@ export function alabamaCoverCashCents(cover: AlabamaFilingCover): number {
 export function alabamaCoverInKindCents(cover: AlabamaFilingCover): number {
   if (cover.kind === "major_contribution") return cover.totalInKindCents;
   return cover.itemizedInKindCents + cover.nonItemizedInKindCents;
+}
+
+export function alabamaCoverOtherCents(cover: AlabamaFilingCover): number {
+  if (cover.kind === "major_contribution") return cover.totalOtherCents;
+  return cover.itemizedOtherCents + cover.nonItemizedOtherCents;
 }
 
 /** Ordinary expenditures only; line-of-credit stays out of state cash accounting. */

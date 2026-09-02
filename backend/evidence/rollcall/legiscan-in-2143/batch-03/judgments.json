@@ -1,0 +1,166 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "IN",
+   "chamber": "senate",
+   "session": "2143",
+   "roll": 1484850,
+   "measure_id": "SB 450",
+   "vote_date": "2025-02-10",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 450, which sets new rules for the people Indiana would send to a national convention on amending the United States Constitution. A delegate must have lived in Indiana for five years. A delegate may not have worked as a paid lobbyist in the past five years, and may not have a serious criminal record. While serving, a delegate may not take a gift worth $200 or more. The state must also order its delegates never to back an amendment that changes the Bill of Rights or other named parts of the Constitution. The Indiana Senate passed the bill 33-16, and it became law.",
+   "nay_description": "Voted against Senate Bill 450, which sets new rules for the people Indiana would send to a national convention on amending the United States Constitution. A delegate must have lived in Indiana for five years. A delegate may not have worked as a paid lobbyist in the past five years, and may not have a serious criminal record. While serving, a delegate may not take a gift worth $200 or more. The state must also order its delegates never to back an amendment that changes the Bill of Rights or other named parts of the Constitution. The Indiana Senate passed the bill 33-16, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "note": "Third reading. The House passed the same text without amendment, so this roll and the enrolled act are the same bill. Member list verified against official roll-call PDF SB0450.92_S.pdf."
+  },
+  {
+   "jurisdiction": "IN",
+   "chamber": "house",
+   "session": "2143",
+   "roll": 1524703,
+   "measure_id": "SB 450",
+   "vote_date": "2025-03-24",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 450, which sets new rules for the people Indiana would send to a national convention on amending the United States Constitution. A delegate must have lived in Indiana for five years. A delegate may not have worked as a paid lobbyist in the past five years, and may not have a serious criminal record. While serving, a delegate may not take a gift worth $200 or more. The state must also order its delegates never to back an amendment that changes the Bill of Rights or other named parts of the Constitution. The Indiana House passed the bill 69-27, and it became law.",
+   "nay_description": "Voted against Senate Bill 450, which sets new rules for the people Indiana would send to a national convention on amending the United States Constitution. A delegate must have lived in Indiana for five years. A delegate may not have worked as a paid lobbyist in the past five years, and may not have a serious criminal record. While serving, a delegate may not take a gift worth $200 or more. The state must also order its delegates never to back an amendment that changes the Bill of Rights or other named parts of the Constitution. The Indiana House passed the bill 69-27, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "note": "Third reading, and the House's last vote on the bill; it was returned to the Senate without amendments. Member list verified against official roll-call PDF SB0450.300_H.pdf."
+  },
+  {
+   "jurisdiction": "IN",
+   "chamber": "house",
+   "session": "2143",
+   "roll": 1548365,
+   "measure_id": "SB 423",
+   "vote_date": "2025-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 423, which sets up a program for building small nuclear reactors in Indiana. A large electric utility may join with investors, big customers, reactor makers, military bases or state universities. With state approval, it may then raise customer bills to pay for early design and permit work. It may do this before it holds a permit to build anything. It collects 80 percent of that money as it spends, and the rest at its next rate review. If the project is later dropped, customers do not get their money back. The utility only gives up its profit on those costs. The program ends in 2035. The Indiana House passed the bill 67-29, and it became law.",
+   "nay_description": "Voted against Senate Bill 423, which sets up a program for building small nuclear reactors in Indiana. A large electric utility may join with investors, big customers, reactor makers, military bases or state universities. With state approval, it may then raise customer bills to pay for early design and permit work. It may do this before it holds a permit to build anything. It collects 80 percent of that money as it spends, and the rest at its next rate review. If the project is later dropped, customers do not get their money back. The utility only gives up its profit on those costs. The program ends in 2035. The Indiana House passed the bill 67-29, and it became law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "note": "Third reading of the text the Senate then agreed to, which is the enrolled act. Member list verified against official roll-call PDF SB0423.449_H.pdf."
+  },
+  {
+   "jurisdiction": "IN",
+   "chamber": "senate",
+   "session": "2143",
+   "roll": 1551274,
+   "measure_id": "SB 423",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 423, which sets up a program for building small nuclear reactors in Indiana. A large electric utility may join with investors, big customers, reactor makers, military bases or state universities. With state approval, it may then raise customer bills to pay for early design and permit work. It may do this before it holds a permit to build anything. It collects 80 percent of that money as it spends, and the rest at its next rate review. If the project is later dropped, customers do not get their money back. The utility only gives up its profit on those costs. The program ends in 2035. The Indiana Senate passed the bill 34-12, and it became law.",
+   "nay_description": "Voted against Senate Bill 423, which sets up a program for building small nuclear reactors in Indiana. A large electric utility may join with investors, big customers, reactor makers, military bases or state universities. With state approval, it may then raise customer bills to pay for early design and permit work. It may do this before it holds a permit to build anything. It collects 80 percent of that money as it spends, and the rest at its next rate review. If the project is later dropped, customers do not get their money back. The utility only gives up its profit on those costs. The program ends in 2035. The Indiana Senate passed the bill 34-12, and it became law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "note": "Senate agreeing to the House amendments, which is the enrolled act. Member list verified against official roll-call PDF SB0423.471_S.pdf."
+  },
+  {
+   "jurisdiction": "IN",
+   "chamber": "house",
+   "session": "2143",
+   "roll": 1522403,
+   "measure_id": "SB 424",
+   "vote_date": "2025-03-20",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 424, which lets any Indiana electric utility charge customers for the cost of planning a small nuclear reactor. It may do this before it holds a permit to build one. The utility must first get state approval and a cost estimate. It then collects 80 percent of the money as it spends, and the rest at its next rate review. If the project is dropped, customers do not get their money back. The utility only gives up its profit on those costs. Unlike the pilot program passed the same year, this change is permanent and needs no partner. The Indiana House passed the bill 59-30, and it became law.",
+   "nay_description": "Voted against Senate Bill 424, which lets any Indiana electric utility charge customers for the cost of planning a small nuclear reactor. It may do this before it holds a permit to build one. The utility must first get state approval and a cost estimate. It then collects 80 percent of the money as it spends, and the rest at its next rate review. If the project is dropped, customers do not get their money back. The utility only gives up its profit on those costs. Unlike the pilot program passed the same year, this change is permanent and needs no partner. The Indiana House passed the bill 59-30, and it became law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "note": "Third reading of the text the Senate then agreed to, which is the enrolled act. Member list verified against official roll-call PDF SB0424.291_H.pdf."
+  },
+  {
+   "jurisdiction": "IN",
+   "chamber": "senate",
+   "session": "2143",
+   "roll": 1526255,
+   "measure_id": "SB 424",
+   "vote_date": "2025-03-25",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 424, which lets any Indiana electric utility charge customers for the cost of planning a small nuclear reactor. It may do this before it holds a permit to build one. The utility must first get state approval and a cost estimate. It then collects 80 percent of the money as it spends, and the rest at its next rate review. If the project is dropped, customers do not get their money back. The utility only gives up its profit on those costs. Unlike the pilot program passed the same year, this change is permanent and needs no partner. The Indiana Senate passed the bill 32-15, and it became law.",
+   "nay_description": "Voted against Senate Bill 424, which lets any Indiana electric utility charge customers for the cost of planning a small nuclear reactor. It may do this before it holds a permit to build one. The utility must first get state approval and a cost estimate. It then collects 80 percent of the money as it spends, and the rest at its next rate review. If the project is dropped, customers do not get their money back. The utility only gives up its profit on those costs. Unlike the pilot program passed the same year, this change is permanent and needs no partner. The Indiana Senate passed the bill 32-15, and it became law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "note": "Senate agreeing to the House amendments, which is the enrolled act. Member list verified against official roll-call PDF SB0424.297_S.pdf."
+  },
+  {
+   "jurisdiction": "IN",
+   "chamber": "house",
+   "session": "2143",
+   "roll": 1539781,
+   "measure_id": "SB 2",
+   "vote_date": "2025-04-08",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 2, which tightens who can get Medicaid in Indiana. Adults on the Healthy Indiana Plan must now work, train, study or volunteer at least 20 hours a week. Twelve exceptions apply, such as pregnancy, caring for a young child, or being medically unfit to work. The state must also cap how many people the plan covers, so it spends no more than the money set aside. The state may no longer take an applicant's word on income, address, age or household. It must check state and federal records every month for changes. State agencies may no longer advertise the program. The Indiana House passed the bill 66-28, and it became law.",
+   "nay_description": "Voted against Senate Bill 2, which tightens who can get Medicaid in Indiana. Adults on the Healthy Indiana Plan must now work, train, study or volunteer at least 20 hours a week. Twelve exceptions apply, such as pregnancy, caring for a young child, or being medically unfit to work. The state must also cap how many people the plan covers, so it spends no more than the money set aside. The state may no longer take an applicant's word on income, address, age or household. It must check state and federal records every month for changes. State agencies may no longer advertise the program. The Indiana House passed the bill 66-28, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "against",
+     "nay": null
+    },
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "note": "Third reading of the text the Senate then agreed to, which is the enrolled act. Member list verified against official roll-call PDF SB0002.390_H.pdf."
+  },
+  {
+   "jurisdiction": "IN",
+   "chamber": "senate",
+   "session": "2143",
+   "roll": 1551292,
+   "measure_id": "SB 2",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 2, which tightens who can get Medicaid in Indiana. Adults on the Healthy Indiana Plan must now work, train, study or volunteer at least 20 hours a week. Twelve exceptions apply, such as pregnancy, caring for a young child, or being medically unfit to work. The state must also cap how many people the plan covers, so it spends no more than the money set aside. The state may no longer take an applicant's word on income, address, age or household. It must check state and federal records every month for changes. State agencies may no longer advertise the program. The Indiana Senate passed the bill 37-10, and it became law.",
+   "nay_description": "Voted against Senate Bill 2, which tightens who can get Medicaid in Indiana. Adults on the Healthy Indiana Plan must now work, train, study or volunteer at least 20 hours a week. Twelve exceptions apply, such as pregnancy, caring for a young child, or being medically unfit to work. The state must also cap how many people the plan covers, so it spends no more than the money set aside. The state may no longer take an applicant's word on income, address, age or household. It must check state and federal records every month for changes. State agencies may no longer advertise the program. The Indiana Senate passed the bill 37-10, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "against",
+     "nay": null
+    },
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "note": "Senate agreeing to the House amendments, which is the enrolled act. Member list verified against official roll-call PDF SB0002.470_S.pdf."
+  }
+ ]
+}

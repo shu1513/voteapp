@@ -304,6 +304,7 @@ const FINANCE_SOURCE_LABELS: Record<string, string> = {
   SOUTH_CAROLINA_CAMPAIGN_FINANCE: "South Carolina State Ethics Commission",
   UTAH_DISCLOSURES: "Utah Financial Disclosures",
   HAWAII_CSC: "Hawaii Campaign Spending Commission",
+  IDAHO_SUNSHINE: "Idaho Secretary of State Sunshine Portal",
   VIRGINIA_CFREPORTS: "Virginia CFReports",
   TENNESSEE_CAMP: "Tennessee Registry of Election Finance",
   WASHINGTON_PDC: "Washington PDC",

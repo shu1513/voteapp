@@ -7,6 +7,7 @@ const FINANCE_SOURCE_HOME_URLS: Partial<Record<FinanceSummary["source"], string>
   // Arkansas CFIS is a single-page app whose filer views are reached through
   // POST APIs, so the provenance fallback is the portal home.
   ARKANSAS_CFIS: "https://ethics-disclosures.sos.arkansas.gov/",
+  IDAHO_SUNSHINE: "https://sunshine.voteidaho.gov/",
   MISSOURI_MEC: "https://www.mec.mo.gov/MEC/Campaign_Finance/",
   // Montana CERS deep links are POST/session driven, so the card's
   // provenance fallback points at the COPP home page instead.

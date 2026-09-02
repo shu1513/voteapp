@@ -108,8 +108,26 @@ feed carries both chambers' override rolls for 25 of them; HB 2, HB 4 and HB 6
 are House-only. A description of a bill enacted this way must say so — that a
 bill became law over the Governor's veto is part of what happened.
 
+## Batches
+
+Two batches have been taken from this session, for **2,067 records across 107
+candidates** in total.
+
+- `batch-01/` — 12 measures, 23 rolls, 1,151 records.
+- `batch-02/` — 11 measures, 18 rolls, 916 records. It also re-read the two
+  measures batch-01 dropped that were worth a second look: HB 424 is now
+  imported with no stance, and HB 684 stays dropped.
+
+Every one of the 118 pool rolls carries a recorded disposition in
+`survey/divided-enacted-worklist.tsv`: 23 batch-01, 20 not selected in batch-01,
+18 batch-02, 10 not selected in batch-02, 34 dropped under filter 5, and 13 on 8
+measures marked `candidate:batch-03`, still open for a later batch.
+
 ## Layout
 
-- `survey/` — the fetch survey report, and `desc-families.tsv`, the folded
-  description histogram the configuration was written from.
+- `survey/` — the fetch survey report, `desc-families.tsv` (the folded
+  description histogram the configuration was written from), and
+  `divided-enacted-worklist.tsv`.
+- `crosswalk.json` — the reviewed people_id to candidate map. It serves **both**
+  Kentucky sessions; see the 2247 README for the one seat that changed hands.
 - `CODE-FINDINGS.md` — defects recorded but deliberately not fixed.

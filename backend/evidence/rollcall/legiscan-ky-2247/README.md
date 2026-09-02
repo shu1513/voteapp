@@ -57,9 +57,41 @@ Same document as 2025, under the `26rs` path:
 
 Under the campaign's Kentucky divided gate (nay votes at least 15 percent of
 votes cast — the reasoning is in the 2179 README), this session yields **155
-divided-and-enacted rolls on 52 measures**. 30 bills were vetoed and overridden.
+divided-and-enacted rolls on 52 measures**, 34 of them enacted over a veto.
+
+**36 bills in the session became law over a veto.** Thirty were whole-bill
+overrides; the other six are appropriations bills where the Governor struck line
+items and the legislature overrode those in whole or in part (HB 2, HB 500,
+HB 501, HB 503, HB 504, HB 757). The earlier count of 30 in this file counted
+only the whole-bill wording.
+
+## The fetch and the crosswalk
+
+The fetch stored **840 rows: 791 floor votes (473 House, 367 Senate) plus 49
+excluded-question votes kept for audit**. 77 votes were dropped by measure type.
+No committee votes, no duplicate identities, nothing surfaced, no file errors.
+Run id `rollcall-legiscan-fetch-ky-2247-20260902T060100Z`.
+
+**The crosswalk is the 2025 session's file**, at
+`../legiscan-ky-2179/crosswalk.json`. LegiScan people_ids are stable across
+sessions, and only one seat changed hands between the two: David Yates
+(people_id 22180) held Senate District 37 through the 2025 session and left in
+October 2025, and Gary Clemons (people_id 26549) holds it in this one. Clemons
+maps to null — Kentucky staggers its Senate and District 37 is odd-numbered, so
+the seat is not on the November 2026 ballot. No other member changed name, role
+or district. Each session therefore reports exactly one crosswalk person absent
+from its own snapshot, which is expected.
+
+Resolving all 840 files through the crosswalk: matched 44,382, unmatched and
+reviewed 11,857, **no_crosswalk 0, zero-match rolls 0, file errors 0**. Fan-out
+is a House median of 83 matched members per roll (26 to 88) and a Senate median
+of 18 (13 to 18).
 
 ## Layout
 
-- `survey/` — the fetch survey report and the folded description histogram.
+- `survey/` — the fetch survey report, the folded description histogram, and
+  `divided-enacted-worklist.tsv`, which lists all 155 pool rolls with a
+  disposition for each.
+- `batch-01/` — the first batch: 10 measures, 19 rolls, 997 records.
+- `legiscan-people-ky-2247.json` — this session's people snapshot.
 - `CODE-FINDINGS.md` — defects recorded but deliberately not fixed.

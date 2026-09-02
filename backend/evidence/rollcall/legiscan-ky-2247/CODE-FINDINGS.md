@@ -25,7 +25,7 @@ to need no code change either, once each was looked at on its own:
   consulted, so neither copy is ever stored.
 - The **floor amendment** twin is HB 84's RCS# 40. Kentucky's own record says
   RCS# 40 is `Adopt` — the adoption of House Floor Amendment 1, 81-8 — and the
-  passage is the neighbouring RCS# 41. The `House: Veto Override RCS# 40` copy
+  passage is the neighboring RCS# 41. The `House: Veto Override RCS# 40` copy
   is therefore excluded by its exact sequence number, and a test pins both that
   exclusion and that RCS# 41 stays kept. Found by review of the config PR; the
   first draft of this file had wrongly described it as unreachable by rule and
@@ -43,3 +43,26 @@ nothing but their description and their id.
 duplicate in session 2247. `House: Veto Override` is the reverse. This is
 pinned by a test so that a later edit cannot quietly align the two entries on
 the assumption that one state should have one vocabulary.
+
+## 3. The importer's `related` flag is noise on a state measure
+
+Seven of the nineteen batch-01 rolls report `related: 1`. The flag is
+report-only — it never blocked or changed a write, and all 997 rows were plain
+inserts — but the number means less than it looks like.
+
+`planCandidateRecord` in `rollCallFanOut.ts` flags an existing live record that
+cites no roll call and that either names this measure or "looks like a vote
+claim". Naming the measure is decided by `descriptionMentionsMeasure`, which
+only understands **federal** spellings (`H.R. 29`, `S.J.Res. 3`), so on a state
+bill it can never match. That leaves `looksLikeVoteClaim`, which is the single
+regular expression `/\bvot(?:e|ed|es|ing)\b/i`.
+
+So on a state roll call the flag reduces to "this candidate has some other
+record with the word 'vote' in it". The seven flags here point at records such
+as a school-board minute and a county fiscal-court news item — none of them this
+vote, and none of them a duplicate.
+
+Recorded, not fixed. A useful fix would teach `descriptionMentionsMeasure` the
+state spellings a description actually uses (`House Bill 78`, `Senate Bill 199`)
+and only fall back to the loose test when no measure is known. That touches
+every phase-4 state, so it belongs in its own change with its own tests.

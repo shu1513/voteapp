@@ -1,0 +1,216 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2218",
+      "roll": 1614139,
+      "measure_id": "HB 95",
+      "vote_date": "2026-01-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 95, the Alabama Post-Election Audit Act, which makes each county's probate judge audit the ballots from one precinct after every countywide and statewide general election. In the version both chambers passed, each county's canvassing board picks the precinct and at least one race at random, and the audit happens after the deadline to contest the election. Results go to the Secretary of State, who must post them for the public, and poll watchers and reporters may watch the count. The Governor later sent the bill back with a change of her own, which both chambers accepted with no votes against before it became law. The Alabama House of Representatives passed it 69-25.",
+      "nay_description": "Voted against passing House Bill 95, the Alabama Post-Election Audit Act, which makes each county's probate judge audit the ballots from one precinct after every countywide and statewide general election. In the version both chambers passed, each county's canvassing board picks the precinct and at least one race at random, and the audit happens after the deadline to contest the election. Results go to the Secretary of State, who must post them for the public, and poll watchers and reporters may watch the count. The Governor later sent the bill back with a change of her own, which both chambers accepted with no votes against before it became law. The Alabama House of Representatives passed it 69-25 over these votes.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1678274
+      ],
+      "note": "The later House roll 1678274 is the 96-0 vote accepting the Governor's executive amendment. Its content could not be verified from any official text (the enrolled print predates it), so the description names the amendment without characterizing it."
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2218",
+      "roll": 1674032,
+      "measure_id": "HB 95",
+      "vote_date": "2026-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 95, the Alabama Post-Election Audit Act, which makes each county's probate judge audit the ballots from one precinct after every countywide and statewide general election. In the version both chambers passed, each county's canvassing board picks the precinct and at least one race at random, and the audit happens after the deadline to contest the election. Results go to the Secretary of State, who must post them for the public, and poll watchers and reporters may watch the count. The Governor later sent the bill back with a change of her own, which both chambers accepted with no votes against before it became law. The Alabama Senate passed it 22-7.",
+      "nay_description": "Voted against passing House Bill 95, the Alabama Post-Election Audit Act, which makes each county's probate judge audit the ballots from one precinct after every countywide and statewide general election. In the version both chambers passed, each county's canvassing board picks the precinct and at least one race at random, and the audit happens after the deadline to contest the election. Results go to the Secretary of State, who must post them for the public, and poll watchers and reporters may watch the count. The Governor later sent the bill back with a change of her own, which both chambers accepted with no votes against before it became law. The Alabama Senate passed it 22-7 over these votes.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1678877
+      ],
+      "note": "The later Senate roll 1678877 is the 26-0 vote accepting the Governor's executive amendment."
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2218",
+      "roll": 1675418,
+      "measure_id": "HB 475",
+      "vote_date": "2026-04-01",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's version of House Bill 475, the Power to the People Act, which changes the state board that sets electric rates. It freezes electric base rates until January 1, 2029. After that, power companies may not bill customers for their own lobbying, ads, or grants, and they may not give money to candidates for the board. The board grows from three elected members to seven, one per congressional district, phased in through 2032, and a new state energy secretary picked by the Governor runs its staff and sets its agendas. The Alabama House of Representatives agreed 72-26 and the bill became law.",
+      "nay_description": "Voted against agreeing to the Senate's version of House Bill 475, the Power to the People Act, which changes the state board that sets electric rates. It freezes electric base rates until January 1, 2029. After that, power companies may not bill customers for their own lobbying, ads, or grants, and they may not give money to candidates for the board. The board grows from three elected members to seven, one per congressional district, phased in through 2032, and a new state energy secretary picked by the Governor runs its staff and sets its agendas. The Alabama House of Representatives agreed 72-26 over these votes and the bill became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2218",
+      "roll": 1679896,
+      "measure_id": "SB 57",
+      "vote_date": "2026-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the final version of Senate Bill 57, which tells Alabama to ask the federal government for permission to stop people from buying candy and soda with SNAP food benefits. If the federal government says yes, the state must block those purchases; if it says no, the state must ask again every year. The law sorts candy and soda by their ingredients, leaves out baked goods and drinks with low-calorie sweeteners, and shields stores from fines for up to three accidental sales a year. The Alabama House of Representatives agreed 77-22 and the bill became law.",
+      "nay_description": "Voted against agreeing to the final version of Senate Bill 57, which tells Alabama to ask the federal government for permission to stop people from buying candy and soda with SNAP food benefits. If the federal government says yes, the state must block those purchases; if it says no, the state must ask again every year. The law sorts candy and soda by their ingredients, leaves out baked goods and drinks with low-calorie sweeteners, and shields stores from fines for up to three accidental sales a year. The Alabama House of Representatives agreed 77-22 over these votes and the bill became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2218",
+      "roll": 1622181,
+      "measure_id": "SB 71",
+      "vote_date": "2026-02-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 71, which stops Alabama agencies from setting pollution limits tougher than federal rules. The ban covers limits on chemicals in drinking water, in the air, at polluted sites, and in waste. Where there is no federal rule, a state agency may set a limit only with proof that being exposed at that level directly causes a real, diagnosed illness or injury. Agencies also may no longer lean by default on a federal risk database when they set water quality limits. The Alabama Senate passed it 27-7 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 71, which stops Alabama agencies from setting pollution limits tougher than federal rules. The ban covers limits on chemicals in drinking water, in the air, at polluted sites, and in waste. Where there is no federal rule, a state agency may set a limit only with proof that being exposed at that level directly causes a real, diagnosed illness or injury. Agencies also may no longer lean by default on a federal risk database when they set water quality limits. The Alabama Senate passed it 27-7 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2218",
+      "roll": 1635385,
+      "measure_id": "SB 71",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 71, which stops Alabama agencies from setting pollution limits tougher than federal rules. The ban covers limits on chemicals in drinking water, in the air, at polluted sites, and in waste. Where there is no federal rule, a state agency may set a limit only with proof that being exposed at that level directly causes a real, diagnosed illness or injury. Agencies also may no longer lean by default on a federal risk database when they set water quality limits. The Alabama House of Representatives passed it 67-34 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 71, which stops Alabama agencies from setting pollution limits tougher than federal rules. The ban covers limits on chemicals in drinking water, in the air, at polluted sites, and in waste. Where there is no federal rule, a state agency may set a limit only with proof that being exposed at that level directly causes a real, diagnosed illness or injury. Agencies also may no longer lean by default on a federal risk database when they set water quality limits. The Alabama House of Representatives passed it 67-34 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2218",
+      "roll": 1643558,
+      "measure_id": "HB 86",
+      "vote_date": "2026-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 86, which changes what the Board of Pardons and Paroles weighs when deciding whether to release someone on parole. The board must now consider the person's work and any education completed while in prison, and it may consider a low risk of reoffending measured by a validated assessment. The law keeps the board's existing duty to protect public safety and says the guidelines create no right to release, leaving the decision fully in the board's hands. The Alabama House of Representatives passed it 77-22 and it became law.",
+      "nay_description": "Voted against passing House Bill 86, which changes what the Board of Pardons and Paroles weighs when deciding whether to release someone on parole. The board must now consider the person's work and any education completed while in prison, and it may consider a low risk of reoffending measured by a validated assessment. The law keeps the board's existing duty to protect public safety and says the guidelines create no right to release, leaving the decision fully in the board's hands. The Alabama House of Representatives passed it 77-22 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2218",
+      "roll": 1679974,
+      "measure_id": "SB 341",
+      "vote_date": "2026-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the final version of Senate Bill 341, which lets Alabama try speed cameras in one interstate work zone. A camera may ticket a driver only for going more than 10 miles per hour over the limit, only where workers are present, and only where two warning signs stand at least 500 feet ahead. The ticket is a civil fine mailed to the vehicle's owner rather than a criminal charge, and the program ends on September 30, 2028 unless lawmakers extend it. The Alabama House of Representatives agreed 76-23 and the bill became law.",
+      "nay_description": "Voted against agreeing to the final version of Senate Bill 341, which lets Alabama try speed cameras in one interstate work zone. A camera may ticket a driver only for going more than 10 miles per hour over the limit, only where workers are present, and only where two warning signs stand at least 500 feet ahead. The ticket is a civil fine mailed to the vehicle's owner rather than a criminal charge, and the program ends on September 30, 2028 unless lawmakers extend it. The Alabama House of Representatives agreed 76-23 over these votes and the bill became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2218",
+      "roll": 1643628,
+      "measure_id": "HB 2",
+      "vote_date": "2026-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2, the Gulf of America Act, which renames the Gulf of Mexico as the Gulf of America everywhere in Alabama law. Starting October 1, 2026, state and local offices and their workers must use the new name on new maps, papers, school materials, websites, and official messages. They must try to update older materials unless that would cost too much or get in the way, and schools may still say Gulf of Mexico when teaching history. The Alabama House of Representatives passed it 73-30 and it became law.",
+      "nay_description": "Voted against passing House Bill 2, the Gulf of America Act, which renames the Gulf of Mexico as the Gulf of America everywhere in Alabama law. Starting October 1, 2026, state and local offices and their workers must use the new name on new maps, papers, school materials, websites, and official messages. They must try to update older materials unless that would cost too much or get in the way, and schools may still say Gulf of Mexico when teaching history. The Alabama House of Representatives passed it 73-30 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2218",
+      "roll": 1679940,
+      "measure_id": "SB 5",
+      "vote_date": "2026-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5, which asks voters to change the Alabama Constitution so every public school plays the national anthem at least once a week. School boards would have to write a policy for it. Each school would play a Library of Congress recording of the first verse of The Star-Spangled Banner, or have a school band, choir, or singer perform it. This is a proposed change to the state constitution, so it takes effect only if most Alabama voters approve it at a statewide election. The Alabama House of Representatives passed it 75-27.",
+      "nay_description": "Voted against passing Senate Bill 5, which asks voters to change the Alabama Constitution so every public school plays the national anthem at least once a week. School boards would have to write a policy for it. Each school would play a Library of Congress recording of the first verse of The Star-Spangled Banner, or have a school band, choir, or singer perform it. This is a proposed change to the state constitution, so it takes effect only if most Alabama voters approve it at a statewide election. The Alabama House of Representatives passed it 75-27 over these votes.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ],
+      "note": "A ballot measure: this description states a future condition and must be revisited once Alabama voters decide it."
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2218",
+      "roll": 1679865,
+      "measure_id": "HB 580",
+      "vote_date": "2026-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 580, which limits how professors help run Alabama's four-year public colleges and sets state rules for tenure. Only a college's governing board may set up a faculty senate, and senates that already exist end on October 1, 2026 unless the board keeps them. A senate can only give advice, and it may not speak for the college in public. Each board must review tenured professors at least every six years and must allow firing for poor work, serious misconduct, or conduct that harms the college. The Alabama Senate passed it 27-7 and it became law.",
+      "nay_description": "Voted against passing House Bill 580, which limits how professors help run Alabama's four-year public colleges and sets state rules for tenure. Only a college's governing board may set up a faculty senate, and senates that already exist end on October 1, 2026 unless the board keeps them. A senate can only give advice, and it may not speak for the college in public. Each board must review tenured professors at least every six years and must allow firing for poor work, serious misconduct, or conduct that harms the college. The Alabama Senate passed it 27-7 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2218",
+      "roll": 1642547,
+      "measure_id": "HB 360",
+      "vote_date": "2026-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 360, which would have created a yearly Second Amendment Sales Tax Holiday in Alabama. On the last weekend of August each year, guns, ammunition, and hunting supplies would have been free of state sales tax. Hunting supplies were defined to include archery gear, gun and bow cases, hearing protection, holsters, belts, slings, and silencers, and counties and cities could have dropped their own sales tax for the same weekend. The Alabama House of Representatives passed it 72-29, but the Senate never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 360, which would have created a yearly Second Amendment Sales Tax Holiday in Alabama. On the last weekend of August each year, guns, ammunition, and hunting supplies would have been free of state sales tax. Hunting supplies were defined to include archery gear, gun and bow cases, hearing protection, holsters, belts, slings, and silencers, and counties and cities could have dropped their own sales tax for the same weekend. The Alabama House of Representatives passed it 72-29 over these votes, but the Senate never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

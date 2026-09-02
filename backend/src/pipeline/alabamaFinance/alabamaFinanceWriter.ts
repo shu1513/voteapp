@@ -90,6 +90,9 @@ const writer = createStandardStateFinanceSnapshotWriter({
     // a stray historical value can never survive a sync.
     outside_support_total: "replace",
     outside_oppose_total: "replace",
+    // The sync stores null cash on hand only for an overdrawn committee; the
+    // default preserve-when-null would keep a stale positive balance showing.
+    cash_on_hand: "replace",
   },
   normalizeCommitteeId: normalizeStoredCommitteeId,
   manualLinkProtection: true,

@@ -1,83 +1,83 @@
 bill	chamber	roll	date	fate	tally	disposition	title
 H105	H	1514653	2025-03-11	passed-one-chamber	71-44	dropped: filter 5: local measure	Gaston Co. Bd. of Ed. Elect. Partisan
 H1083	H	1712729	2026-06-30	passed-one-chamber	77-33	held:2026-house-tally-understated-by-legiscan	Voluntary Portable Benefits Plan Act
-H123	H	1542568	2025-04-09	passed-one-chamber	88-24	candidate:batch-04-unbatched	Criminal Falsification of Medical Records
-H139	H	1563591	2025-05-01	passed-one-chamber	75-33	candidate:batch-04-unbatched	Baby Boxes/Newborn Safety Device
-H15	H	1534219	2025-04-02	passed-one-chamber	93-24	candidate:batch-04-unbatched	Support Private Property Rights
+H123	H	1542568	2025-04-09	passed-one-chamber	88-24	judged:batch-04	Criminal Falsification of Medical Records
+H139	H	1563591	2025-05-01	passed-one-chamber	75-33	dropped:no-clear-stance-axis	Baby Boxes/Newborn Safety Device
+H15	H	1534219	2025-04-02	passed-one-chamber	93-24	dropped:title-broader-than-text	Support Private Property Rights
 H171	H	1562385	2025-04-30	vetoed	69-45	superseded: not the chamber last kept floor vote	Equality in State Agencies/Prohibition on DEI
 H171	H	1595427	2025-06-26	vetoed	60-48	superseded: not the chamber last kept floor vote	Equality in State Agencies/Prohibition on DEI
 H171	H	1711518	2026-06-24	vetoed	71-46	held:2026-house-tally-understated-by-legiscan	Equality in State Agencies/Prohibition on DEI
 H171	S	1594833	2025-06-25	vetoed	26-20	judged:batch-03	Equality in State Agencies/Prohibition on DEI
-H192	S	1603086	2025-09-22	passed-one-chamber	28-20	candidate:batch-04-unbatched	Defund Planned Parenthood & Cost Transparency
-H214	H	1567810	2025-05-07	passed-one-chamber	61-53	candidate:batch-04-unbatched	Faithful Article V Commissioner Act
-H244	H	1550039	2025-04-16	passed-one-chamber	69-43	candidate:batch-04-unbatched	Depoliticize Government Property Act
-H261	H	1562351	2025-04-30	passed-one-chamber	84-29	candidate:batch-04-unbatched	Sent. Enhancement/Immigration-Related Crimes
+H192	S	1603086	2025-09-22	passed-one-chamber	28-20	dropped:vehicle-bill-unrelated-strands	Defund Planned Parenthood & Cost Transparency
+H214	H	1567810	2025-05-07	passed-one-chamber	61-53	dropped:no-research-area	Faithful Article V Commissioner Act
+H244	H	1550039	2025-04-16	passed-one-chamber	69-43	held:legiscan-miscoded-member-vote-tally-understated	Depoliticize Government Property Act
+H261	H	1562351	2025-04-30	passed-one-chamber	84-29	judged:batch-04	Sent. Enhancement/Immigration-Related Crimes
 H271	H	1571278	2025-05-14	passed-one-chamber	66-42	dropped: filter 5: local measure	Cabarrus Co Local Omnibus
 H279	H	1563158	2025-04-30	passed-one-chamber	87-26	dropped: filter 5: local measure	Filling Vacancies/Haywood County Bd. of Comm
 H294	H	1528329	2025-03-26	passed-one-chamber	65-47	dropped: filter 5: local measure	Jackson Co Bd of Ed Election Partisan
 H302	H	1533801	2025-04-01	passed-one-chamber	70-47	dropped: filter 5: local measure	Pitt Co. Bd. of Ed. Elect. Partisan
 H336	H	1588776	2025-06-11	passed-one-chamber	56-50	superseded: not the chamber last kept floor vote	Town of Maggie Valley/Deannexations
 H336	H	1591656	2025-06-17	passed-one-chamber	67-47	dropped: filter 5: local measure	Town of Maggie Valley/Deannexations
-H354	H	1542636	2025-04-09	passed-one-chamber	89-24	candidate:batch-04-unbatched	Civil Procedure/Gatekeeper Orders/Database
+H354	H	1542636	2025-04-09	passed-one-chamber	89-24	dropped:procedural	Civil Procedure/Gatekeeper Orders/Database
 H377	H	1716502	2026-08-05	vetoed	61-45	held:2026-house-tally-understated-by-legiscan	2026 Court Changes
 H377	S	1715977	2026-07-29	vetoed	26-11	dropped: filter 5: vehicle bill, estates package replaced by court changes, conference report	2026 Court Changes
-H379	H	1567832	2025-05-07	passed-one-chamber	62-51	candidate:batch-04-unbatched	Application for a Convention of the States
-H38	H	1560541	2025-04-29	passed-one-chamber	77-38	candidate:batch-04-unbatched	Second Amendment Financial Privacy Act
-H414	H	1566659	2025-05-06	passed-one-chamber	69-41	candidate:batch-04-unbatched	1-to-1 Credit for Career and College Promise
-H415	H	1567952	2025-05-07	passed-one-chamber	69-43	candidate:batch-04-unbatched	Modify Math & Social Studies Grad. Req
+H379	H	1567832	2025-05-07	passed-one-chamber	62-51	dropped:changes-no-state-law	Application for a Convention of the States
+H38	H	1560541	2025-04-29	passed-one-chamber	77-38	judged:batch-04	Second Amendment Financial Privacy Act
+H414	H	1566659	2025-05-06	passed-one-chamber	69-41	dropped:hidden-second-policy	1-to-1 Credit for Career and College Promise
+H415	H	1567952	2025-05-07	passed-one-chamber	69-43	dropped:omnibus-six-policies	Modify Math & Social Studies Grad. Req
 H437	H	1548759	2025-04-15	vetoed	76-36	superseded: not the chamber last kept floor vote	Drug-Free Zones/Unauthorized Public Camping
 H437	H	1712734	2026-06-30	vetoed	71-40	held:2026-house-tally-understated-by-legiscan	Drug-Free Zones/Unauthorized Public Camping
 H437	S	1711554	2026-06-24	vetoed	26-16	judged:batch-03	Drug-Free Zones/Unauthorized Public Camping
-H439	H	1562506	2025-04-30	passed-one-chamber	71-37	candidate:batch-04-unbatched	Allow Concealed Carry of Knife
-H442	H	1567831	2025-05-07	passed-one-chamber	77-35	candidate:batch-04-unbatched	Flounder/Red Snapper Seasons & Shrimp Trawl
+H439	H	1562506	2025-04-30	passed-one-chamber	71-37	dropped:no-research-area	Allow Concealed Carry of Knife
+H442	H	1567831	2025-05-07	passed-one-chamber	77-35	dropped:title-mismatch-later-substitute	Flounder/Red Snapper Seasons & Shrimp Trawl
 H443	H	1700469	2026-05-20	passed-one-chamber	71-46	superseded: not the chamber last kept floor vote	Const. Amendment: Council of State Vacancies
 H443	H	1700470	2026-05-20	passed-one-chamber	71-46	held:2026-house-tally-understated-by-legiscan	Const. Amendment: Council of State Vacancies
-H483	H	1563567	2025-05-01	passed-one-chamber	85-23	candidate:batch-04-unbatched	Juvenile Justice Legislative Proposals
-H519	H	1566647	2025-05-06	passed-one-chamber	68-41	candidate:batch-04-unbatched	Parents' Medical Bill of Rights
-H575	H	1562518	2025-04-30	passed-one-chamber	87-23	candidate:batch-04-unbatched	The Hunter Robinson Act
-H605	H	1562323	2025-04-30	passed-one-chamber	68-38	candidate:batch-04-unbatched	Definitions for Advanced Recycling
-H606	H	1566371	2025-05-06	passed-one-chamber	69-41	candidate:batch-04-unbatched	Civil Procedure Amendment
-H618	H	1567964	2025-05-07	passed-one-chamber	66-47	candidate:batch-04-unbatched	Ivermectin Access Act
-H636	H	1550064	2025-04-16	passed-one-chamber	63-46	candidate:batch-04-unbatched	Promoting Wholesome Content for Students
-H674	H	1567818	2025-05-07	passed-one-chamber	70-42	candidate:batch-04-unbatched	The Firearms Liberty Act
-H690	H	1567800	2025-05-07	passed-one-chamber	68-43	candidate:batch-04-unbatched	The Citizens Support Act
-H781	H	1567805	2025-05-07	passed-one-chamber	69-42	candidate:batch-04-unbatched	Unauthorized Public Camping & Sleeping
-H832	S	1592983	2025-06-19	passed-one-chamber	32-9	candidate:batch-04-unbatched	Education Omnibus
-H859	H	1567828	2025-05-07	passed-one-chamber	69-40	candidate:batch-04-unbatched	Local Govts/Guaranteed Income Programs
-H870	H	1566590	2025-05-06	passed-one-chamber	63-43	candidate:batch-04-unbatched	Sedimentation Act & Other Env.'l Changes
-H913	H	1563904	2025-05-01	passed-one-chamber	67-39	candidate:batch-04-unbatched	Liability/Unfair/Deceptive Develop. Actions
-H918	H	1566613	2025-05-06	passed-one-chamber	84-25	candidate:batch-04-unbatched	Standardized Testing Choice Act
-H92	H	1562493	2025-04-30	passed-one-chamber	71-44	candidate:batch-04-unbatched	NC Digital Assets Investments Act
+H483	H	1563567	2025-05-01	passed-one-chamber	85-23	dropped:omnibus-mixed-direction	Juvenile Justice Legislative Proposals
+H519	H	1566647	2025-05-06	passed-one-chamber	68-41	judged:batch-04	Parents' Medical Bill of Rights
+H575	H	1562518	2025-04-30	passed-one-chamber	87-23	dropped:two-way-effect	The Hunter Robinson Act
+H605	H	1562323	2025-04-30	passed-one-chamber	68-38	dropped:definitions-only	Definitions for Advanced Recycling
+H606	H	1566371	2025-05-06	passed-one-chamber	69-41	judged:batch-04	Civil Procedure Amendment
+H618	H	1567964	2025-05-07	passed-one-chamber	66-47	dropped:contested-direction	Ivermectin Access Act
+H636	H	1550064	2025-04-16	passed-one-chamber	63-46	judged:batch-04	Promoting Wholesome Content for Students
+H674	H	1567818	2025-05-07	passed-one-chamber	70-42	dropped:stale-title-mixed-direction	The Firearms Liberty Act
+H690	H	1567800	2025-05-07	passed-one-chamber	68-43	judged:batch-04	The Citizens Support Act
+H781	H	1567805	2025-05-07	passed-one-chamber	69-42	judged:batch-04	Unauthorized Public Camping & Sleeping
+H832	S	1592983	2025-06-19	passed-one-chamber	32-9	dropped:vehicle-bill-omnibus	Education Omnibus
+H859	H	1567828	2025-05-07	passed-one-chamber	69-40	judged:batch-04	Local Govts/Guaranteed Income Programs
+H870	H	1566590	2025-05-06	passed-one-chamber	63-43	dropped:title-understates-mostly-reporting	Sedimentation Act & Other Env.'l Changes
+H913	H	1563904	2025-05-01	passed-one-chamber	67-39	dropped:no-research-area	Liability/Unfair/Deceptive Develop. Actions
+H918	H	1566613	2025-05-06	passed-one-chamber	84-25	dropped:study-only	Standardized Testing Choice Act
+H92	H	1562493	2025-04-30	passed-one-chamber	71-44	dropped:no-research-area	NC Digital Assets Investments Act
 H925	H	1712672	2026-06-30	passed-one-chamber	69-40	held:2026-house-tally-understated-by-legiscan	Consumers in Crisis Protection Act
-H936	S	1709970	2026-06-17	passed-one-chamber	32-15	candidate:batch-04-unbatched	Robocall Solicitation Modifications
+H936	S	1709970	2026-06-17	passed-one-chamber	32-15	judged:batch-04	Robocall Solicitation Modifications
 H958	H	1712684	2026-06-30	vetoed	66-45	superseded: not the chamber last kept floor vote	Election Law Changes
 H958	H	1716494	2026-08-04	vetoed	62-46	held:2026-house-tally-understated-by-legiscan	Election Law Changes
 H958	S	1715969	2026-07-28	vetoed	28-13	dropped: filter 5: shortens early voting and raises money-disclosure limits, while adding citizenship checks and audits	Election Law Changes
 H96	H	1534228	2025-04-02	vetoed	86-29	superseded: not the chamber last kept floor vote	Expedited Removal of Unauthorized Persons
 H96	H	1595440	2025-06-26	vetoed	76-32	dropped: filter 5: squatter removal bundled with an unrelated pet shop preemption, and no research area fits	Expedited Removal of Unauthorized Persons
-S1047	S	1711477	2026-06-24	passed-one-chamber	27-14	candidate:batch-04-unbatched	Regulatory Reform Act of 2026
-S1057	S	1711563	2026-06-24	passed-one-chamber	29-13	candidate:batch-04-unbatched	Required Disclosures/Proxy Advisory Services
+S1047	S	1711477	2026-06-24	passed-one-chamber	27-14	dropped:omnibus-mixed-direction	Regulatory Reform Act of 2026
+S1057	S	1711563	2026-06-24	passed-one-chamber	29-13	judged:batch-04	Required Disclosures/Proxy Advisory Services
 S1082	S	1700901	2026-05-20	passed-one-chamber	30-16	superseded: not the chamber last kept floor vote	NC Right to Work Amendment
-S1082	S	1700902	2026-05-20	passed-one-chamber	30-16	candidate:batch-04-unbatched	NC Right to Work Amendment
-S177	H	1595074	2025-06-25	passed-one-chamber	77-33	candidate:batch-04-unbatched	Continuing Budget Adjustments
-S24	S	1487562	2025-02-12	passed-one-chamber	30-15	candidate:batch-04-unbatched	Govt Mandates Increase Healthcare Costs
-S261	S	1516964	2025-03-13	passed-one-chamber	31-12	candidate:batch-04-unbatched	Energy Security and Affordability Act
-S280	S	1567614	2025-05-07	passed-one-chamber	29-18	candidate:batch-04-unbatched	Dominique Moody Act
-S370	S	1549496	2025-04-15	passed-one-chamber	31-17	candidate:batch-04-unbatched	Repeal Certificate of Need Laws
-S378	H	1604137	2025-10-22	passed-one-chamber	61-47	candidate:batch-04-unbatched	Align Medicaid Eligibility with Federal Law
+S1082	S	1700902	2026-05-20	passed-one-chamber	30-16	judged:batch-04	NC Right to Work Amendment
+S177	H	1595074	2025-06-25	passed-one-chamber	77-33	dropped:budget-bill	Continuing Budget Adjustments
+S24	S	1487562	2025-02-12	passed-one-chamber	30-15	dropped:legislative-procedure-only	Govt Mandates Increase Healthcare Costs
+S261	S	1516964	2025-03-13	passed-one-chamber	31-12	judged:batch-04	Energy Security and Affordability Act
+S280	S	1567614	2025-05-07	passed-one-chamber	29-18	dropped:title-mismatch-later-substitute	Dominique Moody Act
+S370	S	1549496	2025-04-15	passed-one-chamber	31-17	dropped:no-research-area	Repeal Certificate of Need Laws
+S378	H	1604137	2025-10-22	passed-one-chamber	61-47	judged:batch-04	Align Medicaid Eligibility with Federal Law
 S403	S	1562387	2025-04-30	passed-one-chamber	34-12	superseded: not the chamber last kept floor vote	Additional Medicaid Funds and Requirements
-S405	S	1563048	2025-04-30	passed-one-chamber	35-11	candidate:batch-04-unbatched	Healthcare Investment Act
-S488	H	1595242	2025-06-25	passed-one-chamber	75-34	candidate:batch-04-unbatched	Clarify Disp. Place Analysis/IOLTA
-S493	S	1566260	2025-05-06	passed-one-chamber	33-12	candidate:batch-04-unbatched	Land Use Clarification and Changes
+S405	S	1563048	2025-04-30	passed-one-chamber	35-11	dropped:title-mismatch-later-substitute	Healthcare Investment Act
+S488	H	1595242	2025-06-25	passed-one-chamber	75-34	dropped:unrelated-rider	Clarify Disp. Place Analysis/IOLTA
+S493	S	1566260	2025-05-06	passed-one-chamber	33-12	dropped:title-overstates-separable-parts	Land Use Clarification and Changes
 S50	H	1588661	2025-06-11	vetoed	59-48	judged:batch-03	Freedom to Carry NC
 S50	S	1522618	2025-03-20	vetoed	26-18	superseded: not the chamber last kept floor vote	Freedom to Carry NC
 S50	S	1599136	2025-07-29	vetoed	30-19	judged:batch-03	Freedom to Carry NC
-S554	S	1567702	2025-05-07	passed-one-chamber	36-11	candidate:batch-04-unbatched	Farmers Protection Act
+S554	S	1567702	2025-05-07	passed-one-chamber	36-11	judged:batch-04	Farmers Protection Act
 S58	S	1506135	2025-03-05	passed-one-chamber	28-17	superseded: not the chamber last kept floor vote	AG/Restrict Challenge to Presidential EOs
-S58	S	1513567	2025-03-11	passed-one-chamber	29-19	candidate:batch-04-unbatched	AG/Restrict Challenge to Presidential EOs
-S599	S	1562407	2025-04-30	passed-one-chamber	27-19	candidate:batch-04-unbatched	State Teacher/Employee Pay & Local LEO Bonus
-S639	S	1591761	2025-06-17	passed-one-chamber	31-14	candidate:batch-04-unbatched	North Carolina Farm Act of 2025
+S58	S	1513567	2025-03-11	passed-one-chamber	29-19	dropped:no-research-area	AG/Restrict Challenge to Presidential EOs
+S599	S	1562407	2025-04-30	passed-one-chamber	27-19	dropped:title-mismatch-later-substitute	State Teacher/Employee Pay & Local LEO Bonus
+S639	S	1591761	2025-06-17	passed-one-chamber	31-14	dropped:omnibus-mixed-direction	North Carolina Farm Act of 2025
 S69	H	1594506	2025-06-24	passed-one-chamber	65-45	dropped: filter 5: local measure	Various Local Provisions V
 S730	H	1705043	2026-06-03	passed-one-chamber	67-44	held:2026-house-tally-understated-by-legiscan	Ratepayer Protection Act
-S730	S	1567653	2025-05-07	passed-one-chamber	29-18	candidate:batch-04-unbatched	Ratepayer Protection Act
-S808	S	1693823	2026-05-05	passed-one-chamber	29-15	candidate:batch-04-unbatched	Board of Cosmetic Art Examiners Amendments
+S730	S	1567653	2025-05-07	passed-one-chamber	29-18	dropped:title-mismatch-later-substitute	Ratepayer Protection Act
+S808	S	1693823	2026-05-05	passed-one-chamber	29-15	dropped:licensing-housekeeping-mixed-direction	Board of Cosmetic Art Examiners Amendments
