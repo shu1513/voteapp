@@ -1,35 +1,35 @@
 bill	roll	date	chamber	yea	nay	enacted	title	disposition	reason
-HB43	1486884	2025-02-11	H	55	44	yes	Criminal procedure; split sentence authorized for 30 year sentence		
-SB63	1488709	2025-02-13	S	24	7	yes	Immigration, requires law enforcement agencies to collect and submit fingerprints and DNA from illegal aliens in custody		
-SB53	1488934	2025-02-13	S	24	8	yes	Crimes and offenses, crimes of concealing an illegal alien and human smuggling established, process for determining if a detainee is an illegal alien established		
-SB67	1492166	2025-02-18	S	21	9	yes	Veterans Affairs, board membership revised, appointment and duties of commissioner provided for		
-HB202	1507249	2025-03-06	H	75	26	yes	Law enforcement officers; civil and criminal immunity from liability, further provided		
-SB116	1507290	2025-03-06	H	77	23	yes	Machine gun conversion devices prohibited		
-SB67	1507461	2025-03-06	H	56	39	yes	Veterans Affairs, board membership revised, appointment and duties of commissioner provided for		
-HB288	1532898	2025-04-01	H	67	29	yes	Alabama Commission on Higher Education; authorized to award loan assistance to athletic trainers under Alabama Math and Science Teacher Education Program		
-HB357	1543491	2025-04-10	H	58	37	yes	Tobacco products, heated tobacco product definition and tax provided for		
-SB314	1556394	2025-04-24	H	10	3	yes	Shelby County, levy of additional motor vehicle license and registration fee authorized, distribution provided for		
-SB330	1564597	2025-05-01	H	66	27	yes	Certain municipal water works boards reconstituted, operating procedures further provided for		
-HB445	1566046	2025-05-06	S	19	13	yes	Cannabinoids found in hemp; licensure and regulation of sale of consumable cannabinoid products by Alcoholic Beverage Control Board imposed		
-HB445	1566772	2025-05-06	H	60	27	yes	Cannabinoids found in hemp; licensure and regulation of sale of consumable cannabinoid products by Alcoholic Beverage Control Board imposed		
-HB8	1566797	2025-05-06	H	52	43	yes	Alcoholic Beverage Control Board, regulation of retail sale of certain tobacco products and electronic nicotine delivery systems, further provided		
-HB357	1567082	2025-05-07	S	24	6	yes	Tobacco products, heated tobacco product definition and tax provided for		
-HB165	1567089	2025-05-07	S	13	5	yes	State holidays; Juneteenth added as state holiday		
-HB202	1573029	2025-05-14	H	73	28	yes	Law enforcement officers; civil and criminal immunity from liability, further provided		
-HB29	1486877	2025-02-11	H	76	25	no	Unemployment compensation, unemployed individual required to contact an increased number of prospective employers for each week of unemployment claimed; further providing for the meaning of failure to seek or accept suitable work		
-HB280	1501177	2025-02-27	H	70	22	no	Public nuisance, actions to abate or enjoin public nuisances further provided for		
-HB146	1504861	2025-03-04	H	67	33	no	Youthful offender status, to prohibit a judge from granting youthful offender status to any person who is 16 years of age and older and charged with murder		
-SB156	1519776	2025-03-18	S	16	16	no	Sentencing; habitual felony offender act, resentencing procedures, established		
-SB156	1519777	2025-03-18	S	17	8	no	Sentencing; habitual felony offender act, resentencing procedures, established		
-HB30	1519986	2025-03-18	H	63	30	no	Judge of probate of each county to conduct post-election audit		
-HB234	1522711	2025-03-20	H	58	30	no	Public K-12 schools; mobile emergency rapid response systems required, State Board of Education required to adopt rules, funding sources provided for		
-HB403	1540485	2025-04-08	H	77	21	no	Crimes and offenses, establishment, development, management, and maintenance of Alabama Criminal Enterprise Database provided for		
-HB42	1543601	2025-04-10	H	66	32	no	Alabama Bail Reform Act of 1993, court authorized to accept cash deposit in certain circumstances		
-HB7	1551126	2025-04-17	H	74	26	no	Illegal immigration; procedures for arrest, detention, transportation of illegal aliens provided for; reporting requirements established		
-HB247	1551361	2025-04-17	H	72	26	no	Gulf of Mexico, renamed, observation and implementation by state and local entities and state and local employees required where practicable		
-SB262	1553721	2025-04-22	S	18	7	no	Lowndes County, pari-mutuel wagering on simulcast past events and live horse and dog races under certain conditions; tax levied; distribution of revenue, provided		
-HB479	1553910	2025-04-22	H	74	28	no	Voting, statewide voter registration database, identifying voter address changes, Electronic Registration Information Center removed as verification database		
-HB521	1554333	2025-04-22	H	68	25	no	Mixed spirit beverages, providing for distribution, retail sale, and tax		
-SB324	1556705	2025-04-24	S	16	8	no	Pardons and Paroles Board; increase members on board; further provide for selection of chair; parole consideration guidelines after denial of parole established		
-HB559	1560123	2025-04-29	H	74	22	no	Crimes and offenses; crime of loitering, exceptions further provided; mask usage policies on school campuses, authorized		
-SB5	1566474	2025-05-06	H	74	29	no	Department of Archives and History, composition of board and method of filling board vacancies further provided for, retroactive effect		
+HB43	1486884	2025-02-11	H	55	44	yes	Criminal procedure; split sentence authorized for 30 year sentence	dropped	filter 5: HB 43 expands split sentencing AND adds a 10-year no-parole minimum — two directions inside public_safety_and_crime_control
+SB63	1488709	2025-02-13	S	24	7	yes	Immigration, requires law enforcement agencies to collect and submit fingerprints and DNA from illegal aliens in custody	batch-01	imported
+SB53	1488934	2025-02-13	S	24	8	yes	Crimes and offenses, crimes of concealing an illegal alien and human smuggling established, process for determining if a detainee is an illegal alien established	batch-01	imported
+SB67	1492166	2025-02-18	S	21	9	yes	Veterans Affairs, board membership revised, appointment and duties of commissioner provided for	dropped	filter 5: SB 67 veterans-board power shift, no honest area or direction
+HB202	1507249	2025-03-06	H	75	26	yes	Law enforcement officers; civil and criminal immunity from liability, further provided	superseded	HB 202: the batch imports the later House concurrence roll 1573029, the vote on the enacted text
+SB116	1507290	2025-03-06	H	77	23	yes	Machine gun conversion devices prohibited	batch-01	imported
+SB67	1507461	2025-03-06	H	56	39	yes	Veterans Affairs, board membership revised, appointment and duties of commissioner provided for	dropped	same measure as roll 1492166 (SB 67), dropped with it
+HB288	1532898	2025-04-01	H	67	29	yes	Alabama Commission on Higher Education; authorized to award loan assistance to athletic trainers under Alabama Math and Science Teacher Education Program	dropped	filter 5: HB 288 one-profession loan subsidy, no area fits; read in full to rule out a vehicle bill
+HB357	1543491	2025-04-10	H	58	37	yes	Tobacco products, heated tobacco product definition and tax provided for	batch-01	imported
+SB314	1556394	2025-04-24	H	10	3	yes	Shelby County, levy of additional motor vehicle license and registration fee authorized, distribution provided for	dropped	filter 3: SB 314 Shelby County local act, no statewide subject
+SB330	1564597	2025-05-01	H	66	27	yes	Certain municipal water works boards reconstituted, operating procedures further provided for	dropped	filter 5: SB 330 Birmingham Water Works takeover, direction genuinely contested
+HB445	1566046	2025-05-06	S	19	13	yes	Cannabinoids found in hemp; licensure and regulation of sale of consumable cannabinoid products by Alcoholic Beverage Control Board imposed	batch-01	imported
+HB445	1566772	2025-05-06	H	60	27	yes	Cannabinoids found in hemp; licensure and regulation of sale of consumable cannabinoid products by Alcoholic Beverage Control Board imposed	batch-01	imported
+HB8	1566797	2025-05-06	H	52	43	yes	Alcoholic Beverage Control Board, regulation of retail sale of certain tobacco products and electronic nicotine delivery systems, further provided	batch-01	imported
+HB357	1567082	2025-05-07	S	24	6	yes	Tobacco products, heated tobacco product definition and tax provided for	batch-01	imported
+HB165	1567089	2025-05-07	S	13	5	yes	State holidays; Juneteenth added as state holiday	batch-01	imported
+HB202	1573029	2025-05-14	H	73	28	yes	Law enforcement officers; civil and criminal immunity from liability, further provided	batch-01	imported
+HB29	1486877	2025-02-11	H	76	25	no	Unemployment compensation, unemployed individual required to contact an increased number of prospective employers for each week of unemployment claimed; further providing for the meaning of failure to seek or accept suitable work	deferred	one-chamber scope (measure did not become law) — a user call, the Pennsylvania batch-02 precedent
+HB280	1501177	2025-02-27	H	70	22	no	Public nuisance, actions to abate or enjoin public nuisances further provided for	deferred	one-chamber scope (measure did not become law) — a user call, the Pennsylvania batch-02 precedent
+HB146	1504861	2025-03-04	H	67	33	no	Youthful offender status, to prohibit a judge from granting youthful offender status to any person who is 16 years of age and older and charged with murder	deferred	one-chamber scope (measure did not become law) — a user call, the Pennsylvania batch-02 precedent
+SB156	1519776	2025-03-18	S	16	16	no	Sentencing; habitual felony offender act, resentencing procedures, established	deferred	one-chamber scope (measure did not become law) — a user call, the Pennsylvania batch-02 precedent
+SB156	1519777	2025-03-18	S	17	8	no	Sentencing; habitual felony offender act, resentencing procedures, established	deferred	one-chamber scope (measure did not become law) — a user call, the Pennsylvania batch-02 precedent
+HB30	1519986	2025-03-18	H	63	30	no	Judge of probate of each county to conduct post-election audit	deferred	one-chamber scope (measure did not become law) — a user call, the Pennsylvania batch-02 precedent
+HB234	1522711	2025-03-20	H	58	30	no	Public K-12 schools; mobile emergency rapid response systems required, State Board of Education required to adopt rules, funding sources provided for	deferred	one-chamber scope (measure did not become law) — a user call, the Pennsylvania batch-02 precedent
+HB403	1540485	2025-04-08	H	77	21	no	Crimes and offenses, establishment, development, management, and maintenance of Alabama Criminal Enterprise Database provided for	deferred	one-chamber scope (measure did not become law) — a user call, the Pennsylvania batch-02 precedent
+HB42	1543601	2025-04-10	H	66	32	no	Alabama Bail Reform Act of 1993, court authorized to accept cash deposit in certain circumstances	deferred	one-chamber scope (measure did not become law) — a user call, the Pennsylvania batch-02 precedent
+HB7	1551126	2025-04-17	H	74	26	no	Illegal immigration; procedures for arrest, detention, transportation of illegal aliens provided for; reporting requirements established	deferred	one-chamber scope (measure did not become law) — a user call, the Pennsylvania batch-02 precedent
+HB247	1551361	2025-04-17	H	72	26	no	Gulf of Mexico, renamed, observation and implementation by state and local entities and state and local employees required where practicable	deferred	one-chamber scope (measure did not become law) — a user call, the Pennsylvania batch-02 precedent
+SB262	1553721	2025-04-22	S	18	7	no	Lowndes County, pari-mutuel wagering on simulcast past events and live horse and dog races under certain conditions; tax levied; distribution of revenue, provided	deferred	one-chamber scope (measure did not become law) — a user call, the Pennsylvania batch-02 precedent
+HB479	1553910	2025-04-22	H	74	28	no	Voting, statewide voter registration database, identifying voter address changes, Electronic Registration Information Center removed as verification database	deferred	one-chamber scope (measure did not become law) — a user call, the Pennsylvania batch-02 precedent
+HB521	1554333	2025-04-22	H	68	25	no	Mixed spirit beverages, providing for distribution, retail sale, and tax	deferred	one-chamber scope (measure did not become law) — a user call, the Pennsylvania batch-02 precedent
+SB324	1556705	2025-04-24	S	16	8	no	Pardons and Paroles Board; increase members on board; further provide for selection of chair; parole consideration guidelines after denial of parole established	deferred	one-chamber scope (measure did not become law) — a user call, the Pennsylvania batch-02 precedent
+HB559	1560123	2025-04-29	H	74	22	no	Crimes and offenses; crime of loitering, exceptions further provided; mask usage policies on school campuses, authorized	deferred	one-chamber scope (measure did not become law) — a user call, the Pennsylvania batch-02 precedent
+SB5	1566474	2025-05-06	H	74	29	no	Department of Archives and History, composition of board and method of filling board vacancies further provided for, retroactive effect	deferred	one-chamber scope (measure did not become law) — a user call, the Pennsylvania batch-02 precedent
