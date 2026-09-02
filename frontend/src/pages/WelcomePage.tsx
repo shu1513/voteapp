@@ -116,14 +116,16 @@ export function WelcomePage() {
     navigate("/me/ballot", { replace: true });
   }
 
+  // max-w-4xl, not the app's usual 2xl: the picker is two columns from lg up
+  // and needs the width.
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10">
+    <div className="mx-auto max-w-4xl px-4 py-10">
       <h1 className="text-title font-bold">
         {me.first_name ? `Welcome, ${me.first_name}!` : "Welcome!"}
       </h1>
       <p className="mt-2 text-sm text-ink">
-        Choose the issues you care about and drag them into priority order — we&rsquo;ll rank
-        elections and candidates by how well they align with your issues. Choose
+        Choose the issues you care about and drag to arrange them into priority order.
+        We&rsquo;ll rank elections and candidates by how well they align with your issues. Choose
         &ldquo;Must&rdquo; if you will absolutely not accept a candidate or ballot measure that
         takes the opposite stance from yours. You can change this any time in Settings.
       </p>

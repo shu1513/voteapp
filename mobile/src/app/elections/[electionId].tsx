@@ -41,6 +41,7 @@ import { FollowButton } from "../../components/FollowButton";
 import { NotFoundNotice } from "../../components/NotFoundNotice";
 import { ShareButton } from "../../components/ShareButton";
 import { SortChips } from "../../components/SortChips";
+import { SourceFootnote } from "../../components/SourceFootnote";
 import { SourceLine } from "../../components/SourceLine";
 import { ErrorNotice, LoadingNotice } from "../../components/Status";
 import { openExternalUrl } from "../../lib/openExternalUrl";
@@ -147,6 +148,12 @@ export default function ElectionScreen() {
 
   const data = election.data;
   const measure = data.ballot_measure;
+  // Election-level sources the measure section did not already show (its
+  // source_urls plus the official-measure link), mirroring the web page.
+  const measureShownSources = new Set<string>(
+    measure ? [...measure.source_urls, ...(measure.official_measure_url ? [measure.official_measure_url] : [])] : []
+  );
+  const electionOnlySources = data.sources.filter((url) => !measureShownSources.has(url));
   // Pick gates, copied from the web ElectionPage. Controls render on
   // upcoming elections only (the backend rejects writes to past ones), and
   // only once the signed-in viewer's choices list is loaded. District gate
@@ -323,11 +330,10 @@ export default function ElectionScreen() {
                 : "More about this measure"}
             </Text>
           ) : null}
-          {measure.source_urls
-            .filter((url) => url !== measure.official_measure_url)
-            .map((url) => (
-              <SourceLine key={url} url={url} />
-            ))}
+          <SourceFootnote
+            urls={measure.source_urls.filter((url) => url !== measure.official_measure_url)}
+            className="mt-1"
+          />
         </View>
       ) : null}
 
@@ -534,14 +540,9 @@ export default function ElectionScreen() {
         </View>
       ) : null}
 
-      {data.sources.length > 0 ? (
-        <View className="mt-6">
-          <Text className="text-sm font-semibold text-ink">Election sources</Text>
-          {data.sources.map((url) => (
-            <SourceLine key={url} url={url} />
-          ))}
-        </View>
-      ) : null}
+      {/* One footnote line, no heading, minus anything the measure section
+          already cited (same rule as the web page). */}
+      <SourceFootnote urls={electionOnlySources} className="mt-6" />
       </ScrollView>
       {/* The measure screen's ONE pick control, in a safe-area-aware footer
           below the scroll area (the web pins the same card with sticky).

@@ -61,6 +61,23 @@ export function formatSourceHost(url: string): string {
   }
 }
 
+export type SourceHostGroup = { host: string; urls: string[] };
+
+// Source lists show the host, not the URL, so two pages from one site
+// (an index page and the detail page it led to — the normal research
+// trail) read as the same line twice. Group by display host, first-seen
+// order, exact-URL dedupe, so a footnote can name each site once.
+export function groupSourcesByHost(urls: readonly string[]): SourceHostGroup[] {
+  const groups: SourceHostGroup[] = [];
+  for (const url of new Set(urls)) {
+    const host = formatSourceHost(url);
+    const group = groups.find((entry) => entry.host === host);
+    if (group) group.urls.push(url);
+    else groups.push({ host, urls: [url] });
+  }
+  return groups;
+}
+
 // Display scale reads Very low / Below average / Normal / High / Very high:
 // "low" as a verdict on the voter and "medium" as a size word both misread,
 // so they ship as "Below average" and "Normal". Wire values stay unchanged.

@@ -21,9 +21,23 @@ forced every account through re-acceptance for a change to nothing they
 accepted. What did change is that "1.4" now covers two pre-search screens, so
 the boundary is recorded here: acceptances before 2026-08-30 saw the
 four-paragraph dialog naming arbitration; acceptances after saw this file's
-current text. Signup and re-acceptance copy is untouched and still names
-arbitration in full. Rationale for the removals is in "Why arbitration is not
-named on this screen" and under the short privacy note.
+current text. Rationale for the removals is in "Why arbitration is not
+named on any checkbox screen" and under the short privacy note.
+
+1.4 presentation revision (2026-08-31), SIGNUP AND RE-ACCEPTANCE. The signup
+label dropped its closing arbitration sentence and the re-acceptance label its
+"including the agreement..." clause, for the same reason the pre-search gate
+was trimmed the day before: Section 12 is stated in the linked Terms of Use,
+and restating it beside the checkbox repeated a linked document as scare copy.
+The version again did NOT bump — the three pinned documents are byte-identical,
+so the agreement entered is the same agreement. Boundary for the acceptance
+ledger: it is a per-client DEPLOY boundary, not a calendar line, and the rows
+do not record label text, so a 1.4 row alone cannot say which wording was on
+screen. Web flipped with the 2026-08-31 deploy; a mobile binary built earlier
+keeps showing the old labels until the app updates, so 1.4 rows dated after
+2026-08-31 may come from either wording. The ambiguity only runs the safe way:
+the old labels are the current text PLUS an arbitration sentence, so every 1.4
+acceptor saw at least the current wording — some saw more notice, none less.
 
 Clickwrap requirements (Meyer v. Uber; Nguyen v. Barnes & Noble; Berman v.
 Freedom Financial Network):
@@ -32,10 +46,10 @@ Freedom Financial Network):
 - Checkbox sits directly above the action button it gates.
 - [Terms of Use] / [Privacy Policy] / [Disclaimer] render as clearly visible
   links right next to the checkbox — no tiny gray text, no footer-only links.
-  On the pre-search gate this is now the ENTIRE notice, since no clause is
-  called out there any more (see the 2026-08-30 revision note above), so
-  weakening those links is the one edit that would actually cost us Section 12
-  against an anonymous searcher.
+  On every gate this is now the ENTIRE notice, since no clause is called out
+  anywhere any more (see the 2026-08-30 and 2026-08-31 revision notes above),
+  so weakening those links is the one edit that would actually cost us
+  Section 12.
 - Signup acceptance is recorded server-side: POST /api/auth/register requires
   accepted_terms_version matching CURRENT_TERMS_VERSION
   (backend/src/constants/legal.ts); stored on the user row with a timestamp.
@@ -89,12 +103,13 @@ Freedom Financial Network):
   or before collection.
 - The pre-search checkbox label is a SUMMARY; the sentences it does not carry
   appear above it in the dialog. It names the three documents and nothing else
-  — see "Why arbitration is not named on this screen" below, and do not add a
-  clause callout back to it without reading that section first.
+  — see "Why arbitration is not named on any checkbox screen" below, and do
+  not add a clause callout back to any label without reading that section
+  first.
 - All of this copy lives in packages/api-client/src/legalCopy.ts, and
   legalCopy.test.ts asserts every string still appears in this file. That suite
-  also pins the arbitration asymmetry in both directions: absent from the
-  anonymous gate, present in the signup and re-acceptance labels.
+  also pins arbitration and the class-action waiver OUT of every label, so the
+  restatement cannot creep back one screen at a time.
 -->
 
 # Checkbox and notice copy — Version 1.4
@@ -125,11 +140,10 @@ forced scrolling through the documents.
 > deadline, and election-result information with official election authorities
 > before relying on it.
 
-### Why arbitration is not named on this screen
+### Why arbitration is not named on any checkbox screen
 
-Neither the label nor the paragraphs above mention arbitration or the
-class-action waiver. The signup and re-acceptance checkboxes below still name
-both, and that difference is deliberate:
+No label in this file — pre-search, signup, or re-acceptance — mentions
+arbitration or the class-action waiver, and that is deliberate:
 
 - What the clickwrap cases require is conspicuous notice of the **documents**
   plus an unambiguous act of assent, not a callout of any one clause. The Uber
@@ -138,17 +152,18 @@ both, and that difference is deliberate:
   SERVICE & PRIVACY POLICY" and never used the word "arbitration". An empty
   checkbox that gates the action clears that bar by a wider margin than Uber's
   click-to-continue did.
-- Acceptance here is never recorded server-side, so this gate was never the
-  evidence a Section 12 motion would rest on. `user_terms_acceptances` is, and
-  the rows in it come from the signup and re-acceptance labels, which name
-  arbitration in full.
-- The cost was one-sided and it landed on a stranger's first screen: someone
-  typed an address to look up a ballot and was shown a lawsuit warning.
+- Section 12 is stated once, in the Terms of Use. Restating it beside a
+  checkbox repeats a linked document as a lawsuit warning on a screen someone
+  came to for something else — a ballot lookup, an account, a version bump.
+- What a Section 12 motion rests on is the assent evidence, not a clause
+  restatement: for accounts, the `user_terms_acceptances` rows recording
+  acceptance of the named documents; for anonymous searchers, this file plus
+  the deployed gate.
 
-The Terms of Use link beside the checkbox is what now carries the whole of the
+The Terms of Use link beside each checkbox is what carries the whole of the
 notice. It is not optional and it may not be demoted to the footer: the link,
 named and adjacent at the moment of assent, is the basis on which Section 12
-binds an anonymous searcher at all.
+binds at all.
 
 ## Signup checkbox (account registration)
 
@@ -157,18 +172,12 @@ binds an anonymous searcher at all.
 > Disclaimer]. I consent to enter this agreement electronically. I understand
 > that Elections Simplified is not an official election source, does not register voters
 > or cast ballots, and may display AI-assisted content that must be
-> independently verified with official election authorities. I agree that
-> disputes are resolved by binding individual arbitration with a class-action
-> waiver as described in Section 12 of the Terms of Use, unless I opt out as
-> described there.
+> independently verified with official election authorities.
 
 ## Re-acceptance checkbox (signed-in interstitial after a version bump)
 
 > [ ] I have read and agree to the updated [Terms of Use], [Privacy Policy],
-> and [AI Research and Election Information Disclaimer], including the
-> agreement to resolve disputes by binding individual arbitration with a
-> class-action waiver (Terms of Use Section 12), unless I opt out as
-> described there.
+> and [AI Research and Election Information Disclaimer].
 
 ## Short privacy note (beside every address input, and in the pre-search dialog)
 

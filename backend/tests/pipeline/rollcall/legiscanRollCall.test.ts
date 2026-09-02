@@ -365,6 +365,242 @@ describe("Maryland 2026's measured desc vocabulary", () => {
   });
 });
 
+describe("Indiana 2025's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS.IN!;
+  const inRoll = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+
+  it("keeps the measured final-action spellings, scheduling prefix and all", () => {
+    expect(inRoll("House - Third reading", 100)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(inRoll("Senate - Third reading", 50, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(inRoll("House - House concurred with Senate amendments", 100).questionClass).toBe("concurrence");
+    expect(inRoll("House - Rules Suspended. House concurred with Senate amendments", 100).questionClass).toBe(
+      "concurrence"
+    );
+    expect(inRoll("Senate - Concurrence failed for lack of constitutional majority", 50, "senate").questionClass).toBe(
+      "concurrence"
+    );
+    expect(inRoll("Senate - Conference Committee Report 1", 50, "senate").questionClass).toBe("conference_report");
+    expect(inRoll("House - Rules Suspended. Conference Committee Report 2", 100).questionClass).toBe(
+      "conference_report"
+    );
+  });
+
+  it("excludes each surveyed procedural family", () => {
+    for (const desc of [
+      "House - Amendment #1 (Burton) failed",
+      "Senate - Amendment #12 (Ford Jon) prevailed",
+      "House - Appeal the ruling of the chair (Pryor)",
+      "House - Second reading",
+      "House - Referred to Committee on Education pursuant to House Rule 126.4",
+    ]) {
+      expect(inRoll(desc, 100)).toMatchObject({ isFloorVote: false });
+    }
+  });
+
+  // Ten House rolls carry the literal desc `House -` with no question after
+  // the dash. The bill histories show they are five third readings, two
+  // concurrences, one failed amendment and two appeals of the chair, so no
+  // pattern can recover the question from the desc — they must surface for a
+  // human rather than be guessed at. See the config comment and
+  // evidence/rollcall/legiscan-in-2143/CODE-FINDINGS.md.
+  it("surfaces the blank-question rolls instead of guessing them", () => {
+    expect(inRoll("House -", 100)).toMatchObject({
+      isFloorVote: null,
+      questionClass: null,
+      reason: "unknown_question",
+    });
+  });
+});
+
+describe("Montana 2025's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS.MT!;
+  const mt = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+
+  it("keeps every third-reading spelling the survey measured", () => {
+    expect(mt("(H) 3rd Reading Passed", 100)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(mt("(S) 3rd Reading Concurred", 50, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(mt("(S) 3rd Reading Failed", 50, "senate")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(mt("(H) 3rd Reading Failed; 2nd House Vote Required", 100).questionClass).toBe("passage");
+    expect(mt("(H) 3rd Reading Passed as Amended by Senate", 100).questionClass).toBe("concurrence");
+    expect(mt("(H) 3rd Reading Not Passed as Amended by Senate", 100).questionClass).toBe("concurrence");
+    expect(mt("(S) 3rd Reading Free Conference Committee Report Adopted", 50, "senate").questionClass).toBe(
+      "conference_report"
+    );
+    expect(mt("(S) 3rd Reading Conference Committee Report Rejected", 50, "senate").questionClass).toBe(
+      "conference_report"
+    );
+    expect(mt("(H) 3rd Reading Governor's Proposed Amendments Adopted", 100).questionClass).toBe("concurrence");
+  });
+
+  it("excludes second reading, the stage where Montana takes floor amendments", () => {
+    for (const desc of [
+      "(H) 2nd Reading Passed",
+      "(S) 2nd Reading Concurred",
+      "(H) 2nd Reading Motion to Amend Carried",
+      "(S) 2nd Reading Indefinitely Postponed",
+      "(H) 2nd Reading Senate Amendments Concurred",
+      "(S) 2nd Reading Conference Committee Report Adopted",
+    ]) {
+      expect(mt(desc, 100)).toMatchObject({ isFloorVote: false });
+    }
+  });
+
+  it("excludes the surveyed motion, scheduling and resolution families", () => {
+    for (const desc of [
+      "(H) Motion Failed",
+      "(S) Motion to Reconsider Failed",
+      "(H) Taken from Committee; Placed on 2nd Reading",
+      "(S) Reconsidered Previous Action; Placed on 2nd Reading",
+      "(H) Reconsidered Previous Action; Remains in 3rd Reading Process",
+      "(S) Resolution Adopted",
+    ]) {
+      expect(mt(desc, 100)).toMatchObject({ isFloorVote: false });
+    }
+  });
+
+  it("rejects every committee roll on its tally, without naming a committee", () => {
+    // Montana committee descriptions always join the committee name to its
+    // question with a double hyphen and never report more than 23 votes,
+    // while every floor roll reports the whole chamber.
+    expect(mt("(H) Judiciary--Do Pass", 20)).toMatchObject({ isFloorVote: false });
+    expect(mt("(S) Finance and Claims--Be Concurred In", 22, "senate")).toMatchObject({ isFloorVote: false });
+  });
+});
+
+describe("North Carolina's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS.NC!;
+  const nc = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+
+  it("keeps the readings, both concurrence spellings, conference reports and overrides", () => {
+    // The recorded floor vote is taken on SECOND reading; a third reading
+    // roll only exists on the days a member objected.
+    expect(nc("Second Reading", 120)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(nc("Third Reading", 50, "senate")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    // House concurrence, bare, with the amendment named, and under a
+    // materiality ruling (LegiScan leaves the apostrophe HTML-escaped).
+    expect(nc("M11 Concur", 120).questionClass).toBe("concurrence");
+    expect(nc("M11 Concur Sen. Amd. 1", 120).questionClass).toBe("concurrence");
+    expect(nc("R2 Ruled Mat&#x27;l M11 Concur", 120).questionClass).toBe("concurrence");
+    // Senate concurrence, with and without a reading in front.
+    expect(nc("Motion 9 To Concur House Amend", 50, "senate").questionClass).toBe("concurrence");
+    expect(nc("Second Reading Motion 9 To Concur", 50, "senate").questionClass).toBe("concurrence");
+    // Conference reports, one shape per chamber plus the Senate's readings
+    // on the report.
+    expect(nc("C RPT Adoption", 120).questionClass).toBe("conference_report");
+    expect(nc("R3 Ruled Mat&#x27;l C RPT Adoption", 120).questionClass).toBe("conference_report");
+    expect(nc("Conference Report Motion 8 To Adopt", 50, "senate").questionClass).toBe("conference_report");
+    expect(nc("Conference Rpt Third Reading", 50, "senate").questionClass).toBe("conference_report");
+    // The override votes, one spelling per chamber.
+    expect(nc("Veto Override", 120)).toMatchObject({ isFloorVote: true, questionClass: "veto_override" });
+    expect(nc("Motion 11 Veto Override", 50, "senate").questionClass).toBe("veto_override");
+  });
+
+  it("excludes the suffix traps that carry the passage wording", () => {
+    // The question can be a SUFFIX: amendments, previous question and table
+    // motions all end in the reading words, so exclusions must win.
+    for (const desc of [
+      "A1 Blackwell Second Reading",
+      "A1 Smith, Carson Second Reading",
+      "A1 Morey Second Reading M3 To Lay On The Table",
+      "Amendment 3",
+      "Amendment 3 Motion 1 To Table",
+      "Second Reading M4 Previous Question",
+      "Veto Override M4 Previous Question",
+      "M11 Not Concur",
+    ]) {
+      expect(nc(desc, 120)).toMatchObject({ isFloorVote: false, questionClass: null });
+    }
+  });
+});
+
+describe("Alabama's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS.AL!;
+  const al = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType, config });
+
+  it("keeps passage with or without a sponsor prefix or an ` as Amended` tail", () => {
+    expect(al("Motion to Read a Third Time and Pass - Roll Call 376", 105)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(al("Motion to Read a Third Time and Pass as Amended - Roll Call 130", 34, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // SB 54 roll 164: a real passage vote printed under its sponsor's name,
+    // which is why the passage pattern cannot anchor at the start.
+    expect(al("Roberts motion to Read a Third Time and Pass as Amended - Roll Call 164", 34, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+  });
+
+  it("classes the concurrence spellings, and the conference report ahead of them", () => {
+    expect(al("Garrett Concur In and Adopt - Roll Call 1188", 103).questionClass).toBe("concurrence");
+    expect(al("Concur In and Senate Amendment", 103).questionClass).toBe("concurrence");
+    expect(al("Senate Concurs In House Amendment -", 34, "senate").questionClass).toBe("concurrence");
+    expect(al("Hassell Motion to Concur In and Adopt", 104).questionClass).toBe("concurrence");
+    expect(al("Concur In and Adopt Conference Committee Report YMYZ96N-1", 103).questionClass).toBe(
+      "conference_report"
+    );
+  });
+
+  it("excludes the Budget Isolation Resolution under BOTH of its captions", () => {
+    // Alabama votes a Budget Isolation Resolution before taking up most
+    // bills, and LegiScan files that one vote twice. The second caption
+    // reads like passage but is the same tally and the same member list, so
+    // keeping it would double every Alabama record.
+    for (const desc of [
+      "HBIR: Passed by House of Origin",
+      "HBIR: Passed by Second House",
+      "SBIR: Passed by House of Origin",
+      "SBIR: Passed by Second House",
+      "Third Reading in House of Origin",
+      "Third Reading in Second House",
+      "Motion to Adopt BIR- Failed",
+    ]) {
+      expect(al(desc, 105)).toMatchObject({ isFloorVote: false, questionClass: null });
+    }
+  });
+
+  it("excludes each surveyed procedural family", () => {
+    for (const desc of [
+      "Albritton motion to Adopt - Roll Call 27 F2Z4DCC-1",
+      "Carns motion to Table - Roll Call 1143 SLMKI78-1",
+      "Waggoner Petition to Cease Debate",
+      "Petition to Close Debate",
+      "Stadthagen Previous Question",
+      "Motion to Add Cosponsor",
+      "LocalCertificationResolutionAdopted",
+      "Orr Local Certification Resolution",
+      "In Conference Committee",
+      "Chambliss Reconsider",
+      "Underwood motion to Non-Concur and Appoint Conference Committee",
+    ]) {
+      expect(al(desc, 105)).toMatchObject({ isFloorVote: false, questionClass: null });
+    }
+  });
+
+  it("keeps a county delegation's local-bill vote, because its roll is still chamber-sized", () => {
+    // SB 314 (Shelby County) passed the House 10-3 with 90 members recorded
+    // as not voting, so `total` is 103 and no tally rule separates a local
+    // act from a statewide one. Selection has to drop these by subject.
+    expect(al("Motion to Read a Third Time and Pass - Roll Call 978", 103)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+  });
+});
+
 describe("getLegiscanStateConfig", () => {
   it("serves only surveyed states; an unsurveyed state is refused by name", () => {
     expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual([
@@ -381,11 +617,31 @@ describe("getLegiscanStateConfig", () => {
       "MO-2226",
       "MD",
       "MD-2240",
+      "IN",
+      "MT",
+      "NC",
+      "AL",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
     // judgment may never name `MO-2226` or `MD-2240`.
-    expect(LEGISCAN_RECORD_JURISDICTIONS).toEqual(["GA", "CT", "IL", "TN", "TX", "FL", "CA", "PA", "ME", "MO", "MD"]);
+    expect(LEGISCAN_RECORD_JURISDICTIONS).toEqual([
+      "GA",
+      "CT",
+      "IL",
+      "TN",
+      "TX",
+      "FL",
+      "CA",
+      "PA",
+      "ME",
+      "MO",
+      "MD",
+      "IN",
+      "MT",
+      "NC",
+      "AL",
+    ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
     expect(getLegiscanStateConfig("GA").sessionId).toBe(2167);
@@ -398,7 +654,9 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("MO").sessionId).toBe(2169);
     expect(getLegiscanStateConfig("MO-2226")).toMatchObject({ jurisdiction: "MO", sessionId: 2226 });
     expect(getLegiscanStateConfig("MD").sessionId).toBe(2164);
+    expect(getLegiscanStateConfig("NC").sessionId).toBe(2189);
     expect(getLegiscanStateConfig("md-2240")).toMatchObject({ jurisdiction: "MD", sessionId: 2240 });
+    expect(getLegiscanStateConfig("MT").sessionId).toBe(2159);
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("NY")).toThrow("no LegiScan state config for NY");
   });

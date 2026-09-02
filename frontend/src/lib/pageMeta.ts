@@ -23,8 +23,8 @@ const SHARE_IMAGE = `${SITE_ORIGIN}/og-card.png`;
 const SHARE_IMAGE_ALT = `${APP_NAME} — see which elections you can vote in`;
 
 export const DEFAULT_DESCRIPTION =
-  "Enter your address to see the elections on your ballot, who is running, and independent " +
-  "AI-assisted research on every candidate.";
+  "See how much power your vote has and who the candidates really are by their track records " +
+  "instead of their marketing.";
 
 type PageMetaInput = {
   title: string;

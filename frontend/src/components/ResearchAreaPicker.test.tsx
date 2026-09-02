@@ -24,6 +24,9 @@ describe("ResearchAreaPicker", () => {
       />
     );
 
+    expect(
+      screen.getByText("Tap an issue to add it here.")
+    ).toBeInTheDocument();
     const names = screen.getAllByRole("button").map((button) => button.textContent);
     expect(names).toEqual([
       "Healthcare Affordability",
@@ -70,5 +73,29 @@ describe("ResearchAreaPicker", () => {
 
     await user.click(screen.getByRole("button", { name: "Remove Healthcare Affordability" }));
     expect(onChange).toHaveBeenLastCalledWith([ranked[1]]);
+  });
+});
+
+describe("physical keyboard on pool cards", () => {
+  // Regression: the drag listeners on the card used to include dnd-kit's
+  // keyboard handler, which treated Enter/Space on the inner buttons as
+  // "start dragging" and swallowed the press.
+  it("Enter adds an issue and Space opens its description", async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    render(
+      <ResearchAreaPicker
+        areas={[{ id: "a-health", slug: "healthcare_affordability", name: "Healthcare Affordability", description: "Costs." }]}
+        ranked={[]}
+        disabled={false}
+        onChange={onChange}
+      />
+    );
+    screen.getByRole("button", { name: "Healthcare Affordability" }).focus();
+    await user.keyboard("{Enter}");
+    expect(onChange).toHaveBeenCalledTimes(1);
+    screen.getByRole("button", { name: "About Healthcare Affordability" }).focus();
+    await user.keyboard(" ");
+    expect(screen.getByText("Costs.")).toBeInTheDocument();
   });
 });

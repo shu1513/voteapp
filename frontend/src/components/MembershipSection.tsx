@@ -23,6 +23,10 @@ const MAX_DOLLARS = 1000;
 
 const buttonClass =
   "rounded-lg bg-rausch px-4 py-2 text-sm font-semibold text-white transition hover:bg-rausch-dark disabled:cursor-not-allowed disabled:bg-line";
+// The member checkout CTA: inviting green (the app's affirmative color)
+// instead of rausch, which reads as destructive/alert elsewhere.
+const memberButtonClass =
+  "rounded-lg bg-green-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-green-800 disabled:cursor-not-allowed disabled:bg-line";
 const secondaryButtonClass =
   "rounded-lg border border-line bg-white px-4 py-2 text-sm font-semibold text-ink transition hover:border-rausch disabled:cursor-not-allowed disabled:text-ink-soft";
 const inputClass =
@@ -63,6 +67,7 @@ function AmountForm({
   kind,
   label,
   buttonLabel,
+  buttonClassName = buttonClass,
   initialDollars,
   disabled,
   onSubmit,
@@ -70,6 +75,7 @@ function AmountForm({
   kind: MembershipKind;
   label: string;
   buttonLabel: string;
+  buttonClassName?: string;
   initialDollars: string;
   disabled: boolean;
   onSubmit: (input: { kind: MembershipKind; amountCents: number }) => void;
@@ -118,7 +124,7 @@ function AmountForm({
           {message ?? ""}
         </p>
       </div>
-      <button type="submit" disabled={cents === null || disabled} className={`${buttonClass} mb-5`}>
+      <button type="submit" disabled={cents === null || disabled} className={`${buttonClassName} mb-5`}>
         {buttonLabel}
       </button>
     </form>
@@ -434,7 +440,8 @@ export function SupportCheckout({ kind }: { kind: MembershipKind }) {
                     ? "Monthly amount ($5/month minimum)"
                     : "One-time support ($5 minimum)"
                 }
-                buttonLabel={kind === "monthly" ? "Become a member" : "Support once"}
+                buttonLabel={kind === "monthly" ? "Become an honorary member" : "Support once"}
+                buttonClassName={kind === "monthly" ? memberButtonClass : undefined}
                 initialDollars="10"
                 disabled={busy}
                 onSubmit={(input) => checkout.mutate(input)}

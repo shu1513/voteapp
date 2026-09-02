@@ -1,0 +1,2118 @@
+{
+ "importerVersion": "rollcall-legiscan-resolve-v1",
+ "jurisdiction": "MT",
+ "sessionId": 2159,
+ "scopeFrom": "2026-11-01",
+ "peopleMembers": 151,
+ "candidatePool": 239,
+ "proposals": [
+  {
+   "peopleId": 7855,
+   "rosterName": "Llew Jones",
+   "rosterSeat": "house HD-018",
+   "candidateId": "07417713-ffa1-4d99-ba8e-c86b9f74acfd",
+   "candidateName": "Llew Jones",
+   "candidacy": "state_upper: State Senate District 9 (2024); Montana",
+   "confidence": "first_prefix",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 10396,
+   "rosterName": "Steve Fitzpatrick",
+   "rosterSeat": "house HD-024",
+   "candidateId": "7c5123f8-af35-40a7-af4b-af236ecf11ed",
+   "candidateName": "Steve Fitzpatrick",
+   "candidacy": "state_lower: State House District 24 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 14338,
+   "rosterName": "Dennis Lenz",
+   "rosterSeat": "senate SD-027",
+   "candidateId": "c7b76311-d5e6-4f6e-a846-b77673186fc0",
+   "candidateName": "Dennis Lenz",
+   "candidacy": "state_upper: State Senate District 25 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 14351,
+   "rosterName": "Daniel Zolnikov",
+   "rosterSeat": "senate SD-022",
+   "candidateId": "e40461f0-ffa6-491e-995c-3c007a1ae613",
+   "candidateName": "Daniel Zolnikov",
+   "candidacy": "state_upper: State Senate District 22 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 16341,
+   "rosterName": "Mary Dunwell",
+   "rosterSeat": "senate SD-042",
+   "candidateId": "2cb4ec20-4f62-4eae-8fca-2f8839d322cb",
+   "candidateName": "Mary Ann Dunwell",
+   "candidacy": "state_upper: State Senate District 42 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 16342,
+   "rosterName": "Willis Curdy",
+   "rosterSeat": "senate SD-049",
+   "candidateId": "3ca9586b-934a-4f36-a1c4-d4cd34e12d2e",
+   "candidateName": "Willis Curdy",
+   "candidacy": "state_upper: State Senate District 49 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 16355,
+   "rosterName": "Janet Ellis",
+   "rosterSeat": "senate SD-041",
+   "candidateId": "32c719e5-6ddf-4263-8bef-1efb3f468afe",
+   "candidateName": "Janet Ellis",
+   "candidacy": "state_lower: State House District 81 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 16356,
+   "rosterName": "Andrea Olsen",
+   "rosterSeat": "senate SD-050",
+   "candidateId": "bed0eac2-bf4a-467f-a0d6-7216665270a3",
+   "candidateName": "Andrea Olsen",
+   "candidacy": "state_upper: State Senate District 48 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 16562,
+   "rosterName": "Forrest Mandeville",
+   "rosterSeat": "senate SD-029",
+   "candidateId": "d1fb5543-9924-472f-ada7-a91d9a3eae4a",
+   "candidateName": "Forrest Mandeville",
+   "candidacy": "state_upper: State Senate District 28 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 16656,
+   "rosterName": "Mark Noland",
+   "rosterSeat": "senate SD-005",
+   "candidateId": "fbab26db-2b21-463d-8ba7-92a5ad08a6c1",
+   "candidateName": "Mark Noland",
+   "candidacy": "state_upper: State Senate District 6 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 16672,
+   "rosterName": "Jedediah Hinkle",
+   "rosterSeat": "house HD-067",
+   "candidateId": "5db347d0-b82c-4c46-bd4a-ded089a528c0",
+   "candidateName": "Jedediah Hinkle",
+   "candidacy": "state_lower: State House District 67 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 18381,
+   "rosterName": "Shane Morigeau",
+   "rosterSeat": "senate SD-048",
+   "candidateId": "22f7c3af-9093-455a-8f07-757a0d07a0c6",
+   "candidateName": "Shane Morigeau",
+   "candidacy": "state_upper: State Senate District 50 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 19742,
+   "rosterName": "David Bedey",
+   "rosterSeat": "house HD-086",
+   "candidateId": "e249407b-8675-485f-a275-a0907fa6ddfd",
+   "candidateName": "David Bedey",
+   "candidacy": "state_upper: State Senate District 43 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 19916,
+   "rosterName": "Bruce Gillespie",
+   "rosterSeat": "senate SD-009",
+   "candidateId": "7f5760b5-c080-43c5-a231-b13a09d114c2",
+   "candidateName": "Bruce Gillespie",
+   "candidacy": "state_lower: State House District 18 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 20498,
+   "rosterName": "Emma Kerr-Carpenter",
+   "rosterSeat": "senate SD-023",
+   "candidateId": "43552bc8-a7b3-465f-9f47-4eab7568884a",
+   "candidateName": "Emma Kerr-Carpenter",
+   "candidacy": "state_upper: State Senate District 23 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20502,
+   "rosterName": "Tyson Running Wolf",
+   "rosterSeat": "house HD-016",
+   "candidateId": "d9579cd7-9a76-4136-8508-2bb8317901e4",
+   "candidateName": "Tyson Running Wolf",
+   "candidacy": "state_upper: State Senate District 8 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 21433,
+   "rosterName": "Debo Powers",
+   "rosterSeat": "house HD-003",
+   "candidateId": "384e18b9-1170-4f63-9a2a-05aeeff93e30",
+   "candidateName": "Debo Powers",
+   "candidacy": "state_lower: State House District 3 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 21762,
+   "rosterName": "Steve Gist",
+   "rosterSeat": "house HD-025",
+   "candidateId": "001cc7a2-f9f7-4834-bd08-e142b9877a3d",
+   "candidateName": "Steve Gist",
+   "candidacy": "state_lower: State House District 25 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 21771,
+   "rosterName": "Mike Fox",
+   "rosterSeat": "senate SD-016",
+   "candidateId": "d6a5f087-01d2-4588-83c0-8d0de674a5f4",
+   "candidateName": "Mike Fox",
+   "candidacy": "state_lower: State House District 32 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 21773,
+   "rosterName": "Jane Gillette",
+   "rosterSeat": "house HD-064",
+   "candidateId": "dfb74e91-9d2a-4fed-bf32-57b11c425cbc",
+   "candidateName": "Jane Gillette",
+   "candidacy": "state_lower: State House District 77 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 21774,
+   "rosterName": "Kerri Seekins-Crowe",
+   "rosterSeat": "house HD-043",
+   "candidateId": "86a2afcd-ed22-438e-b1c5-691064723a3b",
+   "candidateName": "Kerri Seekins-Crowe",
+   "candidacy": "state_lower: State House District 39 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 21896,
+   "rosterName": "Donavon Hawk",
+   "rosterSeat": "house HD-076",
+   "candidateId": "c6053f37-e079-42ee-acfa-3a63ff3f4cba",
+   "candidateName": "Donavon Hawk",
+   "candidacy": "state_lower: State House District 72 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 22084,
+   "rosterName": "Braxton Mitchell",
+   "rosterSeat": "house HD-003",
+   "candidateId": "2e5b4685-befc-4bcb-b45a-e4e72615d5a6",
+   "candidateName": "Braxton Mitchell",
+   "candidacy": "state_lower: State House District 5 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 22177,
+   "rosterName": "Fiona Nave",
+   "rosterSeat": "house HD-057",
+   "candidateId": "ca77fe3c-9369-459b-a218-4d6517a16361",
+   "candidateName": "Fiona Nave",
+   "candidacy": "state_lower: State House District 56 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 22178,
+   "rosterName": "Jerry Schillinger",
+   "rosterSeat": "house HD-037",
+   "candidateId": "b2a0e9b2-c5b6-4f1d-8b72-0ddc6a9ced7c",
+   "candidateName": "Jerry Schillinger",
+   "candidacy": "state_lower: State House District 34 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 22184,
+   "rosterName": "Larry Brewster",
+   "rosterSeat": "house HD-044",
+   "candidateId": "49bbd380-a71d-48f1-a5c4-4dfd1a5850c7",
+   "candidateName": "Larry Brewster",
+   "candidacy": "state_lower: State House District 43 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 22186,
+   "rosterName": "Paul Fielder",
+   "rosterSeat": "house HD-013",
+   "candidateId": "c1ee1ae1-b869-4817-bb11-dd74c58317fd",
+   "candidateName": "Paul Fielder",
+   "candidacy": "state_lower: State House District 14 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 22190,
+   "rosterName": "Caleb Hinkle",
+   "rosterSeat": "house HD-068",
+   "candidateId": "ab1e7bec-f9fa-45a5-a00d-43f7d3406811",
+   "candidateName": "Caleb Hinkle",
+   "candidacy": "state_upper: State Senate District 34 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 22192,
+   "rosterName": "Kelly Kortum",
+   "rosterSeat": "house HD-065",
+   "candidateId": "581b6f1b-ea9b-499c-a9aa-78148b1f6b16",
+   "candidateName": "Kelly Kortum",
+   "candidacy": "state_upper: State Senate District 32 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 22193,
+   "rosterName": "Brandon Ler",
+   "rosterSeat": "house HD-035",
+   "candidateId": "074c84cf-4e74-4b56-a1fc-08d9dcf83533",
+   "candidateName": "Brandon Ler",
+   "candidacy": "state_lower: State House District 33 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 22196,
+   "rosterName": "Amy Regier",
+   "rosterSeat": "house HD-006",
+   "candidateId": "37bb4771-4db3-4602-9f32-3f04c2d68d35",
+   "candidateName": "Amy Regier",
+   "candidacy": "state_upper: State Senate District 4 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 22198,
+   "rosterName": "Mark Thane",
+   "rosterSeat": "house HD-099",
+   "candidateId": "7ebf0455-ea7d-4d14-8095-ba9c97aba74c",
+   "candidateName": "Mark Thane",
+   "candidacy": "state_lower: State House District 89 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 22201,
+   "rosterName": "Katie Zolnikov",
+   "rosterSeat": "house HD-045",
+   "candidateId": "db4933f3-f102-4ab5-b73b-d6fad4c19afe",
+   "candidateName": "Katie Zolnikov",
+   "candidacy": "state_lower: State House District 44 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23191,
+   "rosterName": "George Nikolakakos",
+   "rosterSeat": "house HD-026",
+   "candidateId": "badc7ccf-6e33-42e0-9b72-6bdb1c13fb75",
+   "candidateName": "George Nikolakakos",
+   "candidacy": "state_upper: State Senate District 12 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23292,
+   "rosterName": "Greg Oblander",
+   "rosterSeat": "house HD-040",
+   "candidateId": "72f9c7d7-f2d6-49a6-8382-40d75d2961c8",
+   "candidateName": "Greg Oblander",
+   "candidacy": "state_lower: State House District 38 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23296,
+   "rosterName": "Gary Parry",
+   "rosterSeat": "house HD-039",
+   "candidateId": "65510527-10bd-4839-99d2-df2be105b647",
+   "candidateName": "Gary Parry",
+   "candidacy": "state_lower: State House District 35 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23312,
+   "rosterName": "Greg Kmetz",
+   "rosterSeat": "house HD-038",
+   "candidateId": "901352a0-429b-4b2e-b994-04508adf8733",
+   "candidateName": "Greg Kmetz",
+   "candidacy": "state_upper: State Senate District 18 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23315,
+   "rosterName": "Terry Falk",
+   "rosterSeat": "house HD-008",
+   "candidateId": "bb71188c-799f-4f5b-90bc-b997fff788ff",
+   "candidateName": "Terry Falk",
+   "candidacy": "state_lower: State House District 10 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23334,
+   "rosterName": "Brad Barker",
+   "rosterSeat": "house HD-058",
+   "candidateId": "011af813-4d14-48d0-9884-38c9943319bb",
+   "candidateName": "Brad Barker",
+   "candidacy": "state_lower: State House District 55 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23335,
+   "rosterName": "Jodee Etchart",
+   "rosterSeat": "house HD-048",
+   "candidateId": "5838c020-3745-490b-99d7-3e12e86e5676",
+   "candidateName": "Jodee Etchart",
+   "candidacy": "state_lower: State House District 51 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23336,
+   "rosterName": "Russel Miner",
+   "rosterSeat": "house HD-019",
+   "candidateId": "5b3fdba4-6fd7-48ef-a63d-999034a78ec0",
+   "candidateName": "Russ Miner",
+   "candidacy": "state_lower: State House District 26 (2024); Montana",
+   "confidence": "first_prefix",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23337,
+   "rosterName": "Courtenay Sprunger",
+   "rosterSeat": "house HD-007",
+   "candidateId": "820cd636-b686-4ca8-801b-b6befae762ed",
+   "candidateName": "Courtenay Sprunger",
+   "candidacy": "state_lower: State House District 7 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23363,
+   "rosterName": "Jennifer Lynch",
+   "rosterSeat": "house HD-073",
+   "candidateId": "e5493f5d-50b3-4f15-a452-847c9e0a3aa9",
+   "candidateName": "Jennifer Lynch",
+   "candidacy": "state_lower: State House District 73 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23372,
+   "rosterName": "Paul Tuss",
+   "rosterSeat": "house HD-028",
+   "candidateId": "cadd1c93-d031-4890-81b6-d0dfed663d42",
+   "candidateName": "Paul Tuss",
+   "candidacy": "state_lower: State House District 27 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23629,
+   "rosterName": "Denise Baum",
+   "rosterSeat": "house HD-047",
+   "candidateId": "f49c3794-53fd-474b-bce3-d7a105a296ea",
+   "candidateName": "Denise Baum",
+   "candidacy": "state_lower: State House District 45 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23631,
+   "rosterName": "Lee Deming",
+   "rosterSeat": "house HD-055",
+   "candidateId": "3b0e0d5d-2c2b-4f41-a1f0-d386ed1d699e",
+   "candidateName": "Lee Deming",
+   "candidacy": "state_lower: State House District 54 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23632,
+   "rosterName": "SJ Howell",
+   "rosterSeat": "house HD-095",
+   "candidateId": "56500058-5df9-4019-9d5c-77815e3534d3",
+   "candidateName": "SJ Howell",
+   "candidacy": "state_lower: State House District 100 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23633,
+   "rosterName": "Jonathan Karlen",
+   "rosterSeat": "house HD-096",
+   "candidateId": "cc9e5b99-98df-4219-af60-7dafc3da3bda",
+   "candidateName": "Jonathan Karlen",
+   "candidacy": "state_lower: State House District 98 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23637,
+   "rosterName": "Eric Matthews",
+   "rosterSeat": "house HD-066",
+   "candidateId": "84aa95a1-622b-480f-9afd-ae67553bce22",
+   "candidateName": "Eric Matthews",
+   "candidacy": "state_lower: State House District 66 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23638,
+   "rosterName": "Zooey Zephyr",
+   "rosterSeat": "house HD-100",
+   "candidateId": "c68e2f0e-b5d1-4157-9b65-7a61b7ee1eb6",
+   "candidateName": "Zooey Zephyr",
+   "candidacy": "state_lower: State House District 95 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 25390,
+   "rosterName": "Eric Albus",
+   "rosterSeat": "house HD-012",
+   "candidateId": "d3d86dd3-b408-4b4f-aa97-0bdaff2cb132",
+   "candidateName": "Eric Albus",
+   "candidacy": "state_upper: State Senate District 14 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 25392,
+   "rosterName": "Ed Byrne",
+   "rosterSeat": "house HD-063",
+   "candidateId": "4f31567c-e6e8-4784-9089-5cde6d63d00c",
+   "candidateName": "Ed Byrne",
+   "candidacy": "state_lower: State House District 11 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 25393,
+   "rosterName": "Brian Close",
+   "rosterSeat": "house HD-030",
+   "candidateId": "c5c7fac8-aec3-44e6-b8ce-b5d20aee664b",
+   "candidateName": "Brian Close",
+   "candidacy": "state_lower: State House District 65 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 25395,
+   "rosterName": "Thedis Crowe",
+   "rosterSeat": "house HD-040",
+   "candidateId": "79c06e7c-0a82-4d63-89dd-f95447262bb7",
+   "candidateName": "Thedis Crowe",
+   "candidacy": "state_lower: State House District 15 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 25396,
+   "rosterName": "Melody Cunningham",
+   "rosterSeat": "house HD-019",
+   "candidateId": "edce702c-8713-469b-a352-91d4417fc656",
+   "candidateName": "Melody Cunningham",
+   "candidacy": "state_lower: State House District 97 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 25397,
+   "rosterName": "Scott DeMarois",
+   "rosterSeat": "senate SD-015",
+   "candidateId": "f3ce897b-2471-4a18-9964-62ed27ee4ffc",
+   "candidateName": "Scott DeMarois",
+   "candidacy": "state_lower: State House District 71 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 25399,
+   "rosterName": "Pete Elverum",
+   "rosterSeat": "house HD-082",
+   "candidateId": "cfe35e02-50e0-461e-8fff-7f2ed7820f16",
+   "candidateName": "Pete Elverum",
+   "candidacy": "state_lower: State House District 82 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25400,
+   "rosterName": "Sidney Fitzpatrick",
+   "rosterSeat": "senate SD-035",
+   "candidateId": "c20799b8-e77f-4d9e-b602-8b92be550614",
+   "candidateName": "Sidney Fitzpatrick",
+   "candidacy": "state_lower: State House District 42 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 25401,
+   "rosterName": "Shelly Fyant",
+   "rosterSeat": "house HD-091",
+   "candidateId": "d69907f2-9baf-4954-8241-4ee152c641df",
+   "candidateName": "Shelly Fyant",
+   "candidacy": "state_lower: State House District 91 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25402,
+   "rosterName": "Randyn Gregg",
+   "rosterSeat": "house HD-078",
+   "candidateId": "3e0fbfab-19a2-4849-a099-6ff031715cc4",
+   "candidateName": "Randyn Gregg",
+   "candidacy": "state_lower: State House District 78 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25403,
+   "rosterName": "Alanah Griffith",
+   "rosterSeat": "house HD-060",
+   "candidateId": "dd26bb2a-b2f9-4cb6-b4d0-db18f75c2ea1",
+   "candidateName": "Alanah Griffith",
+   "candidacy": "state_lower: State House District 60 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25404,
+   "rosterName": "Jamie Isaly",
+   "rosterSeat": "house HD-058",
+   "candidateId": "9c4b0649-7932-4e55-b8d8-2fe5b7b23b71",
+   "candidateName": "Jamie Isaly",
+   "candidacy": "state_lower: State House District 58 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25405,
+   "rosterName": "Steven Kelly",
+   "rosterSeat": "house HD-009",
+   "candidateId": "d636f767-ae48-4efa-b5b0-6c6b7445dc67",
+   "candidateName": "Steven Kelly",
+   "candidacy": "state_lower: State House District 9 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25406,
+   "rosterName": "Shane Klakken",
+   "rosterSeat": "house HD-037",
+   "candidateId": "afcca138-807f-4a60-bcff-50ea1cae63c4",
+   "candidateName": "Shane Klakken",
+   "candidacy": "state_lower: State House District 37 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25408,
+   "rosterName": "Marc Lee",
+   "rosterSeat": "house HD-074",
+   "candidateId": "5cc3aa2d-1623-4ae6-9a31-8098e0c1f4ae",
+   "candidateName": "Marc Lee",
+   "candidacy": "state_lower: State House District 74 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25410,
+   "rosterName": "Shannon Maness",
+   "rosterSeat": "house HD-070",
+   "candidateId": "57561ab7-4a55-4a60-a1ab-d8f3b68e79f9",
+   "candidateName": "Shannon Maness",
+   "candidacy": "state_lower: State House District 70 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25411,
+   "rosterName": "Tom Millett",
+   "rosterSeat": "house HD-002",
+   "candidateId": "e7131cc8-681d-4afa-abb7-093429f10768",
+   "candidateName": "Tom Millett",
+   "candidacy": "state_lower: State House District 2 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25412,
+   "rosterName": "Valerie Moore",
+   "rosterSeat": "house HD-029",
+   "candidateId": "51a89b46-80a9-4fb1-a953-2f9435d3544f",
+   "candidateName": "Valerie Moore",
+   "candidacy": "state_lower: State House District 29 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25413,
+   "rosterName": "Luke Muszkiewicz",
+   "rosterSeat": "house HD-079",
+   "candidateId": "dc4eb0f3-749f-41e3-9bbc-a4ae769b43ef",
+   "candidateName": "Luke Muszkiewicz",
+   "candidacy": "state_lower: State House District 79 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25415,
+   "rosterName": "Melissa Nikolakakos",
+   "rosterSeat": "house HD-020",
+   "candidateId": "eef1fbe0-6902-4e27-8539-3040e7898a6f",
+   "candidateName": "Melissa Nikolakakos",
+   "candidacy": "state_lower: State House District 20 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25416,
+   "rosterName": "Greg Overstreet",
+   "rosterSeat": "house HD-088",
+   "candidateId": "c8957557-93e8-4238-af8e-cff291460e4f",
+   "candidateName": "Greg Overstreet",
+   "candidacy": "state_lower: State House District 88 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25417,
+   "rosterName": "James Reavis",
+   "rosterSeat": "house HD-047",
+   "candidateId": "97109e38-d88f-4e89-9d34-9db7f338e353",
+   "candidateName": "James Reavis",
+   "candidacy": "state_lower: State House District 47 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25418,
+   "rosterName": "Scott Rosenzweig",
+   "rosterSeat": "house HD-057",
+   "candidateId": "5a13672b-4126-4871-ba96-473b674f53e2",
+   "candidateName": "Scott Rosenzweig",
+   "candidacy": "state_upper: State Senate District 29 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 25419,
+   "rosterName": "Curtis Schomer",
+   "rosterSeat": "house HD-048",
+   "candidateId": "2a4ede01-6da6-43c8-9397-a7ebaafbe513",
+   "candidateName": "Curtis Schomer",
+   "candidacy": "state_lower: State House District 48 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25420,
+   "rosterName": "Lukas Schubert",
+   "rosterSeat": "house HD-008",
+   "candidateId": "cf45a54f-78e4-4c62-8770-471cfa045f95",
+   "candidateName": "Lukas Schubert",
+   "candidacy": "state_lower: State House District 8 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25421,
+   "rosterName": "Josh Seckinger",
+   "rosterSeat": "house HD-062",
+   "candidateId": "7f715f0c-7635-4079-95a9-aef19db840d9",
+   "candidateName": "Josh Seckinger",
+   "candidacy": "state_lower: State House District 62 (2024); Montana",
+   "confidence": "first_prefix",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25422,
+   "rosterName": "Tracy Sharp",
+   "rosterSeat": "house HD-012",
+   "candidateId": "8bfaf265-9f68-4853-8f97-ffc66d1232aa",
+   "candidateName": "Tracy Sharp",
+   "candidacy": "state_lower: State House District 12 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25423,
+   "rosterName": "Jade Sooktis",
+   "rosterSeat": "house HD-041",
+   "candidateId": "3950d736-6453-4ea1-8d9b-83205f464b9d",
+   "candidateName": "Jade Sooktis",
+   "candidacy": "state_lower: State House District 41 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25424,
+   "rosterName": "Peter Strand",
+   "rosterSeat": "house HD-063",
+   "candidateId": "dd6040fe-50a6-4027-a20d-2e8ab710b42e",
+   "candidateName": "Peter Strand",
+   "candidacy": "state_lower: State House District 63 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25425,
+   "rosterName": "Morgan Thiel",
+   "rosterSeat": "house HD-030",
+   "candidateId": "868f2fa7-78ef-4f68-93f6-df23413c2847",
+   "candidateName": "Morgan Thiel",
+   "candidacy": "state_lower: State House District 30 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25426,
+   "rosterName": "Eric Tilleman",
+   "rosterSeat": "house HD-023",
+   "candidateId": "bfa92d98-2545-4687-96c9-b0147e95d065",
+   "candidateName": "Eric Tilleman",
+   "candidacy": "state_lower: State House District 23 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25427,
+   "rosterName": "Mike Vinton",
+   "rosterSeat": "house HD-040",
+   "candidateId": "71d33d31-0abb-4fa9-a46c-0fbcc4fe3405",
+   "candidateName": "Mike Vinton",
+   "candidacy": "state_lower: State House District 40 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25428,
+   "rosterName": "Jane Weber",
+   "rosterSeat": "house HD-019",
+   "candidateId": "b5a36235-6a9a-4ee3-adfd-ef19393dd132",
+   "candidateName": "Jane Weber",
+   "candidacy": "state_lower: State House District 19 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25732,
+   "rosterName": "Denise Joy",
+   "rosterSeat": "house HD-046",
+   "candidateId": "d6da5f4d-27cf-401c-ba98-20670f0e2936",
+   "candidateName": "Denise Joy",
+   "candidacy": "state_lower: State House District 46 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26438,
+   "rosterName": "Terry Nelson",
+   "rosterSeat": "house HD-087",
+   "candidateId": "7dc3258c-fe33-4f66-bfeb-e9cc002d94f3",
+   "candidateName": "Terry Nelson",
+   "candidacy": "state_lower: State House District 87 (2024); Montana",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  }
+ ],
+ "unmatchedPeople": [
+  {
+   "peopleId": 10405,
+   "name": "Frank Smith",
+   "seat": "house HD-031"
+  },
+  {
+   "peopleId": 11953,
+   "name": "Mike Cuffe",
+   "seat": "senate SD-001"
+  },
+  {
+   "peopleId": 11962,
+   "name": "Edward Buttrey",
+   "seat": "house HD-021"
+  },
+  {
+   "peopleId": 12051,
+   "name": "Ellie Boldman",
+   "seat": "senate SD-045"
+  },
+  {
+   "peopleId": 14173,
+   "name": "Greg Hertz",
+   "seat": "senate SD-006"
+  },
+  {
+   "peopleId": 14259,
+   "name": "Wylie Galt",
+   "seat": "senate SD-039"
+  },
+  {
+   "peopleId": 14331,
+   "name": "Carl Glimm",
+   "seat": "senate SD-002"
+  },
+  {
+   "peopleId": 16313,
+   "name": "Denise Hayman",
+   "seat": "senate SD-033"
+  },
+  {
+   "peopleId": 16353,
+   "name": "Susan Webber",
+   "seat": "senate SD-008"
+  },
+  {
+   "peopleId": 16375,
+   "name": "Wendy McKamey",
+   "seat": "senate SD-012"
+  },
+  {
+   "peopleId": 16445,
+   "name": "Vince Ricci",
+   "seat": "senate SD-027"
+  },
+  {
+   "peopleId": 16563,
+   "name": "Theresa Manzella",
+   "seat": "senate SD-044"
+  },
+  {
+   "peopleId": 16658,
+   "name": "Christopher Pope",
+   "seat": "senate SD-031"
+  },
+  {
+   "peopleId": 18028,
+   "name": "Dave Fern",
+   "seat": "senate SD-002"
+  },
+  {
+   "peopleId": 18044,
+   "name": "Denley Loge",
+   "seat": "senate SD-045"
+  },
+  {
+   "peopleId": 18373,
+   "name": "Becky Beard",
+   "seat": "senate SD-040"
+  },
+  {
+   "peopleId": 18387,
+   "name": "Jeremy Trebas",
+   "seat": "senate SD-013"
+  },
+  {
+   "peopleId": 18388,
+   "name": "Barry Usher",
+   "seat": "senate SD-020"
+  },
+  {
+   "peopleId": 18389,
+   "name": "Sue Vinton",
+   "seat": "senate SD-020"
+  },
+  {
+   "peopleId": 18515,
+   "name": "Matt Regier",
+   "seat": "senate SD-005"
+  },
+  {
+   "peopleId": 18552,
+   "name": "Russel Tempel",
+   "seat": "senate SD-014"
+  },
+  {
+   "peopleId": 19734,
+   "name": "Pat Flowers",
+   "seat": "senate SD-032"
+  },
+  {
+   "peopleId": 19909,
+   "name": "Julie Dooling",
+   "seat": "house HD-070"
+  },
+  {
+   "peopleId": 19910,
+   "name": "Katie Sullivan",
+   "seat": "house HD-089"
+  },
+  {
+   "peopleId": 19911,
+   "name": "Marilyn Marler",
+   "seat": "house HD-090"
+  },
+  {
+   "peopleId": 20370,
+   "name": "John Fuller",
+   "seat": "senate SD-004"
+  },
+  {
+   "peopleId": 20371,
+   "name": "Joshua Kassmier",
+   "seat": "senate SD-013"
+  },
+  {
+   "peopleId": 20372,
+   "name": "Neil Duram",
+   "seat": "house HD-002"
+  },
+  {
+   "peopleId": 20496,
+   "name": "Derek Harvey",
+   "seat": "senate SD-037"
+  },
+  {
+   "peopleId": 20497,
+   "name": "Connie Keogh",
+   "seat": "house HD-091"
+  },
+  {
+   "peopleId": 20501,
+   "name": "Bill Mercer",
+   "seat": "house HD-046"
+  },
+  {
+   "peopleId": 20677,
+   "name": "Jason Ellsworth",
+   "seat": "senate SD-043"
+  },
+  {
+   "peopleId": 20760,
+   "name": "Kenneth Bogner",
+   "seat": "senate SD-019"
+  },
+  {
+   "peopleId": 21770,
+   "name": "Marta Bertoglio",
+   "seat": "house HD-075"
+  },
+  {
+   "peopleId": 21897,
+   "name": "Kenneth Walsh",
+   "seat": "house HD-071"
+  },
+  {
+   "peopleId": 21982,
+   "name": "Ed Stafman",
+   "seat": "house HD-062"
+  },
+  {
+   "peopleId": 22021,
+   "name": "Ron Marshall",
+   "seat": "house HD-087"
+  },
+  {
+   "peopleId": 22118,
+   "name": "Linda Reksten",
+   "seat": "house HD-012"
+  },
+  {
+   "peopleId": 22187,
+   "name": "Tom France",
+   "seat": "house HD-094"
+  },
+  {
+   "peopleId": 22194,
+   "name": "Sara Novak",
+   "seat": "senate SD-036"
+  },
+  {
+   "peopleId": 22195,
+   "name": "Bob Phalen",
+   "seat": "senate SD-017"
+  },
+  {
+   "peopleId": 22943,
+   "name": "Sherry Essmann",
+   "seat": "house HD-052"
+  },
+  {
+   "peopleId": 23146,
+   "name": "Michael Yakawich",
+   "seat": "senate SD-024"
+  },
+  {
+   "peopleId": 23313,
+   "name": "Nelly Nicol",
+   "seat": "house HD-053"
+  },
+  {
+   "peopleId": 23326,
+   "name": "John Fitzpatrick",
+   "seat": "house HD-077"
+  },
+  {
+   "peopleId": 23370,
+   "name": "Daniel Emrich",
+   "seat": "senate SD-011"
+  },
+  {
+   "peopleId": 23607,
+   "name": "Shelley Vance",
+   "seat": "senate SD-034"
+  },
+  {
+   "peopleId": 23630,
+   "name": "Robert Carter",
+   "seat": "house HD-098"
+  },
+  {
+   "peopleId": 23634,
+   "name": "Melissa Romano",
+   "seat": "house HD-081"
+  },
+  {
+   "peopleId": 23635,
+   "name": "Laura Smith",
+   "seat": "senate SD-040"
+  },
+  {
+   "peopleId": 23639,
+   "name": "Zack Wirth",
+   "seat": "house HD-080"
+  },
+  {
+   "peopleId": 25391,
+   "name": "Lyn Bennett",
+   "seat": "house HD-041"
+  },
+  {
+   "peopleId": 25394,
+   "name": "Curtis Cochran",
+   "seat": "house HD-023"
+  },
+  {
+   "peopleId": 25398,
+   "name": "Becky Edwards",
+   "seat": "house HD-061"
+  },
+  {
+   "peopleId": 25407,
+   "name": "Gayle Lammers",
+   "seat": "senate SD-021"
+  },
+  {
+   "peopleId": 25409,
+   "name": "Kathy Love",
+   "seat": "house HD-085"
+  },
+  {
+   "peopleId": 25414,
+   "name": "Anthony Nicastro",
+   "seat": "house HD-050"
+  },
+  {
+   "peopleId": 25429,
+   "name": "Gregg Hunter",
+   "seat": "senate SD-015"
+  },
+  {
+   "peopleId": 25430,
+   "name": "Jacinda Morigeau",
+   "seat": "senate SD-046"
+  },
+  {
+   "peopleId": 25431,
+   "name": "Cora Neumann",
+   "seat": "senate SD-030"
+  },
+  {
+   "peopleId": 25432,
+   "name": "Tony Tezak",
+   "seat": "senate SD-035"
+  },
+  {
+   "peopleId": 7872,
+   "name": "Jill Cohenour",
+   "seat": "house HD-084"
+  },
+  {
+   "peopleId": 7923,
+   "name": "Mary Caferro",
+   "seat": "house HD-082"
+  },
+  {
+   "peopleId": 7926,
+   "name": "Tom McGillvray",
+   "seat": "senate SD-023"
+  },
+  {
+   "peopleId": 7986,
+   "name": "John Esp",
+   "seat": "senate SD-030"
+  },
+  {
+   "peopleId": 7994,
+   "name": "Jonathan Windy Boy",
+   "seat": "senate SD-016"
+  }
+ ],
+ "unmatchedCandidates": [
+  {
+   "candidateId": "c7363e21-230f-4709-bb5a-96a3ce8b6d40",
+   "name": "Aaron Leas",
+   "scope": "state_lower",
+   "districtName": "State House District 83 (2024); Montana"
+  },
+  {
+   "candidateId": "5c0c0b5f-65aa-41d0-a507-f6de8cd00312",
+   "name": "Archie Thomas",
+   "scope": "state_lower",
+   "districtName": "State House District 86 (2024); Montana"
+  },
+  {
+   "candidateId": "6cd3db80-694c-422b-96dd-88b82770daff",
+   "name": "Ben Davis",
+   "scope": "state_lower",
+   "districtName": "State House District 93 (2024); Montana"
+  },
+  {
+   "candidateId": "8ae64d3a-7c0c-4fac-b392-c6c367d5aed4",
+   "name": "Benjamin Keyes",
+   "scope": "state_lower",
+   "districtName": "State House District 36 (2024); Montana"
+  },
+  {
+   "candidateId": "4f65fb46-0205-4e0d-b58b-d65a0dc2c893",
+   "name": "Bill Jones",
+   "scope": "state_lower",
+   "districtName": "State House District 87 (2024); Montana"
+  },
+  {
+   "candidateId": "96e21e71-f7c6-4dff-a159-f7fbaf8a164f",
+   "name": "Blake Borst",
+   "scope": "state_upper",
+   "districtName": "State Senate District 14 (2024); Montana"
+  },
+  {
+   "candidateId": "efc20e1e-e8a4-4cd2-a4ac-ed2ce59eff33",
+   "name": "Bob Carter",
+   "scope": "state_lower",
+   "districtName": "State House District 96 (2024); Montana"
+  },
+  {
+   "candidateId": "0e0555b9-c4b5-49e2-9665-a9f2fa10d892",
+   "name": "Bob Crank",
+   "scope": "state_lower",
+   "districtName": "State House District 57 (2024); Montana"
+  },
+  {
+   "candidateId": "01fc4ec2-492a-4654-91c3-1ddd4ca14776",
+   "name": "Brad Tschida",
+   "scope": "state_upper",
+   "districtName": "State Senate District 49 (2024); Montana"
+  },
+  {
+   "candidateId": "6f879094-48ec-4166-bcac-41001a388018",
+   "name": "Brady Bremer",
+   "scope": "state_lower",
+   "districtName": "State House District 64 (2024); Montana"
+  },
+  {
+   "candidateId": "08c4822d-74f4-4da2-83df-a8cbf59f42a0",
+   "name": "Bryan Muzzana",
+   "scope": "state_lower",
+   "districtName": "State House District 98 (2024); Montana"
+  },
+  {
+   "candidateId": "0ec689f3-e635-4e10-b601-8d0d1292c984",
+   "name": "Bryce Walston",
+   "scope": "state_lower",
+   "districtName": "State House District 45 (2024); Montana"
+  },
+  {
+   "candidateId": "91ef2427-b714-45f0-9e7d-e1c8475392fc",
+   "name": "Calvin Lime",
+   "scope": "state_lower",
+   "districtName": "State House District 8 (2024); Montana"
+  },
+  {
+   "candidateId": "dccf0d22-2913-47f6-9546-36dc9bea76e1",
+   "name": "Carl Anderson",
+   "scope": "state_upper",
+   "districtName": "State Senate District 34 (2024); Montana"
+  },
+  {
+   "candidateId": "80a01610-b3f0-4604-b911-9934cbd9501b",
+   "name": "Catherine Allen",
+   "scope": "state_lower",
+   "districtName": "State House District 10 (2024); Montana"
+  },
+  {
+   "candidateId": "b7b6d520-5fc3-4c72-86eb-804918d24c47",
+   "name": "Charles Headley",
+   "scope": "state_lower",
+   "districtName": "State House District 91 (2024); Montana"
+  },
+  {
+   "candidateId": "d4b4513f-71e7-45ad-84e9-bf36d58a1b39",
+   "name": "Charlie Loveridge",
+   "scope": "state_lower",
+   "districtName": "State House District 49 (2024); Montana"
+  },
+  {
+   "candidateId": "fbfa96a8-c05c-4162-9e40-60bc30147c6e",
+   "name": "Chiko Olson",
+   "scope": "state_lower",
+   "districtName": "State House District 79 (2024); Montana"
+  },
+  {
+   "candidateId": "190c305b-ea37-4a98-b2c0-1ce8f84c8a29",
+   "name": "Chisholm Christensen",
+   "scope": "state_lower",
+   "districtName": "State House District 28 (2024); Montana"
+  },
+  {
+   "candidateId": "51f8cf6d-40e9-4180-a380-4d749b4b4629",
+   "name": "Chris Bechtold",
+   "scope": "state_lower",
+   "districtName": "State House District 17 (2024); Montana"
+  },
+  {
+   "candidateId": "54d498a3-244c-4e83-b360-2d74a6bce4b5",
+   "name": "Chris Rindal",
+   "scope": "state_upper",
+   "districtName": "State Senate District 19 (2024); Montana"
+  },
+  {
+   "candidateId": "8d240bae-6ee6-437f-b2ba-024244f309bb",
+   "name": "Christopher Paul Buckles",
+   "scope": "state_upper",
+   "districtName": "State Senate District 8 (2024); Montana"
+  },
+  {
+   "candidateId": "cc64fc1e-d065-4df4-b139-632c28339449",
+   "name": "Cindy Bruckner",
+   "scope": "state_lower",
+   "districtName": "State House District 12 (2024); Montana"
+  },
+  {
+   "candidateId": "5738f149-f783-490f-b4b6-c574b7ae3666",
+   "name": "Clinton McKay",
+   "scope": "state_lower",
+   "districtName": "State House District 82 (2024); Montana"
+  },
+  {
+   "candidateId": "b76a694f-6b28-4f24-8173-63d884f0693c",
+   "name": "Colleen Hinds",
+   "scope": "state_lower",
+   "districtName": "State House District 14 (2024); Montana"
+  },
+  {
+   "candidateId": "db388ba2-b095-49ef-adc3-c632fc9717a1",
+   "name": "Dakota Adams",
+   "scope": "state_lower",
+   "districtName": "State House District 1 (2024); Montana"
+  },
+  {
+   "candidateId": "e558fe52-ccab-4139-b60e-416ccf8e6635",
+   "name": "Dalton Bradford",
+   "scope": "state_lower",
+   "districtName": "State House District 13 (2024); Montana"
+  },
+  {
+   "candidateId": "9d5dea23-dc1b-435d-81c5-d957797d0ca9",
+   "name": "Daniel Martinez",
+   "scope": "state_lower",
+   "districtName": "State House District 64 (2024); Montana"
+  },
+  {
+   "candidateId": "a15c393d-568b-47ed-bbb8-41b615cde03f",
+   "name": "Darren Fix",
+   "scope": "state_lower",
+   "districtName": "State House District 6 (2024); Montana"
+  },
+  {
+   "candidateId": "81044c8a-79d1-4b22-b793-46b89dfb3478",
+   "name": "Dave Von Eschen",
+   "scope": "state_lower",
+   "districtName": "State House District 22 (2024); Montana"
+  },
+  {
+   "candidateId": "47a0b0dc-d13b-4ec5-a68e-9bf281040ff0",
+   "name": "Deanna Daigrepont",
+   "scope": "state_upper",
+   "districtName": "State Senate District 19 (2024); Montana"
+  },
+  {
+   "candidateId": "32ed6877-2045-4d77-bde8-21c3658555fe",
+   "name": "Deborah Hansen",
+   "scope": "state_lower",
+   "districtName": "State House District 77 (2024); Montana"
+  },
+  {
+   "candidateId": "89fd4fdd-af27-46f9-8163-dd0599d427b4",
+   "name": "Derek Peachey",
+   "scope": "state_lower",
+   "districtName": "State House District 3 (2024); Montana"
+  },
+  {
+   "candidateId": "2682ddf4-3636-44b1-b92c-446b66513b84",
+   "name": "Dru Koester",
+   "scope": "state_upper",
+   "districtName": "State Senate District 41 (2024); Montana"
+  },
+  {
+   "candidateId": "e1f62320-db91-47cc-8371-4877636c3189",
+   "name": "Elizabeth Heald",
+   "scope": "state_lower",
+   "districtName": "State House District 52 (2024); Montana"
+  },
+  {
+   "candidateId": "aa240b94-6c3a-4d6e-9328-3bba36374ea2",
+   "name": "Eric Jacobs",
+   "scope": "state_lower",
+   "districtName": "State House District 61 (2024); Montana"
+  },
+  {
+   "candidateId": "bff9e91b-ba5e-4136-ac70-ae47c29d8d5f",
+   "name": "Erin Farris-Olsen",
+   "scope": "state_upper",
+   "districtName": "State Senate District 41 (2024); Montana"
+  },
+  {
+   "candidateId": "c86b6df4-18f3-4fbc-b77f-f945f51e2218",
+   "name": "Esther Fishbaugh",
+   "scope": "state_lower",
+   "districtName": "State House District 62 (2024); Montana"
+  },
+  {
+   "candidateId": "5ccdf5f0-df50-4871-8da8-88b325283bb1",
+   "name": "Evan Schroedel",
+   "scope": "state_lower",
+   "districtName": "State House District 88 (2024); Montana"
+  },
+  {
+   "candidateId": "1dabb9fb-959d-43e1-86f4-c51ce0e60d64",
+   "name": "Finley Warden",
+   "scope": "state_lower",
+   "districtName": "State House District 13 (2024); Montana"
+  },
+  {
+   "candidateId": "074b437e-c3db-454b-b3ff-83168030068c",
+   "name": "Gabriel Bradshaw",
+   "scope": "state_lower",
+   "districtName": "State House District 40 (2024); Montana"
+  },
+  {
+   "candidateId": "8c73c37b-3c94-4163-a95e-4c89249658b9",
+   "name": "Gerry Kennedy",
+   "scope": "state_lower",
+   "districtName": "State House District 73 (2024); Montana"
+  },
+  {
+   "candidateId": "52893a44-a7ea-4712-85f5-2dafe91f1843",
+   "name": "Greg DeVries",
+   "scope": "state_lower",
+   "districtName": "State House District 75 (2024); Montana"
+  },
+  {
+   "candidateId": "0c43f981-ba8c-4120-974e-9534b75c4450",
+   "name": "Greg Leman",
+   "scope": "state_lower",
+   "districtName": "State House District 60 (2024); Montana"
+  },
+  {
+   "candidateId": "61099a81-b799-4084-829a-ff00053d3c94",
+   "name": "Greg Woodward",
+   "scope": "state_lower",
+   "districtName": "State House District 94 (2024); Montana"
+  },
+  {
+   "candidateId": "dceefbbf-6244-445f-957e-bd07efd31e35",
+   "name": "Hannah Trebas",
+   "scope": "state_lower",
+   "districtName": "State House District 19 (2024); Montana"
+  },
+  {
+   "candidateId": "30b584bf-faf7-4c56-892f-141dc5322add",
+   "name": "J.C. Windmueller",
+   "scope": "state_lower",
+   "districtName": "State House District 100 (2024); Montana"
+  },
+  {
+   "candidateId": "4ca144ee-5357-4711-ac9b-20bcdcfeab23",
+   "name": "Jane Maahs",
+   "scope": "state_lower",
+   "districtName": "State House District 2 (2024); Montana"
+  },
+  {
+   "candidateId": "e4ddbedd-fb54-45d9-8146-01e0752a7d91",
+   "name": "Janine Coole",
+   "scope": "state_lower",
+   "districtName": "State House District 54 (2024); Montana"
+  },
+  {
+   "candidateId": "9a399d91-6392-4ad6-a91b-cdee5b6bb8e9",
+   "name": "Jasmine Erickson",
+   "scope": "state_lower",
+   "districtName": "State House District 34 (2024); Montana"
+  },
+  {
+   "candidateId": "5acb3001-5be9-4e6d-af53-da2ecaaa563a",
+   "name": "Jason Boeshore",
+   "scope": "state_lower",
+   "districtName": "State House District 30 (2024); Montana"
+  },
+  {
+   "candidateId": "c78ac4fe-a97e-47b3-a160-9cde2e938a4f",
+   "name": "Jason Gunderson",
+   "scope": "state_upper",
+   "districtName": "State Senate District 29 (2024); Montana"
+  },
+  {
+   "candidateId": "d0554061-18a0-4ba8-bb18-2437c4a64213",
+   "name": "Jason Lorang",
+   "scope": "state_lower",
+   "districtName": "State House District 22 (2024); Montana"
+  },
+  {
+   "candidateId": "7de1eea0-23f9-439f-9c42-75ae962afeb0",
+   "name": "Jason Wilson",
+   "scope": "state_lower",
+   "districtName": "State House District 37 (2024); Montana"
+  },
+  {
+   "candidateId": "6cd6bae4-5824-4f6a-9e83-59d215320b9d",
+   "name": "Jeff Stanek",
+   "scope": "state_lower",
+   "districtName": "State House District 90 (2024); Montana"
+  },
+  {
+   "candidateId": "36d090b9-f5ab-4da5-bfba-4c3e5af00290",
+   "name": "Jeremiah Jabs",
+   "scope": "state_lower",
+   "districtName": "State House District 42 (2024); Montana"
+  },
+  {
+   "candidateId": "96f72a71-cd38-472f-9874-6b5bd4fff33e",
+   "name": "Jerry Ferderer",
+   "scope": "state_lower",
+   "districtName": "State House District 25 (2024); Montana"
+  },
+  {
+   "candidateId": "309ee3a3-23af-4c7e-a73f-7005868f4154",
+   "name": "Jessica Dyrdahl",
+   "scope": "state_upper",
+   "districtName": "State Senate District 10 (2024); Montana"
+  },
+  {
+   "candidateId": "3bb17846-505c-4a89-bf8d-f115db89933d",
+   "name": "Jim Riley",
+   "scope": "state_lower",
+   "districtName": "State House District 6 (2024); Montana"
+  },
+  {
+   "candidateId": "bb2995fb-901e-4bd2-a8ce-699b8164c871",
+   "name": "Joanna Oblander",
+   "scope": "state_upper",
+   "districtName": "State Senate District 23 (2024); Montana"
+  },
+  {
+   "candidateId": "0759b5de-f027-487c-abf3-febb09f9e06f",
+   "name": "Jocelyn Kent",
+   "scope": "state_lower",
+   "districtName": "State House District 68 (2024); Montana"
+  },
+  {
+   "candidateId": "9254ea42-48c6-49ac-943f-a90914d1be34",
+   "name": "Joe Cohenour",
+   "scope": "state_lower",
+   "districtName": "State House District 83 (2024); Montana"
+  },
+  {
+   "candidateId": "d9462365-5abf-4cf3-b33b-f3c3d90fa2f2",
+   "name": "Joe Flynn",
+   "scope": "state_lower",
+   "districtName": "State House District 65 (2024); Montana"
+  },
+  {
+   "candidateId": "800d67af-01ff-4744-80f2-03c8288f6636",
+   "name": "John Looney Sr.",
+   "scope": "state_lower",
+   "districtName": "State House District 81 (2024); Montana"
+  },
+  {
+   "candidateId": "22b0aeae-2b90-4a16-b279-3056529acf35",
+   "name": "John Maxwell",
+   "scope": "state_lower",
+   "districtName": "State House District 47 (2024); Montana"
+  },
+  {
+   "candidateId": "21353bce-1cb3-4998-8fe4-5f69bf2093f6",
+   "name": "Jonathan Jameson",
+   "scope": "state_upper",
+   "districtName": "State Senate District 1 (2024); Montana"
+  },
+  {
+   "candidateId": "bd6172da-0073-4172-81e6-1e4a73868058",
+   "name": "Jordan Ophus",
+   "scope": "state_lower",
+   "districtName": "State House District 27 (2024); Montana"
+  },
+  {
+   "candidateId": "b20f9b43-4474-4db7-b775-ff4a65edcfac",
+   "name": "Jordan Viegut",
+   "scope": "state_lower",
+   "districtName": "State House District 57 (2024); Montana"
+  },
+  {
+   "candidateId": "fd7fc92d-ad49-4675-9006-05511c373a5a",
+   "name": "Joshua Congleton",
+   "scope": "state_lower",
+   "districtName": "State House District 58 (2024); Montana"
+  },
+  {
+   "candidateId": "0446620a-cedd-4b78-a82a-01c6d6625446",
+   "name": "Julie Hippler",
+   "scope": "state_upper",
+   "districtName": "State Senate District 25 (2024); Montana"
+  },
+  {
+   "candidateId": "bec02be7-24eb-4eeb-a250-710b7eee1c1f",
+   "name": "Justin Cleveland",
+   "scope": "state_lower",
+   "districtName": "State House District 17 (2024); Montana"
+  },
+  {
+   "candidateId": "d4a461cd-c942-40c5-b528-def9325c66d0",
+   "name": "Kate McLaughlin",
+   "scope": "state_lower",
+   "districtName": "State House District 9 (2024); Montana"
+  },
+  {
+   "candidateId": "ab43a2c8-7091-42b0-a1d7-2c2b0afab45d",
+   "name": "Kathleen Williams",
+   "scope": "state_upper",
+   "districtName": "State Senate District 31 (2024); Montana"
+  },
+  {
+   "candidateId": "b33111e0-2ab2-4300-8cb7-b46a200cbf0e",
+   "name": "Katie Fire Thunder",
+   "scope": "state_lower",
+   "districtName": "State House District 59 (2024); Montana"
+  },
+  {
+   "candidateId": "7c459b6b-d1b9-489b-9a17-58291560c88c",
+   "name": "Katie Fruits",
+   "scope": "state_lower",
+   "districtName": "State House District 80 (2024); Montana"
+  },
+  {
+   "candidateId": "c7512567-c960-40dc-8f9a-b694aea7afa3",
+   "name": "Kelley Durbin-Williams",
+   "scope": "state_lower",
+   "districtName": "State House District 90 (2024); Montana"
+  },
+  {
+   "candidateId": "0c1f53f3-7143-495f-9ba9-92d9fbb0cb5f",
+   "name": "Kelly Hale",
+   "scope": "state_upper",
+   "districtName": "State Senate District 28 (2024); Montana"
+  },
+  {
+   "candidateId": "62a4ccc3-4250-4fae-ba0b-10f630a5abc4",
+   "name": "Kim Dailey",
+   "scope": "state_lower",
+   "districtName": "State House District 85 (2024); Montana"
+  },
+  {
+   "candidateId": "131a56b9-6fab-4e66-917c-246530fce789",
+   "name": "Kimberly Welzenbach",
+   "scope": "state_lower",
+   "districtName": "State House District 46 (2024); Montana"
+  },
+  {
+   "candidateId": "87fee109-e0c3-4a44-ae40-c0d0eea08b70",
+   "name": "Kobi Craddock",
+   "scope": "state_lower",
+   "districtName": "State House District 70 (2024); Montana"
+  },
+  {
+   "candidateId": "dba01f5a-3c80-4f80-a6b9-a2262671a8c1",
+   "name": "Kyle Waterman",
+   "scope": "state_upper",
+   "districtName": "State Senate District 4 (2024); Montana"
+  },
+  {
+   "candidateId": "6962df73-9e05-4da9-8c55-d025936a4a79",
+   "name": "Laura Jackson",
+   "scope": "state_lower",
+   "districtName": "State House District 85 (2024); Montana"
+  },
+  {
+   "candidateId": "bcbb78f0-0bb7-48bc-8e1f-a9260b182468",
+   "name": "Lawrence Moore",
+   "scope": "state_lower",
+   "districtName": "State House District 63 (2024); Montana"
+  },
+  {
+   "candidateId": "a52e0084-9237-404d-81c5-aa504b445706",
+   "name": "Lela Graham",
+   "scope": "state_lower",
+   "districtName": "State House District 21 (2024); Montana"
+  },
+  {
+   "candidateId": "fd4035c3-3e9f-42e1-8be5-74bda9a60b07",
+   "name": "Logan Henke",
+   "scope": "state_lower",
+   "districtName": "State House District 67 (2024); Montana"
+  },
+  {
+   "candidateId": "3bfb751b-4dbd-46ab-afbc-4892816ea5e7",
+   "name": "Lona Running Wolf",
+   "scope": "state_lower",
+   "districtName": "State House District 16 (2024); Montana"
+  },
+  {
+   "candidateId": "e22103ef-c4e2-4c91-965a-c456edcd7829",
+   "name": "Luca Welle",
+   "scope": "state_lower",
+   "districtName": "State House District 5 (2024); Montana"
+  },
+  {
+   "candidateId": "1a938dcd-32f6-4b0a-ba7f-148e882f87c3",
+   "name": "Lyn Hellegaard",
+   "scope": "state_lower",
+   "districtName": "State House District 89 (2024); Montana"
+  },
+  {
+   "candidateId": "ddceaca3-db29-4403-bffe-27d2fe0af6bd",
+   "name": "Madison Evans",
+   "scope": "state_lower",
+   "districtName": "State House District 7 (2024); Montana"
+  },
+  {
+   "candidateId": "94ec558a-f880-4650-a892-a284c1f907b3",
+   "name": "Maeve Kintzler",
+   "scope": "state_lower",
+   "districtName": "State House District 11 (2024); Montana"
+  },
+  {
+   "candidateId": "32ee11a4-9673-4189-8575-e8a984f470db",
+   "name": "Marc Greendorfer",
+   "scope": "state_lower",
+   "districtName": "State House District 59 (2024); Montana"
+  },
+  {
+   "candidateId": "716ef78c-4dcc-438c-8d02-2caf6d3bb731",
+   "name": "Margaret Mitchell",
+   "scope": "state_upper",
+   "districtName": "State Senate District 10 (2024); Montana"
+  },
+  {
+   "candidateId": "6fe2f44e-4012-4fe2-8f8d-6f4bf00e9529",
+   "name": "Mark Peters",
+   "scope": "state_lower",
+   "districtName": "State House District 50 (2024); Montana"
+  },
+  {
+   "candidateId": "fd61792c-748b-4d7f-aa37-af427fc763da",
+   "name": "Mark Reinschmidt",
+   "scope": "state_lower",
+   "districtName": "State House District 75 (2024); Montana"
+  },
+  {
+   "candidateId": "fa89983e-784e-4364-b607-caabfa605d3b",
+   "name": "Mark White",
+   "scope": "state_lower",
+   "districtName": "State House District 78 (2024); Montana"
+  },
+  {
+   "candidateId": "a7dafcd4-d8db-40ea-a1ad-f4ff57c35cdd",
+   "name": "Matthew Hankins",
+   "scope": "state_lower",
+   "districtName": "State House District 53 (2024); Montana"
+  },
+  {
+   "candidateId": "0df20cbf-65c4-435a-a0f1-772afb85e141",
+   "name": "Megan Lane",
+   "scope": "state_lower",
+   "districtName": "State House District 80 (2024); Montana"
+  },
+  {
+   "candidateId": "a7770af4-dc70-4952-beb3-3b4846ec2495",
+   "name": "Melissa Smith",
+   "scope": "state_lower",
+   "districtName": "State House District 39 (2024); Montana"
+  },
+  {
+   "candidateId": "93cb131a-97cb-4fb2-bb54-135224dad4bd",
+   "name": "Michael Bowles",
+   "scope": "state_lower",
+   "districtName": "State House District 100 (2024); Montana"
+  },
+  {
+   "candidateId": "2c67351c-d3b6-4a9a-b6d6-270ae65cb389",
+   "name": "Michael Hagestad",
+   "scope": "state_lower",
+   "districtName": "State House District 97 (2024); Montana"
+  },
+  {
+   "candidateId": "f12018d7-1393-4190-9529-1743f499967b",
+   "name": "Michael Saul",
+   "scope": "state_lower",
+   "districtName": "State House District 72 (2024); Montana"
+  },
+  {
+   "candidateId": "fde5c359-4db2-4bb9-bcad-79434e52ad57",
+   "name": "Michelle Bianco",
+   "scope": "state_lower",
+   "districtName": "State House District 1 (2024); Montana"
+  },
+  {
+   "candidateId": "246b76e9-91dd-4a58-aacb-169a4fc964b3",
+   "name": "Mike Eaton",
+   "scope": "state_lower",
+   "districtName": "State House District 44 (2024); Montana"
+  },
+  {
+   "candidateId": "071f939d-8e5c-4812-94e6-9c5a2b891959",
+   "name": "Mindy Leach",
+   "scope": "state_upper",
+   "districtName": "State Senate District 12 (2024); Montana"
+  },
+  {
+   "candidateId": "7bb840eb-de0f-4f2b-a62e-1a6fde4b29be",
+   "name": "Monica Tranel",
+   "scope": "state_lower",
+   "districtName": "State House District 92 (2024); Montana"
+  },
+  {
+   "candidateId": "21b3318b-9c55-4bc0-b706-52c3e9d0b6e5",
+   "name": "Natalie Parker",
+   "scope": "state_lower",
+   "districtName": "State House District 35 (2024); Montana"
+  },
+  {
+   "candidateId": "aa9d859a-30ba-4024-9c85-9d8d7ecf5489",
+   "name": "Natalie Weeks-O'Neal",
+   "scope": "state_lower",
+   "districtName": "State House District 31 (2024); Montana"
+  },
+  {
+   "candidateId": "395c2da4-50b2-48b7-ba38-0d3e50609217",
+   "name": "Neal Ganser",
+   "scope": "state_upper",
+   "districtName": "State Senate District 32 (2024); Montana"
+  },
+  {
+   "candidateId": "c3f5bace-8372-4748-b429-5099877818fa",
+   "name": "Neal Miller",
+   "scope": "state_lower",
+   "districtName": "State House District 22 (2024); Montana"
+  },
+  {
+   "candidateId": "93b84210-4be4-464b-8436-d914721521b2",
+   "name": "Noy Holland",
+   "scope": "state_upper",
+   "districtName": "State Senate District 9 (2024); Montana"
+  },
+  {
+   "candidateId": "199f6ba3-45c3-4e6c-8272-57aea836d09f",
+   "name": "Owen Lang",
+   "scope": "state_lower",
+   "districtName": "State House District 66 (2024); Montana"
+  },
+  {
+   "candidateId": "469b01bb-2b20-4bca-8942-7c81393cb43d",
+   "name": "Pam Carroll",
+   "scope": "state_lower",
+   "districtName": "State House District 24 (2024); Montana"
+  },
+  {
+   "candidateId": "37836699-d9cb-467e-b575-3ba1d0c8e2eb",
+   "name": "Patrick Fitzpatrick",
+   "scope": "state_upper",
+   "districtName": "State Senate District 6 (2024); Montana"
+  },
+  {
+   "candidateId": "d8d54ca9-6858-4a24-a965-93c4d66ab220",
+   "name": "Patrick Sullivan",
+   "scope": "state_lower",
+   "districtName": "State House District 75 (2024); Montana"
+  },
+  {
+   "candidateId": "8144d238-d28c-4a8d-a511-74af36922a6e",
+   "name": "Paul Jefferson",
+   "scope": "state_lower",
+   "districtName": "State House District 26 (2024); Montana"
+  },
+  {
+   "candidateId": "d7016c54-9b2f-4200-a6cd-efb96b42b467",
+   "name": "Paula Koch",
+   "scope": "state_lower",
+   "districtName": "State House District 4 (2024); Montana"
+  },
+  {
+   "candidateId": "5984fdac-99c8-4886-990f-c54d683a615f",
+   "name": "Precious McKenzie",
+   "scope": "state_lower",
+   "districtName": "State House District 51 (2024); Montana"
+  },
+  {
+   "candidateId": "9c68bdd9-2b7b-424c-bf7a-ab0aa85380a0",
+   "name": "Ralph Foster",
+   "scope": "state_lower",
+   "districtName": "State House District 15 (2024); Montana"
+  },
+  {
+   "candidateId": "0d902796-899c-4427-a39a-a9d72d72dfdd",
+   "name": "Randy Chamberlin",
+   "scope": "state_lower",
+   "districtName": "State House District 68 (2024); Montana"
+  },
+  {
+   "candidateId": "59835bf1-077d-4d07-b9ad-be58484828e4",
+   "name": "Rebecca Bogden-Richards",
+   "scope": "state_lower",
+   "districtName": "State House District 23 (2024); Montana"
+  },
+  {
+   "candidateId": "a37aab79-71a4-4ac9-a6ea-6f01c90857b4",
+   "name": "Rebecca Noell",
+   "scope": "state_lower",
+   "districtName": "State House District 49 (2024); Montana"
+  },
+  {
+   "candidateId": "fc1826eb-a6f6-4399-8317-537dbb003c82",
+   "name": "Richard Aungier",
+   "scope": "state_upper",
+   "districtName": "State Senate District 31 (2024); Montana"
+  },
+  {
+   "candidateId": "2f3431ab-35de-4195-a07c-4ba9fbbd9dff",
+   "name": "Richard Gessling",
+   "scope": "state_lower",
+   "districtName": "State House District 55 (2024); Montana"
+  },
+  {
+   "candidateId": "ae041f5a-7a7e-4def-85ac-09a622be3656",
+   "name": "Rio Roland",
+   "scope": "state_lower",
+   "districtName": "State House District 61 (2024); Montana"
+  },
+  {
+   "candidateId": "d5e9d9d4-12a5-47de-a18f-8c892e0c0239",
+   "name": "Robin Kendall",
+   "scope": "state_lower",
+   "districtName": "State House District 94 (2024); Montana"
+  },
+  {
+   "candidateId": "7affe97e-0336-465d-89fd-99297e8495bb",
+   "name": "Roy Caldwell",
+   "scope": "state_lower",
+   "districtName": "State House District 84 (2024); Montana"
+  },
+  {
+   "candidateId": "2d869404-b6f6-47fb-b792-880ace7b63ef",
+   "name": "Roy Handley",
+   "scope": "state_lower",
+   "districtName": "State House District 93 (2024); Montana"
+  },
+  {
+   "candidateId": "77c489fd-b3fa-4165-83b4-4e9bc6bc0f83",
+   "name": "Rudolf Haden",
+   "scope": "state_lower",
+   "districtName": "State House District 43 (2024); Montana"
+  },
+  {
+   "candidateId": "6e5c17b5-75d4-4c7c-b346-f64383e5c3d1",
+   "name": "Ryan Darling",
+   "scope": "state_lower",
+   "districtName": "State House District 99 (2024); Montana"
+  },
+  {
+   "candidateId": "5889abd1-b45c-425c-8cd3-6c3d5c2401f7",
+   "name": "Shaun Pandina",
+   "scope": "state_lower",
+   "districtName": "State House District 4 (2024); Montana"
+  },
+  {
+   "candidateId": "c568f13d-2517-481a-9be2-d51face8cd8e",
+   "name": "Shayne Morgan",
+   "scope": "state_lower",
+   "districtName": "State House District 76 (2024); Montana"
+  },
+  {
+   "candidateId": "b3337caa-5ed6-4df1-80d0-46d9504ce87a",
+   "name": "Stacy Zinn",
+   "scope": "state_lower",
+   "districtName": "State House District 52 (2024); Montana"
+  },
+  {
+   "candidateId": "6b1effd0-fb48-4365-b673-f843c69f0d2f",
+   "name": "Stan Taylor",
+   "scope": "state_upper",
+   "districtName": "State Senate District 18 (2024); Montana"
+  },
+  {
+   "candidateId": "a6e063ce-1f12-4d13-ba59-84fff823f3fe",
+   "name": "Stephen LaPraim",
+   "scope": "state_upper",
+   "districtName": "State Senate District 42 (2024); Montana"
+  },
+  {
+   "candidateId": "db857a7a-e36d-4ceb-8226-6f106bcc301e",
+   "name": "Stephen Leuchtman",
+   "scope": "state_upper",
+   "districtName": "State Senate District 43 (2024); Montana"
+  },
+  {
+   "candidateId": "fb2e4ba8-7ba2-4463-b54e-474a9a902b9c",
+   "name": "Steve Gunderson",
+   "scope": "state_upper",
+   "districtName": "State Senate District 1 (2024); Montana"
+  },
+  {
+   "candidateId": "9d26ea03-4032-40af-b565-ad7bcfd6b20a",
+   "name": "Steve Keller",
+   "scope": "state_lower",
+   "districtName": "State House District 20 (2024); Montana"
+  },
+  {
+   "candidateId": "fdedf66a-a489-4413-bcca-1b0fe48e683f",
+   "name": "Steven Galloway",
+   "scope": "state_upper",
+   "districtName": "State Senate District 11 (2024); Montana"
+  },
+  {
+   "candidateId": "d3514d12-2812-493b-be83-d1a1d5e9bc72",
+   "name": "Stewart Harris",
+   "scope": "state_lower",
+   "districtName": "State House District 50 (2024); Montana"
+  },
+  {
+   "candidateId": "31e7596b-58ea-4ed3-bcaf-e662ef17fe97",
+   "name": "Suzzann Nordwick",
+   "scope": "state_lower",
+   "districtName": "State House District 71 (2024); Montana"
+  },
+  {
+   "candidateId": "5c4996d9-7478-4d5f-9df1-8ad0fb710fa9",
+   "name": "Tess Fahlgren",
+   "scope": "state_lower",
+   "districtName": "State House District 29 (2024); Montana"
+  },
+  {
+   "candidateId": "e49a21a6-cdde-4aaf-91d3-f8aca9367635",
+   "name": "Tia Nelson",
+   "scope": "state_lower",
+   "districtName": "State House District 84 (2024); Montana"
+  },
+  {
+   "candidateId": "cbddd89f-cfac-41c4-9683-4b1f8bbd209e",
+   "name": "Tom France",
+   "scope": "state_lower",
+   "districtName": "State House District 99 (2024); Montana"
+  },
+  {
+   "candidateId": "10fd3ee0-8f1d-41ae-964d-cf8cf408e0ee",
+   "name": "Tracey Miller Karcher",
+   "scope": "state_lower",
+   "districtName": "State House District 37 (2024); Montana"
+  },
+  {
+   "candidateId": "5b90bcb6-3c82-4f69-bb5d-65fae089cf0c",
+   "name": "Trenin Bayless",
+   "scope": "state_lower",
+   "districtName": "State House District 74 (2024); Montana"
+  },
+  {
+   "candidateId": "fcaf7e99-d2e0-4e70-b4ec-e84d4a23435f",
+   "name": "Trevor Funseth",
+   "scope": "state_lower",
+   "districtName": "State House District 21 (2024); Montana"
+  },
+  {
+   "candidateId": "2b306153-c1bf-475a-862b-5848fec97716",
+   "name": "Trevor Walter",
+   "scope": "state_lower",
+   "districtName": "State House District 69 (2024); Montana"
+  },
+  {
+   "candidateId": "4cc27ee1-2f0f-43fe-a4ee-71a7646b1b7d",
+   "name": "Trish Schreiber",
+   "scope": "state_lower",
+   "districtName": "State House District 76 (2024); Montana"
+  },
+  {
+   "candidateId": "b9f281d3-506d-4da3-a2da-75ac77411c48",
+   "name": "Tristan Veverka",
+   "scope": "state_lower",
+   "districtName": "State House District 33 (2024); Montana"
+  },
+  {
+   "candidateId": "3f83dcbf-3f75-4b5c-9030-42683d83bb45",
+   "name": "Troy Charbonneau",
+   "scope": "state_lower",
+   "districtName": "State House District 53 (2024); Montana"
+  },
+  {
+   "candidateId": "7ef56451-8a36-4d9c-8dd4-e2bf8bde8eb9",
+   "name": "Tucker Colvin",
+   "scope": "state_lower",
+   "districtName": "State House District 48 (2024); Montana"
+  },
+  {
+   "candidateId": "7de6ef75-c760-4161-85a7-9fdb414321d4",
+   "name": "Ty Linger",
+   "scope": "state_lower",
+   "districtName": "State House District 36 (2024); Montana"
+  },
+  {
+   "candidateId": "fb8e2a35-d63f-4e23-badf-237403e70780",
+   "name": "Valynda Holland",
+   "scope": "state_upper",
+   "districtName": "State Senate District 11 (2024); Montana"
+  },
+  {
+   "candidateId": "67c23fa8-1643-413e-9746-c83bb3400661",
+   "name": "Wayne Rusk",
+   "scope": "state_lower",
+   "districtName": "State House District 86 (2024); Montana"
+  }
+ ]
+}

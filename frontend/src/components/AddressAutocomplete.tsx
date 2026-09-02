@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from "@headlessui/react";
 import type { AddressLocation, AddressSuggestion } from "@voteapp/api-client";
 import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
@@ -33,6 +33,13 @@ type AddressAutocompleteProps = {
   onRetrievePendingChange?: (pending: boolean) => void;
   inputId: string;
   placeholder?: string;
+  /** Phone-width affordance (landing page): a grey magnifying glass inside
+   * the left edge of the empty, unfocused box — the mobile stand-in for the
+   * blinking cursor phones never show (they ignore autoFocus so the keyboard
+   * doesn't cover the page). Hidden the moment the box gains focus or holds
+   * text, exactly like Google's mobile search box; never rendered at sm+
+   * where the cursor does the job. */
+  searchIconWhenIdle?: boolean;
 };
 
 export function AddressAutocomplete({
@@ -41,7 +48,12 @@ export function AddressAutocomplete({
   onRetrievePendingChange,
   inputId,
   placeholder,
+  searchIconWhenIdle,
 }: AddressAutocompleteProps) {
+  // Drives the idle search glyph only; suggestion machinery has its own
+  // focus handling below.
+  const [focused, setFocused] = useState(false);
+  const showSearchIcon = Boolean(searchIconWhenIdle) && !focused && value === "";
   const { suggestions, enabled, onInputChanged, selectSuggestion, clearSuggestions, warmup } =
     useAddressSuggestions();
 
@@ -107,7 +119,11 @@ export function AddressAutocomplete({
       <div className="relative">
         <ComboboxInput
           id={inputId}
-          className="mt-1 w-full rounded-md border border-line px-3 py-3 shadow-sm focus:border-ink focus:outline-none"
+          // pl-10 clears the glyph while it shows; sm:px-3 because the glyph
+          // never renders at sm+ (see sm:hidden below).
+          className={`mt-1 w-full rounded-md border border-line py-3 shadow-sm focus:border-ink focus:outline-none ${
+            showSearchIcon ? "pl-10 pr-3 sm:px-3" : "px-3"
+          }`}
           placeholder={placeholder}
           autoComplete="street-address"
           value={value}
@@ -115,9 +131,30 @@ export function AddressAutocomplete({
             onChange(event.target.value);
             onInputChanged(event.target.value);
           }}
-          onFocus={() => warmup()}
-          onBlur={() => clearSuggestions()}
+          onFocus={() => {
+            setFocused(true);
+            warmup();
+          }}
+          onBlur={() => {
+            setFocused(false);
+            clearSuggestions();
+          }}
         />
+        {showSearchIcon ? (
+          // Decorative: the label above the field already names the action,
+          // so screen readers need nothing from the glyph. pt-1 mirrors the
+          // input's mt-1 so the centering tracks the input, not the wrapper.
+          <span
+            aria-hidden="true"
+            data-testid="address-search-hint"
+            className="pointer-events-none absolute inset-y-0 left-3 flex items-center pt-1 text-ink-soft sm:hidden"
+          >
+            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.8-3.8" />
+            </svg>
+          </span>
+        ) : null}
         {enabled && suggestions.length > 0 ? (
           <ComboboxOptions
             static

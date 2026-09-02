@@ -45,7 +45,7 @@ import { ErrorNotice, LoadingNotice } from "../../components/Status";
 import { openExternalUrl } from "../../lib/openExternalUrl";
 import { usLatestLocalDate } from "../../lib/usLatestLocalDate";
 
-type RecordView = "by_issue" | "my_issues" | "newest";
+type RecordView = "my_issues" | "newest";
 
 type RecordGroup = {
   /** null for the untagged "Other records" pseudo-group. */
@@ -288,7 +288,7 @@ export default function CandidateScreen() {
   const { candidateId } = useLocalSearchParams<{ candidateId: string }>();
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { hasSaved, preferences } = useMyResearchAreas();
+  const { preferences } = useMyResearchAreas();
   // "My choice" state, all loaded before any control renders (no-flash rule,
   // like FollowButton). me is undefined while the session loads — the guest
   // login line must not flash for a viewer who turns out to be signed in.
@@ -299,7 +299,10 @@ export default function CandidateScreen() {
   // users); the button renders only once that list has loaded — before then
   // a followed candidate would briefly show as unfollowed. Same as the web.
   const { follows, canFollow } = useFollows();
-  const [recordView, setRecordView] = useState<RecordView>("by_issue");
+  // "My issues first" is the only grouped view: with no saved areas the
+  // preference reorder is a no-op, so it degrades to the public-salience
+  // order. Same as the web.
+  const [recordView, setRecordView] = useState<RecordView>("my_issues");
 
   const detail = useQuery({
     queryKey: ["candidate", candidateId],
@@ -340,9 +343,7 @@ export default function CandidateScreen() {
 
   const candidate = detail.data.candidate;
   const profileLinks = candidateProfileLinks(candidate);
-  const baseGroups = groupRecords(candidate.records);
-  const recordGroups =
-    recordView === "my_issues" ? orderGroupsByPreference(baseGroups, preferences) : baseGroups;
+  const recordGroups = orderGroupsByPreference(groupRecords(candidate.records), preferences);
   const today = usLatestLocalDate();
   const ongoingElections = candidate.elections.filter((election) => election.election_date >= today);
   // The history list splits on the same date boundary as the web page: "is
@@ -398,8 +399,7 @@ export default function CandidateScreen() {
       (pick) => pick.candidate_id === candidate.candidate_id
     );
   const viewOptions = [
-    { value: "by_issue" as const, label: "By issue" },
-    ...(hasSaved ? [{ value: "my_issues" as const, label: "My issues first" }] : []),
+    { value: "my_issues" as const, label: "My issues first" },
     { value: "newest" as const, label: "Newest first" },
   ];
 
