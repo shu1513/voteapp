@@ -126,3 +126,13 @@ inside the file before it was renamed. `import-report.json` remains the
 original insert ledger. Convergence afterwards: **5,467 unchanged**. Per-measure
 tag counts and hashes captured before and after: all 43 measures
 byte-identical, as expected for description-only changes.
+
+**How that proof was run, stated because the first attempt got it wrong.** A
+rewrite re-stamps `origin_run_id`, so the rewritten records now carry the fix
+stamp above rather than the batch's insert stamp. A before/after comparison
+filtered on the insert stamp therefore shows the fixed measures as "drifted"
+when they have merely moved to the new stamp. The comparison was re-run keyed
+on the batch's roll numbers with no stamp filter: identical counts and hashes
+on every measure, and the rewritten records keep their original row ids and
+creation times (updated in place, not re-created). 1,195 records across 13
+rolls now carry the fix stamp; the rest keep the insert stamp.
