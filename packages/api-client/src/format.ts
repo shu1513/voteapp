@@ -286,6 +286,7 @@ const FINANCE_SOURCE_LABELS: Record<string, string> = {
   NEW_JERSEY_ELEC: "New Jersey ELEC",
   NEW_MEXICO_CFIS: "New Mexico CFIS",
   NORTH_CAROLINA_SBE: "North Carolina State Board of Elections",
+  NORTH_DAKOTA_CFRS: "North Dakota Campaign Finance Reporting System",
   OHIO_SOS: "Ohio Secretary of State",
   OKLAHOMA_GUARDIAN: "Oklahoma Guardian",
   TEXAS_TEC: "Texas Ethics Commission",

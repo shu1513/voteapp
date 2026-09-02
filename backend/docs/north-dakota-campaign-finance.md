@@ -266,6 +266,35 @@ tests). One live run, ~2 s between requests, JSON report with `ok` +
   (District Court Judge, Supreme Court Justice), 363 Active. CSV registrants
   join the registry 422/422.
 
+## Phase 2 — direct totals (built 2026-09-02, local)
+
+Candidate-committee (RegistrantID `101…`) rows in the bulk Contributions files,
+counted from the 2026-09-01 downloads, pin the money model's vocabulary:
+
+| TransactionCategory | ContributorPayeeType values seen | 2025 rows / $ | 2026 rows / $ |
+| --- | --- | --- | --- |
+| Monetary | Individual, Business or Organization, Committee/PAC, Party Committee, Candidate, Self | 500 / 1,359,559.77 | 1,265 / 1,505,604.51 |
+| In-Kind | Individual, Self (2025); + Business or Organization, Candidate, Committee/PAC (2026) | 5 / 2,492.99 | 46 / 111,749.02 |
+| Reimbursement of Expenditure | Committee/PAC, Individual (2025); Candidate, Self (2026) | 2 / 3,200.00 | 3 / 3,168.38 |
+| Total - $200 or less | blank | 50 / 40,583.93 | 536 / 156,613.80 |
+
+No negative or zero amounts in either year; `Total - $100 or less` appears only
+on non-candidate filers but stays in the pinned set. Money model (see the plan's
+Phase 2 entry): total receipts = every row; Raised = Monetary + In-Kind from the
+four donor classes plus the lump rows; Candidate/Self and reimbursements are
+excluded; size buckets = itemized individual Monetary rows. A committee with no
+rows in the window gets NULL money, never $0 — the file cannot separate "filed
+with no contributions" from "first cumulative report not yet due" (Nelson and
+Adams, both registered after the pre-primary cutoff, are the live examples).
+
+Live run 2026-09-02 (`raw:refresh` then `sync-due --stale-after-days=0`):
+schedules 2026 + 2027 → window 2025-01-01 → 2026-12-31; CON 2025 = 2,914 rows,
+CON 2026 = 5,340 rows, API harvests the same counts; 49/49 links synced, every
+committee-year CSV↔API multiset-exact; four committees recomputed by hand from
+the raw CSVs matched to the cent (Wrigley $160,525.00; Bachmeier $105,237.14
+total / $72,826.54 raised / $32,410.60 self; Howe $140,266.07 / $136,516.07;
+Haugen-Hoffart $123,279.55 / $89,889.00).
+
 Not in Phase 0A (deliberately): filed-report PDF download (verified once via
 `Common-Service/AmazonCloudFront/getDownloadLinkWithoutCookies` with
 `{ s3FilePath }` → presigned URL), the 48-hour overlap (Phase 0B, after

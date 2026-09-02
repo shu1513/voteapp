@@ -120,7 +120,8 @@ export type BallotLookupFinanceSummary = {
     | "RHODE_ISLAND_ERTS"
     | "SOUTH_CAROLINA_CAMPAIGN_FINANCE"
     | "ALABAMA_FCPA"
-    | "WEST_VIRGINIA_CFRS";
+    | "WEST_VIRGINIA_CFRS"
+    | "NORTH_DAKOTA_CFRS";
   cycle: number;
   fec_candidate_id: string | null;
   controlled_committee_id?: string | null;
@@ -243,6 +244,7 @@ export const FINANCE_SUMMARY_SOURCES = [
   "SOUTH_CAROLINA_CAMPAIGN_FINANCE",
   "ALABAMA_FCPA",
   "WEST_VIRGINIA_CFRS",
+  "NORTH_DAKOTA_CFRS",
 ] as const satisfies readonly BallotLookupFinanceSummary["source"][];
 
 // Compile-time exhaustiveness: never = a union member is missing above.

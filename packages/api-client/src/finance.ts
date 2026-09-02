@@ -13,6 +13,9 @@ const FINANCE_SOURCE_HOME_URLS: Partial<Record<FinanceSummary["source"], string>
   // the CSV), so the card needs this portal fallback for its provenance link.
   NEVADA_AURORA: "https://www.nvsos.gov/SOSCandidateServices/AnonymousAccess/CEFDSearchUU/Search.aspx",
   NEW_HAMPSHIRE_CFS: "https://cfs.sos.nh.gov/",
+  // North Dakota CFRS is the same single-page Civix portal as West
+  // Virginia's, so the provenance fallback is the portal home.
+  NORTH_DAKOTA_CFRS: "https://cfrs.sos.nd.gov/",
   // West Virginia CFRS is a single-page app whose committee views are
   // reached through POST APIs, so the provenance fallback is the portal home.
   WEST_VIRGINIA_CFRS: "https://cfrs.wvsos.gov/",
