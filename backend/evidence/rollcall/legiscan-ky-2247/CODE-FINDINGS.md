@@ -17,20 +17,25 @@ Each pair names `House: Veto Override` alongside one of:
 | `House: Co-Sponsor` | 1 |
 
 Excluding the three partner spellings resolves 29 of the 31, because the
-excluded copy is the one that is genuinely redundant. **It does not resolve the
-other two.** For those, the copy the configuration keeps is labelled `House:
-Veto Override` but is really a floor amendment and a vote to add co-sponsors.
+excluded copy is the one that is genuinely redundant. The other two turned out
+to need no code change either, once each was looked at on its own:
 
-This is not fixed in code, for the same reason the Texas duplicate fix was
-scoped the way it was: relaxing the identity key to ignore the description would
-re-open the double-record hazard everywhere else. The two rolls are instead
-caught by the check every selected roll already gets against Kentucky's official
-vote record, which names the real question. Neither is divided and enacted, so
-neither is reachable by the current selection filters.
+- The **co-sponsor** twin sits on HR 21, a simple resolution. The shared
+  kept-types list drops simple resolutions before this configuration is
+  consulted, so neither copy is ever stored.
+- The **floor amendment** twin is HB 84's RCS# 40. Kentucky's own record says
+  RCS# 40 is `Adopt` — the adoption of House Floor Amendment 1, 81-8 — and the
+  passage is the neighbouring RCS# 41. The `House: Veto Override RCS# 40` copy
+  is therefore excluded by its exact sequence number, and a test pins both that
+  exclusion and that RCS# 41 stays kept. Found by review of the config PR; the
+  first draft of this file had wrongly described it as unreachable by rule and
+  left it to the per-roll check at selection time.
 
-If a future change makes the identity key description-insensitive, re-measure
-Kentucky 2026 first: it is the only session in the registry where two rolls
-differ in nothing but their description and their id.
+Relaxing the identity key to ignore the description would have been the wrong
+fix: it would re-open the double-record hazard everywhere else. If a future
+change makes the identity key description-insensitive, re-measure Kentucky
+2026 first: it is the only session in the registry where two rolls differ in
+nothing but their description and their id.
 
 ## 2. The 2025 rules and the 2026 rules are opposites, by measurement
 

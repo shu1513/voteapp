@@ -1098,10 +1098,10 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   // of `House: Third Reading` (29), `House: Adopt HFA 1` (1) or `House:
   // Co-Sponsor` (1). The shared identity key includes `desc`, so it does
   // NOT collapse them. Excluding the three partner spellings resolves 29 of
-  // the 31 by rule; the remaining two keep the `Veto Override` copy of what
-  // is really a floor amendment and a co-sponsor vote, so they must be
-  // caught by the per-roll check against the official vote record that
-  // every selected roll gets anyway. Recorded in the evidence directory's
+  // the 31 by rule. Of the other two, the co-sponsor vote sits on a simple
+  // resolution that the shared kept-types list drops before this config is
+  // consulted, and the floor amendment (HB 84, RCS# 40) is excluded below by
+  // its sequence number. Recorded in the evidence directory's
   // CODE-FINDINGS.md. 2025 has ZERO duplicates (701 distinct pairs).
   //
   // Ground truth is the same document as 2025 under the 26rs path:
@@ -1132,6 +1132,13 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       /^house: third reading rcs# \d+$/,
       // A vote to add co-sponsors, on a simple resolution.
       /^house: co-sponsor rcs# \d+$/,
+      // HB 84's RCS# 40 is the ONE duplicate the spelling rules above cannot
+      // reach: the feed carries it both as `House: Adopt HFA 1 RCS# 40`
+      // (excluded) and as `House: Veto Override RCS# 40` (kept by the broad
+      // rule), and Kentucky's own record says it is the adoption of House
+      // Floor Amendment 1, 81-8, not a passage. Excluded by sequence number,
+      // and pinned by a test, so a re-fetch cannot store it as a floor vote.
+      /^house: veto override rcs# 40$/,
     ],
   },
 

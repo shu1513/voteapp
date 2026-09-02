@@ -44,8 +44,9 @@ Co-Sponsor` (1).
 
 The shared identity key includes the description, so it does **not** collapse
 them. Excluding the three partner spellings resolves 29 of the 31 by rule. The
-remaining two keep the `Veto Override` copy of what is really a floor amendment
-and a co-sponsor vote — see `CODE-FINDINGS.md`.
+co-sponsor twin sits on a simple resolution the measure-type filter drops before
+the configuration is consulted, and the floor-amendment twin (HB 84, RCS# 40) is
+excluded by its exact sequence number — see `CODE-FINDINGS.md`.
 
 ## Ground truth
 

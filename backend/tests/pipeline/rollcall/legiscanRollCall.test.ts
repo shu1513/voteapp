@@ -418,6 +418,14 @@ describe("Kentucky's two sessions read the same words differently", () => {
     });
     expect(ky("KY-2247", "House: Co-Sponsor RCS# 12", "house")).toMatchObject({ isFloorVote: false });
     expect(ky("KY-2247", "House: Adopt HFA 16 RCS# 169", "house")).toMatchObject({ isFloorVote: false });
+    // HB 84's RCS# 40 arrives twice, once as an amendment and once wearing the
+    // broad House label. Kentucky's record says it is the amendment vote, so
+    // BOTH copies must be excluded; the neighbouring RCS# 41 (a real passage)
+    // must still be kept.
+    expect(ky("KY-2247", "House: Adopt HFA 1 RCS# 40", "house")).toMatchObject({ isFloorVote: false });
+    expect(ky("KY-2247", "House: Veto Override RCS# 40", "house")).toMatchObject({ isFloorVote: false });
+    expect(ky("KY-2247", "House: Veto Override RCS# 41", "house")).toMatchObject({ isFloorVote: true });
+    expect(ky("KY-2247", "House: Veto Override RCS# 400", "house")).toMatchObject({ isFloorVote: true });
   });
 });
 
