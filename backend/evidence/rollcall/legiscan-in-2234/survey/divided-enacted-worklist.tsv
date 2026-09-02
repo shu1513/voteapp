@@ -11,62 +11,62 @@ HB1038	B	4	house	2026-02-27	1647630	405	56	37	House - Rules Suspended. Conferenc
 HB1038	B	4	house	2026-02-02	1621114	199	67	30	House - Third reading	Gaming matters.	candidate: unbatched
 HB1038	B	4	senate	2026-02-27	1648340	312	34	16	Senate - Rules Suspended. Conference Committee Report 1	Gaming matters.	candidate: unbatched
 HB1038	B	4	senate	2026-02-24	1642883	229	26	22	Senate - Third reading	Gaming matters.	candidate: unbatched
-HB1042	B	4	house	2026-02-25	1643911	370	59	33	House - House concurred with Senate amendments	Regulation and investment of cryptocurrency.	candidate: unbatched
-HB1042	B	4	house	2026-01-22	1615974	66	53	42	House - Third reading	Regulation and investment of cryptocurrency.	candidate: unbatched
-HB1042	B	4	senate	2026-02-19	1639191	198	35	10	Senate - Third reading	Regulation and investment of cryptocurrency.	candidate: unbatched
+HB1042	B	4	house	2026-02-25	1643911	370	59	33	House - House concurred with Senate amendments	Regulation and investment of cryptocurrency.	dropped: filter 5, a public pension crypto option and a bar on state and local rules about digital assets fit no research area
+HB1042	B	4	house	2026-01-22	1615974	66	53	42	House - Third reading	Regulation and investment of cryptocurrency.	dropped: filter 5, a public pension crypto option and a bar on state and local rules about digital assets fit no research area
+HB1042	B	4	senate	2026-02-19	1639191	198	35	10	Senate - Third reading	Regulation and investment of cryptocurrency.	dropped: filter 5, a public pension crypto option and a bar on state and local rules about digital assets fit no research area
 HB1052	B	4	house	2026-02-26	1646506	398	68	21	House - Conference Committee Report 1	Various administrative law matters.	candidate: unbatched
-HB1062	B	4	senate	2026-02-19	1639167	199	34	11	Senate - Third reading	Wake boarding and wake surfing.	candidate: unbatched
-HB1115	B	4	senate	2026-02-27	1648342	331	37	10	Senate - Rules Suspended. Conference Committee Report 1	Homeowners association governance.	candidate: unbatched
-HB1150	B	4	house	2026-02-18	1637695	275	72	19	House - House concurred with Senate amendments	Local regulation.	candidate: unbatched
-HB1150	B	4	house	2026-01-20	1614416	56	65	23	House - Third reading	Local regulation.	candidate: unbatched
-HB1150	B	4	senate	2026-02-12	1632010	158	37	10	Senate - Third reading	Local regulation.	candidate: unbatched
-HB1155	B	4	senate	2026-02-19	1639184	203	31	15	Senate - Third reading	Traffic enforcement.	candidate: unbatched
+HB1062	B	4	senate	2026-02-19	1639167	199	34	11	Senate - Third reading	Wake boarding and wake surfing.	dropped: filter 5, no research area maps a defensible direction for this subject, a time and place restriction on wake boarding is recreational boating regulation
+HB1115	B	4	senate	2026-02-27	1648342	331	37	10	Senate - Rules Suspended. Conference Committee Report 1	Homeowners association governance.	dropped: filter 5, no research area maps a defensible direction for this subject, the act is about homeowners association governance procedure, not housing supply or cost
+HB1150	B	4	house	2026-02-18	1637695	275	72	19	House - House concurred with Senate amendments	Local regulation.	batch-02
+HB1150	B	4	house	2026-01-20	1614416	56	65	23	House - Third reading	Local regulation.	dropped: version trap, both the flag chapter and the licence plate reader chapter were added after this roll; the 2026-02-18 concurrence is in batch-02
+HB1150	B	4	senate	2026-02-12	1632010	158	37	10	Senate - Third reading	Local regulation.	batch-02
+HB1155	B	4	senate	2026-02-19	1639184	203	31	15	Senate - Third reading	Traffic enforcement.	dropped: filter 5, no research area maps a defensible direction for this subject, a pilot letting one large subdivision set speed limits on its private roads is not policing policy
 HB1193	B	4	house	2026-02-26	1646022	395	66	29	House - House concurred with Senate amendments	Civil rights commission.	batch-01
 HB1193	B	4	house	2026-01-28	1618344	138	71	20	House - Third reading	Civil rights commission.	dropped: version trap, this text also made any violation of the United States or Indiana Constitution a discriminatory practice, which the enrolled act drops; the 2026-02-26 concurrence is in batch-01
 HB1210	B	4	senate	2026-02-24	1642613	242	38	10	Senate - Third reading	Department of local government finance.	candidate: unbatched
 HB1266	B	4	house	2026-02-27	1648351	425	66	30	House - Rules Suspended. Conference Committee Report 1	Department of education and education matters.	candidate: unbatched
 HB1266	B	4	senate	2026-02-27	1648350	334	28	19	Senate - Rules Suspended. Conference Committee Report 1	Department of education and education matters.	candidate: unbatched
-HB1273	B	4	house	2026-02-25	1643905	368	72	20	House - House concurred with Senate amendments	Requirements for proxy advisors.	candidate: unbatched
-HB1273	B	4	house	2026-01-20	1614519	63	67	21	House - Third reading	Requirements for proxy advisors.	candidate: unbatched
+HB1273	B	4	house	2026-02-25	1643905	368	72	20	House - House concurred with Senate amendments	Requirements for proxy advisors.	batch-02
+HB1273	B	4	house	2026-01-20	1614519	63	67	21	House - Third reading	Requirements for proxy advisors.	dropped: version trap, the enrolled act exempts banks acting as trustees and small charities and neither exemption was in this text; the 2026-02-25 concurrence is in batch-02
 HB1274	B	4	house	2026-01-28	1618337	129	69	25	House - Third reading	Insurance mandated gun free zone notices.	batch-01
 HB1302	B	4	house	2026-02-26	1645961	394	69	25	House - House concurred with Senate amendments	Various labor and safety matters.	candidate: unbatched
 HB1343	B	4	house	2026-02-27	1648314	409	65	29	House - Conference Committee Report 1	Public safety matters.	candidate: unbatched
 HB1343	B	4	house	2026-01-28	1618347	121	67	29	House - Third reading	Public safety matters.	candidate: unbatched
 HB1343	B	4	senate	2026-02-27	1648313	318	37	11	Senate - Rules Suspended. Conference Committee Report 1	Public safety matters.	candidate: unbatched
 HB1343	B	4	senate	2026-02-24	1642620	255	38	10	Senate - Third reading	Public safety matters.	candidate: unbatched
-HB1355	B	4	house	2026-02-19	1638743	299	73	22	House - House concurred with Senate amendments	Confined feeding operations.	candidate: unbatched
-HB1355	B	4	house	2026-01-28	1618346	117	69	26	House - Third reading	Confined feeding operations.	candidate: unbatched
-HB1368	B	4	house	2026-02-27	1648201	420	57	40	House - Rules Suspended. House concurred with Senate amendments	Carbon.	candidate: unbatched
-HB1368	B	4	house	2026-01-28	1618050	114	58	36	House - Third reading	Carbon.	needs member-list check: LegiScan tally has no exact match in the official history
-HB1368	B	4	senate	2026-02-24	1642619	259	29	19	Senate - Third reading	Carbon.	candidate: unbatched
+HB1355	B	4	house	2026-02-19	1638743	299	73	22	House - House concurred with Senate amendments	Confined feeding operations.	batch-02
+HB1355	B	4	house	2026-01-28	1618346	117	69	26	House - Third reading	Confined feeding operations.	superseded: the Senate reworked the bill after this roll; the House concurrence of 2026-02-19 is in batch-02
+HB1368	B	4	house	2026-02-27	1648201	420	57	40	House - Rules Suspended. House concurred with Senate amendments	Carbon.	batch-02
+HB1368	B	4	house	2026-01-28	1618050	114	58	36	House - Third reading	Carbon.	dropped: the member-list check failed, LegiScan records a member on the wrong side against the official roll-call PDF; a flagged roll is unusable whichever direction the error runs; HB 1368 keeps its 2026-02-27 concurrence, which is in batch-02
+HB1368	B	4	senate	2026-02-24	1642619	259	29	19	Senate - Third reading	Carbon.	batch-02
 HB1377	B	4	house	2026-02-25	1644430	383	69	27	House - House concurred with Senate amendments	Straight ticket voting.	dropped: filter 5, restoring the straight party mark for multi-seat offices and the new rule that discards a straight party vote when a voter also marks a candidate run opposite inside election_integrity
 HB1377	B	4	house	2026-01-22	1615963	82	71	20	House - Third reading	Straight ticket voting.	dropped: filter 5, restoring the straight party mark for multi-seat offices and the new rule that discards a straight party vote when a voter also marks a candidate run opposite inside election_integrity
-HB1389	B	4	house	2026-02-02	1621109	196	69	29	House - Third reading	Adoption and foster care matters.	candidate: unbatched
+HB1389	B	4	house	2026-02-02	1621109	196	69	29	House - Third reading	Adoption and foster care matters.	dropped: filter 5, the act is an antidiscrimination statute whose protected characteristic is religious belief and whose effect is to remove a state lever for requiring equal service, so it argues in both directions inside civil_rights
 HB1406	B	4	house	2026-02-27	1648318	426	65	31	House - Rules Suspended. Conference Committee Report 1	Tax and fiscal matters.	candidate: unbatched
 HB1408	B	4	house	2026-02-02	1621102	197	70	28	House - Third reading	Education matters.	candidate: unbatched
 HB1423	B	4	house	2026-02-25	1644801	384	67	30	House - House concurred with Senate amendments	Indianapolis public education corporation.	candidate: unbatched
 HB1423	B	4	house	2026-02-02	1620935	198	68	30	House - Third reading	Indianapolis public education corporation.	candidate: unbatched
 HB1423	B	4	senate	2026-02-24	1642565	262	27	21	Senate - Third reading	Indianapolis public education corporation.	candidate: unbatched
-HB1424	B	4	house	2026-01-22	1615975	84	76	20	House - Third reading	Farm and homestead food sales.	candidate: unbatched
-HB1424	B	4	senate	2026-02-24	1642595	263	38	10	Senate - Third reading	Farm and homestead food sales.	candidate: unbatched
-SB0001	B	4	house	2026-02-23	1640645	302	62	31	House - Third reading	Human services matters.	needs member-list check: LegiScan tally has no exact match in the official history
+HB1424	B	4	house	2026-01-22	1615975	84	76	20	House - Third reading	Farm and homestead food sales.	dropped: version trap, the Senate rewrote the bill after this roll; the Senate third reading of 2026-02-24 is in batch-02
+HB1424	B	4	senate	2026-02-24	1642595	263	38	10	Senate - Third reading	Farm and homestead food sales.	batch-02
+SB0001	B	4	house	2026-02-23	1640645	302	62	31	House - Third reading	Human services matters.	dropped: the member-list check failed, LegiScan records a member on the wrong side against the official roll-call PDF; a flagged roll is unusable whichever direction the error runs; SB 0001 has no other divided roll, so the measure is lost
 SB0003	B	4	house	2026-02-16	1634176	245	63	22	House - Third reading	Constitutional amendment ballot language.	dropped: filter 5, a vote to put a constitutional amendment on the ballot is not a vote on the amendment itself, so no stance can be attributed
 SB0003	B	4	senate	2026-01-22	1616261	45	36	9	Senate - Third reading	Constitutional amendment ballot language.	dropped: filter 5, a vote to put a constitutional amendment on the ballot is not a vote on the amendment itself, so no stance can be attributed
 SB0012	B	4	house	2026-02-17	1635266	259	58	30	House - Third reading	Prohibition of ranked choice voting.	dropped: filter 5, a ban on ranked choice voting argues in both directions inside election_integrity and neither is defensible on its own
 SB0023	B	4	house	2026-02-16	1634114	247	66	22	House - Third reading	Alcoholic beverage permits for county fairs.	candidate: unbatched
 SB0023	B	4	senate	2026-01-27	1617775	89	36	9	Senate - Third reading	Alcoholic beverage permits for county fairs.	candidate: unbatched
-SB0076	B	4	house	2026-02-12	1631741	240	61	28	House - Third reading	Immigration matters.	candidate: unbatched
-SB0076	B	4	senate	2026-02-25	1645175	271	37	11	Senate - Senate concurred with House amendments	Immigration matters.	candidate: unbatched
-SB0078	B	4	senate	2026-02-25	1645121	291	36	12	Senate - Senate concurred with House amendments	Wireless communication device policy.	candidate: unbatched
-SB0078	B	4	senate	2026-01-20	1614574	37	28	19	Senate - Third reading	Wireless communication device policy.	candidate: unbatched
+SB0076	B	4	house	2026-02-12	1631741	240	61	28	House - Third reading	Immigration matters.	batch-02
+SB0076	B	4	senate	2026-02-25	1645175	271	37	11	Senate - Senate concurred with House amendments	Immigration matters.	batch-02
+SB0078	B	4	senate	2026-02-25	1645121	291	36	12	Senate - Senate concurred with House amendments	Wireless communication device policy.	batch-02
+SB0078	B	4	senate	2026-01-20	1614574	37	28	19	Senate - Third reading	Wireless communication device policy.	superseded: the House rewrote the bill after this roll; the Senate concurrence of 2026-02-25 is in batch-02
 SB0088	B	4	house	2026-02-24	1642415	337	67	29	House - Third reading	Education matters.	candidate: unbatched
 SB0088	B	4	senate	2026-02-25	1645274	292	34	14	Senate - Senate concurred with House amendments	Education matters.	candidate: unbatched
 SB0091	B	4	house	2026-02-18	1637687	271	70	22	House - Third reading	Syringe exchange program.	dropped: filter 5, the act both keeps the syringe programme alive past its 2026 expiry and narrows who may use it, so no single direction is honest
 SB0091	B	4	senate	2026-02-25	1645195	273	38	10	Senate - Senate concurred with House amendments	Syringe exchange program.	dropped: filter 5, the act both keeps the syringe programme alive past its 2026 expiry and narrows who may use it, so no single direction is honest
 SB0091	B	4	senate	2026-01-27	1617759	93	33	13	Senate - Third reading	Syringe exchange program.	dropped: filter 5, the act both keeps the syringe programme alive past its 2026 expiry and narrows who may use it, so no single direction is honest
 SB0112	B	4	house	2026-02-10	1628208	234	72	24	House - Third reading	Candidacy documents.	batch-01
-SB0176	B	4	house	2026-02-27	1647622	403	67	25	House - Rules Suspended. Conference Committee Report 1	Shooting ranges.	candidate: unbatched
-SB0176	B	4	house	2026-02-16	1634173	252	66	24	House - Third reading	Shooting ranges.	needs member-list check: LegiScan tally has no exact match in the official history
+SB0176	B	4	house	2026-02-27	1647622	403	67	25	House - Rules Suspended. Conference Committee Report 1	Shooting ranges.	dropped: filter 5, no research area maps a defensible direction for this subject, the act is zoning preemption for shooting ranges and sporting goods stores, and does not regulate firearm access
+SB0176	B	4	house	2026-02-16	1634173	252	66	24	House - Third reading	Shooting ranges.	dropped: the member-list check failed, LegiScan records a member on the wrong side against the official roll-call PDF; a flagged roll is unusable whichever direction the error runs; SB 0176 keeps its conference report roll, but the measure was dropped under filter 5
 SB0179	B	4	house	2026-02-24	1642625	345	72	23	House - Third reading	Indiana department of transportation.	candidate: unbatched
 SB0199	B	4	house	2026-02-27	1647600	404	62	32	House - Rules Suspended. Conference Committee Report 1	Various education matters.	candidate: unbatched
 SB0199	B	4	house	2026-02-17	1635300	266	67	28	House - Third reading	Various education matters.	candidate: unbatched
@@ -84,9 +84,9 @@ SB0239	B	4	senate	2026-02-27	1648296	330	31	16	Senate - Rules Suspended. Confere
 SB0239	B	4	senate	2026-01-28	1618653	121	30	18	Senate - Third reading	Various education matters.	candidate: unbatched
 SB0258	B	4	house	2026-02-09	1626087	211	64	28	House - Third reading	Nuclear facility permits.	batch-01
 SB0258	B	4	senate	2026-01-22	1616240	61	36	9	Senate - Third reading	Nuclear facility permits.	batch-01
-SB0270	B	4	house	2026-02-24	1642577	353	61	35	House - Third reading	Township mergers.	needs member-list check: LegiScan tally has no exact match in the official history
-SB0270	B	4	senate	2026-02-26	1647209	301	34	15	Senate - Senate concurred with House amendments	Township mergers.	candidate: unbatched
-SB0271	B	4	house	2026-02-24	1642587	354	75	22	House - Third reading	Telecommunications wire and valuable metal dealers.	needs member-list check: LegiScan tally has no exact match in the official history
+SB0270	B	4	house	2026-02-24	1642577	353	61	35	House - Third reading	Township mergers.	dropped: the member-list check failed, LegiScan records a member on the wrong side against the official roll-call PDF; a flagged roll is unusable whichever direction the error runs; SB 0270 keeps its 2026-02-26 concurrence, which is in batch-02
+SB0270	B	4	senate	2026-02-26	1647209	301	34	15	Senate - Senate concurred with House amendments	Township mergers.	batch-02
+SB0271	B	4	house	2026-02-24	1642587	354	75	22	House - Third reading	Telecommunications wire and valuable metal dealers.	dropped: the member-list check failed, LegiScan records a member on the wrong side against the official roll-call PDF; a flagged roll is unusable whichever direction the error runs; SB 0271 has no other divided roll, so the measure is lost
 SB0277	B	4	house	2026-02-24	1642560	356	53	45	House - Third reading	Indiana department of environmental management.	candidate: unbatched
 SB0277	B	4	senate	2026-02-25	1645191	296	26	21	Senate - Senate concurred with House amendments	Indiana department of environmental management.	candidate: unbatched
 SB0277	B	4	senate	2026-01-29	1619043	141	29	19	Senate - Third reading	Indiana department of environmental management.	candidate: unbatched

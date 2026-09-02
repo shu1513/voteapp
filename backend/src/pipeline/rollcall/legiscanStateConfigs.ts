@@ -1345,10 +1345,12 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   //     desc `House -` with nothing after the dash (HB 1002 and SB 0076).
   //     They stay unmatched and surface for a human, exactly as in 2025.
   // (2) LegiScan's Indiana member lists still disagree with the official
-  //     journal. Five of the 96 divided-and-enacted rolls report a tally with
-  //     no exact match in the bill history, and HB 1032's `House - Committee
-  //     report` is a sixth (LegiScan 63-23, journal 63-24). Every roll
-  //     selected for a batch must be checked name by name against
+  //     journal. Five of the worklist's 95 divided-and-enacted rolls report a
+  //     tally with no exact match in the bill history, and HB 1032's `House -
+  //     Committee report` is a sixth (LegiScan 63-23, journal 63-24). All five
+  //     were then checked against the official PDF and ALL FIVE disagree, each
+  //     with a member on the wrong side. Every roll selected for a batch must
+  //     be checked name by name against
   //     iga.in.gov/pdf-documents/124/2026/<chamber>/bills/<BILL>/rollcalls/<BILL>.<n>_<H|S>.pdf
   //     before it is judged. Note the `2026` path segment.
   "IN-2234": {

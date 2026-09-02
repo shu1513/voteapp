@@ -129,14 +129,29 @@ in any of the 689 rolls. `parseLegiscanPerson` drops committee sponsors by desig
 Resolution over all 677 stored evidence files reports **35,414 matched member votes and
 13,422 reviewed-unmapped**, with no member missing from the crosswalk and no file errors.
 
-## The member-list check still applies
+## The member-list check still applies, and it bites
 
-Five of the divided-and-enacted rolls have a LegiScan tally with no exact match in the
-bill history, which is the signal for the defect in
-`../legiscan-in-2143/CODE-FINDINGS.md` section 2. That is 5.2%, against about 8% in 2025.
-Every roll selected for a batch must still be checked name by name against the official
-roll-call PDF, and batch-04 established that a flagged roll is unusable whichever direction
-the error runs.
+Five of the worklist's 95 divided-and-enacted rolls report a LegiScan tally with no exact
+match in the bill history, which is the signal for the defect in
+`../legiscan-in-2143/CODE-FINDINGS.md` section 2. That is 5.3%, against about 8% in 2025.
+
+**All five have since been checked name by name against Indiana's own roll-call PDF, and all
+five disagree.** In each case a member sits on the wrong side, not merely a wrong count.
+
+| Roll | LegiScan | Official | The disagreement |
+| --- | --- | --- | --- |
+| HB 1368 House, journal 114 | 58-36 | 57-37 | Patterson recorded yea, journal says nay |
+| SB 0001 House, journal 302 | 62-31 | 64-30 | Smaltz recorded nay, journal says yea; Lopez missing |
+| SB 0176 House, journal 252 | 66-24 | 65-25 | Patterson recorded yea, journal says nay |
+| SB 0270 House, journal 353 | 61-35 | 62-35 | Greene missing from the LegiScan yeas |
+| SB 0271 House, journal 354 | 75-22 | 76-21 | Patterson recorded nay, journal says yea |
+
+The 2025 batch-04 established that a flagged roll is unusable whichever direction the error
+runs, so none of these five can be judged. SB 0001 and SB 0271 have no other divided roll, so
+the measures are lost. HB 1368, SB 0176 and SB 0270 each keep another usable roll.
+
+The flag is therefore not a warning to look harder. In this session it has been a perfect
+predictor: every flagged roll failed, and no unflagged roll has.
 
 One more instance turned up while the config was written and is worth recording: HB 1032's
 `House - Committee report` is reported by LegiScan as 63-23 where the journal says 63-24.
@@ -160,14 +175,13 @@ That roll is excluded as procedural, so it costs nothing, but it is the same def
 
 ## State of the work
 
-Batch-01 is imported on the local `voteapp` database: **548 records across 104 candidates
-with 378 area tags, over six measures and eight rolls.** Indiana now holds **1,368 live
-roll-call records across 104 candidates with 1,044 area tags** across both sessions.
-**Production still holds no Indiana records.**
+Batches 01 and 02 are imported on the local `voteapp` database: **1,041 records across 104
+candidates with 808 area tags, over fourteen measures and nineteen rolls.** Indiana now holds
+**1,861 live roll-call records across 104 candidates with 1,474 area tags** across both
+sessions. **Production still holds no Indiana records.**
 
-`survey/divided-enacted-worklist.tsv` started at **95 rolls over 47 measures**. After
-batch-01 it stands at 8 in batch-01, 9 dropped, 1 superseded, 5 still flagged for the
-member-list check, and 72 unbatched.
+`survey/divided-enacted-worklist.tsv` started at **95 rolls over 47 measures**. It now stands
+at 8 in batch-01, 11 in batch-02, 25 dropped, 3 superseded, and 48 unbatched.
 
 ## Files
 
