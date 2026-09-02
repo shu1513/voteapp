@@ -403,6 +403,7 @@
     "massachusetts-candidates:finance:live-probe": "tsx src/scripts/probeMassachusettsCandidateFinance.ts",
     "missouri-candidates:finance:probe": "tsx src/scripts/probeMissouriCandidateFinance.ts",
     "arkansas-candidates:finance:phase-zero": "tsx src/scripts/probeArkansasCampaignFinance.ts",
+    "arkansas-candidates:finance:auto-link": "tsx src/scripts/autoLinkArkansasCandidateFinance.ts",
     "montana-candidates:finance:probe": "tsx src/scripts/probeMontanaCandidateFinance.ts",
     "montana-candidates:finance:auto-link": "tsx src/scripts/autoLinkMontanaCandidateFinance.ts",
     "montana-candidates:finance:sync-due": "tsx src/scripts/syncDueMontanaCandidateFinance.ts",

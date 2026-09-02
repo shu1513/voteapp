@@ -80,6 +80,10 @@ export type ArkansasFilerRegistrationRow = {
   filerType: string;
   filerTypeCode: string;
   filerStatus: string;
+  // Comma-form display name with middle initials and sometimes honorifics
+  // ("Richardson, Robert S.", "Sanders, Governor. Sarah H."); the structured
+  // firstName/lastName fields carry no middle name (verified 2026-09-02).
+  filerName: string | null;
   firstName: string | null;
   lastName: string | null;
   suffix: string | null;
@@ -412,6 +416,7 @@ function parseFilerRegistrationRow(value: unknown): ArkansasFilerRegistrationRow
     filerType: requiredString(row.filerType, "filer-registration filerType"),
     filerTypeCode: requiredString(row.filerTypeCode, "filer-registration filerTypeCode"),
     filerStatus: requiredString(row.filerStatus, "filer-registration filerStatus"),
+    filerName: nullableString(row.filerName),
     firstName: nullableString(row.firstName),
     lastName: nullableString(row.lastName),
     suffix: nullableString(row.suffix),

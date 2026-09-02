@@ -27,6 +27,7 @@ function registrationItem(overrides: Record<string, unknown> = {}): Record<strin
     filerType: "Candidate",
     filerTypeCode: "CAN",
     filerStatus: "Active",
+    filerName: "Sanders, Governor. Sarah H.",
     firstName: "Sarah",
     lastName: "Sanders",
     suffix: null,
