@@ -23,7 +23,9 @@ itemized rows in 2025, 8% in 2026 so far.)
   2. **Headers**: `User-Agent: Mozilla/5.0` + `Origin`/`Referer` of the portal
      (NH Akamai lesson; plain curl UA gets WAF 403).
   Presigned S3 URLs need neither (normal chain, no WAF).
-- ND historically had NO expenditure disclosure. CFRS-era data (2025+) includes
+- No structured pre-2025 expenditure export was found in either system (the
+  legacy archive exposes filed reports, not a bulk expenditure file; this is not
+  a claim about pre-2025 disclosure duties). CFRS-era bulk data (2025+) includes
   expenditures. Bulk data exists only for 2025 and 2026 (registrations back to
   2014). Fine for the Nov-2026 use case.
 - Statement thresholds: itemized > $200; unitemized appears as explicit lump
@@ -63,9 +65,11 @@ At probe time: Contributions 2025 (id 1018) / 2026 (1019), Expenditures 2025
 ### Gotcha: candidate expenditures lag
 
 2026 expenditure file has zero candidate-committee rows while 2026 contributions
-have 1,850 — candidate spending appears to surface on later reports (year-end),
-so "total spent" for candidates will read $0/stale until those reports land.
-Show spent as of latest filed report; don't treat $0 as a defect.
+have 1,850 — statute puts candidate expenditures on the year-end statement, so
+no candidate spending exists mid-cycle. Keep `totalDisbursements` null (never
+$0) until an authoritative year-end filing lands, with the static coverage note
+explaining the timing — see the plan's hard fact 2. An empty 2026 candidate
+slice is expected, not a defect.
 
 ## Registry / auto-link
 

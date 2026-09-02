@@ -8,7 +8,7 @@ Scope: statewide, legislative, judicial, and district-party filers — all centr
 
 ### Primary: CFRS (https://cfrs.sos.nd.gov) — 2025 onward
 
-New portal (launched 2026-01-01 per SOS news release; "Ethics Solution" by TGS Technology — Civix-family). Anonymous JSON API under `/api/Public-Service/`, no auth. Access reality (verified live, **browser context only** — see hard fact 7):
+New portal (launched 2026-01-01 per SOS news release; "Ethics Solution" by TGS Technology — Civix-family). Anonymous JSON API under `/api/Public-Service/`, no auth. Access reality (verified live from the browser and from plain local Node; the production-runtime caveat is hard fact 7):
 
 - **Node transport SOLVED (2026-08-26):** the server serves a broken TLS chain (leaf twice, no intermediate) — pin the Sectigo OV R36 intermediate (leaf's AIA URL) via `NODE_EXTRA_CA_CERTS`/agent `ca`; send `User-Agent: Mozilla/5.0` + portal `Origin`/`Referer` (plain curl UA gets WAF 403). With both, every endpoint answers plain Node fetch. Presigned S3 URLs need neither. Recipe + evidence in the findings doc; gate 1 keeps only the runtime-environment replay.
 - **Burst sensitivity observed**: a run of rapid in-page fetches wedged the SPA on its preloader for several minutes; it recovered on its own. One incident is not a measured rate limit — the ~2s single-flight spacing below is conservative policy, not a verified threshold.
@@ -64,7 +64,7 @@ Legacy archive `cf.sos.nd.gov` (2014–2024) — historical adapter only on dema
 4. **IE totals sum by row identity** (allocation semantics proven above). Reconcile per-committee sums against `transactionTotalYTD` as a control; quarantine on mismatch.
 5. **Cumulative + 48-hour overlap dedupes by report lineage**, preferring `transactionID`; amount-tuple matching is a quarantine trigger, never a merge key. Lineage behavior is pinned in Phase 0B when it becomes observable.
 6. **Acquisition is contract-fragile.** Undocumented API, unpinned dataset-selector, daily-regenerating CSVs. Every fetched artifact lands in an NC-style artifact cache (hash + manifest + pinned parser version); schema drift fails closed and retains last-known-good. Contributor addresses are PII: restricted directory, sanitized fixtures, never in logs, raw artifacts pruned on a retention window (keep manifests + hashes indefinitely).
-7. **Browser-context success ≠ server success.** Every verified request ran in the portal's own page context. Node fetch from the actual runtime/network is unproven — it is Phase 0A gate 1, before any module code is designed around server-side fetch.
+7. **Local Node success ≠ production-runtime success.** Local Node fetch is proven (2026-08-26, TLS-intermediate + header recipe). Fetch from the runtime/network that will actually run acquisition is unproven — it is Phase 0A gate 1, before any module code is designed around server-side fetch.
 
 ## Prerequisites
 
@@ -122,7 +122,7 @@ Direct breakdowns: `contribution_size` always; `occupation` per hard fact 3. Out
 - **Phase 3 — occupation enrichment.** API-sourced occupation per hard fact 3, once the transaction-API contract is stable.
 - **Phase 0B — 48-hour overlap observation (after the pre-general filing window, Sep 25–Oct 2).** Track the known June 48-hour transactions (e.g. the $15,000 Herman David row) into the pre-general cumulative data: persist, duplicate, or supersede — pins the dedupe lineage rule before the highest-volume period.
 - **Phase 4 — outside spending + funders.** IE ingestion per hard facts 4–5 (gated on 0A gate 2 and informed by 0B), YTD reconciliation control, support/oppose groups; funder donor+industry rows for registered-committee spenders; no-funder note for corporate/individual spenders.
-- **Phase 5 — live run + prod checklist.** Full November-2026 cohort locally, spot-audit ≥10 candidates against filed PDFs, then the standard prod promotion (read flag in render.yaml + prod env, migration, data promotion, deploy) as an explicit operator action.
+- **Phase 5 — live run + prod checklist.** Full November-2026 cohort locally, spot-audit ≥10 candidates against filed PDFs, then the standard prod promotion as an explicit operator action: read flag in render.yaml + prod env, migration, data promotion by `pg_dump` of the five `nd_candidate_finance_*` tables into prod (the Montana/Nevada pattern — the `research:promote*` scripts carry candidate records and `finance_committee_labels`, never per-state finance tables), deploy by full SHA.
 
 ## Fail-closed rules — component isolation
 
