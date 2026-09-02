@@ -131,3 +131,33 @@ all Alabama candidates found 2 more. Disposition:
   load-bearing qualifications into long sentences; dropping those qualifications would trade
   accuracy for readability, which the California batch-01 review round established is the wrong
   trade ("grade ~9 is the honest floor" for immunity and immigration statutes).
+
+## Review response (2026-09-01)
+
+Three review findings, all checked against the enrolled Acts and all real:
+
+1. **HB 8 — "vape-only stores" was wrong.** The Act limits sales of vapes that lack FDA
+   authorization to a licensed *specialty retailer*, and §28-11-2's definition of that term
+   reaches well past vape-only shops: any store with "vape" or "vapor" in its name, 50 percent or
+   more vape inventory, 20 percent or more of its floor or shelf space given to vapes, a
+   self-service vape display, sampling, or on-site e-liquid production. A store that is half
+   vapes qualifies. The 21-and-up entry rule and the ID scan at the door apply to every such
+   store, so that part stood. Now "licensed vape specialty stores, which must keep out anyone
+   under 21 and check every ID at the door." 83 records rewritten.
+2. **HB 165 — "17 senators not voting" was wrong on both the number and the category.** The
+   roll records 13 yea, 5 nay, 16 absent, 0 not voting, total 34. The 35th seat (Senate District
+   5) was vacant on May 7, 2025, between Greg Reed's departure and Matt Woods's June special
+   election, and a vacancy is not a senator. Now "with 16 senators absent." 16 records rewritten.
+3. **HB 445 — "repeat unlicensed selling a felony" was ambiguous toward harshness.** §28-12-44's
+   ladder is a $5,000 civil penalty for a first offense, $7,500 for a second, and only the
+   third offense adds a Class C felony and license revocation. Now "makes a third unlicensed sale
+   a felony." 102 records rewritten (Senate 28 + House 74).
+
+Mechanics: judgments.json edited, lint re-run (0 warnings), `rollcall:judge` updated the four
+approved rows (post-fan-out description edits are permitted), and a real import re-run rewrote
+exactly 201 records in place with 333 unchanged and 0 inserts (ledger
+`import-review-fixes-report.json`, stamp `2026-09-02T01:35:59.361Z`; the original insert ledger
+`import-report.json` is untouched). Convergence dry run: 534 unchanged. Rows 534 / 118 candidates
+and tags 431 are unchanged. The batch now spans two stamps: 333 at `…00:54:17.408Z` and 201 at
+`…01:35:59.361Z` — use the grouped-stamp query, not a single stamp, to select this batch.
+
