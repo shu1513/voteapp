@@ -26,6 +26,7 @@ import {
 import { getLegiscanStateConfig } from "../pipeline/rollcall/legiscanStateConfigs.js";
 import type { LegiscanQuestionClass } from "../pipeline/rollcall/legiscanStateConfigs.js";
 import { rollCallUrlKey } from "../pipeline/rollcall/rollCallRecordUrls.js";
+import { reportPath } from "../pipeline/rollcall/rollCallReportPaths.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 
 // LegiScan fetcher for the roll-call import's phase-4 state rollout
@@ -322,7 +323,7 @@ async function main(): Promise<void> {
       state,
       startedAt: startedAt.toISOString(),
       finishedAt: new Date().toISOString(),
-      datasetDir,
+      datasetDir: reportPath(datasetDir),
       bills: dataset.billsById.size,
       votes: dataset.votes.length,
       people: dataset.people.length,
@@ -581,8 +582,8 @@ async function main(): Promise<void> {
     dryRun,
     startedAt: startedAt.toISOString(),
     finishedAt: new Date().toISOString(),
-    datasetDir,
-    evidenceDir,
+    datasetDir: reportPath(datasetDir),
+    evidenceDir: reportPath(evidenceDir),
     bills: dataset.billsById.size,
     datasetVotes: dataset.votes.length,
     billFilter: billFilter === null ? null : [...billFilter].sort(),

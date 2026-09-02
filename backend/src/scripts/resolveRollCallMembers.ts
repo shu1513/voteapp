@@ -15,6 +15,7 @@ import {
 import { parseFederalMemberVotes } from "../pipeline/rollcall/federalRollCallMembers.js";
 import { parseFederalRollCallXml, type ParsedFederalRollCall } from "../pipeline/rollcall/federalRollCallXml.js";
 import type { LegislativeVoteChamber } from "../pipeline/rollcall/legislativeVotes.js";
+import { reportPath } from "../pipeline/rollcall/rollCallReportPaths.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 
 // Dry-run identity report for the roll-call import
@@ -259,7 +260,7 @@ async function main(): Promise<void> {
     importerVersion: ROLLCALL_RESOLVE_IMPORTER_VERSION,
     startedAt: startedAt.toISOString(),
     finishedAt: new Date().toISOString(),
-    evidenceDir,
+    evidenceDir: reportPath(evidenceDir),
     scopeFrom,
     legislators: {
       sha: legislators.sha,

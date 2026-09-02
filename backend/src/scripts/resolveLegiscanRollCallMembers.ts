@@ -23,6 +23,7 @@ import {
 } from "../pipeline/rollcall/legiscanRollCall.js";
 import { getLegiscanStateConfig } from "../pipeline/rollcall/legiscanStateConfigs.js";
 import type { LegislativeVoteChamber } from "../pipeline/rollcall/legislativeVotes.js";
+import { reportPath } from "../pipeline/rollcall/rollCallReportPaths.js";
 import { readLegiscanDataset } from "./fetchLegiscanRollCallVotes.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 import { DEFAULT_SCOPE_FROM } from "./resolveRollCallMembers.js";
@@ -278,12 +279,12 @@ async function main(): Promise<void> {
     finishedAt: new Date().toISOString(),
     jurisdiction: config.jurisdiction,
     sessionId: config.sessionId,
-    evidenceDir,
+    evidenceDir: reportPath(evidenceDir),
     scopeFrom,
-    peopleSource,
+    peopleSource: reportPath(peopleSource),
     peopleMembers: people.length,
     candidatePool: candidatesPool.length,
-    crosswalkFile: crosswalkFile === null ? null : resolve(crosswalkFile),
+    crosswalkFile: crosswalkFile === null ? null : reportPath(crosswalkFile),
     crosswalkEntries: crosswalk === null ? null : crosswalk.byPeopleId.size,
     crosswalkPeopleNotInSnapshot,
     proposals: proposals.proposals,
