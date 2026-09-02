@@ -3,9 +3,10 @@
 **1 measure, 2 rolls, 95 records across 95 candidates.** Imported on the local `voteapp`
 database 2026-09-02. Production untouched.
 
-This batch is deliberately small. Eight measures were shortlisted from the 121 open rolls;
-seven were dropped after reading the source, and the reasons are worth more than the
-volume would have been.
+This batch is deliberately small. Eight measures were shortlisted from the 121 open rolls:
+SB 526, SB 281, SB 442, SB 249, HB 1666, HB 1461, HB 1125 and SB 2. One was kept, four were
+dropped after reading the source, and three are held unread. The reasons for the drops are
+worth more than the volume would have been.
 
 ## Kept
 
@@ -50,10 +51,11 @@ they voted for. Under the California SB 707 precedent, a chamber whose only divi
 predates the last amendment loses that roll, and for a one-chamber measure that drops the
 measure.
 
-**HB 1461 (road funding) and HB 1125 (earned wage access)** were shortlisted but their
-enrolled acts are 1,474 and 1,765 lines. They are held for a later batch rather than judged
-from excerpts — the rule this campaign learned from California batch-05 is that a measure is
-not judged until its whole enacted text has been read.
+**HB 1461 (road funding), HB 1125 (earned wage access) and SB 2 (Medicaid)** were shortlisted
+but their enrolled acts are 1,474, 1,765 and 990 lines. They are held for a later batch rather
+than judged from excerpts — the rule this campaign learned from California batch-05 is that a
+measure is not judged until its whole enacted text has been read. SB 2 is the session's
+Medicaid act and the most valuable of the three.
 
 ## Left for batch-03
 

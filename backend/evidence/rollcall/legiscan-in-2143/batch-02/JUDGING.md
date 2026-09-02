@@ -55,11 +55,40 @@ tag.
   Official House 65-26 and Senate 40-10 both match LegiScan exactly, every name.
 - Body and tail joined with a period; the builder asserted `", The "` appears nowhere.
 - `listPlainLanguageWarnings`: **0 warnings over 4 descriptions**.
-- Reading level measured separately: mean sentence 17.3 words, longest 25,
-  Flesch-Kincaid grade 8.9. Reaching grade 7 would mean dropping the identifier list or the
+- Reading level measured separately: mean sentence 16.0 words, longest 25,
+  Flesch-Kincaid grade 8.3. Reaching grade 7 would mean dropping the identifier list or the
   grandfather date, which are the two things a reader most needs.
 - Each roll's own tally appears in both its yes and no sentence.
 - 0 `related` flags, 0 `ambiguous`, nothing retired.
+
+## Review response, 2026-09-02
+
+Three findings on the first review, all real.
+
+**The tracking-number sentence overstated the act (P2, accepted).** The descriptions said
+"each absentee ballot gets a private tracking number" as if it were unconditional. The act
+is conditional twice over: IC 3-11-15-26(b) says a voting system *may* include a retraction
+feature, and 26(c) says *the retraction feature described in subsection (b)* must assign the
+number. A county whose system has no such feature assigns nothing. The descriptions now read
+"If a system uses that feature, it must give each absentee ballot a private tracking
+number." All 95 records were rewritten in place (`import-rewrite-report.json`, stamp
+`2026-09-02T05:46:53.761Z`); the convergence run reports 95 `unchanged`; the original insert
+ledger is untouched. This is the may/must precision failure Maryland's plain-language pass
+recorded — a permission read as a mandate — and it was introduced when the sentence was
+shortened for reading level.
+
+**SB 249's third roll was still queued (P2, accepted).** The measure was dropped under
+filter 5, but the worklist update only rewrote rows whose disposition began `candidate`, and
+SB 249's Senate roll of 2025-03-25 carried `needs member-list check` instead, so it stayed
+open for a future batch to research again. It now carries the same dropped disposition as
+its two siblings. A measure-wide decision has to be applied to every row of the measure,
+not to the rows that happened to be in the default state.
+
+**The shortlist did not reconcile (P3, accepted).** PLAN.md said eight shortlisted and
+seven dropped while naming one kept, four dropped and two held. The eighth was SB 2, the
+Medicaid act, fetched at 990 lines and then silently left out with the other long acts. It
+is now named among the held measures, and the counts read one kept, four dropped, three
+held.
 
 ## Import ledger
 

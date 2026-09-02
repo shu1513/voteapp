@@ -90,7 +90,7 @@ SB0209	B	4	senate	2025-02-04	1480002	70	37	13	Senate - Third reading	Electronic 
 SB0209	B	4	senate	2025-04-03	1535962	340	35	12	Senate - Senate concurred with House amendments	Electronic pull tabs in charity gaming.	candidate: unbatched
 SB0249	B	4	senate	2025-02-11	1486724	101	39	10	Senate - Third reading	Teacher compensation.	dropped: filter 5, pay flexibility runs against removing the supplement from collective bargaining
 SB0249	B	4	house	2025-03-25	1526229	311	65	29	House - Third reading	Teacher compensation.	dropped: filter 5, pay flexibility runs against removing the supplement from collective bargaining
-SB0249	B	4	senate	2025-03-25	1530902		34	13	Senate - Third reading	Teacher compensation.	needs member-list check: LegiScan tally has no exact match in the official history
+SB0249	B	4	senate	2025-03-25	1530902		34	13	Senate - Third reading	Teacher compensation.	dropped: filter 5, pay flexibility runs against removing the supplement from collective bargaining
 SB0255	B	4	house	2025-04-23	1555254	533	66	25	House - Rules Suspended. Conference Committee Report 1	Education matters.	candidate: unbatched
 SB0255	B	4	senate	2025-04-23	1555516	498	32	12	Senate - Rules Suspended. Conference Committee Report 1	Education matters.	candidate: unbatched
 SB0281	B	4	house	2025-03-27	1528620	321	71	21	House - Third reading	Expungement.	dropped: filter 5, widens expungement for official misconduct while barring it for others
