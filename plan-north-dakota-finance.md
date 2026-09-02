@@ -1,0 +1,138 @@
+# North Dakota Campaign Finance Plan
+
+Written 2026-08-26 after two live probes of the new CFRS portal (browser-context API calls, bulk CSVs downloaded and summed, IE and CON transaction rows read from the portal's own requests), cross-checking an external feasibility report against primary sources (NDCC 16.1-08.1 statute PDF, SOS Campaign Finance FAQ PDF, legacy upload spec, SOS pages), and a second external review round — every adopted correction below was re-verified against the statute text, the live portal, or this repo's code before adoption (judicial exemption, IE allocation arithmetic, writer capabilities, wiring file/line cites). Verdict: **GO — Phase 0A first.** Findings doc: `backend/docs/north-dakota-campaign-finance.md`.
+
+Scope: statewide, legislative, judicial, and district-party filers — all centralized in CFRS. County/city/school/park candidates file on paper with local officers and are **not in CFRS** (verified, SOS Local Government Offices page): those races get no link and no card — absence, not a sync failure.
+
+## Verified sources
+
+### Primary: CFRS (https://cfrs.sos.nd.gov) — 2025 onward
+
+New portal (launched 2026-01-01 per SOS news release; "Ethics Solution" by TGS Technology — Civix-family). Anonymous JSON API under `/api/Public-Service/`, no auth. Access reality (verified live from the browser and from plain local Node; the production-runtime caveat is hard fact 7):
+
+- **Node transport SOLVED (2026-08-26):** the server serves a broken TLS chain (leaf twice, no intermediate) — pin the Sectigo OV R36 intermediate (leaf's AIA URL) via `NODE_EXTRA_CA_CERTS`/agent `ca`; send `User-Agent: Mozilla/5.0` + portal `Origin`/`Referer` (plain curl UA gets WAF 403). With both, every endpoint answers plain Node fetch. Presigned S3 URLs need neither. Recipe + evidence in the findings doc; gate 1 keeps only the runtime-environment replay.
+- **Burst sensitivity observed**: a run of rapid in-page fetches wedged the SPA on its preloader for several minutes; it recovered on its own. One incident is not a measured rate limit — the ~2s single-flight spacing below is conservative policy, not a verified threshold.
+- Bulk CSV route: `POST /api/Public-Service/AccessReport/getDataDownloadDataList` (`{"pageNumber":1,"pageSize":25}`) → rows with `id`, `dataType`, `year`, `s3ReportFilePath`; then `POST .../AccessReport/getDataDownloadfile/{id}` (id in the **path**; query form 404s) → `responseData.fileUrl` = presigned S3 URL (us-gov-west-1, 1-hour expiry, Range works). Files regenerate daily. At probe time: Contributions 2025/2026, Expenditures 2025/2026, Filed reports 2026, Registrations 2014–2018 + 2020–2026, Reporting schedules 2026–2027. **No Loans/Debts files and no IE file found in the current download list.**
+- Registry: `POST /api/Public-Service/Committee/getPublicCandidatesCommitteeDataList` → 598 orgs with `orgID`, `entityId`, `orgName`, `candidateName`, `orgType`, `orgSubType`, `election` ("2026 Election - Statewide"), `office`, `district`, `party`, `orgStatus`. Use the explicit `orgType`/`orgSubType` fields; the observed `entityID` prefix pattern (101/102/104) is a probe observation, never production logic.
+- Transaction API: `POST /api/Public-Service/CommitteeTransactions/getAllPublicTransactionDataList`. **Contract PINNED (2026-08-26, decompiled from the SPA bundle and verified live from Node):** dataset selector = `transactionCategory` (`CON` / `EXP` / `IE` + `orgTypeCode: "104"`), plus `sortColumn`/`sortDirection`/`transactionYear` — full body shape and the silent-fallback gotcha in the findings doc. Unknown members 400 with an error naming them; unknown VALUES silently return the default dataset, so contract tests must assert against a known fixture, never just non-emptiness.
+- Public endpoint map extracted from `assets/publicEndpoints-*.js` (stance list `getStanceForPublic` → `SU`/`OP`, IE chart, contributor search, filed reports, violations, election/office/district/party lists). Phrasing rule for all such findings: "none found in the current public bundle", not "does not exist".
+
+### Contributions (raised) — CSV is the inventory, API is the occupation source
+
+CSV columns (pinned at probe): `RegistrantID, CommitteeName, CandidateName, TransactionType, TransactionCategory, TransactionDate, TransactionAmount, ContributorPayeeType, ContributorPayeeName, ContributorAddress, EmployerName, FiledDate`. **No occupation column.** Itemization is >$200 aggregate (statute verbatim); smaller money appears as explicit lump rows. **Category vocabulary is open** (portal chart data already shows `Monetary`, `In-Kind`, `Reimbursement of Expenditure`, `Total - $100 or less`, `Total - $200 or less`) — Phase 0A pins the complete list; sums are true totals only once every category is classified include/exclude. Probe sums: 2025 = 2,914 rows / $4.15M; 2026 = 5,340 rows / $4.22M; expenditures 2025 = $2.49M (candidate slice matched the portal chart to the cent).
+
+**Occupation (verified live; two corrections baked in):**
+
+- Statute (NDCC 16.1-08.1-02.3), SOS FAQ, and the legacy upload spec agree: occupation, employer, and employer's principal place of business are required when an **individual's aggregate reaches $5,000 in a reporting period** — an aggregate test, satisfiable by multiple smaller checks, not a per-transaction test.
+- **Exemption (statute verbatim):** the $5,000 disclosure duty applies to filers "other than a candidate for judicial office, county office, city office, or school district office". **Judicial candidates therefore get no occupation chart — statutory-unavailable note**, same for any local office if ever supported. Statewide + legislative candidates, parties (02.4), and political committees are covered.
+- Live proof: transaction API rows populate `employerOccupation`/`employerName`/`employerAddress` on $5k+ individual contributions (observed: $15,000 donor → "Healthcare/Medical" / Essentia Health / employer address). The bulk CSV cannot supply occupation; ingestion needs the transaction API or filed reports.
+
+### Expenditures (spent) — statutory shape limits the promise
+
+Statute verbatim: candidate/committee year-end statements report "expenditures, by expenditure category" — candidate spending is a **year-end category lump**, and mid-cycle it doesn't exist (2026 expenditure CSV has 0 candidate-committee rows while contributions have 1,850). Only **statewide** candidates report fund balances. Consequences: `totalDisbursements` and `cashOnHand` stay null (the writer's summary fields are nullable and `hasFinanceContent` hides nulls — no schema change needed) until an authoritative filing lands; no vendor-level candidate spending is promised. A static coverage note explains the year-end timing; there are no per-field status columns in the standard schema and v1 does not add any.
+
+### Independent expenditures (outside stance) — strongest feature, weakest acquisition
+
+Verified live: IE rows carry `stanceDescription` (Support/Oppose), `candidateNameAssocation` (sic), spender/vendor identity, `transactionAmount`, `transactionTotalYTD`, distinct `transactionID` per row, `amendedFlag`, `reportVersionID`, `electionYear`, and a per-filing PDF. 52 rows for 2026 at probe time, all Support. Legal frame (statute + FAQ verbatim): **no minimum dollar threshold**, filed within **48 hours**, applies to individuals and businesses without a PAC as well as committees.
+
+- **Rows are per-candidate allocations (verified arithmetically over the full 52-row dataset):** each row has its own `transactionID` (52 distinct), and each FILING's rows sum cent-exact to that filing's `transactionTotalYTD` — StrongND's June filing: 7 × $16,857.14 + 18 × $2,000 = $153,999.98; its May filing: one $44,281.36 row = control 44,281.36. **`transactionTotalYTD` is therefore the REPORT total, not year-to-date** (field name lies): StrongND's true 2026 total is the $198,281.34 sum of unique rows across both filings. Rules: committee totals = sum of unique `transactionID`s; reconcile per report (group by `s3ReportFilePath`, sum == that report's control); never dedupe by spender+vendor+date+amount (equal slate allocations are legitimate); never publish any single `transactionTotalYTD` as a committee total. Phase 0A gate: `transactionID` stability across days; repeated IDs mean amendment lineage, not allocation.
+- Stance is filed, never inferred. Zero Oppose rows in 2026 so far is a fact about filings, not a schema limit, and never converts into inferred opposition.
+- **IE acquisition PINNED (2026-08-26, live from Node):** no bulk CSV and no public grid export control, but the transaction API contract is now known — see the findings doc: `transactionCategory: "IE"` + `orgTypeCode: "104"` (without orgTypeCode, "IE" silently falls through to all transactions). Gate 2 reduces to replay-under-contract-test.
+
+### Outside-group funders
+
+- Registered ND committees: their receipts are ordinary CFRS contributions — funder (`donor`) + `industry` breakdowns via the Georgia pattern (rule-based classifier + cached manual verdicts, no AI calls), registered-spender-only.
+- Federal committees (NDCC 16.1-08.1-03.7, verified verbatim): ultimate-and-true-source filings by contributor and subcontributor over $200 — filed documents, not structured rows; deferred past v1 as a coverage note.
+- Direct corporate/individual spenders (03.5): the statement discloses the spender only — "additional funding sources are not disclosed in this filing", never an empty chart. Conduits (03.14) disclose underlying donors; never count a conduit transfer and its underlying donors twice.
+
+### Report mechanics
+
+- Reporting periods are **cumulative from Jan 1** (verified: pre-primary –Apr 30, pre-general –Sep 24 filed Sep 25–Oct 2, year-end –Dec 31 filed in January). Never add reports; later reports restate earlier ones.
+- 48-hour supplemental statements (contributions >$500, last 39 days before an election) legally include name/address/amount/date only — **no occupation**; it arrives with the next cumulative report. The June 2026 48-hour rows' covering cumulative report is the **pre-general filing (Sep 25–Oct 2)** — overlap behavior is physically unobservable before then, hence Phase 0B.
+- Amendments: API rows expose `amendedFlag` + `reportVersionID`; filed-report list shows Original/Amended versions. CSV representation of amendments (current-version-only vs duplicated) is unknown — Phase 0A gate.
+- **System split (verified, SOS Search Reports page + CFRS menu):** CFRS = 2025 onward; "Archived Reports - 2014-2024" = the legacy archive; SOS states CFRS will hold five years of data by January 2028 (migration through 2027). The legacy archive's year dropdown showing 2025 is a transition artifact — the official split governs. The external report's June-4 48-hour-bug notice was not reproducible on the portal (News tab empty, no home-page notice on 2026-08-26); treated as an unconfirmed maturity warning: immutable snapshots, alert on retroactive changes.
+
+### Out of scope v1
+
+Legacy archive `cf.sos.nd.gov` (2014–2024) — historical adapter only on demand; identifiers not assumed interchangeable with CFRS. **No structured pre-2025 expenditure data was found in either system's exports** (no claim about pre-2025 legal disclosure duties). Local offices: no link, no card.
+
+## Hard facts that shape the design
+
+1. **Totals are itemized-CSV sums including lump rows, reconciled before exclusion.** No per-committee summary endpoint exists. The writer already separates `totalReceipts` from `directContributionTotal`: reconcile the full-category sum against the portal chart totals first (cent-exact expectation, proven for 2025 expenditures), then derive `directContributionTotal` by excluding reimbursements/refunds/loans per the shared contract, with the excluded dollars logged.
+2. **Candidate spent/cash have statutory gaps.** Null money + the static coverage note (see above). Never publish zero for "not yet due".
+3. **Occupation publishes only where it is lawful data and representative.** Filed `employerOccupation` values only, individuals only, statewide + legislative candidates only (judicial: statutory-unavailable note). Display gate: occupation-bearing individual dollars ≥20% of itemized individual dollars AND ≥3 occupation-bearing donors — this denominator is a deliberate **representativeness** choice (a chart describing 3% of the money is misleading even at perfect compliance); sub-$5k donors are excluded from any Unknown bucket because their occupation was never required. A separate **compliance** diagnostic (occupation-bearing dollars / dollars from donors whose period aggregate ≥ $5,000, measured after the latest regular report) lives in probe output and the artifact manifest — there is no staging schema and v1 adds none. Store employer separately; never derive or infer either.
+4. **IE totals sum by row identity** (allocation semantics proven above). Reconcile per-committee sums against `transactionTotalYTD` as a control; quarantine on mismatch.
+5. **Cumulative + 48-hour overlap dedupes by report lineage**, preferring `transactionID`; amount-tuple matching is a quarantine trigger, never a merge key. Lineage behavior is pinned in Phase 0B when it becomes observable.
+6. **Acquisition is contract-fragile.** Undocumented API, unpinned dataset-selector, daily-regenerating CSVs. Every fetched artifact lands in an NC-style artifact cache (hash + manifest + pinned parser version); schema drift fails closed and retains last-known-good. Contributor addresses are PII: restricted directory, sanitized fixtures, never in logs, raw artifacts pruned on a retention window (keep manifests + hashes indefinitely).
+7. **Local Node success ≠ production-runtime success.** Local Node fetch is proven (2026-08-26, TLS-intermediate + header recipe). Fetch from the runtime/network that will actually run acquisition is unproven — it is Phase 0A gate 1, before any module code is designed around server-side fetch.
+
+## Prerequisites
+
+1. **Rosters.** Finance links land only on rostered candidates. Verify November-2026 ND races have candidate rows before Phase 2; fill gaps via `voteapp-manual-research` first.
+2. **SOS export inquiry (user action, parallel with Phase 0A).** Ask the Secretary of State (soselect@nd.gov, 701-328-2900) for: a stable documented method for the annual data downloads, an IE export (none in the download list today), transaction-ID stability semantics, and amendment representation in the daily files. Any yes removes the riskiest reverse-engineering.
+
+## Architecture
+
+New module `backend/src/pipeline/northDakotaFinance/`, tables prefixed `nd_candidate_finance_*` (well under 63 chars). Standard five-table shape via `createStandardStateFinanceSnapshotWriter` ([standardStateFinanceSnapshotWriter.ts](backend/src/pipeline/finance/standardStateFinanceSnapshotWriter.ts) — summary money fields already nullable, breakdowns/outside components already optional); identity = CFRS `orgID`/`entityID` + `orgName`. Closest structural analog: `newHampshireFinance/` (the other Civix-family API state — phase-zero script, artifact cache/reader, CSV parser, no scheduler wiring).
+
+Candidate coverage and source universe are separate concerns: district parties and PACs are ingested as funders/spenders, never as candidate auto-link targets.
+
+```text
+northDakotaCfrsClient.ts            # throttled fetch, S3-presign download flow, WAF/429 fail-closed backoff — transport per Phase 0A gate 1
+northDakotaCfrsArtifactCache.ts     # NC pattern: hash, manifest, pinned parser version, restricted PII + retention
+northDakotaCfrsCsv.ts               # contributions/expenditures CSV parsers, category vocabulary pinned, fail closed on drift
+northDakotaCfrsTransactionReader.ts # transaction API reader (occupation + IE rows) — contract from Phase 0A
+northDakotaCandidateCommitteeResolver.ts  # registry office/district/party/election evidence; never name-alone
+northDakotaCandidateFinanceAutoLink.ts
+northDakotaCandidateFinanceSync.ts
+northDakotaDirectContributionAggregator.ts
+northDakotaOutsideSpendingAggregator.ts
+northDakotaOutsideGroupContributionAggregator.ts
+northDakotaFinanceEligibleOffices.ts      # from the registry office list, not guessed
+northDakotaFinanceWriter.ts
+northDakotaBallotLookupFinanceLoader.ts
+index.ts
+```
+
+(Due-list/batch-sync files join only if the cohort size warrants them — NH ships without.)
+
+Direct breakdowns: `contribution_size` always; `occupation` per hard fact 3. Outside: `support`/`oppose` groups from IE rows; funder `donor` + `industry` rows for registered-committee spenders only.
+
+### Repo wiring (launch checklist, all verified in this tree)
+
+- Flags: code defaults false in `backend/src/config/featureFlags.ts`. NH-pattern flag names — `NORTH_DAKOTA_CAMPAIGN_FINANCE_ENABLED` (read side) + `NORTH_DAKOTA_CFRS_RAW_DATA_REFRESH_ENABLED` + cache-dir var — in `backend/.env` AND `backend/.env.example` (NH precedent lines 249–251). **Deliberate deviation from the generic checklist's `_SYNC_ENABLED`:** no scheduler/worker wiring exists in v1, so no sync flag until a recurring sync does; the read flag goes into `render.yaml` at prod-promotion time (NH is likewise absent from render.yaml until promoted).
+- Source enum: `NORTH_DAKOTA_CFRS` in the `FINANCE_SUMMARY_SOURCES` runtime list + union ([ballotLookupFinanceShared.ts:183](backend/src/pipeline/address/ballotLookupFinanceShared.ts) — the `FinanceSourceListIsComplete` check fails compilation if missed).
+- Loader wiring: import + state-adapter entry `{ state: "ND", load: ... }` in the registry in [ballotLookup.ts:1070](backend/src/pipeline/address/ballotLookup.ts).
+- api-client: `FINANCE_SOURCE_LABELS["NORTH_DAKOTA_CFRS"]` in `packages/api-client/src/format.ts` (alphabetical) + `financeSourceLabel` test; source-home URL in `FINANCE_SOURCE_HOME_URLS` ([finance.ts:3](packages/api-client/src/finance.ts)).
+- `backend/package.json` scripts: `north-dakota-candidates:finance:phase-zero`, `:raw:refresh`, `:sync` (NH naming).
+- Tests: loader, source-exhaustiveness, feature-flag, migration, parser-contract.
+
+## Phases (each its own PR; probe before schema)
+
+- **Phase 0A — probe now (no schema, no publication).** `npm run north-dakota-candidates:finance:phase-zero`. Hard gates:
+  1. **Production transport proven.** **Local Node: DONE 2026-08-26** (registry, presign, CSV Range download, CON rows with occupation, IE rows — all 200 via the TLS-intermediate + header recipe). Remaining: replay from the runtime that will actually run acquisition (Render-equivalent network only if scheduled sync ever moves there; local-acquisition-promote-later is the default model).
+  2. **IE acquisition pinned. DONE 2026-08-26** — API contract decompiled from the SPA bundle and verified live (52/52 rows, stance + candidate + per-report control reconciliation cent-exact for all 3 committees). Remaining: encode as a contract test with a known fixture, asserting exact counts — a silent value-fallback returns the wrong dataset with 200, so non-emptiness proves nothing.
+  3. **CSV schema + category vocabulary + checksums pinned** for all four files; full-category sums reconciled against the portal chart endpoints to the cent; artifact cache proven (same-day re-download → same hash or versioned artifact).
+  4. **Election-cycle window pinned.** Map reporting years → the November-2026 cycle: for ≥10 registrants with 2025 activity, determine from the registry `election` field and filed reports whether 2025 rows belong to the 2026 candidacy. Never combine reporting years solely because the committee ID matches. Decide the factory `minElectionYear` (expected 2026 — it gates link election year, not reporting year; confirm against factory semantics).
+  5. **Transaction identity + amendment semantics.** `transactionID` stability across days; amended filings in CSV and API (`amendedFlag`, `reportVersionID`) — replaced or duplicated; IE repeated-ID meaning per hard fact 4.
+  6. **Occupation coverage measured.** Aggregate contributions per donor per reporting period (not per transaction); for donors at ≥$5,000 aggregate, measure `employerOccupation` fill; compute both hard-fact-3 metrics for ~10 committees across statewide/legislative/judicial (judicial expected statutorily absent — that's the test).
+  7. **Resolver gold set.** ≥15 registry orgs across statewide/legislative/judicial + both party-district types resolve on office+district+election identity; ambiguous cases quarantine.
+- **Phase 1 — schema + writer + registry + resolver.** Migration `<next>_add_north_dakota_campaign_finance_tables.sql`, five `nd_` tables, factory writer (replace-merge, `minElectionYear` from gate 4, `cfrs_portal` supersession source, pairing validation); registry ingestion, eligible-offices list, resolver + auto-link. Requires rosters.
+- **Phase 2 — direct totals + contribution_size.** CSV inventory, lump-row handling, category include/exclude per gate 3, `totalReceipts`/`directContributionTotal` split, amendment policy from gate 5.
+- **Phase 3 — occupation enrichment.** API-sourced occupation per hard fact 3, once the transaction-API contract is stable.
+- **Phase 0B — 48-hour overlap observation (after the pre-general filing window, Sep 25–Oct 2).** Track the known June 48-hour transactions (e.g. the $15,000 Herman David row) into the pre-general cumulative data: persist, duplicate, or supersede — pins the dedupe lineage rule before the highest-volume period.
+- **Phase 4 — outside spending + funders.** IE ingestion per hard facts 4–5 (gated on 0A gate 2 and informed by 0B), YTD reconciliation control, support/oppose groups; funder donor+industry rows for registered-committee spenders; no-funder note for corporate/individual spenders.
+- **Phase 5 — live run + prod checklist.** Full November-2026 cohort locally, spot-audit ≥10 candidates against filed PDFs, then the standard prod promotion as an explicit operator action: read flag in render.yaml + prod env, migration, data promotion by `pg_dump` of the five `nd_candidate_finance_*` tables into prod (the Montana/Nevada pattern — the `research:promote*` scripts carry candidate records and `finance_committee_labels`, never per-state finance tables), deploy by full SHA.
+
+## Fail-closed rules — component isolation
+
+One malformed row must not erase unrelated valid data. Failure scope:
+
+- Direct schema/sum/reconciliation failure → retain the prior direct data (last-known-good), skip the refresh.
+- Occupation failure or below the display gate → suppress the occupation chart only; totals still publish.
+- IE acquisition/reconciliation failure → retain or suppress the outside component only.
+- Funder resolution failure → omit the funder breakdown only; group + stance totals still publish.
+- Ambiguous candidate resolution → suppress that candidate's whole snapshot (wrong-candidate money is the one unrecoverable error).
+- Local filing → no link, no card; not a sync failure.
+
+Within each component: schema drift, checksum failure, non-deterministic amendments, and lineage-ambiguous 48-hour overlaps fail that component closed with dollar diagnostics. `Unknown`, `not yet due`, and `not centrally filed` are distinct states, never zero.
