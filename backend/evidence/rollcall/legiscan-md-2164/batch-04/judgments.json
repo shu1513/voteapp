@@ -1,0 +1,601 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1533870,
+   "measure_id": "HB 102",
+   "vote_date": "2025-03-28",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 102, which pushed back the start of Maryland's paid family and medical leave program. The Family and Medical Leave Insurance program collects contributions from workers and employers and later pays benefits to people who take leave. The bill delayed the start of contributions by 18 months to January 1, 2027, and delayed benefit payments by at least six months, to a date between January 1, 2027 and January 3, 2028 that the Secretary of Labor sets and announces. It also pushed optional participation by self-employed people back until rules are adopted by July 1, 2028. A yes vote delayed the paid leave program. The Maryland House of Delegates passed it 95-34 and it was signed into law as Chapter 363 of 2025.",
+   "nay_description": "Voted against passing HB 102, which pushed back the start of Maryland's paid family and medical leave program. The Family and Medical Leave Insurance program collects contributions from workers and employers and later pays benefits to people who take leave. The bill delayed the start of contributions by 18 months to January 1, 2027, and delayed benefit payments by at least six months, to a date between January 1, 2027 and January 3, 2028 that the Secretary of Labor sets and announces. It also pushed optional participation by self-employed people back until rules are adopted by July 1, 2028. A no vote opposed the delay. The Maryland House of Delegates passed it 95-34 over these votes and it was signed into law as Chapter 363 of 2025.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1547377,
+   "measure_id": "HB 1046",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1046, which stopped vehicle repair contracts excluding known defects. A technical service bulletin is a notice a manufacturer issues about a known problem with a vehicle. A mechanical repair contract may no longer contain a clause that denies coverage just because the problem appears in one, and a guarantor or provider may no longer refuse a claim just because the diagnosed problem was named in one. A yes vote closed that loophole. The Maryland House of Delegates passed it 100-38 and it was signed into law as Chapter 207 of 2025.",
+   "nay_description": "Voted against passing HB 1046, which stopped vehicle repair contracts excluding known defects. A technical service bulletin is a notice a manufacturer issues about a known problem with a vehicle. A mechanical repair contract may no longer contain a clause that denies coverage just because the problem appears in one, and a guarantor or provider may no longer refuse a claim just because the diagnosed problem was named in one. A no vote opposed closing it. The Maryland House of Delegates passed it 100-38 over these votes and it was signed into law as Chapter 207 of 2025.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1525730,
+   "measure_id": "HB 1111",
+   "vote_date": "2025-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1111, which opened a solar incentive to panels over ponds and old quarries. Solar systems on or over a water retention pond or a quarry now or previously zoned industrial can qualify for the Small Solar Energy Generating System Incentive Program, if they generate between 20 kilowatts and 5 megawatts and meet the program's other rules. Local governments may also grant a property tax credit for non-residential solar built on a brownfield, a retention pond or such a quarry. A yes vote extended the incentive to those sites. The Maryland House of Delegates passed it 101-37 and it was signed into law as Chapter 458 of 2025.",
+   "nay_description": "Voted against passing HB 1111, which opened a solar incentive to panels over ponds and old quarries. Solar systems on or over a water retention pond or a quarry now or previously zoned industrial can qualify for the Small Solar Energy Generating System Incentive Program, if they generate between 20 kilowatts and 5 megawatts and meet the program's other rules. Local governments may also grant a property tax credit for non-residential solar built on a brownfield, a retention pond or such a quarry. A no vote opposed extending it. The Maryland House of Delegates passed it 101-37 over these votes and it was signed into law as Chapter 458 of 2025.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1522294,
+   "measure_id": "HB 1294",
+   "vote_date": "2025-03-14",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1294, which brought pay advance apps under Maryland's consumer lending law. Earned wage access products let a worker draw pay before payday, often for a fee or a requested tip. The bill treats certain of these products as loans under the Maryland Consumer Loan Law, requires the companies offering them to be licensed, and sets new rules on accepting tips. It also limits and requires disclosure of the costs and fees of getting one, and reworks the state's credit licensing structure to fit. A yes vote regulated pay advance products as lending. The Maryland House of Delegates passed it 99-38 and it became law without the Governor's signature as Chapter 847 of 2025.",
+   "nay_description": "Voted against passing HB 1294, which brought pay advance apps under Maryland's consumer lending law. Earned wage access products let a worker draw pay before payday, often for a fee or a requested tip. The bill treats certain of these products as loans under the Maryland Consumer Loan Law, requires the companies offering them to be licensed, and sets new rules on accepting tips. It also limits and requires disclosure of the costs and fees of getting one, and reworks the state's credit licensing structure to fit. A no vote opposed regulating them that way. The Maryland House of Delegates passed it 99-38 over these votes and it became law without the Governor's signature as Chapter 847 of 2025.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2164",
+   "roll": 1561941,
+   "measure_id": "HB 1294",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1294, which brought pay advance apps under Maryland's consumer lending law. Earned wage access products let a worker draw pay before payday, often for a fee or a requested tip. The bill treats certain of these products as loans under the Maryland Consumer Loan Law, requires the companies offering them to be licensed, and sets new rules on accepting tips. It also limits and requires disclosure of the costs and fees of getting one, and reworks the state's credit licensing structure to fit. A yes vote regulated pay advance products as lending. The Maryland Senate passed it 28-17 and it became law without the Governor's signature as Chapter 847 of 2025.",
+   "nay_description": "Voted against passing HB 1294, which brought pay advance apps under Maryland's consumer lending law. Earned wage access products let a worker draw pay before payday, often for a fee or a requested tip. The bill treats certain of these products as loans under the Maryland Consumer Loan Law, requires the companies offering them to be licensed, and sets new rules on accepting tips. It also limits and requires disclosure of the costs and fees of getting one, and reworks the state's credit licensing structure to fit. A no vote opposed regulating them that way. The Maryland Senate passed it 28-17 over these votes and it became law without the Governor's signature as Chapter 847 of 2025.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2164",
+   "roll": 1561920,
+   "measure_id": "HB 1310",
+   "vote_date": "2025-04-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1310, which widened the program that redistributes donated prescription drugs. The Prescription Drug Repository Program collects unused medicine and dispenses it to patients who need it. The bill lets an out-of-state entity take part, adds over-the-counter drugs to what the program may accept, defines who counts as an eligible patient, and widens the legal immunity for people who donate, handle or receive the drugs. It also sets what an out-of-state repository must do and clarifies which drugs may be accepted. A yes vote widened the program. The Maryland Senate passed it 33-12 and it was signed into law as Chapter 705 of 2025.",
+   "nay_description": "Voted against passing HB 1310, which widened the program that redistributes donated prescription drugs. The Prescription Drug Repository Program collects unused medicine and dispenses it to patients who need it. The bill lets an out-of-state entity take part, adds over-the-counter drugs to what the program may accept, defines who counts as an eligible patient, and widens the legal immunity for people who donate, handle or receive the drugs. It also sets what an out-of-state repository must do and clarifies which drugs may be accepted. A no vote opposed widening it. The Maryland Senate passed it 33-12 over these votes and it was signed into law as Chapter 705 of 2025.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1546802,
+   "measure_id": "HB 15",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 15, the Maryland Limited Worker Cooperative Association Act. A worker cooperative is a business the people who work there own and control. The bill creates a legal form for one in Maryland: a limited liability company that elects to be a limited worker cooperative association. It sets out how such a business is formed, run and wound up, and says no existing contract or obligation is disturbed by it. It took effect October 1, 2026. A yes vote created that ownership structure in state law. The Maryland House of Delegates passed it 102-37 and it was signed into law as Chapter 198 of 2025.",
+   "nay_description": "Voted against passing HB 15, the Maryland Limited Worker Cooperative Association Act. A worker cooperative is a business the people who work there own and control. The bill creates a legal form for one in Maryland: a limited liability company that elects to be a limited worker cooperative association. It sets out how such a business is formed, run and wound up, and says no existing contract or obligation is disturbed by it. It took effect October 1, 2026. A no vote opposed creating it. The Maryland House of Delegates passed it 102-37 over these votes and it was signed into law as Chapter 198 of 2025.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2164",
+   "roll": 1559663,
+   "measure_id": "HB 161",
+   "vote_date": "2025-04-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 161, which gave the state a way to force local school curriculum into line. The state education department must now write content standards for every subject at every grade level, on top of the curriculum standards it already produces. Each county school board must adopt curriculum guides and courses of study that line up with those standards. The bill sets up a process for the State Superintendent to identify gaps in a local board's guides and to impose penalties for them. A yes vote created the standards and the enforcement process. The Maryland Senate passed it 33-12 and it was signed into law as Chapter 245 of 2025.",
+   "nay_description": "Voted against passing HB 161, which gave the state a way to force local school curriculum into line. The state education department must now write content standards for every subject at every grade level, on top of the curriculum standards it already produces. Each county school board must adopt curriculum guides and courses of study that line up with those standards. The bill sets up a process for the State Superintendent to identify gaps in a local board's guides and to impose penalties for them. A no vote opposed them. The Maryland Senate passed it 33-12 over these votes and it was signed into law as Chapter 245 of 2025.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1545522,
+   "measure_id": "HB 161",
+   "vote_date": "2025-04-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 161, which gave the state a way to force local school curriculum into line. The state education department must now write content standards for every subject at every grade level, on top of the curriculum standards it already produces. Each county school board must adopt curriculum guides and courses of study that line up with those standards. The bill sets up a process for the State Superintendent to identify gaps in a local board's guides and to impose penalties for them. A yes vote created the standards and the enforcement process. The Maryland House of Delegates passed it 97-38 and it was signed into law as Chapter 245 of 2025.",
+   "nay_description": "Voted against passing HB 161, which gave the state a way to force local school curriculum into line. The state education department must now write content standards for every subject at every grade level, on top of the curriculum standards it already produces. Each county school board must adopt curriculum guides and courses of study that line up with those standards. The bill sets up a process for the State Superintendent to identify gaps in a local board's guides and to impose penalties for them. A no vote opposed them. The Maryland House of Delegates passed it 97-38 over these votes and it was signed into law as Chapter 245 of 2025.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1490375,
+   "measure_id": "HB 199",
+   "vote_date": "2025-02-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 199, which changed how the state checks in with permanent absentee voters. Voters on the permanent absentee list get a ballot mailed for every election without asking each time. The bill changes the outreach the State Board of Elections does before an election to confirm that a voter is still on that list, and to confirm their address and how they want the ballot sent. It took effect July 1, 2025. A yes vote adopted the new outreach rules. The Maryland House of Delegates passed it 104-33 and it was signed into law as Chapter 280 of 2025.",
+   "nay_description": "Voted against passing HB 199, which changed how the state checks in with permanent absentee voters. Voters on the permanent absentee list get a ballot mailed for every election without asking each time. The bill changes the outreach the State Board of Elections does before an election to confirm that a voter is still on that list, and to confirm their address and how they want the ballot sent. It took effect July 1, 2025. A no vote opposed them. The Maryland House of Delegates passed it 104-33 over these votes and it was signed into law as Chapter 280 of 2025.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2164",
+   "roll": 1559912,
+   "measure_id": "HB 199",
+   "vote_date": "2025-04-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 199, which changed how the state checks in with permanent absentee voters. Voters on the permanent absentee list get a ballot mailed for every election without asking each time. The bill changes the outreach the State Board of Elections does before an election to confirm that a voter is still on that list, and to confirm their address and how they want the ballot sent. It took effect July 1, 2025. A yes vote adopted the new outreach rules. The Maryland Senate passed it 36-10 and it was signed into law as Chapter 280 of 2025.",
+   "nay_description": "Voted against passing HB 199, which changed how the state checks in with permanent absentee voters. Voters on the permanent absentee list get a ballot mailed for every election without asking each time. The bill changes the outreach the State Board of Elections does before an election to confirm that a voter is still on that list, and to confirm their address and how they want the ballot sent. It took effect July 1, 2025. A no vote opposed them. The Maryland Senate passed it 36-10 over these votes and it was signed into law as Chapter 280 of 2025.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1499848,
+   "measure_id": "HB 277",
+   "vote_date": "2025-02-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 277, which required water bottle filling stations in new and renovated buildings. From October 1, 2025, and with exceptions, a building must include at least one water bottle filling station, or a combined filling station and drinking fountain, wherever the plumbing code the state has adopted requires a drinking fountain. That applies to new construction and to buildings being renovated, and a filling station must replace a drinking fountain in a renovated area if the renovation replaces that fountain. It applies only to construction not yet under contract when it took effect. A yes vote required the filling stations. The Maryland House of Delegates passed it 105-30 and it was signed into law as Chapter 547 of 2025.",
+   "nay_description": "Voted against passing HB 277, which required water bottle filling stations in new and renovated buildings. From October 1, 2025, and with exceptions, a building must include at least one water bottle filling station, or a combined filling station and drinking fountain, wherever the plumbing code the state has adopted requires a drinking fountain. That applies to new construction and to buildings being renovated, and a filling station must replace a drinking fountain in a renovated area if the renovation replaces that fountain. It applies only to construction not yet under contract when it took effect. A no vote opposed the requirement. The Maryland House of Delegates passed it 105-30 over these votes and it was signed into law as Chapter 547 of 2025.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2164",
+   "roll": 1560002,
+   "measure_id": "HB 277",
+   "vote_date": "2025-04-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 277, which required water bottle filling stations in new and renovated buildings. From October 1, 2025, and with exceptions, a building must include at least one water bottle filling station, or a combined filling station and drinking fountain, wherever the plumbing code the state has adopted requires a drinking fountain. That applies to new construction and to buildings being renovated, and a filling station must replace a drinking fountain in a renovated area if the renovation replaces that fountain. It applies only to construction not yet under contract when it took effect. A yes vote required the filling stations. The Maryland Senate passed it 33-12 and it was signed into law as Chapter 547 of 2025.",
+   "nay_description": "Voted against passing HB 277, which required water bottle filling stations in new and renovated buildings. From October 1, 2025, and with exceptions, a building must include at least one water bottle filling station, or a combined filling station and drinking fountain, wherever the plumbing code the state has adopted requires a drinking fountain. That applies to new construction and to buildings being renovated, and a filling station must replace a drinking fountain in a renovated area if the renovation replaces that fountain. It applies only to construction not yet under contract when it took effect. A no vote opposed the requirement. The Maryland Senate passed it 33-12 over these votes and it was signed into law as Chapter 547 of 2025.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1499807,
+   "measure_id": "HB 297",
+   "vote_date": "2025-02-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 297, which made health insurance subsidies for young adults permanent. Maryland ran a pilot giving young adults money toward health plans bought on the state exchange, set to end June 30, 2026. The bill repeals that end date and renames it the State-Based Young Adult Health Insurance Subsidies Program. The exchange is now authorized rather than required to run it, and may not run it in a year when the money from a specified assessment is not there. A yes vote made the subsidies permanent. The Maryland House of Delegates passed it 98-37 and it was signed into law as Chapter 721 of 2025.",
+   "nay_description": "Voted against passing HB 297, which made health insurance subsidies for young adults permanent. Maryland ran a pilot giving young adults money toward health plans bought on the state exchange, set to end June 30, 2026. The bill repeals that end date and renames it the State-Based Young Adult Health Insurance Subsidies Program. The exchange is now authorized rather than required to run it, and may not run it in a year when the money from a specified assessment is not there. A no vote opposed making them permanent. The Maryland House of Delegates passed it 98-37 over these votes and it was signed into law as Chapter 721 of 2025.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1505661,
+   "measure_id": "HB 367",
+   "vote_date": "2025-02-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 367, which stopped health boards demanding duplicate proof that an applicant speaks English. A Maryland health occupations board may no longer require extra evidence of English proficiency from an applicant who already holds a valid, unrestricted license, certification or registration from another state that required such evidence. Any board that asks for English proficiency evidence must say so prominently on its website, along with this exception. The bill also changes the English proficiency rules of the nursing and pharmacy boards and the conditions for a nurse licensed elsewhere to be licensed here by endorsement. A yes vote removed that duplicate requirement. The Maryland House of Delegates passed it 107-27 and it was signed into law as Chapter 731 of 2025.",
+   "nay_description": "Voted against passing HB 367, which stopped health boards demanding duplicate proof that an applicant speaks English. A Maryland health occupations board may no longer require extra evidence of English proficiency from an applicant who already holds a valid, unrestricted license, certification or registration from another state that required such evidence. Any board that asks for English proficiency evidence must say so prominently on its website, along with this exception. The bill also changes the English proficiency rules of the nursing and pharmacy boards and the conditions for a nurse licensed elsewhere to be licensed here by endorsement. A no vote opposed removing it. The Maryland House of Delegates passed it 107-27 over these votes and it was signed into law as Chapter 731 of 2025.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2164",
+   "roll": 1561539,
+   "measure_id": "HB 367",
+   "vote_date": "2025-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 367, which stopped health boards demanding duplicate proof that an applicant speaks English. A Maryland health occupations board may no longer require extra evidence of English proficiency from an applicant who already holds a valid, unrestricted license, certification or registration from another state that required such evidence. Any board that asks for English proficiency evidence must say so prominently on its website, along with this exception. The bill also changes the English proficiency rules of the nursing and pharmacy boards and the conditions for a nurse licensed elsewhere to be licensed here by endorsement. A yes vote removed that duplicate requirement. The Maryland Senate passed it 33-13 and it was signed into law as Chapter 731 of 2025.",
+   "nay_description": "Voted against passing HB 367, which stopped health boards demanding duplicate proof that an applicant speaks English. A Maryland health occupations board may no longer require extra evidence of English proficiency from an applicant who already holds a valid, unrestricted license, certification or registration from another state that required such evidence. Any board that asks for English proficiency evidence must say so prominently on its website, along with this exception. The bill also changes the English proficiency rules of the nursing and pharmacy boards and the conditions for a nurse licensed elsewhere to be licensed here by endorsement. A no vote opposed removing it. The Maryland Senate passed it 33-13 over these votes and it was signed into law as Chapter 731 of 2025.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1490372,
+   "measure_id": "HB 4",
+   "vote_date": "2025-02-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 4, which limited how far a community association can restrict rooftop solar. State law already bars unreasonable restrictions on installing a solar collector system. The bill puts numbers on what unreasonable means: a restriction counts as unreasonable if it raises the install cost by at least 5% over the cost of the original proposal, or cuts the energy the system would generate by at least 10%. It also spells out what a community association may still do about solar installations. A yes vote set those limits on solar restrictions. The Maryland House of Delegates passed it 100-36 and it was signed into law as Chapter 517 of 2025.",
+   "nay_description": "Voted against passing HB 4, which limited how far a community association can restrict rooftop solar. State law already bars unreasonable restrictions on installing a solar collector system. The bill puts numbers on what unreasonable means: a restriction counts as unreasonable if it raises the install cost by at least 5% over the cost of the original proposal, or cuts the energy the system would generate by at least 10%. It also spells out what a community association may still do about solar installations. A no vote opposed setting them. The Maryland House of Delegates passed it 100-36 over these votes and it was signed into law as Chapter 517 of 2025.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2164",
+   "roll": 1561522,
+   "measure_id": "HB 4",
+   "vote_date": "2025-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 4, which limited how far a community association can restrict rooftop solar. State law already bars unreasonable restrictions on installing a solar collector system. The bill puts numbers on what unreasonable means: a restriction counts as unreasonable if it raises the install cost by at least 5% over the cost of the original proposal, or cuts the energy the system would generate by at least 10%. It also spells out what a community association may still do about solar installations. A yes vote set those limits on solar restrictions. The Maryland Senate passed it 34-13 and it was signed into law as Chapter 517 of 2025.",
+   "nay_description": "Voted against passing HB 4, which limited how far a community association can restrict rooftop solar. State law already bars unreasonable restrictions on installing a solar collector system. The bill puts numbers on what unreasonable means: a restriction counts as unreasonable if it raises the install cost by at least 5% over the cost of the original proposal, or cuts the energy the system would generate by at least 10%. It also spells out what a community association may still do about solar installations. A no vote opposed setting them. The Maryland Senate passed it 34-13 over these votes and it was signed into law as Chapter 517 of 2025.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2164",
+   "roll": 1559843,
+   "measure_id": "HB 452",
+   "vote_date": "2025-04-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 452, which tightened the rules on outdoor lighting paid for with state money. State funds already could not be used to install or replace a permanent outdoor light fixture on state building grounds unless it met set criteria. The bill extends that to state parks and trails, and exempts lighting for the field of play at a sports facility. Except for fixtures installed by the transportation department, a fixture paid for with state money must have a color temperature of 3,000 Kelvin or less, which is the warmer, less glaring end of the range, subject to existing waivers. A yes vote tightened those lighting rules. The Maryland Senate passed it 36-11 and it was signed into law as Chapter 389 of 2025.",
+   "nay_description": "Voted against passing HB 452, which tightened the rules on outdoor lighting paid for with state money. State funds already could not be used to install or replace a permanent outdoor light fixture on state building grounds unless it met set criteria. The bill extends that to state parks and trails, and exempts lighting for the field of play at a sports facility. Except for fixtures installed by the transportation department, a fixture paid for with state money must have a color temperature of 3,000 Kelvin or less, which is the warmer, less glaring end of the range, subject to existing waivers. A no vote opposed tightening them. The Maryland Senate passed it 36-11 over these votes and it was signed into law as Chapter 389 of 2025.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2164",
+   "roll": 1560051,
+   "measure_id": "HB 502",
+   "vote_date": "2025-04-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 502, an Administration bill making the state a model employer of people with disabilities. The bill creates the Office of Disability Employment Advancement and Policy inside the Maryland Department of Disabilities and puts it in charge of the Maryland as a Model Employer Initiative from July 1, 2026. Each December 1 from that year on, the office must report to the Governor and the legislature on how the initiative is going and recommend further changes to how state government hires and keeps people with disabilities. A yes vote created that office and initiative. The Maryland Senate passed it 35-12 and it was signed into law as Chapter 1 of 2025.",
+   "nay_description": "Voted against passing HB 502, an Administration bill making the state a model employer of people with disabilities. The bill creates the Office of Disability Employment Advancement and Policy inside the Maryland Department of Disabilities and puts it in charge of the Maryland as a Model Employer Initiative from July 1, 2026. Each December 1 from that year on, the office must report to the Governor and the legislature on how the initiative is going and recommend further changes to how state government hires and keeps people with disabilities. A no vote opposed creating them. The Maryland Senate passed it 35-12 over these votes and it was signed into law as Chapter 1 of 2025.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1546877,
+   "measure_id": "HB 502",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 502, an Administration bill making the state a model employer of people with disabilities. The bill creates the Office of Disability Employment Advancement and Policy inside the Maryland Department of Disabilities and puts it in charge of the Maryland as a Model Employer Initiative from July 1, 2026. Each December 1 from that year on, the office must report to the Governor and the legislature on how the initiative is going and recommend further changes to how state government hires and keeps people with disabilities. A yes vote created that office and initiative. The Maryland House of Delegates passed it 102-37 and it was signed into law as Chapter 1 of 2025.",
+   "nay_description": "Voted against passing HB 502, an Administration bill making the state a model employer of people with disabilities. The bill creates the Office of Disability Employment Advancement and Policy inside the Maryland Department of Disabilities and puts it in charge of the Maryland as a Model Employer Initiative from July 1, 2026. Each December 1 from that year on, the office must report to the Governor and the legislature on how the initiative is going and recommend further changes to how state government hires and keeps people with disabilities. A no vote opposed creating them. The Maryland House of Delegates passed it 102-37 over these votes and it was signed into law as Chapter 1 of 2025.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1546875,
+   "measure_id": "HB 634",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 634, which gave recently released prisoners a way to clear old state tax debt. It covers a person convicted of a crime who is still serving, or who was released within the past two years after serving between six months and ten years in a state or federal prison. For tax years 2025 through 2029, such a person who gets a tax bill for a year they were incarcerated may ask the Comptroller for an installment plan of up to ten years, and the Comptroller must waive the interest and penalties that piled up. The Comptroller works with the corrections department on an awareness campaign and writes the rules, which may set income limits, and reports to the legislature on the program each December 1 from 2026. A yes vote created that tax relief path. The Maryland House of Delegates passed it 103-36 and it was signed into law as Chapter 734 of 2025.",
+   "nay_description": "Voted against passing HB 634, which gave recently released prisoners a way to clear old state tax debt. It covers a person convicted of a crime who is still serving, or who was released within the past two years after serving between six months and ten years in a state or federal prison. For tax years 2025 through 2029, such a person who gets a tax bill for a year they were incarcerated may ask the Comptroller for an installment plan of up to ten years, and the Comptroller must waive the interest and penalties that piled up. The Comptroller works with the corrections department on an awareness campaign and writes the rules, which may set income limits, and reports to the legislature on the program each December 1 from 2026. A no vote opposed creating it. The Maryland House of Delegates passed it 103-36 over these votes and it was signed into law as Chapter 734 of 2025.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1518351,
+   "measure_id": "HB 666",
+   "vote_date": "2025-03-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 666, which required insurance coverage of a heart scan with no gap in Medicaid. A calcium score test is a scan that measures calcium build-up in the arteries to gauge heart disease risk. Insurers, nonprofit health plans, health maintenance organizations and Maryland Medicaid must all cover it, following the most recent American College of Cardiology guidelines that widen preventive care for consumers. It applies to plans issued, delivered or renewed on or after January 1, 2026. A yes vote required that coverage. The Maryland House of Delegates passed it 108-31 and it was signed into law as Chapter 684 of 2025.",
+   "nay_description": "Voted against passing HB 666, which required insurance coverage of a heart scan with no gap in Medicaid. A calcium score test is a scan that measures calcium build-up in the arteries to gauge heart disease risk. Insurers, nonprofit health plans, health maintenance organizations and Maryland Medicaid must all cover it, following the most recent American College of Cardiology guidelines that widen preventive care for consumers. It applies to plans issued, delivered or renewed on or after January 1, 2026. A no vote opposed requiring it. The Maryland House of Delegates passed it 108-31 over these votes and it was signed into law as Chapter 684 of 2025.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1525718,
+   "measure_id": "HB 731",
+   "vote_date": "2025-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 731, which set up a state effort to keep wildlife off the highways. The bill creates the Maryland Connectivity Coalition to improve the connections between wildlife habitats and cut collisions between animals and vehicles, and gives the natural resources department and the State Highway Administration roles in it. Local governments must consider wildlife movement and habitat connections when they write or amend their comprehensive plans, and the planning department must supply them the relevant information. A yes vote created the coalition and the planning duty. The Maryland House of Delegates passed it 101-36 and it was signed into law as Chapter 549 of 2025.",
+   "nay_description": "Voted against passing HB 731, which set up a state effort to keep wildlife off the highways. The bill creates the Maryland Connectivity Coalition to improve the connections between wildlife habitats and cut collisions between animals and vehicles, and gives the natural resources department and the State Highway Administration roles in it. Local governments must consider wildlife movement and habitat connections when they write or amend their comprehensive plans, and the planning department must supply them the relevant information. A no vote opposed them. The Maryland House of Delegates passed it 101-36 over these votes and it was signed into law as Chapter 549 of 2025.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2164",
+   "roll": 1561540,
+   "measure_id": "HB 731",
+   "vote_date": "2025-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 731, which set up a state effort to keep wildlife off the highways. The bill creates the Maryland Connectivity Coalition to improve the connections between wildlife habitats and cut collisions between animals and vehicles, and gives the natural resources department and the State Highway Administration roles in it. Local governments must consider wildlife movement and habitat connections when they write or amend their comprehensive plans, and the planning department must supply them the relevant information. A yes vote created the coalition and the planning duty. The Maryland Senate passed it 34-13 and it was signed into law as Chapter 549 of 2025.",
+   "nay_description": "Voted against passing HB 731, which set up a state effort to keep wildlife off the highways. The bill creates the Maryland Connectivity Coalition to improve the connections between wildlife habitats and cut collisions between animals and vehicles, and gives the natural resources department and the State Highway Administration roles in it. Local governments must consider wildlife movement and habitat connections when they write or amend their comprehensive plans, and the planning department must supply them the relevant information. A no vote opposed them. The Maryland Senate passed it 34-13 over these votes and it was signed into law as Chapter 549 of 2025.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2164",
+   "roll": 1562559,
+   "measure_id": "HB 795",
+   "vote_date": "2025-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 795, which stopped public employers shortchanging workers on student loan forgiveness. The federal Public Service Loan Forgiveness program cancels remaining student debt after ten years of payments while working full time for a public employer, and the employer has to certify the employment. A Maryland public service employer must now adopt a way of counting hours that maximizes the time an employee counts as full time, and must treat an employee as full time if they meet the minimum. The bill sets out how adjunct and tenured professors are certified and bars an employer from unreasonably delaying a certification. A yes vote required employers to certify this way. The Maryland Senate passed it 33-13 and it was signed into law as Chapter 324 of 2025.",
+   "nay_description": "Voted against passing HB 795, which stopped public employers shortchanging workers on student loan forgiveness. The federal Public Service Loan Forgiveness program cancels remaining student debt after ten years of payments while working full time for a public employer, and the employer has to certify the employment. A Maryland public service employer must now adopt a way of counting hours that maximizes the time an employee counts as full time, and must treat an employee as full time if they meet the minimum. The bill sets out how adjunct and tenured professors are certified and bars an employer from unreasonably delaying a certification. A no vote opposed the requirement. The Maryland Senate passed it 33-13 over these votes and it was signed into law as Chapter 324 of 2025.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2164",
+   "roll": 1531942,
+   "measure_id": "SB 250",
+   "vote_date": "2025-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 250, which raised environmental fees and tightened the rules on dams. The bill raises a number of fees and penalties that fund programs at the Maryland Department of the Environment and lets the department set new fees for certain programs. It also strengthens the state's regulatory framework for dams and creates a special fund tied to it. Most of it took effect July 1, 2025, with the Maryland Clean Air Fund provisions starting June 1, 2025. A yes vote raised those fees and tightened dam regulation. The Maryland Senate passed it 33-14 and it was signed into law as Chapter 432 of 2025.",
+   "nay_description": "Voted against passing SB 250, which raised environmental fees and tightened the rules on dams. The bill raises a number of fees and penalties that fund programs at the Maryland Department of the Environment and lets the department set new fees for certain programs. It also strengthens the state's regulatory framework for dams and creates a special fund tied to it. Most of it took effect July 1, 2025, with the Maryland Clean Air Fund provisions starting June 1, 2025. A no vote opposed doing so. The Maryland Senate passed it 33-14 over these votes and it was signed into law as Chapter 432 of 2025.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1547015,
+   "measure_id": "SB 250",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 250, which raised environmental fees and tightened the rules on dams. The bill raises a number of fees and penalties that fund programs at the Maryland Department of the Environment and lets the department set new fees for certain programs. It also strengthens the state's regulatory framework for dams and creates a special fund tied to it. Most of it took effect July 1, 2025, with the Maryland Clean Air Fund provisions starting June 1, 2025. A yes vote raised those fees and tightened dam regulation. The Maryland House of Delegates passed it 96-44 and it was signed into law as Chapter 432 of 2025.",
+   "nay_description": "Voted against passing SB 250, which raised environmental fees and tightened the rules on dams. The bill raises a number of fees and penalties that fund programs at the Maryland Department of the Environment and lets the department set new fees for certain programs. It also strengthens the state's regulatory framework for dams and creates a special fund tied to it. Most of it took effect July 1, 2025, with the Maryland Clean Air Fund provisions starting June 1, 2025. A no vote opposed doing so. The Maryland House of Delegates passed it 96-44 over these votes and it was signed into law as Chapter 432 of 2025.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2164",
+   "roll": 1532329,
+   "measure_id": "SB 599",
+   "vote_date": "2025-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 599, which restored guaranteed funding for behavioral health crisis response. The bill brings back a funding mandate for three years: the Governor must include $5.0 million in the operating budget for the Behavioral Health Crisis Response Grant Program in each of fiscal years 2027, 2028 and 2029. It took effect July 1, 2025. A yes vote guaranteed that money for three years. The Maryland Senate passed it 31-13 and it was signed into law as Chapter 666 of 2025.",
+   "nay_description": "Voted against passing SB 599, which restored guaranteed funding for behavioral health crisis response. The bill brings back a funding mandate for three years: the Governor must include $5.0 million in the operating budget for the Behavioral Health Crisis Response Grant Program in each of fiscal years 2027, 2028 and 2029. It took effect July 1, 2025. A no vote opposed guaranteeing it. The Maryland Senate passed it 31-13 over these votes and it was signed into law as Chapter 666 of 2025.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1547601,
+   "measure_id": "SB 666",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 666, which guaranteed operating money for community action agencies. Community action agencies are local non-profits that run anti-poverty services. For each of fiscal years 2027 through 2030 the Governor must include $250,000 in the budget for the housing department, to be used only as operating grants to eligible agencies. The requirement took effect July 1, 2025 and ends June 30, 2032. A yes vote guaranteed those grants. The Maryland House of Delegates passed it 109-30 and it was signed into law as Chapter 288 of 2025.",
+   "nay_description": "Voted against passing SB 666, which guaranteed operating money for community action agencies. Community action agencies are local non-profits that run anti-poverty services. For each of fiscal years 2027 through 2030 the Governor must include $250,000 in the budget for the housing department, to be used only as operating grants to eligible agencies. The requirement took effect July 1, 2025 and ends June 30, 2032. A no vote opposed guaranteeing them. The Maryland House of Delegates passed it 109-30 over these votes and it was signed into law as Chapter 288 of 2025.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1547122,
+   "measure_id": "SB 842",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 842, which let the state seize illegally sold vapes. The head of the Alcohol, Tobacco, and Cannabis Commission may now seize electronic smoking devices sold or offered for sale in breach of state law, without a warrant. The bill sets out how notice of a seizure is given and how someone claims the devices back, including a right to a hearing. It also ends the ability of a device manufacturer to sell directly to a consumer and imposes record-keeping duties on wholesale distributors and importers. A yes vote created that seizure power. The Maryland House of Delegates passed it 105-33 and it was signed into law as Chapter 305 of 2025.",
+   "nay_description": "Voted against passing SB 842, which let the state seize illegally sold vapes. The head of the Alcohol, Tobacco, and Cannabis Commission may now seize electronic smoking devices sold or offered for sale in breach of state law, without a warrant. The bill sets out how notice of a seizure is given and how someone claims the devices back, including a right to a hearing. It also ends the ability of a device manufacturer to sell directly to a consumer and imposes record-keeping duties on wholesale distributors and importers. A no vote opposed creating it. The Maryland House of Delegates passed it 105-33 over these votes and it was signed into law as Chapter 305 of 2025.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1546789,
+   "measure_id": "SB 856",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 856, the Maryland Tenant Mold Protection Act. The Maryland Department of the Environment, working with the health, housing, labor and general services departments, must build and maintain a central website on mold remediation and damp, and produce an information pamphlet or use a specified federal one. The bill also places duties on landlords about mold in rental units, including carrying out a mold assessment and remediation as specified. A yes vote created those landlord duties and public information. The Maryland House of Delegates passed it 103-35 and it was signed into law as Chapter 539 of 2025.",
+   "nay_description": "Voted against passing SB 856, the Maryland Tenant Mold Protection Act. The Maryland Department of the Environment, working with the health, housing, labor and general services departments, must build and maintain a central website on mold remediation and damp, and produce an information pamphlet or use a specified federal one. The bill also places duties on landlords about mold in rental units, including carrying out a mold assessment and remediation as specified. A no vote opposed them. The Maryland House of Delegates passed it 103-35 over these votes and it was signed into law as Chapter 539 of 2025.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2164",
+   "roll": 1547104,
+   "measure_id": "SB 93",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 93, which told local election boards to remind voters they can vote by mail. A local board of elections must include a written notice about requesting a state absentee ballot application whenever it sends a specimen ballot or other mailing to voters, so that people know mail-in voting is an option. The board need not send it to a voter who already has permanent absentee status, need not send it more than once per election, and need not send it at all for a vote-by-mail election. A yes vote required those reminders. The Maryland House of Delegates passed it 104-36 and it was signed into law as Chapter 310 of 2025.",
+   "nay_description": "Voted against passing SB 93, which told local election boards to remind voters they can vote by mail. A local board of elections must include a written notice about requesting a state absentee ballot application whenever it sends a specimen ballot or other mailing to voters, so that people know mail-in voting is an option. The board need not send it to a voter who already has permanent absentee status, need not send it more than once per election, and need not send it at all for a vote-by-mail election. A no vote opposed requiring them. The Maryland House of Delegates passed it 104-36 over these votes and it was signed into law as Chapter 310 of 2025.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1546800
+   ]
+  }
+ ]
+}
