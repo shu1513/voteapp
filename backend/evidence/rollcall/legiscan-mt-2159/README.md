@@ -98,7 +98,20 @@ repository at `/Users/shu/legiscan-data/mt_doc.py` and `mt_diff.py`.
 
 ## Status
 
-Batch-01 is imported on the local `voteapp` database only: 9 measures, 18 rolls,
-**764 records across 87 candidates**, 436 area tags. **Production has zero
-Montana records.** 615 divided-and-enacted rolls remain unbatched; the worklist
-names every one.
+Imported on the local `voteapp` database only. **Production has zero Montana
+records.**
+
+| Batch | Measures | Rolls | Records | Areas |
+| --- | --- | --- | --- | --- |
+| batch-01 | 9 | 18 | 764 | civil rights, immigration, income tax, reproductive rights, education, welfare, guns, elections, housing |
+| batch-02 | 7 | 14 | 598 | environment, health care, corporate accountability |
+| **total** | **16** | **32** | **1,362** | 12 areas, 87 candidates, 801 tags |
+
+596 divided-and-enacted rolls remain unbatched and 5 are dropped under filter 5;
+`survey/divided-enacted-worklist.tsv` carries a disposition for every one, and
+`survey/filter-5-drops.md` records why each drop was dropped after a full read.
+
+Held deliberately for their own batches: **HB 285** and **SB 221** (both
+rewriting the Montana Environmental Policy Act), **HB 664** and **HB 685**, and
+**HB 231**, the property tax rewrite. **HB 807** and **SB 218** are
+vaccine-adjacent and wait on a direction call.

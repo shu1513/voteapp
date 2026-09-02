@@ -1,0 +1,256 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1491902,
+   "measure_id": "HB 291",
+   "vote_date": "2025-02-18",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 291, which limits how strict Montana's air pollution rules may be. The state may no longer set limits tighter than the federal Clean Air Act. Two exceptions remain. Limits already in place before this law still stand. So do limits needed in areas that fail federal air quality standards. The law also removes the path that let the state set a tighter rule after a public hearing and a written, science-backed finding. City and county air programs lose that path too, and may now only match state rules. The Montana House passed it 61-38, and it became law.",
+   "nay_description": "Voted against House Bill 291, which limits how strict Montana's air pollution rules may be. The state may no longer set limits tighter than the federal Clean Air Act. Two exceptions remain. Limits already in place before this law still stand. So do limits needed in areas that fail federal air quality standards. The law also removes the path that let the state set a tighter rule after a public hearing and a written, science-backed finding. City and county air programs lose that path too, and may now only match state rules. The Montana House passed it 61-38, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1537295,
+   "measure_id": "HB 291",
+   "vote_date": "2025-04-04",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 291, which limits how strict Montana's air pollution rules may be. The state may no longer set limits tighter than the federal Clean Air Act. Two exceptions remain. Limits already in place before this law still stand. So do limits needed in areas that fail federal air quality standards. The law also removes the path that let the state set a tighter rule after a public hearing and a written, science-backed finding. City and county air programs lose that path too, and may now only match state rules. The Montana Senate passed it 30-19, and it became law.",
+   "nay_description": "Voted against House Bill 291, which limits how strict Montana's air pollution rules may be. The state may no longer set limits tighter than the federal Clean Air Act. Two exceptions remain. Limits already in place before this law still stand. So do limits needed in areas that fail federal air quality standards. The law also removes the path that let the state set a tighter rule after a public hearing and a written, science-backed finding. City and county air programs lose that path too, and may now only match state rules. The Montana Senate passed it 30-19, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1552315,
+   "measure_id": "HB 703",
+   "vote_date": "2025-04-18",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 703, which narrows what state environmental reviews must cover. Building code officials, state and local, no longer have to study greenhouse gases from covered appliances. That applies when they adopt or enforce a building code. The state also no longer has to study greenhouse gases given off outside Montana. That covers new motor vehicles, their engines, and new off-road engines. The Montana House backed the Senate's version 61-37, and it became law.",
+   "nay_description": "Voted against House Bill 703, which narrows what state environmental reviews must cover. Building code officials, state and local, no longer have to study greenhouse gases from covered appliances. That applies when they adopt or enforce a building code. The state also no longer has to study greenhouse gases given off outside Montana. That covers new motor vehicles, their engines, and new off-road engines. The Montana House backed the Senate's version 61-37, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1546422,
+   "measure_id": "HB 703",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 703, which narrows what state environmental reviews must cover. Building code officials, state and local, no longer have to study greenhouse gases from covered appliances. That applies when they adopt or enforce a building code. The state also no longer has to study greenhouse gases given off outside Montana. That covers new motor vehicles, their engines, and new off-road engines. The Montana Senate passed it 36-12, and it became law.",
+   "nay_description": "Voted against House Bill 703, which narrows what state environmental reviews must cover. Building code officials, state and local, no longer have to study greenhouse gases from covered appliances. That applies when they adopt or enforce a building code. The state also no longer has to study greenhouse gases given off outside Montana. That covers new motor vehicles, their engines, and new off-road engines. The Montana Senate passed it 36-12, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1552120,
+   "measure_id": "HB 740",
+   "vote_date": "2025-04-18",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 740, which tightens rules on pharmacy benefit managers. These are the companies that run drug benefits for health plans. They may not stop a pharmacist from telling a patient about a cheaper option. They may not punish a pharmacist who does. They may not make a pharmacy collect a copay larger than the amount it billed. The law limits what a pharmacy audit can take back. It requires drug price lists to be updated at least every 10 days and shared with pharmacies. It also sets a pay floor for independent pharmacies. They get the drug's national average cost, plus a fee of at least $15 for filling it, and that fee rises each year. The Montana House had passed an earlier version 98-1, then backed the Senate's version 63-35, and it became law.",
+   "nay_description": "Voted against House Bill 740, which tightens rules on pharmacy benefit managers. These are the companies that run drug benefits for health plans. They may not stop a pharmacist from telling a patient about a cheaper option. They may not punish a pharmacist who does. They may not make a pharmacy collect a copay larger than the amount it billed. The law limits what a pharmacy audit can take back. It requires drug price lists to be updated at least every 10 days and shared with pharmacies. It also sets a pay floor for independent pharmacies. They get the drug's national average cost, plus a fee of at least $15 for filling it, and that fee rises each year. The Montana House had passed an earlier version 98-1, then backed the Senate's version 63-35, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1546636,
+   "measure_id": "HB 740",
+   "vote_date": "2025-04-12",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 740, which tightens rules on pharmacy benefit managers. These are the companies that run drug benefits for health plans. They may not stop a pharmacist from telling a patient about a cheaper option. They may not punish a pharmacist who does. They may not make a pharmacy collect a copay larger than the amount it billed. The law limits what a pharmacy audit can take back. It requires drug price lists to be updated at least every 10 days and shared with pharmacies. It also sets a pay floor for independent pharmacies. They get the drug's national average cost, plus a fee of at least $15 for filling it, and that fee rises each year. The Montana Senate passed it 39-11, and it became law.",
+   "nay_description": "Voted against House Bill 740, which tightens rules on pharmacy benefit managers. These are the companies that run drug benefits for health plans. They may not stop a pharmacist from telling a patient about a cheaper option. They may not punish a pharmacist who does. They may not make a pharmacy collect a copay larger than the amount it billed. The law limits what a pharmacy audit can take back. It requires drug price lists to be updated at least every 10 days and shared with pharmacies. It also sets a pay floor for independent pharmacies. They get the drug's national average cost, plus a fee of at least $15 for filling it, and that fee rises each year. The Montana Senate passed it 39-11, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1539751,
+   "measure_id": "HB 953",
+   "vote_date": "2025-04-08",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 953, which adds direct primary care to the services Montana Medicaid may cover. In direct primary care a patient or their plan pays a doctor a set fee, instead of paying visit by visit. The coverage is optional, so the health department may add it by rule but does not have to. The law also bars the department from making an enrollee join a case management program if that person has a direct care agreement. It sets aside $5,000 to carry the change out. The Montana House passed it 73-24, and it became law.",
+   "nay_description": "Voted against House Bill 953, which adds direct primary care to the services Montana Medicaid may cover. In direct primary care a patient or their plan pays a doctor a set fee, instead of paying visit by visit. The coverage is optional, so the health department may add it by rule but does not have to. The law also bars the department from making an enrollee join a case management program if that person has a direct care agreement. It sets aside $5,000 to carry the change out. The Montana House passed it 73-24, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1557130,
+   "measure_id": "HB 953",
+   "vote_date": "2025-04-24",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 953, which adds direct primary care to the services Montana Medicaid may cover. In direct primary care a patient or their plan pays a doctor a set fee, instead of paying visit by visit. The coverage is optional, so the health department may add it by rule but does not have to. The law also bars the department from making an enrollee join a case management program if that person has a direct care agreement. It sets aside $5,000 to carry the change out. The Montana Senate passed it 28-22, and it became law.",
+   "nay_description": "Voted against House Bill 953, which adds direct primary care to the services Montana Medicaid may cover. In direct primary care a patient or their plan pays a doctor a set fee, instead of paying visit by visit. The coverage is optional, so the health department may add it by rule but does not have to. The law also bars the department from making an enrollee join a case management program if that person has a direct care agreement. It sets aside $5,000 to carry the change out. The Montana Senate passed it 28-22, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1524212,
+   "measure_id": "SB 170",
+   "vote_date": "2025-03-21",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 170, which removes the end date from Montana's community health aide program. These aides are trained local workers who provide basic health services. They are used mainly in tribal and rural areas. The program had been set to expire, and it is now permanent. The health department is told to seek the federal approval Medicaid needs to pay for their work. The Montana House passed it 57-40, and it became law.",
+   "nay_description": "Voted against Senate Bill 170, which removes the end date from Montana's community health aide program. These aides are trained local workers who provide basic health services. They are used mainly in tribal and rural areas. The program had been set to expire, and it is now permanent. The health department is told to seek the federal approval Medicaid needs to pay for their work. The Montana House passed it 57-40, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1486315,
+   "measure_id": "SB 170",
+   "vote_date": "2025-02-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 170, which removes the end date from Montana's community health aide program. These aides are trained local workers who provide basic health services. They are used mainly in tribal and rural areas. The program had been set to expire, and it is now permanent. The health department is told to seek the federal approval Medicaid needs to pay for their work. The Montana Senate passed it 34-16, and it became law.",
+   "nay_description": "Voted against Senate Bill 170, which removes the end date from Montana's community health aide program. These aides are trained local workers who provide basic health services. They are used mainly in tribal and rural areas. The program had been set to expire, and it is now permanent. The health department is told to seek the federal approval Medicaid needs to pay for their work. The Montana Senate passed it 34-16, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1546445,
+   "measure_id": "SB 262",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 262, which cuts environmental review out of part of subdivision approval. The state no longer follows the Montana Environmental Policy Act when it reviews water or sewer plans. Local governments that review small water and sewer systems drop two steps. They no longer file environmental policy act papers or property takings papers. They must still decide whether water quality would get worse. The Montana House passed it 57-42, and it became law.",
+   "nay_description": "Voted against Senate Bill 262, which cuts environmental review out of part of subdivision approval. The state no longer follows the Montana Environmental Policy Act when it reviews water or sewer plans. Local governments that review small water and sewer systems drop two steps. They no longer file environmental policy act papers or property takings papers. They must still decide whether water quality would get worse. The Montana House passed it 57-42, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1496351,
+   "measure_id": "SB 262",
+   "vote_date": "2025-02-21",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 262, which cuts environmental review out of part of subdivision approval. The state no longer follows the Montana Environmental Policy Act when it reviews water or sewer plans. Local governments that review small water and sewer systems drop two steps. They no longer file environmental policy act papers or property takings papers. They must still decide whether water quality would get worse. The Montana Senate passed it 39-11, and it became law.",
+   "nay_description": "Voted against Senate Bill 262, which cuts environmental review out of part of subdivision approval. The state no longer follows the Montana Environmental Policy Act when it reviews water or sewer plans. Local governments that review small water and sewer systems drop two steps. They no longer file environmental policy act papers or property takings papers. They must still decide whether water quality would get worse. The Montana Senate passed it 39-11, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1562296,
+   "measure_id": "SB 319",
+   "vote_date": "2025-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 319, which creates a state license for doulas. A doula is a trained helper, not a medical provider, who supports a pregnant woman before, during, and after birth. To use that title a person must be licensed by the state labor department. They must meet its training standards and have a clean record. Peer mentors, advocates, coaches, and tribal healers may keep doing similar work without a license. They just may not call themselves doulas. The law also lets the health department cover licensed doula services under Medicaid. It starts January 1, 2026 and ends December 31, 2030. The Montana House backed the final compromise version 54-46, and it became law.",
+   "nay_description": "Voted against Senate Bill 319, which creates a state license for doulas. A doula is a trained helper, not a medical provider, who supports a pregnant woman before, during, and after birth. To use that title a person must be licensed by the state labor department. They must meet its training standards and have a clean record. Peer mentors, advocates, coaches, and tribal healers may keep doing similar work without a license. They just may not call themselves doulas. The law also lets the health department cover licensed doula services under Medicaid. It starts January 1, 2026 and ends December 31, 2030. The Montana House backed the final compromise version 54-46, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1562297,
+   "measure_id": "SB 319",
+   "vote_date": "2025-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 319, which creates a state license for doulas. A doula is a trained helper, not a medical provider, who supports a pregnant woman before, during, and after birth. To use that title a person must be licensed by the state labor department. They must meet its training standards and have a clean record. Peer mentors, advocates, coaches, and tribal healers may keep doing similar work without a license. They just may not call themselves doulas. The law also lets the health department cover licensed doula services under Medicaid. It starts January 1, 2026 and ends December 31, 2030. The Montana Senate backed the final compromise version 28-22, and it became law.",
+   "nay_description": "Voted against Senate Bill 319, which creates a state license for doulas. A doula is a trained helper, not a medical provider, who supports a pregnant woman before, during, and after birth. To use that title a person must be licensed by the state labor department. They must meet its training standards and have a clean record. Peer mentors, advocates, coaches, and tribal healers may keep doing similar work without a license. They just may not call themselves doulas. The law also lets the health department cover licensed doula services under Medicaid. It starts January 1, 2026 and ends December 31, 2030. The Montana Senate backed the final compromise version 28-22, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
