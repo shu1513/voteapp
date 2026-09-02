@@ -86,8 +86,8 @@
       "measure_id": "H 1219",
       "vote_date": "2025-04-24",
       "review_status": "approved",
-      "yea_description": "Voted for House Bill 1219. The CHOICE Act lets non-health workers earning over twice their county's average wage sign deals lasting up to four years that pay them to avoid rivals or bar rival work, and says these are not trade restraints. Courts must temporarily stop similar work unless strong evidence shows it differs or the employer stopped agreed pay and benefits. The Florida Senate passed it 28-9, and it became law.",
-      "nay_description": "Voted against House Bill 1219. The CHOICE Act lets non-health workers earning over twice their county's average wage sign deals lasting up to four years that pay them to avoid rivals or bar rival work, and says these are not trade restraints. Courts must temporarily stop similar work unless strong evidence shows it differs or the employer stopped agreed pay and benefits. The Florida Senate passed it 28-9, and it became law.",
+      "yea_description": "Voted for House Bill 1219. The CHOICE Act lets workers earning over twice their county's average wage, except licensed health care practitioners, sign deals lasting up to four years that pay them to avoid rivals or bar rival work, and says these are not trade restraints. Courts must temporarily stop similar work unless strong evidence shows it differs or the employer stopped agreed pay and benefits. The Florida Senate passed it 28-9, and it became law.",
+      "nay_description": "Voted against House Bill 1219. The CHOICE Act lets workers earning over twice their county's average wage, except licensed health care practitioners, sign deals lasting up to four years that pay them to avoid rivals or bar rival work, and says these are not trade restraints. Courts must temporarily stop similar work unless strong evidence shows it differs or the employer stopped agreed pay and benefits. The Florida Senate passed it 28-9, and it became law.",
       "labels": [
         {
           "slug": "corporate_accountability",
@@ -122,8 +122,8 @@
       "measure_id": "S 56",
       "vote_date": "2025-04-03",
       "review_status": "approved",
-      "yea_description": "Voted for Senate Bill 56. Purposely releasing material into Florida's air to change weather, climate, temperature, or sunlight becomes a third-degree felony, with up to five years and $100,000, or up to $5,000 for aircraft workers. Public airports must report equipped aircraft, environmental officials must investigate reports, and Florida ends its weather-modification licenses and research power. The Florida Senate passed it 28-9, and it became law.",
-      "nay_description": "Voted against Senate Bill 56. Purposely releasing material into Florida's air to change weather, climate, temperature, or sunlight becomes a third-degree felony, with up to five years and $100,000, or up to $5,000 for aircraft workers. Public airports must report equipped aircraft, environmental officials must investigate reports, and Florida ends its weather-modification licenses and research power. The Florida Senate passed it 28-9, and it became law.",
+      "yea_description": "Voted for Senate Bill 56. Purposely releasing material into Florida's air to change weather, climate, temperature, or sunlight becomes a third-degree felony carrying up to five years in prison, with a fine up to $100,000, or up to $5,000 for aircraft operators and controllers. Public airports must report equipped aircraft, environmental officials must investigate reports, and Florida ends its weather-modification licenses and research power. The Florida Senate passed it 28-9, and it became law.",
+      "nay_description": "Voted against Senate Bill 56. Purposely releasing material into Florida's air to change weather, climate, temperature, or sunlight becomes a third-degree felony carrying up to five years in prison, with a fine up to $100,000, or up to $5,000 for aircraft operators and controllers. Public airports must report equipped aircraft, environmental officials must investigate reports, and Florida ends its weather-modification licenses and research power. The Florida Senate passed it 28-9, and it became law.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -140,8 +140,8 @@
       "measure_id": "S 56",
       "vote_date": "2025-04-30",
       "review_status": "approved",
-      "yea_description": "Voted for Senate Bill 56. Purposely releasing material into Florida's air to change weather, climate, temperature, or sunlight becomes a third-degree felony, with up to five years and $100,000, or up to $5,000 for aircraft workers. Public airports must report equipped aircraft, environmental officials must investigate reports, and Florida ends its weather-modification licenses and research power. The Florida House passed it 82-28, and it became law.",
-      "nay_description": "Voted against Senate Bill 56. Purposely releasing material into Florida's air to change weather, climate, temperature, or sunlight becomes a third-degree felony, with up to five years and $100,000, or up to $5,000 for aircraft workers. Public airports must report equipped aircraft, environmental officials must investigate reports, and Florida ends its weather-modification licenses and research power. The Florida House passed it 82-28, and it became law.",
+      "yea_description": "Voted for Senate Bill 56. Purposely releasing material into Florida's air to change weather, climate, temperature, or sunlight becomes a third-degree felony carrying up to five years in prison, with a fine up to $100,000, or up to $5,000 for aircraft operators and controllers. Public airports must report equipped aircraft, environmental officials must investigate reports, and Florida ends its weather-modification licenses and research power. The Florida House passed it 82-28, and it became law.",
+      "nay_description": "Voted against Senate Bill 56. Purposely releasing material into Florida's air to change weather, climate, temperature, or sunlight becomes a third-degree felony carrying up to five years in prison, with a fine up to $100,000, or up to $5,000 for aircraft operators and controllers. Public airports must report equipped aircraft, environmental officials must investigate reports, and Florida ends its weather-modification licenses and research power. The Florida House passed it 82-28, and it became law.",
       "labels": [
         {
           "slug": "environment_and_public_health",
