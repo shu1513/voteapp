@@ -105,3 +105,17 @@ with reasons naming the replacing record:
 - `93f3731f…` Jason Ridley, SB 1 House passage → replaced by `bf4f6bac…` (house roll 1531583).
 
 PROD UNTOUCHED — promotion is a separate step.
+
+## Plain-language rewrite (2026-08-30)
+
+All 18 yea and nay descriptions were rewritten from committed evidence. Judge
+dry and real runs passed. The importer rewrote 1,725 local records with stamp
+`2026-08-31T06:58:26.015Z`; convergence reported all 1,725 unchanged. The
+original `import-report.json` remains unchanged.
+Prod remains untouched.
+
+Current-judge later-roll acknowledgments: 1508337→1535498,
+1524305→1524304, and 1531585→1531584.
+
+A final jargon-definition pass rewrote 188 SB 212 records at
+`2026-08-31T07:28:27.200Z`; the next dry run reported all 1,725 unchanged.

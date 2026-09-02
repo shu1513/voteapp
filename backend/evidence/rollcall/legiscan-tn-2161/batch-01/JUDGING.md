@@ -138,3 +138,21 @@ cites these roll calls and none duplicates a record this batch writes, so nothin
 retired. Note for later: Watson's Vote Smart row does describe the **Senate's** SB 1084
 vote, which is not divided and so is not in this batch; a future batch that imported it
 would be a genuine duplicate.
+
+## Plain-language rewrite (2026-08-31)
+
+All 14 yea and nay descriptions were rewritten from committed evidence. Judge
+dry and real runs passed. A run with the current default scope rewrote 691
+local records at `2026-08-31T07:15:58.986Z`.
+
+The original import used `--scope-from 2026-08-01`, so the importer was run
+again with that same scope instead of editing candidate rows directly. It
+rewrote the remaining 135 records at `2026-08-31T07:18:03.404Z`; convergence
+reported all 826 unchanged, and a DB comparison found zero stale descriptions.
+The original `import-report.json` remains unchanged. Prod remains untouched.
+
+Current-judge later-roll acknowledgment: 1543982→1661626.
+
+A final jargon-definition pass, again using the original scope, rewrote 241
+records at `2026-08-31T07:29:19.009Z`; the next dry run reported all 826
+unchanged.

@@ -8,13 +8,17 @@
       "measure_id": "HB 493",
       "vote_date": "2025-05-13",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.B. 493, which made a person who has been finally convicted of a first- or second-degree felony ineligible to serve as a poll watcher, on top of the existing bar on a felony conviction connected to election conduct, and required the appointee's certificate of appointment to carry an affidavit that they have no such conviction. It passed the Texas House 86-52 and became law.",
-      "nay_description": "Voted against passing H.B. 493, which made a person who has been finally convicted of a first- or second-degree felony ineligible to serve as a poll watcher, on top of the existing bar on a felony conviction connected to election conduct, and required the appointee's certificate of appointment to carry an affidavit that they have no such conviction. It passed the Texas House 86-52 and became law.",
+      "yea_description": "Voted to pass House Bill 493. It bars people finally convicted of first- or second-degree felonies, the two most serious levels, from serving as poll watchers. Texas already barred people with an election-related felony, and appointees must now swear in writing that they have no covered conviction. The bill became law after the Texas House passed it 86-52.",
+      "nay_description": "Voted against House Bill 493. It bars people finally convicted of first- or second-degree felonies, the two most serious levels, from serving as poll watchers. Texas already barred people with an election-related felony, and appointees must now swear in writing that they have no covered conviction. The bill became law after the Texas House passed it 86-52.",
       "labels": [
         {
           "slug": "election_integrity",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
+      ],
+      "acknowledge_later_rolls": [
+        1582993
       ]
     },
     {
@@ -25,12 +29,13 @@
       "measure_id": "HB 493",
       "vote_date": "2025-06-01",
       "review_status": "approved",
-      "yea_description": "Voted to adopt the conference committee report on H.B. 493, which made a person who has been finally convicted of a first- or second-degree felony ineligible to serve as a poll watcher, on top of the existing bar on a felony conviction connected to election conduct, and required the appointee's certificate of appointment to carry an affidavit that they have no such conviction. The Texas Senate adopted the report 23-8 and the bill became law.",
-      "nay_description": "Voted against adopting the conference committee report on H.B. 493, which made a person who has been finally convicted of a first- or second-degree felony ineligible to serve as a poll watcher, on top of the existing bar on a felony conviction connected to election conduct, and required the appointee's certificate of appointment to carry an affidavit that they have no such conviction. The Texas Senate adopted the report 23-8 and the bill became law.",
+      "yea_description": "Voted to accept the final House-Senate deal on House Bill 493. It bars people finally convicted of first- or second-degree felonies, the two most serious levels, from serving as poll watchers. Texas already barred people with an election-related felony, and appointees must now swear in writing that they have no covered conviction. The bill became law after the Texas Senate approved the compromise 23-8.",
+      "nay_description": "Voted against the final House-Senate deal on House Bill 493. It bars people finally convicted of first- or second-degree felonies, the two most serious levels, from serving as poll watchers. Texas already barred people with an election-related felony, and appointees must now swear in writing that they have no covered conviction. The bill became law after the Texas Senate approved the compromise 23-8.",
       "labels": [
         {
           "slug": "election_integrity",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -42,12 +47,15 @@
       "measure_id": "HB 521",
       "vote_date": "2025-05-13",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.B. 521, which required a curbside voter to sign a sworn statement that they cannot enter the polling place without assistance or are requesting a disability accommodation, extended curbside ballot delivery to a voter escorting such a person, required two election officers to deliver the ballot where four or more are present, barred electioneering within 20 feet of a designated curbside space, and made it a Class A misdemeanor for a person who transported seven or more curbside voters to intentionally fail to file the required form. It passed the Texas House 84-54 and became law.",
-      "nay_description": "Voted against passing H.B. 521, which required a curbside voter to sign a sworn statement that they cannot enter the polling place without assistance or are requesting a disability accommodation, extended curbside ballot delivery to a voter escorting such a person, required two election officers to deliver the ballot where four or more are present, barred electioneering within 20 feet of a designated curbside space, and made it a Class A misdemeanor for a person who transported seven or more curbside voters to intentionally fail to file the required form. It passed the Texas House 84-54 and became law.",
+      "yea_description": "Voted to pass House Bill 521. Curbside voters must swear they cannot enter without help or need help because of a disability, and someone escorting such a voter may also get a curbside ballot. When at least four poll workers are present, two must carry the ballot; campaigning is barred within 20 feet; and knowingly skipping the form after driving seven or more voters is a Class A misdemeanor, the state's most serious minor crime. The bill became law after the Texas House passed it 84-54.",
+      "nay_description": "Voted against House Bill 521. Curbside voters must swear they cannot enter without help or need help because of a disability, and someone escorting such a voter may also get a curbside ballot. When at least four poll workers are present, two must carry the ballot; campaigning is barred within 20 feet; and knowingly skipping the form after driving seven or more voters is a Class A misdemeanor, the state's most serious minor crime. The bill became law after the Texas House passed it 84-54.",
       "labels": [
         {
           "slug": "general"
         }
+      ],
+      "acknowledge_later_rolls": [
+        1581601
       ]
     },
     {
@@ -58,8 +66,8 @@
       "measure_id": "HB 521",
       "vote_date": "2025-05-28",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.B. 521, which required a curbside voter to sign a sworn statement that they cannot enter the polling place without assistance or are requesting a disability accommodation, extended curbside ballot delivery to a voter escorting such a person, required two election officers to deliver the ballot where four or more are present, barred electioneering within 20 feet of a designated curbside space, and made it a Class A misdemeanor for a person who transported seven or more curbside voters to intentionally fail to file the required form. It passed the Texas Senate 20-11 and became law.",
-      "nay_description": "Voted against passing H.B. 521, which required a curbside voter to sign a sworn statement that they cannot enter the polling place without assistance or are requesting a disability accommodation, extended curbside ballot delivery to a voter escorting such a person, required two election officers to deliver the ballot where four or more are present, barred electioneering within 20 feet of a designated curbside space, and made it a Class A misdemeanor for a person who transported seven or more curbside voters to intentionally fail to file the required form. It passed the Texas Senate 20-11 and became law.",
+      "yea_description": "Voted to pass House Bill 521. Curbside voters must swear they cannot enter without help or need help because of a disability, and someone escorting such a voter may also get a curbside ballot. When at least four poll workers are present, two must carry the ballot; campaigning is barred within 20 feet; and knowingly skipping the form after driving seven or more voters is a Class A misdemeanor, the state's most serious minor crime. The bill became law after the Texas Senate passed it 20-11.",
+      "nay_description": "Voted against House Bill 521. Curbside voters must swear they cannot enter without help or need help because of a disability, and someone escorting such a voter may also get a curbside ballot. When at least four poll workers are present, two must carry the ballot; campaigning is barred within 20 feet; and knowingly skipping the form after driving seven or more voters is a Class A misdemeanor, the state's most serious minor crime. The bill became law after the Texas Senate passed it 20-11.",
       "labels": [
         {
           "slug": "general"
@@ -74,12 +82,13 @@
       "measure_id": "HB 5115",
       "vote_date": "2025-05-15",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.B. 5115, which raised election fraud under Section 276.013 of the Election Code from a Class A misdemeanor to a second-degree felony, to a first-degree felony when committed by an elected official, and to a third-degree felony for an attempt, and added knowingly counting votes the person knows are invalid or refusing to count votes the person knows are valid to the offense. It passed the Texas House 88-54 and became law.",
-      "nay_description": "Voted against passing H.B. 5115, which raised election fraud under Section 276.013 of the Election Code from a Class A misdemeanor to a second-degree felony, to a first-degree felony when committed by an elected official, and to a third-degree felony for an attempt, and added knowingly counting votes the person knows are invalid or refusing to count votes the person knows are valid to the offense. It passed the Texas House 88-54 and became law.",
+      "yea_description": "Voted to pass House Bill 5115. It raises the election fraud listed in state Election Code Section 276.013 from the most serious misdemeanor to a second-degree felony, makes it a first-degree felony for elected officials, and makes an attempt a third-degree felony. It also covers knowingly counting an invalid vote or refusing to count a valid one. The bill became law after the Texas House passed it 88-54.",
+      "nay_description": "Voted against House Bill 5115. It raises the election fraud listed in state Election Code Section 276.013 from the most serious misdemeanor to a second-degree felony, makes it a first-degree felony for elected officials, and makes an attempt a third-degree felony. It also covers knowingly counting an invalid vote or refusing to count a valid one. The bill became law after the Texas House passed it 88-54.",
       "labels": [
         {
           "slug": "election_integrity",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -91,12 +100,13 @@
       "measure_id": "HB 5115",
       "vote_date": "2025-05-28",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.B. 5115, which raised election fraud under Section 276.013 of the Election Code from a Class A misdemeanor to a second-degree felony, to a first-degree felony when committed by an elected official, and to a third-degree felony for an attempt, and added knowingly counting votes the person knows are invalid or refusing to count votes the person knows are valid to the offense. It passed the Texas Senate 21-10 and became law.",
-      "nay_description": "Voted against passing H.B. 5115, which raised election fraud under Section 276.013 of the Election Code from a Class A misdemeanor to a second-degree felony, to a first-degree felony when committed by an elected official, and to a third-degree felony for an attempt, and added knowingly counting votes the person knows are invalid or refusing to count votes the person knows are valid to the offense. It passed the Texas Senate 21-10 and became law.",
+      "yea_description": "Voted to pass House Bill 5115. It raises the election fraud listed in state Election Code Section 276.013 from the most serious misdemeanor to a second-degree felony, makes it a first-degree felony for elected officials, and makes an attempt a third-degree felony. It also covers knowingly counting an invalid vote or refusing to count a valid one. The bill became law after the Texas Senate passed it 21-10.",
+      "nay_description": "Voted against House Bill 5115. It raises the election fraud listed in state Election Code Section 276.013 from the most serious misdemeanor to a second-degree felony, makes it a first-degree felony for elected officials, and makes an attempt a third-degree felony. It also covers knowingly counting an invalid vote or refusing to count a valid one. The bill became law after the Texas Senate passed it 21-10.",
       "labels": [
         {
           "slug": "election_integrity",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -108,12 +118,13 @@
       "measure_id": "SB 510",
       "vote_date": "2025-05-28",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.B. 510, which let the secretary of state withhold voter-registration funding from a county voter registrar who, after written notice and a reasonable opportunity to correct, fails to timely perform an Election Code duty on approving, changing, or cancelling a registration, on scheduling or deciding a registration challenge, or on delivering a residence-confirmation notice. It passed the Texas House 109-33 and became law.",
-      "nay_description": "Voted against passing S.B. 510, which let the secretary of state withhold voter-registration funding from a county voter registrar who, after written notice and a reasonable opportunity to correct, fails to timely perform an Election Code duty on approving, changing, or cancelling a registration, on scheduling or deciding a registration challenge, or on delivering a residence-confirmation notice. It passed the Texas House 109-33 and became law.",
+      "yea_description": "Voted to pass Senate Bill 510. It lets the secretary of state withhold voter-registration money from a county official after written notice and a fair chance to fix late or missing work. Covered duties include handling registrations, registration challenges, and address-check notices on time. The bill became law after the Texas House passed it 109-33.",
+      "nay_description": "Voted against Senate Bill 510. It lets the secretary of state withhold voter-registration money from a county official after written notice and a fair chance to fix late or missing work. Covered duties include handling registrations, registration challenges, and address-check notices on time. The bill became law after the Texas House passed it 109-33.",
       "labels": [
         {
           "slug": "election_integrity",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -125,13 +136,17 @@
       "measure_id": "SB 510",
       "vote_date": "2025-05-13",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.B. 510, which let the secretary of state withhold voter-registration funding from a county voter registrar who, after written notice and a reasonable opportunity to correct, fails to timely perform an Election Code duty on approving, changing, or cancelling a registration, on scheduling or deciding a registration challenge, or on delivering a residence-confirmation notice. It passed the Texas Senate 20-11 and became law.",
-      "nay_description": "Voted against passing S.B. 510, which let the secretary of state withhold voter-registration funding from a county voter registrar who, after written notice and a reasonable opportunity to correct, fails to timely perform an Election Code duty on approving, changing, or cancelling a registration, on scheduling or deciding a registration challenge, or on delivering a residence-confirmation notice. It passed the Texas Senate 20-11 and became law.",
+      "yea_description": "Voted to pass Senate Bill 510. It lets the secretary of state withhold voter-registration money from a county official after written notice and a fair chance to fix late or missing work. Covered duties include handling registrations, registration challenges, and address-check notices on time. The bill became law after the Texas Senate passed it 20-11.",
+      "nay_description": "Voted against Senate Bill 510. It lets the secretary of state withhold voter-registration money from a county official after written notice and a fair chance to fix late or missing work. Covered duties include handling registrations, registration challenges, and address-check notices on time. The bill became law after the Texas Senate passed it 20-11.",
       "labels": [
         {
           "slug": "election_integrity",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
+      ],
+      "acknowledge_later_rolls": [
+        1584058
       ]
     },
     {
@@ -142,12 +157,13 @@
       "measure_id": "HB 3053",
       "vote_date": "2025-05-13",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.B. 3053, which prohibited a municipality or county from adopting or enforcing a measure under which it organizes, sponsors, or participates in a program that buys or offers to buy firearms with the intent to remove firearms from circulation, reduce the number of firearms owned by civilians, or let people sell firearms without fear of criminal prosecution. It passed the Texas House 85-56 and became law.",
-      "nay_description": "Voted against passing H.B. 3053, which prohibited a municipality or county from adopting or enforcing a measure under which it organizes, sponsors, or participates in a program that buys or offers to buy firearms with the intent to remove firearms from circulation, reduce the number of firearms owned by civilians, or let people sell firearms without fear of criminal prosecution. It passed the Texas House 85-56 and became law.",
+      "yea_description": "Voted to pass House Bill 3053. It blocks cities and counties from running or joining firearm buyback programs meant to reduce civilian gun ownership or let people sell guns without fear of charges. The bill became law after the Texas House passed it 85-56.",
+      "nay_description": "Voted against House Bill 3053. It blocks cities and counties from running or joining firearm buyback programs meant to reduce civilian gun ownership or let people sell guns without fear of charges. The bill became law after the Texas House passed it 85-56.",
       "labels": [
         {
           "slug": "gun_control",
-          "yea": "against"
+          "yea": "against",
+          "nay": null
         }
       ]
     },
@@ -159,12 +175,13 @@
       "measure_id": "HB 3053",
       "vote_date": "2025-05-28",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.B. 3053, which prohibited a municipality or county from adopting or enforcing a measure under which it organizes, sponsors, or participates in a program that buys or offers to buy firearms with the intent to remove firearms from circulation, reduce the number of firearms owned by civilians, or let people sell firearms without fear of criminal prosecution. It passed the Texas Senate 20-11 and became law.",
-      "nay_description": "Voted against passing H.B. 3053, which prohibited a municipality or county from adopting or enforcing a measure under which it organizes, sponsors, or participates in a program that buys or offers to buy firearms with the intent to remove firearms from circulation, reduce the number of firearms owned by civilians, or let people sell firearms without fear of criminal prosecution. It passed the Texas Senate 20-11 and became law.",
+      "yea_description": "Voted to pass House Bill 3053. It blocks cities and counties from running or joining firearm buyback programs meant to reduce civilian gun ownership or let people sell guns without fear of charges. The bill became law after the Texas Senate passed it 20-11.",
+      "nay_description": "Voted against House Bill 3053. It blocks cities and counties from running or joining firearm buyback programs meant to reduce civilian gun ownership or let people sell guns without fear of charges. The bill became law after the Texas Senate passed it 20-11.",
       "labels": [
         {
           "slug": "gun_control",
-          "yea": "against"
+          "yea": "against",
+          "nay": null
         }
       ]
     },
@@ -176,12 +193,13 @@
       "measure_id": "SB 1362",
       "vote_date": "2025-05-28",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.B. 1362, which was titled the Anti-Red Flag Act and barred state and local entities from adopting or enforcing any measure relating to an extreme risk protective order unless Texas law specifically authorizes it, barred them from accepting federal grants to enforce such orders, and made serving or enforcing an extreme risk protective order not issued under Texas law a state jail felony, while leaving protective orders issued under the Family Code or the Code of Criminal Procedure untouched. It passed the Texas House 86-53 and became law.",
-      "nay_description": "Voted against passing S.B. 1362, which was titled the Anti-Red Flag Act and barred state and local entities from adopting or enforcing any measure relating to an extreme risk protective order unless Texas law specifically authorizes it, barred them from accepting federal grants to enforce such orders, and made serving or enforcing an extreme risk protective order not issued under Texas law a state jail felony, while leaving protective orders issued under the Family Code or the Code of Criminal Procedure untouched. It passed the Texas House 86-53 and became law.",
+      "yea_description": "Voted to pass Senate Bill 1362. It bars Texas offices from using red flag orders unless state law allows them; these court orders take guns from people judged dangerous for a time. Offices cannot take federal money to enforce them; using an order not issued under Texas law becomes the lowest felony level, while current family and crime-related protection orders stay. The bill became law after the Texas House passed it 86-53.",
+      "nay_description": "Voted against Senate Bill 1362. It bars Texas offices from using red flag orders unless state law allows them; these court orders take guns from people judged dangerous for a time. Offices cannot take federal money to enforce them; using an order not issued under Texas law becomes the lowest felony level, while current family and crime-related protection orders stay. The bill became law after the Texas House passed it 86-53.",
       "labels": [
         {
           "slug": "gun_control",
-          "yea": "against"
+          "yea": "against",
+          "nay": null
         }
       ]
     },
@@ -193,13 +211,17 @@
       "measure_id": "SB 1362",
       "vote_date": "2025-03-27",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.B. 1362, which was titled the Anti-Red Flag Act and barred state and local entities from adopting or enforcing any measure relating to an extreme risk protective order unless Texas law specifically authorizes it, barred them from accepting federal grants to enforce such orders, and made serving or enforcing an extreme risk protective order not issued under Texas law a state jail felony, while leaving protective orders issued under the Family Code or the Code of Criminal Procedure untouched. It passed the Texas Senate 19-11 and became law.",
-      "nay_description": "Voted against passing S.B. 1362, which was titled the Anti-Red Flag Act and barred state and local entities from adopting or enforcing any measure relating to an extreme risk protective order unless Texas law specifically authorizes it, barred them from accepting federal grants to enforce such orders, and made serving or enforcing an extreme risk protective order not issued under Texas law a state jail felony, while leaving protective orders issued under the Family Code or the Code of Criminal Procedure untouched. It passed the Texas Senate 19-11 and became law.",
+      "yea_description": "Voted to pass Senate Bill 1362. It bars Texas offices from using red flag orders unless state law allows them; these court orders take guns from people judged dangerous for a time. Offices cannot take federal money to enforce them; using an order not issued under Texas law becomes the lowest felony level, while current family and crime-related protection orders stay. The bill became law after the Texas Senate passed it 19-11.",
+      "nay_description": "Voted against Senate Bill 1362. It bars Texas offices from using red flag orders unless state law allows them; these court orders take guns from people judged dangerous for a time. Offices cannot take federal money to enforce them; using an order not issued under Texas law becomes the lowest felony level, while current family and crime-related protection orders stay. The bill became law after the Texas Senate passed it 19-11.",
       "labels": [
         {
           "slug": "gun_control",
-          "yea": "against"
+          "yea": "against",
+          "nay": null
         }
+      ],
+      "acknowledge_later_rolls": [
+        1583939
       ]
     },
     {
@@ -210,12 +232,13 @@
       "measure_id": "SB 2284",
       "vote_date": "2025-05-15",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.B. 2284, which barred municipalities and counties from regulating archery equipment alongside firearms and air guns, made the exception that lets a municipality regulate carrying at certain public places and events inapplicable to handgun license holders, struck firearms from the provision letting a Type A general-law municipality prohibit or regulate the use of fireworks and firearms, and narrowed county authority to restrict bow hunting to subdivision lots smaller than seven acres rather than 10 acres or smaller. It passed the Texas House 96-43 and became law.",
-      "nay_description": "Voted against passing S.B. 2284, which barred municipalities and counties from regulating archery equipment alongside firearms and air guns, made the exception that lets a municipality regulate carrying at certain public places and events inapplicable to handgun license holders, struck firearms from the provision letting a Type A general-law municipality prohibit or regulate the use of fireworks and firearms, and narrowed county authority to restrict bow hunting to subdivision lots smaller than seven acres rather than 10 acres or smaller. It passed the Texas House 96-43 and became law.",
+      "yea_description": "Voted to pass Senate Bill 2284, which limits local bow and gun rules. Cities and counties cannot treat bows like firearms or air guns, and licensed handgun carriers keep some rights at public places and events. It also removes one small-city gun power and changes the county bow-hunting lot limit from 10 acres or less to under seven acres. The bill became law after the Texas House passed it 96-43.",
+      "nay_description": "Voted against Senate Bill 2284, which limits local bow and gun rules. Cities and counties cannot treat bows like firearms or air guns, and licensed handgun carriers keep some rights at public places and events. It also removes one small-city gun power and changes the county bow-hunting lot limit from 10 acres or less to under seven acres. The bill became law after the Texas House passed it 96-43.",
       "labels": [
         {
           "slug": "gun_control",
-          "yea": "against"
+          "yea": "against",
+          "nay": null
         }
       ]
     },
@@ -227,8 +250,8 @@
       "measure_id": "SB 11",
       "vote_date": "2025-05-23",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.B. 11, which let a school district or open-enrollment charter school board adopt, by record vote, a policy giving students and employees a daily period for prayer and reading of the Bible or another religious text, required a signed consent form that includes an express waiver of the right to bring an Establishment Clause or related claim, barred delivery over a public address system, required the attorney general to defend an adopting district at state expense, and deleted the existing prohibition on encouraging a student to engage in or refrain from prayer. It passed the Texas House 88-48 and became law.",
-      "nay_description": "Voted against passing S.B. 11, which let a school district or open-enrollment charter school board adopt, by record vote, a policy giving students and employees a daily period for prayer and reading of the Bible or another religious text, required a signed consent form that includes an express waiver of the right to bring an Establishment Clause or related claim, barred delivery over a public address system, required the attorney general to defend an adopting district at state expense, and deleted the existing prohibition on encouraging a student to engage in or refrain from prayer. It passed the Texas House 88-48 and became law.",
+      "yea_description": "Voted through Senate Bill 11 to let school boards create a daily school prayer and religious-reading period. Participants must give up legal claims that the prayer time breaks church-state rules; the time cannot use the school speaker system; and the state must defend participating schools. It also removes the rule against urging students to pray or not pray. The bill became law after the Texas House passed it 88-48.",
+      "nay_description": "Voted against Senate Bill 11, which lets school boards create a daily school prayer and religious-reading period. Participants must give up legal claims that the prayer time breaks church-state rules; the time cannot use the school speaker system; and the state must defend participating schools. It also removes the rule against urging students to pray or not pray. The bill became law after the Texas House passed it 88-48.",
       "labels": [
         {
           "slug": "general"
@@ -243,8 +266,8 @@
       "measure_id": "SB 11",
       "vote_date": "2025-03-18",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.B. 11, which let a school district or open-enrollment charter school board adopt, by record vote, a policy giving students and employees a daily period for prayer and reading of the Bible or another religious text, required a signed consent form that includes an express waiver of the right to bring an Establishment Clause or related claim, barred delivery over a public address system, required the attorney general to defend an adopting district at state expense, and deleted the existing prohibition on encouraging a student to engage in or refrain from prayer. It passed the Texas Senate 23-7 and became law.",
-      "nay_description": "Voted against passing S.B. 11, which let a school district or open-enrollment charter school board adopt, by record vote, a policy giving students and employees a daily period for prayer and reading of the Bible or another religious text, required a signed consent form that includes an express waiver of the right to bring an Establishment Clause or related claim, barred delivery over a public address system, required the attorney general to defend an adopting district at state expense, and deleted the existing prohibition on encouraging a student to engage in or refrain from prayer. It passed the Texas Senate 23-7 and became law.",
+      "yea_description": "Voted through Senate Bill 11 to let school boards create a daily school prayer and religious-reading period. Participants must give up legal claims that the prayer time breaks church-state rules; the time cannot use the school speaker system; and the state must defend participating schools. It also removes the rule against urging students to pray or not pray. The bill became law after the Texas Senate passed it 23-7.",
+      "nay_description": "Voted against Senate Bill 11, which lets school boards create a daily school prayer and religious-reading period. Participants must give up legal claims that the prayer time breaks church-state rules; the time cannot use the school speaker system; and the state must defend participating schools. It also removes the rule against urging students to pray or not pray. The bill became law after the Texas Senate passed it 23-7.",
       "labels": [
         {
           "slug": "general"
@@ -259,12 +282,13 @@
       "measure_id": "SB 965",
       "vote_date": "2025-05-23",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.B. 965, which provided that a school district, open-enrollment charter school, or other state governmental entity may not infringe on a public school employee's right to engage in religious speech or prayer while on duty unless the infringement is necessary to further a compelling state interest and is narrowly tailored using the least restrictive means. It passed the Texas House 86-48 and became law.",
-      "nay_description": "Voted against passing S.B. 965, which provided that a school district, open-enrollment charter school, or other state governmental entity may not infringe on a public school employee's right to engage in religious speech or prayer while on duty unless the infringement is necessary to further a compelling state interest and is narrowly tailored using the least restrictive means. It passed the Texas House 86-48 and became law.",
+      "yea_description": "Voted to pass Senate Bill 965. It protects a public school employee's religious speech or prayer while working. A government office may limit it only to serve a vital public goal and must use the narrowest rule that works. The bill became law after the Texas House passed it 86-48.",
+      "nay_description": "Voted against Senate Bill 965. It protects a public school employee's religious speech or prayer while working. A government office may limit it only to serve a vital public goal and must use the narrowest rule that works. The bill became law after the Texas House passed it 86-48.",
       "labels": [
         {
           "slug": "civil_rights",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -276,12 +300,13 @@
       "measure_id": "SB 965",
       "vote_date": "2025-04-01",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.B. 965, which provided that a school district, open-enrollment charter school, or other state governmental entity may not infringe on a public school employee's right to engage in religious speech or prayer while on duty unless the infringement is necessary to further a compelling state interest and is narrowly tailored using the least restrictive means. It passed the Texas Senate 20-11 and became law.",
-      "nay_description": "Voted against passing S.B. 965, which provided that a school district, open-enrollment charter school, or other state governmental entity may not infringe on a public school employee's right to engage in religious speech or prayer while on duty unless the infringement is necessary to further a compelling state interest and is narrowly tailored using the least restrictive means. It passed the Texas Senate 20-11 and became law.",
+      "yea_description": "Voted to pass Senate Bill 965. It protects a public school employee's religious speech or prayer while working. A government office may limit it only to serve a vital public goal and must use the narrowest rule that works. The bill became law after the Texas Senate passed it 20-11.",
+      "nay_description": "Voted against Senate Bill 965. It protects a public school employee's religious speech or prayer while working. A government office may limit it only to serve a vital public goal and must use the narrowest rule that works. The bill became law after the Texas Senate passed it 20-11.",
       "labels": [
         {
           "slug": "civil_rights",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -293,12 +318,13 @@
       "measure_id": "SB 1257",
       "vote_date": "2025-05-12",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.B. 1257, which required a health benefit plan that provides or has ever provided coverage for an enrollee's gender transition procedure to also cover the adverse consequences of that procedure, annual baseline and follow-up monitoring, and any treatment needed to manage, reverse, or reconstruct from it, including for an enrollee who was not in the plan when the procedure occurred; self-funded ERISA plans are excluded. It passed the Texas House 87-58 and became law.",
-      "nay_description": "Voted against passing S.B. 1257, which required a health benefit plan that provides or has ever provided coverage for an enrollee's gender transition procedure to also cover the adverse consequences of that procedure, annual baseline and follow-up monitoring, and any treatment needed to manage, reverse, or reconstruct from it, including for an enrollee who was not in the plan when the procedure occurred; self-funded ERISA plans are excluded. It passed the Texas House 87-58 and became law.",
+      "yea_description": "Voted to pass Senate Bill 1257. Health plans that cover or once covered a patient's gender transition procedure must also cover side effects, yearly checks, and care to manage or reverse it. Coverage applies even if the patient joined the plan later, while employer plans that pay claims themselves are exempt. The bill became law after the Texas House passed it 87-58.",
+      "nay_description": "Voted against Senate Bill 1257. Health plans that cover or once covered a patient's gender transition procedure must also cover side effects, yearly checks, and care to manage or reverse it. Coverage applies even if the patient joined the plan later, while employer plans that pay claims themselves are exempt. The bill became law after the Texas House passed it 87-58.",
       "labels": [
         {
           "slug": "healthcare_affordability",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -310,12 +336,13 @@
       "measure_id": "SB 1257",
       "vote_date": "2025-04-24",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.B. 1257, which required a health benefit plan that provides or has ever provided coverage for an enrollee's gender transition procedure to also cover the adverse consequences of that procedure, annual baseline and follow-up monitoring, and any treatment needed to manage, reverse, or reconstruct from it, including for an enrollee who was not in the plan when the procedure occurred; self-funded ERISA plans are excluded. It passed the Texas Senate 20-11 and became law.",
-      "nay_description": "Voted against passing S.B. 1257, which required a health benefit plan that provides or has ever provided coverage for an enrollee's gender transition procedure to also cover the adverse consequences of that procedure, annual baseline and follow-up monitoring, and any treatment needed to manage, reverse, or reconstruct from it, including for an enrollee who was not in the plan when the procedure occurred; self-funded ERISA plans are excluded. It passed the Texas Senate 20-11 and became law.",
+      "yea_description": "Voted to pass Senate Bill 1257. Health plans that cover or once covered a patient's gender transition procedure must also cover side effects, yearly checks, and care to manage or reverse it. Coverage applies even if the patient joined the plan later, while employer plans that pay claims themselves are exempt. The bill became law after the Texas Senate passed it 20-11.",
+      "nay_description": "Voted against Senate Bill 1257. Health plans that cover or once covered a patient's gender transition procedure must also cover side effects, yearly checks, and care to manage or reverse it. Coverage applies even if the patient joined the plan later, while employer plans that pay claims themselves are exempt. The bill became law after the Texas Senate passed it 20-11.",
       "labels": [
         {
           "slug": "healthcare_affordability",
-          "yea": "for"
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -327,8 +354,8 @@
       "measure_id": "HB 3441",
       "vote_date": "2025-05-16",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.B. 3441, which made a vaccine manufacturer liable for actual damages, court costs, and reasonable attorney's fees to a person harmed by a vaccine the manufacturer paid to advertise in Texas, with a three-year limitations period, excluding from \"advertise\" any discussion between a health care provider and a patient and any materials displayed in a clinical setting. It passed the Texas House 88-31 and became law.",
-      "nay_description": "Voted against passing H.B. 3441, which made a vaccine manufacturer liable for actual damages, court costs, and reasonable attorney's fees to a person harmed by a vaccine the manufacturer paid to advertise in Texas, with a three-year limitations period, excluding from \"advertise\" any discussion between a health care provider and a patient and any materials displayed in a clinical setting. It passed the Texas House 88-31 and became law.",
+      "yea_description": "Voted to pass House Bill 3441. It lets people harmed by a vaccine sue its maker for direct losses, court costs, and lawyer fees if the maker paid to advertise it in Texas. They have three years to sue, while doctor-patient talks and materials shown in a clinic do not count as ads. The bill became law after the Texas House passed it 88-31.",
+      "nay_description": "Voted against House Bill 3441. It lets people harmed by a vaccine sue its maker for direct losses, court costs, and lawyer fees if the maker paid to advertise it in Texas. They have three years to sue, while doctor-patient talks and materials shown in a clinic do not count as ads. The bill became law after the Texas House passed it 88-31.",
       "labels": [
         {
           "slug": "general"
@@ -343,8 +370,8 @@
       "measure_id": "HB 3441",
       "vote_date": "2025-05-27",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.B. 3441, which made a vaccine manufacturer liable for actual damages, court costs, and reasonable attorney's fees to a person harmed by a vaccine the manufacturer paid to advertise in Texas, with a three-year limitations period, excluding from \"advertise\" any discussion between a health care provider and a patient and any materials displayed in a clinical setting. It passed the Texas Senate 21-10 and became law.",
-      "nay_description": "Voted against passing H.B. 3441, which made a vaccine manufacturer liable for actual damages, court costs, and reasonable attorney's fees to a person harmed by a vaccine the manufacturer paid to advertise in Texas, with a three-year limitations period, excluding from \"advertise\" any discussion between a health care provider and a patient and any materials displayed in a clinical setting. It passed the Texas Senate 21-10 and became law.",
+      "yea_description": "Voted to pass House Bill 3441. It lets people harmed by a vaccine sue its maker for direct losses, court costs, and lawyer fees if the maker paid to advertise it in Texas. They have three years to sue, while doctor-patient talks and materials shown in a clinic do not count as ads. The bill became law after the Texas Senate passed it 21-10.",
+      "nay_description": "Voted against House Bill 3441. It lets people harmed by a vaccine sue its maker for direct losses, court costs, and lawyer fees if the maker paid to advertise it in Texas. They have three years to sue, while doctor-patient talks and materials shown in a clinic do not count as ads. The bill became law after the Texas Senate passed it 21-10.",
       "labels": [
         {
           "slug": "general"
@@ -359,13 +386,17 @@
       "measure_id": "SB 379",
       "vote_date": "2025-05-23",
       "review_status": "approved",
-      "yea_description": "Voted to pass the House version of S.B. 379, which prohibited using supplemental nutrition assistance program benefits to buy sweetened carbonated soft drinks containing five or more grams of added sugar or any artificial sweetener, exempting drinks with milk, milk substitutes, or majority fruit or vegetable juice. It passed the Texas House 90-37; a conference committee later broadened the bill, and the enacted law covers all such sweetened drinks, carbonated or not, plus candy.",
-      "nay_description": "Voted against passing the House version of S.B. 379, which prohibited using supplemental nutrition assistance program benefits to buy sweetened carbonated soft drinks containing five or more grams of added sugar or any artificial sweetener, exempting drinks with milk, milk substitutes, or majority fruit or vegetable juice. It passed the Texas House 90-37; a conference committee later broadened the bill, and the enacted law covers all such sweetened drinks, carbonated or not, plus candy.",
+      "yea_description": "Voted to pass the House version of Senate Bill 379. That version barred food aid from buying fizzy soft drinks with at least five grams of added sugar or any artificial sweetener. Milk products and drinks mostly made of fruit or vegetable juice were exempt. The House passed it 90-37 before a later House-Senate deal became law and also covered sweetened drinks without bubbles and candy.",
+      "nay_description": "Voted against the House version of Senate Bill 379. That version barred food aid from buying fizzy soft drinks with at least five grams of added sugar or any artificial sweetener. Milk products and drinks mostly made of fruit or vegetable juice were exempt. The House passed it 90-37 before a later House-Senate deal became law and also covered sweetened drinks without bubbles and candy.",
       "labels": [
         {
           "slug": "social_programs_and_welfare",
-          "yea": "against"
+          "yea": "against",
+          "nay": null
         }
+      ],
+      "acknowledge_later_rolls": [
+        1592101
       ]
     },
     {
@@ -376,12 +407,13 @@
       "measure_id": "SB 379",
       "vote_date": "2025-03-31",
       "review_status": "approved",
-      "yea_description": "Voted to pass the Senate version of S.B. 379, which prohibited using supplemental nutrition assistance program benefits to buy energy drinks, sweetened or carbonated beverages, candy, potato or corn chips, and cookies, with exceptions including milk products and unsweetened fruit or vegetable juice. It passed the Texas Senate 22-8; a conference committee later narrowed the bill, and the enacted law covers sweetened drinks and candy.",
-      "nay_description": "Voted against passing the Senate version of S.B. 379, which prohibited using supplemental nutrition assistance program benefits to buy energy drinks, sweetened or carbonated beverages, candy, potato or corn chips, and cookies, with exceptions including milk products and unsweetened fruit or vegetable juice. It passed the Texas Senate 22-8; a conference committee later narrowed the bill, and the enacted law covers sweetened drinks and candy.",
+      "yea_description": "Voted to pass the Senate version of Senate Bill 379. That version barred food aid from buying energy drinks, sweetened or fizzy drinks, candy, chips, and cookies. Milk products and unsweetened fruit or vegetable juice were exempt. The Senate passed it 22-8 before a later House-Senate deal became law and narrowed the ban to sweetened drinks and candy.",
+      "nay_description": "Voted against the Senate version of Senate Bill 379. That version barred food aid from buying energy drinks, sweetened or fizzy drinks, candy, chips, and cookies. Milk products and unsweetened fruit or vegetable juice were exempt. The Senate passed it 22-8 before a later House-Senate deal became law and narrowed the ban to sweetened drinks and candy.",
       "labels": [
         {
           "slug": "social_programs_and_welfare",
-          "yea": "against"
+          "yea": "against",
+          "nay": null
         }
       ]
     },
@@ -393,12 +425,15 @@
       "measure_id": "SB 2337",
       "vote_date": "2025-05-28",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.B. 2337, which required a proxy advisory firm whose voting advice is based wholly or partly on nonfinancial factors such as environmental, social, or governance goals, diversity, equity, or inclusion, or sustainability scores to disclose that to the client, send a copy to the subject company, and say so on its public website; separately required a firm giving materially different advice to different clients who had not asked for nonfinancial services to notify those clients, the company, and the attorney general in writing; and made a violation a deceptive trade practice that an affected party may sue over. It passed the Texas House 92-50 and became law.",
-      "nay_description": "Voted against passing S.B. 2337, which required a proxy advisory firm whose voting advice is based wholly or partly on nonfinancial factors such as environmental, social, or governance goals, diversity, equity, or inclusion, or sustainability scores to disclose that to the client, send a copy to the subject company, and say so on its public website; separately required a firm giving materially different advice to different clients who had not asked for nonfinancial services to notify those clients, the company, and the attorney general in writing; and made a violation a deceptive trade practice that an affected party may sue over. It passed the Texas House 92-50 and became law.",
+      "yea_description": "Voted to pass Senate Bill 2337. Businesses that tell shareholders how to vote must tell the client, company, and public when advice uses goals not tied to money, such as environmental or diversity goals. If they give very different advice to clients who did not ask for it, they must tell those clients, the company, and the attorney general, and harmed people may sue. The bill became law after the Texas House passed it 92-50.",
+      "nay_description": "Voted against Senate Bill 2337. Businesses that tell shareholders how to vote must tell the client, company, and public when advice uses goals not tied to money, such as environmental or diversity goals. If they give very different advice to clients who did not ask for it, they must tell those clients, the company, and the attorney general, and harmed people may sue. The bill became law after the Texas House passed it 92-50.",
       "labels": [
         {
           "slug": "general"
         }
+      ],
+      "acknowledge_later_rolls": [
+        1582596
       ]
     },
     {
@@ -409,12 +444,15 @@
       "measure_id": "SB 2337",
       "vote_date": "2025-05-08",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.B. 2337, which required a proxy advisory firm whose voting advice is based wholly or partly on nonfinancial factors such as environmental, social, or governance goals, diversity, equity, or inclusion, or sustainability scores to disclose that to the client, send a copy to the subject company, and say so on its public website; separately required a firm giving materially different advice to different clients who had not asked for nonfinancial services to notify those clients, the company, and the attorney general in writing; and made a violation a deceptive trade practice that an affected party may sue over. It passed the Texas Senate 20-11 and became law.",
-      "nay_description": "Voted against passing S.B. 2337, which required a proxy advisory firm whose voting advice is based wholly or partly on nonfinancial factors such as environmental, social, or governance goals, diversity, equity, or inclusion, or sustainability scores to disclose that to the client, send a copy to the subject company, and say so on its public website; separately required a firm giving materially different advice to different clients who had not asked for nonfinancial services to notify those clients, the company, and the attorney general in writing; and made a violation a deceptive trade practice that an affected party may sue over. It passed the Texas Senate 20-11 and became law.",
+      "yea_description": "Voted to pass Senate Bill 2337. Businesses that tell shareholders how to vote must tell the client, company, and public when advice uses goals not tied to money, such as environmental or diversity goals. If they give very different advice to clients who did not ask for it, they must tell those clients, the company, and the attorney general, and harmed people may sue. The bill became law after the Texas Senate passed it 20-11.",
+      "nay_description": "Voted against Senate Bill 2337. Businesses that tell shareholders how to vote must tell the client, company, and public when advice uses goals not tied to money, such as environmental or diversity goals. If they give very different advice to clients who did not ask for it, they must tell those clients, the company, and the attorney general, and harmed people may sue. The bill became law after the Texas Senate passed it 20-11.",
       "labels": [
         {
           "slug": "general"
         }
+      ],
+      "acknowledge_later_rolls": [
+        1585434
       ]
     },
     {
@@ -425,12 +463,15 @@
       "measure_id": "SB 21",
       "vote_date": "2025-05-21",
       "review_status": "approved",
-      "yea_description": "Voted to pass S.B. 21, which created the Texas Strategic Bitcoin Reserve as a special fund outside the state treasury, managed by the comptroller, that may hold bitcoin and other cryptocurrency with an average market capitalization of at least $500 billion over the preceding 24 months, and added an advisory committee and a biennial public report. It passed the Texas House 101-42 and became law.",
-      "nay_description": "Voted against passing S.B. 21, which created the Texas Strategic Bitcoin Reserve as a special fund outside the state treasury, managed by the comptroller, that may hold bitcoin and other cryptocurrency with an average market capitalization of at least $500 billion over the preceding 24 months, and added an advisory committee and a biennial public report. It passed the Texas House 101-42 and became law.",
+      "yea_description": "Voted to pass Senate Bill 21. It created the Texas Strategic Bitcoin Reserve, a fund outside the state treasury run by the comptroller. The fund may hold bitcoin or other digital money worth an average of at least $500 billion in total over 24 months; an advisory group must report every two years. The bill became law after the Texas House passed it 101-42.",
+      "nay_description": "Voted against Senate Bill 21. It created the Texas Strategic Bitcoin Reserve, a fund outside the state treasury run by the comptroller. The fund may hold bitcoin or other digital money worth an average of at least $500 billion in total over 24 months; an advisory group must report every two years. The bill became law after the Texas House passed it 101-42.",
       "labels": [
         {
           "slug": "general"
         }
+      ],
+      "acknowledge_later_rolls": [
+        1581603
       ]
     },
     {
@@ -441,8 +482,8 @@
       "measure_id": "SB 21",
       "vote_date": "2025-05-30",
       "review_status": "approved",
-      "yea_description": "Voted to adopt the conference committee report on S.B. 21, which created the Texas Strategic Bitcoin Reserve as a special fund outside the state treasury, managed by the comptroller, that may hold bitcoin and other cryptocurrency with an average market capitalization of at least $500 billion over the preceding 24 months, and added an advisory committee and a biennial public report. The Texas Senate adopted the report 23-8 and the bill became law.",
-      "nay_description": "Voted against adopting the conference committee report on S.B. 21, which created the Texas Strategic Bitcoin Reserve as a special fund outside the state treasury, managed by the comptroller, that may hold bitcoin and other cryptocurrency with an average market capitalization of at least $500 billion over the preceding 24 months, and added an advisory committee and a biennial public report. The Texas Senate adopted the report 23-8 and the bill became law.",
+      "yea_description": "Voted to accept the final House-Senate deal on Senate Bill 21. It created the Texas Strategic Bitcoin Reserve, a fund outside the state treasury run by the comptroller. The fund may hold bitcoin or other digital money worth an average of at least $500 billion in total over 24 months; an advisory group must report every two years. The bill became law after the Texas Senate approved the compromise 23-8.",
+      "nay_description": "Voted against the final House-Senate deal on Senate Bill 21. It created the Texas Strategic Bitcoin Reserve, a fund outside the state treasury run by the comptroller. The fund may hold bitcoin or other digital money worth an average of at least $500 billion in total over 24 months; an advisory group must report every two years. The bill became law after the Texas Senate approved the compromise 23-8.",
       "labels": [
         {
           "slug": "general"

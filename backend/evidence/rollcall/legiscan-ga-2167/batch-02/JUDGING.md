@@ -158,3 +158,12 @@ recorded vote.
 The dry run flagged **no** related existing records, so nothing was retired by hand this batch.
 
 PROD UNTOUCHED — promotion is a separate step.
+
+## Plain-language rewrite (2026-08-30)
+
+All 9 yea and nay descriptions were rewritten from committed evidence under
+the now-explicit ≤45-word sentence rule. Judge dry and real runs passed. The
+importer rewrote 1,035 local records with stamp
+`2026-08-31T06:58:59.368Z`; convergence reported all 1,035 unchanged. The
+original `import-report.json` remains unchanged.
+Prod remains untouched.

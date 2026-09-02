@@ -215,3 +215,17 @@ re-run is `import-override-rerun-report.json` (`{"unchanged": 1273,
 "rewrite": 91}`, no inserts, no notifications), and
 `import-dry-run-rerun-report.json` is the post-override convergence check
 (`{"unchanged": 1364}`).
+
+## Plain-language rewrite (2026-08-30)
+
+All 22 yea and nay descriptions were rewritten from committed evidence. No
+vote date or official-date override changed. Judge dry and real runs passed;
+the importer rewrote 1,364 local records with stamp
+`2026-08-31T06:51:13.576Z`, and convergence reported all 1,364 unchanged.
+The original `import-report.json` remains unchanged. Prod remains untouched.
+
+Current-judge later-roll acknowledgments: 1721610→1721612,
+1721226→1721228, and 1544480→1717513.
+
+A final jargon-definition pass rewrote 125 SB 3772 records at
+`2026-08-31T07:27:05.885Z`; the next dry run reported all 1,364 unchanged.

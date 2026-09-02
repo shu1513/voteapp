@@ -100,3 +100,33 @@ select right(origin_run_id, 24) as stamp, count(*)
 - **62 distinct candidates, not the 63 in the crosswalk.** Nathan Boyles (HD-003, people_id 26477) won the June 2025 special election and first appears in a roll call on 2025-06-16, after every vote in this batch. Not a fan-out gap — the Texas Speaker-Burrows finding in a different shape.
 
 Queue after judging: 11 approved / 895 pending of 906 stored FL rows.
+
+## Plain-language rewrite (2026-08-31)
+
+All 11 yea and nay descriptions were rewritten from committed evidence. Judge
+dry and real runs passed. The importer rewrote 385 local records with stamp
+`2026-08-31T07:04:17.041Z`; convergence reported all 385 unchanged. The
+original `import-report.json` remains unchanged.
+Prod remains untouched.
+
+Current-judge later-roll acknowledgments: 1555216→1564581,
+1558940→1563783, and 1560643→1560642.
+
+A final jargon-definition pass rewrote 65 records at
+`2026-08-31T07:28:47.100Z`; the next dry run reported all 385 unchanged.
+
+## Review fixes (2026-09-01)
+
+Two wording defects from PR #995 review, checked against the enrolled SB 56
+text and s. 542.43, F.S.:
+
+- SB 56 (rolls 1535606, 1562557): "aircraft workers" was broader than the
+  statute's "aircraft operator or controller", and the sentence read as if
+  that group faced only the $5,000 fine. They face the same five-year
+  felony with a lower fine cap. Rewritten accordingly.
+- HB 1219 (roll 1557039): "non-health workers" overstated the exclusion.
+  The CHOICE Act excludes only "health care practitioners" as defined in
+  s. 456.001 (licensed practitioners), not everyone in health care.
+
+Six descriptions changed (yea and nay for three rolls). Local reimport still
+pending for these three rolls.

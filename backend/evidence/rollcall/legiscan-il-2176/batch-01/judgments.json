@@ -1,379 +1,410 @@
 {
- "judgments": [
-  {
-   "jurisdiction": "IL",
-   "chamber": "senate",
-   "session": "2176",
-   "roll": 1545154,
-   "measure_id": "SB 8",
-   "vote_date": "2025-04-10",
-   "review_status": "approved",
-   "yea_description": "Voted to pass S.B. 8, which created the Safe Gun Storage Act barring a firearm owner from keeping a firearm on premises where the owner knows or reasonably should know a minor, an at-risk person, or a person prohibited from possessing firearms is likely to gain access to it unless the firearm is secured in a locked container or otherwise rendered inaccessible, with the requirement not applying when the firearm is being carried by or is under the control of the owner, when the firearm is used in a lawful act of self-defense or defense of another, or when it was obtained through an unlawful entry of the premises. Violations carry civil penalties of up to $500, rising to $1,000 if such a person actually obtains the firearm and $10,000 if the firearm is then used to injure or kill someone or in a crime, and a court may substitute community service or restitution for good cause. The bill also shortened the deadline for reporting a lost or stolen firearm to local law enforcement from 72 to 48 hours. The Illinois Senate passed it 33-19 and it became law.",
-   "nay_description": "Voted against passing S.B. 8, which created the Safe Gun Storage Act barring a firearm owner from keeping a firearm on premises where the owner knows or reasonably should know a minor, an at-risk person, or a person prohibited from possessing firearms is likely to gain access to it unless the firearm is secured in a locked container or otherwise rendered inaccessible, with the requirement not applying when the firearm is being carried by or is under the control of the owner, when the firearm is used in a lawful act of self-defense or defense of another, or when it was obtained through an unlawful entry of the premises. Violations carry civil penalties of up to $500, rising to $1,000 if such a person actually obtains the firearm and $10,000 if the firearm is then used to injure or kill someone or in a crime, and a court may substitute community service or restitution for good cause. The bill also shortened the deadline for reporting a lost or stolen firearm to local law enforcement from 72 to 48 hours. The Illinois Senate passed it 33-19 and it became law.",
-   "labels": [
+  "judgments": [
     {
-     "slug": "gun_control",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "house",
-   "session": "2176",
-   "roll": 1580413,
-   "measure_id": "SB 8",
-   "vote_date": "2025-05-28",
-   "review_status": "approved",
-   "yea_description": "Voted to pass S.B. 8, which created the Safe Gun Storage Act barring a firearm owner from keeping a firearm on premises where the owner knows or reasonably should know a minor, an at-risk person, or a person prohibited from possessing firearms is likely to gain access to it unless the firearm is secured in a locked container or otherwise rendered inaccessible, with the requirement not applying when the firearm is being carried by or is under the control of the owner, when the firearm is used in a lawful act of self-defense or defense of another, or when it was obtained through an unlawful entry of the premises. Violations carry civil penalties of up to $500, rising to $1,000 if such a person actually obtains the firearm and $10,000 if the firearm is then used to injure or kill someone or in a crime, and a court may substitute community service or restitution for good cause. The bill also shortened the deadline for reporting a lost or stolen firearm to local law enforcement from 72 to 48 hours. The Illinois House passed it 69-40 and it became law.",
-   "nay_description": "Voted against passing S.B. 8, which created the Safe Gun Storage Act barring a firearm owner from keeping a firearm on premises where the owner knows or reasonably should know a minor, an at-risk person, or a person prohibited from possessing firearms is likely to gain access to it unless the firearm is secured in a locked container or otherwise rendered inaccessible, with the requirement not applying when the firearm is being carried by or is under the control of the owner, when the firearm is used in a lawful act of self-defense or defense of another, or when it was obtained through an unlawful entry of the premises. Violations carry civil penalties of up to $500, rising to $1,000 if such a person actually obtains the firearm and $10,000 if the firearm is then used to injure or kill someone or in a crime, and a court may substitute community service or restitution for good cause. The bill also shortened the deadline for reporting a lost or stolen firearm to local law enforcement from 72 to 48 hours. The Illinois House passed it 69-40 and it became law.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1545154,
+      "measure_id": "SB 8",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 8. It requires owners to lock a gun when a minor, at-risk person, or person banned from having guns may reach it, with exceptions for carrying, self-defense, or illegal entry. Penalties are up to $500, $1,000 if someone gets the gun, and $10,000 if it causes harm or a crime; lost or stolen guns must be reported within 48 hours instead of 72. The Illinois Senate passed it 33-19, and it became law.",
+      "nay_description": "Voted against Senate Bill 8. It requires owners to lock a gun when a minor, at-risk person, or person banned from having guns may reach it, with exceptions for carrying, self-defense, or illegal entry. Penalties are up to $500, $1,000 if someone gets the gun, and $10,000 if it causes harm or a crime; lost or stolen guns must be reported within 48 hours instead of 72. The Illinois Senate passed it 33-19, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "gun_control",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "house",
-   "session": "2176",
-   "roll": 1540287,
-   "measure_id": "HB 1373",
-   "vote_date": "2025-04-08",
-   "review_status": "approved",
-   "yea_description": "Voted to pass H.B. 1373, which required a law enforcement agency that seizes or takes custody of a firearm that was unlawfully possessed, used for an unlawful purpose, recovered from a crime scene, reasonably believed to be connected to a crime, or acquired as abandoned, lost, or discarded to use the best available information, including a firearms trace, to determine how and from whom the firearm was obtained and who previously owned it. Agencies must use the federal Bureau of Alcohol, Tobacco, Firearms and Explosives eTrace platform and take part in its collective data-sharing program so trace reports are shared among Illinois law enforcement agencies on a reciprocal basis. The Illinois House passed it 75-40 and it became law.",
-   "nay_description": "Voted against passing H.B. 1373, which required a law enforcement agency that seizes or takes custody of a firearm that was unlawfully possessed, used for an unlawful purpose, recovered from a crime scene, reasonably believed to be connected to a crime, or acquired as abandoned, lost, or discarded to use the best available information, including a firearms trace, to determine how and from whom the firearm was obtained and who previously owned it. Agencies must use the federal Bureau of Alcohol, Tobacco, Firearms and Explosives eTrace platform and take part in its collective data-sharing program so trace reports are shared among Illinois law enforcement agencies on a reciprocal basis. The Illinois House passed it 75-40 and it became law.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1580413,
+      "measure_id": "SB 8",
+      "vote_date": "2025-05-28",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 8. It requires owners to lock a gun when a minor, at-risk person, or person banned from having guns may reach it, with exceptions for carrying, self-defense, or illegal entry. Penalties are up to $500, $1,000 if someone gets the gun, and $10,000 if it causes harm or a crime; lost or stolen guns must be reported within 48 hours instead of 72. The Illinois House passed it 69-40, and it became law.",
+      "nay_description": "Voted against Senate Bill 8. It requires owners to lock a gun when a minor, at-risk person, or person banned from having guns may reach it, with exceptions for carrying, self-defense, or illegal entry. Penalties are up to $500, $1,000 if someone gets the gun, and $10,000 if it causes harm or a crime; lost or stolen guns must be reported within 48 hours instead of 72. The Illinois House passed it 69-40, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "gun_control",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "senate",
-   "session": "2176",
-   "roll": 1582371,
-   "measure_id": "HB 1373",
-   "vote_date": "2025-05-31",
-   "review_status": "approved",
-   "yea_description": "Voted to pass H.B. 1373, which required a law enforcement agency that seizes or takes custody of a firearm that was unlawfully possessed, used for an unlawful purpose, recovered from a crime scene, reasonably believed to be connected to a crime, or acquired as abandoned, lost, or discarded to use the best available information, including a firearms trace, to determine how and from whom the firearm was obtained and who previously owned it. Agencies must use the federal Bureau of Alcohol, Tobacco, Firearms and Explosives eTrace platform and take part in its collective data-sharing program so trace reports are shared among Illinois law enforcement agencies on a reciprocal basis. The Illinois Senate passed it 43-11 and it became law.",
-   "nay_description": "Voted against passing H.B. 1373, which required a law enforcement agency that seizes or takes custody of a firearm that was unlawfully possessed, used for an unlawful purpose, recovered from a crime scene, reasonably believed to be connected to a crime, or acquired as abandoned, lost, or discarded to use the best available information, including a firearms trace, to determine how and from whom the firearm was obtained and who previously owned it. Agencies must use the federal Bureau of Alcohol, Tobacco, Firearms and Explosives eTrace platform and take part in its collective data-sharing program so trace reports are shared among Illinois law enforcement agencies on a reciprocal basis. The Illinois Senate passed it 43-11 and it became law.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1540287,
+      "measure_id": "HB 1373",
+      "vote_date": "2025-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1373. Police must trace a gun that was illegally held or used, found at a crime scene, linked to a crime, or found abandoned, lost, or thrown away to learn its source and past owners. They must use the federal Bureau of Alcohol, Tobacco, Firearms and Explosives eTrace system and share trace reports with other Illinois police agencies that also share their data. The Illinois House passed it 75-40, and it became law.",
+      "nay_description": "Voted against House Bill 1373. Police must trace a gun that was illegally held or used, found at a crime scene, linked to a crime, or found abandoned, lost, or thrown away to learn its source and past owners. They must use the federal Bureau of Alcohol, Tobacco, Firearms and Explosives eTrace system and share trace reports with other Illinois police agencies that also share their data. The Illinois House passed it 75-40, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "gun_control",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "house",
-   "session": "2176",
-   "roll": 1721610,
-   "measure_id": "HB 5295",
-   "vote_date": "2026-04-16",
-   "review_status": "approved",
-   "yea_description": "Voted to pass H.B. 5295, which created the Reproductive Health Records Privacy Act requiring electronic health networks to build the policies and technical capability to segregate a patient's medical information about abortion-related health care and to prevent its disclosure to providers, business entities, networks, or health information exchanges located outside Illinois, while letting a patient direct that the information be shared with a specific treating provider outside the state. The Illinois House passed this version 73-34. The Senate later rewrote the definitions and the conditions under which a covered entity may receive the information, and the House agreed to that version, which became law effective July 1, 2027.",
-   "nay_description": "Voted against passing H.B. 5295, which created the Reproductive Health Records Privacy Act requiring electronic health networks to build the policies and technical capability to segregate a patient's medical information about abortion-related health care and to prevent its disclosure to providers, business entities, networks, or health information exchanges located outside Illinois, while letting a patient direct that the information be shared with a specific treating provider outside the state. The Illinois House passed this version 73-34. The Senate later rewrote the definitions and the conditions under which a covered entity may receive the information, and the House agreed to that version, which became law effective July 1, 2027.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1582371,
+      "measure_id": "HB 1373",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1373. Police must trace a gun that was illegally held or used, found at a crime scene, linked to a crime, or found abandoned, lost, or thrown away to learn its source and past owners. They must use the federal Bureau of Alcohol, Tobacco, Firearms and Explosives eTrace system and share trace reports with other Illinois police agencies that also share their data. The Illinois Senate passed it 43-11, and it became law.",
+      "nay_description": "Voted against House Bill 1373. Police must trace a gun that was illegally held or used, found at a crime scene, linked to a crime, or found abandoned, lost, or thrown away to learn its source and past owners. They must use the federal Bureau of Alcohol, Tobacco, Firearms and Explosives eTrace system and share trace reports with other Illinois police agencies that also share their data. The Illinois Senate passed it 43-11, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "womens_reproductive_rights",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "senate",
-   "session": "2176",
-   "roll": 1721611,
-   "measure_id": "HB 5295",
-   "vote_date": "2026-05-30",
-   "review_status": "approved",
-   "yea_description": "Voted to pass H.B. 5295, which created the Reproductive Health Records Privacy Act requiring electronic health networks to build the policies and technical capability to segregate a patient's medical information about abortion-related health care and to prevent its disclosure to providers, business entities, networks, or health information exchanges located outside Illinois, while letting a patient direct that the information be shared with a specific treating provider outside the state. The Illinois Senate passed it 38-19 after adding definitions of coded private health care information and narrowing when a covered entity may receive it, the House agreed to that version, and it became law effective July 1, 2027.",
-   "nay_description": "Voted against passing H.B. 5295, which created the Reproductive Health Records Privacy Act requiring electronic health networks to build the policies and technical capability to segregate a patient's medical information about abortion-related health care and to prevent its disclosure to providers, business entities, networks, or health information exchanges located outside Illinois, while letting a patient direct that the information be shared with a specific treating provider outside the state. The Illinois Senate passed it 38-19 after adding definitions of coded private health care information and narrowing when a covered entity may receive it, the House agreed to that version, and it became law effective July 1, 2027.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1721610,
+      "measure_id": "HB 5295",
+      "vote_date": "2026-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass the House version of House Bill 5295. It made health networks separate abortion-related records and block sharing outside Illinois, unless the patient chose a specific out-of-state provider. The House passed it 73-34; the Senate later changed key definitions and access rules, and that final version became law effective July 1, 2027.",
+      "nay_description": "Voted against the House version of House Bill 5295. It made health networks separate abortion-related records and block sharing outside Illinois, unless the patient chose a specific out-of-state provider. The House passed it 73-34; the Senate later changed key definitions and access rules, and that final version became law effective July 1, 2027.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1721612
+      ]
+    },
     {
-     "slug": "womens_reproductive_rights",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "senate",
-   "session": "2176",
-   "roll": 1717532,
-   "measure_id": "SB 3341",
-   "vote_date": "2026-05-20",
-   "review_status": "approved",
-   "yea_description": "Voted to pass S.B. 3341, which provided that any minor may give effective consent for contraceptive services or supplies with no other person's consent required, and that for the purpose of obtaining contraceptive services or supplies a minor has the same legal capacity as a person of legal age. A request for prescription contraceptive services or supplies must be made to a licensed physician, an advanced practice registered nurse, a physician assistant, or a pharmacist acting under the Pharmacy Practice Act. The Illinois Senate passed it 37-19 and it became law.",
-   "nay_description": "Voted against passing S.B. 3341, which provided that any minor may give effective consent for contraceptive services or supplies with no other person's consent required, and that for the purpose of obtaining contraceptive services or supplies a minor has the same legal capacity as a person of legal age. A request for prescription contraceptive services or supplies must be made to a licensed physician, an advanced practice registered nurse, a physician assistant, or a pharmacist acting under the Pharmacy Practice Act. The Illinois Senate passed it 37-19 and it became law.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1721611,
+      "measure_id": "HB 5295",
+      "vote_date": "2026-05-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass the Senate version of House Bill 5295. It made health networks separate abortion-related records and block sharing outside Illinois unless the patient chose a provider, while adding coded-record definitions and tighter rules for who may receive data. The Senate passed it 38-19; the House agreed, and it became law effective July 1, 2027.",
+      "nay_description": "Voted against the Senate version of House Bill 5295. It made health networks separate abortion-related records and block sharing outside Illinois unless the patient chose a provider, while adding coded-record definitions and tighter rules for who may receive data. The Senate passed it 38-19; the House agreed, and it became law effective July 1, 2027.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "womens_reproductive_rights",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "house",
-   "session": "2176",
-   "roll": 1717533,
-   "measure_id": "SB 3341",
-   "vote_date": "2026-05-27",
-   "review_status": "approved",
-   "yea_description": "Voted to pass S.B. 3341, which provided that any minor may give effective consent for contraceptive services or supplies with no other person's consent required, and that for the purpose of obtaining contraceptive services or supplies a minor has the same legal capacity as a person of legal age. A request for prescription contraceptive services or supplies must be made to a licensed physician, an advanced practice registered nurse, a physician assistant, or a pharmacist acting under the Pharmacy Practice Act. The Illinois House passed it 73-38 and it became law.",
-   "nay_description": "Voted against passing S.B. 3341, which provided that any minor may give effective consent for contraceptive services or supplies with no other person's consent required, and that for the purpose of obtaining contraceptive services or supplies a minor has the same legal capacity as a person of legal age. A request for prescription contraceptive services or supplies must be made to a licensed physician, an advanced practice registered nurse, a physician assistant, or a pharmacist acting under the Pharmacy Practice Act. The Illinois House passed it 73-38 and it became law.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1717532,
+      "measure_id": "SB 3341",
+      "vote_date": "2026-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 3341. It lets any minor consent to birth control without anyone else's approval and gives the minor adult legal authority for that care. Prescription birth control must be requested from a licensed doctor, advanced-practice nurse, physician assistant, or pharmacist acting under pharmacy law. The Illinois Senate passed it 37-19, and it became law.",
+      "nay_description": "Voted against Senate Bill 3341. It lets any minor consent to birth control without anyone else's approval and gives the minor adult legal authority for that care. Prescription birth control must be requested from a licensed doctor, advanced-practice nurse, physician assistant, or pharmacist acting under pharmacy law. The Illinois Senate passed it 37-19, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "womens_reproductive_rights",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "house",
-   "session": "2176",
-   "roll": 1539817,
-   "measure_id": "HB 3489",
-   "vote_date": "2025-04-08",
-   "review_status": "approved",
-   "yea_description": "Voted to pass H.B. 3489, which expanded the practice of pharmacy to include assessing and consulting with patients about, and dispensing, contraceptives including emergency contraception, rather than only hormonal contraceptives, and required the state medical assistance program to cover the patient care services a pharmacist provides for those contraceptives. The Illinois House passed it 77-36 and it became law.",
-   "nay_description": "Voted against passing H.B. 3489, which expanded the practice of pharmacy to include assessing and consulting with patients about, and dispensing, contraceptives including emergency contraception, rather than only hormonal contraceptives, and required the state medical assistance program to cover the patient care services a pharmacist provides for those contraceptives. The Illinois House passed it 77-36 and it became law.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1717533,
+      "measure_id": "SB 3341",
+      "vote_date": "2026-05-27",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 3341. It lets any minor consent to birth control without anyone else's approval and gives the minor adult legal authority for that care. Prescription birth control must be requested from a licensed doctor, advanced-practice nurse, physician assistant, or pharmacist acting under pharmacy law. The Illinois House passed it 73-38, and it became law.",
+      "nay_description": "Voted against Senate Bill 3341. It lets any minor consent to birth control without anyone else's approval and gives the minor adult legal authority for that care. Prescription birth control must be requested from a licensed doctor, advanced-practice nurse, physician assistant, or pharmacist acting under pharmacy law. The Illinois House passed it 73-38, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "womens_reproductive_rights",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "senate",
-   "session": "2176",
-   "roll": 1576151,
-   "measure_id": "HB 3489",
-   "vote_date": "2025-05-22",
-   "review_status": "approved",
-   "yea_description": "Voted to pass H.B. 3489, which expanded the practice of pharmacy to include assessing and consulting with patients about, and dispensing, contraceptives including emergency contraception, rather than only hormonal contraceptives, and required the state medical assistance program to cover the patient care services a pharmacist provides for those contraceptives. The Illinois Senate passed it 41-16 and it became law.",
-   "nay_description": "Voted against passing H.B. 3489, which expanded the practice of pharmacy to include assessing and consulting with patients about, and dispensing, contraceptives including emergency contraception, rather than only hormonal contraceptives, and required the state medical assistance program to cover the patient care services a pharmacist provides for those contraceptives. The Illinois Senate passed it 41-16 and it became law.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1539817,
+      "measure_id": "HB 3489",
+      "vote_date": "2025-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 3489. It lets pharmacists assess, advise, and provide all birth control, including emergency birth control, instead of only hormonal products. The state Medicaid program must cover pharmacists' patient-care services for these products. The Illinois House passed it 77-36, and it became law.",
+      "nay_description": "Voted against House Bill 3489. It lets pharmacists assess, advise, and provide all birth control, including emergency birth control, instead of only hormonal products. The state Medicaid program must cover pharmacists' patient-care services for these products. The Illinois House passed it 77-36, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "womens_reproductive_rights",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "house",
-   "session": "2176",
-   "roll": 1719534,
-   "measure_id": "HB 5095",
-   "vote_date": "2026-04-14",
-   "review_status": "approved",
-   "yea_description": "Voted to pass H.B. 5095, which required the Secretary of State to let an applicant choose male, female, or X as the sex listed on an identification card, driver's license, or permit, replacing the earlier male, female, or non-binary options, required an applicant seeking to change the sex on an issued credential to submit a gender designation form, and barred the Secretary of State from disclosing or revealing the existence of any such form unless ordered to do so by a court. The Illinois House passed it 72-37 and it became law.",
-   "nay_description": "Voted against passing H.B. 5095, which required the Secretary of State to let an applicant choose male, female, or X as the sex listed on an identification card, driver's license, or permit, replacing the earlier male, female, or non-binary options, required an applicant seeking to change the sex on an issued credential to submit a gender designation form, and barred the Secretary of State from disclosing or revealing the existence of any such form unless ordered to do so by a court. The Illinois House passed it 72-37 and it became law.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1576151,
+      "measure_id": "HB 3489",
+      "vote_date": "2025-05-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 3489. It lets pharmacists assess, advise, and provide all birth control, including emergency birth control, instead of only hormonal products. The state Medicaid program must cover pharmacists' patient-care services for these products. The Illinois Senate passed it 41-16, and it became law.",
+      "nay_description": "Voted against House Bill 3489. It lets pharmacists assess, advise, and provide all birth control, including emergency birth control, instead of only hormonal products. The state Medicaid program must cover pharmacists' patient-care services for these products. The Illinois Senate passed it 41-16, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "senate",
-   "session": "2176",
-   "roll": 1719535,
-   "measure_id": "HB 5095",
-   "vote_date": "2026-05-21",
-   "review_status": "approved",
-   "yea_description": "Voted to pass H.B. 5095, which required the Secretary of State to let an applicant choose male, female, or X as the sex listed on an identification card, driver's license, or permit, replacing the earlier male, female, or non-binary options, required an applicant seeking to change the sex on an issued credential to submit a gender designation form, and barred the Secretary of State from disclosing or revealing the existence of any such form unless ordered to do so by a court. The Illinois Senate passed it 38-19 and it became law.",
-   "nay_description": "Voted against passing H.B. 5095, which required the Secretary of State to let an applicant choose male, female, or X as the sex listed on an identification card, driver's license, or permit, replacing the earlier male, female, or non-binary options, required an applicant seeking to change the sex on an issued credential to submit a gender designation form, and barred the Secretary of State from disclosing or revealing the existence of any such form unless ordered to do so by a court. The Illinois Senate passed it 38-19 and it became law.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1719534,
+      "measure_id": "HB 5095",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 5095. It lets people choose male, female, or X on a state ID, driver's license, or permit, replacing male, female, or non-binary choices. Changing an issued card requires a gender form, which the Secretary of State cannot reveal without a court order. The Illinois House passed it 72-37, and it became law.",
+      "nay_description": "Voted against House Bill 5095. It lets people choose male, female, or X on a state ID, driver's license, or permit, replacing male, female, or non-binary choices. Changing an issued card requires a gender form, which the Secretary of State cannot reveal without a court order. The Illinois House passed it 72-37, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "senate",
-   "session": "2176",
-   "roll": 1721226,
-   "measure_id": "SB 3777",
-   "vote_date": "2026-05-20",
-   "review_status": "approved",
-   "yea_description": "Voted to pass S.B. 3777 in the form the Senate considered, which amended the Illinois Human Rights Act to make it a civil rights violation, in the articles governing employment, financial credit, and public accommodations, to use criteria or methods that have the effect of subjecting individuals to discrimination prohibited by the Act, and which redefined unlawful discrimination to mean discrimination by purpose or effect on the basis of the characteristics the Act already protects. The Illinois Senate passed this version 38-20. The House then replaced the bill with a narrower version that instead set out an explicit burden-shifting test and named citizenship status, family responsibilities, work authorization status, arrest record, and conviction record as covered bases, and the Senate agreed to that version, which became law.",
-   "nay_description": "Voted against passing S.B. 3777 in the form the Senate considered, which amended the Illinois Human Rights Act to make it a civil rights violation, in the articles governing employment, financial credit, and public accommodations, to use criteria or methods that have the effect of subjecting individuals to discrimination prohibited by the Act, and which redefined unlawful discrimination to mean discrimination by purpose or effect on the basis of the characteristics the Act already protects. The Illinois Senate passed this version 38-20. The House then replaced the bill with a narrower version that instead set out an explicit burden-shifting test and named citizenship status, family responsibilities, work authorization status, arrest record, and conviction record as covered bases, and the Senate agreed to that version, which became law.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1719535,
+      "measure_id": "HB 5095",
+      "vote_date": "2026-05-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 5095. It lets people choose male, female, or X on a state ID, driver's license, or permit, replacing male, female, or non-binary choices. Changing an issued card requires a gender form, which the Secretary of State cannot reveal without a court order. The Illinois Senate passed it 38-19, and it became law.",
+      "nay_description": "Voted against House Bill 5095. It lets people choose male, female, or X on a state ID, driver's license, or permit, replacing male, female, or non-binary choices. Changing an issued card requires a gender form, which the Secretary of State cannot reveal without a court order. The Illinois Senate passed it 38-19, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "house",
-   "session": "2176",
-   "roll": 1721227,
-   "measure_id": "SB 3777",
-   "vote_date": "2026-05-31",
-   "official_vote_date": "2026-06-01",
-   "review_status": "approved",
-   "yea_description": "Voted to pass S.B. 3777, which amended the Illinois Human Rights Act to make it a civil rights violation for an employer, employment agency, or labor organization to use criteria or methods that have the effect of subjecting people to discrimination on the basis of unlawful discrimination, citizenship status, family responsibilities, work authorization status, arrest record, or conviction record, unless the respondent shows the criteria are job related for the position and consistent with business necessity and the complainant cannot show a less discriminatory alternative would serve that necessity, and which applied a comparable test to financial institutions, credit card issuers, and public accommodations. The Illinois House passed this version 72-38, the Senate agreed to it, and it became law.",
-   "nay_description": "Voted against passing S.B. 3777, which amended the Illinois Human Rights Act to make it a civil rights violation for an employer, employment agency, or labor organization to use criteria or methods that have the effect of subjecting people to discrimination on the basis of unlawful discrimination, citizenship status, family responsibilities, work authorization status, arrest record, or conviction record, unless the respondent shows the criteria are job related for the position and consistent with business necessity and the complainant cannot show a less discriminatory alternative would serve that necessity, and which applied a comparable test to financial institutions, credit card issuers, and public accommodations. The Illinois House passed this version 72-38, the Senate agreed to it, and it became law.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1721226,
+      "measure_id": "SB 3777",
+      "vote_date": "2026-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass the Senate version of Senate Bill 3777. It made rules that cause a discriminatory effect a civil-rights violation in jobs, credit, and public places, even without discriminatory intent. The Senate passed it 38-20; the House later added a narrower proof test and named citizenship, family duties, work permission, arrest records, and conviction records, and that version became law.",
+      "nay_description": "Voted against the Senate version of Senate Bill 3777. It made rules that cause a discriminatory effect a civil-rights violation in jobs, credit, and public places, even without discriminatory intent. The Senate passed it 38-20; the House later added a narrower proof test and named citizenship, family duties, work permission, arrest records, and conviction records, and that version became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1721228
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "senate",
-   "session": "2176",
-   "roll": 1575572,
-   "measure_id": "SB 1976",
-   "vote_date": "2025-05-21",
-   "review_status": "approved",
-   "yea_description": "Voted to pass S.B. 1976, which created the Workers' Rights and Worker Safety Act barring a state agency, unless a later state law authorizes it, from revising its rules to be less protective of workers' rights or worker safety than federal wage and hour law or federal coal mine safety law as those laws stood on April 28, 2025. The bill also created the Illinois Safe and Healthy Workplace Act directing the Department of Labor to adopt rules taking up federal occupational health or safety standards that are repealed or revoked, with rights of action and penalties, and let the Director of Labor adopt a standard matching a federal occupational safety standard as it stood before being repealed, revoked, amended, or reinterpreted. The Illinois Senate passed it 38-19 and it became law.",
-   "nay_description": "Voted against passing S.B. 1976, which created the Workers' Rights and Worker Safety Act barring a state agency, unless a later state law authorizes it, from revising its rules to be less protective of workers' rights or worker safety than federal wage and hour law or federal coal mine safety law as those laws stood on April 28, 2025. The bill also created the Illinois Safe and Healthy Workplace Act directing the Department of Labor to adopt rules taking up federal occupational health or safety standards that are repealed or revoked, with rights of action and penalties, and let the Director of Labor adopt a standard matching a federal occupational safety standard as it stood before being repealed, revoked, amended, or reinterpreted. The Illinois Senate passed it 38-19 and it became law.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1721227,
+      "measure_id": "SB 3777",
+      "vote_date": "2026-05-31",
+      "official_vote_date": "2026-06-01",
+      "review_status": "approved",
+      "yea_description": "Voted to pass the House version of Senate Bill 3777. It bars job, credit, and public-place rules that unfairly harm protected groups, including citizenship, family duties, work permission, arrest records, and conviction records. A business may defend a needed job rule, but a complainant can show a less discriminatory option; the House passed it 72-38, the Senate agreed, and it became law.",
+      "nay_description": "Voted against the House version of Senate Bill 3777. It bars job, credit, and public-place rules that unfairly harm protected groups, including citizenship, family duties, work permission, arrest records, and conviction records. A business may defend a needed job rule, but a complainant can show a less discriminatory option; the House passed it 72-38, the Senate agreed, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "corporate_accountability",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "house",
-   "session": "2176",
-   "roll": 1582212,
-   "measure_id": "SB 1976",
-   "vote_date": "2025-05-30",
-   "review_status": "approved",
-   "yea_description": "Voted to pass S.B. 1976, which created the Workers' Rights and Worker Safety Act barring a state agency, unless a later state law authorizes it, from revising its rules to be less protective of workers' rights or worker safety than federal wage and hour law or federal coal mine safety law as those laws stood on April 28, 2025. The bill also created the Illinois Safe and Healthy Workplace Act directing the Department of Labor to adopt rules taking up federal occupational health or safety standards that are repealed or revoked, with rights of action and penalties, and let the Director of Labor adopt a standard matching a federal occupational safety standard as it stood before being repealed, revoked, amended, or reinterpreted. The Illinois House passed it 80-32 and it became law.",
-   "nay_description": "Voted against passing S.B. 1976, which created the Workers' Rights and Worker Safety Act barring a state agency, unless a later state law authorizes it, from revising its rules to be less protective of workers' rights or worker safety than federal wage and hour law or federal coal mine safety law as those laws stood on April 28, 2025. The bill also created the Illinois Safe and Healthy Workplace Act directing the Department of Labor to adopt rules taking up federal occupational health or safety standards that are repealed or revoked, with rights of action and penalties, and let the Director of Labor adopt a standard matching a federal occupational safety standard as it stood before being repealed, revoked, amended, or reinterpreted. The Illinois House passed it 80-32 and it became law.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1575572,
+      "measure_id": "SB 1976",
+      "vote_date": "2025-05-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1976. It stops state agencies from weakening worker-pay or coal-mine safety rules below federal protections in place on April 28, 2025, unless a later state law allows it. It also orders Illinois to replace revoked federal workplace-safety rules, allows lawsuits and penalties, and lets the labor director copy a federal rule as it stood before repeal or change. The Illinois Senate passed it 38-19, and it became law.",
+      "nay_description": "Voted against Senate Bill 1976. It stops state agencies from weakening worker-pay or coal-mine safety rules below federal protections in place on April 28, 2025, unless a later state law allows it. It also orders Illinois to replace revoked federal workplace-safety rules, allows lawsuits and penalties, and lets the labor director copy a federal rule as it stood before repeal or change. The Illinois Senate passed it 38-19, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "corporate_accountability",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "senate",
-   "session": "2176",
-   "roll": 1544480,
-   "measure_id": "SB 2339",
-   "vote_date": "2025-04-10",
-   "review_status": "approved",
-   "yea_description": "Voted to pass S.B. 2339, which amended the Right to Privacy in the Workplace Act to bar an employer enrolled in an employment eligibility verification system such as E-Verify from imposing verification or re-verification requirements beyond what that system requires, to guarantee notice and response rights to an employee when the employer receives a discrepancy notice about the employee's taxpayer identification number or identifying documents from a federal agency or other third party not responsible for enforcing immigration law, and to add Department of Labor enforcement, civil penalties recoverable by an interested party, and a private right of action. The Illinois Senate passed this version 35-21. The House then repealed the two sections restricting employers' use of employment eligibility verification systems and removed the petty offense penalty, and the Senate agreed to that narrower version, which became law.",
-   "nay_description": "Voted against passing S.B. 2339, which amended the Right to Privacy in the Workplace Act to bar an employer enrolled in an employment eligibility verification system such as E-Verify from imposing verification or re-verification requirements beyond what that system requires, to guarantee notice and response rights to an employee when the employer receives a discrepancy notice about the employee's taxpayer identification number or identifying documents from a federal agency or other third party not responsible for enforcing immigration law, and to add Department of Labor enforcement, civil penalties recoverable by an interested party, and a private right of action. The Illinois Senate passed this version 35-21. The House then repealed the two sections restricting employers' use of employment eligibility verification systems and removed the petty offense penalty, and the Senate agreed to that narrower version, which became law.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1582212,
+      "measure_id": "SB 1976",
+      "vote_date": "2025-05-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1976. It stops state agencies from weakening worker-pay or coal-mine safety rules below federal protections in place on April 28, 2025, unless a later state law allows it. It also orders Illinois to replace revoked federal workplace-safety rules, allows lawsuits and penalties, and lets the labor director copy a federal rule as it stood before repeal or change. The Illinois House passed it 80-32, and it became law.",
+      "nay_description": "Voted against Senate Bill 1976. It stops state agencies from weakening worker-pay or coal-mine safety rules below federal protections in place on April 28, 2025, unless a later state law allows it. It also orders Illinois to replace revoked federal workplace-safety rules, allows lawsuits and penalties, and lets the labor director copy a federal rule as it stood before repeal or change. The Illinois House passed it 80-32, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "immigration",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "house",
-   "session": "2176",
-   "roll": 1582511,
-   "measure_id": "SB 2339",
-   "vote_date": "2025-05-31",
-   "review_status": "approved",
-   "yea_description": "Voted to pass S.B. 2339, which amended the Right to Privacy in the Workplace Act to bar an employer enrolled in an employment eligibility verification system such as E-Verify from imposing verification or re-verification requirements beyond what that system requires, to guarantee notice and response rights to an employee when the employer receives a discrepancy notice about the employee's taxpayer identification number or identifying documents from a federal agency or other third party not responsible for enforcing immigration law, and to add Department of Labor enforcement, civil penalties recoverable by an interested party, and a private right of action. The Illinois House passed it 75-42 after repealing the two sections that had restricted employers' use of employment eligibility verification systems and removing the petty offense penalty, the Senate agreed to that version, and it became law.",
-   "nay_description": "Voted against passing S.B. 2339, which amended the Right to Privacy in the Workplace Act to bar an employer enrolled in an employment eligibility verification system such as E-Verify from imposing verification or re-verification requirements beyond what that system requires, to guarantee notice and response rights to an employee when the employer receives a discrepancy notice about the employee's taxpayer identification number or identifying documents from a federal agency or other third party not responsible for enforcing immigration law, and to add Department of Labor enforcement, civil penalties recoverable by an interested party, and a private right of action. The Illinois House passed it 75-42 after repealing the two sections that had restricted employers' use of employment eligibility verification systems and removing the petty offense penalty, the Senate agreed to that version, and it became law.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1544480,
+      "measure_id": "SB 2339",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass the Senate version of Senate Bill 2339. It limited extra E-Verify checks, protected workers responding to federal ID mismatches, and added Labor Department enforcement, civil fines, private lawsuits, and a minor criminal penalty. The Senate passed it 35-21; the House later removed the E-Verify limits and criminal penalty, and that narrower version became law.",
+      "nay_description": "Voted against the Senate version of Senate Bill 2339. It limited extra E-Verify checks, protected workers responding to federal ID mismatches, and added Labor Department enforcement, civil fines, private lawsuits, and a minor criminal penalty. The Senate passed it 35-21; the House later removed the E-Verify limits and criminal penalty, and that narrower version became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1717513
+      ]
+    },
     {
-     "slug": "immigration",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "senate",
-   "session": "2176",
-   "roll": 1718025,
-   "measure_id": "SB 3772",
-   "vote_date": "2026-04-29",
-   "review_status": "approved",
-   "yea_description": "Voted to pass S.B. 3772, which required the Illinois Environmental Protection Agency, for air pollution construction permit applications filed on or after January 1, 2026 by new or expanding sources located in an area of environmental justice concern, to evaluate the application's effects on that community, to consider the applicant's prior record of owning and operating such sources, and to decide whether additional testing or changes to the application are needed. The bill also established an Office of Environmental Justice within the agency, headed by an Environmental Justice Officer, to coordinate environmental justice across agency programs. The Illinois Senate passed it 43-11 and it became law.",
-   "nay_description": "Voted against passing S.B. 3772, which required the Illinois Environmental Protection Agency, for air pollution construction permit applications filed on or after January 1, 2026 by new or expanding sources located in an area of environmental justice concern, to evaluate the application's effects on that community, to consider the applicant's prior record of owning and operating such sources, and to decide whether additional testing or changes to the application are needed. The bill also established an Office of Environmental Justice within the agency, headed by an Environmental Justice Officer, to coordinate environmental justice across agency programs. The Illinois Senate passed it 43-11 and it became law.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1582511,
+      "measure_id": "SB 2339",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass the House version of Senate Bill 2339. It protects workers responding to federal ID mismatches and allows Labor Department enforcement, civil fines, and private lawsuits, but removes earlier E-Verify limits and a minor criminal penalty. The House passed it 75-42; the Senate agreed, and it became law.",
+      "nay_description": "Voted against the House version of Senate Bill 2339. It protects workers responding to federal ID mismatches and allows Labor Department enforcement, civil fines, and private lawsuits, but removes earlier E-Verify limits and a minor criminal penalty. The House passed it 75-42; the Senate agreed, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "environment_and_public_health",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "house",
-   "session": "2176",
-   "roll": 1718026,
-   "measure_id": "SB 3772",
-   "vote_date": "2026-05-30",
-   "review_status": "approved",
-   "yea_description": "Voted to pass S.B. 3772, which required the Illinois Environmental Protection Agency, for air pollution construction permit applications filed on or after January 1, 2026 by new or expanding sources located in an area of environmental justice concern, to evaluate the application's effects on that community, to consider the applicant's prior record of owning and operating such sources, and to decide whether additional testing or changes to the application are needed. The bill also established an Office of Environmental Justice within the agency, headed by an Environmental Justice Officer, to coordinate environmental justice across agency programs. The Illinois House passed it 73-39 and it became law.",
-   "nay_description": "Voted against passing S.B. 3772, which required the Illinois Environmental Protection Agency, for air pollution construction permit applications filed on or after January 1, 2026 by new or expanding sources located in an area of environmental justice concern, to evaluate the application's effects on that community, to consider the applicant's prior record of owning and operating such sources, and to decide whether additional testing or changes to the application are needed. The bill also established an Office of Environmental Justice within the agency, headed by an Environmental Justice Officer, to coordinate environmental justice across agency programs. The Illinois House passed it 73-39 and it became law.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1718025,
+      "measure_id": "SB 3772",
+      "vote_date": "2026-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 3772. For air permits requested on or after January 1, 2026, the state must study effects on communities flagged for unfair pollution burdens, the applicant's past record, and whether more tests or changes are needed. It also creates an Environmental Justice Office and officer to coordinate this work across state environmental programs. The Illinois Senate passed it 43-11, and it became law.",
+      "nay_description": "Voted against Senate Bill 3772. For air permits requested on or after January 1, 2026, the state must study effects on communities flagged for unfair pollution burdens, the applicant's past record, and whether more tests or changes are needed. It also creates an Environmental Justice Office and officer to coordinate this work across state environmental programs. The Illinois Senate passed it 43-11, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "environment_and_public_health",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "house",
-   "session": "2176",
-   "roll": 1718089,
-   "measure_id": "HB 4339",
-   "vote_date": "2026-04-08",
-   "review_status": "approved",
-   "yea_description": "Voted to pass H.B. 4339, which required every school district maintaining any of grades 9 through 12 to give all eligible students graduating from high school the opportunity to register to vote. The Illinois House passed it 77-24 and it became law.",
-   "nay_description": "Voted against passing H.B. 4339, which required every school district maintaining any of grades 9 through 12 to give all eligible students graduating from high school the opportunity to register to vote. The Illinois House passed it 77-24 and it became law.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1718026,
+      "measure_id": "SB 3772",
+      "vote_date": "2026-05-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 3772. For air permits requested on or after January 1, 2026, the state must study effects on communities flagged for unfair pollution burdens, the applicant's past record, and whether more tests or changes are needed. It also creates an Environmental Justice Office and officer to coordinate this work across state environmental programs. The Illinois House passed it 73-39, and it became law.",
+      "nay_description": "Voted against Senate Bill 3772. For air permits requested on or after January 1, 2026, the state must study effects on communities flagged for unfair pollution burdens, the applicant's past record, and whether more tests or changes are needed. It also creates an Environmental Justice Office and officer to coordinate this work across state environmental programs. The Illinois House passed it 73-39, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "election_integrity",
-     "yea": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "IL",
-   "chamber": "senate",
-   "session": "2176",
-   "roll": 1718090,
-   "measure_id": "HB 4339",
-   "vote_date": "2026-05-29",
-   "review_status": "approved",
-   "yea_description": "Voted to pass H.B. 4339, which required every school district maintaining any of grades 9 through 12 to give all eligible students graduating from high school the opportunity to register to vote. The Illinois Senate passed it 41-12 and it became law.",
-   "nay_description": "Voted against passing H.B. 4339, which required every school district maintaining any of grades 9 through 12 to give all eligible students graduating from high school the opportunity to register to vote. The Illinois Senate passed it 41-12 and it became law.",
-   "labels": [
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1718089,
+      "measure_id": "HB 4339",
+      "vote_date": "2026-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4339. Every district with grades 9 through 12 must give eligible graduating students a chance to register to vote. The Illinois House passed it 77-24, and it became law.",
+      "nay_description": "Voted against House Bill 4339. Every district with grades 9 through 12 must give eligible graduating students a chance to register to vote. The Illinois House passed it 77-24, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "election_integrity",
-     "yea": "for"
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1718090,
+      "measure_id": "HB 4339",
+      "vote_date": "2026-05-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4339. Every district with grades 9 through 12 must give eligible graduating students a chance to register to vote. The Illinois Senate passed it 41-12, and it became law.",
+      "nay_description": "Voted against House Bill 4339. Every district with grades 9 through 12 must give eligible graduating students a chance to register to vote. The Illinois Senate passed it 41-12, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
     }
-   ]
-  }
- ]
+  ]
 }

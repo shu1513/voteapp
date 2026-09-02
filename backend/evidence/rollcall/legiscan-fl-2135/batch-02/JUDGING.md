@@ -103,3 +103,16 @@ justfacts.votesmart.org). Retired by hand after the import, reason naming the
 replacing canonical record (`c0f175ff-7edb-4d31-ae6f-c99d4b667101`) — the
 Ohio Bird / federal Husted pattern: the record citing the roll call itself
 supersedes a second-hand vote claim.
+
+## Plain-language rewrite (2026-08-31)
+
+All 4 yea and nay descriptions were rewritten from committed evidence. Judge
+dry and real runs passed. The importer rewrote 120 local records with stamp
+`2026-08-31T07:05:12.860Z`; convergence reported all 120 unchanged. The
+original `import-report.json` remains unchanged.
+Prod remains untouched.
+
+Current-judge later-roll acknowledgment: 1563815→1563814.
+
+A final jargon-definition pass rewrote 60 HB 1205 records at
+`2026-08-31T07:29:02.434Z`; the next dry run reported all 120 unchanged.
