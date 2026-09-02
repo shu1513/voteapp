@@ -118,10 +118,10 @@ candidates** in total.
   measures batch-01 dropped that were worth a second look: HB 424 is now
   imported with no stance, and HB 684 stays dropped.
 
-Every one of the 118 pool rolls carries a final disposition in
+Every one of the 118 pool rolls carries a recorded disposition in
 `survey/divided-enacted-worklist.tsv`: 23 batch-01, 20 not selected in batch-01,
 18 batch-02, 10 not selected in batch-02, 34 dropped under filter 5, and 13 on 8
-measures still open for a later batch.
+measures marked `candidate:batch-03`, still open for a later batch.
 
 ## Layout
 

@@ -9,10 +9,10 @@ divided-and-enacted roll calls on 45 measures**. This batch works the 62 rolls
 that batch-01 left marked `candidate:batch-02`, and re-reads the two measures
 batch-01 dropped that were worth a second look.
 
-Every roll in the pool now carries a final disposition in
+Every roll in the pool now carries a recorded disposition in
 `../survey/divided-enacted-worklist.tsv`: 23 batch-01, 20 not selected in
-batch-01, 18 batch-02, 10 not selected in batch-02, 34 dropped, and 13 still
-open for a later batch.
+batch-01, 18 batch-02, 10 not selected in batch-02, 34 dropped, and 13 marked
+`candidate:batch-03`, still open for a later batch.
 
 ## The eleven measures
 
@@ -88,7 +88,7 @@ Kentucky's 2025 session now holds **2,067 records across 107 candidates** —
 
 ## What is left in this session
 
-**13 rolls on 8 measures** stay `candidate:batch-02` in the worklist: HB 241 and
+**13 rolls on 8 measures** are marked `candidate:batch-03` in the worklist: HB 241 and
 SB 9 on education, HB 606 on economic development, HB 618 and SB 202 on
 alcoholic beverages, HB 664 on motor vehicle operation, SB 28 on agricultural
 economic development, and HJR 15 on the Ten Commandments monument at the

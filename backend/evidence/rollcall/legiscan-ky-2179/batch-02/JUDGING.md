@@ -152,5 +152,18 @@ before checking, and the database agrees exactly — 211 `general`, 172
 `environment_and_public_health`, 78 `election_integrity`, 69 `data_privacy`.
 
 A convergence dry run reports all 916 `unchanged`. The insert ledger is preserved
-in `import-report.json`; the convergence run wrote
-`import-dry-run-rerun-report.json`.
+in `import-report.json`.
+
+## One rewrite after review
+
+Review of the pull request caught that the HB 45 description said a donor may not
+have taken more than $100,000 "from one" foreign national. The Act's four
+certification clauses do say "from a foreign national", but the clause that makes
+the threshold enforceable — the presumption of a violation — aggregates funds
+"from one (1) or more foreign nationals", so $60,000 from each of two foreign
+nationals crosses it. Both descriptions now say "in total from foreign
+nationals". The judgment was re-applied and a real re-run rewrote the 16 HB 45
+records (`import-rerun-report.json`, stamp `2026-09-02T14:48:03.652Z`, 900
+`unchanged` and 16 `rewrite`, insert ledger untouched). The database reads back
+16 records with the new wording and none with the old, and a fresh convergence
+dry run again reports all 916 `unchanged` (`import-dry-run-rerun-report.json`).
