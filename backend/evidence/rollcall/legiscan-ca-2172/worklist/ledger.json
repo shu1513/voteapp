@@ -1359,183 +1359,183 @@
    "reason": "cuts both ways on disclosure \u2014 compels data center reporting to government while creating a new public records exemption and publishing only aggregated data"
   },
   "AB 1595": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Criminal procedure: writs of habeas corpus and motions to vacate.",
-   "batch": null,
+   "batch": "batch-20",
    "reason": null
   },
   "AB 1629": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Dental coverage.",
-   "batch": null,
+   "batch": "batch-20",
    "reason": null
   },
   "AB 1647": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Juveniles: transfer to criminal court: criminal procedure.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-20 read",
+   "reason": "declaratory of existing law by its own terms, and carves out sentencing, where the statements can matter most"
   },
   "AB 1655": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "CalWORKs: temporary absence: immigration detention.",
-   "batch": null,
+   "batch": "batch-20",
    "reason": null
   },
   "AB 1679": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Local pop-up small business program.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-20 read",
+   "reason": "cuts both ways \u2014 mandates that cities allow pop-up businesses while preserving fire, accessibility and enforcement authority and adding a new food inspection gate"
   },
   "AB 179": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Housing.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-20 read",
+   "reason": "omnibus budget trailer from the Assembly Committee on Budget \u2014 17 items that add money while exempting a new committee from open-meeting and rulemaking rules and dropping a fingerprinting duty"
   },
   "AB 1792": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Pupil instruction: health framework: sexual health.",
-   "batch": null,
+   "batch": "batch-20",
    "reason": null
   },
   "AB 1803": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Employment: sexual harassment training and education: anti-hate speech training.",
-   "batch": null,
+   "batch": "batch-20",
    "reason": null
   },
   "AB 1809": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Public contracts: school and community college districts.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-20 read",
+   "reason": "cuts both ways \u2014 deletes two existing cost checks on school job order contracting and replaces them with one test each district writes for itself"
   },
   "AB 1818": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "California State University: employer-employee relations: meeting and conferring.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-20 read",
+   "reason": "no research area fits \u2014 moves one procedural determination in university labor bargaining to a neutral state board"
   },
   "AB 1820": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Electric vehicle charging stations: permit fees.",
-   "batch": null,
+   "batch": "batch-20",
    "reason": null
   },
   "AB 1837": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Video imaging of parking violations.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-20 read",
+   "reason": "cuts both ways \u2014 extends camera parking enforcement seven years while adding facial-recognition, federal-access and blurring limits, and exempts San Francisco from the new reporting"
   },
   "AB 1838": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Public contracts: local agencies: responsive bidders.",
-   "batch": null,
+   "batch": "batch-20",
    "reason": null
   },
   "AB 1944": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Zero-emission transit buses: axle weight.",
-   "batch": null,
+   "batch": "batch-20",
    "reason": null
   },
   "AB 1977": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Notaries public.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-20 read",
+   "reason": "departmental omnibus that cuts both ways \u2014 a new renewal exam and fixed fees alongside electronic signature authority and lighter renewal filing"
   },
   "AB 1979": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Health care services: artificial intelligence.",
-   "batch": null,
+   "batch": "batch-20",
    "reason": null
   },
   "AB 2011": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Nonquantitative treatment limitations.",
-   "batch": null,
+   "batch": "batch-20",
    "reason": null
   },
   "AB 2015": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Department of Transportation: third-party navigation applications: study and report.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-20 read",
+   "reason": "study only \u2014 a Caltrans pilot on navigation apps in one unnamed region, with permissive recommendations and a sunset"
   },
   "AB 2161": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Medi-Cal eligibility: work or community engagement.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-20 read",
+   "reason": "implements the federal Medi-Cal work requirement rather than opposing it, and lets the department defer every protection it adds if no appropriation is made"
   },
   "AB 2164": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Legally protected activities.",
-   "batch": null,
+   "batch": "batch-20",
    "reason": null
   },
   "AB 2308": {
