@@ -9,7 +9,7 @@ Second batch of the Senate-only tail. Rule and method unchanged from `../batch-0
 | measure | status | area | yea | Senate |
 | --- | --- | --- | --- | --- |
 | AB 1050 covenants that block housing conversions | chaptered | housing_affordability | for | 31-9 |
-| SB 294 Workplace Know Your Rights Act | chaptered | **civil_rights** | for | 29-8 |
+| SB 294 Workplace Know Your Rights Act | chaptered | civil_rights | for | 29-8 |
 | SB 1125 Water Rate Assistance Program | enrolled | social_programs_and_welfare | for | 31-9 |
 | SB 655 safe maximum indoor temperature as state policy | chaptered | environment_and_public_health | for | 31-8 |
 | AB 1108 independent death investigations in custody (FACTS Act) | chaptered | public_safety_and_crime_control | for | 29-9 |
@@ -17,12 +17,13 @@ Second batch of the Senate-only tail. Rule and method unchanged from `../batch-0
 | AB 507 adaptive reuse: by-right conversion of buildings to housing | chaptered | housing_affordability | for | 30-9 |
 | AB 260 medication abortion: labeling, immunity, coverage | chaptered | womens_reproductive_rights | for | 30-8 |
 
-**`civil_rights` gains its first California coverage** — **18 of 27** areas.
+**No area is new in this batch**: `civil_rights` was first covered in batch-02. California covers
+**14 of 27** research areas. (The first draft claimed 18; corrected on review, see `../batch-08/PLAN.md`.)
 
 ## Two measures dropped after a full read, and why they are worth naming
 
-Both would have added a new area. Both were dropped anyway, because a tag that misleads is worse
-than an area left uncovered.
+Both were dropped because a tag that misleads is worse than a record left out. (The first draft
+said each would have opened a new area; only SB 1354's `national_defense` is actually uncovered.)
 
 - **SB 403 (End of Life Option Act: removes the 2031 sunset).** The only area that fits is
   `womens_reproductive_rights`, whose description covers "individual bodily autonomy". Aid-in-dying

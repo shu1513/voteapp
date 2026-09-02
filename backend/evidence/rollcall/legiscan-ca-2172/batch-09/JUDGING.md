@@ -68,5 +68,13 @@ Every label states `"nay": null`.
 `origin_run_id LIKE 'rollcall:CA:%:2172:%:2026-08-31T18:27:54.458Z'` returns 87 rows across 11
 candidates; the DRY RUN's stamp `2026-08-31T18:27:27.830Z` matches **zero** rows.
 
-California now holds **4,560 roll-call records across 80 candidates**, 80 measures, **18 of 27
-research areas**. Prod untouched.
+California now holds **4,560 roll-call records across 80 candidates**, 80 measures, 14 of 27
+research areas. Prod untouched.
+
+## Review response (2026-09-01)
+
+**Tense (P2, true).** SB 1125 is enrolled, not law; it now reads "would set up", "would create",
+"could confirm". 11 records rewritten, re-run unchanged.
+
+**Area coverage (P2, true).** `civil_rights` was not new — batch-02 covered it. The count is 14 of
+27. Corrected here and in `PLAN.md`; the root cause and the rule are in `../batch-08/PLAN.md`.

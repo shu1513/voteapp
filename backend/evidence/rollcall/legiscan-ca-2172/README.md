@@ -98,8 +98,8 @@ so every vote in this batch was cast on the enrolled text and no description nee
   `batch-07/` 8 / 8 / **507** (final-text rule; Assembly-only tail) ·
   `batch-08/` 10 / 10 / **107** (Senate-only tail begins) · `batch-09/` 8 / 8 / **87**.
 
-California total: **4,560 roll-call records across 80 candidates**, 80 measures, **18 of 27
-research areas**. All descriptions plain English, American-spelled, every qualification kept.
+California total: **4,560 roll-call records across 80 candidates**, 80 measures, **14 of 27
+research areas** (`public_education_quality`, batch-07, is the only area added since batch-04). All descriptions plain English, American-spelled, every qualification kept.
 
 ## The rule changed on 2026-08-31: final text, not enacted
 
@@ -125,7 +125,13 @@ Hash `c150cc01b198`, at `/Users/shu/legiscan-data/ca-2172-0830/`. Re-fetched 202
 store refuses to overwrite an approved row.
 
 Signing runs into the autumn and will move measures from `enrolled` to `chaptered` or `vetoed`.
-Under the new rule that changes only a description's closing sentence, not whether a vote is usable.
+Under the new rule that changes the description, not whether the vote is usable — and it is a
+**real rewrite**, not a closing-sentence swap: enrolled bills are written in the conditional
+("would require") and must move to the indicative ("requires") if signed, or to "would have
+required … but the governor vetoed it" if not.
+
+**Enrolled measures awaiting that rewrite** (6): SB 923, SB 1250, AB 2247 (batch-07); SB 1220,
+SB 1418 (batch-08); SB 1125 (batch-09). Check `status` in the next dataset cut's bill JSON.
 
 ## The open pool, measured on the 08-30 cut
 

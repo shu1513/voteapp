@@ -79,5 +79,16 @@ unknown flag. Nothing was written and the row count was unchanged, which is exac
 fail-closed CLI should do. Noted because "the import errored" and "the import half-ran" look alike
 in a scrollback, and only the row count tells them apart.
 
-California now holds **4,473 roll-call records across 80 candidates**, 72 measures, **17 of 27
-research areas**. Prod untouched.
+California now holds **4,473 roll-call records across 80 candidates**, 72 measures, 14 of 27
+research areas. Prod untouched.
+
+## Review response (2026-09-01) — enrolled bills rewritten into the conditional
+
+**Tense (P2, true).** SB 1220 and SB 1418 are on the governor's desk, and the first draft described
+them as law — SB 1418 even said it "takes effect immediately" in the sentence before saying it was
+awaiting a decision. Both now use "would", the same convention the vetoed bills already used. 22
+records rewritten (11 each), re-run unchanged, row count unchanged. When the governor acts, these
+two need a second rewrite — tense and closing sentence — and the README lists them.
+
+**Area coverage (P2, true).** See the correction in `PLAN.md`: nothing in this batch was a new
+area; the count is 14 of 27, not 17.

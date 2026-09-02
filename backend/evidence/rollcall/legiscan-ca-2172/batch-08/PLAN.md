@@ -12,8 +12,9 @@ the same reading effort for roughly a sixth of the coverage. They are still wort
 are correctly done *after* the Assembly work, and the both-chamber pool (163 measures at ~79 records
 each) outranks the rest of this tail.
 
-Selection therefore favored **area coverage** over raw count: this batch opens three research areas
-California had no roll-call record in at all.
+Selection was meant to favor **area coverage** over raw count. It did not: the first draft of this
+file claimed three new areas, and every one of them was already covered in batches 01-02. The
+baseline was recalled from memory instead of measured. See "Corrected on review" below.
 
 ## The version check ran offline
 
@@ -26,21 +27,22 @@ reproducible — see `../README.md`.
 
 | measure | status | area | yea | Senate |
 | --- | --- | --- | --- | --- |
-| AB 1263 ghost guns: aiding unlawful manufacture, code files | chaptered | **gun_control** | for | 30-10 |
-| SB 1220 firearm ban after serial-number tampering | enrolled | **gun_control** | for | 30-9 |
+| AB 1263 ghost guns: aiding unlawful manufacture, code files | chaptered | gun_control | for | 30-10 |
+| SB 1220 firearm ban after serial-number tampering | enrolled | gun_control | for | 30-9 |
 | SB 53 Transparency in Frontier Artificial Intelligence Act | chaptered | corporate_accountability | for | 29-8 |
 | AB 45 health-location data and geofencing ban | chaptered | data_privacy | for | 29-9 |
-| SB 1418 preservation of election materials | enrolled | **election_integrity** | for | 30-10 |
-| AB 1411 county voter education and outreach plans | chaptered | **election_integrity** | for | 30-10 |
+| SB 1418 preservation of election materials | enrolled | election_integrity | for | 30-10 |
+| AB 1411 county voter education and outreach plans | chaptered | election_integrity | for | 30-10 |
 | AB 1167 no ratepayer money for utility politics | chaptered | anti_corruption | for | 29-10 |
 | SB 766 Combating Auto Retail Scams Act | chaptered | corporate_accountability | for | 30-8 |
-| AB 1261 legal counsel for immigrant youth | chaptered | **immigration** | for | 30-8 |
+| AB 1261 legal counsel for immigrant youth | chaptered | immigration | for | 30-8 |
 | SB 771 social media liability for civil rights violations | vetoed | corporate_accountability | for | 30-8 |
 
-**Three areas gain their first California coverage: `gun_control`, `election_integrity` and
-`immigration`.** California now covers **17 of 27** research areas.
+**No area is new in this batch.** `gun_control` and `immigration` were first covered in batch-01,
+`election_integrity` in batch-02. California covers **14 of 27** research areas, unchanged since
+batch-07.
 
-`gun_control` is the one worth noting against the campaign's opening instruction. The area reads
+`gun_control` is still worth noting against the campaign's opening instruction. The area reads
 "regulate firearm access … to reduce gun violence", so in California a yes on AB 1263 and SB 1220
 is `for` — the mirror image of how Texas's firearm votes scored. The direction follows the area
 description, not the bill's home state.
@@ -60,3 +62,12 @@ description, not the bill's home state.
 - **Completeness audit run BEFORE judging** — **75 untruncated digest items**; four gaps found and
   closed pre-import.
 - Lint: 20 descriptions, 0 warnings, longest sentence 44 words.
+
+## Corrected on review (2026-09-01)
+
+The first draft said this batch opened `gun_control`, `election_integrity` and `immigration`, and
+took California to 17 of 27 areas. **All three were already covered** — two since batch-01, one
+since batch-02 — and the true count is 14. The error came from working off a remembered "13 of 27"
+and an assumed list of which 13, rather than reading the slugs out of the earlier judgment files.
+The measures themselves stand; the stated reason for choosing them does not. The fix that stops it
+recurring is one line: count areas from the judgment files, never from memory.

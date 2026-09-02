@@ -96,3 +96,11 @@ candidates; the DRY RUN's stamp `2026-08-31T18:10:30.959Z` matches **zero** rows
 69 candidates, not 80: absences differ per roll, and no single roll reaches every member.
 
 California now holds **4,366 roll-call records across 80 candidates**, 62 measures. Prod untouched.
+
+## Review response (2026-09-01) — enrolled bills rewritten into the conditional
+
+The section above says enrolled bills get a pending closing sentence "in the right tense" — but the
+**bodies** of SB 923, SB 1250 and AB 2247 were written as law: "requires", "creates", "must". A
+reviewer caught it. All three now use "would" throughout, matching the vetoed bills. 185 records
+rewritten (55 + 64 + 66), re-run 4,560 `unchanged`, row count unchanged. When the governor acts,
+each needs a second rewrite; the README keeps the list.

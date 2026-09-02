@@ -1,0 +1,58 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": false,
+  "skipExisting": false,
+  "startedAt": "2026-09-02T01:17:16.104Z",
+  "finishedAt": "2026-09-02T01:17:56.085Z",
+  "jurisdiction": "CA",
+  "sessionId": 2172,
+  "evidenceDir": "/Users/shu/legiscan-data/ca-2172-evidence",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "/Users/shu/voteApp/.claude/worktrees/hungry-engelbart-5b1814/backend/evidence/rollcall/legiscan-ca-2172/crosswalk.json",
+  "crosswalkEntries": 121,
+  "peopleFile": "/Users/shu/voteApp/.claude/worktrees/hungry-engelbart-5b1814/backend/evidence/rollcall/legiscan-ca-2172/legiscan-people-ca-2172.json",
+  "peopleMembers": 121,
+  "files": 6454,
+  "outcomes": {
+    "not_approved": 6327,
+    "imported": 127
+  },
+  "actions": {
+    "unchanged": 4342,
+    "rewrite": 218
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-ca-senate-2172-roll1726371.json",
+      "state": "CA",
+      "chamber": "senate",
+      "sessionId": 2172,
+      "roll": 1726371,
+      "outcome": "imported",
+      "legislativeVoteId": "6de03f5a-f345-45fa-a726-b64efc0bdcd4",
+      "reviewStatus": "approved",
+      "bill": "SB1125",
+      "voteDate": "2026-08-26",
+      "officialVoteDate": null,
+      "measureId": "SB 1125",
+      "question": "Unfinished Business SB1125 Menjivar et al. Concurrence",
+      "originRunId": "rollcall:CA:senate:2172:1726371:2026-09-02T01:17:16.104Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 29,
+        "matched": 11
+      },
+      "actions": {
+        "rewrite": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    }
+  ],
+  "rollsScopedToBatch": true
+}
