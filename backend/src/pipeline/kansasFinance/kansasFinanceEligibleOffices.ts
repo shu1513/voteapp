@@ -126,13 +126,27 @@ export function kansasCfrCycleStart(office: KansasCfrOffice, electionYear: numbe
  * the cycle by construction. A cycle that has not opened yet (a 2028 House
  * race seen in late 2026) has no window — callers check
  * kansasCfrCycleStart first; an inverted range here is a programming error.
+ * `cycleStartYear` overrides the office's term length for a special
+ * election's short cycle (the 2026 Senate specials start at 2025).
  */
 export function kansasCfrFiledDateWindow(input: {
   office: KansasCfrOffice;
   electionYear: number;
+  cycleStartYear?: number;
   now: Date;
 }): { startDate: string; endDate: string } {
-  const start = kansasCfrCycleStart(input.office, input.electionYear);
+  if (
+    input.cycleStartYear !== undefined &&
+    (!Number.isSafeInteger(input.cycleStartYear) ||
+      input.cycleStartYear > input.electionYear ||
+      input.cycleStartYear < input.electionYear - 3)
+  ) {
+    throw new Error(`Invalid Kansas cycle start year: ${input.cycleStartYear} for ${input.electionYear}`);
+  }
+  const start =
+    input.cycleStartYear === undefined
+      ? kansasCfrCycleStart(input.office, input.electionYear)
+      : new Date(Date.UTC(input.cycleStartYear, 0, 1));
   if (Number.isNaN(input.now.getTime()) || input.now < start) {
     throw new Error(
       `Kansas ${input.office.label} cycle for ${input.electionYear} opens ${formatKansasCfrDate(start)}, after ${formatKansasCfrDate(input.now)}`

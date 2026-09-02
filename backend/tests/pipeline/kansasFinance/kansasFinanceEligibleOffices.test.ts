@@ -55,6 +55,11 @@ describe("kansasFinanceEligibleOffices", () => {
     const governor = kansasCfrOfficeForRace({ officeScope: "statewide", officeCanonicalName: "Governor" })!;
     expect(kansasCfrFiledDateWindow({ office: governor, electionYear: 2026, now })).toEqual({ startDate: "01/01/2023", endDate: "09/01/2026" });
     expect(() => kansasCfrFiledDateWindow({ office: house, electionYear: 1999, now })).toThrow("Invalid Kansas election year");
+    // A special election's short cycle overrides the office's term length.
+    const senate = kansasCfrOfficeForRace({ officeScope: "state_upper", officeCanonicalName: "State Senator" })!;
+    expect(kansasCfrFiledDateWindow({ office: senate, electionYear: 2026, cycleStartYear: 2025, now })).toEqual({ startDate: "01/01/2025", endDate: "09/01/2026" });
+    expect(() => kansasCfrFiledDateWindow({ office: senate, electionYear: 2026, cycleStartYear: 2027, now })).toThrow("Invalid Kansas cycle start year");
+    expect(() => kansasCfrFiledDateWindow({ office: senate, electionYear: 2026, cycleStartYear: 2022, now })).toThrow("Invalid Kansas cycle start year");
   });
 
   it("refuses an inverted window for a cycle that has not opened", () => {

@@ -15,22 +15,8 @@
 
 import type { Pool, PoolClient } from "pg";
 
-import {
-  buildKansasCfrUrl,
-  collectKansasCfrGridPages,
-  createKansasCfrSession,
-  KANSAS_CFR_VIEWER_PAGES,
-  KansasCfrClientError,
-  openKansasCfrCategory,
-  postAndFollow,
-  type KansasCfrSessionOptions,
-} from "./kansasCfrViewerClient.js";
-import {
-  resolveKansasCandidateFiler,
-  type KansasFilerFilingKind,
-  type KansasFilerMatch,
-  type KansasFilerRow,
-} from "./kansasCandidateFilerResolver.js";
+import { buildKansasCfrUrl, KANSAS_CFR_VIEWER_PAGES, type KansasCfrSessionOptions } from "./kansasCfrViewerClient.js";
+import { resolveKansasCandidateFiler, type KansasFilerMatch, type KansasFilerRow } from "./kansasCandidateFilerResolver.js";
 import {
   KANSAS_FINANCE_ELIGIBLE_OFFICE_KEYS,
   kansasCfrCycleStart,
@@ -39,18 +25,11 @@ import {
   type KansasCfrOffice,
 } from "./kansasFinanceEligibleOffices.js";
 import { buildKansasFilerKey, normalizeKansasNameForStorage, upsertKansasFinanceLink } from "./kansasFinanceWriter.js";
+import { KANSAS_CFR_FILER_SEARCHES, kansasGridOfficeMatches, searchKansasFilings } from "./kansasFilingSearch.js";
+
+export { KANSAS_CFR_FILER_SEARCHES } from "./kansasFilingSearch.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
-
-export const KANSAS_CFR_FILER_SEARCHES: readonly {
-  filingType: string;
-  gridId: string;
-  filingKind: KansasFilerFilingKind;
-}[] = [
-  { filingType: "Receipts and Expenditures Report", gridId: "grdviewCfrResults", filingKind: "report" },
-  { filingType: "Appointment of Treasurer", gridId: "grdviewApptOfTreas", filingKind: "appointment_of_treasurer" },
-  { filingType: "Affidavit of Exemption Candidate", gridId: "grdviewAffidavitResults", filingKind: "affidavit" },
-];
 
 export const KANSAS_CFR_LINK_SOURCE_URL = buildKansasCfrUrl(KANSAS_CFR_VIEWER_PAGES.entry);
 
@@ -175,41 +154,14 @@ export type KansasFilerSearch = (input: {
   sessionOptions?: KansasCfrSessionOptions;
 }) => Promise<{ name: string; district: string; officeSought: string; fileDate: string }[]>;
 
-/**
- * One viewer session, one Candidate-filings search, every grid page. Fails
- * closed when the form re-renders instead of redirecting to the results page
- * (a validation message such as "Filing Type Required").
- */
-export const searchKansasFilerRows: KansasFilerSearch = async (input) => {
-  const session = createKansasCfrSession(input.sessionOptions);
-  const form = await openKansasCfrCategory(session, "Candidate");
-  const results = await postAndFollow(session, form, {
-    txtFirstName: "",
-    txtLastName: "",
-    drpdownOffice: input.office.code,
-    txtDistrictNo: "",
-    drpdownFilingType: input.filingType,
-    txtStartDate: input.startDate,
-    txtEndDate: input.endDate,
-    btnSearch: "Submit Search",
-  });
-  if (!results.url.endsWith(KANSAS_CFR_VIEWER_PAGES.searchResults)) {
-    const message = /<span[^>]*style="[^"]*color:\s*Red[^"]*"[^>]*>([^<]*)</i.exec(results.html)?.[1]?.trim();
-    throw new KansasCfrClientError(
-      "bad_response",
-      `Kansas candidate search for ${input.office.label} / ${input.filingType} did not reach results: ${message ?? results.url}`
-    );
-  }
-  const { pages } = await collectKansasCfrGridPages(session, results, input.gridId);
-  return pages.flatMap((page) =>
-    page.rows.map((row) => ({
-      name: row.name,
-      district: row.district,
-      officeSought: row.officeSought,
-      fileDate: row.fileDate,
-    }))
-  );
-};
+/** The shared search (kansasFilingSearch.ts) reduced to the resolver's row fields. */
+export const searchKansasFilerRows: KansasFilerSearch = async (input) =>
+  (await searchKansasFilings(input)).map(({ row }) => ({
+    name: row.name,
+    district: row.district,
+    officeSought: row.officeSought,
+    fileDate: row.fileDate,
+  }));
 
 export type KansasFilerPoolLoader = (office: KansasCfrOffice, electionYear: number) => Promise<KansasFilerRow[]>;
 
@@ -235,7 +187,6 @@ export function createKansasFilerPoolLoader(input: {
         const window = kansasCfrFiledDateWindow({ office, electionYear, now: input.now });
         const rows: KansasFilerRow[] = [];
         let skipped = 0;
-        const expectedOffice = office.label.toUpperCase().replace(/\s+/g, " ");
         // Sequential on purpose: one request in flight per viewer session.
         for (const filerSearch of KANSAS_CFR_FILER_SEARCHES) {
           const found = await search({
@@ -247,7 +198,7 @@ export function createKansasFilerPoolLoader(input: {
             sessionOptions: input.sessionOptions,
           });
           for (const row of found) {
-            if (row.officeSought.toUpperCase().replace(/\s+/g, " ").trim() !== expectedOffice) {
+            if (!kansasGridOfficeMatches(office, row.officeSought)) {
               skipped += 1;
               continue;
             }
