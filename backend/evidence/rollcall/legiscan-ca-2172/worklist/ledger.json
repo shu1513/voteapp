@@ -1179,184 +1179,184 @@
    "reason": "cuts both ways on one dimension \u2014 tightens license plate data rules for police while removing transit, transportation and airport agencies from coverage entirely"
   },
   "SB 499": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "A",
    "bill_status": "chaptered",
    "value": 6,
    "title": "Residential projects: fees and charges.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-19 read",
+   "reason": "cuts both ways \u2014 binds one early fee-collection route to a cost cap while widening two others, including parkland under the emergency category"
   },
   "SB 647": {
-   "status": "open",
+   "status": "judged",
    "chambers": "A",
    "bill_status": "vetoed",
    "value": 6,
    "title": "Energy: Equitable Building Decarbonization Program: Low-Income Oversight Board: membership.",
-   "batch": null,
+   "batch": "batch-19",
    "reason": null
   },
   "SB 682": {
-   "status": "open",
+   "status": "judged",
    "chambers": "A",
    "bill_status": "vetoed",
    "value": 6,
    "title": "Environmental health: product safety: perfluoroalkyl and polyfluoroalkyl substances.",
-   "batch": null,
+   "batch": "batch-19",
    "reason": null
   },
   "SB 830": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "A",
    "bill_status": "chaptered",
    "value": 6,
    "title": "Public Transit Revenue Measure District: revenue measure: election procedures.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-19 read",
+   "reason": "single-region procedural bill \u2014 ballot designation and argument selection for one Bay Area transit measure"
   },
   "SB 851": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "A",
    "bill_status": "chaptered",
    "value": 6,
    "title": "Elections.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-19 read",
+   "reason": "cuts both ways \u2014 tightens certification duties and poll security while lowering the voting-system standards benchmark and deleting federal defect reporting"
   },
   "AB 1136": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "vetoed",
    "value": 1,
    "title": "Employment: immigration and work authorization.",
-   "batch": null,
+   "batch": "batch-19",
    "reason": null
   },
   "AB 1235": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "California State University: skilled and trained workforce requirement.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-19 read",
+   "reason": "no research area fits \u2014 mandatory skilled-and-trained workforce commitment on university construction contracts, with a broad housing carve-out"
   },
   "AB 1258": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Deferred entry of judgment pilot program.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-19 read",
+   "reason": "sunset extension and housekeeping for a three-county pilot, and it quietly drops Alameda County from the program"
   },
   "AB 1296": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Local educational agencies: reserve funds.",
-   "batch": null,
+   "batch": "batch-19",
    "reason": null
   },
   "AB 1303": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Communications: lifeline telephone service program.",
-   "batch": null,
+   "batch": "batch-19",
    "reason": null
   },
   "AB 1329": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "vetoed",
    "value": 1,
    "title": "Workers\u2019 Compensation: Subsequent injuries payments.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-19 read",
+   "reason": "cuts both ways \u2014 fixes a disability measuring method in workers favour but adds a proof burden and a filing deadline that do not exist in statute today"
   },
   "AB 134": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Public Safety.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-19 read",
+   "reason": "omnibus budget trailer from the Committee on Budget \u2014 abolishes two oversight bodies and a reentry grant fund while funding a new tribal police pilot"
   },
   "AB 1348": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "vetoed",
    "value": 1,
    "title": "Average daily attendance: emergencies: immigration enforcement activity: independent study plans.",
-   "batch": null,
+   "batch": "batch-19",
    "reason": null
   },
   "AB 138": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "State employment: state bargaining units.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-19 read",
+   "reason": "budget trailer \u2014 a negotiated package that cuts pay through a leave program while suspending pension and retiree-health contributions"
   },
   "AB 1417": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Energy: Voluntary Offshore Wind and Coastal Resources Protection Program: community capacity funding activities and grants.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-19 read",
+   "reason": "weak area fit and a transparency tradeoff \u2014 expands community funding but replaces per-donation posting with an annual report"
   },
   "AB 1439": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Public retirement systems: development projects: labor standards.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-19 read",
+   "reason": "no operative duty \u2014 every verb is requests, and the pension boards may decline on fiduciary grounds"
   },
   "AB 152": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Human services.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-19 read",
+   "reason": "omnibus budget trailer \u2014 16 unrelated items that raise cash aid while raising licensing fees and delaying consumer-protection deadlines"
   },
   "AB 1525": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Attorneys: discipline: sensitive services.",
-   "batch": null,
+   "batch": "batch-19",
    "reason": null
   },
   "AB 1539": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Presidential elections: qualifications for office.",
-   "batch": null,
+   "batch": "batch-19",
    "reason": null
   },
   "AB 1577": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Data centers: reporting.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-19 read",
+   "reason": "cuts both ways on disclosure \u2014 compels data center reporting to government while creating a new public records exemption and publishing only aggregated data"
   },
   "AB 1595": {
    "status": "open",
