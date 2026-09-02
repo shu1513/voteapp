@@ -295,8 +295,44 @@ live (2026-09-01 figures; the nightly files move a little between runs):
   F-7b PDF has no text layer (scan, as expected); sample filed-report PDF (2026 Q2,
   1.3 MB) **has a text layer** -> cover extraction / cash_on_hand path is feasible.
 
-Still open for Phase 1: LOAN-file vs CON-grid loan-subtype overlap; `transactionTotalYTD`
-semantics; full category x contributor-type money matrix pinned against covers.
+## Phase 1 direct pipeline (built 2026-09-01, migration 267, flags off)
+
+`backend/src/pipeline/westVirginiaFinance/`: artifact cache (content-addressed CSV/JSON
++ metadata pointer, 0700/0600), reporting-cycle windows, resolver, auto-link, due list,
+cache-only sync, aggregator, writer, loader; CLIs
+`west-virginia-candidates:finance:raw:refresh` (the only live caller — takes
+`--election-year`, refreshes the three schedule files, resolves the window, then every
+window year's CON/EXP/API-CON artifacts), `:auto-link` (live registry, one fetch per
+batch) and `:sync-due`. Flags `WEST_VIRGINIA_CAMPAIGN_FINANCE_{ENABLED,SYNC_ENABLED,
+RAW_DATA_REFRESH_ENABLED}`, all default false. Evidence gathered while building:
+
+- **Window:** the `2026 Candidate Election Cycle` spans three schedule files — the 2027
+  file holds a "2026 4th Quarter Report" period (2026-10-19 -> 2026-12-31) — so the
+  cycle window is 2025-07-01 -> 2026-12-31 (data years 2025 + 2026). Committee-cycle
+  and non-partisan cycles are separate strings.
+- **Registry vocabulary (429 "2026 Election" State Candidate rows):** office
+  `House of Delegates` 316 / `State Senator` 77 / `Undeclared` 21 / judicial 15; district
+  is the plain seat number; candidateName is `Last, First Middle Suffix`
+  (`Oliverio, Michael Angelo II`); status Active 355 / Terminated 74; three same-seat
+  re-registered pairs (resolver reports them ambiguous). One legislative name carries a
+  quoted nickname (`Jeffries, Warren "Dean"`), one a parenthesized one — manual links.
+- **Signs:** `Return` rows are POSITIVE in both bulk files (CON: contribution returned to
+  the donor; EXP: vendor refund) and are subtracted. API amounts are never negative.
+- **API CON selector rows (2026, org 101):** Monetary/In-Kind/Other Income/Transfer/
+  Return rows carry `transactionTypeDesc` "Contributions"; loan subtypes carry "Loans".
+  The CON bulk file has no loan rows at all, so the LOAN-file overlap question does not
+  touch the published totals. `transactionDate`/`filedDate` are ISO
+  (`2026-06-30T00:00:00`); `transactionTotalYTD` stays unused.
+- **Parsers on the 2025 files:** CON 2025 28,873 rows / 1 recovered; **EXP 2025 6,214
+  rows / 310 recovered** (same bad-width class as 2026's 428); API-CON 2025 16,394 rows.
+- **Dry-run sync on 8 real committees** (embedded-quote fixture 1010003610, top-3 2026
+  totals, two committees with amended 2025 reports, two with Return rows): every year
+  reconciled cent- and multiset-exact; prior-cycle committees produce zero in-window
+  rows (the window rule keeps 2024-cycle money out).
+
+Not built in Phase 1, on purpose: `cash_on_hand` (cover PDF layout never pinned),
+`loans_received` / `debts_owed` (LOAN/DEB files unparsed), judicial offices (no November
+races), the occupation label snapshot (labels publish verbatim as filed).
 
 ## Coverage boundary (statutory, verified)
 

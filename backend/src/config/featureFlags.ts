@@ -364,6 +364,24 @@ export function isKansasCampaignFinanceSyncEnabled(force = false): boolean {
   );
 }
 
+export function isWestVirginiaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("WEST_VIRGINIA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isWestVirginiaCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isWestVirginiaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("WEST_VIRGINIA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isWestVirginiaCampaignFinanceRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isWestVirginiaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("WEST_VIRGINIA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
+
 export function isMarylandCfsRawDataRefreshEnabled(force = false): boolean {
   return (
     isMarylandCampaignFinanceEnabled() &&
