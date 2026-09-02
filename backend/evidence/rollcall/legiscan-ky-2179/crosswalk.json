@@ -1,7 +1,7 @@
 {
   "source": "legiscan",
   "jurisdiction": "KY",
-  "note": "Reviewed people_id to candidate map for Kentucky. LegiScan people_ids are stable across sessions, so this one file serves both the 2025 and the 2026 Regular Session. Every member of the 2025 session appears exactly once: a candidate id where a human confirmed the identity, or null where a human confirmed there is no candidate to map.",
+  "note": "Reviewed people_id to candidate map for Kentucky. LegiScan people_ids are stable across sessions, so this one file serves both the 2025 and the 2026 Regular Session. Every member of either session appears exactly once: a candidate id where a human confirmed the identity, or null where a human confirmed there is no candidate to map. One seat changed hands between the two sessions. David Yates (people_id 22180) held Senate District 37 through the 2025 session and left in October 2025; Gary Clemons (people_id 26549) holds it in the 2026 session. Each of them is absent from the other session's people file, so a run of either session reports exactly one crosswalk person who is not in its snapshot. That is expected, not a defect.",
   "entries": [
     {
       "people_id": 1141,
@@ -692,6 +692,11 @@
       "people_id": 25786,
       "candidate_id": null,
       "note": "reviewed, no candidate. Kentucky staggers its Senate: only the even-numbered districts are on the November 2026 ballot, so this seat has no candidate to map. Not a roster gap."
+    },
+    {
+      "people_id": 26549,
+      "candidate_id": null,
+      "note": "hand-added for the 2026 session. Gary Clemons took Senate District 37 after David Yates (people_id 22180) left the Senate in October 2025. Kentucky staggers its Senate and District 37 is odd-numbered, so the seat is not on the November 2026 ballot and there is no candidate to map. Reviewed, no candidate. Not a roster gap."
     }
   ]
 }

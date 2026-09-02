@@ -1,0 +1,346 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1675555,
+      "measure_id": "SB 199",
+      "vote_date": "2026-04-01",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 199. It says a pesticide label approved by the federal Environmental Protection Agency counts as a sufficient warning under Kentucky law. A company that follows that label cannot be sued in state court for failing to warn about the product's health risks, unless the EPA finds the maker hid or misstated health information to get the label approved. The Kentucky House voted 56-32, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 199. It says a pesticide label approved by the federal Environmental Protection Agency counts as a sufficient warning under Kentucky law. A company that follows that label cannot be sued in state court for failing to warn about the product's health risks, unless the EPA finds the maker hid or misstated health information to get the label approved. The Kentucky House voted 56-32, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1674531,
+      "measure_id": "SB 199",
+      "vote_date": "2026-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 199. It says a pesticide label approved by the federal Environmental Protection Agency counts as a sufficient warning under Kentucky law. A company that follows that label cannot be sued in state court for failing to warn about the product's health risks, unless the EPA finds the maker hid or misstated health information to get the label approved. The Kentucky Senate voted 24-12, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 199. It says a pesticide label approved by the federal Environmental Protection Agency counts as a sufficient warning under Kentucky law. A company that follows that label cannot be sued in state court for failing to warn about the product's health risks, unless the EPA finds the maker hid or misstated health information to get the label approved. The Kentucky Senate voted 24-12, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1682943,
+      "measure_id": "HB 78",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 78. It bars most lawsuits in Kentucky against gun makers, gun sellers and their trade groups over harm caused by someone who used a firearm criminally. Narrow exceptions remain, such as a product defect, a broken contract, or a seller who handed a gun to a person likely to misuse it. The Kentucky House voted 80-19, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 78. It bars most lawsuits in Kentucky against gun makers, gun sellers and their trade groups over harm caused by someone who used a firearm criminally. Narrow exceptions remain, such as a product defect, a broken contract, or a seller who handed a gun to a person likely to misuse it. The Kentucky House voted 80-19, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1682944,
+      "measure_id": "HB 78",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 78. It bars most lawsuits in Kentucky against gun makers, gun sellers and their trade groups over harm caused by someone who used a firearm criminally. Narrow exceptions remain, such as a product defect, a broken contract, or a seller who handed a gun to a person likely to misuse it. The Kentucky Senate voted 31-6, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 78. It bars most lawsuits in Kentucky against gun makers, gun sellers and their trade groups over harm caused by someone who used a firearm criminally. Narrow exceptions remain, such as a product defect, a broken contract, or a seller who handed a gun to a person likely to misuse it. The Kentucky Senate voted 31-6, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1682936,
+      "measure_id": "HB 312",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 312. It orders the Kentucky State Police to issue a new kind of concealed carry license to people aged 18, 19 and 20 who meet the same requirements adults must meet. The license is good statewide until the holder turns 21, and it can then be swapped for a standard license without repeating the firearms training. The Kentucky House voted 81-18, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 312. It orders the Kentucky State Police to issue a new kind of concealed carry license to people aged 18, 19 and 20 who meet the same requirements adults must meet. The license is good statewide until the holder turns 21, and it can then be swapped for a standard license without repeating the firearms training. The Kentucky House voted 81-18, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1682937,
+      "measure_id": "HB 312",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 312. It orders the Kentucky State Police to issue a new kind of concealed carry license to people aged 18, 19 and 20 who meet the same requirements adults must meet. The license is good statewide until the holder turns 21, and it can then be swapped for a standard license without repeating the firearms training. The Kentucky Senate voted 28-9, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against House Bill 312. It orders the Kentucky State Police to issue a new kind of concealed carry license to people aged 18, 19 and 20 who meet the same requirements adults must meet. The license is good statewide until the holder turns 21, and it can then be swapped for a standard license without repeating the firearms training. The Kentucky Senate voted 28-9, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1674562,
+      "measure_id": "SB 183",
+      "vote_date": "2026-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 183. It sets rules for proxy advisers, the firms that tell investors how to vote the shares they own in public companies. An adviser that recommends voting against a company's board must first write an economic analysis or warn clients that its advice is not solely in shareholders' interest, while advice matching the board needs neither step. The Kentucky House voted 76-15, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 183. It sets rules for proxy advisers, the firms that tell investors how to vote the shares they own in public companies. An adviser that recommends voting against a company's board must first write an economic analysis or warn clients that its advice is not solely in shareholders' interest, while advice matching the board needs neither step. The Kentucky House voted 76-15, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1674561,
+      "measure_id": "SB 183",
+      "vote_date": "2026-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 183. It sets rules for proxy advisers, the firms that tell investors how to vote the shares they own in public companies. An adviser that recommends voting against a company's board must first write an economic analysis or warn clients that its advice is not solely in shareholders' interest, while advice matching the board needs neither step. The Kentucky Senate voted 31-6, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 183. It sets rules for proxy advisers, the firms that tell investors how to vote the shares they own in public companies. An adviser that recommends voting against a company's board must first write an economic analysis or warn clients that its advice is not solely in shareholders' interest, while advice matching the board needs neither step. The Kentucky Senate voted 31-6, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1674521,
+      "measure_id": "HB 58",
+      "vote_date": "2026-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 58. It makes using an automated license plate reader unlawful in Kentucky except for listed purposes, caps how long the pictures may be kept at 90 days, bars selling the data, and makes a violation a crime. Police must publish a written policy, audit the system every 90 days, and match the plate by eye before a stop, while insurers and lenders may still use the data in limited cases. The Kentucky House voted 70-19, and the Governor signed the bill into law.",
+      "nay_description": "Voted against House Bill 58. It makes using an automated license plate reader unlawful in Kentucky except for listed purposes, caps how long the pictures may be kept at 90 days, bars selling the data, and makes a violation a crime. Police must publish a written policy, audit the system every 90 days, and match the plate by eye before a stop, while insurers and lenders may still use the data in limited cases. The Kentucky House voted 70-19, and the Governor signed the bill into law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1682942,
+      "measure_id": "SB 59",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 59. It bars using state or local money, public buildings, public websites and public employees on the job to campaign for or against a question on the ballot. Fines start at $500 and rise to a misdemeanor charge for repeat offenses, though public workers may still speak out on their own time with their own resources. The Kentucky House voted 80-19, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 59. It bars using state or local money, public buildings, public websites and public employees on the job to campaign for or against a question on the ballot. Fines start at $500 and rise to a misdemeanor charge for repeat offenses, though public workers may still speak out on their own time with their own resources. The Kentucky House voted 80-19, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1682941,
+      "measure_id": "SB 59",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 59. It bars using state or local money, public buildings, public websites and public employees on the job to campaign for or against a question on the ballot. Fines start at $500 and rise to a misdemeanor charge for repeat offenses, though public workers may still speak out on their own time with their own resources. The Kentucky Senate voted 31-7, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 59. It bars using state or local money, public buildings, public websites and public employees on the job to campaign for or against a question on the ballot. Fines start at $500 and rise to a misdemeanor charge for repeat offenses, though public workers may still speak out on their own time with their own resources. The Kentucky Senate voted 31-7, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1682934,
+      "measure_id": "SB 173",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 173. It requires Kentucky's Medicaid agency to post its Medicaid and children's health plans online and send the legislature every change it asks the federal government to approve, with an estimate of what each change costs. Two legislative panels must review the plans in public each year and may declare a plan deficient, after which the Governor has 30 days to say whether it will be changed. The Kentucky House voted 80-19, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 173. It requires Kentucky's Medicaid agency to post its Medicaid and children's health plans online and send the legislature every change it asks the federal government to approve, with an estimate of what each change costs. Two legislative panels must review the plans in public each year and may declare a plan deficient, after which the Governor has 30 days to say whether it will be changed. The Kentucky House voted 80-19, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1682933,
+      "measure_id": "SB 173",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 173. It requires Kentucky's Medicaid agency to post its Medicaid and children's health plans online and send the legislature every change it asks the federal government to approve, with an estimate of what each change costs. Two legislative panels must review the plans in public each year and may declare a plan deficient, after which the Governor has 30 days to say whether it will be changed. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 173. It requires Kentucky's Medicaid agency to post its Medicaid and children's health plans online and send the legislature every change it asks the federal government to approve, with an estimate of what each change costs. Two legislative panels must review the plans in public each year and may declare a plan deficient, after which the Governor has 30 days to say whether it will be changed. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1682823,
+      "measure_id": "SB 251",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 251. It lets Kentucky's Department of Corrections set the rules and procedures for carrying out the death penalty by internal policy, instead of through the public regulation process that requires notice, public comment and legislative review. Any such policy must be posted on the department's website. The Kentucky House voted 74-16, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 251. It lets Kentucky's Department of Corrections set the rules and procedures for carrying out the death penalty by internal policy, instead of through the public regulation process that requires notice, public comment and legislative review. Any such policy must be posted on the department's website. The Kentucky House voted 74-16, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1682822,
+      "measure_id": "SB 251",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 251. It lets Kentucky's Department of Corrections set the rules and procedures for carrying out the death penalty by internal policy, instead of through the public regulation process that requires notice, public comment and legislative review. Any such policy must be posted on the department's website. The Kentucky Senate voted 30-7, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 251. It lets Kentucky's Department of Corrections set the rules and procedures for carrying out the death penalty by internal policy, instead of through the public regulation process that requires notice, public comment and legislative review. Any such policy must be posted on the department's website. The Kentucky Senate voted 30-7, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1682868,
+      "measure_id": "SB 77",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 77. It creates a state fund and lets Kentucky's Department of Agriculture partner with a drug company to run clinical trials of ibogaine, a plant compound being studied as a treatment for opioid addiction. The company must match the state's money, run the trials in Kentucky, plan for access for uninsured and low-income patients, and share with the state any money the research earns. The Kentucky House voted 77-18, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 77. It creates a state fund and lets Kentucky's Department of Agriculture partner with a drug company to run clinical trials of ibogaine, a plant compound being studied as a treatment for opioid addiction. The company must match the state's money, run the trials in Kentucky, plan for access for uninsured and low-income patients, and share with the state any money the research earns. The Kentucky House voted 77-18, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1682867,
+      "measure_id": "SB 77",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 77. It creates a state fund and lets Kentucky's Department of Agriculture partner with a drug company to run clinical trials of ibogaine, a plant compound being studied as a treatment for opioid addiction. The company must match the state's money, run the trials in Kentucky, plan for access for uninsured and low-income patients, and share with the state any money the research earns. The Kentucky Senate voted 31-6, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 77. It creates a state fund and lets Kentucky's Department of Agriculture partner with a drug company to run clinical trials of ibogaine, a plant compound being studied as a treatment for opioid addiction. The company must match the state's money, run the trials in Kentucky, plan for access for uninsured and low-income patients, and share with the state any money the research earns. The Kentucky Senate voted 31-6, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2247",
+      "roll": 1682856,
+      "measure_id": "SB 100",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 100. It changes how Kentucky's Energy Planning and Inventory Commission, which reviews utility plans to retire power plants, is run: two of the five executive committee seats are now filled by the Attorney General rather than the Governor. Its executive director gains full authority to act with the board only advising, and information a utility marks confidential is closed to open records requests. The Kentucky House voted 79-18, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 100. It changes how Kentucky's Energy Planning and Inventory Commission, which reviews utility plans to retire power plants, is run: two of the five executive committee seats are now filled by the Attorney General rather than the Governor. Its executive director gains full authority to act with the board only advising, and information a utility marks confidential is closed to open records requests. The Kentucky House voted 79-18, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2247",
+      "roll": 1682855,
+      "measure_id": "SB 100",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 100. It changes how Kentucky's Energy Planning and Inventory Commission, which reviews utility plans to retire power plants, is run: two of the five executive committee seats are now filled by the Attorney General rather than the Governor. Its executive director gains full authority to act with the board only advising, and information a utility marks confidential is closed to open records requests. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 100. It changes how Kentucky's Energy Planning and Inventory Commission, which reviews utility plans to retire power plants, is run: two of the five executive committee seats are now filled by the Attorney General rather than the Governor. Its executive director gains full authority to act with the board only advising, and information a utility marks confidential is closed to open records requests. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
