@@ -130,3 +130,10 @@ text and s. 542.43, F.S.:
 
 Six descriptions changed (yea and nay for three rolls). Local reimport still
 pending for these three rolls.
+
+Reimport for the two review fixes ran 2026-09-02 on local `voteapp`: judge
+dry run planned 3 of 11, real run updated 3; importer dry run planned 66
+rewrites (roll 1562557: 48, 1535606: 9, 1557039: 9) and 319 unchanged; real
+run at stamp `2026-09-02T01:45:26.924Z` rewrote those 66, 0 notified; the
+convergence dry run reported all 385 unchanged. Zero local records still
+carry "aircraft workers" or "non-health workers". Prod untouched.
