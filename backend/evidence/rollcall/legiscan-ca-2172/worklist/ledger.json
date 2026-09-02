@@ -1719,184 +1719,184 @@
    "reason": "study only \u2014 a panel, a report and recommendations, all conditional on an appropriation the bill does not make, self-repealing in 2029"
   },
   "AB 461": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Truancy.",
-   "batch": null,
+   "batch": "batch-22",
    "reason": null
   },
   "AB 499": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Robert F. Kennedy Farm Workers Medical Plan.",
-   "batch": null,
+   "batch": "batch-22",
    "reason": null
   },
   "AB 52": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Farmer equity: advisory committees.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-22 read",
+   "reason": "purely permissive \u2014 the secretary may establish two advisory committees, and if none is created nothing in the bill binds anyone"
   },
   "AB 538": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Public works: payroll records.",
-   "batch": null,
+   "batch": "batch-22",
    "reason": null
   },
   "AB 57": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "vetoed",
    "value": 1,
    "title": "California Dream for All Program: descendants of formerly enslaved people.",
-   "batch": null,
+   "batch": "batch-22",
    "reason": null
   },
   "AB 632": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "vetoed",
    "value": 1,
    "title": "Local ordinances: administrative fines or penalties.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-22 read",
+   "reason": "weak area fit \u2014 collection of local administrative fines across four unrelated violation types, from substandard housing to illegal cannabis grows"
   },
   "AB 681": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "California DREAM Loan Program: limits.",
-   "batch": null,
+   "batch": "batch-22",
    "reason": null
   },
   "AB 690": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Criminal procedure: indigent defense compensation.",
-   "batch": null,
+   "batch": "batch-22",
    "reason": null
   },
   "AB 713": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Public postsecondary education: student employment.",
-   "batch": null,
+   "batch": "batch-22",
    "reason": null
   },
   "AB 723": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Real estate: digitally altered images: disclosure.",
-   "batch": null,
+   "batch": "batch-22",
    "reason": null
   },
   "AB 734": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "vetoed",
    "value": 1,
    "title": "Environmental protection: biological resources data: State Energy Resources Conservation and Development Commission: powerplants: power lines: applica",
-   "batch": null,
+   "batch": "batch-22",
    "reason": null
   },
   "AB 749": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Youth Sports for All Act.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-22 read",
+   "reason": "study only \u2014 a blue ribbon commission and a feasibility report, contingent on funding and self-repealing in 2033, creating no rule for any youth sports body"
   },
   "AB 797": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "vetoed",
    "value": 1,
    "title": "Community Stabilization Act: Counties of Los Angeles and Ventura.",
-   "batch": null,
+   "batch": "batch-22",
    "reason": null
   },
   "AB 801": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Nondiscrimination.",
-   "batch": null,
+   "batch": "batch-22",
    "reason": null
   },
   "AB 812": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Recall and resentencing: incarcerated firefighters.",
-   "batch": null,
+   "batch": "batch-22",
    "reason": null
   },
   "AB 82": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Health care: legally protected health care activity.",
-   "batch": null,
+   "batch": "batch-22",
    "reason": null
   },
   "AB 851": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Real property transactions: Counties of Los Angeles and Ventura wildfires: unsolicited offers.",
-   "batch": null,
+   "batch": "batch-22",
    "reason": null
   },
   "AB 86": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "vetoed",
    "value": 1,
    "title": "Instructional materials: health education.",
-   "batch": null,
+   "batch": "batch-22",
    "reason": null
   },
   "AB 893": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Housing development projects: objective standards: campus development zone.",
-   "batch": null,
+   "batch": "batch-22",
    "reason": null
   },
   "AB 935": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "State agencies: complaints: demographic data.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-22 read",
+   "reason": "cuts both ways on disclosure \u2014 creates annual public reports on discrimination complaints while making the underlying collected data confidential and exempt from the public records act"
   },
   "AB 956": {
    "status": "open",
@@ -1989,13 +1989,13 @@
    "reason": null
   },
   "SB 1354": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "The military: defense of the state.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-09 (recorded late)",
+   "reason": "read and dropped in batch-09 (pre-ledger) \u2014 national_defense reads as military readiness and deterrence, and a bill restricting out-of-state deployments is not clearly for or against it"
   },
   "SB 1388": {
    "status": "open",
@@ -2034,13 +2034,13 @@
    "reason": null
   },
   "SB 403": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "End of Life Option Act: sunset.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-09 (recorded late)",
+   "reason": "read and dropped in batch-09 (pre-ledger) \u2014 the only fitting area is womens_reproductive_rights, and filing an aid-in-dying vote there would display to voters as a reproductive rights record"
   },
   "SB 450": {
    "status": "open",
@@ -2178,31 +2178,31 @@
    "reason": null
   },
   "SJR 12": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Proposed 2026\u20132031 National Outer Continental Shelf Oil and Gas Leasing Program: opposition.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-23 read",
+   "reason": "joint resolution \u2014 expresses the Legislature position and changes no law; same treatment as AJR 29 and SJR 18"
   },
   "SJR 7": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Tariffs.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-23 read",
+   "reason": "joint resolution \u2014 expresses the Legislature position and changes no law; same treatment as AJR 29 and SJR 18"
   },
   "SJR 9": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Immigrants in California: mass immigration raids.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-23 read",
+   "reason": "joint resolution \u2014 expresses the Legislature position and changes no law; same treatment as AJR 29 and SJR 18"
   }
  }
 }
