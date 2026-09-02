@@ -413,6 +413,37 @@ money-matrix gates off fixture data, occupation label-list snapshot (new state v
 visible diff, not silent pass-through), **§3-8-6a redaction regression fixture**
 (post-2027-dated filing → zero employer-derived output).
 
+**Built 2026-09-01 (migration 267; flags off; PR pending).** Decisions taken while
+building, each verified against the live portal or the cached 2025–2026 artifacts:
+
+- **Scope = House of Delegates + State Senate only.** Statewide executive offices run in
+  presidential years, judicial races are decided at the May primary, and county/municipal
+  filings stay local until 2027, so nothing else is on the November 2026 ballot to link.
+  The judicial circuit/division parse is deferred until a judicial roster exists.
+- **Window rule pinned:** `<year> Candidate Election Cycle` rows across the election
+  year's three schedule files (y−1, y, y+1). The 2027 file adds a "2026 4th Quarter"
+  period (2026-10-19 → 12-31), so the 2026 window is **2025-07-01 → 2026-12-31**; a
+  missing schedule file fails the sync closed rather than shortening the window.
+- **Amendment gate = per-year committee-level CSV↔API multiset reconciliation** (the
+  Phase 0 evidence, re-proved on every sync). Per-report cover-total reconciliation and
+  `cash_on_hand` are NOT built: the cover PDF layout was never pinned, so `cash_on_hand`
+  stays NULL rather than guessed. `loans_received` / `debts_owed` also stay unpublished
+  (LOAN/DEB files unparsed; the CON bulk file carries no loan rows, so totals are clean).
+- **Money model as pinned:** `Return` rows carry positive amounts in both files and are
+  subtracted; donors = individuals, businesses, PACs, party committees; Self/Candidate,
+  Other Income and transfers stay out of "Raised" (the coverage note says so).
+- **Occupation** = verbatim controlled label from API Monetary + In-Kind individual rows
+  (blank / "Unknown" excluded; no snapshot list — labels publish as filed). **Industry** =
+  CSV employer of the same rows through the rule classifier, only for statements filed
+  before 2027-01-01 (redaction fixture in the aggregator test); recovered rows skip it.
+- **Resolver limits (fail closed to manual links):** re-registered same-seat pairs (3 in
+  the 2026 population) and "goes-by" names the shared matcher cannot align — the
+  registry writes `Jeffries, Warren "Dean"` (1 of 393 legislative names; a
+  parenthesized `(Les)` is the only other) so a roster "Dean Jeffries" is unmatched while
+  "Warren Jeffries" links.
+- Dry-run sync on real cached data (8 committees incl. the embedded-quote fixture and
+  two with amended 2025 reports): every year reconciled cent- and multiset-exact.
+
 ### Phase 2 — rosters, then local live run + enablement
 
 Blocked on Prerequisite 1 (districts + elections + rosters only). Then: 2024–2026

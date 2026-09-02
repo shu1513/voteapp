@@ -1,0 +1,327 @@
+// West Virginia per-candidate finance sync (plan Phase 1). CACHE-ONLY: it
+// never touches the live portal — the refresh CLI (its own flag) fills the
+// artifact cache. Every gate runs before anything is written and every gate
+// fails closed, preserving the prior snapshot:
+//   1. eligible office + valid entityId + Nov-2026-scope election year;
+//   2. the candidacy window resolves from REPS cycle membership (fact 5);
+//   3. every window year's contributions, expenditures and API artifacts are
+//      cached and parse clean (a missing year is a missing year, never an
+//      empty one);
+//   4. per year, the committee's CSV rows and API rows reconcile cent-exact
+//      and multiset-exact on (date, amount, category) — the committee-level
+//      amendment evidence Phase 0 pinned (fact 3), re-proved on every run so
+//      a CSV that ever starts carrying superseded versions stops publication;
+//   5. no category / contributor-type / expenditure-type value outside the
+//      pinned vocabulary.
+// cash_on_hand and outside totals stay NULL (writer contract) — cover
+// extraction and the F-7b document path are later phases.
+
+import { resolve } from "node:path";
+
+import type { Pool, PoolClient } from "pg";
+
+import type { WestVirginiaTransactionRow } from "./westVirginiaCfrsClient.js";
+import {
+  DEFAULT_WEST_VIRGINIA_CFRS_CACHE_DIR,
+  readWestVirginiaApiContributionsArtifact,
+  readWestVirginiaBulkArtifact,
+} from "./westVirginiaCfrsArtifactCache.js";
+import {
+  parseWestVirginiaContributionCsv,
+  parseWestVirginiaExpenditureCsv,
+  parseWestVirginiaReportingScheduleCsv,
+  type WestVirginiaContributionCsvRow,
+  type WestVirginiaExpenditureCsvRow,
+  type WestVirginiaReportingScheduleCsvRow,
+} from "./westVirginiaCfrsCsv.js";
+import { normalizeWestVirginiaCandidateNameForStorage } from "./westVirginiaCandidateCommitteeResolver.js";
+import {
+  WEST_VIRGINIA_CONTRIBUTION_FILE_CATEGORIES,
+  aggregateWestVirginiaDirectFinance,
+  type WestVirginiaDirectFinanceAggregationResult,
+} from "./westVirginiaDirectContributionAggregator.js";
+import { isWestVirginiaFinanceEligibleOffice } from "./westVirginiaFinanceEligibleOffices.js";
+import {
+  WEST_VIRGINIA_CFRS_SOURCE_URL,
+  normalizeWestVirginiaEntityId,
+  replaceWestVirginiaCandidateFinanceSnapshot,
+  type WestVirginiaFinanceLinkSource,
+} from "./westVirginiaFinanceWriter.js";
+import { reconcileWestVirginiaCommittee } from "./westVirginiaPhaseZero.js";
+import {
+  resolveWestVirginiaCandidateCycleWindow,
+  westVirginiaCycleWindowYears,
+  westVirginiaScheduleYearsForElection,
+  type WestVirginiaCycleWindow,
+} from "./westVirginiaReportingCycleWindows.js";
+
+type Queryable = Pick<Pool | PoolClient, "query">;
+type ConnectableQueryable = Queryable & { connect: () => Promise<PoolClient> };
+
+export class WestVirginiaCandidateFinanceSyncError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "WestVirginiaCandidateFinanceSyncError";
+  }
+}
+
+export type WestVirginiaFinanceArtifactLoader = {
+  scheduleRows: (year: number) => Promise<WestVirginiaReportingScheduleCsvRow[]>;
+  contributionRows: (year: number) => Promise<WestVirginiaContributionCsvRow[]>;
+  expenditureRows: (year: number) => Promise<WestVirginiaExpenditureCsvRow[]>;
+  apiContributionRows: (year: number) => Promise<WestVirginiaTransactionRow[]>;
+};
+
+function requireClean<T>(label: string, result: { rows: T[]; errors: { line: number; reason: string }[] }): T[] {
+  if (result.errors.length > 0) {
+    throw new WestVirginiaCandidateFinanceSyncError(
+      `cached ${label} artifact has ${result.errors.length} row errors (line ${result.errors[0]!.line}: ${result.errors[0]!.reason})`
+    );
+  }
+  return result.rows;
+}
+
+/** Reads and parses each cached artifact once per (kind, year); no live fetches. */
+export function createWestVirginiaFinanceArtifactLoader(cacheDir?: string): WestVirginiaFinanceArtifactLoader {
+  const resolvedCacheDir = resolve(
+    cacheDir ??
+      (process.env.WEST_VIRGINIA_CFRS_RAW_DATA_CACHE_DIR?.trim() || DEFAULT_WEST_VIRGINIA_CFRS_CACHE_DIR)
+  );
+  const memo = new Map<string, Promise<unknown>>();
+  const once = <T>(key: string, load: () => Promise<T>): Promise<T> => {
+    let entry = memo.get(key) as Promise<T> | undefined;
+    if (entry === undefined) {
+      entry = load();
+      memo.set(key, entry);
+    }
+    return entry;
+  };
+  const bulkText = (kind: "contributions" | "expenditures" | "reporting_schedules", year: number) =>
+    readWestVirginiaBulkArtifact({ kind, year, cacheDir: resolvedCacheDir }).then((read) => read.csvText);
+  return {
+    scheduleRows: (year) =>
+      once(`reps:${year}`, async () =>
+        requireClean(`reporting-schedules ${year}`, parseWestVirginiaReportingScheduleCsv(await bulkText("reporting_schedules", year)))
+      ),
+    contributionRows: (year) =>
+      once(`con:${year}`, async () =>
+        requireClean(`contributions ${year}`, parseWestVirginiaContributionCsv(await bulkText("contributions", year)))
+      ),
+    expenditureRows: (year) =>
+      once(`exp:${year}`, async () =>
+        requireClean(`expenditures ${year}`, parseWestVirginiaExpenditureCsv(await bulkText("expenditures", year)))
+      ),
+    apiContributionRows: (year) =>
+      once(`api:${year}`, async () =>
+        (await readWestVirginiaApiContributionsArtifact({ year, cacheDir: resolvedCacheDir })).rows
+      ),
+  };
+}
+
+export type WestVirginiaYearReconciliation = {
+  year: number;
+  csvRowCount: number;
+  apiRowCount: number;
+  csvTotalCents: number;
+  apiTotalCents: number;
+  amendedApiRowCount: number;
+};
+
+export type WestVirginiaCandidateFinanceSyncResult = {
+  dryRun: boolean;
+  status: "synced";
+  entityId: string;
+  window: Pick<WestVirginiaCycleWindow, "reportingCycle" | "windowStart" | "windowEnd">;
+  windowYears: number[];
+  totalReceipts: number;
+  directContributionTotal: number;
+  totalDisbursements: number;
+  reconciliation: WestVirginiaYearReconciliation[];
+  aggregation: Omit<WestVirginiaDirectFinanceAggregationResult, "breakdowns">;
+  breakdownCounts: { occupation: number; industry: number; contribution_size: number };
+  summaryWritten: boolean;
+  directBreakdownsWritten: number;
+};
+
+export async function syncWestVirginiaCandidateFinance(input: {
+  db: ConnectableQueryable;
+  candidateId: string;
+  electionId: string;
+  candidateName: string;
+  electionYear: number;
+  officeScope: string;
+  officeName: string;
+  district?: string | null;
+  link: {
+    entityId: string;
+    committeeName: string;
+    linkSource: WestVirginiaFinanceLinkSource;
+    sourceUrl?: string | null;
+  };
+  now?: Date;
+  dryRun?: boolean;
+  cacheDir?: string;
+  loadArtifacts?: WestVirginiaFinanceArtifactLoader;
+  maxOccupationBreakdowns?: number;
+}): Promise<WestVirginiaCandidateFinanceSyncResult> {
+  const candidateName = input.candidateName.trim();
+  if (!candidateName) {
+    throw new WestVirginiaCandidateFinanceSyncError("candidateName is required");
+  }
+  const committeeName = input.link.committeeName.trim();
+  if (!committeeName) {
+    throw new WestVirginiaCandidateFinanceSyncError("link.committeeName is required");
+  }
+  if (!isWestVirginiaFinanceEligibleOffice({ officeScope: input.officeScope, officeCanonicalName: input.officeName })) {
+    throw new WestVirginiaCandidateFinanceSyncError(
+      `office ${input.officeScope}::${input.officeName} is not West Virginia-finance eligible`
+    );
+  }
+  let entityId: string;
+  try {
+    entityId = normalizeWestVirginiaEntityId(input.link.entityId);
+  } catch (error) {
+    throw new WestVirginiaCandidateFinanceSyncError(error instanceof Error ? error.message : String(error));
+  }
+  if (!Number.isSafeInteger(input.electionYear) || input.electionYear < 2026 || input.electionYear > 2100) {
+    throw new WestVirginiaCandidateFinanceSyncError(`invalid election year: ${input.electionYear}`);
+  }
+  const now = input.now ?? new Date();
+  if (Number.isNaN(now.getTime())) {
+    throw new WestVirginiaCandidateFinanceSyncError("invalid now");
+  }
+  const dryRun = input.dryRun === true;
+  const loader = input.loadArtifacts ?? createWestVirginiaFinanceArtifactLoader(input.cacheDir);
+
+  // --- Window (fact 5): union of the cycle's periods across the schedule
+  // files that can carry them. A missing schedule file fails closed rather
+  // than silently shortening the window.
+  const scheduleRows: WestVirginiaReportingScheduleCsvRow[] = [];
+  for (const year of westVirginiaScheduleYearsForElection(input.electionYear)) {
+    scheduleRows.push(...(await loader.scheduleRows(year)));
+  }
+  const window = resolveWestVirginiaCandidateCycleWindow({ scheduleRows, electionYear: input.electionYear });
+  const windowYears = westVirginiaCycleWindowYears(window);
+
+  // --- Artifacts + per-year CSV<->API reconciliation (fact 3).
+  const contributionRows: WestVirginiaContributionCsvRow[] = [];
+  const expenditureRows: WestVirginiaExpenditureCsvRow[] = [];
+  const apiRows: WestVirginiaTransactionRow[] = [];
+  const reconciliation: WestVirginiaYearReconciliation[] = [];
+  for (const year of windowYears) {
+    const yearContributions = await loader.contributionRows(year);
+    const yearExpenditures = await loader.expenditureRows(year);
+    const yearApiRows = await loader.apiContributionRows(year);
+    const check = reconcileWestVirginiaCommittee({
+      entityId,
+      csvRows: yearContributions,
+      apiRows: yearApiRows,
+      contributionCategories: WEST_VIRGINIA_CONTRIBUTION_FILE_CATEGORIES,
+    });
+    if (!check.totalsMatch || !check.multisetMatch) {
+      throw new WestVirginiaCandidateFinanceSyncError(
+        `${year} contributions do not reconcile for ${entityId}: CSV ${check.csvRowCount} rows / ${check.csvTotalCents}c ` +
+          `vs API ${check.apiRowCount} rows / ${check.apiTotalCents}c (only-in-CSV ${check.onlyInCsv}, only-in-API ${check.onlyInApi})`
+      );
+    }
+    reconciliation.push({
+      year,
+      csvRowCount: check.csvRowCount,
+      apiRowCount: check.apiRowCount,
+      csvTotalCents: check.csvTotalCents,
+      apiTotalCents: check.apiTotalCents,
+      amendedApiRowCount: check.amendedApiRowCount,
+    });
+    contributionRows.push(...yearContributions);
+    expenditureRows.push(...yearExpenditures);
+    apiRows.push(...yearApiRows);
+  }
+
+  // --- Aggregation (facts 1, 2, 10); unknown vocabulary fails closed.
+  const aggregation = aggregateWestVirginiaDirectFinance({
+    entityId,
+    window,
+    contributionRows,
+    expenditureRows,
+    apiRows,
+    maxOccupationBreakdowns: input.maxOccupationBreakdowns,
+  });
+  const unrecognized = [
+    ...aggregation.unrecognizedContributionCategories.map((value) => `contribution category "${value}"`),
+    ...aggregation.unrecognizedContributorTypes.map((value) => `contributor type "${value}"`),
+    ...aggregation.unrecognizedExpenditureTypes.map((value) => `expenditure type "${value}"`),
+  ];
+  if (unrecognized.length > 0) {
+    throw new WestVirginiaCandidateFinanceSyncError(
+      `unrecognized values in window for ${entityId}: ${unrecognized.join(", ")}`
+    );
+  }
+  // The summaries table pins every amount >= 0; a net-negative total means
+  // returns exceeded receipts in the window, which is an evidence problem to
+  // look at, not a number to publish.
+  if (aggregation.totalReceiptsCents < 0 || aggregation.directContributionCents < 0 || aggregation.totalDisbursementsCents < 0) {
+    throw new WestVirginiaCandidateFinanceSyncError(
+      `negative window total for ${entityId}: receipts ${aggregation.totalReceiptsCents}c, ` +
+        `direct ${aggregation.directContributionCents}c, disbursements ${aggregation.totalDisbursementsCents}c`
+    );
+  }
+
+  const totalReceipts = aggregation.totalReceiptsCents / 100;
+  const directContributionTotal = aggregation.directContributionCents / 100;
+  const totalDisbursements = aggregation.totalDisbursementsCents / 100;
+  const sourceUrl = input.link.sourceUrl ?? WEST_VIRGINIA_CFRS_SOURCE_URL;
+  const { breakdowns, ...aggregationSummary } = aggregation;
+
+  let summaryWritten = false;
+  let directBreakdownsWritten = 0;
+  if (!dryRun) {
+    const writeResult = await replaceWestVirginiaCandidateFinanceSnapshot({
+      db: input.db,
+      link: {
+        candidateId: input.candidateId,
+        electionId: input.electionId,
+        electionYear: input.electionYear,
+        candidateNameNormalized: normalizeWestVirginiaCandidateNameForStorage(candidateName),
+        officeName: input.officeName,
+        district: input.district ?? null,
+        entityId,
+        committeeName,
+        linkStatus: "active",
+        linkSource: input.link.linkSource,
+        sourceUrl,
+        lastVerifiedAt: now,
+      },
+      syncedAt: now,
+      summary: { totalReceipts, directContributionTotal, totalDisbursements, sourceUrl },
+      directBreakdowns: breakdowns.map((breakdown) => ({
+        categoryType: breakdown.categoryType,
+        categoryName: breakdown.categoryName,
+        amount: breakdown.amount,
+        contributorCount: breakdown.contributorCount,
+        sourceUrl,
+      })),
+    });
+    summaryWritten = writeResult.summaryWritten;
+    directBreakdownsWritten = writeResult.directBreakdownsWritten;
+  }
+
+  return {
+    dryRun,
+    status: "synced",
+    entityId,
+    window: { reportingCycle: window.reportingCycle, windowStart: window.windowStart, windowEnd: window.windowEnd },
+    windowYears,
+    totalReceipts,
+    directContributionTotal,
+    totalDisbursements,
+    reconciliation,
+    aggregation: aggregationSummary,
+    breakdownCounts: {
+      occupation: breakdowns.filter((breakdown) => breakdown.categoryType === "occupation").length,
+      industry: breakdowns.filter((breakdown) => breakdown.categoryType === "industry").length,
+      contribution_size: breakdowns.filter((breakdown) => breakdown.categoryType === "contribution_size").length,
+    },
+    summaryWritten,
+    directBreakdownsWritten,
+  };
+}
