@@ -60,9 +60,43 @@ export type IdahoRegistrationReconciliation = {
   deltaCents: number;
   status: "match" | "mismatch";
   // true when the bulk export reproduces exactly the version-1 rows of the
-  // registration within the downloaded filing years.
+  // registration within the downloaded filing years: same transaction ids
+  // with the same amounts, nothing more, nothing less.
   bulkMatchesVersionOne: boolean;
 };
+
+function transactionKeys(entries: ReadonlyArray<{ transactionId: number; amountCents: number }>): string[] {
+  return entries.map((entry) => `${entry.transactionId}:${entry.amountCents}`).sort();
+}
+
+function sameKeys(left: readonly string[], right: readonly string[]): boolean {
+  return left.length === right.length && left.every((key, index) => key === right[index]);
+}
+
+function bulkTransactionId(row: IdahoReceiptCsvRow): number {
+  return Number(row["Transaction Id"]);
+}
+
+function isBulkContributionForEntity(row: IdahoReceiptCsvRow, filerEntityId: number): boolean {
+  return (
+    row["Filing Entity ID"].trim() === String(filerEntityId) &&
+    row["Transaction Type"] === BULK_CONTRIBUTION_TRANSACTION_TYPE
+  );
+}
+
+// Bulk contribution rows of the entity that no search row accounts for. The
+// search rows must cover every registration of the entity; any hit here means
+// the search is not a superset of the export and the design must be revisited.
+export function countIdahoBulkRowsOutsideSearch(input: {
+  filerEntityId: number;
+  bulkRows: readonly IdahoReceiptCsvRow[];
+  searchRows: readonly IdahoContributionRow[];
+}): number {
+  const searchIds = new Set(input.searchRows.map((row) => row.transactionId));
+  return input.bulkRows.filter(
+    (row) => isBulkContributionForEntity(row, input.filerEntityId) && !searchIds.has(bulkTransactionId(row))
+  ).length;
+}
 
 export function reconcileIdahoRegistration(input: {
   registration: IdahoCandidateRegistrationRow;
@@ -83,19 +117,24 @@ export function reconcileIdahoRegistration(input: {
   const versionOneRows = rows.filter(
     (row) => row.transactionVersionId === 1 && filingYears.has(transactionYear(row))
   );
-  const entityId = String(registration.filerEntityId);
-  const bulkRows = input.bulkRows.filter(
-    (row) =>
-      row["Filing Entity ID"].trim() === entityId &&
-      row["Transaction Type"] === BULK_CONTRIBUTION_TRANSACTION_TYPE &&
-      transactionIds.has(Number(row["Transaction Id"]))
-  );
+  const bulkEntries = input.bulkRows
+    .filter(
+      (row) => isBulkContributionForEntity(row, registration.filerEntityId) && transactionIds.has(bulkTransactionId(row))
+    )
+    .map((row) => ({
+      transactionId: bulkTransactionId(row),
+      amountCents: parseIdahoCurrencyCents(row["Transaction Amount"]),
+    }));
   const bulk: IdahoMoneySummary = {
-    rowCount: bulkRows.length,
-    amountCents: bulkRows.reduce((sum, row) => sum + parseIdahoCurrencyCents(row["Transaction Amount"]), 0),
+    rowCount: bulkEntries.length,
+    amountCents: bulkEntries.reduce((sum, entry) => sum + entry.amountCents, 0),
   };
   const search = sumSearchRows(rows);
   const searchVersionOne = sumSearchRows(versionOneRows);
+  const versionOneEntries = versionOneRows.map((row) => ({
+    transactionId: row.transactionId,
+    amountCents: Math.round(row.transactionAmount * 100),
+  }));
   const gridTotalRaisedCents = Math.round(registration.totalRaised * 100);
   const deltaCents = search.amountCents - gridTotalRaisedCents;
   return {
@@ -110,8 +149,7 @@ export function reconcileIdahoRegistration(input: {
     bulkFilingYears: [...input.bulkFilingYears],
     deltaCents,
     status: deltaCents === 0 ? "match" : "mismatch",
-    bulkMatchesVersionOne:
-      bulk.rowCount === searchVersionOne.rowCount && bulk.amountCents === searchVersionOne.amountCents,
+    bulkMatchesVersionOne: sameKeys(transactionKeys(bulkEntries), transactionKeys(versionOneEntries)),
   };
 }
 

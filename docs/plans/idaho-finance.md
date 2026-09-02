@@ -64,7 +64,8 @@ Built: `backend/src/pipeline/idahoFinance/{idahoCfsClient,idahoCfsCsv,idahoPhase
 Gates the probe enforces (throws on failure):
 - bulk TCON files for the requested filing years and the cycle-year TEXP file parse against the exact headers, with quarantine ≤ 1%;
 - for the fixture entity (Todd Achilles, entity 257, two registrations) every registration's search-row sum equals grid `totalRaised` to the cent;
-- bulk rows for the registration equal exactly its version-1 search rows (row count and cents) within the downloaded filing years — the export is still version-1-only;
+- bulk rows for the registration equal exactly its version-1 search rows (same transaction ids with the same amounts) within the downloaded filing years — the export is still version-1-only;
+- no bulk contribution row of the fixture entity is missing from the union of its registrations' search rows — the search is still a superset of the export;
 - the all-time IE list carries only Support/Oppose stances and only `TIECOM`/`TEXP` transaction codes.
 
 Live results 2026-09-01 (`npm run idaho-candidates:finance:phase-zero`, exit 0, every gate green; corpus figures from the Python spike behind this PR, reproduced by the TypeScript parser on the same downloaded files):

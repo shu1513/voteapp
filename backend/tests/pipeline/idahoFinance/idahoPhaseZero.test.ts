@@ -22,6 +22,7 @@ import {
   parseIdahoReceiptCsv,
 } from "../../../src/pipeline/idahoFinance/idahoCfsCsv.js";
 import {
+  countIdahoBulkRowsOutsideSearch,
   reconcileIdahoRegistration,
   selectIdahoRegistrationContributions,
   summarizeIdahoIndependentExpenditures,
@@ -341,6 +342,30 @@ describe("Idaho CFS Phase 0", () => {
       bulkFilingYears: [2025, 2026],
     });
     expect(bulkDrift).toMatchObject({ status: "match", bulkMatchesVersionOne: false });
+
+    // Same row count and total, different transaction identity: must not pass.
+    const bulkSwapped = reconcileIdahoRegistration({
+      registration: registrations[1]!,
+      searchRows,
+      bulkRows: bulkRows.map((row) => (row["Transaction Id"] === "313561" ? { ...row, "Transaction Id": "313562" } : row)),
+      bulkFilingYears: [2025, 2026],
+    });
+    expect(bulkSwapped).toMatchObject({
+      bulk: { rowCount: 3, amountCents: 130_000 },
+      searchVersionOne: { rowCount: 3, amountCents: 130_000 },
+      bulkMatchesVersionOne: false,
+    });
+
+    // Bulk contribution rows the search never returned are counted, loans are not.
+    expect(countIdahoBulkRowsOutsideSearch({ filerEntityId: 257, bulkRows, searchRows })).toBe(0);
+    expect(
+      countIdahoBulkRowsOutsideSearch({
+        filerEntityId: 257,
+        bulkRows: [...bulkRows, { ...bulkRows[0]!, "Transaction Id": "999999" }],
+        searchRows,
+      })
+    ).toBe(1);
+    expect(countIdahoBulkRowsOutsideSearch({ filerEntityId: 257, bulkRows, searchRows: [] })).toBe(3);
 
     expect(() =>
       reconcileIdahoRegistration({

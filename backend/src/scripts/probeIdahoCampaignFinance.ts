@@ -18,6 +18,7 @@ import {
   type IdahoReceiptCsvRow,
 } from "../pipeline/idahoFinance/idahoCfsCsv.js";
 import {
+  countIdahoBulkRowsOutsideSearch,
   reconcileIdahoRegistration,
   summarizeIdahoIndependentExpenditures,
 } from "../pipeline/idahoFinance/idahoPhaseZero.js";
@@ -139,7 +140,9 @@ export async function runProbeIdahoCampaignFinance(input: {
       filingYear,
       rowCount: parsed.rows.length,
       quarantinedCount: parsed.quarantined.length,
-      byteCount: Buffer.byteLength(csv),
+      // windows-1252 decodes one byte to one character, so the decoded
+      // length is the raw artifact size (re-encoding as UTF-8 would not be).
+      byteCount: csv.length,
     });
   }
 
@@ -153,11 +156,13 @@ export async function runProbeIdahoCampaignFinance(input: {
   assertIdahoCsvQuarantineTolerance(expenditures, `expenditure ${input.args.cycleYear}`);
 
   const reconciliations = [];
+  const entitySearchRows = [];
   for (const registration of fixtureRegistrations) {
     const searchRows = await client.getAllContributions(
       { filerName: idahoRegistrationSearchName(registration), pageSize: input.args.pageSize },
       clientOptions
     );
+    entitySearchRows.push(...searchRows);
     const reconciliation = reconcileIdahoRegistration({
       registration,
       searchRows,
@@ -175,6 +180,16 @@ export async function runProbeIdahoCampaignFinance(input: {
       );
     }
     reconciliations.push(reconciliation);
+  }
+  const bulkRowsOutsideSearch = countIdahoBulkRowsOutsideSearch({
+    filerEntityId: input.args.filerEntityId,
+    bulkRows,
+    searchRows: entitySearchRows,
+  });
+  if (bulkRowsOutsideSearch > 0) {
+    throw new Error(
+      `Idaho bulk export has ${bulkRowsOutsideSearch} contribution rows for entity ${input.args.filerEntityId} that the transaction search does not return; revisit the totals strategy`
+    );
   }
 
   const independentExpenditures = await client.getAllIndependentExpenditures(
@@ -198,12 +213,13 @@ export async function runProbeIdahoCampaignFinance(input: {
         filingYear: input.args.cycleYear,
         rowCount: expenditures.rows.length,
         quarantinedCount: expenditures.quarantined.length,
-        byteCount: Buffer.byteLength(expenditureCsv),
+        byteCount: expenditureCsv.length,
       },
     },
     totals_fixture: {
       filer_entity_id: input.args.filerEntityId,
       registrations: reconciliations,
+      bulk_rows_outside_search: bulkRowsOutsideSearch,
       strategy: "grid_totals_plus_search_rows_bulk_is_version_one_only" as const,
     },
     independent_expenditures: outside,

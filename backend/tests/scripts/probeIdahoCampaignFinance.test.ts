@@ -25,7 +25,7 @@ function jsonFetch(body: string): typeof fetch {
   ) as unknown as typeof fetch;
 }
 
-async function buildClient(overrides: { totalRaised?: number } = {}): Promise<IdahoPhaseZeroClient> {
+async function buildClient(overrides: { totalRaised?: number; extraBulkLine?: string } = {}): Promise<IdahoPhaseZeroClient> {
   const registrations = (
     await getIdahoCandidateRegistrationPage({}, { fetchImpl: jsonFetch(await fixture("candidate-registrations-sanitized.json")) })
   ).items.map((registration) =>
@@ -44,10 +44,11 @@ async function buildClient(overrides: { totalRaised?: number } = {}): Promise<Id
   ).items;
   // The probe enforces the 1% quarantine tolerance, so feed it the fixture
   // without its deliberately corrupted record.
-  const receiptsCsv = (await fixture("receipts-sanitized.csv"))
-    .split("\n")
-    .filter((line) => !line.startsWith("227,"))
-    .join("\n");
+  const receiptsCsv = [
+    ...(await fixture("receipts-sanitized.csv")).split("\n").filter((line) => !line.startsWith("227,") && line !== ""),
+    ...(overrides.extraBulkLine ? [overrides.extraBulkLine] : []),
+    "",
+  ].join("\n");
   const expendituresCsv = await fixture("expenditures-sanitized.csv");
   return {
     downloadBulkCsv: vi.fn().mockImplementation(async ({ transactionTypeCode }) =>
@@ -110,6 +111,7 @@ describe("probeIdahoCampaignFinance", () => {
       },
       totals_fixture: {
         filer_entity_id: 257,
+        bulk_rows_outside_search: 0,
         strategy: "grid_totals_plus_search_rows_bulk_is_version_one_only",
       },
       independent_expenditures: {
@@ -145,5 +147,18 @@ describe("probeIdahoCampaignFinance", () => {
         client,
       })
     ).rejects.toThrow("no registration for entity 4242");
+  });
+
+  it("fails when the bulk export carries a contribution the search does not return", async () => {
+    const client = await buildClient({
+      extraBulkLine:
+        '257,"Achilles, Todd Baker",Todd Achilles for Idaho,Candidate,999999,Contribution,Itemized,Person,Sample,Donor Ghost,,REDACTED,,Boise,ID,="83702",03/08/2025,$75.00,$0.00,$0.00,2026,Primary,,N,,,2025 Annual Report,01/10/2026',
+    });
+    await expect(
+      runProbeIdahoCampaignFinance({
+        args: { cycleYear: 2026, filingYears: [2025], filerEntityId: 257, pageSize: 500, timeoutMs: 5_000 },
+        client,
+      })
+    ).rejects.toThrow("has 1 contribution rows for entity 257 that the transaction search does not return");
   });
 });
