@@ -48,7 +48,28 @@ same test was run over every divided roll in this session: **29 of 29 pass**. Sy
 roll call number, and every System B roll's number appears in its own bill's history. The 2026 defect
 did not exist yet in 2024.
 
-## 3. What this means for any future Alabama session
+## 3. Two version-check failures, caught in review
+
+Both were the same mistake: describing a text other than the one the chamber voted.
+
+- **HB 379 of 2023.** The history reads `Read a Third Time and Pass as Amended` (House), Senate
+  substitute, `Read A Third Time And Passed As Amended` (Senate), `Concur In and Adopt` (House). That
+  pattern — a Senate rewrite followed by a House concurrence with no roll call — means the House's
+  only recorded vote is on the engrossed text. It was diffed against the enrolled Act for HB 131 in
+  the same batch and not for HB 379, and the two texts turned out to be different bills.
+- **HB 151 and HB 152 of 2024.** A conference-report vote is a vote on the conference substitute,
+  which LegiScan files under `amendments[]`, not `texts[]`. Reading the engrossed print for a
+  conference roll describes the wrong bill whenever the conference changed anything, and here it
+  removed sports betting and casino games entirely.
+
+The rule that follows: **for every imported roll, name the document it voted before writing a
+word.** Passage in the house of origin = engrossed (or introduced). Passage in the second house = the
+second house's substitute if one exists. Concurrence and conference votes = the conference
+substitute or the amendment concurred in. Enrolled is correct only for the last vote in each chamber
+on an unchanged text. When two chambers voted different bills, they can carry different labels, and
+HB 379 does.
+
+## 4. What this means for any future Alabama session
 
 Three sessions, three vocabularies, and one string that means opposite things in two of them. The
 registry rule that a session's patterns come only from that session's own measured survey is not

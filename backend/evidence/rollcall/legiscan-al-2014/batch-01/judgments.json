@@ -26,12 +26,12 @@
       "measure_id": "HB 379",
       "vote_date": "2023-05-09",
       "review_status": "approved",
-      "yea_description": "Voted to pass House Bill 379, the Alabama Property Protection Act. It bars the government of China, Iran, North Korea or Russia, their officials and political parties, and bodies on a United States sanctions list, from buying farm or forest land in Alabama. The same bar covers land within 10 miles of a military base or of a critical site such as a power plant, water plant, port or airport, and land bought before the law took effect is not affected. The House passed it 73-23 and it became law.",
-      "nay_description": "Voted against passing House Bill 379, the Alabama Property Protection Act. It bars the government of China, Iran, North Korea or Russia, their officials and political parties, and bodies on a United States sanctions list, from buying farm or forest land in Alabama. The same bar covers land within 10 miles of a military base or of a critical site such as a power plant, water plant, port or airport, and land bought before the law took effect is not affected. The House passed it 73-23 over these votes and it became law.",
+      "yea_description": "Voted to pass House Bill 379, the Alabama Property Protection Act, in the form the House first approved. That version barred every citizen of China, every firm based in China or mostly owned by Chinese citizens, and China's government from buying any land or building in the state. The Senate later cut it back to four governments and to farm land and land near military bases and key sites, and the House took that version without a recorded vote. The House passed its own version 73-23, and the narrower Senate version became law.",
+      "nay_description": "Voted against passing House Bill 379, the Alabama Property Protection Act, in the form the House first approved. That version barred every citizen of China, every firm based in China or mostly owned by Chinese citizens, and China's government from buying any land or building in the state. The Senate later cut it back to four governments and to farm land and land near military bases and key sites, and the House took that version without a recorded vote. The House passed its own version 73-23 over these votes, and the narrower Senate version became law.",
       "labels": [
         {
-          "slug": "national_defense",
-          "yea": "for",
+          "slug": "civil_rights",
+          "yea": "against",
           "nay": null
         }
       ]

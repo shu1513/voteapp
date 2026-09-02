@@ -4,7 +4,12 @@
 
 Each measure was judged from the version its chamber voted, fetched through the LegiScan bulk API
 and verified against the recorded byte length and MD5 hash: the **engrossed** print where one
-exists, the **introduced** print for HB 16, HB 229 and SB 81, which were never engrossed. None of
+exists, the **introduced** print for HB 16, HB 229 and SB 81, which were never engrossed — and, for
+the gaming package, the **conference committee substitutes** (`7ZU62EE-1` for HB 151, `IEJQZWZ-1`
+for HB 152) and the **Senate substitute** `C4E3QJJ-1` for HB 152's Senate roll, fetched through the
+API's amendment endpoint. A first import described the four gaming rolls from the engrossed print,
+which still carried sports betting and casino games; review caught it, and 226 records were
+rewritten in place. None of
 these measures became law, and no description says otherwise.
 
 ## Roll-attribution check
@@ -56,8 +61,14 @@ Every stance label states `nay` explicitly, and every one is `null`.
 ## The five no-stance imports
 
 - **HB 151 and HB 152 (the gaming package).** The largest fight of the session and squarely divided,
-  but no research area covers gambling, a lottery or sports betting. High salience with no area is
-  exactly the case the no-stance rule exists for.
+  but no research area covers gambling or a lottery. High salience with no area is exactly the case
+  the no-stance rule exists for. What each roll actually voted: the conference substitutes authorise
+  an education lottery, up to seven electronic-games-of-chance licences at named racetracks and
+  bingo halls, charity raffles and bingo, and a Poarch Creek compact — **not** sports betting or
+  casino table games, which survive only in a clause voiding future local amendments and in the
+  criminal-penalty sections. HB 152's Senate roll of 2024-03-07 voted the Senate substitute, narrower
+  still: lottery, pooled race betting and a single charity permit. The descriptions now say so and
+  say what was left out.
 - **HB 385 (material harmful to minors).** Would have declared premises distributing material harmful
   to minors a public nuisance, widened the definition of sexual conduct, and let county and city
   attorneys bring the action. It touches expression rather than equal treatment, and `civil_rights`
@@ -86,9 +97,12 @@ authorship of a successful amendment to HB 130, and Chris Blackshear's sponsorsh
 
 - Dry run: 13 files, 0 errors, 930 planned inserts.
 - Real run (stamp `2026-09-02T16:45:01.675Z`): **930 inserts, 0 errors, 0 notified.**
+- Review re-run (stamp `2026-09-02T17:27:42.967Z`, `import-rerun-report.json`): **226 rewrites** —
+  86 on HB 151's House roll, 29 on its Senate roll, 84 on HB 152's House roll and 27 on its Senate
+  roll — 704 unchanged, no tag changes (all four are `general`).
 - Reconciled three ways: report totals (930); run-stamp predicate (930 rows, 117 distinct
   candidates); and the session total, 1,519 records carrying a 2103 run id, matching 589 + 930.
-- Convergence: a follow-up dry run reports all 930 `unchanged`.
+- Convergence: a follow-up dry run after the re-run reports all 930 `unchanged`.
 
 ## Writing checks run before import
 

@@ -50,7 +50,10 @@ with a description that names the later vote:
 - **HB 131** — the House's 79-23 vote on its own six-month version, then a 97-1 concurrence in the
   Senate's 12-month version.
 
-Everything else is its chamber's final kept floor vote.
+Everything else is its chamber's final kept floor vote. **HB 379's House roll is a different case**:
+the House's later concurrence in the Senate rewrite has no roll call in the dataset, so nothing
+supersedes the 73-23 vote in the gate's terms — but that vote was on a materially different text,
+and the description and label are written to that text, not to the Act.
 
 ## Label reasoning
 
@@ -60,12 +63,26 @@ reason for a no vote runs on a different axis than the scored area.
 - **SB 10 and SB 9 — election_integrity, yes = for.** One bars vote counting machines that can reach
   the internet, a cell network or a modem; the other requires a voter-verified paper ballot, marked
   by hand or by an accessible device. Both are squarely "secure, accurate, auditable".
-- **HB 379 — national_defense, yes = for.** The Act's own trigger is military and critical
-  infrastructure: no purchase of farm or forest land, or of land within 10 miles of a military base,
-  power plant, water plant, port or airport. Worth stating plainly because it is easy to misread:
-  the ban reaches **governments, their officials and political parties, and bodies on a United States
-  sanctions list**, not private individuals of any nationality. The objection to it — that singling
-  out four countries is discriminatory — runs on the civil rights axis, so nay is null.
+- **HB 379 — two chambers, two bills, two labels.** This was caught in review after a first import
+  described the enacted Act for both rolls; 81 House records were rewritten in place. The House's
+  73-23 vote on 2023-05-09 was on the **engrossed** text, which is a different bill: it barred *every
+  citizen of China*, every firm based in China or majority-owned by Chinese citizens, and China's
+  government from acquiring *any* real property anywhere in the state, with only Taiwan and an
+  existing business's expansion onto contiguous land excepted. It contains no military, farmland or
+  infrastructure language at all. The Senate replaced it with the four-country "foreign principal"
+  version limited to farm and forest land and 10-mile zones, and the House concurred on 2023-05-24
+  by a vote with **no roll call in the dataset**, so the House's only recorded position is on the
+  broad ban.
+  - **House roll — civil_rights, yes = against.** A bar on property ownership by individuals of one
+    nationality is the area's own subject, "fair treatment under law", and the label follows the
+    text, not the bill's title. Nay is null.
+  - **Senate roll — national_defense, yes = for.** The Senate voted the enacted text, whose trigger
+    is military and critical infrastructure and which reaches governments, parties and sanctioned
+    bodies, not private individuals. The objection there runs on the civil rights axis, so nay is
+    null.
+  The lesson is in the version-check section above: when the history shows a later concurrence with
+  no roll, diff engrossed against enrolled *before* writing. That diff was done for HB 131 and
+  skipped for HB 379, which is how the error got in.
 - **HB 289 — public_safety_and_crime_control, yes = for.** Alabama had no statutory route to see
   police body camera or dashboard camera video. This Act creates one, for the person recorded and
   their representatives, and the area's own words cover "accountability". The access is limited (view
@@ -124,10 +141,12 @@ HB 289's House passage, where this batch imports the Senate vote.
 
 - Dry run: 16 files, 0 errors, 987 planned inserts.
 - Real run (stamp `2026-09-02T16:43:43.447Z`): **987 inserts, 0 errors, 0 notified.**
+- Review re-run (stamp `2026-09-02T17:27:29.538Z`, `import-rerun-report.json`): **81 rewrites** on
+  HB 379's House roll, 906 unchanged, tags moved from national_defense to civil_rights.
 - Reconciled three ways: the report totals (987); the run-stamp predicate (987 rows, 114 distinct
   candidates); and the Alabama roll-call total, which moved 1,975 to 4,890 across all six batches
   imported together, of which 1,263 carry a 2014 run id.
-- Convergence: a follow-up dry run reports all 987 `unchanged`.
+- Convergence: a follow-up dry run after the re-run reports all 987 `unchanged`.
 
 ## Writing checks run before import
 

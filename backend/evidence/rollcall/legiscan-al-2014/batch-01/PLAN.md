@@ -11,7 +11,9 @@ The five filters used throughout this campaign.
    sits on a local act.
 4. **One roll per measure per chamber, preferring the vote on the enacted text.** Six of the chosen
    rolls are superseded by a later concurrence in the same chamber and carry
-   `acknowledge_later_rolls`; each description says which version that chamber voted.
+   `acknowledge_later_rolls`; each description says which version that chamber voted. HB 379 is the
+   case where that mattered most — the House and Senate voted materially different bills, and the
+   two rolls carry different labels for that reason (see `JUDGING.md`).
 5. **A defensible direction, or a deliberate no-stance import.** Five measures dropped, four imported
    with no stance.
 
@@ -26,7 +28,8 @@ session prints no roll call numbers in its descriptions at all.
 |---|---|---|
 | SB 10 vote counting machines may not go online | House 77-28 | election_integrity, yes = for |
 | SB 9 vote counting machines must use paper ballots | House 78-27 | election_integrity, yes = for |
-| HB 379 Alabama Property Protection Act | House 73-23, Senate 26-7 | national_defense, yes = for |
+| HB 379 Alabama Property Protection Act, House version (a statewide ban on Chinese citizens and firms) | House 73-23 | civil_rights, yes = against |
+| HB 379 Alabama Property Protection Act, enacted version | Senate 26-7 | national_defense, yes = for |
 | HB 289 police camera video disclosure | Senate 21-8 | public_safety_and_crime_control, yes = for |
 | SB 1 Deputy Brad Johnson Act, correctional incentive time | House 79-24 | public_safety_and_crime_control, yes = for |
 | SB 206 Retail Theft Crime Prevention Act | House 76-27 | public_safety_and_crime_control, yes = for |

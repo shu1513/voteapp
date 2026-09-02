@@ -28,7 +28,12 @@ chamber, and only the last vote in each chamber is imported.
 ## The gaming package
 
 HB 151 proposed the constitutional amendment; HB 152 was the machinery that would only ever take
-effect alongside it. Both went to a conference committee and both failed: the Senate's 20-15 vote on
+effect alongside it. **The conference committee narrowed both sharply**: the February House version
+had casino games and sports betting, the April conference substitute has an education lottery, up to
+seven electronic-games-of-chance licences at named sites, and charity gaming, with sports betting
+appearing only in a clause banning future local amendments about it. The Senate's own March version
+of HB 152 was narrower again — lottery, pooled race betting and one charity permit. Each imported
+roll is described from the text that chamber voted that day. Both went to a conference committee and both failed: the Senate's 20-15 vote on
 the amendment's conference report fell short of the three fifths a constitutional amendment needs,
 and the package died. The descriptions say so and never say either became law.
 
