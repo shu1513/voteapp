@@ -66,9 +66,18 @@ Two members present in 2025 do not appear in 2026. Of the 151 committed crosswal
 The 2143 question patterns already classify **680 of the 689 rolls**. Nine rolls in eight
 descriptions are not matched, and they fall into four groups.
 
-**One is a kept question under a new spelling.** 2025 printed a failed concurrence as
-`Senate - Concurrence failed for lack of constitutional majority`. 2026 prints
-`House - Concurrence defeated`. The kept pattern has to cover both.
+**One is a real vote that must still stay out of the kept patterns.** 2025 printed a
+failed concurrence as `Senate - Concurrence failed for lack of constitutional majority`.
+2026 prints `House - Concurrence defeated`, once, on HB 1368 (roll 399, 2026-02-26). The
+natural move is to widen the kept pattern to cover both spellings. Do not. LegiScan marks
+this roll `passed: 1` even though the House defeated it 48 to 42: a concurrence in Indiana
+needs a constitutional majority of 51, and LegiScan set its flag by simple majority. The
+fetcher takes `result` straight from that flag, so matching the roll would store it as
+"Passed". It is the only roll in the session whose flag disagrees with the constitutional
+majority rule; the 2025 counterpart carries `passed: 0` and was stored correctly. Add the
+spelling to the exclusions with a comment saying why. Nothing is lost: a defeated
+concurrence can never be the final action on a bill that became law, and this one was
+superseded the next day by roll 420, which concurred 57 to 40.
 
 **Four are procedural and belong in the exclusions.** `First reading`,
 `Motion to postpone indefinitely, failed`, `Committee report`, and
@@ -93,8 +102,9 @@ re-run.
 
 The registry already anticipates this. Each entry carries its own `jurisdiction` field
 separate from its key, `LEGISCAN_RECORD_JURISDICTIONS` de-duplicates those through a `Set`,
-and `--state` is trimmed and upper-cased with no format check. So a second entry keyed
-`IN_2234` with `jurisdiction: "IN"` and `sessionId: 2234` works without touching any shared
+and `--state` is trimmed and upper-cased with no format check. Later sessions already use
+the key form `ST-session` (`MO-2226`, `MD-2240`, `KY-2247`). So a second entry keyed
+`IN-2234` with `jurisdiction: "IN"` and `sessionId: 2234` works without touching any shared
 logic. Records still land under Indiana, and nothing collides with 2025: the stored evidence
 filenames carry the session, and a `legislative_votes` row is keyed by jurisdiction, chamber,
 session and roll.
