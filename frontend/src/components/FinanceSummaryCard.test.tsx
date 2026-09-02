@@ -62,21 +62,21 @@ describe("FinanceSummaryCard", () => {
     expect(screen.queryByText("Industries represented among direct contributions")).not.toBeInTheDocument();
     expect(screen.queryByText("Oil, gas, and energy")).not.toBeInTheDocument();
     // Support and opposition stay distinct, with a plain-language intro. The
-    // independence claim attaches to the spending, not the groups — PACs can
-    // also coordinate or give directly; the expenditure shown here doesn't.
+    // independence claim attaches to the spending, not the groups: PACs can
+    // also give directly; the expenditure shown here doesn't.
     expect(screen.getByText("Spending by outside groups")).toBeInTheDocument();
     expect(
-      screen.getByText(/Money spent on this race by outside groups/)
+      screen.getByText(/Outside groups, such as PACs and super PACs, spend this money on the race/)
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/This spending is not coordinated with the candidate's campaign/)
+      screen.getByText(/The candidate's campaign does not spend it/)
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Outside money spent supporting this candidate: $50,000")
+      screen.getByText("Outside groups spent $50,000 to support this candidate.")
     ).toBeInTheDocument();
     expect(screen.getByText("Growth PAC")).toBeInTheDocument();
     expect(
-      screen.getByText("Outside money spent opposing this candidate: $20,000")
+      screen.getByText("Outside groups spent $20,000 to oppose this candidate.")
     ).toBeInTheDocument();
     expect(screen.getByText("Stop Them PAC")).toBeInTheDocument();
     // Backing evidence names the organizations behind a supporting industry.
@@ -88,10 +88,10 @@ describe("FinanceSummaryCard", () => {
     ).toBeInTheDocument();
     // Industry money flows into the groups, not necessarily onto this race —
     // the heading and note must not present it as candidate-specific spend.
-    expect(screen.getByText("Industries funding these supporting groups")).toBeInTheDocument();
-    expect(screen.getByText("Industries funding these opposing groups")).toBeInTheDocument();
+    expect(screen.getByText("Donations to groups supporting this candidate, by donor industry")).toBeInTheDocument();
+    expect(screen.getByText("Donations to groups opposing this candidate, by donor industry")).toBeInTheDocument();
     expect(
-      screen.getByText("Industry amounts are contributions to these groups, not amounts necessarily spent on this candidate.")
+      screen.getByText("Industry amounts are donations to these groups, sorted by each donor's industry. They are not what the groups spent on this candidate.")
     ).toBeInTheDocument();
     // Source enum renders as a display label with the provenance link; the
     // sync date lives at the top of the card now.
@@ -142,7 +142,7 @@ describe("FinanceSummaryCard", () => {
     expect(screen.getByText(/Source: Montana Commissioner of Political Practices/)).toBeInTheDocument();
     expect(screen.getByText(summary.direct_campaign.direct_coverage_note)).toBeInTheDocument();
     expect(screen.getByText(summary.outside_spending.outside_coverage_note)).toBeInTheDocument();
-    expect(screen.getByText(/Outside money spent supporting this candidate/)).toBeInTheDocument();
+    expect(screen.getByText(/Outside groups spent .* to support this candidate/)).toBeInTheDocument();
     // No row carries a source URL, so the footer link falls back to the COPP
     // home page (CERS deep links are POST/session driven).
     expect(screen.getByRole("link", { name: "politicalpractices.mt.gov" })).toHaveAttribute(
@@ -204,7 +204,7 @@ describe("FinanceSummaryCard", () => {
     summary.direct_campaign.total_spent = 90000;
     const { rerender } = render(<FinanceSummaryCard summary={summary} />);
     expect(
-      screen.getByText(/money not counted in Raised/)
+      screen.getByText(/money that Raised does not count/)
     ).toBeInTheDocument();
 
     // Public matching money accounts for the gap — no note.
@@ -214,13 +214,13 @@ describe("FinanceSummaryCard", () => {
     funded.direct_campaign.public_funds_received = 60000;
     rerender(<FinanceSummaryCard summary={funded} />);
     expect(
-      screen.queryByText(/money not counted in Raised/)
+      screen.queryByText(/money that Raised does not count/)
     ).not.toBeInTheDocument();
 
     // Normal case (fixture raises more than it spends) — no note.
     rerender(<FinanceSummaryCard summary={financeSummary()} />);
     expect(
-      screen.queryByText(/money not counted in Raised/)
+      screen.queryByText(/money that Raised does not count/)
     ).not.toBeInTheDocument();
   });
 
@@ -240,7 +240,7 @@ describe("FinanceSummaryCard", () => {
     // It must sit with the outside data, not down in the source footnote — a
     // reader who sees the claim has to see the caveat.
     const outsideHeading = screen.getByText("Spending by outside groups");
-    const supportTotal = screen.getByText(/Outside money spent supporting this candidate/);
+    const supportTotal = screen.getByText(/Outside groups spent .* to support this candidate/);
     expect(
       outsideHeading.compareDocumentPosition(note) & Node.DOCUMENT_POSITION_FOLLOWING
     ).toBeTruthy();
@@ -289,7 +289,7 @@ describe("FinanceSummaryCard", () => {
 
     expect(screen.getByText("Spending by outside groups")).toBeInTheDocument();
     expect(
-      screen.getByText("Outside spending reported without a candidate amount")
+      screen.getByText("Outside spending with no amount reported for this candidate")
     ).toBeInTheDocument();
     expect(screen.getByText(/do not report how much/)).toBeInTheDocument();
     expect(screen.getByText("Improve Mississippi PAC")).toBeInTheDocument();
@@ -301,8 +301,8 @@ describe("FinanceSummaryCard", () => {
       screen.getByText(/Reported as opposing this candidate · October 29, 2025/)
     ).toBeInTheDocument();
     expect(screen.getByText(/candidate-level amounts were not reported/)).toBeInTheDocument();
-    expect(screen.queryByText(/Outside money spent supporting/)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Outside money spent opposing/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Outside groups spent .* to support/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Outside groups spent .* to oppose/)).not.toBeInTheDocument();
     expect(screen.queryByText("$0")).not.toBeInTheDocument();
     expect(
       screen.getByRole("link", {
@@ -349,10 +349,10 @@ describe("FinanceSummaryCard", () => {
     const summary = financeSummary();
     const { container } = render(<FinanceSummaryCard summary={summary} />);
     const supportBox = screen
-      .getByText("Outside money spent supporting this candidate: $50,000")
+      .getByText("Outside groups spent $50,000 to support this candidate.")
       .closest("div");
     const opposeBox = screen
-      .getByText("Outside money spent opposing this candidate: $20,000")
+      .getByText("Outside groups spent $20,000 to oppose this candidate.")
       .closest("div");
     expect(supportBox).toHaveClass("bg-green-50");
     expect(opposeBox).toHaveClass("bg-red-50");
@@ -407,8 +407,8 @@ describe("FinanceSummaryCard", () => {
     summary.outside_spending.top_opposing_industries = [];
     render(<FinanceSummaryCard summary={summary} />);
 
-    expect(screen.getByText(/Outside money spent supporting/)).toBeInTheDocument();
-    expect(screen.queryByText(/Outside money spent opposing/)).not.toBeInTheDocument();
+    expect(screen.getByText(/Outside groups spent .* to support/)).toBeInTheDocument();
+    expect(screen.queryByText(/Outside groups spent .* to oppose/)).not.toBeInTheDocument();
   });
 
   it("hides a direction whose disclosed total is $0 with nothing behind it", () => {
@@ -419,8 +419,8 @@ describe("FinanceSummaryCard", () => {
     render(<FinanceSummaryCard summary={summary} />);
 
     // "$0 opposing this candidate" is noise, not information — the box hides.
-    expect(screen.getByText(/Outside money spent supporting/)).toBeInTheDocument();
-    expect(screen.queryByText(/Outside money spent opposing/)).not.toBeInTheDocument();
+    expect(screen.getByText(/Outside groups spent .* to support/)).toBeInTheDocument();
+    expect(screen.queryByText(/Outside groups spent .* to oppose/)).not.toBeInTheDocument();
   });
 
   it("keeps a $0-total direction visible when it has groups, but drops the $0 from the heading", () => {
@@ -430,7 +430,7 @@ describe("FinanceSummaryCard", () => {
 
     // The fixture's opposing group still discloses spending, so the box stays;
     // a "$0" amount on the heading would contradict the rows beneath it.
-    const heading = screen.getByText(/Outside money spent opposing this candidate/);
+    const heading = screen.getByText(/Outside groups spent .* to oppose this candidate/);
     expect(heading).toBeInTheDocument();
     expect(heading.textContent).not.toContain("$0");
     expect(screen.getByText("Stop Them PAC")).toBeInTheDocument();
@@ -520,13 +520,13 @@ describe("FinanceSummaryCard", () => {
 
     expect(screen.getByText("Member communications")).toBeInTheDocument();
     expect(
-      screen.getByText(/spending to talk to their own members about this candidate/)
+      screen.getByText(/spent this money to talk to their own members about this candidate/)
     ).toBeInTheDocument();
-    expect(screen.getByText("Spent supporting this candidate: $203,457")).toBeInTheDocument();
+    expect(screen.getByText("These organizations spent $203,457 to support this candidate.")).toBeInTheDocument();
     // The $0 oppose side hides (the LA sync writes 0 for every candidate),
     // and member money must not appear under the outside-groups section —
     // it is legally distinct from independent expenditures.
-    expect(screen.queryByText(/Spent opposing this candidate/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/to oppose this candidate/)).not.toBeInTheDocument();
     expect(screen.queryByText("Spending by outside groups")).not.toBeInTheDocument();
   });
 
@@ -557,7 +557,7 @@ describe("FinanceSummaryCard", () => {
     expect(loansLabel).toBeInTheDocument();
     expect(loansLabel.closest("dl")).toHaveClass("sm:grid-cols-5");
     expect(screen.getByText("$30,752,614")).toBeInTheDocument();
-    expect(screen.getByText(/borrowed money the campaign reported receiving/)).toBeInTheDocument();
+    expect(screen.getByText(/money the campaign borrowed, often from the candidate/)).toBeInTheDocument();
   });
 
   it("hides the Loans stat for zero and for sources that do not report loans", () => {
@@ -566,7 +566,7 @@ describe("FinanceSummaryCard", () => {
     zeroLoans.direct_campaign.loans_received = 0;
     const { rerender } = render(<FinanceSummaryCard summary={zeroLoans} />);
     expect(screen.queryByText("Loans")).not.toBeInTheDocument();
-    expect(screen.queryByText(/borrowed money/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/the campaign borrowed/)).not.toBeInTheDocument();
 
     // Field absent (source does not report loans): hidden.
     rerender(<FinanceSummaryCard summary={financeSummary()} />);
