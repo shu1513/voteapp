@@ -447,7 +447,8 @@
     "pennsylvania-candidates:finance:raw:scheduler:trigger": "tsx src/scripts/triggerPennsylvaniaCampaignFinanceRawDataRefresh.ts",
     "pennsylvania-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertPennsylvaniaCandidateFinanceSyncScheduler.ts",
     "pennsylvania-candidates:finance:scheduler:worker": "tsx src/scripts/runPennsylvaniaCandidateFinanceSyncSchedulerWorker.ts",
-    "pennsylvania-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerPennsylvaniaCandidateFinanceSync.ts"
+    "pennsylvania-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerPennsylvaniaCandidateFinanceSync.ts",
+    "west-virginia-candidates:finance:probe": "tsx src/scripts/probeWestVirginiaCandidateFinance.ts"
   },
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.1078.0",
