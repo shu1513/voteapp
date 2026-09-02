@@ -39,7 +39,10 @@ rolls of 2026-06-24 do not: LegiScan reports 71-46 and the official transcripts
 report 71-47, because LegiScan leaves the chamber's unaffiliated members out of
 its member list. Those three rolls were withdrawn rather than imported with a
 number the state's own record contradicts. The full finding is in
-`../CODE-FINDINGS.md`.
+`../CODE-FINDINGS.md`. Their pending descriptions in `judgments.json` quote the
+official 71-47, not the stored 71-46, on purpose: the judge's tally gate refuses
+to approve a description that does not cite the stored tally, so nobody can
+approve these rolls until the stored roll is corrected to the official figure.
 
 This is why `import-report.json` records 1,025 inserts across 14 files while the
 live count is 713 across 11: the 312 records of the three held rolls were
@@ -72,8 +75,8 @@ batches.
 The no side is stated only where the whole act sits inside the area and there is
 no other axis to object on:
 
-- House Bills 318 and 153 are immigration statutes end to end, so a no vote is a
-  vote against extending immigration enforcement.
+- House Bill 318 and Senate Bill 153 are immigration statutes end to end, so a
+  no vote is a vote against extending immigration enforcement.
 - Senate Bills 227 and 558 are anti-discrimination statutes by their own terms,
   and both expressly protect speech the First Amendment covers, which removes
   the free-speech axis a no vote might otherwise be resting on. What is left is
