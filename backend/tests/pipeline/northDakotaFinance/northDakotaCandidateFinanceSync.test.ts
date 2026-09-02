@@ -221,6 +221,23 @@ describe("syncNorthDakotaCandidateFinance", () => {
     expect(client.query).not.toHaveBeenCalled();
   });
 
+  it("fails closed when the API reclassifies a same-date, same-amount row (donor money vs the candidate's own)", async () => {
+    const { db, client } = writingDb();
+    await expect(
+      syncNorthDakotaCandidateFinance({
+        ...baseInput(db),
+        loadArtifacts: loader({
+          apiContributionRows: vi.fn(async (year: number) =>
+            year === 2026
+              ? API_ROWS[2026]!.map((row) => (row.transactionID === 11 ? { ...row, entityTypeDesc: "Candidate" } : row))
+              : API_ROWS[year]!
+          ),
+        }),
+      })
+    ).rejects.toThrow(/2026 contributions do not reconcile for 1010001478: .*\(only-in-CSV 1, only-in-API 1\)/);
+    expect(client.query).not.toHaveBeenCalled();
+  });
+
   it("fails closed when a window year's artifact or a schedule file is not cached", async () => {
     const { db, client } = writingDb();
     await expect(

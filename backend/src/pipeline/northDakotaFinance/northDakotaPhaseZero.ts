@@ -247,8 +247,13 @@ export function reconcileNorthDakotaChart(input: {
 // --- CSV vs API committee reconciliation ------------------------------------
 
 // The bulk CSV has no report identity, so the comparison is committee-level:
-// a multiset of (transactionDate, amountCents). Category vocabularies differ
-// between the two surfaces and are reported side by side instead of keyed.
+// a multiset of (transactionDate, amountCents, category, counterparty type).
+// Both surfaces use the same category and type vocabulary (verified
+// 2026-09-02: 8,254 rows across 2025-2026 agree row for row; the CSV's blank
+// type on lump rows is the API's null), so a classification change — an
+// amendment that turns an "Individual" gift into "Candidate" money at the
+// same date and amount — is a mismatch, not a pass. The aggregator keys its
+// money model on exactly these two fields.
 export type NorthDakotaCommitteeReconciliation = {
   entityId: string;
   csvRowCount: number;
@@ -284,15 +289,21 @@ export function reconcileNorthDakotaCommittee(input: {
   const csvTotalCents = csvRows.reduce((sum, row) => sum + row.amountCents, 0);
   const apiTotalCents = apiRows.reduce((sum, row) => sum + apiAmountToCents(row.transactionAmount), 0);
 
-  const key = (date: string, cents: number) => `${date.slice(0, 10)}\u0000${cents}`;
+  const key = (date: string, cents: number, category: string, counterpartyType: string) =>
+    [date.slice(0, 10), cents, category, counterpartyType].join("\u0000");
   const remaining = new Map<string, number>();
   for (const row of csvRows) {
-    const k = key(row.transactionDate, row.amountCents);
+    const k = key(row.transactionDate, row.amountCents, row.transactionCategory, row.contributorType);
     remaining.set(k, (remaining.get(k) ?? 0) + 1);
   }
   let onlyInApi = 0;
   for (const row of apiRows) {
-    const k = key(row.transactionDate, apiAmountToCents(row.transactionAmount));
+    const k = key(
+      row.transactionDate,
+      apiAmountToCents(row.transactionAmount),
+      row.transactionCategoryDesc ?? "",
+      row.entityTypeDesc ?? ""
+    );
     const count = remaining.get(k) ?? 0;
     if (count > 0) remaining.set(k, count - 1);
     else onlyInApi += 1;

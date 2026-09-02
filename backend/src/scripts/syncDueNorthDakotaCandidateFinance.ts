@@ -117,6 +117,11 @@ async function main(): Promise<void> {
         2
       )
     );
+    // The batch is fail-visible (per-candidate errors are recorded and the
+    // run continues); the exit code still has to say so for shell callers.
+    if (result.failed > 0) {
+      process.exitCode = 1;
+    }
   } finally {
     await pool.end();
   }

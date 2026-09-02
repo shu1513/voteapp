@@ -221,17 +221,41 @@ describe("reconcileNorthDakotaChart", () => {
 });
 
 describe("reconcileNorthDakotaCommittee", () => {
-  it("matches identical (date, amount) multisets regardless of category labels", () => {
+  it("matches identical (date, amount, category, type) multisets; blank CSV type equals null API type", () => {
     const result = reconcileNorthDakotaCommittee({
       entityId: "1010000001",
-      csvRows: [csvRow({}), csvRow({ amountCents: 100, transactionDate: "2026-01-02", transactionCategory: "Total - $200 or less" })],
-      apiRows: [apiRow({}), apiRow({ transactionAmount: 1, transactionDate: "2026-01-02T00:00:00", transactionCategoryDesc: "Lumpsum" })],
+      csvRows: [
+        csvRow({}),
+        csvRow({ amountCents: 100, transactionDate: "2026-01-02", transactionCategory: "Total - $200 or less", contributorType: "" }),
+      ],
+      apiRows: [
+        apiRow({}),
+        apiRow({ transactionAmount: 1, transactionDate: "2026-01-02T00:00:00", transactionCategoryDesc: "Total - $200 or less", entityTypeDesc: null }),
+      ],
     });
     expect(result.totalsMatch).toBe(true);
     expect(result.multisetMatch).toBe(true);
     expect(result.csvCategoryCounts).toEqual({ Monetary: 1, "Total - $200 or less": 1 });
-    expect(result.apiCategoryCounts).toEqual({ Monetary: 1, Lumpsum: 1 });
+    expect(result.apiCategoryCounts).toEqual({ Monetary: 1, "Total - $200 or less": 1 });
     expect(result.apiReports).toEqual([{ reportFileName: "2026 Pre-Primary Report", reportVersionID: "1", rowCount: 2, totalDollars: "961.60" }]);
+  });
+
+  it("treats a classification change at the same date and amount as a mismatch", () => {
+    const reclassified = reconcileNorthDakotaCommittee({
+      entityId: "1010000001",
+      csvRows: [csvRow({ contributorType: "Individual" })],
+      apiRows: [apiRow({ entityTypeDesc: "Candidate" })],
+    });
+    expect(reclassified.totalsMatch).toBe(true);
+    expect(reclassified.multisetMatch).toBe(false);
+    expect(reclassified.onlyInCsv).toBe(1);
+    expect(reclassified.onlyInApi).toBe(1);
+    const recategorized = reconcileNorthDakotaCommittee({
+      entityId: "1010000001",
+      csvRows: [csvRow({ transactionCategory: "Monetary" })],
+      apiRows: [apiRow({ transactionCategoryDesc: "Reimbursement of Expenditure" })],
+    });
+    expect(recategorized.multisetMatch).toBe(false);
   });
 
   it("surfaces asymmetric rows and ignores other committees", () => {
