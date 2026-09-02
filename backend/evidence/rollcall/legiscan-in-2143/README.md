@@ -100,16 +100,21 @@ instead of by guessing a filename. See `CODE-FINDINGS.md` section 5.
 
 ## State of the work
 
-Batches 01 to 03, 05 and 06 are imported on the local `voteapp` database: **1,105 records across
-102 candidates, over fifteen measures and twenty-three rolls.** Batch-04 read twelve measures and
-kept none. **Production holds no Indiana records.**
+Batches 01 to 03 and 05 to 09 are imported on the local `voteapp` database: **1,394 records
+across 102 candidates, over twenty-one measures and thirty-two rolls.** Batch-04 read twelve
+measures and kept none. **Production holds no Indiana records.**
 
-Across both Indiana sessions the total is **2,432 live roll-call records over 104 candidates
-with 1,951 area tags**.
+Across both Indiana sessions the total is **2,721 live roll-call records over 104 candidates
+with 2,159 area tags**.
 
-19 measures and 35 divided-and-enacted rolls remain open in this session, each dispositioned in
-`survey/divided-enacted-worklist.tsv`; one still carries the `needs member-list check` flag. What
-is left is the state budget, five education omnibus bills, two elections omnibus bills and a run
-of agency bills, so on the evidence of batches 04, 05 and 06 the expected yield is close to zero.
+Only two measures remain open: **HB 1001, the state budget, and SB 1, local government finance**,
+carrying five rolls between them. Everything else in the session has been read in full and
+dispositioned.
+
+The tail was worth working after all, though not evenly. Batches 05 to 09 read 30 measures and
+kept 10, and the keeps clustered: the two health cost acts in batch-07, the elections act in
+batch-08 and the reading act in batch-09 are all bills whose titles look like omnibus work and
+whose contents are not. The lesson for a later state is that "Various ... matters" is a
+prompt to read, not a reason to drop.
 
 The 2026 Regular Session (LegiScan session 2234) is complete and has never been surveyed.
