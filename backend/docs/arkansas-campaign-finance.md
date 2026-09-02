@@ -120,6 +120,12 @@ registration-scoped `GetTransactionDetails` (TCON) path:
   breakdowns only when the receipt sum equals `totalRaised` to the cent and
   withholds them otherwise (totals still publish). `hasChild` rows appeared
   only on overshooting filers (8021: 5, 8753: 4) — semantics unpinned.
+- Per-row `GetTransactionDetailsByGuid` (body `{"transactionGuid"}`; returns
+  `transactionID`, `transactionVersionID`, election type/year, source type,
+  category) on 10477, 8313 and 7526 (551 rows): every transactionID appears
+  once, all at version 1 — so the 7526 overshoot is transactions an amendment
+  removed surviving as their own rows, not duplicate versions. A max-version
+  dedupe cannot repair overshoots; only report-lineage scoping could.
 - Wilson (11847, the Phase 0 loan-heavy gold filer) now carries no
   `electionYear` on his State Senate registration, so he is outside the
   cycle-pinned v1 scope.

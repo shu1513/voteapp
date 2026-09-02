@@ -14,11 +14,16 @@
 // - registration.totalRaised = monetary rows + interest rows, cent-exact,
 //   for filers whose search carries no superseded report versions (loans
 //   and in-kind excluded; interest verified on a filer with 20 interest rows
-//   that reconciles only with them counted). Some amended filers overshoot
-//   (the search keeps superseded versions with no per-row marker), so
-//   breakdowns are published only when the sum reconciles exactly; otherwise
-//   the totals still publish and the breakdowns are quarantined with the
-//   dollar delta.
+//   that reconciles only with them counted). Some amended filers overshoot:
+//   transactions an amendment removed survive in the search as their own
+//   rows (per-row GetTransactionDetailsByGuid on 551 rows across three
+//   amended filers found every transactionID exactly once, all at version
+//   1 — leftovers, not duplicate versions, so a version dedupe cannot fix
+//   them). Leftovers only ever add money, so breakdowns are published only
+//   when the sum reconciles exactly; otherwise the totals still publish and
+//   the breakdowns are quarantined with the dollar delta. A reconciled
+//   amended filer (8313, ten amended reports) carries one current row per
+//   transaction; the search has never been seen serving a stale row.
 // - Non-itemized rows are per-report lumps (no source, no occupation) and
 //   interest rows have no contributor: both count toward the reconciliation
 //   and never toward a bucket. Nonmoney (in-kind) rows are outside
