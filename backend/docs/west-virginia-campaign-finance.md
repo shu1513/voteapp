@@ -45,7 +45,7 @@ with 1–3 extra columns** (382×13, 25×14, 21×15) from unescaped commas in th
 name/address; and the **contributions files have the same defect class** (2025 file:
 1 row — `Alonzio Perry, II`, a generational-suffix comma in the contributor name). All
 bad-width rows keep a valid typed prefix and a recoverable trailing `FiledDate`.
-Recovery rule (implemented in `westVirginiaCfrsParsers`): keep the typed prefix and the
+Recovery rule (implemented in `westVirginiaCfrsCsv`): keep the typed prefix and the
 trailing fixed columns, keep only the FIRST column of the damaged name/address span as
 the counterparty name, discard the ambiguous tail (it mixes in the street address —
 never retained), and flag the row `recovered`.

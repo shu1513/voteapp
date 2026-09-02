@@ -310,7 +310,7 @@ westVirginiaCfrsArtifactAcquisition.ts # daily catalog poll → changed-object d
                                      # inventory + PDF fetch; the only live-portal component
 westVirginiaCfrsArtifactCache.ts     # NC pattern: SHA-256 + manifest + pinned parser version;
                                      # restricted perms; sync reads cache only
-westVirginiaCfrsParsers.ts           # cp1252 + relaxed-quote CSV readers with typed per-column
+westVirginiaCfrsCsv.ts               # cp1252 + relaxed-quote CSV readers with typed per-column
                                      # validation and the EXP bad-width recovery rule; API row
                                      # normalizers with response-field self-classification;
                                      # catalog/doc-list parsers; header drift fails the artifact

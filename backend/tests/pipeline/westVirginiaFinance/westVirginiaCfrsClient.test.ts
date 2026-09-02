@@ -82,6 +82,20 @@ describe("getWestVirginiaDataDownloadCatalog", () => {
     ).rejects.toThrow(/unexpected content type/);
   });
 
+  it("classifies a body-read failure as a typed network error", async () => {
+    const brokenBody = {
+      ok: true,
+      status: 200,
+      headers: new Headers({ "content-type": "application/json" }),
+      arrayBuffer: async () => {
+        throw new TypeError("terminated");
+      },
+    } as unknown as Response;
+    const pending = getWestVirginiaDataDownloadCatalog({}, { fetchImpl: async () => brokenBody });
+    await expect(pending).rejects.toBeInstanceOf(WestVirginiaCfrsClientError);
+    await expect(pending).rejects.toThrow(/response read failed .*terminated/);
+  });
+
   it("fails closed on isSuccess=false envelopes", async () => {
     await expect(
       getWestVirginiaDataDownloadCatalog(

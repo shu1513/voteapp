@@ -420,6 +420,10 @@ export async function runProbeWestVirginiaCandidateFinance(input: {
     }
   }
 
+  // Gate: amendment semantics — every reconciled committee must match the API
+  // cent-exact and multiset-exact, or the CSV cannot be aggregated directly.
+  const reconciliationOk = reconciliations.every((entry) => entry.totalsMatch && entry.multisetMatch);
+
   const occupations = summarizeWestVirginiaOccupations(latestApiRows);
   const apiCategoryCounts: Record<string, number> = {};
   for (const row of latestApiRows) {
@@ -492,7 +496,7 @@ export async function runProbeWestVirginiaCandidateFinance(input: {
   return {
     type: "west_virginia_campaign_finance_phase_zero_probe" as const,
     ts: (input.now ?? new Date()).toISOString(),
-    ok: true,
+    ok: reconciliationOk,
     tls_fallback_uses: getWestVirginiaTlsFallbackUseCount(),
     catalog: { artifactCount: catalog.length },
     bulk: {
@@ -548,6 +552,10 @@ async function main(): Promise<void> {
     args: parseProbeWestVirginiaCandidateFinanceArgs(process.argv.slice(2)),
   });
   console.log(JSON.stringify(output, null, 2));
+  if (!output.ok) {
+    console.error("West Virginia campaign-finance Phase 0 probe: reconciliation gate failed (see reconciliation[])");
+    process.exitCode = 1;
+  }
 }
 
 const entrypoint = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;

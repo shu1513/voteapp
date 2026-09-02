@@ -234,7 +234,18 @@ async function postJsonEnvelope(input: {
     );
   }
 
-  const bytes = new Uint8Array(await response.arrayBuffer());
+  // A stall or reset while the body streams rejects here, not in fetch above;
+  // keep it inside the typed-error contract.
+  let bytes: Uint8Array;
+  try {
+    bytes = new Uint8Array(await response.arrayBuffer());
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new WestVirginiaCfrsClientError(
+      "network_error",
+      `West Virginia CFRS response read failed (${input.endpoint}): ${message}`
+    );
+  }
   if (bytes.byteLength > MAX_JSON_RESPONSE_BYTES) {
     throw new WestVirginiaCfrsClientError(
       "bad_response",
