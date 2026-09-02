@@ -2,8 +2,8 @@
   "importerVersion": "rollcall-legiscan-import-v1",
   "dryRun": true,
   "skipExisting": false,
-  "startedAt": "2026-08-31T06:33:45.202Z",
-  "finishedAt": "2026-08-31T06:33:47.056Z",
+  "startedAt": "2026-09-02T01:15:21.004Z",
+  "finishedAt": "2026-09-02T01:15:23.878Z",
   "jurisdiction": "NC",
   "sessionId": 2189,
   "evidenceDir": "/Users/shu/voteApp/.claude/worktrees/sharp-thompson-53b81c/backend/evidence/rollcall/legiscan-nc-2189/batch-01",
@@ -35,7 +35,7 @@
       "officialVoteDate": null,
       "measureId": "H 193",
       "question": "Veto Override",
-      "originRunId": "rollcall:NC:house:2189:1599102:2026-08-31T06:33:45.202Z",
+      "originRunId": "rollcall:NC:house:2189:1599102:2026-09-02T01:15:21.004Z",
       "members": 120,
       "notVoting": 0,
       "absent": 0,
@@ -1138,10 +1138,7 @@
           "recordId": "b9787a31-e26f-4908-8e5d-61d30bd470cb",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "5201c6ed-a830-45ce-ba38-82b00bed52cf",
-            "e9632958-65fc-4c28-b6ed-0bd3d2a81561"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "6242f94e-dec6-4fe0-8368-ed97c7f9925a",
@@ -1268,7 +1265,7 @@
       "officialVoteDate": null,
       "measureId": "H 805",
       "question": "Veto Override",
-      "originRunId": "rollcall:NC:house:2189:1599122:2026-08-31T06:33:45.202Z",
+      "originRunId": "rollcall:NC:house:2189:1599122:2026-09-02T01:15:21.004Z",
       "members": 120,
       "notVoting": 0,
       "absent": 0,
@@ -2371,10 +2368,7 @@
           "recordId": "5c76cee5-84c8-4de7-a35b-210112ba7a68",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "5201c6ed-a830-45ce-ba38-82b00bed52cf",
-            "e9632958-65fc-4c28-b6ed-0bd3d2a81561"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "6242f94e-dec6-4fe0-8368-ed97c7f9925a",
@@ -2501,7 +2495,7 @@
       "officialVoteDate": null,
       "measureId": "H 318",
       "question": "Veto Override",
-      "originRunId": "rollcall:NC:house:2189:1599134:2026-08-31T06:33:45.202Z",
+      "originRunId": "rollcall:NC:house:2189:1599134:2026-09-02T01:15:21.004Z",
       "members": 120,
       "notVoting": 0,
       "absent": 0,
@@ -3604,10 +3598,7 @@
           "recordId": "44aea39e-eea4-4b6f-9970-2a42719fcdc9",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "5201c6ed-a830-45ce-ba38-82b00bed52cf",
-            "e9632958-65fc-4c28-b6ed-0bd3d2a81561"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "6242f94e-dec6-4fe0-8368-ed97c7f9925a",
@@ -3734,7 +3725,7 @@
       "officialVoteDate": null,
       "measureId": "S 266",
       "question": "Veto Override",
-      "originRunId": "rollcall:NC:house:2189:1599150:2026-08-31T06:33:45.202Z",
+      "originRunId": "rollcall:NC:house:2189:1599150:2026-09-02T01:15:21.004Z",
       "members": 120,
       "notVoting": 0,
       "absent": 0,
@@ -4837,10 +4828,7 @@
           "recordId": "63e747ed-396c-4878-ad9c-803fcc0accd8",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "5201c6ed-a830-45ce-ba38-82b00bed52cf",
-            "e9632958-65fc-4c28-b6ed-0bd3d2a81561"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "6242f94e-dec6-4fe0-8368-ed97c7f9925a",
@@ -4967,7 +4955,7 @@
       "officialVoteDate": null,
       "measureId": "S 153",
       "question": "Motion 11 Veto Override",
-      "originRunId": "rollcall:NC:senate:2189:1599126:2026-08-31T06:33:45.202Z",
+      "originRunId": "rollcall:NC:senate:2189:1599126:2026-09-02T01:15:21.004Z",
       "members": 49,
       "notVoting": 0,
       "absent": 1,
@@ -5537,7 +5525,7 @@
       "officialVoteDate": null,
       "measureId": "H 318",
       "question": "Motion 11 Veto Override",
-      "originRunId": "rollcall:NC:senate:2189:1599133:2026-08-31T06:33:45.202Z",
+      "originRunId": "rollcall:NC:senate:2189:1599133:2026-09-02T01:15:21.004Z",
       "members": 49,
       "notVoting": 0,
       "absent": 1,
@@ -6107,7 +6095,7 @@
       "officialVoteDate": null,
       "measureId": "S 266",
       "question": "Motion 11 Veto Override",
-      "originRunId": "rollcall:NC:senate:2189:1599149:2026-08-31T06:33:45.202Z",
+      "originRunId": "rollcall:NC:senate:2189:1599149:2026-09-02T01:15:21.004Z",
       "members": 48,
       "notVoting": 0,
       "absent": 2,
@@ -6665,7 +6653,7 @@
       "officialVoteDate": null,
       "measureId": "S 558",
       "question": "Motion 11 Veto Override",
-      "originRunId": "rollcall:NC:senate:2189:1599164:2026-08-31T06:33:45.202Z",
+      "originRunId": "rollcall:NC:senate:2189:1599164:2026-09-02T01:15:21.004Z",
       "members": 49,
       "notVoting": 0,
       "absent": 1,
@@ -7235,7 +7223,7 @@
       "officialVoteDate": null,
       "measureId": "H 193",
       "question": "Motion 11 Veto Override",
-      "originRunId": "rollcall:NC:senate:2189:1599165:2026-08-31T06:33:45.202Z",
+      "originRunId": "rollcall:NC:senate:2189:1599165:2026-09-02T01:15:21.004Z",
       "members": 48,
       "notVoting": 1,
       "absent": 1,
@@ -7793,7 +7781,7 @@
       "officialVoteDate": null,
       "measureId": "S 227",
       "question": "Motion 11 Veto Override",
-      "originRunId": "rollcall:NC:senate:2189:1599167:2026-08-31T06:33:45.202Z",
+      "originRunId": "rollcall:NC:senate:2189:1599167:2026-09-02T01:15:21.004Z",
       "members": 49,
       "notVoting": 0,
       "absent": 1,
@@ -8363,7 +8351,7 @@
       "officialVoteDate": null,
       "measureId": "H 805",
       "question": "Motion 11 Veto Override",
-      "originRunId": "rollcall:NC:senate:2189:1599171:2026-08-31T06:33:45.202Z",
+      "originRunId": "rollcall:NC:senate:2189:1599171:2026-09-02T01:15:21.004Z",
       "members": 49,
       "notVoting": 0,
       "absent": 1,

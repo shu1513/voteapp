@@ -113,6 +113,13 @@ was treated as the binding constraint.
   database then held 1,025 rows under this run's stamp.
 - After the hold: 713 live records, 145 candidates, 611 area tags.
 - Convergence dry run after the hold: 11 files, 713 records, all unchanged.
-- No `related` flags and no `ambiguous` outcomes; no pre-existing hand-written
-  North Carolina vote records had to be retired.
+- No `ambiguous` outcomes. Four `related` flags, all on Bryan Cohn (House
+  District 32), pointing at two hand-written records from July 2026. Both cite
+  the wrong roll: the H318 record quotes House roll 577 (71-49) and the S266
+  record quotes roll 585 (72-48). Those were the previous-question motions.
+  The overrides were rolls 578 (72-48) and 586 (74-46). The URL-based duplicate
+  check could not catch them because the cited roll differs from the imported
+  one. Both were retired on 2026-09-01 with reasons naming the replacing
+  records; see `related-retirements.json`. A fresh convergence dry run after
+  the retirement shows 713 unchanged and no `related` flags.
 - Production was not touched.

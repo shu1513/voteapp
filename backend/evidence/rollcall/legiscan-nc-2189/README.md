@@ -73,5 +73,5 @@ The session law is the ground truth. The summary is an index into it.
 
 - `crosswalk.json`, `legiscan-people-nc-2189.json` — identity
 - `survey/` — the measured vocabulary and the divided-and-enacted worklist
-- `batch-01/` — the twelve bills enacted over the governor's veto
+- `batch-01/` — seven of the twelve bills enacted over the governor's veto (the other five failed the stance filter)
 - `CODE-FINDINGS.md` — defects found in the feed, recorded rather than fixed
