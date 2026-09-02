@@ -443,6 +443,8 @@ export type KansasCfrGridRow = {
   /** lblDate_N (e-filed rows) or lblOriginalDate_N (paper rows). */
   fileDate: string;
   amendmentDate: string;
+  /** lblAmendmentNo_N on the Appointment of Treasurer grid: "" on an original appointment. */
+  amendmentNo: string;
   name: string;
   officeSought: string;
   district: string;
@@ -506,6 +508,7 @@ export function parseKansasCfrGridRows(html: string, gridId: string): KansasCfrG
         index,
         fileDate: rowFields.get("lblDate") ?? rowFields.get("lblOriginalDate") ?? "",
         amendmentDate: rowFields.get("lblAmendmentDate") ?? "",
+        amendmentNo: rowFields.get("lblAmendmentNo") ?? "",
         name: names.join(" "),
         officeSought: rowFields.get("labelOfficeSought") ?? "",
         district: (rowFields.get("lblDistrictNumber") ?? "").replace(/^\/\s*/, ""),

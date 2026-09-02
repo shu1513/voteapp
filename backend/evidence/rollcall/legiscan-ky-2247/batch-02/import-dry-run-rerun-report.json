@@ -1,0 +1,1045 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": true,
+  "skipExisting": false,
+  "startedAt": "2026-09-02T16:42:28.106Z",
+  "finishedAt": "2026-09-02T16:42:35.033Z",
+  "jurisdiction": "KY",
+  "sessionId": 2247,
+  "evidenceDir": "~/legiscan-data/ky-2247-batch02-evidence",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "evidence/rollcall/legiscan-ky-2179/crosswalk.json",
+  "crosswalkEntries": 139,
+  "peopleFile": "~/legiscan-data/ky-2247-batch02-evidence/legiscan-people-ky-2247.json",
+  "peopleMembers": 138,
+  "files": 34,
+  "outcomes": {
+    "dry_run": 34
+  },
+  "actions": {
+    "unchanged": 1731
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-ky-house-2247-roll1626655.json",
+      "state": "KY",
+      "chamber": "house",
+      "sessionId": 2247,
+      "roll": 1626655,
+      "outcome": "dry_run",
+      "legislativeVoteId": "7c54ae94-b856-4a6d-8927-a82a03c3fadd",
+      "reviewStatus": "approved",
+      "bill": "HB7",
+      "voteDate": "2026-02-09",
+      "officialVoteDate": null,
+      "measureId": "HB 7",
+      "question": "House: Veto Override RCS# 70",
+      "originRunId": "rollcall:KY:house:2247:1626655:2026-09-02T16:42:28.106Z",
+      "members": 93,
+      "notVoting": 0,
+      "absent": 7,
+      "resolution": {
+        "matched": 83,
+        "unmatched_reviewed": 10
+      },
+      "actions": {
+        "unchanged": 83
+      },
+      "notified": 0,
+      "candidates": 83,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-house-2247-roll1663923.json",
+      "state": "KY",
+      "chamber": "house",
+      "sessionId": 2247,
+      "roll": 1663923,
+      "outcome": "dry_run",
+      "legislativeVoteId": "dc577c7c-d65e-4468-9bc1-18c3516f2735",
+      "reviewStatus": "approved",
+      "bill": "HB1",
+      "voteDate": "2026-03-16",
+      "officialVoteDate": null,
+      "measureId": "HB 1",
+      "question": "House: Veto Override RCS# 255",
+      "originRunId": "rollcall:KY:house:2247:1663923:2026-09-02T16:42:28.106Z",
+      "members": 91,
+      "notVoting": 1,
+      "absent": 8,
+      "resolution": {
+        "matched": 83,
+        "unmatched_reviewed": 8
+      },
+      "actions": {
+        "unchanged": 83
+      },
+      "notified": 0,
+      "candidates": 83,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-house-2247-roll1670413.json",
+      "state": "KY",
+      "chamber": "house",
+      "sessionId": 2247,
+      "roll": 1670413,
+      "outcome": "dry_run",
+      "legislativeVoteId": "d6ababf9-000e-4a70-9fd8-3c1c52b22714",
+      "reviewStatus": "approved",
+      "bill": "SB104",
+      "voteDate": "2026-03-25",
+      "officialVoteDate": null,
+      "measureId": "SB 104",
+      "question": "House: Veto Override RCS# 321",
+      "originRunId": "rollcall:KY:house:2247:1670413:2026-09-02T16:42:28.106Z",
+      "members": 95,
+      "notVoting": 0,
+      "absent": 5,
+      "resolution": {
+        "matched": 84,
+        "unmatched_reviewed": 11
+      },
+      "actions": {
+        "unchanged": 84
+      },
+      "notified": 0,
+      "candidates": 84,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-house-2247-roll1671526.json",
+      "state": "KY",
+      "chamber": "house",
+      "sessionId": 2247,
+      "roll": 1671526,
+      "outcome": "dry_run",
+      "legislativeVoteId": "3e911733-745a-4d80-9409-3271e3eff8cb",
+      "reviewStatus": "approved",
+      "bill": "SB195",
+      "voteDate": "2026-03-26",
+      "officialVoteDate": null,
+      "measureId": "SB 195",
+      "question": "House: Veto Override RCS# 330",
+      "originRunId": "rollcall:KY:house:2247:1671526:2026-09-02T16:42:28.106Z",
+      "members": 91,
+      "notVoting": 0,
+      "absent": 9,
+      "resolution": {
+        "matched": 81,
+        "unmatched_reviewed": 10
+      },
+      "actions": {
+        "unchanged": 81
+      },
+      "notified": 0,
+      "candidates": 81,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-house-2247-roll1671539.json",
+      "state": "KY",
+      "chamber": "house",
+      "sessionId": 2247,
+      "roll": 1671539,
+      "outcome": "dry_run",
+      "legislativeVoteId": "38aa0c03-66c9-47ad-8fe9-c37c88c8d892",
+      "reviewStatus": "approved",
+      "bill": "SB29",
+      "voteDate": "2026-03-26",
+      "officialVoteDate": null,
+      "measureId": "SB 29",
+      "question": "House: Veto Override RCS# 335",
+      "originRunId": "rollcall:KY:house:2247:1671539:2026-09-02T16:42:28.106Z",
+      "members": 89,
+      "notVoting": 0,
+      "absent": 11,
+      "resolution": {
+        "matched": 79,
+        "unmatched_reviewed": 10
+      },
+      "actions": {
+        "unchanged": 79
+      },
+      "notified": 0,
+      "candidates": 79,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-house-2247-roll1674574.json",
+      "state": "KY",
+      "chamber": "house",
+      "sessionId": 2247,
+      "roll": 1674574,
+      "outcome": "dry_run",
+      "legislativeVoteId": "1555e62a-eba3-4ad9-88b9-c711d3700215",
+      "reviewStatus": "approved",
+      "bill": "HB627",
+      "voteDate": "2026-03-31",
+      "officialVoteDate": null,
+      "measureId": "HB 627",
+      "question": "House: Veto Override RCS# 404",
+      "originRunId": "rollcall:KY:house:2247:1674574:2026-09-02T16:42:28.106Z",
+      "members": 89,
+      "notVoting": 0,
+      "absent": 11,
+      "resolution": {
+        "matched": 81,
+        "unmatched_reviewed": 8
+      },
+      "actions": {
+        "unchanged": 81
+      },
+      "notified": 0,
+      "candidates": 81,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-house-2247-roll1675554.json",
+      "state": "KY",
+      "chamber": "house",
+      "sessionId": 2247,
+      "roll": 1675554,
+      "outcome": "dry_run",
+      "legislativeVoteId": "8780c237-9728-44ee-bc16-ad65a1428edb",
+      "reviewStatus": "approved",
+      "bill": "HB677",
+      "voteDate": "2026-04-01",
+      "officialVoteDate": null,
+      "measureId": "HB 677",
+      "question": "House: Veto Override RCS# 445",
+      "originRunId": "rollcall:KY:house:2247:1675554:2026-09-02T16:42:28.106Z",
+      "members": 89,
+      "notVoting": 0,
+      "absent": 11,
+      "resolution": {
+        "matched": 80,
+        "unmatched_reviewed": 9
+      },
+      "actions": {
+        "unchanged": 80
+      },
+      "notified": 0,
+      "candidates": 80,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-house-2247-roll1682824.json",
+      "state": "KY",
+      "chamber": "house",
+      "sessionId": 2247,
+      "roll": 1682824,
+      "outcome": "dry_run",
+      "legislativeVoteId": "adff0963-398b-4fe4-90e7-2f45e3f536e4",
+      "reviewStatus": "approved",
+      "bill": "HB490",
+      "voteDate": "2026-04-14",
+      "officialVoteDate": null,
+      "measureId": "HB 490",
+      "question": "House: Veto Override RCS# 465",
+      "originRunId": "rollcall:KY:house:2247:1682824:2026-09-02T16:42:28.106Z",
+      "members": 99,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "matched": 87,
+        "unmatched_reviewed": 12
+      },
+      "actions": {
+        "unchanged": 87
+      },
+      "notified": 0,
+      "candidates": 87,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-ky-house-2247-roll1682832.json",
+      "state": "KY",
+      "chamber": "house",
+      "sessionId": 2247,
+      "roll": 1682832,
+      "outcome": "dry_run",
+      "legislativeVoteId": "791c558b-04d6-456c-80ad-797d9d8e626d",
+      "reviewStatus": "approved",
+      "bill": "SB4",
+      "voteDate": "2026-04-14",
+      "officialVoteDate": null,
+      "measureId": "SB 4",
+      "question": "House: Veto Override RCS# 476",
+      "originRunId": "rollcall:KY:house:2247:1682832:2026-09-02T16:42:28.106Z",
+      "members": 97,
+      "notVoting": 0,
+      "absent": 3,
+      "resolution": {
+        "matched": 85,
+        "unmatched_reviewed": 12
+      },
+      "actions": {
+        "unchanged": 85
+      },
+      "notified": 0,
+      "candidates": 85,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-ky-house-2247-roll1682834.json",
+      "state": "KY",
+      "chamber": "house",
+      "sessionId": 2247,
+      "roll": 1682834,
+      "outcome": "dry_run",
+      "legislativeVoteId": "f12b560d-9580-4180-bc09-d424ab57308e",
+      "reviewStatus": "approved",
+      "bill": "HB10",
+      "voteDate": "2026-04-14",
+      "officialVoteDate": null,
+      "measureId": "HB 10",
+      "question": "House: Veto Override RCS# 456",
+      "originRunId": "rollcall:KY:house:2247:1682834:2026-09-02T16:42:28.106Z",
+      "members": 98,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "matched": 86,
+        "unmatched_reviewed": 12
+      },
+      "actions": {
+        "unchanged": 86
+      },
+      "notified": 0,
+      "candidates": 86,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-ky-house-2247-roll1682849.json",
+      "state": "KY",
+      "chamber": "house",
+      "sessionId": 2247,
+      "roll": 1682849,
+      "outcome": "dry_run",
+      "legislativeVoteId": "a273dcfb-7163-49a4-8437-3ee3cd36dee6",
+      "reviewStatus": "approved",
+      "bill": "HB355",
+      "voteDate": "2026-04-14",
+      "officialVoteDate": null,
+      "measureId": "HB 355",
+      "question": "House: Veto Override RCS# 462",
+      "originRunId": "rollcall:KY:house:2247:1682849:2026-09-02T16:42:28.106Z",
+      "members": 94,
+      "notVoting": 0,
+      "absent": 6,
+      "resolution": {
+        "matched": 83,
+        "unmatched_reviewed": 11
+      },
+      "actions": {
+        "unchanged": 83
+      },
+      "notified": 0,
+      "candidates": 83,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-ky-house-2247-roll1682885.json",
+      "state": "KY",
+      "chamber": "house",
+      "sessionId": 2247,
+      "roll": 1682885,
+      "outcome": "dry_run",
+      "legislativeVoteId": "be74eb35-a695-424e-9748-4451ddfde3e8",
+      "reviewStatus": "approved",
+      "bill": "SB1",
+      "voteDate": "2026-04-14",
+      "officialVoteDate": null,
+      "measureId": "SB 1",
+      "question": "House: Veto Override RCS# 475",
+      "originRunId": "rollcall:KY:house:2247:1682885:2026-09-02T16:42:28.106Z",
+      "members": 99,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "matched": 87,
+        "unmatched_reviewed": 12
+      },
+      "actions": {
+        "unchanged": 87
+      },
+      "notified": 0,
+      "candidates": 87,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-ky-house-2247-roll1682889.json",
+      "state": "KY",
+      "chamber": "house",
+      "sessionId": 2247,
+      "roll": 1682889,
+      "outcome": "dry_run",
+      "legislativeVoteId": "13f0928e-fdc6-4a18-9ff3-dd3532529c80",
+      "reviewStatus": "approved",
+      "bill": "HB387",
+      "voteDate": "2026-04-14",
+      "officialVoteDate": null,
+      "measureId": "HB 387",
+      "question": "House: Veto Override RCS# 464",
+      "originRunId": "rollcall:KY:house:2247:1682889:2026-09-02T16:42:28.106Z",
+      "members": 99,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "matched": 87,
+        "unmatched_reviewed": 12
+      },
+      "actions": {
+        "unchanged": 87
+      },
+      "notified": 0,
+      "candidates": 87,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-ky-house-2247-roll1682893.json",
+      "state": "KY",
+      "chamber": "house",
+      "sessionId": 2247,
+      "roll": 1682893,
+      "outcome": "dry_run",
+      "legislativeVoteId": "b18668e1-8f78-413f-9aea-9ff5addd01ba",
+      "reviewStatus": "approved",
+      "bill": "HB139",
+      "voteDate": "2026-04-14",
+      "officialVoteDate": null,
+      "measureId": "HB 139",
+      "question": "House: Veto Override RCS# 459",
+      "originRunId": "rollcall:KY:house:2247:1682893:2026-09-02T16:42:28.106Z",
+      "members": 100,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 88,
+        "unmatched_reviewed": 12
+      },
+      "actions": {
+        "unchanged": 88
+      },
+      "notified": 0,
+      "candidates": 88,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-ky-house-2247-roll1682939.json",
+      "state": "KY",
+      "chamber": "house",
+      "sessionId": 2247,
+      "roll": 1682939,
+      "outcome": "dry_run",
+      "legislativeVoteId": "2b063b78-34a9-4fd4-93e5-3381503b0497",
+      "reviewStatus": "approved",
+      "bill": "SB65",
+      "voteDate": "2026-04-14",
+      "officialVoteDate": null,
+      "measureId": "SB 65",
+      "question": "House: Veto Override RCS# 478",
+      "originRunId": "rollcall:KY:house:2247:1682939:2026-09-02T16:42:28.106Z",
+      "members": 98,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "matched": 87,
+        "unmatched_reviewed": 11
+      },
+      "actions": {
+        "unchanged": 87
+      },
+      "notified": 0,
+      "candidates": 87,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-ky-house-2247-roll1683991.json",
+      "state": "KY",
+      "chamber": "house",
+      "sessionId": 2247,
+      "roll": 1683991,
+      "outcome": "dry_run",
+      "legislativeVoteId": "3620f970-7dd6-4fcc-88f0-9a852f3a7b7c",
+      "reviewStatus": "approved",
+      "bill": "SB324",
+      "voteDate": "2026-04-15",
+      "officialVoteDate": null,
+      "measureId": "SB 324",
+      "question": "House: Veto Override RCS# 502",
+      "originRunId": "rollcall:KY:house:2247:1683991:2026-09-02T16:42:28.106Z",
+      "members": 95,
+      "notVoting": 0,
+      "absent": 5,
+      "resolution": {
+        "matched": 84,
+        "unmatched_reviewed": 11
+      },
+      "actions": {
+        "unchanged": 84
+      },
+      "notified": 0,
+      "candidates": 84,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-house-2247-roll1684100.json",
+      "state": "KY",
+      "chamber": "house",
+      "sessionId": 2247,
+      "roll": 1684100,
+      "outcome": "dry_run",
+      "legislativeVoteId": "ec903435-9e1f-4599-b4ad-215c78c00964",
+      "reviewStatus": "approved",
+      "bill": "SB66",
+      "voteDate": "2026-04-15",
+      "officialVoteDate": null,
+      "measureId": "SB 66",
+      "question": "House: Veto Override RCS# 500",
+      "originRunId": "rollcall:KY:house:2247:1684100:2026-09-02T16:42:28.106Z",
+      "members": 94,
+      "notVoting": 0,
+      "absent": 6,
+      "resolution": {
+        "matched": 84,
+        "unmatched_reviewed": 10
+      },
+      "actions": {
+        "unchanged": 84
+      },
+      "notified": 0,
+      "candidates": 84,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2247-roll1655689.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2247,
+      "roll": 1655689,
+      "outcome": "dry_run",
+      "legislativeVoteId": "b4cbbcf9-1e1f-47af-869b-3723486d3308",
+      "reviewStatus": "approved",
+      "bill": "SB137",
+      "voteDate": "2026-03-05",
+      "officialVoteDate": null,
+      "measureId": "SB 137",
+      "question": "Senate: Third Reading RSN# 3884",
+      "originRunId": "rollcall:KY:senate:2247:1655689:2026-09-02T16:42:28.106Z",
+      "members": 37,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 19,
+        "matched": 18
+      },
+      "actions": {
+        "unchanged": 18
+      },
+      "notified": 0,
+      "candidates": 18,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2247-roll1669300.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2247,
+      "roll": 1669300,
+      "outcome": "dry_run",
+      "legislativeVoteId": "b7da82b7-bc07-4ad9-a522-6ee03e7e311b",
+      "reviewStatus": "approved",
+      "bill": "HB189",
+      "voteDate": "2026-03-24",
+      "officialVoteDate": null,
+      "measureId": "HB 189",
+      "question": "Senate: Third Reading RSN# 3980",
+      "originRunId": "rollcall:KY:senate:2247:1669300:2026-09-02T16:42:28.106Z",
+      "members": 37,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 20,
+        "matched": 17
+      },
+      "actions": {
+        "unchanged": 17
+      },
+      "notified": 0,
+      "candidates": 17,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2247-roll1671519.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2247,
+      "roll": 1671519,
+      "outcome": "dry_run",
+      "legislativeVoteId": "869f37a7-795d-48a2-be6c-8471f41af2d6",
+      "reviewStatus": "approved",
+      "bill": "SB101",
+      "voteDate": "2026-03-26",
+      "officialVoteDate": null,
+      "measureId": "SB 101",
+      "question": "Senate: Third Reading RSN# 4020",
+      "originRunId": "rollcall:KY:senate:2247:1671519:2026-09-02T16:42:28.106Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 20,
+        "matched": 18
+      },
+      "actions": {
+        "unchanged": 18
+      },
+      "notified": 0,
+      "candidates": 18,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2247-roll1671561.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2247,
+      "roll": 1671561,
+      "outcome": "dry_run",
+      "legislativeVoteId": "55f0c896-ca9a-40d4-94ef-113227c599a6",
+      "reviewStatus": "approved",
+      "bill": "HB398",
+      "voteDate": "2026-03-26",
+      "officialVoteDate": null,
+      "measureId": "HB 398",
+      "question": "Senate: Third Reading RSN# 4026",
+      "originRunId": "rollcall:KY:senate:2247:1671561:2026-09-02T16:42:28.106Z",
+      "members": 36,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 18,
+        "matched": 18
+      },
+      "actions": {
+        "unchanged": 18
+      },
+      "notified": 0,
+      "candidates": 18,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2247-roll1671862.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2247,
+      "roll": 1671862,
+      "outcome": "dry_run",
+      "legislativeVoteId": "1715b2d6-c73c-48b9-8682-b21dd3be257e",
+      "reviewStatus": "approved",
+      "bill": "HB627",
+      "voteDate": "2026-03-27",
+      "officialVoteDate": null,
+      "measureId": "HB 627",
+      "question": "Senate: Third Reading RSN# 4034",
+      "originRunId": "rollcall:KY:senate:2247:1671862:2026-09-02T16:42:28.106Z",
+      "members": 32,
+      "notVoting": 0,
+      "absent": 6,
+      "resolution": {
+        "unmatched_reviewed": 16,
+        "matched": 16
+      },
+      "actions": {
+        "unchanged": 16
+      },
+      "notified": 0,
+      "candidates": 16,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2247-roll1674515.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2247,
+      "roll": 1674515,
+      "outcome": "dry_run",
+      "legislativeVoteId": "5eaa864a-1625-4afb-b782-506120c061f5",
+      "reviewStatus": "approved",
+      "bill": "SB219",
+      "voteDate": "2026-03-31",
+      "officialVoteDate": null,
+      "measureId": "SB 219",
+      "question": "Senate: Third Reading RSN# 4076",
+      "originRunId": "rollcall:KY:senate:2247:1674515:2026-09-02T16:42:28.106Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 20,
+        "matched": 18
+      },
+      "actions": {
+        "unchanged": 18
+      },
+      "notified": 0,
+      "candidates": 18,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2247-roll1674572.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2247,
+      "roll": 1674572,
+      "outcome": "dry_run",
+      "legislativeVoteId": "a4d7940f-6101-4d8b-9419-96de87814463",
+      "reviewStatus": "approved",
+      "bill": "SB195",
+      "voteDate": "2026-03-31",
+      "officialVoteDate": null,
+      "measureId": "SB 195",
+      "question": "Senate: Third Reading RSN# 4075",
+      "originRunId": "rollcall:KY:senate:2247:1674572:2026-09-02T16:42:28.106Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 20,
+        "matched": 18
+      },
+      "actions": {
+        "unchanged": 18
+      },
+      "notified": 0,
+      "candidates": 18,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2247-roll1674599.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2247,
+      "roll": 1674599,
+      "outcome": "dry_run",
+      "legislativeVoteId": "b87e3cd9-a4f7-4354-8f5e-bc2c751c25c8",
+      "reviewStatus": "approved",
+      "bill": "SB104",
+      "voteDate": "2026-03-31",
+      "officialVoteDate": null,
+      "measureId": "SB 104",
+      "question": "Senate: Third Reading RSN# 4074",
+      "originRunId": "rollcall:KY:senate:2247:1674599:2026-09-02T16:42:28.106Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 20,
+        "matched": 18
+      },
+      "actions": {
+        "unchanged": 18
+      },
+      "notified": 0,
+      "candidates": 18,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2247-roll1682825.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2247,
+      "roll": 1682825,
+      "outcome": "dry_run",
+      "legislativeVoteId": "fe463697-f621-476a-99bc-d40ce02b8f25",
+      "reviewStatus": "approved",
+      "bill": "HB490",
+      "voteDate": "2026-04-14",
+      "officialVoteDate": null,
+      "measureId": "HB 490",
+      "question": "Senate: Veto Override RSN# 4171",
+      "originRunId": "rollcall:KY:senate:2247:1682825:2026-09-02T16:42:28.106Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 20,
+        "matched": 18
+      },
+      "actions": {
+        "unchanged": 18
+      },
+      "notified": 0,
+      "candidates": 18,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2247-roll1682831.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2247,
+      "roll": 1682831,
+      "outcome": "dry_run",
+      "legislativeVoteId": "e8b89bfe-901d-4154-a83f-a45557862a50",
+      "reviewStatus": "approved",
+      "bill": "SB4",
+      "voteDate": "2026-04-14",
+      "officialVoteDate": null,
+      "measureId": "SB 4",
+      "question": "Senate: Veto Override RSN# 4146",
+      "originRunId": "rollcall:KY:senate:2247:1682831:2026-09-02T16:42:28.106Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 20,
+        "matched": 18
+      },
+      "actions": {
+        "unchanged": 18
+      },
+      "notified": 0,
+      "candidates": 18,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2247-roll1682835.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2247,
+      "roll": 1682835,
+      "outcome": "dry_run",
+      "legislativeVoteId": "93c3a351-ab56-4b77-af66-a3399cb235e7",
+      "reviewStatus": "approved",
+      "bill": "HB10",
+      "voteDate": "2026-04-14",
+      "officialVoteDate": null,
+      "measureId": "HB 10",
+      "question": "Senate: Veto Override RSN# 4162",
+      "originRunId": "rollcall:KY:senate:2247:1682835:2026-09-02T16:42:28.106Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 20,
+        "matched": 18
+      },
+      "actions": {
+        "unchanged": 18
+      },
+      "notified": 0,
+      "candidates": 18,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2247-roll1682841.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2247,
+      "roll": 1682841,
+      "outcome": "dry_run",
+      "legislativeVoteId": "9594cb26-10e3-4cc7-95b7-98386f70419f",
+      "reviewStatus": "approved",
+      "bill": "SB291",
+      "voteDate": "2026-04-14",
+      "officialVoteDate": null,
+      "measureId": "SB 291",
+      "question": "Senate: Veto Override RSN# 4154",
+      "originRunId": "rollcall:KY:senate:2247:1682841:2026-09-02T16:42:28.106Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 20,
+        "matched": 18
+      },
+      "actions": {
+        "unchanged": 18
+      },
+      "notified": 0,
+      "candidates": 18,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2247-roll1682850.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2247,
+      "roll": 1682850,
+      "outcome": "dry_run",
+      "legislativeVoteId": "763fdaaf-556a-474d-bc72-56a6cf2854f6",
+      "reviewStatus": "approved",
+      "bill": "HB355",
+      "voteDate": "2026-04-14",
+      "officialVoteDate": null,
+      "measureId": "HB 355",
+      "question": "Senate: Veto Override RSN# 4168",
+      "originRunId": "rollcall:KY:senate:2247:1682850:2026-09-02T16:42:28.106Z",
+      "members": 36,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 19,
+        "matched": 17
+      },
+      "actions": {
+        "unchanged": 17
+      },
+      "notified": 0,
+      "candidates": 17,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2247-roll1682884.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2247,
+      "roll": 1682884,
+      "outcome": "dry_run",
+      "legislativeVoteId": "974c313f-84e1-4800-b0c8-dff7f5794e74",
+      "reviewStatus": "approved",
+      "bill": "SB1",
+      "voteDate": "2026-04-14",
+      "officialVoteDate": null,
+      "measureId": "SB 1",
+      "question": "Senate: Veto Override RSN# 4145",
+      "originRunId": "rollcall:KY:senate:2247:1682884:2026-09-02T16:42:28.106Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 20,
+        "matched": 18
+      },
+      "actions": {
+        "unchanged": 18
+      },
+      "notified": 0,
+      "candidates": 18,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2247-roll1682890.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2247,
+      "roll": 1682890,
+      "outcome": "dry_run",
+      "legislativeVoteId": "6a76aa92-8b8e-4ba1-af4f-5891f2bf93da",
+      "reviewStatus": "approved",
+      "bill": "HB387",
+      "voteDate": "2026-04-14",
+      "officialVoteDate": null,
+      "measureId": "HB 387",
+      "question": "Senate: Veto Override RSN# 4170",
+      "originRunId": "rollcall:KY:senate:2247:1682890:2026-09-02T16:42:28.106Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 20,
+        "matched": 18
+      },
+      "actions": {
+        "unchanged": 18
+      },
+      "notified": 0,
+      "candidates": 18,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2247-roll1682894.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2247,
+      "roll": 1682894,
+      "outcome": "dry_run",
+      "legislativeVoteId": "ab8d44bc-51ef-4d3d-acaa-7c161be70bd2",
+      "reviewStatus": "approved",
+      "bill": "HB139",
+      "voteDate": "2026-04-14",
+      "officialVoteDate": null,
+      "measureId": "HB 139",
+      "question": "Senate: Veto Override RSN# 4165",
+      "originRunId": "rollcall:KY:senate:2247:1682894:2026-09-02T16:42:28.106Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 20,
+        "matched": 18
+      },
+      "actions": {
+        "unchanged": 18
+      },
+      "notified": 0,
+      "candidates": 18,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2247-roll1682938.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2247,
+      "roll": 1682938,
+      "outcome": "dry_run",
+      "legislativeVoteId": "378400e1-745a-4a14-a83d-64f443bf2110",
+      "reviewStatus": "approved",
+      "bill": "SB65",
+      "voteDate": "2026-04-14",
+      "officialVoteDate": null,
+      "measureId": "SB 65",
+      "question": "Senate: Veto Override RSN# 4148",
+      "originRunId": "rollcall:KY:senate:2247:1682938:2026-09-02T16:42:28.106Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 20,
+        "matched": 18
+      },
+      "actions": {
+        "unchanged": 18
+      },
+      "notified": 0,
+      "candidates": 18,
+      "error": null,
+      "related": 0
+    }
+  ]
+}

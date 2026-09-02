@@ -1,19 +1,57 @@
 # Maryland 2025 session (LegiScan 2164) — full disposition ledger
 
-Every divided-and-enacted subject in this session that batches 01 through 03 did
-not already judge, with its disposition. A subject is one measure plus its
-cross-filed twin: Maryland chapters both halves of a cross-file, so exactly one
-half is ever judged.
+Every divided-and-enacted measure in this session, named exactly once, with its
+disposition. A measure clears the gate when a floor vote on it was divided (at least
+one nay and the smaller side at least a quarter of the larger) and it became law.
 
-A deferral is not a finding that the vote does not matter. It records that no
-research area carries an honest direction for the measure, or that it is local,
-administrative, a study, or runs both ways.
+Maryland chapters both halves of a cross-filed pair, so exactly one half of each pair
+is ever judged; the other half is listed in the last section pointing at the half
+that carries the disposition. A deferral is not a finding that the vote does not
+matter. It records that no research area carries an honest direction for the
+measure, or that it is local, administrative, a study, or runs both ways.
 
-- **109 subjects** in this ledger
-- **24 judged**
-- **85 deferred**, each with its reason below
+- **30 judged in batches 01-03**
+- **24 judged in the finish campaign (batch-04)**
+- **85 deferred with a reason**
+- **37 cross-files handled through their twin**
+- **176 in total** — every divided-and-enacted measure in the session
 
-## Judged
+## Judged in batches 01-03
+
+| measure | batch |
+| --- | --- |
+| HB 39 | batch-01 |
+| HB 197 | batch-01 |
+| HB 249 | batch-03 |
+| HB 324 | batch-02 |
+| HB 390 | batch-02 |
+| HB 424 | batch-01 |
+| HB 431 | batch-03 |
+| HB 765 | batch-02 |
+| HB 783 | batch-02 |
+| HB 861 | batch-02 |
+| HB 881 | batch-03 |
+| HB 933 | batch-03 |
+| HB 974 | batch-03 |
+| HB 983 | batch-01 |
+| HB 1020 | batch-01 |
+| HB 1045 | batch-03 |
+| HB 1082 | batch-03 |
+| HB 1085 | batch-02 |
+| HB 1222 | batch-01 |
+| HB 1315 | batch-02 |
+| HB 1378 | batch-01 |
+| HB 1380 | batch-03 |
+| HB 1424 | batch-01 |
+| HB 1473 | batch-02 |
+| SB 154 | batch-03 |
+| SB 425 | batch-03 |
+| SB 432 | batch-02 |
+| SB 608 | batch-02 |
+| SB 848 | batch-01 |
+| SB 901 | batch-01 |
+
+## Judged in the finish campaign
 
 | measure | chapter | area | yea | nay |
 | --- | --- | --- | --- | --- |
@@ -80,7 +118,7 @@ administrative, a study, or runs both ways.
 - **SB 767** — local public-employer collective bargaining (Calvert County)
 - **HB 913** — local speed cameras (Baltimore City)
 - **SB 338** — local speed cameras (Baltimore County)
-- **HB 1173, HB 988** — local speed cameras (Montgomery)
+- **HB 988, HB 1173** — local speed cameras (Montgomery)
 - **HB 349** — local speed-camera penalties (Prince George's)
 - **SB 600** — local stop-sign cameras
 - **HB 1207** — local trivia: student board member compensation
@@ -108,7 +146,7 @@ administrative, a study, or runs both ways.
 - **SB 820** — raises municipal fine ceiling; no area direction
 - **HB 292** — runs both ways: adds reserve funding plans but allows hardship deviation
 - **HB 504** — runs both ways: cuts per-pupil funding and delays mandates while adding grant programs (recorded in batch-01)
-- **HB 716** — runs both ways: prioritizes vulnerable applicants but loosens inspections annual to biennial (recorded in batch-01)
+- **HB 716** — runs both ways: prioritises vulnerable applicants but loosens inspections annual to biennial (recorded in batch-01)
 - **SB 399** — runs both ways: removes wildland protection for transmission lines but requires mitigation
 - **HB 343** — speed-camera administration
 - **HB 182** — speed-camera penalties; no research area fits
@@ -125,4 +163,46 @@ administrative, a study, or runs both ways.
 - **HB 774** — thin: extends only the designation to private colleges and bars them from grant money (recorded in batch-03)
 - **HB 825** — trivia: adds one member to a board
 - **HB 672** — workforce assessment and reporting only
-- **HB 1066, HB 517, SB 156** — workgroup only
+- **HB 517, HB 1066, SB 156** — workgroup only
+
+## Cross-files handled through their twin
+
+| measure | twin | how the twin was handled |
+| --- | --- | --- |
+| HB 930 | SB 848 | judged in batch-01 |
+| SB 5 | HB 297 | judged in batch-04 |
+| SB 41 | HB 825 | deferred: trivia: adds one member to a board |
+| SB 49 | HB 107 | deferred: only divided roll is superseded by a later non-divided House vote (115-20); attributing it would repeat the SB 255 error |
+| SB 60 | HB 666 | judged in batch-04 |
+| SB 63 | HB 292 | deferred: runs both ways: adds reserve funding plans but allows hardship deviation |
+| SB 68 | HB 197 | judged in batch-01 |
+| SB 72 | HB 367 | judged in batch-04 |
+| SB 96 | HB 277 | judged in batch-04 |
+| SB 125 | HB 249 | judged in batch-03 |
+| SB 144 | HB 15 | judged in batch-04 |
+| SB 210 | HB 288 | deferred: administrative: extends emergency toll adjustment window |
+| SB 214 | HB 12 | deferred: contested direction: cannabis/THC enforcement runs both ways |
+| SB 248 | HB 33 | deferred: administrative changes to Maryland Corps |
+| SB 257 | HB 199 | judged in batch-04 |
+| SB 258 | HB 40 | deferred: fee schedule; no area carries a direction |
+| SB 265 | HB 25 | deferred: permitting framework; no honest direction on reservoir augmentation |
+| SB 266 | HB 286 | deferred: administrative rewrite of local planning framework |
+| SB 293 | HB 324 | judged in batch-02 |
+| SB 295 | HB 634 | judged in batch-04 |
+| SB 327 | HB 390 | judged in batch-02 |
+| SB 356 | HB 39 | judged in batch-01 |
+| SB 357 | HB 424 | judged in batch-01 |
+| SB 365 | HB 541 | deferred: administrative: establishes a navigator position |
+| SB 373 | HB 599 | deferred: public employer (airport fire and rescue); corporate_accountability means companies |
+| SB 390 | HB 343 | deferred: speed-camera administration |
+| SB 451 | HB 325 | deferred: only divided roll is superseded by a later non-divided House vote (114-24) |
+| SB 495 | HB 728 | deferred: contested: diverts opioid settlement money to enforcement operations rather than treatment |
+| SB 566 | HB 796 | deferred: fee increase with no clear direction |
+| SB 606 | HB 872 | deferred: technical liability clarification (recorded in batch-01) |
+| SB 664 | HB 577 | deferred: study only |
+| SB 674 | HB 939 | deferred: collaborative and reports only; creates no coverage |
+| SB 676 | HB 1380 | judged in batch-03 |
+| SB 685 | HB 983 | judged in batch-01 |
+| SB 930 | HB 1296 | deferred: narrow pilot permitting program |
+| SB 931 | HB 1036 | deferred: omnibus with a local-control strand running against its own area (recorded in batch-02) |
+| SB 937 | HB 1035 | deferred: energy omnibus (recorded in batch-03) |

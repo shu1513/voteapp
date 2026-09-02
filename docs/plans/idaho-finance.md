@@ -1,6 +1,6 @@
 # Idaho campaign finance — build plan
 
-Status: rev 2 — Phase 0 MERGED (#1025, 2026-09-02); Phase 1 BUILT 2026-09-02 (migration 268, flags, source label, eligible offices, filer resolver, auto-link + `--dry-run` script, per-registration artifact cache, snapshot writer; unit tests only, no live run). Next = Phase 2a.
+Status: rev 3 — Phase 0 MERGED (#1025); Phase 1 MERGED (#1041, 2026-09-02) and run locally (migration 268 applied, 101 of 108 candidates auto-linked); Phase 2a BUILT 2026-09-02 (`idahoContributionAggregator.ts`, verified on live rows). Next = Phase 2b (outside money) then Phase 3 (acquisition + sync, rules pinned below).
 Source facts: `backend/docs/idaho-campaign-finance.md` (endpoints, quirks, and the two findings that shaped this plan; committed with Phase 0).
 Template module: `backend/src/pipeline/newHampshireFinance/` (same Civix CFIS vendor; same JSON envelope, pagination, bulk-export endpoint, client error model).
 Writer: `createStandardStateFinanceSnapshotWriter` (`pipeline/finance/standardStateFinanceSnapshotWriter.ts`), as NH/Montana.
@@ -22,7 +22,7 @@ Writer: `createStandardStateFinanceSnapshotWriter` (`pipeline/finance/standardSt
 
 ## The two findings the design rests on
 
-1. **Grid `totalRaised` = Σ current contribution transactions of that registration, cent-exact.** Proven on every probed registration once rows are attributed by `filerRegistrationGuid` (Achilles 2024: 286 rows = $89,667.61; Achilles 2026, Blad, Blanksma, Bruno, Boyle ×2, Ackerman all exact). Returned contributions are subtracted by the state and are not served by the contribution search, so registrations with returns show grid < search; totals come from the grid, never recomputed from rows.
+1. **Grid `totalRaised` = Σ current contribution transactions of that registration, cent-exact.** Proven on every probed registration once rows are attributed by `filerRegistrationGuid` (Achilles 2024: 286 rows = $89,667.61; Achilles 2026, Blad, Blanksma, Bruno, Boyle ×2, Ackerman all exact). Returned contributions are subtracted by the state and are not served by the contribution search, so registrations with returns show grid < search; totals come from the grid, never recomputed from rows. **Revised 2026-09-02** (survey of the 60 top-raised eligible 2026 registrations, single-page fetch): 42 cent-exact; 8 rows > grid, each a "Return Contribution" the state subtracts; 10 rows < grid — rows of a *filed* monthly report the search does not serve (Stegner: 168 of the July monthly's 177 rows, $30,552.85; Hickman: the whole June monthly, $8,622.46; the rest $117–$1,810). `GetFinancialSummaryDetails.totalContributions` equals the grid; loans are separate. The grid stays the headline; rows are a breakdown basis whose coverage is reported.
 2. **The bulk CSV export contains exactly the version-1 transactions.** Every contribution edited or added through an amended report (transactionVersionId > 1) is missing from the export while it is present in the search API and in the grid total. Verified row-for-row on four filers (bulk rows == search rows with version 1, same Transaction Ids, same sums). Effect on the whole grid: only 89% of registrations reconcile from bulk sums; the rest are short by the amended-in money. The export also cannot be filtered per registration. Therefore: **bulk CSV is not used for totals or breakdowns.** Phase 0 keeps the contract check (headers, encoding, row shape) and the probe fails if the export ever stops being version-1-only, so the decision gets revisited on evidence.
 
 Consequences: no 20 MB artifact cache; the raw artifact per link is the registration's own JSON (grid row + contribution rows + IE rows), sha256-manifested like Missouri/Montana. Cycle attribution is free: the search row carries the registration guid, and the grid row carries `electionYear` and `filingCycleId`.
@@ -37,7 +37,7 @@ Consequences: no 20 MB artifact cache; the raw artifact per link is the registra
 - `idahoCandidateFinanceAutoLink.ts` (Phase 1) — lists Nov-2026 Idaho candidate elections in eligible offices with no active link, pulls the grid once (one 5,000-row page), resolves, writes links only (`link_source = 'sunshine_grid'`, deep-link `sourceUrl`); `npm run idaho-candidates:finance:auto-link -- --dry-run` reports without writing. Gated by the sync flag (live API).
 - `idahoRegistrationArtifactCache.ts` (Phase 1) — one JSON per registration guid (grid row + its contribution rows + the IE rows targeting it) under `scratch/idaho-campaign-finance/registrations/` (gitignored), sha256 manifest, 0700/0600, identity checked on store and read (every row must carry the key's guid).
 - `idahoFinanceWriter.ts` (Phase 1) — `createStandardStateFinanceSnapshotWriter` over the `id_*` tables; link identity `registration_guid`, outside identity `filer_key`, signed cash on hand, manual-link protection, `sunshine_grid` supersession.
-- `idahoContributionAggregator.ts` (Phase 2a) — direct money.
+- `idahoContributionAggregator.ts` (Phase 2a) — pure direct-money aggregator: grid totals in, size and source-type breakdowns plus `rowCoverage` out (rules under Phase 2a).
 - `idahoOutsideSpendingAggregator.ts` (Phase 2b) — outside money.
 - writer + sync + due-list + scheduler (Phase 2/3) — clone NH/Montana shapes.
 
@@ -85,9 +85,21 @@ Live results 2026-09-01 (`npm run idaho-candidates:finance:phase-zero`, exit 0, 
 
 Built: migration 268; `IDAHO_CAMPAIGN_FINANCE_{ENABLED,SYNC_ENABLED,RAW_DATA_REFRESH_ENABLED}` (+ `.env.example`, `render.yaml`); source `IDAHO_SUNSHINE` + label + home URL (+ tests); `backend/src/pipeline/idahoFinance/{idahoFinanceEligibleOffices,idahoCandidateFilerResolver,idahoCandidateFinanceAutoLink,idahoRegistrationArtifactCache,idahoFinanceWriter}.ts`; `backend/src/scripts/autoLinkIdahoCandidateFinance.ts` (`npm run idaho-candidates:finance:auto-link`, `--dry-run`, `--force`, `--max-candidates`, `--lookback-days`, `--lookahead-days`); grid row contract gains `seatZone`; tests under `backend/tests/pipeline/idahoFinance/` (shared factories in `idahoTestFixtures.ts`), `backend/tests/scripts/`, `backend/tests/config/`. No live run, no data written.
 
+Live run (local, 2026-09-02, after migration 268): `auto-link --dry-run` then real — 108 attempted, 101 linked (94 name_exact, 7 name_nickname, all checked: Debbie/Deborah, Ben ×2, Dan, Doug ×2, Pam), 0 ambiguous, 0 errors, 7 unmatched for manual links: Eric Myricks (grid "Myricks II, William Eric"), Pro-Life ("Pro-Life, Pro-Life"), W. Lane Startin ("Startin, Wesley 'Lane'"), Desi Burbank ("Burbank, Desiree Leigh"), C. Scott Grow ("Grow, Cecil Scott"), Jan Brown ("Brown, Janice Marie", one Active of three), Marty Kilhefner ("Rotz-Kilhefner, Martha Louise").
+
 Resolver rules are pinned by tests against the real grid shapes (Senate district, House seat label "16B", commissioner seat "Ada 2", both clerk spellings, statewide null district, call-name alias, nickname expansion, middle-initial corroboration, middle conflict rejection, Active-over-Terminated, two-Active ambiguity, wrong-year exclusion).
 
-### Phase 2a — direct money
+### Phase 2a — direct money (BUILT 2026-09-02)
+
+Built: `idahoContributionAggregator.ts` (pure, no I/O) + tests; verified on live rows for 7 registrations including Little (4,725 search rows). Summary = grid `totalRaised` / `totalSpent` / `balanceOfFunds` (signed); `directContributionTotal` is the same grid figure (it equals the state's `totalContributions`, loans excluded, and the shared loader shows `direct_contribution_total` as "Raised", so the official number must sit there); the row sum is returned only as `directContributionRowTotal` for coverage reporting. Rows are selected by registration guid + `TCON`; an unknown subtype, a row of another entity or cycle, a repeated transaction id, or a repeated row guid throws. Breakdowns: `contribution_size` = the NH buckets over `ITMY`/`INKIND` plus one lump "Unitemized small contributions" over `NITMY`/`ANYMS` (digit-free label so the shared bucket sort keeps it last); `contributor_source_type` over every direct row — TIND → individuals, TBSN → business_nonprofit_entities, TPAC → pac_independent, TCENC → party_committee (central committees), TCAN/TSELF → candidate_self, else/null → other (the names NM/NE/VT already store). `ITR` (interest) is in the grid total but is not a contribution. `contributorCount` stays null (NH precedent).
+
+Decisions made here, binding on Phase 3:
+- in-state share (`stateType`) is not written: no category type or card slot; the state's `GetContributionsInStateAndOutStateDetail` endpoint exists if a card is ever wanted;
+- row coverage is reported (`rowCoverage` exact / rows_exceed_grid / rows_below_grid with `rowTotal`, `gridTotalRaised`), never enforced. Sync rule: the summary is always written (the grid is official); breakdowns are written too, with a coverage note whenever coverage is not exact ("breakdowns cover $rowTotal of the $gridTotal state total"); no quarantine on a shortfall — the gap is the state's search, not our data;
+- acquisition rule: fetch the contribution search as ONE page (`pageSize` 10,000; the largest 2026 filer-name result is Little at 4,725) and fail closed when `totalItems > items.length`. Date-sorted paging at 500 is unstable (Little: 30 rows duplicated, 30 dropped) and `sortBy` other than `TransactionDate` returns HTTP 500;
+- loader gap: the per-state ballot-lookup loaders surface `occupation`/`industry`/`contribution_size` only, so `contributor_source_type` rows are stored (NM/NE/VT precedent) but not yet shown. Surfacing them is a UI decision for Phase 3.
+
+Original spec (kept for the record):
 
 - summary: raised = grid `totalRaised`, spent = grid `totalSpent`, cash on hand = grid `balanceOfFunds`, as-of = latest `filedDate` among rows (fallback: sync time);
 - breakdowns from the registration's contribution rows: size buckets over itemized rows (`ITMY`, `INKIND`), unitemized lump = Σ `NITMY` rows (+ `ANYMS`), donor type from `transactionSourceTypeCode` (TIND/TSELF/TCAN → individual; TBSN/TPAC/TCENC → organization) stored as `contributor_source_type`; in-state share from `stateType` (INST/OTST) has no standard category type or card slot — decide (new category + loader/UI, or a coverage note) before writing it;
@@ -112,7 +124,7 @@ Migrations, `IDAHO_CAMPAIGN_FINANCE_ENABLED` in render.yaml, `id_*` pg_dump prom
 ## Validation gates (import refuses to write on failure)
 
 - grid row present and `electionYear` matches the link's cycle; the auto-link only creates links to Active registrations (a lone Terminated/Inactive one is reported for manual review), but an existing link keeps syncing after its registration terminates — the money stays public;
-- Σ contribution rows for the registration guid ≥ grid `totalRaised` only when returned contributions exist in the bulk export for that entity; otherwise must equal to the cent;
+- row coverage is reported, not enforced: rows > grid = returned contributions the state subtracts; rows < grid = rows of a filed report the search omits (survey 2026-09-02: 10 of 60). The summary still comes from the grid and breakdowns carry a coverage note;
 - every IE row selected carries stance Support or Oppose and a date inside the window;
 - artifact sha256 matches the manifest before any snapshot write.
 

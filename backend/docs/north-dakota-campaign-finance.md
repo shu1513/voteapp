@@ -87,7 +87,17 @@ publishable from the year-end file as the sum of these category lumps.
 (`{"pageNumber":1,"pageSize":N}`) → 598 orgs at probe time with `orgID`,
 `entityId`, `orgName`, `candidateName`, `orgType`, `orgSubType`, `election`
 ("2026 Election - Statewide"), `office`, `district`, `party`, `orgStatus`.
-Everything needed for auto-link. Committee profile:
+Everything needed for auto-link. Vocabulary pinned 2026-09-01 from 601 rows:
+`orgType` = "Candidate/Candidate Committee" (376) / "Committee/PAC" (125) /
+"Party Committee" (97) / "Independent Expenditure Committee" (3);
+`orgSubType` CNDT "Candidate" (234, `orgName` null) vs CNCM "Candidate
+Committee" (142); `candidateName` is "Last, First M" with an optional
+honorific (Mr./Ms./Mrs./Dr./Hon., 77 rows) and a suffix on either side of
+the comma ("Lippert, Donald Jr.", "Johnston Sr, Daniel"); legislative
+`district` = "District N", District Court Judge = named judicial district
+("Northeast Central District"), statewide null. Phase 1 auto-link
+(2026-09-02, local roster of 53): 49 linked, 0 ambiguous, 4 fail-closed —
+see the plan. Committee profile:
 `GET /api/Public-Service/Committee/getCommitteeProfileByOrgId/{orgID}` — no
 financial summary block, so totals must be summed from CSVs (itemized-sum plus
 lump rows; cover-sheet reconciliation possible via Filed reports PDFs if wanted).
