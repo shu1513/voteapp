@@ -32,3 +32,33 @@ LD 1126 carries three amendments, all flagged `adopted: 1`; the history shows
 Senate Amendment "A" (S-403) FAILED ADOPTION. Nothing in our pipeline reads the
 flag, so this is a judging hazard, not a defect — but it is the reason the
 recipe pins versions off `history[]` and never off `amendments[]`.
+
+## 4. Nine substantive rolls are unreachable because the classifier cannot see the report kind
+
+Maine writes `Accept Report` when a committee reports out **unanimously**, and
+`Accept Majority Ought To Pass As Amended Report` when it splits. The config
+keeps the second and surfaces the first, because the first does not say whether
+the report was ought-to-pass or ought-not-to-pass — that fact lives in the
+committee's `Reported Out:` line in the bill history, not in the roll.
+
+All 31 surfaced rolls have now been matched to the journal (`surfaced/`).
+**Nine are genuine ought-to-pass report acceptances on divided votes that became
+law** — functionally identical to the kept family — and they cannot be
+approved, because `legislative_votes_approved_fields_check` requires
+`is_floor_vote = true`.
+
+Neither obvious fix is safe:
+
+- **Widening the pattern** would also catch the two rolls where the "report" was
+  preliminary and the bill was referred to committee the same day (LD 2225,
+  LD 2231), and would mislabel a future unanimous ought-not-to-pass report as
+  passage — inverting a description's direction.
+- **Hand-editing `is_floor_vote`** is reverted silently by the next fetch:
+  `upsertLegislativeVote` writes `is_floor_vote` from the classifier on every
+  run. Same reasoning that ruled out a hand fix for the Illinois
+  `official_vote_date` skew.
+
+**Parked design:** a committed per-roll disposition file the fetcher consults
+for surfaced rolls, on the `crosswalk.json` model — the human commits the fact
+the machine cannot infer, and the fetcher applies it. Worth about 9 Senate rolls
+(~216 records). `surfaced/dispositions.json` is the ready-made input.
