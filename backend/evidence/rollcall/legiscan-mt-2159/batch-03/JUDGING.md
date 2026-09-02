@@ -85,3 +85,23 @@ zero rows. Stamp `2026-09-02T01:01:13.251Z`.
 
 Montana now holds **1,534 records across 87 candidates, 913 tags, 36 approved
 rolls**. Production has zero Montana records.
+
+## Review response, 2026-09-02
+
+One finding on batch-03, real and accepted; the stance is unchanged.
+
+**HB 664 — "ends Montana's numeric limits on nutrients in water" overstated the
+repeal.** The act repeals the *base* numeric nutrient standards in circular
+DEQ-12A and their variances, strips references to them from fourteen named
+rules, and repeals the transition statute. It does not name every numeric
+nutrient limit in Montana law, and the description should not either. Rewritten
+to say what the act repeals — the base numeric nutrient standards adopted in
+2014 in DEQ-12A — with a plain gloss of what those standards set.
+
+Repair: both HB 664 descriptions rewritten, re-judged (2 updated, 2 unchanged),
+re-imported as an in-place rewrite, converged. Rewrite ledger is
+`import-rewrite-report.json`, verified by its `actions` field.
+
+Reading grade for HB 664 moved from 9.2 to 10.0 with the fix, because "base
+numeric nutrient standards", "DEQ-12A" and "variances" are now named rather
+than paraphrased. Naming them is the point of the correction.

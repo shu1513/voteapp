@@ -134,3 +134,34 @@ rolls**. Production has zero Montana records; nothing here touched it.
 
 Ledgers: `import-dry-run-report.json` (the plan), `import-report.json` (the
 insert ledger), `import-dry-run-rerun-report.json` (the convergence run).
+
+## Review response, 2026-09-02
+
+One finding on batch-02, verified against the enrolled text and real.
+
+**SB 319 — the descriptions gave the wrong licensure rule and the wrong date.**
+They said only the *title* "doula" requires a license and implied that begins
+January 1 2026. Section 2(1) of the act reads: "Beginning January 1, 2027, a
+person may not **practice** as a doula unless licensed." That is a practice
+ban, not a title rule, and it starts a year after the act's effective date. The
+title-only nuance is real but belongs to section 3's exemption: peer mentors,
+advocates, coaches and tribal healers may keep doing similar work "as long as
+the person does not represent by title" that they practice doula care. The
+first draft collapsed that exemption onto the whole act.
+
+Root cause: my read of section 2 started mid-sentence — the page break fell
+inside subsection (1) and the extract I quoted began at "doula unless
+licensed". The verb ("practice") and the date ("January 1, 2027") were in the
+half I did not see. Same failure family as Pennsylvania's "owning" for
+"possession": the scope lives in the verb.
+
+Repair: both SB 319 descriptions rewritten to state the 2027 practice ban, the
+title-only exemption, the 2026 effective date and the 2030 termination
+separately; re-judged (2 updated, 12 unchanged), re-imported as an in-place
+rewrite of the measure's records, converged. Ledger for the rewrite is
+`import-rewrite-report.json`, verified by its own `actions` field.
+
+Reading grade for SB 319 moved from 8.0 to 9.2 with the fix: stating the
+practice ban, its 2027 start, the title-only exemption and both act dates
+separately costs a sentence and adds a date. That is the right trade — the
+first draft was easier to read and wrong.
