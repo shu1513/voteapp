@@ -2133,48 +2133,48 @@
    "reason": "cuts both ways \u2014 reimbursement and classification rules favour drivers while the amnesty relieves employers of misclassification penalties and bars claims for drivers who do not accept a settlement"
   },
   "SB 827": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Local agency officials: training.",
-   "batch": null,
+   "batch": "batch-24",
    "reason": null
   },
   "SB 909": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Public works.",
-   "batch": null,
+   "batch": "batch-24",
    "reason": null
   },
   "SB 98": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Elementary, secondary, and postsecondary education: immigration enforcement: notification.",
-   "batch": null,
+   "batch": "batch-24",
    "reason": null
   },
   "SB 983": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "San Diego Unified Port District: job order contracting: pilot program.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-24 read",
+   "reason": "cuts both ways and single-district pilot \u2014 lets the San Diego port district bypass normal competitive bidding while requiring a project labor agreement, prevailing wage below the usual threshold and independent cost estimates"
   },
   "SB 998": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Educational equity: discrimination prevention coordinators.",
-   "batch": null,
+   "batch": "batch-24",
    "reason": null
   },
   "SJR 12": {
