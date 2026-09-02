@@ -1,0 +1,148 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1526179,
+      "measure_id": "HB 20",
+      "vote_date": "2025-03-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 20, which changes how a local government asks voters to approve a property tax. The question must now name a fixed number of dollars, not a number of mills. A mill is a rate, so a levy set in mills brings in more money as property values rise. A levy set in dollars stays put, and the rate floats to hit it. Counties, cities, towns, and special districts may ask voters to let the amount grow by half of recent inflation. School districts may not. The Montana House backed the Senate's version 57-42, and it became law.",
+      "nay_description": "Voted against House Bill 20, which changes how a local government asks voters to approve a property tax. The question must now name a fixed number of dollars, not a number of mills. A mill is a rate, so a levy set in mills brings in more money as property values rise. A levy set in dollars stays put, and the rate floats to hit it. Counties, cities, towns, and special districts may ask voters to let the amount grow by half of recent inflation. School districts may not. The Montana House backed the Senate's version 57-42, and it became law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1501599,
+      "measure_id": "HB 20",
+      "vote_date": "2025-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 20, which changes how a local government asks voters to approve a property tax. The question must now name a fixed number of dollars, not a number of mills. A mill is a rate, so a levy set in mills brings in more money as property values rise. A levy set in dollars stays put, and the rate floats to hit it. Counties, cities, towns, and special districts may ask voters to let the amount grow by half of recent inflation. School districts may not. The Montana Senate passed it 34-16, and it became law.",
+      "nay_description": "Voted against House Bill 20, which changes how a local government asks voters to approve a property tax. The question must now name a fixed number of dollars, not a number of mills. A mill is a rate, so a levy set in mills brings in more money as property values rise. A levy set in dollars stays put, and the rate floats to hit it. Counties, cities, towns, and special districts may ask voters to let the amount grow by half of recent inflation. School districts may not. The Montana Senate passed it 34-16, and it became law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1483327,
+      "measure_id": "HB 300",
+      "vote_date": "2025-02-06",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 300, which adds two rules to Montana's ban on discrimination in education. A school breaks the law if it lets a person whose sex is male take part in a sports program set aside for females. A school also breaks the law if it fails to give a person a restroom, locker room, shower, or sleeping area. Such a space must be closed to people of the opposite sex while it is in use. There are exceptions for cleaning, medical help, and emergencies. A school may still set up single-occupancy or family rooms, and may change which sex a room is set aside for. The Montana House passed it 57-42, and it became law.",
+      "nay_description": "Voted against House Bill 300, which adds two rules to Montana's ban on discrimination in education. A school breaks the law if it lets a person whose sex is male take part in a sports program set aside for females. A school also breaks the law if it fails to give a person a restroom, locker room, shower, or sleeping area. Such a space must be closed to people of the opposite sex while it is in use. There are exceptions for cleaning, medical help, and emergencies. A school may still set up single-occupancy or family rooms, and may change which sex a room is set aside for. The Montana House passed it 57-42, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1522954,
+      "measure_id": "HB 300",
+      "vote_date": "2025-03-20",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 300, which adds two rules to Montana's ban on discrimination in education. A school breaks the law if it lets a person whose sex is male take part in a sports program set aside for females. A school also breaks the law if it fails to give a person a restroom, locker room, shower, or sleeping area. Such a space must be closed to people of the opposite sex while it is in use. There are exceptions for cleaning, medical help, and emergencies. A school may still set up single-occupancy or family rooms, and may change which sex a room is set aside for. The Montana Senate passed it 32-18, and it became law.",
+      "nay_description": "Voted against House Bill 300, which adds two rules to Montana's ban on discrimination in education. A school breaks the law if it lets a person whose sex is male take part in a sports program set aside for females. A school also breaks the law if it fails to give a person a restroom, locker room, shower, or sleeping area. Such a space must be closed to people of the opposite sex while it is in use. There are exceptions for cleaning, medical help, and emergencies. A school may still set up single-occupancy or family rooms, and may change which sex a room is set aside for. The Montana Senate passed it 32-18, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1508716,
+      "measure_id": "HB 638",
+      "vote_date": "2025-03-07",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 638, which bars state and local agencies from asking for a diversity statement. That means a paper meant to promote different treatment based on a person's traits. The law lists race, color, ethnicity, sex, sexual orientation, national origin, religion, and gender identity. An agency may not ask for one, or press a person to give one. It may not give any edge to a person who hands one in. The rule covers state offices, colleges, counties, cities, towns, and school districts. The Montana House passed it 57-41, and it became law.",
+      "nay_description": "Voted against House Bill 638, which bars state and local agencies from asking for a diversity statement. That means a paper meant to promote different treatment based on a person's traits. The law lists race, color, ethnicity, sex, sexual orientation, national origin, religion, and gender identity. An agency may not ask for one, or press a person to give one. It may not give any edge to a person who hands one in. The rule covers state offices, colleges, counties, cities, towns, and school districts. The Montana House passed it 57-41, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1548414,
+      "measure_id": "HB 638",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 638, which bars state and local agencies from asking for a diversity statement. That means a paper meant to promote different treatment based on a person's traits. The law lists race, color, ethnicity, sex, sexual orientation, national origin, religion, and gender identity. An agency may not ask for one, or press a person to give one. It may not give any edge to a person who hands one in. The rule covers state offices, colleges, counties, cities, towns, and school districts. The Montana Senate passed it 31-19, and it became law.",
+      "nay_description": "Voted against House Bill 638, which bars state and local agencies from asking for a diversity statement. That means a paper meant to promote different treatment based on a person's traits. The law lists race, color, ethnicity, sex, sexual orientation, national origin, religion, and gender identity. An agency may not ask for one, or press a person to give one. It may not give any edge to a person who hands one in. The rule covers state offices, colleges, counties, cities, towns, and school districts. The Montana Senate passed it 31-19, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1552116,
+      "measure_id": "HB 723",
+      "vote_date": "2025-04-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 723, which makes medical facilities report on infants born alive after an abortion or an attempted abortion. A report is due by February 28 each year, even when the number is zero. It must give the rough stage of pregnancy, what was done to save the infant's life, the outcome, and any health problems. A facility that files late may be fined up to $500. Another $500 may be added for each further 30 days. The state health department must publish a yearly total, with no way to identify anyone. The Montana House backed the Senate's version 58-41, and it became law.",
+      "nay_description": "Voted against House Bill 723, which makes medical facilities report on infants born alive after an abortion or an attempted abortion. A report is due by February 28 each year, even when the number is zero. It must give the rough stage of pregnancy, what was done to save the infant's life, the outcome, and any health problems. A facility that files late may be fined up to $500. Another $500 may be added for each further 30 days. The state health department must publish a yearly total, with no way to identify anyone. The Montana House backed the Senate's version 58-41, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1546591,
+      "measure_id": "HB 723",
+      "vote_date": "2025-04-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 723, which makes medical facilities report on infants born alive after an abortion or an attempted abortion. A report is due by February 28 each year, even when the number is zero. It must give the rough stage of pregnancy, what was done to save the infant's life, the outcome, and any health problems. A facility that files late may be fined up to $500. Another $500 may be added for each further 30 days. The state health department must publish a yearly total, with no way to identify anyone. The Montana Senate passed it 31-19, and it became law.",
+      "nay_description": "Voted against House Bill 723, which makes medical facilities report on infants born alive after an abortion or an attempted abortion. A report is due by February 28 each year, even when the number is zero. It must give the rough stage of pregnancy, what was done to save the infant's life, the outcome, and any health problems. A facility that files late may be fined up to $500. Another $500 may be added for each further 30 days. The state health department must publish a yearly total, with no way to identify anyone. The Montana Senate passed it 31-19, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

@@ -107,3 +107,28 @@ description must state the two-thirds failure in its own words. All five bills
 are dead (LegiScan status 6), so none can appear in a divided-and-enacted
 batch; they would surface only in a failed-votes scope like Pennsylvania's
 batch 02.
+
+## 6. Not a code defect: Montana coordination instructions can void a bill
+
+Montana bills often end with a "coordination instruction" saying that if some
+other named bill also passes and is approved, then whole blocks of this bill are
+void and the other bill is amended to carry the text instead. LegiScan records
+none of this. Its status field says the bill was enacted, and its stored text is
+the enrolled bill, which still prints the sections that the instruction voided.
+
+HB 231, the 2025 property tax rewrite, is the case that surfaced it. Sections
+27, 29 and 31 each void sections 1 through 23, 25, 30, 33 and 34 of HB 231 if
+Senate Bill 542 is also passed and approved, and transplant that text into SB
+542. The governor signed both on May 13, 2025, so the instruction fired and
+almost nothing substantive survives under HB 231's own number.
+
+HB 285 in batch-04 hit a milder form of the same thing: its section 12 replaces
+its own section 7 version of 75-1-201 once SB 221 passed. There the rest of the
+act stands, and section 12 supplies the operative text, so the measure is still
+judgeable on its own.
+
+**Rule for future Montana batches.** Before judging any Montana measure, search
+the enrolled text for "Coordination instruction". If one exists, look up whether
+the named bill was signed. If it was, work out what survives before writing a
+description that says "and it became law".
+
