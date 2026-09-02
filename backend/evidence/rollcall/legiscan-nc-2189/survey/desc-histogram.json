@@ -1,0 +1,3242 @@
+{
+  "runId": "rollcall-legiscan-fetch-nc-20260831T060641Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "NC",
+  "startedAt": "2026-08-31T06:06:41.818Z",
+  "finishedAt": "2026-08-31T06:06:42.548Z",
+  "datasetDir": "/Users/shu/legiscan-data/nc-2189/NC/2025-2026_Regular_Session",
+  "bills": 2338,
+  "votes": 1493,
+  "people": 180,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "Second Reading",
+      "count": 415,
+      "withoutMemberList": 0,
+      "minTotal": 117,
+      "maxTotal": 120,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "S2",
+        "H47",
+        "H157"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Second Reading",
+      "count": 253,
+      "withoutMemberList": 0,
+      "minTotal": 49,
+      "maxTotal": 50,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "S2",
+        "S24",
+        "S13"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 1",
+      "count": 102,
+      "withoutMemberList": 0,
+      "minTotal": 49,
+      "maxTotal": 50,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "S24",
+        "S115",
+        "H47"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "M11 Concur",
+      "count": 64,
+      "withoutMemberList": 0,
+      "minTotal": 117,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H58",
+        "H477",
+        "H17"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion 9 To Concur",
+      "count": 45,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "S115",
+        "S153",
+        "S479"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Third Reading",
+      "count": 36,
+      "withoutMemberList": 0,
+      "minTotal": 49,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S58",
+        "S214",
+        "S177"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Third Reading",
+      "count": 32,
+      "withoutMemberList": 0,
+      "minTotal": 117,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H48",
+        "H74",
+        "H240"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "M11 Not Concur",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 117,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H47",
+        "H116",
+        "H309"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 2 Motion 1 To Table",
+      "count": 22,
+      "withoutMemberList": 0,
+      "minTotal": 49,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S55",
+        "S558",
+        "S280"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "C RPT Adoption",
+      "count": 21,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H47",
+        "H959",
+        "H412"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 2",
+      "count": 21,
+      "withoutMemberList": 0,
+      "minTotal": 49,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S24",
+        "S153",
+        "H47"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Conference Report Motion 8 To Adopt",
+      "count": 20,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H47",
+        "S118",
+        "S311"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion 8 To Adopt",
+      "count": 17,
+      "withoutMemberList": 0,
+      "minTotal": 49,
+      "maxTotal": 50,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "S1",
+        "S104",
+        "S150"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 1 Motion 1 To Table",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 49,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S55",
+        "S558",
+        "S429"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Veto Override",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H193",
+        "H402",
+        "H805"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 3",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S153",
+        "H47",
+        "S227"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion 11 Veto Override",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S153",
+        "H318",
+        "S50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Veto Override M4 Previous Question",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H193",
+        "H402",
+        "H805"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 3 Motion 1 To Table",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 49,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S474",
+        "S280",
+        "H959"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 4 Motion 1 To Table",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 49,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S474",
+        "S257",
+        "H442"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Conference Rpt Second Reading",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S214",
+        "H696",
+        "S595"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "R3 Ruled Mat&#x27;l C RPT Adoption",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H696",
+        "S214",
+        "S595"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 5 Motion 1 To Table",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 49,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S474",
+        "H442",
+        "H441"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Conference Rpt Third Reading",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H696",
+        "S214",
+        "S595"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "R2 For Adoption",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 117,
+      "maxTotal": 120,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "H1",
+        "H19",
+        "H563"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "R2 Ruled Mat&#x27;l C RPT Adoption",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 117,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S214",
+        "S595",
+        "S474"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "R2 Ruled Mat&#x27;l M11 Concur",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H74",
+        "H26",
+        "H546"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "R3 Ruled Mat&#x27;l M11 Concur",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H74",
+        "H26",
+        "H546"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 4",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H47",
+        "S50",
+        "H74"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 6 Motion 1 To Table",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 49,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S474",
+        "H125",
+        "H87"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Blackwell Second Reading",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H918",
+        "S125",
+        "S442"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Jones, B. Second Reading",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H549",
+        "H1003",
+        "H569"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 10 Motion 1 To Table",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S50",
+        "S257",
+        "H805"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 5",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H47",
+        "S280",
+        "S442"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 9 Motion 1 To Table",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S50",
+        "H805",
+        "H87"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Bell Second Reading",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 119,
+      "maxTotal": 120,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "H47",
+        "H1015",
+        "S772"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Morey Second Reading",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H212",
+        "S50",
+        "S488"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Second Reading M4 Previous Question",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H636",
+        "H193",
+        "H618"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 8 Motion 1 To Table",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H805",
+        "H87",
+        "H307"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Second Reading Motion 9 To Concur",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257",
+        "S809",
+        "S474"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Adams Second Reading",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H850",
+        "H894",
+        "H674"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Arp Second Reading",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H412",
+        "S266",
+        "S730"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Chesser Second Reading",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 117,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H547",
+        "S280",
+        "H1200"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Pyrtle Second Reading",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H354",
+        "H38",
+        "S328"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "M11 Concur Sen. Amd. 1",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H576",
+        "H1003",
+        "H1222"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 7 Motion 1 To Table",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H125",
+        "H87",
+        "H958"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Conference Rpt Motion 8 To Adopt",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H377",
+        "H562",
+        "S445"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion 9 To Concur House Amend",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S442",
+        "S307",
+        "S1041"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Blust Second Reading",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H305",
+        "S474"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Crawford Second Reading",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H258",
+        "H681"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Davis Second Reading",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 119,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H40",
+        "H1114"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Greene Second Reading",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H936",
+        "H1012"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Hall, K. Second Reading",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S387",
+        "H1067"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Harrison Second Reading",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H402",
+        "H606"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Howard Second Reading",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H96",
+        "H797"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Longest Second Reading",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 119,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H48",
+        "H920"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 McNeely Second Reading",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H948",
+        "S401"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Morey Second Reading M3 To Lay On The Table",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S429",
+        "S416"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Pickett Second Reading",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S664",
+        "S706"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Rubin Second Reading",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H52",
+        "H1173"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Smith, Carson Second Reading",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H477",
+        "S472"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Stevens Second Reading",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H612",
+        "S690"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 von Haefen Second Reading",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H875",
+        "H415"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "M6 Reconsider",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H768",
+        "H96"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 11 Motion 1 To Table",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S50",
+        "H307"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 6",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S50",
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 7",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H805",
+        "H307"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 8",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S50",
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion 3 Previous Question",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H805",
+        "S249"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Third Reading Motion 9 To Concur",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S809",
+        "S811"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Almond Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H834"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Arp Third Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H1123"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Belk Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Brody Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H376"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Butler R2 For Adoption",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "H563"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Campbell Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H146"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Carver Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H250"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Clampitt Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H97"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Clark Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H618"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Cotham Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H87"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Echevarria Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H318"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Eddins Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H925"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Gable Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H886"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Gillespie Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H183"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Goodwin Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H266"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Hastings Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H251"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Hawkins Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H775"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Humphrey Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H717"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Iler Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H117"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Jackson, N. Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S695"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Johnson Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H819"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Kidwell Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H661"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Lambeth Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S245"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Loftis Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S1041"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Logan Second Reading M3 To Lay On The Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S153"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Par&#xE9; Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S599"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Quick Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H636"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Reeder Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S600"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Riddell Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S445"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Riddell Third Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H926"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Schietzelt Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S307"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Smith, Charles Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H443"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Turner Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H74"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Warren Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 117,
+      "maxTotal": 117,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S876"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Winslow Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S391"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A1 Zenger Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H763"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A10 Crawford Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A11 Ball Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A12 Ball Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A13 Belk Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A14 Dahle Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A15 Greenfield Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A16 Greenfield Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A17 Harrison Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A18 Cervania Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A19 Cervania Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A2 Adams Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S445"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A2 Ager Second Reading M3 To Lay On The Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S730"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A2 Arp Third Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S391"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A2 Belk Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A2 Blackwell Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H958"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A2 Crawford Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S442"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A2 Hall, K. Third Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H926"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A2 Harrison R2 For Adoption",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "H563"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A2 Harrison Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S266"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A2 Howard Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H886"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A2 Jones, B. Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H661"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A2 Longest Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H549"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A2 Par&#xE9; Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S599"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A2 Pierce, R. Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H97"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A2 Rubin Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S177"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A2 Stevens Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H606"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A20 Hawkins Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A21 Hawkins Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A23 Lambeth Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A24 Logan Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A25 Logan Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A26 Logan Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A27 Longest Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A28 Lopez Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A29 Lopez Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A3 Adams Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S445"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A3 Brown, G. Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A3 Budd Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H661"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A3 Cervania Second Reading M3 To Lay On The Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S730"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A3 Dahle Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H958"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A3 Hall, K. Third Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H926"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A3 Morey R2 For Adoption",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "H563"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A3 Morey Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S442"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A30 Lopez Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A31 Lopez Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A32 Morey Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A33 Morey Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A34 Prather Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A34 Prather Second Reading M4 Previous Question",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A35 Prather Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A36 Prather Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A37 Prather Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A38 Price Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A39 Rubin Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A4 Brown, T. Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A4 Cairns Third Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H926"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A4 Cervania Second Reading M3 To Lay On The Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S730"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A4 Morey R2 For Adoption",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "H563"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A40 Rubin Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A41 Rubin Second Reading M3 To Lay On The Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A42 Rubin Second Reading M3 To Lay On The Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A43 Schietzelt Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A44 von Haefen Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A45 von Haefen Second Reading M3 To Lay On The Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A46 Arp Third Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A5 Brown, G. Third Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H926"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A5 Buansi Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A5 Longest Second Reading M3 To Lay On The Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S730"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A6 Butler Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A6 Rubin Second Reading M3 To Lay On The Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S730"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A7 Cervania Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A8 Cervania Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "A9 Clark Second Reading",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "C RPT Adoption R2 Ruled Mat&#x27;l",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H696"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "R2 Ruled Mat&#x27;l C RPT Adoption M4 Previous Question",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S876"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "R2 Ruled Mat&#x27;l M11 Not Concur",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H1220"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Second Reading M6 Reconsider",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H305"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Second Reading M8 Re-Refer Appropriations",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H74"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Second Reading Motion 12/Appeal Ruling of Chair",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S378"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Second Reading Motion 12/Appeal Ruling of the Chair",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H1126"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Second Reading Motion 12/Divide",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 118,
+      "maxTotal": 118,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S730"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Third Reading M6 Reconsider",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 120,
+      "maxTotal": 120,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S391"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 12",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 12 Motion 1 To Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S50"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 13 Motion 1 To Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S50"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 14",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 14 Motion 1 To Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S50"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 15 Motion 1 To Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S50"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 16",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 18",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 20",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 23",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 25",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 26 Motion 1 To Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 27 Motion 1 To Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 28 Motion 1 To Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 29 Motion 1 To Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 32",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 33 Motion 1 To Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 34 Motion 1 To Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 35 Motion 1 To Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 38",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 40",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 41 Motion 1 To Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 43 Motion 1 To Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 45 Motion 1 To Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 46 Motion 1 To Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 47 Motion 1 To Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 49",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Amendment 51",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion 1 To Table Motion 11 To Postpone",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H805"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion 11 Divide Question",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H805"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion 11 To Adjourn",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H805"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion 11 To Substitute",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "H805"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Second Reading Motion 1 To Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S249"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "R": 31,
+    "B": 2284,
+    "JR": 23
+  },
+  "sessionIds": {
+    "2189": 2338
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}

@@ -1,0 +1,166 @@
+bill	chamber	roll	date	question_class	tally	disposition	title
+H1035	S	1709664	2026-06-16	passage	29-16	candidate:unbatched	Various Local Election Changes III
+H1035	H	1711092	2026-06-23	concurrence	76-34	candidate:unbatched	Various Local Election Changes III
+H1089	H	1700592	2026-05-20	passage	71-46	candidate:unbatched	Const. Amend. Property Tax Levy Limit
+H1089	S	1700910	2026-05-20	passage	31-15	candidate:unbatched	Const. Amend. Property Tax Levy Limit
+H1089	S	1700911	2026-05-20	passage	31-15	candidate:unbatched	Const. Amend. Property Tax Levy Limit
+H1089	H	1700593	2026-05-20	passage	71-46	candidate:unbatched	Const. Amend. Property Tax Levy Limit
+H1126	H	1704794	2026-06-02	passage	66-42	candidate:unbatched	2026 DST Admin/Technical/Clarifying Changes.-AB
+H1126	H	1712705	2026-06-30	concurrence	81-29	candidate:unbatched	2026 DST Admin/Technical/Clarifying Changes.-AB
+H116	H	1514654	2025-03-11	passage	71-44	candidate:unbatched	Jacksonville Annexation & Conforming Changes
+H116	S	1594934	2025-06-25	conference_report	29-16	candidate:unbatched	Jacksonville Annexation & Conforming Changes
+H125	H	1599189	2025-07-30	conference_report	91-23	candidate:unbatched	Continuing Budget Operations
+H173	H	1533671	2025-04-01	passage	79-38	candidate:unbatched	Various Local Provisions III
+H173	S	1594006	2025-06-23	passage	29-18	candidate:unbatched	Various Local Provisions III
+H173	S	1594702	2025-06-24	passage	28-17	candidate:unbatched	Various Local Provisions III
+H173	H	1595274	2025-06-25	concurrence	79-34	candidate:unbatched	Various Local Provisions III
+H173	H	1595534	2025-06-26	concurrence	68-37	candidate:unbatched	Various Local Provisions III
+H193	H	1563580	2025-05-01	passage	63-44	candidate:unbatched	Firearm Law Revisions
+H193	S	1594922	2025-06-25	passage	29-17	candidate:unbatched	Firearm Law Revisions
+H193	H	1595366	2025-06-26	concurrence	61-46	candidate:unbatched	Firearm Law Revisions
+H193	H	1599102	2025-07-29	veto_override	72-48	judged:batch-01	Firearm Law Revisions
+H193	S	1599165	2025-07-29	veto_override	29-19	judged:batch-01	Firearm Law Revisions
+H226	H	1588789	2025-06-11	passage	60-47	candidate:unbatched	City of Greensboro/Deannexations
+H226	H	1591661	2025-06-17	passage	73-41	candidate:unbatched	City of Greensboro/Deannexations
+H268	H	1716500	2026-08-04	conference_report	78-31	candidate:unbatched	2026 Budget Technical Corrections - II
+H268	H	1716503	2026-08-05	conference_report	78-28	candidate:unbatched	2026 Budget Technical Corrections - II
+H3	S	1592540	2025-06-18	passage	28-17	candidate:unbatched	Various Local Election Changes II
+H3	H	1594523	2025-06-24	concurrence	62-47	candidate:unbatched	Various Local Election Changes II
+H305	H	1567662	2025-05-07	passage	54-57	candidate:unbatched	Guilford County Sales Tax Distribution Mods
+H305	H	1591655	2025-06-17	passage	67-46	candidate:unbatched	Guilford County Sales Tax Distribution Mods
+H307	S	1603081	2025-09-22	passage	28-8	candidate:unbatched	Iryna's Law
+H307	H	1603096	2025-09-23	concurrence	81-31	candidate:unbatched	Iryna's Law
+H309	H	1595590	2025-06-26	conference_report	85-22	candidate:unbatched	Various Local Provisions VI
+H309	S	1595591	2025-06-26	conference_report	30-12	candidate:unbatched	Various Local Provisions VI
+H318	H	1560440	2025-04-29	passage	70-45	candidate:unbatched	The Criminal Illegal Alien Enforcement Act
+H318	S	1587562	2025-06-10	passage	26-17	candidate:unbatched	The Criminal Illegal Alien Enforcement Act
+H318	H	1587960	2025-06-10	concurrence	66-45	candidate:unbatched	The Criminal Illegal Alien Enforcement Act
+H318	H	1599134	2025-07-29	veto_override	72-48	judged:batch-01	The Criminal Illegal Alien Enforcement Act
+H318	S	1599133	2025-07-29	veto_override	30-19	judged:batch-01	The Criminal Illegal Alien Enforcement Act
+H376	H	1562525	2025-04-30	passage	71-37	candidate:unbatched	Water/Wastewater Affordability & Capacity Act
+H376	H	1711540	2026-06-24	concurrence	77-39	candidate:unbatched	Water/Wastewater Affordability & Capacity Act
+H402	H	1550044	2025-04-16	passage	68-45	dropped: filter 5: limits on costly agency rules, runs both ways (not government efficiency)	Limit Rules With Substantial Financial Costs
+H402	H	1550045	2025-04-16	passage	68-44	dropped: filter 5: limits on costly agency rules, runs both ways (not government efficiency)	Limit Rules With Substantial Financial Costs
+H402	S	1587577	2025-06-10	passage	26-17	dropped: filter 5: limits on costly agency rules, runs both ways (not government efficiency)	Limit Rules With Substantial Financial Costs
+H402	H	1591751	2025-06-17	concurrence	70-44	dropped: filter 5: limits on costly agency rules, runs both ways (not government efficiency)	Limit Rules With Substantial Financial Costs
+H402	S	1599166	2025-07-29	veto_override	30-19	dropped: filter 5: limits on costly agency rules, runs both ways (not government efficiency)	Limit Rules With Substantial Financial Costs
+H402	H	1599118	2025-07-29	veto_override	73-47	dropped: filter 5: limits on costly agency rules, runs both ways (not government efficiency)	Limit Rules With Substantial Financial Costs
+H412	H	1549380	2025-04-15	passage	81-31	candidate:unbatched	Child Care Regulatory Reforms
+H517	S	1711584	2026-06-24	passage	32-10	candidate:unbatched	Modify Nonprofit Corp. Act/Charitable Org
+H549	H	1565983	2025-05-06	passage	66-46	dropped: filter 5: State Auditor powers, expands some oversight and deletes other audits	Clarify Powers of State Auditor
+H549	S	1593036	2025-06-19	passage	27-14	dropped: filter 5: State Auditor powers, expands some oversight and deletes other audits	Clarify Powers of State Auditor
+H549	H	1594559	2025-06-24	concurrence	62-48	dropped: filter 5: State Auditor powers, expands some oversight and deletes other audits	Clarify Powers of State Auditor
+H549	H	1599169	2025-07-29	veto_override	72-48	dropped: filter 5: State Auditor powers, expands some oversight and deletes other audits	Clarify Powers of State Auditor
+H549	S	1599168	2025-07-29	veto_override	30-19	dropped: filter 5: State Auditor powers, expands some oversight and deletes other audits	Clarify Powers of State Auditor
+H56	H	1563592	2025-05-01	passage	67-38	candidate:unbatched	2026 Budget Technical Corrections
+H56	H	1713675	2026-07-02	conference_report	82-21	candidate:unbatched	2026 Budget Technical Corrections
+H56	S	1713676	2026-07-02	conference_report	30-13	candidate:unbatched	2026 Budget Technical Corrections
+H568	H	1561226	2025-04-29	passage	72-42	candidate:unbatched	2025 Omnibus Labor Amendments.-AB
+H568	S	1587941	2025-06-10	passage	26-17	candidate:unbatched	2025 Omnibus Labor Amendments.-AB
+H568	H	1591676	2025-06-17	concurrence	72-42	candidate:unbatched	2025 Omnibus Labor Amendments.-AB
+H58	H	1527367	2025-03-26	concurrence	59-52	candidate:unbatched	Various Local Elections
+H694	H	1595387	2025-06-26	concurrence	66-42	candidate:unbatched	Reg'l Water Study/IBT Subbasin/TMDL
+H74	H	1504730	2025-03-04	passage	69-45	candidate:unbatched	House Budget Technical Corrections
+H74	H	1505958	2025-03-05	passage	70-40	candidate:unbatched	House Budget Technical Corrections
+H74	S	1562444	2025-04-30	passage	29-17	candidate:unbatched	House Budget Technical Corrections
+H74	S	1563451	2025-05-01	passage	29-13	candidate:unbatched	House Budget Technical Corrections
+H74	H	1567698	2025-05-07	concurrence	71-37	candidate:unbatched	House Budget Technical Corrections
+H74	H	1570365	2025-05-13	concurrence	69-35	candidate:unbatched	House Budget Technical Corrections
+H768	S	1594025	2025-06-23	passage	30-17	candidate:unbatched	Emerg. Comm. Code Exempts/Sanitary Board/401
+H768	H	1594425	2025-06-24	concurrence	67-44	candidate:unbatched	Emerg. Comm. Code Exempts/Sanitary Board/401
+H768	H	1594424	2025-06-24	concurrence	68-40	candidate:unbatched	Emerg. Comm. Code Exempts/Sanitary Board/401
+H805	H	1595086	2025-06-25	concurrence	65-43	candidate:unbatched	Prevent Sexual Exploitation/Women and Minors
+H805	S	1599171	2025-07-29	veto_override	30-19	judged:batch-01	Prevent Sexual Exploitation/Women and Minors
+H805	H	1599122	2025-07-29	veto_override	72-48	judged:batch-01	Prevent Sexual Exploitation/Women and Minors
+H834	H	1716497	2026-08-04	concurrence	73-35	candidate:unbatched	SBOE Administrative Changes
+H87	S	1599159	2025-07-29	passage	30-19	dropped: filter 5: school-choice financing, no honest direction (Texas SB 2 and Georgia SB 82 precedent)	Educational Choice for Children Act (ECCA)
+H87	H	1599190	2025-07-30	concurrence	69-47	dropped: filter 5: school-choice financing, no honest direction (Texas SB 2 and Georgia SB 82 precedent)	Educational Choice for Children Act (ECCA)
+H87	H	1700459	2026-05-20	veto_override	71-46	dropped: filter 5: school-choice financing, no honest direction (Texas SB 2 and Georgia SB 82 precedent)	Educational Choice for Children Act (ECCA)
+H87	S	1704995	2026-06-03	veto_override	30-19	dropped: filter 5: school-choice financing, no honest direction (Texas SB 2 and Georgia SB 82 precedent)	Educational Choice for Children Act (ECCA)
+H926	H	1592361	2025-06-18	passage	81-29	candidate:unbatched	Regulatory Reform Act of 2025
+H926	H	1594532	2025-06-24	passage	79-31	candidate:unbatched	Regulatory Reform Act of 2025
+H926	S	1603084	2025-09-22	passage	31-17	candidate:unbatched	Regulatory Reform Act of 2025
+H926	H	1603097	2025-09-23	concurrence	72-37	candidate:unbatched	Regulatory Reform Act of 2025
+S1076	S	1699906	2026-05-19	passage	30-18	candidate:unbatched	Rocky Mount/Louisburg Utility Rev./Advisory
+S1076	H	1712895	2026-06-30	passage	76-34	candidate:unbatched	Rocky Mount/Louisburg Utility Rev./Advisory
+S1076	S	1713660	2026-07-01	concurrence	29-18	candidate:unbatched	Rocky Mount/Louisburg Utility Rev./Advisory
+S1080	S	1699850	2026-05-19	passage	30-18	candidate:unbatched	Lower Taxes for All NC
+S1080	S	1699849	2026-05-19	passage	30-18	candidate:unbatched	Lower Taxes for All NC
+S1080	H	1700516	2026-05-20	passage	71-46	candidate:unbatched	Lower Taxes for All NC
+S1080	H	1700515	2026-05-20	passage	71-46	candidate:unbatched	Lower Taxes for All NC
+S1091	H	1716504	2026-08-05	passage	77-28	candidate:unbatched	Adjournment Resolution
+S1092	S	1715959	2026-07-28	passage	32-9	candidate:unbatched	2026 Senate & House Appointments
+S1092	H	1716492	2026-08-04	passage	70-38	candidate:unbatched	2026 Senate & House Appointments
+S115	H	1499307	2025-02-25	passage	92-23	candidate:unbatched	General Assembly Appointments
+S153	S	1504836	2025-03-04	passage	28-15	candidate:unbatched	North Carolina Border Protection Act
+S153	H	1584769	2025-06-04	passage	60-46	candidate:unbatched	North Carolina Border Protection Act
+S153	S	1587744	2025-06-10	concurrence	26-17	candidate:unbatched	North Carolina Border Protection Act
+S153	S	1599126	2025-07-29	veto_override	30-19	judged:batch-01	North Carolina Border Protection Act
+S153	H	1711527	2026-06-24	veto_override	71-46	held:legiscan-omits-unaffiliated-members	North Carolina Border Protection Act
+S214	H	1599125	2025-07-29	passage	73-45	candidate:unbatched	Various Local Provisions VII
+S214	H	1599196	2025-07-30	passage	72-44	candidate:unbatched	Various Local Provisions VII
+S214	S	1687580	2026-04-22	conference_report	28-21	candidate:unbatched	Various Local Provisions VII
+S214	H	1691454	2026-04-29	conference_report	74-37	candidate:unbatched	Various Local Provisions VII
+S214	H	1694703	2026-05-06	conference_report	70-38	candidate:unbatched	Various Local Provisions VII
+S227	S	1514105	2025-03-11	passage	28-18	candidate:unbatched	"Eliminating ""DEI"" in Public Education"
+S227	H	1595014	2025-06-25	passage	67-48	candidate:unbatched	"Eliminating ""DEI"" in Public Education"
+S227	S	1599167	2025-07-29	veto_override	30-19	judged:batch-01	"Eliminating ""DEI"" in Public Education"
+S227	H	1711513	2026-06-24	veto_override	71-46	held:legiscan-omits-unaffiliated-members	"Eliminating ""DEI"" in Public Education"
+S249	S	1603993	2025-10-20	passage	25-20	candidate:unbatched	Realign Congressional Districts 2025
+S249	S	1604004	2025-10-21	passage	26-20	candidate:unbatched	Realign Congressional Districts 2025
+S249	H	1604135	2025-10-22	passage	66-48	candidate:unbatched	Realign Congressional Districts 2025
+S254	H	1592646	2025-06-18	passage	67-42	dropped: filter 5: charter school governance shift, runs both ways	Charter School Changes
+S254	S	1594933	2025-06-25	conference_report	26-20	dropped: filter 5: charter school governance shift, runs both ways	Charter School Changes
+S254	H	1595281	2025-06-25	conference_report	73-36	dropped: filter 5: charter school governance shift, runs both ways	Charter School Changes
+S254	H	1599174	2025-07-29	veto_override	74-46	dropped: filter 5: charter school governance shift, runs both ways	Charter School Changes
+S254	S	1599173	2025-07-29	veto_override	30-19	dropped: filter 5: charter school governance shift, runs both ways	Charter School Changes
+S257	S	1550316	2025-04-16	passage	31-16	candidate:unbatched	2026 Appropriations Act
+S257	S	1550976	2025-04-17	passage	30-15	candidate:unbatched	2026 Appropriations Act
+S257	S	1713386	2026-07-01	conference_report	36-13	candidate:unbatched	2026 Appropriations Act
+S257	H	1713387	2026-07-01	conference_report	90-23	candidate:unbatched	2026 Appropriations Act
+S257	S	1713672	2026-07-02	conference_report	35-10	candidate:unbatched	2026 Appropriations Act
+S266	H	1587973	2025-06-10	passage	75-36	candidate:unbatched	The Power Bill Reduction Act
+S266	S	1593021	2025-06-19	concurrence	29-11	candidate:unbatched	The Power Bill Reduction Act
+S266	H	1599150	2025-07-29	veto_override	74-46	judged:batch-01	The Power Bill Reduction Act
+S266	S	1599149	2025-07-29	veto_override	30-18	judged:batch-01	The Power Bill Reduction Act
+S401	S	1595457	2025-06-26	concurrence	9-32	candidate:unbatched	NC Farm Act of 2025-2026
+S416	S	1567696	2025-05-07	passage	32-15	dropped: filter 5: donor privacy against dark-money disclosure, two directions	Personal Privacy Protection Act
+S416	H	1595066	2025-06-25	passage	63-44	dropped: filter 5: donor privacy against dark-money disclosure, two directions	Personal Privacy Protection Act
+S416	H	1595355	2025-06-26	conference_report	63-46	dropped: filter 5: donor privacy against dark-money disclosure, two directions	Personal Privacy Protection Act
+S416	S	1595497	2025-06-26	conference_report	24-15	dropped: filter 5: donor privacy against dark-money disclosure, two directions	Personal Privacy Protection Act
+S416	S	1599137	2025-07-29	veto_override	30-19	dropped: filter 5: donor privacy against dark-money disclosure, two directions	Personal Privacy Protection Act
+S416	H	1599138	2025-07-29	veto_override	74-46	dropped: filter 5: donor privacy against dark-money disclosure, two directions	Personal Privacy Protection Act
+S442	S	1567756	2025-05-07	passage	32-13	candidate:unbatched	Parents Protection Act
+S442	H	1592370	2025-06-18	passage	74-36	candidate:unbatched	Parents Protection Act
+S442	S	1594096	2025-06-23	concurrence	28-19	candidate:unbatched	Parents Protection Act
+S445	H	1705023	2026-06-03	passage	83-28	candidate:unbatched	Regulatory Reform Act of 2026
+S445	H	1716499	2026-08-04	conference_report	81-28	candidate:unbatched	Regulatory Reform Act of 2026
+S449	H	1591912	2025-06-17	passage	76-36	candidate:unbatched	Continuing Budget Operations Part IV
+S472	S	1562333	2025-04-30	passage	31-15	candidate:unbatched	Coastal Regulatory Reform
+S472	H	1594508	2025-06-24	passage	66-45	candidate:unbatched	Coastal Regulatory Reform
+S472	S	1594854	2025-06-25	concurrence	30-15	candidate:unbatched	Coastal Regulatory Reform
+S474	S	1540411	2025-04-08	passage	29-17	candidate:unbatched	Adjust Counties/Reappraisal Moratorium
+S474	S	1711027	2026-06-23	concurrence	12-33	candidate:unbatched	Adjust Counties/Reappraisal Moratorium
+S474	H	1712797	2026-06-30	conference_report	66-44	candidate:unbatched	Adjust Counties/Reappraisal Moratorium
+S474	H	1713316	2026-07-01	conference_report	72-40	candidate:unbatched	Adjust Counties/Reappraisal Moratorium
+S479	S	1592859	2025-06-19	concurrence	9-31	candidate:unbatched	SCRIPT Act
+S558	S	1542230	2025-04-09	passage	28-18	candidate:unbatched	"Eliminating ""DEI"" in Public Higher Ed"
+S558	H	1595005	2025-06-25	passage	64-47	candidate:unbatched	"Eliminating ""DEI"" in Public Higher Ed"
+S558	S	1599164	2025-07-29	veto_override	30-19	judged:batch-01	"Eliminating ""DEI"" in Public Higher Ed"
+S558	H	1711515	2026-06-24	veto_override	71-46	held:legiscan-omits-unaffiliated-members	"Eliminating ""DEI"" in Public Higher Ed"
+S595	S	1710243	2026-06-18	conference_report	28-14	candidate:unbatched	Various Revenue Laws Changes
+S595	S	1711056	2026-06-23	conference_report	27-18	candidate:unbatched	Various Revenue Laws Changes
+S655	S	1567659	2025-05-07	passage	29-18	candidate:unbatched	Extend Certain Rights to Catawba Nation
+S763	S	1572068	2025-05-15	passage	27-13	candidate:unbatched	Confirm Don van der Vaart/Util. Comm
+S763	H	1575355	2025-05-21	passage	63-47	candidate:unbatched	Confirm Don van der Vaart/Util. Comm
+S770	H	1595584	2025-06-26	passage	78-28	candidate:unbatched	General Assembly Appointments
+S772	H	1599183	2025-07-29	passage	70-45	candidate:unbatched	Adjournment Resolution
+S858	H	1709988	2026-06-17	passage	79-30	candidate:unbatched	GSC Add Member from High Point Law School
+S876	H	1709865	2026-06-16	passage	67-46	candidate:unbatched	Various Local Provisions X
+S876	S	1712643	2026-06-30	conference_report	32-17	candidate:unbatched	Various Local Provisions X
+S876	H	1713114	2026-06-30	conference_report	64-43	candidate:unbatched	Various Local Provisions X
+S876	H	1713357	2026-07-01	conference_report	69-42	candidate:unbatched	Various Local Provisions X
+S876	S	1713356	2026-07-01	conference_report	32-15	candidate:unbatched	Various Local Provisions X
+S889	S	1693936	2026-05-05	passage	36-9	candidate:unbatched	Property Tax Reappraisal Moratorium
+S889	H	1707343	2026-06-09	passage	71-42	candidate:unbatched	Property Tax Reappraisal Moratorium
+S889	H	1707957	2026-06-10	passage	70-41	candidate:unbatched	Property Tax Reappraisal Moratorium
