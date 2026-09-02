@@ -153,17 +153,21 @@ That roll is excluded as procedural, so it costs nothing, but it is the same def
   `../legiscan-in-2143/tools/`. Their Indiana URL recipe needs its year segment changed from
   `124/2025/` to `124/2026/`.
 
+## Layout addition
+
+- `batch-01/` and later — the judgments, the roll evidence files, the import ledgers and the
+  selection notes for each batch.
+
 ## State of the work
 
-The config, the crosswalk and the fetch are done. **677 rows are stored on the local
-`voteapp` database from this session, all `pending`; no record has been judged or imported
-yet, so Indiana's live record count is unchanged at the 820 from 2025. Production holds no
-Indiana records.**
+Batch-01 is imported on the local `voteapp` database: **548 records across 104 candidates
+with 378 area tags, over six measures and eight rolls.** Indiana now holds **1,368 live
+roll-call records across 104 candidates with 1,044 area tags** across both sessions.
+**Production still holds no Indiana records.**
 
-`survey/divided-enacted-worklist.tsv` holds **95 rolls over 47 measures** — 58 House and 37
-Senate, 42 measures with a House roll, 5 flagged for the member-list check. That is one
-fewer roll than the survey predicted, because the survey counted the defeated concurrence
-the config now excludes.
+`survey/divided-enacted-worklist.tsv` started at **95 rolls over 47 measures**. After
+batch-01 it stands at 8 in batch-01, 9 dropped, 1 superseded, 5 still flagged for the
+member-list check, and 72 unbatched.
 
 ## Files
 

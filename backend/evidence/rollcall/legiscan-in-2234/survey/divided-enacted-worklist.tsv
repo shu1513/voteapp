@@ -21,14 +21,14 @@ HB1150	B	4	house	2026-02-18	1637695	275	72	19	House - House concurred with Senat
 HB1150	B	4	house	2026-01-20	1614416	56	65	23	House - Third reading	Local regulation.	candidate: unbatched
 HB1150	B	4	senate	2026-02-12	1632010	158	37	10	Senate - Third reading	Local regulation.	candidate: unbatched
 HB1155	B	4	senate	2026-02-19	1639184	203	31	15	Senate - Third reading	Traffic enforcement.	candidate: unbatched
-HB1193	B	4	house	2026-02-26	1646022	395	66	29	House - House concurred with Senate amendments	Civil rights commission.	candidate: unbatched
-HB1193	B	4	house	2026-01-28	1618344	138	71	20	House - Third reading	Civil rights commission.	candidate: unbatched
+HB1193	B	4	house	2026-02-26	1646022	395	66	29	House - House concurred with Senate amendments	Civil rights commission.	batch-01
+HB1193	B	4	house	2026-01-28	1618344	138	71	20	House - Third reading	Civil rights commission.	dropped: version trap, this text also made any violation of the United States or Indiana Constitution a discriminatory practice, which the enrolled act drops; the 2026-02-26 concurrence is in batch-01
 HB1210	B	4	senate	2026-02-24	1642613	242	38	10	Senate - Third reading	Department of local government finance.	candidate: unbatched
 HB1266	B	4	house	2026-02-27	1648351	425	66	30	House - Rules Suspended. Conference Committee Report 1	Department of education and education matters.	candidate: unbatched
 HB1266	B	4	senate	2026-02-27	1648350	334	28	19	Senate - Rules Suspended. Conference Committee Report 1	Department of education and education matters.	candidate: unbatched
 HB1273	B	4	house	2026-02-25	1643905	368	72	20	House - House concurred with Senate amendments	Requirements for proxy advisors.	candidate: unbatched
 HB1273	B	4	house	2026-01-20	1614519	63	67	21	House - Third reading	Requirements for proxy advisors.	candidate: unbatched
-HB1274	B	4	house	2026-01-28	1618337	129	69	25	House - Third reading	Insurance mandated gun free zone notices.	candidate: unbatched
+HB1274	B	4	house	2026-01-28	1618337	129	69	25	House - Third reading	Insurance mandated gun free zone notices.	batch-01
 HB1302	B	4	house	2026-02-26	1645961	394	69	25	House - House concurred with Senate amendments	Various labor and safety matters.	candidate: unbatched
 HB1343	B	4	house	2026-02-27	1648314	409	65	29	House - Conference Committee Report 1	Public safety matters.	candidate: unbatched
 HB1343	B	4	house	2026-01-28	1618347	121	67	29	House - Third reading	Public safety matters.	candidate: unbatched
@@ -39,8 +39,8 @@ HB1355	B	4	house	2026-01-28	1618346	117	69	26	House - Third reading	Confined fee
 HB1368	B	4	house	2026-02-27	1648201	420	57	40	House - Rules Suspended. House concurred with Senate amendments	Carbon.	candidate: unbatched
 HB1368	B	4	house	2026-01-28	1618050	114	58	36	House - Third reading	Carbon.	needs member-list check: LegiScan tally has no exact match in the official history
 HB1368	B	4	senate	2026-02-24	1642619	259	29	19	Senate - Third reading	Carbon.	candidate: unbatched
-HB1377	B	4	house	2026-02-25	1644430	383	69	27	House - House concurred with Senate amendments	Straight ticket voting.	candidate: unbatched
-HB1377	B	4	house	2026-01-22	1615963	82	71	20	House - Third reading	Straight ticket voting.	candidate: unbatched
+HB1377	B	4	house	2026-02-25	1644430	383	69	27	House - House concurred with Senate amendments	Straight ticket voting.	dropped: filter 5, restoring the straight party mark for multi-seat offices and the new rule that discards a straight party vote when a voter also marks a candidate run opposite inside election_integrity
+HB1377	B	4	house	2026-01-22	1615963	82	71	20	House - Third reading	Straight ticket voting.	dropped: filter 5, restoring the straight party mark for multi-seat offices and the new rule that discards a straight party vote when a voter also marks a candidate run opposite inside election_integrity
 HB1389	B	4	house	2026-02-02	1621109	196	69	29	House - Third reading	Adoption and foster care matters.	candidate: unbatched
 HB1406	B	4	house	2026-02-27	1648318	426	65	31	House - Rules Suspended. Conference Committee Report 1	Tax and fiscal matters.	candidate: unbatched
 HB1408	B	4	house	2026-02-02	1621102	197	70	28	House - Third reading	Education matters.	candidate: unbatched
@@ -50,9 +50,9 @@ HB1423	B	4	senate	2026-02-24	1642565	262	27	21	Senate - Third reading	Indianapol
 HB1424	B	4	house	2026-01-22	1615975	84	76	20	House - Third reading	Farm and homestead food sales.	candidate: unbatched
 HB1424	B	4	senate	2026-02-24	1642595	263	38	10	Senate - Third reading	Farm and homestead food sales.	candidate: unbatched
 SB0001	B	4	house	2026-02-23	1640645	302	62	31	House - Third reading	Human services matters.	needs member-list check: LegiScan tally has no exact match in the official history
-SB0003	B	4	house	2026-02-16	1634176	245	63	22	House - Third reading	Constitutional amendment ballot language.	candidate: unbatched
-SB0003	B	4	senate	2026-01-22	1616261	45	36	9	Senate - Third reading	Constitutional amendment ballot language.	candidate: unbatched
-SB0012	B	4	house	2026-02-17	1635266	259	58	30	House - Third reading	Prohibition of ranked choice voting.	candidate: unbatched
+SB0003	B	4	house	2026-02-16	1634176	245	63	22	House - Third reading	Constitutional amendment ballot language.	dropped: filter 5, a vote to put a constitutional amendment on the ballot is not a vote on the amendment itself, so no stance can be attributed
+SB0003	B	4	senate	2026-01-22	1616261	45	36	9	Senate - Third reading	Constitutional amendment ballot language.	dropped: filter 5, a vote to put a constitutional amendment on the ballot is not a vote on the amendment itself, so no stance can be attributed
+SB0012	B	4	house	2026-02-17	1635266	259	58	30	House - Third reading	Prohibition of ranked choice voting.	dropped: filter 5, a ban on ranked choice voting argues in both directions inside election_integrity and neither is defensible on its own
 SB0023	B	4	house	2026-02-16	1634114	247	66	22	House - Third reading	Alcoholic beverage permits for county fairs.	candidate: unbatched
 SB0023	B	4	senate	2026-01-27	1617775	89	36	9	Senate - Third reading	Alcoholic beverage permits for county fairs.	candidate: unbatched
 SB0076	B	4	house	2026-02-12	1631741	240	61	28	House - Third reading	Immigration matters.	candidate: unbatched
@@ -61,10 +61,10 @@ SB0078	B	4	senate	2026-02-25	1645121	291	36	12	Senate - Senate concurred with Ho
 SB0078	B	4	senate	2026-01-20	1614574	37	28	19	Senate - Third reading	Wireless communication device policy.	candidate: unbatched
 SB0088	B	4	house	2026-02-24	1642415	337	67	29	House - Third reading	Education matters.	candidate: unbatched
 SB0088	B	4	senate	2026-02-25	1645274	292	34	14	Senate - Senate concurred with House amendments	Education matters.	candidate: unbatched
-SB0091	B	4	house	2026-02-18	1637687	271	70	22	House - Third reading	Syringe exchange program.	candidate: unbatched
-SB0091	B	4	senate	2026-02-25	1645195	273	38	10	Senate - Senate concurred with House amendments	Syringe exchange program.	candidate: unbatched
-SB0091	B	4	senate	2026-01-27	1617759	93	33	13	Senate - Third reading	Syringe exchange program.	candidate: unbatched
-SB0112	B	4	house	2026-02-10	1628208	234	72	24	House - Third reading	Candidacy documents.	candidate: unbatched
+SB0091	B	4	house	2026-02-18	1637687	271	70	22	House - Third reading	Syringe exchange program.	dropped: filter 5, the act both keeps the syringe programme alive past its 2026 expiry and narrows who may use it, so no single direction is honest
+SB0091	B	4	senate	2026-02-25	1645195	273	38	10	Senate - Senate concurred with House amendments	Syringe exchange program.	dropped: filter 5, the act both keeps the syringe programme alive past its 2026 expiry and narrows who may use it, so no single direction is honest
+SB0091	B	4	senate	2026-01-27	1617759	93	33	13	Senate - Third reading	Syringe exchange program.	dropped: filter 5, the act both keeps the syringe programme alive past its 2026 expiry and narrows who may use it, so no single direction is honest
+SB0112	B	4	house	2026-02-10	1628208	234	72	24	House - Third reading	Candidacy documents.	batch-01
 SB0176	B	4	house	2026-02-27	1647622	403	67	25	House - Rules Suspended. Conference Committee Report 1	Shooting ranges.	candidate: unbatched
 SB0176	B	4	house	2026-02-16	1634173	252	66	24	House - Third reading	Shooting ranges.	needs member-list check: LegiScan tally has no exact match in the official history
 SB0179	B	4	house	2026-02-24	1642625	345	72	23	House - Third reading	Indiana department of transportation.	candidate: unbatched
@@ -82,15 +82,15 @@ SB0239	B	4	house	2026-02-27	1648297	431	65	29	House - Rules Suspended. Conferenc
 SB0239	B	4	house	2026-02-24	1642561	350	66	31	House - Third reading	Various education matters.	candidate: unbatched
 SB0239	B	4	senate	2026-02-27	1648296	330	31	16	Senate - Rules Suspended. Conference Committee Report 1	Various education matters.	candidate: unbatched
 SB0239	B	4	senate	2026-01-28	1618653	121	30	18	Senate - Third reading	Various education matters.	candidate: unbatched
-SB0258	B	4	house	2026-02-09	1626087	211	64	28	House - Third reading	Nuclear facility permits.	candidate: unbatched
-SB0258	B	4	senate	2026-01-22	1616240	61	36	9	Senate - Third reading	Nuclear facility permits.	candidate: unbatched
+SB0258	B	4	house	2026-02-09	1626087	211	64	28	House - Third reading	Nuclear facility permits.	batch-01
+SB0258	B	4	senate	2026-01-22	1616240	61	36	9	Senate - Third reading	Nuclear facility permits.	batch-01
 SB0270	B	4	house	2026-02-24	1642577	353	61	35	House - Third reading	Township mergers.	needs member-list check: LegiScan tally has no exact match in the official history
 SB0270	B	4	senate	2026-02-26	1647209	301	34	15	Senate - Senate concurred with House amendments	Township mergers.	candidate: unbatched
 SB0271	B	4	house	2026-02-24	1642587	354	75	22	House - Third reading	Telecommunications wire and valuable metal dealers.	needs member-list check: LegiScan tally has no exact match in the official history
 SB0277	B	4	house	2026-02-24	1642560	356	53	45	House - Third reading	Indiana department of environmental management.	candidate: unbatched
 SB0277	B	4	senate	2026-02-25	1645191	296	26	21	Senate - Senate concurred with House amendments	Indiana department of environmental management.	candidate: unbatched
 SB0277	B	4	senate	2026-01-29	1619043	141	29	19	Senate - Third reading	Indiana department of environmental management.	candidate: unbatched
-SB0284	B	4	house	2026-02-24	1642646	358	70	25	House - Third reading	Law enforcement civilian oversight boards.	candidate: unbatched
-SB0285	B	4	house	2026-02-24	1642738	359	53	44	House - Third reading	Housing matters.	candidate: unbatched
-SB0285	B	4	senate	2026-02-26	1646484	303	28	22	Senate - Senate concurred with House amendments	Housing matters.	candidate: unbatched
-SB0285	B	4	senate	2026-01-28	1618615	129	29	19	Senate - Third reading	Housing matters.	candidate: unbatched
+SB0284	B	4	house	2026-02-24	1642646	358	70	25	House - Third reading	Law enforcement civilian oversight boards.	batch-01
+SB0285	B	4	house	2026-02-24	1642738	359	53	44	House - Third reading	Housing matters.	batch-01
+SB0285	B	4	senate	2026-02-26	1646484	303	28	22	Senate - Senate concurred with House amendments	Housing matters.	batch-01
+SB0285	B	4	senate	2026-01-28	1618615	129	29	19	Senate - Third reading	Housing matters.	superseded: the House rewrote the bill after this roll; the Senate concurrence of 2026-02-26 is its final action and is in batch-01
