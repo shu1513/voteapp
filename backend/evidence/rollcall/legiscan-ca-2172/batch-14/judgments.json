@@ -1,0 +1,184 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1725821,
+   "measure_id": "SB 1037",
+   "vote_date": "2026-08-24",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 1037, which would move the judgment on unreasonable health insurance rate increases from federal to state officials. An unreasonable rate increase now means one the federal Centers for Medicare and Medicaid Services finds excessive, unjustified or unfairly discriminatory. The bill would instead let the Director of the Department of Managed Health Care or the Insurance Commissioner make that finding, and would add increases that are otherwise unreasonable. When filing rates, a plan or insurer would have to show whether its annual rate growth exceeds the state's health care cost target. If growth is expected to exceed the target, the filing would have to list the steps the company is taking or plans to take to get back within it. The bill would delete the current instruction that regulators weigh the effect of those cost targets when judging a single rate. In its place the departments would report each year on whether rates meet an affordability standard for an individual, a couple and a family of four, with five years of premium and cost-sharing changes. The Assembly passed it 59-15. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Senate Bill 1037, which would move the judgment on unreasonable health insurance rate increases from federal to state officials. An unreasonable rate increase now means one the federal Centers for Medicare and Medicaid Services finds excessive, unjustified or unfairly discriminatory. The bill would instead let the Director of the Department of Managed Health Care or the Insurance Commissioner make that finding, and would add increases that are otherwise unreasonable. When filing rates, a plan or insurer would have to show whether its annual rate growth exceeds the state's health care cost target. If growth is expected to exceed the target, the filing would have to list the steps the company is taking or plans to take to get back within it. The bill would delete the current instruction that regulators weigh the effect of those cost targets when judging a single rate. In its place the departments would report each year on whether rates meet an affordability standard for an individual, a couple and a family of four, with five years of premium and cost-sharing changes. The Assembly passed it 59-15. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725860,
+   "measure_id": "SB 1037",
+   "vote_date": "2026-08-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 1037, which would move the judgment on unreasonable health insurance rate increases from federal to state officials. An unreasonable rate increase now means one the federal Centers for Medicare and Medicaid Services finds excessive, unjustified or unfairly discriminatory. The bill would instead let the Director of the Department of Managed Health Care or the Insurance Commissioner make that finding, and would add increases that are otherwise unreasonable. When filing rates, a plan or insurer would have to show whether its annual rate growth exceeds the state's health care cost target. If growth is expected to exceed the target, the filing would have to list the steps the company is taking or plans to take to get back within it. The bill would delete the current instruction that regulators weigh the effect of those cost targets when judging a single rate. In its place the departments would report each year on whether rates meet an affordability standard for an individual, a couple and a family of four, with five years of premium and cost-sharing changes. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Senate Bill 1037, which would move the judgment on unreasonable health insurance rate increases from federal to state officials. An unreasonable rate increase now means one the federal Centers for Medicare and Medicaid Services finds excessive, unjustified or unfairly discriminatory. The bill would instead let the Director of the Department of Managed Health Care or the Insurance Commissioner make that finding, and would add increases that are otherwise unreasonable. When filing rates, a plan or insurer would have to show whether its annual rate growth exceeds the state's health care cost target. If growth is expected to exceed the target, the filing would have to list the steps the company is taking or plans to take to get back within it. The bill would delete the current instruction that regulators weigh the effect of those cost targets when judging a single rate. In its place the departments would report each year on whether rates meet an affordability standard for an individual, a couple and a family of four, with five years of premium and cost-sharing changes. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1725624,
+   "measure_id": "SB 1093",
+   "vote_date": "2026-08-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 1093, which would set what a mobilehome park owner owes residents after a disaster. Existing law already gives displaced residents first refusal if the park is rebuilt and refunds prepaid rent when a tenancy ends from disaster damage. The bill would require management to make a good faith effort to send written status updates weekly for four weeks, then monthly, until residents can return or the park is formally closed. Management could not keep a resident from reaching their home during business hours to collect belongings or inspect damage more than seven days after evacuation orders are lifted or eased. Any liability waiver handed to a resident would have to be limited to harm from that access. Before seeking to close or convert the park, management would have to at least reasonably evaluate the cost of rebuilding and identify possible funding, using a list the state housing department would maintain. Until that documentation is filed with the department, the local government and the residents, no approval or permit could issue, and the local body could not approve a change of use. A resident, a resident organization or a public attorney could sue over a willful violation. The Assembly passed it 48-17. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Senate Bill 1093, which would set what a mobilehome park owner owes residents after a disaster. Existing law already gives displaced residents first refusal if the park is rebuilt and refunds prepaid rent when a tenancy ends from disaster damage. The bill would require management to make a good faith effort to send written status updates weekly for four weeks, then monthly, until residents can return or the park is formally closed. Management could not keep a resident from reaching their home during business hours to collect belongings or inspect damage more than seven days after evacuation orders are lifted or eased. Any liability waiver handed to a resident would have to be limited to harm from that access. Before seeking to close or convert the park, management would have to at least reasonably evaluate the cost of rebuilding and identify possible funding, using a list the state housing department would maintain. Until that documentation is filed with the department, the local government and the residents, no approval or permit could issue, and the local body could not approve a change of use. A resident, a resident organization or a public attorney could sue over a willful violation. The Assembly passed it 48-17. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725778,
+   "measure_id": "SB 1093",
+   "vote_date": "2026-08-24",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 1093, which would set what a mobilehome park owner owes residents after a disaster. Existing law already gives displaced residents first refusal if the park is rebuilt and refunds prepaid rent when a tenancy ends from disaster damage. The bill would require management to make a good faith effort to send written status updates weekly for four weeks, then monthly, until residents can return or the park is formally closed. Management could not keep a resident from reaching their home during business hours to collect belongings or inspect damage more than seven days after evacuation orders are lifted or eased. Any liability waiver handed to a resident would have to be limited to harm from that access. Before seeking to close or convert the park, management would have to at least reasonably evaluate the cost of rebuilding and identify possible funding, using a list the state housing department would maintain. Until that documentation is filed with the department, the local government and the residents, no approval or permit could issue, and the local body could not approve a change of use. A resident, a resident organization or a public attorney could sue over a willful violation. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Senate Bill 1093, which would set what a mobilehome park owner owes residents after a disaster. Existing law already gives displaced residents first refusal if the park is rebuilt and refunds prepaid rent when a tenancy ends from disaster damage. The bill would require management to make a good faith effort to send written status updates weekly for four weeks, then monthly, until residents can return or the park is formally closed. Management could not keep a resident from reaching their home during business hours to collect belongings or inspect damage more than seven days after evacuation orders are lifted or eased. Any liability waiver handed to a resident would have to be limited to harm from that access. Before seeking to close or convert the park, management would have to at least reasonably evaluate the cost of rebuilding and identify possible funding, using a list the state housing department would maintain. Until that documentation is filed with the department, the local government and the residents, no approval or permit could issue, and the local body could not approve a change of use. A resident, a resident organization or a public attorney could sue over a willful violation. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1725986,
+   "measure_id": "SB 1164",
+   "vote_date": "2026-08-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 1164, which would rewrite the California Voting Rights Act into two separate bans and widen who can sue. That law now reaches only a local government using an at-large election method that weakens a protected class's ability to elect its candidates. The bill would add a ban on any election policy or practice, by a local government or a state agency, that results or is likely to result in voter suppression. Suppression would mean a material disparity in participation or access for a protected class, meaning any race, color or language-minority group, or an impairment of their equal opportunity to take part. A government could defend itself only by showing with clear and convincing evidence that the practice is necessary to a compelling interest with no less harmful alternative. The second ban would cover any method of election that dilutes protected-class votes, not just at-large systems. Proof of intentional discrimination would not be required. The Attorney General could sue alongside affected voters, but a plaintiff would first have to send a notice letter and wait 45 or 60 days, and cost recovery would be capped near $30,000 adjusted for inflation. A government found to have violated voting-rights law in the past decade would need the Attorney General's approval before changing its election method. The Assembly passed it 59-18. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Senate Bill 1164, which would rewrite the California Voting Rights Act into two separate bans and widen who can sue. That law now reaches only a local government using an at-large election method that weakens a protected class's ability to elect its candidates. The bill would add a ban on any election policy or practice, by a local government or a state agency, that results or is likely to result in voter suppression. Suppression would mean a material disparity in participation or access for a protected class, meaning any race, color or language-minority group, or an impairment of their equal opportunity to take part. A government could defend itself only by showing with clear and convincing evidence that the practice is necessary to a compelling interest with no less harmful alternative. The second ban would cover any method of election that dilutes protected-class votes, not just at-large systems. Proof of intentional discrimination would not be required. The Attorney General could sue alongside affected voters, but a plaintiff would first have to send a notice letter and wait 45 or 60 days, and cost recovery would be capped near $30,000 adjusted for inflation. A government found to have violated voting-rights law in the past decade would need the Attorney General's approval before changing its election method. The Assembly passed it 59-18. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726611,
+   "measure_id": "SB 1164",
+   "vote_date": "2026-08-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 1164, which would rewrite the California Voting Rights Act into two separate bans and widen who can sue. That law now reaches only a local government using an at-large election method that weakens a protected class's ability to elect its candidates. The bill would add a ban on any election policy or practice, by a local government or a state agency, that results or is likely to result in voter suppression. Suppression would mean a material disparity in participation or access for a protected class, meaning any race, color or language-minority group, or an impairment of their equal opportunity to take part. A government could defend itself only by showing with clear and convincing evidence that the practice is necessary to a compelling interest with no less harmful alternative. The second ban would cover any method of election that dilutes protected-class votes, not just at-large systems. Proof of intentional discrimination would not be required. The Attorney General could sue alongside affected voters, but a plaintiff would first have to send a notice letter and wait 45 or 60 days, and cost recovery would be capped near $30,000 adjusted for inflation. A government found to have violated voting-rights law in the past decade would need the Attorney General's approval before changing its election method. The Senate passed it 29-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Senate Bill 1164, which would rewrite the California Voting Rights Act into two separate bans and widen who can sue. That law now reaches only a local government using an at-large election method that weakens a protected class's ability to elect its candidates. The bill would add a ban on any election policy or practice, by a local government or a state agency, that results or is likely to result in voter suppression. Suppression would mean a material disparity in participation or access for a protected class, meaning any race, color or language-minority group, or an impairment of their equal opportunity to take part. A government could defend itself only by showing with clear and convincing evidence that the practice is necessary to a compelling interest with no less harmful alternative. The second ban would cover any method of election that dilutes protected-class votes, not just at-large systems. Proof of intentional discrimination would not be required. The Attorney General could sue alongside affected voters, but a plaintiff would first have to send a notice letter and wait 45 or 60 days, and cost recovery would be capped near $30,000 adjusted for inflation. A government found to have violated voting-rights law in the past decade would need the Attorney General's approval before changing its election method. The Senate passed it 29-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1726161,
+   "measure_id": "SB 1173",
+   "vote_date": "2026-08-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 1173, which would let a defendant ask the jury to consider a closely related lesser offense. A jury may now convict on an offense necessarily included in the charge, and a judge must instruct on one where the evidence supports it. There is no right to an instruction on a merely related offense. The bill would require the court, at the defendant's request, to instruct on a lesser offense closely related to the charge, if three conditions are met. The defense theory must be consistent with a conviction for the lesser offense, the evidence of it must have been admitted to decide the charged offense, and there must be some basis for the lower finding beyond simply disbelieving the prosecution. A judge could do the same where a jury is waived. The defendant would have to notify the prosecution no later than the start of jury selection, or before evidence in a court trial. That notice could be excused only with the prosecution's agreement or for good cause. The Assembly passed it 44-19. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Senate Bill 1173, which would let a defendant ask the jury to consider a closely related lesser offense. A jury may now convict on an offense necessarily included in the charge, and a judge must instruct on one where the evidence supports it. There is no right to an instruction on a merely related offense. The bill would require the court, at the defendant's request, to instruct on a lesser offense closely related to the charge, if three conditions are met. The defense theory must be consistent with a conviction for the lesser offense, the evidence of it must have been admitted to decide the charged offense, and there must be some basis for the lower finding beyond simply disbelieving the prosecution. A judge could do the same where a jury is waived. The defendant would have to notify the prosecution no later than the start of jury selection, or before evidence in a court trial. That notice could be excused only with the prosecution's agreement or for good cause. The Assembly passed it 44-19. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726574,
+   "measure_id": "SB 1173",
+   "vote_date": "2026-08-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 1173, which would let a defendant ask the jury to consider a closely related lesser offense. A jury may now convict on an offense necessarily included in the charge, and a judge must instruct on one where the evidence supports it. There is no right to an instruction on a merely related offense. The bill would require the court, at the defendant's request, to instruct on a lesser offense closely related to the charge, if three conditions are met. The defense theory must be consistent with a conviction for the lesser offense, the evidence of it must have been admitted to decide the charged offense, and there must be some basis for the lower finding beyond simply disbelieving the prosecution. A judge could do the same where a jury is waived. The defendant would have to notify the prosecution no later than the start of jury selection, or before evidence in a court trial. That notice could be excused only with the prosecution's agreement or for good cause. The Senate passed it 28-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Senate Bill 1173, which would let a defendant ask the jury to consider a closely related lesser offense. A jury may now convict on an offense necessarily included in the charge, and a judge must instruct on one where the evidence supports it. There is no right to an instruction on a merely related offense. The bill would require the court, at the defendant's request, to instruct on a lesser offense closely related to the charge, if three conditions are met. The defense theory must be consistent with a conviction for the lesser offense, the evidence of it must have been admitted to decide the charged offense, and there must be some basis for the lower finding beyond simply disbelieving the prosecution. A judge could do the same where a jury is waived. The defendant would have to notify the prosecution no later than the start of jury selection, or before evidence in a court trial. That notice could be excused only with the prosecution's agreement or for good cause. The Senate passed it 28-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1725982,
+   "measure_id": "SB 1237",
+   "vote_date": "2026-08-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 1237, which would raise the penalty on employers that repeatedly fail to file a pay data report. Larger private employers must file a yearly report with the Civil Rights Department showing employee counts by race, ethnicity and sex, and within each job category the median and mean hourly pay for each group. A court must already impose up to $100 per employee for failing to file and up to $200 per employee for a later failure. The bill would raise that repeat penalty to up to $1,000 per employee, leaving the first-time penalty unchanged. It would also require the department to publish each year the total number of pay data reports it received. That count would still be subject to the existing rule that published figures be arranged so they cannot be traced to any individual business or person. The Assembly passed it 59-19. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Senate Bill 1237, which would raise the penalty on employers that repeatedly fail to file a pay data report. Larger private employers must file a yearly report with the Civil Rights Department showing employee counts by race, ethnicity and sex, and within each job category the median and mean hourly pay for each group. A court must already impose up to $100 per employee for failing to file and up to $200 per employee for a later failure. The bill would raise that repeat penalty to up to $1,000 per employee, leaving the first-time penalty unchanged. It would also require the department to publish each year the total number of pay data reports it received. That count would still be subject to the existing rule that published figures be arranged so they cannot be traced to any individual business or person. The Assembly passed it 59-19. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726381,
+   "measure_id": "SB 1237",
+   "vote_date": "2026-08-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 1237, which would raise the penalty on employers that repeatedly fail to file a pay data report. Larger private employers must file a yearly report with the Civil Rights Department showing employee counts by race, ethnicity and sex, and within each job category the median and mean hourly pay for each group. A court must already impose up to $100 per employee for failing to file and up to $200 per employee for a later failure. The bill would raise that repeat penalty to up to $1,000 per employee, leaving the first-time penalty unchanged. It would also require the department to publish each year the total number of pay data reports it received. That count would still be subject to the existing rule that published figures be arranged so they cannot be traced to any individual business or person. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Senate Bill 1237, which would raise the penalty on employers that repeatedly fail to file a pay data report. Larger private employers must file a yearly report with the Civil Rights Department showing employee counts by race, ethnicity and sex, and within each job category the median and mean hourly pay for each group. A court must already impose up to $100 per employee for failing to file and up to $200 per employee for a later failure. The bill would raise that repeat penalty to up to $1,000 per employee, leaving the first-time penalty unchanged. It would also require the department to publish each year the total number of pay data reports it received. That count would still be subject to the existing rule that published figures be arranged so they cannot be traced to any individual business or person. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

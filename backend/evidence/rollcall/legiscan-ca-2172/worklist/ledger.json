@@ -63,12 +63,12 @@
    "reason": "omnibus budget trailer \u2014 privacy funds, prison land, tribal gaming, climate lending and more in one measure"
   },
   "AB 1376": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Wards: probation.",
-   "batch": null,
+   "batch": "batch-13",
    "reason": null
   },
   "AB 143": {
@@ -90,12 +90,12 @@
    "reason": "omnibus budget trailer \u2014 33 digest items across unrelated health topics, cutting both ways on vaccines and transparency"
   },
   "AB 1441": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "County of Merced Citizens Redistricting Commission.",
-   "batch": null,
+   "batch": "batch-13",
    "reason": null
   },
   "AB 1448": {
@@ -288,21 +288,21 @@
    "reason": "single-county procedural bill (Fresno initiative timing); operative text takes no position on the measure itself"
   },
   "AB 1930": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Abortion or gender-affirming health care services: subpoenas, discovery requests, or other requests for information.",
-   "batch": null,
+   "batch": "batch-13",
    "reason": null
   },
   "AB 1973": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Abortion: authorized procedures.",
-   "batch": null,
+   "batch": "batch-13",
    "reason": null
   },
   "AB 2084": {
@@ -315,12 +315,12 @@
    "reason": "no defensible research area \u2014 discretion to keep a state tax exemption after federal revocation"
   },
   "AB 2122": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Infractions: warrants and penalties.",
-   "batch": null,
+   "batch": "batch-13",
    "reason": null
   },
   "AB 2128": {
@@ -378,12 +378,12 @@
    "reason": "cuts both ways on one dimension \u2014 extends the low-income shield to all license types but narrows the income test to a one-person household median"
   },
   "AB 2227": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Farm labor contractors: surety bonds.",
-   "batch": null,
+   "batch": "batch-13",
    "reason": null
   },
   "AB 2257": {
@@ -405,21 +405,21 @@
    "reason": "cuts both ways \u2014 a capped, opt-in, expiring pilot with an exit fee and an incentive held below avoided cost"
   },
   "AB 2318": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Law enforcement: facilitating medical care.",
-   "batch": null,
+   "batch": "batch-13",
    "reason": null
   },
   "AB 2393": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "False imprisonment: false arrest: remedies.",
-   "batch": null,
+   "batch": "batch-13",
    "reason": null
   },
   "AB 2405": {
@@ -432,30 +432,30 @@
    "reason": "cuts both ways \u2014 closest-facility duty, but the stated preference is advisory and local destination policies survive"
   },
   "AB 2428": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Criminal fees.",
-   "batch": null,
+   "batch": "batch-13",
    "reason": null
   },
   "AB 2448": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Medical information: confidentiality.",
-   "batch": null,
+   "batch": "batch-13",
    "reason": null
   },
   "AB 2465": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "State government: benefits.",
-   "batch": null,
+   "batch": "batch-13",
    "reason": null
   },
   "AB 2484": {
@@ -549,184 +549,184 @@
    "reason": null
   },
   "AB 7": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "vetoed",
    "value": 7,
    "title": "Postsecondary education: admissions preference: descendants of slavery.",
-   "batch": null,
+   "batch": "batch-13",
    "reason": null
   },
   "AB 742": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "vetoed",
    "value": 7,
    "title": "Department of Consumer Affairs: licensing: applicants who are descendants of slaves.",
-   "batch": null,
+   "batch": "batch-13",
    "reason": null
   },
   "AB 747": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Service of Process Accountability, Reform and Equity (SPARE) Act.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-13/14 read",
+   "reason": "cuts both ways \u2014 tightens service-of-process proof but narrows the existing route to set aside a default, and shields pre-2027 service from the new photo rule"
   },
   "AB 761": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Monterey-Salinas Transit District: sales and special taxes.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-13/14 read",
+   "reason": "cuts both ways and single-district \u2014 removes the district's existing ballot power while granting a narrower one that can exceed the county tax cap"
   },
   "AB 762": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Disposable, battery-embedded vapor inhalation device: prohibition and penalties.",
-   "batch": null,
+   "batch": "batch-13",
    "reason": null
   },
   "AB 766": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "vetoed",
    "value": 7,
    "title": "State agencies and departments: strategic plans: diversity, equity, and inclusion.",
-   "batch": null,
+   "batch": "batch-13",
    "reason": null
   },
   "AB 93": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "vetoed",
    "value": 7,
    "title": "Water resources: data centers.",
-   "batch": null,
+   "batch": "batch-13",
    "reason": null
   },
   "AB 930": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Elections and voting procedures.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-13/14 read",
+   "reason": "cuts both ways and two-topic \u2014 extends the mail-ballot deadline but charges recount requesters for board members while giving them new control over recount order"
   },
   "ACA 8": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Congressional redistricting.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-13/14 read",
+   "reason": "constitutional amendment that sets aside the independent commission for congressional maps while declaring support for independent commissions; too contested to label"
   },
   "AJR 29": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Voting by mail.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-13/14 read",
+   "reason": "joint resolution \u2014 expresses a position and changes no law; a no vote may object to the Legislature weighing in at all"
   },
   "SB 1004": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Law enforcement: masks.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-13/14 read",
+   "reason": "cuts both ways \u2014 adds state peace officers to the mask ban but cuts the civil damages rule from six torts to two and delays the policy deadline"
   },
   "SB 1037": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Health care coverage: rate review.",
-   "batch": null,
+   "batch": "batch-14",
    "reason": null
   },
   "SB 1093": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Mobilehome parks: disaster assistance.",
-   "batch": null,
+   "batch": "batch-14",
    "reason": null
   },
   "SB 1105": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Law enforcement.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-13/14 read",
+   "reason": "cuts both ways \u2014 strips federal arrest authority while granting it to tribal officers, preserving it for land-management officers, and grandfathering existing agreements"
   },
   "SB 1135": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "California Wildlife Coexistence Act.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-13/14 read",
+   "reason": "cuts both ways \u2014 the protective program is contingent on an appropriation while the operative provision lets dogs pursue wolves, a listed species"
   },
   "SB 1164": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Elections.",
-   "batch": null,
+   "batch": "batch-14",
    "reason": null
   },
   "SB 1173": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Jury instructions: lesser related offenses.",
-   "batch": null,
+   "batch": "batch-14",
    "reason": null
   },
   "SB 122": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Taxation.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-13/14 read",
+   "reason": "budget trailer and omnibus \u2014 raises taxes on digital goods while cutting the minimum tax for new entities, plus a targeted 100 percent tax"
   },
   "SB 1237": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Civil Rights Department.",
-   "batch": null,
+   "batch": "batch-14",
    "reason": null
   },
   "SB 125": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Medi-Cal: managed care organization provider tax.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-13/14 read",
+   "reason": "budget trailer \u2014 central move is taking the managed care tax outside the voter-approved Proposition 35 spending conditions"
   },
   "SB 127": {
    "status": "open",
