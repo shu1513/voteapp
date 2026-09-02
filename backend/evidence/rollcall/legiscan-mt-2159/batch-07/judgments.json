@@ -1,0 +1,130 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1481813,
+   "measure_id": "HB 179",
+   "vote_date": "2025-02-04",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 179, which changes one rule about Montana's inactive voter list. A county moves a voter to that list when mail sent to them comes back. Such a voter goes back on the active list by voting, by giving the county a current address in writing, or by filing a form. The bill says that signing a petition for a statewide ballot issue is not one of those steps. So a name on such a petition leaves the voter's inactive status as it was. The Montana House passed it 58-42, and it became law.",
+   "nay_description": "Voted against House Bill 179, which changes one rule about Montana's inactive voter list. A county moves a voter to that list when mail sent to them comes back. Such a voter goes back on the active list by voting, by giving the county a current address in writing, or by filing a form. The bill says that signing a petition for a statewide ballot issue is not one of those steps. So a name on such a petition leaves the voter's inactive status as it was. The Montana House passed it 58-42, and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1561886,
+   "measure_id": "HB 231",
+   "vote_date": "2025-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 231, one of two property tax bills that passed on the same day. Because Senate Bill 542 also passed, House Bill 231 said that most of its own text would fall away. What was left rewrote three parts of Senate Bill 542. It set the 2025 tax rate on a home at 0.76% of the first $400,000 of value, 1.1% up to $1.5 million, and 2.2% above that. It set business property at 1.4% on the first $400,000 and 1.89% above. It also gave the revenue department $4 million to carry the new law out. The Montana House adopted the final version 60-39, and it became law.",
+   "nay_description": "Voted against House Bill 231, one of two property tax bills that passed on the same day. Because Senate Bill 542 also passed, House Bill 231 said that most of its own text would fall away. What was left rewrote three parts of Senate Bill 542. It set the 2025 tax rate on a home at 0.76% of the first $400,000 of value, 1.1% up to $1.5 million, and 2.2% above that. It set business property at 1.4% on the first $400,000 and 1.89% above. It also gave the revenue department $4 million to carry the new law out. The Montana House adopted the final version 60-39, and it became law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1562488,
+   "measure_id": "HB 231",
+   "vote_date": "2025-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 231, one of two property tax bills that passed on the same day. Because Senate Bill 542 also passed, House Bill 231 said that most of its own text would fall away. What was left rewrote three parts of Senate Bill 542. It set the 2025 tax rate on a home at 0.76% of the first $400,000 of value, 1.1% up to $1.5 million, and 2.2% above that. It set business property at 1.4% on the first $400,000 and 1.89% above. It also gave the revenue department $4 million to carry the new law out. The Montana Senate adopted the final version 28-22, and it became law.",
+   "nay_description": "Voted against House Bill 231, one of two property tax bills that passed on the same day. Because Senate Bill 542 also passed, House Bill 231 said that most of its own text would fall away. What was left rewrote three parts of Senate Bill 542. It set the 2025 tax rate on a home at 0.76% of the first $400,000 of value, 1.1% up to $1.5 million, and 2.2% above that. It set business property at 1.4% on the first $400,000 and 1.89% above. It also gave the revenue department $4 million to carry the new law out. The Montana Senate adopted the final version 28-22, and it became law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1508577,
+   "measure_id": "HB 801",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 801, the Montana Firearms Liability Clarification Act. The act limits lawsuits over the way guns and ammunition are sold and advertised. A person may no longer sue a maker or seller over its ads unless four tests are all met. The ads must have aimed at people who by law may not own guns, and must have urged illegal use. They must be a direct cause of the harm, and must break a law written just about gun sales or gun ads. General consumer laws and nuisance laws no longer count. A person who sues anyway can be told to pay the firm's legal costs, and the firm may then sue that person. The Montana House passed it 59-40, and it became law.",
+   "nay_description": "Voted against House Bill 801, the Montana Firearms Liability Clarification Act. The act limits lawsuits over the way guns and ammunition are sold and advertised. A person may no longer sue a maker or seller over its ads unless four tests are all met. The ads must have aimed at people who by law may not own guns, and must have urged illegal use. They must be a direct cause of the harm, and must break a law written just about gun sales or gun ads. General consumer laws and nuisance laws no longer count. A person who sues anyway can be told to pay the firm's legal costs, and the firm may then sue that person. The Montana House passed it 59-40, and it became law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1554386,
+   "measure_id": "HB 801",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 801, the Montana Firearms Liability Clarification Act. The act limits lawsuits over the way guns and ammunition are sold and advertised. A person may no longer sue a maker or seller over its ads unless four tests are all met. The ads must have aimed at people who by law may not own guns, and must have urged illegal use. They must be a direct cause of the harm, and must break a law written just about gun sales or gun ads. General consumer laws and nuisance laws no longer count. A person who sues anyway can be told to pay the firm's legal costs, and the firm may then sue that person. The Montana Senate passed it 37-13, and it became law.",
+   "nay_description": "Voted against House Bill 801, the Montana Firearms Liability Clarification Act. The act limits lawsuits over the way guns and ammunition are sold and advertised. A person may no longer sue a maker or seller over its ads unless four tests are all met. The ads must have aimed at people who by law may not own guns, and must have urged illegal use. They must be a direct cause of the harm, and must break a law written just about gun sales or gun ads. General consumer laws and nuisance laws no longer count. A person who sues anyway can be told to pay the firm's legal costs, and the firm may then sue that person. The Montana Senate passed it 37-13, and it became law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1546096,
+   "measure_id": "SB 440",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 440, which adds a public counting report to Montana elections. The secretary of state must design one standard form that checks ballot counts against each other. Every county must fill it in after the ballots are counted and before the county board meets to make the count official. The county must post the form online and send it to the secretary of state. One statewide report must then be published at least 7 days before results are made final. The Montana House backed the Senate bill 58-41, and it became law.",
+   "nay_description": "Voted against Senate Bill 440, which adds a public counting report to Montana elections. The secretary of state must design one standard form that checks ballot counts against each other. Every county must fill it in after the ballots are counted and before the county board meets to make the count official. The county must post the form online and send it to the secretary of state. One statewide report must then be published at least 7 days before results are made final. The Montana House backed the Senate bill 58-41, and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1562501,
+   "measure_id": "SB 542",
+   "vote_date": "2025-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 542, Montana's 2025 property tax law. It sent a one-time rebate of up to $400 to people who owned and lived in a Montana home during 2024. It cut the rate on farm and ranch land from 2.16% to 2.05%. It replaced the single 1.35% home rate with a sliding scale, so a lower-value home is taxed at a lower rate than a costly one. From 2026 a homeowner or a long-term landlord must apply to get the lowest rate. Local governments whose charter or whose voters had fixed their tax rate must now raise only the same dollars they raised in 2025. The Montana Senate adopted the final version 28-22, and it became law.",
+   "nay_description": "Voted against Senate Bill 542, Montana's 2025 property tax law. It sent a one-time rebate of up to $400 to people who owned and lived in a Montana home during 2024. It cut the rate on farm and ranch land from 2.16% to 2.05%. It replaced the single 1.35% home rate with a sliding scale, so a lower-value home is taxed at a lower rate than a costly one. From 2026 a homeowner or a long-term landlord must apply to get the lowest rate. Local governments whose charter or whose voters had fixed their tax rate must now raise only the same dollars they raised in 2025. The Montana Senate adopted the final version 28-22, and it became law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

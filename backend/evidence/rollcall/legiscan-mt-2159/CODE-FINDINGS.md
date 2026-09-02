@@ -132,3 +132,55 @@ the enrolled text for "Coordination instruction". If one exists, look up whether
 the named bill was signed. If it was, work out what survives before writing a
 description that says "and it became law".
 
+
+## 6a. Not a code defect: a stale short title
+
+LegiScan's short title for HB 329 is "Make the Montana ammunition act
+permanent". The enrolled act terminates on 31 December 2035. The title reflects
+the bill as introduced, not as enacted, and a conference committee changed it.
+Read the enrolled title, never the tracker's label.
+
+## 7. A real defect: LegiScan's Montana feed can record a member's vote wrongly
+
+Found in batch-07 while checking which text the House had voted on for SB 542.
+
+Montana publishes its own roll calls member by member:
+
+    https://api.legmt.gov/bills/v1/votes/findByBillId?billId=<id>
+
+The `id` is the `id` field of the bill record already used for chapter numbers.
+Each vote carries a `legislatorVotes` array of legislator ids and vote types,
+which resolve against `/Users/shu/legiscan-data/mt-legmt-legislators.json`.
+
+Three confirmed disagreements so far:
+
+| Roll | Chamber, date | LegiScan | Montana | Members differing |
+| --- | --- | --- | --- | --- |
+| 1556679 (SB 542) | house 2025-04-24 | 73-26 | 72-27 | 1 (Amy Regier) |
+| 1551940 (HB 231) | senate 2025-04-17 | 26-24 | 25-25 | 47 of 50 |
+| 1554283 (HB 231) | senate 2025-04-22 | 24-26 | 24-26 | 8 |
+
+The last row is the important one: **the tallies match exactly and eight
+members' votes are still swapped.** A check that compares only totals passes it.
+Only a member-by-member comparison catches it.
+
+Roll 1556679 is a roll this campaign wanted to use, and Amy Regier is in the
+crosswalk, so importing it as LegiScan has it would have published a record
+saying a named person voted for a bill she voted against.
+
+**Tooling.** `/Users/shu/legiscan-data/mt_verify.py` compares any bill's stored
+LegiScan rolls against Montana's own record, member by member, and
+`mt_prefetch.py` warms a local cache of the official records with eight threads.
+Both live outside the repository, like the other Montana helpers.
+
+**What the pipeline does right.** The importer verifies the SHA-256 of each roll
+call payload against the value approved at fetch time, and separately checks the
+evidence file's tally against the approved row. Those guards make a hand
+correction impossible, which is correct: they exist to stop unreviewed editing of
+source data.
+
+**What is missing.** There is no supported way to record that an upstream source
+is wrong about a named member and to import the corrected roll. Until there is,
+an affected roll can only be held. SB 542's House roll is held for this reason
+and is marked `held:legiscan-vote-defect` in the worklist. Building that path is
+a code change and belongs in its own review.
