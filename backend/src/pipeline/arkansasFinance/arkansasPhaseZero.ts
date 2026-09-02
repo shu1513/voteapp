@@ -1,5 +1,7 @@
 // Phase 0 gate computations for Arkansas CFIS (plan-arkansas-finance.md).
-// Pure functions + streaming accumulators; no database, no publication.
+// Pure functions + row-callback accumulators (the parser hands rows over one
+// at a time so only gold-entity detail is retained); no database, no
+// publication.
 
 import {
   mergeArkansasOccupation,
@@ -43,7 +45,21 @@ export type ArkansasReceiptEntityDetail = {
   // key: `${Report Name}|${Amended}` — the amendment-lineage join input
   byReportAmended: Record<string, ArkansasMoneySummary>;
   byElectionType: Record<string, ArkansasMoneySummary>;
+  // CSV "Election Year" is the election a row is designated for, NOT the
+  // registration cycle (Sanders' 2026-cycle registration total includes rows
+  // tagged 2022). Kept for transparency; never used as a cycle key.
+  byElectionYear: Record<string, ArkansasMoneySummary>;
   total: ArkansasMoneySummary;
+};
+
+export type ArkansasOccupationCoverage = {
+  individualRowCount: number;
+  occupationFilledCount: number;
+  occupationFromDropdownCount: number;
+  occupationFromOtherCount: number;
+  employerFilledCount: number;
+  itemizedSmallRowCount: number;
+  itemizedSmallWithOccupationCount: number;
 };
 
 export type ArkansasReceiptCsvSummary = {
@@ -55,15 +71,10 @@ export type ArkansasReceiptCsvSummary = {
   // Rows whose Transaction Amount cell is blank or unparseable (2 observed
   // live in TCON 2024 with shifted cells) — skipped entirely, never $0.
   unparseableAmountRowCount: number;
-  occupation: {
-    individualRowCount: number;
-    occupationFilledCount: number;
-    occupationFromDropdownCount: number;
-    occupationFromOtherCount: number;
-    employerFilledCount: number;
-    itemizedSmallRowCount: number;
-    itemizedSmallWithOccupationCount: number;
-  };
+  // All individual-source rows (PAC-dominated) vs candidate filers only — the
+  // latter is what the direct-donor occupation chart would actually draw on.
+  occupation: ArkansasOccupationCoverage;
+  candidateOccupation: ArkansasOccupationCoverage;
   entities: Record<string, ArkansasReceiptEntityDetail>;
   // filing-entity IDs of candidate filers with Amended=Y rows (gate 4 fixture
   // discovery), capped to keep output readable.
@@ -77,6 +88,37 @@ export type ArkansasReceiptCsvAccumulator = {
 
 const AMENDED_ENTITY_SAMPLE_LIMIT = 25;
 
+function emptyOccupationCoverage(): ArkansasOccupationCoverage {
+  return {
+    individualRowCount: 0,
+    occupationFilledCount: 0,
+    occupationFromDropdownCount: 0,
+    occupationFromOtherCount: 0,
+    employerFilledCount: 0,
+    itemizedSmallRowCount: 0,
+    itemizedSmallWithOccupationCount: 0,
+  };
+}
+
+function addOccupationCoverage(
+  stats: ArkansasOccupationCoverage,
+  row: ArkansasReceiptCsvRow,
+  cents: number
+): void {
+  stats.individualRowCount += 1;
+  const merged = mergeArkansasOccupation(row.Occupation, row["Occupation Other"]);
+  if (merged.value !== null) {
+    stats.occupationFilledCount += 1;
+    if (merged.source === "occupation") stats.occupationFromDropdownCount += 1;
+    if (merged.source === "occupation_other") stats.occupationFromOtherCount += 1;
+  }
+  if (row["Employer Name"].trim()) stats.employerFilledCount += 1;
+  if (row["Transaction Sub Type"] === "Itemized Monetary" && cents > 0 && cents <= 200_00) {
+    stats.itemizedSmallRowCount += 1;
+    if (merged.value !== null) stats.itemizedSmallWithOccupationCount += 1;
+  }
+}
+
 export function createArkansasReceiptCsvAccumulator(
   goldEntityIds: ReadonlySet<number>
 ): ArkansasReceiptCsvAccumulator {
@@ -87,15 +129,8 @@ export function createArkansasReceiptCsvAccumulator(
     electionTypeCounts: {},
     amendedRowCount: 0,
     unparseableAmountRowCount: 0,
-    occupation: {
-      individualRowCount: 0,
-      occupationFilledCount: 0,
-      occupationFromDropdownCount: 0,
-      occupationFromOtherCount: 0,
-      employerFilledCount: 0,
-      itemizedSmallRowCount: 0,
-      itemizedSmallWithOccupationCount: 0,
-    },
+    occupation: emptyOccupationCoverage(),
+    candidateOccupation: emptyOccupationCoverage(),
     entities: {},
     candidateEntitiesWithAmendedRows: [],
   };
@@ -127,24 +162,12 @@ export function createArkansasReceiptCsvAccumulator(
         amendedCandidateEntities.add(entityId);
       }
 
-      if (row["Funding Source / Loan Source Type"].includes("Individual")) {
-        const occupationStats = summary.occupation;
-        occupationStats.individualRowCount += 1;
-        const merged = mergeArkansasOccupation(row.Occupation, row["Occupation Other"]);
-        if (merged.value !== null) {
-          occupationStats.occupationFilledCount += 1;
-          if (merged.source === "occupation") occupationStats.occupationFromDropdownCount += 1;
-          if (merged.source === "occupation_other") occupationStats.occupationFromOtherCount += 1;
-        }
-        if (row["Employer Name"].trim()) occupationStats.employerFilledCount += 1;
-        if (
-          row["Transaction Sub Type"] === "Itemized Monetary" &&
-          cents > 0 &&
-          cents <= 200_00
-        ) {
-          occupationStats.itemizedSmallRowCount += 1;
-          if (merged.value !== null) occupationStats.itemizedSmallWithOccupationCount += 1;
-        }
+      if (
+        row["Funding Source / Loan Source Type"].includes("Individual") &&
+        row["Transaction Type"] === "Contribution"
+      ) {
+        addOccupationCoverage(summary.occupation, row, cents);
+        if (row.FilerType === "Candidate") addOccupationCoverage(summary.candidateOccupation, row, cents);
       }
 
       if (goldEntityIds.has(entityId)) {
@@ -154,6 +177,7 @@ export function createArkansasReceiptCsvAccumulator(
           byTypeSubTypeAmended: {},
           byReportAmended: {},
           byElectionType: {},
+          byElectionYear: {},
           total: emptyMoney(),
         });
         addMoney(detail.total, cents);
@@ -162,6 +186,7 @@ export function createArkansasReceiptCsvAccumulator(
         const reportKey = `${row["Report Name"]}|${amended ? "Y" : "N"}`;
         addMoney((detail.byReportAmended[reportKey] ??= emptyMoney()), cents);
         addMoney((detail.byElectionType[row["Election Type"]] ??= emptyMoney()), cents);
+        addMoney((detail.byElectionYear[row["Election Year"]] ??= emptyMoney()), cents);
       }
     },
     result() {
@@ -258,6 +283,7 @@ export function createArkansasExpenditureCsvAccumulator(
           byTypeSubTypeAmended: {},
           byReportAmended: {},
           byElectionType: {},
+          byElectionYear: {},
           total: emptyMoney(),
         });
         addMoney(detail.total, cents);
@@ -266,6 +292,7 @@ export function createArkansasExpenditureCsvAccumulator(
         const reportKey = `${row["Report Name"]}|${amended ? "Y" : "N"}`;
         addMoney((detail.byReportAmended[reportKey] ??= emptyMoney()), cents);
         addMoney((detail.byElectionType[row["Election Type"]] ??= emptyMoney()), cents);
+        addMoney((detail.byElectionYear[row["Election Year"]] ??= emptyMoney()), cents);
       }
     },
     result() {

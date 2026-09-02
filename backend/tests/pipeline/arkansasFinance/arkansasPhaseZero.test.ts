@@ -98,6 +98,21 @@ describe("createArkansasReceiptCsvAccumulator", () => {
     expect(summary.occupation.occupationFromOtherCount).toBe(1);
     expect(summary.occupation.itemizedSmallRowCount).toBe(3);
     expect(summary.occupation.itemizedSmallWithOccupationCount).toBe(2);
+    expect(summary.entities["1004"]!.byElectionYear).toEqual({ "2026": { rowCount: 2, amountCents: 15_000 } });
+  });
+
+  it("tracks candidate-filer occupation coverage separately from PAC-dominated totals", () => {
+    const accumulator = createArkansasReceiptCsvAccumulator(new Set());
+    accumulator.add(receiptRow({}));
+    accumulator.add(
+      receiptRow({ "Filing Entity ID": "559", FilerType: "Political Action Committee", Occupation: "", "Occupation Other": "" })
+    );
+    accumulator.add(receiptRow({ "Filing Entity ID": "560", FilerType: "Political Action Committee" }));
+    // Candidate self-loans are individual-source rows but not contributions.
+    accumulator.add(receiptRow({ "Transaction Type": "Loan", "Transaction Sub Type": "" }));
+    const summary = accumulator.result();
+    expect(summary.occupation).toMatchObject({ individualRowCount: 3, occupationFilledCount: 2 });
+    expect(summary.candidateOccupation).toMatchObject({ individualRowCount: 1, occupationFilledCount: 1 });
   });
 
   it("discovers candidate filers with amended rows", () => {

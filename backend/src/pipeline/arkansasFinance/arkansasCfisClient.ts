@@ -155,11 +155,28 @@ export type ArkansasFilerRegistrationSearchInput = {
   filerName?: string;
 };
 
+// Sort keys the deployment accepts (verified 2026-08-27; anything else is a
+// server error). None is unique — heavy ties make multi-page pulls unstable
+// (Sanders, 41 pages: 1,789 duplicate rows unsorted, 2,046 sorted by date).
+// Complete pulls therefore partition by inclusive `fromDate`/`toDate`
+// (MM/DD/YYYY) until each window fits in one page.
+export type ArkansasTransactionSortBy =
+  | "TransactionDate"
+  | "TransactionAmount"
+  | "SourceName"
+  | "ReportName"
+  | "FilerName";
+
 export type ArkansasTransactionSearchInput = {
   pageNumber?: number;
   pageSize?: number;
   filerRegistrationGuid: string;
   transactionTypeCode: ArkansasCfisTransactionTypeCode;
+  // Inclusive transaction-date window, MM/DD/YYYY.
+  fromDate?: string;
+  toDate?: string;
+  sortBy?: ArkansasTransactionSortBy;
+  sortType?: "asc" | "desc";
 };
 
 export type ArkansasFiledReportSearchInput = {
@@ -515,10 +532,26 @@ export async function getArkansasFilerRegistrationPage(
   return parsePage(envelope, parseFilerRegistrationRow);
 }
 
+const US_DATE_PATTERN = /^(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/\d{4}$/;
+
+function requireUsDate(value: string, label: string): string {
+  const trimmed = value.trim();
+  if (!US_DATE_PATTERN.test(trimmed)) {
+    throw new ArkansasCfisClientError("invalid_request", `Invalid ${label} (MM/DD/YYYY): ${value}`);
+  }
+  return trimmed;
+}
+
 export async function getArkansasTransactionPage(
   input: ArkansasTransactionSearchInput,
   options?: ArkansasCfisClientOptions
 ): Promise<ArkansasCfisPage<ArkansasTransactionRow>> {
+  if ((input.fromDate === undefined) !== (input.toDate === undefined)) {
+    throw new ArkansasCfisClientError("invalid_request", "Arkansas CFIS date window needs both fromDate and toDate");
+  }
+  if ((input.sortBy === undefined) !== (input.sortType === undefined)) {
+    throw new ArkansasCfisClientError("invalid_request", "Arkansas CFIS sort needs both sortBy and sortType");
+  }
   const envelope = await requestJson({
     endpoint: ARKANSAS_CFIS_ENDPOINTS.transactions,
     method: "POST",
@@ -527,6 +560,15 @@ export async function getArkansasTransactionPage(
       pageSize: requirePageSize(input.pageSize),
       filerRegistrationGuid: requireGuid(input.filerRegistrationGuid, "Arkansas CFIS registration guid"),
       transactionTypeCode: input.transactionTypeCode,
+      ...(input.fromDate !== undefined && input.toDate !== undefined
+        ? {
+            fromDate: requireUsDate(input.fromDate, "Arkansas CFIS fromDate"),
+            toDate: requireUsDate(input.toDate, "Arkansas CFIS toDate"),
+          }
+        : {}),
+      ...(input.sortBy !== undefined && input.sortType !== undefined
+        ? { sortBy: input.sortBy, sortType: input.sortType }
+        : {}),
     },
     options,
   });
@@ -597,15 +639,125 @@ export async function getAllArkansasFilerRegistrations(
   });
 }
 
+function rejectDuplicateTransactionGuids(rows: readonly ArkansasTransactionRow[], context: string): void {
+  const seen = new Set<string>();
+  let duplicates = 0;
+  for (const row of rows) {
+    if (seen.has(row.guid)) duplicates += 1;
+    seen.add(row.guid);
+  }
+  if (duplicates > 0) {
+    throw new ArkansasCfisClientError(
+      "bad_response",
+      `Arkansas CFIS transaction pull returned ${duplicates} duplicate guids (${context}); ` +
+        "server paging is unstable, so the pull is incomplete"
+    );
+  }
+}
+
+function usDateToUtc(value: string): number {
+  const [month, day, year] = value.split("/").map(Number);
+  return Date.UTC(year!, month! - 1, day!);
+}
+
+function utcToUsDate(ms: number): string {
+  const date = new Date(ms);
+  const pad = (n: number): string => String(n).padStart(2, "0");
+  return `${pad(date.getUTCMonth() + 1)}/${pad(date.getUTCDate())}/${date.getUTCFullYear()}`;
+}
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+export type ArkansasTransactionPullInput = Omit<
+  ArkansasTransactionSearchInput,
+  "pageNumber" | "fromDate" | "toDate" | "sortBy" | "sortType"
+>;
+
+// Complete per-registration pull. Server paging is unstable across pages
+// (see ArkansasTransactionSortBy), so: find the date bounds with two sorted
+// single-row requests, then bisect inclusive date windows until every window
+// fits in one page. A single day that still overflows a page falls back to
+// multi-page reads. Every level checks child totals against the parent and
+// the assembled set rejects duplicate guids — the pull fails closed instead
+// of returning silently incomplete rows.
 export async function getAllArkansasTransactions(
-  input: Omit<ArkansasTransactionSearchInput, "pageNumber">,
+  input: ArkansasTransactionPullInput,
   options?: ArkansasCfisClientOptions
 ): Promise<ArkansasTransactionRow[]> {
   const pageSize = requirePageSize(input.pageSize);
-  return getAllPages({
-    pageSize,
-    getPage: (pageNumber) => getArkansasTransactionPage({ ...input, pageNumber, pageSize }, options),
-  });
+  const base = { ...input, pageSize };
+
+  const first = await getArkansasTransactionPage({ ...base, pageNumber: 1 }, options);
+  if (first.totalItems <= pageSize) {
+    if (first.items.length !== first.totalItems) {
+      throw new ArkansasCfisClientError(
+        "bad_response",
+        `Arkansas CFIS pagination returned ${first.items.length} rows for totalItems ${first.totalItems}`
+      );
+    }
+    rejectDuplicateTransactionGuids(first.items, "single page");
+    return first.items;
+  }
+
+  const earliest = await getArkansasTransactionPage(
+    { ...base, pageNumber: 1, pageSize: 1, sortBy: "TransactionDate", sortType: "asc" },
+    options
+  );
+  const latest = await getArkansasTransactionPage(
+    { ...base, pageNumber: 1, pageSize: 1, sortBy: "TransactionDate", sortType: "desc" },
+    options
+  );
+  const earliestDate = earliest.items[0]?.transactionDate;
+  const latestDate = latest.items[0]?.transactionDate;
+  if (!earliestDate || !latestDate || !US_DATE_PATTERN.test(earliestDate) || !US_DATE_PATTERN.test(latestDate)) {
+    throw new ArkansasCfisClientError("bad_response", "Arkansas CFIS transaction date bounds unavailable");
+  }
+
+  const pullWindow = async (fromMs: number, toMs: number): Promise<ArkansasTransactionRow[]> => {
+    const fromDate = utcToUsDate(fromMs);
+    const toDate = utcToUsDate(toMs);
+    const page = await getArkansasTransactionPage({ ...base, pageNumber: 1, fromDate, toDate }, options);
+    if (page.totalItems <= pageSize) {
+      if (page.items.length !== page.totalItems) {
+        throw new ArkansasCfisClientError(
+          "bad_response",
+          `Arkansas CFIS window ${fromDate}-${toDate} returned ${page.items.length} rows for totalItems ${page.totalItems}`
+        );
+      }
+      return page.items;
+    }
+    if (fromMs >= toMs) {
+      // One day overflowing a page: the only remaining option is multi-page
+      // reading; duplicate rejection below decides whether it was complete.
+      const rows = await getAllPages({
+        pageSize,
+        getPage: (pageNumber) => getArkansasTransactionPage({ ...base, pageNumber, fromDate, toDate }, options),
+      });
+      rejectDuplicateTransactionGuids(rows, `single day ${fromDate}`);
+      return rows;
+    }
+    const days = Math.round((toMs - fromMs) / DAY_MS);
+    const midMs = fromMs + Math.floor(days / 2) * DAY_MS;
+    const left = await pullWindow(fromMs, midMs);
+    const right = await pullWindow(midMs + DAY_MS, toMs);
+    if (left.length + right.length !== page.totalItems) {
+      throw new ArkansasCfisClientError(
+        "bad_response",
+        `Arkansas CFIS window ${fromDate}-${toDate} split returned ${left.length + right.length} rows for totalItems ${page.totalItems}`
+      );
+    }
+    return [...left, ...right];
+  };
+
+  const rows = await pullWindow(usDateToUtc(earliestDate), usDateToUtc(latestDate));
+  if (rows.length !== first.totalItems) {
+    throw new ArkansasCfisClientError(
+      "bad_response",
+      `Arkansas CFIS windowed pull returned ${rows.length} rows for totalItems ${first.totalItems}`
+    );
+  }
+  rejectDuplicateTransactionGuids(rows, "windowed pull");
+  return rows;
 }
 
 export async function getAllArkansasFiledReports(

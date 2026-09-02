@@ -4,6 +4,7 @@ import { join } from "node:path";
 
 import { describe, expect, it, vi } from "vitest";
 
+import { ArkansasCfisClientError } from "../../src/pipeline/arkansasFinance/arkansasCfisClient.js";
 import {
   ARKANSAS_EXPENDITURE_CSV_COLUMNS,
   ARKANSAS_RECEIPT_CSV_COLUMNS,
@@ -191,11 +192,87 @@ describe("runProbeArkansasCampaignFinance", () => {
     expect(gold.status).toBe("ok");
     if (gold.status === "ok") {
       expect(gold.completeness.csvReceipts).toEqual({ rowCount: 2, amountCents: 35_000 });
-      expect(gold.completeness.apiReceipts).toMatchObject({ rowCount: 1, amountCents: 35_000 });
+      expect(gold.completeness.apiReceipts).toMatchObject({
+        status: "ok",
+        summary: { rowCount: 1, amountCents: 35_000 },
+      });
+      expect(gold.registrationScopedApi).toEqual({ raisedDeltaCents: 0, spentDeltaCents: 0 });
     }
-    expect(output.gate6_occupation.individualRowCount).toBe(2);
+    expect(output.gate6_occupation.allIndividualRows.individualRowCount).toBe(2);
+    expect(output.gate6_occupation.candidateFilersOnly.individualRowCount).toBe(2);
     expect(output.gate7_offices.missingRequiredOffices).toEqual([]);
+    // No amended fixture exists in this tiny corpus, so gate 4 fails and the
+    // overall verdict must not be green.
+    expect(output.gates.gate4_amendment.status).toBe("fail");
+    expect(output.gates.gate7_offices.status).toBe("pass");
+    expect(output.gates.gate3_completeness.status).toBe("pass");
+    expect(output.ok).toBe(false);
     expect(output.publication).toBe("disabled_phase_zero");
     expect(vi.mocked(client.downloadBulkCsvToFile)).not.toHaveBeenCalled();
+  });
+
+  it("fails gate 3 and the overall verdict when a transaction pull is incomplete", async () => {
+    const artifactDir = await mkdtemp(join(tmpdir(), "ar-phase0-"));
+    await writeFile(join(artifactDir, "TCON_2026.csv"), receiptCsv([]));
+    await writeFile(join(artifactDir, "TEXP_2026.csv"), expenditureCsv([]));
+    const client: ArkansasPhaseZeroClient = {
+      getNextElectionYear: vi.fn(async () => 2028),
+      getOfficeLookup: vi.fn(async () => [{ value: "1", name: "Governor" }]),
+      getAllFilerRegistrations: vi.fn(async () => [
+        {
+          registrationGuid: GUID,
+          filerEntityId: 1004,
+          filerEntityVersionId: 1,
+          filerType: "Candidate",
+          filerTypeCode: "CAN",
+          filerStatus: "Active",
+          firstName: "Sarah",
+          lastName: "Sanders",
+          suffix: null,
+          committeeName: null,
+          office: "Governor",
+          officeDistrictName: null,
+          jurisdictionName: "Arkansas",
+          politicalParty: null,
+          electionYear: 2026,
+          filingYear: 2026,
+          isPaperFiler: false,
+          totalRaised: 0,
+          totalSpent: 0,
+          balanceOfFunds: 0,
+        },
+      ]),
+      getAllTransactions: vi.fn(async () => {
+        throw new ArkansasCfisClientError(
+          "bad_response",
+          "Arkansas CFIS transaction pull returned 5 duplicate guids (windowed pull)"
+        );
+      }),
+      getAllFiledReports: vi.fn(async () => []),
+      downloadBulkCsvToFile: vi.fn(async () => {
+        throw new Error("not expected");
+      }),
+    };
+    const output = await runProbeArkansasCampaignFinance({
+      args: {
+        filingYears: [2026],
+        goldEntityIds: [1004],
+        artifactDir,
+        reuseArtifacts: true,
+        dnsFallback: false,
+        pageSize: 1_000,
+        timeoutMs: 10_000,
+      },
+      client,
+    });
+    expect(output.gates.gate3_completeness.status).toBe("fail");
+    expect(output.gates.gate7_offices).toEqual({ status: "fail", finding: "required_offices_present" });
+    expect(output.gate7_offices.missingRequiredOffices).toContain("State Senate");
+    expect(output.ok).toBe(false);
+    const gold = output.gold[0]!;
+    if (gold.status === "ok") {
+      expect(gold.completeness.apiReceipts).toMatchObject({ status: "pull_failed" });
+      expect(gold.registrationScopedApi.raisedDeltaCents).toBeNull();
+    }
   });
 });

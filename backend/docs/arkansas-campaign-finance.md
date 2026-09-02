@@ -124,7 +124,18 @@ also usable.
   counties/cities are in scope, unlike most states' state-only portals.
 - Registration rows carry office + district + party → auto-link candidate →
   filerEntityID looks straightforward (office/district match like NH rules).
-- Amended: CSV has explicit Amended Y/N (149 of 304k rows in 2026). Whether
-  the export contains only-latest or original+amended versions is unpinned —
-  cheap fixture (GetAmendedSheetHistory + one amended filer) before shipping
-  totals from CSVs.
+- Amended: CSV has explicit Amended Y/N (149 of 304k rows in 2026), but the
+  flag is not version semantics. **Pinned by the Phase 0 run (2026-08-27; see
+  the Phase 0 results in `plan-arkansas-finance.md`, the authoritative
+  record):** the CSV under-reports amended filers (Burkes $16.5k vs $33.9k
+  registration total) while the transaction search over-reports them
+  (superseded versions included, no per-row marker). Version-safe machinery:
+  `PublicFilerDetails/GetPublicFilerProfileFiling` (deduped current-version
+  report inventory), `GetPublicFilerProfileChildFilingDetails` (prior
+  versions), `GetTransactionDetailsByGuid` (`transactionID` +
+  `transactionVersionID` per row).
+- Transaction-search paging is unstable across pages (no unique sort key
+  exists; `fromDate`/`toDate` MM/DD/YYYY inclusive and `reportName` filters
+  do exist) — complete pulls partition by date window; see the client.
+- The 2026-only occupation figure above (87%) is superseded by the all-years,
+  candidate-filer-only figures in the plan doc's Phase 0 results.

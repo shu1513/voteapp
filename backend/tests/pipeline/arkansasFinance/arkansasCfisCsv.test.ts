@@ -71,6 +71,18 @@ describe("Arkansas CFIS CSV parsing", () => {
     expect(rows).toHaveLength(1);
   });
 
+  it("keeps a raw quote inside a value and closes on the escaped-quote boundary (live Civix shape)", () => {
+    // TEXP 2024/2026: Civix writes raw quotes inside values, so `"",` means
+    // "literal quote, field ends" — not an RFC escaped quote continuing the field.
+    const line = receiptLine({
+      "Source Name": '"Lead, Encourage, Elect PAC "LEE PAC""',
+    });
+    const rows = parseArkansasReceiptCsv(`${RECEIPT_HEADER}\n${line}\n`);
+    expect(rows).toHaveLength(1);
+    expect(rows[0]!["Source Name"]).toBe('Lead, Encourage, Elect PAC "LEE PAC"');
+    expect(rows[0]!["Source Address"]).toBe("PO Box 1860, Bentonville, AR 72712");
+  });
+
   it("quarantines mis-quoted source records through onMalformed", () => {
     // Live defect (TCON 2023): a field VALUE containing a literal double-quote
     // breaks Civix's export quoting and splits into extra columns.

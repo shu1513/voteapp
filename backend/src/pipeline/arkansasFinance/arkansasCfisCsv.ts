@@ -77,6 +77,11 @@ function hasClosingQuote(record: string, openingIndex: number): boolean {
   return false;
 }
 
+// Deliberately NOT RFC 4180: Civix never escapes quotes as `""`; it writes
+// raw `"` inside values, so `""` followed by a field boundary means "literal
+// quote, then the field ends" (live: `"Lead, Encourage, Elect PAC "LEE PAC"",`).
+// On the 2022-2026 corpus this rule leaves 4 unparseable records vs 24 under
+// RFC semantics, and every `"",` occurrence in the corpus is this shape.
 function parseCsvRecord(record: string): string[] {
   const cells: string[] = [];
   let field = "";
@@ -242,8 +247,11 @@ export function validateArkansasExpenditureCsvHeader(headerRecord: string): void
   validateHeaderCells(parseCsvRecord(headerRecord), ARKANSAS_EXPENDITURE_CSV_COLUMNS, "expenditure");
 }
 
-// Streaming iteration: the 2023-2026 receipt artifacts run 69-119 MB each, so
-// callers aggregate row-by-row instead of materializing 300k row objects.
+// Bounded in-memory parsing, not true streaming: the whole artifact string
+// (69-119 MB for 2023-2026 receipts) and its record strings are held at once,
+// but rows are handed to the callback one at a time so callers never
+// materialize 300k+ row objects. Revisit with a byte-stream parser only if
+// exports outgrow the Node heap.
 export function forEachArkansasReceiptCsvRow(
   csv: string,
   callback: (row: ArkansasReceiptCsvRow, rowNumber: number) => void,

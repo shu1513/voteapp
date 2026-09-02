@@ -207,7 +207,14 @@ function latestCandidateRegistration(
     (row) => row.filerEntityId === filingEntityId && row.filerType === "Candidate"
   );
   if (rows.length === 0) return null;
-  return rows.reduce((best, row) => ((row.electionYear ?? 0) > (best.electionYear ?? 0) ? row : best));
+  // Latest cycle wins; a registration with no election year (special-election
+  // rows carry an empty string) never beats one that has a year.
+  return rows.reduce((best, row) => {
+    const bestYear = best.electionYear ?? -1;
+    const rowYear = row.electionYear ?? -1;
+    if (rowYear !== bestYear) return rowYear > bestYear ? row : best;
+    return row.filerEntityVersionId > best.filerEntityVersionId ? row : best;
+  });
 }
 
 function displayFilerName(registration: ArkansasFilerRegistrationRow): string {
@@ -381,8 +388,13 @@ export async function runProbeArkansasCampaignFinance(input: {
         status: "ok";
         registration: Record<string, unknown>;
         totals: ReturnType<typeof reconcileArkansasRegistrationTotals>;
-        completeness: Record<string, unknown>;
-        amendment: Record<string, unknown>;
+        registrationScopedApi: { raisedDeltaCents: number | null; spentDeltaCents: number | null };
+        completeness: {
+          apiReceipts: { status: "ok" | "pull_failed" };
+          apiExpenditures: { status: "ok" | "pull_failed" };
+          [key: string]: unknown;
+        };
+        amendment: { lineage: ReturnType<typeof summarizeArkansasFiledReports>; [key: string]: unknown };
       };
   const goldReports: GoldReport[] = [];
   for (const filingEntityId of [...goldEntityIds].sort((left, right) => left - right)) {
@@ -395,27 +407,29 @@ export async function runProbeArkansasCampaignFinance(input: {
     const expenditureDetail = expenditureSummary.entities[String(filingEntityId)];
     const totals = reconcileArkansasRegistrationTotals({ registration, receiptDetail, expenditureDetail });
 
-    const apiReceipts = await client.getAllTransactions(
-      {
-        filerRegistrationGuid: registration.registrationGuid,
-        transactionTypeCode: "TCON",
-        pageSize: args.pageSize,
-      },
-      clientOptions
-    );
-    const apiExpenditures = await client.getAllTransactions(
-      {
-        filerRegistrationGuid: registration.registrationGuid,
-        transactionTypeCode: "TEXP",
-        pageSize: args.pageSize,
-      },
-      clientOptions
-    );
-    const apiReceiptSummary = summarizeArkansasTransactionRows(registration.registrationGuid, apiReceipts);
-    const apiExpenditureSummary = summarizeArkansasTransactionRows(
-      registration.registrationGuid,
-      apiExpenditures
-    );
+    // The complete pull fails closed when server paging proves unstable; that
+    // is gate 3 evidence, so record it instead of aborting the probe.
+    const pull = async (
+      transactionTypeCode: ArkansasCfisTransactionTypeCode
+    ): Promise<
+      | { status: "ok"; summary: ReturnType<typeof summarizeArkansasTransactionRows> }
+      | { status: "pull_failed"; message: string }
+    > => {
+      try {
+        const rows = await client.getAllTransactions(
+          { filerRegistrationGuid: registration.registrationGuid, transactionTypeCode, pageSize: args.pageSize },
+          clientOptions
+        );
+        return { status: "ok", summary: summarizeArkansasTransactionRows(registration.registrationGuid, rows) };
+      } catch (error) {
+        if (error instanceof ArkansasCfisClientError && error.code === "bad_response") {
+          return { status: "pull_failed", message: error.message };
+        }
+        throw error;
+      }
+    };
+    const apiReceipts = await pull("TCON");
+    const apiExpenditures = await pull("TEXP");
 
     const filedReports = await client.getAllFiledReports(
       { filerName: displayFilerName(registration), pageSize: args.pageSize },
@@ -437,11 +451,22 @@ export async function runProbeArkansasCampaignFinance(input: {
         totalSpent: registration.totalSpent,
       },
       totals,
+      // Registration-scoped comparison (the API rows carry the registration
+      // guid; the CSV detail above is entity-scoped and may span cycles).
+      registrationScopedApi: {
+        raisedDeltaCents:
+          apiReceipts.status === "ok" ? apiReceipts.summary.amountCents - totals.totalRaisedCents : null,
+        spentDeltaCents:
+          apiExpenditures.status === "ok"
+            ? apiExpenditures.summary.amountCents - totals.totalSpentCents
+            : null,
+      },
       completeness: {
         csvReceipts: receiptDetail?.total ?? { rowCount: 0, amountCents: 0 },
-        apiReceipts: apiReceiptSummary,
+        csvReceiptsByElectionYear: receiptDetail?.byElectionYear ?? {},
+        apiReceipts,
         csvExpenditures: expenditureDetail?.total ?? { rowCount: 0, amountCents: 0 },
-        apiExpenditures: apiExpenditureSummary,
+        apiExpenditures,
         // CSV detail is keyed by filing entity; the API rows by registration.
         // A delta on a multi-cycle entity is a gate 5 finding, not gate 3.
         note: "csv_scope_is_entity_api_scope_is_registration",
@@ -475,10 +500,59 @@ export async function runProbeArkansasCampaignFinance(input: {
   const offices = await client.getOfficeLookup(clientOptions);
   const officeVocabulary = summarizeArkansasOfficeVocabulary(offices, REQUIRED_OFFICES);
 
+  // Per-gate verdicts; `ok` is true only when every gate passes. Gate 2 is a
+  // semantics gate: it passes once the gold registrations were reconciled,
+  // whatever the formulas say — the finding is the deliverable.
+  const amendedFixtureReport = okGold.find((report) => report.filingEntityId === amendedFixtureEntityId);
+  const malformedGoldRowCount =
+    malformedReceipts.filter((entry) => entry.entityIdPrefix !== null && goldEntityIds.has(entry.entityIdPrefix))
+      .length +
+    malformedExpenditures.filter((entry) => entry.entityIdPrefix !== null && goldEntityIds.has(entry.entityIdPrefix))
+      .length;
+  const candidateOccupation = receiptSummary.candidateOccupation;
+  const candidateOccupationFillRate =
+    candidateOccupation.individualRowCount > 0
+      ? candidateOccupation.occupationFilledCount / candidateOccupation.individualRowCount
+      : 0;
+  const verdict = (pass: boolean, finding: string) => ({ status: pass ? ("pass" as const) : ("fail" as const), finding });
+  const gates = {
+    gate1_access: verdict(true, dnsDefectObserved ? "reached_via_dns_fallback" : "reached_on_default_resolver"),
+    gate2_totals: verdict(
+      okGold.length > 0,
+      (raisedFormulaIntersection ?? []).length > 0 || (spentFormulaIntersection ?? []).length > 0
+        ? "exact_formula_found"
+        : "no_exact_formula_registration_rows_are_headline"
+    ),
+    gate3_completeness: verdict(
+      okGold.length > 0 &&
+        okGold.every(
+          (report) =>
+            report.completeness.apiReceipts.status === "ok" && report.completeness.apiExpenditures.status === "ok"
+        ),
+      "complete_registration_scoped_pulls_required"
+    ),
+    gate4_amendment: verdict(
+      amendedFixtureReport !== undefined && amendedFixtureReport.amendment.lineage.reportsWithVersionAboveOne > 0,
+      "amended_fixture_with_version_lineage_required"
+    ),
+    gate5_multi_cycle: verdict(true, multiCycleFixture ? "multi_cycle_observed" : "multi_cycle_not_observed"),
+    gate6_occupation: verdict(
+      candidateOccupationFillRate >= 0.5,
+      `candidate_individual_occupation_fill_${candidateOccupationFillRate.toFixed(3)}`
+    ),
+    gate7_offices: verdict(officeVocabulary.missingRequiredOffices.length === 0, "required_offices_present"),
+    gold_registrations: verdict(
+      goldReports.every((report) => report.status === "ok") && malformedGoldRowCount === 0,
+      "all_gold_entities_resolved_without_malformed_rows"
+    ),
+  };
+  const ok = Object.values(gates).every((gate) => gate.status === "pass");
+
   return {
     type: "arkansas_campaign_finance_phase_zero_probe" as const,
     ts: (input.now ?? new Date()).toISOString(),
-    ok: true,
+    ok,
+    gates,
     gate1_access: {
       defaultResolverOk,
       dnsDefectObserved,
@@ -521,7 +595,10 @@ export async function runProbeArkansasCampaignFinance(input: {
       sample: multiCycle,
       selectedFixtureEntityId: multiCycleFixture?.filingEntityId ?? null,
     },
-    gate6_occupation: receiptSummary.occupation,
+    gate6_occupation: {
+      allIndividualRows: receiptSummary.occupation,
+      candidateFilersOnly: receiptSummary.candidateOccupation,
+    },
     gate7_offices: officeVocabulary,
     receipts_global: {
       rowCount: receiptSummary.rowCount,
