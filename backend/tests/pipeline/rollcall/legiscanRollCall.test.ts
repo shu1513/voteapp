@@ -618,6 +618,15 @@ describe("Alabama's measured desc vocabulary", () => {
     );
   });
 
+  it("keeps the 2026 session's hyphenated executive-amendment concurrence", () => {
+    // The Governor can return a bill with an executive amendment; the
+    // chamber votes to accept it. Alabama prints that question with a hyphen
+    // (`Concur-In`), which a space-only pattern would miss.
+    expect(al("Reynolds Concur-In and Adopt Executive Amendment Roll Call 159", 104).questionClass).toBe(
+      "concurrence"
+    );
+  });
+
   it("excludes the Budget Isolation Resolution under BOTH of its captions", () => {
     // Alabama votes a Budget Isolation Resolution before taking up most
     // bills, and LegiScan files that one vote twice. The second caption
@@ -631,6 +640,11 @@ describe("Alabama's measured desc vocabulary", () => {
       "Third Reading in House of Origin",
       "Third Reading in Second House",
       "Motion to Adopt BIR- Failed",
+      // A FAILED Budget Isolation Resolution in the 2026 session. The desc
+      // reads like a failed passage vote; only the bill history says
+      // `BIR Lost in House of Origin` (HB 583, 47-37, three fifths needed).
+      "Lost in House of Origin",
+      "Lost in Second House",
     ]) {
       expect(al(desc, 105)).toMatchObject({ isFloorVote: false, questionClass: null });
     }
@@ -687,6 +701,7 @@ describe("getLegiscanStateConfig", () => {
       "MT",
       "NC",
       "AL",
+      "AL-2218",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
