@@ -110,18 +110,20 @@ bill became law over the Governor's veto is part of what happened.
 
 ## Batches
 
-Two batches have been taken from this session, for **2,067 records across 107
-candidates** in total.
+This session is complete. Three batches were taken from it, for **2,437
+records across 107 candidates** in total.
 
 - `batch-01/` — 12 measures, 23 rolls, 1,151 records.
 - `batch-02/` — 11 measures, 18 rolls, 916 records. It also re-read the two
   measures batch-01 dropped that were worth a second look: HB 424 is now
   imported with no stance, and HB 684 stays dropped.
+- `batch-03/` — 7 measures, 9 rolls, 370 records. It worked the 13 rolls the
+  first two batches left open, and closed the session.
 
-Every one of the 118 pool rolls carries a recorded disposition in
+Every one of the 118 pool rolls carries a final disposition in
 `survey/divided-enacted-worklist.tsv`: 23 batch-01, 20 not selected in batch-01,
-18 batch-02, 10 not selected in batch-02, 34 dropped under filter 5, and 13 on 8
-measures marked `candidate:batch-03`, still open for a later batch.
+18 batch-02, 10 not selected in batch-02, 9 batch-03, 3 not selected in
+batch-03, and 35 dropped under filter 5. No roll is left open.
 
 ## Layout
 

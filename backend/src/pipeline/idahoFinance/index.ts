@@ -2,6 +2,7 @@ export * from "./idahoCandidateFilerResolver.js";
 export * from "./idahoCandidateFinanceAutoLink.js";
 export * from "./idahoCfsClient.js";
 export * from "./idahoCfsCsv.js";
+export * from "./idahoContributionAggregator.js";
 export * from "./idahoFinanceEligibleOffices.js";
 export * from "./idahoFinanceWriter.js";
 export * from "./idahoPhaseZero.js";

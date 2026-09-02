@@ -120,6 +120,7 @@ export type BallotLookupFinanceSummary = {
     | "RHODE_ISLAND_ERTS"
     | "SOUTH_CAROLINA_CAMPAIGN_FINANCE"
     | "ALABAMA_FCPA"
+    | "ARKANSAS_CFIS"
     | "WEST_VIRGINIA_CFRS"
     | "NORTH_DAKOTA_CFRS";
   cycle: number;
@@ -243,6 +244,7 @@ export const FINANCE_SUMMARY_SOURCES = [
   "RHODE_ISLAND_ERTS",
   "SOUTH_CAROLINA_CAMPAIGN_FINANCE",
   "ALABAMA_FCPA",
+  "ARKANSAS_CFIS",
   "WEST_VIRGINIA_CFRS",
   "NORTH_DAKOTA_CFRS",
 ] as const satisfies readonly BallotLookupFinanceSummary["source"][];

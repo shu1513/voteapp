@@ -273,6 +273,7 @@ export function formatFinanceCategory(categoryName: string): string {
 const FINANCE_SOURCE_LABELS: Record<string, string> = {
   FEC: "FEC",
   ALABAMA_FCPA: "Alabama FCPA Reporting System",
+  ARKANSAS_CFIS: "Arkansas Secretary of State",
   ARIZONA_SOS: "Arizona Secretary of State",
   CALIFORNIA_SOS: "California Secretary of State",
   COLORADO_TRACER: "Colorado TRACER",

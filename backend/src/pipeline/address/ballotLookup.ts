@@ -37,6 +37,7 @@ import {
 } from "../candidates/candidateRecordResearchAreaPolicy.js";
 import { loadKentuckyCandidateFinanceSummariesByCandidateElection } from "../kentuckyFinance/kentuckyBallotLookupFinanceLoader.js";
 import { loadAlabamaCandidateFinanceSummariesByCandidateElection } from "../alabamaFinance/alabamaBallotLookupFinanceLoader.js";
+import { loadArkansasCandidateFinanceSummariesByCandidateElection } from "../arkansasFinance/arkansasBallotLookupFinanceLoader.js";
 import { loadWestVirginiaCandidateFinanceSummariesByCandidateElection } from "../westVirginiaFinance/westVirginiaBallotLookupFinanceLoader.js";
 import { loadNorthDakotaCandidateFinanceSummariesByCandidateElection } from "../northDakotaFinance/northDakotaBallotLookupFinanceLoader.js";
 import { loadAlaskaCandidateFinanceSummariesByCandidateElection } from "../alaskaFinance/alaskaCandidateFinanceBallotLookup.js";
@@ -1100,6 +1101,7 @@ const STATE_FINANCE_LOOKUP_ADAPTERS: readonly StateFinanceLookupAdapter[] = [
   { state: "RI", load: loadRhodeIslandCandidateFinanceSummariesByCandidateElection },
   { state: "SC", load: loadSouthCarolinaCandidateFinanceSummariesByCandidateElection },
   { state: "AL", load: loadAlabamaCandidateFinanceSummariesByCandidateElection },
+  { state: "AR", load: loadArkansasCandidateFinanceSummariesByCandidateElection },
   { state: "WV", load: loadWestVirginiaCandidateFinanceSummariesByCandidateElection },
   { state: "ND", load: loadNorthDakotaCandidateFinanceSummariesByCandidateElection },
 ];

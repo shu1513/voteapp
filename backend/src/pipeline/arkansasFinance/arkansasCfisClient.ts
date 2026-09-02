@@ -13,6 +13,9 @@ import type { ReadableStream as NodeReadableStream } from "node:stream/web";
 
 export const ARKANSAS_CFIS_API_BASE_URL = "https://api-ethics-disclosures.sos.arkansas.gov/api";
 export const ARKANSAS_CFIS_PUBLIC_ORIGIN = "https://ethics-disclosures.sos.arkansas.gov";
+// Filer views are reached through POST APIs inside the SPA, so published
+// snapshots point at the portal home (the api-client home-URL fallback).
+export const ARKANSAS_CFIS_PUBLIC_URL = `${ARKANSAS_CFIS_PUBLIC_ORIGIN}/`;
 
 export const ARKANSAS_CFIS_ENDPOINTS = {
   bulkExport: "ExportData/GetExportPublicDownloadData",

@@ -1,0 +1,169 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1517647,
+      "measure_id": "HB 241",
+      "vote_date": "2025-03-13",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 241. It lets school districts make up storm days by adding time to school days and lets the state waive up to five missed days. It also caps how many out-of-district students may enroll statewide in public online school programs at one percent of all Kentucky students, and ends new out-of-district enrollment after June 30, 2028. The Kentucky Senate voted 31-6, and the bill became law without the Governor's signature.",
+      "nay_description": "Voted against House Bill 241. It lets school districts make up storm days by adding time to school days and lets the state waive up to five missed days. It also caps how many out-of-district students may enroll statewide in public online school programs at one percent of all Kentucky students, and ends new out-of-district enrollment after June 30, 2028. The Kentucky Senate voted 31-6, and the bill became law without the Governor's signature.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1530717,
+      "measure_id": "HB 606",
+      "vote_date": "2025-03-28",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 606. It lets two or more local governments in different counties join together to develop a site of at least 300 acres that is expected to create at least 500 jobs. The site can be turned into a taxing district run by an appointed board, which may levy a property tax of up to 10 cents per $100 of value and a wage tax of up to 3 percent, without the voter signatures normally required. The Kentucky House voted 82-17, and the Governor signed the bill into law.",
+      "nay_description": "Voted against House Bill 606. It lets two or more local governments in different counties join together to develop a site of at least 300 acres that is expected to create at least 500 jobs. The site can be turned into a taxing district run by an appointed board, which may levy a property tax of up to 10 cents per $100 of value and a wage tax of up to 3 percent, without the voter signatures normally required. The Kentucky House voted 82-17, and the Governor signed the bill into law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1530505,
+      "measure_id": "HB 664",
+      "vote_date": "2025-03-28",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 664. It lets a police officer who is present in a highway work zone write a speeding ticket using a camera device when a worker is present and a driver is going more than 10 miles per hour over the limit. It also lowers from 16 to 15 the age at which a child charged with a motor vehicle offense is handled in adult District Court instead of juvenile court. The Kentucky House voted 76-20, and the Governor signed the bill into law.",
+      "nay_description": "Voted against House Bill 664. It lets a police officer who is present in a highway work zone write a speeding ticket using a camera device when a worker is present and a driver is going more than 10 miles per hour over the limit. It also lowers from 16 to 15 the age at which a child charged with a motor vehicle offense is handled in adult District Court instead of juvenile court. The Kentucky House voted 76-20, and the Governor signed the bill into law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1530504,
+      "measure_id": "HB 664",
+      "vote_date": "2025-03-28",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 664. It lets a police officer who is present in a highway work zone write a speeding ticket using a camera device when a worker is present and a driver is going more than 10 miles per hour over the limit. It also lowers from 16 to 15 the age at which a child charged with a motor vehicle offense is handled in adult District Court instead of juvenile court. The Kentucky Senate voted 29-7, and the Governor signed the bill into law.",
+      "nay_description": "Voted against House Bill 664. It lets a police officer who is present in a highway work zone write a speeding ticket using a camera device when a worker is present and a driver is going more than 10 miles per hour over the limit. It also lowers from 16 to 15 the age at which a child charged with a motor vehicle offense is handled in adult District Court instead of juvenile court. The Kentucky Senate voted 29-7, and the Governor signed the bill into law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1517690,
+      "measure_id": "HJR 15",
+      "vote_date": "2025-03-13",
+      "review_status": "approved",
+      "yea_description": "Voted for House Joint Resolution 15. It orders the state commission in charge of historic properties to return a granite Ten Commandments monument to permanent display on the grounds of the Kentucky Capitol. The Fraternal Order of Eagles gave the monument to the state in 1971. The Kentucky Senate voted 32-6, and the resolution became law without the Governor's signature.",
+      "nay_description": "Voted against House Joint Resolution 15. It orders the state commission in charge of historic properties to return a granite Ten Commandments monument to permanent display on the grounds of the Kentucky Capitol. The Fraternal Order of Eagles gave the monument to the state in 1971. The Kentucky Senate voted 32-6, and the resolution became law without the Governor's signature.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1506432,
+      "measure_id": "SB 9",
+      "vote_date": "2025-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 9, as the Senate passed it. It would require every school district to set up a policy giving teachers and school staff who give birth up to 30 days of paid maternity leave. It also shifts the retirement cost of sick leave earned above a set yearly limit from the state to local school districts. The Kentucky Senate voted 31-7, and the Governor signed the bill into law.",
+      "nay_description": "Voted against Senate Bill 9, as the Senate passed it. It would require every school district to set up a policy giving teachers and school staff who give birth up to 30 days of paid maternity leave. It also shifts the retirement cost of sick leave earned above a set yearly limit from the state to local school districts. The Kentucky Senate voted 31-7, and the Governor signed the bill into law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1530424
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1529611,
+      "measure_id": "SB 28",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 28. It creates a new state program in the Department of Agriculture that gives grants, forgivable loans, and low-interest loans to farm and agribusiness projects. A six-member board picked by the elected Commissioner of Agriculture decides the awards, must report each award to lawmakers every year, and can take back money if a company breaks its agreement. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "nay_description": "Voted against Senate Bill 28. It creates a new state program in the Department of Agriculture that gives grants, forgivable loans, and low-interest loans to farm and agribusiness projects. A six-member board picked by the elected Commissioner of Agriculture decides the awards, must report each award to lawmakers every year, and can take back money if a company breaks its agreement. The Kentucky Senate voted 32-6, and the bill became law over the Governor's veto.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "house",
+      "session": "2179",
+      "roll": 1516642,
+      "measure_id": "SB 202",
+      "vote_date": "2025-03-12",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 202. It puts drinks containing intoxicating hemp cannabinoids under the state alcohol control department, limits them to 5 milligrams per 12-ounce serving, and bars anyone under 21 from buying or drinking them. The drinks may be sold only by licensed package liquor stores, and only in areas where alcohol sales are allowed. The Kentucky House voted 77-17, and the Governor signed the bill into law.",
+      "nay_description": "Voted against Senate Bill 202. It puts drinks containing intoxicating hemp cannabinoids under the state alcohol control department, limits them to 5 milligrams per 12-ounce serving, and bars anyone under 21 from buying or drinking them. The drinks may be sold only by licensed package liquor stores, and only in areas where alcohol sales are allowed. The Kentucky House voted 77-17, and the Governor signed the bill into law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KY",
+      "chamber": "senate",
+      "session": "2179",
+      "roll": 1517715,
+      "measure_id": "SB 202",
+      "vote_date": "2025-03-13",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 202. It puts drinks containing intoxicating hemp cannabinoids under the state alcohol control department, limits them to 5 milligrams per 12-ounce serving, and bars anyone under 21 from buying or drinking them. The drinks may be sold only by licensed package liquor stores, and only in areas where alcohol sales are allowed. The Kentucky Senate voted 22-13, and the Governor signed the bill into law.",
+      "nay_description": "Voted against Senate Bill 202. It puts drinks containing intoxicating hemp cannabinoids under the state alcohol control department, limits them to 5 milligrams per 12-ounce serving, and bars anyone under 21 from buying or drinking them. The drinks may be sold only by licensed package liquor stores, and only in areas where alcohol sales are allowed. The Kentucky Senate voted 22-13, and the Governor signed the bill into law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
