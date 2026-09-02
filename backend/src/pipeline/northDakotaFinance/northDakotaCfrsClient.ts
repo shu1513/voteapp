@@ -600,7 +600,9 @@ export type NorthDakotaTransactionRow = {
   contributorPayeeID: number | null;
   employerName: string | null;
   employerOccupation: string | null;
-  /** Verified to be the owning REPORT's total, not a year-to-date figure. */
+  /** The committee x counterparty year-to-date aggregate as of this row's
+   * report (a donor's running total on CON rows, a payee's on IE rows) —
+   * neither a report total nor a committee total. Verified 2026-09-01. */
   transactionTotalYTD: string | null;
   amendedFlag: boolean;
   reportVersionID: string | null;

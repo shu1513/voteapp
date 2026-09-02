@@ -257,6 +257,8 @@ describe("summarizeNorthDakotaIndependentExpenditures", () => {
       transactionTypeDesc: "Independent Expenditures",
       orgType: "Independent Expenditure Committee",
       stanceDescription: "Support",
+      candidateNameAssocation: "Kringstad, Jill",
+      electionYear: 2026,
       s3ReportFilePath: "nd-cfs/Reports/1626/june.pdf",
       filedDate: "2026-06-08T00:00:00",
       transactionTotalYTD: "153999.9800",
@@ -275,6 +277,7 @@ describe("summarizeNorthDakotaIndependentExpenditures", () => {
     expect(summary.rowCount).toBe(26);
     expect(summary.distinctTransactionIdCount).toBe(26);
     expect(summary.offTypeRowCount).toBe(0);
+    expect([summary.missingStanceRowCount, summary.missingCandidateRowCount, summary.missingElectionYearRowCount]).toEqual([0, 0, 0]);
     expect(summary.totalDollars).toBe("198281.34");
     expect(summary.reports.map((report) => [report.rowCount, report.sumDollars])).toEqual([[1, "44281.36"], [25, "153999.98"]]);
     expect(summary.payeeYtd).toEqual({ groupCount: 2, matchingGroupCount: 2, missingControlGroupCount: 0, mismatches: [] });
@@ -288,13 +291,22 @@ describe("summarizeNorthDakotaIndependentExpenditures", () => {
     const summary = summarizeNorthDakotaIndependentExpenditures([
       ieRow({ transactionID: 1, transactionAmount: 100, transactionTotalYTD: "300.0000" }),
       ieRow({ transactionID: 1, transactionAmount: 100, transactionTotalYTD: "300.0000" }),
-      ieRow({ transactionID: 2, transactionAmount: 50, transactionTotalYTD: "300.0000", transactionTypeDesc: "Contributions" }),
+      ieRow({
+        transactionID: 2,
+        transactionAmount: 50,
+        transactionTotalYTD: "300.0000",
+        transactionTypeDesc: "Contributions",
+        stanceDescription: "Neutral",
+        candidateNameAssocation: null,
+        electionYear: null,
+      }),
     ]);
     expect(summary.distinctTransactionIdCount).toBe(2);
     expect(summary.offTypeRowCount).toBe(1);
+    expect([summary.missingStanceRowCount, summary.missingCandidateRowCount, summary.missingElectionYearRowCount]).toEqual([1, 1, 1]);
     expect(summary.totalCents).toBe(15_000);
     expect(summary.payeeYtd.mismatches).toEqual([
-      { entityId: "1040001626", counterparty: "id:10", sumCents: 15_000, maxYtdCents: 30_000, rowCount: 2 },
+      { entityId: "1040001626", year: "2026", counterpartyRef: "id:10", sumCents: 15_000, maxYtdCents: 30_000, rowCount: 2 },
     ]);
   });
 });
@@ -308,6 +320,21 @@ describe("checkNorthDakotaYtdSemantics", () => {
       apiRow({ transactionID: 4, contributorPayeeID: null, contributorPayeeName: "Total - $200 or less", transactionAmount: 100, transactionTotalYTD: null }),
     ];
     expect(checkNorthDakotaYtdSemantics(rows)).toEqual({ groupCount: 2, matchingGroupCount: 1, missingControlGroupCount: 1, mismatches: [] });
+  });
+
+  it("scopes the aggregate to the calendar year and never exposes a contributor name", () => {
+    const rows = [
+      apiRow({ transactionID: 1, contributorPayeeID: null, contributorPayeeName: "Jane Donor", transactionDate: "2025-11-01T00:00:00", transactionAmount: 1000, transactionTotalYTD: "1000.0000" }),
+      apiRow({ transactionID: 2, contributorPayeeID: null, contributorPayeeName: "Jane Donor", transactionDate: "2026-02-01T00:00:00", transactionAmount: 1000, transactionTotalYTD: "1000.0000" }),
+      apiRow({ transactionID: 3, contributorPayeeID: null, contributorPayeeName: "Jane Donor", transactionDate: "2026-03-01T00:00:00", transactionAmount: 500, transactionTotalYTD: "1200.0000" }),
+    ];
+    const check = checkNorthDakotaYtdSemantics(rows);
+    expect(check.groupCount).toBe(2);
+    expect(check.matchingGroupCount).toBe(1);
+    expect(check.mismatches).toHaveLength(1);
+    expect(check.mismatches[0]).toMatchObject({ entityId: "1010000001", year: "2026", sumCents: 150_000, maxYtdCents: 120_000, rowCount: 2 });
+    expect(check.mismatches[0].counterpartyRef).toMatch(/^name#[0-9a-f]{12}$/);
+    expect(JSON.stringify(check)).not.toContain("Jane");
   });
 });
 
@@ -408,10 +435,14 @@ describe("evaluateNorthDakotaPhaseZeroGates", () => {
       rowCount: 52,
       distinctTransactionIdCount: 52,
       offTypeRowCount: 0,
+      missingStanceRowCount: 0,
+      missingCandidateRowCount: 0,
+      missingElectionYearRowCount: 0,
       payeeYtd: { groupCount: 4, matchingGroupCount: 4, missingControlGroupCount: 0, mismatches: [] },
       totalCents: 100,
     },
     independentExpenditureChartTotalCents: 100,
+    currentElection: "2026 Election - Statewide",
     cycleWindow: { priorYear: 2025, candidateRegistrantsWithPriorYearActivity: 40, byElection: { "2026 Election - Statewide": 40 } },
     reportingCycles: [
       { electionName: "2026 Election - Statewide", reportingCycles: ["2025 REPORTING CYCLE"], periodCount: 1, earliestBeginDate: "2025-01-01", latestEndDate: "2025-12-31" },
@@ -429,8 +460,8 @@ describe("evaluateNorthDakotaPhaseZeroGates", () => {
         election: "2026 Election - Statewide",
         count: 200,
         active: 190,
-        byOfficeClass: { statewide: 10, legislative: 180, judicial: 5, unknown: 5 },
-        completeIdentity: 195,
+        byOfficeClass: { statewide: 10, legislative: 185, judicial: 5, unknown: 0 },
+        completeIdentity: 200,
         distinctOffices: [],
       },
     },
@@ -454,10 +485,13 @@ describe("evaluateNorthDakotaPhaseZeroGates", () => {
         ...green.independentExpenditures,
         distinctTransactionIdCount: 51,
         totalCents: 99,
-        payeeYtd: { groupCount: 4, matchingGroupCount: 3, missingControlGroupCount: 0, mismatches: [{ entityId: "1040001621", counterparty: "id:1", sumCents: 1, maxYtdCents: 2, rowCount: 1 }] },
+        missingStanceRowCount: 2,
+        payeeYtd: { groupCount: 4, matchingGroupCount: 3, missingControlGroupCount: 0, mismatches: [{ entityId: "1040001621", year: "2026", counterpartyRef: "id:1", sumCents: 1, maxYtdCents: 2, rowCount: 1 }] },
       },
-      cycleWindow: { priorYear: 2025, candidateRegistrantsWithPriorYearActivity: 3, byElection: {} },
-      reportingCycles: [],
+      cycleWindow: { priorYear: 2025, candidateRegistrantsWithPriorYearActivity: 3, byElection: { "2024 Election - Statewide": 3 } },
+      reportingCycles: [
+        { electionName: "2024 Election - Statewide", reportingCycles: ["2025 REPORTING CYCLE"], periodCount: 1, earliestBeginDate: "2025-01-01", latestEndDate: "2025-12-31" },
+      ],
       registry: { currentCycleCandidates: { ...green.registry.currentCycleCandidates, completeIdentity: 4 } },
     });
     expect(failures).toEqual([
@@ -468,11 +502,13 @@ describe("evaluateNorthDakotaPhaseZeroGates", () => {
       "reconciliation 1010000001: empty sample (csv 0, api 0)",
       "reconciliation 1010000002: CSV and API rows differ",
       "independent expenditures: repeated transactionIDs",
+      "independent expenditures: 2 rows without a Support/Oppose stance",
       "independent expenditures: 1 payee group(s) do not sum to their YTD control (0 without a control)",
       "independent expenditures: unique-row total differs from the portal chart total",
       "cycle window: only 3 candidate registrants with 2025 activity",
-      'cycle window: reporting schedules do not map "2025 REPORTING CYCLE" to an election',
-      "resolver gold set: only 4 current-cycle candidate committees carry a complete office identity",
+      "cycle window: candidate registrants with 2025 activity map to other elections (2024 Election - Statewide)",
+      'cycle window: reporting schedules do not map "2025 REPORTING CYCLE" to "2026 Election - Statewide"',
+      "resolver gold set: 196 of 200 current-cycle candidate committees lack a complete office identity",
     ]);
   });
 });

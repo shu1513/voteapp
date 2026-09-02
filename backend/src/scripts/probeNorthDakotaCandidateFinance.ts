@@ -396,6 +396,7 @@ export async function runProbeNorthDakotaCandidateFinance(input: {
     reconciliations,
     independentExpenditures,
     independentExpenditureChartTotalCents,
+    currentElection: args.currentElection,
     cycleWindow,
     reportingCycles,
     occupations,
