@@ -202,6 +202,20 @@ describe("parseAlabamaFilingDetailCover", () => {
       /missing "Ending Balance"/
     );
   });
+
+  it("reads accounting-style negative balances, ($220.23), as negative cents", () => {
+    // Live 2026-09-01: overdrawn committees render negatives in parentheses,
+    // which the "-$" form alone rejected as a missing label.
+    const cover = parseAlabamaFilingDetailCover(
+      html
+        .replace("Beginning Balance $358,862.76", "Beginning Balance ($220.23)")
+        .replace("Ending Balance $350,501.35", "Ending Balance ($45.90)")
+    );
+    if (cover.kind !== "periodic") throw new Error("expected periodic cover");
+    expect(cover.beginningBalanceCents).toBe(-22023);
+    expect(cover.endingBalanceCents).toBe(-4590);
+    expect(cover.itemizedCashCents).toBe(1000000);
+  });
 });
 
 function raceRow(overrides: Partial<AlabamaRaceRow> = {}): AlabamaRaceRow {

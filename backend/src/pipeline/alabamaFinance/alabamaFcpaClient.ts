@@ -110,6 +110,7 @@ async function requestAllPages<TRow>(
 ): Promise<TRow[]> {
   const rows: TRow[] = [];
   let expected: number | null = null;
+  let exhausted = false;
   for (let pageNumber = 1; pageNumber <= MAX_PAGES; pageNumber += 1) {
     const result = await requestListPage<TRow>(
       page,
@@ -124,9 +125,17 @@ async function requestAllPages<TRow>(
       );
     }
     rows.push(...result.list);
-    if (rows.length >= expected || result.list.length === 0) break;
+    if (rows.length >= expected) break;
+    if (result.list.length === 0) {
+      // The portal exhausted its own list below its advertised count. Seen
+      // live 2026-09-01 on committee 7460's filings (totalRecords 17, 16 rows
+      // at every page size, page 3 empty) — a count that includes a row the
+      // list never renders, not a truncated read, so the rows are complete.
+      exhausted = true;
+      break;
+    }
   }
-  if (expected !== null && rows.length < expected) {
+  if (expected !== null && rows.length < expected && !exhausted) {
     throw new AlabamaFcpaClientError(
       "bad_response",
       `Alabama FCPA page ${page} returned ${rows.length} of ${expected} rows`

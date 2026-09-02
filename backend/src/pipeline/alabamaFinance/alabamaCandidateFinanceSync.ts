@@ -1,20 +1,27 @@
-// Alabama per-candidate finance sync: fetch the linked race row live (the
-// authority — Phase 0 contract: race totals == Σ filed report covers,
-// cent-exact), build contribution-size buckets from the CACHED cash
-// extracts, and write one full-replacement snapshot.
+// Alabama per-candidate finance sync: confirm the linked race row live (the
+// roster/identity gate and the cash-on-hand source), sum the committee's
+// filed-report covers inside the term window for the cycle totals (the
+// authority — see alabamaCommitteeCycleCovers.ts for why the race row's
+// aggregate columns are not cycle-scoped), build contribution-size buckets
+// from the CACHED cash extracts, and write one full-replacement snapshot.
 //
-// Presence semantics (plan Phase 3): the summary always comes from the race
-// row; the coverage ratio gates BUCKETS ONLY, never the summary — a lagging
-// or permanently incomplete extract must not leave authoritative totals
-// stale. A missing race row or fetch failure throws and writes nothing,
-// preserving the prior snapshot. Extracts are never fetched live here — the
-// refresh CLI (its own flag) populates the cache; an unreadable artifact
-// just gates the buckets off with a diagnostic.
+// Presence semantics (plan Phase 3): the summary always comes from the
+// covers; the coverage ratio gates BUCKETS ONLY, never the summary — a
+// lagging or permanently incomplete extract must not leave authoritative
+// totals stale. A missing race row or a cover fetch failure throws and writes
+// nothing, preserving the prior snapshot. Extracts are never fetched live
+// here — the refresh CLI (its own flag) populates the cache; an unreadable
+// artifact just gates the buckets off with a diagnostic.
 
 import { resolve } from "node:path";
 
 import type { Pool, PoolClient } from "pg";
 
+import {
+  alabamaCycleWindowStart,
+  createAlabamaCycleCoversLoader,
+  type AlabamaCycleCoversLoader,
+} from "./alabamaCommitteeCycleCovers.js";
 import {
   DEFAULT_ALABAMA_FCPA_CACHE_DIR,
   readAlabamaFcpaArtifact,
@@ -111,7 +118,15 @@ export type AlabamaCandidateFinanceSyncResult = {
   totalReceipts: number;
   directContributionTotal: number;
   totalDisbursements: number;
-  cashOnHand: number;
+  /** Null when the committee is overdrawn (see summaryDiagnostics). */
+  cashOnHand: number | null;
+  /** Cover window (ISO date) and how many filed reports fell inside it. */
+  cycleWindowStart: string;
+  coverFilingCount: number;
+  /** The race row's own (non-cycle-scoped) receipts figure, for comparison. */
+  raceRowTotalReceipts: number;
+  /** Non-fatal summary observations (balance identity, empty window). */
+  summaryDiagnostics: string[];
   bucketExtractYears: number[];
   coverageRatio: number | null;
   coverageCashCents: number | null;
@@ -145,6 +160,7 @@ export async function syncAlabamaCandidateFinance(input: {
   clientOptions?: AlabamaFcpaClientOptions;
   loadOfficeRaceContext?: (electionYear: number, officeLabel: string) => Promise<AlabamaOfficeRaceContext>;
   loadCashRows?: AlabamaCashRowsLoader;
+  loadCycleCovers?: AlabamaCycleCoversLoader;
 }): Promise<AlabamaCandidateFinanceSyncResult> {
   const candidateName = input.candidateName.trim();
   if (!candidateName) {
@@ -193,12 +209,50 @@ export async function syncAlabamaCandidateFinance(input: {
     );
   }
 
-  const totalReceipts = roundToCents(
+  // Cycle totals: filed-report covers inside the term window. The race row's
+  // aggregate columns lump every untagged (annual / major-contribution)
+  // report the committee ever filed into whichever cycle is queried, so they
+  // overstate incumbents by years of off-cycle money; ENDINGFUNDS is the
+  // current balance and stays the cash-on-hand source.
+  const termYears = alabamaOfficeTermYears({ officeScope: input.officeScope, officeCanonicalName: input.officeName });
+  const cycleWindowStart = alabamaCycleWindowStart(input.electionYear, termYears);
+  const loadCycleCovers =
+    input.loadCycleCovers ?? createAlabamaCycleCoversLoader({ clientOptions: input.clientOptions });
+  const covers = await loadCycleCovers(input.link.internalCommitteeId, cycleWindowStart);
+
+  const coverCashContrib = covers.cashCents / 100;
+  const totalReceipts = roundToCents((covers.cashCents + covers.inKindCents + covers.otherCents) / 100);
+  const directContributionTotal = roundToCents((covers.cashCents + covers.inKindCents) / 100);
+  const totalDisbursements = roundToCents(covers.expenditureCents / 100);
+  const raceRowTotalReceipts = roundToCents(
     raceRow.MONETARYCONTRIB + raceRow.NONMONETARYCONTRIB + raceRow.OTHERSOURCES
   );
-  const directContributionTotal = roundToCents(raceRow.MONETARYCONTRIB + raceRow.NONMONETARYCONTRIB);
-  const totalDisbursements = roundToCents(raceRow.MONETARYEXP);
-  const cashOnHand = roundToCents(raceRow.ENDINGFUNDS);
+
+  const summaryDiagnostics: string[] = [];
+  // An overdrawn committee (four in the 2026-09-01 run) has a negative
+  // balance the summary tables cannot hold (cash_on_hand >= 0); store null
+  // rather than clamp, and say so.
+  let cashOnHand: number | null = roundToCents(raceRow.ENDINGFUNDS);
+  if (cashOnHand < 0) {
+    summaryDiagnostics.push(`cash_on_hand_negative_not_stored: ${cashOnHand.toFixed(2)}`);
+    cashOnHand = null;
+  }
+  if (covers.windowFilingCount === 0) {
+    summaryDiagnostics.push(`no_filings_in_window:${cycleWindowStart}`);
+  } else if (covers.openingBalanceCents !== null) {
+    // The portal's own identity, restricted to the window: opening balance +
+    // cash + other - expenditures should land on the current balance. A miss
+    // means the window split a report chain (or a cover parsed oddly) and is
+    // reported, never silently accepted.
+    const impliedEndingCents =
+      covers.openingBalanceCents + covers.cashCents + covers.otherCents - covers.expenditureCents;
+    const endingCents = Math.round(raceRow.ENDINGFUNDS * 100);
+    if (impliedEndingCents !== endingCents) {
+      summaryDiagnostics.push(
+        `cash_on_hand_identity_mismatch: window implies ${(impliedEndingCents / 100).toFixed(2)}, race row ${(endingCents / 100).toFixed(2)}`
+      );
+    }
+  }
 
   // Self-heal a NULL fcpa_committee_number (a crashed auto-link backfill, or
   // a manual link created without it) from the committee-search join already
@@ -225,10 +279,7 @@ export async function syncAlabamaCandidateFinance(input: {
 
   // Buckets: cached extracts only. Any gate failure clears stored buckets —
   // buckets must always correspond to the summary being written.
-  const bucketExtractYears = alabamaBucketExtractYears(
-    input.electionYear,
-    alabamaOfficeTermYears({ officeScope: input.officeScope, officeCanonicalName: input.officeName })
-  );
+  const bucketExtractYears = alabamaBucketExtractYears(input.electionYear, termYears);
   const bucketDiagnostics: string[] = [];
   let aggregation: AlabamaDirectFinanceAggregationResult | null = null;
   let quarantinedRowCount = 0;
@@ -240,7 +291,12 @@ export async function syncAlabamaCandidateFinance(input: {
     for (const year of bucketExtractYears) {
       try {
         const loaded = await loadCashRows(year);
-        cashRows.push(...loaded.rows);
+        // Not push(...rows): a yearly extract runs past 100k rows (2025 cash =
+        // 120,501), and spreading that many arguments overflows the call
+        // stack, which the live run surfaced as artifact_unavailable.
+        for (const row of loaded.rows) {
+          cashRows.push(row);
+        }
         quarantinedRowCount += loaded.quarantinedCount;
       } catch (error) {
         bucketDiagnostics.push(
@@ -252,7 +308,7 @@ export async function syncAlabamaCandidateFinance(input: {
       aggregation = aggregateAlabamaDirectFinance({
         cashRows,
         fcpaCommitteeNumber,
-        raceMonetaryContrib: raceRow.MONETARYCONTRIB,
+        authoritativeCashContrib: coverCashContrib,
       });
       bucketDiagnostics.push(...aggregation.bucketDiagnostics);
     }
@@ -309,6 +365,10 @@ export async function syncAlabamaCandidateFinance(input: {
     directContributionTotal,
     totalDisbursements,
     cashOnHand,
+    cycleWindowStart,
+    coverFilingCount: covers.windowFilingCount,
+    raceRowTotalReceipts,
+    summaryDiagnostics,
     bucketExtractYears,
     coverageRatio: aggregation?.coverageRatio ?? null,
     coverageCashCents: aggregation?.coverageCashCents ?? null,

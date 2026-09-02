@@ -5,6 +5,7 @@ import type {
   AlabamaRaceRow,
 } from "../../../src/pipeline/alabamaFinance/alabamaFcpaClient.js";
 import type { AlabamaCashRow } from "../../../src/pipeline/alabamaFinance/alabamaFcpaCsv.js";
+import type { AlabamaCommitteeCycleCovers } from "../../../src/pipeline/alabamaFinance/alabamaCommitteeCycleCovers.js";
 import {
   alabamaBucketExtractYears,
   syncAlabamaCandidateFinance,
@@ -75,8 +76,27 @@ function cashLoader(rowsByYear: Record<number, AlabamaCashRow[]>) {
   }));
 }
 
+// Window covers consistent with raceRow(): cash 100 + in-kind 5 + other 20,
+// spent 40, and opening 0 + 100 + 20 - 40 = 80 + ... = ENDINGFUNDS 85 only
+// with opening balance 5 (the identity check below).
+function coversLoader(overrides: Partial<AlabamaCommitteeCycleCovers> = {}) {
+  return vi.fn(async (_internalCommitteeId: number, windowStart: string) => ({
+    windowStart,
+    filingCount: 3,
+    windowFilingCount: 2,
+    cashCents: 10_000,
+    inKindCents: 500,
+    otherCents: 2_000,
+    expenditureCents: 4_000,
+    openingBalanceCents: 500,
+    latestEndingBalanceCents: 8_500,
+    ...overrides,
+  }));
+}
+
 function baseInput(db: { query: unknown; connect: unknown }) {
   return {
+    loadCycleCovers: coversLoader(),
     db: db as never,
     candidateId: "candidate-1",
     electionId: "election-1",
@@ -121,6 +141,10 @@ describe("syncAlabamaCandidateFinance", () => {
       directContributionTotal: 105,
       totalDisbursements: 40,
       cashOnHand: 85,
+      cycleWindowStart: "2023-01-01",
+      coverFilingCount: 2,
+      raceRowTotalReceipts: 125,
+      summaryDiagnostics: [],
       coverageRatio: 1,
       bucketDiagnostics: [],
       summaryWritten: true,
@@ -147,6 +171,113 @@ describe("syncAlabamaCandidateFinance", () => {
     });
     expect(result).toMatchObject({ dryRun: true, summaryWritten: false, bucketsWritten: 0 });
     expect(db.connect).not.toHaveBeenCalled();
+    expect(client.query).not.toHaveBeenCalled();
+  });
+
+  it("handles a yearly extract larger than the spread-argument limit", async () => {
+    // Live 2026-09-01: the 2025 cash extract has 120,501 rows and the 2026
+    // one 117,300; push(...rows) overflowed the call stack and gated every
+    // candidate's buckets off with artifact_unavailable.
+    const { db } = writingDb();
+    const filler: AlabamaCashRow[] = [];
+    for (let index = 0; index < 200_000; index += 1) {
+      filler.push(cashRow({ committeeId: "1", contributionId: String(index) }));
+    }
+    const result = await syncAlabamaCandidateFinance({
+      ...baseInput(db),
+      dryRun: true,
+      loadOfficeRaceContext: officeContext([raceRow({})]),
+      loadCashRows: cashLoader({ 2025: filler, 2026: [cashRow({})] }),
+    });
+    expect(result).toMatchObject({ coverageRatio: 1, bucketDiagnostics: [] });
+  });
+
+  it("takes the summary from window covers, not the race row's lifetime aggregate", async () => {
+    // Live 2026-09-01: an incumbent's race row showed $655,220.53 raised while
+    // the 2026-cycle covers summed to $171,102.00 (the race aggregate lumps in
+    // every untagged annual/major report since 2014).
+    const { db } = writingDb();
+    const result = await syncAlabamaCandidateFinance({
+      ...baseInput(db),
+      loadOfficeRaceContext: officeContext([
+        raceRow({ MONETARYCONTRIB: 655_220.53, MONETARYEXP: 552_049.08, ENDINGFUNDS: 85 }),
+      ]),
+      loadCashRows: cashLoader({ 2026: [cashRow({})] }),
+    });
+    expect(result).toMatchObject({
+      totalReceipts: 125,
+      totalDisbursements: 40,
+      cashOnHand: 85,
+      raceRowTotalReceipts: 655_245.53,
+      summaryDiagnostics: [],
+      coverageRatio: 1,
+      bucketsWritten: 1,
+    });
+  });
+
+  it("reports a cash-on-hand identity miss and an empty window without failing", async () => {
+    const { db } = writingDb();
+    const mismatch = await syncAlabamaCandidateFinance({
+      ...baseInput(db),
+      dryRun: true,
+      loadCycleCovers: coversLoader({ openingBalanceCents: 0 }),
+      loadOfficeRaceContext: officeContext([raceRow({})]),
+      loadCashRows: cashLoader({ 2026: [cashRow({})] }),
+    });
+    expect(mismatch.summaryDiagnostics).toEqual([
+      "cash_on_hand_identity_mismatch: window implies 80.00, race row 85.00",
+    ]);
+    const empty = await syncAlabamaCandidateFinance({
+      ...baseInput(db),
+      dryRun: true,
+      loadCycleCovers: coversLoader({
+        windowFilingCount: 0,
+        cashCents: 0,
+        inKindCents: 0,
+        otherCents: 0,
+        expenditureCents: 0,
+        openingBalanceCents: null,
+        latestEndingBalanceCents: null,
+      }),
+      loadOfficeRaceContext: officeContext([raceRow({})]),
+      loadCashRows: cashLoader({}),
+    });
+    expect(empty).toMatchObject({
+      totalReceipts: 0,
+      totalDisbursements: 0,
+      cashOnHand: 85,
+      summaryDiagnostics: ["no_filings_in_window:2023-01-01"],
+    });
+  });
+
+  it("stores a null cash on hand for an overdrawn committee and says so", async () => {
+    const { db } = writingDb();
+    const result = await syncAlabamaCandidateFinance({
+      ...baseInput(db),
+      // -125.90 + 100 + 20 - 40 = -45.90: identity holds, only the sign trips.
+      loadCycleCovers: coversLoader({ openingBalanceCents: -12_590 }),
+      loadOfficeRaceContext: officeContext([raceRow({ ENDINGFUNDS: -45.9 })]),
+      loadCashRows: cashLoader({ 2026: [cashRow({})] }),
+    });
+    expect(result).toMatchObject({
+      cashOnHand: null,
+      summaryWritten: true,
+      summaryDiagnostics: ["cash_on_hand_negative_not_stored: -45.90"],
+    });
+  });
+
+  it("throws and writes nothing when the covers cannot be loaded", async () => {
+    const { db, client } = writingDb();
+    await expect(
+      syncAlabamaCandidateFinance({
+        ...baseInput(db),
+        loadCycleCovers: vi.fn(async () => {
+          throw new Error("filing 52634 cover unavailable after 3 attempts");
+        }),
+        loadOfficeRaceContext: officeContext([raceRow({})]),
+        loadCashRows: cashLoader({ 2026: [cashRow({})] }),
+      })
+    ).rejects.toThrow("cover unavailable");
     expect(client.query).not.toHaveBeenCalled();
   });
 
@@ -240,10 +371,12 @@ describe("syncAlabamaCandidateFinance", () => {
     const { db } = writingDb();
     const result = await syncAlabamaCandidateFinance({
       ...baseInput(db),
-      loadOfficeRaceContext: officeContext([raceRow({ MONETARYCONTRIB: 1_000 })]),
+      loadCycleCovers: coversLoader({ cashCents: 100_000, openingBalanceCents: -89_500 }),
+      loadOfficeRaceContext: officeContext([raceRow({})]),
       loadCashRows: cashLoader({ 2026: [cashRow({})] }),
     });
     expect(result.summaryWritten).toBe(true);
+    expect(result.totalReceipts).toBe(1_025);
     expect(result.bucketsWritten).toBe(0);
     expect(result.bucketDiagnostics[0]).toContain("cash_coverage_out_of_tolerance");
   });
