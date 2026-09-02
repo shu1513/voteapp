@@ -105,9 +105,10 @@ records.**
 | --- | --- | --- | --- | --- |
 | batch-01 | 9 | 18 | 764 | civil rights, immigration, income tax, reproductive rights, education, welfare, guns, elections, housing |
 | batch-02 | 7 | 14 | 598 | environment, health care, corporate accountability |
-| **total** | **16** | **32** | **1,362** | 12 areas, 87 candidates, 801 tags |
+| batch-03 | 2 | 4 | 172 | environment, both directions |
+| **total** | **18** | **36** | **1,534** | 12 areas, 87 candidates, 913 tags |
 
-596 divided-and-enacted rolls remain unbatched and 5 are dropped under filter 5;
+592 divided-and-enacted rolls remain unbatched and 5 are dropped under filter 5;
 `survey/divided-enacted-worklist.tsv` carries a disposition for every one, and
 `survey/filter-5-drops.md` records why each drop was dropped after a full read.
 

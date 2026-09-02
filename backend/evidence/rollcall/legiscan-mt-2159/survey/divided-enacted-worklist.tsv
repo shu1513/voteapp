@@ -262,8 +262,8 @@ HB 650	B	house	2025-03-07	1508645	60	39	unbatched	Revise bonding laws to include
 HB 650	B	house	2025-04-17	1551989	61	38	unbatched	Revise bonding laws to include broadband projects
 HB 655	B	house	2025-03-07	1508732	59	40	unbatched	Prohibit discriminatory action against persons providing adoption or foster care services
 HB 655	B	senate	2025-04-08	1548839	29	19	unbatched	Prohibit discriminatory action against persons providing adoption or foster care services
-HB 664	B	house	2025-03-07	1508647	69	30	unbatched	Repeal numeric nutrient standards
-HB 664	B	senate	2025-04-15	1548853	34	16	unbatched	Repeal numeric nutrient standards
+HB 664	B	house	2025-03-07	1508647	69	30	batch-03	Repeal numeric nutrient standards
+HB 664	B	senate	2025-04-15	1548853	34	16	batch-03	Repeal numeric nutrient standards
 HB 665	B	senate	2025-04-16	1550431	36	14	unbatched	Preclude non-profit officers from personal liability for unpaid tax withholding
 HB 667	B	senate	2025-04-07	1538595	32	17	unbatched	Revise labor laws relating to employers and public service
 HB 668	B	senate	2025-04-11	1546383	33	15	unbatched	Revising alcohol law to prohibit certain licensees from offering gambling
@@ -490,8 +490,8 @@ SB 218	B	house	2025-04-11	1546384	55	44	unbatched	Provide for private right of a
 SB 218	B	senate	2025-02-18	1492242	30	20	unbatched	Provide for private right of action for injuries caused by certain medical interventions to treat gender dysphoria
 SB 218	B	senate	2025-04-17	1551250	32	18	unbatched	Provide for private right of action for injuries caused by certain medical interventions to treat gender dysphoria
 SB 218	B	senate	2025-04-29	1560193	31	19	unbatched	Provide for private right of action for injuries caused by certain medical interventions to treat gender dysphoria
-SB 221	B	house	2025-04-10	1543279	63	35	unbatched	Generally revise the Montana environmental policy act
-SB 221	B	senate	2025-02-13	1489304	37	13	unbatched	Generally revise the Montana environmental policy act
+SB 221	B	house	2025-04-10	1543279	63	35	batch-03	Generally revise the Montana environmental policy act
+SB 221	B	senate	2025-02-13	1489304	37	13	batch-03	Generally revise the Montana environmental policy act
 SB 226	B	senate	2025-03-05	1505705	31	18	unbatched	Require petition submittals be dropped off within a specific timeframe
 SB 236	B	house	2025-03-31	1530890	70	28	unbatched	Allow longevity payments for county detention officers
 SB 236	B	senate	2025-02-19	1494083	32	17	unbatched	Allow longevity payments for county detention officers

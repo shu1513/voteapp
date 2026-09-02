@@ -1,0 +1,76 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1508647,
+   "measure_id": "HB 664",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 664, which ends Montana's numeric limits on nutrients in water. Nutrients here means nitrogen and phosphorus, which feed algae growth. The environmental quality department must repeal the 2014 circular that set those numeric limits. It must also strip references to them from 14 rules and from its guidance, testing methods, and pollution budgets. The law repeals the state's transition rules for nutrient standards and ends the advisory nutrient work group. The Montana House passed it 69-30, and it became law.",
+   "nay_description": "Voted against House Bill 664, which ends Montana's numeric limits on nutrients in water. Nutrients here means nitrogen and phosphorus, which feed algae growth. The environmental quality department must repeal the 2014 circular that set those numeric limits. It must also strip references to them from 14 rules and from its guidance, testing methods, and pollution budgets. The law repeals the state's transition rules for nutrient standards and ends the advisory nutrient work group. The Montana House passed it 69-30, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1548853,
+   "measure_id": "HB 664",
+   "vote_date": "2025-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 664, which ends Montana's numeric limits on nutrients in water. Nutrients here means nitrogen and phosphorus, which feed algae growth. The environmental quality department must repeal the 2014 circular that set those numeric limits. It must also strip references to them from 14 rules and from its guidance, testing methods, and pollution budgets. The law repeals the state's transition rules for nutrient standards and ends the advisory nutrient work group. The Montana Senate passed it 34-16, and it became law.",
+   "nay_description": "Voted against House Bill 664, which ends Montana's numeric limits on nutrients in water. Nutrients here means nitrogen and phosphorus, which feed algae growth. The environmental quality department must repeal the 2014 circular that set those numeric limits. It must also strip references to them from 14 rules and from its guidance, testing methods, and pollution budgets. The law repeals the state's transition rules for nutrient standards and ends the advisory nutrient work group. The Montana Senate passed it 34-16, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1543279,
+   "measure_id": "SB 221",
+   "vote_date": "2025-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 221, which changes how Montana weighs greenhouse gases in environmental reviews. State law had barred agencies from studying greenhouse gases and their effect on the climate, and that ban is repealed. An agency may now do a greenhouse gas assessment when it decides one is needed. It must do one for a project that counts as a fossil fuel activity under state law. The environmental quality department must write public guidance on when an assessment is needed and how to do it, after public notice and comment. The law also drops a rule that had kept a greenhouse gas complaint from undoing or delaying a permit. The Montana House passed it 63-35, and it became law.",
+   "nay_description": "Voted against Senate Bill 221, which changes how Montana weighs greenhouse gases in environmental reviews. State law had barred agencies from studying greenhouse gases and their effect on the climate, and that ban is repealed. An agency may now do a greenhouse gas assessment when it decides one is needed. It must do one for a project that counts as a fossil fuel activity under state law. The environmental quality department must write public guidance on when an assessment is needed and how to do it, after public notice and comment. The law also drops a rule that had kept a greenhouse gas complaint from undoing or delaying a permit. The Montana House passed it 63-35, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1489304,
+   "measure_id": "SB 221",
+   "vote_date": "2025-02-13",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 221, which changes how Montana weighs greenhouse gases in environmental reviews. State law had barred agencies from studying greenhouse gases and their effect on the climate, and that ban is repealed. An agency may now do a greenhouse gas assessment when it decides one is needed. It must do one for a project that counts as a fossil fuel activity under state law. The environmental quality department must write public guidance on when an assessment is needed and how to do it, after public notice and comment. The law also drops a rule that had kept a greenhouse gas complaint from undoing or delaying a permit. The Montana Senate passed it 37-13, and it became law.",
+   "nay_description": "Voted against Senate Bill 221, which changes how Montana weighs greenhouse gases in environmental reviews. State law had barred agencies from studying greenhouse gases and their effect on the climate, and that ban is repealed. An agency may now do a greenhouse gas assessment when it decides one is needed. It must do one for a project that counts as a fossil fuel activity under state law. The environmental quality department must write public guidance on when an assessment is needed and how to do it, after public notice and comment. The law also drops a rule that had kept a greenhouse gas complaint from undoing or delaying a permit. The Montana Senate passed it 37-13, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
