@@ -24,48 +24,48 @@ HB1037	B	4	house	2025-02-04	1479607		66	23	House - Third reading	Storm water man
 HB1037	B	4	senate	2025-04-15	1548822	425	31	18	Senate - Third reading	Storm water management.	candidate: unbatched
 HB1037	B	4	house	2025-04-17	1550985	479	68	20	House - House concurred with Senate amendments	Storm water management.	candidate: unbatched
 HB1041	B	4	house	2025-02-18	1491965	202	71	25	House - Third reading	Student eligibility in interscholastic sports.	batch-01
-HB1052	B	4	house	2025-02-06	1483077	98	60	27	House - Third reading	Onsite sewage systems.	candidate: unbatched
-HB1052	B	4	house	2025-04-17	1551267	494	64	16	House - House concurred with Senate amendments	Onsite sewage systems.	candidate: unbatched
-HB1064	B	4	house	2025-02-11	1486265	127	67	25	House - Third reading	School transfers.	candidate: unbatched
-HB1064	B	4	senate	2025-04-15	1548834	426	30	19	Senate - Third reading	School transfers.	candidate: unbatched
-HB1064	B	4	house	2025-04-17	1550990	480	64	24	House - House concurred with Senate amendments	School transfers.	candidate: unbatched
+HB1052	B	4	house	2025-02-06	1483077	98	60	27	House - Third reading	Onsite sewage systems.	dropped: filter 5, overdue statewide septic rules run against voiding local ordinances approved after 2025-01-01 and freezing approval of new ones
+HB1052	B	4	house	2025-04-17	1551267	494	64	16	House - House concurred with Senate amendments	Onsite sewage systems.	dropped: filter 5, overdue statewide septic rules run against voiding local ordinances approved after 2025-01-01 and freezing approval of new ones
+HB1064	B	4	house	2025-02-11	1486265	127	67	25	House - Third reading	School transfers.	dropped: filter 3, removing the athletic-reasons bar on public school transfers fits no research area
+HB1064	B	4	senate	2025-04-15	1548834	426	30	19	Senate - Third reading	School transfers.	dropped: filter 3, removing the athletic-reasons bar on public school transfers fits no research area
+HB1064	B	4	house	2025-04-17	1550990	480	64	24	House - House concurred with Senate amendments	School transfers.	dropped: filter 3, removing the athletic-reasons bar on public school transfers fits no research area
 HB1079	B	4	house	2025-04-16	1549561	462	64	21	House - House concurred with Senate amendments	Property matters.	candidate: unbatched
-HB1114	B	4	house	2025-02-13	1489093	155	69	24	House - Third reading	Driving without a license.	candidate: unbatched
+HB1114	B	4	house	2025-02-13	1489093	155	69	24	House - Third reading	Driving without a license.	dropped: version trap, the only roll is a house text carrying mandatory vehicle impoundment and liability for other drivers' insurance deductibles, neither of which is law
 HB1115	B	4	house	2025-02-03	1478779		69	19	House - Third reading	Emergency possessory orders.	dropped: filter 5, a crime ground and a lease-fraud ground point different ways and the burden of proof is raised for landlords and tenants alike
 HB1115	B	4	senate	2025-04-01	1532404	323	38	10	Senate - Third reading	Emergency possessory orders.	dropped: filter 5, a crime ground and a lease-fraud ground point different ways and the burden of proof is raised for landlords and tenants alike
 HB1115	B	4	house	2025-04-16	1549557	464	63	17	House - House concurred with Senate amendments	Emergency possessory orders.	dropped: filter 5, a crime ground and a lease-fraud ground point different ways and the burden of proof is raised for landlords and tenants alike
-HB1122	B	4	house	2025-02-04	1479619		70	19	House - Third reading	Unlawful encroachment.	needs member-list check: LegiScan tally has no exact match in the official history
-HB1122	B	4	senate	2025-03-11	1513525	225	39	10	Senate - Third reading	Unlawful encroachment.	candidate: unbatched
-HB1125	B	4	house	2025-02-10	1484846	109	70	18	House - Third reading	Earned wage access services.	candidate: unbatched
-HB1125	B	4	house	2025-04-23	1555255	530	67	26	House - Rules Suspended. Conference Committee Report 1	Earned wage access services.	candidate: unbatched
+HB1122	B	4	house	2025-02-04	1479619		70	19	House - Third reading	Unlawful encroachment.	dropped: filter 5, a 25 foot buffer around officers sits both for effective policing and against accountability inside one area; the house roll is also unusable
+HB1122	B	4	senate	2025-03-11	1513525	225	39	10	Senate - Third reading	Unlawful encroachment.	dropped: filter 5, a 25 foot buffer around officers sits both for effective policing and against accountability inside one area; the house roll is also unusable
+HB1125	B	4	house	2025-02-10	1484846	109	70	18	House - Third reading	Earned wage access services.	dropped: filter 5, a licensing and consumer conduct regime runs against declaring the advances are not loans and exempting the charges from the loansharking cap; also carries two unrelated banking changes
+HB1125	B	4	house	2025-04-23	1555255	530	67	26	House - Rules Suspended. Conference Committee Report 1	Earned wage access services.	dropped: filter 5, a licensing and consumer conduct regime runs against declaring the advances are not loans and exempting the charges from the loansharking cap; also carries two unrelated banking changes
 HB1144	B	4	senate	2025-04-15	1548804	432	33	16	Senate - Third reading	Courts.	candidate: unbatched
 HB1196	B	4	senate	2025-03-18	1519727	245	39	10	Senate - Third reading	Membership of aviation boards.	candidate: unbatched
 HB1221	B	4	senate	2025-04-24	1556855	514	39	11	Senate - Rules Suspended. Conference Committee Report 1	Pension matters.	candidate: unbatched
 HB1275	B	4	senate	2025-04-15	1548879	435	39	10	Senate - Third reading	Alcohol and tobacco commission matters.	candidate: unbatched
-HB1348	B	4	house	2025-01-30	1477355	54	62	29	House - Third reading	Nonaccredited nonpublic schools.	candidate: unbatched
-HB1348	B	4	senate	2025-03-25	1526217	285	32	15	Senate - Third reading	Nonaccredited nonpublic schools.	candidate: unbatched
+HB1348	B	4	house	2025-01-30	1477355	54	62	29	House - Third reading	Nonaccredited nonpublic schools.	dropped: filter 3, giving nonaccredited school diplomas legal effect fits no research area; public education quality is about outcomes in public schools
+HB1348	B	4	senate	2025-03-25	1526217	285	32	15	Senate - Third reading	Nonaccredited nonpublic schools.	dropped: filter 3, giving nonaccredited school diplomas legal effect fits no research area; public education quality is about outcomes in public schools
 HB1390	B	4	senate	2025-04-08	1539783	361	38	11	Senate - Third reading	Bureau of motor vehicles.	candidate: unbatched
 HB1390	B	4	senate	2025-04-24	1556834	515	31	19	Senate - Rules Suspended. Conference Committee Report 1	Bureau of motor vehicles.	candidate: unbatched
 HB1393	B	4	house	2025-02-04	1479606	88	67	26	House - Third reading	Immigration notice.	superseded: the measure is covered by its HB 1393 house concurrence (batch-01)
 HB1393	B	4	senate	2025-03-24	1524754	271	37	10	Senate - Third reading	Immigration notice.	batch-01
 HB1393	B	4	house	2025-04-16	1549534	472	58	19	House - House concurred with Senate amendments	Immigration notice.	batch-01
-HB1412	B	4	senate	2025-04-07	1538218	346	31	18	Senate - Third reading	Reporting of child abuse or neglect.	candidate: unbatched
-HB1412	B	4	house	2025-04-16	1549550	474	59	19	House - House concurred with Senate amendments	Reporting of child abuse or neglect.	candidate: unbatched
+HB1412	B	4	senate	2025-04-07	1538218	346	31	18	Senate - Third reading	Reporting of child abuse or neglect.	dropped: filter 5, wider reporting duties run against a rider excluding raising a child consistent with biological sex from abuse, neglect and CHINS
+HB1412	B	4	house	2025-04-16	1549550	474	59	19	House - House concurred with Senate amendments	Reporting of child abuse or neglect.	dropped: filter 5, wider reporting duties run against a rider excluding raising a child consistent with biological sex from abuse, neglect and CHINS
 HB1427	B	4	house	2025-04-24	1557725	574	69	23	House - Rules Suspended. Conference Committee Report 1	Department of local government finance.	candidate: unbatched
 HB1427	B	4	senate	2025-04-24	1557724	536	37	13	Senate - Rules Suspended. Conference Committee Report 1	Department of local government finance.	candidate: unbatched
 HB1460	B	4	house	2025-02-06	1483075	99	64	23	House - Third reading	Drainage systems.	candidate: unbatched
 HB1461	B	4	house	2025-02-20	1494703	249	72	21	House - Third reading	Road funding.	candidate: unbatched
 HB1461	B	4	senate	2025-04-15	1548815	442	38	10	Senate - Third reading	Road funding.	candidate: unbatched
 HB1461	B	4	house	2025-04-17	1551304	496	68	17	House - House concurred with Senate amendments	Road funding.	candidate: unbatched
-HB1498	B	4	house	2025-02-04	1479610	90	62	28	House - Third reading	School accountability.	candidate: unbatched
-HB1498	B	4	house	2025-04-24	1557230	564	65	25	House - House concurred with Senate amendments	School accountability.	candidate: unbatched
+HB1498	B	4	house	2025-02-04	1479610	90	62	28	House - Third reading	School accountability.	dropped: filter 5, rebuilding the A to F school rating system runs against suspending every school's grade for 2024-2025
+HB1498	B	4	house	2025-04-24	1557230	564	65	25	House - House concurred with Senate amendments	School accountability.	dropped: filter 5, rebuilding the A to F school rating system runs against suspending every school's grade for 2024-2025
 HB1515	B	4	house	2025-02-06	1483086	101	57	28	House - Third reading	Education and higher education matters.	candidate: unbatched
 HB1515	B	4	senate	2025-04-15	1548816	444	32	16	Senate - Third reading	Education and higher education matters.	candidate: unbatched
 HB1515	B	4	senate	2025-04-24	1557779	537	28	22	Senate - Rules Suspended. Conference Committee Report 1	Education and higher education matters.	candidate: unbatched
 HB1515	B	4	house	2025-04-24	1557780	573	62	30	House - Rules Suspended. Conference Committee Report 1	Education and higher education matters.	candidate: unbatched
-HB1601	B	4	senate	2025-04-15	1548817	446	30	18	Senate - Third reading	Quantum research tax incentives.	candidate: unbatched
-HB1601	B	4	house	2025-04-21	1552516	503	61	24	House - House concurred with Senate amendments	Quantum research tax incentives.	candidate: unbatched
-HB1605	B	4	house	2025-02-20	1494705	253	69	23	House - Third reading	Juvenile law matters.	candidate: unbatched
+HB1601	B	4	senate	2025-04-15	1548817	446	30	18	Senate - Third reading	Quantum research tax incentives.	dropped: filter 3, an uncapped sales tax exemption for quantum and defence computing networks fits no research area
+HB1601	B	4	house	2025-04-21	1552516	503	61	24	House - House concurred with Senate amendments	Quantum research tax incentives.	dropped: filter 3, an uncapped sales tax exemption for quantum and defence computing networks fits no research area
+HB1605	B	4	house	2025-02-20	1494705	253	69	23	House - Third reading	Juvenile law matters.	dropped: filter 5 and a version trap, several distinct child welfare topics and the only roll predates a whole added section on confidential assistance records
 HB1633	B	4	senate	2025-04-07	1538226	350	35	13	Senate - Third reading	Study of election issues.	candidate: unbatched
 HB1634	B	4	senate	2025-04-08	1540370	367	38	11	Senate - Third reading	Math education.	candidate: unbatched
 HB1666	B	4	house	2025-02-13	1489138	161	70	25	House - Third reading	Ownership of health care providers.	dropped: version trap, the only divided roll is the House text carrying an AG merger pre-approval regime the enrolled act does not contain
@@ -85,7 +85,7 @@ SB0043	B	4	house	2025-03-31	1530948	331	64	26	House - Third reading	Study of loc
 SB0043	B	4	senate	2025-04-23	1555021	487	37	11	Senate - Senate concurred with House amendments	Study of location of gambling operations.	candidate: unbatched
 SB0108	B	4	senate	2025-02-18	1492470	147	39	10	Senate - Third reading	Charity gaming.	candidate: unbatched
 SB0140	B	4	senate	2025-04-24	1558096	523	39	10	Senate - Rules Suspended. Conference Committee Report 1	Pharmacy benefits.	candidate: unbatched
-SB0143	B	4	house	2025-04-01	1532310	344	69	24	House - Third reading	Parental rights.	candidate: unbatched
+SB0143	B	4	house	2025-04-01	1532310	344	69	24	House - Third reading	Parental rights.	dropped: filter 5, a strict scrutiny parental right against government bodies runs against a child's confidentiality inside the same area
 SB0209	B	4	senate	2025-02-04	1480002	70	37	13	Senate - Third reading	Electronic pull tabs in charity gaming.	candidate: unbatched
 SB0209	B	4	senate	2025-04-03	1535962	340	35	12	Senate - Senate concurred with House amendments	Electronic pull tabs in charity gaming.	candidate: unbatched
 SB0249	B	4	senate	2025-02-11	1486724	101	39	10	Senate - Third reading	Teacher compensation.	dropped: filter 5, pay flexibility runs against removing the supplement from collective bargaining
@@ -101,7 +101,7 @@ SB0289	B	4	senate	2025-02-06	1483504	80	34	13	Senate - Third reading	Unlawful di
 SB0289	B	4	house	2025-04-14	1547488	441	67	27	House - Third reading	Unlawful discrimination.	superseded: the measure is covered by its SB 289 house conference report (batch-01)
 SB0289	B	4	senate	2025-04-24	1556839	506	34	16	Senate - Rules Suspended. Conference Committee Report 1	Unlawful discrimination.	batch-01
 SB0289	B	4	house	2025-04-24	1556465	548	64	26	House - Rules Suspended. Conference Committee Report 1	Unlawful discrimination.	batch-01
-SB0318	B	4	house	2025-04-07	1538211	373	61	32	House - Third reading	Required disclosures and access of foreign media.	candidate: unbatched
+SB0318	B	4	house	2025-04-07	1538211	373	61	32	House - Third reading	Required disclosures and access of foreign media.	dropped: filter 5, foreign ownership disclosure by media runs against conditioning press access to state events on state accreditation
 SB0331	B	4	house	2025-04-14	1547473	442	72	22	House - Third reading	Amended registration.	candidate: unbatched
 SB0358	B	4	senate	2025-02-20	1495604	186	39	10	Senate - Third reading	Various education matters.	candidate: unbatched
 SB0358	B	4	house	2025-04-24	1556821	555	58	28	House - Rules Suspended. Conference Committee Report 1	Various education matters.	candidate: unbatched

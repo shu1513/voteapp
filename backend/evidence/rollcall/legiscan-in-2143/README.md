@@ -17,8 +17,8 @@ subset: the survey, the crosswalk, the people snapshot and each judged batch.
 - `survey/` — the desc histogram the config was written from, the fetch ledger, and
   `divided-enacted-worklist.tsv`, which carries one row per divided-and-enacted roll with
   its disposition.
-- `batch-01/`, `batch-02/`, `batch-03/` — judgments, the roll evidence files, and the import
-  ledgers for each batch.
+- `batch-01/` to `batch-04/` — judgments, the roll evidence files, and the import ledgers for
+  each batch. Batch-04 kept nothing, so it holds only its selection notes.
 - `CODE-FINDINGS.md` — the Indiana defects and source quirks recorded but deliberately not
   fixed here.
 
@@ -91,8 +91,8 @@ Two things are worth doing the same way every batch.
 
 **Read the annotated text, not plain `pdftotext` output.** Indiana prints additions in bold
 and deletions in roman with a struck rule, and `pdftotext` flattens both into ordinary text.
-`pdftohtml -xml` keeps the bold, so additions can be marked and read directly. See
-`CODE-FINDINGS.md` section 4.
+`tools/annot.py` marks additions as `<<...>>` and deletions as `[[...]]`, so an amendment can
+be read without rendering pages as images. See `CODE-FINDINGS.md` section 4.
 
 **Take the version stack from the LegiScan dataset.** Each bill's JSON carries a dated link
 for every printed version, so the version a roll actually voted on can be identified by date
@@ -101,9 +101,11 @@ instead of by guessing a filename. See `CODE-FINDINGS.md` section 5.
 ## State of the work
 
 Batches 01 to 03 are imported on the local `voteapp` database only: **820 records across 102
-candidates with 666 area tags, over nine measures and sixteen rolls.** **Production holds no
-Indiana records.**
+candidates with 666 area tags, over nine measures and sixteen rolls.** Batch-04 read twelve
+more measures and kept none of them. **Production holds no Indiana records.**
 
-46 measures and 89 divided-and-enacted rolls remain, each dispositioned in
-`survey/divided-enacted-worklist.tsv`; three still carry the `needs member-list check` flag.
+34 measures and 68 divided-and-enacted rolls remain, each dispositioned in
+`survey/divided-enacted-worklist.tsv`; two still carry the `needs member-list check` flag.
+Most of what is left is the session's omnibus work, where the keep rate should be expected to
+be low.
 The 2026 Regular Session (LegiScan session 2234) is complete and has never been surveyed.

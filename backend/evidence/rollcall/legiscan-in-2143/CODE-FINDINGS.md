@@ -102,7 +102,7 @@ proposer's requirement that a match be unique in both directions is what stopped
 district settles the identity. This is the Maryland "two Mark Fishers" trap recurring, and
 the uniqueness rule is what prevented it.
 
-## 4. `pdftotext` hides what an Indiana bill deletes, and `pdftohtml` does not
+## 4. `pdftotext` hides what an Indiana bill adds and deletes; both are recoverable
 
 Indiana prints an amendment in three styles, and says so on the first page of every enrolled
 act: existing statute text in roman, additions in bold, and deletions in roman with a rule
@@ -110,15 +110,17 @@ struck through. `pdftotext` flattens all three into identical plain text. That i
 the batch-01 description of SB 289 materially wrong — the words "meet the definition of a
 minority" read as operative text when they were struck.
 
-`pdftohtml -xml` keeps the font of every run, and additions are the only one of the three
-styles that uses a bold font. Rendering a bill with every bold run wrapped in markers makes
-the additions visible directly, and the roman text sitting next to an addition is then
-either existing law or the words being replaced. Batch-03 read every enacted text this way.
-The residue is small: only a claim that turns on what an amendment *removed* still needs the
-page rendered as an image, and one such claim in batch-03 was checked that way.
+Both remaining styles are recoverable, and `tools/annot.py` now marks both. Additions carry
+a bold font name. Deletions are not a font at all — the strike is drawn as a thin horizontal
+rule, about 0.7 points tall, laid over the words — so they are found by intersecting those
+rules with the word boxes they cross. The tool wraps additions in `<<...>>` and deletions in
+`[[...]]`, which makes an Indiana amendment readable without rendering a single page as an
+image.
 
-The deletion rule itself is drawn as a graphic, not encoded as a font, so it cannot be
-recovered from the text layer at all. That is the reason the residue exists.
+Batch-03 used an earlier version of the tool that could see only the bold, and this document
+then said the strike could not be recovered from the file at all. That was wrong: the strike
+is vector geometry rather than text, so a text-only extractor misses it, but a library that
+also reports page shapes finds it directly. Batch-04 corrected the tool and this note.
 
 ## 5. Bill versions should come from the dataset, not from the filename
 
