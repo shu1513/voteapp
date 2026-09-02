@@ -1899,93 +1899,93 @@
    "reason": "cuts both ways on disclosure \u2014 creates annual public reports on discrimination complaints while making the underlying collected data confidential and exempt from the public records act"
   },
   "AB 956": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Accessory dwelling units and junior accessory dwelling units.",
-   "batch": null,
+   "batch": "batch-23",
    "reason": null
   },
   "AB 963": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "vetoed",
    "value": 1,
    "title": "Public works: prevailing wages: access to records.",
-   "batch": null,
+   "batch": "batch-23",
    "reason": null
   },
   "SB 1014": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Development projects: preliminary estimate of required improvements: onsite and offsite improvements.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-23 read",
+   "reason": "the headline preliminary estimate is expressly informational only and not legally binding, so the bill adds paperwork deadlines without changing what a city may require"
   },
   "SB 1154": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Public contracts: best value procurement: community college districts.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-23 read",
+   "reason": "permissive authority only \u2014 community college boards may use best value procurement, and no duty arises unless a district chooses to"
   },
   "SB 1166": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Alameda-Contra Costa Transit District: employee relations.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-23 read",
+   "reason": "cuts both ways and single-district \u2014 unfair practice duties and the court appeal run equally against the AC Transit district and the union"
   },
   "SB 1194": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Immigration Legal Fellowship Project.",
-   "batch": null,
+   "batch": "batch-23",
    "reason": null
   },
   "SB 1196": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Small energization projects: electrical service connections.",
-   "batch": null,
+   "batch": "batch-23",
    "reason": null
   },
   "SB 1255": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Postsecondary education: Designation of California Hispanic-Serving Institutions.",
-   "batch": null,
+   "batch": "batch-23",
    "reason": null
   },
   "SB 1323": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Health care providers: patient access: immigration enforcement.",
-   "batch": null,
+   "batch": "batch-23",
    "reason": null
   },
   "SB 1328": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Public postsecondary education: Equity in Higher Education Act: campus contact.",
-   "batch": null,
+   "batch": "batch-23",
    "reason": null
   },
   "SB 1354": {
@@ -1998,39 +1998,39 @@
    "reason": "read and dropped in batch-09 (pre-ledger) \u2014 national_defense reads as military readiness and deterrence, and a bill restricting out-of-state deployments is not clearly for or against it"
   },
   "SB 1388": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Affordable Housing Risk Reduction Program.",
-   "batch": null,
+   "batch": "batch-23",
    "reason": null
   },
   "SB 24": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "vetoed",
    "value": 1,
    "title": "Public utilities: review of accounts: electrical and gas corporations: rates: political influence activities.",
-   "batch": null,
+   "batch": "batch-23",
    "reason": null
   },
   "SB 313": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Vital records: birth certificates.",
-   "batch": null,
+   "batch": "batch-23",
    "reason": null
   },
   "SB 388": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "vetoed",
    "value": 1,
    "title": "California Latino Commission.",
-   "batch": null,
+   "batch": "batch-23",
    "reason": null
   },
   "SB 403": {
@@ -2043,94 +2043,94 @@
    "reason": "read and dropped in batch-09 (pre-ledger) \u2014 the only fitting area is womens_reproductive_rights, and filing an aid-in-dying vote there would display to voters as a reproductive rights record"
   },
   "SB 450": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Adoption.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-23 read",
+   "reason": "cuts both ways \u2014 widens court jurisdiction over adoptions while shifting the cost of completing a deficient out-of-state home study onto the adopting family"
   },
   "SB 501": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "enrolled",
    "value": 1,
    "title": "Responsible Battery Recycling Act of 2022: covered batteries.",
-   "batch": null,
+   "batch": "batch-23",
    "reason": null
   },
   "SB 513": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Personnel records.",
-   "batch": null,
+   "batch": "batch-23",
    "reason": null
   },
   "SB 515": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Local government: collection of demographic data.",
-   "batch": null,
+   "batch": "batch-23",
    "reason": null
   },
   "SB 578": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "California Workplace Outreach Program.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-23 read",
+   "reason": "no research area fits \u2014 a state outreach programme telling workers about workplace protections, contingent on an appropriation"
   },
   "SB 610": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Disaster assistance: tenants, mobilehome parks, and mortgages.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-23 read",
+   "reason": "cuts both ways \u2014 adds disaster protections for tenants but removes the in-place market value payment owed to displaced mobilehome residents when the closure follows a disaster"
   },
   "SB 703": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "vetoed",
    "value": 1,
    "title": "Ports: truck drivers.",
-   "batch": null,
+   "batch": "batch-23",
    "reason": null
   },
   "SB 762": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Transactions and use taxes: various jurisdictions.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-23 read",
+   "reason": "thirteen separate local sales tax authorizations across named cities and counties; no statewide operative effect a voter would recognize"
   },
   "SB 787": {
-   "status": "open",
+   "status": "judged",
    "chambers": "S",
    "bill_status": "vetoed",
    "value": 1,
    "title": "Energy: equitable clean energy supply chains and industrial policy in California.",
-   "batch": null,
+   "batch": "batch-23",
    "reason": null
   },
   "SB 809": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "S",
    "bill_status": "chaptered",
    "value": 1,
    "title": "Employees and independent contractors: construction trucking.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-23 read",
+   "reason": "cuts both ways \u2014 reimbursement and classification rules favour drivers while the amnesty relieves employers of misclassification penalties and bars claims for drivers who do not accept a settlement"
   },
   "SB 827": {
    "status": "open",
