@@ -50,9 +50,9 @@ HB 20	B	house	2025-01-23	1481040	63	37	unbatched	Require voted levies to be in d
 HB 20	B	house	2025-03-25	1526179	57	42	unbatched	Require voted levies to be in dollars rather than mills
 HB 20	B	senate	2025-02-27	1501599	34	16	unbatched	Require voted levies to be in dollars rather than mills
 HB 201	B	house	2025-02-04	1481928	59	41	unbatched	Require disclosure of paid signature gatherers for initiatives
-HB 201	B	house	2025-04-01	1532267	57	42	unbatched	Require disclosure of paid signature gatherers for initiatives
+HB 201	B	house	2025-04-01	1532267	57	42	batch-05	Require disclosure of paid signature gatherers for initiatives
 HB 201	B	senate	2025-03-17	1519004	39	10	unbatched	Require disclosure of paid signature gatherers for initiatives
-HB 201	B	senate	2025-04-04	1537129	27	22	unbatched	Require disclosure of paid signature gatherers for initiatives
+HB 201	B	senate	2025-04-04	1537129	27	22	batch-05	Require disclosure of paid signature gatherers for initiatives
 HB 206	B	house	2025-01-31	1481938	59	40	unbatched	Revise electrical contractors presentation of license laws
 HB 206	B	house	2025-04-11	1546484	62	37	unbatched	Revise electrical contractors presentation of license laws
 HB 206	B	senate	2025-03-31	1531411	32	18	unbatched	Revise electrical contractors presentation of license laws
@@ -135,8 +135,8 @@ HB 365	B	senate	2025-04-14	1547627	31	17	unbatched	Revise laws relating to attor
 HB 372	B	senate	2025-04-23	1555843	31	19	unbatched	Revise license fees used for funding of upland game bird enhancement program
 HB 388	B	house	2025-02-21	1496775	57	41	batch-01	Create pregnancy center autonomy and rights of expression act
 HB 388	B	senate	2025-04-12	1546604	31	19	batch-01	Create pregnancy center autonomy and rights of expression act
-HB 39	B	house	2025-01-15	1481006	57	43	unbatched	Repeal law disallowing parties from contributing to judicial candidates
-HB 39	B	senate	2025-02-15	1490713	25	23	unbatched	Repeal law disallowing parties from contributing to judicial candidates
+HB 39	B	house	2025-01-15	1481006	57	43	batch-05	Repeal law disallowing parties from contributing to judicial candidates
+HB 39	B	senate	2025-02-15	1490713	25	23	batch-05	Repeal law disallowing parties from contributing to judicial candidates
 HB 393	B	house	2025-02-24	1497876	69	30	unbatched	Require towns to record meetings in audio format
 HB 393	B	senate	2025-04-14	1547354	37	11	unbatched	Require towns to record meetings in audio format
 HB 396	B	house	2025-03-04	1504413	60	39	unbatched	Generally revise bail laws
@@ -154,8 +154,8 @@ HB 409	B	house	2025-03-21	1524065	58	39	unbatched	Revise injunction laws
 HB 409	B	senate	2025-03-18	1520594	31	18	unbatched	Revise injunction laws
 HB 411	B	house	2025-03-26	1528094	56	43	unbatched	Exempt agricultural property from open space levies
 HB 411	B	senate	2025-04-22	1554841	38	12	unbatched	Exempt agricultural property from open space levies
-HB 413	B	house	2025-02-27	1501539	56	42	unbatched	Revise election laws regarding residency
-HB 413	B	senate	2025-04-11	1545872	30	18	unbatched	Revise election laws regarding residency
+HB 413	B	house	2025-02-27	1501539	56	42	batch-05	Revise election laws regarding residency
+HB 413	B	senate	2025-04-11	1545872	30	18	batch-05	Revise election laws regarding residency
 HB 415	B	house	2025-02-21	1496478	63	35	unbatched	Revise laws on a judge's ability to provide bail to certain defendants
 HB 415	B	senate	2025-04-14	1547363	34	14	unbatched	Revise laws on a judge's ability to provide bail to certain defendants
 HB 416	B	house	2025-02-26	1500714	56	44	unbatched	Require homeowners' associations to seek permission for entry on real property
@@ -290,12 +290,12 @@ HB 703	B	house	2025-03-07	1508518	58	41	unbatched	Exempt GHG emissions analysis 
 HB 703	B	house	2025-04-18	1552315	61	37	batch-02	Exempt GHG emissions analysis for appliances, vehicles, engines
 HB 703	B	senate	2025-04-11	1546422	36	12	batch-02	Exempt GHG emissions analysis for appliances, vehicles, engines
 HB 710	B	senate	2025-04-22	1553597	32	18	unbatched	Generally revise laws related to the judiciary
-HB 711	B	house	2025-03-07	1508630	57	42	unbatched	Prohibit selection of redistricting chair with recent major party contributions
-HB 711	B	senate	2025-04-14	1547715	29	19	unbatched	Prohibit selection of redistricting chair with recent major party contributions
+HB 711	B	house	2025-03-07	1508630	57	42	batch-05	Prohibit selection of redistricting chair with recent major party contributions
+HB 711	B	senate	2025-04-14	1547715	29	19	batch-05	Prohibit selection of redistricting chair with recent major party contributions
 HB 714	B	house	2025-03-07	1508746	56	43	unbatched	Revise laws for divisions of land exempt from subdivision review
 HB 714	B	house	2025-04-18	1552095	57	41	unbatched	Revise laws for divisions of land exempt from subdivision review
-HB 719	B	house	2025-03-07	1508609	57	42	unbatched	Revise election laws related to an elector's date of birth
-HB 719	B	senate	2025-04-22	1554827	32	18	unbatched	Revise election laws related to an elector's date of birth
+HB 719	B	house	2025-03-07	1508609	57	42	batch-05	Revise election laws related to an elector's date of birth
+HB 719	B	senate	2025-04-22	1554827	32	18	batch-05	Revise election laws related to an elector's date of birth
 HB 72	B	senate	2025-03-03	1503420	39	11	unbatched	Revise enlisted militia compensation for SAD
 HB 723	B	house	2025-03-07	1508592	57	42	unbatched	Establish annual reporting requirements of infants born alive
 HB 723	B	house	2025-04-18	1552116	58	41	unbatched	Establish annual reporting requirements of infants born alive
@@ -442,9 +442,9 @@ SB 101	B	house	2025-03-27	1529013	58	41	unbatched	Revise laws related to squatti
 SB 101	B	senate	2025-01-24	1481618	35	14	unbatched	Revise laws related to squatting
 SB 101	B	senate	2025-04-01	1533264	35	15	unbatched	Revise laws related to squatting
 SB 104	B	senate	2025-02-28	1502635	38	11	unbatched	Expanding access to low-cost capital to certain eligible projects and entities
-SB 105	B	house	2025-03-31	1531112	77	21	unbatched	Generally revise election laws related to electioneering at polling locations
+SB 105	B	house	2025-03-31	1531112	77	21	batch-05	Generally revise election laws related to electioneering at polling locations
 SB 105	B	senate	2025-02-26	1500296	28	22	unbatched	Generally revise election laws related to electioneering at polling locations
-SB 105	B	senate	2025-04-04	1537120	36	13	unbatched	Generally revise election laws related to electioneering at polling locations
+SB 105	B	senate	2025-04-04	1537120	36	13	batch-05	Generally revise election laws related to electioneering at polling locations
 SB 110	B	senate	2025-02-10	1485531	33	16	unbatched	Revise laws relating to amusement rides and safety
 SB 113	B	house	2025-03-21	1524060	76	21	unbatched	Revise exemptions related to tow truck lien law
 SB 116	B	house	2025-04-28	1558991	58	41	unbatched	Revise the Montana heritage preservation and development commission membership
@@ -498,8 +498,8 @@ SB 236	B	senate	2025-02-19	1494083	32	17	unbatched	Allow longevity payments for 
 SB 237	B	house	2025-04-16	1550668	66	32	unbatched	Require revenue interim committee to make a recommendation about property tax rates
 SB 238	B	house	2025-04-16	1550601	71	26	unbatched	Allow hunters to donate funds for archery equipment for disabled bowhunters
 SB 238	B	senate	2025-04-04	1537096	38	11	unbatched	Allow hunters to donate funds for archery equipment for disabled bowhunters
-SB 242	B	house	2025-03-31	1531507	71	28	unbatched	Revise election laws related to ballot form and uniformity
-SB 242	B	senate	2025-03-01	1502923	31	19	unbatched	Revise election laws related to ballot form and uniformity
+SB 242	B	house	2025-03-31	1531507	71	28	dropped:filter-5	Revise election laws related to ballot form and uniformity
+SB 242	B	senate	2025-03-01	1502923	31	19	dropped:filter-5	Revise election laws related to ballot form and uniformity
 SB 243	B	house	2025-04-11	1546282	77	22	unbatched	Amend zoning regulations to allow taller buildings
 SB 246	B	house	2025-04-02	1535298	60	35	unbatched	Provide for Montana First Procurement laws and establish reporting requirements
 SB 247	B	house	2025-04-16	1550158	57	41	unbatched	Modify tax classification of shooting ranges
@@ -555,8 +555,8 @@ SB 390	B	senate	2025-03-06	1508318	37	12	unbatched	Revise definitions in Clean I
 SB 390	B	senate	2025-04-15	1549344	34	16	unbatched	Revise definitions in Clean Indoor Air Act
 SB 393	B	senate	2025-04-28	1559130	39	10	unbatched	Provide funding for enforcement of PL 280
 SB 404	B	senate	2025-03-06	1507549	39	11	unbatched	Require reporting of building permits for appraisal information
-SB 41	B	house	2025-04-11	1546344	56	43	unbatched	Requiring substitution of district court judges by random selection
-SB 41	B	senate	2025-01-29	1481224	32	17	unbatched	Requiring substitution of district court judges by random selection
+SB 41	B	house	2025-04-11	1546344	56	43	batch-05	Requiring substitution of district court judges by random selection
+SB 41	B	senate	2025-01-29	1481224	32	17	batch-05	Requiring substitution of district court judges by random selection
 SB 426	B	senate	2025-03-06	1507863	36	14	unbatched	Generally revise the Uniform Commercial Code
 SB 428	B	house	2025-04-11	1546030	72	27	unbatched	Generally revise county speed limits
 SB 428	B	senate	2025-03-06	1508011	31	18	unbatched	Generally revise county speed limits
@@ -564,18 +564,18 @@ SB 429	B	house	2025-04-24	1557239	80	20	unbatched	Generally revise laws related 
 SB 430	B	house	2025-04-23	1555403	78	21	unbatched	Generally revise laws related to civil commitment and emergency detention of mentally ill persons
 SB 440	B	house	2025-04-11	1546096	58	41	unbatched	Revising election laws related to reporting election results
 SB 440	B	senate	2025-03-06	1508129	31	18	unbatched	Revising election laws related to reporting election results
-SB 45	B	house	2025-04-11	1546385	58	41	unbatched	Create a judicial performance evaluation commission and system
-SB 45	B	house	2025-04-28	1558967	56	44	unbatched	Create a judicial performance evaluation commission and system
-SB 45	B	senate	2025-02-27	1501459	28	22	unbatched	Create a judicial performance evaluation commission and system
-SB 45	B	senate	2025-04-17	1551286	33	17	unbatched	Create a judicial performance evaluation commission and system
-SB 45	B	senate	2025-04-25	1558039	31	18	unbatched	Create a judicial performance evaluation commission and system
+SB 45	B	house	2025-04-11	1546385	58	41	dropped:filter-5	Create a judicial performance evaluation commission and system
+SB 45	B	house	2025-04-28	1558967	56	44	dropped:filter-5	Create a judicial performance evaluation commission and system
+SB 45	B	senate	2025-02-27	1501459	28	22	dropped:filter-5	Create a judicial performance evaluation commission and system
+SB 45	B	senate	2025-04-17	1551286	33	17	dropped:filter-5	Create a judicial performance evaluation commission and system
+SB 45	B	senate	2025-04-25	1558039	31	18	dropped:filter-5	Create a judicial performance evaluation commission and system
 SB 457	B	house	2025-04-11	1546193	55	44	unbatched	Revise laws regarding legislative subpoenas
 SB 457	B	senate	2025-03-06	1508107	31	19	unbatched	Revise laws regarding legislative subpoenas
 SB 471	B	senate	2025-03-21	1524172	34	16	unbatched	Generally revise vehicular traffic laws related to pedestrian crossings
 SB 48	B	house	2025-04-11	1546126	57	42	unbatched	Generally revise laws relating to Judicial Standards Commission complaints
 SB 48	B	senate	2025-01-30	1481289	30	19	unbatched	Generally revise laws relating to Judicial Standards Commission complaints
-SB 490	B	house	2025-04-11	1546023	58	41	unbatched	Revise election laws regarding late registration
-SB 490	B	senate	2025-03-06	1508105	33	16	unbatched	Revise election laws regarding late registration
+SB 490	B	house	2025-04-11	1546023	58	41	dropped:filter-5	Revise election laws regarding late registration
+SB 490	B	senate	2025-03-06	1508105	33	16	dropped:filter-5	Revise election laws regarding late registration
 SB 492	B	house	2025-04-11	1546285	56	43	unbatched	Generally revise business disclosure statement requirements for elected officials and department directors
 SB 493	B	house	2025-04-11	1546453	72	27	unbatched	Establish the offense of trespass by unmanned aerial vehicle
 SB 495	B	senate	2025-03-06	1507960	39	10	unbatched	Eliminate the tobacco prevention advisory board
