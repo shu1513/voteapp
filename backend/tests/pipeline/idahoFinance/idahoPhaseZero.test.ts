@@ -50,7 +50,12 @@ describe("Idaho CFS Phase 0", () => {
     const parsed = parseIdahoReceiptCsv(await fixture("receipts-sanitized.csv"));
 
     expect(parsed.rows).toHaveLength(5);
-    expect(parsed.quarantined).toEqual([{ lineNumber: 6, columnCount: 29 }]);
+    // Line 6: comma-corrupted apostrophe (29 cells). Line 9: 28 cells but the
+    // content is shifted four columns left, so "Primary" sits in Transaction Amount.
+    expect(parsed.quarantined).toEqual([
+      { lineNumber: 6, columnCount: 29, reason: "column_count" },
+      { lineNumber: 9, columnCount: 28, reason: "amount" },
+    ]);
     expect(parsed.rows.map((row) => row["Transaction Id"])).toEqual(["313559", "313560", "313561", "313570", "400001"]);
     // Record split by a raw newline inside an unquoted address is re-joined.
     expect(parsed.rows[1]?.["Contributor Address Line 1"]).toBe("13456 N Smith Rd\n");
@@ -66,7 +71,9 @@ describe("Idaho CFS Phase 0", () => {
 
     expect(() => parseIdahoReceiptCsv("wrong,header\n1,2\n")).toThrow("header changed");
     expect(() => parseIdahoReceiptCsv("")).toThrow("is empty");
-    expect(() => parseIdahoCurrencyCents("12.345")).toThrow("Invalid Idaho CFS currency");
+    expect(() => parseIdahoCurrencyCents("$12.345")).toThrow("Invalid Idaho CFS currency");
+    expect(() => parseIdahoCurrencyCents("2026")).toThrow("Invalid Idaho CFS currency");
+    expect(parseIdahoCurrencyCents(" $0.05 ")).toBe(5);
     expect(idahoCsvElectionYear({ "Election Type": "", "Election Year": "" })).toBeNull();
     expect(idahoCsvElectionStage({ "Election Type": "", "Election Year": "" })).toBeNull();
   });
@@ -94,9 +101,10 @@ describe("Idaho CFS Phase 0", () => {
     const bytes = new Uint8Array([0xef, 0xbb, 0xbf, 0x47, 0xa0, 0x2d, 0xa0, 0x47, 0xe9]);
     expect(decodeIdahoCfsCsv(bytes)).toBe("G\u00a0-\u00a0G\u00e9");
 
-    const clean = { rows: new Array<unknown>(200).fill({}), quarantined: [{ lineNumber: 5, columnCount: 29 }] };
+    const quarantined = [{ lineNumber: 5, columnCount: 29, reason: "column_count" as const }];
+    const clean = { rows: new Array<unknown>(200).fill({}), quarantined };
     expect(() => assertIdahoCsvQuarantineTolerance(clean, "receipt")).not.toThrow();
-    const broken = { rows: new Array<unknown>(50).fill({}), quarantined: [{ lineNumber: 5, columnCount: 29 }] };
+    const broken = { rows: new Array<unknown>(50).fill({}), quarantined };
     expect(() => assertIdahoCsvQuarantineTolerance(broken, "receipt")).toThrow("export shape has changed");
   });
 

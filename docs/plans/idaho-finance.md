@@ -47,7 +47,7 @@ Source enum `IDAHO_SUNSHINE` in `ballotLookupFinanceShared.ts`; label `IDAHO_SUN
 
 Code defaults `false` in `featureFlags.ts`; add all three to `backend/.env.example`, the read flag to `render.yaml`, and set them ON in local `backend/.env` per [voteapp-new-state-finance-checklist] (free read-side flags stay on; raw refresh hits the live API and stays off unless a batch run is intended):
 
-```
+```text
 IDAHO_CAMPAIGN_FINANCE_ENABLED
 IDAHO_CAMPAIGN_FINANCE_SYNC_ENABLED
 IDAHO_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED

@@ -87,8 +87,9 @@ function readValueFlag(args: readonly string[], name: string): string | undefine
 
 function positiveInteger(value: string | undefined, fallback: number, name: string): number {
   const raw = value ?? String(fallback);
-  if (!/^[1-9]\d*$/.test(raw)) throw new Error(`Invalid ${name}: ${raw}`);
-  return Number(raw);
+  const parsed = Number(raw);
+  if (!/^[1-9]\d*$/.test(raw) || !Number.isSafeInteger(parsed)) throw new Error(`Invalid ${name}: ${raw}`);
+  return parsed;
 }
 
 function filingYears(value: string | undefined, fallback: readonly number[]): number[] {

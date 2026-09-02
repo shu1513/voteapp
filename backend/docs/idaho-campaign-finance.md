@@ -93,7 +93,7 @@ district, party, electionYear, filingCycleId, treasurer, status, entityGuid.
 ## Per-registration transaction search (cracked 2026-09-01 via the SPA)
 
 `POST /api/PublicTransactionDetails/GetContributionsDetails`
-```
+```json
 {"pageNumber":1,"pageSize":500,"sortBy":"TransactionDate","sortType":"desc",
  "transactionTypeCode":"TCON","filerName":"<First Middle Last>","sourceName":null,
  "transactionAmountMax":null,"transactionAmountMin":null,"sourceTypeCode":null,

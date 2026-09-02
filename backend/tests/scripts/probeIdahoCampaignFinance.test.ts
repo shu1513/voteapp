@@ -43,9 +43,11 @@ async function buildClient(overrides: { totalRaised?: number; extraBulkLine?: st
     await getIdahoIndependentExpenditurePage({}, { fetchImpl: jsonFetch(await fixture("independent-expenditures-sanitized.json")) })
   ).items;
   // The probe enforces the 1% quarantine tolerance, so feed it the fixture
-  // without its deliberately corrupted record.
+  // without its deliberately corrupted records.
   const receiptsCsv = [
-    ...(await fixture("receipts-sanitized.csv")).split("\n").filter((line) => !line.startsWith("227,") && line !== ""),
+    ...(await fixture("receipts-sanitized.csv"))
+      .split("\n")
+      .filter((line) => !line.startsWith("227,") && !line.startsWith("998,") && line !== ""),
     ...(overrides.extraBulkLine ? [overrides.extraBulkLine] : []),
     "",
   ].join("\n");
@@ -88,6 +90,7 @@ describe("probeIdahoCampaignFinance", () => {
     expect(() => parseProbeIdahoCampaignFinanceArgs(["--unknown=1"])).toThrow("Unknown Idaho campaign-finance Phase 0 probe flag");
     expect(() => parseProbeIdahoCampaignFinanceArgs(["--filing-years", "2025,2025"])).toThrow("duplicates");
     expect(() => parseProbeIdahoCampaignFinanceArgs(["--page-size"])).toThrow("Missing --page-size value");
+    expect(() => parseProbeIdahoCampaignFinanceArgs(["--timeout-ms=99999999999999999999"])).toThrow("Invalid --timeout-ms");
     expect(() => parseProbeIdahoCampaignFinanceArgs(["dry-run"])).toThrow("Unexpected positional argument");
   });
 

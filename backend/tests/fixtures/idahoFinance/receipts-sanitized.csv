@@ -6,3 +6,4 @@ Filing Entity ID,Filing Entity Name,Campaign Name,Registration Type,Transaction 
 227,Sample Committee,,Political Committee,284702,Contribution,Itemized,Person,Sample,Donor Three,,REDACTED,,Coeur d,ÄôAlene,ID,="83814",07/16/2025,$25.00,$0.00,$0.00,,,,N,,,2025 Annual Report,01/10/2026
 257,"Achilles, Todd Baker",Todd Achilles for Idaho,Candidate,313570,Loan Received,,Self,Achilles,Todd,,REDACTED,,Boise,ID,="83702",03/06/2025,$500.00,$0.00,$500.00,2026,Primary,,N,,,2025 Annual Report,01/10/2026
 999,"Other, Candidate",Other for Idaho,Candidate,400001,Contribution,Unitemized,,,,,,,,,,03/07/2025,$100.00,$0.00,$0.00,2026,Primary,,N,,,2025 March Monthly Report,04/10/2025
+998,"Shifted, Candidate",Shifted for Idaho,Candidate,400002,Contribution,Itemized,Person,Sample,Donor Four,ID,="83702",03/08/2025,$40.00,$0.00,$0.00,2026,Primary,,N,,,2025 March Monthly Report,04/10/2025,,,,

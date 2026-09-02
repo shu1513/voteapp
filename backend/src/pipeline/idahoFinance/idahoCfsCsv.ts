@@ -87,6 +87,9 @@ export type IdahoCsvQuarantinedRecord = {
   // 1-based physical line where the record starts (line 1 is the header).
   lineNumber: number;
   columnCount: number;
+  // column_count: wrong number of cells; amount: right shape but the
+  // Transaction Amount cell is not a currency value (shifted content).
+  reason: "column_count" | "amount";
 };
 
 export type IdahoCsvParseResult<TRow> = {
@@ -227,9 +230,14 @@ function parseForColumns<const TColumns extends readonly string[]>(
   validateHeader(header, columns, label);
   const rows: Record<TColumns[number], string>[] = [];
   const quarantined: IdahoCsvQuarantinedRecord[] = [];
+  const amountIndex = columns.indexOf("Transaction Amount");
   for (const record of records) {
     if (record.cells.length !== columns.length) {
-      quarantined.push({ lineNumber: record.lineNumber, columnCount: record.cells.length });
+      quarantined.push({ lineNumber: record.lineNumber, columnCount: record.cells.length, reason: "column_count" });
+      continue;
+    }
+    if (amountIndex >= 0 && !isIdahoCurrency(record.cells[amountIndex] ?? "")) {
+      quarantined.push({ lineNumber: record.lineNumber, columnCount: record.cells.length, reason: "amount" });
       continue;
     }
     rows.push(
@@ -265,16 +273,23 @@ export function parseIdahoExpenditureCsv(csv: string): IdahoCsvParseResult<Idaho
   return parseForColumns(csv, IDAHO_EXPENDITURE_CSV_COLUMNS, "expenditure");
 }
 
+// Every Idaho amount is emitted as "$1,234.56"; the dollar sign is part of the
+// contract so a shifted year or count in the amount column cannot pass.
+const CURRENCY_PATTERN = /^-?\$\d+(?:\.\d{1,2})?$/;
+
+function normalizeCurrency(value: string): string {
+  return value.trim().replace(/,/g, "");
+}
+
+function isIdahoCurrency(value: string): boolean {
+  return CURRENCY_PATTERN.test(normalizeCurrency(value));
+}
+
 export function parseIdahoCurrencyCents(value: string): number {
-  const normalized = value.trim().replace(/^\$/, "").replace(/,/g, "");
-  if (!/^-?\d+(?:\.\d{1,2})?$/.test(normalized)) {
+  if (!isIdahoCurrency(value)) {
     throw new Error(`Invalid Idaho CFS currency amount: ${JSON.stringify(value)}`);
   }
-  const amount = Number(normalized);
-  if (!Number.isFinite(amount)) {
-    throw new Error(`Invalid Idaho CFS currency amount: ${JSON.stringify(value)}`);
-  }
-  return Math.round(amount * 100);
+  return Math.round(Number(normalizeCurrency(value).replace("$", "")) * 100);
 }
 
 // Zip codes are exported as Excel formulas: ="83702" → 83702.
