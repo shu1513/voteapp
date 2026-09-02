@@ -2,16 +2,16 @@ bill	type	status	chamber	date	roll	journal	yea	nay	desc	title	disposition
 HB1001	B	4	house	2025-02-20	1494687	238	66	28	House - Third reading	State budget.	candidate: unbatched
 HB1001	B	4	senate	2025-04-25	1557867	538	39	11	Senate - Rules Suspended. Conference Committee Report 1	State budget.	candidate: unbatched
 HB1001	B	4	house	2025-04-25	1557868	576	66	27	House - Rules Suspended. Conference Committee Report 1	State budget.	candidate: unbatched
-HB1002	B	4	senate	2025-04-15	1548875	420	31	18	Senate - Third reading	Various education matters.	candidate: unbatched
-HB1002	B	4	house	2025-04-24	1557228	563	61	25	House - Rules Suspended. Conference Committee Report 1	Various education matters.	candidate: unbatched
-HB1002	B	4	senate	2025-04-24	1557784	530	27	21	Senate - Rules Suspended. Conference Committee Report 1	Various education matters.	candidate: unbatched
-HB1003	B	4	house	2025-02-18	1491974	201	66	32	House - Third reading	Health matters.	candidate: unbatched
-HB1003	B	4	senate	2025-04-24	1556836	513	30	20	Senate - Rules Suspended. Conference Committee Report 1	Health matters.	candidate: unbatched
-HB1003	B	4	house	2025-04-24	1556472	544	67	25	House - Rules Suspended. Conference Committee Report 1	Health matters.	candidate: unbatched
-HB1004	B	4	house	2025-02-20	1494692	239	68	26	House - Third reading	Health care matters.	candidate: unbatched
-HB1004	B	4	senate	2025-04-15	1548870	422	29	19	Senate - Third reading	Health care matters.	candidate: unbatched
-HB1004	B	4	house	2025-04-24	1557221		67	23	House - Rules Suspended. Conference Committee Report 1	Health care matters.	needs member-list check: LegiScan tally has no exact match in the official history
-HB1004	B	4	senate	2025-04-24	1557738	528	37	13	Senate - Rules Suspended. Conference Committee Report 1	Health care matters.	candidate: unbatched
+HB1002	B	4	senate	2025-04-15	1548875	420	31	18	Senate - Third reading	Various education matters.	dropped: filter 5, 218 sections, about 95 of them repeals, that cut state spending through mass repeal while letting schools charge families a new supplies and materials fee, and that remove a training mandate while adding two others
+HB1002	B	4	house	2025-04-24	1557228	563	61	25	House - Rules Suspended. Conference Committee Report 1	Various education matters.	dropped: filter 5, 218 sections, about 95 of them repeals, that cut state spending through mass repeal while letting schools charge families a new supplies and materials fee, and that remove a training mandate while adding two others
+HB1002	B	4	senate	2025-04-24	1557784	530	27	21	Senate - Rules Suspended. Conference Committee Report 1	Various education matters.	dropped: filter 5, 218 sections, about 95 of them repeals, that cut state spending through mass repeal while letting schools charge families a new supplies and materials fee, and that remove a training mandate while adding two others
+HB1003	B	4	house	2025-02-18	1491974	201	66	32	House - Third reading	Health matters.	dropped: version trap, this House third reading sits at 0.70 similarity to the enrolled act across 339 differing runs; the 2025-04-24 conference report is in batch-07
+HB1003	B	4	senate	2025-04-24	1556836	513	30	20	Senate - Rules Suspended. Conference Committee Report 1	Health matters.	batch-07
+HB1003	B	4	house	2025-04-24	1556472	544	67	25	House - Rules Suspended. Conference Committee Report 1	Health matters.	batch-07
+HB1004	B	4	house	2025-02-20	1494692	239	68	26	House - Third reading	Health care matters.	dropped: version trap, this House third reading predates the conference committee that rewrote the bill; the 2025-04-24 conference report is in batch-07
+HB1004	B	4	senate	2025-04-15	1548870	422	29	19	Senate - Third reading	Health care matters.	dropped: version trap, this Senate third reading predates the conference committee (0.89 similarity, 355 differing runs); the 2025-04-24 conference report is in batch-07
+HB1004	B	4	house	2025-04-24	1557221		67	23	House - Rules Suspended. Conference Committee Report 1	Health care matters.	dropped: the member-list check failed, LegiScan reports 67-23 where the journal reports 68-23 and Representative Behning appears only in the journal yeas; HB 1004 keeps its Senate conference roll, which is in batch-07
+HB1004	B	4	senate	2025-04-24	1557738	528	37	13	Senate - Rules Suspended. Conference Committee Report 1	Health care matters.	batch-07
 HB1006	B	4	house	2025-02-19	1493310		72	24	House - Third reading	Prosecutors.	dropped: the final house roll's LegiScan member list contradicts the journal, the earlier house roll is a version trap, and the act carries two subjects
 HB1006	B	4	house	2025-04-17	1551279		61	21	House - House concurred with Senate amendments	Prosecutors.	dropped: the final house roll's LegiScan member list contradicts the journal, the earlier house roll is a version trap, and the act carries two subjects
 HB1007	B	4	house	2025-02-13	1489075		67	25	House - Third reading	Energy generation resources.	dropped: filter 5, three subjects and a contested direction; ratepayers fund new generation while the act also blocks plant retirements
