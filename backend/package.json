@@ -426,6 +426,7 @@
     "new-hampshire-candidates:finance:phase-zero": "tsx src/scripts/probeNewHampshireCampaignFinance.ts",
     "kansas-candidates:finance:phase-zero": "tsx src/scripts/probeKansasCandidateFinance.ts",
     "kansas-candidates:finance:auto-link": "tsx src/scripts/autoLinkKansasCandidateFinance.ts",
+    "north-dakota-candidates:finance:phase-zero": "tsx src/scripts/probeNorthDakotaCandidateFinance.ts",
     "new-hampshire-candidates:finance:raw:refresh": "tsx src/scripts/refreshNewHampshireCampaignFinanceRawData.ts",
     "idaho-candidates:finance:phase-zero": "tsx src/scripts/probeIdahoCampaignFinance.ts",
     "alabama-candidates:finance:phase-zero": "tsx src/scripts/probeAlabamaCampaignFinance.ts",
