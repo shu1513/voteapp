@@ -846,12 +846,12 @@
    "reason": "budget trailer; narrows injured-worker access to the subsequent injuries fund while tightening on employers and adding a $3 billion pension payment"
   },
   "SB 177": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Medi-Cal: Fair Share from Big Corporations Act.",
-   "batch": null,
+   "batch": "batch-17",
    "reason": null
   },
   "SB 280": {
@@ -873,12 +873,12 @@
    "reason": "cuts both ways \u2014 requires a verbatim immigration advisement at plea but bars using that failure to reopen any plea taken before 2026"
   },
   "SB 327": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Public utilities: review of accounts: electrical and gas corporations: rates: political influence activities.",
-   "batch": null,
+   "batch": "batch-17",
    "reason": null
   },
   "SB 333": {
@@ -900,12 +900,12 @@
    "reason": "cuts both ways \u2014 a large insurance privacy rewrite that also caps consumer remedies, grants disclosure immunity, preempts inconsistent state privacy law and exempts whole lines of insurance"
   },
   "SB 36": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "vetoed",
    "value": 7,
    "title": "Price gouging: state of emergency.",
-   "batch": null,
+   "batch": "batch-17",
    "reason": null
   },
   "SB 418": {
@@ -999,184 +999,184 @@
    "reason": null
   },
   "SB 633": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Plastic beverage containers: recycling.",
-   "batch": null,
+   "batch": "batch-18",
    "reason": null
   },
   "SB 642": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Employment: payment of wages.",
-   "batch": null,
+   "batch": "batch-18",
    "reason": null
   },
   "SB 675": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Imperial County Air Pollution Control District: members and duties.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-18 read",
+   "reason": "single-county (Imperial air district) and cuts both ways \u2014 new disclosure duties alongside an address-redaction carve-out and a standing military consultation right"
   },
   "SB 7": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "vetoed",
    "value": 7,
    "title": "Employment: automated decision systems.",
-   "batch": null,
+   "batch": "batch-18",
    "reason": null
   },
   "SB 747": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Civil rights: deprivation of federal constitutional rights, privileges, and immunities.",
-   "batch": null,
+   "batch": "batch-18",
    "reason": null
   },
   "SB 770": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Common interest developments: EV charging stations.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-18 read",
+   "reason": "trivial technical change \u2014 deletes an additional-insured clause for EV chargers in homeowner associations; no research area fits"
   },
   "SB 786": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Planning and zoning: general plan: judicial challenges.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-18 read",
+   "reason": "cuts both ways \u2014 lengthens compliance deadlines to 120 days while making sanctions mandatory and removing extensions"
   },
   "SB 838": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Housing Accountability Act: housing development projects.",
-   "batch": null,
+   "batch": "batch-18",
    "reason": null
   },
   "SB 873": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Courthouses: privilege from civil arrest.",
-   "batch": null,
+   "batch": "batch-18",
    "reason": null
   },
   "SB 934": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Sexual orientation or gender identity change efforts.",
-   "batch": null,
+   "batch": "batch-18",
    "reason": null
   },
   "SB 937": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Law enforcement: flash-bang grenades and explosive breaching charges.",
-   "batch": null,
+   "batch": "batch-18",
    "reason": null
   },
   "SB 938": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Peace officers: training requirements.",
-   "batch": null,
+   "batch": "batch-18",
    "reason": null
   },
   "SB 948": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Firearms: safety certificates.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-18 read",
+   "reason": "cuts both ways \u2014 a new live-fire training requirement alongside a 180-day import window, an infraction-level penalty and an amnesty for late self-reporters"
   },
   "SB 954": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "California Environmental Quality Act: advanced manufacturing facilities: exemption.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-18 read",
+   "reason": "cuts both ways and omnibus \u2014 adds species habitat protection but repeals the oil and gas exception to the housing rezoning exemption and switches the new habitat rule off for housing"
   },
   "SJR 18": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Campaign finance reform.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-18 read",
+   "reason": "joint resolution \u2014 states opposition to Citizens United and changes no law"
   },
   "SB 128": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "A",
    "bill_status": "chaptered",
    "value": 6,
    "title": "Transportation.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-18 read",
+   "reason": "budget trailer; delays a loosening and a tightening at once and bundles six unrelated transportation topics"
   },
   "SB 155": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "A",
    "bill_status": "chaptered",
    "value": 6,
    "title": "Governor\u2019s Office of Business and Economic Development: California Civic Media Program.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-18 read",
+   "reason": "no research area fits \u2014 a state program funding local journalism, housed in the economic development office"
   },
   "SB 162": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "A",
    "bill_status": "chaptered",
    "value": 6,
    "title": "Elections.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-18 read",
+   "reason": "one-time housekeeping for the November 2025 special election, with a single-county carve-out for Santa Clara"
   },
   "SB 172": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "A",
    "bill_status": "chaptered",
    "value": 6,
    "title": "State government.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-18 read",
+   "reason": "omnibus budget trailer \u2014 26 items from boxing fees to 911 procurement, adding and removing oversight in the same act"
   },
   "SB 274": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "A",
    "bill_status": "vetoed",
    "value": 6,
    "title": "Automated license plate recognition systems.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-18 read",
+   "reason": "cuts both ways on one dimension \u2014 tightens license plate data rules for police while removing transit, transportation and airport agencies from coverage entirely"
   },
   "SB 499": {
    "status": "open",
