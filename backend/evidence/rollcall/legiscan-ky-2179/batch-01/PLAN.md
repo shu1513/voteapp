@@ -25,12 +25,12 @@ Five filters, in order.
 
 Kentucky's veto override needs only a simple majority of each chamber, and the
 legislature used it 28 times in this session. An override vote is taken on the
-enrolled Act, and no amendment is possible at that stage. Twenty of the 23 rolls
+enrolled Act, and no amendment is possible at that stage. Nineteen of the 23 rolls
 are the 27 March 2025 override votes, so the text each chamber voted on **is** the
 text that became law. Every roll was still checked one by one against Kentucky's
 own vote record.
 
-The three rolls that are not overrides are HB 520 in both chambers and SB 100 in
+The four rolls that are not overrides are HB 520 in both chambers and SB 100 in
 the Senate, neither of which was vetoed, plus the HB 4 Senate roll described below.
 For HB 520 both chambers voted the identical text: a Senate committee substitute
 existed but was withdrawn on the floor before the vote, and the enrolled document
