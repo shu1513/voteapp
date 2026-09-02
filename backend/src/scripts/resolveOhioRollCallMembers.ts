@@ -240,7 +240,9 @@ async function main(): Promise<void> {
     generalAssembly,
     evidenceDir: reportPath(evidenceDir),
     scopeFrom,
-    rosterSource,
+    // A file path is reported like every other input path; the default
+    // roster URL is a URL and is written as-is.
+    rosterSource: rosterFile === null ? rosterSource : reportPath(rosterFile),
     rosterMembers: roster.length,
     candidatePool: candidatesPool.length,
     crosswalkFile: crosswalkFile === null ? null : reportPath(crosswalkFile),

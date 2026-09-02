@@ -425,7 +425,7 @@ async function main(): Promise<void> {
     scopeFrom,
     crosswalkFile: reportPath(crosswalkFileRaw),
     crosswalkEntries: crosswalk.byLpid.size,
-    rosterFile: resolve(rosterFileRaw),
+    rosterFile: reportPath(rosterFileRaw),
     rosterMembers: roster.length,
     files: files.length,
     outcomes,
