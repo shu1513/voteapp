@@ -176,6 +176,7 @@ describe("financeSourceLabel", () => {
     expect(financeSourceLabel("ALABAMA_FCPA")).toBe("Alabama FCPA Reporting System");
     expect(financeSourceLabel("ARKANSAS_CFIS")).toBe("Arkansas Secretary of State");
     expect(financeSourceLabel("WEST_VIRGINIA_CFRS")).toBe("West Virginia Campaign Finance Reporting System");
+    expect(financeSourceLabel("NORTH_DAKOTA_CFRS")).toBe("North Dakota Campaign Finance Reporting System");
     expect(financeSourceLabel("DELAWARE_CFRS")).toBe("Delaware Campaign Finance Reporting System");
     expect(financeSourceLabel("NEVADA_AURORA")).toBe("Nevada Secretary of State");
     expect(financeSourceLabel("NEW_HAMPSHIRE_CFS")).toBe("New Hampshire Campaign Finance System");

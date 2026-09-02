@@ -110,6 +110,12 @@ describe("finance source provenance and coverage notes", () => {
     expect(firstFinanceSourceUrl(summary)).toBe("https://cfrs.wvsos.gov/");
   });
 
+  it("falls back to the North Dakota CFRS home page when no breakdown URL exists", () => {
+    const summary = emptySummary();
+    summary.source = "NORTH_DAKOTA_CFRS";
+    expect(firstFinanceSourceUrl(summary)).toBe("https://cfrs.sos.nd.gov/");
+  });
+
   it("falls back to the Montana COPP home page when no breakdown URL exists", () => {
     const summary = emptySummary();
     summary.source = "MONTANA_COPP";
