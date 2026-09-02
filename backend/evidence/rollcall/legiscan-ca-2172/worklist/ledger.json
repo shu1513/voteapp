@@ -9,58 +9,58 @@
  },
  "measures": {
   "AB 1049": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "California Food Assistance Program: sponsor deeming rules.",
-   "batch": null,
+   "batch": "batch-11",
    "reason": null
   },
   "AB 117": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Transit and Intercity Rail Capital Program: loans: transit operating purposes: San Francisco Bay area.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-11/12 read",
+   "reason": "budget package \u2014 carries the Budget Bill appropriations clause; batch-07 dropped 12 of these"
   },
   "AB 1201": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Family reunification services.",
-   "batch": null,
+   "batch": "batch-11",
    "reason": null
   },
   "AB 1223": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Local Transportation Authority and Improvement Act: Sacramento Transportation Authority.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-11/12 read",
+   "reason": "cuts both ways \u2014 infill and greenhouse-gas spending authority sits beside authority to pledge sales tax to toll-lane bonds"
   },
   "AB 1336": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "vetoed",
    "value": 7,
    "title": "Farmworkers: benefits.",
-   "batch": null,
+   "batch": "batch-11",
    "reason": null
   },
   "AB 137": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "State government.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-11/12 read",
+   "reason": "omnibus budget trailer \u2014 privacy funds, prison land, tribal gaming, climate lending and more in one measure"
   },
   "AB 1376": {
    "status": "open",
@@ -72,22 +72,22 @@
    "reason": null
   },
   "AB 143": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Developmental services.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-11/12 read",
+   "reason": "budget trailer; tightens and loosens inside developmental services (repeals parental fee, but moves rate freeze earlier and makes duties appropriation-contingent)"
   },
   "AB 144": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Health.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-11/12 read",
+   "reason": "omnibus budget trailer \u2014 33 digest items across unrelated health topics, cutting both ways on vaccines and transparency"
   },
   "AB 1441": {
    "status": "open",
@@ -99,193 +99,193 @@
    "reason": null
   },
   "AB 1448": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Coastal resources: California Coastal Sanctuary: tidelands and submerged lands: oil and gas development.",
-   "batch": null,
+   "batch": "batch-11",
    "reason": null
   },
   "AB 1457": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "General plan: environmental justice element: disadvantaged communities.",
-   "batch": null,
+   "batch": "batch-11",
    "reason": null
   },
   "AB 1633": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Taxation: private detention facilities.",
-   "batch": null,
+   "batch": "batch-11",
    "reason": null
   },
   "AB 1650": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Rental vehicles: law enforcement.",
-   "batch": null,
+   "batch": "batch-11",
    "reason": null
   },
   "AB 1661": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Oil and gas: low-production wells: Baldwin Hills Conservancy: Equitable Community Repair and Reinvestment Account: health impacts.",
-   "batch": null,
+   "batch": "batch-11",
    "reason": null
   },
   "AB 1664": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Elections: law enforcement investigations of election records or voting technology.",
-   "batch": null,
+   "batch": "batch-11",
    "reason": null
   },
   "AB 1743": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Firearms.",
-   "batch": null,
+   "batch": "batch-11",
    "reason": null
   },
   "AB 1758": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Sellers of travel.",
-   "batch": null,
+   "batch": "batch-11",
    "reason": null
   },
   "AB 1768": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Transactions and use taxes: Counties of Contra Costa and Los Angeles.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-11/12 read",
+   "reason": "no defensible research area \u2014 authorizes two counties to seek a sales tax above the state cap"
   },
   "AB 1770": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Arbitration: health care service plans: Lindalee\u2019s Law.",
-   "batch": null,
+   "batch": "batch-12",
    "reason": null
   },
   "AB 1801": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Public agencies: approval: detention facilities.",
-   "batch": null,
+   "batch": "batch-12",
    "reason": null
   },
   "AB 1806": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Department of Justice.",
-   "batch": null,
+   "batch": "batch-12",
    "reason": null
   },
   "AB 1807": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Immigration enforcement: use of state-owned property.",
-   "batch": null,
+   "batch": "batch-12",
    "reason": null
   },
   "AB 182": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "November 3, 2026, statewide general election: ballot measures.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-11/12 read",
+   "reason": "procedural only \u2014 sets ballot order and numbers for five named measures; no stance area fits"
   },
   "AB 1854": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Legally protected health care activities.",
-   "batch": null,
+   "batch": "batch-12",
    "reason": null
   },
   "AB 1876": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Health care coverage: nondiscrimination.",
-   "batch": null,
+   "batch": "batch-12",
    "reason": null
   },
   "AB 1886": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Wards: probation.",
-   "batch": null,
+   "batch": "batch-12",
    "reason": null
   },
   "AB 1905": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Juveniles: custodial interrogation.",
-   "batch": null,
+   "batch": "batch-12",
    "reason": null
   },
   "AB 1917": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Criminal procedure: information.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-11/12 read",
+   "reason": "cuts both ways \u2014 restricts prosecutors reviving dismissed counts but removes the defence route to challenge them"
   },
   "AB 1919": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Santa Cruz Metropolitan Transit District: transactions and use tax: qualified voter initiative.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-11/12 read",
+   "reason": "single-district special bill (Santa Cruz transit tax ballot access); no clean area, minimal statewide recognition"
   },
   "AB 1923": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "chaptered",
    "value": 7,
    "title": "Local ballot measures: County of Fresno.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-11/12 read",
+   "reason": "single-county procedural bill (Fresno initiative timing); operative text takes no position on the measure itself"
   },
   "AB 1930": {
    "status": "open",
@@ -306,13 +306,13 @@
    "reason": null
   },
   "AB 2084": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Corporation Tax Law: tax-exempt organizations: revocation of tax-exempt status.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-11/12 read",
+   "reason": "no defensible research area \u2014 discretion to keep a state tax exemption after federal revocation"
   },
   "AB 2122": {
    "status": "open",
@@ -324,58 +324,58 @@
    "reason": null
   },
   "AB 2128": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Housing authorities: term limits and work requirements.",
-   "batch": null,
+   "batch": "batch-12",
    "reason": null
   },
   "AB 2142": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "School districts: community college districts: short-term employees: classified service.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-11/12 read",
+   "reason": "no defensible research area \u2014 classified status for long-serving short-term school staff"
   },
   "AB 2157": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Workforce development: Displaced Oil and Gas Worker Pilot Program: extension.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-11/12 read",
+   "reason": "cuts both ways \u2014 removes the sunset but conditions the program on an appropriation it did not previously need"
   },
   "AB 2168": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Active Transportation Program: guidelines.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-11/12 read",
+   "reason": "cuts both ways \u2014 widens eligibility while adding disqualification penalties and steering money to larger projects"
   },
   "AB 2186": {
-   "status": "open",
+   "status": "judged",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Personal Income Tax Law: exclusions: reparations programs.",
-   "batch": null,
+   "batch": "batch-12",
    "reason": null
   },
   "AB 2195": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Child support: license suspensions.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-11/12 read",
+   "reason": "cuts both ways on one dimension \u2014 extends the low-income shield to all license types but narrows the income test to a one-person household median"
   },
   "AB 2227": {
    "status": "open",
@@ -387,22 +387,22 @@
    "reason": null
   },
   "AB 2257": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Corrections: jail administrators.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-11/12 read",
+   "reason": "cuts both ways \u2014 board gains a confirmation vote but the sheriff keeps sole power to nominate and to remove"
   },
   "AB 2313": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Gas corporations: gas distribution service line replacements: alternatives.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-11/12 read",
+   "reason": "cuts both ways \u2014 a capped, opt-in, expiring pilot with an exit fee and an incentive held below avoided cost"
   },
   "AB 2318": {
    "status": "open",
@@ -423,13 +423,13 @@
    "reason": null
   },
   "AB 2405": {
-   "status": "open",
+   "status": "dropped",
    "chambers": "AS",
    "bill_status": "enrolled",
    "value": 7,
    "title": "Mental health.",
-   "batch": null,
-   "reason": null
+   "batch": "batch-11/12 read",
+   "reason": "cuts both ways \u2014 closest-facility duty, but the stated preference is advisory and local destination policies survive"
   },
   "AB 2428": {
    "status": "open",
