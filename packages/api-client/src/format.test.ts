@@ -177,6 +177,7 @@ describe("financeSourceLabel", () => {
     expect(financeSourceLabel("DELAWARE_CFRS")).toBe("Delaware Campaign Finance Reporting System");
     expect(financeSourceLabel("NEVADA_AURORA")).toBe("Nevada Secretary of State");
     expect(financeSourceLabel("NEW_HAMPSHIRE_CFS")).toBe("New Hampshire Campaign Finance System");
+    expect(financeSourceLabel("IDAHO_SUNSHINE")).toBe("Idaho Secretary of State Sunshine Portal");
     expect(financeSourceLabel("MISSISSIPPI_SOS")).toBe("Mississippi Secretary of State");
     expect(financeSourceLabel("RHODE_ISLAND_ERTS")).toBe("Rhode Island Board of Elections");
     expect(financeSourceLabel("SOUTH_CAROLINA_CAMPAIGN_FINANCE")).toBe("South Carolina State Ethics Commission");
