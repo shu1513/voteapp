@@ -5,9 +5,11 @@ import {
   addFinanceBreakdown,
   buildStateFinanceSummaryRequests,
   candidateElectionKey,
+  firstNonEmptySourceUrl,
   mapFinanceBreakdown,
   parseFinanceAmount,
   type BallotLookupFinanceBreakdown,
+  type BallotLookupFinanceOutsideGroup,
   type BallotLookupFinanceSummary,
   type StateFinanceRequestCandidateRow,
   type StateFinanceRequestElectionRow,
@@ -22,6 +24,11 @@ type CandidateRow = StateFinanceRequestCandidateRow;
 type ElectionRow = StateFinanceRequestElectionRow;
 
 const GENERIC_CONNECTICUT_ECRIS_SOURCE_URL = "https://seec.ct.gov/portal/ecris/CurPreYears";
+const CONNECTICUT_ECRIS_INDEPENDENT_EXPENDITURE_SEARCH_URL =
+  "https://seec.ct.gov/eCrisReporting/SearchingIndependentExpenditure.aspx";
+// See connecticutOutsideSpendingAggregator.ts for why each of these is out.
+const CONNECTICUT_OUTSIDE_COVERAGE_NOTE =
+  "Connecticut totals count independent expenditures that SEEC Form 40 filers reported as paid and tied to this one candidate; expenditures not yet paid, lines naming several candidates at once, and spending reported on other SEEC forms (party and PAC statements, and reports by spenders that are not committees) are not included.";
 
 type ConnecticutFinanceSummaryRow = {
   candidate_id: string;
@@ -30,8 +37,20 @@ type ConnecticutFinanceSummaryRow = {
   election_year: number;
   total_receipts: string | number | null;
   total_disbursements: string | number | null;
+  outside_support_total: string | number | null;
+  outside_oppose_total: string | number | null;
   source_url: string | null;
   last_synced_at: string;
+};
+
+type ConnecticutFinanceOutsideGroupRow = {
+  candidate_id: string;
+  election_id: string;
+  committee_id: string;
+  committee_name: string;
+  support_oppose: "support" | "oppose";
+  amount: string | number;
+  source_url: string | null;
 };
 
 type ConnecticutFinanceDirectBreakdownRow = {
@@ -79,6 +98,8 @@ export async function loadConnecticutCandidateFinanceSummariesByCandidateElectio
         max(summary.election_year) AS election_year,
         CASE WHEN count(summary.total_receipts) = 0 THEN NULL ELSE sum(summary.total_receipts) END AS total_receipts,
         CASE WHEN count(summary.total_disbursements) = 0 THEN NULL ELSE sum(summary.total_disbursements) END AS total_disbursements,
+        max(summary.outside_support_total) AS outside_support_total,
+        max(summary.outside_oppose_total) AS outside_oppose_total,
         min(summary.source_url) FILTER (WHERE summary.source_url IS NOT NULL) AS source_url,
         max(summary.last_synced_at)::text AS last_synced_at
       FROM requested
@@ -154,11 +175,76 @@ export async function loadConnecticutCandidateFinanceSummariesByCandidateElectio
     [JSON.stringify(selectedRequests)]
   );
 
+  // Outside groups are stored once per committee and stance per link; a
+  // candidate with several active links repeats the same candidate-level
+  // group, hence max() rather than sum() (the standard loader's rule).
+  const outsideGroupResult = await db.query<ConnecticutFinanceOutsideGroupRow>(
+    `
+      WITH selected AS (
+        SELECT
+          candidate_id::uuid AS candidate_id,
+          election_id::uuid AS election_id
+        FROM jsonb_to_recordset($1::jsonb) AS x(
+          candidate_id text,
+          election_id text
+        )
+      ),
+      grouped AS (
+        SELECT
+          selected.candidate_id::text AS candidate_id,
+          selected.election_id::text AS election_id,
+          outside_group.committee_id,
+          min(outside_group.committee_name) AS committee_name,
+          outside_group.support_oppose,
+          max(outside_group.amount) AS amount,
+          min(outside_group.source_url) FILTER (WHERE outside_group.source_url IS NOT NULL) AS source_url
+        FROM selected
+        JOIN public.ct_candidate_finance_links AS link
+          ON link.candidate_id = selected.candidate_id
+         AND link.election_id = selected.election_id
+         AND link.link_status = 'active'
+        JOIN public.ct_candidate_finance_outside_groups AS outside_group
+          ON outside_group.link_id = link.id
+         AND outside_group.election_year = link.election_year
+        GROUP BY selected.candidate_id, selected.election_id, outside_group.committee_id, outside_group.support_oppose
+      ),
+      ranked AS (
+        SELECT
+          *,
+          row_number() OVER (
+            PARTITION BY candidate_id, election_id, support_oppose
+            ORDER BY amount DESC, committee_name ASC
+          ) AS rn
+        FROM grouped
+      )
+      SELECT candidate_id, election_id, committee_id, committee_name, support_oppose, amount, source_url
+      FROM ranked
+      WHERE rn <= 5
+      ORDER BY candidate_id, election_id, support_oppose, amount DESC, committee_name ASC
+    `,
+    [JSON.stringify(selectedRequests)]
+  );
+
   const directOccupationsByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
   const directIndustriesByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
   const summaryByCandidateElection = new Map(
     summaryResult.rows.map((row) => [candidateElectionKey(row.candidate_id, row.election_id), row])
   );
+  const supportingGroupsByCandidateElection = new Map<string, BallotLookupFinanceOutsideGroup[]>();
+  const opposingGroupsByCandidateElection = new Map<string, BallotLookupFinanceOutsideGroup[]>();
+  for (const row of outsideGroupResult.rows) {
+    const key = candidateElectionKey(row.candidate_id, row.election_id);
+    const map = row.support_oppose === "support" ? supportingGroupsByCandidateElection : opposingGroupsByCandidateElection;
+    const list = map.get(key) ?? [];
+    list.push({
+      committee_id: row.committee_id,
+      committee_name: row.committee_name,
+      support_oppose: row.support_oppose,
+      amount: parseFinanceAmount(row.amount) ?? 0,
+      source_url: firstNonEmptySourceUrl(row.source_url, CONNECTICUT_ECRIS_INDEPENDENT_EXPENDITURE_SEARCH_URL),
+    });
+    map.set(key, list);
+  }
   for (const row of directBreakdownResult.rows) {
     const summary = summaryByCandidateElection.get(candidateElectionKey(row.candidate_id, row.election_id));
     const mapped = mapFinanceBreakdown(row, summary?.source_url ?? GENERIC_CONNECTICUT_ECRIS_SOURCE_URL);
@@ -191,10 +277,11 @@ export async function loadConnecticutCandidateFinanceSummariesByCandidateElectio
             top_industries: directIndustriesByCandidateElection.get(key) ?? [],
           },
           outside_spending: {
-            support_total: null,
-            oppose_total: null,
-            top_supporting_groups: [],
-            top_opposing_groups: [],
+            support_total: parseFinanceAmount(row.outside_support_total),
+            oppose_total: parseFinanceAmount(row.outside_oppose_total),
+            outside_coverage_note: CONNECTICUT_OUTSIDE_COVERAGE_NOTE,
+            top_supporting_groups: supportingGroupsByCandidateElection.get(key) ?? [],
+            top_opposing_groups: opposingGroupsByCandidateElection.get(key) ?? [],
             top_supporting_industries: [],
             top_opposing_industries: [],
           },

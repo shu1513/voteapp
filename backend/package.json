@@ -238,6 +238,7 @@
     "test:watch": "vitest",
     "connecticut-candidates:finance:sync-due": "tsx src/scripts/syncDueConnecticutCandidateFinance.ts",
     "connecticut-candidates:finance:raw:refresh": "tsx src/scripts/refreshConnecticutEcrisRawData.ts",
+    "connecticut-candidates:finance:ie:refresh": "tsx src/scripts/refreshConnecticutEcrisIndependentExpenditures.ts",
     "connecticut-candidates:finance:raw:scheduler:upsert": "tsx src/scripts/upsertConnecticutEcrisRawDataRefreshScheduler.ts",
     "connecticut-candidates:finance:raw:scheduler:worker": "tsx src/scripts/runConnecticutEcrisRawDataRefreshSchedulerWorker.ts",
     "connecticut-candidates:finance:raw:scheduler:trigger": "tsx src/scripts/triggerConnecticutEcrisRawDataRefresh.ts",
@@ -402,6 +403,7 @@
     "michigan-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerMichiganCandidateFinanceSync.ts",
     "massachusetts-candidates:finance:live-probe": "tsx src/scripts/probeMassachusettsCandidateFinance.ts",
     "missouri-candidates:finance:probe": "tsx src/scripts/probeMissouriCandidateFinance.ts",
+    "arkansas-candidates:finance:phase-zero": "tsx src/scripts/probeArkansasCampaignFinance.ts",
     "montana-candidates:finance:probe": "tsx src/scripts/probeMontanaCandidateFinance.ts",
     "montana-candidates:finance:auto-link": "tsx src/scripts/autoLinkMontanaCandidateFinance.ts",
     "montana-candidates:finance:sync-due": "tsx src/scripts/syncDueMontanaCandidateFinance.ts",
@@ -423,8 +425,10 @@
     "nevada-candidates:finance:import": "tsx src/scripts/importNevadaCandidateFinance.ts",
     "new-hampshire-candidates:finance:phase-zero": "tsx src/scripts/probeNewHampshireCampaignFinance.ts",
     "kansas-candidates:finance:phase-zero": "tsx src/scripts/probeKansasCandidateFinance.ts",
+    "kansas-candidates:finance:auto-link": "tsx src/scripts/autoLinkKansasCandidateFinance.ts",
     "north-dakota-candidates:finance:phase-zero": "tsx src/scripts/probeNorthDakotaCandidateFinance.ts",
     "new-hampshire-candidates:finance:raw:refresh": "tsx src/scripts/refreshNewHampshireCampaignFinanceRawData.ts",
+    "idaho-candidates:finance:phase-zero": "tsx src/scripts/probeIdahoCampaignFinance.ts",
     "alabama-candidates:finance:phase-zero": "tsx src/scripts/probeAlabamaCampaignFinance.ts",
     "alabama-candidates:finance:raw:refresh": "tsx src/scripts/refreshAlabamaCampaignFinanceRawData.ts",
     "alabama-candidates:finance:auto-link": "tsx src/scripts/autoLinkAlabamaCandidateFinance.ts",
@@ -447,7 +451,8 @@
     "pennsylvania-candidates:finance:raw:scheduler:trigger": "tsx src/scripts/triggerPennsylvaniaCampaignFinanceRawDataRefresh.ts",
     "pennsylvania-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertPennsylvaniaCandidateFinanceSyncScheduler.ts",
     "pennsylvania-candidates:finance:scheduler:worker": "tsx src/scripts/runPennsylvaniaCandidateFinanceSyncSchedulerWorker.ts",
-    "pennsylvania-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerPennsylvaniaCandidateFinanceSync.ts"
+    "pennsylvania-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerPennsylvaniaCandidateFinanceSync.ts",
+    "west-virginia-candidates:finance:probe": "tsx src/scripts/probeWestVirginiaCandidateFinance.ts"
   },
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.1078.0",

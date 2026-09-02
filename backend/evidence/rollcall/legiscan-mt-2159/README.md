@@ -89,16 +89,32 @@ repository at `/Users/shu/legiscan-data/mt_doc.py` and `mt_diff.py`.
 ## Layout
 
 - `crosswalk.json`, `legiscan-people-mt-2159.json`, `crosswalk-proposals-report.json`
-- `CODE-FINDINGS.md` — four defects in LegiScan's Montana data, recorded not fixed
-- `survey/` — the survey report, the fetch report, and
-  `divided-enacted-worklist.tsv`, one row per divided-and-enacted roll with its
-  disposition
-- `batch-01/` — `PLAN.md`, `JUDGING.md`, `judgments.json`, the 18 roll evidence
-  files, and the import ledgers
+- `CODE-FINDINGS.md` — five defects in LegiScan's Montana data, recorded not fixed
+- `survey/` — the survey report, the fetch report,
+  `divided-enacted-worklist.tsv` (one row per divided-and-enacted roll with its
+  disposition), and `filter-5-drops.md` (why each dropped measure was dropped
+  after a full read)
+- `batch-01/`, `batch-02/`, `batch-03/` — each holds `PLAN.md`, `JUDGING.md`,
+  `judgments.json`, the roll evidence files, and the import ledgers
 
 ## Status
 
-Batch-01 is imported on the local `voteapp` database only: 9 measures, 18 rolls,
-**764 records across 87 candidates**, 436 area tags. **Production has zero
-Montana records.** 615 divided-and-enacted rolls remain unbatched; the worklist
-names every one.
+Imported on the local `voteapp` database only. **Production has zero Montana
+records.**
+
+| Batch | Measures | Rolls | Records | Areas |
+| --- | --- | --- | --- | --- |
+| batch-01 | 9 | 18 | 764 | civil rights, immigration, income tax, reproductive rights, education, welfare, guns, elections, housing |
+| batch-02 | 7 | 14 | 598 | environment, health care, corporate accountability |
+| batch-03 | 2 | 4 | 172 | environment, both directions |
+| **total** | **18** | **36** | **1,534** | 12 areas, 87 candidates, 913 tags |
+
+592 divided-and-enacted rolls remain unbatched and 5 are dropped under filter 5;
+`survey/divided-enacted-worklist.tsv` carries a disposition for every one, and
+`survey/filter-5-drops.md` records why each drop was dropped after a full read.
+
+Held deliberately for their own batches: **HB 285** (the Montana Environmental
+Policy Act rewrite) and **HB 685** (nondegradation), both of which need the
+same page-by-page render treatment SB 221 needed, and **HB 231**, the property
+tax rewrite. **HB 807** and **SB 218** are vaccine-adjacent and wait on a
+direction call.

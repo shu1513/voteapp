@@ -2,10 +2,12 @@ import { describe, expect, it, vi } from "vitest";
 
 import { syncConnecticutCandidateFinance } from "../../../src/pipeline/connecticutFinance/connecticutCandidateFinanceSync.js";
 import type { ConnecticutEcrisArtifactRow } from "../../../src/pipeline/connecticutFinance/connecticutEcrisArtifactReader.js";
+import type { ConnecticutEcrisIndependentExpenditureRow } from "../../../src/pipeline/connecticutFinance/connecticutEcrisIndependentExpenditureParsers.js";
 
 const CANDIDATE_ID = "11111111-1111-1111-1111-111111111111";
 const ELECTION_ID = "22222222-2222-2222-2222-222222222222";
 const LINK_ID = "33333333-3333-3333-3333-333333333333";
+const IE_SOURCE_URL = "https://seec.ct.gov/eCrisReporting/SearchingIndependentExpenditure.aspx";
 
 function createMockDb() {
   return {
@@ -133,6 +135,109 @@ describe("connecticutCandidateFinanceSync", () => {
     expect(
       db.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.ct_candidate_finance_direct_breakdowns"))
     ).toBe(true);
+  });
+
+  it("writes outside-spending totals and groups when the year's independent expenditures are supplied", async () => {
+    const db = createMockDb();
+    const expenditure = (overrides: Partial<ConnecticutEcrisIndependentExpenditureRow> = {}): ConnecticutEcrisIndependentExpenditureRow => ({
+      rootExpenditureId: "0",
+      committeeName: "Nutmeg Forward",
+      formTag: "SEEC40",
+      documentUrl: "https://seec.ct.gov/eCrisReporting/Data/Attachment/Unassigned/SEEC40_July_10_Filing_1.PDF",
+      reportType: "July 10 Filing",
+      documentType: "Original",
+      payee: "Shoreline Digital LLC",
+      receivedDate: "2026-06-30",
+      fileYear: 2026,
+      periodStartDate: "2026-04-01",
+      periodEndDate: "2026-06-30",
+      amountCents: 125_000,
+      formSection: "G. Expenses Paid by Committee",
+      supportingCandidates: ["Tim Ackert"],
+      supportingOffices: ["State Representative"],
+      opposingCandidates: [],
+      opposingOffices: [],
+      dataSource: "eFile",
+      ...overrides,
+    });
+
+    const result = await syncConnecticutCandidateFinance({
+      db,
+      ...baseInput(),
+      receiptRows: [receipt({ Amount: "100.00" })],
+      independentExpenditureRows: [
+        expenditure(),
+        expenditure({ committeeName: "Hands Off Our Schools", amountCents: 50_000, supportingCandidates: [], supportingOffices: [], opposingCandidates: ["Timothy Ackert"], opposingOffices: ["State Representative"] }),
+        expenditure({ supportingCandidates: ["Someone Else"] }),
+      ],
+      independentExpenditureSourceUrl: IE_SOURCE_URL,
+    });
+
+    expect(result).toMatchObject({
+      linkWritten: true,
+      outsideGroupsWritten: 2,
+      outsideSupportTotal: 1250,
+      outsideOpposeTotal: 500,
+      outsideAggregation: { sourceRowCount: 3, targetedRowCount: 2, includedRowCount: 2 },
+    });
+
+    const summaryCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.ct_candidate_finance_summaries")
+    );
+    expect(summaryCall?.[1]).toEqual([
+      LINK_ID,
+      2026,
+      100,
+      null,
+      1250,
+      500,
+      "https://seec.ct.gov/ecrisreporting/Data/eCrisDownloads/exportdatafiles/Receipts2026ElectionYearCandidateExploratoryCommittees.csv",
+      "2026-02-03T04:05:06.000Z",
+    ]);
+    const groupCalls = db.query.mock.calls.filter((call) =>
+      String(call[0]).includes("INSERT INTO public.ct_candidate_finance_outside_groups")
+    );
+    expect(groupCalls.map((call) => call[1])).toEqual([
+      [LINK_ID, 2026, "NUTMEG FORWARD", "Nutmeg Forward", "support", 1250, IE_SOURCE_URL, "2026-02-03T04:05:06.000Z"],
+      [LINK_ID, 2026, "HANDS OFF OUR SCHOOLS", "Hands Off Our Schools", "oppose", 500, IE_SOURCE_URL, "2026-02-03T04:05:06.000Z"],
+    ]);
+    expect(
+      db.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.ct_candidate_finance_outside_groups"))
+    ).toBe(true);
+  });
+
+  it("writes zero outside totals and clears groups when the year's expenditures name nobody", async () => {
+    const db = createMockDb();
+
+    const result = await syncConnecticutCandidateFinance({
+      db,
+      ...baseInput(),
+      receiptRows: [receipt({ Amount: "100.00" })],
+      independentExpenditureRows: [],
+    });
+
+    expect(result).toMatchObject({ outsideGroupsWritten: 0, outsideSupportTotal: 0, outsideOpposeTotal: 0 });
+    const summaryCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.ct_candidate_finance_summaries")
+    );
+    expect(summaryCall?.[1]?.slice(2, 6)).toEqual([100, null, 0, 0]);
+    const deleteCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("DELETE FROM public.ct_candidate_finance_outside_groups")
+    );
+    expect(deleteCall?.[1]).toEqual([LINK_ID, 2026, "[]"]);
+  });
+
+  it("leaves stored outside-spending data untouched when no expenditures are supplied", async () => {
+    const db = createMockDb();
+
+    const result = await syncConnecticutCandidateFinance({
+      db,
+      ...baseInput(),
+      receiptRows: [receipt({ Amount: "100.00" })],
+    });
+
+    expect(result).toMatchObject({ outsideGroupsWritten: 0, outsideSupportTotal: null, outsideOpposeTotal: null, outsideAggregation: null });
+    expect(db.query.mock.calls.some((call) => String(call[0]).includes("ct_candidate_finance_outside_groups"))).toBe(false);
   });
 
   it("aggregates but does not write in dry-run mode", async () => {

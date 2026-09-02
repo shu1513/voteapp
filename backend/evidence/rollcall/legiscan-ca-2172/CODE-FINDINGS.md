@@ -1,6 +1,7 @@
 # California code findings (LegiScan session 2172)
 
-Two things the California dataset exposed. §2 is FIXED in the config; §1 is RECORDED, not fixed.
+Three things the California dataset exposed. §2 is FIXED in the config; §1 and §3 are RECORDED,
+not fixed.
 
 ## 1. RECORDED, NOT FIXED — 80 roll pairs are identical except for `date`
 
@@ -53,3 +54,15 @@ The anchor matters: an unanchored `/\breconsider/` also swallows the 91 committe
 granted` / `Reconsideration of favorable vote granted` rolls. Those are rejected by the tally cut
 today and so are never stored; matched as excluded questions instead, they WOULD be stored as
 non-floor audit rows (measured: the queue grew by 80 rows before the anchor was added).
+
+## 3. RECORDED, NOT FIXED — a desc with no question phrase at all (2026-08-31, 08-30 cut)
+
+Roll **1726359** (AB 2524, Senate, 2026-08-26) carries the desc `AB2524 Gipson By Cabaldon` — a
+bill number and two member names, and no question. The classifier cannot place it as floor or
+committee, so the fetcher stores it with `is_floor_vote` null and surfaces it, which is the correct
+behaviour: it is visible rather than silently binned.
+
+**Recorded, not fixed.** The vote is 39-0, so it can never pass the divided gate and can never
+enter a batch. One malformed string is not a vocabulary; writing a config pattern from a single
+instance is how the `reconsider` over-match (§2) happened. If a later cut shows a family of these,
+measure the histogram first.

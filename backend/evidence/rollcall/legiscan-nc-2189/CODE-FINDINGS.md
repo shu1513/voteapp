@@ -40,3 +40,53 @@ prefix, which records that the presiding officer ruled the matter material under
 a House rule. The vote is still on the concurrence or the conference report that
 follows the prefix. LegiScan leaves the apostrophe HTML-escaped, so the config
 patterns match the escape rather than a normal apostrophe.
+
+---
+
+# Finding 3: the omission is systematic, not three rolls (batch-02)
+
+Finding 1 was written from three rolls. Measured across all 1,452 fetched North
+Carolina rolls, 248 have a member list smaller than the chamber, and the pattern
+is not random.
+
+**House.** Every 2026 House roll lists 117 or 118 members, never 120. Comparing
+a 2025-07-29 roll against a 2026-06-30 roll, six members are gone and four
+replacements appear: HD-047, HD-060, HD-090 and HD-119 each show a successor.
+The two with no replacement listed are HD-099 Nasif Majeed and HD-106 Carla
+Cunningham, the members from finding 1. Both were still serving. Rolls showing
+117 are the same six dropped with only three successors seated yet, which is
+legitimate.
+
+**Senate.** Senate rolls in May 2026 list 49. Graig Meyer and Paul Newton show
+successors; Terence Everitt of SD-018 does not. By late June 2026 the Senate
+list is back to 50.
+
+## What it costs
+
+A short member list is not proof of a wrong tally. It is wrong only when a
+dropped member actually voted. Checked against ncleg.gov transcripts:
+
+| Bill  | Chamber, date     | Feed  | Official |
+|-------|-------------------|-------|----------|
+| H1089 | House, 2026-05-20 | 71-46 | 73-46    |
+| S1080 | House, 2026-05-20 | 71-46 | 73-46    |
+| S474  | House, 2026-07-01 | 72-40 | 74-40    |
+| H834  | House, 2026-08-04 | 73-35 | 74-35    |
+| S445  | House, 2026-08-04 | 81-28 | 84-26    |
+| H376  | House, 2026-06-24 | 77-39 | 77-40    |
+| S889  | House, 2026-06-10 | 70-41 | 69-43    |
+
+Seven for seven wrong, on top of the three held in batch-01. Every 2025 roll
+checked, and every 2026 Senate roll checked, matches.
+
+## The rule this gives
+
+No 2026 House roll may be imported. The judge's tally gate requires each
+description to quote the stored tally, and the stored tally for these rolls is a
+number North Carolina's own record contradicts. 17 such rolls are marked
+`held:2026-house-tally-understated-by-legiscan` in the worklist, on top of the
+three held in batch-01. They become importable when the feed is corrected or the
+stored tallies are repaired from the transcripts.
+
+2025 rolls and 2026 Senate rolls are usable, with the tally still checked
+one by one against the official transcript before import.

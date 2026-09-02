@@ -1,0 +1,99 @@
+{
+  "judgments": [
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 160,
+      "measure_id": "S.J.Res. 37",
+      "vote_date": "2025-04-02",
+      "review_status": "approved",
+      "yea_description": "Voted for S.J.Res. 37, to end the national emergency behind the President's February 2025 tariffs on Canadian goods. Those tariffs added 25 percent on most imports and 10 percent on Canadian energy. The Senate passed it 51-48, but the House never voted, so the tariffs stayed.",
+      "nay_description": "Voted against S.J.Res. 37, which sought to end the national emergency behind the President's February 2025 tariffs on Canadian goods. A no vote left the 25 percent import tariff and 10 percent energy tariff in place. The Senate passed the measure 51-48, but the House never took it up.",
+      "labels": [
+        {
+          "nay": null,
+          "yea": "for",
+          "slug": "cost_of_living_reduction"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 117,
+      "session": 1,
+      "roll": 110,
+      "measure_id": "H.R. 1319",
+      "vote_date": "2021-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass the Senate's version of H.R. 1319, the American Rescue Plan Act, a $1.9 trillion COVID-19 relief package. The Senate approved it 50-49. It sent $1,400 payments to most households, extended jobless benefits, expanded the child tax credit, and funded vaccines, schools, and states. The House then agreed, and it was signed on March 11, 2021 as Public Law 117-2.",
+      "nay_description": "Voted against the Senate's version of H.R. 1319, the American Rescue Plan Act, a $1.9 trillion COVID-19 relief package. The Senate approved it 50-49. It sent $1,400 payments to most households, extended jobless benefits, expanded the child tax credit, and funded vaccines, schools, and states. The House agreed anyway, and it was signed on March 11, 2021 as Public Law 117-2.",
+      "labels": [
+        {
+          "nay": null,
+          "yea": "for",
+          "slug": "social_programs_and_welfare"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 117,
+      "session": 2,
+      "roll": 325,
+      "measure_id": "H.R. 5376",
+      "vote_date": "2022-08-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass H.R. 5376, the Inflation Reduction Act, which let Medicare negotiate some drug prices and capped insulin at $35 a month for Medicare patients. It also funded clean energy tax credits and set a 15 percent minimum tax on large corporations. The Senate split 50-50 and the Vice President broke the tie; it became Public Law 117-169 on August 16, 2022.",
+      "nay_description": "Voted against H.R. 5376, the Inflation Reduction Act, which let Medicare negotiate some drug prices and capped insulin at $35 a month for Medicare patients. A no vote opposed those drug price, clean energy, and corporate tax changes. The Senate split 50-50, the Vice President broke the tie for passage, and it became Public Law 117-169 on August 16, 2022.",
+      "labels": [
+        {
+          "nay": null,
+          "yea": "for",
+          "slug": "environment_and_public_health"
+        },
+        {
+          "nay": null,
+          "yea": "for",
+          "slug": "healthcare_affordability"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 594,
+      "measure_id": "S.J.Res. 81",
+      "vote_date": "2025-10-28",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 81, which would end the national emergency the President declared on July 30, 2025 to add a 40 percent tariff on many imports from Brazil. The Senate passed it 52-48, but the House never took it up, so the resolution did not become law and the tariff stayed in place.",
+      "nay_description": "Voted against S.J.Res. 81, which would end the national emergency the President declared on July 30, 2025 to add a 40 percent tariff on many imports from Brazil. The Senate passed it 52-48 anyway, but the House never took it up, so the resolution did not become law and the tariff stayed in place.",
+      "labels": [
+        {
+          "nay": null,
+          "yea": "for",
+          "slug": "cost_of_living_reduction"
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "congress": 119,
+      "session": 1,
+      "roll": 600,
+      "measure_id": "S.J.Res. 88",
+      "vote_date": "2025-10-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S.J.Res. 88, which would end the national emergency the President declared on April 2, 2025 to impose broad import tariffs. The Senate passed it 51-47, but the House never took it up, so the tariffs stayed in place.",
+      "nay_description": "Voted against S.J.Res. 88, which would end the national emergency the President declared on April 2, 2025 to impose broad import tariffs. It passed the Senate 51-47, but the House never acted on it, so the tariffs stayed in place.",
+      "labels": [
+        {
+          "nay": null,
+          "yea": "for",
+          "slug": "cost_of_living_reduction"
+        }
+      ]
+    }
+  ]
+}

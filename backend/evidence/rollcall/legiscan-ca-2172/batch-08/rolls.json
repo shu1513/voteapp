@@ -1,0 +1,107 @@
+{
+  "batch": "batch-08",
+  "chamber": "senate",
+  "note": "Senate-only tail, first batch.",
+  "rolls": [
+    {
+      "measure": "AB 1263",
+      "roll": 1601872,
+      "vote_date": "2025-09-11",
+      "last_amended": "2025-09-05",
+      "bill_status": "chaptered",
+      "tally": "30-10",
+      "area": "gun_control",
+      "version_check": "vote is after the last amendment"
+    },
+    {
+      "measure": "SB 1220",
+      "roll": 1726054,
+      "vote_date": "2026-08-25",
+      "last_amended": "2026-08-19",
+      "bill_status": "enrolled",
+      "tally": "30-9",
+      "area": "gun_control",
+      "version_check": "vote is after the last amendment"
+    },
+    {
+      "measure": "SB 53",
+      "roll": 1602910,
+      "vote_date": "2025-09-13",
+      "last_amended": "2025-09-05",
+      "bill_status": "chaptered",
+      "tally": "29-8",
+      "area": "corporate_accountability",
+      "version_check": "vote is after the last amendment"
+    },
+    {
+      "measure": "AB 45",
+      "roll": 1602297,
+      "vote_date": "2025-09-12",
+      "last_amended": "2025-09-09",
+      "bill_status": "chaptered",
+      "tally": "29-9",
+      "area": "data_privacy",
+      "version_check": "vote is after the last amendment"
+    },
+    {
+      "measure": "SB 1418",
+      "roll": 1726637,
+      "vote_date": "2026-08-27",
+      "last_amended": "2026-08-21",
+      "bill_status": "enrolled",
+      "tally": "30-10",
+      "area": "election_integrity",
+      "version_check": "vote is after the last amendment"
+    },
+    {
+      "measure": "AB 1411",
+      "roll": 1601520,
+      "vote_date": "2025-09-09",
+      "last_amended": "2025-07-16",
+      "bill_status": "chaptered",
+      "tally": "30-10",
+      "area": "election_integrity",
+      "version_check": "vote is after the last amendment"
+    },
+    {
+      "measure": "AB 1167",
+      "roll": 1601532,
+      "vote_date": "2025-09-09",
+      "last_amended": "2025-08-29",
+      "bill_status": "chaptered",
+      "tally": "29-10",
+      "area": "anti_corruption",
+      "version_check": "vote is after the last amendment"
+    },
+    {
+      "measure": "SB 766",
+      "roll": 1601918,
+      "vote_date": "2025-09-11",
+      "last_amended": "2025-09-05",
+      "bill_status": "chaptered",
+      "tally": "30-8",
+      "area": "corporate_accountability",
+      "version_check": "vote is after the last amendment"
+    },
+    {
+      "measure": "AB 1261",
+      "roll": 1601512,
+      "vote_date": "2025-09-09",
+      "last_amended": "2025-09-05",
+      "bill_status": "chaptered",
+      "tally": "30-8",
+      "area": "immigration",
+      "version_check": "vote is after the last amendment"
+    },
+    {
+      "measure": "SB 771",
+      "roll": 1601976,
+      "vote_date": "2025-09-11",
+      "last_amended": "2025-09-02",
+      "bill_status": "vetoed",
+      "tally": "30-8",
+      "area": "corporate_accountability",
+      "version_check": "vote is after the last amendment"
+    }
+  ]
+}

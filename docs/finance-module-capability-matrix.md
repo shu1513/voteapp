@@ -24,7 +24,7 @@ The shared factory (`createStandardStateFinanceSnapshotWriter`) after PR #488 + 
 | arizona | 5 | none | R | 2002 | pool | g | — | std |
 | california | 5 | no `district`; →`controlled_committee_id`/`_name` | C; +`debts_owed`; no `direct_contribution_total` | 2001 | self | — | — | std+`contributor_source_type`+`industry` |
 | colorado | 3 (no outside) | +`tracer_candidate_id` | C; only receipts+source | 2001 | self | — | — | std |
-| connecticut | 3 (no outside) | none | C; no direct/cash | 2008 | self | — | — | std |
+| connecticut | 4 (no `outside_group_breakdowns`; outside groups since the 2026-09 IE PR, keyed by normalized committee name) | none | C; no direct/cash | 2008 | self | — | — | std |
 | districtOfColumbia | 5 | →`committee_key` | C | 2000 | pool | G | — | std |
 | florida | **6** (+`outside_group_links`, 2nd insert) | none | R+oC | 1996 | pool | — | — | std |
 | hawaii | 5 | +`election_period` | C+oR | 2000 | pool | g | — | std |

@@ -79,6 +79,25 @@ export function normalizeConnecticutEcrisOfficeLabel(value: string | null | unde
   return normalized ? normalized : null;
 }
 
+/**
+ * The app office canonical name for an eCRIS office label alone, e.g.
+ * "State Representative" -> "State Lower Chamber Legislator". Unlike
+ * mapConnecticutEcrisOffice this does not need a district: the
+ * independent-expenditure search names the office but never the district.
+ */
+export function connecticutEcrisOfficeCanonicalName(officeLabel: string | null | undefined): string | null {
+  const normalizedOffice = normalizeConnecticutEcrisOfficeLabel(officeLabel);
+  if (!normalizedOffice) {
+    return null;
+  }
+  const definition = ECRIS_OFFICE_DEFINITIONS.get(normalizedOffice);
+  if (!definition) {
+    return null;
+  }
+  const officeKey = toConnecticutFinanceOfficeKey(definition);
+  return officeKey && CONNECTICUT_FINANCE_ELIGIBLE_OFFICE_KEY_SET.has(officeKey) ? definition.officeCanonicalName : null;
+}
+
 export function mapConnecticutEcrisOffice(input: {
   officeSought: string | null | undefined;
   district?: string | null | undefined;

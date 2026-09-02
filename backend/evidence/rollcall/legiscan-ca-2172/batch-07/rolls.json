@@ -1,0 +1,87 @@
+{
+  "batch": "batch-07",
+  "chamber": "house",
+  "note": "One-chamber (Assembly-only) tail; first batch under the final-text rule (chaptered + enrolled + vetoed).",
+  "rolls": [
+    {
+      "measure": "SB 352",
+      "roll": 1602326,
+      "vote_date": "2025-09-13",
+      "last_amended": "2025-09-10",
+      "bill_status": "chaptered",
+      "tally": "55-19",
+      "area": "environment_and_public_health",
+      "version_check": "vote is after the last amendment"
+    },
+    {
+      "measure": "SB 744",
+      "roll": 1602132,
+      "vote_date": "2025-09-12",
+      "last_amended": "2025-09-03",
+      "bill_status": "chaptered",
+      "tally": "60-18",
+      "area": "public_education_quality",
+      "version_check": "vote is after the last amendment"
+    },
+    {
+      "measure": "SB 840",
+      "roll": 1602366,
+      "vote_date": "2025-09-13",
+      "last_amended": "2025-09-10",
+      "bill_status": "chaptered",
+      "tally": "59-15",
+      "area": "environment_and_public_health",
+      "version_check": "vote is after the last amendment"
+    },
+    {
+      "measure": "SB 923",
+      "roll": 1726337,
+      "vote_date": "2026-08-26",
+      "last_amended": "2026-08-20",
+      "bill_status": "enrolled",
+      "tally": "49-14",
+      "area": "data_privacy",
+      "version_check": "vote is after the last amendment"
+    },
+    {
+      "measure": "SB 1250",
+      "roll": 1725723,
+      "vote_date": "2026-08-24",
+      "last_amended": "2026-08-19",
+      "bill_status": "enrolled",
+      "tally": "59-15",
+      "area": "environment_and_public_health",
+      "version_check": "vote is after the last amendment"
+    },
+    {
+      "measure": "AB 2247",
+      "roll": 1726173,
+      "vote_date": "2026-08-26",
+      "last_amended": "2026-08-13",
+      "bill_status": "enrolled",
+      "tally": "60-16",
+      "area": "social_programs_and_welfare",
+      "version_check": "vote is after the last amendment"
+    },
+    {
+      "measure": "SB 613",
+      "roll": 1602281,
+      "vote_date": "2025-09-12",
+      "last_amended": "2025-06-30",
+      "bill_status": "vetoed",
+      "tally": "54-14",
+      "area": "environment_and_public_health",
+      "version_check": "vote is after the last amendment"
+    },
+    {
+      "measure": "SB 629",
+      "roll": 1602105,
+      "vote_date": "2025-09-12",
+      "last_amended": "2025-09-02",
+      "bill_status": "vetoed",
+      "tally": "59-18",
+      "area": "environment_and_public_health",
+      "version_check": "vote is after the last amendment"
+    }
+  ]
+}
