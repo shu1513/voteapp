@@ -1,0 +1,58 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2262",
+      "roll": 1694623,
+      "measure_id": "HB 1",
+      "vote_date": "2026-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1, a backup plan for Alabama's primary elections for Congress. If a federal court let the state go back to the map the Legislature drew in 2023, and the ruling came too late for the normal primary, the Governor would call a new one. The top vote-getter would win the party slot, with no runoff, and the first primary would not count. The House passed it 75-29 on a party-line vote, and it became law.",
+      "nay_description": "Voted against passing House Bill 1, a backup plan for Alabama's primary elections for Congress. If a federal court let the state go back to the map the Legislature drew in 2023, and the ruling came too late for the normal primary, the Governor would call a new one. The top vote-getter would win the party slot, with no runoff, and the first primary would not count. The House passed it 75-29 over these votes, on a party-line split, and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2262",
+      "roll": 1695918,
+      "measure_id": "HB 1",
+      "vote_date": "2026-05-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1, a backup plan for Alabama's primary elections for Congress. If a federal court let the state go back to the map the Legislature drew in 2023, and the ruling came too late for the normal primary, the Governor would call a new one. The top vote-getter would win the party slot, with no runoff, and the first primary would not count. The Senate passed it 27-8 on a party-line vote, and it became law.",
+      "nay_description": "Voted against passing House Bill 1, a backup plan for Alabama's primary elections for Congress. If a federal court let the state go back to the map the Legislature drew in 2023, and the ruling came too late for the normal primary, the Governor would call a new one. The top vote-getter would win the party slot, with no runoff, and the first primary would not count. The Senate passed it 27-8 over these votes, on a party-line split, and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2262",
+      "roll": 1694713,
+      "measure_id": "SB 1",
+      "vote_date": "2026-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1, a backup plan for Alabama's State Senate primary elections. If a federal court let the state go back to the map the Legislature drew in 2021, and the ruling came too late for the normal primary, the Governor would call a new one. The top vote-getter would win the party slot, with no runoff, and the first primary would not count. The Senate passed it 26-7 on a party-line vote, and it became law.",
+      "nay_description": "Voted against passing Senate Bill 1, a backup plan for Alabama's State Senate primary elections. If a federal court let the state go back to the map the Legislature drew in 2021, and the ruling came too late for the normal primary, the Governor would call a new one. The top vote-getter would win the party slot, with no runoff, and the first primary would not count. The Senate passed it 26-7 over these votes, on a party-line split, and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
