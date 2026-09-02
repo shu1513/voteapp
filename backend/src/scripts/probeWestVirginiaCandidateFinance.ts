@@ -31,6 +31,7 @@ import {
 } from "../pipeline/westVirginiaFinance/westVirginiaCfrsCsv.js";
 import {
   checkWestVirginiaRegistryJoin,
+  evaluateWestVirginiaPhaseZeroGates,
   isWestVirginiaIndependentExpenditureDocument,
   pdfHasFontMarker,
   reconcileWestVirginiaCommittee,
@@ -38,6 +39,7 @@ import {
   summarizeWestVirginiaOccupations,
   summarizeWestVirginiaOutsideInventory,
   summarizeWestVirginiaReportingCycles,
+  westVirginiaDocumentReceivedYear,
 } from "../pipeline/westVirginiaFinance/westVirginiaPhaseZero.js";
 
 export type WestVirginiaPhaseZeroArgs = {
@@ -57,7 +59,9 @@ const DEFAULT_ARGS: WestVirginiaPhaseZeroArgs = {
   // Committee to Elect Dean Jeffries — the embedded-quote CSV fixture
   // (verified live 2026-08-27). Additional committees are auto-picked.
   reconcileEntityIds: ["1010003610"],
-  outsideCommitteeLimit: 40,
+  // Safety valve only: the registry holds ~90 IEC/ECC committees all-time and
+  // every one is enumerated; the output reports how many were cut off.
+  outsideCommitteeLimit: 200,
 };
 
 // The category vocabulary the contributions bulk file carries (verified live);
@@ -70,6 +74,10 @@ const CONTRIBUTION_FILE_CATEGORIES = new Set([
   "Receipt of Transfer of Excess Funds",
   "Return",
 ]);
+
+// Direct-donor rows for the occupation sweep: loans, returns, transfers and
+// other income from individuals are not donations (plan money model).
+const DIRECT_DONATION_CATEGORIES = new Set(["Monetary", "In-Kind"]);
 
 const COURTESY_DELAY_MS = 150;
 
@@ -420,37 +428,40 @@ export async function runProbeWestVirginiaCandidateFinance(input: {
     }
   }
 
-  // Gate: amendment semantics — every reconciled committee must match the API
-  // cent-exact and multiset-exact, or the CSV cannot be aggregated directly.
-  const reconciliationOk = reconciliations.every((entry) => entry.totalsMatch && entry.multisetMatch);
-
-  const occupations = summarizeWestVirginiaOccupations(latestApiRows);
+  const occupations = summarizeWestVirginiaOccupations(latestApiRows, DIRECT_DONATION_CATEGORIES);
   const apiCategoryCounts: Record<string, number> = {};
   for (const row of latestApiRows) {
     const category = row.transactionCategoryDesc ?? "<null>";
     apiCategoryCounts[category] = (apiCategoryCounts[category] ?? 0) + 1;
   }
 
-  // Gate: outside document inventory + PDF text-layer checks.
-  const outsideCommittees = committees
+  // Gate: outside document inventory + PDF text-layer checks. Every IEC/ECC
+  // committee is enumerated whatever its registration year (an older
+  // committee can still file this cycle); documents are scoped by receivedDate.
+  const allOutsideCommittees = committees
     .filter(
       (committee) =>
         committee.orgType.includes("Independent Expenditure") ||
         committee.orgType.includes("Electioneering")
     )
-    .filter(
-      (committee) =>
-        committee.registrationYear !== null && Number(committee.registrationYear) >= args.years[0]
-    )
-    .slice(0, args.outsideCommitteeLimit);
+    .sort((a, b) => a.orgID - b.orgID);
+  const outsideCommittees = allOutsideCommittees.slice(0, args.outsideCommitteeLimit);
+  const documentWindowStartYear = args.years[0];
   const outsideEntries: Array<{
     committee: WestVirginiaCommitteeRow;
     documents: Awaited<ReturnType<typeof getAllWestVirginiaOrgDocuments>>;
   }> = [];
   for (const committee of outsideCommittees) {
+    const documents = await client.getAllOrgDocuments(
+      { orgID: committee.orgID, pageSize: args.pageSize },
+      clientOptions
+    );
     outsideEntries.push({
       committee,
-      documents: await client.getAllOrgDocuments({ orgID: committee.orgID, pageSize: args.pageSize }, clientOptions),
+      documents: documents.filter((document) => {
+        const year = westVirginiaDocumentReceivedYear(document);
+        return year === null || year >= documentWindowStartYear;
+      }),
     });
     await sleep(COURTESY_DELAY_MS);
   }
@@ -493,10 +504,18 @@ export async function runProbeWestVirginiaCandidateFinance(input: {
     (committee) => committee.election === "2026 Election" && committee.orgType === "State Candidate"
   );
 
+  const gateFailures = evaluateWestVirginiaPhaseZeroGates({
+    reconciliations,
+    registryJoin,
+    outsideInventory,
+    sampleFiledReportHasFontMarker: coverPdf?.hasFontMarker ?? null,
+  });
+
   return {
     type: "west_virginia_campaign_finance_phase_zero_probe" as const,
     ts: (input.now ?? new Date()).toISOString(),
-    ok: reconciliationOk,
+    ok: gateFailures.length === 0,
+    gate_failures: gateFailures,
     tls_fallback_uses: getWestVirginiaTlsFallbackUseCount(),
     catalog: { artifactCount: catalog.length },
     bulk: {
@@ -539,6 +558,9 @@ export async function runProbeWestVirginiaCandidateFinance(input: {
     reconciliation: reconciliations,
     occupations,
     outside: {
+      documentWindowStartYear,
+      committeesInRegistry: allOutsideCommittees.length,
+      committeesSkippedByLimit: allOutsideCommittees.length - outsideCommittees.length,
       inventory: outsideInventory,
       sampleIndependentExpenditurePdf: outsidePdf,
       sampleFiledReportPdf: coverPdf,
@@ -553,7 +575,7 @@ async function main(): Promise<void> {
   });
   console.log(JSON.stringify(output, null, 2));
   if (!output.ok) {
-    console.error("West Virginia campaign-finance Phase 0 probe: reconciliation gate failed (see reconciliation[])");
+    console.error(`West Virginia campaign-finance Phase 0 gates failed: ${output.gate_failures.join("; ")}`);
     process.exitCode = 1;
   }
 }

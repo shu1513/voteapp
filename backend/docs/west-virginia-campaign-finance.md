@@ -6,7 +6,7 @@ Verdict: **buildable**; outside spending needs a document (PDF) path, not the st
 |---|---|
 | Total raised | YES — bulk CSV + API, cent-level rows |
 | Total spent | YES — bulk CSV + API |
-| Direct donor occupation | YES **via API only** (bulk CSV has employer, no occupation); full 2026 result: 95.4% occupation / 95.9% employer on >$250 single transactions (2,723 of 8,530 individual rows); statutory basis: W. Va. Code §3-8-5a requires occupation + major business affiliation once a donor's **cycle aggregate** exceeds $250 (single-gift >$250 is a proxy; `transactionTotalYTD`>$250 view: 91.1%, field semantics unproven) |
+| Direct donor occupation | YES **via API only** (bulk CSV has employer, no occupation); full 2026 result (re-run 2026-09-01, Monetary + In-Kind individual rows only — loans/returns/other income excluded): 95.7% occupation / 96.3% employer on >$250 single transactions (2,694 of 8,490 individual donation rows); statutory basis: W. Va. Code §3-8-5a requires occupation + major business affiliation once a donor's **cycle aggregate** exceeds $250 (single-gift >$250 is a proxy; `transactionTotalYTD`>$250 view: 91.4%, field semantics unproven) |
 | Outside spending support/oppose | YES **via filed F-7b PDFs**; the structured IE grid is NOT the source of record — see below |
 
 ## System
@@ -45,7 +45,7 @@ with 1–3 extra columns** (382×13, 25×14, 21×15) from unescaped commas in th
 name/address; and the **contributions files have the same defect class** (2025 file:
 1 row — `Alonzio Perry, II`, a generational-suffix comma in the contributor name). All
 bad-width rows keep a valid typed prefix and a recoverable trailing `FiledDate`.
-Recovery rule (implemented in `westVirginiaCfrsCsv`): keep the typed prefix and the
+Recovery rule (implemented in `westVirginiaCfrsCsv.ts`): keep the typed prefix and the
 trailing fixed columns, keep only the FIRST column of the damaged name/address span as
 the counterparty name, discard the ambiguous tail (it mixes in the street address —
 never retained), and flag the row `recovered`.
@@ -75,14 +75,16 @@ CandidateName, CommitteeType, CommitteeSubType, RegistrationDate, CommitteeStatu
 **No office or district column** — do not link candidates from this file; use the
 committee API instead.
 
-### Amendment semantics — RESOLVED (Phase 0 probe, 2026-08-27)
+### Amendment semantics — committee-level evidence (Phase 0 probe, 2026-08-27; re-run 2026-09-01)
 
-**The nightly CSV holds current-version rows only.** Evidence from the live probe
-(`npm run west-virginia-candidates:finance:probe`):
+**Working conclusion: the nightly CSV holds current-version rows only.** Evidence from
+the live probe (`npm run west-virginia-candidates:finance:probe`):
 
 - Six committees reconciled CSV↔API, including two 2025 committees with amended
   reports on file (report versions 2 and 3): every one matched **cent-exact and
-  multiset-exact** on (date, amount) — zero rows only-in-CSV or only-in-API.
+  multiset-exact** on (date, amount, category) — zero rows only-in-CSV or
+  only-in-API. The probe now fails (`ok: false`, exit 1) on any mismatch or on an
+  empty sample, so a mistyped committee id cannot "match" as 0 = 0.
 - Version >1 rows are common in the API (2026: 2,114 of 11,506 rows on versions 2–5)
   with **zero** `amendedFlag` rows in 2026 and 47 in 2025 — if the CSV carried
   original+amended side by side, amended committees' CSV row counts would exceed the
@@ -91,8 +93,15 @@ committee API instead.
   rows (2026: 240; 2025: 1,049) are legitimate repeat transactions, not version
   residue.
 
-The API's `amendedFlag`/`reportVersionID`/`transactionID` remain available for
-diagnostics; no version-resolution staging layer is needed.
+**What this evidence is and is not.** The CSV has no report identity, so the check is
+committee-wide on the fields both sides share (date, amount, category). It rules out
+coexisting versions (row counts would differ) but cannot see an amendment that only
+renamed the donor or moved a row between reports. The plan's per-report
+CSV↔API↔cover-total reconciliation is not done yet — cover totals need PDF text
+extraction — and stays a Phase 1 gate alongside the money-model matrix. The API's
+`amendedFlag`/`reportVersionID`/`transactionID` remain available for diagnostics; a
+version-resolution staging layer is not planned unless that Phase 1 gate finds a
+counterexample.
 
 ## Donor occupation — API only
 
@@ -105,11 +114,14 @@ The bulk contributions CSV has `EmployerName` **but no occupation column**
 ```json
 {"pageNumber":1,"pageSize":5000,"transactionCategory":"CON","orgTypeCode":"101","transactionYear":"2026"}
 ```
-→ 11,506 rows for 2026 (3 pages). Full result: 8,530 individual transactions; 2,723
-single transactions >$250, of which **occupation 2,597 (95.4%), employer 2,611 (95.9%)**.
-Statute triggers on the donor's cycle aggregate, not single-gift size; the
-`transactionTotalYTD`>$250 view gives 2,743 rows / occupation 2,500 (91.1%), but that
-field's semantics (YTD vs cycle, per-donor vs per-committee) are unproven.
+→ 11,509 rows for 2026 (3 pages, re-run 2026-09-01). The probe measures occupation on
+**individual Monetary + In-Kind rows only** — the CON selector also returns loans, loan
+payments, returns and other income from individuals, which are not donors. Full result:
+8,490 individual donation rows; 2,694 single transactions >$250, of which **occupation
+2,579 (95.7%), employer 2,593 (96.3%)**. Statute triggers on the donor's cycle
+aggregate, not single-gift size; the `transactionTotalYTD`>$250 view gives 2,722 rows /
+occupation 2,487 (91.4%), but that field's semantics (YTD vs cycle, per-donor vs
+per-committee) are unproven.
 
 Values are a controlled vocabulary, not free text ("Construction/Engineering",
 "Environmental Services", "General Business", "Unknown"). The shared contract's
@@ -152,10 +164,17 @@ candidate "Robert Fluharty", checkbox **In Opposition of Candidate**, payee
 contributor schedule (>$1,000 furthering-the-expenditure funders, occupation + employer
 fields) — blank on this filing.
 
-Scale of the document universe: **18 IE committees registered 2025–2026, 111 IE-report
-PDFs total** (Mountaineer Conservative Action 29, Mountaineer Freedom Alliance 15,
-School Freedom Fund 11, Make Liberty Win 10, …). Small enough for form-fixed extraction
-with review; too big to ignore.
+Scale of the document universe (first probe, committees registered 2025–2026 only):
+**18 IE committees, 111 IE-report PDFs** (Mountaineer Conservative Action 29,
+Mountaineer Freedom Alliance 15, School Freedom Fund 11, Make Liberty Win 10, …). The
+registry holds 93 IEC/ECC committees all-time (registration years 2016–2026), and an
+older committee can still file this cycle, so the probe now enumerates every one and
+scopes documents by `receivedDate` year instead. **Re-run 2026-09-01: 93 committees,
+335 documents received 2025–2026, of which 292 are IE reports across 25 committees.**
+The registration-year filter had hidden 181 of them — Americans for Prosperity
+(registered 2023) alone has 129, The West Virginia Chamber of Commerce (2020) 21,
+Mountaineer Majority Fund (2024) 8, West Virginia Coal Victory PAC (2022) 7. Still
+small enough for form-fixed extraction with review; too big to ignore.
 
 PDF retrieval chain (verified):
 1. `POST /Committee/getAllPublicOrgDocumentDataList` → `documentID`, `documentType`,
@@ -198,7 +217,7 @@ committees' *general expenditure schedules* from quarterly filings; the candidat
 support/oppose money lives on F-7b PDFs that bypass the grid entirely. The single
 stance-filled 2026 row (West Virginia Strong, "Criss, Vernon", Support, $897.10) is the
 rare committee that e-filed through the online form. **The 2026 doc store already holds
-111 IE PDFs while the grid holds 1 stance row — do not wait for October; the grid will
+292 IE PDFs while the grid holds 1 stance row — do not wait for October; the grid will
 not fill in.** Build totals from documents; treat any structured stance rows as a bonus
 to reconcile against.
 
@@ -246,29 +265,35 @@ not be publicly released; **occupation is NOT restricted**; pre-2027 statements 
 explicitly unaffected. Employer→industry processing therefore needs a filing-date
 boundary and a fail-closed redaction test; occupation charts are unaffected.
 
-## Phase 0 probe results (run 2026-08-27, all gates green)
+## Phase 0 probe results (run 2026-08-27, re-run 2026-09-01, all gates green)
 
 `npm run west-virginia-candidates:finance:probe` (client + parsers + phaseZero in
-`backend/src/pipeline/westVirginiaFinance/`). Verified live in one run:
+`backend/src/pipeline/westVirginiaFinance/`). Transport and parse problems throw as
+they happen; the evidence gates run on the collected report and set `ok: false` +
+`gate_failures` + exit 1 while still printing the evidence. Gates: every reconciled
+committee non-empty and cent/multiset-exact, every CSV registrant in the registry, at
+least one IE document in the window, a filed-report PDF with a text layer. Verified
+live (2026-09-01 figures; the nightly files move a little between runs):
 
-- Transport: TLS trust-first + pinned-intermediate fallback works (fallback engaged and
-  cached); catalog 81 artifacts; repeated mint+download byte-identical (determinism).
-- Parsers: CON 2025 28,873 rows / $6,940,014.31 / 1 recovered; CON 2026 18,396 rows /
-  $10,454,673.08 / 0 errors; EXP 2026 10,736 rows / $14,073,952.38 / 428 recovered —
+- Transport: TLS trust-first + pinned-intermediate fallback works; catalog 81
+  artifacts; repeated mint+download byte-identical (determinism).
+- Parsers: CON 2025 28,873 rows / $6,940,014.31 / 1 recovered; CON 2026 18,399 rows /
+  $10,454,913.08 / 0 errors; EXP 2026 10,736 rows / $14,073,952.38 / 428 recovered —
   all cent-exact against the known totals.
 - Join: all 705 CSV registrants (2025+2026) resolve in the committee registry (100%).
 - Reporting cycles: 2026 Candidate/Committee cycles = 7 periods, 2025-07-01 ->
   2026-10-18 (cycle-membership scoping confirmed).
 - Reconciliation: 6 committees (incl. embedded-quote fixture 1010003610 and two
-  amended-report committees) all cent-exact + multiset-exact -> amendment semantics
-  resolved (see above).
-- Occupation (org 101 CON 2026): 8,530 individual rows; >$250 single-txn 2,723 with
-  occupation 2,597 (95.4%) / employer 2,611 (95.9%); YTD>$250 2,743 / occ 2,500;
-  **165 distinct occupation labels** (top: Attorney/Legal 844, Retired 601, Business
-  Owner 346, Healthcare/Medical 328, Not Currently Employed 307).
-- Outside: 18 IEC/ECC committees 2025-26, 142 docs, **111 IE docs**; sample F-7b PDF
-  has no text layer (scan, as expected); sample filed-report PDF (2026 Q2, 1.3 MB)
-  **has a text layer** -> cover extraction / cash_on_hand path is feasible.
+  amended-report committees) all cent-exact + multiset-exact on (date, amount,
+  category) -> committee-level amendment evidence (see above for its limits).
+- Occupation (org 101 CON 2026, individual Monetary + In-Kind rows): 8,490 rows; >$250
+  single-txn 2,694 with occupation 2,579 (95.7%) / employer 2,593 (96.3%); YTD>$250
+  2,722 / occ 2,487; **165 distinct occupation labels** (top: Attorney/Legal 841,
+  Retired 601, Business Owner 344, Healthcare/Medical 328, Not Currently Employed 304).
+- Outside: all 93 IEC/ECC committees enumerated, 335 docs received 2025-26, **292 IE
+  docs across 25 committees** (first run's registration-year filter saw 111); sample
+  F-7b PDF has no text layer (scan, as expected); sample filed-report PDF (2026 Q2,
+  1.3 MB) **has a text layer** -> cover extraction / cash_on_hand path is feasible.
 
 Still open for Phase 1: LOAN-file vs CON-grid loan-subtype overlap; `transactionTotalYTD`
 semantics; full category x contributor-type money matrix pinned against covers.

@@ -143,9 +143,11 @@ are unproven and get pinned in Phase 0. Values are a controlled vocabulary
 
 **Decisive negative result:** F-7b Independent Expenditure filings do not become
 structured transactions. Citizens for Better Communities (orgID 3981) — 3 IE PDFs,
-**zero** structured transactions, zero filed-report rows. Across 18 IE committees
-registered 2025–2026: **111 "Independent Expenditure Report" PDFs** vs 1
-stance-populated 2026 grid row. Historical stance rows exist but are filer-specific:
+**zero** structured transactions, zero filed-report rows. Across all 93 IEC/ECC
+committees in the registry, documents received 2025–2026: **292 "Independent
+Expenditure Report" PDFs from 25 committees** (probe re-run 2026-09-01; the first run
+counted 111 because it only looked at committees registered 2025–2026 — Americans for
+Prosperity, registered 2023, alone holds 129) vs 1 stance-populated 2026 grid row. Historical stance rows exist but are filer-specific:
 2022 has **11** stance rows — every one from West Virginia Strong, Inc., the same
 online-form filer behind the single 2026 row — out of 467 grid rows; 2024/2025 have
 zero. The grid captures stance only when a filer e-files through the portal form; paper
@@ -245,7 +247,7 @@ unaffected.** See hard fact 10.
    who is on the November ballot. Ambiguous matches quarantine; manual links win.
 7. **Outside support/oppose is a document-evidence product.** Inventory = every IEC +
    ECC org × every IE/EC-typed document, hashed and cached, plus the fact that this
-   boundary is *known-incomplete* (non-committee filers) until the SOS answers. At ~111
+   boundary is *known-incomplete* (non-committee filers) until the SOS answers. At ~292
    docs for 2025–26 and fixed form geometry, v1 extraction is **agent-read PDFs through
    the manual-research evidence pattern** (per-document ledger: candidate / stance /
    amount / date / payee / election + reviewer status), with deterministic per-block
@@ -390,8 +392,8 @@ Hard gates:
 7. **Linkage gate**: registry sweep → `westVirginiaFinanceEligibleOffices.ts`
    vocabulary; `entityId`↔`RegistrantID` join proven on gold filers; judicial
    circuit/division parse (incl. `"Division Undeclared"`) exercised.
-8. **Outside inventory dry run**: full IEC+ECC sweep × doc enumeration (expect ~111 IE
-   docs 2025–26); pull 5 F-7bs spanning filing types + both stances + a
+8. **Outside inventory dry run**: full IEC+ECC sweep × doc enumeration (~292 IE docs
+   received 2025–26 across 25 committees); pull 5 F-7bs spanning filing types + both stances + a
    multi-expenditure form; confirm fixed geometry; ledger row shape + per-block
    validator list pinned; document the non-committee-filer boundary as
    known-incomplete pending SOS answers.
@@ -420,7 +422,7 @@ explicit operator action per house rule.
 
 ### Phase 3 — outside documents (support / oppose)
 
-Inventory module + evidence ledger + agent extraction runs (batched, ~111 docs; each
+Inventory module + evidence ledger + agent extraction runs (batched, ~292 docs; each
 doc = ledger row + validator pass + accept/review status), reconciliation against
 structured-stance grid rows (WV Strong), loader publication of support/oppose totals
 for `accepted`-only evidence carrying the **"registered IEC/ECC filings only"**

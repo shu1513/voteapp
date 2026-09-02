@@ -236,6 +236,13 @@ async function postJsonEnvelope(input: {
 
   // A stall or reset while the body streams rejects here, not in fetch above;
   // keep it inside the typed-error contract.
+  const declaredLength = Number(response.headers.get("content-length") ?? Number.NaN);
+  if (Number.isFinite(declaredLength) && declaredLength > MAX_JSON_RESPONSE_BYTES) {
+    throw new WestVirginiaCfrsClientError(
+      "bad_response",
+      `West Virginia CFRS ${input.endpoint} exceeded ${MAX_JSON_RESPONSE_BYTES} bytes`
+    );
+  }
   let bytes: Uint8Array;
   try {
     bytes = new Uint8Array(await response.arrayBuffer());
