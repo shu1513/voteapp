@@ -33,8 +33,11 @@ content late.
 
 ## Tally check
 
-All 18 rolls considered for this batch were compared against the official
-ncleg.gov roll-call transcripts, and all 18 match. The two rolls added late,
+All 16 imported rolls were compared against the official ncleg.gov roll-call
+transcripts, and all 16 match, as do two more that were checked and then
+dropped on the stance filter. The two 2026 House companion rolls in
+`held-rolls/` did not match: the feed says 71-46 and the transcripts say 73-46.
+That is why they are held. The two rolls added late,
 House Bill 1089 and Senate Bill 1080 in the Senate, were then checked a second
 time directly against transcripts S-548 and S-535, because their member lists
 are short by one seat.

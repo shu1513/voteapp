@@ -26,9 +26,13 @@ written from. The important facts:
   debate, so patterns are anchored at both ends and exclusions run first.
 - Veto overrides are a real pool. The legislature and the governor are of
   different parties, so 26 kept rolls on 14 bills are override votes.
-- Feed health is in the cleanest tier: no repeated roll call ids, no duplicate
-  rolls, no summary-only rolls, no tally mismatches, no committee votes, and
-  nothing left surfaced.
+- The fetch's own checks pass: no repeated roll call ids, no duplicate rolls,
+  no summary-only rolls, no committee votes, and every roll's parts add up to
+  its total. That is not the same as the tallies being right. Every 2026 House
+  roll is short two seated members and reports a tally North Carolina's own
+  transcript contradicts, seven for seven where checked. 2025 rolls and 2026
+  Senate rolls match the transcripts. No 2026 House roll may be imported; see
+  finding 3 in `CODE-FINDINGS.md`.
 
 Fetch stored 1,452 rows: 972 floor votes and 480 rolls on excluded questions.
 Of the floor votes, 247 are divided and 165 are divided and enacted, across 58
