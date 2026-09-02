@@ -1,0 +1,192 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2148",
+      "roll": 1507290,
+      "measure_id": "SB 116",
+      "vote_date": "2025-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 116, which made it a crime in Alabama to have, sell, or use a part that turns a pistol into a machine gun, meaning a gun that fires many shots with one pull of the trigger. Breaking the ban is a felony that can bring prison time. The ban does not cover police officers doing their jobs, guns and parts registered under federal gun law, or trigger parts that speed up firing but still fire no more than two shots per pull. The Alabama House of Representatives passed it 77-23 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 116, which made it a crime in Alabama to have, sell, or use a part that turns a pistol into a machine gun, meaning a gun that fires many shots with one pull of the trigger. Breaking the ban is a felony that can bring prison time. The ban does not cover police officers doing their jobs, guns and parts registered under federal gun law, or trigger parts that speed up firing but still fire no more than two shots per pull. The Alabama House of Representatives passed it 77-23 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2148",
+      "roll": 1488934,
+      "measure_id": "SB 53",
+      "vote_date": "2025-02-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass the Senate's version of Senate Bill 53, which made it a felony, called human smuggling, to knowingly bring a person into Alabama while knowing that person is in the country illegally. Jails must also try to learn whether a person booked for certain serious crimes is in the country illegally, and must hold a person for up to 48 hours when federal immigration agents send paperwork asking for the hold. At first the smuggling charge excused only lawyers and school trips; the House later added health care workers, church and charity rides, and government transport, and the Senate agreed 30-0. The Alabama Senate passed its version 24-8 and the bill became law.",
+      "nay_description": "Voted against passing the Senate's version of Senate Bill 53, which made it a felony, called human smuggling, to knowingly bring a person into Alabama while knowing that person is in the country illegally. Jails must also try to learn whether a person booked for certain serious crimes is in the country illegally, and must hold a person for up to 48 hours when federal immigration agents send paperwork asking for the hold. At first the smuggling charge excused only lawyers and school trips; the House later added health care workers, church and charity rides, and government transport, and the Senate agreed 30-0. The Alabama Senate passed its version 24-8 over these votes and the bill became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1573051
+      ],
+      "note": "The later Senate roll 1573051 is the 30-0 concurrence in the House amendment, which only widened the human-smuggling exemptions; the divided vote is this passage roll."
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2148",
+      "roll": 1488709,
+      "measure_id": "SB 63",
+      "vote_date": "2025-02-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 63, which said police may not release a person in custody who is in the country illegally until they take that person's fingerprints and a DNA sample. Only the federal government's records can label someone as being in the country illegally under this law; state officers may not decide that on their own. The fingerprints go to the state police, the DNA goes to the state crime lab, and a criminal court fee rises from $12 to $15 to pay for the DNA database. The Alabama Senate passed it 24-7 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 63, which said police may not release a person in custody who is in the country illegally until they take that person's fingerprints and a DNA sample. Only the federal government's records can label someone as being in the country illegally under this law; state officers may not decide that on their own. The fingerprints go to the state police, the DNA goes to the state crime lab, and a criminal court fee rises from $12 to $15 to pay for the DNA database. The Alabama Senate passed it 24-7 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2148",
+      "roll": 1567089,
+      "measure_id": "HB 165",
+      "vote_date": "2025-05-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 165, which made Juneteenth, June 19, an official state holiday in Alabama. Juneteenth marks the day in 1865 when enslaved people in Texas finally learned they were free. The law kept Alabama's existing holidays on the books, including Confederate Memorial Day and Jefferson Davis' birthday. The Alabama Senate passed it 13-5, with 16 senators absent, and it became law.",
+      "nay_description": "Voted against passing House Bill 165, which made Juneteenth, June 19, an official state holiday in Alabama. Juneteenth marks the day in 1865 when enslaved people in Texas finally learned they were free. The law kept Alabama's existing holidays on the books, including Confederate Memorial Day and Jefferson Davis' birthday. The Alabama Senate passed it 13-5 over these votes, with 16 senators absent, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2148",
+      "roll": 1573029,
+      "measure_id": "HB 202",
+      "vote_date": "2025-05-14",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's version of House Bill 202, which gave police officers a much stronger legal shield when they are sued or charged over their work, and made police agencies report yearly data on use-of-force complaints. A court must throw out such a lawsuit unless the officer recklessly risked death or serious injury for no policing reason, or violated a right courts had already made clear. Evidence sharing pauses while that question is decided, and an officer charged with a crime over use of force can ask a judge to end the case before trial. The Alabama House of Representatives agreed 73-28 and the bill became law.",
+      "nay_description": "Voted against agreeing to the Senate's version of House Bill 202, which gave police officers a much stronger legal shield when they are sued or charged over their work, and made police agencies report yearly data on use-of-force complaints. A court must throw out such a lawsuit unless the officer recklessly risked death or serious injury for no policing reason, or violated a right courts had already made clear. Evidence sharing pauses while that question is decided, and an officer charged with a crime over use of force can ask a judge to end the case before trial. The Alabama House of Representatives agreed 73-28 over these votes and the bill became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2148",
+      "roll": 1566797,
+      "measure_id": "HB 8",
+      "vote_date": "2025-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's version of House Bill 8, which tightened Alabama's vaping rules to keep vapes away from people under 21. Vapes not authorized by the federal Food and Drug Administration may be sold only in licensed vape specialty stores, which must keep out anyone under 21 and check every ID at the door. The law also banned vape ads with candy or cartoon themes, raised license fees and fines, and made every public school adopt a vaping prevention policy. The Alabama House of Representatives agreed 52-43 and the bill became law.",
+      "nay_description": "Voted against agreeing to the Senate's version of House Bill 8, which tightened Alabama's vaping rules to keep vapes away from people under 21. Vapes not authorized by the federal Food and Drug Administration may be sold only in licensed vape specialty stores, which must keep out anyone under 21 and check every ID at the door. The law also banned vape ads with candy or cartoon themes, raised license fees and fines, and made every public school adopt a vaping prevention policy. The Alabama House of Representatives agreed 52-43 over these votes and the bill became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2148",
+      "roll": 1543491,
+      "measure_id": "HB 357",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 357, which gave heated tobacco products, devices that heat tobacco instead of burning it, their own state tax rate. The tax is 1.7 cents per unit, while regular cigarettes are taxed at about 3.4 cents each, so heated products are taxed at about half the cigarette rate. The Senate later reworded the definitions and moved the start date to November 1, 2025, and the House accepted those changes 89-8. The Alabama House of Representatives passed its version 58-37 and the bill became law.",
+      "nay_description": "Voted against passing House Bill 357, which gave heated tobacco products, devices that heat tobacco instead of burning it, their own state tax rate. The tax is 1.7 cents per unit, while regular cigarettes are taxed at about 3.4 cents each, so heated products are taxed at about half the cigarette rate. The Senate later reworded the definitions and moved the start date to November 1, 2025, and the House accepted those changes 89-8. The Alabama House of Representatives passed its version 58-37 over these votes and the bill became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1568024
+      ],
+      "note": "The later House roll 1568024 is the 89-8 concurrence in the Senate amendment, which only split the definitions and moved the start date from October to November 2025; the divided vote is this passage roll."
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2148",
+      "roll": 1567082,
+      "measure_id": "HB 357",
+      "vote_date": "2025-05-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 357, which gave heated tobacco products, devices that heat tobacco instead of burning it, their own state tax rate. The tax is 1.7 cents per unit starting November 1, 2025, while regular cigarettes are taxed at about 3.4 cents each, so heated products are taxed at about half the cigarette rate. Counties and cities that already tax tobacco also collect a smaller local tax on these products. The Alabama Senate passed it 24-6 and the bill became law.",
+      "nay_description": "Voted against passing House Bill 357, which gave heated tobacco products, devices that heat tobacco instead of burning it, their own state tax rate. The tax is 1.7 cents per unit starting November 1, 2025, while regular cigarettes are taxed at about 3.4 cents each, so heated products are taxed at about half the cigarette rate. Counties and cities that already tax tobacco also collect a smaller local tax on these products. The Alabama Senate passed it 24-6 over these votes and the bill became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2148",
+      "roll": 1566046,
+      "measure_id": "HB 445",
+      "vote_date": "2025-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 445, which put THC products made from hemp, such as delta-8 gummies and drinks, under strict state control. An edible or a drink may hold no more than 10 milligrams of THC per serving, every product needs lab testing and warning labels, and no one under 21 may buy them. The law bans smokable hemp and online sales, limits sales to licensed 21-and-up stores, pharmacies, and grocery-store drink sections, adds a 10 percent tax, and makes a third unlicensed sale a felony. The Alabama Senate passed it 19-13 and the bill became law.",
+      "nay_description": "Voted against passing House Bill 445, which put THC products made from hemp, such as delta-8 gummies and drinks, under strict state control. An edible or a drink may hold no more than 10 milligrams of THC per serving, every product needs lab testing and warning labels, and no one under 21 may buy them. The law bans smokable hemp and online sales, limits sales to licensed 21-and-up stores, pharmacies, and grocery-store drink sections, adds a 10 percent tax, and makes a third unlicensed sale a felony. The Alabama Senate passed it 19-13 over these votes and the bill became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2148",
+      "roll": 1566772,
+      "measure_id": "HB 445",
+      "vote_date": "2025-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to House Bill 445, which put THC products made from hemp, such as delta-8 gummies and drinks, under strict state control. An edible or a drink may hold no more than 10 milligrams of THC per serving, every product needs lab testing and warning labels, and no one under 21 may buy them. The law bans smokable hemp and online sales, limits sales to licensed 21-and-up stores, pharmacies, and grocery-store drink sections, adds a 10 percent tax, and makes a third unlicensed sale a felony. The Alabama House of Representatives agreed 60-27 and the bill became law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to House Bill 445, which put THC products made from hemp, such as delta-8 gummies and drinks, under strict state control. An edible or a drink may hold no more than 10 milligrams of THC per serving, every product needs lab testing and warning labels, and no one under 21 may buy them. The law bans smokable hemp and online sales, limits sales to licensed 21-and-up stores, pharmacies, and grocery-store drink sections, adds a 10 percent tax, and makes a third unlicensed sale a felony. The Alabama House of Representatives agreed 60-27 over these votes and the bill became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

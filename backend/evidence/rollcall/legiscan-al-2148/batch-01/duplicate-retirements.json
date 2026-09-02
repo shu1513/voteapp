@@ -1,0 +1,30 @@
+[
+ {
+  "recordId": "5a3502fe-419e-458f-a67a-eba5f6071686",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama LegiScan batch-01 run: this hand-written record describes the same vote as SB 116 House passage, roll 1507290 (77-23, 2025-03-06) for Chris Pringle, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2148/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "de026325-ec82-46ab-a7b8-77dcb1078206",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama LegiScan batch-01 run: this hand-written record describes the same vote as SB 116 House passage, roll 1507290 (77-23, 2025-03-06) for Marilyn Lands, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2148/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "6a8c3f7f-7229-4f56-b279-e865098d57ca",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama LegiScan batch-01 run: this hand-written record describes the same vote as SB 116 House passage, roll 1507290 (77-23, 2025-03-06) for Mark Shirey, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2148/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "8108ccc5-50b3-442f-abfd-1f05990ff7de",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama LegiScan batch-01 run: this hand-written record describes the same vote as SB 116 House passage, roll 1507290 (77-23, 2025-03-06) for Philip Ensler, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2148/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "c53619e2-3328-48e6-b5d9-92982a0b19ad",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama LegiScan batch-01 run: this hand-written record describes the same vote as HB 357 House passage, roll 1543491 (58-37, 2025-04-10) for Mark Shirey, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2148/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "51e4ba2e-4444-4517-86d7-c91e6e17e0b6",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama LegiScan batch-01 run: this hand-written record describes the same vote as HB 202 House concurrence, roll 1573029 (73-28, 2025-05-14) for Kerry Underwood, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2148/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "6ceb7982-1e30-4b4b-9c4a-9cb1e0c38141",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama LegiScan batch-01 run: this hand-written record describes the same vote as HB 202 House concurrence, roll 1573029 (73-28, 2025-05-14) for Laura Hall, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2148/batch-01/JUDGING.md."
+ }
+]
