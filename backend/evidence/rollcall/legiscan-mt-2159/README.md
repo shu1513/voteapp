@@ -89,12 +89,13 @@ repository at `/Users/shu/legiscan-data/mt_doc.py` and `mt_diff.py`.
 ## Layout
 
 - `crosswalk.json`, `legiscan-people-mt-2159.json`, `crosswalk-proposals-report.json`
-- `CODE-FINDINGS.md` — five defects in LegiScan's Montana data, recorded not fixed
+- `CODE-FINDINGS.md` — five defects in LegiScan's Montana data, recorded not
+  fixed, plus one judging hazard in Montana's own bill drafting
 - `survey/` — the survey report, the fetch report,
   `divided-enacted-worklist.tsv` (one row per divided-and-enacted roll with its
   disposition), and `filter-5-drops.md` (why each dropped measure was dropped
   after a full read)
-- `batch-01/`, `batch-02/`, `batch-03/` — each holds `PLAN.md`, `JUDGING.md`,
+- `batch-01/` through `batch-04/` — each holds `PLAN.md`, `JUDGING.md`,
   `judgments.json`, the roll evidence files, and the import ledgers
 
 ## Status
@@ -107,14 +108,16 @@ records.**
 | batch-01 | 9 | 18 | 764 | civil rights, immigration, income tax, reproductive rights, education, welfare, guns, elections, housing |
 | batch-02 | 7 | 14 | 598 | environment, health care, corporate accountability |
 | batch-03 | 2 | 4 | 172 | environment, both directions |
-| **total** | **18** | **36** | **1,534** | 12 areas, 87 candidates, 913 tags |
+| batch-04 | 8 | 16 | 682 | environment, civil rights, immigration, anti-corruption |
+| **total** | **26** | **52** | **2,216** | 13 areas, 87 candidates, 1,299 tags |
 
-592 divided-and-enacted rolls remain unbatched and 5 are dropped under filter 5;
+571 divided-and-enacted rolls remain unbatched, 5 are held on HB 231 (below)
+and 5 are dropped under filter 5;
 `survey/divided-enacted-worklist.tsv` carries a disposition for every one, and
 `survey/filter-5-drops.md` records why each drop was dropped after a full read.
 
-Held deliberately for their own batches: **HB 285** (the Montana Environmental
-Policy Act rewrite) and **HB 685** (nondegradation), both of which need the
-same page-by-page render treatment SB 221 needed, and **HB 231**, the property
-tax rewrite. **HB 807** and **SB 218** are vaccine-adjacent and wait on a
-direction call.
+Still held: **HB 231**, the property tax rewrite, was pulled out of batch-04
+when its coordination instructions turned out to have fired. Sections 27, 29 and
+31 void most of HB 231 because Senate Bill 542 also passed; the policy became
+law as SB 542 instead. The two will be judged together in a later batch. **HB
+807** and **SB 218** are vaccine-adjacent and wait on a direction call.

@@ -59,8 +59,8 @@ HB 206	B	senate	2025-03-31	1531411	32	18	unbatched	Revise electrical contractors
 HB 207	B	house	2025-02-10	1485674	59	41	unbatched	Revise candidate filing and write-in candidate laws
 HB 207	B	house	2025-04-17	1551996	63	36	unbatched	Revise candidate filing and write-in candidate laws
 HB 211	B	senate	2025-03-18	1519648	37	12	unbatched	Revise alcohol laws
-HB 214	B	house	2025-02-12	1487964	58	42	unbatched	Provide for prosecution of state crimes for persons subject to federal immigration detention
-HB 214	B	senate	2025-03-24	1525087	32	18	unbatched	Provide for prosecution of state crimes for persons subject to federal immigration detention
+HB 214	B	house	2025-02-12	1487964	58	42	batch-04	Provide for prosecution of state crimes for persons subject to federal immigration detention
+HB 214	B	senate	2025-03-24	1525087	32	18	batch-04	Provide for prosecution of state crimes for persons subject to federal immigration detention
 HB 215	B	house	2025-02-06	1483359	58	41	unbatched	Revise laws on state appointments and vacancies of executive boards and commissions
 HB 215	B	senate	2025-03-24	1525154	33	17	unbatched	Revise laws on state appointments and vacancies of executive boards and commissions
 HB 218	B	house	2025-01-29	1481979	76	24	dropped:filter-5	Revising the practice of optometry to include certain laser procedures and in-office surgical procedures
@@ -68,11 +68,11 @@ HB 218	B	senate	2025-04-01	1533358	38	12	dropped:filter-5	Revising the practice 
 HB 219	B	house	2025-02-05	1481970	57	43	unbatched	Generally revise hunting laws related to unlawful contest or prize
 HB 219	B	senate	2025-03-27	1529320	31	19	unbatched	Generally revise hunting laws related to unlawful contest or prize
 HB 227	B	senate	2025-04-01	1533546	35	15	unbatched	Establish a contingent litigation fund for occupational licensing boards and programs
-HB 231	B	house	2025-02-27	1501661	68	30	unbatched	Revise property tax rates for certain property
-HB 231	B	house	2025-04-30	1561886	60	39	unbatched	Revise property tax rates for certain property
-HB 231	B	senate	2025-04-24	1557138	25	25	unbatched	Revise property tax rates for certain property
-HB 231	B	senate	2025-04-25	1558093	25	24	unbatched	Revise property tax rates for certain property
-HB 231	B	senate	2025-04-30	1562488	28	22	unbatched	Revise property tax rates for certain property
+HB 231	B	house	2025-02-27	1501661	68	30	held:coordination-SB542	Revise property tax rates for certain property
+HB 231	B	house	2025-04-30	1561886	60	39	held:coordination-SB542	Revise property tax rates for certain property
+HB 231	B	senate	2025-04-24	1557138	25	25	held:coordination-SB542	Revise property tax rates for certain property
+HB 231	B	senate	2025-04-25	1558093	25	24	held:coordination-SB542	Revise property tax rates for certain property
+HB 231	B	senate	2025-04-30	1562488	28	22	held:coordination-SB542	Revise property tax rates for certain property
 HB 233	B	house	2025-02-11	1486213	63	36	unbatched	Provide for transfer of title of open spaces in final plat to HOA
 HB 239	B	senate	2025-04-22	1553971	38	12	unbatched	Revise laws related to construction contractors
 HB 24	B	house	2025-01-21	1480872	79	20	unbatched	Clarify laws related to kindergarten
@@ -94,8 +94,8 @@ HB 284	B	house	2025-02-21	1496525	59	39	unbatched	Establish an interim committee
 HB 284	B	house	2025-04-17	1551835	58	41	unbatched	Establish an interim committee to investigate civil rights violations and censorship within the MUS
 HB 284	B	senate	2025-04-14	1547358	29	19	unbatched	Establish an interim committee to investigate civil rights violations and censorship within the MUS
 HB 285	B	house	2025-02-13	1489394	57	42	unbatched	Generally revise Montana environmental policy act
-HB 285	B	house	2025-04-15	1548641	63	34	unbatched	Generally revise Montana environmental policy act
-HB 285	B	senate	2025-04-04	1537318	31	18	unbatched	Generally revise Montana environmental policy act
+HB 285	B	house	2025-04-15	1548641	63	34	batch-04	Generally revise Montana environmental policy act
+HB 285	B	senate	2025-04-04	1537318	31	18	batch-04	Generally revise Montana environmental policy act
 HB 291	B	house	2025-02-18	1491902	61	38	batch-02	Revise laws related to air quality standards
 HB 291	B	senate	2025-04-04	1537295	30	19	batch-02	Revise laws related to air quality standards
 HB 3	B	house	2025-01-28	1481149	70	29	unbatched	Supplemental Appropriations Bill
@@ -144,8 +144,8 @@ HB 396	B	senate	2025-04-24	1557490	32	18	unbatched	Generally revise bail laws
 HB 399	B	senate	2025-04-03	1535825	38	12	unbatched	Revise prior authorization laws
 HB 4	B	house	2025-04-29	1560013	73	26	unbatched	Appropriations by budget amendment
 HB 4	B	senate	2025-04-24	1557362	30	20	unbatched	Appropriations by budget amendment
-HB 400	B	house	2025-02-21	1496472	56	42	unbatched	"Enact the ""Free to Speak Act"""
-HB 400	B	senate	2025-04-11	1546074	28	20	unbatched	"Enact the ""Free to Speak Act"""
+HB 400	B	house	2025-02-21	1496472	56	42	batch-04	"Enact the ""Free to Speak Act"""
+HB 400	B	senate	2025-04-11	1546074	28	20	batch-04	"Enact the ""Free to Speak Act"""
 HB 401	B	house	2025-03-06	1507314	64	35	unbatched	Prohibit the sale of lab-grown meat in the state of Montana
 HB 401	B	senate	2025-04-14	1547388	34	14	unbatched	Prohibit the sale of lab-grown meat in the state of Montana
 HB 406	B	house	2025-02-24	1504422	72	27	unbatched	Revise election laws related to school election deadlines
@@ -177,8 +177,8 @@ HB 46	B	house	2025-01-21	1480950	77	22	unbatched	Revise change of attorney laws 
 HB 466	B	senate	2025-04-14	1546924	38	10	unbatched	Provide categorical exclusions from MEPA
 HB 467	B	house	2025-02-25	1499519	64	36	unbatched	Revise DUI testing to include oral fluids
 HB 467	B	senate	2025-04-14	1547317	38	10	unbatched	Revise DUI testing to include oral fluids
-HB 471	B	house	2025-03-06	1507017	56	42	unbatched	Revise education laws related to human sexuality and identity instruction
-HB 471	B	senate	2025-04-10	1543602	28	20	unbatched	Revise education laws related to human sexuality and identity instruction
+HB 471	B	house	2025-03-06	1507017	56	42	batch-04	Revise education laws related to human sexuality and identity instruction
+HB 471	B	senate	2025-04-10	1543602	28	20	batch-04	Revise education laws related to human sexuality and identity instruction
 HB 476	B	house	2025-03-18	1520054	74	24	unbatched	Establish grant program for newborn safety devices
 HB 476	B	senate	2025-04-14	1547222	32	16	unbatched	Establish grant program for newborn safety devices
 HB 480	B	house	2025-02-28	1502464	58	40	unbatched	Revise when a party in a proceeding is entitled to jury trial
@@ -272,12 +272,12 @@ HB 67	B	senate	2025-04-01	1532708	32	18	unbatched	Generally revise laws related 
 HB 679	B	house	2025-03-05	1505713	71	27	unbatched	Generally revised use of public equipment
 HB 68	B	senate	2025-03-20	1522949	38	12	unbatched	Authorize county commissioners to initiate mandamus proceedings
 HB 682	B	house	2025-03-07	1508614	57	42	unbatched	Generally revise laws regarding gender transition treatment
-HB 682	B	house	2025-04-30	1562328	57	43	unbatched	Generally revise laws regarding gender transition treatment
+HB 682	B	house	2025-04-30	1562328	57	43	batch-04	Generally revise laws regarding gender transition treatment
 HB 682	B	senate	2025-04-11	1545984	30	18	unbatched	Generally revise laws regarding gender transition treatment
-HB 682	B	senate	2025-04-30	1562329	32	18	unbatched	Generally revise laws regarding gender transition treatment
+HB 682	B	senate	2025-04-30	1562329	32	18	batch-04	Generally revise laws regarding gender transition treatment
 HB 684	B	house	2025-03-07	1508646	64	35	unbatched	Eliminate deadline for water quality data review
-HB 685	B	house	2025-03-07	1508453	56	43	unbatched	Feasibility allowance for nondegradation policy
-HB 685	B	senate	2025-04-18	1552308	33	17	unbatched	Feasibility allowance for nondegradation policy
+HB 685	B	house	2025-03-07	1508453	56	43	batch-04	Feasibility allowance for nondegradation policy
+HB 685	B	senate	2025-04-18	1552308	33	17	batch-04	Feasibility allowance for nondegradation policy
 HB 687	B	house	2025-03-04	1504595	57	42	batch-01	Revise age of expanded Medicaid participants required to engage in community engagement activities
 HB 687	B	senate	2025-04-12	1546748	32	18	batch-01	Revise age of expanded Medicaid participants required to engage in community engagement activities
 HB 690	B	house	2025-03-07	1508728	57	42	unbatched	Generally revise laws related to child protection
@@ -315,8 +315,8 @@ HB 756	B	house	2025-03-07	1508564	67	32	unbatched	Revise criteria for historic g
 HB 757	B	house	2025-03-07	1508576	62	37	unbatched	Revise criteria for cultural and arts grant program
 HB 757	B	senate	2025-04-22	1553823	40	10	unbatched	Revise criteria for cultural and arts grant program
 HB 759	B	house	2025-03-07	1508536	56	43	unbatched	Revise campaign finance laws
-HB 759	B	house	2025-04-18	1552229	59	39	unbatched	Revise campaign finance laws
-HB 759	B	senate	2025-04-12	1546667	40	10	unbatched	Revise campaign finance laws
+HB 759	B	house	2025-04-18	1552229	59	39	batch-04	Revise campaign finance laws
+HB 759	B	senate	2025-04-12	1546667	40	10	batch-04	Revise campaign finance laws
 HB 76	B	house	2025-01-17	1481328	69	29	unbatched	Generally revise laws related to the board of behavioral health
 HB 76	B	house	2025-04-28	1558903	69	31	unbatched	Generally revise laws related to the board of behavioral health
 HB 76	B	senate	2025-04-12	1546687	31	19	unbatched	Generally revise laws related to the board of behavioral health
@@ -609,8 +609,8 @@ SB 74	B	house	2025-04-17	1551760	70	28	unbatched	Generally revise marijuana laws
 SB 74	B	senate	2025-03-27	1528983	38	12	unbatched	Generally revise marijuana laws
 SB 77	B	senate	2025-02-10	1485219	38	11	unbatched	Require conservation districts to comply with state procurement laws
 SB 87	B	house	2025-03-20	1522965	76	22	unbatched	Modify holidays for certain employees and create an annual floating holiday
-SB 91	B	house	2025-04-18	1552110	58	40	unbatched	Require citizenship marker on driver's license and identification cards
-SB 91	B	senate	2025-03-06	1508004	33	16	unbatched	Require citizenship marker on driver's license and identification cards
+SB 91	B	house	2025-04-18	1552110	58	40	batch-04	Require citizenship marker on driver's license and identification cards
+SB 91	B	senate	2025-03-06	1508004	33	16	batch-04	Require citizenship marker on driver's license and identification cards
 SB 95	B	senate	2025-03-21	1524131	39	11	unbatched	Provide funding for suicide prevention
 SB 97	B	house	2025-04-11	1546393	57	42	unbatched	Revise venue laws for cases challenging constitutionality of recent laws
 SB 97	B	senate	2025-01-31	1481606	32	18	unbatched	Revise venue laws for cases challenging constitutionality of recent laws
