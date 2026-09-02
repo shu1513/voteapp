@@ -38,7 +38,7 @@ No `approved_conflict` — the store refuses to overwrite an approved row, and n
 **One new unclassified roll**, recorded not fixed: roll 1726359 (AB 2524, Senate, 2026-08-26) has
 the desc `AB2524 Gipson By Cabaldon` — a bill number and two names, with no question phrase at all.
 It is 39-0, so it can never enter a batch. A single malformed desc is not a vocabulary to write a
-pattern from; see `../CODE-FINDINGS.md`.
+pattern from; see `../CODE-FINDINGS.md` §3.
 
 ## The Assembly-only pool
 

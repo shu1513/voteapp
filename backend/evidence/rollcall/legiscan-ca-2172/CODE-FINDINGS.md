@@ -1,6 +1,7 @@
 # California code findings (LegiScan session 2172)
 
-Two things the California dataset exposed. §2 is FIXED in the config; §1 is RECORDED, not fixed.
+Three things the California dataset exposed. §2 is FIXED in the config; §1 and §3 are RECORDED,
+not fixed.
 
 ## 1. RECORDED, NOT FIXED — 80 roll pairs are identical except for `date`
 
@@ -54,7 +55,7 @@ granted` / `Reconsideration of favorable vote granted` rolls. Those are rejected
 today and so are never stored; matched as excluded questions instead, they WOULD be stored as
 non-floor audit rows (measured: the queue grew by 80 rows before the anchor was added).
 
-## 4. A desc with no question phrase at all (2026-08-31, 08-30 cut)
+## 3. RECORDED, NOT FIXED — a desc with no question phrase at all (2026-08-31, 08-30 cut)
 
 Roll **1726359** (AB 2524, Senate, 2026-08-26) carries the desc `AB2524 Gipson By Cabaldon` — a
 bill number and two member names, and no question. The classifier cannot place it as floor or
