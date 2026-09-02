@@ -87,11 +87,26 @@ reviewed 11,857, **no_crosswalk 0, zero-match rolls 0, file errors 0**. Fan-out
 is a House median of 83 matched members per roll (26 to 88) and a Senate median
 of 18 (13 to 18).
 
+## Batches
+
+This session is complete. Two batches were taken from it, for **2,728 records
+across 106 candidates** in total.
+
+- `batch-01/` — 10 measures, 19 rolls, 997 records.
+- `batch-02/` — 23 measures, 34 rolls, 1,731 records. It worked the 115 rolls
+  batch-01 left open, and closed the session.
+
+Every one of the 155 pool rolls carries a final disposition in
+`survey/divided-enacted-worklist.tsv`: 19 batch-01, 21 not selected in batch-01,
+34 batch-02, 22 not selected in batch-02, and 59 dropped under filter 3 or
+filter 5. No roll is left open.
+
 ## Layout
 
 - `survey/` — the fetch survey report, the folded description histogram, and
   `divided-enacted-worklist.tsv`, which lists all 155 pool rolls with a
   disposition for each.
-- `batch-01/` — the first batch: 10 measures, 19 rolls, 997 records.
+- `batch-01/` and `batch-02/` — the two batches, each with its PLAN.md,
+  JUDGING.md, judgments file, roll evidence and import reports.
 - `legiscan-people-ky-2247.json` — this session's people snapshot.
 - `CODE-FINDINGS.md` — defects recorded but deliberately not fixed.
