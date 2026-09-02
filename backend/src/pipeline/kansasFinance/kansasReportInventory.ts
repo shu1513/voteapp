@@ -29,13 +29,15 @@ export class KansasReportInventoryError extends Error {
   }
 }
 
-/** Viewer dates ("1/1/2026" on covers, "07/27/2026" on grids) -> YYYY-MM-DD; throws otherwise. */
+/** Viewer dates ("1/1/2026" on covers, "07/27/2026" on grids) or ISO "2026-01-01" -> YYYY-MM-DD; throws otherwise. */
 export function kansasDateToIso(value: string): string {
-  const match = /^\s*(\d{1,2})\/(\d{1,2})\/(\d{4})\s*$/.exec(value);
-  if (!match) throw new KansasReportInventoryError(`unparseable Kansas date: "${value}"`);
-  const month = Number.parseInt(match[1]!, 10);
-  const day = Number.parseInt(match[2]!, 10);
-  const year = Number.parseInt(match[3]!, 10);
+  const viewer = /^\s*(\d{1,2})\/(\d{1,2})\/(\d{4})\s*$/.exec(value);
+  const iso = viewer ? null : /^\s*(\d{4})-(\d{2})-(\d{2})\s*$/.exec(value);
+  if (!viewer && !iso) throw new KansasReportInventoryError(`unparseable Kansas date: "${value}"`);
+  const [monthText, dayText, yearText] = viewer ? [viewer[1]!, viewer[2]!, viewer[3]!] : [iso![2]!, iso![3]!, iso![1]!];
+  const month = Number.parseInt(monthText, 10);
+  const day = Number.parseInt(dayText, 10);
+  const year = Number.parseInt(yearText, 10);
   const date = new Date(Date.UTC(year, month - 1, day));
   if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) {
     throw new KansasReportInventoryError(`invalid Kansas date: "${value}"`);
@@ -78,15 +80,27 @@ export type KansasReportingPeriod = {
 /**
  * Required periods for an office's cycle ending in `electionYear`: annual
  * reports for the earlier cycle years, then the election year's three.
+ * The cycle opens `office.cycleYearsBefore` years earlier unless
+ * `cycleStartYear` says otherwise — a SPECIAL election runs on the short
+ * cycle KPDC files it under (the 2026 Senate special archive starts at the
+ * 2025 annual, not 2023), so the caller passes the special's start year.
  * Regular election dates are computed; a special election on other dates
  * needs its own calendar (the 2026 Senate specials share the regular dates).
  */
-export function kansasReportingPeriods(office: KansasCfrOffice, electionYear: number): KansasReportingPeriod[] {
+export function kansasReportingPeriods(
+  office: KansasCfrOffice,
+  electionYear: number,
+  options: { cycleStartYear?: number } = {}
+): KansasReportingPeriod[] {
   if (!Number.isSafeInteger(electionYear) || electionYear < 2000 || electionYear > 2100) {
     throw new KansasReportInventoryError(`Invalid Kansas election year: ${electionYear}`);
   }
+  const cycleStartYear = options.cycleStartYear ?? electionYear - office.cycleYearsBefore;
+  if (!Number.isSafeInteger(cycleStartYear) || cycleStartYear > electionYear || cycleStartYear < electionYear - 3) {
+    throw new KansasReportInventoryError(`Invalid Kansas cycle start year: ${cycleStartYear} for ${electionYear}`);
+  }
   const periods: KansasReportingPeriod[] = [];
-  for (let year = electionYear - office.cycleYearsBefore; year < electionYear; year += 1) {
+  for (let year = cycleStartYear; year < electionYear; year += 1) {
     periods.push({
       key: `${year}-annual`,
       kind: "annual",
@@ -151,6 +165,20 @@ export type KansasFilingHeader = {
   channel: "efile" | "paper";
 };
 
+/**
+ * An Appointment of Treasurer grid row. The grid's "Amendment No." column
+ * is blank on the ORIGINAL appointment and numbered on every later change
+ * (live Governor 2026: Kelly's in-window appointments are #6 and #7 — a
+ * continuing committee; Rogers 8/28/2024 blank then 9/18/2024 #1). Only an
+ * original proves when the committee began.
+ */
+export type KansasAppointmentOfTreasurer = {
+  /** Grid file date ("07/29/2026") or ISO. */
+  fileDate: string;
+  /** Grid lblAmendmentNo text; "" on an original appointment. */
+  amendmentNo: string;
+};
+
 export type KansasPeriodStatus =
   | "report_filed"
   | "amended"
@@ -211,11 +239,47 @@ function compareVersionsDesc(left: KansasFilingHeader, right: KansasFilingHeader
   return effectiveDate(right).localeCompare(effectiveDate(left)) || Number(right.amended) - Number(left.amended);
 }
 
+type VersionGroup = {
+  periodStart: string;
+  periodEnd: string;
+  /** Latest version first. */
+  versions: KansasFilingHeader[];
+  /** The version whose figures count; null when the chain cannot be ordered. */
+  canonical: KansasFilingHeader | null;
+};
+
+/**
+ * Every version filed for one cover period, resolved to a canonical one.
+ * A chain is trusted only when at most one version is an unflagged
+ * original, that original is the earliest, and the latest version is
+ * strictly later than the next (two amendments on one day — live: Ward,
+ * 2/9/2023 — cannot be ordered, so nothing is trusted).
+ */
+function groupVersions(filings: readonly KansasFilingHeader[]): Map<string, VersionGroup> {
+  const groups = new Map<string, VersionGroup>();
+  for (const filing of filings) {
+    const key = `${filing.periodStart}|${filing.periodEnd}`;
+    const group = groups.get(key) ?? { periodStart: filing.periodStart, periodEnd: filing.periodEnd, versions: [], canonical: null };
+    group.versions.push(filing);
+    groups.set(key, group);
+  }
+  for (const group of groups.values()) {
+    group.versions.sort(compareVersionsDesc);
+    const [latest, next] = group.versions;
+    const originals = group.versions.filter((filing) => !filing.amended);
+    const chainOk =
+      originals.length <= 1 && (originals.length === 0 || originals[0] === group.versions[group.versions.length - 1]);
+    const tie = next !== undefined && compareVersionsDesc(latest!, next) === 0;
+    group.canonical = chainOk && !tie ? latest! : null;
+  }
+  return groups;
+}
+
 export function buildKansasReportLedger(input: {
   periods: readonly KansasReportingPeriod[];
   filings: readonly KansasFilingHeader[];
-  /** Appointment of Treasurer grid file dates seen inside the cycle window. */
-  appointmentOfTreasurerDates: readonly string[];
+  /** Appointment of Treasurer grid rows seen inside the cycle window. */
+  appointmentsOfTreasurer: readonly KansasAppointmentOfTreasurer[];
   /** Affidavit of Exemption grid file dates seen inside the cycle window. */
   affidavitDates: readonly string[];
   lastMinuteWindows: readonly { start: string; end: string }[];
@@ -224,30 +288,38 @@ export function buildKansasReportLedger(input: {
   if (Number.isNaN(input.now.getTime())) throw new KansasReportInventoryError("invalid now");
   const today = isoDate(input.now);
   const filings = input.filings.map(normalizeHeader);
-  const appointmentDates = input.appointmentOfTreasurerDates.map(kansasDateToIso).sort();
+  const groups = groupVersions(filings);
+  const originalAppointmentDates = input.appointmentsOfTreasurer
+    .filter((appointment) => appointment.amendmentNo.trim() === "")
+    .map((appointment) => kansasDateToIso(appointment.fileDate))
+    .sort();
   const affidavitDates = input.affidavitDates.map(kansasDateToIso).sort();
 
-  // Pre-candidacy periods are not required: a committee whose first
+  // Pre-candidacy periods are not required: a committee whose ORIGINAL
   // Appointment of Treasurer falls inside the cycle window owes nothing for
-  // periods that ended before it. A committee that filed a report for a
-  // period that ENDED before that appointment predates it (a treasurer
-  // change), so it is continuing and every period is required.
-  const earliestAppointment = appointmentDates[0] ?? null;
+  // periods that ended before it. Amended appointments (treasurer changes)
+  // prove nothing about when the committee began, and a committee that
+  // filed a report for a period that ended before its earliest original
+  // appointment predates it anyway — either way it is continuing and every
+  // period is required.
+  const earliestOriginal = originalAppointmentDates[0] ?? null;
   const committeePredatesAppointment =
-    earliestAppointment !== null && filings.some((filing) => filing.periodEnd < earliestAppointment);
-  const notRequiredBefore = committeePredatesAppointment ? null : earliestAppointment;
+    earliestOriginal !== null && filings.some((filing) => filing.periodEnd < earliestOriginal);
+  const notRequiredBefore = committeePredatesAppointment ? null : earliestOriginal;
   // A termination report closes the committee, so later periods owe nothing
-  // — until a new Appointment of Treasurer or a later filing reopens it
-  // (live: Colyer terminated with an amended 2023 annual, then reappointed
-  // a treasurer in 2025 and filed again). Only whole periods between the
-  // termination and the reopening are `terminated`.
-  const closures = filings
-    .filter((filing) => filing.termination)
-    .map((filing) => {
-      const closedAt = filing.periodEnd;
+  // — until a new original Appointment of Treasurer or a later filing
+  // reopens it (live: Colyer terminated with an amended 2023 annual, then
+  // reappointed a treasurer in 2025 and filed again). Only whole periods
+  // between the termination and the reopening are `terminated`, and only a
+  // CANONICAL version's termination counts — a superseded original's
+  // checkbox, or one of two same-day amendments, proves nothing.
+  const closures = [...groups.values()]
+    .filter((group) => group.canonical?.termination === true)
+    .map((group) => {
+      const closedAt = group.periodEnd;
       const reopenedAt =
         [
-          ...appointmentDates.filter((date) => date > closedAt),
+          ...originalAppointmentDates.filter((date) => date > closedAt),
           ...filings.filter((other) => other.periodStart > closedAt).map((other) => other.periodStart),
         ].sort()[0] ?? null;
       return { closedAt, reopenedAt };
@@ -260,29 +332,14 @@ export function buildKansasReportLedger(input: {
   const entries: KansasLedgerEntry[] = [];
   const consumed = new Set<KansasFilingHeader>();
   for (const period of input.periods) {
-    const matching = filings
-      .filter((filing) => filing.periodStart === period.start && filing.periodEnd === period.end)
-      .sort(compareVersionsDesc);
+    const group = groups.get(`${period.start}|${period.end}`) ?? null;
+    const matching = group?.versions ?? [];
     for (const filing of matching) consumed.add(filing);
 
     let status: KansasPeriodStatus;
-    let canonical: KansasFilingHeader | null = null;
-    if (matching.length === 1) {
-      canonical = matching[0]!;
-      status = canonical.amended ? "amended" : "report_filed";
-    } else if (matching.length > 1) {
-      // Several versions of one period form an amendment chain only when
-      // at most one of them is an unflagged original and nothing flagged
-      // precedes it; two originals, or an original after an amendment,
-      // cannot be ordered and nothing is trusted.
-      const originals = matching.filter((filing) => !filing.amended);
-      const chainOk = originals.length <= 1 && (originals.length === 0 || originals[0] === matching[matching.length - 1]);
-      if (chainOk) {
-        canonical = matching[0]!;
-        status = "amended";
-      } else {
-        status = "ambiguous";
-      }
+    const canonical = group?.canonical ?? null;
+    if (group !== null) {
+      status = canonical === null ? "ambiguous" : canonical.amended ? "amended" : "report_filed";
     } else if (notRequiredBefore !== null && period.end < notRequiredBefore) {
       status = "not_required";
     } else if (isTerminated(period)) {

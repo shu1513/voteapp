@@ -23,12 +23,15 @@ describe("kansasDateToIso", () => {
     expect(kansasDateToIso("1/1/2026")).toBe("2026-01-01");
     expect(kansasDateToIso("07/27/2026")).toBe("2026-07-27");
     expect(kansasDateToIso(" 7/23/2026 ")).toBe("2026-07-23");
+    expect(kansasDateToIso("2026-07-23")).toBe("2026-07-23");
   });
 
   it("rejects two-digit years, blanks, and impossible dates", () => {
     expect(() => kansasDateToIso("07/23/26")).toThrow("unparseable Kansas date");
     expect(() => kansasDateToIso("")).toThrow("unparseable Kansas date");
     expect(() => kansasDateToIso("02/30/2026")).toThrow("invalid Kansas date");
+    expect(() => kansasDateToIso("2026-02-30")).toThrow("invalid Kansas date");
+    expect(() => kansasDateToIso("2026-7-23")).toThrow("unparseable Kansas date");
   });
 });
 
@@ -60,6 +63,20 @@ describe("kansasReportingPeriods", () => {
     ]);
   });
 
+  it("lets a special election run on the short cycle KPDC files it under", () => {
+    const senate = kansasCfrOfficeForRace({ officeScope: "state_upper", officeCanonicalName: "State Senator" })!;
+    expect(kansasReportingPeriods(senate, 2026).map((period) => period.key).slice(0, 3)).toEqual(["2023-annual", "2024-annual", "2025-annual"]);
+    // KPDC's Senate/2026SpecialElection archive starts at the 2025 annual.
+    expect(kansasReportingPeriods(senate, 2026, { cycleStartYear: 2025 }).map((period) => period.key)).toEqual([
+      "2025-annual",
+      "2026-pre_primary",
+      "2026-pre_general",
+      "2026-post_general",
+    ]);
+    expect(() => kansasReportingPeriods(senate, 2026, { cycleStartYear: 2027 })).toThrow("Invalid Kansas cycle start year");
+    expect(() => kansasReportingPeriods(senate, 2026, { cycleStartYear: 2022 })).toThrow("Invalid Kansas cycle start year");
+  });
+
   it("computes the last-minute windows (7/24-7/29 and 10/23-10/28 in 2026)", () => {
     expect(kansasLastMinuteWindows(2026)).toEqual([
       { start: "2026-07-24", end: "2026-07-29" },
@@ -76,7 +93,7 @@ describe("buildKansasReportLedger", () => {
   const periods = kansasReportingPeriods(HOUSE, 2026);
   const windows = kansasLastMinuteWindows(2026);
   const NOW = new Date("2026-09-02T12:00:00.000Z");
-  const base = { periods, lastMinuteWindows: windows, now: NOW, appointmentOfTreasurerDates: [], affidavitDates: [] };
+  const base = { periods, lastMinuteWindows: windows, now: NOW, appointmentsOfTreasurer: [], affidavitDates: [] };
 
   it("marks filed, not-yet-due, and last-minute filings for a continuing committee (live Helwig shape)", () => {
     const ledger = buildKansasReportLedger({
@@ -111,17 +128,30 @@ describe("buildKansasReportLedger", () => {
   it("treats periods that ended before the first in-window Appointment of Treasurer as not_required", () => {
     const ledger = buildKansasReportLedger({
       ...base,
-      appointmentOfTreasurerDates: ["03/02/2026"],
+      appointmentsOfTreasurer: [{ fileDate: "03/02/2026", amendmentNo: "" }],
       filings: [filing({ periodStart: "1/1/2026", periodEnd: "7/23/2026", fileDate: "07/27/2026" })],
     });
     expect(ledger.entries[0]!.status).toBe("not_required");
     expect(ledger.complete).toBe(true);
   });
 
+  it("ignores amended appointments: a treasurer change proves nothing about when the committee began", () => {
+    // Live Kelly shape: only appointment amendments #6 and #7 fall in the
+    // window, and no report was filed — the committee is continuing, so the
+    // 2025 annual is owed, not excused.
+    const ledger = buildKansasReportLedger({
+      ...base,
+      appointmentsOfTreasurer: [{ fileDate: "09/05/2024", amendmentNo: "6" }, { fileDate: "01/08/2025", amendmentNo: "7" }],
+      filings: [filing({ periodStart: "1/1/2026", periodEnd: "7/23/2026", fileDate: "07/27/2026" })],
+    });
+    expect(ledger.entries[0]!.status).toBe("missing_or_late");
+    expect(ledger.complete).toBe(false);
+  });
+
   it("does not excuse earlier periods when a report predates the appointment (treasurer change)", () => {
     const ledger = buildKansasReportLedger({
       ...base,
-      appointmentOfTreasurerDates: ["03/02/2026", "06/01/2026"],
+      appointmentsOfTreasurer: [{ fileDate: "03/02/2026", amendmentNo: "" }, { fileDate: "06/01/2026", amendmentNo: "1" }],
       filings: [filing({ periodStart: "1/1/2025", periodEnd: "12/31/2025", fileDate: "01/09/2026" })],
     });
     // The 2025 annual proves the committee predates 03/02/2026, so the
@@ -143,6 +173,32 @@ describe("buildKansasReportLedger", () => {
       ["2026-01-12", true],
       [null, false],
     ]);
+  });
+
+  it("reports two amendments on one day as ambiguous (live: Ward 2/9/2023)", () => {
+    const annual = { periodStart: "1/1/2025", periodEnd: "12/31/2025", fileDate: "01/12/2026" };
+    const first = filing({ ...annual, amendmentDate: "01/15/2026", amended: true, termination: true });
+    const second = filing({ ...annual, amendmentDate: "01/15/2026", amended: true });
+    for (const order of [[filing(annual), first, second], [second, first, filing(annual)]]) {
+      const ledger = buildKansasReportLedger({ ...base, filings: order });
+      expect(ledger.entries[0]).toMatchObject({ status: "ambiguous", canonical: null });
+      // The unresolved termination checkbox must not close later periods.
+      expect(ledger.entries[1]!.status).toBe("missing_or_late");
+    }
+  });
+
+  it("ignores a termination checkbox on a superseded version", () => {
+    const period = { periodStart: "1/1/2026", periodEnd: "7/23/2026", fileDate: "07/27/2026" };
+    const ledger = buildKansasReportLedger({
+      ...base,
+      now: new Date("2027-02-01T00:00:00.000Z"),
+      filings: [
+        filing({ periodStart: "1/1/2025", periodEnd: "12/31/2025", fileDate: "01/09/2026" }),
+        filing({ ...period, termination: true }),
+        filing({ ...period, amendmentDate: "08/01/2026", amended: true }),
+      ],
+    });
+    expect(ledger.entries.map((entry) => entry.status)).toEqual(["report_filed", "amended", "missing_or_late", "missing_or_late"]);
   });
 
   it("reports two unflagged originals, or an original after an amendment, as ambiguous", () => {
@@ -193,7 +249,7 @@ describe("buildKansasReportLedger", () => {
     const reopened = buildKansasReportLedger({
       ...base,
       periods,
-      appointmentOfTreasurerDates: ["05/12/2025"],
+      appointmentsOfTreasurer: [{ fileDate: "05/12/2025", amendmentNo: "" }],
       filings: [
         filing({ periodStart: "1/1/2022", periodEnd: "12/31/2022", fileDate: "01/03/2024" }),
         filing({ periodStart: "1/1/2023", periodEnd: "12/31/2023", fileDate: "01/03/2024" }),

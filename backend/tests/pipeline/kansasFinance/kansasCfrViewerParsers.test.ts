@@ -449,7 +449,8 @@ describe("parseKansasCfrGridRows", () => {
       <span id="grdviewCfrResults_lblOriginalDate_1">07/27/2026</span>
       <span id="grdviewCfrResults_lblAmendmentDate_1">08/06/2026</span>
       <a id="grdviewCfrResults_LinkButton1_1" title="open filing with Adobe Acrobat in a new window" href="javascript:__doPostBack(&#39;grdviewCfrResults$ctl03$LinkButton1&#39;,&#39;&#39;)">HENDERSON FRANK</a>
-      <img id="grdviewCfrResults_paper_1" title="Paper Filing" src="../../images/pdficon_small.gif" />`;
+      <img id="grdviewCfrResults_paper_1" title="Paper Filing" src="../../images/pdficon_small.gif" />
+      <span id="grdviewCfrResults_lblAmendmentNo_1">2</span>`;
     const rows = parseKansasCfrGridRows(html, "grdviewCfrResults");
     expect(rows).toHaveLength(2);
     expect(rows[0]).toMatchObject({
@@ -457,6 +458,7 @@ describe("parseKansasCfrGridRows", () => {
       name: "Helwig Dale",
       officeSought: "STATE REPRESENTATIVE",
       district: "1",
+      amendmentNo: "",
       channel: "efile",
       postbackTarget: "grdviewCfrResults$ctl02$lnkbtnLastName",
     });
@@ -464,6 +466,7 @@ describe("parseKansasCfrGridRows", () => {
       fileDate: "07/27/2026",
       amendmentDate: "08/06/2026",
       name: "HENDERSON FRANK",
+      amendmentNo: "2",
       channel: "paper",
       postbackTarget: "grdviewCfrResults$ctl03$LinkButton1",
     });
