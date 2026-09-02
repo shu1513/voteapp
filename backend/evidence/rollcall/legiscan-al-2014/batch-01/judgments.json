@@ -1,0 +1,310 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2014",
+      "roll": 1316694,
+      "measure_id": "SB 10",
+      "vote_date": "2023-05-02",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 10, which bars Alabama from using vote counting machines that can go online. A machine may not be able to connect to the internet or a cell phone network, and may not contain modem technology. The rest of the long list of machine rules, such as secret voting and accurate counting, stays as it was. The House passed it 77-28 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 10, which bars Alabama from using vote counting machines that can go online. A machine may not be able to connect to the internet or a cell phone network, and may not contain modem technology. The rest of the long list of machine rules, such as secret voting and accurate counting, stays as it was. The House passed it 77-28 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2014",
+      "roll": 1321392,
+      "measure_id": "HB 379",
+      "vote_date": "2023-05-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 379, the Alabama Property Protection Act. It bars the government of China, Iran, North Korea or Russia, their officials and political parties, and bodies on a United States sanctions list, from buying farm or forest land in Alabama. The same bar covers land within 10 miles of a military base or of a critical site such as a power plant, water plant, port or airport, and land bought before the law took effect is not affected. The House passed it 73-23 and it became law.",
+      "nay_description": "Voted against passing House Bill 379, the Alabama Property Protection Act. It bars the government of China, Iran, North Korea or Russia, their officials and political parties, and bodies on a United States sanctions list, from buying farm or forest land in Alabama. The same bar covers land within 10 miles of a military base or of a critical site such as a power plant, water plant, port or airport, and land bought before the law took effect is not affected. The House passed it 73-23 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "national_defense",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2014",
+      "roll": 1327840,
+      "measure_id": "HB 379",
+      "vote_date": "2023-05-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 379, the Alabama Property Protection Act. It bars the government of China, Iran, North Korea or Russia, their officials and political parties, and bodies on a United States sanctions list, from buying farm or forest land in Alabama. The same bar covers land within 10 miles of a military base or of a critical site such as a power plant, water plant, port or airport, and land bought before the law took effect is not affected. The Senate passed it 26-7 and it became law.",
+      "nay_description": "Voted against passing House Bill 379, the Alabama Property Protection Act. It bars the government of China, Iran, North Korea or Russia, their officials and political parties, and bodies on a United States sanctions list, from buying farm or forest land in Alabama. The same bar covers land within 10 miles of a military base or of a critical site such as a power plant, water plant, port or airport, and land bought before the law took effect is not affected. The Senate passed it 26-7 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "national_defense",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2014",
+      "roll": 1336890,
+      "measure_id": "HB 289",
+      "vote_date": "2023-06-01",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 289, which set out who may see police body camera and dashboard camera video. A person who was recorded may ask in writing to view the parts that concern them, and so may a parent, guardian, spouse or lawyer, or the family of someone who died. The agency may refuse while an investigation or prosecution is active, may charge for editing, and the viewer may not keep a copy. The Senate passed it 21-8 and it became law.",
+      "nay_description": "Voted against passing House Bill 289, which set out who may see police body camera and dashboard camera video. A person who was recorded may ask in writing to view the parts that concern them, and so may a parent, guardian, spouse or lawyer, or the family of someone who died. The agency may refuse while an investigation or prosecution is active, may charge for editing, and the viewer may not keep a copy. The Senate passed it 21-8 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2014",
+      "roll": 1300210,
+      "measure_id": "SB 1",
+      "vote_date": "2023-04-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1, the Deputy Brad Johnson Act, which cut the credit prisoners earn toward early release. The best-behaved class dropped from 75 days off for every 30 days served to 30 days, the next class from 40 to 15, and the third from 20 to 5. Prisoners must also spend longer in each class before moving up, and a prisoner who commits a serious act such as assault, arson or escape loses all credit earned. The House passed it 79-24 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 1, the Deputy Brad Johnson Act, which cut the credit prisoners earn toward early release. The best-behaved class dropped from 75 days off for every 30 days served to 30 days, the next class from 40 to 15, and the third from 20 to 5. Prisoners must also spend longer in each class before moving up, and a prisoner who commits a serious act such as assault, arson or escape loses all credit earned. The House passed it 79-24 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2014",
+      "roll": 1336162,
+      "measure_id": "SB 206",
+      "vote_date": "2023-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 206, the Retail Theft Crime Prevention Act, which created new shoplifting crimes. Stealing more than $2,500 of goods, or $1,000 across 180 days, or any gun from a store, is a Class B felony. Theft of $500 to $2,500 is a Class C felony, under $500 is a misdemeanor, and a fourth conviction becomes a felony. The law also created the crime of organized retail theft for groups that steal and resell goods, the House passed it 76-27, and it became law.",
+      "nay_description": "Voted against passing Senate Bill 206, the Retail Theft Crime Prevention Act, which created new shoplifting crimes. Stealing more than $2,500 of goods, or $1,000 across 180 days, or any gun from a store, is a Class B felony. Theft of $500 to $2,500 is a Class C felony, under $500 is a misdemeanor, and a fourth conviction becomes a felony. The law also created the crime of organized retail theft for groups that steal and resell goods, the House passed it 76-27 over these votes, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2014",
+      "roll": 1339599,
+      "measure_id": "SB 301",
+      "vote_date": "2023-06-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 301, which made it an offense to hold a phone while driving badly. A driver seen swerving or drifting out of a lane may not be holding a phone, watching or recording video, or reading or writing a message. Fines run from $50 to $150 for a third time within two years, no one may be arrested for it alone, and police could only give warnings for the first year. The House passed it 57-37 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 301, which made it an offense to hold a phone while driving badly. A driver seen swerving or drifting out of a lane may not be holding a phone, watching or recording video, or reading or writing a message. Fines run from $50 to $150 for a third time within two years, no one may be arrested for it alone, and police could only give warnings for the first year. The House passed it 57-37 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2014",
+      "roll": 1327663,
+      "measure_id": "SB 261",
+      "vote_date": "2023-05-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 261, which barred state and local government from contracting with companies that run economic boycotts. A company with 10 or more staff seeking a contract worth $15,000 or more must certify in writing that it does not refuse to deal with firms over fossil fuels, timber, mining, farming or guns. The same bar covers refusing to deal over a firm's greenhouse gas reporting, its board makeup, or whether it helps people get an abortion or gender-change treatment. The Senate passed it 27-8 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 261, which barred state and local government from contracting with companies that run economic boycotts. A company with 10 or more staff seeking a contract worth $15,000 or more must certify in writing that it does not refuse to deal with firms over fossil fuels, timber, mining, farming or guns. The same bar covers refusing to deal over a firm's greenhouse gas reporting, its board makeup, or whether it helps people get an abortion or gender-change treatment. The Senate passed it 27-8 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2014",
+      "roll": 1336165,
+      "measure_id": "SB 261",
+      "vote_date": "2023-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 261, which barred state and local government from contracting with companies that run economic boycotts. A company with 10 or more staff seeking a contract worth $15,000 or more must certify in writing that it does not refuse to deal with firms over fossil fuels, timber, mining, farming or guns. The same bar covers refusing to deal over a firm's greenhouse gas reporting, its board makeup, or whether it helps people get an abortion or gender-change treatment. The House passed it 74-27 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 261, which barred state and local government from contracting with companies that run economic boycotts. A company with 10 or more staff seeking a contract worth $15,000 or more must certify in writing that it does not refuse to deal with firms over fossil fuels, timber, mining, farming or guns. The same bar covers refusing to deal over a firm's greenhouse gas reporting, its board makeup, or whether it helps people get an abortion or gender-change treatment. The House passed it 74-27 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2014",
+      "roll": 1333288,
+      "measure_id": "HB 125",
+      "vote_date": "2023-05-25",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 125, a mid-year spending bill adding $207.6 million from the state general fund and $10 million for veterans. The money went to dozens of items, among them $50 million to the budget reserve, $39.9 million for debt, $22 million for mental health, $30 million for economic development and $10 million for volunteer fire departments. The Senate passed this version 28-7, agreed to the final version 27-3 the next day, and it became law.",
+      "nay_description": "Voted against passing House Bill 125, a mid-year spending bill adding $207.6 million from the state general fund and $10 million for veterans. The money went to dozens of items, among them $50 million to the budget reserve, $39.9 million for debt, $22 million for mental health, $30 million for economic development and $10 million for volunteer fire departments. The Senate passed this version 28-7 over these votes, agreed to the final version 27-3 the next day, and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1333911
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2014",
+      "roll": 1333046,
+      "measure_id": "SB 278",
+      "vote_date": "2023-05-25",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 278, which set up a state loan fund for colleges in financial trouble. The state treasurer may lend to a public or private Alabama college that has run for more than 50 years, matters to its community, faces possible closure, and has assets to pledge as security. No loans may be made after January 2027, and money left in the fund then goes to the education budget. The House passed this version 66-27, later agreed to the final version 97-0, and it became law.",
+      "nay_description": "Voted against passing Senate Bill 278, which set up a state loan fund for colleges in financial trouble. The state treasurer may lend to a public or private Alabama college that has run for more than 50 years, matters to its community, faces possible closure, and has assets to pledge as security. No loans may be made after January 2027, and money left in the fund then goes to the education budget. The House passed this version 66-27 over these votes, later agreed to the final version 97-0, and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1339706
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2014",
+      "roll": 1323541,
+      "measure_id": "HB 363",
+      "vote_date": "2023-05-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 363, which changed how Alabama's public charter schools are overseen and paid. It altered how members of the state charter school commission are chosen, let the commission hire its own staff, and required members to train each year. It also set out how a new charter school is funded in its first year, including how much federal, state and local money a converted school gets per pupil. The House passed this version 76-25, later agreed to the final version 98-3, and it became law.",
+      "nay_description": "Voted against passing House Bill 363, which changed how Alabama's public charter schools are overseen and paid. It altered how members of the state charter school commission are chosen, let the commission hire its own staff, and required members to train each year. It also set out how a new charter school is funded in its first year, including how much federal, state and local money a converted school gets per pupil. The House passed this version 76-25 over these votes, later agreed to the final version 98-3, and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1337016
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2014",
+      "roll": 1336287,
+      "measure_id": "HB 363",
+      "vote_date": "2023-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 363, which changed how Alabama's public charter schools are overseen and paid. It altered how members of the state charter school commission are chosen, let the commission hire its own staff, and required members to train each year. It also set out how a new charter school is funded in its first year, including how much federal, state and local money a converted school gets per pupil. The Senate passed it 26-8 on its second vote of the day and it became law.",
+      "nay_description": "Voted against passing House Bill 363, which changed how Alabama's public charter schools are overseen and paid. It altered how members of the state charter school commission are chosen, let the commission hire its own staff, and required members to train each year. It also set out how a new charter school is funded in its first year, including how much federal, state and local money a converted school gets per pupil. The Senate passed it 26-8 on its second vote of the day, over these votes, and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1336286
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2014",
+      "roll": 1331411,
+      "measure_id": "SB 263",
+      "vote_date": "2023-05-24",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 263, which widened Alabama's tax-credit scholarship program for private school costs. The law renamed failing schools as priority schools, opened scholarships to more students at schools that are not failing, changed the income limit, and raised the yearly cap on tax credits from $30 million to $40 million. The cap rises by $10 million, up to $60 million, whenever more than 90 percent of it is used in three of four years. The Senate passed it 26-7 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 263, which widened Alabama's tax-credit scholarship program for private school costs. The law renamed failing schools as priority schools, opened scholarships to more students at schools that are not failing, changed the income limit, and raised the yearly cap on tax credits from $30 million to $40 million. The cap rises by $10 million, up to $60 million, whenever more than 90 percent of it is used in three of four years. The Senate passed it 26-7 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2014",
+      "roll": 1316753,
+      "measure_id": "SB 9",
+      "vote_date": "2023-05-02",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 9, which requires Alabama's vote counting machines to use paper ballots. A machine may be certified only if the voter marks a paper ballot, by hand or with an accessible marking device, and can inspect and check it before the vote is cast and counted. A machine must also be certified by an independent testing authority against federal standards. The House passed this version 78-27, later agreed to the final version 96-3, and it became law.",
+      "nay_description": "Voted against passing Senate Bill 9, which requires Alabama's vote counting machines to use paper ballots. A machine may be certified only if the voter marks a paper ballot, by hand or with an accessible marking device, and can inspect and check it before the vote is cast and counted. A machine must also be certified by an independent testing authority against federal standards. The House passed this version 78-27 over these votes, later agreed to the final version 96-3, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1332389
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2014",
+      "roll": 1307256,
+      "measure_id": "HB 131",
+      "vote_date": "2023-04-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 131, which stops the parole board from considering a prisoner who is facing a new criminal charge. The version the House voted on covered any new charge that could bring more than six months in prison, and barred parole consideration until that charge was settled by trial or some other way. The Senate later raised that to more than 12 months and added a duty to tell the prisoner about new charges. The House passed its version 79-23, agreed to the Senate's version 97-1, and it became law.",
+      "nay_description": "Voted against passing House Bill 131, which stops the parole board from considering a prisoner who is facing a new criminal charge. The version the House voted on covered any new charge that could bring more than six months in prison, and barred parole consideration until that charge was settled by trial or some other way. The Senate later raised that to more than 12 months and added a duty to tell the prisoner about new charges. The House passed its version 79-23 over these votes, agreed to the Senate's version 97-1, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1333831
+      ]
+    }
+  ]
+}

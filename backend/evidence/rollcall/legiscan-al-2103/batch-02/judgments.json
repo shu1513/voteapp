@@ -1,0 +1,238 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2103",
+      "roll": 1425563,
+      "measure_id": "HB 111",
+      "vote_date": "2024-04-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 111, which would have written fixed meanings for male and female into every Alabama law. It declared there are only two sexes, that sex is fixed at birth, and that gender identity is not the same thing. Public bodies could set up single-sex spaces, and any record of a birth had to list the sex seen at birth. The House passed it 77-24, but the Senate never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 111, which would have written fixed meanings for male and female into every Alabama law. It declared there are only two sexes, that sex is fixed at birth, and that gender identity is not the same thing. Public bodies could set up single-sex spaces, and any record of a birth had to list the sex seen at birth. The House passed it 77-24 over these votes, but the Senate never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2103",
+      "roll": 1432866,
+      "measure_id": "HB 130",
+      "vote_date": "2024-04-23",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 130, which would have widened Alabama's limits on classroom talk about sexual orientation and gender identity from fifth grade up to eighth grade. Such talk would have been barred in those grades unless it fit the age and stage of the pupils under state standards. No teacher or school worker could display a flag or badge about sexual orientation or gender identity at school. The House passed it 74-25, but the Senate never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 130, which would have widened Alabama's limits on classroom talk about sexual orientation and gender identity from fifth grade up to eighth grade. Such talk would have been barred in those grades unless it fit the age and stage of the pupils under state standards. No teacher or school worker could display a flag or badge about sexual orientation or gender identity at school. The House passed it 74-25 over these votes, but the Senate never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2103",
+      "roll": 1436817,
+      "measure_id": "HB 195",
+      "vote_date": "2024-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 195, which would have changed what Alabama schools teach about sex. Lessons would have had to teach that avoiding sex is the only sure way to prevent pregnancy and disease, and that avoiding sex outside marriage is the best health practice for unmarried pupils. Lessons could not promote abortion or show how to use contraceptives, and a parent could pull a child out. The House passed it 72-22, but the Senate never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 195, which would have changed what Alabama schools teach about sex. Lessons would have had to teach that avoiding sex is the only sure way to prevent pregnancy and disease, and that avoiding sex outside marriage is the best health practice for unmarried pupils. Lessons could not promote abortion or show how to use contraceptives, and a parent could pull a child out. The House passed it 72-22 over these votes, but the Senate never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2103",
+      "roll": 1437008,
+      "measure_id": "HB 356",
+      "vote_date": "2024-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 356, the Pregnancy Resource Act, which would have given a state income tax credit for gifts to pregnancy centers. To qualify, a center had to be a charity whose stated purpose includes helping women carry a pregnancy to term, encouraging parenting or adoption, and preventing abortion. Mobile clinics for women and homes for expectant mothers could also qualify. The House passed it 75-28, but the Senate never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 356, the Pregnancy Resource Act, which would have given a state income tax credit for gifts to pregnancy centers. To qualify, a center had to be a charity whose stated purpose includes helping women carry a pregnancy to term, encouraging parenting or adoption, and preventing abortion. Mobile clinics for women and homes for expectant mothers could also qualify. The House passed it 75-28 over these votes, but the Senate never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2103",
+      "roll": 1436740,
+      "measure_id": "HB 36",
+      "vote_date": "2024-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 36, which would have made it a Class C felony to have a pistol fitted with a part that turns it into a machine gun. Police on duty were excepted, and so were parts properly listed on the federal firearms register. Parts that only speed up a pistol, without letting one pull of the trigger fire more than one shot, were not covered. The House passed it 60-38, but the Senate never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 36, which would have made it a Class C felony to have a pistol fitted with a part that turns it into a machine gun. Police on duty were excepted, and so were parts properly listed on the federal firearms register. Parts that only speed up a pistol, without letting one pull of the trigger fire more than one shot, were not covered. The House passed it 60-38 over these votes, but the Senate never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2103",
+      "roll": 1425650,
+      "measure_id": "HB 363",
+      "vote_date": "2024-04-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 363, which would have made a death caused by drunk driving murder or manslaughter in some cases. Alabama already treated some reckless killings as murder, and the bill added driving under the influence to the list of conduct that can bring those charges. It was named for four people killed by drunk drivers. The House passed it 76-21, but the Senate never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 363, which would have made a death caused by drunk driving murder or manslaughter in some cases. Alabama already treated some reckless killings as murder, and the bill added driving under the influence to the list of conduct that can bring those charges. It was named for four people killed by drunk drivers. The House passed it 76-21 over these votes, but the Senate never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2103",
+      "roll": 1434894,
+      "measure_id": "HB 385",
+      "vote_date": "2024-04-25",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 385, which would have let prosecutors shut down a place that hands out material harmful to minors. Alabama already treated a place used to spread obscene material as a public nuisance, and the bill widened that to material judged harmful to minors. It also changed the legal meaning of sexual conduct and let county and city lawyers, not just the state, bring the case. The House passed it 72-28, but the Senate never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 385, which would have let prosecutors shut down a place that hands out material harmful to minors. Alabama already treated a place used to spread obscene material as a public nuisance, and the bill widened that to material judged harmful to minors. It also changed the legal meaning of sexual conduct and let county and city lawyers, not just the state, bring the case. The House passed it 72-28 over these votes, but the Senate never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2103",
+      "roll": 1432637,
+      "measure_id": "HB 63",
+      "vote_date": "2024-04-23",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 63, which would have let judges split longer prison sentences. A judge may order part of a sentence served and the rest suspended with probation, and the bill raised the ceiling for that from 20 years to 30. A sentence of 20 to 30 years would have carried at least 10 years locked up before probation began. The House passed it 60-34, but the Senate never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 63, which would have let judges split longer prison sentences. A judge may order part of a sentence served and the rest suspended with probation, and the bill raised the ceiling for that from 20 years to 30. A sentence of 20 to 30 years would have carried at least 10 years locked up before probation began. The House passed it 60-34 over these votes, but the Senate never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2103",
+      "roll": 1384609,
+      "measure_id": "SB 10",
+      "vote_date": "2024-02-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 10, which would have put county and city library boards under the direct control of the officials who appoint them. Board members would have served at the pleasure of the appointing body and could be removed at any time by a two-thirds vote. Each board would also have had to report every year to the Governor and legislative leaders on any items it reviewed or removed from its shelves. The Senate passed it 25-7, but the House never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing Senate Bill 10, which would have put county and city library boards under the direct control of the officials who appoint them. Board members would have served at the pleasure of the appointing body and could be removed at any time by a two-thirds vote. Each board would also have had to report every year to the Governor and legislative leaders on any items it reviewed or removed from its shelves. The Senate passed it 25-7 over these votes, but the House never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2103",
+      "roll": 1437151,
+      "measure_id": "HB 151",
+      "vote_date": "2024-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted for the final, conference committee version of House Bill 151, which would have asked Alabama voters to change the state constitution to allow some gambling. It would have permitted a state lottery, casino games at a set number of sites and sports betting, and created a state gaming commission with its own law enforcement arm to license and police them. Because it changes the constitution, it would have taken effect only if voters approved it. The House agreed 72-29, but the Senate rejected the same version and the bill died.",
+      "nay_description": "Voted against the final, conference committee version of House Bill 151, which would have asked Alabama voters to change the state constitution to allow some gambling. It would have permitted a state lottery, casino games at a set number of sites and sports betting, and created a state gaming commission with its own law enforcement arm to license and police them. Because it changes the constitution, it would have taken effect only if voters approved it. The House agreed 72-29 over these votes, but the Senate rejected the same version and the bill died.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2103",
+      "roll": 1437113,
+      "measure_id": "HB 151",
+      "vote_date": "2024-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted for the final, conference committee version of House Bill 151, which would have asked Alabama voters to change the state constitution to allow some gambling. It would have permitted a state lottery, casino games at a set number of sites and sports betting, and created a state gaming commission with its own law enforcement arm to license and police them. Because it changes the constitution, it would have taken effect only if voters approved it. The Senate vote was 20-15, short of the three fifths a constitutional amendment needs, so the bill died.",
+      "nay_description": "Voted against the final, conference committee version of House Bill 151, which would have asked Alabama voters to change the state constitution to allow some gambling. It would have permitted a state lottery, casino games at a set number of sites and sports betting, and created a state gaming commission with its own law enforcement arm to license and police them. Because it changes the constitution, it would have taken effect only if voters approved it. The Senate vote was 20-15, short of the three fifths a constitutional amendment needs, so the bill died.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2103",
+      "roll": 1437155,
+      "measure_id": "HB 152",
+      "vote_date": "2024-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted for the final, conference committee version of House Bill 152, the bill that would have set up the rules for gambling in Alabama if voters approved the change to the constitution. It would have created an Alabama Gaming Commission to license and police casino games, sports betting and charity gaming, with its own enforcement division and a role for the Attorney General. It could only ever take effect alongside the constitutional amendment, which failed. The House agreed 70-29 and the bill died with the amendment.",
+      "nay_description": "Voted against the final, conference committee version of House Bill 152, the bill that would have set up the rules for gambling in Alabama if voters approved the change to the constitution. It would have created an Alabama Gaming Commission to license and police casino games, sports betting and charity gaming, with its own enforcement division and a role for the Attorney General. It could only ever take effect alongside the constitutional amendment, which failed. The House agreed 70-29 over these votes and the bill died with the amendment.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2103",
+      "roll": 1405649,
+      "measure_id": "HB 152",
+      "vote_date": "2024-03-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 152, the bill that would have set up the rules for gambling in Alabama if voters approved the change to the constitution. It would have created an Alabama Gaming Commission to license and police casino games, sports betting and charity gaming, with its own enforcement division and a role for the Attorney General. It could only ever take effect alongside the constitutional amendment, which failed. The Senate passed this version 22-11 and the bill died with the amendment.",
+      "nay_description": "Voted against passing House Bill 152, the bill that would have set up the rules for gambling in Alabama if voters approved the change to the constitution. It would have created an Alabama Gaming Commission to license and police casino games, sports betting and charity gaming, with its own enforcement division and a role for the Attorney General. It could only ever take effect alongside the constitutional amendment, which failed. The Senate passed this version 22-11 over these votes and the bill died with the amendment.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
