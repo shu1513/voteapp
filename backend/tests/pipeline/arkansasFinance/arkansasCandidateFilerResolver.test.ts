@@ -86,7 +86,6 @@ describe("arkansasCandidateFilerResolver", () => {
       confidence: "exact",
       source: "cfis_registration",
       sourceUrl: houseInput.sourceUrl,
-      dormantFilingEntityIds: [],
     });
   });
 
@@ -213,7 +212,9 @@ describe("arkansasCandidateFilerResolver", () => {
     );
   });
 
-  it("links the one funded registration over dormant duplicates, otherwise reports ambiguity", () => {
+  it("reports two matching filers as ambiguous even when only one carries money", () => {
+    // Live 2026 shape: a paper-filer twin registration at $0/$0/$0. Money is
+    // not identity, so the operator links by hand.
     const dormant = registration({
       filerEntityId: 7298,
       registrationGuid: "69b74574-f3e2-43fe-9c18-1305d73813c5",
@@ -222,23 +223,13 @@ describe("arkansasCandidateFilerResolver", () => {
       totalSpent: 0,
       balanceOfFunds: 0,
     });
-    expect(resolveArkansasCandidateFiler({ ...houseInput, registrationRows: [dormant, registration()] })).toMatchObject({
-      status: "matched",
-      filingEntityId: 7817,
-      dormantFilingEntityIds: [7298],
-    });
-    const funded = registration({ filerEntityId: 7298, totalRaised: 500 });
-    const ambiguous = resolveArkansasCandidateFiler({ ...houseInput, registrationRows: [funded, registration()] });
+    const ambiguous = resolveArkansasCandidateFiler({ ...houseInput, registrationRows: [dormant, registration()] });
     expect(ambiguous).toMatchObject({ status: "ambiguous", reason: "multiple_matching_filers" });
     if (ambiguous.status !== "ambiguous") throw new Error("expected ambiguity");
-    expect(ambiguous.matches.map((match) => match.filingEntityId)).toEqual([7298, 7817]);
-    // Two dormant duplicates: nothing distinguishes them.
-    expect(
-      resolveArkansasCandidateFiler({
-        ...houseInput,
-        registrationRows: [dormant, { ...dormant, filerEntityId: 7299 }],
-      })
-    ).toMatchObject({ status: "ambiguous" });
+    expect(ambiguous.matches.map((match) => [match.filingEntityId, match.totalRaised])).toEqual([
+      [7298, 0],
+      [7817, 27800],
+    ]);
     expect(() =>
       resolveArkansasCandidateFiler({ ...houseInput, registrationRows: [registration(), registration()] })
     ).toThrow(/twice/);

@@ -10,10 +10,12 @@
 //
 // Fail-closed rules: SFI filers, PACs, and exploratory committees are never
 // candidates; registrations without a cycle year (every county and
-// municipal filer in the live registry) never match; two different filers
-// matching the same candidate are ambiguous, except that duplicate
-// registrations of the same person where all but one carry zero money link
-// the one with money (dropping the dormant duplicates cannot lose a cent).
+// municipal filer in the live registry) never match; two filers matching
+// the same candidate are ambiguous, full stop — the public registration
+// row carries no identity key, so nothing (not money, not paper-filer
+// status) proves two filerEntityIds are one person. Live 2026 duplicates
+// (a paper-filer twin at $0 for Wooten HD59 and Caldwell SD10) are linked
+// by hand through the writer.
 
 import { firstNameVariants } from "../finance/personFirstNameNicknames.js";
 import { personNamesMatchWithMiddleEvidence } from "../finance/personNameMiddleEvidence.js";
@@ -48,8 +50,6 @@ export type ArkansasCandidateFilerMatch = {
   confidence: "exact";
   source: "cfis_registration";
   sourceUrl: string | null;
-  /** Same-candidate duplicate registrations skipped because they carry no money. */
-  dormantFilingEntityIds: number[];
 };
 
 export type ArkansasCandidateFilerResolution =
@@ -213,10 +213,6 @@ function isCandidateRegistration(row: ArkansasFilerRegistrationRow): boolean {
   return row.filerTypeCode === "CAN";
 }
 
-function hasMoney(row: { totalRaised: number; totalSpent: number; balanceOfFunds: number }): boolean {
-  return row.totalRaised !== 0 || row.totalSpent !== 0 || row.balanceOfFunds !== 0;
-}
-
 function toMatch(input: {
   row: ArkansasFilerRegistrationRow;
   officialName: string;
@@ -238,7 +234,6 @@ function toMatch(input: {
     confidence: "exact",
     source: "cfis_registration",
     sourceUrl: input.sourceUrl,
-    dormantFilingEntityIds: [],
   };
 }
 
@@ -290,19 +285,6 @@ export function resolveArkansasCandidateFiler(
   }
   if (matches.length === 1) {
     return { status: "matched", ...matches[0]! };
-  }
-  // Duplicate registrations of one candidate (live 2026: three House/Senate
-  // incumbents each hold a paper-filer duplicate at $0/$0/$0). Linking the
-  // only registration with money drops nothing; anything else is ambiguous.
-  const funded = matches.filter(hasMoney);
-  if (funded.length === 1) {
-    return {
-      status: "matched",
-      ...funded[0]!,
-      dormantFilingEntityIds: matches
-        .filter((match) => match !== funded[0])
-        .map((match) => match.filingEntityId),
-    };
   }
   return { status: "ambiguous", reason: "multiple_matching_filers", candidateNameNormalized, matches };
 }

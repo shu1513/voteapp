@@ -91,29 +91,24 @@ describe("autoLinkMissingArkansasCandidateFinanceLinks", () => {
     expect(db.query.mock.calls.filter((call) => String(call[0]).includes("INSERT INTO"))).toHaveLength(1);
   });
 
-  it("reports ambiguity and dormant duplicates without guessing", async () => {
+  it("reports duplicate registrations as ambiguous and writes nothing", async () => {
     const db = linkDb();
-    const funded = registration({ filerEntityId: 7298, registrationGuid: "69b74574-f3e2-43fe-9c18-1305d73813c5", totalRaised: 5 });
-    const dormant = { ...funded, totalRaised: 0, totalSpent: 0, balanceOfFunds: 0 };
-    const ambiguous = await autoLinkMissingArkansasCandidateFinanceLinks({
-      ...baseInput,
-      db: db as never,
-      candidateElections: [candidateElection()],
-      loadRegistrations: async () => [registration(), funded],
+    const dormant = registration({
+      filerEntityId: 7298,
+      registrationGuid: "69b74574-f3e2-43fe-9c18-1305d73813c5",
+      totalRaised: 0,
+      totalSpent: 0,
+      balanceOfFunds: 0,
     });
-    expect(ambiguous[0]).toMatchObject({ status: "ambiguous", reason: "multiple_matching_filers" });
-    expect(ambiguous[0]!.candidates?.map((match) => match.filingEntityId)).toEqual([7298, 7817]);
-    expect(db.query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO"))).toBe(false);
-
-    const linked = await autoLinkMissingArkansasCandidateFinanceLinks({
+    const results = await autoLinkMissingArkansasCandidateFinanceLinks({
       ...baseInput,
       db: db as never,
       candidateElections: [candidateElection()],
       loadRegistrations: async () => [registration(), dormant],
     });
-    expect(linked).toEqual([
-      { candidateId: "candidate-1", electionId: "election-1", status: "linked", filingEntityId: 7817, filerName: "Robert Doe", dormantFilingEntityIds: [7298] },
-    ]);
+    expect(results[0]).toMatchObject({ status: "ambiguous", reason: "multiple_matching_filers" });
+    expect(results[0]!.candidates?.map((match) => match.filingEntityId)).toEqual([7298, 7817]);
+    expect(db.query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO"))).toBe(false);
   });
 
   it("captures a sweep failure per candidate instead of aborting the run", async () => {

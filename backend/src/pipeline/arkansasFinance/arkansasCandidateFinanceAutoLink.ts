@@ -47,7 +47,6 @@ export type ArkansasFinanceAutoLinkResult = {
   reason?: string;
   filingEntityId?: number;
   filerName?: string;
-  dormantFilingEntityIds?: number[];
   candidates?: ArkansasCandidateFilerMatch[];
   error?: string;
 };
@@ -201,9 +200,6 @@ export async function autoLinkArkansasCandidateFinanceForCandidateElection(input
     status: "linked",
     filingEntityId: resolution.filingEntityId,
     filerName: resolution.filerName,
-    ...(resolution.dormantFilingEntityIds.length > 0
-      ? { dormantFilingEntityIds: resolution.dormantFilingEntityIds }
-      : {}),
   };
 }
 
