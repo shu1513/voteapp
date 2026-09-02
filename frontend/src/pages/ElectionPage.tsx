@@ -16,6 +16,7 @@ import {
 import { JsonLdScript } from "../components/JsonLdScript";
 import { NotFoundNotice } from "../components/NotFoundNotice";
 import { RouteError } from "../components/RouteError";
+import { SourceFootnote } from "../components/SourceFootnote";
 import { SourceLine } from "../components/SourceLine";
 import { ReportContentButton } from "../components/ReportContentButton";
 import { ShareButton } from "../components/ShareButton";
@@ -816,11 +817,10 @@ export function ElectionPage() {
                 Result: <span className={measure.result === "passed" ? "text-green-700" : "text-red-700"}>{measure.result}</span>
               </p>
             ) : null}
-            {[...new Set(measure.source_urls)]
-              .filter((url) => url !== measure.official_measure_url)
-              .map((url) => (
-                <SourceLine key={url} url={url} />
-              ))}
+            <SourceFootnote
+              urls={measure.source_urls.filter((url) => url !== measure.official_measure_url)}
+              className="mt-1"
+            />
             <div className="mt-3">
               <ReportContentButton
                 entityType="ballot_measure"
@@ -1131,16 +1131,10 @@ export function ElectionPage() {
           </section>
         ) : null}
 
-        {electionOnlySources.length > 0 ? (
-          <section className="mt-6">
-            <h2 className="text-sm font-semibold text-ink">Election sources</h2>
-            {/* Research passes can record the same source twice; showing the
-                repeat reads as a rendering bug. */}
-            {electionOnlySources.map((url) => (
-              <SourceLine key={url} url={url} />
-            ))}
-          </section>
-        ) : null}
+        {/* One footnote line, no heading: the research trail is usually two
+            pages of one site (index + detail), and a heading plus a line per
+            URL read as the same source printed twice. */}
+        <SourceFootnote urls={electionOnlySources} className="mt-6" />
 
         {/* Last on purpose: reporting is a reaction to reading the page, not a
             headline action worth space above the candidates. Skipped when the

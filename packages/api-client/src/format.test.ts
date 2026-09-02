@@ -16,6 +16,7 @@ import {
   formatSourceHost,
   formatVotePowerLabel,
   formatWinnerNames,
+  groupSourcesByHost,
   sortContributionSizeBuckets,
 } from "./format";
 import type { FinanceOutsideIndustryEvidence } from "./types";
@@ -97,6 +98,26 @@ describe("formatSourceHost", () => {
       "capitol.texas.gov"
     );
     expect(formatSourceHost("not a url")).toBe("not a url");
+  });
+});
+
+describe("groupSourcesByHost", () => {
+  it("names each host once in first-seen order and keeps every distinct URL", () => {
+    expect(
+      groupSourcesByHost([
+        "https://elections.ny.gov/certification-2026",
+        "https://ballotpedia.org/New_York",
+        "https://elections.ny.gov/certification-2026",
+        "https://www.elections.ny.gov/ballot-certifications",
+      ])
+    ).toEqual([
+      {
+        host: "elections.ny.gov",
+        urls: ["https://elections.ny.gov/certification-2026", "https://www.elections.ny.gov/ballot-certifications"],
+      },
+      { host: "ballotpedia.org", urls: ["https://ballotpedia.org/New_York"] },
+    ]);
+    expect(groupSourcesByHost([])).toEqual([]);
   });
 });
 
