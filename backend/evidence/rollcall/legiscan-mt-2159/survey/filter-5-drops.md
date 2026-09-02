@@ -42,3 +42,49 @@ does not re-litigate them.
   judge files to run again, and then only on a website — never in the voter pamphlet or on the
   ballot. A transparency reading and an independence reading are both honest, and the act's own
   text does not settle which dominates.
+
+## Batch-06
+
+- **House Bill 343** (religious instruction released time). The act changes "may"
+  to "shall", so every district must now run a released time program on a
+  parent's written request, for at least one hour a week, and trustees may award
+  academic credit for a course from an independently accredited outside provider.
+  The education-quality reading is that districts lose discretion and students
+  leave instruction. But the act keeps the existing bars on using public school
+  property and public money for the religious instruction, and it protects the
+  pupil's attendance record and the district's funding count, so the usual harms
+  an education-quality objection rests on are expressly written out. Both
+  readings are honest and the text does not settle which dominates.
+
+- **House Bill 495** (repeal of the Federal Mandates Act). It repeals seven
+  sections that required the state to identify federal mandates, report their
+  cost, and put them through legislative review, and moves two surviving sections
+  into the legislature's own title. Removing stale reporting is a
+  government-efficiency gain; removing a legislative oversight channel is a
+  government-efficiency loss. The act itself contains nothing but a repealer and
+  two renumbering directions, so there is no text to break the tie.
+
+- **House Bill 401** (ban on cell-cultured meat). Read in full, including a
+  shape-analysis pass over the PDF that located every strike-through and
+  underline, and four rendered pages. The act is clear enough: it bans making for
+  sale, selling, holding or offering for sale, and distributing cell-cultured
+  edible product, with no exceptions of any kind, and it deletes the existing
+  labelling requirement and its misbranding safe harbour in three places because
+  a banned product needs no label. Personal possession and eating are untouched,
+  and plant-based substitutes are not affected. It was dropped for a different
+  reason from the two above: **no research area in the catalogue maps to it with
+  a direction that can be defended.** It is a market ban favouring one industry
+  over a competing product, which is neither consumer protection nor corporate
+  accountability nor public health as those areas are used here.
+
+Deferred rather than dropped, for a later batch:
+
+- **House Bill 329** (Montana Ammunition Act). The House adopted a conference
+  committee report on April 30 with no matching Senate roll in the
+  divided-and-enacted set. Work out what the Senate actually voted last before
+  using either roll.
+- **House Bill 801** (Montana Firearms Liability Clarification Act). It narrows
+  the predicate exception in the federal Protection of Lawful Commerce in Arms
+  Act, limits negligent marketing claims, and creates a private right of action.
+  Who may sue whom under that right decides the direction, and it needs its own
+  careful read.

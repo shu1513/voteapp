@@ -47,8 +47,8 @@ HB 2	B	house	2025-04-07	1538411	61	38	unbatched	General Appropriations Act
 HB 2	B	house	2025-04-30	1562041	66	34	unbatched	General Appropriations Act
 HB 2	B	senate	2025-04-23	1555295	27	23	unbatched	General Appropriations Act
 HB 20	B	house	2025-01-23	1481040	63	37	unbatched	Require voted levies to be in dollars rather than mills
-HB 20	B	house	2025-03-25	1526179	57	42	unbatched	Require voted levies to be in dollars rather than mills
-HB 20	B	senate	2025-02-27	1501599	34	16	unbatched	Require voted levies to be in dollars rather than mills
+HB 20	B	house	2025-03-25	1526179	57	42	batch-06	Require voted levies to be in dollars rather than mills
+HB 20	B	senate	2025-02-27	1501599	34	16	batch-06	Require voted levies to be in dollars rather than mills
 HB 201	B	house	2025-02-04	1481928	59	41	unbatched	Require disclosure of paid signature gatherers for initiatives
 HB 201	B	house	2025-04-01	1532267	57	42	batch-05	Require disclosure of paid signature gatherers for initiatives
 HB 201	B	senate	2025-03-17	1519004	39	10	unbatched	Require disclosure of paid signature gatherers for initiatives
@@ -101,8 +101,8 @@ HB 291	B	senate	2025-04-04	1537295	30	19	batch-02	Revise laws related to air qua
 HB 3	B	house	2025-01-28	1481149	70	29	unbatched	Supplemental Appropriations Bill
 HB 3	B	house	2025-03-21	1524132	51	45	unbatched	Supplemental Appropriations Bill
 HB 3	B	senate	2025-03-15	1518248	27	22	unbatched	Supplemental Appropriations Bill
-HB 300	B	house	2025-02-06	1483327	57	42	unbatched	Generally revise laws related to discrimination in education
-HB 300	B	senate	2025-03-20	1522954	32	18	unbatched	Generally revise laws related to discrimination in education
+HB 300	B	house	2025-02-06	1483327	57	42	batch-06	Generally revise laws related to discrimination in education
+HB 300	B	senate	2025-03-20	1522954	32	18	batch-06	Generally revise laws related to discrimination in education
 HB 311	B	house	2025-03-07	1508672	67	32	unbatched	Require the refund of rental application fees
 HB 311	B	house	2025-04-15	1549032	68	29	unbatched	Require the refund of rental application fees
 HB 311	B	senate	2025-04-08	1540633	34	14	unbatched	Require the refund of rental application fees
@@ -117,8 +117,8 @@ HB 337	B	senate	2025-04-22	1554357	34	16	batch-01	Revise income tax laws to lowe
 HB 338	B	senate	2025-04-11	1546110	32	16	unbatched	Revise laws regarding targeted early numeracy intervention
 HB 342	B	house	2025-02-13	1489730	57	42	unbatched	Revise civil liability laws to provide a statutory duty of care for certain actions
 HB 342	B	senate	2025-04-09	1542136	32	17	unbatched	Revise civil liability laws to provide a statutory duty of care for certain actions
-HB 343	B	house	2025-03-05	1505800	56	42	unbatched	Require schools to provide religious instruction released time program
-HB 343	B	senate	2025-04-18	1552256	31	19	unbatched	Require schools to provide religious instruction released time program
+HB 343	B	house	2025-03-05	1505800	56	42	dropped:filter-5	Require schools to provide religious instruction released time program
+HB 343	B	senate	2025-04-18	1552256	31	19	dropped:filter-5	Require schools to provide religious instruction released time program
 HB 344	B	house	2025-02-19	1494138	62	38	unbatched	Revise criminal laws.
 HB 344	B	house	2025-04-15	1548471	68	29	unbatched	Revise criminal laws.
 HB 344	B	senate	2025-04-02	1534593	36	14	unbatched	Revise criminal laws.
@@ -146,8 +146,8 @@ HB 4	B	house	2025-04-29	1560013	73	26	unbatched	Appropriations by budget amendme
 HB 4	B	senate	2025-04-24	1557362	30	20	unbatched	Appropriations by budget amendment
 HB 400	B	house	2025-02-21	1496472	56	42	batch-04	"Enact the ""Free to Speak Act"""
 HB 400	B	senate	2025-04-11	1546074	28	20	batch-04	"Enact the ""Free to Speak Act"""
-HB 401	B	house	2025-03-06	1507314	64	35	unbatched	Prohibit the sale of lab-grown meat in the state of Montana
-HB 401	B	senate	2025-04-14	1547388	34	14	unbatched	Prohibit the sale of lab-grown meat in the state of Montana
+HB 401	B	house	2025-03-06	1507314	64	35	dropped:filter-5	Prohibit the sale of lab-grown meat in the state of Montana
+HB 401	B	senate	2025-04-14	1547388	34	14	dropped:filter-5	Prohibit the sale of lab-grown meat in the state of Montana
 HB 406	B	house	2025-02-24	1504422	72	27	unbatched	Revise election laws related to school election deadlines
 HB 409	B	house	2025-02-20	1495641	57	42	unbatched	Revise injunction laws
 HB 409	B	house	2025-03-21	1524065	58	39	unbatched	Revise injunction laws
@@ -188,9 +188,9 @@ HB 480	B	senate	2025-04-07	1538630	32	17	unbatched	Revise when a party in a proc
 HB 486	B	senate	2025-04-14	1547687	32	16	unbatched	Revise county deputy sheriff compensation
 HB 492	B	house	2025-03-03	1503251	58	40	unbatched	Revise municipal zoning laws related to parking requirements
 HB 492	B	house	2025-04-17	1551775	73	26	unbatched	Revise municipal zoning laws related to parking requirements
-HB 495	B	house	2025-03-01	1502984	57	40	unbatched	Repeal federal mandates act
-HB 495	B	house	2025-04-17	1551546	58	41	unbatched	Repeal federal mandates act
-HB 495	B	senate	2025-04-11	1546419	33	15	unbatched	Repeal federal mandates act
+HB 495	B	house	2025-03-01	1502984	57	40	dropped:filter-5	Repeal federal mandates act
+HB 495	B	house	2025-04-17	1551546	58	41	dropped:filter-5	Repeal federal mandates act
+HB 495	B	senate	2025-04-11	1546419	33	15	dropped:filter-5	Repeal federal mandates act
 HB 499	B	house	2025-04-05	1537646	62	36	unbatched	Extend the grow your own grant program
 HB 499	B	senate	2025-04-22	1553710	29	21	unbatched	Extend the grow your own grant program
 HB 509	B	house	2025-03-05	1505964	67	31	batch-01	Revise the quality educator loan forgiveness program to expand eligibility
@@ -254,8 +254,8 @@ HB 625	B	house	2025-03-06	1507045	63	36	unbatched	Withhold entitlement share for
 HB 625	B	senate	2025-04-15	1549184	30	20	unbatched	Withhold entitlement share for non-compliance with child abuse reporting requirements
 HB 626	B	senate	2025-04-08	1539702	38	10	unbatched	Generally revise DUI laws
 HB 636	B	senate	2025-04-11	1546218	35	13	unbatched	Generally revise marijuana laws
-HB 638	B	house	2025-03-07	1508716	57	41	unbatched	Revise human rights laws
-HB 638	B	senate	2025-04-15	1548414	31	19	unbatched	Revise human rights laws
+HB 638	B	house	2025-03-07	1508716	57	41	batch-06	Revise human rights laws
+HB 638	B	senate	2025-04-15	1548414	31	19	batch-06	Revise human rights laws
 HB 642	B	house	2025-03-07	1508506	57	42	unbatched	Revise civil liability laws
 HB 642	B	senate	2025-04-15	1548408	34	16	unbatched	Revise civil liability laws
 HB 650	B	house	2025-03-07	1508645	60	39	unbatched	Revise bonding laws to include broadband projects
@@ -298,8 +298,8 @@ HB 719	B	house	2025-03-07	1508609	57	42	batch-05	Revise election laws related to
 HB 719	B	senate	2025-04-22	1554827	32	18	batch-05	Revise election laws related to an elector's date of birth
 HB 72	B	senate	2025-03-03	1503420	39	11	unbatched	Revise enlisted militia compensation for SAD
 HB 723	B	house	2025-03-07	1508592	57	42	unbatched	Establish annual reporting requirements of infants born alive
-HB 723	B	house	2025-04-18	1552116	58	41	unbatched	Establish annual reporting requirements of infants born alive
-HB 723	B	senate	2025-04-12	1546591	31	19	unbatched	Establish annual reporting requirements of infants born alive
+HB 723	B	house	2025-04-18	1552116	58	41	batch-06	Establish annual reporting requirements of infants born alive
+HB 723	B	senate	2025-04-12	1546591	31	19	batch-06	Establish annual reporting requirements of infants born alive
 HB 726	B	house	2025-03-07	1508610	62	37	unbatched	Generally revise bail bonds laws
 HB 726	B	house	2025-04-11	1546357	56	43	unbatched	Generally revise bail bonds laws
 HB 736	B	house	2025-04-18	1552294	69	30	unbatched	Provide nutrient pollutant loading offsets

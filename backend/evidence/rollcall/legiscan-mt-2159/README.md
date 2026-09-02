@@ -95,7 +95,7 @@ repository at `/Users/shu/legiscan-data/mt_doc.py` and `mt_diff.py`.
   `divided-enacted-worklist.tsv` (one row per divided-and-enacted roll with its
   disposition), and `filter-5-drops.md` (why each dropped measure was dropped
   after a full read)
-- `batch-01/` through `batch-05/` — each holds `PLAN.md`, `JUDGING.md`,
+- `batch-01/` through `batch-06/` — each holds `PLAN.md`, `JUDGING.md`,
   `judgments.json`, the roll evidence files, and the import ledgers
 
 ## Status
@@ -110,10 +110,11 @@ records.**
 | batch-03 | 2 | 4 | 172 | environment, both directions |
 | batch-04 | 8 | 16 | 682 | environment, civil rights, immigration, anti-corruption |
 | batch-05 | 7 | 14 | 597 | elections, courts, anti-corruption |
-| **total** | **33** | **66** | **2,813** | 14 areas, 87 candidates, 1,639 tags |
+| batch-06 | 4 | 8 | 342 | property tax, civil rights, reproductive rights |
+| **total** | **37** | **74** | **3,155** | 15 areas, 87 candidates, 1,827 tags |
 
-548 divided-and-enacted rolls remain unbatched, 5 are held on HB 231 (below)
-and 14 are dropped under filter 5;
+533 divided-and-enacted rolls remain unbatched, 5 are held on HB 231 (below)
+and 21 are dropped under filter 5;
 `survey/divided-enacted-worklist.tsv` carries a disposition for every one, and
 `survey/filter-5-drops.md` records why each drop was dropped after a full read.
 
