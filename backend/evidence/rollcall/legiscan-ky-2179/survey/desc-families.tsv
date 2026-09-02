@@ -1,0 +1,37 @@
+rolls	chambers	min_total	max_total	bill_types	desc_family_suffix_folded	sample_bills
+293	house	100	100	B+CR+JR	house: third reading	HB392,HB220,HB373
+265	senate	38	38	B+CR+JR+R	senate: third reading	HB1,SB17,SB313
+42	senate	38	38	B+CR+JR	senate: third reading w/scs1	SB43,SB126,SB69
+15	house	100	100	CR+JR+R	house: adopt	HJR30,HJR46,HJR54
+15	senate	37	38	B+JR	senate: third reading w/scs1 scta1	SB24,SB245,HB2
+11	senate	37	38	B	senate: third reading w/sfa1	SB23,SB73,SB26
+9	senate	37	38	B+CR+JR	senate: third reading w/scs1 sfa1	SB37,SJR55,SB22
+7	house	100	100	B+JR	house: veto override	SB120,HB495,HB695
+6	house	100	100	B	house: suspend the rules	HB495,HB684,HB18
+6	senate	38	38	B	senate: third reading w/scs1 sfa1 scta1	SB136,HB305,HB9
+4	house	100	100	B	house: adopt hfa 1	HB4,HB276,SB120
+3	house	100	100	B	house: adopt hfa 3	SB25,SB207,HB398
+2	senate	38	38	B	senate: third reading w/scs1 sfa3	SB57,HB315
+1	house	100	100	B	house: adopt hcs 1	SB19
+1	house	100	100	B	house: adopt hfa 2	HB398
+1	house	100	100	B	house: adopt hfa 6	HB4
+1	house	100	100	B	house: adopt hfa 8	HB1
+1	house	100	100	B	house: adopt scs 1	HB369
+1	house	100	100	B	house: lay on the clerks desk	HB775
+1	house	100	100	B	house: table	HB398
+1	senate	38	38	B	senate: adopt sfa 5	HB4
+1	senate	38	38	B	senate: adopt sfa 8	HB4
+1	senate	38	38	B	senate: third reading w/scs1 sfa1 sfa2 scta1	HB552
+1	senate	38	38	B	senate: third reading w/scs1 sfa2	SB13
+1	senate	38	38	B	senate: third reading w/scs1 sfa2 sfta2	HB664
+1	senate	38	38	B	senate: third reading w/scs1 sfa4	HB775
+1	senate	38	38	B	senate: third reading w/scs1 sfa5 sfta3	SB100
+1	senate	38	38	B	senate: third reading w/scs1 sfta1	SB64
+1	senate	38	38	B	senate: third reading w/scs2	HB695
+1	senate	38	38	B	senate: third reading w/scs2 scta1	HB241
+1	senate	38	38	B	senate: third reading w/sfa1 scta2	HB392
+1	senate	38	38	B	senate: third reading w/sfa1 sfa2	SB9
+1	senate	38	38	B	senate: third reading w/sfa2 scta1	HB304
+1	senate	38	38	B	senate: third reading w/sfa2 sfa3 sfta4	HB136
+1	senate	38	38	B	senate: third reading w/sfa2 sfta1	HB501
+1	senate	38	38	B	senate: third reading w/sfta 19	HB4

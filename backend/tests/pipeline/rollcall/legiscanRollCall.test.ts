@@ -365,6 +365,70 @@ describe("Maryland 2026's measured desc vocabulary", () => {
   });
 });
 
+describe("Kentucky's two sessions read the same words differently", () => {
+  const ky = (key: string, desc: string, chamber: "house" | "senate", billType = "B") =>
+    classifyLegiscanRollCall({
+      desc,
+      total: chamber === "house" ? 100 : 38,
+      chamber,
+      billType,
+      config: LEGISCAN_STATE_CONFIGS[key]!,
+    });
+
+  it("keeps the 2025 floor votes and excludes its procedural rolls", () => {
+    expect(ky("KY", "House: Third Reading RCS# 157", "house")).toMatchObject({ isFloorVote: true });
+    expect(ky("KY", "House: Adopt  RCS# 37", "house", "JR")).toMatchObject({ isFloorVote: true });
+    expect(ky("KY", "Senate: Third Reading RSN# 3362", "senate")).toMatchObject({ isFloorVote: true });
+    // The Senate names the adopted substitute and amendments in the desc.
+    expect(ky("KY", "Senate: Third Reading W/scs1 sfa1 scta1 RSN# 3501", "senate")).toMatchObject({ isFloorVote: true });
+    expect(ky("KY", "Senate: Third Reading W/sfta 19 RSN# 3503", "senate")).toMatchObject({ isFloorVote: true });
+    for (const desc of [
+      "House: Adopt HFA 1 RCS# 155",
+      "House: Adopt HCS 1 RCS# 200",
+      "House: Adopt SCS 1 RCS# 201",
+      "Senate: Adopt SFA 5 RSN# 3501",
+      "House: Suspend the Rules RCS# 148",
+      "House: Table RCS# 86",
+      "House: Lay on the Clerks Desk RCS# 90",
+      // NOT an override: Kentucky's real 2025 overrides are worded
+      // `Third Reading`, and all seven rolls wearing this label are a
+      // previous question, a reconsideration, a motion to strike the
+      // enacting clause, or a floor amendment.
+      "House: Veto Override RCS# 333",
+    ]) {
+      expect(ky("KY", desc, desc.startsWith("Senate") ? "senate" : "house")).toMatchObject({ isFloorVote: false });
+    }
+  });
+
+  it("reverses the two House labels for 2026, which is why each session is surveyed", () => {
+    // The identical string is a kept floor vote in one session and an
+    // excluded duplicate in the other.
+    expect(ky("KY-2247", "House: Veto Override RCS# 46", "house")).toMatchObject({ isFloorVote: true });
+    expect(ky("KY", "House: Veto Override RCS# 46", "house")).toMatchObject({ isFloorVote: false });
+    expect(ky("KY-2247", "House: Third Reading RCS# 46", "house")).toMatchObject({ isFloorVote: false });
+    expect(ky("KY", "House: Third Reading RCS# 46", "house")).toMatchObject({ isFloorVote: true });
+
+    expect(ky("KY-2247", "Senate: Third Reading RSN# 4026", "senate")).toMatchObject({ isFloorVote: true });
+    expect(ky("KY-2247", "Senate: Veto Override RSN# 4161", "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "veto_override",
+    });
+    expect(ky("KY-2247", "Senate: Adopt W/ SCS 1, SCA 1 (T) RSN# 4000", "senate", "JR")).toMatchObject({
+      isFloorVote: true,
+    });
+    expect(ky("KY-2247", "House: Co-Sponsor RCS# 12", "house")).toMatchObject({ isFloorVote: false });
+    expect(ky("KY-2247", "House: Adopt HFA 16 RCS# 169", "house")).toMatchObject({ isFloorVote: false });
+    // HB 84's RCS# 40 arrives twice, once as an amendment and once wearing the
+    // broad House label. Kentucky's record says it is the amendment vote, so
+    // BOTH copies must be excluded; the neighbouring RCS# 41 (a real passage)
+    // must still be kept.
+    expect(ky("KY-2247", "House: Adopt HFA 1 RCS# 40", "house")).toMatchObject({ isFloorVote: false });
+    expect(ky("KY-2247", "House: Veto Override RCS# 40", "house")).toMatchObject({ isFloorVote: false });
+    expect(ky("KY-2247", "House: Veto Override RCS# 41", "house")).toMatchObject({ isFloorVote: true });
+    expect(ky("KY-2247", "House: Veto Override RCS# 400", "house")).toMatchObject({ isFloorVote: true });
+  });
+});
+
 describe("Indiana 2025's measured desc vocabulary", () => {
   const config = LEGISCAN_STATE_CONFIGS.IN!;
   const inRoll = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
@@ -617,6 +681,8 @@ describe("getLegiscanStateConfig", () => {
       "MO-2226",
       "MD",
       "MD-2240",
+      "KY",
+      "KY-2247",
       "IN",
       "MT",
       "NC",
@@ -637,6 +703,7 @@ describe("getLegiscanStateConfig", () => {
       "ME",
       "MO",
       "MD",
+      "KY",
       "IN",
       "MT",
       "NC",
@@ -656,6 +723,8 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("MD").sessionId).toBe(2164);
     expect(getLegiscanStateConfig("NC").sessionId).toBe(2189);
     expect(getLegiscanStateConfig("md-2240")).toMatchObject({ jurisdiction: "MD", sessionId: 2240 });
+    expect(getLegiscanStateConfig("KY").sessionId).toBe(2179);
+    expect(getLegiscanStateConfig("KY-2247")).toMatchObject({ jurisdiction: "KY", sessionId: 2247 });
     expect(getLegiscanStateConfig("MT").sessionId).toBe(2159);
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("NY")).toThrow("no LegiScan state config for NY");

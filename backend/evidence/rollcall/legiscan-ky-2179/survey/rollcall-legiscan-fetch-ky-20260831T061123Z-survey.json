@@ -1,0 +1,9840 @@
+{
+  "runId": "rollcall-legiscan-fetch-ky-20260831T061123Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "KY",
+  "startedAt": "2026-08-31T06:11:23.171Z",
+  "finishedAt": "2026-08-31T06:11:23.477Z",
+  "datasetDir": "/Users/shu/legiscan-data/ky-2179",
+  "bills": 1441,
+  "votes": 701,
+  "people": 138,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "House: Adopt  RCS# 114",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR30"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt  RCS# 115",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR46"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt  RCS# 116",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR54"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt  RCS# 117",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR32"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt  RCS# 118",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR34"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt  RCS# 119",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR53"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt  RCS# 139",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR22"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt  RCS# 171",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR5"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt  RCS# 192",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR31"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt  RCS# 196",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR49"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt  RCS# 2",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt  RCS# 204",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR33"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt  RCS# 37",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR15"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt  RCS# 4",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR7"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt  RCS# 40",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR20"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt HCS 1 RCS# 257",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB19"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt HFA 1 RCS# 155",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt HFA 1 RCS# 165",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB276"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt HFA 1 RCS# 279",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB120"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt HFA 1 RCS# 80",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB16"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt HFA 2 RCS# 83",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB398"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt HFA 3 RCS# 271",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB25"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt HFA 3 RCS# 274",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB207"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt HFA 3 RCS# 84",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB398"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt HFA 6 RCS# 156",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt HFA 8 RCS# 6",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Adopt SCS 1 RCS# 303",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB369"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Lay on the Clerks Desk RCS# 212",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB775"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Suspend the Rules RCS# 148",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB495"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Suspend the Rules RCS# 174",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB684"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Suspend the Rules RCS# 215",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB18"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Suspend the Rules RCS# 258",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB19"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Suspend the Rules RCS# 259",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB19"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Suspend the Rules RCS# 270",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB25"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Table  RCS# 86",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB398"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 100",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB392"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 101",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB220"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 102",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB373"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 103",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB290"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 104",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB291"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 105",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 107",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB157"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 108",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB682"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 109",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB444"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 110",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB79"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 111",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB580"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 112",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB546"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 113",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB605"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 120",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB306"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 121",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB493"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 122",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB545"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 123",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB606"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 125",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB701"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 126",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB555"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 127",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB315"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 128",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB87"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 129",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB255"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 130",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB6"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 131",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB437"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 133",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB808"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 134",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB342"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 135",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB520"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 136",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB321"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 137",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB9"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 138",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB695"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 14",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB313"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 140",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB433"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 141",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB403"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 142",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB48"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 143",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB416"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 144",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB622"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 145",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB10"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 146",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB371"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 149",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB495"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 150",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB298"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 151",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB443"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 152",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB537"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 153",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB369"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 154",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB422"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 157",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 158",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB387"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 159",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB465"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 16",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB45"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 160",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB430"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 161",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB421"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 162",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB501"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 164",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB710"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 166",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB276"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 167",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB90"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 168",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB618"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 169",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB356"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 17",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB44"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 170",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB635"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 172",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB711"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 173",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB278"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 175",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB684"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 176",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB456"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 177",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB210"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 178",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB114"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 179",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB661"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 180",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB190"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 181",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB389"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 182",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB14"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 183",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB783"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 184",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB805"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 185",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB340"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 186",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB446"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 187",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB524"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 189",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB399"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 19",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB15"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 190",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB662"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 191",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB664"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 193",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB449"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 194",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB669"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 195",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB73"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 197",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB70"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 198",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB236"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 200",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB15"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 201",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB24"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 202",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB544"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 203",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB87"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 205",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB84"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 206",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB26"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 207",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB3"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 208",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB208"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 209",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB741"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 21",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB191"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 210",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB508"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 211",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB18"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 213",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB775"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 214",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB64"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 216",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB18"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 217",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB527"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 218",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB738"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 22",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB263"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 220",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB640"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 221",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB790"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 222",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB89"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 223",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB491"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 224",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB324"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 225",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB100"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 226",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB202"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 227",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB65"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 228",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB103"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 229",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR26"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 230",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB85"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 231",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB201"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 233",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB15"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 234",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB390"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 235",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB136"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 236",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 237",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 238",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB77"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 239",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB28"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 24",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB27"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 240",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB10"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 241",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB176"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 242",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB130"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 243",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB63"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 244",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB90"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 245",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB179"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 246",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB43"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 247",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB38"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 248",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB136"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 249",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB157"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 25",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB216"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 250",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB237"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 251",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB190"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 252",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB178"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 253",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB162"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 254",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "SCR43"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 255",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB245"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 256",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB694"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 26",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB38"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 260",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB19"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 261",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB398"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 262",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB566"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 264",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR46"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 265",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB183"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 266",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB38"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 267",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB241"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 268",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB169"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 269",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB30"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 27",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB23"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 272",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB25"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 273",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB129"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 275",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB207"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 276",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB61"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 277",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 278",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB22"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 28",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB184"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 280",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB120"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 281",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB68"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 282",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB69"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 284",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB184"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 285",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB145"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 286",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR30"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 287",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB133"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 288",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB13"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 289",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB27"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 29",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB233"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 290",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB201"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 291",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB240"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 292",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB45"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 293",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB315"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 294",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB346"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 295",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB455"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 296",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB775"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 297",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB552"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 298",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB546"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 299",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB682"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 30",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB211"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 300",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB244"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 301",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB342"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 302",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB321"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 305",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB495"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 307",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB695"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 309",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 311",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB495"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 312",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB346"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 313",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB216"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 314",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB240"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 315",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 316",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB695"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 317",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB6"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 318",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB398"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 319",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB424"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 32",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB137"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 320",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB566"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 321",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB684"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 322",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB552"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 323",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR30"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 324",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR46"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 325",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB546"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 326",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB90"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 327",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB136"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 328",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB694"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 329",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB399"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 33",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB30"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 330",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 331",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB65"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 332",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB183"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 334",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB65"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 335",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB245"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 336",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB84"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 337",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB19"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 338",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB207"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 339",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB89"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 34",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB261"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 340",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB25"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 341",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB28"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 343",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB430"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 344",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB437"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 345",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR5"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 346",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB160"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 347",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB104"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 348",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB76"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 349",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB555"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 35",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB262"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 350",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB188"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 351",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB544"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 352",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB493"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 353",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB305"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 354",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB662"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 355",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB48"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 356",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB181"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 357",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB9"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 358",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB24"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 359",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB501"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 360",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB622"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 361",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB606"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 362",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB441"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 363",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB618"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 364",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR55"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 365",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB664"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 38",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB251"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 39",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB219"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 41",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB132"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 42",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB193"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 44",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB196"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 45",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB305"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 46",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB242"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 47",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB256"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 48",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB164"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 49",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB71"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 50",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB234"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 51",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB427"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 53",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB423"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 54",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB72"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 55",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB54"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 56",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB566"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 57",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB24"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 58",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB201"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 59",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB241"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 60",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB186"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 61",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB188"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 62",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB19"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 63",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB20"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 64",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB304"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 66",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB131"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 67",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB390"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 68",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB441"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 69",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB391"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 7",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 70",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB272"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 71",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB473"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 72",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB455"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 73",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB303"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 74",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB39"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 75",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB160"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 77",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB552"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 78",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB152"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 79",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB424"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 81",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB16"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 82",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB694"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 87",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB398"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 88",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB73"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 89",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB46"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 90",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB223"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 91",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB479"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 92",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB346"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 93",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB368"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 94",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB415"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 95",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB240"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 96",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB136"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 97",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB688"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 98",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB88"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Third Reading RCS# 99",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB462"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Veto Override RCS# 283",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB120"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Veto Override RCS# 304",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB495"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Veto Override RCS# 306",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB695"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Veto Override RCS# 308",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Veto Override RCS# 333",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB65"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Veto Override RCS# 36",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR15"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Veto Override RCS# 85",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB398"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Adopt SFA 5 RSN# 3501",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Adopt SFA 8 RSN# 3502",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3337",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3342",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB17"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3347",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB313"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3348",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB59"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3349",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB76"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3353",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB61"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3356",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB85"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3357",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB14"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3359",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR26"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3360",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB89"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3362",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB2"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3363",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB18"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3368",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB84"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3370",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB15"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3371",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "SCR43"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3372",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB111"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3373",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB103"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3376",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB67"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3379",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB10"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3381",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB104"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3382",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB179"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3383",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR25"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3385",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB19"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3386",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB65"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3389",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR28"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3393",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB169"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3400",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB120"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3407",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB71"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3408",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB121"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3409",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB151"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3410",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB174"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3411",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB176"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3413",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB4"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3416",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB3"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3419",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB117"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3423",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB207"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3426",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB244"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3427",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB237"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3429",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB58"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3434",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB266"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3436",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB234"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3439",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB133"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3440",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB190"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3443",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB218"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3447",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB202"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3448",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB132"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3449",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB193"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3450",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB191"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3451",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB391"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3452",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB216"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3453",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB219"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3454",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB261"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3455",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB262"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3456",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR20"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3457",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR66"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3461",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB75"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3464",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB303"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3465",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB27"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3466",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB164"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3469",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB233"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3471",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB242"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3474",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB545"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3475",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR54"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3481",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR34"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3483",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB19"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3487",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB196"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3488",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB313"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3490",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB54"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3491",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB137"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3492",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB131"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3493",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB193"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3494",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB251"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3495",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB201"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3496",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB473"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3497",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB132"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3498",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB263"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3499",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB15"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3500",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB84"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3504",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB65"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3510",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB6"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3511",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB399"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3513",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB4"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3514",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB28"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3515",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB28"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3516",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB63"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3517",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB64"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3518",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB89"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3519",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB100"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3520",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB77"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3521",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB103"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3522",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB176"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3523",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB202"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3525",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB10"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3526",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB152"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3527",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB73"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3531",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB306"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3535",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB415"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3536",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB422"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3537",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR15"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3538",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB537"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3539",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB605"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3540",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB701"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3541",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB783"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3542",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB424"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3543",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB241"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3545",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3547",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR31"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3551",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB443"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3553",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB684"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3554",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB19"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3555",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB179"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3556",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB43"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3557",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB136"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3558",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB162"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3559",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB237"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3560",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB546"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3562",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB208"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3565",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR53"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3569",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB520"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3571",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB25"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3572",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB68"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3573",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB129"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3574",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB207"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3575",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3576",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB120"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3577",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB27"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3578",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB22"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3579",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB201"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3581",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB298"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3583",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB25"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3584",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB19"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3585",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB65"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3586",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB28"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3587",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB84"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3588",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB89"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3589",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB183"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3590",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB207"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3591",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB245"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3592",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB369"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3597",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR32"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3598",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB495"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3601",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB216"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3602",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB240"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3603",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB346"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3604",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB398"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3605",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB695"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3606",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR103"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3607",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR104"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3608",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR104"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3609",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR105"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3610",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR106"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3611",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR111"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3612",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR112"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3613",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR113"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3614",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR114"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3615",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR115"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3616",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB424"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3617",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB552"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3618",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB546"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3619",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR116"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3620",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR117"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3621",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR118"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3622",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR119"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3623",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR120"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3624",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR121"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3625",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR122"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3626",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR123"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3627",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR124"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3628",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR126"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3629",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR127"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3630",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR128"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3631",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR129"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3632",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR130"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3633",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR132"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3634",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR133"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3635",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR134"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3636",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR135"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3637",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR144"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3638",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR145"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3639",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR146"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3640",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR148"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3641",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR149"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3642",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR151"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3643",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR152"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3644",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR153"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3645",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR168"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3646",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR169"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3647",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR170"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3648",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR171"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3649",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR172"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3650",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR173"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3651",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR174"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3652",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR176"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3653",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR177"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3654",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR178"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3655",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR179"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3656",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR180"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3657",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR181"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3658",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR182"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3659",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR183"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3660",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR46"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3661",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB566"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3662",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR30"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3663",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB684"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3665",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB90"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3666",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB136"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3667",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB399"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3668",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB694"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3670",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB606"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3671",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB622"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3675",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB421"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3676",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR22"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3678",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB190"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3679",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB72"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3680",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB210"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3681",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB462"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3682",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB114"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3683",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB444"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3684",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB524"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3685",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB181"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3686",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR110"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3687",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR175"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3688",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR184"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3689",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR185"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3690",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR186"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3691",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR187"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3692",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR188"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3693",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR189"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3694",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR190"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3695",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR191"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3696",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR192"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3697",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR193"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3698",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR194"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3699",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR195"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3700",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR196"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3701",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR197"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3702",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR198"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3703",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR199"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3704",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR200"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3705",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR201"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3706",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR202"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3707",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR203"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3708",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR204"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3709",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR205"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3710",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR206"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3711",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR207"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3712",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR208"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3713",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR209"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3714",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR210"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3715",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR211"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3716",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR212"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3717",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR213"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3718",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR214"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3719",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR215"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3720",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR216"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3721",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR217"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3722",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR218"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3723",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR219"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3724",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR220"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3725",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR221"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3726",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR222"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3727",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR251"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3728",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR265"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3729",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR269"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading RSN# 3730",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB9"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3344",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB43"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3345",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB126"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3366",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB69"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3367",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB77"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3375",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB28"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3380",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB87"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3387",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB83"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3388",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB129"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3394",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB60"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3398",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB145"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3399",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "SCR61"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3404",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB25"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3405",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB50"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3406",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB27"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3415",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3417",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB6"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3418",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB63"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3420",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB130"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3422",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB183"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3428",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB38"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3430",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB93"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3459",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR30"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3460",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR32"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3462",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB15"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3463",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB188"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3467",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3468",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB157"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3473",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB441"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3489",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB566"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3512",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB398"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3529",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB160"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3530",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB240"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3532",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB346"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3533",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB544"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3534",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB682"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3552",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB455"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3561",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB48"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3567",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB342"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3568",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB369"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3570",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB662"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3594",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB493"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 RSN# 3677",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB618"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 scta1 RSN# 3364",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB24"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 scta1 RSN# 3412",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB245"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 scta1 RSN# 3477",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 37,
+      "maxTotal": 37,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 scta1 RSN# 3478",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB606"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 scta1 RSN# 3479",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB546"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 scta1 RSN# 3480",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR46"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 scta1 RSN# 3484",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB30"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 scta1 RSN# 3506",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB90"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 scta1 RSN# 3524",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB495"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 scta1 RSN# 3528",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB184"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 scta1 RSN# 3564",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB622"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 scta1 RSN# 3566",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB321"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 scta1 RSN# 3593",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR5"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 scta1 RSN# 3595",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB555"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 scta1 RSN# 3596",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB430"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa1 RSN# 3343",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB37"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa1 RSN# 3396",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR55"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa1 RSN# 3402",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB22"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa1 RSN# 3432",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB257"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa1 RSN# 3433",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 37,
+      "maxTotal": 37,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB153"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa1 RSN# 3438",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB68"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa1 RSN# 3441",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB162"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa1 RSN# 3444",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "SCR67"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa1 RSN# 3486",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB38"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa1 scta1 RSN# 3421",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB136"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa1 scta1 RSN# 3472",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB305"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa1 scta1 RSN# 3507",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB9"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa1 scta1 RSN# 3508",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB24"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa1 scta1 RSN# 3509",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB298"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa1 scta1 RSN# 3550",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB437"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa1 sfa2 scta1 RSN# 3546",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB552"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa2 RSN# 3365",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB13"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa2 sfta2 RSN# 3673",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB664"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa3 RSN# 3392",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB57"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa3 RSN# 3548",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB315"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa4 RSN# 3563",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB775"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfa5 sfta3 RSN# 3395",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB100"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs1 sfta1 RSN# 3351",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB64"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs2 RSN# 3580",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB695"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/scs2 scta1 RSN# 3445",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB241"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/sfa1 RSN# 3340",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB23"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/sfa1 RSN# 3352",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB73"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/sfa1 RSN# 3355",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB26"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/sfa1 RSN# 3377",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB79"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/sfa1 RSN# 3390",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB178"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/sfa1 RSN# 3401",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 37,
+      "maxTotal": 37,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB201"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/sfa1 RSN# 3425",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB7"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/sfa1 RSN# 3431",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB144"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/sfa1 RSN# 3442",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB181"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/sfa1 RSN# 3470",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB390"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/sfa1 RSN# 3482",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB694"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/sfa1 scta2 RSN# 3549",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB392"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/sfa1 sfa2 RSN# 3435",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB9"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/sfa2 scta1 RSN# 3672",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB304"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/sfa2 sfa3 sfta4 RSN# 3485",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB136"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/sfa2 sfta1 RSN# 3674",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB501"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading W/sfta 19 RSN# 3503",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 38,
+      "maxTotal": 38,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 1080,
+    "CR": 38,
+    "JR": 49,
+    "R": 274
+  },
+  "sessionIds": {
+    "2179": 1441
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}

@@ -1,0 +1,20 @@
+rolls	chambers	min_total	max_total	bill_types	desc_family_suffix_folded	sample_bills
+415	house	100	100	B+JR+R	house: veto override	HB562,HB136,HB257
+387	senate	38	38	B+CR+JR+R	senate: third reading	SB7,SB10,SB28
+36	senate	38	38	B+JR	senate: veto override	HB314,HB1,SB183
+29	house	100	100	B	house: third reading	HB184,HB265,HB176
+17	house	100	100	CR+JR+R	house: adopt	HJR50,HJR24,HJR75
+7	senate	38	38	CR+JR	senate: adopt	SCR9,SJR74,SJR116
+4	house	100	100	B+JR	house: adopt hfa 1	HB2,HB335,HB84
+4	house	100	100	B	house: adopt hfa 2	HB904,SB101,SB251
+4	house	100	100	B	house: adopt hfa 3	HB497,HB732,SB104
+3	house	100	100	B	house: adopt hfa 4	HB2,HB732,SB104
+3	senate	38	38	JR	senate: adopt w/ scs 1	SJR23,HJR75,HJR76
+1	house	100	100	B	house: adopt hfa 10	HB2
+1	house	100	100	B	house: adopt hfa 16	HB2
+1	house	100	100	B	house: adopt hfa 6	HB2
+1	house	100	100	B	house: adopt hfa 7	HB2
+1	house	100	100	R	house: co-sponsor	HR21
+1	senate	38	38	JR	senate: adopt w/ sca 1	SJR75
+1	senate	38	38	JR	senate: adopt w/ scs 1, sca 1 (t)	SJR139
+1	senate	38	38	JR	senate: adopt w/ scs 1, sfa 3	SJR54
