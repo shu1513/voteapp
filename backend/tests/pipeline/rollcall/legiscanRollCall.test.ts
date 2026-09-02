@@ -702,6 +702,7 @@ describe("getLegiscanStateConfig", () => {
       "NC",
       "AL",
       "AL-2218",
+      "AL-2262",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
@@ -741,6 +742,9 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("KY").sessionId).toBe(2179);
     expect(getLegiscanStateConfig("KY-2247")).toMatchObject({ jurisdiction: "KY", sessionId: 2247 });
     expect(getLegiscanStateConfig("MT").sessionId).toBe(2159);
+    expect(getLegiscanStateConfig("AL").sessionId).toBe(2148);
+    expect(getLegiscanStateConfig("AL-2218")).toMatchObject({ jurisdiction: "AL", sessionId: 2218 });
+    expect(getLegiscanStateConfig("AL-2262")).toMatchObject({ jurisdiction: "AL", sessionId: 2262 });
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("NY")).toThrow("no LegiScan state config for NY");
   });

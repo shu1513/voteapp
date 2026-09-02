@@ -1489,10 +1489,12 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     ],
   },
 
-  // Alabama Legislature, 2025 Regular Session (Feb 4 - May 14 2025). The
-  // 2026 sessions (LegiScan 2218 regular, 2262 special) are NOT registered
-  // here: each needs its own survey and an `AL-2218`-style compound key
-  // (the MO/MD pattern) in a follow-up PR.
+  // Alabama Legislature, 2025 Regular Session (Feb 4 - May 14 2025).
+  // Alabama sits in ANNUAL sessions, so each later one is a separate
+  // LegiScan session with its own compound key (the MO/MD pattern): the
+  // 2026 Regular Session is `AL-2218` and the 2026 First Special Session
+  // is `AL-2262`, both registered below and both sharing this state's one
+  // vocabulary definition.
   // Vocabulary measured from the full dataset survey 2026-08-31: 1,449
   // bills, 2,851 roll calls, 139 people (105 House + 35 Senate seats).
   //
@@ -1565,6 +1567,36 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   "AL-2218": {
     jurisdiction: "AL",
     sessionId: 2218,
+    chamberSizes: { house: 105, senate: 35 },
+    keptQuestions: ALABAMA_KEPT_QUESTIONS,
+    excludedQuestions: ALABAMA_EXCLUDED_QUESTIONS,
+  },
+
+  // Alabama Legislature, 2026 First Special Session (May 4 - May 12 2026),
+  // called to redraw districts. Tiny and entirely conventional: 9 bills, 9
+  // roll calls, and a people file identical to the 2026 regular session's,
+  // so that session's crosswalk covers it unchanged and no roll call id
+  // collides with either regular session. Surveyed 2026-09-02 — every
+  // description matches a kept or excluded pattern already defined above,
+  // with NOTHING left unmatched, which is why this entry adds no rules of
+  // its own.
+  //
+  // Only 3 of the 9 rolls are floor votes on a measure, and all three are
+  // divided and on measures that became law: the House and Senate votes on
+  // HB 1 and the Senate vote on SB 1, both authorising special primary
+  // elections after redistricting. The other six are amendment adoptions
+  // and previous-question motions, all correctly excluded.
+  //
+  // ⚠ FEED GAP: SB 1's HOUSE passage vote is missing from the dataset. The
+  // bill history records `Motion to Read a Third Time and Pass - Adopted
+  // Roll Call 4` in the House on 2026-05-08, but no such roll call exists
+  // in the vote files; what the dataset holds for that chamber and day is
+  // the previous-question motion (Roll Call 3). Missouri's feed had the
+  // same shape. Nothing here can recover the missing vote, so SB 1 is
+  // represented by its Senate vote only.
+  "AL-2262": {
+    jurisdiction: "AL",
+    sessionId: 2262,
     chamberSizes: { house: 105, senate: 35 },
     keptQuestions: ALABAMA_KEPT_QUESTIONS,
     excludedQuestions: ALABAMA_EXCLUDED_QUESTIONS,

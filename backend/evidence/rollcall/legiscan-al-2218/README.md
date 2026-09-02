@@ -1,7 +1,8 @@
 # Alabama roll-call votes — LegiScan session 2218 (2026 Regular Session)
 
 Alabama sits in annual regular sessions, so 2026 is a separate LegiScan session from 2025 and gets
-its own registry key, `AL-2218`, sharing one vocabulary definition with the 2025 entry. The dataset
+its own registry key, `AL-2218`, sharing one vocabulary definition with the 2025 entry and with the
+2026 First Special Session (`AL-2262`, see `../legiscan-al-2262/`). The dataset
 holds 1,531 bills, 3,541 roll calls and 140 people. The dataset and the 3,503 stored roll-call
 evidence files live outside this repository at `/Users/shu/legiscan-data/al-2218/` and
 `/Users/shu/legiscan-data/al-2218-evidence/`; this directory keeps the curated subset.
