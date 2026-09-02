@@ -94,7 +94,7 @@ export function normalizeNorthDakotaEntityId(value: string): string {
 
 const writer = createStandardStateFinanceSnapshotWriter({
   label: "North Dakota",
-  // Migration 268 constrains election_year to 2026+ (Phase 0A gate 4).
+  // Migration 269 constrains election_year to 2026+ (Phase 0A gate 4).
   minElectionYear: 2026,
   outsideGroupValidation: "pairing",
   normalizeCommitteeId: normalizeNorthDakotaEntityId,
