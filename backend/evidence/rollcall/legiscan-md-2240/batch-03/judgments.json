@@ -1,0 +1,328 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1682539,
+   "measure_id": "HB 1017",
+   "vote_date": "2026-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1017, an emergency bill shutting private detention facilities out of Maryland. Neither the state nor any local government may approve building or operating any property for a private company to use as a detention facility, and a private company may not run or occupy one. If a state or federal court rules that ban unenforceable, a narrower rule takes its place: such a facility may only be approved where the zoning expressly allows private detention facilities. Because it is an emergency bill, it took effect on signing. A yes vote closed the state to privately run detention. The Maryland Senate passed it 32-10 and it was signed into law as Chapter 173 of 2026.",
+   "nay_description": "Voted against passing HB 1017, an emergency bill shutting private detention facilities out of Maryland. Neither the state nor any local government may approve building or operating any property for a private company to use as a detention facility, and a private company may not run or occupy one. If a state or federal court rules that ban unenforceable, a narrower rule takes its place: such a facility may only be approved where the zoning expressly allows private detention facilities. Because it is an emergency bill, it took effect on signing. A no vote opposed the ban. The Maryland Senate passed it 32-10 over these votes and it was signed into law as Chapter 173 of 2026.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1684716,
+   "measure_id": "HB 1017",
+   "vote_date": "2026-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1017, an emergency bill shutting private detention facilities out of Maryland. Neither the state nor any local government may approve building or operating any property for a private company to use as a detention facility, and a private company may not run or occupy one. If a state or federal court rules that ban unenforceable, a narrower rule takes its place: such a facility may only be approved where the zoning expressly allows private detention facilities. Because it is an emergency bill, it took effect on signing. A yes vote closed the state to privately run detention. The Maryland House of Delegates passed it 95-36 and it was signed into law as Chapter 173 of 2026.",
+   "nay_description": "Voted against passing HB 1017, an emergency bill shutting private detention facilities out of Maryland. Neither the state nor any local government may approve building or operating any property for a private company to use as a detention facility, and a private company may not run or occupy one. If a state or federal court rules that ban unenforceable, a narrower rule takes its place: such a facility may only be approved where the zoning expressly allows private detention facilities. Because it is an emergency bill, it took effect on signing. A no vote opposed the ban. The Maryland House of Delegates passed it 95-36 over these votes and it was signed into law as Chapter 173 of 2026.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1683266,
+   "measure_id": "HB 191",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 191, which made shops take cash for everyday essentials. Between 6:00 a.m. and 10:00 p.m., a shop may not refuse cash, demand a card, or charge more for paying cash when someone buys an essential consumer good. That covers food, water and drinks, personal hygiene and cleaning products, medicine and medical supplies, and fuel. It applies only to in-person sales under $300, and not to online, phone, mail, vending machine or kiosk sales, restaurants, specialty food shops, or membership fuel sellers. A shop may refuse notes larger than $20, or use a free cash-to-card machine on site instead. Breaking the rule is an unfair trade practice under state consumer law. A yes vote guaranteed the right to pay cash for essentials. The Maryland Senate passed it 35-11 and it was signed into law as Chapter 714 of 2026.",
+   "nay_description": "Voted against passing HB 191, which made shops take cash for everyday essentials. Between 6:00 a.m. and 10:00 p.m., a shop may not refuse cash, demand a card, or charge more for paying cash when someone buys an essential consumer good. That covers food, water and drinks, personal hygiene and cleaning products, medicine and medical supplies, and fuel. It applies only to in-person sales under $300, and not to online, phone, mail, vending machine or kiosk sales, restaurants, specialty food shops, or membership fuel sellers. A shop may refuse notes larger than $20, or use a free cash-to-card machine on site instead. Breaking the rule is an unfair trade practice under state consumer law. A no vote opposed requiring shops to take cash. The Maryland Senate passed it 35-11 over these votes and it was signed into law as Chapter 714 of 2026.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1685474,
+   "measure_id": "HB 191",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 191, which made shops take cash for everyday essentials. Between 6:00 a.m. and 10:00 p.m., a shop may not refuse cash, demand a card, or charge more for paying cash when someone buys an essential consumer good. That covers food, water and drinks, personal hygiene and cleaning products, medicine and medical supplies, and fuel. It applies only to in-person sales under $300, and not to online, phone, mail, vending machine or kiosk sales, restaurants, specialty food shops, or membership fuel sellers. A shop may refuse notes larger than $20, or use a free cash-to-card machine on site instead. Breaking the rule is an unfair trade practice under state consumer law. A yes vote guaranteed the right to pay cash for essentials. The Maryland House of Delegates passed it 99-28 and it was signed into law as Chapter 714 of 2026.",
+   "nay_description": "Voted against passing HB 191, which made shops take cash for everyday essentials. Between 6:00 a.m. and 10:00 p.m., a shop may not refuse cash, demand a card, or charge more for paying cash when someone buys an essential consumer good. That covers food, water and drinks, personal hygiene and cleaning products, medicine and medical supplies, and fuel. It applies only to in-person sales under $300, and not to online, phone, mail, vending machine or kiosk sales, restaurants, specialty food shops, or membership fuel sellers. A shop may refuse notes larger than $20, or use a free cash-to-card machine on site instead. Breaking the rule is an unfair trade practice under state consumer law. A no vote opposed requiring shops to take cash. The Maryland House of Delegates passed it 99-28 over these votes and it was signed into law as Chapter 714 of 2026.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1680493,
+   "measure_id": "HB 284",
+   "vote_date": "2026-04-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 284, a State Police bill requiring gun dealers to report break-ins within a day. A licensed firearms dealer must tell the head of the State Police within 24 hours of first learning of a break-in. That covers a burglary, attempted burglary, robbery or theft involving a firearm or ammunition where the dealer operates or stores guns, and it also covers a required security feature being compromised. The notice is on top of any report to local police or to the federal firearms bureau. The bill also changes the penalties for dealers who break these rules. A yes vote required the fast reporting of stolen guns. The Maryland Senate passed it 32-11 and it was signed into law as Chapter 85 of 2026.",
+   "nay_description": "Voted against passing HB 284, a State Police bill requiring gun dealers to report break-ins within a day. A licensed firearms dealer must tell the head of the State Police within 24 hours of first learning of a break-in. That covers a burglary, attempted burglary, robbery or theft involving a firearm or ammunition where the dealer operates or stores guns, and it also covers a required security feature being compromised. The notice is on top of any report to local police or to the federal firearms bureau. The bill also changes the penalties for dealers who break these rules. A no vote opposed the requirement. The Maryland Senate passed it 32-11 over these votes and it was signed into law as Chapter 85 of 2026.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1682184,
+   "measure_id": "HB 284",
+   "vote_date": "2026-04-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 284, a State Police bill requiring gun dealers to report break-ins within a day. A licensed firearms dealer must tell the head of the State Police within 24 hours of first learning of a break-in. That covers a burglary, attempted burglary, robbery or theft involving a firearm or ammunition where the dealer operates or stores guns, and it also covers a required security feature being compromised. The notice is on top of any report to local police or to the federal firearms bureau. The bill also changes the penalties for dealers who break these rules. A yes vote required the fast reporting of stolen guns. The Maryland House of Delegates passed it 97-36 and it was signed into law as Chapter 85 of 2026.",
+   "nay_description": "Voted against passing HB 284, a State Police bill requiring gun dealers to report break-ins within a day. A licensed firearms dealer must tell the head of the State Police within 24 hours of first learning of a break-in. That covers a burglary, attempted burglary, robbery or theft involving a firearm or ammunition where the dealer operates or stores guns, and it also covers a required security feature being compromised. The notice is on top of any report to local police or to the federal firearms bureau. The bill also changes the penalties for dealers who break these rules. A no vote opposed the requirement. The Maryland House of Delegates passed it 97-36 over these votes and it was signed into law as Chapter 85 of 2026.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1681848,
+   "measure_id": "HB 315",
+   "vote_date": "2026-04-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 315, which barred landlords from rejecting voucher holders over their credit. A landlord who uses financial information to screen applicants may not refuse someone who pays rent with a housing subsidy because of their income, their credit score, their lack of one, or bad credit history from a time when they had no subsidy. Doing so is a discriminatory housing practice the Maryland Commission on Civil Rights enforces. A landlord may still check that the tenant can afford their own share of the rent, using the same income test applied to other tenants, and may still rely on landlord references or a record of lease violations, unpaid utilities, nuisance or property damage. Landlords with six or more units must also offer to report tenants' on-time rent payments to a credit bureau. A yes vote made that screening a form of housing discrimination. The Maryland Senate passed it 33-10 and it was signed into law as Chapter 772 of 2026.",
+   "nay_description": "Voted against passing HB 315, which barred landlords from rejecting voucher holders over their credit. A landlord who uses financial information to screen applicants may not refuse someone who pays rent with a housing subsidy because of their income, their credit score, their lack of one, or bad credit history from a time when they had no subsidy. Doing so is a discriminatory housing practice the Maryland Commission on Civil Rights enforces. A landlord may still check that the tenant can afford their own share of the rent, using the same income test applied to other tenants, and may still rely on landlord references or a record of lease violations, unpaid utilities, nuisance or property damage. Landlords with six or more units must also offer to report tenants' on-time rent payments to a credit bureau. A no vote opposed the new limits on landlords. The Maryland Senate passed it 33-10 over these votes and it was signed into law as Chapter 772 of 2026.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1684021,
+   "measure_id": "HB 315",
+   "vote_date": "2026-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 315, which barred landlords from rejecting voucher holders over their credit. A landlord who uses financial information to screen applicants may not refuse someone who pays rent with a housing subsidy because of their income, their credit score, their lack of one, or bad credit history from a time when they had no subsidy. Doing so is a discriminatory housing practice the Maryland Commission on Civil Rights enforces. A landlord may still check that the tenant can afford their own share of the rent, using the same income test applied to other tenants, and may still rely on landlord references or a record of lease violations, unpaid utilities, nuisance or property damage. Landlords with six or more units must also offer to report tenants' on-time rent payments to a credit bureau. A yes vote made that screening a form of housing discrimination. The Maryland House of Delegates passed it 96-34 and it was signed into law as Chapter 772 of 2026.",
+   "nay_description": "Voted against passing HB 315, which barred landlords from rejecting voucher holders over their credit. A landlord who uses financial information to screen applicants may not refuse someone who pays rent with a housing subsidy because of their income, their credit score, their lack of one, or bad credit history from a time when they had no subsidy. Doing so is a discriminatory housing practice the Maryland Commission on Civil Rights enforces. A landlord may still check that the tenant can afford their own share of the rent, using the same income test applied to other tenants, and may still rely on landlord references or a record of lease violations, unpaid utilities, nuisance or property damage. Landlords with six or more units must also offer to report tenants' on-time rent payments to a credit bureau. A no vote opposed the new limits on landlords. The Maryland House of Delegates passed it 96-34 over these votes and it was signed into law as Chapter 772 of 2026.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1684000,
+   "measure_id": "HB 624",
+   "vote_date": "2026-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 624, the Safe Staffing Act of 2026, which gave hospital staff a say in staffing levels. Every hospital must meet the staffing standards of the body that accredits it and the federal Medicare and Medicaid conditions of participation. Each must also run a clinical staffing committee: three managers and two employees at hospitals with 150 or fewer licensed beds, and five managers and four employees at larger ones. The hospital's chief nurse executive drafts a staffing plan and the committee finalizes one that meets patient needs. The hospital must give the plan to any staff member who asks. A yes vote gave front-line staff a formal role in setting staffing. The Maryland House of Delegates passed it 96-35 and it was signed into law as Chapter 236 of 2026.",
+   "nay_description": "Voted against passing HB 624, the Safe Staffing Act of 2026, which gave hospital staff a say in staffing levels. Every hospital must meet the staffing standards of the body that accredits it and the federal Medicare and Medicaid conditions of participation. Each must also run a clinical staffing committee: three managers and two employees at hospitals with 150 or fewer licensed beds, and five managers and four employees at larger ones. The hospital's chief nurse executive drafts a staffing plan and the committee finalizes one that meets patient needs. The hospital must give the plan to any staff member who asks. A no vote opposed the requirement. The Maryland House of Delegates passed it 96-35 over these votes and it was signed into law as Chapter 236 of 2026.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1671927,
+   "measure_id": "HB 711",
+   "vote_date": "2026-03-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 711, the Data Privacy Act, which walled personal data off from immigration enforcement. A company that decides how personal data is used may not knowingly sell a consumer's data to any federal, state or local government body that, in the previous six months, carried out or backed civil immigration enforcement by supplying staff or resources. Without a court warrant naming the exact data, such a company also may not answer subpoenas from those agencies or otherwise cooperate with them. The bill widens what counts as protected data, including location data and sensitive data, and makes matching changes to the public records law and to the rules on police database access. A yes vote put those limits on sharing personal data. The Maryland House of Delegates passed it 94-35 and it became law without the Governor's signature as Chapter 874 of 2026.",
+   "nay_description": "Voted against passing HB 711, the Data Privacy Act, which walled personal data off from immigration enforcement. A company that decides how personal data is used may not knowingly sell a consumer's data to any federal, state or local government body that, in the previous six months, carried out or backed civil immigration enforcement by supplying staff or resources. Without a court warrant naming the exact data, such a company also may not answer subpoenas from those agencies or otherwise cooperate with them. The bill widens what counts as protected data, including location data and sensitive data, and makes matching changes to the public records law and to the rules on police database access. A no vote opposed the limits. The Maryland House of Delegates passed it 94-35 over these votes and it became law without the Governor's signature as Chapter 874 of 2026.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1691962,
+   "measure_id": "HB 711",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 711, the Data Privacy Act, which walled personal data off from immigration enforcement. A company that decides how personal data is used may not knowingly sell a consumer's data to any federal, state or local government body that, in the previous six months, carried out or backed civil immigration enforcement by supplying staff or resources. Without a court warrant naming the exact data, such a company also may not answer subpoenas from those agencies or otherwise cooperate with them. The bill widens what counts as protected data, including location data and sensitive data, and makes matching changes to the public records law and to the rules on police database access. A yes vote put those limits on sharing personal data. The Maryland Senate passed it 28-8 and it became law without the Governor's signature as Chapter 874 of 2026.",
+   "nay_description": "Voted against passing HB 711, the Data Privacy Act, which walled personal data off from immigration enforcement. A company that decides how personal data is used may not knowingly sell a consumer's data to any federal, state or local government body that, in the previous six months, carried out or backed civil immigration enforcement by supplying staff or resources. Without a court warrant naming the exact data, such a company also may not answer subpoenas from those agencies or otherwise cooperate with them. The bill widens what counts as protected data, including location data and sensitive data, and makes matching changes to the public records law and to the rules on police database access. A no vote opposed the limits. The Maryland Senate passed it 28-8 over these votes and it became law without the Governor's signature as Chapter 874 of 2026.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1684982,
+   "measure_id": "HB 894",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 894, an Administration bill making it easier to build homes next to rail stations. Near a rail station with at least hourly weekday service, a local government generally may not set a minimum number of off-street parking spaces for housing or mixed-use projects within a quarter mile. It may do so only if a recent parking study backs the requirement and the state transportation department agrees. Future rezonings within half a mile must allow mixed-use development. Land owned by the state, Baltimore City or the regional transit authority next to such a station, under a state-approved development plan, is exempt from local limits on use, height and setbacks. Local control over environmental concerns, health and safety, and public facilities rules is untouched, and land zoned single-family on January 1, 2026 and college campus stations are carved out. A yes vote cleared local barriers to housing near transit. The Maryland House of Delegates passed it 100-32 and it was signed into law as Chapter 592 of 2026.",
+   "nay_description": "Voted against passing HB 894, an Administration bill making it easier to build homes next to rail stations. Near a rail station with at least hourly weekday service, a local government generally may not set a minimum number of off-street parking spaces for housing or mixed-use projects within a quarter mile. It may do so only if a recent parking study backs the requirement and the state transportation department agrees. Future rezonings within half a mile must allow mixed-use development. Land owned by the state, Baltimore City or the regional transit authority next to such a station, under a state-approved development plan, is exempt from local limits on use, height and setbacks. Local control over environmental concerns, health and safety, and public facilities rules is untouched, and land zoned single-family on January 1, 2026 and college campus stations are carved out. A no vote opposed overriding those local rules. The Maryland House of Delegates passed it 100-32 over these votes and it was signed into law as Chapter 592 of 2026.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1683978,
+   "measure_id": "HB 895",
+   "vote_date": "2026-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 895, an Administration bill banning personalised food pricing at big grocers. A food shop of at least 15,000 square feet, or a delivery service, may not use a shopper's personal data to set a price just for them on food that is exempt from sales tax. Nor may either use data about a protected class in a way that denies someone a benefit others get. Ordinary pricing is untouched: sales and loyalty discounts, subscription prices, price differences from shipping, taxes, location, supply or cost, prices offered to shoppers who agree to share data, and fixing a pricing error or a system outage. Breaking the ban is an unfair trade practice under state consumer law. A yes vote banned that personalised pricing on groceries. The Maryland House of Delegates passed it 100-31 and it was signed into law as Chapter 154 of 2026.",
+   "nay_description": "Voted against passing HB 895, an Administration bill banning personalised food pricing at big grocers. A food shop of at least 15,000 square feet, or a delivery service, may not use a shopper's personal data to set a price just for them on food that is exempt from sales tax. Nor may either use data about a protected class in a way that denies someone a benefit others get. Ordinary pricing is untouched: sales and loyalty discounts, subscription prices, price differences from shipping, taxes, location, supply or cost, prices offered to shoppers who agree to share data, and fixing a pricing error or a system outage. Breaking the ban is an unfair trade practice under state consumer law. A no vote opposed the ban. The Maryland House of Delegates passed it 100-31 over these votes and it was signed into law as Chapter 154 of 2026.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1685440,
+   "measure_id": "SB 141",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 141, which made election deepfakes a crime. A deepfake is an image, audio or video made or altered with artificial intelligence or similar technology to show a real person convincingly doing or saying something they did not. It is now a misdemeanor to knowingly or recklessly make, use or spread one carrying materially false election information. The aim must be to sway or block someone's vote, misstate how voting or counting works, affect a ballot petition, or push a voter for or against a candidate, and harm must result or be intended. The penalty is up to $5,000 and up to five years in prison. Satire and parody are exempt, as are certain required or news broadcasts. The bill also lets the state elections administrator correct election misinformation and go to court to have it taken down. A yes vote created the crime and the takedown power. The Maryland House of Delegates passed it 85-38 and it was signed into law as Chapter 444 of 2026.",
+   "nay_description": "Voted against passing SB 141, which made election deepfakes a crime. A deepfake is an image, audio or video made or altered with artificial intelligence or similar technology to show a real person convincingly doing or saying something they did not. It is now a misdemeanor to knowingly or recklessly make, use or spread one carrying materially false election information. The aim must be to sway or block someone's vote, misstate how voting or counting works, affect a ballot petition, or push a voter for or against a candidate, and harm must result or be intended. The penalty is up to $5,000 and up to five years in prison. Satire and parody are exempt, as are certain required or news broadcasts. The bill also lets the state elections administrator correct election misinformation and go to court to have it taken down. A no vote opposed creating them. The Maryland House of Delegates passed it 85-38 over these votes and it was signed into law as Chapter 444 of 2026.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1680521,
+   "measure_id": "SB 475",
+   "vote_date": "2026-04-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 475, the PACE Act, which limited using a defendant's art as evidence against them. Prosecutors have used defendants' song lyrics and other creative work as proof of guilt. In a criminal or juvenile case, such work is now inadmissible unless the judge finds all four of the following, more likely than not. The defendant meant it literally rather than as fiction. It is close in time and facts to the alleged offense. It bears on a disputed fact, and its value as proof outweighs the unfair prejudice it causes. Creative expression covers music, dance, performance and visual art, poetry, literature and film. Juvenile courts may still use it to steer a young person toward mental health services or a diversion program. A yes vote set that test before art can be used as evidence. The Maryland House of Delegates passed it 99-35 and it was signed into law as Chapter 517 of 2026.",
+   "nay_description": "Voted against passing SB 475, the PACE Act, which limited using a defendant's art as evidence against them. Prosecutors have used defendants' song lyrics and other creative work as proof of guilt. In a criminal or juvenile case, such work is now inadmissible unless the judge finds all four of the following, more likely than not. The defendant meant it literally rather than as fiction. It is close in time and facts to the alleged offense. It bears on a disputed fact, and its value as proof outweighs the unfair prejudice it causes. Creative expression covers music, dance, performance and visual art, poetry, literature and film. Juvenile courts may still use it to steer a young person toward mental health services or a diversion program. A no vote opposed limiting its use. The Maryland House of Delegates passed it 99-35 over these votes and it was signed into law as Chapter 517 of 2026.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1682274,
+   "measure_id": "SB 475",
+   "vote_date": "2026-04-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 475, the PACE Act, which limited using a defendant's art as evidence against them. Prosecutors have used defendants' song lyrics and other creative work as proof of guilt. In a criminal or juvenile case, such work is now inadmissible unless the judge finds all four of the following, more likely than not. The defendant meant it literally rather than as fiction. It is close in time and facts to the alleged offense. It bears on a disputed fact, and its value as proof outweighs the unfair prejudice it causes. Creative expression covers music, dance, performance and visual art, poetry, literature and film. Juvenile courts may still use it to steer a young person toward mental health services or a diversion program. A yes vote set that test before art can be used as evidence. The Maryland Senate passed it 32-10 and it was signed into law as Chapter 517 of 2026.",
+   "nay_description": "Voted against passing SB 475, the PACE Act, which limited using a defendant's art as evidence against them. Prosecutors have used defendants' song lyrics and other creative work as proof of guilt. In a criminal or juvenile case, such work is now inadmissible unless the judge finds all four of the following, more likely than not. The defendant meant it literally rather than as fiction. It is close in time and facts to the alleged offense. It bears on a disputed fact, and its value as proof outweighs the unfair prejudice it causes. Creative expression covers music, dance, performance and visual art, poetry, literature and film. Juvenile courts may still use it to steer a young person toward mental health services or a diversion program. A no vote opposed limiting its use. The Maryland Senate passed it 32-10 over these votes and it was signed into law as Chapter 517 of 2026.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "house",
+   "session": "2240",
+   "roll": 1684033,
+   "measure_id": "SB 937",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 937, the Maryland Fair Chance Housing Act, which limited criminal record screening by landlords. A landlord who owns or manages five or more rental units — not counting owner-occupied ones — may not ask a prospective tenant for a drug or alcohol test or for records from an addiction treatment program. A landlord who runs criminal background checks must run them on every applicant, and may only weigh a conviction after making a conditional offer, meaning an offer to rent that depends on what the check shows. Before taking an application fee the landlord must explain in writing how criminal history is used, that the applicant may show the record is wrong or point to rehabilitation and mitigating factors, and that each case is judged individually. Breaking the rules costs up to $500 a time, and the law replaces any comparable local ordinance. A yes vote set those limits on screening tenants by criminal record. The Maryland House of Delegates passed it 97-36 and it was signed into law as Chapter 752 of 2026.",
+   "nay_description": "Voted against passing SB 937, the Maryland Fair Chance Housing Act, which limited criminal record screening by landlords. A landlord who owns or manages five or more rental units — not counting owner-occupied ones — may not ask a prospective tenant for a drug or alcohol test or for records from an addiction treatment program. A landlord who runs criminal background checks must run them on every applicant, and may only weigh a conviction after making a conditional offer, meaning an offer to rent that depends on what the check shows. Before taking an application fee the landlord must explain in writing how criminal history is used, that the applicant may show the record is wrong or point to rehabilitation and mitigating factors, and that each case is judged individually. Breaking the rules costs up to $500 a time, and the law replaces any comparable local ordinance. A no vote opposed the limits. The Maryland House of Delegates passed it 97-36 over these votes and it was signed into law as Chapter 752 of 2026.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MD",
+   "chamber": "senate",
+   "session": "2240",
+   "roll": 1691964,
+   "measure_id": "SB 937",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 937, the Maryland Fair Chance Housing Act, which limited criminal record screening by landlords. A landlord who owns or manages five or more rental units — not counting owner-occupied ones — may not ask a prospective tenant for a drug or alcohol test or for records from an addiction treatment program. A landlord who runs criminal background checks must run them on every applicant, and may only weigh a conviction after making a conditional offer, meaning an offer to rent that depends on what the check shows. Before taking an application fee the landlord must explain in writing how criminal history is used, that the applicant may show the record is wrong or point to rehabilitation and mitigating factors, and that each case is judged individually. Breaking the rules costs up to $500 a time, and the law replaces any comparable local ordinance. A yes vote set those limits on screening tenants by criminal record. The Maryland Senate passed it 31-13 and it was signed into law as Chapter 752 of 2026.",
+   "nay_description": "Voted against passing SB 937, the Maryland Fair Chance Housing Act, which limited criminal record screening by landlords. A landlord who owns or manages five or more rental units — not counting owner-occupied ones — may not ask a prospective tenant for a drug or alcohol test or for records from an addiction treatment program. A landlord who runs criminal background checks must run them on every applicant, and may only weigh a conviction after making a conditional offer, meaning an offer to rent that depends on what the check shows. Before taking an application fee the landlord must explain in writing how criminal history is used, that the applicant may show the record is wrong or point to rehabilitation and mitigating factors, and that each case is judged individually. Breaking the rules costs up to $500 a time, and the law replaces any comparable local ordinance. A no vote opposed the limits. The Maryland Senate passed it 31-13 over these votes and it was signed into law as Chapter 752 of 2026.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  }
+ ]
+}
