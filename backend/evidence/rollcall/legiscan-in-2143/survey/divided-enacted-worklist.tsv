@@ -12,14 +12,14 @@ HB1004	B	4	house	2025-02-20	1494692	239	68	26	House - Third reading	Health care 
 HB1004	B	4	senate	2025-04-15	1548870	422	29	19	Senate - Third reading	Health care matters.	candidate: unbatched
 HB1004	B	4	house	2025-04-24	1557221		67	23	House - Rules Suspended. Conference Committee Report 1	Health care matters.	needs member-list check: LegiScan tally has no exact match in the official history
 HB1004	B	4	senate	2025-04-24	1557738	528	37	13	Senate - Rules Suspended. Conference Committee Report 1	Health care matters.	candidate: unbatched
-HB1006	B	4	house	2025-02-19	1493310		72	24	House - Third reading	Prosecutors.	needs member-list check: LegiScan tally has no exact match in the official history
-HB1006	B	4	house	2025-04-17	1551279		61	21	House - House concurred with Senate amendments	Prosecutors.	needs member-list check: LegiScan tally has no exact match in the official history
-HB1007	B	4	house	2025-02-13	1489075		67	25	House - Third reading	Energy generation resources.	needs member-list check: LegiScan tally has no exact match in the official history
-HB1007	B	4	senate	2025-04-15	1548809	423	36	13	Senate - Third reading	Energy generation resources.	candidate: unbatched
-HB1007	B	4	house	2025-04-22	1553293	512	63	23	House - Rules Suspended. House concurred with Senate amendments	Energy generation resources.	candidate: unbatched
-HB1008	B	4	house	2025-02-20	1494695	240	69	25	House - Third reading	Indiana-Illinois boundary adjustment commission.	candidate: unbatched
-HB1008	B	4	senate	2025-04-15	1548812	424	36	13	Senate - Third reading	Indiana-Illinois boundary adjustment commission.	candidate: unbatched
-HB1008	B	4	house	2025-04-17	1551012	478	64	23	House - House concurred with Senate amendments	Indiana-Illinois boundary adjustment commission.	candidate: unbatched
+HB1006	B	4	house	2025-02-19	1493310		72	24	House - Third reading	Prosecutors.	dropped: the final house roll's LegiScan member list contradicts the journal, the earlier house roll is a version trap, and the act carries two subjects
+HB1006	B	4	house	2025-04-17	1551279		61	21	House - House concurred with Senate amendments	Prosecutors.	dropped: the final house roll's LegiScan member list contradicts the journal, the earlier house roll is a version trap, and the act carries two subjects
+HB1007	B	4	house	2025-02-13	1489075		67	25	House - Third reading	Energy generation resources.	dropped: filter 5, three subjects and a contested direction; ratepayers fund new generation while the act also blocks plant retirements
+HB1007	B	4	senate	2025-04-15	1548809	423	36	13	Senate - Third reading	Energy generation resources.	dropped: filter 5, three subjects and a contested direction; ratepayers fund new generation while the act also blocks plant retirements
+HB1007	B	4	house	2025-04-22	1553293	512	63	23	House - Rules Suspended. House concurred with Senate amendments	Energy generation resources.	dropped: filter 5, three subjects and a contested direction; ratepayers fund new generation while the act also blocks plant retirements
+HB1008	B	4	house	2025-02-20	1494695	240	69	25	House - Third reading	Indiana-Illinois boundary adjustment commission.	dropped: filter 3, an advisory commission with no power and no research area that fits
+HB1008	B	4	senate	2025-04-15	1548812	424	36	13	Senate - Third reading	Indiana-Illinois boundary adjustment commission.	dropped: filter 3, an advisory commission with no power and no research area that fits
+HB1008	B	4	house	2025-04-17	1551012	478	64	23	House - House concurred with Senate amendments	Indiana-Illinois boundary adjustment commission.	dropped: filter 3, an advisory commission with no power and no research area that fits
 HB1037	B	4	house	2025-02-04	1479607		66	23	House - Third reading	Storm water management.	needs member-list check: LegiScan tally has no exact match in the official history
 HB1037	B	4	senate	2025-04-15	1548822	425	31	18	Senate - Third reading	Storm water management.	candidate: unbatched
 HB1037	B	4	house	2025-04-17	1550985	479	68	20	House - House concurred with Senate amendments	Storm water management.	candidate: unbatched
@@ -31,9 +31,9 @@ HB1064	B	4	senate	2025-04-15	1548834	426	30	19	Senate - Third reading	School tra
 HB1064	B	4	house	2025-04-17	1550990	480	64	24	House - House concurred with Senate amendments	School transfers.	candidate: unbatched
 HB1079	B	4	house	2025-04-16	1549561	462	64	21	House - House concurred with Senate amendments	Property matters.	candidate: unbatched
 HB1114	B	4	house	2025-02-13	1489093	155	69	24	House - Third reading	Driving without a license.	candidate: unbatched
-HB1115	B	4	house	2025-02-03	1478779		69	19	House - Third reading	Emergency possessory orders.	needs member-list check: LegiScan tally has no exact match in the official history
-HB1115	B	4	senate	2025-04-01	1532404	323	38	10	Senate - Third reading	Emergency possessory orders.	candidate: unbatched
-HB1115	B	4	house	2025-04-16	1549557	464	63	17	House - House concurred with Senate amendments	Emergency possessory orders.	candidate: unbatched
+HB1115	B	4	house	2025-02-03	1478779		69	19	House - Third reading	Emergency possessory orders.	dropped: filter 5, a crime ground and a lease-fraud ground point different ways and the burden of proof is raised for landlords and tenants alike
+HB1115	B	4	senate	2025-04-01	1532404	323	38	10	Senate - Third reading	Emergency possessory orders.	dropped: filter 5, a crime ground and a lease-fraud ground point different ways and the burden of proof is raised for landlords and tenants alike
+HB1115	B	4	house	2025-04-16	1549557	464	63	17	House - House concurred with Senate amendments	Emergency possessory orders.	dropped: filter 5, a crime ground and a lease-fraud ground point different ways and the burden of proof is raised for landlords and tenants alike
 HB1122	B	4	house	2025-02-04	1479619		70	19	House - Third reading	Unlawful encroachment.	needs member-list check: LegiScan tally has no exact match in the official history
 HB1122	B	4	senate	2025-03-11	1513525	225	39	10	Senate - Third reading	Unlawful encroachment.	candidate: unbatched
 HB1125	B	4	house	2025-02-10	1484846	109	70	18	House - Third reading	Earned wage access services.	candidate: unbatched
@@ -46,7 +46,7 @@ HB1348	B	4	house	2025-01-30	1477355	54	62	29	House - Third reading	Nonaccredited
 HB1348	B	4	senate	2025-03-25	1526217	285	32	15	Senate - Third reading	Nonaccredited nonpublic schools.	candidate: unbatched
 HB1390	B	4	senate	2025-04-08	1539783	361	38	11	Senate - Third reading	Bureau of motor vehicles.	candidate: unbatched
 HB1390	B	4	senate	2025-04-24	1556834	515	31	19	Senate - Rules Suspended. Conference Committee Report 1	Bureau of motor vehicles.	candidate: unbatched
-HB1393	B	4	house	2025-02-04	1479606	88	67	26	House - Third reading	Immigration notice.	candidate: unbatched
+HB1393	B	4	house	2025-02-04	1479606	88	67	26	House - Third reading	Immigration notice.	superseded: the measure is covered by its HB 1393 house concurrence (batch-01)
 HB1393	B	4	senate	2025-03-24	1524754	271	37	10	Senate - Third reading	Immigration notice.	batch-01
 HB1393	B	4	house	2025-04-16	1549534	472	58	19	House - House concurred with Senate amendments	Immigration notice.	batch-01
 HB1412	B	4	senate	2025-04-07	1538218	346	31	18	Senate - Third reading	Reporting of child abuse or neglect.	candidate: unbatched
@@ -76,10 +76,10 @@ HB1680	B	4	senate	2025-04-23	1555540	501	36	9	Senate - Rules Suspended. Conferen
 HB1680	B	4	house	2025-04-23	1555035	523	65	25	House - Rules Suspended. Conference Committee Report 1	Various elections matters.	candidate: unbatched
 SB0001	B	4	senate	2025-02-17	1491378	132	37	10	Senate - Third reading	Local government finance.	candidate: unbatched
 SB0001	B	4	house	2025-04-10	1543337	433	65	29	House - Third reading	Local government finance.	candidate: unbatched
-SB0002	B	4	house	2025-04-08	1539781	390	66	28	House - Third reading	Medicaid matters.	candidate: unbatched
-SB0002	B	4	senate	2025-04-17	1551292	470	37	10	Senate - Senate concurred with House amendments	Medicaid matters.	candidate: unbatched
-SB0010	B	4	senate	2025-02-04	1480028	66	39	11	Senate - Third reading	Voter registration.	candidate: unbatched
-SB0010	B	4	house	2025-04-01	1532383		66	25	House - Third reading	Voter registration.	needs member-list check: LegiScan tally has no exact match in the official history
+SB0002	B	4	house	2025-04-08	1539781	390	66	28	House - Third reading	Medicaid matters.	batch-03
+SB0002	B	4	senate	2025-04-17	1551292	470	37	10	Senate - Senate concurred with House amendments	Medicaid matters.	batch-03
+SB0010	B	4	senate	2025-02-04	1480028	66	39	11	Senate - Third reading	Voter registration.	dropped: the senate roll voted a different regime (version trap) and the house roll's LegiScan tally is one nay short of the journal, see CODE-FINDINGS section 2
+SB0010	B	4	house	2025-04-01	1532383		66	25	House - Third reading	Voter registration.	dropped: the senate roll voted a different regime (version trap) and the house roll's LegiScan tally is one nay short of the journal, see CODE-FINDINGS section 2
 SB0043	B	4	senate	2025-02-18	1492460	145	33	16	Senate - Third reading	Study of location of gambling operations.	candidate: unbatched
 SB0043	B	4	house	2025-03-31	1530948	331	64	26	House - Third reading	Study of location of gambling operations.	candidate: unbatched
 SB0043	B	4	senate	2025-04-23	1555021	487	37	11	Senate - Senate concurred with House amendments	Study of location of gambling operations.	candidate: unbatched
@@ -97,8 +97,8 @@ SB0281	B	4	house	2025-03-27	1528620	321	71	21	House - Third reading	Expungement.
 SB0287	B	4	senate	2025-02-17	1491394	140	26	20	Senate - Third reading	School board matters.	candidate: unbatched
 SB0287	B	4	house	2025-03-31	1530920	335	54	40	House - Third reading	School board matters.	candidate: unbatched
 SB0287	B	4	senate	2025-04-24	1556857	504	26	24	Senate - Senate concurred with House amendments	School board matters.	candidate: unbatched
-SB0289	B	4	senate	2025-02-06	1483504	80	34	13	Senate - Third reading	Unlawful discrimination.	candidate: unbatched
-SB0289	B	4	house	2025-04-14	1547488	441	67	27	House - Third reading	Unlawful discrimination.	candidate: unbatched
+SB0289	B	4	senate	2025-02-06	1483504	80	34	13	Senate - Third reading	Unlawful discrimination.	superseded: the measure is covered by its SB 289 senate conference report (batch-01)
+SB0289	B	4	house	2025-04-14	1547488	441	67	27	House - Third reading	Unlawful discrimination.	superseded: the measure is covered by its SB 289 house conference report (batch-01)
 SB0289	B	4	senate	2025-04-24	1556839	506	34	16	Senate - Rules Suspended. Conference Committee Report 1	Unlawful discrimination.	batch-01
 SB0289	B	4	house	2025-04-24	1556465	548	64	26	House - Rules Suspended. Conference Committee Report 1	Unlawful discrimination.	batch-01
 SB0318	B	4	house	2025-04-07	1538211	373	61	32	House - Third reading	Required disclosures and access of foreign media.	candidate: unbatched
@@ -117,27 +117,27 @@ SB0405	B	4	senate	2025-02-04	1480027	73	35	13	Senate - Third reading	Labor organ
 SB0405	B	4	house	2025-04-08	1539856	402	57	31	House - Third reading	Labor organization membership.	dropped: filter 5: the ban is written symmetrically (a government may not require or consider that contractor employees ARE members or ARE NOT members), so neither direction is honest.
 SB0405	B	4	senate	2025-04-16	1549851	462	29	9	Senate - Senate concurred with House amendments	Labor organization membership.	dropped: filter 5: the ban is written symmetrically (a government may not require or consider that contractor employees ARE members or ARE NOT members), so neither direction is honest.
 SB0409	B	4	senate	2025-02-20	1495551	191	30	19	Senate - Third reading	Employee absence for certain meetings.	candidate: unbatched
-SB0423	B	4	house	2025-04-15	1548365	449	67	29	House - Third reading	Small modular nuclear reactor pilot program.	candidate: unbatched
-SB0423	B	4	senate	2025-04-17	1551274	471	34	12	Senate - Senate concurred with House amendments	Small modular nuclear reactor pilot program.	candidate: unbatched
-SB0424	B	4	senate	2025-02-03	1479043	61	34	14	Senate - Third reading	Small modular nuclear reactor development costs.	candidate: unbatched
-SB0424	B	4	house	2025-03-20	1522403	291	59	30	House - Third reading	Small modular nuclear reactor development costs.	candidate: unbatched
-SB0424	B	4	senate	2025-03-25	1526255	297	32	15	Senate - Senate concurred with House amendments	Small modular nuclear reactor development costs.	candidate: unbatched
-SB0425	B	4	senate	2025-02-20	1495160	194	37	12	Senate - Third reading	Energy production zones.	candidate: unbatched
-SB0425	B	4	house	2025-04-15	1548363		59	38	House - Third reading	Energy production zones.	needs member-list check: LegiScan tally has no exact match in the official history
-SB0425	B	4	house	2025-04-24	1556454	550	51	40	House - Rules Suspended. Conference Committee Report 1	Energy production zones.	candidate: unbatched
-SB0425	B	4	senate	2025-04-24	1556750	509	31	19	Senate - Rules Suspended. Conference Committee Report 1	Energy production zones.	candidate: unbatched
+SB0423	B	4	house	2025-04-15	1548365	449	67	29	House - Third reading	Small modular nuclear reactor pilot program.	batch-03
+SB0423	B	4	senate	2025-04-17	1551274	471	34	12	Senate - Senate concurred with House amendments	Small modular nuclear reactor pilot program.	batch-03
+SB0424	B	4	senate	2025-02-03	1479043	61	34	14	Senate - Third reading	Small modular nuclear reactor development costs.	superseded: the measure is covered by its SB 424 senate concurrence (batch-03)
+SB0424	B	4	house	2025-03-20	1522403	291	59	30	House - Third reading	Small modular nuclear reactor development costs.	batch-03
+SB0424	B	4	senate	2025-03-25	1526255	297	32	15	Senate - Senate concurred with House amendments	Small modular nuclear reactor development costs.	batch-03
+SB0425	B	4	senate	2025-02-20	1495160	194	37	12	Senate - Third reading	Energy production zones.	dropped: filter 5, six subjects spanning state preemption of local zoning, general permit procedure and local moratoriums
+SB0425	B	4	house	2025-04-15	1548363		59	38	House - Third reading	Energy production zones.	dropped: filter 5, six subjects spanning state preemption of local zoning, general permit procedure and local moratoriums
+SB0425	B	4	house	2025-04-24	1556454	550	51	40	House - Rules Suspended. Conference Committee Report 1	Energy production zones.	dropped: filter 5, six subjects spanning state preemption of local zoning, general permit procedure and local moratoriums
+SB0425	B	4	senate	2025-04-24	1556750	509	31	19	Senate - Rules Suspended. Conference Committee Report 1	Energy production zones.	dropped: filter 5, six subjects spanning state preemption of local zoning, general permit procedure and local moratoriums
 SB0442	B	4	house	2025-04-15	1548345	451	76	19	House - Third reading	Instruction on human sexuality.	dropped: filter 5, consent instruction runs against the mandated fetal-development presentation and added consent-form friction
 SB0442	B	4	senate	2025-04-23	1555529	499	35	12	Senate - Rules Suspended. Conference Committee Report 1	Instruction on human sexuality.	dropped: filter 5, consent instruction runs against the mandated fetal-development presentation and added consent-form friction
 SB0442	B	4	house	2025-04-23	1555217	534	72	20	House - Rules Suspended. Conference Committee Report 1	Instruction on human sexuality.	dropped: filter 5, consent instruction runs against the mandated fetal-development presentation and added consent-form friction
 SB0448	B	4	house	2025-04-15	1548353	452	75	21	House - Third reading	Higher education and workforce development matters.	candidate: unbatched
-SB0450	B	4	senate	2025-02-10	1484850	92	33	16	Senate - Third reading	Article V convention.	candidate: unbatched
-SB0450	B	4	house	2025-03-24	1524703	300	69	27	House - Third reading	Article V convention.	candidate: unbatched
-SB0457	B	4	senate	2025-02-11	1486677	110	27	21	Senate - Third reading	Carbon dioxide sequestration.	candidate: unbatched
-SB0457	B	4	house	2025-03-20	1522407		55	37	House - Third reading	Carbon dioxide sequestration.	needs member-list check: LegiScan tally has no exact match in the official history
-SB0475	B	4	house	2025-04-09	1541701	410	71	23	House - Third reading	Physician noncompete agreements.	candidate: unbatched
+SB0450	B	4	senate	2025-02-10	1484850	92	33	16	Senate - Third reading	Article V convention.	batch-03
+SB0450	B	4	house	2025-03-24	1524703	300	69	27	House - Third reading	Article V convention.	batch-03
+SB0457	B	4	senate	2025-02-11	1486677	110	27	21	Senate - Third reading	Carbon dioxide sequestration.	dropped: filter 5, easier carbon storage permitting runs against weaker landowner notice and the abolished long-term monitoring fund; the house roll is also unusable
+SB0457	B	4	house	2025-03-20	1522407		55	37	House - Third reading	Carbon dioxide sequestration.	dropped: filter 5, easier carbon storage permitting runs against weaker landowner notice and the abolished long-term monitoring fund; the house roll is also unusable
+SB0475	B	4	house	2025-04-09	1541701	410	71	23	House - Third reading	Physician noncompete agreements.	superseded: the measure is covered by its SB 475 house conference report (batch-01)
 SB0475	B	4	house	2025-04-24	1556843	556	65	21	House - Rules Suspended. Conference Committee Report 1	Physician noncompete agreements.	batch-01
 SB0525	B	4	senate	2025-02-20	1495534	212	33	15	Senate - Third reading	Annexation.	candidate: unbatched
 SB0526	B	4	senate	2025-04-24	1556915	512	40	10	Senate - Rules Suspended. Conference Committee Report 1	Absentee ballot retraction.	batch-02
 SB0526	B	4	house	2025-04-24	1556507	552	65	26	House - Rules Suspended. Conference Committee Report 1	Absentee ballot retraction.	batch-02
-SJR0021	JR	4	senate	2025-01-27	1475019	22	31	18	Senate - Third reading	Terms of members of Congress.	candidate: unbatched
-SJR0021	JR	4	house	2025-03-17	1518503		66	30	House - Third reading	Terms of members of Congress.	needs member-list check: LegiScan tally has no exact match in the official history
+SJR0021	JR	4	senate	2025-01-27	1475019	22	31	18	Senate - Third reading	Terms of members of Congress.	dropped: filter 3, no research area fits an application for a convention on congressional term limits; the house roll is also unusable, see CODE-FINDINGS section 2
+SJR0021	JR	4	house	2025-03-17	1518503		66	30	House - Third reading	Terms of members of Congress.	dropped: filter 3, no research area fits an application for a convention on congressional term limits; the house roll is also unusable, see CODE-FINDINGS section 2

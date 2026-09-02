@@ -17,8 +17,10 @@ subset: the survey, the crosswalk, the people snapshot and each judged batch.
 - `survey/` — the desc histogram the config was written from, the fetch ledger, and
   `divided-enacted-worklist.tsv`, which carries one row per divided-and-enacted roll with
   its disposition.
-- `batch-01/` — judgments, the six roll evidence files, and the import ledgers.
-- `CODE-FINDINGS.md` — two Indiana defects recorded but deliberately not fixed here.
+- `batch-01/`, `batch-02/`, `batch-03/` — judgments, the roll evidence files, and the import
+  ledgers for each batch.
+- `CODE-FINDINGS.md` — the Indiana defects and source quirks recorded but deliberately not
+  fixed here.
 
 ## What the feed looks like
 
@@ -77,15 +79,31 @@ history line (`Third reading: passed; Roll Call 83: yeas 88, nays 3`), not from 
 **Every roll selected for a batch has its member list checked against the official
 roll-call PDF before it is judged.** LegiScan's Indiana member lists disagree with the
 official journal on 30 of the 1,010 rolls, and the disagreement is a member on the wrong
-side, not just a wrong count. See `CODE-FINDINGS.md` section 2. All six batch-01 rolls
-passed this check name by name.
+side, not just a wrong count. See `CODE-FINDINGS.md` section 2. Every roll used in batches
+01 to 03 passed this check name by name. Batch-03 found four rolls that did not, and dropped
+all four along with the measures that depended on them.
+
+The tools that do these checks are in `tools/`.
+
+## Reading a bill
+
+Two things are worth doing the same way every batch.
+
+**Read the annotated text, not plain `pdftotext` output.** Indiana prints additions in bold
+and deletions in roman with a struck rule, and `pdftotext` flattens both into ordinary text.
+`pdftohtml -xml` keeps the bold, so additions can be marked and read directly. See
+`CODE-FINDINGS.md` section 4.
+
+**Take the version stack from the LegiScan dataset.** Each bill's JSON carries a dated link
+for every printed version, so the version a roll actually voted on can be identified by date
+instead of by guessing a filename. See `CODE-FINDINGS.md` section 5.
 
 ## State of the work
 
-Batches 01 and 02 are imported on the local `voteapp` database only: **434 records across
-101 candidates with 324 area tags, over 5 measures and 8 rolls.** **Production holds no
+Batches 01 to 03 are imported on the local `voteapp` database only: **820 records across 102
+candidates with 666 area tags, over nine measures and sixteen rolls.** **Production holds no
 Indiana records.**
 
-63 measures and 119 divided-and-enacted rolls remain, each dispositioned in
-`survey/divided-enacted-worklist.tsv`. The 2026 Regular Session (LegiScan session 2234) is
-complete and has never been surveyed.
+46 measures and 89 divided-and-enacted rolls remain, each dispositioned in
+`survey/divided-enacted-worklist.tsv`; three still carry the `needs member-list check` flag.
+The 2026 Regular Session (LegiScan session 2234) is complete and has never been surveyed.

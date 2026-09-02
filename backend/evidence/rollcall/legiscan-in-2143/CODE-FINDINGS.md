@@ -51,10 +51,25 @@ A wrong side is much worse than a wrong count: the fan-out would write a record 
 named legislator voted the opposite of how they actually voted.
 
 **How the recipe handles it.** Every roll selected for a batch has its member list compared
-name by name against the official roll-call PDF before it is judged. All six batch-01 rolls
-passed. The worklist in `survey/divided-enacted-worklist.tsv` marks the 12
+name by name against the official roll-call PDF before it is judged. All six batch-01 rolls, both batch-02 rolls and all
+eight batch-03 rolls passed. The worklist in `survey/divided-enacted-worklist.tsv` marks the 12
 divided-and-enacted rolls whose LegiScan tally has no exact match in the official history,
 so a later batch knows to treat them with extra care rather than stumbling onto them.
+
+**What batch-03 learned: a flagged roll is unusable either way.** Four of the twenty-three
+rolls examined for batch-03 disagreed with the journal, and every one of them had already
+been flagged in the worklist. Three were wrong-side errors — SJ 21 Roll Call 273 has
+Rep. Mayfield as a nay where the journal has a yea, HB 1006 Roll Call 493 has Rep. Baird as
+a nay where the journal has him excused, and SB 457 Roll Call 293 has Rep. Pryor as a nay
+where the journal has a yea. Those cannot be imported at all.
+
+The fourth looked survivable and is not. On SB 10 Roll Call 340 LegiScan records
+Rep. Dvorak as not voting where the journal records a nay. No false record would be written
+for him; he would simply get none. But the judge requires each description to cite its own
+roll's tally, and LegiScan's tally is 66-25 where Indiana's journal says 66-26. Publishing
+the smaller number would misstate the official record, so the roll is unusable too. **A
+flagged roll that fails the member-list check is dropped, whichever direction the error
+runs.** Both SB 10 and HB 1006 were dropped from batch-03 for this reason.
 
 **Why this is not fixed in code.** The importer's evidence hash pins the LegiScan roll-call
 element, which is the right behaviour: the stored evidence must be what the source served.
@@ -86,3 +101,36 @@ and John L. Bartlett in House District 95, so the name alone is ambiguous and th
 proposer's requirement that a match be unique in both directions is what stopped it. The
 district settles the identity. This is the Maryland "two Mark Fishers" trap recurring, and
 the uniqueness rule is what prevented it.
+
+## 4. `pdftotext` hides what an Indiana bill deletes, and `pdftohtml` does not
+
+Indiana prints an amendment in three styles, and says so on the first page of every enrolled
+act: existing statute text in roman, additions in bold, and deletions in roman with a rule
+struck through. `pdftotext` flattens all three into identical plain text. That is what made
+the batch-01 description of SB 289 materially wrong — the words "meet the definition of a
+minority" read as operative text when they were struck.
+
+`pdftohtml -xml` keeps the font of every run, and additions are the only one of the three
+styles that uses a bold font. Rendering a bill with every bold run wrapped in markers makes
+the additions visible directly, and the roman text sitting next to an addition is then
+either existing law or the words being replaced. Batch-03 read every enacted text this way.
+The residue is small: only a claim that turns on what an amendment *removed* still needs the
+page rendered as an image, and one such claim in batch-03 was checked that way.
+
+The deletion rule itself is drawn as a graphic, not encoded as a font, so it cannot be
+recovered from the text layer at all. That is the reason the residue exists.
+
+## 5. Bill versions should come from the dataset, not from the filename
+
+Bill version PDFs live at
+`iga.in.gov/pdf-documents/124/2025/<chamber>/bills/<BILL>/<BILL>.<nn>.<STAGE>.pdf`, and the
+`<nn>` sequence number cannot be predicted. Probing for it wastes requests and misses files.
+The LegiScan bill JSON already carries a dated `state_link` for every printed version, so the
+whole version stack can be listed and fetched with no guessing, and the dates give an exact
+mapping from a roll's date to the text that roll voted on. Joint resolutions sit under
+`/resolutions/SJ00nn/` rather than `/bills/`, which the dataset links get right and a guessed
+filename does not.
+
+One transport detail: iga.in.gov returns its 691-byte JavaScript shell with a `200` status
+for every PDF request that does not carry a browser `Accept` and `Referer` header. A size
+check alone reads that as a missing file.
