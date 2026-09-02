@@ -1,0 +1,94 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2148",
+      "roll": 1519986,
+      "measure_id": "HB 30",
+      "vote_date": "2025-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 30, which would have made each county's probate judge audit the ballots from one precinct after every county and statewide general election. The county canvassing board would have picked the precinct and the race at random, and the audit would have had to finish before the county certified its returns. Results would have gone to the Secretary of State to post for the public, with poll watchers and reporters allowed to watch the count. The Alabama House of Representatives passed it 63-30, but the Senate never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 30, which would have made each county's probate judge audit the ballots from one precinct after every county and statewide general election. The county canvassing board would have picked the precinct and the race at random, and the audit would have had to finish before the county certified its returns. Results would have gone to the Secretary of State to post for the public, with poll watchers and reporters allowed to watch the count. The Alabama House of Representatives passed it 63-30 over these votes, but the Senate never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2148",
+      "roll": 1551126,
+      "measure_id": "HB 7",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 7, the Laken Riley Act, which would have let state and local police sign agreements with federal agencies to help enforce immigration law. Under such an agreement, an officer could arrest someone on probable cause of being in the country illegally, and could hold and move that person to a federal facility. Jails would have had to try to determine each person's immigration status, call a federal center when someone had no papers, and hold that person when the federal government asked. The Alabama House of Representatives passed it 74-26, but the Senate never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 7, the Laken Riley Act, which would have let state and local police sign agreements with federal agencies to help enforce immigration law. Under such an agreement, an officer could arrest someone on probable cause of being in the country illegally, and could hold and move that person to a federal facility. Jails would have had to try to determine each person's immigration status, call a federal center when someone had no papers, and hold that person when the federal government asked. The Alabama House of Representatives passed it 74-26 over these votes, but the Senate never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2148",
+      "roll": 1486877,
+      "measure_id": "HB 29",
+      "vote_date": "2025-02-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 29, which would have required people drawing unemployment benefits to contact more employers each week to stay eligible. The weekly minimum would have risen from three employers to five for anyone living in a county of 20,000 or more people, and stayed at three in smaller counties. Claimants would have had to show proof of their job search each week, could not count the same employer twice unless it was hiring again, and the state would have checked five percent of those proofs at random. The Alabama House of Representatives passed it 76-25, but the Senate never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 29, which would have required people drawing unemployment benefits to contact more employers each week to stay eligible. The weekly minimum would have risen from three employers to five for anyone living in a county of 20,000 or more people, and stayed at three in smaller counties. Claimants would have had to show proof of their job search each week, could not count the same employer twice unless it was hiring again, and the state would have checked five percent of those proofs at random. The Alabama House of Representatives passed it 76-25 over these votes, but the Senate never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2148",
+      "roll": 1522711,
+      "measure_id": "HB 234",
+      "vote_date": "2025-03-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 234, called Alyssa's Law, which would have given school staff wearable panic buttons that call police directly. By October 2030, and only if the state set aside money for it, every school board and charter school would have had to decide which staff carry a device, hand them out, and train people to use them. The device would have had to report the caller's location down to the room and floor, and the state school board would have approved the vendors. The Alabama House of Representatives passed it 58-30, but the Senate never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 234, called Alyssa's Law, which would have given school staff wearable panic buttons that call police directly. By October 2030, and only if the state set aside money for it, every school board and charter school would have had to decide which staff carry a device, hand them out, and train people to use them. The device would have had to report the caller's location down to the room and floor, and the state school board would have approved the vendors. The Alabama House of Representatives passed it 58-30 over these votes, but the Senate never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2148",
+      "roll": 1551361,
+      "measure_id": "HB 247",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 247, the Gulf of America Act, which would have renamed the Gulf of Mexico as the Gulf of America everywhere in Alabama law. State and local offices and their workers would have had to use the new name on new maps, papers, school materials, websites, and official messages. A nearly identical bill, House Bill 2, passed both chambers the following year and became law. The Alabama House of Representatives passed it 72-26, but the Senate never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 247, the Gulf of America Act, which would have renamed the Gulf of Mexico as the Gulf of America everywhere in Alabama law. State and local offices and their workers would have had to use the new name on new maps, papers, school materials, websites, and official messages. A nearly identical bill, House Bill 2, passed both chambers the following year and became law. The Alabama House of Representatives passed it 72-26 over these votes, but the Senate never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
