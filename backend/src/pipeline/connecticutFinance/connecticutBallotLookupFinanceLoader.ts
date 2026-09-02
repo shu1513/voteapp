@@ -28,7 +28,7 @@ const CONNECTICUT_ECRIS_INDEPENDENT_EXPENDITURE_SEARCH_URL =
   "https://seec.ct.gov/eCrisReporting/SearchingIndependentExpenditure.aspx";
 // See connecticutOutsideSpendingAggregator.ts for why each of these is out.
 const CONNECTICUT_OUTSIDE_COVERAGE_NOTE =
-  "Connecticut totals count independent expenditures that SEEC Form 40 filers reported as paid and tied to this one candidate; expenditures not yet paid, lines naming several candidates at once, and party committee organization expenditures are not included.";
+  "Connecticut totals count independent expenditures that SEEC Form 40 filers reported as paid and tied to this one candidate; expenditures not yet paid, lines naming several candidates at once, and spending reported on other SEEC forms (party and PAC statements, and reports by spenders that are not committees) are not included.";
 
 type ConnecticutFinanceSummaryRow = {
   candidate_id: string;

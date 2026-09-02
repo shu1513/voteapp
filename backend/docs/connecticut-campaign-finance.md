@@ -30,7 +30,11 @@ A line counts toward a candidate only when all of these hold:
 - Its form section is "Expenses Paid by Committee". "Expenses Incurred but Not Paid" lines reappear as paid lines once paid (verified: Impact CT / Landscape Media $500, Section I on the 01/20 report and Section G on the 01/23 report), so counting both would double-count. Reimbursement itemizations are excluded too.
 - Its amount is positive and its file year is the election year.
 
-Every remaining line is a distinct expenditure: same-amount lines with the same payee and date are separate Section G entries in the filed PDF, one per candidate. Groups are keyed by normalized committee name because this search exposes no committee id. SEEC Form 20 rows (party and PAC statements) are excluded: their candidate-tagged lines are organization expenditures or contributions that the candidate's own receipts already count.
+Every remaining line is a distinct expenditure: same-amount lines with the same payee and date are separate Section G entries in the filed PDF, one per candidate. Groups are keyed by normalized committee name because this search exposes no committee id.
+
+Other forms the search can return are excluded, checked against 2024 and 2026: SEEC Form 20 (party and PAC statements) candidate-tagged lines were all town-committee organization expenditures or contributions to committees, and the search row cannot tell a PAC's rare independent expenditure apart from those; SEEC Form 26 (spenders that are not committees) had two rows, both with blank amounts naming several candidates; SEEC Form 22 had none; SEEC Form 8 is registration. Revisit if a general-election check shows Form 22/26 rows with amounts.
+
+Because eCRIS names no district, two candidates with the same name (after nickname expansion) running for the same office in the same year cannot be told apart. The batch sync checks the whole Connecticut roster for that year and leaves outside spending untouched for any such pair, with a warning, rather than guess.
 
 A successful yearly fetch is authoritative: a candidate no line names gets zero totals and no groups, which clears superseded data. When the year has no cached expenditure artifact, the sync leaves stored outside-spending data untouched and only refreshes direct receipts. The ballot response carries an `outside_coverage_note` naming these exclusions.
 
@@ -51,7 +55,7 @@ The gate is explicit. The module does not run for every `statewide`, `state_uppe
 
 ## Runtime Flow
 
-1. Raw-data refresh downloads/caches the eCRIS candidate/exploratory committee receipts CSV for the current election year. The independent-expenditure refresh searches eCRIS for the year's SEEC Form 40 lines and caches them as `<year>_independent_expenditures.json` in the same directory.
+1. Raw-data refresh downloads/caches the eCRIS candidate/exploratory committee receipts CSV for the current election year, then searches eCRIS for the year's SEEC Form 40 independent-expenditure lines and caches them as `<year>_independent_expenditures.json` in the same directory (a failed search is reported in the job result and does not undo the receipts refresh).
 2. Candidate profile enrichment links a candidate to an eligible future Connecticut election.
 3. The enricher enqueues one deduped Connecticut finance sync batch job for the day.
 4. The sync batch scans eligible Connecticut candidate-election links that do not already have active finance links.
@@ -98,7 +102,7 @@ Refresh raw eCRIS receipts manually:
 npm run connecticut-candidates:finance:raw:refresh -- --year=2026
 ```
 
-Refresh the year's independent expenditures manually (same flag gate as the raw refresh; not on the daily scheduler yet):
+Refresh the year's independent expenditures manually (same flag gate as the raw refresh; the daily raw-data refresh job also does this after the receipts CSV):
 
 ```bash
 npm run connecticut-candidates:finance:ie:refresh -- --year=2026

@@ -9,10 +9,16 @@
 //   window that comes back full until every window is under the cap. A
 //   single day that is still full is a hard error, never silent truncation.
 // - Only SEEC Form 40 documents (independent-expenditure filers, periodic
-//   and 24-hour reports) are requested. SEEC Form 20 rows are party/PAC
-//   statements whose candidate-tagged lines are organization expenditures or
-//   contributions (money the candidate's own receipts already count), and
-//   SEEC Form 8 rows are registration amendments with no amount.
+//   and 24-hour reports) are requested. The other forms this search can
+//   return were checked for 2024 and 2026 and none carries a usable
+//   candidate-level independent expenditure: SEEC Form 20 (party/PAC
+//   statements) candidate-tagged lines were all town-committee organization
+//   expenditures or contributions to committees, though a PAC may in
+//   principle report an independent expenditure there and the search row
+//   does not say which; SEEC Form 26 (non-committee spenders) had two rows
+//   with blank amounts naming several candidates; SEEC Form 22 had none;
+//   SEEC Form 8 rows are registration amendments with no amount. Including
+//   those forms would need per-row proof this search does not provide.
 // - Show History = No returns only the current version of each document.
 
 import {

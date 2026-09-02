@@ -54,6 +54,7 @@ describe("connecticutEcrisRawDataRefreshScheduler", () => {
       year: 2026,
       status: "disabled",
       refresh: null,
+      independentExpenditures: null,
     });
     expect(refreshConnecticutEcrisArtifactCache).not.toHaveBeenCalled();
   });
@@ -114,6 +115,18 @@ describe("connecticutEcrisRawDataRefreshScheduler", () => {
       );
       return { ...actual, refreshConnecticutEcrisArtifactCache };
     });
+    const fetchResult = { year: 2026, sourceUrl: "https://seec.ct.gov/ie", rows: [], searchWindows: [] };
+    const fetchConnecticutEcrisIndependentExpenditures = vi.fn().mockResolvedValue(fetchResult);
+    vi.doMock("../../src/pipeline/connecticutFinance/connecticutEcrisIndependentExpenditureClient.js", () => ({
+      fetchConnecticutEcrisIndependentExpenditures,
+    }));
+    const writeConnecticutEcrisIndependentExpenditureCache = vi.fn().mockResolvedValue({
+      filePath: "/cache/2026_independent_expenditures.json",
+      artifact: { version: 1, year: 2026, fetchedAt: "2026-09-01T00:00:00.000Z", rowCount: 0, rows: [] },
+    });
+    vi.doMock("../../src/pipeline/connecticutFinance/connecticutEcrisIndependentExpenditureCache.js", () => ({
+      writeConnecticutEcrisIndependentExpenditureCache,
+    }));
 
     const { runConnecticutEcrisRawDataRefreshJob } = await import(
       "../../src/scheduler/connecticutEcrisRawDataRefreshScheduler.js"
@@ -135,7 +148,15 @@ describe("connecticutEcrisRawDataRefreshScheduler", () => {
       year: 2026,
       status: "unchanged",
       refresh,
+      independentExpenditures: {
+        status: "refreshed",
+        filePath: "/cache/2026_independent_expenditures.json",
+        rowCount: 0,
+        fetchedAt: "2026-09-01T00:00:00.000Z",
+      },
     });
+    expect(fetchConnecticutEcrisIndependentExpenditures).toHaveBeenCalledWith({ year: 2026, timeoutMs: 5000 });
+    expect(writeConnecticutEcrisIndependentExpenditureCache).toHaveBeenCalledWith({ cacheDir: "/cache", fetchResult });
     expect(refreshConnecticutEcrisArtifactCache).toHaveBeenCalledWith({
       year: 2026,
       transactionType: "receipts",
@@ -147,6 +168,71 @@ describe("connecticutEcrisRawDataRefreshScheduler", () => {
       force: true,
       timeoutMs: 5000,
     });
+  });
+
+  it("keeps the receipts refresh when the independent expenditure search fails", async () => {
+    process.env.CONNECTICUT_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.CONNECTICUT_ECRIS_RAW_DATA_REFRESH_ENABLED = "true";
+
+    const refreshConnecticutEcrisArtifactCache = vi.fn().mockResolvedValue({ status: "downloaded" });
+    vi.doMock("../../src/pipeline/connecticutFinance/connecticutEcrisArtifactCache.js", async () => {
+      const actual = await vi.importActual<object>(
+        "../../src/pipeline/connecticutFinance/connecticutEcrisArtifactCache.js"
+      );
+      return { ...actual, refreshConnecticutEcrisArtifactCache };
+    });
+    vi.doMock("../../src/pipeline/connecticutFinance/connecticutEcrisIndependentExpenditureClient.js", () => ({
+      fetchConnecticutEcrisIndependentExpenditures: vi.fn().mockRejectedValue(new Error("eCRIS answered 503")),
+    }));
+    const writeConnecticutEcrisIndependentExpenditureCache = vi.fn();
+    vi.doMock("../../src/pipeline/connecticutFinance/connecticutEcrisIndependentExpenditureCache.js", () => ({
+      writeConnecticutEcrisIndependentExpenditureCache,
+    }));
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+
+    const { runConnecticutEcrisRawDataRefreshJob } = await import(
+      "../../src/scheduler/connecticutEcrisRawDataRefreshScheduler.js"
+    );
+
+    const result = await runConnecticutEcrisRawDataRefreshJob({ triggeredBy: "daily", year: 2026, cacheDir: "/cache" });
+
+    expect(result).toMatchObject({
+      status: "downloaded",
+      independentExpenditures: { status: "failed", error: "eCRIS answered 503" },
+    });
+    expect(writeConnecticutEcrisIndependentExpenditureCache).not.toHaveBeenCalled();
+    expect(warn).toHaveBeenCalled();
+  });
+
+  it("does not search independent expenditures for a non-receipts artifact job", async () => {
+    process.env.CONNECTICUT_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.CONNECTICUT_ECRIS_RAW_DATA_REFRESH_ENABLED = "true";
+
+    vi.doMock("../../src/pipeline/connecticutFinance/connecticutEcrisArtifactCache.js", async () => {
+      const actual = await vi.importActual<object>(
+        "../../src/pipeline/connecticutFinance/connecticutEcrisArtifactCache.js"
+      );
+      return { ...actual, refreshConnecticutEcrisArtifactCache: vi.fn().mockResolvedValue({ status: "unchanged" }) };
+    });
+    const fetchConnecticutEcrisIndependentExpenditures = vi.fn();
+    vi.doMock("../../src/pipeline/connecticutFinance/connecticutEcrisIndependentExpenditureClient.js", () => ({
+      fetchConnecticutEcrisIndependentExpenditures,
+    }));
+
+    const { runConnecticutEcrisRawDataRefreshJob } = await import(
+      "../../src/scheduler/connecticutEcrisRawDataRefreshScheduler.js"
+    );
+
+    const result = await runConnecticutEcrisRawDataRefreshJob({
+      triggeredBy: "manual",
+      year: 2026,
+      transactionType: "disbursements",
+      committeeType: "party_pac",
+      period: "calendar",
+    });
+
+    expect(result.independentExpenditures).toBeNull();
+    expect(fetchConnecticutEcrisIndependentExpenditures).not.toHaveBeenCalled();
   });
 
   it("upserts a daily scheduler with eCRIS defaults", async () => {

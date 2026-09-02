@@ -17,6 +17,10 @@ import {
 } from "./connecticutEcrisIndependentExpenditureCache.js";
 import type { ConnecticutEcrisIndependentExpenditureRow } from "./connecticutEcrisIndependentExpenditureParsers.js";
 import {
+  connecticutOutsideSpendingIdentityKey,
+  findConnecticutAmbiguousOutsideSpendingIdentities,
+} from "./connecticutOutsideSpendingAggregator.js";
+import {
   syncConnecticutCandidateFinance,
   type ConnecticutCandidateFinanceSyncResult,
 } from "./connecticutCandidateFinanceSync.js";
@@ -272,6 +276,65 @@ async function loadIndependentExpenditureDataForYear(input: {
   };
 }
 
+type ConnecticutRosterIdentityRow = {
+  election_year: number;
+  candidate_name: string;
+  office_name: string;
+};
+
+/**
+ * Per election year, the outside-spending identities (office + name) that
+ * two or more Connecticut candidates share. Every candidate of the year is
+ * considered, whatever their link or status: a namesake who lost a primary
+ * is still a valid eCRIS target and would otherwise receive this candidate's
+ * spending.
+ */
+async function listAmbiguousOutsideSpendingIdentitiesByYear(
+  db: Queryable,
+  years: readonly number[]
+): Promise<Map<number, Set<string>>> {
+  const result = await db.query<ConnecticutRosterIdentityRow>(
+    `
+      SELECT
+        date_part('year', election.election_date)::int AS election_year,
+        COALESCE(
+          NULLIF(trim(candidate.display_name), ''),
+          NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), '')
+        ) AS candidate_name,
+        office.canonical_name AS office_name
+      FROM public.candidate_elections AS candidate_election
+      JOIN public.candidates AS candidate
+        ON candidate.id = candidate_election.candidate_id
+      JOIN public.elections AS election
+        ON election.id = candidate_election.election_id
+      JOIN public.districts AS district
+        ON district.id = election.district_id
+      JOIN public.offices AS office
+        ON office.id = election.office_id
+      WHERE district.state = 'CT'
+        AND election.race_type = 'office'
+        AND candidate.deleted_at IS NULL
+        AND date_part('year', election.election_date)::int = ANY($1::int[])
+    `,
+    [years]
+  );
+  const rowsByYear = new Map<number, ConnecticutRosterIdentityRow[]>();
+  for (const row of result.rows) {
+    if (!row.candidate_name || !row.office_name) continue;
+    const rows = rowsByYear.get(row.election_year) ?? [];
+    rows.push(row);
+    rowsByYear.set(row.election_year, rows);
+  }
+  return new Map(
+    [...rowsByYear.entries()].map(([year, rows]) => [
+      year,
+      findConnecticutAmbiguousOutsideSpendingIdentities(
+        rows.map((row) => ({ officeName: row.office_name, candidateName: row.candidate_name }))
+      ),
+    ])
+  );
+}
+
 async function loadAutoLinkReceiptRowsForYear(input: {
   year: number;
   candidates: readonly ConnecticutFinanceAutoLinkCandidateElection[];
@@ -519,6 +582,11 @@ export async function syncDueConnecticutCandidateFinance(
     }
   }
 
+  const ambiguousIdentitiesByYear =
+    independentExpenditureDataByYear.size > 0
+      ? await listAmbiguousOutsideSpendingIdentitiesByYear(input.db, [...independentExpenditureDataByYear.keys()])
+      : new Map<number, Set<string>>();
+
   const results: ConnecticutCandidateFinanceBatchSyncItemResult[] = [];
   for (const row of due.rows) {
     const receiptDataLoadError = receiptDataLoadErrorsByYear.get(row.electionYear);
@@ -535,7 +603,19 @@ export async function syncDueConnecticutCandidateFinance(
     }
 
     const receiptData = receiptDataByYear.get(row.electionYear);
-    const independentExpenditureData = independentExpenditureDataByYear.get(row.electionYear);
+    let independentExpenditureData = independentExpenditureDataByYear.get(row.electionYear);
+    if (
+      independentExpenditureData &&
+      ambiguousIdentitiesByYear
+        .get(row.electionYear)
+        ?.has(connecticutOutsideSpendingIdentityKey({ officeName: row.officeName, candidateName: row.candidateName }))
+    ) {
+      console.warn(
+        `Connecticut outside spending skipped for ${row.candidateName} (${row.officeName}, ${row.electionYear}): ` +
+          `another ${row.electionYear} candidate for that office shares the name and eCRIS names no district`
+      );
+      independentExpenditureData = undefined;
+    }
     const committeeKey = normalizeCommitteeId(row.committeeId);
     try {
       const result = await syncFn({

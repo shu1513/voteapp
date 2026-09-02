@@ -3,6 +3,8 @@ import { describe, expect, it } from "vitest";
 import type { ConnecticutEcrisIndependentExpenditureRow } from "../../../src/pipeline/connecticutFinance/connecticutEcrisIndependentExpenditureParsers.js";
 import {
   aggregateConnecticutOutsideSpending,
+  connecticutOutsideSpendingIdentityKey,
+  findConnecticutAmbiguousOutsideSpendingIdentities,
   normalizeConnecticutOutsideCommitteeId,
 } from "../../../src/pipeline/connecticutFinance/connecticutOutsideSpendingAggregator.js";
 
@@ -204,6 +206,31 @@ describe("connecticutOutsideSpendingAggregator", () => {
     expect(normalizeConnecticutOutsideCommitteeId("Impact CT, Inc.")).toBe("IMPACT CT INC");
     expect(normalizeConnecticutOutsideCommitteeId("  Hands  Off Our Schools ")).toBe("HANDS OFF OUR SCHOOLS");
     expect(normalizeConnecticutOutsideCommitteeId("Café & Vote PAC")).toBe("CAFE AND VOTE PAC");
+  });
+
+  it("flags same-name candidates for one office as ambiguous, including nickname collisions", () => {
+    const house = "State Lower Chamber Legislator";
+    const roster = [
+      { officeName: house, candidateName: "Robert Smith" },
+      { officeName: house, candidateName: "Bob Smith" },
+      { officeName: house, candidateName: "Jane Q Doe" },
+      { officeName: "State Senator", candidateName: "Jane Doe" },
+      { officeName: "State Senator", candidateName: "Robert Smith" },
+    ];
+
+    const ambiguous = findConnecticutAmbiguousOutsideSpendingIdentities(roster);
+
+    expect(ambiguous).toEqual(
+      new Set([
+        connecticutOutsideSpendingIdentityKey({ officeName: house, candidateName: "Robert Smith" }),
+        connecticutOutsideSpendingIdentityKey({ officeName: house, candidateName: "Bob Smith" }),
+      ])
+    );
+    expect(ambiguous.has(connecticutOutsideSpendingIdentityKey({ officeName: "State Senator", candidateName: "Robert Smith" }))).toBe(false);
+    expect(findConnecticutAmbiguousOutsideSpendingIdentities([])).toEqual(new Set());
+    expect(connecticutOutsideSpendingIdentityKey({ officeName: " Governor ", candidateName: "Erin E. Stewart" })).toBe(
+      connecticutOutsideSpendingIdentityKey({ officeName: "Governor", candidateName: "erin e stewart" })
+    );
   });
 
   it("validates inputs", () => {

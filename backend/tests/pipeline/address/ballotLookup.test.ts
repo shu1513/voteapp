@@ -3190,7 +3190,7 @@ describe("lookupElectionDetailById", () => {
         support_total: null,
         oppose_total: null,
         outside_coverage_note:
-          "Connecticut totals count independent expenditures that SEEC Form 40 filers reported as paid and tied to this one candidate; expenditures not yet paid, lines naming several candidates at once, and party committee organization expenditures are not included.",
+          "Connecticut totals count independent expenditures that SEEC Form 40 filers reported as paid and tied to this one candidate; expenditures not yet paid, lines naming several candidates at once, and spending reported on other SEEC forms (party and PAC statements, and reports by spenders that are not committees) are not included.",
         top_supporting_groups: [],
         top_opposing_groups: [],
         top_supporting_industries: [],

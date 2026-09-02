@@ -146,6 +146,8 @@ describe("connecticutCandidateFinanceBatchSync", () => {
       db,
       syncConnecticutCandidateFinanceFn: vi.fn(),
       now: new Date("2026-06-01T00:00:00.000Z"),
+      // A missing cache dir keeps the test off any real local artifact.
+      rawDataCacheDir: "/tmp/voteapp-missing-connecticut-ecris-cache",
       autoLinkMissingLinks: false,
     });
 
@@ -213,6 +215,8 @@ describe("connecticutCandidateFinanceBatchSync", () => {
       db,
       syncConnecticutCandidateFinanceFn,
       now: new Date("2026-06-01T00:00:00.000Z"),
+      // A missing cache dir keeps the test off any real local artifact.
+      rawDataCacheDir: "/tmp/voteapp-missing-connecticut-ecris-cache",
       maxCandidates: 2,
       staleAfterDays: 3,
       electionLookbackDays: 30,
@@ -362,6 +366,62 @@ describe("connecticutCandidateFinanceBatchSync", () => {
     expect(governorCall).toBeDefined();
     expect(governorCall.independentExpenditureRows).toBeUndefined();
     expect(governorCall.independentExpenditureSourceUrl).toBeUndefined();
+  });
+
+  it("withholds independent expenditures from candidates whose name and office another candidate shares", async () => {
+    const dueRow = {
+      candidate_id: CANDIDATE_ID,
+      election_id: ELECTION_ID,
+      candidate_name: "Timothy Ackert",
+      election_year: 2026,
+      office_name: "State Lower Chamber Legislator",
+      district: "8",
+      committee_id: "14376",
+      committee_name: "ACKERT FOR THE 8TH",
+      source_url: null,
+      last_synced_at: null,
+      total_due_rows: "1",
+    };
+    const db = {
+      query: vi.fn(async (sql: string) => {
+        if (String(sql).includes("FROM public.ct_candidate_finance_links AS link")) {
+          return { rows: [dueRow] };
+        }
+        if (String(sql).includes("JOIN public.offices AS office")) {
+          return {
+            rows: [
+              { election_year: 2026, candidate_name: "Timothy Ackert", office_name: "State Lower Chamber Legislator" },
+              { election_year: 2026, candidate_name: "Tim Ackert", office_name: "State Lower Chamber Legislator" },
+              { election_year: 2026, candidate_name: "Jane Doe", office_name: "Governor" },
+            ],
+          };
+        }
+        throw new Error(`Unexpected query: ${String(sql)}`);
+      }),
+    };
+    const syncConnecticutCandidateFinanceFn = vi.fn().mockResolvedValue({ ok: true });
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+
+    await syncDueConnecticutCandidateFinance({
+      db,
+      syncConnecticutCandidateFinanceFn,
+      now: new Date("2026-06-01T00:00:00.000Z"),
+      // A missing cache dir keeps the test off any real local artifact.
+      rawDataCacheDir: "/tmp/voteapp-missing-connecticut-ecris-cache",
+      autoLinkMissingLinks: false,
+      receiptDataByYear: new Map([[2026, receiptDataForYear({ year: 2026, rowsByCommitteeId: new Map() })]]),
+      independentExpenditureDataByYear: new Map([
+        [2026, { year: 2026, filePath: "/tmp/2026_independent_expenditures.json", sourceUrl: "https://seec.ct.gov/ie", rows: [] }],
+      ]),
+    });
+
+    expect(db.query.mock.calls.map((call) => String(call[0]).includes("JOIN public.offices AS office"))).toEqual([false, true]);
+    expect(db.query.mock.calls[1]?.[1]).toEqual([[2026]]);
+    expect(syncConnecticutCandidateFinanceFn).toHaveBeenCalledTimes(1);
+    const call = syncConnecticutCandidateFinanceFn.mock.calls[0]?.[0];
+    expect(call.independentExpenditureRows).toBeUndefined();
+    expect(call.independentExpenditureSourceUrl).toBeUndefined();
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining("Connecticut outside spending skipped for Timothy Ackert"));
   });
 
   it("records artifact load failures per year without blocking other due years", async () => {
@@ -514,6 +574,8 @@ describe("connecticutCandidateFinanceBatchSync", () => {
       db,
       syncConnecticutCandidateFinanceFn,
       now: new Date("2026-06-01T00:00:00.000Z"),
+      // A missing cache dir keeps the test off any real local artifact.
+      rawDataCacheDir: "/tmp/voteapp-missing-connecticut-ecris-cache",
       receiptDataByYear: new Map([
         [
           2026,
@@ -611,6 +673,8 @@ describe("connecticutCandidateFinanceBatchSync", () => {
     const result = await syncDueConnecticutCandidateFinance({
       db,
       now: new Date("2026-06-01T00:00:00.000Z"),
+      // A missing cache dir keeps the test off any real local artifact.
+      rawDataCacheDir: "/tmp/voteapp-missing-connecticut-ecris-cache",
       receiptDataByYear: new Map([
         [
           2026,
