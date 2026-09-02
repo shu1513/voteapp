@@ -99,3 +99,15 @@ reading level was again treated as the more important constraint.
 - A dry run after the import reports 216 unchanged.
 - North Carolina now holds 2,004 live records across 147 candidates.
 - Production was not touched. No AI provider was called.
+
+## Correction after review
+
+The first House Bill 437 descriptions overstated the bill in two places. They
+said it would stop "any" city or county from allowing public camping, when the
+bill lets a local government pick one site, get it state certified, and use it
+for up to a year. And they said a "shelter worker" who "knowingly" allowed drug
+activity would commit a felony, when the bill reaches a facility operator who
+intentionally allows it. Both descriptions were rewritten, the roll re-judged,
+and the import re-run: 39 records rewritten in place, 177 unchanged, and a dry
+run after that reports 216 unchanged. The re-run ledger is
+`import-rerun-report.json`; the original `import-report.json` is untouched.

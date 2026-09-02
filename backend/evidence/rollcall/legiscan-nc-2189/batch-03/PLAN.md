@@ -21,12 +21,13 @@ They split two ways:
 
 Of the 17 vetoed-measure rolls:
 
-- 11 are an earlier stage the chamber voted on again later.
+- 6 are an earlier stage the chamber voted on again later.
 - 4 are 2026 House rolls, which cannot be imported because LegiScan understates
   their tallies. See finding 3 in `../CODE-FINDINGS.md`. They sit in
   `held-rolls/`.
 - 7 remain. Every one has a complete member list, and every one was checked
-  against the official ncleg.gov transcript.
+  against the official ncleg.gov transcript. Of those 7, 3 failed the stance
+  filter (listed below) and 4 were imported.
 
 ## Two votes here are not passage votes
 
