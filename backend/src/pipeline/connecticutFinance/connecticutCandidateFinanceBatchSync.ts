@@ -12,6 +12,11 @@ import {
   type ConnecticutEcrisArtifactRow,
 } from "./connecticutEcrisArtifactReader.js";
 import {
+  getConnecticutEcrisIndependentExpenditureCachePath,
+  readConnecticutEcrisIndependentExpenditureCache,
+} from "./connecticutEcrisIndependentExpenditureCache.js";
+import type { ConnecticutEcrisIndependentExpenditureRow } from "./connecticutEcrisIndependentExpenditureParsers.js";
+import {
   syncConnecticutCandidateFinance,
   type ConnecticutCandidateFinanceSyncResult,
 } from "./connecticutCandidateFinanceSync.js";
@@ -44,6 +49,13 @@ export type ConnecticutEcrisReceiptDataForYear = {
   rowsByCommitteeId: Map<string, ConnecticutEcrisArtifactRow[]>;
 };
 
+export type ConnecticutEcrisIndependentExpenditureDataForYear = {
+  year: number;
+  filePath: string;
+  sourceUrl: string;
+  rows: readonly ConnecticutEcrisIndependentExpenditureRow[];
+};
+
 export type ConnecticutCandidateFinanceBatchSyncInput = {
   db: Queryable;
   now?: Date;
@@ -54,6 +66,7 @@ export type ConnecticutCandidateFinanceBatchSyncInput = {
   electionLookaheadDays?: number;
   rawDataCacheDir?: string;
   receiptDataByYear?: ReadonlyMap<number, ConnecticutEcrisReceiptDataForYear>;
+  independentExpenditureDataByYear?: ReadonlyMap<number, ConnecticutEcrisIndependentExpenditureDataForYear>;
   autoLinkMissingLinks?: boolean;
   syncConnecticutCandidateFinanceFn?: typeof syncConnecticutCandidateFinance;
 };
@@ -230,6 +243,32 @@ async function loadReceiptDataForYear(input: {
         format: "csv",
       }),
     rowsByCommitteeId: groupReceiptRowsByCommittee(rows),
+  };
+}
+
+function resolveRawDataCacheDir(rawDataCacheDir: string | undefined): string {
+  return rawDataCacheDir ?? (process.env.CONNECTICUT_ECRIS_CACHE_DIR?.trim() || DEFAULT_CONNECTICUT_ECRIS_CACHE_DIR);
+}
+
+/**
+ * The year's cached independent-expenditure artifact, or null when none has
+ * been refreshed yet. A missing artifact is not an error: direct receipts
+ * still sync and stored outside-spending data is left untouched.
+ */
+async function loadIndependentExpenditureDataForYear(input: {
+  year: number;
+  rawDataCacheDir?: string;
+}): Promise<ConnecticutEcrisIndependentExpenditureDataForYear | null> {
+  const cacheDir = resolveRawDataCacheDir(input.rawDataCacheDir);
+  const artifact = await readConnecticutEcrisIndependentExpenditureCache({ cacheDir, year: input.year });
+  if (!artifact) {
+    return null;
+  }
+  return {
+    year: input.year,
+    filePath: getConnecticutEcrisIndependentExpenditureCachePath({ cacheDir, year: input.year }),
+    sourceUrl: artifact.sourceUrl,
+    rows: artifact.rows,
   };
 }
 
@@ -443,6 +482,9 @@ export async function syncDueConnecticutCandidateFinance(
     input.receiptDataByYear ? [...input.receiptDataByYear.entries()] : []
   );
   const receiptDataLoadErrorsByYear = new Map<number, string>();
+  const independentExpenditureDataByYear = new Map<number, ConnecticutEcrisIndependentExpenditureDataForYear>(
+    input.independentExpenditureDataByYear ? [...input.independentExpenditureDataByYear.entries()] : []
+  );
   for (const [year, rows] of groupDueRowsByYear(due.rows).entries()) {
     if (!receiptDataByYear.has(year)) {
       try {
@@ -456,6 +498,23 @@ export async function syncDueConnecticutCandidateFinance(
         );
       } catch (error) {
         receiptDataLoadErrorsByYear.set(year, error instanceof Error ? error.message : String(error));
+      }
+    }
+    if (!independentExpenditureDataByYear.has(year)) {
+      try {
+        const data = await loadIndependentExpenditureDataForYear({ year, rawDataCacheDir: input.rawDataCacheDir });
+        if (data) {
+          independentExpenditureDataByYear.set(year, data);
+        } else {
+          console.warn(
+            `Connecticut eCRIS independent expenditure artifact not found for ${year}; outside spending left untouched`
+          );
+        }
+      } catch (error) {
+        console.warn(
+          `Connecticut eCRIS independent expenditure artifact unreadable for ${year}; outside spending left untouched:`,
+          error instanceof Error ? error.message : error
+        );
       }
     }
   }
@@ -476,6 +535,7 @@ export async function syncDueConnecticutCandidateFinance(
     }
 
     const receiptData = receiptDataByYear.get(row.electionYear);
+    const independentExpenditureData = independentExpenditureDataByYear.get(row.electionYear);
     const committeeKey = normalizeCommitteeId(row.committeeId);
     try {
       const result = await syncFn({
@@ -489,6 +549,8 @@ export async function syncDueConnecticutCandidateFinance(
         sourceUrl: row.sourceUrl,
         receiptRows: receiptData?.rowsByCommitteeId.get(committeeKey) ?? [],
         receiptSourceUrl: receiptData?.sourceUrl,
+        independentExpenditureRows: independentExpenditureData?.rows,
+        independentExpenditureSourceUrl: independentExpenditureData?.sourceUrl,
         dryRun,
         now,
       });

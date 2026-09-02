@@ -97,6 +97,7 @@ describe("connecticutFinanceWriter", () => {
       linkId: LINK_ID,
       summaryWritten: true,
       directBreakdownsWritten: 2,
+      outsideGroupsWritten: 0,
     });
     expect(db.connect).toHaveBeenCalledTimes(1);
     expect(db.query).not.toHaveBeenCalled();
@@ -143,13 +144,116 @@ describe("connecticutFinanceWriter", () => {
       linkId: LINK_ID,
       summaryWritten: true,
       directBreakdownsWritten: 0,
+      outsideGroupsWritten: 0,
     });
     const sql = db.query.mock.calls.map((call) => String(call[0]));
     const summarySql = sql.find((statement) => statement.includes("INSERT INTO public.ct_candidate_finance_summaries"));
     expect(summarySql).toContain(
       "total_receipts = COALESCE(EXCLUDED.total_receipts, ct_candidate_finance_summaries.total_receipts)"
     );
+    expect(summarySql).toContain(
+      "outside_support_total = COALESCE(EXCLUDED.outside_support_total, ct_candidate_finance_summaries.outside_support_total)"
+    );
     expect(sql.some((statement) => statement.includes("DELETE FROM public.ct_candidate_finance_direct_breakdowns"))).toBe(false);
+    expect(sql.some((statement) => statement.includes("ct_candidate_finance_outside_groups"))).toBe(false);
+  });
+
+  it("writes outside groups, then deletes groups missing from the snapshot", async () => {
+    const db = createMockDb();
+    const syncedAt = new Date("2026-02-03T04:05:06.000Z");
+
+    const result = await replaceConnecticutCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      syncedAt,
+      summary: { totalReceipts: 1000, outsideSupportTotal: 1250.5, outsideOpposeTotal: 0 },
+      outsideGroups: [
+        {
+          committeeId: "NUTMEG FORWARD",
+          committeeName: "Nutmeg Forward",
+          supportOppose: "support",
+          amount: 1250.5,
+          sourceUrl: "https://seec.ct.gov/eCrisReporting/SearchingIndependentExpenditure.aspx",
+        },
+      ],
+    });
+
+    expect(result).toEqual({
+      linkId: LINK_ID,
+      summaryWritten: true,
+      directBreakdownsWritten: 0,
+      outsideGroupsWritten: 1,
+    });
+    const summaryCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.ct_candidate_finance_summaries")
+    );
+    expect(summaryCall?.[1]).toEqual([LINK_ID, 2026, 1000, null, 1250.5, 0, null, "2026-02-03T04:05:06.000Z"]);
+
+    const insertCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.ct_candidate_finance_outside_groups")
+    );
+    expect(String(insertCall?.[0])).toContain("ON CONFLICT (link_id, election_year, committee_id, support_oppose)");
+    expect(insertCall?.[1]).toEqual([
+      LINK_ID,
+      2026,
+      "NUTMEG FORWARD",
+      "Nutmeg Forward",
+      "support",
+      1250.5,
+      "https://seec.ct.gov/eCrisReporting/SearchingIndependentExpenditure.aspx",
+      "2026-02-03T04:05:06.000Z",
+    ]);
+
+    const deleteCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("DELETE FROM public.ct_candidate_finance_outside_groups")
+    );
+    expect(String(deleteCall?.[0])).toContain("jsonb_to_recordset");
+    expect(deleteCall?.[1]).toEqual([
+      LINK_ID,
+      2026,
+      JSON.stringify([{ committee_id: "NUTMEG FORWARD", support_oppose: "support" }]),
+    ]);
+    const statements = db.query.mock.calls.map((call) => String(call[0]));
+    expect(statements.indexOf(String(insertCall?.[0]))).toBeLessThan(statements.indexOf(String(deleteCall?.[0])));
+    expect(statements.at(-1)).toBe("COMMIT");
+  });
+
+  it("clears every stored outside group when an empty list is supplied", async () => {
+    const db = createMockDb();
+
+    const result = await replaceConnecticutCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      outsideGroups: [],
+    });
+
+    expect(result.outsideGroupsWritten).toBe(0);
+    const deleteCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("DELETE FROM public.ct_candidate_finance_outside_groups")
+    );
+    expect(deleteCall?.[1]).toEqual([LINK_ID, 2026, "[]"]);
+  });
+
+  it("rejects an outside group with an empty committee id or unknown stance", async () => {
+    const db = createMockDb();
+
+    await expect(
+      replaceConnecticutCandidateFinanceSnapshot({
+        db,
+        link: baseLink(),
+        outsideGroups: [{ committeeId: " ", committeeName: "X", supportOppose: "support", amount: 1 }],
+      })
+    ).rejects.toThrow("Connecticut outside group committee id is required");
+
+    await expect(
+      replaceConnecticutCandidateFinanceSnapshot({
+        db,
+        link: baseLink(),
+        outsideGroups: [
+          { committeeId: "X", committeeName: "X", supportOppose: "neutral" as unknown as "support", amount: 1 },
+        ],
+      })
+    ).rejects.toThrow("Invalid Connecticut finance outside group stance: neutral");
   });
 
   it("uses current snapshot keys when cleaning repeated direct writes with the same timestamp", async () => {

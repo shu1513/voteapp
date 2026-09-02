@@ -1,6 +1,6 @@
 # Connecticut Campaign Finance
 
-This module adds direct campaign-finance summaries for supported Connecticut state candidates using Connecticut SEEC eCRIS bulk receipt exports.
+This module adds campaign-finance summaries for supported Connecticut state candidates using Connecticut SEEC eCRIS data: bulk receipt exports for direct money, and the eCRIS independent-expenditure search for outside spending.
 
 It is isolated behind Connecticut-specific feature flags and does not run unless explicitly enabled.
 
@@ -12,14 +12,27 @@ Supported data in this module:
 - Top donor occupation categories.
 - Contribution-size buckets.
 - Contributor-state buckets.
+- Outside spending: support and oppose totals plus the top spending groups, from SEEC Form 40 independent-expenditure lines (see below).
 
 Not supported in this module yet:
 
-- Outside-spending industry summaries.
-- PAC-to-candidate support/oppose attribution.
+- Outside-spending industry summaries (eCRIS exposes no donors behind an independent-expenditure filer on this search).
 - Local offices such as mayor, school board, probate judge, or municipal clerk.
 
-If Connecticut outside-spending data is added later, it should stay in this module and only write fields when support/oppose attribution is explicit and safe.
+## Outside spending rules
+
+Source: the eCRIS "Search Independent Expenditures" page (`SearchingIndependentExpenditure.aspx`), an ASP.NET form. Each result line carries explicit "Supporting Candidates" and "Opposing Candidates" columns with the office named, so stance is never inferred. The page caps a search at 200 rows with no pager, so the client searches by received-date window and splits any full window until every window is under the cap. Only SEEC Form 40 documents are requested. Facts below were verified against the 2026 corpus and filed PDFs on 2026-09-01.
+
+A line counts toward a candidate only when all of these hold:
+
+- It names exactly one candidate on that stance side, and that candidate is this one (same name rules as committee matching: nicknames expand on the VoteApp side only, a contradicting middle initial rejects). Lines naming several candidates carry one amount for all of them, so they are skipped rather than split or duplicated.
+- It names exactly one office, and that office is the candidate's office. eCRIS carries no district, so name plus office is the whole identity.
+- Its form section is "Expenses Paid by Committee". "Expenses Incurred but Not Paid" lines reappear as paid lines once paid (verified: Impact CT / Landscape Media $500, Section I on the 01/20 report and Section G on the 01/23 report), so counting both would double-count. Reimbursement itemizations are excluded too.
+- Its amount is positive and its file year is the election year.
+
+Every remaining line is a distinct expenditure: same-amount lines with the same payee and date are separate Section G entries in the filed PDF, one per candidate. Groups are keyed by normalized committee name because this search exposes no committee id. SEEC Form 20 rows (party and PAC statements) are excluded: their candidate-tagged lines are organization expenditures or contributions that the candidate's own receipts already count.
+
+A successful yearly fetch is authoritative: a candidate no line names gets zero totals and no groups, which clears superseded data. When the year has no cached expenditure artifact, the sync leaves stored outside-spending data untouched and only refreshes direct receipts. The ballot response carries an `outside_coverage_note` naming these exclusions.
 
 ## Eligible Offices
 
@@ -38,13 +51,13 @@ The gate is explicit. The module does not run for every `statewide`, `state_uppe
 
 ## Runtime Flow
 
-1. Raw-data refresh downloads/caches the eCRIS candidate/exploratory committee receipts CSV for the current election year.
+1. Raw-data refresh downloads/caches the eCRIS candidate/exploratory committee receipts CSV for the current election year. The independent-expenditure refresh searches eCRIS for the year's SEEC Form 40 lines and caches them as `<year>_independent_expenditures.json` in the same directory.
 2. Candidate profile enrichment links a candidate to an eligible future Connecticut election.
 3. The enricher enqueues one deduped Connecticut finance sync batch job for the day.
 4. The sync batch scans eligible Connecticut candidate-election links that do not already have active finance links.
 5. The auto-linker resolves candidate name + office + district + election year against cached eCRIS receipt rows.
 6. Only matched committees get a `ct_candidate_finance_links` row.
-7. Due linked candidates sync direct receipt aggregates into Connecticut finance tables.
+7. Due linked candidates sync direct receipt aggregates into Connecticut finance tables, plus outside-spending totals and groups when the year's independent-expenditure artifact is cached.
 8. Ballot lookup reads those Connecticut rows when `CONNECTICUT_CAMPAIGN_FINANCE_ENABLED=true`.
 
 The sync window stops after election day plus a one-day grace period, matching the other state finance modules.
@@ -85,6 +98,12 @@ Refresh raw eCRIS receipts manually:
 npm run connecticut-candidates:finance:raw:refresh -- --year=2026
 ```
 
+Refresh the year's independent expenditures manually (same flag gate as the raw refresh; not on the daily scheduler yet):
+
+```bash
+npm run connecticut-candidates:finance:ie:refresh -- --year=2026
+```
+
 Upsert the raw-data refresh scheduler:
 
 ```bash
@@ -121,4 +140,4 @@ npm run connecticut-candidates:finance:scheduler:trigger
 
 - Auto-linking is conservative. Ambiguous or unmatched committee resolution is skipped rather than guessed.
 - If the raw eCRIS cache is missing, auto-linking is skipped and already-linked candidates can still sync if their receipt data is available.
-- The ballot response uses source `CONNECTICUT_ECRIS` and returns empty outside-spending arrays for Connecticut until safe outside-spending attribution is added.
+- The ballot response uses source `CONNECTICUT_ECRIS`. Outside-spending totals are null for candidates never synced with an independent-expenditure artifact; industry arrays stay empty.

@@ -276,6 +276,94 @@ describe("connecticutCandidateFinanceBatchSync", () => {
     ]);
   });
 
+  it("passes the year's cached independent expenditures to each sync, or nothing when the year has none", async () => {
+    const db = createMockDb([
+      {
+        candidate_id: CANDIDATE_ID,
+        election_id: ELECTION_ID,
+        candidate_name: "Timothy Ackert",
+        election_year: 2026,
+        office_name: "State Lower Chamber Legislator",
+        district: "8",
+        committee_id: "14376",
+        committee_name: "ACKERT FOR THE 8TH",
+        source_url: null,
+        last_synced_at: null,
+        total_due_rows: "2",
+      },
+      {
+        candidate_id: "33333333-3333-4333-8333-333333333333",
+        election_id: "44444444-4444-4444-8444-444444444444",
+        candidate_name: "Jane Doe",
+        election_year: 2025,
+        office_name: "Governor",
+        district: null,
+        committee_id: "20001",
+        committee_name: "DOE FOR GOVERNOR",
+        source_url: null,
+        last_synced_at: null,
+        total_due_rows: "2",
+      },
+    ]);
+    const syncConnecticutCandidateFinanceFn = vi.fn().mockResolvedValue({ ok: true });
+    const expenditureRow = {
+      rootExpenditureId: "0",
+      committeeName: "Nutmeg Forward",
+      formTag: "SEEC40",
+      documentUrl: null,
+      reportType: "July 10 Filing",
+      documentType: "Original",
+      payee: "Vendor",
+      receivedDate: "2026-06-30",
+      fileYear: 2026,
+      periodStartDate: null,
+      periodEndDate: null,
+      amountCents: 1000,
+      formSection: "G. Expenses Paid by Committee",
+      supportingCandidates: ["Tim Ackert"],
+      supportingOffices: ["State Representative"],
+      opposingCandidates: [],
+      opposingOffices: [],
+      dataSource: "eFile",
+    };
+
+    await syncDueConnecticutCandidateFinance({
+      db,
+      syncConnecticutCandidateFinanceFn,
+      now: new Date("2026-06-01T00:00:00.000Z"),
+      rawDataCacheDir: "/tmp/voteapp-missing-connecticut-ecris-cache",
+      autoLinkMissingLinks: false,
+      receiptDataByYear: new Map([
+        [2026, receiptDataForYear({ year: 2026, rowsByCommitteeId: new Map() })],
+        [2025, receiptDataForYear({ year: 2025, rowsByCommitteeId: new Map() })],
+      ]),
+      independentExpenditureDataByYear: new Map([
+        [
+          2026,
+          {
+            year: 2026,
+            filePath: "/tmp/2026_independent_expenditures.json",
+            sourceUrl: "https://seec.ct.gov/eCrisReporting/SearchingIndependentExpenditure.aspx",
+            rows: [expenditureRow],
+          },
+        ],
+      ]),
+    });
+
+    expect(syncConnecticutCandidateFinanceFn).toHaveBeenCalledTimes(2);
+    expect(syncConnecticutCandidateFinanceFn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        candidateId: CANDIDATE_ID,
+        independentExpenditureRows: [expenditureRow],
+        independentExpenditureSourceUrl: "https://seec.ct.gov/eCrisReporting/SearchingIndependentExpenditure.aspx",
+      })
+    );
+    const governorCall = syncConnecticutCandidateFinanceFn.mock.calls.find((call) => call[0].electionYear === 2025)?.[0];
+    expect(governorCall).toBeDefined();
+    expect(governorCall.independentExpenditureRows).toBeUndefined();
+    expect(governorCall.independentExpenditureSourceUrl).toBeUndefined();
+  });
+
   it("records artifact load failures per year without blocking other due years", async () => {
     const successfulCandidateId = "55555555-5555-4555-8555-555555555555";
     const successfulElectionId = "66666666-6666-4666-8666-666666666666";
