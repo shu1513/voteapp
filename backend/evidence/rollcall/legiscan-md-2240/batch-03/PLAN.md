@@ -33,7 +33,7 @@ distinct subjects**. This batch takes 11, leaving 120.
 | HB 711, Data Privacy Act | 874 | data_privacy | H 1671927 (94-35); S 1691962 (28-8) | for | null |
 | HB 894, housing near rail transit | 592 | housing_affordability | H 1684982 (100-32) | for | null |
 | HB 895, personalized food pricing | 154 | corporate_accountability | H 1683978 (100-31) | for | against |
-| HB 1017, private detention ban | 173 | immigration | H 1684716 (95-36); S 1682539 (32-10) | for | against |
+| HB 1017, private detention ban | 173 | general (no stance) | H 1684716 (95-36); S 1682539 (32-10) | none | none |
 | SB 141, election deepfakes | 444 | election_integrity | H 1685440 (85-38) | for | null |
 | SB 475, PACE Act | 517 | civil_rights | S 1682274 (32-10); H 1680521 (99-35) | for | against |
 | SB 937, Fair Chance Housing Act | 752 | civil_rights | S 1691964 (31-13); H 1684033 (97-36) | for | against |
@@ -62,6 +62,15 @@ so rather than claiming it was signed.
 
 **HB 894's impact-fee provision is contingent** on two other bills failing, so
 the descriptions do not state it as something the law did.
+
+**HB 1017 carries no stance.** Its definition of a detention facility is any
+building used to hold people for civil *or criminal* violations; immigration
+detention is included but is not the subject. Maryland's immigration-specific
+bans on private detention already existed under Chapter 19 of 2021. Reading a
+general private-prison vote as a position on the `immigration` area's goal was
+wrong, and no other area carries an honest direction, so the measure is
+recorded under `general` with no stance — the GA H.B. 116 precedent. This was
+corrected on review; see `JUDGING.md`.
 
 ## Cross-filed twins
 

@@ -42,8 +42,12 @@ Two facts the descriptions state carefully rather than rounding off:
   no vote can be a local-control position.
 - **HB 895 — corporate_accountability, for, nay against.** A single-subject ban
   on data-driven pricing by large food sellers.
-- **HB 1017 — immigration, for, nay against.** Following batch-02's HB 444 and
-  SB 810: a no vote directly rejects the limit.
+- **HB 1017 — general, no stance.** Originally labeled `immigration` for/against.
+  Corrected on review: the enacted definition covers detention for civil *or
+  criminal* violations and only *includes* immigration facilities, and the
+  immigration-specific bans predate this bill (Chapter 19 of 2021). A vote on
+  private detention generally is not a position on welcoming immigration, and
+  no other area fits, so it is recorded with no stance.
 - **SB 141 — election_integrity, for, nay null.** Deepfake rules protect trust in
   elections, but the bill creates a speech crime, and a First Amendment
   objection is a different axis from election integrity.
@@ -76,10 +80,11 @@ Real import stamp `2026-09-02T00:55:38.124Z`.
   `import-report.json` remains the original insert ledger, confirmed by its
   `dryRun: false` and `insert: 1550` read from inside the file.
 
-Records by stamp: **1,550 across 18 rolls**. Area tags: **1,455**. The split is
-exact — all 1,169 yea-side records are tagged, and of the 381 nay-side records
-the 286 belonging to the eight measures with a non-null `nay` are tagged, while
-HB 711, HB 894 and SB 141 contribute none.
+Records by stamp: **1,550 across 18 rolls**. Area tags: **1,455**, and the
+split is exact. All 1,169 yea-side records are tagged. Of the 381 nay-side
+records, 286 are tagged: the 246 belonging to the seven measures with a
+non-null `nay`, plus HB 1017's 40, which carry the stance-free `general` tag
+its yea side also carries. HB 711, HB 894 and SB 141 contribute no nay tags.
 
 Reconciliation was by run stamp, never by table delta.
 
@@ -96,3 +101,38 @@ batch-02.
 
 Session 2240 now holds **3,779 live records across 163 candidates** from batches
 01 through 03. Production is untouched.
+
+## Review response (2026-09-02)
+
+Four findings on the first version of this batch; all four were checked against
+the DLS note and, where the note was silent, the enrolled bill text. All four
+were real and all four are fixed. Fix stamp `2026-09-02T01:39:50.699Z`; ledger
+`import-review-fixes-report.json` (**589 rewrites across 7 rolls, 0 inserts,
+0 errors**), verified by its `dryRun: false` and action counts before it was
+renamed. `import-report.json` remains the original insert ledger. Convergence
+afterwards: **1,550 unchanged**.
+
+- **SB 937 (P1, accepted).** The descriptions said a conviction could only be
+  weighed after a conditional offer. The note lists convictions a landlord may
+  ask about and reject on *before* any offer — murder, sex offenses, child
+  pornography, human trafficking, meth production in federally assisted
+  housing — plus sex-offender registration, and a five-year felony window after
+  the offer. Rewritten to carry all of that. Same defect the batch-01 review
+  caught: plain words that lost the statute's limits.
+- **HB 1017 (P1, accepted as a relabel).** See the label section above.
+  Relabeled `general` with no stance rather than excluded: the vote is divided
+  and enacted and worth recording, the label just cannot claim a direction. The
+  description now says the ban covers private detention of any kind, civil or
+  criminal, and that the immigration-specific bans already existed.
+- **HB 895 (P2, accepted).** The enrolled text bans using personal data to set a
+  *higher* price in both of its prongs; the DLS synopsis's definition of dynamic
+  pricing dropped the word and the description followed it. Now says "higher".
+- **HB 284 (P2, accepted).** The body already listed attempted burglaries and
+  compromised security features; only the one-line "what a yes meant" narrowed
+  it to stolen guns. The line now matches the body.
+
+Tag proof: a per-measure tag count and hash was captured before and after the
+fix run. Every measure outside the four is byte-identical. HB 284, HB 895 and
+SB 937 keep the same counts and hashes (descriptions changed, labels did not).
+HB 1017's hash changed as intended: 157 immigration tags replaced by 157
+`general` tags with no stance.
