@@ -68,7 +68,7 @@ HB1601	B	4	house	2025-04-21	1552516	503	61	24	House - House concurred with Senat
 HB1605	B	4	house	2025-02-20	1494705	253	69	23	House - Third reading	Juvenile law matters.	candidate: unbatched
 HB1633	B	4	senate	2025-04-07	1538226	350	35	13	Senate - Third reading	Study of election issues.	candidate: unbatched
 HB1634	B	4	senate	2025-04-08	1540370	367	38	11	Senate - Third reading	Math education.	candidate: unbatched
-HB1666	B	4	house	2025-02-13	1489138	161	70	25	House - Third reading	Ownership of health care providers.	candidate: unbatched
+HB1666	B	4	house	2025-02-13	1489138	161	70	25	House - Third reading	Ownership of health care providers.	dropped: version trap, the only divided roll is the House text carrying an AG merger pre-approval regime the enrolled act does not contain
 HB1679	B	4	senate	2025-04-15	1548813	449	37	10	Senate - Third reading	Various elections matters.	candidate: unbatched
 HB1679	B	4	house	2025-04-24	1557254	559	63	24	House - Rules Suspended. Conference Committee Report 1	Various elections matters.	candidate: unbatched
 HB1680	B	4	house	2025-02-11	1486685	147	65	25	House - Third reading	Various elections matters.	candidate: unbatched
@@ -88,12 +88,12 @@ SB0140	B	4	senate	2025-04-24	1558096	523	39	10	Senate - Rules Suspended. Confere
 SB0143	B	4	house	2025-04-01	1532310	344	69	24	House - Third reading	Parental rights.	candidate: unbatched
 SB0209	B	4	senate	2025-02-04	1480002	70	37	13	Senate - Third reading	Electronic pull tabs in charity gaming.	candidate: unbatched
 SB0209	B	4	senate	2025-04-03	1535962	340	35	12	Senate - Senate concurred with House amendments	Electronic pull tabs in charity gaming.	candidate: unbatched
-SB0249	B	4	senate	2025-02-11	1486724	101	39	10	Senate - Third reading	Teacher compensation.	candidate: unbatched
-SB0249	B	4	house	2025-03-25	1526229	311	65	29	House - Third reading	Teacher compensation.	candidate: unbatched
+SB0249	B	4	senate	2025-02-11	1486724	101	39	10	Senate - Third reading	Teacher compensation.	dropped: filter 5, pay flexibility runs against removing the supplement from collective bargaining
+SB0249	B	4	house	2025-03-25	1526229	311	65	29	House - Third reading	Teacher compensation.	dropped: filter 5, pay flexibility runs against removing the supplement from collective bargaining
 SB0249	B	4	senate	2025-03-25	1530902		34	13	Senate - Third reading	Teacher compensation.	needs member-list check: LegiScan tally has no exact match in the official history
 SB0255	B	4	house	2025-04-23	1555254	533	66	25	House - Rules Suspended. Conference Committee Report 1	Education matters.	candidate: unbatched
 SB0255	B	4	senate	2025-04-23	1555516	498	32	12	Senate - Rules Suspended. Conference Committee Report 1	Education matters.	candidate: unbatched
-SB0281	B	4	house	2025-03-27	1528620	321	71	21	House - Third reading	Expungement.	candidate: unbatched
+SB0281	B	4	house	2025-03-27	1528620	321	71	21	House - Third reading	Expungement.	dropped: filter 5, widens expungement for official misconduct while barring it for others
 SB0287	B	4	senate	2025-02-17	1491394	140	26	20	Senate - Third reading	School board matters.	candidate: unbatched
 SB0287	B	4	house	2025-03-31	1530920	335	54	40	House - Third reading	School board matters.	candidate: unbatched
 SB0287	B	4	senate	2025-04-24	1556857	504	26	24	Senate - Senate concurred with House amendments	School board matters.	candidate: unbatched
@@ -126,9 +126,9 @@ SB0425	B	4	senate	2025-02-20	1495160	194	37	12	Senate - Third reading	Energy pro
 SB0425	B	4	house	2025-04-15	1548363		59	38	House - Third reading	Energy production zones.	needs member-list check: LegiScan tally has no exact match in the official history
 SB0425	B	4	house	2025-04-24	1556454	550	51	40	House - Rules Suspended. Conference Committee Report 1	Energy production zones.	candidate: unbatched
 SB0425	B	4	senate	2025-04-24	1556750	509	31	19	Senate - Rules Suspended. Conference Committee Report 1	Energy production zones.	candidate: unbatched
-SB0442	B	4	house	2025-04-15	1548345	451	76	19	House - Third reading	Instruction on human sexuality.	candidate: unbatched
-SB0442	B	4	senate	2025-04-23	1555529	499	35	12	Senate - Rules Suspended. Conference Committee Report 1	Instruction on human sexuality.	candidate: unbatched
-SB0442	B	4	house	2025-04-23	1555217	534	72	20	House - Rules Suspended. Conference Committee Report 1	Instruction on human sexuality.	candidate: unbatched
+SB0442	B	4	house	2025-04-15	1548345	451	76	19	House - Third reading	Instruction on human sexuality.	dropped: filter 5, consent instruction runs against the mandated fetal-development presentation and added consent-form friction
+SB0442	B	4	senate	2025-04-23	1555529	499	35	12	Senate - Rules Suspended. Conference Committee Report 1	Instruction on human sexuality.	dropped: filter 5, consent instruction runs against the mandated fetal-development presentation and added consent-form friction
+SB0442	B	4	house	2025-04-23	1555217	534	72	20	House - Rules Suspended. Conference Committee Report 1	Instruction on human sexuality.	dropped: filter 5, consent instruction runs against the mandated fetal-development presentation and added consent-form friction
 SB0448	B	4	house	2025-04-15	1548353	452	75	21	House - Third reading	Higher education and workforce development matters.	candidate: unbatched
 SB0450	B	4	senate	2025-02-10	1484850	92	33	16	Senate - Third reading	Article V convention.	candidate: unbatched
 SB0450	B	4	house	2025-03-24	1524703	300	69	27	House - Third reading	Article V convention.	candidate: unbatched
@@ -137,7 +137,7 @@ SB0457	B	4	house	2025-03-20	1522407		55	37	House - Third reading	Carbon dioxide 
 SB0475	B	4	house	2025-04-09	1541701	410	71	23	House - Third reading	Physician noncompete agreements.	candidate: unbatched
 SB0475	B	4	house	2025-04-24	1556843	556	65	21	House - Rules Suspended. Conference Committee Report 1	Physician noncompete agreements.	batch-01
 SB0525	B	4	senate	2025-02-20	1495534	212	33	15	Senate - Third reading	Annexation.	candidate: unbatched
-SB0526	B	4	senate	2025-04-24	1556915	512	40	10	Senate - Rules Suspended. Conference Committee Report 1	Absentee ballot retraction.	candidate: unbatched
-SB0526	B	4	house	2025-04-24	1556507	552	65	26	House - Rules Suspended. Conference Committee Report 1	Absentee ballot retraction.	candidate: unbatched
+SB0526	B	4	senate	2025-04-24	1556915	512	40	10	Senate - Rules Suspended. Conference Committee Report 1	Absentee ballot retraction.	batch-02
+SB0526	B	4	house	2025-04-24	1556507	552	65	26	House - Rules Suspended. Conference Committee Report 1	Absentee ballot retraction.	batch-02
 SJR0021	JR	4	senate	2025-01-27	1475019	22	31	18	Senate - Third reading	Terms of members of Congress.	candidate: unbatched
 SJR0021	JR	4	house	2025-03-17	1518503		66	30	House - Third reading	Terms of members of Congress.	needs member-list check: LegiScan tally has no exact match in the official history

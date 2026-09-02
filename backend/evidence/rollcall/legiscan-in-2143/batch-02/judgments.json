@@ -1,0 +1,42 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2143",
+      "roll": 1556507,
+      "measure_id": "SB 526",
+      "vote_date": "2025-04-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 526, which changes how Indiana handles absentee ballots that must be thrown out. The test run before an election must now include a ballot that has to be rejected. The machine must void that ballot before any votes are counted. A voting system may add a feature that pulls such a ballot back out, and each absentee ballot gets a private tracking number. That number may not hold the voter's name, address, phone number, birth date or Social Security number. The law also raises the federal standard a newly approved machine must meet, but lets counties keep older machines that were approved before October 2025. The Indiana House backed the final version 65-26, and it became law.",
+      "nay_description": "Voted against Senate Bill 526, which changes how Indiana handles absentee ballots that must be thrown out. The test run before an election must now include a ballot that has to be rejected. The machine must void that ballot before any votes are counted. A voting system may add a feature that pulls such a ballot back out, and each absentee ballot gets a private tracking number. That number may not hold the voter's name, address, phone number, birth date or Social Security number. The law also raises the federal standard a newly approved machine must meet, but lets counties keep older machines that were approved before October 2025. The Indiana House backed the final version 65-26, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "note": "Conference committee report, which is the enacted text (the act is signed SEA 526 - CC 1). The earlier House third reading was on an earlier version and is not in this batch."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "senate",
+      "session": "2143",
+      "roll": 1556915,
+      "measure_id": "SB 526",
+      "vote_date": "2025-04-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 526, which changes how Indiana handles absentee ballots that must be thrown out. The test run before an election must now include a ballot that has to be rejected. The machine must void that ballot before any votes are counted. A voting system may add a feature that pulls such a ballot back out, and each absentee ballot gets a private tracking number. That number may not hold the voter's name, address, phone number, birth date or Social Security number. The law also raises the federal standard a newly approved machine must meet, but lets counties keep older machines that were approved before October 2025. The Indiana Senate backed the final version 40-10, and it became law.",
+      "nay_description": "Voted against Senate Bill 526, which changes how Indiana handles absentee ballots that must be thrown out. The test run before an election must now include a ballot that has to be rejected. The machine must void that ballot before any votes are counted. A voting system may add a feature that pulls such a ballot back out, and each absentee ballot gets a private tracking number. That number may not hold the voter's name, address, phone number, birth date or Social Security number. The law also raises the federal standard a newly approved machine must meet, but lets counties keep older machines that were approved before October 2025. The Indiana Senate backed the final version 40-10, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "note": "Conference committee report, which is the enacted text (the act is signed SEA 526 - CC 1). The earlier Senate third reading was on the introduced version and is not in this batch."
+    }
+  ]
+}
