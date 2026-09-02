@@ -1,0 +1,328 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1574113,
+   "measure_id": "LD 784",
+   "vote_date": "2025-05-20",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 784, a bill about insurance denials for first responders' medical tests. First responders here include paid and volunteer fire, emergency medical, dispatch, corrections, and police staff. If a health insurer denies coverage for one of the screening tests the law lists, a court now starts from the assumption that the insurer failed to use ordinary care. The insurer can still rebut that assumption with evidence. The listed tests include screening for cancers tied to on-the-job exposure, standard blood panels, and mammograms, colonoscopies, and prostate exams at any age. The Maine Senate passed it 20-12 and it became law.",
+   "nay_description": "Voted no on LD 784, a bill about insurance denials for first responders' medical tests. First responders here include paid and volunteer fire, emergency medical, dispatch, corrections, and police staff. If a health insurer denies coverage for one of the screening tests the law lists, a court now starts from the assumption that the insurer failed to use ordinary care. The insurer can still rebut that assumption with evidence. The listed tests include screening for cancers tied to on-the-job exposure, standard blood panels, and mammograms, colonoscopies, and prostate exams at any age. The Maine Senate passed it 20-12 and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1579017,
+   "measure_id": "LD 784",
+   "vote_date": "2025-05-27",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 784, a bill about insurance denials for first responders' medical tests. First responders here include paid and volunteer fire, emergency medical, dispatch, corrections, and police staff. If a health insurer denies coverage for one of the screening tests the law lists, a court now starts from the assumption that the insurer failed to use ordinary care. The insurer can still rebut that assumption with evidence. The listed tests include screening for cancers tied to on-the-job exposure, standard blood panels, and mammograms, colonoscopies, and prostate exams at any age. The Maine House passed it 78-62 and it became law.",
+   "nay_description": "Voted no on LD 784, a bill about insurance denials for first responders' medical tests. First responders here include paid and volunteer fire, emergency medical, dispatch, corrections, and police staff. If a health insurer denies coverage for one of the screening tests the law lists, a court now starts from the assumption that the insurer failed to use ordinary care. The insurer can still rebut that assumption with evidence. The listed tests include screening for cancers tied to on-the-job exposure, standard blood panels, and mammograms, colonoscopies, and prostate exams at any age. The Maine House passed it 78-62 and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1589170,
+   "measure_id": "LD 215",
+   "vote_date": "2025-06-11",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 215, a bill about housing aid in large recovery homes. Recovery residences are group homes for people recovering from substance use. Towns must now cap general assistance for someone living in a recovery residence with 26 or more beds at 70 percent of what they would allow at a smaller residence. The state reimburses towns the full cost of that assistance. The health department also had to convene a stakeholder group and report back on managing these costs. The Maine House passed it 76-65 and it became law.",
+   "nay_description": "Voted no on LD 215, a bill about housing aid in large recovery homes. Recovery residences are group homes for people recovering from substance use. Towns must now cap general assistance for someone living in a recovery residence with 26 or more beds at 70 percent of what they would allow at a smaller residence. The state reimburses towns the full cost of that assistance. The health department also had to convene a stakeholder group and report back on managing these costs. The Maine House passed it 76-65 and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1590154,
+   "measure_id": "LD 215",
+   "vote_date": "2025-06-12",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 215, a bill about housing aid in large recovery homes. Recovery residences are group homes for people recovering from substance use. Towns must now cap general assistance for someone living in a recovery residence with 26 or more beds at 70 percent of what they would allow at a smaller residence. The state reimburses towns the full cost of that assistance. The health department also had to convene a stakeholder group and report back on managing these costs. The Maine Senate passed it 22-13 and it became law.",
+   "nay_description": "Voted no on LD 215, a bill about housing aid in large recovery homes. Recovery residences are group homes for people recovering from substance use. Towns must now cap general assistance for someone living in a recovery residence with 26 or more beds at 70 percent of what they would allow at a smaller residence. The state reimburses towns the full cost of that assistance. The health department also had to convene a stakeholder group and report back on managing these costs. The Maine Senate passed it 22-13 and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1668516,
+   "measure_id": "LD 2057",
+   "vote_date": "2026-03-24",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 2057, a bill about state loans to build affordable housing. The Maine State Housing Authority may now make construction loans for low-income housing on its own. Before this it generally needed a Maine bank to take part in the loan, at least as escrow agent. It could already lend on its own to public bodies and nonprofits, or where it was funding more than 60 percent of a project. The Maine Senate passed it 22-13 and it became law.",
+   "nay_description": "Voted no on LD 2057, a bill about state loans to build affordable housing. The Maine State Housing Authority may now make construction loans for low-income housing on its own. Before this it generally needed a Maine bank to take part in the loan, at least as escrow agent. It could already lend on its own to public bodies and nonprofits, or where it was funding more than 60 percent of a project. The Maine Senate passed it 22-13 and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1669503,
+   "measure_id": "LD 2057",
+   "vote_date": "2026-03-25",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 2057, a bill about state loans to build affordable housing. The Maine State Housing Authority may now make construction loans for low-income housing on its own. Before this it generally needed a Maine bank to take part in the loan, at least as escrow agent. It could already lend on its own to public bodies and nonprofits, or where it was funding more than 60 percent of a project. The Maine House passed it 74-67 and it became law.",
+   "nay_description": "Voted no on LD 2057, a bill about state loans to build affordable housing. The Maine State Housing Authority may now make construction loans for low-income housing on its own. Before this it generally needed a Maine bank to take part in the loan, at least as escrow agent. It could already lend on its own to public bodies and nonprofits, or where it was funding more than 60 percent of a project. The Maine House passed it 74-67 and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1583357,
+   "measure_id": "LD 1768",
+   "vote_date": "2025-06-02",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 1768, a bill about a housing fund and mobile home parks. The state's Housing Opportunities for Maine Fund may now be spent on keeping mobile home parks affordable. The stated purpose is to support parks owned by the residents themselves, through homeowner associations, cooperatives, or nonprofits acting for the homeowners. The law also adjusts how the real estate transfer tax applies when a controlling interest in a property-owning company changes hands. The Maine Senate passed it 23-11 and it became law.",
+   "nay_description": "Voted no on LD 1768, a bill about a housing fund and mobile home parks. The state's Housing Opportunities for Maine Fund may now be spent on keeping mobile home parks affordable. The stated purpose is to support parks owned by the residents themselves, through homeowner associations, cooperatives, or nonprofits acting for the homeowners. The law also adjusts how the real estate transfer tax applies when a controlling interest in a property-owning company changes hands. The Maine Senate passed it 23-11 and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1584131,
+   "measure_id": "LD 1768",
+   "vote_date": "2025-06-03",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 1768, a bill about a housing fund and mobile home parks. The state's Housing Opportunities for Maine Fund may now be spent on keeping mobile home parks affordable. The stated purpose is to support parks owned by the residents themselves, through homeowner associations, cooperatives, or nonprofits acting for the homeowners. The law also adjusts how the real estate transfer tax applies when a controlling interest in a property-owning company changes hands. The Maine House passed it 79-69 and it became law.",
+   "nay_description": "Voted no on LD 1768, a bill about a housing fund and mobile home parks. The state's Housing Opportunities for Maine Fund may now be spent on keeping mobile home parks affordable. The stated purpose is to support parks owned by the residents themselves, through homeowner associations, cooperatives, or nonprofits acting for the homeowners. The law also adjusts how the real estate transfer tax applies when a controlling interest in a property-owning company changes hands. The Maine House passed it 79-69 and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1677418,
+   "measure_id": "LD 1966",
+   "vote_date": "2026-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 1966, a bill about hidden fees on utility bills. When a customer pays directly for utility work, such as connecting a new service or extending a line, the electric utility must now disclose any administrative charge it adds on top of materials and labor. This applies to utilities with more than 50,000 customers. Labor and materials costs do not count as administrative charges when the bill says they are included. This was the final passage vote. The Maine House passed it 77-70 and it became law.",
+   "nay_description": "Voted no on LD 1966, a bill about hidden fees on utility bills. When a customer pays directly for utility work, such as connecting a new service or extending a line, the electric utility must now disclose any administrative charge it adds on top of materials and labor. This applies to utilities with more than 50,000 customers. Labor and materials costs do not count as administrative charges when the bill says they are included. This was the final passage vote. The Maine House passed it 77-70 and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1677077,
+   "measure_id": "LD 1966",
+   "vote_date": "2026-04-06",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 1966, a bill about hidden fees on utility bills. When a customer pays directly for utility work, such as connecting a new service or extending a line, the electric utility must now disclose any administrative charge it adds on top of materials and labor. This applies to utilities with more than 50,000 customers. Labor and materials costs do not count as administrative charges when the bill says they are included. The Maine Senate passed it 20-12 and it became law.",
+   "nay_description": "Voted no on LD 1966, a bill about hidden fees on utility bills. When a customer pays directly for utility work, such as connecting a new service or extending a line, the electric utility must now disclose any administrative charge it adds on top of materials and labor. This applies to utilities with more than 50,000 customers. Labor and materials costs do not count as administrative charges when the bill says they are included. The Maine Senate passed it 20-12 and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1668769,
+   "measure_id": "LD 2107",
+   "vote_date": "2026-03-24",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 2107, a bill about security grants for nonprofits. Maine set up a grant program to help nonprofit organizations improve security at buildings they own or use, so they are better protected against hate crimes and terror attacks. The state emergency management agency runs it. A hate crime here means one where the victim or the property was chosen because of race, religion, sex, disability, sexual orientation, gender identity, national origin, or homelessness. The Maine House passed it 76-68 and it became law.",
+   "nay_description": "Voted no on LD 2107, a bill about security grants for nonprofits. Maine set up a grant program to help nonprofit organizations improve security at buildings they own or use, so they are better protected against hate crimes and terror attacks. The state emergency management agency runs it. A hate crime here means one where the victim or the property was chosen because of race, religion, sex, disability, sexual orientation, gender identity, national origin, or homelessness. The Maine House passed it 76-68 and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1669869,
+   "measure_id": "LD 2107",
+   "vote_date": "2026-03-25",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 2107, a bill about security grants for nonprofits. Maine set up a grant program to help nonprofit organizations improve security at buildings they own or use, so they are better protected against hate crimes and terror attacks. The state emergency management agency runs it. A hate crime here means one where the victim or the property was chosen because of race, religion, sex, disability, sexual orientation, gender identity, national origin, or homelessness. The Maine Senate passed it 21-14 and it became law.",
+   "nay_description": "Voted no on LD 2107, a bill about security grants for nonprofits. Maine set up a grant program to help nonprofit organizations improve security at buildings they own or use, so they are better protected against hate crimes and terror attacks. The state emergency management agency runs it. A hate crime here means one where the victim or the property was chosen because of race, religion, sex, disability, sexual orientation, gender identity, national origin, or homelessness. The Maine Senate passed it 21-14 and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1676321,
+   "measure_id": "LD 2058",
+   "vote_date": "2026-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 2058, a bill about jails and federal immigration holds. Maine's town and county jails must be available at all times to hold people arrested by any law enforcement officer. This law adds an exception. That duty does not apply when the person is being held solely for a civil violation of federal immigration law. Where a town does not staff its jail full time, the arresting officer still carries responsibility for anyone held there. This was the final passage vote. The Maine House passed it 77-71 and it became law.",
+   "nay_description": "Voted no on LD 2058, a bill about jails and federal immigration holds. Maine's town and county jails must be available at all times to hold people arrested by any law enforcement officer. This law adds an exception. That duty does not apply when the person is being held solely for a civil violation of federal immigration law. Where a town does not staff its jail full time, the arresting officer still carries responsibility for anyone held there. This was the final passage vote. The Maine House passed it 77-71 and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1673194,
+   "measure_id": "LD 2058",
+   "vote_date": "2026-03-30",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 2058, a bill about jails and federal immigration holds. Maine's town and county jails must be available at all times to hold people arrested by any law enforcement officer. This law adds an exception. That duty does not apply when the person is being held solely for a civil violation of federal immigration law. Where a town does not staff its jail full time, the arresting officer still carries responsibility for anyone held there. The Maine Senate passed it 20-12 and it became law.",
+   "nay_description": "Voted no on LD 2058, a bill about jails and federal immigration holds. Maine's town and county jails must be available at all times to hold people arrested by any law enforcement officer. This law adds an exception. That duty does not apply when the person is being held solely for a civil violation of federal immigration law. Where a town does not staff its jail full time, the arresting officer still carries responsibility for anyone held there. The Maine Senate passed it 20-12 and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1575341,
+   "measure_id": "LD 21",
+   "vote_date": "2025-05-21",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 21, a bill about school threat assessment policies. School boards must have policies for handling students who are disruptive or violent or who threaten to harm others. The law reframes those policies around identifying, assessing, and stepping in with students who may pose a threat of violence to themselves or others. The policies must cover student supports as well as discipline and placement, up to removing a student from a classroom or a school bus. The Maine Senate passed it 18-14 and it became law.",
+   "nay_description": "Voted no on LD 21, a bill about school threat assessment policies. School boards must have policies for handling students who are disruptive or violent or who threaten to harm others. The law reframes those policies around identifying, assessing, and stepping in with students who may pose a threat of violence to themselves or others. The policies must cover student supports as well as discipline and placement, up to removing a student from a classroom or a school bus. The Maine Senate passed it 18-14 and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1576079,
+   "measure_id": "LD 21",
+   "vote_date": "2025-05-22",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 21, a bill about school threat assessment policies. School boards must have policies for handling students who are disruptive or violent or who threaten to harm others. The law reframes those policies around identifying, assessing, and stepping in with students who may pose a threat of violence to themselves or others. The policies must cover student supports as well as discipline and placement, up to removing a student from a classroom or a school bus. The Maine House passed it 79-65 and it became law.",
+   "nay_description": "Voted no on LD 21, a bill about school threat assessment policies. School boards must have policies for handling students who are disruptive or violent or who threaten to harm others. The law reframes those policies around identifying, assessing, and stepping in with students who may pose a threat of violence to themselves or others. The policies must cover student supports as well as discipline and placement, up to removing a student from a classroom or a school bus. The Maine House passed it 79-65 and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "senate",
+   "session": "2181",
+   "roll": 1655394,
+   "measure_id": "LD 1949",
+   "vote_date": "2026-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 1949, a bill about electricity costs for households. The Public Utilities Commission must now weigh the effect on household bills when it carries out its duties, while still keeping the power system reliable. It must publish data on large utilities' credit and collection activity on its website. It must also review every part of electric delivery rates to see whether the design could hold down costs, steady bills, and make them easier to understand, and report by the end of 2027. The Maine Senate passed it 21-12 and it became law.",
+   "nay_description": "Voted no on LD 1949, a bill about electricity costs for households. The Public Utilities Commission must now weigh the effect on household bills when it carries out its duties, while still keeping the power system reliable. It must publish data on large utilities' credit and collection activity on its website. It must also review every part of electric delivery rates to see whether the design could hold down costs, steady bills, and make them easier to understand, and report by the end of 2027. The Maine Senate passed it 21-12 and it became law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "ME",
+   "chamber": "house",
+   "session": "2181",
+   "roll": 1664341,
+   "measure_id": "LD 1949",
+   "vote_date": "2026-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted yes on LD 1949, a bill about electricity costs for households. The Public Utilities Commission must now weigh the effect on household bills when it carries out its duties, while still keeping the power system reliable. It must publish data on large utilities' credit and collection activity on its website. It must also review every part of electric delivery rates to see whether the design could hold down costs, steady bills, and make them easier to understand, and report by the end of 2027. This was the final passage vote. The Maine House passed it 86-56 and it became law.",
+   "nay_description": "Voted no on LD 1949, a bill about electricity costs for households. The Public Utilities Commission must now weigh the effect on household bills when it carries out its duties, while still keeping the power system reliable. It must publish data on large utilities' credit and collection activity on its website. It must also review every part of electric delivery rates to see whether the design could hold down costs, steady bills, and make them easier to understand, and report by the end of 2027. This was the final passage vote. The Maine House passed it 86-56 and it became law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
