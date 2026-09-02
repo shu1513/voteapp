@@ -112,12 +112,31 @@ export function formatKansasCfrDate(date: Date): string {
   return `${month}/${day}/${date.getUTCFullYear()}`;
 }
 
-/** January 1 (UTC) of the first year of the office's cycle for an election year. */
-export function kansasCfrCycleStart(office: KansasCfrOffice, electionYear: number): Date {
+/**
+ * First year of the K.S.A. 25-4148 cycle that ends with `electionYear`.
+ * Regular elections (House every even year, Senate in presidential years,
+ * statewide in gubernatorial years) open `cycleYearsBefore` years earlier.
+ * A State Senate race in the other even years is a SPECIAL for the rest of
+ * a term (2026: districts 24 and 25) and KPDC files it on the short cycle
+ * that opens the year after the last regular election (2026 -> 2025, the
+ * Senate/2026SpecialElection archive). Any other off-year race has no
+ * pinned cycle and fails closed.
+ */
+export function kansasCfrCycleStartYear(office: KansasCfrOffice, electionYear: number): number {
   if (!Number.isSafeInteger(electionYear) || electionYear < 2000 || electionYear > 2100) {
     throw new Error(`Invalid Kansas election year: ${electionYear}`);
   }
-  return new Date(Date.UTC(electionYear - office.cycleYearsBefore, 0, 1));
+  const senate = office.code === KANSAS_CFR_OFFICE_CODES.stateSenator;
+  const house = office.code === KANSAS_CFR_OFFICE_CODES.stateRepresentative;
+  const regular = house ? electionYear % 2 === 0 : senate ? electionYear % 4 === 0 : electionYear % 4 === 2;
+  if (regular) return electionYear - office.cycleYearsBefore;
+  if (senate && electionYear % 2 === 0) return electionYear - 1;
+  throw new Error(`No Kansas ${office.label} cycle for a ${electionYear} election`);
+}
+
+/** January 1 (UTC) of the first year of the office's cycle for an election year. */
+export function kansasCfrCycleStart(office: KansasCfrOffice, electionYear: number): Date {
+  return new Date(Date.UTC(kansasCfrCycleStartYear(office, electionYear), 0, 1));
 }
 
 /**
@@ -126,8 +145,7 @@ export function kansasCfrCycleStart(office: KansasCfrOffice, electionYear: numbe
  * the cycle by construction. A cycle that has not opened yet (a 2028 House
  * race seen in late 2026) has no window — callers check
  * kansasCfrCycleStart first; an inverted range here is a programming error.
- * `cycleStartYear` overrides the office's term length for a special
- * election's short cycle (the 2026 Senate specials start at 2025).
+ * `cycleStartYear` overrides kansasCfrCycleStartYear.
  */
 export function kansasCfrFiledDateWindow(input: {
   office: KansasCfrOffice;

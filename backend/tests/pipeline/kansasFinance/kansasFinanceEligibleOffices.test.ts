@@ -5,6 +5,7 @@ import {
   isKansasFinanceEligibleOffice,
   KANSAS_FINANCE_ELIGIBLE_OFFICE_KEYS,
   kansasCfrCycleStart,
+  kansasCfrCycleStartYear,
   kansasCfrFiledDateWindow,
   kansasCfrOfficeForRace,
 } from "../../../src/pipeline/kansasFinance/kansasFinanceEligibleOffices.js";
@@ -60,6 +61,24 @@ describe("kansasFinanceEligibleOffices", () => {
     expect(kansasCfrFiledDateWindow({ office: senate, electionYear: 2026, cycleStartYear: 2025, now })).toEqual({ startDate: "01/01/2025", endDate: "09/01/2026" });
     expect(() => kansasCfrFiledDateWindow({ office: senate, electionYear: 2026, cycleStartYear: 2027, now })).toThrow("Invalid Kansas cycle start year");
     expect(() => kansasCfrFiledDateWindow({ office: senate, electionYear: 2026, cycleStartYear: 2022, now })).toThrow("Invalid Kansas cycle start year");
+  });
+
+  it("derives the cycle start from the office calendar, Senate even off-years being specials", () => {
+    const house = kansasCfrOfficeForRace({ officeScope: "state_lower", officeCanonicalName: "State Lower Chamber Legislator" })!;
+    const senate = kansasCfrOfficeForRace({ officeScope: "state_upper", officeCanonicalName: "State Senator" })!;
+    const governor = kansasCfrOfficeForRace({ officeScope: "statewide", officeCanonicalName: "Governor" })!;
+    expect(kansasCfrCycleStartYear(house, 2026)).toBe(2025);
+    expect(kansasCfrCycleStartYear(senate, 2028)).toBe(2025);
+    expect(kansasCfrCycleStartYear(governor, 2026)).toBe(2023);
+    // 2026 Senate races are specials (districts 24 and 25): KPDC's short cycle opens 2025.
+    expect(kansasCfrCycleStartYear(senate, 2026)).toBe(2025);
+    const now = new Date("2026-09-01T15:00:00.000Z");
+    expect(kansasCfrFiledDateWindow({ office: senate, electionYear: 2026, now })).toEqual({ startDate: "01/01/2025", endDate: "09/01/2026" });
+    // No pinned cycle for any other off-year race.
+    expect(() => kansasCfrCycleStartYear(house, 2027)).toThrow("No Kansas State Representative cycle for a 2027 election");
+    expect(() => kansasCfrCycleStartYear(senate, 2027)).toThrow("No Kansas State Senator cycle for a 2027 election");
+    expect(() => kansasCfrCycleStartYear(governor, 2024)).toThrow("No Kansas Governor cycle for a 2024 election");
+    expect(() => kansasCfrCycleStart(governor, 2024)).toThrow("No Kansas Governor cycle");
   });
 
   it("refuses an inverted window for a cycle that has not opened", () => {

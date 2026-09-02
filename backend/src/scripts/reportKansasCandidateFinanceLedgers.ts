@@ -128,7 +128,7 @@ async function main(): Promise<void> {
       }
       try {
         const result = await buildKansasCandidateLedger({
-          target: { committeeId: row.committeeId, office, electionYear: row.electionYear },
+          target: { committeeId: row.committeeId, committeeName: row.committeeName, office, electionYear: row.electionYear },
           now: startedAt,
           loadFilingPool,
         });

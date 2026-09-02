@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import type { KansasFilerFilingKind } from "../../../src/pipeline/kansasFinance/kansasCandidateFilerResolver.js";
-import { buildKansasCandidateLedger } from "../../../src/pipeline/kansasFinance/kansasCandidateLedger.js";
+import { buildKansasCandidateLedger, kansasLedgerCandidateName } from "../../../src/pipeline/kansasFinance/kansasCandidateLedger.js";
 import type { KansasCfrGridRow } from "../../../src/pipeline/kansasFinance/kansasCfrViewerParsers.js";
 import { kansasCfrOfficeForRace } from "../../../src/pipeline/kansasFinance/kansasFinanceEligibleOffices.js";
 import type { KansasPooledFiling } from "../../../src/pipeline/kansasFinance/kansasFilingSearch.js";
@@ -183,6 +183,41 @@ describe("buildKansasCandidateLedger", () => {
       await buildKansasCandidateLedger({ target: { ...houseTarget, committeeId: "7::HOLLOWAY:MARGARET" }, now: NOW, loadFilingPool })
     ).toEqual({ status: "unresolved", reason: "recipe_district_mismatch" });
     expect(loadFilingPool).not.toHaveBeenCalled();
+  });
+
+  it("carries the link's verified filed spelling as middle-name evidence", async () => {
+    const recipe = { surname: "HOLLOWAY", firstName: "MARGARET" };
+    expect(kansasLedgerCandidateName(recipe)).toBe("HOLLOWAY, MARGARET");
+    expect(kansasLedgerCandidateName(recipe, "HOLLOWAY MARGARET A")).toBe("HOLLOWAY, MARGARET A");
+    // A suffix typed into the surname cell (live 2026) never reaches the name.
+    expect(kansasLedgerCandidateName({ surname: "ROBERTSON", firstName: "BOBBY" }, "JR ROBERTSON BOBBY JOE")).toBe("ROBERTSON, BOBBY JOE");
+    // Operator free text that is not the recipe's filer is ignored.
+    expect(kansasLedgerCandidateName(recipe, "FRIENDS OF MARGARET")).toBe("HOLLOWAY, MARGARET");
+    expect(kansasLedgerCandidateName(recipe, "HOLLOWAYS MARGARET")).toBe("HOLLOWAY, MARGARET");
+
+    const cover = { start: "1/1/2026", end: "7/23/2026" };
+    const filings = () => [
+      filing({ row: { name: "HOLLOWAY MARGARET A" }, cover }),
+      filing({ row: { index: 1, name: "HOLLOWAY MARGARET" }, cover }),
+      filing({ row: { index: 2, name: "HOLLOWAY MARGARET B" }, cover }),
+    ];
+    // The recipe alone aligns both middles and must report the contradiction.
+    expect(await buildKansasCandidateLedger({ target: houseTarget, now: NOW, loadFilingPool: poolOf(filings()) })).toMatchObject({
+      status: "unresolved",
+      reason: "conflicting_filed_names",
+    });
+    // The auto-link verified "HOLLOWAY MARGARET A" (roster "Margaret A. Holloway"): B is another person.
+    const pool = filings();
+    const result = await buildKansasCandidateLedger({
+      target: { ...houseTarget, committeeName: "HOLLOWAY MARGARET A" },
+      now: NOW,
+      loadFilingPool: poolOf(pool),
+    });
+    expect(result.status).toBe("resolved");
+    if (result.status !== "resolved") return;
+    expect(result.match.filedNames).toEqual(["HOLLOWAY MARGARET", "HOLLOWAY MARGARET A"]);
+    expect(result.reports).toHaveLength(2);
+    expect(pool[2]!.openReport).not.toHaveBeenCalled();
   });
 
   it("reports resolver outcomes: no filer, contradictory spellings, blank districts", async () => {

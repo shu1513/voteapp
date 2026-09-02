@@ -20,7 +20,7 @@
 // report was due, a filing that matches no period is reported rather than
 // dropped, and two unflagged filings for one period are `ambiguous`.
 
-import type { KansasCfrOffice } from "./kansasFinanceEligibleOffices.js";
+import { kansasCfrCycleStartYear, type KansasCfrOffice } from "./kansasFinanceEligibleOffices.js";
 
 export class KansasReportInventoryError extends Error {
   constructor(message: string) {
@@ -80,10 +80,9 @@ export type KansasReportingPeriod = {
 /**
  * Required periods for an office's cycle ending in `electionYear`: annual
  * reports for the earlier cycle years, then the election year's three.
- * The cycle opens `office.cycleYearsBefore` years earlier unless
- * `cycleStartYear` says otherwise — a SPECIAL election runs on the short
- * cycle KPDC files it under (the 2026 Senate special archive starts at the
- * 2025 annual, not 2023), so the caller passes the special's start year.
+ * The cycle opens at kansasCfrCycleStartYear (a SPECIAL election runs on
+ * the short cycle KPDC files it under: the 2026 Senate special archive
+ * starts at the 2025 annual, not 2023) unless `cycleStartYear` overrides it.
  * Regular election dates are computed; a special election on other dates
  * needs its own calendar (the 2026 Senate specials share the regular dates).
  */
@@ -95,7 +94,7 @@ export function kansasReportingPeriods(
   if (!Number.isSafeInteger(electionYear) || electionYear < 2000 || electionYear > 2100) {
     throw new KansasReportInventoryError(`Invalid Kansas election year: ${electionYear}`);
   }
-  const cycleStartYear = options.cycleStartYear ?? electionYear - office.cycleYearsBefore;
+  const cycleStartYear = options.cycleStartYear ?? kansasCfrCycleStartYear(office, electionYear);
   if (!Number.isSafeInteger(cycleStartYear) || cycleStartYear > electionYear || cycleStartYear < electionYear - 3) {
     throw new KansasReportInventoryError(`Invalid Kansas cycle start year: ${cycleStartYear} for ${electionYear}`);
   }

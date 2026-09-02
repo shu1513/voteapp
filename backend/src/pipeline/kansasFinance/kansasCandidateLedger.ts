@@ -5,12 +5,13 @@
 // Treasurer and Affidavit of Exemption dates from the same enumeration, and
 // hand it all to buildKansasReportLedger.
 //
-// Identity is the recipe, not the roster name: an operator's manual link
-// asserts "<officeCode>:<district>:<SURNAME>:<FIRST> is this candidate", so
-// the resolver runs with "FIRST SURNAME" and the same fail-closed rules the
-// auto-link used (exact district, full-name evidence, contradictions ->
-// ambiguous). Nickname families are symmetric, so a recipe built from
-// "BRUNK STEVEN" still folds "BRUNK STEVE".
+// Identity is the link, not the roster name: a link asserts
+// "<officeCode>:<district>:<SURNAME>:<FIRST> is this candidate" and stores
+// the filed spelling it was verified against as committee_name, so the
+// resolver runs with "SURNAME, FIRST [MIDDLE...]" (kansasLedgerCandidateName)
+// under the same fail-closed rules the auto-link used (exact district,
+// full-name evidence, contradictions -> ambiguous). Nickname families are
+// symmetric, so a recipe built from "BRUNK STEVEN" still folds "BRUNK STEVE".
 //
 // Paper (scanned) reports carry no period in the viewer (see
 // kansasFilingSearch.ts), so they are returned unopened as `paperReports`
@@ -18,6 +19,7 @@
 
 import {
   kansasDistrictNumberFromGrid,
+  normalizeKansasPersonNameForMatching,
   resolveKansasCandidateFiler,
   type KansasFilerMatch,
   type KansasFilerRow,
@@ -46,11 +48,30 @@ export class KansasCandidateLedgerError extends Error {
 export type KansasCandidateLedgerTarget = {
   /** Link committee_id: the viewer search recipe "<officeCode>:<district>:<SURNAME>:<FIRST>". */
   committeeId: string;
+  /** Link committee_name: the filed spelling the link was verified against ("HOLLOWAY JOHN A"). */
+  committeeName?: string;
   office: KansasCfrOffice;
   electionYear: number;
-  /** A special election's short cycle; defaults to the office's term length. */
+  /** Overrides kansasCfrCycleStartYear (a special on an unpinned calendar). */
   cycleStartYear?: number;
 };
+
+/**
+ * The resolver's candidate name for a link. The recipe alone is
+ * "SURNAME, FIRST", which would also align "HOLLOWAY JOHN B" for a link the
+ * auto-link verified against "HOLLOWAY JOHN A" (roster "John A. Holloway")
+ * and then report the pair as ambiguous. The link's committee_name is that
+ * verified spelling, so when it starts with the recipe's surname and first
+ * name its remaining tokens ride along as middle-name evidence; any other
+ * committee_name (operator free text) is ignored and the recipe stands.
+ * Comma form so the surname boundary is exact.
+ */
+export function kansasLedgerCandidateName(recipe: { surname: string; firstName: string }, committeeName?: string): string {
+  const filed = normalizeKansasPersonNameForMatching(committeeName ?? "");
+  const prefix = `${recipe.surname} ${recipe.firstName}`;
+  const rest = filed === prefix || filed.startsWith(`${prefix} `) ? filed.slice(recipe.surname.length + 1) : recipe.firstName;
+  return `${recipe.surname}, ${rest}`;
+}
 
 export type KansasCandidateReport = {
   row: KansasCfrGridRow;
@@ -107,7 +128,7 @@ export async function buildKansasCandidateLedger(input: {
     fileDate: filing.row.fileDate,
   }));
   const resolution = resolveKansasCandidateFiler({
-    candidateName: `${recipe.firstName} ${recipe.surname}`,
+    candidateName: kansasLedgerCandidateName(recipe, input.target.committeeName),
     districtNumber: recipe.districtNumber,
     rows,
   });
