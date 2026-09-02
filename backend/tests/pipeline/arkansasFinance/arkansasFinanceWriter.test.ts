@@ -272,9 +272,9 @@ describe("arkansasFinanceWriter", () => {
   });
 });
 
-describe("migration 265", () => {
+describe("migration 266", () => {
   const sql = readFileSync(
-    new URL("../../../../db/migrations/265_add_arkansas_campaign_finance_tables.sql", import.meta.url),
+    new URL("../../../../db/migrations/266_add_arkansas_campaign_finance_tables.sql", import.meta.url),
     "utf8"
   );
 

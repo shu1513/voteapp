@@ -5,7 +5,7 @@
 // Identity: the CFIS filer entity ID (registration-row filerEntityID = bulk
 // CSV "Filing Entity ID") in filing_entity_id, with the filer display name in
 // filer_name. Direct breakdowns are occupations or size buckets (migration
-// 265). cash_on_hand is a signed balance (CFIS reports negative balances for
+// 266). cash_on_hand is a signed balance (CFIS reports negative balances for
 // indebted campaigns).
 //
 // Outside groups/breakdowns are never written — Arkansas publishes no
@@ -90,7 +90,7 @@ function normalizeStoredFilingEntityId(value: string): string {
 
 const writer = createStandardStateFinanceSnapshotWriter({
   label: "Arkansas",
-  // Migration 265 constrains election_year to 2026+ (Nov-2026 scope).
+  // Migration 266 constrains election_year to 2026+ (Nov-2026 scope).
   minElectionYear: 2026,
   summaryUpdatePolicy: {
     // Outside totals are ALWAYS null for Arkansas; replace unconditionally so
