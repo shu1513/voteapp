@@ -18,6 +18,7 @@ import {
   type ArkansasCfisTransactionTypeCode,
   type ArkansasFilerRegistrationRow,
 } from "../pipeline/arkansasFinance/arkansasCfisClient.js";
+import { buildArkansasCfisDnsFallbackFetch } from "../pipeline/arkansasFinance/arkansasCfisDnsFallback.js";
 import {
   forEachArkansasExpenditureCsvRow,
   forEachArkansasReceiptCsvRow,
@@ -152,40 +153,6 @@ export function parseProbeArkansasCampaignFinanceArgs(args: readonly string[]): 
   };
 }
 
-// The DNS defect makes the default resolver return NXDOMAIN on some networks
-// (plan gate 1). The fallback resolves the CFIS hostnames through public DNS
-// for THIS PROBE ONLY — production fixes the host resolver instead.
-async function buildDnsFallbackFetch(): Promise<typeof fetch> {
-  const { Agent, fetch: undiciFetch } = await import("undici");
-  const { Resolver } = await import("node:dns");
-  const resolver = new Resolver();
-  resolver.setServers(["8.8.8.8", "1.1.1.1"]);
-  const lookup = (
-    hostname: string,
-    options: { all?: boolean },
-    callback: (error: NodeJS.ErrnoException | null, address?: unknown, family?: number) => void
-  ): void => {
-    resolver.resolve4(hostname, (error, addresses) => {
-      if (error || !addresses || addresses.length === 0) {
-        callback(error ?? Object.assign(new Error(`No A records for ${hostname}`), { code: "ENOTFOUND" }));
-        return;
-      }
-      if (options.all) {
-        callback(
-          null,
-          addresses.map((address) => ({ address, family: 4 }))
-        );
-        return;
-      }
-      callback(null, addresses[0], 4);
-    });
-  };
-  const dispatcher = new Agent({ connect: { lookup: lookup as never } });
-  const fetchWithDispatcher = (input: unknown, init?: unknown): Promise<unknown> =>
-    undiciFetch(input as never, { ...((init as object) ?? {}), dispatcher } as never);
-  return fetchWithDispatcher as unknown as typeof fetch;
-}
-
 function artifactPath(artifactDir: string, kind: ArkansasCfisTransactionTypeCode, year: number): string {
   return resolve(artifactDir, `${kind}_${year}.csv`);
 }
@@ -248,7 +215,7 @@ export async function runProbeArkansasCampaignFinance(input: {
     if (!isDnsDefect || !args.dnsFallback) throw error;
     dnsDefectObserved = true;
     usedDnsFallback = true;
-    const fetchImpl = await (input.fetchImplFactory ?? buildDnsFallbackFetch)();
+    const fetchImpl = await (input.fetchImplFactory ?? buildArkansasCfisDnsFallbackFetch)();
     clientOptions = { timeoutMs: args.timeoutMs, fetchImpl };
     nextElectionYear = await client.getNextElectionYear(clientOptions);
   }

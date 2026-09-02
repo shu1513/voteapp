@@ -353,6 +353,17 @@ export function isAlabamaFcpaRawDataRefreshEnabled(force = false): boolean {
   );
 }
 
+export function isArkansasCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("ARKANSAS_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isArkansasCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isArkansasCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("ARKANSAS_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
 export function isKansasCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("KANSAS_CAMPAIGN_FINANCE_ENABLED", false);
 }
