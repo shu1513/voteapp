@@ -63,6 +63,27 @@ export function normalizeKansasFilerKey(value: string): string {
   return normalized;
 }
 
+/** The recipe's parts; the sync re-runs the viewer search from them. */
+export function parseKansasFilerKey(value: string): {
+  officeCode: string;
+  districtNumber: number | null;
+  surname: string;
+  firstName: string;
+} {
+  const [officeCode, district, surname, firstName] = normalizeKansasFilerKey(value).split(":") as [
+    string,
+    string,
+    string,
+    string,
+  ];
+  return {
+    officeCode,
+    districtNumber: district === "" ? null : Number.parseInt(district, 10),
+    surname,
+    firstName,
+  };
+}
+
 const writer = createStandardStateFinanceSnapshotWriter({
   label: "Kansas",
   minElectionYear: 2024,

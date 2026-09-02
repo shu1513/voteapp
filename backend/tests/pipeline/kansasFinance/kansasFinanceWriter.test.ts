@@ -4,6 +4,7 @@ import {
   buildKansasFilerKey,
   normalizeKansasFilerKey,
   normalizeKansasNameForStorage,
+  parseKansasFilerKey,
   upsertKansasFinanceLink,
 } from "../../../src/pipeline/kansasFinance/kansasFinanceWriter.js";
 
@@ -21,6 +22,12 @@ describe("Kansas filer recipe keys", () => {
     expect(() => normalizeKansasFilerKey("7:85:BRUNSON")).toThrow("Invalid Kansas filer key");
     expect(() => normalizeKansasFilerKey("7:85::STEVEN")).toThrow("Invalid Kansas filer key");
     expect(() => buildKansasFilerKey({ officeCode: "7", districtNumber: 85, surname: "", firstName: "Steven" })).toThrow("Invalid Kansas filer key");
+  });
+
+  it("parses a stored key back into its recipe parts", () => {
+    expect(parseKansasFilerKey("7:85:VAN DYKE:MARY ANN")).toEqual({ officeCode: "7", districtNumber: 85, surname: "VAN DYKE", firstName: "MARY ANN" });
+    expect(parseKansasFilerKey(" 1::rowan:stacy ")).toEqual({ officeCode: "1", districtNumber: null, surname: "ROWAN", firstName: "STACY" });
+    expect(() => parseKansasFilerKey("7:85:BRUNSON")).toThrow("Invalid Kansas filer key");
   });
 });
 

@@ -63,10 +63,11 @@ describe("kansasReportingPeriods", () => {
     ]);
   });
 
-  it("lets a special election run on the short cycle KPDC files it under", () => {
+  it("runs a special election on the short cycle KPDC files it under", () => {
     const senate = kansasCfrOfficeForRace({ officeScope: "state_upper", officeCanonicalName: "State Senator" })!;
-    expect(kansasReportingPeriods(senate, 2026).map((period) => period.key).slice(0, 3)).toEqual(["2023-annual", "2024-annual", "2025-annual"]);
-    // KPDC's Senate/2026SpecialElection archive starts at the 2025 annual.
+    expect(kansasReportingPeriods(senate, 2028).map((period) => period.key).slice(0, 3)).toEqual(["2025-annual", "2026-annual", "2027-annual"]);
+    // A 2026 Senate race is a special; KPDC's Senate/2026SpecialElection archive starts at the 2025 annual.
+    expect(kansasReportingPeriods(senate, 2026).map((period) => period.key)).toEqual(["2025-annual", "2026-pre_primary", "2026-pre_general", "2026-post_general"]);
     expect(kansasReportingPeriods(senate, 2026, { cycleStartYear: 2025 }).map((period) => period.key)).toEqual([
       "2025-annual",
       "2026-pre_primary",
