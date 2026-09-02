@@ -90,3 +90,47 @@ stored tallies are repaired from the transcripts.
 
 2025 rolls and 2026 Senate rolls are usable, with the tally still checked
 one by one against the official transcript before import.
+
+# Finding 4: a complete member list does not mean a correct tally (batch-04)
+
+Finding 3 gave a rule of thumb: a roll whose member list is shorter than the
+chamber is suspect. Batch-04 checked all 49 candidate rolls against the official
+ncleg.gov transcripts rather than a sample, and found a case the rule of thumb
+misses entirely.
+
+**H244, House, 2025-04-16, "Depoliticize Government Property Act."**
+
+| Source | Tally | Harrison (HD-061) |
+|--------|-------|-------------------|
+| LegiScan | 69-43 | coded `NV`, not voting |
+| ncleg.gov RCS H/130 | 69-44 | listed among the noes |
+
+The member list is complete. All 120 representatives are present in the feed.
+LegiScan simply recorded one member's nay as a non-vote, which drops the nay
+count by one. The official transcript prints 69-44, 113 votes cast, 7 excused
+and nobody not voting, and names Harrison in the noes.
+
+## Why this matters more than one roll
+
+Finding 3's length check cannot catch this, because nothing is missing. Only
+reading the transcript catches it. Any batch that verified tallies by sampling,
+or that trusted a full member list as a proxy for a correct tally, could have
+imported a wrong number.
+
+The rule is now: **read the official transcript for every roll before importing
+it, whatever the member list looks like, and whatever the year.**
+
+## What it costs here
+
+One roll. H244 is held at pending in `batch-04/held-rolls/` and is not imported.
+Its worklist disposition is
+`held:legiscan-miscoded-member-vote-tally-understated`. It becomes importable
+when the feed is corrected or the stored tally is repaired from the transcript.
+
+## One thing finding 3 left open, now closed
+
+Finding 3 noted that Senate rolls in May 2026 list 49 members and that Terence
+Everitt of SD-018 shows no successor. That is not a defect. Everitt resigned, and
+Haseeb Fatmi was appointed to District 18 on 2026-05-21. On 2026-05-05 (S808) and
+2026-05-20 (S1082) the seat was genuinely vacant, and both transcripts account
+for all 49 sitting senators. Both rolls were imported or judged on that basis.
