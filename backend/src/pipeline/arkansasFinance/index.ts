@@ -6,3 +6,8 @@ export * from "./arkansasFinanceWriter.js";
 export * from "./arkansasFinanceEligibleOffices.js";
 export * from "./arkansasCandidateFilerResolver.js";
 export * from "./arkansasCandidateFinanceAutoLink.js";
+export * from "./arkansasDirectContributionAggregator.js";
+export * from "./arkansasCandidateFinanceSync.js";
+export * from "./arkansasCandidateFinanceDueList.js";
+export * from "./arkansasCandidateFinanceBatchSync.js";
+export * from "./arkansasBallotLookupFinanceLoader.js";

@@ -159,6 +159,8 @@ services:
         value: "true"
       - key: ARIZONA_CAMPAIGN_FINANCE_ENABLED
         value: "true"
+      - key: ARKANSAS_CAMPAIGN_FINANCE_ENABLED
+        value: "false"
       - key: AUSTIN_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: CALIFORNIA_CAMPAIGN_FINANCE_ENABLED

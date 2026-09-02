@@ -95,6 +95,35 @@ cycle-scoped) — like Georgia's cover-arithmetic decision. CSVs/search rows
 feed occupation & donor aggregates, not headline totals, until a plan-phase
 fixture pins the CSV↔API↔cover reconciliation.
 
+## Receipt-search semantics (Phase 3 gold-set profile, 2026-09-02)
+
+Ten 2026-cycle candidate registrations pulled through the windowed
+registration-scoped `GetTransactionDetails` (TCON) path:
+
+- The search returns **receipts only**: `transactionSubTypeDesc` is one of
+  `Itemized Monetary`, `Non-Itemized Monetary`, `Itemized Nonmoney`,
+  `Interest`. Loan and Return Contribution rows (present in the CSV) never
+  appear — entity 10477 has 19 CSV loan rows and reconciles to the cent
+  without them.
+- **`totalRaised` = monetary rows + interest rows** (loans and in-kind
+  excluded). Entity 7289 (20 interest rows, $5,331.35) reconciles only with
+  interest counted; every unamended filer reconciles to the cent.
+- Non-itemized rows are per-report lumps (`transactionSource` null, no
+  occupation); `transactionSource` is otherwise `Individual`, `Candidate`,
+  `Political Action Committee`, `Business/Organization/Unlisted PAC`.
+- Amounts can carry sub-cent noise (`1500.001`, entity 8313); rounding each
+  row to cents reconciles.
+- Some amended filers overshoot the registration total (superseded versions
+  kept in the search: 7526 +$11,800 with one amended report; 8753 +$550;
+  8021 +$17,500) while others with amendments reconcile exactly (7722, 10477,
+  8313 with ten amended reports). The aggregator therefore publishes
+  breakdowns only when the receipt sum equals `totalRaised` to the cent and
+  withholds them otherwise (totals still publish). `hasChild` rows appeared
+  only on overshooting filers (8021: 5, 8753: 4) — semantics unpinned.
+- Wilson (11847, the Phase 0 loan-heavy gold filer) now carries no
+  `electionYear` on his State Senate registration, so he is outside the
+  cycle-pinned v1 scope.
+
 ## Donor occupation (verified — shippable)
 
 2026 TCON individual-source rows: 301,059; **occupation filled 261,131 (87%)**
