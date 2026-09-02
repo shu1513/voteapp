@@ -1,0 +1,81 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "NC",
+   "chamber": "senate",
+   "session": "2189",
+   "roll": 1594833,
+   "measure_id": "H 171",
+   "vote_date": "2025-06-25",
+   "review_status": "approved",
+   "yea_description": "Voted yes on House Bill 171. It would have stopped state agencies and local governments from running diversity, equity and inclusion programs, hiring staff for them, or paying for them with public money. Public universities and community colleges were left out. An official who broke the money rule could be fined up to $10,000 for each payment, and people could sue. A yes vote helped the bill move ahead. The Senate voted 26-20 and the governor vetoed the bill. The House voted to override in 2026 but the Senate has not, so it is not law.",
+   "nay_description": "Voted no on House Bill 171. It would have stopped state agencies and local governments from running diversity, equity and inclusion programs, hiring staff for them, or paying for them with public money. Public universities and community colleges were left out. An official who broke the money rule could be fined up to $10,000 for each payment, and people could sue. A no vote was against it. The Senate voted 26-20 and the governor vetoed the bill. The House voted to override in 2026 but the Senate has not, so it is not law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NC",
+   "chamber": "house",
+   "session": "2189",
+   "roll": 1588661,
+   "measure_id": "S 50",
+   "vote_date": "2025-06-11",
+   "review_status": "approved",
+   "yea_description": "Voted yes on Senate Bill 50, called the Freedom to Carry Act. It would have let any citizen 18 or older carry a hidden handgun without a permit, while keeping the current bans on felons and some others. The bill also raised the death benefit paid when a police officer or firefighter is killed on the job. It added new felonies for a felon who carries or fires a gun during another crime. A yes vote helped the bill move ahead. The House voted 59-48 and the governor vetoed the bill. The Senate voted to override but the House never did, so it is not law.",
+   "nay_description": "Voted no on Senate Bill 50, called the Freedom to Carry Act. It would have let any citizen 18 or older carry a hidden handgun without a permit, while keeping the current bans on felons and some others. The bill also raised the death benefit paid when a police officer or firefighter is killed on the job. It added new felonies for a felon who carries or fires a gun during another crime. A no vote was against it. The House voted 59-48 and the governor vetoed the bill. The Senate voted to override but the House never did, so it is not law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NC",
+   "chamber": "senate",
+   "session": "2189",
+   "roll": 1599136,
+   "measure_id": "S 50",
+   "vote_date": "2025-07-29",
+   "review_status": "approved",
+   "yea_description": "Voted yes on Senate Bill 50, called the Freedom to Carry Act. It would have let any citizen 18 or older carry a hidden handgun without a permit, while keeping the current bans on felons and some others. The bill also raised the death benefit paid when a police officer or firefighter is killed on the job. It added new felonies for a felon who carries or fires a gun during another crime. A yes vote was to pass the bill over the governor's veto. The Senate voted 30-19 to override the veto. The House never held its own vote, so the bill is not law.",
+   "nay_description": "Voted no on Senate Bill 50, called the Freedom to Carry Act. It would have let any citizen 18 or older carry a hidden handgun without a permit, while keeping the current bans on felons and some others. The bill also raised the death benefit paid when a police officer or firefighter is killed on the job. It added new felonies for a felon who carries or fires a gun during another crime. A no vote was to let the veto stand. The Senate voted 30-19 to override the veto. The House never held its own vote, so the bill is not law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NC",
+   "chamber": "senate",
+   "session": "2189",
+   "roll": 1711554,
+   "measure_id": "H 437",
+   "vote_date": "2026-06-24",
+   "review_status": "approved",
+   "yea_description": "Voted yes on House Bill 437. It would have raised the penalty for selling drugs within 100 feet of a homeless shelter, and made it a felony for a shelter worker to knowingly let that happen. It would also have stopped any city or county from letting people camp or sleep on public land. A resident or business owner could sue the local government to enforce that. A yes vote helped the bill move ahead. The Senate voted 26-16 and the House agreed. The governor vetoed the bill and no override vote has been held, so it is not law.",
+   "nay_description": "Voted no on House Bill 437. It would have raised the penalty for selling drugs within 100 feet of a homeless shelter, and made it a felony for a shelter worker to knowingly let that happen. It would also have stopped any city or county from letting people camp or sleep on public land. A resident or business owner could sue the local government to enforce that. A no vote was against it. The Senate voted 26-16 and the House agreed. The governor vetoed the bill and no override vote has been held, so it is not law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
