@@ -147,6 +147,32 @@ district, party, electionYear, filingCycleId, treasurer, status, entityGuid.
 - Edge blocks library user agents (Python-urllib → 403); `curl` and
   `Mozilla/5.0` pass. Send the SPA Origin/Referer as NH does.
 
+## Search coverage and paging (survey 2026-09-02, Phase 2a)
+
+- Single page only. `sortBy` accepts only `TransactionDate` (`TransactionId`,
+  `Guid` → HTTP 500) and the date sort is unstable across pages: Little
+  (4,725 rows) paged at 500 came back with 30 rows duplicated and 30 dropped
+  while one page of 10,000 was cent-exact. Fetch one page of 10,000 per
+  filer name and fail closed when `totalItems > items.length`.
+- Rows vs grid, 60 top-raised eligible 2026 registrations: 42 cent-exact;
+  8 rows > grid, each matching a `Return Contribution` row in the bulk
+  export (the state subtracts returns; the search still lists the original);
+  10 rows < grid where the search omits rows of a *filed* monthly report
+  (Stegner: 168 of the July monthly's 177 rows, $30,552.85, present in the
+  bulk export with `Amended = N`; Hickman: the whole June monthly,
+  $8,622.46; others $117–$1,810). Name variants do not recover them.
+- `PublicFilerDetails/GetFinancialSummaryDetails.totalContributions` equals
+  the grid `totalRaised` on every probe; `totalLoansReceived` is separate
+  and not in `totalRaised`. `GetContributionsCategoriesDetails` (amount by
+  source type) and `GetContributionsInStateAndOutStateDetail` are the
+  state's own breakdowns and also exclude the omitted rows.
+- Codes seen across ~15,000 rows: subtypes ITMY, INKIND, NITMY, ITR (never
+  ANYMS); source types TIND, TBSN, TPAC, TCENC (party central committees),
+  TCAN, TSELF, null (ITR only). ITR rows are interest labelled
+  "Unitemized" and count in the grid total. No negative amounts; no
+  duplicate transaction ids on a single page (amended rows appear once,
+  as version 2). `filedDate` is an ISO datetime.
+
 ## Outside spending (support / oppose) — YES, both stances
 
 Two equivalent sources, both current:
