@@ -1,17 +1,21 @@
 # Maryland 2026 session (LegiScan 2240) — full disposition ledger
 
 Every divided-and-enacted subject in this session that batches 01 through 03 did
-not already judge, with its disposition. A subject is one measure plus its
-cross-filed twin: Maryland chapters both halves of a cross-file, so exactly one
-half is ever judged.
+not already judge, with its disposition.
 
 A deferral is not a finding that the vote does not matter. It records that no
 research area carries an honest direction for the measure, or that it is local,
 administrative, a study, or runs both ways.
 
-- **120 subjects** in this ledger
+Maryland chapters both halves of a cross-filed pair, so exactly one half of each
+pair is ever judged. The third section lists every cross-file whose twin was
+handled elsewhere, so this ledger can be audited by bill number: no
+divided-and-enacted subject in the session is absent from these three lists.
+
 - **43 judged**
-- **77 deferred**, each with its reason below
+- **83 deferred with a reason**
+- **37 cross-files of a measure handled elsewhere**
+- **163 total** — every divided-and-enacted subject in the session
 
 ## Judged
 
@@ -84,8 +88,14 @@ administrative, a study, or runs both ways.
 - **SB 323** — contested direction: juvenile charging reform (recorded in batch-03)
 - **HB 467** — contested direction: parole commission changes (recorded in batch-03)
 - **SB 162** — contested direction: sentence reduction eligibility
+- **SB 366** — cross-file twin of HB 107, which is deferred: traffic safety pilot; no research area fits
 - **SB 346** — cross-file twin of HB 351, judged in batch-02
+- **SB 253** — cross-file twin of HB 388, which is deferred: local public-employer bargaining (Baltimore County library)
+- **SB 822** — cross-file twin of HB 467, which is deferred: contested direction: parole commission changes (recorded in batch-03)
 - **SB 325** — cross-file twin of HB 548, judged in this campaign
+- **SB 420** — cross-file twin of HB 6, which is deferred: mostly data collection and reporting (recorded in batch-03)
+- **SB 28** — cross-file twin of HB 604, which is deferred: public employer arbitration; corporate_accountability means companies (recorded in batch-03)
+- **SB 18** — cross-file twin of HB 769, which is deferred: licensing pathway; no area fits
 - **HB 229** — debt capacity increase
 - **HB 1532** — energy omnibus (recorded in batch-03)
 - **HB 1280** — feasibility study only
@@ -138,3 +148,45 @@ administrative, a study, or runs both ways.
 - **HB 330** — trivia: board size
 - **HB 247** — variance standards; direction unclear
 - **HB 1248** — workgroup only
+
+## Cross-files handled through their twin
+
+| measure | twin | how the twin was handled |
+| --- | --- | --- |
+| HB 1533 | SB 656 | judged in batches 01-03 |
+| SB 11 | HB 260 | deferred: administrative campaign finance deadlines |
+| SB 56 | HB 293 | deferred: runs both ways: authorizes wider student data sharing while adding safeguards |
+| SB 100 | HB 263 | judged in batches 01-03 |
+| SB 113 | HB 278 | deferred: plan codification and reporting |
+| SB 130 | HB 220 | judged in batches 01-03 |
+| SB 160 | HB 284 | judged in batches 01-03 |
+| SB 169 | HB 372 | judged in batches 01-03 |
+| SB 188 | HB 229 | deferred: debt capacity increase |
+| SB 197 | HB 243 | deferred: administrative planning framework reorganization |
+| SB 205 | HB 280 | judged in batches 01-03 |
+| SB 218 | HB 288 | deferred: administrative transfer of emergency declaration authority |
+| SB 226 | HB 238 | deferred: administrative heritage area changes |
+| SB 228 | HB 227 | deferred: administrative changes to the Maryland Environmental Service |
+| SB 241 | HB 115 | judged in batches 01-03 |
+| SB 245 | HB 444 | judged in batches 01-03 |
+| SB 252 | HB 330 | deferred: trivia: board size |
+| SB 335 | HB 315 | judged in batches 01-03 |
+| SB 344 | HB 734 | judged in batches 01-03 |
+| SB 354 | HB 483 | deferred: runs both ways: raises audit thresholds, easing oversight and burden together |
+| SB 385 | HB 637 | judged in batches 01-03 |
+| SB 411 | HB 624 | judged in batches 01-03 |
+| SB 469 | HB 816 | deferred: technical insurance assessment and affordability mechanics |
+| SB 532 | HB 1076 | judged in batches 01-03 |
+| SB 585 | HB 625 | deferred: administrative: moves contribution collection between departments |
+| SB 649 | HB 969 | judged in batches 01-03 |
+| SB 673 | HB 1165 | deferred: runs both ways: adds a completion standard but raises the contract threshold |
+| SB 739 | HB 1219 | deferred: study only |
+| SB 740 | HB 480 | judged in batches 01-03 |
+| SB 765 | HB 1148 | judged in batches 01-03 |
+| SB 773 | HB 1135 | judged in batches 01-03 |
+| SB 809 | HB 1280 | deferred: feasibility study only |
+| SB 829 | HB 1137 | deferred: study only |
+| SB 860 | HB 804 | deferred: fund establishment only |
+| SB 893 | HB 1026 | deferred: administrative cash rounding |
+| SB 941 | HB 1218 | deferred: plan and report only |
+| SB 947 | HB 1081 | deferred: transit governance reorganization |
