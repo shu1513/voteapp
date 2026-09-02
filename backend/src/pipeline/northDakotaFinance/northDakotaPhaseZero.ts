@@ -3,10 +3,11 @@
 
 import { createHash } from "node:crypto";
 
-import type {
-  NorthDakotaChartSeries,
-  NorthDakotaCommitteeRow,
-  NorthDakotaTransactionRow,
+import {
+  NORTH_DAKOTA_CANDIDATE_COMMITTEE_ORG_TYPE,
+  type NorthDakotaChartSeries,
+  type NorthDakotaCommitteeRow,
+  type NorthDakotaTransactionRow,
 } from "./northDakotaCfrsClient.js";
 import type {
   NorthDakotaContributionCsvRow,
@@ -59,8 +60,6 @@ function counterpartyLabel(type: string): string {
 }
 
 // --- registry lookups -------------------------------------------------------
-
-export const NORTH_DAKOTA_CANDIDATE_COMMITTEE_ORG_TYPE = "Candidate/Candidate Committee";
 
 export type NorthDakotaOfficeClass = "statewide" | "legislative" | "judicial" | "unknown";
 

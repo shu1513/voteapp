@@ -45,6 +45,9 @@ export const NORTH_DAKOTA_ORG_TYPE_CODES = {
   independentExpenditureCommittee: "104",
 } as const;
 
+/** Registry `orgType` of a candidate filer (376 of 601 registry rows live 2026-09-01). */
+export const NORTH_DAKOTA_CANDIDATE_COMMITTEE_ORG_TYPE = "Candidate/Candidate Committee";
+
 export type NorthDakotaCfrsClientErrorCode = "invalid_request" | "network_error" | "http_error" | "bad_response";
 
 export class NorthDakotaCfrsClientError extends Error {
