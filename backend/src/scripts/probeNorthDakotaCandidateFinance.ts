@@ -8,6 +8,7 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import {
+  NORTH_DAKOTA_CANDIDATE_COMMITTEE_ORG_TYPE,
   NORTH_DAKOTA_ORG_TYPE_CODES,
   downloadNorthDakotaPresignedFile,
   getAllNorthDakotaCommittees,
@@ -30,7 +31,6 @@ import {
   type NorthDakotaExpenditureCsvRow,
 } from "../pipeline/northDakotaFinance/northDakotaCfrsCsv.js";
 import {
-  NORTH_DAKOTA_CANDIDATE_COMMITTEE_ORG_TYPE,
   NORTH_DAKOTA_YEAR_END_EXPENDITURE_TYPE,
   apiAmountToCents,
   checkNorthDakotaCycleWindow,
