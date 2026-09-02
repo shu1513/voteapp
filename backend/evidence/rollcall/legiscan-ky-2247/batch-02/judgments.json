@@ -353,8 +353,8 @@
       "measure_id": "SB 324",
       "vote_date": "2026-04-15",
       "review_status": "approved",
-      "yea_description": "Voted for Senate Bill 324. It lets money set aside each year for Kentucky's film tax credit that goes unused carry forward into the next year for large film and entertainment productions. It also adds video games, music videos, and commercials to the productions that qualify, and raises the minimum a company must spend in Kentucky from $250,000 to $400,000. The Kentucky House voted 80-15, and the Governor signed the bill into law.",
-      "nay_description": "Voted against Senate Bill 324. It lets money set aside each year for Kentucky's film tax credit that goes unused carry forward into the next year for large film and entertainment productions. It also adds video games, music videos, and commercials to the productions that qualify, and raises the minimum a company must spend in Kentucky from $250,000 to $400,000. The Kentucky House voted 80-15, and the Governor signed the bill into law.",
+      "yea_description": "Voted for Senate Bill 324. It lets any unused part of Kentucky's $75 million yearly film tax credit cap carry forward into the next year for large film and entertainment productions. It also adds video games, music videos, and commercials to the productions that qualify, and raises the minimum a company must spend in Kentucky from $250,000 to $400,000. The Kentucky House voted 80-15, and the Governor signed the bill into law.",
+      "nay_description": "Voted against Senate Bill 324. It lets any unused part of Kentucky's $75 million yearly film tax credit cap carry forward into the next year for large film and entertainment productions. It also adds video games, music videos, and commercials to the productions that qualify, and raises the minimum a company must spend in Kentucky from $250,000 to $400,000. The Kentucky House voted 80-15, and the Governor signed the bill into law.",
       "labels": [
         {
           "slug": "government_spending_reduction",
@@ -551,8 +551,8 @@
       "measure_id": "SB 66",
       "vote_date": "2026-04-15",
       "review_status": "approved",
-      "yea_description": "Voted for Senate Bill 66. It adds clonazepam, cyclobenzaprine, and fentanyl to the drugs that make driving illegal when any amount is found in a driver's blood. It also bars using a refused breath or blood test as courtroom evidence of impaired driving, and voids the license suspension if the officer did not first give the required warning. The Kentucky House voted 79-15, and the Governor signed the bill into law.",
-      "nay_description": "Voted against Senate Bill 66. It adds clonazepam, cyclobenzaprine, and fentanyl to the drugs that make driving illegal when any amount is found in a driver's blood. It also bars using a refused breath or blood test as courtroom evidence of impaired driving, and voids the license suspension if the officer did not first give the required warning. The Kentucky House voted 79-15, and the Governor signed the bill into law.",
+      "yea_description": "Voted for Senate Bill 66. It adds clonazepam, cyclobenzaprine, and fentanyl to the drugs that make driving illegal when any amount is found in a driver's blood. It also says refusing a blood test still suspends a license but cannot be used in court to prove impaired driving, and if police skip the required warnings, no refusal may be used against the driver or suspend the license at arraignment. The Kentucky House voted 79-15, and the Governor signed the bill into law.",
+      "nay_description": "Voted against Senate Bill 66. It adds clonazepam, cyclobenzaprine, and fentanyl to the drugs that make driving illegal when any amount is found in a driver's blood. It also says refusing a blood test still suspends a license but cannot be used in court to prove impaired driving, and if police skip the required warnings, no refusal may be used against the driver or suspend the license at arraignment. The Kentucky House voted 79-15, and the Governor signed the bill into law.",
       "labels": [
         {
           "slug": "general",

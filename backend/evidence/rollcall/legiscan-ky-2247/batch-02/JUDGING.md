@@ -41,16 +41,12 @@ most on three measures:
 
 The Commission's Summary of Enacted Version misstated the Act in six of the 2025
 session's twelve batch-01 measures, so every claim below was verified against
-the Act. Three checks changed what was written:
+the Act. Two checks changed what was written:
 
 - **SB 29.** The summary reads as though a landfill escapes its host county's
   rules. The Act says the opposite direction: the facility is exempt from fees,
   permits and other authorization imposed by the county **where the waste was
   generated**.
-- **SB 324.** The summary says any unallocated portion of the $75 million cap
-  carries forward. The Act's bold text ties the carry-forward to the amount set
-  aside for continuous film productions, so the description says "money set
-  aside each year" rather than naming the $75 million.
 - **SB 1.** The summary says the Act limits the superintendent's transfers to
   $250,000 per quarter. The bracketed deletion shows what actually changed: the
   cap used to apply to "any individual transfer" and now applies to "the
@@ -135,6 +131,30 @@ either. Batch-01 left HB 2 alone for the same reason; this batch confirms the
 call rather than reversing it. Every other Act in this batch that was vetoed
 carries the header "Vetoed and Overridden", meaning a whole-bill veto, so their
 override rolls are votes on the whole enrolled Act.
+
+## Two descriptions corrected after review
+
+Review of the pull request found two errors, both confirmed against the Act
+text, and both fixed by a re-judge and a real re-run rather than a file edit.
+The re-run at `2026-09-02T16:42:00.596Z` rewrote 84 records on each roll and
+left the other 1,563 unchanged; the insert ledger was preserved byte for byte.
+
+- **SB 66.** The first description said a refused "breath or blood test" could
+  not be used in court. KRS 189A.105(2)(a) as amended says a warned refusal of
+  an evidentiary **breath** test *may* be used in court and suspends the license
+  at arraignment; only a **blood**-test refusal is barred as evidence (it still
+  suspends), and a roadside preliminary breath test has its own rule under
+  KRS 189A.100. When the officer skips the required warnings, paragraph (d) bars
+  using any refusal against the driver and bars the arraignment suspension. The
+  description now says exactly that.
+- **SB 324.** The first draft of this document said the summary was wrong about
+  the carry-forward and that the Act tied it to the continuous-production
+  allocation. That was a misreading: KRS 154.61-020(4)(c) carries forward the
+  unallocated balance of "paragraph (a) of this subsection", which is the $75
+  million annual cap. The Legislative Research Commission summary was right.
+  The bold run quoted earlier was the parallel clause in KRS 141.383, whose
+  "subdivision a." reference points at the same cap. The description now names
+  the $75 million cap.
 
 ## Direction calls worth recording
 
