@@ -61,3 +61,38 @@ HB 662 and Charles Sydnor on SB 342. Neither is a duplicate; nothing retired.
 Counts come from `rolls[].candidates[].relatedRecordIds`.
 
 Session 2164 now holds **7,216 live records**. Production is untouched.
+
+## Review response (2026-09-02)
+
+One finding on this batch, checked against the DLS note: real, fixed. Reading
+the note also exposed a root cause that reached beyond the finding, so two more
+descriptions were corrected in the same pass.
+
+- **HB 634 (P2, accepted).** The description said anyone unable to file while
+  incarcerated could use the program. The note defines a "justice-involved
+  individual" narrowly: convicted, and still serving or released within the
+  past two years after serving six months to ten years. The description now
+  carries that definition, the ten-year plan limit, and that relief attaches to
+  a tax bill for a year the person was incarcerated.
+
+**Root cause.** Descriptions were authored from the note's synopsis paragraph
+extracted at a fixed character cut, and 51 of the 67 finish-campaign synopses
+were cut mid-paragraph. The text past the cut was read for every judged
+measure in both sessions. In this batch it changed two more:
+
+- **HB 277.** The replacement trigger is a renovation that replaces the
+  fountain, not "where the code requires one"; and the rule is prospective
+  only. Both now stated.
+- **HB 367.** The bill also changes the nursing and pharmacy boards' English
+  proficiency rules and the conditions for licensing nurses by endorsement —
+  the second half of its own title, which the description had omitted.
+
+The other 21 tails were effective dates, conforming changes, or regulation
+duties that change no claim.
+
+Fix stamp `2026-09-02T14:49:54.630Z`; ledger `import-review-fixes-report.json`
+(**424 rewrites across 5 rolls, 0 inserts, 0 errors**), confirmed from inside
+the file before it was renamed. `import-report.json` remains the original
+insert ledger. Convergence afterwards: **2,854 unchanged**. Per-measure tag
+counts and hashes were captured before and after the fix run: all 24 measures
+byte-identical, as expected for description-only changes.

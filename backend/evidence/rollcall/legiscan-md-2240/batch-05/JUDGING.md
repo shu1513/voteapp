@@ -77,3 +77,52 @@ area tags**, 7,216 from the 2025 session and 9,246 from 2026.
 
 **Production still holds zero Maryland roll-call records.** Promotion is the
 only remaining step and is a separate, user-run operation.
+
+## Review response (2026-09-02)
+
+One finding on this batch, checked against the DLS note: real, fixed. Reading
+the note also exposed a root cause that reached well beyond the finding, so
+nine more descriptions were corrected in the same pass.
+
+- **SB 249 (P2, accepted).** The description said existing cigarette and
+  tobacco licensees were "excluded from the requirement". The note says they
+  are excluded *until their current license expires*, and its revenue section
+  adds that all such licenses expire April 30, so the reprieve ends in May 2027.
+  Now stated as temporary, with the date.
+
+**Root cause.** Descriptions were authored from the note's synopsis paragraph
+extracted at a fixed character cut — 430 characters for this session — and
+SB 249's cut fell exactly before "until their current license expires". The
+text past the cut was read for every judged measure. In this batch it changed
+nine more descriptions, listed by how much the missing text mattered:
+
+- **HB 263.** The bus-stop rule does not apply to routes run by the Maryland
+  Transit Administration or the Washington area Metro system — most bus
+  service in the state. Now stated.
+- **SB 12.** The renovation trigger is specifically replacement or substantial
+  upgrade of the electrical or heating system, and buildings permitted before
+  the effective date are untouched. Now stated.
+- **SB 831.** The Public Employee Relations Board's expansion to private
+  employees is contingent on a federal action. Now stated as contingent — the
+  HB 894 lesson from batch-03.
+- **HB 557.** The review process sunsets June 30, 2029. Now stated.
+- **SB 322.** Fraud convictions also disqualify, and the bill repeals the rule
+  that a pardon restored jury eligibility. Both now stated.
+- **HB 969.** The actual charging rule: kilowatt-hours delivered plus an
+  itemized end-of-session service fee, replacing a vague "what the bill
+  specifies".
+- **HB 405.** The license is for up to three years, and the rule reaches
+  existing covenants and bylaws.
+- **HB 1016.** Applies only to contracts signed after the effective date.
+- **SB 775.** The agency must check the national crime database before
+  destroying a surrendered gun.
+
+The other 22 tails were effective dates, conforming changes, or regulation
+duties that change no claim.
+
+Fix stamp `2026-09-02T14:50:22.006Z`; ledger `import-review-fixes-report.json`
+(**1,195 rewrites across 13 rolls, 0 inserts, 0 errors**), confirmed from
+inside the file before it was renamed. `import-report.json` remains the
+original insert ledger. Convergence afterwards: **5,467 unchanged**. Per-measure
+tag counts and hashes captured before and after: all 43 measures
+byte-identical, as expected for description-only changes.
