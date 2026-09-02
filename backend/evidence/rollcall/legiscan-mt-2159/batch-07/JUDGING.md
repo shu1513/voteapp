@@ -54,12 +54,23 @@ show the defect is not a single typo.
 **What was done about it.** A comparison script now exists outside the
 repository at `/Users/shu/legiscan-data/mt_verify.py`, with a companion
 `mt_prefetch.py` that warms a local cache of Montana's own vote records. Every
-roll of all five measures in this batch was checked. All six imported rolls
-agree with Montana's record exactly. An audit of every bill in the worklist,
-including the 74 rolls already imported in batches 1 through 6, is running
-against the same script; its findings will be reported separately.
+stored floor roll on all 335 worklist bills — 1,826 roll calls — was then
+compared member by member. The result is in `../survey/legiscan-vote-audit.md`,
+with every disagreeing roll in `../survey/legiscan-vote-audit.tsv`.
 
-**Why SB 542's House roll is held rather than corrected.** The importer verifies
+**None of the 81 rolls this campaign has imported disagrees with Montana's own
+record.** That covers all 74 rolls from batches 1 through 6 and all 7 from this
+one. No Montana record is wrong.
+
+Across the whole session, 76 of 1,826 rolls (4.2%) put at least one member on
+the wrong side, and 13 of those have a tally that matches exactly. The defect
+concentrates on second readings, 66 of 1,007, against 10 of 812 third readings.
+Eight of those ten third readings are a chamber's last kept floor vote and so
+would otherwise have been selected; seven are now marked
+`held:legiscan-vote-defect` in the worklist, and the eighth was never in it
+because its tally was not divided.
+
+**Why an affected roll is held rather than corrected.** The importer verifies
 the SHA-256 of each roll call payload against the value approved at fetch time,
 and separately checks the evidence file's tally against the approved row. Both
 checks exist to stop exactly the kind of hand-editing that a correction would

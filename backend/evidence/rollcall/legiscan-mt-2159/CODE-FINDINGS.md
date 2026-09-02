@@ -181,6 +181,23 @@ source data.
 
 **What is missing.** There is no supported way to record that an upstream source
 is wrong about a named member and to import the corrected roll. Until there is,
-an affected roll can only be held. SB 542's House roll is held for this reason
-and is marked `held:legiscan-vote-defect` in the worklist. Building that path is
-a code change and belongs in its own review.
+an affected roll can only be held. Building that path is a code change and
+belongs in its own review.
+
+**How far it goes.** All 1,826 stored floor rolls on the 335 worklist bills were
+compared member by member. The full result is in
+`survey/legiscan-vote-audit.md`, with every disagreeing roll listed in
+`survey/legiscan-vote-audit.tsv`. In short:
+
+- **None of the 81 rolls this campaign has imported disagrees.** Every one was
+  in scope and every one matches. No Montana record is wrong.
+- 76 of 1,826 rolls (4.2%) have at least one member on the wrong side, and 63
+  (3.5%) have a wrong tally.
+- **13 rolls have a matching tally and still put members on the wrong side.** A
+  totals-only check passes all thirteen.
+- The defect concentrates on second readings: 66 of 1,007, against 10 of 812
+  third readings.
+- Eight of those ten third readings are a chamber's last kept floor vote, so
+  they are rolls this campaign would otherwise select. Seven are marked
+  `held:legiscan-vote-defect` in the worklist; the eighth, HB 636 roll 1508554,
+  never entered the worklist because 84-15 is not divided.

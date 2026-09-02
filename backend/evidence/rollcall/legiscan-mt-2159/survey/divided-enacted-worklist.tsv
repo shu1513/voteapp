@@ -23,7 +23,7 @@ HB 142	B	senate	2025-03-28	1530074	32	16	unbatched	Revise laws relating to inter
 HB 144	B	senate	2025-03-20	1522978	31	19	unbatched	Revise building code council membership laws
 HB 146	B	senate	2025-03-24	1525221	40	10	unbatched	Revise hunting license fees to include cranes and swans
 HB 147	B	senate	2025-04-16	1549880	34	16	unbatched	Revise laws related to covenants to provide definition of enforcement action
-HB 15	B	house	2025-01-27	1481075	78	20	unbatched	Implement K-12 Inflation
+HB 15	B	house	2025-01-27	1481075	78	20	held:legiscan-vote-defect	Implement K-12 Inflation
 HB 15	B	senate	2025-03-21	1524072	33	17	unbatched	Implement K-12 Inflation
 HB 157	B	senate	2025-03-24	1525010	40	10	unbatched	Revise alcohol laws related to responsible server and sales training
 HB 159	B	senate	2025-03-20	1523736	37	13	unbatched	Revise rural improvement district laws to include maintenance of existing public improvements
@@ -91,7 +91,7 @@ HB 278	B	house	2025-02-12	1488434	60	40	batch-01	Require peace officer to check 
 HB 278	B	senate	2025-04-01	1533387	30	20	batch-01	Require peace officer to check and report immigration status during lawful stop
 HB 28	B	house	2025-01-17	1480903	73	25	unbatched	Clarify timelines and opening procedures for public charter schools
 HB 284	B	house	2025-02-21	1496525	59	39	superseded:later-roll-used	Establish an interim committee to investigate civil rights violations and censorship within the MUS
-HB 284	B	house	2025-04-17	1551835	58	41	unbatched	Establish an interim committee to investigate civil rights violations and censorship within the MUS
+HB 284	B	house	2025-04-17	1551835	58	41	held:legiscan-vote-defect	Establish an interim committee to investigate civil rights violations and censorship within the MUS
 HB 284	B	senate	2025-04-14	1547358	29	19	unbatched	Establish an interim committee to investigate civil rights violations and censorship within the MUS
 HB 285	B	house	2025-02-13	1489394	57	42	superseded:later-roll-used	Generally revise Montana environmental policy act
 HB 285	B	house	2025-04-15	1548641	63	34	batch-04	Generally revise Montana environmental policy act
@@ -318,7 +318,7 @@ HB 759	B	house	2025-03-07	1508536	56	43	superseded:later-roll-used	Revise campai
 HB 759	B	house	2025-04-18	1552229	59	39	batch-04	Revise campaign finance laws
 HB 759	B	senate	2025-04-12	1546667	40	10	batch-04	Revise campaign finance laws
 HB 76	B	house	2025-01-17	1481328	69	29	superseded:later-roll-used	Generally revise laws related to the board of behavioral health
-HB 76	B	house	2025-04-28	1558903	69	31	unbatched	Generally revise laws related to the board of behavioral health
+HB 76	B	house	2025-04-28	1558903	69	31	held:legiscan-vote-defect	Generally revise laws related to the board of behavioral health
 HB 76	B	senate	2025-04-12	1546687	31	19	superseded:later-roll-used	Generally revise laws related to the board of behavioral health
 HB 764	B	senate	2025-04-11	1545902	34	14	unbatched	Revise public transit laws
 HB 770	B	house	2025-03-07	1508724	56	43	unbatched	Revise candidate campaign finance reporting laws
@@ -364,7 +364,7 @@ HB 869	B	house	2025-04-05	1537648	75	23	unbatched	Provide for the sudden cardiac
 HB 876	B	senate	2025-04-23	1556328	29	21	unbatched	Sawmill revitalization act
 HB 882	B	senate	2025-04-22	1554231	31	19	unbatched	Generally revise alcohol laws
 HB 888	B	house	2025-04-05	1537748	56	42	superseded:later-roll-used	Revise local board of health rules for isolation and quarantine
-HB 888	B	house	2025-04-25	1558107	59	41	unbatched	Revise local board of health rules for isolation and quarantine
+HB 888	B	house	2025-04-25	1558107	59	41	held:legiscan-vote-defect	Revise local board of health rules for isolation and quarantine
 HB 888	B	senate	2025-04-18	1552278	30	20	unbatched	Revise local board of health rules for isolation and quarantine
 HB 891	B	house	2025-04-05	1537815	57	41	unbatched	Provide subpoena powers to the office of inspector general
 HB 891	B	senate	2025-04-18	1552333	32	18	unbatched	Provide subpoena powers to the office of inspector general
@@ -500,7 +500,7 @@ SB 238	B	house	2025-04-16	1550601	71	26	unbatched	Allow hunters to donate funds 
 SB 238	B	senate	2025-04-04	1537096	38	11	unbatched	Allow hunters to donate funds for archery equipment for disabled bowhunters
 SB 242	B	house	2025-03-31	1531507	71	28	dropped:filter-5	Revise election laws related to ballot form and uniformity
 SB 242	B	senate	2025-03-01	1502923	31	19	dropped:filter-5	Revise election laws related to ballot form and uniformity
-SB 243	B	house	2025-04-11	1546282	77	22	unbatched	Amend zoning regulations to allow taller buildings
+SB 243	B	house	2025-04-11	1546282	77	22	held:legiscan-vote-defect	Amend zoning regulations to allow taller buildings
 SB 246	B	house	2025-04-02	1535298	60	35	unbatched	Provide for Montana First Procurement laws and establish reporting requirements
 SB 247	B	house	2025-04-16	1550158	57	41	unbatched	Modify tax classification of shooting ranges
 SB 248	B	house	2025-03-28	1529988	61	38	unbatched	Provide that legislator access to CPS records includes drug testing results
@@ -540,7 +540,7 @@ SB 333	B	house	2025-04-24	1557270	58	42	unbatched	Repeal sunset on coal washing 
 SB 335	B	senate	2025-03-03	1503707	28	22	superseded:later-roll-used	Generally revise laws related to dental insurance
 SB 337	B	house	2025-04-24	1557751	60	40	unbatched	Provide a 5 year prepaid property tax exemption during subdivision development
 SB 337	B	senate	2025-03-27	1529146	34	16	unbatched	Provide a 5 year prepaid property tax exemption during subdivision development
-SB 342	B	house	2025-04-11	1546349	58	41	unbatched	Provide that chief justice appoints the court administrator
+SB 342	B	house	2025-04-11	1546349	58	41	held:legiscan-vote-defect	Provide that chief justice appoints the court administrator
 SB 342	B	senate	2025-03-03	1503771	32	18	unbatched	Provide that chief justice appoints the court administrator
 SB 348	B	house	2025-04-11	1546122	58	40	unbatched	Revise laws on sexual assault
 SB 348	B	senate	2025-04-17	1551159	33	17	unbatched	Revise laws on sexual assault

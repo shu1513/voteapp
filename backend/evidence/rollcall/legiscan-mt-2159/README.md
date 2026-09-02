@@ -91,7 +91,8 @@ repository at `/Users/shu/legiscan-data/mt_doc.py` and `mt_diff.py`.
 - `crosswalk.json`, `legiscan-people-mt-2159.json`, `crosswalk-proposals-report.json`
 - `CODE-FINDINGS.md` — five defects in LegiScan's Montana data, recorded not
   fixed, plus one judging hazard in Montana's own bill drafting
-- `survey/` — the survey report, the fetch report,
+- `survey/` — the survey report, the fetch report, the LegiScan-versus-Montana
+  vote audit (`legiscan-vote-audit.md` and `.tsv`),
   `divided-enacted-worklist.tsv` (one row per divided-and-enacted roll with its
   disposition), and `filter-5-drops.md` (why each dropped measure was dropped
   after a full read)
@@ -114,11 +115,12 @@ records.**
 | batch-07 | 5 | 7 | 333 | property tax, guns, elections |
 | **total** | **42** | **81** | **3,488** | 14 areas, 87 candidates, 2,021 tags |
 
-**379 divided-and-enacted rolls remain unworked, across 269 bills**, plus 58
+**373 divided-and-enacted rolls remain unworked, across 267 bills**, plus 58
 joint-resolution rolls excluded by rule. 90 rolls are marked
 `superseded:later-roll-used`, 23 are dropped under filter 5, one is dropped
-because its chamber's final vote was not divided, and one is held on the
-LegiScan vote defect described in `CODE-FINDINGS.md` §7.
+because its chamber's final vote was not divided, and seven are held on the
+LegiScan vote defect described in `CODE-FINDINGS.md` §7 and
+`survey/legiscan-vote-audit.md`.
 `survey/divided-enacted-worklist.tsv` carries a disposition for every roll, and
 `survey/filter-5-drops.md` records why each drop was dropped after a full read.
 
