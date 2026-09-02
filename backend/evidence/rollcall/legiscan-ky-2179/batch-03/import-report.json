@@ -1,0 +1,295 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": false,
+  "skipExisting": false,
+  "startedAt": "2026-09-02T15:30:36.242Z",
+  "finishedAt": "2026-09-02T15:30:38.329Z",
+  "jurisdiction": "KY",
+  "sessionId": 2179,
+  "evidenceDir": "~/legiscan-data/ky-2179-batch03-evidence",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "evidence/rollcall/legiscan-ky-2179/crosswalk.json",
+  "crosswalkEntries": 139,
+  "peopleFile": "~/legiscan-data/ky-2179-batch03-evidence/legiscan-people-ky-2179.json",
+  "peopleMembers": 138,
+  "files": 9,
+  "outcomes": {
+    "imported": 9
+  },
+  "actions": {
+    "insert": 370
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-ky-house-2179-roll1516642.json",
+      "state": "KY",
+      "chamber": "house",
+      "sessionId": 2179,
+      "roll": 1516642,
+      "outcome": "imported",
+      "legislativeVoteId": "5b18f3cb-5885-4ebd-90cf-c0ca38a50c63",
+      "reviewStatus": "approved",
+      "bill": "SB202",
+      "voteDate": "2025-03-12",
+      "officialVoteDate": null,
+      "measureId": "SB 202",
+      "question": "House: Third Reading RCS# 226",
+      "originRunId": "rollcall:KY:house:2179:1516642:2026-09-02T15:30:36.242Z",
+      "members": 94,
+      "notVoting": 0,
+      "absent": 6,
+      "resolution": {
+        "matched": 85,
+        "unmatched_reviewed": 9
+      },
+      "actions": {
+        "insert": 85
+      },
+      "notified": 0,
+      "candidates": 85,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-house-2179-roll1530505.json",
+      "state": "KY",
+      "chamber": "house",
+      "sessionId": 2179,
+      "roll": 1530505,
+      "outcome": "imported",
+      "legislativeVoteId": "7b1c5ee1-9ac2-496f-ab74-5b009f789f3b",
+      "reviewStatus": "approved",
+      "bill": "HB664",
+      "voteDate": "2025-03-28",
+      "officialVoteDate": null,
+      "measureId": "HB 664",
+      "question": "House: Third Reading RCS# 365",
+      "originRunId": "rollcall:KY:house:2179:1530505:2026-09-02T15:30:36.242Z",
+      "members": 96,
+      "notVoting": 0,
+      "absent": 4,
+      "resolution": {
+        "matched": 85,
+        "unmatched_reviewed": 11
+      },
+      "actions": {
+        "insert": 85
+      },
+      "notified": 0,
+      "candidates": 85,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-ky-house-2179-roll1530717.json",
+      "state": "KY",
+      "chamber": "house",
+      "sessionId": 2179,
+      "roll": 1530717,
+      "outcome": "imported",
+      "legislativeVoteId": "f4fb7ec0-649a-430c-9583-8217d9619131",
+      "reviewStatus": "approved",
+      "bill": "HB606",
+      "voteDate": "2025-03-28",
+      "officialVoteDate": null,
+      "measureId": "HB 606",
+      "question": "House: Third Reading RCS# 361",
+      "originRunId": "rollcall:KY:house:2179:1530717:2026-09-02T15:30:36.242Z",
+      "members": 99,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "matched": 88,
+        "unmatched_reviewed": 11
+      },
+      "actions": {
+        "insert": 88
+      },
+      "notified": 0,
+      "candidates": 88,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-ky-senate-2179-roll1506432.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2179,
+      "roll": 1506432,
+      "outcome": "imported",
+      "legislativeVoteId": "2e50506b-8b69-42f2-affa-a849adea8d90",
+      "reviewStatus": "approved",
+      "bill": "SB9",
+      "voteDate": "2025-03-05",
+      "officialVoteDate": null,
+      "measureId": "SB 9",
+      "question": "Senate: Third Reading W/sfa1 sfa2 RSN# 3435",
+      "originRunId": "rollcall:KY:senate:2179:1506432:2026-09-02T15:30:36.242Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 19,
+        "matched": 19
+      },
+      "actions": {
+        "insert": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2179-roll1517647.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2179,
+      "roll": 1517647,
+      "outcome": "imported",
+      "legislativeVoteId": "d260a467-32ab-4bc8-b71a-d22c0e90d7a0",
+      "reviewStatus": "approved",
+      "bill": "HB241",
+      "voteDate": "2025-03-13",
+      "officialVoteDate": null,
+      "measureId": "HB 241",
+      "question": "Senate: Third Reading RSN# 3543",
+      "originRunId": "rollcall:KY:senate:2179:1517647:2026-09-02T15:30:36.242Z",
+      "members": 37,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 19,
+        "matched": 18
+      },
+      "actions": {
+        "insert": 18
+      },
+      "notified": 0,
+      "candidates": 18,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2179-roll1517690.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2179,
+      "roll": 1517690,
+      "outcome": "imported",
+      "legislativeVoteId": "f83e8af5-6afc-4b80-b117-57ae68deb89d",
+      "reviewStatus": "approved",
+      "bill": "HJR15",
+      "voteDate": "2025-03-13",
+      "officialVoteDate": null,
+      "measureId": "HJR 15",
+      "question": "Senate: Third Reading RSN# 3537",
+      "originRunId": "rollcall:KY:senate:2179:1517690:2026-09-02T15:30:36.242Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 19,
+        "matched": 19
+      },
+      "actions": {
+        "insert": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2179-roll1517715.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2179,
+      "roll": 1517715,
+      "outcome": "imported",
+      "legislativeVoteId": "dcc252da-50ce-42e0-8387-4c127c900e11",
+      "reviewStatus": "approved",
+      "bill": "SB202",
+      "voteDate": "2025-03-13",
+      "officialVoteDate": null,
+      "measureId": "SB 202",
+      "question": "Senate: Third Reading RSN# 3523",
+      "originRunId": "rollcall:KY:senate:2179:1517715:2026-09-02T15:30:36.242Z",
+      "members": 35,
+      "notVoting": 1,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 17,
+        "matched": 18
+      },
+      "actions": {
+        "insert": 18
+      },
+      "notified": 0,
+      "candidates": 18,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2179-roll1529611.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2179,
+      "roll": 1529611,
+      "outcome": "imported",
+      "legislativeVoteId": "d8bb0889-1f38-456f-a0cd-8b74739fd9ff",
+      "reviewStatus": "approved",
+      "bill": "SB28",
+      "voteDate": "2025-03-27",
+      "officialVoteDate": null,
+      "measureId": "SB 28",
+      "question": "Senate: Third Reading RSN# 3586",
+      "originRunId": "rollcall:KY:senate:2179:1529611:2026-09-02T15:30:36.242Z",
+      "members": 38,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 19,
+        "matched": 19
+      },
+      "actions": {
+        "insert": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ky-senate-2179-roll1530504.json",
+      "state": "KY",
+      "chamber": "senate",
+      "sessionId": 2179,
+      "roll": 1530504,
+      "outcome": "imported",
+      "legislativeVoteId": "238f653a-7567-45b5-a62d-3608fdcee972",
+      "reviewStatus": "approved",
+      "bill": "HB664",
+      "voteDate": "2025-03-28",
+      "officialVoteDate": null,
+      "measureId": "HB 664",
+      "question": "Senate: Third Reading W/scs1 sfa2 sfta2 RSN# 3673",
+      "originRunId": "rollcall:KY:senate:2179:1530504:2026-09-02T15:30:36.242Z",
+      "members": 36,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 17,
+        "matched": 19
+      },
+      "actions": {
+        "insert": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 0
+    }
+  ]
+}
