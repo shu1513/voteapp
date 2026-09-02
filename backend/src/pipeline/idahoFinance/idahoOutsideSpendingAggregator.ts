@@ -176,8 +176,12 @@ function transactionYear(row: IdahoIndependentExpenditureRow): number {
   return Number(row.transactionDate.slice(0, 4));
 }
 
-// Contract checks for a row that targets this race. A registered filer must
-// carry its guid so groups never split between a guid and a name key.
+// Contract checks for a row about to be counted. Only rows that pass every
+// selection gate are validated: a malformed row the state filed against
+// another race or cycle must not block this candidate's money. (A race row
+// with an unreadable date still throws in transactionYear — it cannot be
+// placed in or out of the window.) A registered filer must carry its guid
+// so groups never split between a guid and a name key.
 function validateRow(row: IdahoIndependentExpenditureRow): void {
   if (!IDAHO_IE_TRANSACTION_TYPE_CODES.has(row.transactionTypeCode)) {
     throw new Error(`Idaho IE row ${row.guid} has unknown transaction type ${JSON.stringify(row.transactionTypeCode)}`);
@@ -296,9 +300,10 @@ export function aggregateIdahoOutsideSpending(
   let ambiguousNameRowCount = 0;
   let nonPositiveRowCount = 0;
 
-  // Adds a row of this race to the totals and its filer group; false when
-  // the amount is not positive.
+  // Validates a row of this race and adds it to the totals and its filer
+  // group; false when the amount is not positive.
   const include = (row: IdahoIndependentExpenditureRow): boolean => {
+    validateRow(row);
     const amountCents = amountToCents(row.amountApplied, `row ${row.guid}`);
     if (amountCents <= 0) {
       nonPositiveRowCount += 1;
@@ -324,12 +329,10 @@ export function aggregateIdahoOutsideSpending(
         : normalizeIdahoRegistrationGuid(row.candidateMeasureFilerRegistrationGuid);
     if (targetGuid !== null) {
       if (otherEntityGuids.has(targetGuid)) {
-        validateRow(row);
         otherOfficeRowCount += 1;
         continue;
       }
       if (!raceGuids.includes(targetGuid)) continue;
-      validateRow(row);
       const year = transactionYear(row);
       if (year <= windowStartYear || year > windowEndYear) {
         outOfWindowRowCount += 1;
@@ -346,7 +349,6 @@ export function aggregateIdahoOutsideSpending(
     if (row.officeSought === null) continue;
     const targetName = idahoIeTargetName(row.candidateMeasure);
     if (idahoCandidateNameMatchConfidence([targetName], entityRowNames) === null) continue;
-    validateRow(row);
     if (row.officeSought.trim() !== office) {
       otherOfficeRowCount += 1;
       continue;

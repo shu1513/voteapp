@@ -206,8 +206,24 @@ describe("aggregateIdahoOutsideSpending", () => {
     expect(() =>
       aggregateIdahoOutsideSpending({ registration: linked, registrations: [linked], expenditureRows: [], maxGroups: 0 })
     ).toThrow("Invalid Idaho outside spending maxGroups");
-    // Rows of other races are never validated.
+    // Only rows that pass every selection gate are validated: another
+    // person's race, the entity's other-office registration, a past cycle,
+    // and a name row declaring another office all stay out without throwing.
     expect(aggregate([row(1, { candidateMeasureFilerRegistrationGuid: GUID_D, stance: "N/A" })])).not.toThrow();
+    const discarded = aggregateIdahoOutsideSpending({
+      registration: linked,
+      registrations: grid,
+      expenditureRows: [
+        row(1, { amountApplied: 250 }),
+        row(2, { candidateMeasureFilerRegistrationGuid: GUID_C, stance: "N/A", transactionTypeCode: "TIE" }),
+        row(3, { candidateMeasureFilerRegistrationGuid: GUID_B, stance: "N/A", transactionDate: "2024-10-01T00:00:00" }),
+        row(4, nameOnly("Achilles, Todd", { officeSought: "City Council", stance: "N/A", filerName: " " })),
+      ],
+    });
+    expect(discarded.summary.supportTotal).toBe(250);
+    expect(discarded).toMatchObject({ includedRowCount: 1, otherOfficeRowCount: 2, outOfWindowRowCount: 1 });
+    // A race row with an unreadable date cannot be placed in or out of the window.
+    expect(aggregate([row(1, { candidateMeasureFilerRegistrationGuid: GUID_B, transactionDate: "bad" })], grid)).toThrow("unexpected date");
   });
 
   it("derives filer keys and target names", () => {
