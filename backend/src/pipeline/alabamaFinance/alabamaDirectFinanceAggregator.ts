@@ -74,7 +74,7 @@ export function aggregateAlabamaDirectFinance(input: {
   /** Extract CommitteeId (the FCPA committee number) to aggregate. */
   fcpaCommitteeNumber: string;
   /** Race-row MONETARYCONTRIB in dollars (the authoritative cash total). */
-  raceMonetaryContrib: number;
+  authoritativeCashContrib: number;
 }): AlabamaDirectFinanceAggregationResult {
   let coverageCashCents = 0;
   let committeeRowCount = 0;
@@ -116,18 +116,19 @@ export function aggregateAlabamaDirectFinance(input: {
 
   const bucketDiagnostics: string[] = [];
   let coverageRatio: number | null = null;
-  if (input.raceMonetaryContrib > 0) {
-    coverageRatio = coverageCashCents / 100 / input.raceMonetaryContrib;
+  if (input.authoritativeCashContrib > 0) {
+    coverageRatio = coverageCashCents / 100 / input.authoritativeCashContrib;
     if (coverageRatio < ALABAMA_CASH_COVERAGE_MIN || coverageRatio > ALABAMA_CASH_COVERAGE_MAX) {
       bucketDiagnostics.push(
         `cash_coverage_out_of_tolerance: ${coverageRatio.toFixed(4)} outside [${ALABAMA_CASH_COVERAGE_MIN}, ${ALABAMA_CASH_COVERAGE_MAX}]`
       );
     }
   } else if (coverageCashCents !== 0) {
-    // Zero race total with nonzero extract cash = the FCPA number aggregates
-    // a different committee than the race row (bad join). Never show buckets.
+    // Zero authoritative cash with nonzero extract cash = the FCPA number
+    // aggregates a different committee than the linked one (bad join). Never
+    // show buckets.
     bucketDiagnostics.push(
-      `zero_race_total_nonzero_extract_cash: ${(coverageCashCents / 100).toFixed(2)}`
+      `zero_authoritative_cash_nonzero_extract_cash: ${(coverageCashCents / 100).toFixed(2)}`
     );
   }
 

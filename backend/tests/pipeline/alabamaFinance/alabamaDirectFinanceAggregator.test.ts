@@ -32,7 +32,7 @@ describe("aggregateAlabamaDirectFinance", () => {
         cashRow({ contributionId: "4", amountCents: 500_000, lastName: "Dean" }),
       ],
       fcpaCommitteeNumber: "32837",
-      raceMonetaryContrib: 5449.98,
+      authoritativeCashContrib: 5449.98,
     });
     expect(result.bucketsUsable).toBe(true);
     expect(result.breakdowns.map((row) => [row.categoryName, row.amount, row.contributorCount])).toEqual([
@@ -56,7 +56,7 @@ describe("aggregateAlabamaDirectFinance", () => {
         }),
       ],
       fcpaCommitteeNumber: "32837",
-      raceMonetaryContrib: 100,
+      authoritativeCashContrib: 100,
     });
     expect(result.committeeRowCount).toBe(3);
     expect(result.inKindRowCount).toBe(2);
@@ -76,7 +76,7 @@ describe("aggregateAlabamaDirectFinance", () => {
         }),
       ],
       fcpaCommitteeNumber: "32837",
-      raceMonetaryContrib: 150,
+      authoritativeCashContrib: 150,
     });
     expect(result.coverageCashCents).toBe(15_000);
     expect(result.nonItemizedCashCents).toBe(5_000);
@@ -92,7 +92,7 @@ describe("aggregateAlabamaDirectFinance", () => {
         cashRow({ contributionId: "3", amountCents: -2_500 }),
       ],
       fcpaCommitteeNumber: "32837",
-      raceMonetaryContrib: 125,
+      authoritativeCashContrib: 125,
     });
     expect(result.coverageCashCents).toBe(12_500);
     expect(result.returnedRowCount).toBe(1);
@@ -105,7 +105,7 @@ describe("aggregateAlabamaDirectFinance", () => {
     const low = aggregateAlabamaDirectFinance({
       cashRows: [cashRow({ amountCents: 90_000 })],
       fcpaCommitteeNumber: "32837",
-      raceMonetaryContrib: 1_000,
+      authoritativeCashContrib: 1_000,
     });
     expect(low.bucketsUsable).toBe(false);
     expect(low.breakdowns).toEqual([]);
@@ -114,7 +114,7 @@ describe("aggregateAlabamaDirectFinance", () => {
     const high = aggregateAlabamaDirectFinance({
       cashRows: [cashRow({ amountCents: 200_000 })],
       fcpaCommitteeNumber: "32837",
-      raceMonetaryContrib: 1_000,
+      authoritativeCashContrib: 1_000,
     });
     expect(high.bucketsUsable).toBe(false);
   });
@@ -123,17 +123,17 @@ describe("aggregateAlabamaDirectFinance", () => {
     const result = aggregateAlabamaDirectFinance({
       cashRows: [cashRow({ amountCents: 10_000 })],
       fcpaCommitteeNumber: "32837",
-      raceMonetaryContrib: 0,
+      authoritativeCashContrib: 0,
     });
     expect(result.bucketsUsable).toBe(false);
-    expect(result.bucketDiagnostics[0]).toContain("zero_race_total_nonzero_extract_cash");
+    expect(result.bucketDiagnostics[0]).toContain("zero_authoritative_cash_nonzero_extract_cash");
   });
 
   it("treats a zero race total with zero extract cash as usable-and-empty", () => {
     const result = aggregateAlabamaDirectFinance({
       cashRows: [],
       fcpaCommitteeNumber: "32837",
-      raceMonetaryContrib: 0,
+      authoritativeCashContrib: 0,
     });
     expect(result.bucketsUsable).toBe(true);
     expect(result.breakdowns).toEqual([]);
