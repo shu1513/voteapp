@@ -11,11 +11,12 @@ instead of once per batch.
 
 | stage | measures | what it removes |
 | --- | --- | --- |
-| divided floor roll on a final-text bill, not yet worked | 332 | non-final-text, lopsided, committee rolls |
-| **version check** (`vote_date >= last Amended text date`) | 270 | 62 — a quarter of the pool, at zero cost |
-| budget / trailer / omnibus titles | 250 | 20 — no single nameable subject |
+| divided floor roll on a final-text bill, not yet worked | 328 | non-final-text, lopsided, committee rolls |
+| **version check** (`vote_date >= last Amended text date`) | 266 | 62 — a quarter of the pool, at zero cost |
+| procedural-only measures (tabling motions, chair appeals) | 262 | 4 — a motion is not a vote on the bill |
+| budget / trailer / omnibus titles | 244 | 18 — no single nameable subject |
 
-Of the 250 live measures: **133 carry an Assembly roll**, 111 are Senate-only, 13 Assembly-only.
+Of the 244 live measures: **135 carry an Assembly roll** (125 both-chamber, 10 Assembly-only), 109 are Senate-only.
 Seven have a one-word title (`Health.`, `State government.`) and need a read before they can be
 judged or dropped.
 
@@ -28,11 +29,14 @@ file is sorted by that value, so **working it top-down is already the right orde
 ## What the file does NOT decide
 
 `worklist.json` is a triage artifact, not a judgment. It records the roll to use per chamber
-(latest version-passing roll) and a `pkg`/`vague` hint. Filters 3 and 5 — nameable subject and
+(latest non-procedural version-passing roll; highest roll id on a same-day tie, with the others kept
+under `same_day_alternatives`) and a `pkg`/`vague` hint that `rank.py` computes. Filters 3 and 5 — nameable subject and
 stance-defensibility — still need the digest read, and the duplicate-date and rescission screens
-still need the official history. The count here (250) is an upper bound on what will be judged;
+still need the official history. The count here (244) is an upper bound on what will be judged;
 batch-07 judged 8 of 31.
 
 ## Known permanent exclusions
 
-AB 863 and AB 483 have only pre-amendment divided votes and can never be worked.
+AB 863 and AB 483 have only pre-amendment divided votes and can never be worked. AB 1078 was
+dropped under filter 5 (batch-01, reaffirmed batch-10) and stays out because it sits in a
+judgments file; any measure in a judgments file counts as worked, whatever its review status.

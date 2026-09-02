@@ -1,6 +1,7 @@
-import json,glob,collections
+import json,glob,collections,os
 DS='/Users/shu/legiscan-data/ca-2172-0830'; E='/Users/shu/legiscan-data/ca-2172-evidence'
-B='/Users/shu/voteApp/.claude/worktrees/hungry-engelbart-5b1814/backend'
+# this file lives at backend/evidence/rollcall/legiscan-ca-2172/worklist/pool.py
+B=os.path.abspath(os.path.join(os.path.dirname(__file__),'..','..','..','..'))
 worked=set()
 for f in glob.glob(B+'/evidence/rollcall/legiscan-ca-2172/batch-*/judgments.json'):
     for j in json.load(open(f))['judgments']: worked.add(j['measure_id'])
@@ -36,5 +37,5 @@ print('after version check:',len(opv))
 mix2=collections.Counter(tuple(sorted({r['chamber'] for r in v})) for v in opv.values())
 print('chamber mix after',mix2.most_common())
 st=collections.Counter(v[0]['status'] for v in opv.values()); print('status',st.most_common())
-json.dump(opv,open(__import__('os').path.dirname(__file__)+'/pool.json','w'),indent=0)
+json.dump(opv,open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'pool.json'),'w'),indent=0)
 print('wrote pool.json')

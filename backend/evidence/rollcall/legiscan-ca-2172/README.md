@@ -142,8 +142,8 @@ the governor's hands after the 08-31 adjournment get 30 days, so the **last day 
 ## The whole pool is now triaged once, in `worklist/`
 
 `worklist/worklist.json` ranks every open measure so the version check and the budget-package
-screen are paid once for the campaign instead of once per batch. 332 open -> 270 after the version
-check -> **250 live**, of which 133 carry an Assembly roll. Work it top-down. The per-batch numbers
+screen are paid once for the campaign instead of once per batch. 328 open -> 266 after the version
+check -> 262 after dropping procedural-only rolls -> **244 live**, of which 135 carry an Assembly roll. Work it top-down. The per-batch numbers
 below are the original 08-30 measurement and are kept for history.
 
 ## The open pool, measured on the 08-30 cut

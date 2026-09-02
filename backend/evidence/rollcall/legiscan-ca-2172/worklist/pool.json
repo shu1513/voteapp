@@ -1,0 +1,6007 @@
+{
+"AB 2195": [
+{
+"measure": "AB 2195",
+"bill_id": 2120669,
+"status": "enrolled",
+"roll": 1726315,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 32,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB2195 Celeste Rodriguez By Reyes",
+"version_ok": true,
+"title": "Child support: license suspensions."
+},
+{
+"measure": "AB 2195",
+"bill_id": 2120669,
+"status": "enrolled",
+"roll": 1726553,
+"date": "2026-08-27",
+"chamber": "A",
+"yea": 56,
+"nay": 14,
+"desc": "AB 2195 Celeste Rodriguez Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Child support: license suspensions."
+}
+],
+"AB 963": [
+{
+"measure": "AB 963",
+"bill_id": 1978715,
+"status": "vetoed",
+"roll": 1602251,
+"date": "2025-09-12",
+"chamber": "S",
+"yea": 29,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB963 Petrie-Norris By Durazo",
+"version_ok": true,
+"title": "Public works: prevailing wages: access to records."
+}
+],
+"AB 2395": [
+{
+"measure": "AB 2395",
+"bill_id": 2121472,
+"status": "enrolled",
+"roll": 1725755,
+"date": "2026-08-24",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB2395 Sharp-Collins By Smallwood-Cuevas",
+"version_ok": true,
+"title": "Child support: compromise of arrears program."
+}
+],
+"AB 288": [
+{
+"measure": "AB 288",
+"bill_id": 1936629,
+"status": "chaptered",
+"roll": 1601492,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB288 McKinnor et al. By Umberg",
+"version_ok": true,
+"title": "Employment: labor organization and unfair practices."
+}
+],
+"AB 1876": [
+{
+"measure": "AB 1876",
+"bill_id": 2116258,
+"status": "enrolled",
+"roll": 1693257,
+"date": "2026-05-04",
+"chamber": "A",
+"yea": 56,
+"nay": 17,
+"desc": "AB 1876 Addis Assembly Third Reading",
+"version_ok": true,
+"title": "Health care coverage: nondiscrimination."
+},
+{
+"measure": "AB 1876",
+"bill_id": 2116258,
+"status": "enrolled",
+"roll": 1725946,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB1876 Addis et al. By Menjivar",
+"version_ok": true,
+"title": "Health care coverage: nondiscrimination."
+}
+],
+"AB 378": [
+{
+"measure": "AB 378",
+"bill_id": 1953067,
+"status": "chaptered",
+"roll": 1602085,
+"date": "2025-09-12",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB378 Valencia et al. By Cervantes",
+"version_ok": true,
+"title": "Education finance: Classified School Employee Summer Assistance Program."
+}
+],
+"AB 2465": [
+{
+"measure": "AB 2465",
+"bill_id": 2121542,
+"status": "enrolled",
+"roll": 1725997,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB2465 Ortega et al. By Durazo",
+"version_ok": true,
+"title": "State government: benefits."
+},
+{
+"measure": "AB 2465",
+"bill_id": 2121542,
+"status": "enrolled",
+"roll": 1726207,
+"date": "2026-08-26",
+"chamber": "A",
+"yea": 58,
+"nay": 19,
+"desc": "AB 2465 Ortega Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "State government: benefits."
+}
+],
+"SB 168": [
+{
+"measure": "SB 168",
+"bill_id": 1939266,
+"status": "chaptered",
+"roll": 1712449,
+"date": "2026-06-29",
+"chamber": "A",
+"yea": 57,
+"nay": 17,
+"desc": "SB 168 B. & F. R. Senate Third Reading By GABRIEL",
+"version_ok": true,
+"title": "Public Resources."
+},
+{
+"measure": "SB 168",
+"bill_id": 1939266,
+"status": "chaptered",
+"roll": 1712448,
+"date": "2026-06-29",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "W/O REF. TO FILE SB168 B. & F.R. (Laird)",
+"version_ok": true,
+"title": "Public Resources."
+}
+],
+"SB 703": [
+{
+"measure": "SB 703",
+"bill_id": 1980433,
+"status": "vetoed",
+"roll": 1602206,
+"date": "2025-09-12",
+"chamber": "S",
+"yea": 29,
+"nay": 8,
+"desc": "Unfinished Business SB703 Richardson Concurrence",
+"version_ok": true,
+"title": "Ports: truck drivers."
+},
+{
+"measure": "SB 703",
+"bill_id": 1980433,
+"status": "vetoed",
+"roll": 1602939,
+"date": "2025-09-13",
+"chamber": "S",
+"yea": 29,
+"nay": 8,
+"desc": "Unfinished Business SB703 Richardson Concurrence",
+"version_ok": true,
+"title": "Ports: truck drivers."
+}
+],
+"SB 171": [
+{
+"measure": "SB 171",
+"bill_id": 1939269,
+"status": "chaptered",
+"roll": 1712471,
+"date": "2026-06-29",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "W/O REF. TO FILE SB171 B. & F.R. (Laird)",
+"version_ok": true,
+"title": "Labor."
+},
+{
+"measure": "SB 171",
+"bill_id": 1939269,
+"status": "chaptered",
+"roll": 1712472,
+"date": "2026-06-29",
+"chamber": "A",
+"yea": 57,
+"nay": 17,
+"desc": "SB 171 B. & F. R. Senate Third Reading By GABRIEL",
+"version_ok": true,
+"title": "Labor."
+}
+],
+"SB 1425": [
+{
+"measure": "SB 1425",
+"bill_id": 2122009,
+"status": "enrolled",
+"roll": 1726045,
+"date": "2026-08-25",
+"chamber": "A",
+"yea": 53,
+"nay": 16,
+"desc": "SB 1425 Cortese Senate Third Reading By Kalra",
+"version_ok": true,
+"title": "High-Speed Rail Authority: property: operating right-of-way."
+},
+{
+"measure": "SB 1425",
+"bill_id": 2122009,
+"status": "enrolled",
+"roll": 1726159,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "Unfinished Business SB1425 Cortese Concurrence",
+"version_ok": true,
+"title": "High-Speed Rail Authority: property: operating right-of-way."
+}
+],
+"AB 2084": [
+{
+"measure": "AB 2084",
+"bill_id": 2119611,
+"status": "enrolled",
+"roll": 1725597,
+"date": "2026-08-20",
+"chamber": "S",
+"yea": 28,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB2084 Bauer-Kahan By McNerney",
+"version_ok": true,
+"title": "Corporation Tax Law: tax-exempt organizations: revocation of tax-exempt status."
+},
+{
+"measure": "AB 2084",
+"bill_id": 2119611,
+"status": "enrolled",
+"roll": 1701293,
+"date": "2026-05-21",
+"chamber": "A",
+"yea": 56,
+"nay": 16,
+"desc": "AB 2084 Bauer-Kahan Assembly Third Reading",
+"version_ok": true,
+"title": "Corporation Tax Law: tax-exempt organizations: revocation of tax-exempt status."
+}
+],
+"AB 112": [
+{
+"measure": "AB 112",
+"bill_id": 1908097,
+"status": "chaptered",
+"roll": 1712310,
+"date": "2026-06-29",
+"chamber": "A",
+"yea": 57,
+"nay": 17,
+"desc": "AB 112 GABRIEL Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Budget Acts of 2022, 2023, 2024, and 2025."
+},
+{
+"measure": "AB 112",
+"bill_id": 1908097,
+"status": "chaptered",
+"roll": 1712309,
+"date": "2026-06-29",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB112 Gabriel By Laird",
+"version_ok": true,
+"title": "Budget Acts of 2022, 2023, 2024, and 2025."
+}
+],
+"AB 1539": [
+{
+"measure": "AB 1539",
+"bill_id": 2065685,
+"status": "enrolled",
+"roll": 1725939,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB1539 Addis et al. By Umberg",
+"version_ok": true,
+"title": "Presidential elections: qualifications for office."
+}
+],
+"AB 1930": [
+{
+"measure": "AB 1930",
+"bill_id": 2117089,
+"status": "enrolled",
+"roll": 1726303,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1930 Zbur et al. By Umberg",
+"version_ok": true,
+"title": "Abortion or gender-affirming health care services: subpoenas, discovery requests, or other requests for information."
+},
+{
+"measure": "AB 1930",
+"bill_id": 2117089,
+"status": "enrolled",
+"roll": 1726572,
+"date": "2026-08-27",
+"chamber": "A",
+"yea": 60,
+"nay": 17,
+"desc": "AB 1930 Zbur Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Abortion or gender-affirming health care services: subpoenas, discovery requests, or other requests for information."
+}
+],
+"SB 541": [
+{
+"measure": "SB 541",
+"bill_id": 1978774,
+"status": "vetoed",
+"roll": 1602912,
+"date": "2025-09-13",
+"chamber": "S",
+"yea": 29,
+"nay": 8,
+"desc": "Unfinished Business SB541 Becker et al. Concurrence",
+"version_ok": true,
+"title": "Electricity: load shifting."
+},
+{
+"measure": "SB 541",
+"bill_id": 1978774,
+"status": "vetoed",
+"roll": 1602133,
+"date": "2025-09-12",
+"chamber": "S",
+"yea": 29,
+"nay": 8,
+"desc": "Unfinished Business SB541 Becker et al. Concurrence",
+"version_ok": true,
+"title": "Electricity: load shifting."
+},
+{
+"measure": "SB 541",
+"bill_id": 1978774,
+"status": "vetoed",
+"roll": 1602134,
+"date": "2025-09-12",
+"chamber": "A",
+"yea": 57,
+"nay": 15,
+"desc": "SB 541 Becker Senate Third Reading By Schultz",
+"version_ok": true,
+"title": "Electricity: load shifting."
+}
+],
+"AB 2142": [
+{
+"measure": "AB 2142",
+"bill_id": 2119669,
+"status": "enrolled",
+"roll": 1726883,
+"date": "2026-08-28",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB2142 Garcia By Smallwood-Cuevas",
+"version_ok": true,
+"title": "School districts: community college districts: short-term employees: classified service."
+},
+{
+"measure": "AB 2142",
+"bill_id": 2119669,
+"status": "enrolled",
+"roll": 1702479,
+"date": "2026-05-27",
+"chamber": "A",
+"yea": 60,
+"nay": 16,
+"desc": "AB 2142 Garcia Assembly Third Reading",
+"version_ok": true,
+"title": "School districts: community college districts: short-term employees: classified service."
+}
+],
+"SB 106": [
+{
+"measure": "SB 106",
+"bill_id": 1939202,
+"status": "chaptered",
+"roll": 1627109,
+"date": "2026-02-09",
+"chamber": "S",
+"yea": 26,
+"nay": 9,
+"desc": "Unfinished Business SB106 Laird Concurrence",
+"version_ok": true,
+"title": "Budget Act of 2025."
+},
+{
+"measure": "SB 106",
+"bill_id": 1939202,
+"status": "chaptered",
+"roll": 1627110,
+"date": "2026-02-09",
+"chamber": "A",
+"yea": 49,
+"nay": 14,
+"desc": "SB 106 Laird Senate Third Reading By Gabriel Amend By TANGIPA Set #1 Motion to Lay on the Table By AGUIAR-CURRY",
+"version_ok": true,
+"title": "Budget Act of 2025."
+}
+],
+"AB 1664": [
+{
+"measure": "AB 1664",
+"bill_id": 2102385,
+"status": "enrolled",
+"roll": 1726340,
+"date": "2026-08-26",
+"chamber": "A",
+"yea": 59,
+"nay": 17,
+"desc": "AB 1664 Jackson Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Elections: law enforcement investigations of election records or voting technology."
+},
+{
+"measure": "AB 1664",
+"bill_id": 2102385,
+"status": "enrolled",
+"roll": 1725947,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB1664 Jackson et al. By Wiener Urgency Clause",
+"version_ok": true,
+"title": "Elections: law enforcement investigations of election records or voting technology."
+}
+],
+"SB 762": [
+{
+"measure": "SB 762",
+"bill_id": 1980492,
+"status": "chaptered",
+"roll": 1716273,
+"date": "2026-08-03",
+"chamber": "S",
+"yea": 27,
+"nay": 8,
+"desc": "Unfinished Business SB762 Arregu\u00edn et al. Urgency Clause Concurrence",
+"version_ok": true,
+"title": "Transactions and use taxes: various jurisdictions."
+}
+],
+"SB 327": [
+{
+"measure": "SB 327",
+"bill_id": 1965882,
+"status": "enrolled",
+"roll": 1726850,
+"date": "2026-08-28",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB327 McNerney et al. Concurrence",
+"version_ok": true,
+"title": "Public utilities: review of accounts: electrical and gas corporations: rates: political influence activities."
+},
+{
+"measure": "SB 327",
+"bill_id": 1965882,
+"status": "enrolled",
+"roll": 1726657,
+"date": "2026-08-27",
+"chamber": "A",
+"yea": 46,
+"nay": 18,
+"desc": "SB 327 McNerney Senate Third Reading By Berman",
+"version_ok": true,
+"title": "Public utilities: review of accounts: electrical and gas corporations: rates: political influence activities."
+}
+],
+"AB 2405": [
+{
+"measure": "AB 2405",
+"bill_id": 2121482,
+"status": "enrolled",
+"roll": 1726655,
+"date": "2026-08-27",
+"chamber": "A",
+"yea": 48,
+"nay": 15,
+"desc": "AB 2405 Gipson Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Mental health."
+},
+{
+"measure": "AB 2405",
+"bill_id": 2121482,
+"status": "enrolled",
+"roll": 1726061,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 27,
+"nay": 7,
+"desc": "Assembly 3rd Reading AB2405 Gipson By Weber Pierson",
+"version_ok": true,
+"title": "Mental health."
+}
+],
+"SB 1323": [
+{
+"measure": "SB 1323",
+"bill_id": 2121907,
+"status": "enrolled",
+"roll": 1726285,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB1323 Rubio et al. Concurrence",
+"version_ok": true,
+"title": "Health care providers: patient access: immigration enforcement."
+}
+],
+"SB 24": [
+{
+"measure": "SB 24",
+"bill_id": 1893437,
+"status": "vetoed",
+"roll": 1602142,
+"date": "2025-09-12",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "Unfinished Business SB24 McNerney et al. Concurrence",
+"version_ok": true,
+"title": "Public utilities: review of accounts: electrical and gas corporations: rates: political influence activities."
+}
+],
+"AB 1770": [
+{
+"measure": "AB 1770",
+"bill_id": 2112376,
+"status": "enrolled",
+"roll": 1726270,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1770 Garcia et al. By Umberg",
+"version_ok": true,
+"title": "Arbitration: health care service plans: Lindalee\u2019s Law."
+},
+{
+"measure": "AB 1770",
+"bill_id": 2112376,
+"status": "enrolled",
+"roll": 1726450,
+"date": "2026-08-27",
+"chamber": "A",
+"yea": 59,
+"nay": 16,
+"desc": "AB 1770 Garcia Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Arbitration: health care service plans: Lindalee\u2019s Law."
+}
+],
+"AB 109": [
+{
+"measure": "AB 109",
+"bill_id": 1908094,
+"status": "chaptered",
+"roll": 1710554,
+"date": "2026-06-15",
+"chamber": "A",
+"yea": 60,
+"nay": 19,
+"desc": "AB 109 GABRIEL Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Budget Act of 2026."
+},
+{
+"measure": "AB 109",
+"bill_id": 1908094,
+"status": "chaptered",
+"roll": 1709550,
+"date": "2026-06-15",
+"chamber": "S",
+"yea": 28,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB109 Gabriel By Laird",
+"version_ok": true,
+"title": "Budget Act of 2026."
+}
+],
+"SB 36": [
+{
+"measure": "SB 36",
+"bill_id": 1894446,
+"status": "vetoed",
+"roll": 1601914,
+"date": "2025-09-11",
+"chamber": "S",
+"yea": 30,
+"nay": 8,
+"desc": "Unfinished Business SB36 Umberg et al. Concurrence",
+"version_ok": true,
+"title": "Price gouging: state of emergency."
+},
+{
+"measure": "SB 36",
+"bill_id": 1894446,
+"status": "vetoed",
+"roll": 1601572,
+"date": "2025-09-09",
+"chamber": "A",
+"yea": 60,
+"nay": 17,
+"desc": "SB 36 Umberg Senate Third Reading By Krell",
+"version_ok": true,
+"title": "Price gouging: state of emergency."
+}
+],
+"ACA 8": [
+{
+"measure": "ACA 8",
+"bill_id": 1978752,
+"status": "chaptered",
+"roll": 1599877,
+"date": "2025-08-21",
+"chamber": "S",
+"yea": 30,
+"nay": 8,
+"desc": "Assembly 3rd Reading ACA8 Rivas et al. By McGuire",
+"version_ok": true,
+"title": "Congressional redistricting."
+},
+{
+"measure": "ACA 8",
+"bill_id": 1978752,
+"status": "chaptered",
+"roll": 1599878,
+"date": "2025-08-21",
+"chamber": "A",
+"yea": 57,
+"nay": 20,
+"desc": "ACA 8 RIVAS Assembly Third Reading By BERMAN",
+"version_ok": true,
+"title": "Congressional redistricting."
+}
+],
+"AB 1973": [
+{
+"measure": "AB 1973",
+"bill_id": 2117132,
+"status": "enrolled",
+"roll": 1725887,
+"date": "2026-08-25",
+"chamber": "A",
+"yea": 59,
+"nay": 17,
+"desc": "AB 1973 Aguiar-Curry Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Abortion: authorized procedures."
+},
+{
+"measure": "AB 1973",
+"bill_id": 2117132,
+"status": "enrolled",
+"roll": 1725886,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1973 Aguiar-Curry et al. By P\u00e9rez",
+"version_ok": true,
+"title": "Abortion: authorized procedures."
+}
+],
+"AB 134": [
+{
+"measure": "AB 134",
+"bill_id": 1908119,
+"status": "chaptered",
+"roll": 1596014,
+"date": "2025-06-27",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB134 BUDGET (Gabriel) By Wiener",
+"version_ok": true,
+"title": "Public Safety."
+}
+],
+"AB 1803": [
+{
+"measure": "AB 1803",
+"bill_id": 2113696,
+"status": "enrolled",
+"roll": 1726010,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB1803 Lowenthal et al. By Smallwood-Cuevas",
+"version_ok": true,
+"title": "Employment: sexual harassment training and education: anti-hate speech training."
+}
+],
+"AB 361": [
+{
+"measure": "AB 361",
+"bill_id": 1949679,
+"status": "chaptered",
+"roll": 1601001,
+"date": "2025-09-03",
+"chamber": "S",
+"yea": 31,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB361 Schultz By P\u00e9rez",
+"version_ok": true,
+"title": "Best value procurement: school districts."
+}
+],
+"SB 1237": [
+{
+"measure": "SB 1237",
+"bill_id": 2120910,
+"status": "enrolled",
+"roll": 1726381,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB1237 Blakespear et al. Concurrence",
+"version_ok": true,
+"title": "Civil Rights Department."
+},
+{
+"measure": "SB 1237",
+"bill_id": 2120910,
+"status": "enrolled",
+"roll": 1725982,
+"date": "2026-08-25",
+"chamber": "A",
+"yea": 59,
+"nay": 19,
+"desc": "SB 1237 Blakespear Senate Third Reading By Aguiar-Curry",
+"version_ok": true,
+"title": "Civil Rights Department."
+}
+],
+"AB 152": [
+{
+"measure": "AB 152",
+"bill_id": 1908137,
+"status": "chaptered",
+"roll": 1712489,
+"date": "2026-06-29",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB152 Budget (Assembly Members Gabriel (Chair)) et al",
+"version_ok": true,
+"title": "Human services."
+}
+],
+"SB 608": [
+{
+"measure": "SB 608",
+"bill_id": 1978841,
+"status": "enrolled",
+"roll": 1726292,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "Unfinished Business SB608 Menjivar et al. Concurrence",
+"version_ok": true,
+"title": "Sexual health."
+},
+{
+"measure": "SB 608",
+"bill_id": 1978841,
+"status": "enrolled",
+"roll": 1726075,
+"date": "2026-08-25",
+"chamber": "A",
+"yea": 58,
+"nay": 17,
+"desc": "SB 608 Menjivar Senate Third Reading By Elhawary",
+"version_ok": true,
+"title": "Sexual health."
+}
+],
+"AB 1441": [
+{
+"measure": "AB 1441",
+"bill_id": 1980338,
+"status": "chaptered",
+"roll": 1601955,
+"date": "2025-09-11",
+"chamber": "S",
+"yea": 28,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1441 Soria By Caballero",
+"version_ok": true,
+"title": "County of Merced Citizens Redistricting Commission."
+},
+{
+"measure": "AB 1441",
+"bill_id": 1980338,
+"status": "chaptered",
+"roll": 1602050,
+"date": "2025-09-13",
+"chamber": "A",
+"yea": 59,
+"nay": 19,
+"desc": "AB 1441 Soria Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "County of Merced Citizens Redistricting Commission."
+}
+],
+"AB 117": [
+{
+"measure": "AB 117",
+"bill_id": 1908102,
+"status": "chaptered",
+"roll": 1639516,
+"date": "2026-02-19",
+"chamber": "A",
+"yea": 54,
+"nay": 17,
+"desc": "AB 117 BUDGET Concurrence in Senate Amendments By GABRIEL",
+"version_ok": true,
+"title": "Transit and Intercity Rail Capital Program: loans: transit operating purposes: San Francisco Bay area."
+},
+{
+"measure": "AB 117",
+"bill_id": 1908102,
+"status": "chaptered",
+"roll": 1639515,
+"date": "2026-02-19",
+"chamber": "S",
+"yea": 28,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB117 BUDGET (Gabriel) By Laird",
+"version_ok": true,
+"title": "Transit and Intercity Rail Capital Program: loans: transit operating purposes: San Francisco Bay area."
+}
+],
+"SB 1093": [
+{
+"measure": "SB 1093",
+"bill_id": 2117180,
+"status": "enrolled",
+"roll": 1725624,
+"date": "2026-08-20",
+"chamber": "A",
+"yea": 48,
+"nay": 17,
+"desc": "SB 1093 Allen Senate Third Reading By Irwin",
+"version_ok": true,
+"title": "Mobilehome parks: disaster assistance."
+},
+{
+"measure": "SB 1093",
+"bill_id": 2117180,
+"status": "enrolled",
+"roll": 1725778,
+"date": "2026-08-24",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB1093 Allen Concurrence",
+"version_ok": true,
+"title": "Mobilehome parks: disaster assistance."
+}
+],
+"AB 2128": [
+{
+"measure": "AB 2128",
+"bill_id": 2119655,
+"status": "enrolled",
+"roll": 1725923,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB2128 Haney et al. By Durazo",
+"version_ok": true,
+"title": "Housing authorities: term limits and work requirements."
+},
+{
+"measure": "AB 2128",
+"bill_id": 2119655,
+"status": "enrolled",
+"roll": 1725924,
+"date": "2026-08-25",
+"chamber": "A",
+"yea": 58,
+"nay": 17,
+"desc": "AB 2128 Haney Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Housing authorities: term limits and work requirements."
+}
+],
+"SB 938": [
+{
+"measure": "SB 938",
+"bill_id": 2102403,
+"status": "enrolled",
+"roll": 1726105,
+"date": "2026-08-25",
+"chamber": "A",
+"yea": 57,
+"nay": 17,
+"desc": "SB 938 Menjivar Senate Third Reading By Solache",
+"version_ok": true,
+"title": "Peace officers: training requirements."
+},
+{
+"measure": "SB 938",
+"bill_id": 2102403,
+"status": "enrolled",
+"roll": 1726854,
+"date": "2026-08-28",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB938 Menjivar et al. Concurrence",
+"version_ok": true,
+"title": "Peace officers: training requirements."
+}
+],
+"AB 1223": [
+{
+"measure": "AB 1223",
+"bill_id": 1980120,
+"status": "chaptered",
+"roll": 1600958,
+"date": "2025-09-03",
+"chamber": "S",
+"yea": 28,
+"nay": 11,
+"desc": "Assembly 3rd Reading AB1223 Nguyen et al. By Cortese",
+"version_ok": true,
+"title": "Local Transportation Authority and Improvement Act: Sacramento Transportation Authority."
+},
+{
+"measure": "AB 1223",
+"bill_id": 1980120,
+"status": "chaptered",
+"roll": 1601120,
+"date": "2025-09-04",
+"chamber": "A",
+"yea": 54,
+"nay": 17,
+"desc": "AB 1223 Nguyen Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Local Transportation Authority and Improvement Act: Sacramento Transportation Authority."
+}
+],
+"AB 1923": [
+{
+"measure": "AB 1923",
+"bill_id": 2116305,
+"status": "chaptered",
+"roll": 1716652,
+"date": "2026-08-06",
+"chamber": "S",
+"yea": 27,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB1923 Soria et al. By Caballero Urgency Clause",
+"version_ok": true,
+"title": "Local ballot measures: County of Fresno."
+},
+{
+"measure": "AB 1923",
+"bill_id": 2116305,
+"status": "chaptered",
+"roll": 1716653,
+"date": "2026-08-06",
+"chamber": "A",
+"yea": 56,
+"nay": 16,
+"desc": "AB 1923 SORIA Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Local ballot measures: County of Fresno."
+}
+],
+"SB 838": [
+{
+"measure": "SB 838",
+"bill_id": 1980568,
+"status": "chaptered",
+"roll": 1602123,
+"date": "2025-09-12",
+"chamber": "S",
+"yea": 26,
+"nay": 9,
+"desc": "Unfinished Business SB838 Durazo Concurrence",
+"version_ok": true,
+"title": "Housing Accountability Act: housing development projects."
+},
+{
+"measure": "SB 838",
+"bill_id": 1980568,
+"status": "chaptered",
+"roll": 1602540,
+"date": "2025-09-11",
+"chamber": "A",
+"yea": 58,
+"nay": 17,
+"desc": "SB 838 Durazo Senate Third Reading By Carrillo",
+"version_ok": true,
+"title": "Housing Accountability Act: housing development projects."
+}
+],
+"SB 437": [
+{
+"measure": "SB 437",
+"bill_id": 1974547,
+"status": "chaptered",
+"roll": 1601371,
+"date": "2025-09-08",
+"chamber": "A",
+"yea": 61,
+"nay": 17,
+"desc": "SB 437 Weber Pierson Senate Third Reading By JACKSON",
+"version_ok": true,
+"title": "California State University: claim eligibility: genealogy and descendancy."
+},
+{
+"measure": "SB 437",
+"bill_id": 1974547,
+"status": "chaptered",
+"roll": 1601494,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB437 Weber Pierson et al. Concurrence",
+"version_ok": true,
+"title": "California State University: claim eligibility: genealogy and descendancy."
+}
+],
+"AB 116": [
+{
+"measure": "AB 116",
+"bill_id": 1908101,
+"status": "chaptered",
+"roll": 1596027,
+"date": "2025-06-27",
+"chamber": "A",
+"yea": 58,
+"nay": 15,
+"desc": "AB 116 BUDGET Concurrence in Senate Amendments By GABRIEL",
+"version_ok": true,
+"title": "Health omnibus trailer bill."
+},
+{
+"measure": "AB 116",
+"bill_id": 1908101,
+"status": "chaptered",
+"roll": 1596026,
+"date": "2025-06-27",
+"chamber": "S",
+"yea": 25,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB116 BUDGET (Gabriel) By Wiener",
+"version_ok": true,
+"title": "Health omnibus trailer bill."
+}
+],
+"AB 766": [
+{
+"measure": "AB 766",
+"bill_id": 1974483,
+"status": "vetoed",
+"roll": 1601719,
+"date": "2025-09-10",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB766 Sharp-Collins et al. By Weber Pierson",
+"version_ok": true,
+"title": "State agencies and departments: strategic plans: diversity, equity, and inclusion."
+},
+{
+"measure": "AB 766",
+"bill_id": 1974483,
+"status": "vetoed",
+"roll": 1602543,
+"date": "2025-09-11",
+"chamber": "A",
+"yea": 60,
+"nay": 18,
+"desc": "AB 766 Sharp-Collins Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "State agencies and departments: strategic plans: diversity, equity, and inclusion."
+}
+],
+"SB 111": [
+{
+"measure": "SB 111",
+"bill_id": 1939207,
+"status": "chaptered",
+"roll": 1712331,
+"date": "2026-06-29",
+"chamber": "A",
+"yea": 56,
+"nay": 16,
+"desc": "SB 111 Laird Senate Third Reading By GABRIEL",
+"version_ok": true,
+"title": "Budget Act of 2026."
+},
+{
+"measure": "SB 111",
+"bill_id": 1939207,
+"status": "chaptered",
+"roll": 1712330,
+"date": "2026-06-29",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "W/O REF. TO FILE SB111 Laird",
+"version_ok": true,
+"title": "Budget Act of 2026."
+}
+],
+"SB 770": [
+{
+"measure": "SB 770",
+"bill_id": 1980500,
+"status": "chaptered",
+"roll": 1580532,
+"date": "2025-05-28",
+"chamber": "S",
+"yea": 28,
+"nay": 10,
+"desc": "Senate 3rd Reading SB770 Allen",
+"version_ok": true,
+"title": "Common interest developments: EV charging stations."
+},
+{
+"measure": "SB 770",
+"bill_id": 1980500,
+"status": "chaptered",
+"roll": 1602427,
+"date": "2025-09-11",
+"chamber": "A",
+"yea": 55,
+"nay": 20,
+"desc": "SB 770 Allen Senate Third Reading By Zbur",
+"version_ok": true,
+"title": "Common interest developments: EV charging stations."
+}
+],
+"SB 1004": [
+{
+"measure": "SB 1004",
+"bill_id": 2112399,
+"status": "enrolled",
+"roll": 1726263,
+"date": "2026-08-26",
+"chamber": "A",
+"yea": 44,
+"nay": 22,
+"desc": "SB 1004 Wiener Senate Third Reading By Schultz",
+"version_ok": true,
+"title": "Law enforcement: masks."
+},
+{
+"measure": "SB 1004",
+"bill_id": 2112399,
+"status": "enrolled",
+"roll": 1726644,
+"date": "2026-08-27",
+"chamber": "S",
+"yea": 29,
+"nay": 11,
+"desc": "Unfinished Business SB1004 Wiener et al. Concurrence",
+"version_ok": true,
+"title": "Law enforcement: masks."
+}
+],
+"SB 610": [
+{
+"measure": "SB 610",
+"bill_id": 1978843,
+"status": "chaptered",
+"roll": 1601762,
+"date": "2025-09-10",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB610 P\u00e9rez et al. Concurrence",
+"version_ok": true,
+"title": "Disaster assistance: tenants, mobilehome parks, and mortgages."
+}
+],
+"SB 125": [
+{
+"measure": "SB 125",
+"bill_id": 1939222,
+"status": "chaptered",
+"roll": 1710550,
+"date": "2026-06-15",
+"chamber": "A",
+"yea": 57,
+"nay": 20,
+"desc": "SB 125 B. & F. R. Senate Third Reading By GABRIEL",
+"version_ok": true,
+"title": "Medi-Cal: managed care organization provider tax."
+},
+{
+"measure": "SB 125",
+"bill_id": 1939222,
+"status": "chaptered",
+"roll": 1710429,
+"date": "2026-06-18",
+"chamber": "S",
+"yea": 27,
+"nay": 9,
+"desc": "Unfinished Business SB125 B. & F.R. (Laird) Concurrence",
+"version_ok": true,
+"title": "Medi-Cal: managed care organization provider tax."
+},
+{
+"measure": "SB 125",
+"bill_id": 1939222,
+"status": "chaptered",
+"roll": 1710549,
+"date": "2026-06-15",
+"chamber": "A",
+"yea": 54,
+"nay": 19,
+"desc": "SB 125 B. & F. R. Senate Third Reading By GABRIEL Amend By DEMAIO Set #1 Motion to Lay on the Table By AGUIAR-CURRY",
+"version_ok": true,
+"title": "Medi-Cal: managed care organization provider tax."
+}
+],
+"AB 1758": [
+{
+"measure": "AB 1758",
+"bill_id": 2112364,
+"status": "enrolled",
+"roll": 1703043,
+"date": "2026-05-28",
+"chamber": "A",
+"yea": 57,
+"nay": 15,
+"desc": "AB 1758 Nguyen Assembly Third Reading",
+"version_ok": true,
+"title": "Sellers of travel."
+},
+{
+"measure": "AB 1758",
+"bill_id": 2112364,
+"status": "enrolled",
+"roll": 1725598,
+"date": "2026-08-20",
+"chamber": "S",
+"yea": 28,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1758 Nguyen By Umberg",
+"version_ok": true,
+"title": "Sellers of travel."
+}
+],
+"SB 1173": [
+{
+"measure": "SB 1173",
+"bill_id": 2119737,
+"status": "enrolled",
+"roll": 1726161,
+"date": "2026-08-26",
+"chamber": "A",
+"yea": 44,
+"nay": 19,
+"desc": "SB 1173 Caballero Senate Third Reading By Schultz",
+"version_ok": true,
+"title": "Jury instructions: lesser related offenses."
+},
+{
+"measure": "SB 1173",
+"bill_id": 2119737,
+"status": "enrolled",
+"roll": 1726574,
+"date": "2026-08-27",
+"chamber": "S",
+"yea": 28,
+"nay": 10,
+"desc": "Unfinished Business SB1173 Caballero et al. Concurrence",
+"version_ok": true,
+"title": "Jury instructions: lesser related offenses."
+}
+],
+"AB 1650": [
+{
+"measure": "AB 1650",
+"bill_id": 2100941,
+"status": "enrolled",
+"roll": 1726620,
+"date": "2026-08-27",
+"chamber": "S",
+"yea": 29,
+"nay": 11,
+"desc": "Assembly 3rd Reading AB1650 Caloza et al. By P\u00e9rez",
+"version_ok": true,
+"title": "Rental vehicles: law enforcement."
+},
+{
+"measure": "AB 1650",
+"bill_id": 2100941,
+"status": "enrolled",
+"roll": 1726621,
+"date": "2026-08-27",
+"chamber": "A",
+"yea": 55,
+"nay": 19,
+"desc": "AB 1650 Caloza Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Rental vehicles: law enforcement."
+}
+],
+"SB 1194": [
+{
+"measure": "SB 1194",
+"bill_id": 2120867,
+"status": "enrolled",
+"roll": 1700179,
+"date": "2026-05-19",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Senate 3rd Reading SB1194 Caballero et al",
+"version_ok": true,
+"title": "Immigration Legal Fellowship Project."
+}
+],
+"SB 63": [
+{
+"measure": "SB 63",
+"bill_id": 1909891,
+"status": "chaptered",
+"roll": 1602072,
+"date": "2025-09-12",
+"chamber": "A",
+"yea": 46,
+"nay": 20,
+"desc": "SB 63 Wiener Senate Third Reading By Wilson",
+"version_ok": true,
+"title": "San Francisco Bay area: local revenue measure: public transit funding."
+},
+{
+"measure": "SB 63",
+"bill_id": 1909891,
+"status": "chaptered",
+"roll": 1602925,
+"date": "2025-09-13",
+"chamber": "S",
+"yea": 29,
+"nay": 8,
+"desc": "Unfinished Business SB63 Wiener et al. Concurrence",
+"version_ok": true,
+"title": "San Francisco Bay area: local revenue measure: public transit funding."
+},
+{
+"measure": "SB 63",
+"bill_id": 1909891,
+"status": "chaptered",
+"roll": 1602071,
+"date": "2025-09-12",
+"chamber": "S",
+"yea": 29,
+"nay": 8,
+"desc": "Unfinished Business SB63 Wiener et al. Concurrence",
+"version_ok": true,
+"title": "San Francisco Bay area: local revenue measure: public transit funding."
+}
+],
+"AB 749": [
+{
+"measure": "AB 749",
+"bill_id": 1974466,
+"status": "chaptered",
+"roll": 1601236,
+"date": "2025-09-08",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB749 McKinnor et al. By Durazo",
+"version_ok": true,
+"title": "Youth Sports for All Act."
+}
+],
+"AB 2495": [
+{
+"measure": "AB 2495",
+"bill_id": 2121572,
+"status": "enrolled",
+"roll": 1725854,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB2495 Kalra et al. By Durazo",
+"version_ok": true,
+"title": "Unlawful immigration-related practices."
+}
+],
+"SB 7": [
+{
+"measure": "SB 7",
+"bill_id": 1893452,
+"status": "vetoed",
+"roll": 1602570,
+"date": "2025-09-11",
+"chamber": "A",
+"yea": 45,
+"nay": 17,
+"desc": "SB 7 McNerney Senate Third Reading By Ward",
+"version_ok": true,
+"title": "Employment: automated decision systems."
+},
+{
+"measure": "SB 7",
+"bill_id": 1893452,
+"status": "vetoed",
+"roll": 1602234,
+"date": "2025-09-12",
+"chamber": "S",
+"yea": 28,
+"nay": 9,
+"desc": "Unfinished Business SB7 McNerney et al. Concurrence",
+"version_ok": true,
+"title": "Employment: automated decision systems."
+}
+],
+"SB 809": [
+{
+"measure": "SB 809",
+"bill_id": 1980539,
+"status": "chaptered",
+"roll": 1602227,
+"date": "2025-09-12",
+"chamber": "S",
+"yea": 29,
+"nay": 8,
+"desc": "Unfinished Business SB809 Durazo et al. Concurrence",
+"version_ok": true,
+"title": "Employees and independent contractors: construction trucking."
+},
+{
+"measure": "SB 809",
+"bill_id": 1980539,
+"status": "chaptered",
+"roll": 1602899,
+"date": "2025-09-13",
+"chamber": "S",
+"yea": 29,
+"nay": 8,
+"desc": "Unfinished Business SB809 Durazo et al. Concurrence",
+"version_ok": true,
+"title": "Employees and independent contractors: construction trucking."
+}
+],
+"SB 418": [
+{
+"measure": "SB 418",
+"bill_id": 1974528,
+"status": "vetoed",
+"roll": 1602423,
+"date": "2025-09-10",
+"chamber": "A",
+"yea": 60,
+"nay": 18,
+"desc": "SB 418 Menjivar Third Reading Urgency By Bonta",
+"version_ok": true,
+"title": "Health care coverage: prescription hormone therapy and nondiscrimination."
+},
+{
+"measure": "SB 418",
+"bill_id": 1974528,
+"status": "vetoed",
+"roll": 1601973,
+"date": "2025-09-11",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Unfinished Business SB418 Menjivar et al. Urgency Clause Concurrence",
+"version_ok": true,
+"title": "Health care coverage: prescription hormone therapy and nondiscrimination."
+}
+],
+"SB 155": [
+{
+"measure": "SB 155",
+"bill_id": 1939253,
+"status": "chaptered",
+"roll": 1602383,
+"date": "2025-09-11",
+"chamber": "A",
+"yea": 60,
+"nay": 20,
+"desc": "SB 155 Budget and Fiscal Review Senate Third Reading By GABRIEL",
+"version_ok": true,
+"title": "Governor\u2019s Office of Business and Economic Development: California Civic Media Program."
+}
+],
+"SB 647": [
+{
+"measure": "SB 647",
+"bill_id": 1978880,
+"status": "vetoed",
+"roll": 1602061,
+"date": "2025-09-12",
+"chamber": "A",
+"yea": 61,
+"nay": 18,
+"desc": "SB 647 Hurtado Senate Third Reading By Arambula",
+"version_ok": true,
+"title": "Energy: Equitable Building Decarbonization Program: Low-Income Oversight Board: membership."
+}
+],
+"AB 2168": [
+{
+"measure": "AB 2168",
+"bill_id": 2119695,
+"status": "enrolled",
+"roll": 1726001,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB2168 Wicks By Blakespear",
+"version_ok": true,
+"title": "Active Transportation Program: guidelines."
+},
+{
+"measure": "AB 2168",
+"bill_id": 2119695,
+"status": "enrolled",
+"roll": 1726564,
+"date": "2026-08-27",
+"chamber": "A",
+"yea": 58,
+"nay": 19,
+"desc": "AB 2168 Wicks Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Active Transportation Program: guidelines."
+}
+],
+"AB 1376": [
+{
+"measure": "AB 1376",
+"bill_id": 1980273,
+"status": "chaptered",
+"roll": 1602121,
+"date": "2025-09-12",
+"chamber": "S",
+"yea": 24,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1376 Bonta et al. By Arregu\u00edn",
+"version_ok": true,
+"title": "Wards: probation."
+},
+{
+"measure": "AB 1376",
+"bill_id": 1980273,
+"status": "chaptered",
+"roll": 1602122,
+"date": "2025-09-13",
+"chamber": "A",
+"yea": 48,
+"nay": 21,
+"desc": "AB 1376 Bonta Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Wards: probation."
+}
+],
+"AB 1448": [
+{
+"measure": "AB 1448",
+"bill_id": 1980345,
+"status": "enrolled",
+"roll": 1726619,
+"date": "2026-08-27",
+"chamber": "A",
+"yea": 46,
+"nay": 18,
+"desc": "AB 1448 Hart Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Coastal resources: California Coastal Sanctuary: tidelands and submerged lands: oil and gas development."
+},
+{
+"measure": "AB 1448",
+"bill_id": 1980345,
+"status": "enrolled",
+"roll": 1726328,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1448 Hart et al. By Blakespear",
+"version_ok": true,
+"title": "Coastal resources: California Coastal Sanctuary: tidelands and submerged lands: oil and gas development."
+}
+],
+"SB 110": [
+{
+"measure": "SB 110",
+"bill_id": 1939206,
+"status": "chaptered",
+"roll": 1710551,
+"date": "2026-06-15",
+"chamber": "A",
+"yea": 58,
+"nay": 19,
+"desc": "SB 110 Laird Senate Third Reading By GABRIEL",
+"version_ok": true,
+"title": "Budget Act of 2026."
+},
+{
+"measure": "SB 110",
+"bill_id": 1939206,
+"status": "chaptered",
+"roll": 1710432,
+"date": "2026-06-18",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Unfinished Business SB110 Laird Concurrence",
+"version_ok": true,
+"title": "Budget Act of 2026."
+}
+],
+"AB 1801": [
+{
+"measure": "AB 1801",
+"bill_id": 2113694,
+"status": "enrolled",
+"roll": 1726033,
+"date": "2026-08-25",
+"chamber": "A",
+"yea": 59,
+"nay": 19,
+"desc": "AB 1801 Lee Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Public agencies: approval: detention facilities."
+},
+{
+"measure": "AB 1801",
+"bill_id": 2113694,
+"status": "enrolled",
+"roll": 1725469,
+"date": "2026-08-19",
+"chamber": "S",
+"yea": 28,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1801 Lee By Durazo",
+"version_ok": true,
+"title": "Public agencies: approval: detention facilities."
+}
+],
+"AB 1647": [
+{
+"measure": "AB 1647",
+"bill_id": 2095313,
+"status": "enrolled",
+"roll": 1725277,
+"date": "2026-08-17",
+"chamber": "S",
+"yea": 32,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB1647 Bryan et al. By Cortese",
+"version_ok": true,
+"title": "Juveniles: transfer to criminal court: criminal procedure."
+}
+],
+"AB 2646": [
+{
+"measure": "AB 2646",
+"bill_id": 2121723,
+"status": "enrolled",
+"roll": 1702184,
+"date": "2026-05-26",
+"chamber": "A",
+"yea": 58,
+"nay": 16,
+"desc": "AB 2646 Krell Assembly Third Reading",
+"version_ok": true,
+"title": "Employment: minimum wages: agricultural workers."
+},
+{
+"measure": "AB 2646",
+"bill_id": 2121723,
+"status": "enrolled",
+"roll": 1726113,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB2646 Krell By Umberg",
+"version_ok": true,
+"title": "Employment: minimum wages: agricultural workers."
+}
+],
+"AB 144": [
+{
+"measure": "AB 144",
+"bill_id": 1908129,
+"status": "chaptered",
+"roll": 1602367,
+"date": "2025-09-12",
+"chamber": "S",
+"yea": 29,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB144 BUDGET (Gabriel) By Wiener",
+"version_ok": true,
+"title": "Health."
+},
+{
+"measure": "AB 144",
+"bill_id": 1908129,
+"status": "chaptered",
+"roll": 1602368,
+"date": "2025-09-12",
+"chamber": "A",
+"yea": 61,
+"nay": 18,
+"desc": "AB 144 BUDGET Concurrence in Senate Amendments By GABRIEL",
+"version_ok": true,
+"title": "Health."
+}
+],
+"AB 747": [
+{
+"measure": "AB 747",
+"bill_id": 1974464,
+"status": "chaptered",
+"roll": 1601558,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB747 Kalra By Umberg",
+"version_ok": true,
+"title": "Service of Process Accountability, Reform and Equity (SPARE) Act."
+},
+{
+"measure": "AB 747",
+"bill_id": 1974464,
+"status": "chaptered",
+"roll": 1602550,
+"date": "2025-09-11",
+"chamber": "A",
+"yea": 55,
+"nay": 20,
+"desc": "AB 747 Kalra Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Service of Process Accountability, Reform and Equity (SPARE) Act."
+}
+],
+"SB 1414": [
+{
+"measure": "SB 1414",
+"bill_id": 2121998,
+"status": "enrolled",
+"roll": 1726127,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB1414 Reyes et al. Concurrence",
+"version_ok": true,
+"title": "County of San Bernardino Citizens Redistricting Commission."
+},
+{
+"measure": "SB 1414",
+"bill_id": 2121998,
+"status": "enrolled",
+"roll": 1726006,
+"date": "2026-08-25",
+"chamber": "A",
+"yea": 53,
+"nay": 21,
+"desc": "SB 1414 Reyes Senate Third Reading By Carrillo",
+"version_ok": true,
+"title": "County of San Bernardino Citizens Redistricting Commission."
+}
+],
+"SB 177": [
+{
+"measure": "SB 177",
+"bill_id": 1939275,
+"status": "chaptered",
+"roll": 1712344,
+"date": "2026-06-29",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "W/O REF. TO FILE SB177 B. & F.R. (Laird)",
+"version_ok": true,
+"title": "Medi-Cal: Fair Share from Big Corporations Act."
+},
+{
+"measure": "SB 177",
+"bill_id": 1939275,
+"status": "chaptered",
+"roll": 1712345,
+"date": "2026-06-29",
+"chamber": "A",
+"yea": 57,
+"nay": 18,
+"desc": "SB 177 B. & F. R. Senate Third Reading By GABRIEL",
+"version_ok": true,
+"title": "Medi-Cal: Fair Share from Big Corporations Act."
+}
+],
+"SJR 7": [
+{
+"measure": "SJR 7",
+"bill_id": 2032536,
+"status": "chaptered",
+"roll": 1725438,
+"date": "2026-08-19",
+"chamber": "S",
+"yea": 27,
+"nay": 10,
+"desc": "Unfinished Business SJR7 Cervantes et al. Concurrence",
+"version_ok": true,
+"title": "Tariffs."
+}
+],
+"SB 633": [
+{
+"measure": "SB 633",
+"bill_id": 1978866,
+"status": "enrolled",
+"roll": 1726162,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 28,
+"nay": 10,
+"desc": "Unfinished Business SB633 Blakespear Concurrence",
+"version_ok": true,
+"title": "Plastic beverage containers: recycling."
+},
+{
+"measure": "SB 633",
+"bill_id": 1978866,
+"status": "enrolled",
+"roll": 1726083,
+"date": "2026-08-25",
+"chamber": "A",
+"yea": 59,
+"nay": 16,
+"desc": "SB 633 Blakespear Senate Third Reading By Pellerin",
+"version_ok": true,
+"title": "Plastic beverage containers: recycling."
+}
+],
+"SB 851": [
+{
+"measure": "SB 851",
+"bill_id": 1987924,
+"status": "chaptered",
+"roll": 1602225,
+"date": "2025-09-13",
+"chamber": "A",
+"yea": 60,
+"nay": 19,
+"desc": "SB 851 Cervantes Senate Second Reading By Pellerin",
+"version_ok": true,
+"title": "Elections."
+}
+],
+"AB 2318": [
+{
+"measure": "AB 2318",
+"bill_id": 2120792,
+"status": "enrolled",
+"roll": 1726793,
+"date": "2026-08-28",
+"chamber": "A",
+"yea": 52,
+"nay": 18,
+"desc": "AB 2318 Elhawary Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Law enforcement: facilitating medical care."
+},
+{
+"measure": "AB 2318",
+"bill_id": 2120792,
+"status": "enrolled",
+"roll": 1726491,
+"date": "2026-08-27",
+"chamber": "S",
+"yea": 26,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB2318 Elhawary et al. By Gonzalez",
+"version_ok": true,
+"title": "Law enforcement: facilitating medical care."
+}
+],
+"SB 164": [
+{
+"measure": "SB 164",
+"bill_id": 1939262,
+"status": "chaptered",
+"roll": 1712493,
+"date": "2026-06-29",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "W/O REF. TO FILE SB164 B. & F.R. (Laird)",
+"version_ok": true,
+"title": "Health."
+},
+{
+"measure": "SB 164",
+"bill_id": 1939262,
+"status": "chaptered",
+"roll": 1712494,
+"date": "2026-06-29",
+"chamber": "A",
+"yea": 55,
+"nay": 18,
+"desc": "SB 164 B. & F. R. Senate Third Reading By GABRIEL Amend By PATTERSON Set #1 Motion to Lay on the Table By AGUIAR-CURRY",
+"version_ok": true,
+"title": "Health."
+},
+{
+"measure": "SB 164",
+"bill_id": 1939262,
+"status": "chaptered",
+"roll": 1712495,
+"date": "2026-06-29",
+"chamber": "A",
+"yea": 56,
+"nay": 14,
+"desc": "SB 164 B. & F. R. Senate Third Reading By GABRIEL",
+"version_ok": true,
+"title": "Health."
+}
+],
+"AB 1235": [
+{
+"measure": "AB 1235",
+"bill_id": 1980132,
+"status": "enrolled",
+"roll": 1726123,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB1235 Rogers By Durazo",
+"version_ok": true,
+"title": "California State University: skilled and trained workforce requirement."
+}
+],
+"AB 2313": [
+{
+"measure": "AB 2313",
+"bill_id": 2120787,
+"status": "enrolled",
+"roll": 1726573,
+"date": "2026-08-27",
+"chamber": "S",
+"yea": 28,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB2313 Berman et al. By Ashby",
+"version_ok": true,
+"title": "Gas corporations: gas distribution service line replacements: alternatives."
+},
+{
+"measure": "AB 2313",
+"bill_id": 2120787,
+"status": "enrolled",
+"roll": 1726821,
+"date": "2026-08-28",
+"chamber": "A",
+"yea": 42,
+"nay": 20,
+"desc": "AB 2313 Berman Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Gas corporations: gas distribution service line replacements: alternatives."
+}
+],
+"SB 122": [
+{
+"measure": "SB 122",
+"bill_id": 1939219,
+"status": "chaptered",
+"roll": 1710441,
+"date": "2026-06-18",
+"chamber": "S",
+"yea": 27,
+"nay": 9,
+"desc": "Unfinished Business SB122 B. & F.R. (Laird) Concurrence",
+"version_ok": true,
+"title": "Taxation."
+},
+{
+"measure": "SB 122",
+"bill_id": 1939219,
+"status": "chaptered",
+"roll": 1710557,
+"date": "2026-06-15",
+"chamber": "A",
+"yea": 54,
+"nay": 20,
+"desc": "SB 122 B. & F. R. Senate Third Reading By GABRIEL Amend By TANGIPA Set #1 Motion to Lay on the Table By AGUIAR-CURRY",
+"version_ok": true,
+"title": "Taxation."
+},
+{
+"measure": "SB 122",
+"bill_id": 1939219,
+"status": "chaptered",
+"roll": 1710558,
+"date": "2026-06-15",
+"chamber": "A",
+"yea": 56,
+"nay": 20,
+"desc": "SB 122 B. & F. R. Senate Third Reading By GABRIEL",
+"version_ok": true,
+"title": "Taxation."
+}
+],
+"SB 787": [
+{
+"measure": "SB 787",
+"bill_id": 1980517,
+"status": "vetoed",
+"roll": 1602933,
+"date": "2025-09-13",
+"chamber": "S",
+"yea": 29,
+"nay": 8,
+"desc": "Unfinished Business SB787 McNerney et al. Concurrence",
+"version_ok": true,
+"title": "Energy: equitable clean energy supply chains and industrial policy in California."
+},
+{
+"measure": "SB 787",
+"bill_id": 1980517,
+"status": "vetoed",
+"roll": 1602220,
+"date": "2025-09-12",
+"chamber": "S",
+"yea": 29,
+"nay": 8,
+"desc": "Unfinished Business SB787 McNerney et al. Concurrence",
+"version_ok": true,
+"title": "Energy: equitable clean energy supply chains and industrial policy in California."
+}
+],
+"SB 747": [
+{
+"measure": "SB 747",
+"bill_id": 1980477,
+"status": "enrolled",
+"roll": 1726009,
+"date": "2026-08-25",
+"chamber": "A",
+"yea": 57,
+"nay": 19,
+"desc": "SB 747 Wiener Third Reading Urgency By Mark Gonz\u00e1lez",
+"version_ok": true,
+"title": "Civil rights: deprivation of federal constitutional rights, privileges, and immunities."
+},
+{
+"measure": "SB 747",
+"bill_id": 1980477,
+"status": "enrolled",
+"roll": 1726579,
+"date": "2026-08-27",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB747 Wiener et al. Urgency Clause Concurrence",
+"version_ok": true,
+"title": "Civil rights: deprivation of federal constitutional rights, privileges, and immunities."
+}
+],
+"SB 873": [
+{
+"measure": "SB 873",
+"bill_id": 2066407,
+"status": "enrolled",
+"roll": 1726877,
+"date": "2026-08-28",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB873 Reyes et al. Concurrence",
+"version_ok": true,
+"title": "Courthouses: privilege from civil arrest."
+},
+{
+"measure": "SB 873",
+"bill_id": 2066407,
+"status": "enrolled",
+"roll": 1726077,
+"date": "2026-08-25",
+"chamber": "A",
+"yea": 58,
+"nay": 17,
+"desc": "SB 873 Reyes Senate Third Reading By Kalra",
+"version_ok": true,
+"title": "Courthouses: privilege from civil arrest."
+}
+],
+"AB 2619": [
+{
+"measure": "AB 2619",
+"bill_id": 2121696,
+"status": "enrolled",
+"roll": 1726174,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB2619 Papan By Padilla",
+"version_ok": true,
+"title": "Water resources: data centers."
+}
+],
+"SB 551": [
+{
+"measure": "SB 551",
+"bill_id": 1978784,
+"status": "chaptered",
+"roll": 1600941,
+"date": "2025-09-03",
+"chamber": "A",
+"yea": 57,
+"nay": 20,
+"desc": "SB 551 Cortese Senate Third Reading By Schultz",
+"version_ok": true,
+"title": "Corrections and rehabilitation: state policy."
+},
+{
+"measure": "SB 551",
+"bill_id": 1978784,
+"status": "chaptered",
+"roll": 1601527,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Unfinished Business SB551 Cortese et al. Concurrence",
+"version_ok": true,
+"title": "Corrections and rehabilitation: state policy."
+}
+],
+"SB 450": [
+{
+"measure": "SB 450",
+"bill_id": 1974560,
+"status": "chaptered",
+"roll": 1601954,
+"date": "2025-09-11",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB450 Menjivar et al. Concurrence",
+"version_ok": true,
+"title": "Adoption."
+}
+],
+"SB 1406": [
+{
+"measure": "SB 1406",
+"bill_id": 2121990,
+"status": "enrolled",
+"roll": 1726212,
+"date": "2026-08-26",
+"chamber": "A",
+"yea": 59,
+"nay": 19,
+"desc": "SB 1406 McNerney Senate Third Reading By Aguiar-Curry",
+"version_ok": true,
+"title": "Sales and Use Tax Law: vehicles: shell companies."
+},
+{
+"measure": "SB 1406",
+"bill_id": 2121990,
+"status": "enrolled",
+"roll": 1700189,
+"date": "2026-05-19",
+"chamber": "S",
+"yea": 31,
+"nay": 8,
+"desc": "Senate 3rd Reading SB1406 McNerney et al",
+"version_ok": true,
+"title": "Sales and Use Tax Law: vehicles: shell companies."
+}
+],
+"SB 166": [
+{
+"measure": "SB 166",
+"bill_id": 1939264,
+"status": "chaptered",
+"roll": 1712464,
+"date": "2026-06-29",
+"chamber": "A",
+"yea": 57,
+"nay": 18,
+"desc": "SB 166 B. & F. R. Senate Third Reading By GABRIEL",
+"version_ok": true,
+"title": "Public resources trailer bill."
+},
+{
+"measure": "SB 166",
+"bill_id": 1939264,
+"status": "chaptered",
+"roll": 1712463,
+"date": "2026-06-29",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "W/O REF. TO FILE SB166 B. & F.R. (Laird)",
+"version_ok": true,
+"title": "Public resources trailer bill."
+}
+],
+"SB 274": [
+{
+"measure": "SB 274",
+"bill_id": 1955765,
+"status": "vetoed",
+"roll": 1602356,
+"date": "2025-09-13",
+"chamber": "A",
+"yea": 41,
+"nay": 29,
+"desc": "SB 274 Cervantes Senate Third Reading By Bauer-Kahan",
+"version_ok": true,
+"title": "Automated license plate recognition systems."
+}
+],
+"SB 578": [
+{
+"measure": "SB 578",
+"bill_id": 1978811,
+"status": "chaptered",
+"roll": 1601944,
+"date": "2025-09-11",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB578 Smallwood-Cuevas Concurrence",
+"version_ok": true,
+"title": "California Workplace Outreach Program."
+}
+],
+"SB 403": [
+{
+"measure": "SB 403",
+"bill_id": 1971779,
+"status": "chaptered",
+"roll": 1602102,
+"date": "2025-09-12",
+"chamber": "S",
+"yea": 25,
+"nay": 9,
+"desc": "Unfinished Business SB403 Blakespear Concurrence",
+"version_ok": true,
+"title": "End of Life Option Act: sunset."
+}
+],
+"AB 2531": [
+{
+"measure": "AB 2531",
+"bill_id": 2121608,
+"status": "enrolled",
+"roll": 1725955,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB2531 Irwin et al. By Menjivar",
+"version_ok": true,
+"title": "Public health: abortion services."
+},
+{
+"measure": "AB 2531",
+"bill_id": 2121608,
+"status": "enrolled",
+"roll": 1726338,
+"date": "2026-08-26",
+"chamber": "A",
+"yea": 60,
+"nay": 18,
+"desc": "AB 2531 Irwin Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Public health: abortion services."
+}
+],
+"AB 713": [
+{
+"measure": "AB 713",
+"bill_id": 1971743,
+"status": "enrolled",
+"roll": 1726504,
+"date": "2026-08-27",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB713 Solache et al. By Cervantes",
+"version_ok": true,
+"title": "Public postsecondary education: student employment."
+}
+],
+"AB 1854": [
+{
+"measure": "AB 1854",
+"bill_id": 2114722,
+"status": "enrolled",
+"roll": 1702576,
+"date": "2026-05-27",
+"chamber": "A",
+"yea": 60,
+"nay": 17,
+"desc": "AB 1854 Krell Assembly Third Reading",
+"version_ok": true,
+"title": "Legally protected health care activities."
+},
+{
+"measure": "AB 1854",
+"bill_id": 2114722,
+"status": "enrolled",
+"roll": 1725697,
+"date": "2026-08-24",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1854 Krell et al. By Weber Pierson",
+"version_ok": true,
+"title": "Legally protected health care activities."
+}
+],
+"AB 2494": [
+{
+"measure": "AB 2494",
+"bill_id": 2121571,
+"status": "enrolled",
+"roll": 1726311,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB2494 Rogers et al. By McGuire",
+"version_ok": true,
+"title": "State forests: forest management."
+},
+{
+"measure": "AB 2494",
+"bill_id": 2121571,
+"status": "enrolled",
+"roll": 1726518,
+"date": "2026-08-27",
+"chamber": "A",
+"yea": 58,
+"nay": 19,
+"desc": "AB 2494 Rogers Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "State forests: forest management."
+}
+],
+"AB 1977": [
+{
+"measure": "AB 1977",
+"bill_id": 2117136,
+"status": "enrolled",
+"roll": 1725294,
+"date": "2026-08-17",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1977 Irwin By Caballero",
+"version_ok": true,
+"title": "Notaries public."
+}
+],
+"AB 57": [
+{
+"measure": "AB 57",
+"bill_id": 1893396,
+"status": "vetoed",
+"roll": 1601295,
+"date": "2025-09-08",
+"chamber": "S",
+"yea": 28,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB57 McKinnor et al. By Smallwood-Cuevas",
+"version_ok": true,
+"title": "California Dream for All Program: descendants of formerly enslaved people."
+}
+],
+"AB 1886": [
+{
+"measure": "AB 1886",
+"bill_id": 2116268,
+"status": "enrolled",
+"roll": 1726284,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 25,
+"nay": 11,
+"desc": "Assembly 3rd Reading AB1886 Elhawary By Cortese",
+"version_ok": true,
+"title": "Wards: probation."
+},
+{
+"measure": "AB 1886",
+"bill_id": 2116268,
+"status": "enrolled",
+"roll": 1726469,
+"date": "2026-08-27",
+"chamber": "A",
+"yea": 43,
+"nay": 20,
+"desc": "AB 1886 Elhawary Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Wards: probation."
+}
+],
+"AB 1136": [
+{
+"measure": "AB 1136",
+"bill_id": 1978671,
+"status": "vetoed",
+"roll": 1601104,
+"date": "2025-09-04",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1136 Ortega et al. By Durazo",
+"version_ok": true,
+"title": "Employment: immigration and work authorization."
+}
+],
+"SB 1371": [
+{
+"measure": "SB 1371",
+"bill_id": 2121955,
+"status": "enrolled",
+"roll": 1726400,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 28,
+"nay": 10,
+"desc": "Unfinished Business SB1371 Durazo Concurrence",
+"version_ok": true,
+"title": "Solid waste handling services: labor dispute."
+},
+{
+"measure": "SB 1371",
+"bill_id": 2121955,
+"status": "enrolled",
+"roll": 1725400,
+"date": "2026-08-19",
+"chamber": "A",
+"yea": 58,
+"nay": 17,
+"desc": "SB 1371 Durazo Senate Third Reading By Harabedian",
+"version_ok": true,
+"title": "Solid waste handling services: labor dispute."
+}
+],
+"AB 734": [
+{
+"measure": "AB 734",
+"bill_id": 1974451,
+"status": "vetoed",
+"roll": 1600980,
+"date": "2025-09-03",
+"chamber": "S",
+"yea": 31,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB734 Schultz et al. By Allen",
+"version_ok": true,
+"title": "Environmental protection: biological resources data: State Energy Resources Conservation and Development Commission: powerplants: power lines: applications."
+}
+],
+"SB 281": [
+{
+"measure": "SB 281",
+"bill_id": 1958486,
+"status": "chaptered",
+"roll": 1600221,
+"date": "2025-08-28",
+"chamber": "A",
+"yea": 53,
+"nay": 18,
+"desc": "SB 281 P\u00e9rez Senate Third Reading By Gabriel",
+"version_ok": true,
+"title": "Pleas: immigration advisement."
+},
+{
+"measure": "SB 281",
+"bill_id": 1958486,
+"status": "chaptered",
+"roll": 1600977,
+"date": "2025-09-03",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB281 P\u00e9rez et al. Concurrence",
+"version_ok": true,
+"title": "Pleas: immigration advisement."
+}
+],
+"SJR 12": [
+{
+"measure": "SJR 12",
+"bill_id": 2074067,
+"status": "chaptered",
+"roll": 1689419,
+"date": "2026-04-23",
+"chamber": "S",
+"yea": 27,
+"nay": 8,
+"desc": "Senate 3rd Reading SJR12 Laird et al",
+"version_ok": true,
+"title": "Proposed 2026\u20132031 National Outer Continental Shelf Oil and Gas Leasing Program: opposition."
+}
+],
+"SB 682": [
+{
+"measure": "SB 682",
+"bill_id": 1980412,
+"status": "vetoed",
+"roll": 1602045,
+"date": "2025-09-12",
+"chamber": "A",
+"yea": 45,
+"nay": 21,
+"desc": "SB 682 Allen Senate Third Reading By Connolly",
+"version_ok": true,
+"title": "Environmental health: product safety: perfluoroalkyl and polyfluoroalkyl substances."
+}
+],
+"SB 477": [
+{
+"measure": "SB 477",
+"bill_id": 1976559,
+"status": "chaptered",
+"roll": 1580513,
+"date": "2025-05-28",
+"chamber": "S",
+"yea": 28,
+"nay": 10,
+"desc": "Senate 3rd Reading SB477 Blakespear",
+"version_ok": true,
+"title": "California Fair Employment and Housing Act: enforcement procedures."
+},
+{
+"measure": "SB 477",
+"bill_id": 1976559,
+"status": "chaptered",
+"roll": 1601546,
+"date": "2025-09-09",
+"chamber": "A",
+"yea": 59,
+"nay": 19,
+"desc": "SB 477 Blakespear Senate Third Reading By Bryan",
+"version_ok": true,
+"title": "California Fair Employment and Housing Act: enforcement procedures."
+}
+],
+"SB 1379": [
+{
+"measure": "SB 1379",
+"bill_id": 2121963,
+"status": "enrolled",
+"roll": 1726355,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB1379 Cervantes et al. Concurrence",
+"version_ok": true,
+"title": "County of Riverside: separation of county offices: in-custody reports."
+},
+{
+"measure": "SB 1379",
+"bill_id": 2121963,
+"status": "enrolled",
+"roll": 1725892,
+"date": "2026-08-25",
+"chamber": "A",
+"yea": 59,
+"nay": 19,
+"desc": "SB 1379 Cervantes Senate Third Reading By Jackson",
+"version_ok": true,
+"title": "County of Riverside: separation of county offices: in-custody reports."
+}
+],
+"AB 2180": [
+{
+"measure": "AB 2180",
+"bill_id": 2120654,
+"status": "enrolled",
+"roll": 1725355,
+"date": "2026-08-18",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB2180 Ward et al. By Arregu\u00edn",
+"version_ok": true,
+"title": "Local government: Proposition 218 Omnibus Implementation Act: proportional cost of service."
+},
+{
+"measure": "AB 2180",
+"bill_id": 2120654,
+"status": "enrolled",
+"roll": 1725427,
+"date": "2026-08-19",
+"chamber": "A",
+"yea": 53,
+"nay": 17,
+"desc": "AB 2180 Ward Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Local government: Proposition 218 Omnibus Implementation Act: proportional cost of service."
+}
+],
+"AB 723": [
+{
+"measure": "AB 723",
+"bill_id": 1971753,
+"status": "chaptered",
+"roll": 1601647,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB723 Pellerin By Wahab",
+"version_ok": true,
+"title": "Real estate: digitally altered images: disclosure."
+}
+],
+"AB 1743": [
+{
+"measure": "AB 1743",
+"bill_id": 2110062,
+"status": "enrolled",
+"roll": 1725611,
+"date": "2026-08-20",
+"chamber": "S",
+"yea": 28,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1743 Wicks et al. By Grayson",
+"version_ok": true,
+"title": "Firearms."
+},
+{
+"measure": "AB 1743",
+"bill_id": 2110062,
+"status": "enrolled",
+"roll": 1725696,
+"date": "2026-08-24",
+"chamber": "A",
+"yea": 60,
+"nay": 18,
+"desc": "AB 1743 Wicks Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Firearms."
+}
+],
+"SB 1354": [
+{
+"measure": "SB 1354",
+"bill_id": 2121938,
+"status": "enrolled",
+"roll": 1725813,
+"date": "2026-08-24",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB1354 Archuleta et al. Concurrence",
+"version_ok": true,
+"title": "The military: defense of the state."
+}
+],
+"AB 699": [
+{
+"measure": "AB 699",
+"bill_id": 1971729,
+"status": "vetoed",
+"roll": 1602141,
+"date": "2025-09-13",
+"chamber": "A",
+"yea": 55,
+"nay": 21,
+"desc": "AB 699 Stefani Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Elections: local tax measures."
+},
+{
+"measure": "AB 699",
+"bill_id": 1971729,
+"status": "vetoed",
+"roll": 1601982,
+"date": "2025-09-11",
+"chamber": "S",
+"yea": 24,
+"nay": 13,
+"desc": "Assembly 3rd Reading AB699 Stefani By Wiener",
+"version_ok": true,
+"title": "Elections: local tax measures."
+}
+],
+"SB 170": [
+{
+"measure": "SB 170",
+"bill_id": 1939268,
+"status": "chaptered",
+"roll": 1712389,
+"date": "2026-06-29",
+"chamber": "A",
+"yea": 58,
+"nay": 16,
+"desc": "SB 170 B. & F. R. Senate Third Reading By GABRIEL",
+"version_ok": true,
+"title": "Governor\u2019s Reorganization Plan No. 1 of 2025: codification."
+},
+{
+"measure": "SB 170",
+"bill_id": 1939268,
+"status": "chaptered",
+"roll": 1712388,
+"date": "2026-06-29",
+"chamber": "S",
+"yea": 28,
+"nay": 9,
+"desc": "W/O REF. TO FILE SB170 B. & F.R. (Laird)",
+"version_ok": true,
+"title": "Governor\u2019s Reorganization Plan No. 1 of 2025: codification."
+}
+],
+"AB 2157": [
+{
+"measure": "AB 2157",
+"bill_id": 2119684,
+"status": "enrolled",
+"roll": 1726251,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB2157 Connolly et al. By Grayson",
+"version_ok": true,
+"title": "Workforce development: Displaced Oil and Gas Worker Pilot Program: extension."
+},
+{
+"measure": "AB 2157",
+"bill_id": 2119684,
+"status": "enrolled",
+"roll": 1726754,
+"date": "2026-08-27",
+"chamber": "A",
+"yea": 55,
+"nay": 19,
+"desc": "AB 2157 Connolly Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Workforce development: Displaced Oil and Gas Worker Pilot Program: extension."
+}
+],
+"SB 954": [
+{
+"measure": "SB 954",
+"bill_id": 2104454,
+"status": "enrolled",
+"roll": 1726140,
+"date": "2026-08-26",
+"chamber": "A",
+"yea": 50,
+"nay": 17,
+"desc": "SB 954 Blakespear Senate Third Reading By Connolly",
+"version_ok": true,
+"title": "California Environmental Quality Act: advanced manufacturing facilities: exemption."
+},
+{
+"measure": "SB 954",
+"bill_id": 2104454,
+"status": "enrolled",
+"roll": 1726784,
+"date": "2026-08-28",
+"chamber": "S",
+"yea": 28,
+"nay": 10,
+"desc": "Unfinished Business SB954 Blakespear et al. Concurrence",
+"version_ok": true,
+"title": "California Environmental Quality Act: advanced manufacturing facilities: exemption."
+}
+],
+"SBX 12": [
+{
+"measure": "SBX 12",
+"bill_id": 1908214,
+"status": "chaptered",
+"roll": 1474139,
+"date": "2025-01-23",
+"chamber": "S",
+"yea": 28,
+"nay": 8,
+"desc": "Senate 3rd Reading SB2 Wiener et al",
+"version_ok": true,
+"title": "Budget Act of 2024."
+},
+{
+"measure": "SBX 12",
+"bill_id": 1908214,
+"status": "chaptered",
+"roll": 1479314,
+"date": "2025-02-03",
+"chamber": "A",
+"yea": 55,
+"nay": 18,
+"desc": "SB 2 Wiener Senate Third Reading By GABRIEL Amend By CASTILLO Set #1 Motion to Lay on the Table By AGUIAR-CURRY First Extraordinary Session",
+"version_ok": true,
+"title": "Budget Act of 2024."
+},
+{
+"measure": "SBX 12",
+"bill_id": 1908214,
+"status": "chaptered",
+"roll": 1479315,
+"date": "2025-02-03",
+"chamber": "A",
+"yea": 58,
+"nay": 17,
+"desc": "SB 2 Wiener Senate Third Reading By GABRIEL First Extraordinary Session",
+"version_ok": true,
+"title": "Budget Act of 2024."
+}
+],
+"SB 1037": [
+{
+"measure": "SB 1037",
+"bill_id": 2114742,
+"status": "enrolled",
+"roll": 1725860,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB1037 Weber Pierson Concurrence",
+"version_ok": true,
+"title": "Health care coverage: rate review."
+},
+{
+"measure": "SB 1037",
+"bill_id": 2114742,
+"status": "enrolled",
+"roll": 1725821,
+"date": "2026-08-24",
+"chamber": "A",
+"yea": 59,
+"nay": 15,
+"desc": "SB 1037 Weber Pierson Senate Third Reading By Schiavo",
+"version_ok": true,
+"title": "Health care coverage: rate review."
+}
+],
+"AB 1905": [
+{
+"measure": "AB 1905",
+"bill_id": 2116287,
+"status": "enrolled",
+"roll": 1726124,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 26,
+"nay": 12,
+"desc": "Assembly 3rd Reading AB1905 Schultz et al. By Wiener",
+"version_ok": true,
+"title": "Juveniles: custodial interrogation."
+},
+{
+"measure": "AB 1905",
+"bill_id": 2116287,
+"status": "enrolled",
+"roll": 1726125,
+"date": "2026-08-25",
+"chamber": "A",
+"yea": 51,
+"nay": 15,
+"desc": "AB 1905 Schultz Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Juveniles: custodial interrogation."
+}
+],
+"SB 354": [
+{
+"measure": "SB 354",
+"bill_id": 1968261,
+"status": "enrolled",
+"roll": 1726717,
+"date": "2026-08-27",
+"chamber": "A",
+"yea": 59,
+"nay": 16,
+"desc": "SB 354 Lim\u00f3n Senate Third Reading By Bauer-Kahan",
+"version_ok": true,
+"title": "Insurance Information and Privacy Protection Act."
+},
+{
+"measure": "SB 354",
+"bill_id": 1968261,
+"status": "enrolled",
+"roll": 1726834,
+"date": "2026-08-28",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB354 Lim\u00f3n Concurrence",
+"version_ok": true,
+"title": "Insurance Information and Privacy Protection Act."
+}
+],
+"SB 998": [
+{
+"measure": "SB 998",
+"bill_id": 2112406,
+"status": "enrolled",
+"roll": 1726427,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Unfinished Business SB998 Gonzalez et al. Concurrence",
+"version_ok": true,
+"title": "Educational equity: discrimination prevention coordinators."
+}
+],
+"AB 1201": [
+{
+"measure": "AB 1201",
+"bill_id": 1980098,
+"status": "enrolled",
+"roll": 1725634,
+"date": "2026-08-20",
+"chamber": "A",
+"yea": 56,
+"nay": 14,
+"desc": "AB 1201 Jackson Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Family reunification services."
+},
+{
+"measure": "AB 1201",
+"bill_id": 1980098,
+"status": "enrolled",
+"roll": 1725404,
+"date": "2026-08-19",
+"chamber": "S",
+"yea": 27,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1201 Jackson",
+"version_ok": true,
+"title": "Family reunification services."
+}
+],
+"SB 501": [
+{
+"measure": "SB 501",
+"bill_id": 1976583,
+"status": "enrolled",
+"roll": 1725899,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB501 Allen Concurrence",
+"version_ok": true,
+"title": "Responsible Battery Recycling Act of 2022: covered batteries."
+}
+],
+"SB 280": [
+{
+"measure": "SB 280",
+"bill_id": 1958485,
+"status": "chaptered",
+"roll": 1599869,
+"date": "2025-08-21",
+"chamber": "A",
+"yea": 54,
+"nay": 19,
+"desc": "SB 280 Cervantes Third Reading Urgency By Pellerin Amend By GALLAGHER Set #2 Motion to Lay on the Table By AGUIAR-CURRY",
+"version_ok": true,
+"title": "Elections."
+},
+{
+"measure": "SB 280",
+"bill_id": 1958485,
+"status": "chaptered",
+"roll": 1599873,
+"date": "2025-08-21",
+"chamber": "A",
+"yea": 57,
+"nay": 20,
+"desc": "SB 280 Cervantes Third Reading Urgency By Pellerin",
+"version_ok": true,
+"title": "Elections."
+},
+{
+"measure": "SB 280",
+"bill_id": 1958485,
+"status": "chaptered",
+"roll": 1599872,
+"date": "2025-08-21",
+"chamber": "A",
+"yea": 54,
+"nay": 19,
+"desc": "SB 280 Cervantes Third Reading Urgency By Pellerin Amend By TANGIPA Set #4 Motion to Lay on the Table By AGUIAR-CURRY",
+"version_ok": true,
+"title": "Elections."
+},
+{
+"measure": "SB 280",
+"bill_id": 1958485,
+"status": "chaptered",
+"roll": 1599871,
+"date": "2025-08-21",
+"chamber": "A",
+"yea": 56,
+"nay": 19,
+"desc": "SB 280 Cervantes Third Reading Urgency By Pellerin Amend By GALLAGHER Set #3 Motion to Lay on the Table By AGUIAR-CURRY",
+"version_ok": true,
+"title": "Elections."
+},
+{
+"measure": "SB 280",
+"bill_id": 1958485,
+"status": "chaptered",
+"roll": 1599870,
+"date": "2025-08-21",
+"chamber": "A",
+"yea": 56,
+"nay": 19,
+"desc": "SB 280 Cervantes Third Reading Urgency By Pellerin Amend By CASTILLO Set #1 Motion to Lay on the Table By AGUIAR-CURRY",
+"version_ok": true,
+"title": "Elections."
+},
+{
+"measure": "SB 280",
+"bill_id": 1958485,
+"status": "chaptered",
+"roll": 1599868,
+"date": "2025-08-21",
+"chamber": "S",
+"yea": 30,
+"nay": 8,
+"desc": "Unfinished Business SB280 Cervantes et al. Urgency Clause Concurrence",
+"version_ok": true,
+"title": "Elections."
+}
+],
+"AB 1944": [
+{
+"measure": "AB 1944",
+"bill_id": 2117103,
+"status": "enrolled",
+"roll": 1725362,
+"date": "2026-08-18",
+"chamber": "S",
+"yea": 31,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB1944 Lee By Blakespear",
+"version_ok": true,
+"title": "Zero-emission transit buses: axle weight."
+}
+],
+"SB 1105": [
+{
+"measure": "SB 1105",
+"bill_id": 2117192,
+"status": "enrolled",
+"roll": 1726688,
+"date": "2026-08-27",
+"chamber": "S",
+"yea": 27,
+"nay": 11,
+"desc": "Unfinished Business SB1105 P\u00e9rez et al. Concurrence",
+"version_ok": true,
+"title": "Law enforcement."
+},
+{
+"measure": "SB 1105",
+"bill_id": 2117192,
+"status": "enrolled",
+"roll": 1725874,
+"date": "2026-08-25",
+"chamber": "A",
+"yea": 58,
+"nay": 19,
+"desc": "SB 1105 P\u00e9rez Senate Third Reading By Schultz",
+"version_ok": true,
+"title": "Law enforcement."
+}
+],
+"SB 388": [
+{
+"measure": "SB 388",
+"bill_id": 1971764,
+"status": "vetoed",
+"roll": 1601733,
+"date": "2025-09-10",
+"chamber": "S",
+"yea": 32,
+"nay": 8,
+"desc": "Unfinished Business SB388 Padilla et al. Concurrence",
+"version_ok": true,
+"title": "California Latino Commission."
+}
+],
+"SB 169": [
+{
+"measure": "SB 169",
+"bill_id": 1939267,
+"status": "chaptered",
+"roll": 1712354,
+"date": "2026-06-29",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "W/O REF. TO FILE SB169 B. & F.R. (Laird)",
+"version_ok": true,
+"title": "Transportation budget trailer bill."
+},
+{
+"measure": "SB 169",
+"bill_id": 1939267,
+"status": "chaptered",
+"roll": 1712355,
+"date": "2026-06-29",
+"chamber": "A",
+"yea": 57,
+"nay": 15,
+"desc": "SB 169 B. & F. R. Senate Third Reading By GABRIEL",
+"version_ok": true,
+"title": "Transportation budget trailer bill."
+}
+],
+"AB 2257": [
+{
+"measure": "AB 2257",
+"bill_id": 2120731,
+"status": "enrolled",
+"roll": 1725820,
+"date": "2026-08-24",
+"chamber": "S",
+"yea": 24,
+"nay": 12,
+"desc": "Assembly 3rd Reading AB2257 Hart By Laird",
+"version_ok": true,
+"title": "Corrections: jail administrators."
+},
+{
+"measure": "AB 2257",
+"bill_id": 2120731,
+"status": "enrolled",
+"roll": 1726396,
+"date": "2026-08-26",
+"chamber": "A",
+"yea": 41,
+"nay": 24,
+"desc": "AB 2257 Hart Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Corrections: jail administrators."
+}
+],
+"AB 137": [
+{
+"measure": "AB 137",
+"bill_id": 1908122,
+"status": "chaptered",
+"roll": 1596030,
+"date": "2025-06-27",
+"chamber": "A",
+"yea": 58,
+"nay": 18,
+"desc": "AB 137 BUDGET Concurrence in Senate Amendments By GABRIEL",
+"version_ok": true,
+"title": "State government."
+},
+{
+"measure": "AB 137",
+"bill_id": 1908122,
+"status": "chaptered",
+"roll": 1596029,
+"date": "2025-06-27",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB137 BUDGET (Gabriel) By Wiener",
+"version_ok": true,
+"title": "State government."
+}
+],
+"AB 399": [
+{
+"measure": "AB 399",
+"bill_id": 1955745,
+"status": "vetoed",
+"roll": 1601158,
+"date": "2025-09-04",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB399 Boerner et al. By Padilla",
+"version_ok": true,
+"title": "Coastal resources: coastal development permits: blue carbon demonstration projects."
+},
+{
+"measure": "AB 399",
+"bill_id": 1955745,
+"status": "vetoed",
+"roll": 1601318,
+"date": "2025-09-08",
+"chamber": "A",
+"yea": 58,
+"nay": 18,
+"desc": "AB 399 Boerner Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Coastal resources: coastal development permits: blue carbon demonstration projects."
+}
+],
+"AB 1525": [
+{
+"measure": "AB 1525",
+"bill_id": 2010622,
+"status": "chaptered",
+"roll": 1601621,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1525 JUD. (Kalra) By Reyes",
+"version_ok": true,
+"title": "Attorneys: discipline: sensitive services."
+}
+],
+"SB 937": [
+{
+"measure": "SB 937",
+"bill_id": 2102402,
+"status": "enrolled",
+"roll": 1726364,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 29,
+"nay": 11,
+"desc": "Unfinished Business SB937 Gonzalez et al. Concurrence",
+"version_ok": true,
+"title": "Law enforcement: flash-bang grenades and explosive breaching charges."
+},
+{
+"measure": "SB 937",
+"bill_id": 2102402,
+"status": "enrolled",
+"roll": 1725866,
+"date": "2026-08-25",
+"chamber": "A",
+"yea": 57,
+"nay": 18,
+"desc": "SB 937 Gonzalez Senate Third Reading By Mark Gonz\u00e1lez",
+"version_ok": true,
+"title": "Law enforcement: flash-bang grenades and explosive breaching charges."
+}
+],
+"AB 182": [
+{
+"measure": "AB 182",
+"bill_id": 1908167,
+"status": "chaptered",
+"roll": 1712418,
+"date": "2026-06-29",
+"chamber": "A",
+"yea": 55,
+"nay": 18,
+"desc": "AB 182 PELLERIN Concurrence - Urgency Added",
+"version_ok": true,
+"title": "November 3, 2026, statewide general election: ballot measures."
+},
+{
+"measure": "AB 182",
+"bill_id": 1908167,
+"status": "chaptered",
+"roll": 1712417,
+"date": "2026-06-29",
+"chamber": "S",
+"yea": 30,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB182 Pellerin et al. By Wiener Urgency Clause",
+"version_ok": true,
+"title": "November 3, 2026, statewide general election: ballot measures."
+}
+],
+"AB 1917": [
+{
+"measure": "AB 1917",
+"bill_id": 2116299,
+"status": "enrolled",
+"roll": 1726700,
+"date": "2026-08-27",
+"chamber": "A",
+"yea": 52,
+"nay": 18,
+"desc": "AB 1917 Schultz Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Criminal procedure: information."
+},
+{
+"measure": "AB 1917",
+"bill_id": 2116299,
+"status": "enrolled",
+"roll": 1726320,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 28,
+"nay": 11,
+"desc": "Assembly 3rd Reading AB1917 Schultz By Arregu\u00edn",
+"version_ok": true,
+"title": "Criminal procedure: information."
+}
+],
+"AB 40": [
+{
+"measure": "AB 40",
+"bill_id": 1893378,
+"status": "enrolled",
+"roll": 1726864,
+"date": "2026-08-28",
+"chamber": "A",
+"yea": 50,
+"nay": 17,
+"desc": "AB 40 Bonta Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "California Environmental Quality Act: environmental impact reports: coal handling, storage, and export."
+},
+{
+"measure": "AB 40",
+"bill_id": 1893378,
+"status": "enrolled",
+"roll": 1726087,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB40 Bonta et al. By Arregu\u00edn",
+"version_ok": true,
+"title": "California Environmental Quality Act: environmental impact reports: coal handling, storage, and export."
+}
+],
+"AB 86": [
+{
+"measure": "AB 86",
+"bill_id": 1903331,
+"status": "vetoed",
+"roll": 1601617,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB86 Boerner By Ashby",
+"version_ok": true,
+"title": "Instructional materials: health education."
+}
+],
+"AB 2682": [
+{
+"measure": "AB 2682",
+"bill_id": 2121759,
+"status": "enrolled",
+"roll": 1725929,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB2682 Berman et al. By Reyes",
+"version_ok": true,
+"title": "Transportation network company drivers: labor relations: appeals."
+}
+],
+"AB 179": [
+{
+"measure": "AB 179",
+"bill_id": 1908164,
+"status": "chaptered",
+"roll": 1712398,
+"date": "2026-06-29",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB179 Budget (Assembly Members Gabriel (Chair)) et al. By Laird",
+"version_ok": true,
+"title": "Housing."
+}
+],
+"SBX 11": [
+{
+"measure": "SBX 11",
+"bill_id": 1894276,
+"status": "chaptered",
+"roll": 1474135,
+"date": "2025-01-23",
+"chamber": "S",
+"yea": 27,
+"nay": 9,
+"desc": "Senate 3rd Reading SB1 Wiener et al",
+"version_ok": true,
+"title": "Budget Act of 2024."
+},
+{
+"measure": "SBX 11",
+"bill_id": 1894276,
+"status": "chaptered",
+"roll": 1479280,
+"date": "2025-02-03",
+"chamber": "A",
+"yea": 58,
+"nay": 17,
+"desc": "SB 1 Wiener Senate Third Reading By GABRIEL First Extraordinary Session",
+"version_ok": true,
+"title": "Budget Act of 2024."
+},
+{
+"measure": "SBX 11",
+"bill_id": 1894276,
+"status": "chaptered",
+"roll": 1479278,
+"date": "2025-02-03",
+"chamber": "A",
+"yea": 56,
+"nay": 17,
+"desc": "SB 1 Wiener Senate Third Reading By GABRIEL Amend By DEMAIO Set #1 Motion to Lay on the Table By AGUIAR-CURRY First Extraordinary Session",
+"version_ok": true,
+"title": "Budget Act of 2024."
+}
+],
+"ACA 20": [
+{
+"measure": "ACA 20",
+"bill_id": 2154473,
+"status": "chaptered",
+"roll": 1712048,
+"date": "2026-06-25",
+"chamber": "A",
+"yea": 55,
+"nay": 18,
+"desc": "ACA 20 GABRIEL Assembly Third Reading Amend By TANGIPA Set #1 Motion to Lay on the Table By AGUIAR-CURRY",
+"version_ok": true,
+"title": "Save for California\u2019s Future Act."
+}
+],
+"SB 630": [
+{
+"measure": "SB 630",
+"bill_id": 1978863,
+"status": "chaptered",
+"roll": 1602392,
+"date": "2025-09-10",
+"chamber": "A",
+"yea": 60,
+"nay": 19,
+"desc": "SB 630 Allen Senate Third Reading By Pellerin",
+"version_ok": true,
+"title": "State parks: real property: acquisitions and leases."
+},
+{
+"measure": "SB 630",
+"bill_id": 1978863,
+"status": "chaptered",
+"roll": 1602351,
+"date": "2025-09-12",
+"chamber": "S",
+"yea": 28,
+"nay": 7,
+"desc": "Unfinished Business SB630 Allen et al. Concurrence",
+"version_ok": true,
+"title": "State parks: real property: acquisitions and leases."
+}
+],
+"SB 1196": [
+{
+"measure": "SB 1196",
+"bill_id": 2120869,
+"status": "enrolled",
+"roll": 1725354,
+"date": "2026-08-18",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB1196 McNerney et al. Concurrence",
+"version_ok": true,
+"title": "Small energization projects: electrical service connections."
+}
+],
+"AB 138": [
+{
+"measure": "AB 138",
+"bill_id": 1908123,
+"status": "chaptered",
+"roll": 1598827,
+"date": "2025-07-17",
+"chamber": "S",
+"yea": 28,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB138 BUDGET (Gabriel) By Wiener",
+"version_ok": true,
+"title": "State employment: state bargaining units."
+}
+],
+"SB 909": [
+{
+"measure": "SB 909",
+"bill_id": 2094107,
+"status": "enrolled",
+"roll": 1726217,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Unfinished Business SB909 Smallwood-Cuevas Concurrence",
+"version_ok": true,
+"title": "Public works."
+}
+],
+"AB 2510": [
+{
+"measure": "AB 2510",
+"bill_id": 2121587,
+"status": "enrolled",
+"roll": 1725987,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB2510 Arambula By Smallwood-Cuevas",
+"version_ok": true,
+"title": "CalWORKs."
+}
+],
+"SB 101": [
+{
+"measure": "SB 101",
+"bill_id": 1939197,
+"status": "chaptered",
+"roll": 1590717,
+"date": "2025-06-13",
+"chamber": "A",
+"yea": 57,
+"nay": 19,
+"desc": "SB 101 Wiener Senate Third Reading By GABRIEL",
+"version_ok": true,
+"title": "Budget Act of 2025."
+},
+{
+"measure": "SB 101",
+"bill_id": 1939197,
+"status": "chaptered",
+"roll": 1590715,
+"date": "2025-06-13",
+"chamber": "S",
+"yea": 26,
+"nay": 8,
+"desc": "Unfinished Business SB101 Wiener Concurrence",
+"version_ok": true,
+"title": "Budget Act of 2025."
+},
+{
+"measure": "SB 101",
+"bill_id": 1939197,
+"status": "chaptered",
+"roll": 1590716,
+"date": "2025-06-13",
+"chamber": "A",
+"yea": 52,
+"nay": 19,
+"desc": "SB 101 Wiener Senate Third Reading By GABRIEL Amend By SANCHEZ Set #1 Motion to Lay on the Table By AGUIAR-CURRY",
+"version_ok": true,
+"title": "Budget Act of 2025."
+}
+],
+"SB 1408": [
+{
+"measure": "SB 1408",
+"bill_id": 2121992,
+"status": "enrolled",
+"roll": 1726151,
+"date": "2026-08-26",
+"chamber": "A",
+"yea": 48,
+"nay": 19,
+"desc": "SB 1408 Arregu\u00edn Senate Third Reading By \u00c1vila Far\u00edas",
+"version_ok": true,
+"title": "Contra Costa Transportation Authority: transactions and use tax."
+},
+{
+"measure": "SB 1408",
+"bill_id": 2121992,
+"status": "enrolled",
+"roll": 1700168,
+"date": "2026-05-19",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Senate 3rd Reading SB1408 Arregu\u00edn",
+"version_ok": true,
+"title": "Contra Costa Transportation Authority: transactions and use tax."
+}
+],
+"SB 158": [
+{
+"measure": "SB 158",
+"bill_id": 1939256,
+"status": "chaptered",
+"roll": 1602202,
+"date": "2025-09-13",
+"chamber": "A",
+"yea": 54,
+"nay": 18,
+"desc": "SB 158 Budget and Fiscal Review Senate Third Reading By GABRIEL",
+"version_ok": true,
+"title": "Land use."
+},
+{
+"measure": "SB 158",
+"bill_id": 1939256,
+"status": "chaptered",
+"roll": 1602201,
+"date": "2025-09-12",
+"chamber": "S",
+"yea": 21,
+"nay": 13,
+"desc": "W/O REF. TO FILE SB158 B. & F.R. (Wiener)",
+"version_ok": true,
+"title": "Land use."
+},
+{
+"measure": "SB 158",
+"bill_id": 1939256,
+"status": "chaptered",
+"roll": 1602896,
+"date": "2025-09-13",
+"chamber": "S",
+"yea": 21,
+"nay": 13,
+"desc": "W/O REF. TO FILE SB158 B. & F.R. (Wiener)",
+"version_ok": true,
+"title": "Land use."
+}
+],
+"AB 2164": [
+{
+"measure": "AB 2164",
+"bill_id": 2119691,
+"status": "enrolled",
+"roll": 1726112,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB2164 Bauer-Kahan et al. By Menjivar",
+"version_ok": true,
+"title": "Legally protected activities."
+}
+],
+"AB 1417": [
+{
+"measure": "AB 1417",
+"bill_id": 1980314,
+"status": "chaptered",
+"roll": 1601945,
+"date": "2025-09-11",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1417 Stefani et al. By Rubio",
+"version_ok": true,
+"title": "Energy: Voluntary Offshore Wind and Coastal Resources Protection Program: community capacity funding activities and grants."
+}
+],
+"AB 499": [
+{
+"measure": "AB 499",
+"bill_id": 1964686,
+"status": "chaptered",
+"roll": 1601292,
+"date": "2025-09-08",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB499 Ortega By Richardson",
+"version_ok": true,
+"title": "Robert F. Kennedy Farm Workers Medical Plan."
+}
+],
+"SB 57": [
+{
+"measure": "SB 57",
+"bill_id": 1908210,
+"status": "chaptered",
+"roll": 1602902,
+"date": "2025-09-13",
+"chamber": "S",
+"yea": 29,
+"nay": 8,
+"desc": "Unfinished Business SB57 Padilla et al. Concurrence",
+"version_ok": true,
+"title": "Electrical corporations: data centers: report."
+},
+{
+"measure": "SB 57",
+"bill_id": 1908210,
+"status": "chaptered",
+"roll": 1602168,
+"date": "2025-09-12",
+"chamber": "A",
+"yea": 57,
+"nay": 18,
+"desc": "SB 57 Padilla Senate Third Reading By Hart",
+"version_ok": true,
+"title": "Electrical corporations: data centers: report."
+},
+{
+"measure": "SB 57",
+"bill_id": 1908210,
+"status": "chaptered",
+"roll": 1602167,
+"date": "2025-09-12",
+"chamber": "S",
+"yea": 29,
+"nay": 8,
+"desc": "Unfinished Business SB57 Padilla et al. Concurrence",
+"version_ok": true,
+"title": "Electrical corporations: data centers: report."
+}
+],
+"AB 1258": [
+{
+"measure": "AB 1258",
+"bill_id": 1980155,
+"status": "chaptered",
+"roll": 1600895,
+"date": "2025-09-03",
+"chamber": "S",
+"yea": 32,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB1258 Kalra By Cortese",
+"version_ok": true,
+"title": "Deferred entry of judgment pilot program."
+}
+],
+"AB 801": [
+{
+"measure": "AB 801",
+"bill_id": 1974518,
+"status": "enrolled",
+"roll": 1725913,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB801 Bonta et al. By Smallwood-Cuevas",
+"version_ok": true,
+"title": "Nondiscrimination."
+}
+],
+"SB 1255": [
+{
+"measure": "SB 1255",
+"bill_id": 2120928,
+"status": "enrolled",
+"roll": 1726796,
+"date": "2026-08-28",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB1255 Reyes et al. Concurrence",
+"version_ok": true,
+"title": "Postsecondary education: Designation of California Hispanic-Serving Institutions."
+}
+],
+"SB 1349": [
+{
+"measure": "SB 1349",
+"bill_id": 2121933,
+"status": "enrolled",
+"roll": 1725769,
+"date": "2026-08-24",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB1349 Gonzalez et al. Concurrence",
+"version_ok": true,
+"title": "Taxation: tax expenditures: Legislative Analyst\u2019s Office: assessment, report, and recommendation."
+},
+{
+"measure": "SB 1349",
+"bill_id": 2121933,
+"status": "enrolled",
+"roll": 1725640,
+"date": "2026-08-20",
+"chamber": "A",
+"yea": 57,
+"nay": 18,
+"desc": "SB 1349 Gonzalez Senate Third Reading By Connolly",
+"version_ok": true,
+"title": "Taxation: tax expenditures: Legislative Analyst\u2019s Office: assessment, report, and recommendation."
+}
+],
+"AB 43": [
+{
+"measure": "AB 43",
+"bill_id": 1893381,
+"status": "chaptered",
+"roll": 1600929,
+"date": "2025-09-03",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB43 Schultz By Laird",
+"version_ok": true,
+"title": "Wild and scenic rivers."
+}
+],
+"AB 2599": [
+{
+"measure": "AB 2599",
+"bill_id": 2121676,
+"status": "enrolled",
+"roll": 1725849,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB2599 Bryan et al. By Weber Pierson",
+"version_ok": true,
+"title": "Slavery: corporate disclosures."
+}
+],
+"AB 935": [
+{
+"measure": "AB 935",
+"bill_id": 1976522,
+"status": "chaptered",
+"roll": 1601457,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB935 Ransom et al. By Weber Pierson",
+"version_ok": true,
+"title": "State agencies: complaints: demographic data."
+}
+],
+"SB 333": [
+{
+"measure": "SB 333",
+"bill_id": 1968240,
+"status": "chaptered",
+"roll": 1601482,
+"date": "2025-09-09",
+"chamber": "A",
+"yea": 54,
+"nay": 19,
+"desc": "SB 333 Laird Senate Third Reading By Addis",
+"version_ok": true,
+"title": "Transactions and use taxes: San Luis Obispo Council of Governments."
+},
+{
+"measure": "SB 333",
+"bill_id": 1968240,
+"status": "chaptered",
+"roll": 1601795,
+"date": "2025-09-10",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB333 Laird et al. Concurrence",
+"version_ok": true,
+"title": "Transactions and use taxes: San Luis Obispo Council of Governments."
+}
+],
+"AB 102": [
+{
+"measure": "AB 102",
+"bill_id": 1908087,
+"status": "chaptered",
+"roll": 1595981,
+"date": "2025-06-27",
+"chamber": "A",
+"yea": 59,
+"nay": 17,
+"desc": "AB 102 GABRIEL Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Budget Act of 2025."
+},
+{
+"measure": "AB 102",
+"bill_id": 1908087,
+"status": "chaptered",
+"roll": 1595980,
+"date": "2025-06-27",
+"chamber": "S",
+"yea": 29,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB102 Gabriel By Wiener",
+"version_ok": true,
+"title": "Budget Act of 2025."
+}
+],
+"AB 1661": [
+{
+"measure": "AB 1661",
+"bill_id": 2102382,
+"status": "enrolled",
+"roll": 1726104,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB1661 Bryan By Stern",
+"version_ok": true,
+"title": "Oil and gas: low-production wells: Baldwin Hills Conservancy: Equitable Community Repair and Reinvestment Account: health impacts."
+},
+{
+"measure": "AB 1661",
+"bill_id": 2102382,
+"status": "enrolled",
+"roll": 1726277,
+"date": "2026-08-26",
+"chamber": "A",
+"yea": 60,
+"nay": 16,
+"desc": "AB 1661 Bryan Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Oil and gas: low-production wells: Baldwin Hills Conservancy: Equitable Community Repair and Reinvestment Account: health impacts."
+}
+],
+"AB 695": [
+{
+"measure": "AB 695",
+"bill_id": 1971725,
+"status": "vetoed",
+"roll": 1602322,
+"date": "2025-09-13",
+"chamber": "A",
+"yea": 60,
+"nay": 16,
+"desc": "AB 695 Fong Concurrence - Urgency Added",
+"version_ok": true,
+"title": "California Community Colleges Access and Continuity for Deported Students Act."
+},
+{
+"measure": "AB 695",
+"bill_id": 1971725,
+"status": "vetoed",
+"roll": 1602321,
+"date": "2025-09-12",
+"chamber": "S",
+"yea": 30,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB695 Fong et al. By Rubio Urgency Clause",
+"version_ok": true,
+"title": "California Community Colleges Access and Continuity for Deported Students Act."
+}
+],
+"AB 1595": [
+{
+"measure": "AB 1595",
+"bill_id": 2085258,
+"status": "enrolled",
+"roll": 1726386,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 30,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB1595 Schultz By Cortese",
+"version_ok": true,
+"title": "Criminal procedure: writs of habeas corpus and motions to vacate."
+}
+],
+"AB 2186": [
+{
+"measure": "AB 2186",
+"bill_id": 2120660,
+"status": "enrolled",
+"roll": 1725530,
+"date": "2026-08-20",
+"chamber": "A",
+"yea": 58,
+"nay": 16,
+"desc": "AB 2186 McKinnor Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Personal Income Tax Law: exclusions: reparations programs."
+},
+{
+"measure": "AB 2186",
+"bill_id": 2120660,
+"status": "enrolled",
+"roll": 1725424,
+"date": "2026-08-19",
+"chamber": "S",
+"yea": 28,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB2186 McKinnor et al. By Smallwood-Cuevas",
+"version_ok": true,
+"title": "Personal Income Tax Law: exclusions: reparations programs."
+}
+],
+"AB 1807": [
+{
+"measure": "AB 1807",
+"bill_id": 2113700,
+"status": "enrolled",
+"roll": 1726148,
+"date": "2026-08-26",
+"chamber": "A",
+"yea": 60,
+"nay": 15,
+"desc": "AB 1807 Gabriel Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Immigration enforcement: use of state-owned property."
+},
+{
+"measure": "AB 1807",
+"bill_id": 2113700,
+"status": "enrolled",
+"roll": 1725665,
+"date": "2026-08-24",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1807 Gabriel et al. By Durazo",
+"version_ok": true,
+"title": "Immigration enforcement: use of state-owned property."
+}
+],
+"AB 419": [
+{
+"measure": "AB 419",
+"bill_id": 1958464,
+"status": "chaptered",
+"roll": 1601769,
+"date": "2025-09-10",
+"chamber": "S",
+"yea": 31,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB419 Connolly By P\u00e9rez",
+"version_ok": true,
+"title": "Educational equity: immigration enforcement."
+}
+],
+"AB 1768": [
+{
+"measure": "AB 1768",
+"bill_id": 2112374,
+"status": "chaptered",
+"roll": 1700867,
+"date": "2026-05-20",
+"chamber": "S",
+"yea": 29,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB1768 Bryan et al. By Durazo Urgency Clause",
+"version_ok": true,
+"title": "Transactions and use taxes: Counties of Contra Costa and Los Angeles."
+},
+{
+"measure": "AB 1768",
+"bill_id": 2112374,
+"status": "chaptered",
+"roll": 1698336,
+"date": "2026-05-14",
+"chamber": "A",
+"yea": 55,
+"nay": 15,
+"desc": "AB 1768 Bryan Third Reading Urgency",
+"version_ok": true,
+"title": "Transactions and use taxes: Counties of Contra Costa and Los Angeles."
+}
+],
+"AB 52": [
+{
+"measure": "AB 52",
+"bill_id": 1893391,
+"status": "enrolled",
+"roll": 1725553,
+"date": "2026-08-20",
+"chamber": "S",
+"yea": 28,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB52 Aguiar-Curry By Hurtado",
+"version_ok": true,
+"title": "Farmer equity: advisory committees."
+}
+],
+"AB 742": [
+{
+"measure": "AB 742",
+"bill_id": 1974459,
+"status": "vetoed",
+"roll": 1601483,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB742 Elhawary et al. By Weber Pierson",
+"version_ok": true,
+"title": "Department of Consumer Affairs: licensing: applicants who are descendants of slaves."
+},
+{
+"measure": "AB 742",
+"bill_id": 1974459,
+"status": "vetoed",
+"roll": 1602529,
+"date": "2025-09-10",
+"chamber": "A",
+"yea": 59,
+"nay": 16,
+"desc": "AB 742 Elhawary Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Department of Consumer Affairs: licensing: applicants who are descendants of slaves."
+}
+],
+"SB 1164": [
+{
+"measure": "SB 1164",
+"bill_id": 2119728,
+"status": "enrolled",
+"roll": 1726611,
+"date": "2026-08-27",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Unfinished Business SB1164 Cervantes et al. Concurrence",
+"version_ok": true,
+"title": "Elections."
+},
+{
+"measure": "SB 1164",
+"bill_id": 2119728,
+"status": "enrolled",
+"roll": 1725986,
+"date": "2026-08-25",
+"chamber": "A",
+"yea": 59,
+"nay": 18,
+"desc": "SB 1164 Cervantes Senate Third Reading By Solache",
+"version_ok": true,
+"title": "Elections."
+}
+],
+"SB 103": [
+{
+"measure": "SB 103",
+"bill_id": 1939199,
+"status": "chaptered",
+"roll": 1595985,
+"date": "2025-06-27",
+"chamber": "A",
+"yea": 58,
+"nay": 17,
+"desc": "SB 103 Wiener Senate Third Reading By GABRIEL",
+"version_ok": true,
+"title": "Budget Acts of 2022, 2023, and 2024."
+}
+],
+"AB 321": [
+{
+"measure": "AB 321",
+"bill_id": 1941754,
+"status": "chaptered",
+"roll": 1601084,
+"date": "2025-09-04",
+"chamber": "S",
+"yea": 23,
+"nay": 13,
+"desc": "Assembly 3rd Reading AB321 Schultz et al. By Wiener",
+"version_ok": true,
+"title": "Misdemeanors."
+}
+],
+"AB 2428": [
+{
+"measure": "AB 2428",
+"bill_id": 2121505,
+"status": "enrolled",
+"roll": 1702008,
+"date": "2026-05-26",
+"chamber": "A",
+"yea": 56,
+"nay": 18,
+"desc": "AB 2428 Celeste Rodriguez Assembly Third Reading By ROGERS",
+"version_ok": true,
+"title": "Criminal fees."
+},
+{
+"measure": "AB 2428",
+"bill_id": 2121505,
+"status": "enrolled",
+"roll": 1726269,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 29,
+"nay": 11,
+"desc": "Assembly 3rd Reading AB2428 Celeste Rodriguez By Cortese",
+"version_ok": true,
+"title": "Criminal fees."
+}
+],
+"SB 642": [
+{
+"measure": "SB 642",
+"bill_id": 1978875,
+"status": "chaptered",
+"roll": 1601570,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB642 Lim\u00f3n et al. Concurrence",
+"version_ok": true,
+"title": "Employment: payment of wages."
+},
+{
+"measure": "SB 642",
+"bill_id": 1978875,
+"status": "chaptered",
+"roll": 1601391,
+"date": "2025-09-08",
+"chamber": "A",
+"yea": 58,
+"nay": 15,
+"desc": "SB 642 Lim\u00f3n Senate Third Reading By Kalra",
+"version_ok": true,
+"title": "Employment: payment of wages."
+}
+],
+"AB 2122": [
+{
+"measure": "AB 2122",
+"bill_id": 2119649,
+"status": "enrolled",
+"roll": 1726191,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 26,
+"nay": 11,
+"desc": "Assembly 3rd Reading AB2122 Kalra et al. By P\u00e9rez",
+"version_ok": true,
+"title": "Infractions: warrants and penalties."
+},
+{
+"measure": "AB 2122",
+"bill_id": 2119649,
+"status": "enrolled",
+"roll": 1701532,
+"date": "2026-05-22",
+"chamber": "A",
+"yea": 55,
+"nay": 18,
+"desc": "AB 2122 Kalra Assembly Third Reading",
+"version_ok": true,
+"title": "Infractions: warrants and penalties."
+}
+],
+"AB 126": [
+{
+"measure": "AB 126",
+"bill_id": 1908111,
+"status": "chaptered",
+"roll": 1713882,
+"date": "2026-07-02",
+"chamber": "S",
+"yea": 28,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB126 Budget",
+"version_ok": true,
+"title": "Education finance: education omnibus trailer bill."
+}
+],
+"AB 893": [
+{
+"measure": "AB 893",
+"bill_id": 1976480,
+"status": "chaptered",
+"roll": 1600973,
+"date": "2025-09-03",
+"chamber": "S",
+"yea": 31,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB893 Fong et al. By Cabaldon",
+"version_ok": true,
+"title": "Housing development projects: objective standards: campus development zone."
+}
+],
+"SB 172": [
+{
+"measure": "SB 172",
+"bill_id": 1939270,
+"status": "chaptered",
+"roll": 1712372,
+"date": "2026-06-29",
+"chamber": "A",
+"yea": 58,
+"nay": 15,
+"desc": "SB 172 B. & F. R. Senate Third Reading By GABRIEL",
+"version_ok": true,
+"title": "State government."
+}
+],
+"AB 1296": [
+{
+"measure": "AB 1296",
+"bill_id": 1980193,
+"status": "chaptered",
+"roll": 1601289,
+"date": "2025-09-08",
+"chamber": "S",
+"yea": 30,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB1296 Bonta et al. By Cabaldon",
+"version_ok": true,
+"title": "Local educational agencies: reserve funds."
+}
+],
+"AB 393": [
+{
+"measure": "AB 393",
+"bill_id": 1953082,
+"status": "vetoed",
+"roll": 1601266,
+"date": "2025-09-08",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB393 Connolly et al. By Richardson",
+"version_ok": true,
+"title": "Personal services contracts: state employees: physician and psychologist positions."
+}
+],
+"AB 762": [
+{
+"measure": "AB 762",
+"bill_id": 1974479,
+"status": "enrolled",
+"roll": 1726189,
+"date": "2026-08-26",
+"chamber": "A",
+"yea": 47,
+"nay": 16,
+"desc": "AB 762 Irwin Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Disposable, battery-embedded vapor inhalation device: prohibition and penalties."
+},
+{
+"measure": "AB 762",
+"bill_id": 1974479,
+"status": "enrolled",
+"roll": 1725926,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB762 Irwin By Blakespear",
+"version_ok": true,
+"title": "Disposable, battery-embedded vapor inhalation device: prohibition and penalties."
+}
+],
+"AB 1919": [
+{
+"measure": "AB 1919",
+"bill_id": 2116301,
+"status": "chaptered",
+"roll": 1702655,
+"date": "2026-05-27",
+"chamber": "A",
+"yea": 54,
+"nay": 20,
+"desc": "AB 1919 Pellerin Third Reading Urgency",
+"version_ok": true,
+"title": "Santa Cruz Metropolitan Transit District: transactions and use tax: qualified voter initiative."
+},
+{
+"measure": "AB 1919",
+"bill_id": 2116301,
+"status": "chaptered",
+"roll": 1716083,
+"date": "2026-08-03",
+"chamber": "S",
+"yea": 27,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB1919 Pellerin et al. By Laird Urgency Clause",
+"version_ok": true,
+"title": "Santa Cruz Metropolitan Transit District: transactions and use tax: qualified voter initiative."
+}
+],
+"AB 1049": [
+{
+"measure": "AB 1049",
+"bill_id": 1978584,
+"status": "enrolled",
+"roll": 1726261,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1049 Celeste Rodriguez By Gonzalez",
+"version_ok": true,
+"title": "California Food Assistance Program: sponsor deeming rules."
+},
+{
+"measure": "AB 1049",
+"bill_id": 1978584,
+"status": "enrolled",
+"roll": 1726539,
+"date": "2026-08-27",
+"chamber": "A",
+"yea": 59,
+"nay": 15,
+"desc": "AB 1049 Celeste Rodriguez Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "California Food Assistance Program: sponsor deeming rules."
+}
+],
+"AB 100": [
+{
+"measure": "AB 100",
+"bill_id": 1908085,
+"status": "chaptered",
+"roll": 1544986,
+"date": "2025-04-10",
+"chamber": "A",
+"yea": 18,
+"nay": 53,
+"desc": "AB 100 GABRIEL Concurrence in Senate Amendments Appeal the Decision of the Speaker By DEMAIO",
+"version_ok": true,
+"title": "Budget Acts of 2023 and 2024."
+}
+],
+"SB 98": [
+{
+"measure": "SB 98",
+"bill_id": 1939325,
+"status": "chaptered",
+"roll": 1600845,
+"date": "2025-09-02",
+"chamber": "S",
+"yea": 31,
+"nay": 8,
+"desc": "Unfinished Business SB98 P\u00e9rez et al. Urgency Clause Concurrence",
+"version_ok": true,
+"title": "Elementary, secondary, and postsecondary education: immigration enforcement: notification."
+}
+],
+"SB 983": [
+{
+"measure": "SB 983",
+"bill_id": 2110067,
+"status": "enrolled",
+"roll": 1726643,
+"date": "2026-08-27",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB983 Weber Pierson Concurrence",
+"version_ok": true,
+"title": "San Diego Unified Port District: job order contracting: pilot program."
+}
+],
+"SB 827": [
+{
+"measure": "SB 827",
+"bill_id": 1980557,
+"status": "chaptered",
+"roll": 1601525,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB827 Gonzalez et al. Concurrence",
+"version_ok": true,
+"title": "Local agency officials: training."
+}
+],
+"AB 2393": [
+{
+"measure": "AB 2393",
+"bill_id": 2121470,
+"status": "enrolled",
+"roll": 1726076,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB2393 Addis By Caballero",
+"version_ok": true,
+"title": "False imprisonment: false arrest: remedies."
+},
+{
+"measure": "AB 2393",
+"bill_id": 2121470,
+"status": "enrolled",
+"roll": 1702508,
+"date": "2026-05-27",
+"chamber": "A",
+"yea": 61,
+"nay": 17,
+"desc": "AB 2393 Addis Assembly Third Reading",
+"version_ok": true,
+"title": "False imprisonment: false arrest: remedies."
+}
+],
+"AB 1837": [
+{
+"measure": "AB 1837",
+"bill_id": 2114705,
+"status": "enrolled",
+"roll": 1725498,
+"date": "2026-08-19",
+"chamber": "S",
+"yea": 28,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB1837 Mark Gonz\u00e1lez et al. By Arregu\u00edn",
+"version_ok": true,
+"title": "Video imaging of parking violations."
+}
+],
+"AB 2227": [
+{
+"measure": "AB 2227",
+"bill_id": 2120701,
+"status": "enrolled",
+"roll": 1726799,
+"date": "2026-08-28",
+"chamber": "A",
+"yea": 51,
+"nay": 18,
+"desc": "AB 2227 Connolly Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Farm labor contractors: surety bonds."
+},
+{
+"measure": "AB 2227",
+"bill_id": 2120701,
+"status": "enrolled",
+"roll": 1726726,
+"date": "2026-08-27",
+"chamber": "S",
+"yea": 28,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB2227 Connolly et al. By P\u00e9rez",
+"version_ok": true,
+"title": "Farm labor contractors: surety bonds."
+}
+],
+"SB 162": [
+{
+"measure": "SB 162",
+"bill_id": 1939260,
+"status": "chaptered",
+"roll": 1602386,
+"date": "2025-09-11",
+"chamber": "A",
+"yea": 59,
+"nay": 19,
+"desc": "SB 162 Budget and Fiscal Review Senate Third Reading By GABRIEL",
+"version_ok": true,
+"title": "Elections."
+}
+],
+"AB 1329": [
+{
+"measure": "AB 1329",
+"bill_id": 1980226,
+"status": "vetoed",
+"roll": 1601273,
+"date": "2025-09-08",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1329 Ortega By Caballero",
+"version_ok": true,
+"title": "Workers\u2019 Compensation: Subsequent injuries payments."
+}
+],
+"SB 499": [
+{
+"measure": "SB 499",
+"bill_id": 1976581,
+"status": "chaptered",
+"roll": 1600909,
+"date": "2025-09-03",
+"chamber": "A",
+"yea": 46,
+"nay": 12,
+"desc": "SB 499 Stern Senate Third Reading By Ransom",
+"version_ok": true,
+"title": "Residential projects: fees and charges."
+}
+],
+"SB 131": [
+{
+"measure": "SB 131",
+"bill_id": 1939228,
+"status": "chaptered",
+"roll": 1596746,
+"date": "2025-06-30",
+"chamber": "A",
+"yea": 55,
+"nay": 20,
+"desc": "SB 131 B. & F. R. Senate Third Reading By GABRIEL Amend By GONZALEZ, J. Set #1 Motion to Lay on the Table By AGUIAR-CURRY",
+"version_ok": true,
+"title": "Public Resources."
+}
+],
+"SB 127": [
+{
+"measure": "SB 127",
+"bill_id": 1939224,
+"status": "chaptered",
+"roll": 1596018,
+"date": "2025-06-27",
+"chamber": "A",
+"yea": 58,
+"nay": 19,
+"desc": "SB 127 B. & F. R. Senate Third Reading By GABRIEL",
+"version_ok": true,
+"title": "Climate change."
+},
+{
+"measure": "SB 127",
+"bill_id": 1939224,
+"status": "chaptered",
+"roll": 1596017,
+"date": "2025-06-27",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "Unfinished Business SB127 B. & F.R. (Wiener) Concurrence",
+"version_ok": true,
+"title": "Climate change."
+}
+],
+"AB 93": [
+{
+"measure": "AB 93",
+"bill_id": 1904793,
+"status": "vetoed",
+"roll": 1602492,
+"date": "2025-09-11",
+"chamber": "A",
+"yea": 59,
+"nay": 16,
+"desc": "AB 93 Papan Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Water resources: data centers."
+},
+{
+"measure": "AB 93",
+"bill_id": 1904793,
+"status": "vetoed",
+"roll": 1601751,
+"date": "2025-09-10",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB93 Papan By Laird",
+"version_ok": true,
+"title": "Water resources: data centers."
+}
+],
+"SB 313": [
+{
+"measure": "SB 313",
+"bill_id": 1964733,
+"status": "chaptered",
+"roll": 1601875,
+"date": "2025-09-11",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Unfinished Business SB313 Cervantes et al. Concurrence",
+"version_ok": true,
+"title": "Vital records: birth certificates."
+}
+],
+"SB 948": [
+{
+"measure": "SB 948",
+"bill_id": 2104448,
+"status": "enrolled",
+"roll": 1725989,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 28,
+"nay": 12,
+"desc": "Unfinished Business SB948 Arregu\u00edn et al. Concurrence",
+"version_ok": true,
+"title": "Firearms: safety certificates."
+},
+{
+"measure": "SB 948",
+"bill_id": 2104448,
+"status": "enrolled",
+"roll": 1725790,
+"date": "2026-08-24",
+"chamber": "A",
+"yea": 56,
+"nay": 19,
+"desc": "SB 948 Arregu\u00edn Senate Third Reading By Pellerin",
+"version_ok": true,
+"title": "Firearms: safety certificates."
+}
+],
+"SB 934": [
+{
+"measure": "SB 934",
+"bill_id": 2102399,
+"status": "enrolled",
+"roll": 1725570,
+"date": "2026-08-20",
+"chamber": "S",
+"yea": 27,
+"nay": 9,
+"desc": "Unfinished Business SB934 Wiener et al. Concurrence",
+"version_ok": true,
+"title": "Sexual orientation or gender identity change efforts."
+},
+{
+"measure": "SB 934",
+"bill_id": 2102399,
+"status": "enrolled",
+"roll": 1725489,
+"date": "2026-08-19",
+"chamber": "A",
+"yea": 58,
+"nay": 18,
+"desc": "SB 934 Wiener Senate Third Reading By Ward",
+"version_ok": true,
+"title": "Sexual orientation or gender identity change efforts."
+}
+],
+"AB 107": [
+{
+"measure": "AB 107",
+"bill_id": 1908092,
+"status": "chaptered",
+"roll": 1639502,
+"date": "2026-02-19",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB107 Gabriel By Laird",
+"version_ok": true,
+"title": "Budget Acts of 2023, 2024, and 2025."
+}
+],
+"SJR 18": [
+{
+"measure": "SJR 18",
+"bill_id": 2150016,
+"status": "chaptered",
+"roll": 1708961,
+"date": "2026-06-11",
+"chamber": "S",
+"yea": 28,
+"nay": 8,
+"desc": "Senate 3rd Reading SJR18 McNerney et al",
+"version_ok": true,
+"title": "Campaign finance reform."
+},
+{
+"measure": "SJR 18",
+"bill_id": 2150016,
+"status": "chaptered",
+"roll": 1725345,
+"date": "2026-08-17",
+"chamber": "A",
+"yea": 55,
+"nay": 15,
+"desc": "SJR 18 McNerney Senate Third Reading By Rogers",
+"version_ok": true,
+"title": "Campaign finance reform."
+}
+],
+"AJR 29": [
+{
+"measure": "AJR 29",
+"bill_id": 2141652,
+"status": "chaptered",
+"roll": 1696661,
+"date": "2026-05-11",
+"chamber": "A",
+"yea": 56,
+"nay": 14,
+"desc": "AJR 29 Berman Assembly Third Reading",
+"version_ok": true,
+"title": "Voting by mail."
+},
+{
+"measure": "AJR 29",
+"bill_id": 2141652,
+"status": "chaptered",
+"roll": 1724540,
+"date": "2026-08-13",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "Assembly 3rd Reading AJR29 Berman et al. By Wiener",
+"version_ok": true,
+"title": "Voting by mail."
+}
+],
+"AB 956": [
+{
+"measure": "AB 956",
+"bill_id": 1978708,
+"status": "enrolled",
+"roll": 1725927,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 28,
+"nay": 7,
+"desc": "Assembly 3rd Reading AB956 Quirk-Silva et al. By Wiener",
+"version_ok": true,
+"title": "Accessory dwelling units and junior accessory dwelling units."
+}
+],
+"SB 512": [
+{
+"measure": "SB 512",
+"bill_id": 1976594,
+"status": "vetoed",
+"roll": 1601863,
+"date": "2025-09-11",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB512 P\u00e9rez et al. Concurrence",
+"version_ok": true,
+"title": "District elections: initiatives."
+},
+{
+"measure": "SB 512",
+"bill_id": 1976594,
+"status": "vetoed",
+"roll": 1601148,
+"date": "2025-09-04",
+"chamber": "A",
+"yea": 50,
+"nay": 19,
+"desc": "SB 512 P\u00e9rez Senate Third Reading By Wicks",
+"version_ok": true,
+"title": "District elections: initiatives."
+}
+],
+"AB 1792": [
+{
+"measure": "AB 1792",
+"bill_id": 2113685,
+"status": "enrolled",
+"roll": 1726034,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB1792 Michelle Rodriguez By Reyes",
+"version_ok": true,
+"title": "Pupil instruction: health framework: sexual health."
+}
+],
+"SB 675": [
+{
+"measure": "SB 675",
+"bill_id": 1980405,
+"status": "enrolled",
+"roll": 1725968,
+"date": "2026-08-25",
+"chamber": "A",
+"yea": 58,
+"nay": 19,
+"desc": "SB 675 Padilla Senate Third Reading By Mark Gonz\u00e1lez",
+"version_ok": true,
+"title": "Imperial County Air Pollution Control District: members and duties."
+},
+{
+"measure": "SB 675",
+"bill_id": 1980405,
+"status": "enrolled",
+"roll": 1726863,
+"date": "2026-08-28",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB675 Padilla Concurrence",
+"version_ok": true,
+"title": "Imperial County Air Pollution Control District: members and duties."
+}
+],
+"AB 1336": [
+{
+"measure": "AB 1336",
+"bill_id": 1980233,
+"status": "vetoed",
+"roll": 1601455,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1336 Addis By Durazo",
+"version_ok": true,
+"title": "Farmworkers: benefits."
+},
+{
+"measure": "AB 1336",
+"bill_id": 1980233,
+"status": "vetoed",
+"roll": 1602466,
+"date": "2025-09-11",
+"chamber": "A",
+"yea": 61,
+"nay": 17,
+"desc": "AB 1336 Addis Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Farmworkers: benefits."
+}
+],
+"AB 2161": [
+{
+"measure": "AB 2161",
+"bill_id": 2119688,
+"status": "enrolled",
+"roll": 1726055,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB2161 Bonta et al. By Weber Pierson",
+"version_ok": true,
+"title": "Medi-Cal eligibility: work or community engagement."
+}
+],
+"AB 143": [
+{
+"measure": "AB 143",
+"bill_id": 1908128,
+"status": "chaptered",
+"roll": 1595966,
+"date": "2025-06-27",
+"chamber": "A",
+"yea": 58,
+"nay": 18,
+"desc": "AB 143 BUDGET Concurrence in Senate Amendments By GABRIEL",
+"version_ok": true,
+"title": "Developmental services."
+},
+{
+"measure": "AB 143",
+"bill_id": 1908128,
+"status": "chaptered",
+"roll": 1595965,
+"date": "2025-06-27",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB143 BUDGET (Gabriel) By Wiener",
+"version_ok": true,
+"title": "Developmental services."
+}
+],
+"AB 1633": [
+{
+"measure": "AB 1633",
+"bill_id": 2094098,
+"status": "enrolled",
+"roll": 1726500,
+"date": "2026-08-27",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1633 Haney et al. By Gonzalez",
+"version_ok": true,
+"title": "Taxation: private detention facilities."
+},
+{
+"measure": "AB 1633",
+"bill_id": 2094098,
+"status": "enrolled",
+"roll": 1726774,
+"date": "2026-08-28",
+"chamber": "A",
+"yea": 57,
+"nay": 17,
+"desc": "AB 1633 Haney Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Taxation: private detention facilities."
+}
+],
+"AB 930": [
+{
+"measure": "AB 930",
+"bill_id": 1976517,
+"status": "chaptered",
+"roll": 1601287,
+"date": "2025-09-08",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB930 Ward By Cervantes",
+"version_ok": true,
+"title": "Elections and voting procedures."
+},
+{
+"measure": "AB 930",
+"bill_id": 1976517,
+"status": "chaptered",
+"roll": 1601451,
+"date": "2025-09-09",
+"chamber": "A",
+"yea": 59,
+"nay": 19,
+"desc": "AB 930 Ward Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Elections and voting procedures."
+}
+],
+"AB 2448": [
+{
+"measure": "AB 2448",
+"bill_id": 2121525,
+"status": "enrolled",
+"roll": 1696694,
+"date": "2026-05-11",
+"chamber": "A",
+"yea": 55,
+"nay": 16,
+"desc": "AB 2448 Berman Assembly Third Reading",
+"version_ok": true,
+"title": "Medical information: confidentiality."
+},
+{
+"measure": "AB 2448",
+"bill_id": 2121525,
+"status": "enrolled",
+"roll": 1726347,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB2448 Berman et al. By Menjivar",
+"version_ok": true,
+"title": "Medical information: confidentiality."
+}
+],
+"AB 1655": [
+{
+"measure": "AB 1655",
+"bill_id": 2102376,
+"status": "enrolled",
+"roll": 1725655,
+"date": "2026-08-20",
+"chamber": "S",
+"yea": 28,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1655 Bryan et al. By Durazo",
+"version_ok": true,
+"title": "CalWORKs: temporary absence: immigration detention."
+}
+],
+"AB 812": [
+{
+"measure": "AB 812",
+"bill_id": 1976399,
+"status": "chaptered",
+"roll": 1601654,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB812 Lowenthal et al. By Arregu\u00edn",
+"version_ok": true,
+"title": "Recall and resentencing: incarcerated firefighters."
+}
+],
+"AB 761": [
+{
+"measure": "AB 761",
+"bill_id": 1974478,
+"status": "chaptered",
+"roll": 1601496,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB761 Addis By Laird",
+"version_ok": true,
+"title": "Monterey-Salinas Transit District: sales and special taxes."
+},
+{
+"measure": "AB 761",
+"bill_id": 1974478,
+"status": "chaptered",
+"roll": 1573536,
+"date": "2025-05-19",
+"chamber": "A",
+"yea": 56,
+"nay": 14,
+"desc": "AB 761 Addis Assembly Third Reading",
+"version_ok": true,
+"title": "Monterey-Salinas Transit District: sales and special taxes."
+}
+],
+"SB 1014": [
+{
+"measure": "SB 1014",
+"bill_id": 2113721,
+"status": "enrolled",
+"roll": 1726176,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB1014 Grayson Concurrence",
+"version_ok": true,
+"title": "Development projects: preliminary estimate of required improvements: onsite and offsite improvements."
+}
+],
+"AB 1577": [
+{
+"measure": "AB 1577",
+"bill_id": 2072055,
+"status": "enrolled",
+"roll": 1726254,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1577 Bauer-Kahan By McGuire",
+"version_ok": true,
+"title": "Data centers: reporting."
+}
+],
+"AB 2484": [
+{
+"measure": "AB 2484",
+"bill_id": 2121561,
+"status": "enrolled",
+"roll": 1726310,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB2484 Alvarez et al. By Weber Pierson",
+"version_ok": true,
+"title": "San Diego Metropolitan Transit System: transactions and use tax: voter initiatives."
+},
+{
+"measure": "AB 2484",
+"bill_id": 2121561,
+"status": "enrolled",
+"roll": 1702030,
+"date": "2026-05-26",
+"chamber": "A",
+"yea": 46,
+"nay": 21,
+"desc": "AB 2484 Alvarez Assembly Third Reading",
+"version_ok": true,
+"title": "San Diego Metropolitan Transit System: transactions and use tax: voter initiatives."
+}
+],
+"AB 339": [
+{
+"measure": "AB 339",
+"bill_id": 1945201,
+"status": "chaptered",
+"roll": 1601182,
+"date": "2025-09-04",
+"chamber": "S",
+"yea": 28,
+"nay": 11,
+"desc": "Assembly 3rd Reading AB339 Ortega By Durazo",
+"version_ok": true,
+"title": "Local public employee organizations: notice requirements."
+}
+],
+"AB 1679": [
+{
+"measure": "AB 1679",
+"bill_id": 2104434,
+"status": "enrolled",
+"roll": 1726193,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB1679 Mark Gonz\u00e1lez et al. By Durazo",
+"version_ok": true,
+"title": "Local pop-up small business program."
+}
+],
+"AB 1820": [
+{
+"measure": "AB 1820",
+"bill_id": 2113713,
+"status": "enrolled",
+"roll": 1725584,
+"date": "2026-08-20",
+"chamber": "S",
+"yea": 27,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1820 Schiavo By Arregu\u00edn",
+"version_ok": true,
+"title": "Electric vehicle charging stations: permit fees."
+}
+],
+"SB 786": [
+{
+"measure": "SB 786",
+"bill_id": 1980516,
+"status": "chaptered",
+"roll": 1601401,
+"date": "2025-09-08",
+"chamber": "A",
+"yea": 58,
+"nay": 19,
+"desc": "SB 786 Arregu\u00edn Senate Third Reading By Bryan",
+"version_ok": true,
+"title": "Planning and zoning: general plan: judicial challenges."
+},
+{
+"measure": "SB 786",
+"bill_id": 1980516,
+"status": "chaptered",
+"roll": 1601507,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB786 Arregu\u00edn et al. Concurrence",
+"version_ok": true,
+"title": "Planning and zoning: general plan: judicial challenges."
+}
+],
+"SB 1328": [
+{
+"measure": "SB 1328",
+"bill_id": 2121912,
+"status": "enrolled",
+"roll": 1725746,
+"date": "2026-08-24",
+"chamber": "S",
+"yea": 30,
+"nay": 8,
+"desc": "Unfinished Business SB1328 Cervantes Concurrence",
+"version_ok": true,
+"title": "Public postsecondary education: Equity in Higher Education Act: campus contact."
+}
+],
+"SB 1135": [
+{
+"measure": "SB 1135",
+"bill_id": 2118693,
+"status": "enrolled",
+"roll": 1725457,
+"date": "2026-08-19",
+"chamber": "A",
+"yea": 58,
+"nay": 17,
+"desc": "SB 1135 Blakespear Senate Third Reading By Rogers",
+"version_ok": true,
+"title": "California Wildlife Coexistence Act."
+},
+{
+"measure": "SB 1135",
+"bill_id": 2118693,
+"status": "enrolled",
+"roll": 1726183,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 31,
+"nay": 9,
+"desc": "Unfinished Business SB1135 Blakespear et al. Concurrence",
+"version_ok": true,
+"title": "California Wildlife Coexistence Act."
+}
+],
+"AB 1818": [
+{
+"measure": "AB 1818",
+"bill_id": 2113711,
+"status": "enrolled",
+"roll": 1725551,
+"date": "2026-08-20",
+"chamber": "S",
+"yea": 27,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1818 Ortega et al. By Smallwood-Cuevas",
+"version_ok": true,
+"title": "California State University: employer-employee relations: meeting and conferring."
+}
+],
+"AB 1629": [
+{
+"measure": "AB 1629",
+"bill_id": 2094094,
+"status": "enrolled",
+"roll": 1726384,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1629 Haney et al. By Gonzalez",
+"version_ok": true,
+"title": "Dental coverage."
+}
+],
+"AB 82": [
+{
+"measure": "AB 82",
+"bill_id": 1898368,
+"status": "chaptered",
+"roll": 1601680,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 29,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB82 Ward et al. By Wiener",
+"version_ok": true,
+"title": "Health care: legally protected health care activity."
+}
+],
+"SB 1154": [
+{
+"measure": "SB 1154",
+"bill_id": 2119718,
+"status": "enrolled",
+"roll": 1700170,
+"date": "2026-05-19",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "Senate 3rd Reading SB1154 Reyes",
+"version_ok": true,
+"title": "Public contracts: best value procurement: community college districts."
+}
+],
+"AB 461": [
+{
+"measure": "AB 461",
+"bill_id": 1961070,
+"status": "chaptered",
+"roll": 1601566,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB461 Ahrens et al. By P\u00e9rez",
+"version_ok": true,
+"title": "Truancy."
+}
+],
+"SB 830": [
+{
+"measure": "SB 830",
+"bill_id": 1980560,
+"status": "chaptered",
+"roll": 1712293,
+"date": "2026-06-29",
+"chamber": "A",
+"yea": 56,
+"nay": 15,
+"desc": "SB 830 Arregu\u00edn Third Reading Urgency By Wicks",
+"version_ok": true,
+"title": "Public Transit Revenue Measure District: revenue measure: election procedures."
+}
+],
+"AB 7": [
+{
+"measure": "AB 7",
+"bill_id": 1893404,
+"status": "vetoed",
+"roll": 1602364,
+"date": "2025-09-12",
+"chamber": "A",
+"yea": 55,
+"nay": 18,
+"desc": "AB 7 Bryan Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Postsecondary education: admissions preference: descendants of slavery."
+},
+{
+"measure": "AB 7",
+"bill_id": 1893404,
+"status": "vetoed",
+"roll": 1601673,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB7 Bryan et al. By Richardson",
+"version_ok": true,
+"title": "Postsecondary education: admissions preference: descendants of slavery."
+}
+],
+"AB 1806": [
+{
+"measure": "AB 1806",
+"bill_id": 2113699,
+"status": "enrolled",
+"roll": 1726323,
+"date": "2026-08-26",
+"chamber": "A",
+"yea": 60,
+"nay": 19,
+"desc": "AB 1806 Gabriel Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Department of Justice."
+},
+{
+"measure": "AB 1806",
+"bill_id": 2113699,
+"status": "enrolled",
+"roll": 1725977,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1806 Gabriel et al. By Menjivar",
+"version_ok": true,
+"title": "Department of Justice."
+}
+],
+"SB 119": [
+{
+"measure": "SB 119",
+"bill_id": 1939215,
+"status": "chaptered",
+"roll": 1598845,
+"date": "2025-07-17",
+"chamber": "S",
+"yea": 28,
+"nay": 9,
+"desc": "Unfinished Business SB119 B. & F.R. (Wiener) Concurrence",
+"version_ok": true,
+"title": "Public social services trailer bill."
+}
+],
+"SB 128": [
+{
+"measure": "SB 128",
+"bill_id": 1939225,
+"status": "chaptered",
+"roll": 1595961,
+"date": "2025-06-27",
+"chamber": "A",
+"yea": 58,
+"nay": 18,
+"desc": "SB 128 B. & F. R. Senate Third Reading By GABRIEL",
+"version_ok": true,
+"title": "Transportation."
+}
+],
+"AB 450": [
+{
+"measure": "AB 450",
+"bill_id": 1961059,
+"status": "chaptered",
+"roll": 1601668,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 31,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB450 Carrillo et al. By Padilla",
+"version_ok": true,
+"title": "Public social services: support for older and aging immigrants."
+}
+],
+"AB 1457": [
+{
+"measure": "AB 1457",
+"bill_id": 1980354,
+"status": "enrolled",
+"roll": 1726587,
+"date": "2026-08-27",
+"chamber": "A",
+"yea": 58,
+"nay": 18,
+"desc": "AB 1457 Bryan Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "General plan: environmental justice element: disadvantaged communities."
+},
+{
+"measure": "AB 1457",
+"bill_id": 1980354,
+"status": "enrolled",
+"roll": 1726341,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1457 Bryan By Reyes",
+"version_ok": true,
+"title": "General plan: environmental justice element: disadvantaged communities."
+}
+],
+"AB 1348": [
+{
+"measure": "AB 1348",
+"bill_id": 1980245,
+"status": "vetoed",
+"roll": 1601280,
+"date": "2025-09-08",
+"chamber": "S",
+"yea": 30,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB1348 Bains By P\u00e9rez",
+"version_ok": true,
+"title": "Average daily attendance: emergencies: immigration enforcement activity: independent study plans."
+}
+],
+"AB 1979": [
+{
+"measure": "AB 1979",
+"bill_id": 2117138,
+"status": "enrolled",
+"roll": 1726291,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB1979 Bonta By Cabaldon",
+"version_ok": true,
+"title": "Health care services: artificial intelligence."
+}
+],
+"AB 604": [
+{
+"measure": "AB 604",
+"bill_id": 1970392,
+"status": "chaptered",
+"roll": 1599875,
+"date": "2025-08-21",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB604 Aguiar-Curry et al. By Gonzalez Urgency Clause",
+"version_ok": true,
+"title": "Redistricting: congressional districts."
+},
+{
+"measure": "AB 604",
+"bill_id": 1970392,
+"status": "chaptered",
+"roll": 1599876,
+"date": "2025-08-21",
+"chamber": "A",
+"yea": 56,
+"nay": 20,
+"desc": "AB 604 AGUIAR-CURRY Concurrence - Urgency Added",
+"version_ok": true,
+"title": "Redistricting: congressional districts."
+}
+],
+"AB 439": [
+{
+"measure": "AB 439",
+"bill_id": 1961048,
+"status": "chaptered",
+"roll": 1600983,
+"date": "2025-09-03",
+"chamber": "S",
+"yea": 31,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB439 Rogers By Allen",
+"version_ok": true,
+"title": "California Coastal Act of 1976: local planning and reporting."
+}
+],
+"AB 538": [
+{
+"measure": "AB 538",
+"bill_id": 1965852,
+"status": "chaptered",
+"roll": 1601740,
+"date": "2025-09-10",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB538 Berman By Durazo",
+"version_ok": true,
+"title": "Public works: payroll records."
+}
+],
+"AB 1838": [
+{
+"measure": "AB 1838",
+"bill_id": 2114706,
+"status": "enrolled",
+"roll": 1726301,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 31,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB1838 Berman",
+"version_ok": true,
+"title": "Public contracts: local agencies: responsive bidders."
+}
+],
+"AB 679": [
+{
+"measure": "AB 679",
+"bill_id": 1971709,
+"status": "chaptered",
+"roll": 1601582,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB679 Pellerin et al. By Allen",
+"version_ok": true,
+"title": "Department of Parks and Recreation: Big Basin Redwoods, A\u00f1o Nuevo, and Butano State Parks."
+},
+{
+"measure": "AB 679",
+"bill_id": 1971709,
+"status": "chaptered",
+"roll": 1602505,
+"date": "2025-09-10",
+"chamber": "A",
+"yea": 59,
+"nay": 18,
+"desc": "AB 679 Pellerin Concurrence in Senate Amendments",
+"version_ok": true,
+"title": "Department of Parks and Recreation: Big Basin Redwoods, A\u00f1o Nuevo, and Butano State Parks."
+}
+],
+"AB 1303": [
+{
+"measure": "AB 1303",
+"bill_id": 1980200,
+"status": "chaptered",
+"roll": 1601243,
+"date": "2025-09-08",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB1303 Valencia et al. By Gonzalez",
+"version_ok": true,
+"title": "Communications: lifeline telephone service program."
+}
+],
+"SB 515": [
+{
+"measure": "SB 515",
+"bill_id": 1976597,
+"status": "chaptered",
+"roll": 1581767,
+"date": "2025-05-29",
+"chamber": "S",
+"yea": 28,
+"nay": 10,
+"desc": "Senate 3rd Reading SB515 Richardson",
+"version_ok": true,
+"title": "Local government: collection of demographic data."
+}
+],
+"SB 513": [
+{
+"measure": "SB 513",
+"bill_id": 1976595,
+"status": "chaptered",
+"roll": 1580526,
+"date": "2025-05-28",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "Senate 3rd Reading SB513 Durazo et al",
+"version_ok": true,
+"title": "Personnel records."
+}
+],
+"AB 39": [
+{
+"measure": "AB 39",
+"bill_id": 1893376,
+"status": "chaptered",
+"roll": 1601664,
+"date": "2025-09-09",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB39 Zbur et al. By Lim\u00f3n",
+"version_ok": true,
+"title": "General plans: Local Electrification Planning Act."
+}
+],
+"AB 690": [
+{
+"measure": "AB 690",
+"bill_id": 1971720,
+"status": "enrolled",
+"roll": 1726622,
+"date": "2026-08-27",
+"chamber": "S",
+"yea": 29,
+"nay": 11,
+"desc": "Assembly 3rd Reading AB690 Schultz By Cervantes",
+"version_ok": true,
+"title": "Criminal procedure: indigent defense compensation."
+}
+],
+"AB 797": [
+{
+"measure": "AB 797",
+"bill_id": 1974514,
+"status": "vetoed",
+"roll": 1601275,
+"date": "2025-09-08",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB797 Harabedian By Ashby Urgency Clause",
+"version_ok": true,
+"title": "Community Stabilization Act: Counties of Los Angeles and Ventura."
+}
+],
+"SJR 9": [
+{
+"measure": "SJR 9",
+"bill_id": 2037614,
+"status": "chaptered",
+"roll": 1616363,
+"date": "2026-01-22",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Unfinished Business SJR9 Durazo et al. Concurrence",
+"version_ok": true,
+"title": "Immigrants in California: mass immigration raids."
+}
+],
+"SB 153": [
+{
+"measure": "SB 153",
+"bill_id": 1939250,
+"status": "chaptered",
+"roll": 1602374,
+"date": "2025-09-11",
+"chamber": "A",
+"yea": 59,
+"nay": 18,
+"desc": "SB 153 Budget and Fiscal Review Senate Third Reading By GABRIEL",
+"version_ok": true,
+"title": "Transportation budget trailer bill."
+}
+],
+"AB 2308": [
+{
+"measure": "AB 2308",
+"bill_id": 2120782,
+"status": "enrolled",
+"roll": 1725872,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB2308 Haney By Wiener",
+"version_ok": true,
+"title": "Redevelopment: successor agency debt: City and County of San Francisco."
+}
+],
+"AB 1809": [
+{
+"measure": "AB 1809",
+"bill_id": 2113702,
+"status": "enrolled",
+"roll": 1725433,
+"date": "2026-08-19",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB1809 Fong By Durazo",
+"version_ok": true,
+"title": "Public contracts: school and community college districts."
+}
+],
+"SB 1388": [
+{
+"measure": "SB 1388",
+"bill_id": 2121972,
+"status": "enrolled",
+"roll": 1726874,
+"date": "2026-08-28",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB1388 Durazo et al. Concurrence",
+"version_ok": true,
+"title": "Affordable Housing Risk Reduction Program."
+}
+],
+"AB 681": [
+{
+"measure": "AB 681",
+"bill_id": 1971711,
+"status": "chaptered",
+"roll": 1601167,
+"date": "2025-09-04",
+"chamber": "S",
+"yea": 30,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB681 Elhawary By P\u00e9rez",
+"version_ok": true,
+"title": "California DREAM Loan Program: limits."
+}
+],
+"SB 1166": [
+{
+"measure": "SB 1166",
+"bill_id": 2119730,
+"status": "enrolled",
+"roll": 1725961,
+"date": "2026-08-25",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Unfinished Business SB1166 Arregu\u00edn et al. Concurrence",
+"version_ok": true,
+"title": "Alameda-Contra Costa Transit District: employee relations."
+}
+],
+"AB 2011": [
+{
+"measure": "AB 2011",
+"bill_id": 2118625,
+"status": "enrolled",
+"roll": 1725520,
+"date": "2026-08-20",
+"chamber": "S",
+"yea": 28,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB2011 Hart et al. By Wiener",
+"version_ok": true,
+"title": "Nonquantitative treatment limitations."
+}
+],
+"AB 851": [
+{
+"measure": "AB 851",
+"bill_id": 1976438,
+"status": "chaptered",
+"roll": 1601736,
+"date": "2025-09-10",
+"chamber": "S",
+"yea": 30,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB851 McKinnor By P\u00e9rez Urgency Clause",
+"version_ok": true,
+"title": "Real property transactions: Counties of Los Angeles and Ventura wildfires: unsolicited offers."
+}
+],
+"AB 2634": [
+{
+"measure": "AB 2634",
+"bill_id": 2121711,
+"status": "enrolled",
+"roll": 1725449,
+"date": "2026-08-19",
+"chamber": "S",
+"yea": 29,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB2634 Zbur By Durazo",
+"version_ok": true,
+"title": "Workforce development: High road training partnerships: scoring preference."
+}
+],
+"AB 632": [
+{
+"measure": "AB 632",
+"bill_id": 1970420,
+"status": "vetoed",
+"roll": 1601777,
+"date": "2025-09-10",
+"chamber": "S",
+"yea": 28,
+"nay": 9,
+"desc": "Assembly 3rd Reading AB632 Hart et al. By Arregu\u00edn",
+"version_ok": true,
+"title": "Local ordinances: administrative fines or penalties."
+}
+],
+"AB 2015": [
+{
+"measure": "AB 2015",
+"bill_id": 2118629,
+"status": "enrolled",
+"roll": 1726707,
+"date": "2026-08-27",
+"chamber": "S",
+"yea": 30,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB2015 Wicks By Arregu\u00edn",
+"version_ok": true,
+"title": "Department of Transportation: third-party navigation applications: study and report."
+}
+],
+"AB 373": [
+{
+"measure": "AB 373",
+"bill_id": 1953062,
+"status": "chaptered",
+"roll": 1600890,
+"date": "2025-09-03",
+"chamber": "S",
+"yea": 30,
+"nay": 8,
+"desc": "Assembly 3rd Reading AB373 Blanca Rubio By Arregu\u00edn",
+"version_ok": true,
+"title": "Dependency proceedings: counsel."
+}
+],
+"ABX 14": [
+{
+"measure": "ABX 14",
+"bill_id": 1930793,
+"status": "chaptered",
+"roll": 1474132,
+"date": "2025-01-23",
+"chamber": "A",
+"yea": 59,
+"nay": 19,
+"desc": "AB 4 Gabriel Assembly Third Reading Amend By GALLAGHER Set #1 Motion to Lay on the Table By AGUIAR-CURRY First Extraordinary Session",
+"version_ok": true,
+"title": "Budget Act of 2024."
+}
+],
+"AB 1439": [
+{
+"measure": "AB 1439",
+"bill_id": 1980336,
+"status": "enrolled",
+"roll": 1726290,
+"date": "2026-08-26",
+"chamber": "S",
+"yea": 29,
+"nay": 10,
+"desc": "Assembly 3rd Reading AB1439 Garcia et al",
+"version_ok": true,
+"title": "Public retirement systems: development projects: labor standards."
+}
+]
+}
