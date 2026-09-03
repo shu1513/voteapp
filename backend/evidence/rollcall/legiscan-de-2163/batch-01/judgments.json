@@ -1,0 +1,454 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1591788,
+      "measure_id": "HB 37",
+      "vote_date": "2025-06-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 37, which applies Delaware's ban on discrimination in public places to the government itself. The ban already covered businesses that serve the public. It now also covers state agencies, local government agencies, and public libraries. It covers groups the state pays to do public work, and groups doing public work under state or local supervision. The law still leaves out home sales and rentals, and tourist homes with fewer than 10 rental units. The Delaware House passed it 26-12, and it became law.",
+      "nay_description": "Voted against House Bill 37, which applies Delaware's ban on discrimination in public places to the government itself. The ban already covered businesses that serve the public. It now also covers state agencies, local government agencies, and public libraries. It covers groups the state pays to do public work, and groups doing public work under state or local supervision. The law still leaves out home sales and rentals, and tourist homes with fewer than 10 rental units. The Delaware House passed it 26-12, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1596866,
+      "measure_id": "HB 37",
+      "vote_date": "2025-06-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 37, which applies Delaware's ban on discrimination in public places to the government itself. The ban already covered businesses that serve the public. It now also covers state agencies, local government agencies, and public libraries. It covers groups the state pays to do public work, and groups doing public work under state or local supervision. The law still leaves out home sales and rentals, and tourist homes with fewer than 10 rental units. The Delaware Senate passed it 15-6, and it became law.",
+      "nay_description": "Voted against House Bill 37, which applies Delaware's ban on discrimination in public places to the government itself. The ban already covered businesses that serve the public. It now also covers state agencies, local government agencies, and public libraries. It covers groups the state pays to do public work, and groups doing public work under state or local supervision. The law still leaves out home sales and rentals, and tourist homes with fewer than 10 rental units. The Delaware Senate passed it 15-6, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1587790,
+      "measure_id": "HB 105",
+      "vote_date": "2025-06-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 105, which makes employers state pay in job ads. It covers employers with 26 or more workers, for Delaware jobs and for remote jobs offered from Delaware. Each ad must give the pay or the pay range, plus a short account of the benefits. A job paid on commission need only say so, and a tipped job must give its base wage. An employer with no ad must tell a job seeker the same thing before any offer or pay talk. A first breach brings a written warning, and later ones bring fines of $500 to $10,000. The rules start two years after the bill became law. The Delaware House passed it 28-12, and it became law.",
+      "nay_description": "Voted against House Bill 105, which makes employers state pay in job ads. It covers employers with 26 or more workers, for Delaware jobs and for remote jobs offered from Delaware. Each ad must give the pay or the pay range, plus a short account of the benefits. A job paid on commission need only say so, and a tipped job must give its base wage. An employer with no ad must tell a job seeker the same thing before any offer or pay talk. A first breach brings a written warning, and later ones bring fines of $500 to $10,000. The rules start two years after the bill became law. The Delaware House passed it 28-12, and it became law.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1596588,
+      "measure_id": "HB 105",
+      "vote_date": "2025-06-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 105, which makes employers state pay in job ads. It covers employers with 26 or more workers, for Delaware jobs and for remote jobs offered from Delaware. Each ad must give the pay or the pay range, plus a short account of the benefits. A job paid on commission need only say so, and a tipped job must give its base wage. An employer with no ad must tell a job seeker the same thing before any offer or pay talk. A first breach brings a written warning, and later ones bring fines of $500 to $10,000. The rules start two years after the bill became law. The Delaware Senate passed it 16-4, and it became law.",
+      "nay_description": "Voted against House Bill 105, which makes employers state pay in job ads. It covers employers with 26 or more workers, for Delaware jobs and for remote jobs offered from Delaware. Each ad must give the pay or the pay range, plus a short account of the benefits. A job paid on commission need only say so, and a tipped job must give its base wage. An employer with no ad must tell a job seeker the same thing before any offer or pay talk. A first breach brings a written warning, and later ones bring fines of $500 to $10,000. The rules start two years after the bill became law. The Delaware Senate passed it 16-4, and it became law.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1576658,
+      "measure_id": "HB 119",
+      "vote_date": "2025-05-22",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 119, the Freedom to Read Act, which limits when a library can pull material off its shelves. Public libraries may not drop material because of who wrote it, and school libraries may not drop it solely for that reason. Neither may drop it because someone dislikes its politics, ideas, or religion. Each library must write a policy for handling objections. Material stays on the shelf while an objection is reviewed, and staff who follow the rules may not be punished. Delaware's obscenity law still applies. The Delaware House passed it 27-10, and it became law.",
+      "nay_description": "Voted against House Bill 119, the Freedom to Read Act, which limits when a library can pull material off its shelves. Public libraries may not drop material because of who wrote it, and school libraries may not drop it solely for that reason. Neither may drop it because someone dislikes its politics, ideas, or religion. Each library must write a policy for handling objections. Material stays on the shelf while an objection is reviewed, and staff who follow the rules may not be punished. Delaware's obscenity law still applies. The Delaware House passed it 27-10, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1596946,
+      "measure_id": "HB 119",
+      "vote_date": "2025-06-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 119, the Freedom to Read Act, which limits when a library can pull material off its shelves. Public libraries may not drop material because of who wrote it, and school libraries may not drop it solely for that reason. Neither may drop it because someone dislikes its politics, ideas, or religion. Each library must write a policy for handling objections. Material stays on the shelf while an objection is reviewed, and staff who follow the rules may not be punished. Delaware's obscenity law still applies. The Delaware Senate passed it 14-6, and it became law.",
+      "nay_description": "Voted against House Bill 119, the Freedom to Read Act, which limits when a library can pull material off its shelves. Public libraries may not drop material because of who wrote it, and school libraries may not drop it solely for that reason. Neither may drop it because someone dislikes its politics, ideas, or religion. Each library must write a policy for handling objections. Material stays on the shelf while an objection is reviewed, and staff who follow the rules may not be punished. Delaware's obscenity law still applies. The Delaware Senate passed it 14-6, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1591662,
+      "measure_id": "HB 205",
+      "vote_date": "2025-06-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 205, which shields Delaware health care workers from other states' laws. Delaware already covered reproductive health care. The shield now covers any care that is legal here. State licensing boards may not punish a provider for that care, and insurers may not raise their premiums or otherwise punish them for it. A person who loses such a case in another state may sue in Delaware to get the money back, subject to limits such as cases where none of the acts happened here. State and local staff, including police, may not help another state or the federal government look into whether the care was legal, unless federal law requires it. The Delaware House passed it 29-11, and it became law.",
+      "nay_description": "Voted against House Bill 205, which shields Delaware health care workers from other states' laws. Delaware already covered reproductive health care. The shield now covers any care that is legal here. State licensing boards may not punish a provider for that care, and insurers may not raise their premiums or otherwise punish them for it. A person who loses such a case in another state may sue in Delaware to get the money back, subject to limits such as cases where none of the acts happened here. State and local staff, including police, may not help another state or the federal government look into whether the care was legal, unless federal law requires it. The Delaware House passed it 29-11, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1596566,
+      "measure_id": "HB 205",
+      "vote_date": "2025-06-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 205, which shields Delaware health care workers from other states' laws. Delaware already covered reproductive health care. The shield now covers any care that is legal here. State licensing boards may not punish a provider for that care, and insurers may not raise their premiums or otherwise punish them for it. A person who loses such a case in another state may sue in Delaware to get the money back, subject to limits such as cases where none of the acts happened here. State and local staff, including police, may not help another state or the federal government look into whether the care was legal, unless federal law requires it. The Delaware Senate passed it 15-6, and it became law.",
+      "nay_description": "Voted against House Bill 205, which shields Delaware health care workers from other states' laws. Delaware already covered reproductive health care. The shield now covers any care that is legal here. State licensing boards may not punish a provider for that care, and insurers may not raise their premiums or otherwise punish them for it. A person who loses such a case in another state may sue in Delaware to get the money back, subject to limits such as cases where none of the acts happened here. State and local staff, including police, may not help another state or the federal government look into whether the care was legal, unless federal law requires it. The Delaware Senate passed it 15-6, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1594471,
+      "measure_id": "HB 210",
+      "vote_date": "2025-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 210, the Pollution Accountability Act, which raises the price of breaking Delaware's environmental laws. The main daily fine range rises from $1,000 to $10,000 up to $5,000 to $40,000. The fine for a repeat conviction of the same offense within 10 years rises from as much as $1,500 to $5,000 a day. The share of fine money set aside for the Community Environmental Project Fund rises from 25% to 40%. That fund must now favor projects within two miles of the violation. The state may now appeal a ruling on chronic violator status, which only the company could do before. The Delaware House passed it 28-12, and it became law.",
+      "nay_description": "Voted against House Bill 210, the Pollution Accountability Act, which raises the price of breaking Delaware's environmental laws. The main daily fine range rises from $1,000 to $10,000 up to $5,000 to $40,000. The fine for a repeat conviction of the same offense within 10 years rises from as much as $1,500 to $5,000 a day. The share of fine money set aside for the Community Environmental Project Fund rises from 25% to 40%. That fund must now favor projects within two miles of the violation. The state may now appeal a ruling on chronic violator status, which only the company could do before. The Delaware House passed it 28-12, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1597096,
+      "measure_id": "HB 210",
+      "vote_date": "2025-06-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 210, the Pollution Accountability Act, which raises the price of breaking Delaware's environmental laws. The main daily fine range rises from $1,000 to $10,000 up to $5,000 to $40,000. The fine for a repeat conviction of the same offense within 10 years rises from as much as $1,500 to $5,000 a day. The share of fine money set aside for the Community Environmental Project Fund rises from 25% to 40%. That fund must now favor projects within two miles of the violation. The state may now appeal a ruling on chronic violator status, which only the company could do before. The Delaware Senate passed it 15-6, and it became law.",
+      "nay_description": "Voted against House Bill 210, the Pollution Accountability Act, which raises the price of breaking Delaware's environmental laws. The main daily fine range rises from $1,000 to $10,000 up to $5,000 to $40,000. The fine for a repeat conviction of the same offense within 10 years rises from as much as $1,500 to $5,000 a day. The share of fine money set aside for the Community Environmental Project Fund rises from 25% to 40%. That fund must now favor projects within two miles of the violation. The state may now appeal a ruling on chronic violator status, which only the company could do before. The Delaware Senate passed it 15-6, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1708611,
+      "measure_id": "HB 344",
+      "vote_date": "2026-06-11",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 344, which tightens Delaware's campaign finance rules. Committees must keep records for five years instead of three, starting two years after the rest of the rules take effect. A loan must be put in writing and banked within three business days, and a candidate may not charge interest on a loan to their own campaign. Candidates and treasurers must take campaign finance training every two years. A committee that ignores a late-filing citation for 30 days must stop all campaign finance work until it files and pays, unless it is appealing. The Justice Department's Division of Civil Rights and Public Trust must look into and prosecute breaches, and the rules start on July 1, 2027. The Delaware House passed it 24-14, and it became law.",
+      "nay_description": "Voted against House Bill 344, which tightens Delaware's campaign finance rules. Committees must keep records for five years instead of three, starting two years after the rest of the rules take effect. A loan must be put in writing and banked within three business days, and a candidate may not charge interest on a loan to their own campaign. Candidates and treasurers must take campaign finance training every two years. A committee that ignores a late-filing citation for 30 days must stop all campaign finance work until it files and pays, unless it is appealing. The Justice Department's Division of Civil Rights and Public Trust must look into and prosecute breaches, and the rules start on July 1, 2027. The Delaware House passed it 24-14, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1713289,
+      "measure_id": "HB 344",
+      "vote_date": "2026-07-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 344, which tightens Delaware's campaign finance rules. Committees must keep records for five years instead of three, starting two years after the rest of the rules take effect. A loan must be put in writing and banked within three business days, and a candidate may not charge interest on a loan to their own campaign. Candidates and treasurers must take campaign finance training every two years. A committee that ignores a late-filing citation for 30 days must stop all campaign finance work until it files and pays, unless it is appealing. The Justice Department's Division of Civil Rights and Public Trust must look into and prosecute breaches, and the rules start on July 1, 2027. The Delaware Senate passed it 16-5, and it became law.",
+      "nay_description": "Voted against House Bill 344, which tightens Delaware's campaign finance rules. Committees must keep records for five years instead of three, starting two years after the rest of the rules take effect. A loan must be put in writing and banked within three business days, and a candidate may not charge interest on a loan to their own campaign. Candidates and treasurers must take campaign finance training every two years. A committee that ignores a late-filing citation for 30 days must stop all campaign finance work until it files and pays, unless it is appealing. The Justice Department's Division of Civil Rights and Public Trust must look into and prosecute breaches, and the rules start on July 1, 2027. The Delaware Senate passed it 16-5, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1711047,
+      "measure_id": "HB 427",
+      "vote_date": "2026-06-23",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 427, which lets 16- and 17-year-olds use guns with no adult present. Before this, anyone under 21 had to be directly supervised by someone 21 or older to hold a firearm, BB gun, or other projectile weapon. A 16- or 17-year-old may now target shoot alone with a parent's or guardian's permission and a finished hunter education course. They may hunt alone if they also carry a valid Delaware hunting license. Towns may still set rules on where guns are fired. The Delaware House passed it 28-9, and it became law.",
+      "nay_description": "Voted against House Bill 427, which lets 16- and 17-year-olds use guns with no adult present. Before this, anyone under 21 had to be directly supervised by someone 21 or older to hold a firearm, BB gun, or other projectile weapon. A 16- or 17-year-old may now target shoot alone with a parent's or guardian's permission and a finished hunter education course. They may hunt alone if they also carry a valid Delaware hunting license. Towns may still set rules on where guns are fired. The Delaware House passed it 28-9, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1713376,
+      "measure_id": "HB 427",
+      "vote_date": "2026-07-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 427, which lets 16- and 17-year-olds use guns with no adult present. Before this, anyone under 21 had to be directly supervised by someone 21 or older to hold a firearm, BB gun, or other projectile weapon. A 16- or 17-year-old may now target shoot alone with a parent's or guardian's permission and a finished hunter education course. They may hunt alone if they also carry a valid Delaware hunting license. Towns may still set rules on where guns are fired. The Delaware Senate passed it 14-6, and it became law.",
+      "nay_description": "Voted against House Bill 427, which lets 16- and 17-year-olds use guns with no adult present. Before this, anyone under 21 had to be directly supervised by someone 21 or older to hold a firearm, BB gun, or other projectile weapon. A 16- or 17-year-old may now target shoot alone with a parent's or guardian's permission and a finished hunter education course. They may hunt alone if they also carry a valid Delaware hunting license. Towns may still set rules on where guns are fired. The Delaware Senate passed it 14-6, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1708718,
+      "measure_id": "SB 23",
+      "vote_date": "2026-06-11",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 23, the Housing for Every Delawarean Act, which pushes local governments to allow more housing. Every county and every town of more than 2,000 people must add an affordable housing plan to its comprehensive plan. The plan works toward a goal of 20% affordable homes. It must raise the number of homes allowed per acre and allow a mix of housing types without a special permit. It must review lot size and height limits, and pick at least five more steps from a list of eleven. A county that does not redraw its zoning map within 12 months must approve an owner's rezoning request that fits the plan. Housing already allowed under local zoning gets a review against set standards instead of a public hearing, and any public comment must be in writing. The Delaware Senate passed it 14-6, and it became law.",
+      "nay_description": "Voted against Senate Bill 23, the Housing for Every Delawarean Act, which pushes local governments to allow more housing. Every county and every town of more than 2,000 people must add an affordable housing plan to its comprehensive plan. The plan works toward a goal of 20% affordable homes. It must raise the number of homes allowed per acre and allow a mix of housing types without a special permit. It must review lot size and height limits, and pick at least five more steps from a list of eleven. A county that does not redraw its zoning map within 12 months must approve an owner's rezoning request that fits the plan. Housing already allowed under local zoning gets a review against set standards instead of a public hearing, and any public comment must be in writing. The Delaware Senate passed it 14-6, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1711037,
+      "measure_id": "SB 23",
+      "vote_date": "2026-06-23",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 23, the Housing for Every Delawarean Act, which pushes local governments to allow more housing. Every county and every town of more than 2,000 people must add an affordable housing plan to its comprehensive plan. The plan works toward a goal of 20% affordable homes. It must raise the number of homes allowed per acre and allow a mix of housing types without a special permit. It must review lot size and height limits, and pick at least five more steps from a list of eleven. A county that does not redraw its zoning map within 12 months must approve an owner's rezoning request that fits the plan. Housing already allowed under local zoning gets a review against set standards instead of a public hearing, and any public comment must be in writing. The Delaware House passed it 29-11, and it became law.",
+      "nay_description": "Voted against Senate Bill 23, the Housing for Every Delawarean Act, which pushes local governments to allow more housing. Every county and every town of more than 2,000 people must add an affordable housing plan to its comprehensive plan. The plan works toward a goal of 20% affordable homes. It must raise the number of homes allowed per acre and allow a mix of housing types without a special permit. It must review lot size and height limits, and pick at least five more steps from a list of eleven. A county that does not redraw its zoning map within 12 months must approve an owner's rezoning request that fits the plan. Housing already allowed under local zoning gets a review against set standards instead of a public hearing, and any public comment must be in writing. The Delaware House passed it 29-11, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1596723,
+      "measure_id": "HB 70",
+      "vote_date": "2025-06-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 70, which requires lead paint checks in older rental homes. A rental unit built before 1978 must be checked by an inspector and certified lead free or lead safe. The certificate goes to the state before a new tenant moves in, and within four years of the start date. The rules start on March 1, 2028 at the latest. A landlord who misses the deadline faces daily fines, but can get more time if no inspector or certified contractor is free, or if the cost would be a serious burden. The state must run a grant and loan program to help pay, and a landlord who takes that help may not raise the rent on that home for three years after the inspection that showed the work was needed. The Delaware Senate passed it 15-6, and it became law.",
+      "nay_description": "Voted against House Bill 70, which requires lead paint checks in older rental homes. A rental unit built before 1978 must be checked by an inspector and certified lead free or lead safe. The certificate goes to the state before a new tenant moves in, and within four years of the start date. The rules start on March 1, 2028 at the latest. A landlord who misses the deadline faces daily fines, but can get more time if no inspector or certified contractor is free, or if the cost would be a serious burden. The state must run a grant and loan program to help pay, and a landlord who takes that help may not raise the rent on that home for three years after the inspection that showed the work was needed. The Delaware Senate passed it 15-6, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1596724,
+      "measure_id": "HB 70",
+      "vote_date": "2025-06-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 70, which requires lead paint checks in older rental homes. A rental unit built before 1978 must be checked by an inspector and certified lead free or lead safe. The certificate goes to the state before a new tenant moves in, and within four years of the start date. The rules start on March 1, 2028 at the latest. A landlord who misses the deadline faces daily fines, but can get more time if no inspector or certified contractor is free, or if the cost would be a serious burden. The state must run a grant and loan program to help pay, and a landlord who takes that help may not raise the rent on that home for three years after the inspection that showed the work was needed. The Delaware House passed the final version 26-11, and it became law.",
+      "nay_description": "Voted against House Bill 70, which requires lead paint checks in older rental homes. A rental unit built before 1978 must be checked by an inspector and certified lead free or lead safe. The certificate goes to the state before a new tenant moves in, and within four years of the start date. The rules start on March 1, 2028 at the latest. A landlord who misses the deadline faces daily fines, but can get more time if no inspector or certified contractor is free, or if the cost would be a serious burden. The state must run a grant and loan program to help pay, and a landlord who takes that help may not raise the rent on that home for three years after the inspection that showed the work was needed. The Delaware House passed the final version 26-11, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1595515,
+      "measure_id": "HB 116",
+      "vote_date": "2025-06-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 116, which lets the state approve cheaper power and gas bills for low-income households. The Public Service Commission may now approve a rate 20% below standard home delivery charges. It must first find that the rate serves the public interest. The Department of Health and Social Services checks each year whether a customer qualifies, using benefit programs already tied to income. The customer has to agree to share that information. Utilities can get the cost back through a low-income program fund, and the Commission must review the discount every five years. The Delaware Senate passed it 15-6, and it became law.",
+      "nay_description": "Voted against House Bill 116, which lets the state approve cheaper power and gas bills for low-income households. The Public Service Commission may now approve a rate 20% below standard home delivery charges. It must first find that the rate serves the public interest. The Department of Health and Social Services checks each year whether a customer qualifies, using benefit programs already tied to income. The customer has to agree to share that information. Utilities can get the cost back through a low-income program fund, and the Commission must review the discount every five years. The Delaware Senate passed it 15-6, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1596577,
+      "measure_id": "HB 116",
+      "vote_date": "2025-06-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 116, which lets the state approve cheaper power and gas bills for low-income households. The Public Service Commission may now approve a rate 20% below standard home delivery charges. It must first find that the rate serves the public interest. The Department of Health and Social Services checks each year whether a customer qualifies, using benefit programs already tied to income. The customer has to agree to share that information. Utilities can get the cost back through a low-income program fund, and the Commission must review the discount every five years. The Delaware House passed the final version 26-14, and it became law.",
+      "nay_description": "Voted against House Bill 116, which lets the state approve cheaper power and gas bills for low-income households. The Public Service Commission may now approve a rate 20% below standard home delivery charges. It must first find that the rate serves the public interest. The Department of Health and Social Services checks each year whether a customer qualifies, using benefit programs already tied to income. The customer has to agree to share that information. Utilities can get the cost back through a low-income program fund, and the Commission must review the discount every five years. The Delaware House passed the final version 26-14, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1595667,
+      "measure_id": "HB 50",
+      "vote_date": "2025-06-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 50, which sets up the Delaware Energy Fund to help households pay energy bills. The Sustainable Energy Utility runs the fund. It is open to households earning below 350% of the federal poverty level. Anyone who qualifies for LIHEAP, the federal fuel aid program, is sent there first. People who get help must join energy saving programs, and each application brings one payment, though they may apply again. The bill also sends 30% of certain clean energy payments to LIHEAP and makes a 5% share of carbon auction money for LIHEAP firm rather than a ceiling. The whole act ends three years after it became law. The Delaware House passed the final version 27-13, and it became law.",
+      "nay_description": "Voted against House Bill 50, which sets up the Delaware Energy Fund to help households pay energy bills. The Sustainable Energy Utility runs the fund. It is open to households earning below 350% of the federal poverty level. Anyone who qualifies for LIHEAP, the federal fuel aid program, is sent there first. People who get help must join energy saving programs, and each application brings one payment, though they may apply again. The bill also sends 30% of certain clean energy payments to LIHEAP and makes a 5% share of carbon auction money for LIHEAP firm rather than a ceiling. The whole act ends three years after it became law. The Delaware House passed the final version 27-13, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1596903,
+      "measure_id": "HB 50",
+      "vote_date": "2025-06-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 50, which sets up the Delaware Energy Fund to help households pay energy bills. The Sustainable Energy Utility runs the fund. It is open to households earning below 350% of the federal poverty level. Anyone who qualifies for LIHEAP, the federal fuel aid program, is sent there first. People who get help must join energy saving programs, and each application brings one payment, though they may apply again. The bill also sends 30% of certain clean energy payments to LIHEAP and makes a 5% share of carbon auction money for LIHEAP firm rather than a ceiling. The whole act ends three years after it became law. The Delaware Senate passed the final version 15-6, and it became law.",
+      "nay_description": "Voted against House Bill 50, which sets up the Delaware Energy Fund to help households pay energy bills. The Sustainable Energy Utility runs the fund. It is open to households earning below 350% of the federal poverty level. Anyone who qualifies for LIHEAP, the federal fuel aid program, is sent there first. People who get help must join energy saving programs, and each application brings one payment, though they may apply again. The bill also sends 30% of certain clean energy payments to LIHEAP and makes a 5% share of carbon auction money for LIHEAP firm rather than a ceiling. The whole act ends three years after it became law. The Delaware Senate passed the final version 15-6, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1572073,
+      "measure_id": "SB 82",
+      "vote_date": "2025-05-15",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 82, which makes Delaware's lethal violence protective orders last longer. Under such an order a court makes a person it finds dangerous hand over their guns. The longest an order can run goes from one year up to five years. The person under the order can still ask for a hearing to end it, but now only once a year instead of at any time. The Delaware Senate passed it 15-6, and it became law.",
+      "nay_description": "Voted against Senate Bill 82, which makes Delaware's lethal violence protective orders last longer. Under such an order a court makes a person it finds dangerous hand over their guns. The longest an order can run goes from one year up to five years. The person under the order can still ask for a hearing to end it, but now only once a year instead of at any time. The Delaware Senate passed it 15-6, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1594969,
+      "measure_id": "HB 154",
+      "vote_date": "2025-06-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 154, which protects charities and police who give away gun locks. A tax-exempt nonprofit or a law enforcement agency that hands out a new cable lock, trigger lock, or gun safe for free cannot be sued over a fault in the device. That cover applies only if the device is given away unopened in its own packaging and comes with a gun safety pamphlet. The maker, seller, and distributor can still be held to account. The Delaware Senate passed it 15-6, and it became law.",
+      "nay_description": "Voted against House Bill 154, which protects charities and police who give away gun locks. A tax-exempt nonprofit or a law enforcement agency that hands out a new cable lock, trigger lock, or gun safe for free cannot be sued over a fault in the device. That cover applies only if the device is given away unopened in its own packaging and comes with a gun safety pamphlet. The maker, seller, and distributor can still be held to account. The Delaware Senate passed it 15-6, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1710338,
+      "measure_id": "HB 444",
+      "vote_date": "2026-06-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 444, the Delaware John Lewis Voting Rights Act, which creates a state law against voting discrimination. Courts must read election rules in favor of letting people register, vote, and have their ballots counted. A voter, a group, or the Attorney General can sue a local government or the state elections office. The claim can be that a rule holds back voters of a racial, color, or language minority, or that a voting system weakens their votes. A court can order changes such as new district lines, extra polling places, or extra voting hours. The elections office must also offer voting help in a second language where more than 2% of voting-age citizens, or more than 1,000 of them, share that language and do not speak English well. The law bars threats, tricks, and blocking that keep people from voting. The Delaware House passed it 29-11, it became law, and it takes effect on July 1, 2027.",
+      "nay_description": "Voted against House Bill 444, the Delaware John Lewis Voting Rights Act, which creates a state law against voting discrimination. Courts must read election rules in favor of letting people register, vote, and have their ballots counted. A voter, a group, or the Attorney General can sue a local government or the state elections office. The claim can be that a rule holds back voters of a racial, color, or language minority, or that a voting system weakens their votes. A court can order changes such as new district lines, extra polling places, or extra voting hours. The elections office must also offer voting help in a second language where more than 2% of voting-age citizens, or more than 1,000 of them, share that language and do not speak English well. The law bars threats, tricks, and blocking that keep people from voting. The Delaware House passed it 29-11, it became law, and it takes effect on July 1, 2027.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
