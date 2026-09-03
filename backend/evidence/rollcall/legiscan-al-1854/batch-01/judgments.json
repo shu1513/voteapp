@@ -1,0 +1,94 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1854",
+      "roll": 1109394,
+      "measure_id": "HB 2",
+      "vote_date": "2021-09-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2, which changed when long-sentence prisoners move from prison to supervision, and put them on electronic monitoring. For a sentence of 10 years or more the release window narrows from between 12 and 24 months before the end of the sentence to between 10 and 12 months. Everyone released under that rule, and everyone on parole, must wear a monitor for as long as the director decides, at the board's expense. The House passed it 77-23 and it became law.",
+      "nay_description": "Voted against passing House Bill 2, which changed when long-sentence prisoners move from prison to supervision, and put them on electronic monitoring. For a sentence of 10 years or more the release window narrows from between 12 and 24 months before the end of the sentence to between 10 and 12 months. Everyone released under that rule, and everyone on parole, must wear a monitor for as long as the director decides, at the board's expense. The House passed it 77-23 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1854",
+      "roll": 1109471,
+      "measure_id": "HB 2",
+      "vote_date": "2021-10-01",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2, which changed when long-sentence prisoners move from prison to supervision, and put them on electronic monitoring. For a sentence of 10 years or more the release window narrows from between 12 and 24 months before the end of the sentence to between 10 and 12 months. Everyone released under that rule, and everyone on parole, must wear a monitor for as long as the director decides, at the board's expense. The Senate passed it 24-6 and it became law.",
+      "nay_description": "Voted against passing House Bill 2, which changed when long-sentence prisoners move from prison to supervision, and put them on electronic monitoring. For a sentence of 10 years or more the release window narrows from between 12 and 24 months before the end of the sentence to between 10 and 12 months. Everyone released under that rule, and everyone on parole, must wear a monitor for as long as the director decides, at the board's expense. The Senate passed it 24-6 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1854",
+      "roll": 1109477,
+      "measure_id": "HB 4",
+      "vote_date": "2021-10-01",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4, which let the state borrow up to $785 million to build prisons. The money pays for two men's prisons of at least 4,000 beds each in Elmore and Escambia counties, then, once most of that work is done, a women's prison and renovations in Jefferson and Limestone counties. Older facilities including Tutwiler, Staton, Elmore, Kilby and St. Clair are to close as the new ones open. The House passed it 74-22 and it became law.",
+      "nay_description": "Voted against passing House Bill 4, which let the state borrow up to $785 million to build prisons. The money pays for two men's prisons of at least 4,000 beds each in Elmore and Escambia counties, then, once most of that work is done, a women's prison and renovations in Jefferson and Limestone counties. Older facilities including Tutwiler, Staton, Elmore, Kilby and St. Clair are to close as the new ones open. The House passed it 74-22 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1854",
+      "roll": 1109371,
+      "measure_id": "HB 5",
+      "vote_date": "2021-09-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 5, which put $400 million of federal pandemic relief money into building prisons. The money comes from the American Rescue Plan and may be spent only on the two new men's prisons in Elmore and Escambia counties. Alabama claimed it under the part of the federal law that lets a state replace tax revenue lost during the pandemic. The House passed it 75-25 and it became law.",
+      "nay_description": "Voted against passing House Bill 5, which put $400 million of federal pandemic relief money into building prisons. The money comes from the American Rescue Plan and may be spent only on the two new men's prisons in Elmore and Escambia counties. Alabama claimed it under the part of the federal law that lets a state replace tax revenue lost during the pandemic. The House passed it 75-25 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1854",
+      "roll": 1109375,
+      "measure_id": "HB 6",
+      "vote_date": "2021-09-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 6, which put $154 million of state money into prisons. Of that, $135 million from the General Fund goes to building, renovating and improving prison facilities, and $19 million goes to the parole bureau to buy and renovate the existing prison in Perry County. Anything unspent carries over into the next budget year. The House passed it 78-22 and it became law.",
+      "nay_description": "Voted against passing House Bill 6, which put $154 million of state money into prisons. Of that, $135 million from the General Fund goes to building, renovating and improving prison facilities, and $19 million goes to the parole bureau to buy and renovate the existing prison in Perry County. Anything unspent carries over into the next budget year. The House passed it 78-22 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

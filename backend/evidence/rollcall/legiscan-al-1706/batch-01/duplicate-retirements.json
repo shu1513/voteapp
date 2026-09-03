@@ -1,0 +1,14 @@
+[
+ {
+  "recordId": "0fdf716b-b569-4c94-8884-5ef560dc4f5a",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1706 session batch-01 run: this hand-written record describes the same vote as HB 147 roll 920063 on 2020-02-11 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1706/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "263fe641-342a-4b6d-823c-b0486ee8054c",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1706 session batch-01 run: this hand-written record describes the same vote as HB 147 roll 920063 on 2020-02-11 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1706/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "81c4fd62-4ee0-4bc0-97c7-bdac502031f7",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1706 session batch-01 run: this hand-written record describes the same vote as HB 147 roll 920063 on 2020-02-11 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1706/batch-01/JUDGING.md."
+ }
+]

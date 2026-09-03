@@ -1,0 +1,316 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1836",
+      "roll": 1167692,
+      "measure_id": "HB 194",
+      "vote_date": "2022-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 194, which barred election officials from taking private money to run elections. No state or local official responsible for an election may accept money, property or services from a person or private group to pay for election costs, voter education, outreach or registration. Breaking the rule is a Class B misdemeanor, though lending space for a polling place is still allowed. The House passed it 72-28 and it became law.",
+      "nay_description": "Voted against passing House Bill 194, which barred election officials from taking private money to run elections. No state or local official responsible for an election may accept money, property or services from a person or private group to pay for election costs, voter education, outreach or registration. Breaking the rule is a Class B misdemeanor, though lending space for a polling place is still allowed. The House passed it 72-28 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1836",
+      "roll": 1185160,
+      "measure_id": "HB 194",
+      "vote_date": "2022-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 194, which barred election officials from taking private money to run elections. No state or local official responsible for an election may accept money, property or services from a person or private group to pay for election costs, voter education, outreach or registration. Breaking the rule is a Class B misdemeanor, though lending space for a polling place is still allowed. The Senate passed it 25-7 and it became law.",
+      "nay_description": "Voted against passing House Bill 194, which barred election officials from taking private money to run elections. No state or local official responsible for an election may accept money, property or services from a person or private group to pay for election costs, voter education, outreach or registration. Breaking the rule is a Class B misdemeanor, though lending space for a polling place is still allowed. The Senate passed it 25-7 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1836",
+      "roll": 1178746,
+      "measure_id": "HB 230",
+      "vote_date": "2022-03-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 230, which limited how pregnant prisoners may be restrained and searched. Leg and waist restraints are banned during pregnancy, labor and the six weeks after birth, and the only restraint allowed is handcuffs held in front of the body, used solely where there is an immediate risk that nothing else can contain. A pregnant woman may not be made to squat and cough during a strip search unless a health professional carries it out. The House passed it 78-21 and it became law.",
+      "nay_description": "Voted against passing House Bill 230, which limited how pregnant prisoners may be restrained and searched. Leg and waist restraints are banned during pregnancy, labor and the six weeks after birth, and the only restraint allowed is handcuffs held in front of the body, used solely where there is an immediate risk that nothing else can contain. A pregnant woman may not be made to squat and cough during a strip search unless a health professional carries it out. The House passed it 78-21 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1185985
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1836",
+      "roll": 1167430,
+      "measure_id": "HB 272",
+      "vote_date": "2022-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 272, which let Alabamians carry a concealed handgun without a permit. Permits remain available and still matter in some places, but no permit is needed to carry. Anyone carrying concealed must tell an officer who asks and may not touch the gun during a stop, a new crime, and the state set aside up to $5 million a year for three years to replace the permit fees counties lose. The House passed it 70-29 and it became law.",
+      "nay_description": "Voted against passing House Bill 272, which let Alabamians carry a concealed handgun without a permit. Permits remain available and still matter in some places, but no permit is needed to carry. Anyone carrying concealed must tell an officer who asks and may not touch the gun during a stop, a new crime, and the state set aside up to $5 million a year for three years to replace the permit fees counties lose. The House passed it 70-29 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1836",
+      "roll": 1167429,
+      "measure_id": "HB 272",
+      "vote_date": "2022-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 272, which let Alabamians carry a concealed handgun without a permit. Permits remain available and still matter in some places, but no permit is needed to carry. Anyone carrying concealed must tell an officer who asks and may not touch the gun during a stop, a new crime, and the state set aside up to $5 million a year for three years to replace the permit fees counties lose. The Senate passed it 24-6 and it became law.",
+      "nay_description": "Voted against passing House Bill 272, which let Alabamians carry a concealed handgun without a permit. Permits remain available and still matter in some places, but no permit is needed to carry. Anyone carrying concealed must tell an officer who asks and may not touch the gun during a stop, a new crime, and the state set aside up to $5 million a year for three years to replace the permit fees counties lose. The Senate passed it 24-6 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1836",
+      "roll": 1185548,
+      "measure_id": "HB 322",
+      "vote_date": "2022-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 322, which requires public school pupils to use the multi-person restroom or changing room matching the sex on their original birth certificate. An amended birth certificate does not count, and single-person rooms are not covered. The same law bars classroom discussion or instruction on sexual orientation or gender identity in kindergarten through fifth grade where it is not suitable for the pupils' age under state standards. The House passed it 70-26 and it became law.",
+      "nay_description": "Voted against passing House Bill 322, which requires public school pupils to use the multi-person restroom or changing room matching the sex on their original birth certificate. An amended birth certificate does not count, and single-person rooms are not covered. The same law bars classroom discussion or instruction on sexual orientation or gender identity in kindergarten through fifth grade where it is not suitable for the pupils' age under state standards. The House passed it 70-26 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1836",
+      "roll": 1185249,
+      "measure_id": "SB 184",
+      "vote_date": "2022-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 184, which made it a felony to give a minor medical care meant to affirm a gender other than their sex at birth. Puberty blockers, cross-sex hormones and the listed surgeries are all barred, and breaking the rule is a Class C felony. Children born with a medically proven difference of sex development are excepted, and school staff may not keep a child's stated gender from a parent. The House passed it 66-28 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 184, which made it a felony to give a minor medical care meant to affirm a gender other than their sex at birth. Puberty blockers, cross-sex hormones and the listed surgeries are all barred, and breaking the rule is a Class C felony. Children born with a medically proven difference of sex development are excepted, and school staff may not keep a child's stated gender from a parent. The House passed it 66-28 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1836",
+      "roll": 1152379,
+      "measure_id": "SB 184",
+      "vote_date": "2022-02-23",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 184, which made it a felony to give a minor medical care meant to affirm a gender other than their sex at birth. Puberty blockers, cross-sex hormones and the listed surgeries are all barred, and breaking the rule is a Class C felony. Children born with a medically proven difference of sex development are excepted, and school staff may not keep a child's stated gender from a parent. The Senate passed it 24-6 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 184, which made it a felony to give a minor medical care meant to affirm a gender other than their sex at birth. Puberty blockers, cross-sex hormones and the listed surgeries are all barred, and breaking the rule is a Class C felony. Children born with a medically proven difference of sex development are excepted, and school staff may not keep a child's stated gender from a parent. The Senate passed it 24-6 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1836",
+      "roll": 1185166,
+      "measure_id": "SB 2",
+      "vote_date": "2022-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 2, the Alabama Second Amendment Protection Act, which barred state and local officials from enforcing presidential orders on guns. No state or local officer acting officially may enforce an executive order of the President that limits the ownership, use or possession of firearms, ammunition or accessories by law-abiding residents. No public money may be spent on such enforcement, and the Attorney General may issue guidance. The House passed it 68-28 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 2, the Alabama Second Amendment Protection Act, which barred state and local officials from enforcing presidential orders on guns. No state or local officer acting officially may enforce an executive order of the President that limits the ownership, use or possession of firearms, ammunition or accessories by law-abiding residents. No public money may be spent on such enforcement, and the Attorney General may issue guidance. The House passed it 68-28 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1836",
+      "roll": 1180303,
+      "measure_id": "SB 158",
+      "vote_date": "2022-03-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 158, the Alabama Lead Reduction Act, which rebuilt the state's lead paint program. The State Board of Health must now run a certification scheme rather than merely being allowed to, and anyone doing lead work must pass training and an exam. Fines rise from a single misdemeanor to a daily civil penalty reaching $2,500 a day for repeat offenders, alongside a Class A misdemeanor. The Senate passed it 18-8 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 158, the Alabama Lead Reduction Act, which rebuilt the state's lead paint program. The State Board of Health must now run a certification scheme rather than merely being allowed to, and anyone doing lead work must pass training and an exam. Fines rise from a single misdemeanor to a daily civil penalty reaching $2,500 a day for repeat offenders, alongside a Class A misdemeanor. The Senate passed it 18-8 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1836",
+      "roll": 1140071,
+      "measure_id": "SB 168",
+      "vote_date": "2022-02-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 168, which made fentanyl test strips legal in Alabama. Equipment designed to detect fentanyl or a synthetic version of it is taken out of the drug paraphernalia law, so a person may possess, hand over or sell it. Every other part of the paraphernalia law is unchanged, including the rule that testing equipment for other drugs remains illegal. The Senate passed it 19-5 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 168, which made fentanyl test strips legal in Alabama. Equipment designed to detect fentanyl or a synthetic version of it is taken out of the drug paraphernalia law, so a person may possess, hand over or sell it. Every other part of the paraphernalia law is unchanged, including the rule that testing equipment for other drugs remains illegal. The Senate passed it 19-5 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1836",
+      "roll": 1179024,
+      "measure_id": "SB 171",
+      "vote_date": "2022-03-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 171, the Alabama Numeracy Act, which overhauled how Alabama teaches maths in the early grades. It creates a state office focused only on kindergarten through fifth grade maths, requires an average of 60 minutes of maths a day, and screens pupils at least twice a year so those who struggle get extra help. Every primary school is to get at least one maths coach, subject to funding. The House passed it 76-24 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 171, the Alabama Numeracy Act, which overhauled how Alabama teaches maths in the early grades. It creates a state office focused only on kindergarten through fifth grade maths, requires an average of 60 minutes of maths a day, and screens pupils at least twice a year so those who struggle get extra help. Every primary school is to get at least one maths coach, subject to funding. The House passed it 76-24 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1836",
+      "roll": 1184501,
+      "measure_id": "SB 224",
+      "vote_date": "2022-04-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 224, which requires people claiming unemployment pay to contact three employers a week. Claimants must show proof of those contacts with each weekly claim, and may not name the same employer twice unless that employer has since started hiring. The department must check at least 5 percent of the proof submitted each week, and the Governor may suspend the rule during a state of emergency. The House passed it 76-24 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 224, which requires people claiming unemployment pay to contact three employers a week. Claimants must show proof of those contacts with each weekly claim, and may not name the same employer twice unless that employer has since started hiring. The department must check at least 5 percent of the proof submitted each week, and the Governor may suspend the rule during a state of emergency. The House passed it 76-24 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1836",
+      "roll": 1185980,
+      "measure_id": "SB 313",
+      "vote_date": "2022-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 313, which barred public officials and employees from spending public money to campaign for or against a ballot measure. The ban covers political literature, signs and posters on government property, and applies even if the official believed the spending served a public purpose. Officials may still give objective factual analysis, and a violator is made to repay the money rather than prosecuted. The House passed it 73-26 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 313, which barred public officials and employees from spending public money to campaign for or against a ballot measure. The ban covers political literature, signs and posters on government property, and applies even if the official believed the spending served a public purpose. Officials may still give objective factual analysis, and a violator is made to repay the money rather than prosecuted. The House passed it 73-26 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1836",
+      "roll": 1146848,
+      "measure_id": "HB 52",
+      "vote_date": "2022-02-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 52, which gave judges more room when someone breaks the terms of probation. Where a sentence had been split between prison and probation, the judge may now decide how much of the remaining time to impose rather than the whole of it, and may split the sentence again. Any part not imposed is suspended and the person may go back on probation. The House passed it 71-28 and it became law.",
+      "nay_description": "Voted against passing House Bill 52, which gave judges more room when someone breaks the terms of probation. Where a sentence had been split between prison and probation, the judge may now decide how much of the remaining time to impose rather than the whole of it, and may split the sentence again. Any part not imposed is suspended and the person may go back on probation. The House passed it 71-28 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1836",
+      "roll": 1185330,
+      "measure_id": "HB 95",
+      "vote_date": "2022-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 95, which gave prisoners a break from court fines and fees just after release. For a set period after leaving the custody of the prison system, a person is not required to pay outstanding court fines, fees or costs. Within 30 days of release they must contact the court clerk and agree a repayment plan, and money owed to victims and supervision fees are not covered. The House passed it 77-20 and it became law.",
+      "nay_description": "Voted against passing House Bill 95, which gave prisoners a break from court fines and fees just after release. For a set period after leaving the custody of the prison system, a person is not required to pay outstanding court fines, fees or costs. Within 30 days of release they must contact the court clerk and agree a repayment plan, and money owed to victims and supervision fees are not covered. The House passed it 77-20 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1836",
+      "roll": 1150254,
+      "measure_id": "SB 200",
+      "vote_date": "2022-02-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 200, which delayed by two years the rule holding back third graders who cannot read well enough. Under the Alabama Literacy Act a third grader who fails to show sufficient reading skill may not move up to fourth grade, and this pushed the start from the 2021 to 2022 school year to 2023 to 2024. Everything else in the Act, including reading help and summer camps, continued unchanged. The Senate passed it 20-12 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 200, which delayed by two years the rule holding back third graders who cannot read well enough. Under the Alabama Literacy Act a third grader who fails to show sufficient reading skill may not move up to fourth grade, and this pushed the start from the 2021 to 2022 school year to 2023 to 2024. Everything else in the Act, including reading help and summer camps, continued unchanged. The Senate passed it 20-12 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1183180
+      ]
+    }
+  ]
+}

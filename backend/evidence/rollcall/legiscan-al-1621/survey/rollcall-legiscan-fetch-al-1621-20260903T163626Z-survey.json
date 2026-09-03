@@ -1,0 +1,2373 @@
+{
+  "runId": "rollcall-legiscan-fetch-al-1621-20260903T163626Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "AL-1621",
+  "startedAt": "2026-09-03T16:36:26.584Z",
+  "finishedAt": "2026-09-03T16:36:27.059Z",
+  "datasetDir": "~/legiscan-data/al-1621",
+  "bills": 1492,
+  "votes": 1634,
+  "people": 140,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "senate",
+      "desc": "Motion to Read a Third Time and Pass",
+      "count": 480,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SB79",
+        "SB59",
+        "SB30"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Read a Third Time and Pass",
+      "count": 453,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB201",
+        "HB130",
+        "HB111"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Adopt",
+      "count": 200,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB101",
+        "HB31",
+        "HB17"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Waggoner motion to Adopt",
+      "count": 48,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SB33",
+        "SB54",
+        "SR14"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Orr motion to Adopt",
+      "count": 28,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB74",
+        "SB76",
+        "SB147"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Marsh motion to Concur In and Adopt",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB124",
+        "SB123",
+        "HJR15"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Singleton motion to Adopt",
+      "count": 22,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB23",
+        "SB220",
+        "SB281"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Local Application",
+      "count": 21,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB158",
+        "HB232",
+        "HB53"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Ward motion to Adopt",
+      "count": 15,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB30",
+        "SB41",
+        "SB60"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Chambliss motion to Adopt",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB66",
+        "SB26",
+        "SB23"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Smitherman motion to Adopt",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB14",
+        "SB5",
+        "HB251"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Gudger motion to Adopt",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SB119",
+        "SB246",
+        "HR75"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Melson motion to Adopt",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB14",
+        "SB83",
+        "SB256"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Marsh motion to Adopt",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB22",
+        "SB321",
+        "SB268"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Butler motion to Adopt",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SB245",
+        "SB238",
+        "HB571"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Roberts motion to Adopt",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45",
+        "SB315",
+        "SB296"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Allen motion to Adopt",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB252",
+        "SB308",
+        "SB47"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Coleman-Madison motion to Adopt",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB59",
+        "SB11",
+        "SB10"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Figures motion to Adopt",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB258",
+        "HB163",
+        "HB339"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "South motion to Table",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB436",
+        "HB361"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Givhan motion to Adopt",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB11",
+        "SB10",
+        "SB242"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Albritton motion to Adopt",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB250",
+        "HB152",
+        "HB154"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Elliott motion to Adopt",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB147",
+        "SB128",
+        "SB23"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Jones motion to Adopt",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB23",
+        "SB106",
+        "SB269"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Reed motion to Adopt",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB38",
+        "SB282",
+        "SB411"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Cosponsors Added",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB45",
+        "HB41",
+        "HB339"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Clouse motion to Concur In and Adopt",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB155",
+        "HB154",
+        "HB152"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Collins motion to Table",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB314",
+        "HB350"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Faulkner motion to Concur In and Adopt",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR51",
+        "HB216",
+        "SB297"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Faulkner motion to Table",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB529",
+        "HB505",
+        "SB297"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Ledbetter motion to Previous Question",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB380",
+        "HB491",
+        "HB262"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Poole motion to Table",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB199",
+        "SB196",
+        "SB78"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Rules Committee Petition to Cease Debate",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB119",
+        "SB22",
+        "HB314"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shedd motion to Concur In and Adopt",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB400",
+        "HB257",
+        "SB90"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Livingston motion to Adopt",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB56",
+        "SB91",
+        "HB400"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Marsh motion to Accede",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB124",
+        "HB152",
+        "HB154"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Marsh motion to Non Concur and Appoint Conference Committee",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB14",
+        "SB90",
+        "SB199"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "McClendon motion to Adopt",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB124",
+        "HB434",
+        "SB416"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Orr motion to Concur In and Adopt",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB228",
+        "SB78",
+        "SB76"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Singleton motion to adopt Local Application Resolution",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB324",
+        "HB620",
+        "HB136"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Whatley motion to Adopt",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB30",
+        "SB78",
+        "HB59"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Clarke motion to Concur In and Adopt",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB225"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Clouse motion to Non Concur and Appoint Conference Committee",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB152",
+        "HB154"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Coleman motion to Concur In and Adopt",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB261",
+        "HB262"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Collins motion to Concur In and Adopt",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB349",
+        "HB388"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Holmes motion to Table",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB233"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Ledbetter motion to Concur In and Adopt",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB339",
+        "SB14"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Lee motion to Concur In and Adopt",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB159",
+        "HB435"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "McMillan motion to Concur In and Adopt",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB163",
+        "HB611"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Table",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB287",
+        "SB199"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Pettus motion to Concur In and Adopt",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB360",
+        "HB209"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Poole motion to Concur In and Adopt",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB540",
+        "SB199"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Robertson motion to Table",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB180"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Rowe motion to Table",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB380"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Wilcox motion to Table",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB154"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Wood (R) motion to Table",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB393",
+        "HB52"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Chesteen motion to Adopt",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB159",
+        "HB77"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Gudger motion to Concur In and Adopt",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB225",
+        "SB278"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Adopt",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB37",
+        "HB155"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Price motion to Adopt",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB138",
+        "SB167"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Sessions motion to Adopt",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB369",
+        "HB41"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Stutts motion to Adopt",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB266",
+        "SB267"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Stutts motion to adopt Local Application Resolution",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB536",
+        "HB398"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "\\\\Motion to Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB404"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Alexander motion to Carry Over to Day Certain",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB380"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Alexander motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB308"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Allen motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB471"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Allen motion to Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB123"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Baker motion to adopt LOCAL APPLICATION",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB99"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Baker motion to Carry Over Temporarily",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB400"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Baker motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB556"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Baker motion to Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB295"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Blackshear motion to Carry Over Temporarily",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB400"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Blackshear motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB361"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Bracy motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB174"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Bracy motion to Non Concur and Appoint Conference Committee",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB209"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Brown (K) motion to Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB404"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Carns motion to Indefinitely Postpone",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB309"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Chestnut motion to Accede",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB198"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Chestnut motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB198"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Clouse motion to rerefer the bill from Calendar to W&MGF",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB547"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Clouse motion to Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB153"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Crawford motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB571"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Crawford motion to Reconsider",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB472"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Dismukes motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB48"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Drummond motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB41"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "England motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB251"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Estes motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB506"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Fridy motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB498"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Fridy motion to Read a Third Time and Pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB10"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Fridy motion to Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB498"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Garrett motion to Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB193"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Givan motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB213"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Gray motion to remove his amendment from the table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB233"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Hanes motion to Carry Over Temporarily",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB361"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Hill motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB565"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Ingram motion to Carry Over Temporarily",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB400"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Jackson motion to Adjourn",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB380"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Jones (M) motion to Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR245"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Ledbetter motion to Accede",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB14"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Ledbetter motion to Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB530"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Lee motion to Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB159"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Local Application Resolution submitted Roll Call 869",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB331"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Lovvorn motion to Carry Over Temporarily",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB400"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Lovvorn motion to Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB308"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "McMillan motion to Carry Over Temporarily",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB332"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "McMillan motion to Reconsider",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB332"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Moore (P) motion to Substitute a Companion Bill",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB223"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Adopt Gray's amendment",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB233"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to adopt Local Application",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB161"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to again adopt Local Application",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB99"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Local Applicaiton submitted Roll Call 1070",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB639"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Local Application Resolution",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB350"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Local Application Resolution submitted Roll Call 894",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB620"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Miscellaneous",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB398"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Nordgren motion to Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB404"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Oliver motion to Reconsider",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB524"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Poole motion to Accede",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB199"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Pringle motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB369"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Robertson motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB180"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Rogers motion to Carry Over to Day Certain",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB314"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Rowe motion to Carry Over Temporarily",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB222"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Rowe motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB353"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Sanderford motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB124"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Sanderford motion to Non Concur and Appoint Conference Committee",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB124"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Sells motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB59"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shedd motion to Accede",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB90"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Simpson motion to Reconsider",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB331"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "South motion to Carry Over to Day Certain",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB222"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Wadsworth motion to Carry Over",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB282"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Warren motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR15"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Weaver motion to Reconsider",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB292"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Wilcox motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB328"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Wingo motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB537"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Wood (D) motion to Indefinitely Postpone",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB196"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Albritton motion to adopt Local Application Resolution",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB331"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Albritton motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB152"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Albritton motion to Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB220"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Albritton to Suspend Joint Rule 21",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB152"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Allen motion to adopt Local Application Resolution",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB18"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Allen motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB308"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Barfoot motion to Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB220"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Beasley motion to Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB300"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Chambliss motion to Reconsider and Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB314"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Coleman-Madison motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB11"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Figures motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB320"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Givhan motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB242"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Holley motion to Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB79"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Melson motion to adopt Local Application Resolution",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB461"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Melson motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB236"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Orr motion to Non Concur and Appoint Conference Committee",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB198"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Orr motion to Suspend Joint Rule 21",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB199"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Sanders-Fortier motion to Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB266"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Scofield motion to Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB90"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Scofield motion to adopt Local Application Resoultion",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB602"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Smitherman motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB302"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Waggoner motion to Concur In and Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR51"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Waggoner motion to Miscellaneous",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB380"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Waggoner motion to Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB147"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Williams motion to Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB66"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 1070,
+    "JR": 176,
+    "R": 246
+  },
+  "sessionIds": {
+    "1621": 1492
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": [
+    {
+      "file": "AL/2019-2019_Regular_Session/vote/826544.json",
+      "error": "LegiScan roll call 826544: yea says 51 but the member list holds 25"
+    }
+  ]
+}

@@ -902,6 +902,95 @@ describe("Alabama's 2024 desc vocabulary, which prints two caption systems at on
   });
 });
 
+describe("Alabama's 2019-2022 desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS["AL-1756"]!;
+  const al = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType, config });
+
+  it("keeps passage, whose roll call suffix carries NO hyphen this term", () => {
+    // 2024 onward writes ` - Roll Call 215`; this term writes ` Roll Call 215`.
+    // The patterns are unanchored at the end so both work, but a histogram
+    // folded with a hyphen-only stripper reports thousands of bogus families.
+    for (const desc of [
+      "Motion to Read a Third Time and Pass",
+      "Motion to Read a Third Time and Pass Roll Call 215",
+      "Motion to Read Again a Third Time and Pass as Amended",
+      "Jackson motion to Read a Third Time and Pass",
+    ]) {
+      expect(al(desc, 105)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    }
+  });
+
+  it("keeps a passage vote whose caption lost its first letter in the feed", () => {
+    // HB 520 of 2022, 24-0. The leading M is missing from the desc AND from the
+    // matching bill-history line. Treating it as an unknown question would drop
+    // a real passage vote silently.
+    expect(al("otion to Read a Third Time and Pass Roll Call 881", 101)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+  });
+
+  it("excludes the two rows that state no question at all", () => {
+    // SB 124 of 2022 has an empty desc and a null date printed as 1969-12-31.
+    // HB 192 of 2021 has `Motion to Roll Call 6`, a caption truncated to
+    // nothing; that measure's real passage is Roll Call 8.
+    expect(al("", 35, "senate")).toMatchObject({ isFloorVote: false, questionClass: null });
+    expect(al("Motion to Roll Call 6", 104)).toMatchObject({ isFloorVote: false, questionClass: null });
+  });
+
+  it("excludes the Budget Isolation Resolution in its fifth spelling", () => {
+    // 2021 and 2022 prefix it onto the sponsor's adoption motion. The 2019 and
+    // 2020 sessions record no such votes at all.
+    for (const desc of ["SBIR: Chambliss motion to Adopt", "HBIR: Garrett motion to Adopt", "HBIR: Motion to Adopt"]) {
+      expect(al(desc, 105)).toMatchObject({ isFloorVote: false, questionClass: null });
+    }
+  });
+
+  it("excludes the procedural tail this term takes by roll call", () => {
+    for (const desc of [
+      "Motion to Local Application",
+      "Motion to LOCAL APPLICATION",
+      "Motion to Local Apploication",
+      "Motion to Local Applicaiton",
+      "Allen motion to Local Certification Application Resoultion",
+      "Cosponsors Added",
+      "Marsh motion to Accede",
+      "Marsh motion to Non Concur and Appoint Conference Committee",
+      "Chambliss motion to Miscellaneous",
+      "Lovvorn motion to Carry Over Temporarily",
+      "Carns motion to Indefinitely Postpone",
+      "Meadows motion to Suspend Rules",
+      "Albritton motion to Suspend Joint Rule 21",
+      "Motion to Substitute SB17 FOR HB21 Roll Call 129",
+      "Moore (P) motion to Substitute a Companion Bill",
+      "Albritton motion to Motion in Writing",
+      "Rogers motion to REMOVE FROM THE TABLE",
+      "Gray motion to remove his amendment from the table",
+      "Givan motion challenging Rule 25 interpretation",
+      "Jackson motion to Adjourn",
+      "Clouse motion to rerefer the bill from Calendar to W&MGF",
+      "Ledbetter motion to Previous Question",
+      "Waggoner motion to Rules Committee to Cease Debate",
+    ]) {
+      expect(al(desc, 105)).toMatchObject({ isFloorVote: false, questionClass: null });
+    }
+  });
+
+  it("is shared by all six registered sessions of that term", () => {
+    for (const key of ["AL-1621", "AL-1706", "AL-1854", "AL-1857", "AL-1836"]) {
+      expect(LEGISCAN_STATE_CONFIGS[key]!.keptQuestions).toBe(config.keptQuestions);
+      expect(LEGISCAN_STATE_CONFIGS[key]!.excludedQuestions).toBe(config.excludedQuestions);
+    }
+  });
+
+  it("does not disturb the modern sessions, which use a separate definition", () => {
+    expect(LEGISCAN_STATE_CONFIGS.AL!.keptQuestions).not.toBe(config.keptQuestions);
+    expect(LEGISCAN_STATE_CONFIGS["AL-2014"]!.keptQuestions).not.toBe(config.keptQuestions);
+    expect(LEGISCAN_STATE_CONFIGS["AL-2103"]!.keptQuestions).not.toBe(config.keptQuestions);
+  });
+});
+
 describe("getLegiscanStateConfig", () => {
   it("serves only surveyed states; an unsurveyed state is refused by name", () => {
     expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual([
@@ -930,6 +1019,12 @@ describe("getLegiscanStateConfig", () => {
       "AL-2014",
       "AL-2060",
       "AL-2103",
+      "AL-1621",
+      "AL-1706",
+      "AL-1756",
+      "AL-1854",
+      "AL-1857",
+      "AL-1836",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
@@ -975,6 +1070,12 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("AL-2014")).toMatchObject({ jurisdiction: "AL", sessionId: 2014 });
     expect(getLegiscanStateConfig("AL-2060")).toMatchObject({ jurisdiction: "AL", sessionId: 2060 });
     expect(getLegiscanStateConfig("AL-2103")).toMatchObject({ jurisdiction: "AL", sessionId: 2103 });
+    expect(getLegiscanStateConfig("AL-1621")).toMatchObject({ jurisdiction: "AL", sessionId: 1621 });
+    expect(getLegiscanStateConfig("AL-1706")).toMatchObject({ jurisdiction: "AL", sessionId: 1706 });
+    expect(getLegiscanStateConfig("AL-1756")).toMatchObject({ jurisdiction: "AL", sessionId: 1756 });
+    expect(getLegiscanStateConfig("AL-1854")).toMatchObject({ jurisdiction: "AL", sessionId: 1854 });
+    expect(getLegiscanStateConfig("AL-1857")).toMatchObject({ jurisdiction: "AL", sessionId: 1857 });
+    expect(getLegiscanStateConfig("AL-1836")).toMatchObject({ jurisdiction: "AL", sessionId: 1836 });
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("NY")).toThrow("no LegiScan state config for NY");
   });

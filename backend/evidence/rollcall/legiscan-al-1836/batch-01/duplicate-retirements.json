@@ -1,0 +1,26 @@
+[
+ {
+  "recordId": "f13f192c-9a94-42e4-8e3e-10d96d1eeb9c",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1836 session batch-01 run: this hand-written record describes the same vote as SB 2 roll 1185166 on 2022-04-07 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1836/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "60cc56c2-acd7-4276-bddb-d317276d4a0e",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1836 session batch-01 run: this hand-written record describes the same vote as SB 184 roll 1185249 on 2022-04-07 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1836/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "8db1aa17-e369-423e-bd86-b562f4adda89",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1836 session batch-01 run: this hand-written record describes the same vote as SB 184 roll 1185249 on 2022-04-07 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1836/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "67beb265-639b-46a5-ab84-af6dffad786c",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1836 session batch-01 run: this hand-written record describes the same vote as SB 2 roll 1185166 on 2022-04-07 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1836/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "5e0527f4-0b7e-4f1f-8ce1-bd4097adca42",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1836 session batch-01 run: this hand-written record describes the same vote as SB 184 roll 1185249 on 2022-04-07 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1836/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "b183ada7-47eb-4d34-ae59-f7a8dc5c5379",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1836 session batch-01 run: this hand-written record describes the same vote as SB 2 roll 1185166 on 2022-04-07 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1836/batch-01/JUDGING.md."
+ }
+]
