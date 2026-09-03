@@ -383,6 +383,11 @@ describe("syncNorthDakotaCandidateFinance", () => {
       { apiIndependentExpenditureRows: vi.fn(async (year: number) => (year === 2026 ? IE_ROWS[2026]!.map((row) => ({ ...row, transactionTotalYTD: "9999" })) : [])) },
       /IE committee 1040001626 fails the payee YTD control/
     );
+    // A spender id the writer would reject never reaches the snapshot transaction.
+    await skipped(
+      { apiIndependentExpenditureRows: vi.fn(async (year: number) => (year === 2026 ? IE_ROWS[2026]!.map((row) => ({ ...row, entityID: "1626" })) : [])) },
+      /IE transaction 100: Invalid North Dakota CFRS entityId: 1626/
+    );
   });
 
   it("dry run computes without touching the database", async () => {

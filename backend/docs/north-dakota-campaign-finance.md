@@ -359,10 +359,13 @@ Money (hard fact 4): per spender × filed stance, sum of unique
 `transactionID`s — equal same-day allocations are kept. The
 per-(spender, payee, calendar year) control (max `transactionTotalYTD` ==
 sum of unique rows) runs over ALL of an included spender's rows, since the
-field aggregates across every target; a mismatch quarantines the outside
-component. A repeated `transactionID`, a row without a Support/Oppose
-stance, a non-positive amount or a blank committee name also fail closed —
-none has been observed, so none gets an interpretation.
+field aggregates across every target; a mismatch, or a payee group with no
+parseable control, quarantines the outside component. A repeated
+`transactionID`, a row without a Support/Oppose stance, a non-positive
+amount, a blank committee name or a spender id that is not ten digits also
+fail closed — none has been observed, so none gets an interpretation (the
+id check runs in the aggregator so a bad spender can never abort the
+writer's snapshot transaction and take the direct component with it).
 
 Component isolation: any outside failure leaves both outside totals NULL
 (the writer preserves the stored value) and the stored groups untouched,
@@ -386,6 +389,6 @@ statewide committees at $16,857.14 each from StrongND, Judy Lee $2,932.89
 across three committees, Schaible $4,092.46, Axtman $2,183.33, Roers
 $2,000). The other 16 targets ($96,295.90, Kringstad $61,138.50 the
 largest) have no VoteApp link — mostly House seats with no roster rows
-yet. Every payee YTD control was present (0 missing). An independent Python
+yet. Every payee YTD control was present. An independent Python
 recompute from the raw APIIE + REGISTRY JSON matched all 15 stored groups
 and all 48 summary totals exactly.

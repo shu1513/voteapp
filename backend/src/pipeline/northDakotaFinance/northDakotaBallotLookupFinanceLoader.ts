@@ -2,10 +2,11 @@
 // standard loader. Phase 2 publishes total receipts, the donor-only "Raised"
 // figure and contribution-size buckets; Phase 3 adds filed occupations for
 // committees that pass the display gate (the sync stores none otherwise, so
-// the card simply has no occupation rows). Spending (year-end statement
-// only), cash (statewide filers only, unparsed) and outside totals (Phase 4)
-// are never stored yet, so they surface as null with the coverage notes —
-// never $0.
+// the card simply has no occupation rows); Phase 4a adds support/oppose
+// groups and totals from the IE harvest (NULL when that component was
+// skipped, $0 when a clean harvest names nobody). Spending (year-end
+// statement only) and cash (statewide filers only, unparsed) are never
+// stored yet, so they surface as null with the coverage notes — never $0.
 
 import type { Pool, PoolClient } from "pg";
 

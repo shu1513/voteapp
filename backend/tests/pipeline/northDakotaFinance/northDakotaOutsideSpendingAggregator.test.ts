@@ -155,8 +155,6 @@ describe("aggregateNorthDakotaOutsideSpending", () => {
       targetRowCount: 4,
       includedRowCount: 3,
       ytdCheckedCommitteeCount: 2,
-      // The 2028 row's payee has a control; nothing is missing.
-      ytdMissingControlGroupCount: 0,
     });
   });
 
@@ -181,12 +179,24 @@ describe("aggregateNorthDakotaOutsideSpending", () => {
     ];
     expect(aggregateNorthDakotaOutsideSpending({ targetName: JUDY, electionYear: 2026, rows: acrossYears })).toMatchObject({
       supportTotal: 2700,
-      ytdMissingControlGroupCount: 0,
     });
-    // A payee with no control at all is counted, not failed.
-    expect(
-      aggregateNorthDakotaOutsideSpending({ targetName: JUDY, electionYear: 2026, rows: [ieRow({ transactionTotalYTD: null })] })
-    ).toMatchObject({ supportTotal: 2000, ytdMissingControlGroupCount: 1 });
+    // A payee with no parseable control is unreconciled money: quarantined like a mismatch.
+    for (const transactionTotalYTD of [null, "n/a"]) {
+      expect(() =>
+        aggregateNorthDakotaOutsideSpending({ targetName: JUDY, electionYear: 2026, rows: [ieRow({ transactionTotalYTD })] })
+      ).toThrow(/IE committee 1040001626 has 1 payee group\(s\) without a transactionTotalYTD control/);
+    }
+    // ...even when the uncontrolled payee only appears on another candidate's rows.
+    expect(() =>
+      aggregateNorthDakotaOutsideSpending({
+        targetName: JUDY,
+        electionYear: 2026,
+        rows: [
+          ieRow({ transactionID: 1, transactionTotalYTD: "2000.0000" }),
+          ieRow({ transactionID: 2, candidateNameAssocation: "Roe, Rick", contributorPayeeName: "Other Co", transactionTotalYTD: null }),
+        ],
+      })
+    ).toThrow(/without a transactionTotalYTD control/);
   });
 
   it("fails closed on every unobserved shape", () => {
@@ -199,6 +209,8 @@ describe("aggregateNorthDakotaOutsideSpending", () => {
     expect(run([ieRow({ transactionAmount: -10 })])).toThrow(/non-positive amount \(-10\)/);
     expect(run([ieRow({ committeeName: " " })])).toThrow(/no committee name for entityId 1040001626/);
     expect(run([ieRow({ transactionTypeDesc: "Expenditures" })])).toThrow(/is typed "Expenditures"/);
+    // A malformed spender id fails here, not inside the writer's transaction.
+    expect(run([ieRow({ entityID: "104-1626" })])).toThrow(/IE transaction 1: Invalid North Dakota CFRS entityId: 104-1626/);
     // The same shapes on another candidate's rows do not touch this candidate.
     expect(run([ieRow({ candidateNameAssocation: "Roe, Rick", stanceDescription: null, transactionAmount: -10 })])).not.toThrow();
     expect(() => aggregateNorthDakotaOutsideSpending({ targetName: "", electionYear: 2026, rows: [] })).toThrow(/targetName is required/);
