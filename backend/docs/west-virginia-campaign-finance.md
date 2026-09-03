@@ -357,10 +357,21 @@ npm run west-virginia-candidates:finance:sync-due -- --no-auto-link --max-candid
 
 Results: refresh 9 artifacts (REPS 2025/26/27, CON/EXP/API-CON 2025+2026; EXP recovered
 310 + 428 bad-width rows, as in Phase 1). Auto-link **228 / 242** (217 on the Phase 1
-resolver, +11 after the changes below). **12 manual links** (list below). Sync
-**240 / 240** succeeded; every window year reconciled cent- and multiset-exact, 36
-amended API rows absorbed; **$5,363,543 raised / $3,211,422 spent** across the 215
-committees with in-window rows; top raised Takubo $266k, Barrett $229k, Oliverio $186k.
+resolver, +11 after the changes below). **15 manual links** (list below) close the rest,
+so **all 242 roster rows are linked** through 243 links — Marta Beck holds two, see the
+same-candidate note. Sync succeeded on every link; each window year reconciled cent- and
+multiset-exact, 36 amended API rows absorbed. Across the 218 committees with in-window
+rows: **$5,368,402 received, of which $4,645,349 is the qualifying contributions the app
+publishes as "raised"** (receipts also carry self-funding, other income and transfers,
+which the coverage note excludes), and **$3,212,818 spent**. Top raised Takubo $266k,
+Barrett $229k, Oliverio $186k.
+
+**A candidate may hold more than one committee.** The links table is unique on
+(candidate, election, committee), and the shared ballot-lookup loader sums summaries
+across all of a candidate's active links, so a second link is the supported way to
+represent this — no summation policy of our own. When a candidate has two,
+`controlled_committee_id` publishes as null, since no single committee controls the
+money. Only pair committees this way after checking they are disjoint (see Beck below).
 
 ### Code changes forced by the live evidence
 
@@ -385,7 +396,7 @@ committees with in-window rows; top raised Takubo $266k, Barrett $229k, Oliverio
   with NULL totals and no breakdowns; the loader shows "unavailable". Re-sync after each
   filing wave (General report due 2026-10-23) turns them into numbers.
 
-### Manual links (link_source `manual`; all same office + seat + "2026 Election")
+### Manual links (link_source `manual`; same seat and "2026 Election" unless noted)
 
 | Roster | entityId | Registry name / evidence |
 |---|---|---|
@@ -401,14 +412,44 @@ committees with in-window rows; top raised Takubo $266k, Barrett $229k, Oliverio
 | Rick Hillenbrand (HD 88) | 1010003520 | Hillenbrand, Frederick Rick III (Undeclared 88); 2022/2024 rows HD 88 |
 | S. Chris Anders (HD 97) | 1010003541 | Anders, Stephen Christian; "Anders for WV" |
 | Taylor Richmond (SD 13) | 1010003961 | re-registered pair; twin 1010003964 (Terminated) has zero cached rows |
+| Marta Beck (HD 98) | 1010003604 **and** 1010003840 | both committees, see below |
+| Christopher Marcus Ratliff (HD 45) | 1010003722 | registry files it under HD 50; the certified feed names this committee for his HD 45 write-in candidacy, see below |
 
-### Left unlinked on purpose
+### The two cases the resolver could not decide (settled 2026-09-03)
 
-- **Marta Beck (HD 98):** 1010003604 (Terminated) holds 38 rows through 2025-07-22 —
-  inside the window — and 1010003840 (Active) holds the 2026 rows. No summation policy,
-  so no link; needs a human call (sum both, or accept the undercount of the Active one).
-- **Christopher Marcus Ratliff:** roster HD 45 (certified feed), registry HD 50. Roster
-  is authoritative; recheck the certified list before linking either way.
+**Marta Beck, HD 98 — both committees linked.** She registered "Friends of Marta Beck"
+in 2025 (1010003604), terminated it, and registered a second committee under the same
+name in 2026 (1010003840). Both carry money inside the cycle window, which is why the
+resolver reported the pair ambiguous. Evidence gathered before pairing them: **zero
+identical (date, amount, contributor) rows across the two**, and **no transfer between
+them** — the closed committee's last act was a "Disbursement of Excess Funds" back to
+the candidate, not a hand-off — so the money is disjoint and summing cannot double-count.
+
+| Committee | In-window rows | Receipts | Qualifying contributions | Spent |
+|---|---|---|---|---|
+| 1010003604 (Terminated) | 8 contributions, 5 expenditures | $1,610.00 | $1,610.00 | $769.06 |
+| 1010003840 (Active) | 24 contributions, 23 expenditures | $3,195.67 | $2,257.29 | $579.09 |
+
+Linking only the Active committee would have understated her by $1,610, a third of her
+cycle money. With both linked the loader publishes $3,867.29 raised and $1,348.15 spent,
+and merges the occupation and size breakdowns. The 2025 committee's pre-window money
+($958.31, before 2025-07-01) stays out, the same rule everyone else gets.
+
+**Christopher Marcus Ratliff, HD 45 — linked despite the district mismatch.** The
+registry files entity 1010003722 under House of Delegates **50**, so the exact-seat
+auto-linker skipped him. The SOS certified candidate feed settles it: he is a **write-in**
+candidate in **HD 45** (filed 2026-08-07), and the feed's own `committeeName` for him is
+"COMMITTEE TO ELECT CHRISTOPHER RATLIFF" — the exact `orgName` of 1010003722. No other
+Ratliff runs for either seat. The roster is right and the committee registration's
+district is stale. He has one contribution and one expenditure in window: $53.00
+received, all Other Income, so **$0 raised** and $47.50 spent.
+
+Certified-feed recipe (it decided this case, and the host serves an incomplete TLS
+chain): `POST https://candidates.wvsos.gov/candidate-web-api/candidates` with
+`{"size":5000}` (add `"candidateType":"W"` for write-ins — Ratliff appears only there),
+a browser `User-Agent` plus `Origin`/`Referer`, and Node run with
+`NODE_EXTRA_CA_CERTS=<the Entrust intermediate in westVirginiaCfrsIntermediateCa.ts>`.
+Rows arrive under `data.candidates`; the seat is in `officeName`, not a district field.
 
 ### Operator notes
 
