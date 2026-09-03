@@ -927,6 +927,7 @@ describe("getLegiscanStateConfig", () => {
       "AL",
       "AL-2218",
       "AL-2262",
+      "NV",
       "AL-2014",
       "AL-2060",
       "AL-2103",
@@ -952,6 +953,7 @@ describe("getLegiscanStateConfig", () => {
       "MT",
       "NC",
       "AL",
+      "NV",
       "NY",
     ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
@@ -974,6 +976,7 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("AL").sessionId).toBe(2148);
     expect(getLegiscanStateConfig("AL-2218")).toMatchObject({ jurisdiction: "AL", sessionId: 2218 });
     expect(getLegiscanStateConfig("AL-2262")).toMatchObject({ jurisdiction: "AL", sessionId: 2262 });
+    expect(getLegiscanStateConfig("NV").sessionId).toBe(2144);
     expect(getLegiscanStateConfig("AL-2014")).toMatchObject({ jurisdiction: "AL", sessionId: 2014 });
     expect(getLegiscanStateConfig("AL-2060")).toMatchObject({ jurisdiction: "AL", sessionId: 2060 });
     expect(getLegiscanStateConfig("AL-2103")).toMatchObject({ jurisdiction: "AL", sessionId: 2103 });
@@ -1007,6 +1010,32 @@ describe("getLegiscanStateConfig", () => {
     expect(ny("Assembly Floor Vote - Final Passage", 150, "house", "CR")).toMatchObject({
       isFloorVote: false,
       reason: "excluded_measure:CR",
+    });
+  });
+
+  it("classifies Nevada's real desc vocabulary as surveyed", () => {
+    const config = LEGISCAN_STATE_CONFIGS.NV!;
+    const nv = (desc: string, total: number, chamber: "house" | "senate", billType = "B") =>
+      classifyLegiscanRollCall({ desc, total, chamber, billType, config });
+    // Nevada prints exactly two floor descriptions and nothing else. Both are
+    // final passage, and a full chamber votes on every one of them.
+    expect(nv("Assembly Final Passage", 42, "house")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(nv("Senate Final Passage", 21, "senate")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    // The one short Senate roll in the session (SB 26, recorded 2-0) must
+    // surface for a human rather than queue as a floor vote.
+    expect(nv("Senate Final Passage", 2, "senate")).toMatchObject({ isFloorVote: null });
+    // Nevada joint resolutions are kept by bill type; concurrent resolutions
+    // are not, so the Joint Standing Rules vote never enters the queue.
+    expect(nv("Senate Final Passage", 21, "senate", "JR")).toMatchObject({ isFloorVote: true });
+    expect(nv("Senate Final Passage", 21, "senate", "CR")).toMatchObject({
+      isFloorVote: false,
+      reason: "excluded_measure:CR",
+    });
+    // Nevada has no exclusion rules, so an unseen description surfaces
+    // instead of being guessed at.
+    expect(nv("Senate Concurred in Assembly Amendment", 21, "senate")).toMatchObject({
+      isFloorVote: null,
+      reason: "unknown_question",
     });
   });
 
