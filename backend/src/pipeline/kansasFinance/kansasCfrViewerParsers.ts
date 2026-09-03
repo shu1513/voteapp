@@ -550,6 +550,19 @@ export function checkKansasScheduleB(parsed: KansasScheduleBRows, totals: Kansas
   };
 }
 
+/** One opened Schedule A page: its rows and its total lines. */
+export type KansasScheduleA = { rows: KansasScheduleARows; totals: KansasScheduleATotals };
+/** One opened Schedule B page: its rows and its total lines. */
+export type KansasScheduleB = { rows: KansasScheduleBRows; totals: KansasScheduleBTotals };
+
+export function parseKansasScheduleA(html: string): KansasScheduleA {
+  return { rows: parseKansasScheduleARows(html), totals: parseKansasScheduleATotals(html) };
+}
+
+export function parseKansasScheduleB(html: string): KansasScheduleB {
+  return { rows: parseKansasScheduleBRows(html), totals: parseKansasScheduleBTotals(html) };
+}
+
 // ---------------------------------------------------------------------------
 // Candidate-filings grids.
 

@@ -20,6 +20,7 @@
 import {
   collectKansasCfrGridPages,
   createKansasCfrSession,
+  getKansasReportSchedule,
   KANSAS_CFR_VIEWER_PAGES,
   KansasCfrClientError,
   openKansasCfrCategory,
@@ -64,6 +65,12 @@ export type KansasSearchedFiling = {
    * postback link — neither has an HTML report.
    */
   openReport: () => Promise<KansasCfrPage>;
+  /**
+   * GET a schedule of the report this row's session opened LAST: the viewer
+   * keeps the open report in session state, so call it right after this
+   * row's openReport() and before any other row's. Throws for a paper row.
+   */
+  openSchedule: (schedule: "A" | "B" | "C" | "D") => Promise<KansasCfrPage>;
 };
 
 export type KansasFilingSearchInput = {
@@ -104,20 +111,21 @@ export const searchKansasFilings: KansasFilingSearch = async (input) => {
   }
   const { pages } = await collectKansasCfrGridPages(session, results, input.gridId);
   return pages.flatMap((page) =>
-    page.rows.map((row) => ({
-      row,
-      openReport: () => {
-        if (row.channel !== "efile" || row.postbackTarget === null) {
-          return Promise.reject(
-            new KansasCfrClientError(
-              "invalid_request",
-              `no HTML report for ${row.channel} filing "${row.name}" filed ${row.fileDate} (${input.filingType})`
-            )
-          );
-        }
-        return postbackAndFollow(session, page.page, row.postbackTarget);
-      },
-    }))
+    page.rows.map((row) => {
+      const noReport = () =>
+        Promise.reject(
+          new KansasCfrClientError(
+            "invalid_request",
+            `no HTML report for ${row.channel} filing "${row.name}" filed ${row.fileDate} (${input.filingType})`
+          )
+        );
+      const isEfile = row.channel === "efile" && row.postbackTarget !== null;
+      return {
+        row,
+        openReport: () => (isEfile ? postbackAndFollow(session, page.page, row.postbackTarget!) : noReport()),
+        openSchedule: (schedule: "A" | "B" | "C" | "D") => (isEfile ? getKansasReportSchedule(session, schedule) : noReport()),
+      };
+    })
   );
 };
 

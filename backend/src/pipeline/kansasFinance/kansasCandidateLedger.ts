@@ -28,13 +28,23 @@ import {
   type KansasFilerRow,
 } from "./kansasCandidateFilerResolver.js";
 import { KANSAS_CFR_VIEWER_PAGES } from "./kansasCfrViewerClient.js";
-import { parseKansasReportCover, type KansasCfrGridRow, type KansasReportCover } from "./kansasCfrViewerParsers.js";
+import {
+  parseKansasReportCover,
+  parseKansasScheduleA,
+  parseKansasScheduleB,
+  type KansasCfrGridRow,
+  type KansasReportCover,
+  type KansasScheduleA,
+  type KansasScheduleB,
+} from "./kansasCfrViewerParsers.js";
+import { KANSAS_COUNTED_PERIOD_STATUSES } from "./kansasDirectContributionAggregator.js";
 import { kansasCfrCycleStartYear, type KansasCfrOffice } from "./kansasFinanceEligibleOffices.js";
 import { normalizeKansasNameForStorage, parseKansasFilerKey } from "./kansasFinanceWriter.js";
-import type { KansasFilingPoolLoader } from "./kansasFilingSearch.js";
+import type { KansasFilingPoolLoader, KansasPooledFiling } from "./kansasFilingSearch.js";
 import { buildKansasPaperInventory, type KansasKpdcRowLoader, type KansasPaperInventoryResult } from "./kansasPaperInventory.js";
 import {
   buildKansasReportLedger,
+  kansasFilingHeaderKey,
   kansasLastMinuteWindows,
   kansasReportingPeriods,
   type KansasAppointmentOfTreasurer,
@@ -81,6 +91,14 @@ export type KansasCandidateReport = {
   row: KansasCfrGridRow;
   cover: KansasReportCover;
   header: KansasFilingHeader;
+  /**
+   * Schedules A and B, opened for the canonical version of each counted
+   * period when `openSchedules` was set; null otherwise. The viewer serves
+   * the schedules of the report opened LAST in the session, so each such
+   * cover is reopened and its two schedules fetched before the next.
+   */
+  scheduleA: KansasScheduleA | null;
+  scheduleB: KansasScheduleB | null;
 };
 
 export type KansasCandidateLedgerResult =
@@ -117,6 +135,8 @@ export async function buildKansasCandidateLedger(input: {
   loadFilingPool: KansasFilingPoolLoader;
   /** KPDC candidate-tree rows per office + election year; consulted only when the viewer shows paper rows. */
   loadKpdcRows?: KansasKpdcRowLoader;
+  /** Also open Schedules A and B of every counted period's canonical e-filed report (the aggregator's rows). */
+  openSchedules?: boolean;
 }): Promise<KansasCandidateLedgerResult> {
   const { office, electionYear, cycleStartYear } = input.target;
   const recipe = parseKansasFilerKey(input.target.committeeId);
@@ -156,6 +176,7 @@ export async function buildKansasCandidateLedger(input: {
   );
 
   const reports: KansasCandidateReport[] = [];
+  const reportFilings = new Map<KansasCandidateReport, KansasPooledFiling>();
   const paperReports: KansasCfrGridRow[] = [];
   const appointments: KansasAppointmentOfTreasurer[] = [];
   const affidavitDates: string[] = [];
@@ -178,7 +199,7 @@ export async function buildKansasCandidateLedger(input: {
       if (cover.periodStart === "" || cover.periodEnd === "") {
         throw new KansasCandidateLedgerError(`report "${row.name}" filed ${row.fileDate}: cover has no period`);
       }
-      reports.push({
+      const report: KansasCandidateReport = {
         row,
         cover,
         header: {
@@ -190,7 +211,11 @@ export async function buildKansasCandidateLedger(input: {
           termination: cover.termination,
           channel: "efile",
         },
-      });
+        scheduleA: null,
+        scheduleB: null,
+      };
+      reports.push(report);
+      reportFilings.set(report, filing);
     }
   }
 
@@ -233,6 +258,32 @@ export async function buildKansasCandidateLedger(input: {
     lastMinuteWindows: kansasLastMinuteWindows(electionYear),
     now: input.now,
   });
+
+  // Schedules only for the versions whose figures count. The session holds
+  // ONE open report, so each canonical cover is reopened (the results page's
+  // state stays valid for repeated row postbacks) and must show the same
+  // period before its schedules are read.
+  if (input.openSchedules === true) {
+    const canonicalKeys = new Set(
+      ledger.entries
+        .filter((entry) => entry.canonical !== null && KANSAS_COUNTED_PERIOD_STATUSES.has(entry.status))
+        .map((entry) => kansasFilingHeaderKey(entry.canonical!))
+    );
+    for (const report of reports) {
+      if (!canonicalKeys.has(kansasFilingHeaderKey(report.header))) continue;
+      const filing = reportFilings.get(report)!;
+      const page = await filing.openReport();
+      const reopened = page.url.endsWith(KANSAS_CFR_VIEWER_PAGES.reportCover) ? parseKansasReportCover(page.html) : null;
+      if (reopened === null || reopened.periodStart !== report.cover.periodStart || reopened.periodEnd !== report.cover.periodEnd) {
+        throw new KansasCandidateLedgerError(
+          `report "${report.row.name}" filed ${report.row.fileDate}: reopening for its schedules did not land on the same cover`
+        );
+      }
+      report.scheduleA = parseKansasScheduleA((await filing.openSchedule("A")).html);
+      report.scheduleB = parseKansasScheduleB((await filing.openSchedule("B")).html);
+    }
+  }
+
   return {
     status: "resolved",
     match: resolution.match,
