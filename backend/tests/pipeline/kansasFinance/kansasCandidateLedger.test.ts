@@ -5,6 +5,7 @@ import { buildKansasCandidateLedger, kansasLedgerCandidateName } from "../../../
 import type { KansasCfrGridRow } from "../../../src/pipeline/kansasFinance/kansasCfrViewerParsers.js";
 import { kansasCfrOfficeForRace } from "../../../src/pipeline/kansasFinance/kansasFinanceEligibleOffices.js";
 import type { KansasPooledFiling } from "../../../src/pipeline/kansasFinance/kansasFilingSearch.js";
+import type { KansasKpdcCandidateRow } from "../../../src/pipeline/kansasFinance/kansasKpdcIndexClient.js";
 
 const NOW = new Date("2026-09-02T12:00:00.000Z");
 const COVER_URL = "https://sos.ks.gov/elections/cfr_viewer/reports/exp_report_main.aspx";
@@ -134,7 +135,7 @@ describe("buildKansasCandidateLedger", () => {
     expect(result.complete).toBe(true);
   });
 
-  it("never opens a paper report and keeps the candidate incomplete until its period is known", async () => {
+  it("never opens a paper report and keeps the candidate incomplete without the KPDC trees", async () => {
     const paper = filing({ row: { channel: "paper", postbackTarget: "grdviewCfrResults$ctl02$lnkbtnName" } });
     const result = await buildKansasCandidateLedger({ target: houseTarget, now: NOW, loadFilingPool: poolOf([paper]) });
     expect(result.status).toBe("resolved");
@@ -142,12 +143,96 @@ describe("buildKansasCandidateLedger", () => {
     expect(paper.openReport).not.toHaveBeenCalled();
     expect(result.paperReports).toEqual([paper.row]);
     expect(result.reports).toEqual([]);
+    expect(result.paper).toBeNull();
     expect(result.ledger.entries.map((entry) => entry.status)).toEqual([
       "missing_or_late",
       "missing_or_late",
       "not_yet_due",
       "not_yet_due",
     ]);
+    expect(result.complete).toBe(false);
+  });
+
+  // KPDC candidate rows (synthetic): the 2026 House tree row and the 2024
+  // tree row of the same paper filer.
+  const kpdcLink = (year: number) => (fileName: string) => ({
+    url: `https://www.kansas.gov/ethics/CFAScanned/House/${year}ElecCycle/${fileName}`,
+    fileName,
+    linkText: fileName,
+  });
+  const kpdcTrees: Record<number, KansasKpdcCandidateRow[]> = {
+    2026: [
+      { district: 85, filedName: "Holloway, Margaret", links: ["H085MH_AT.pdf", "H085MH_amend2601.pdf", "H085MH_202601.pdf", "H085MH_202607.pdf"].map(kpdcLink(2026)) },
+      { district: 86, filedName: "Holloway, Margaret", links: ["H086MH_202607.pdf"].map(kpdcLink(2026)) },
+    ],
+    2024: [{ district: 85, filedName: "Holloway, Margaret", links: ["H085MH_AT.pdf", "H085MH_202410.pdf", "H085MH_202501.pdf"].map(kpdcLink(2024)) }],
+  };
+  const loadKpdcRows = vi.fn(async (_office: unknown, electionYear: number) => kpdcTrees[electionYear] ?? []);
+  const paperRow = (index: number, fileDate: string) =>
+    filing({ row: { index, fileDate, channel: "paper", postbackTarget: "grdviewCfrResults$ctl02$lnkbtnName" } });
+
+  it("takes a paper filer's periods from the KPDC trees when they explain every viewer row", async () => {
+    // Viewer: 1/10/2025 (2024 post-general), 1/10/2026 x2 (2025 annual + amendment), 7/27/2026 (pre-primary).
+    const pool = [paperRow(0, "07/27/2026"), paperRow(1, "01/10/2026"), paperRow(2, "01/10/2026"), paperRow(3, "01/10/2025")];
+    const result = await buildKansasCandidateLedger({ target: houseTarget, now: NOW, loadFilingPool: poolOf(pool), loadKpdcRows });
+    expect(loadKpdcRows).toHaveBeenCalledWith(house, 2026);
+    expect(loadKpdcRows).toHaveBeenCalledWith(house, 2024);
+    expect(result.status).toBe("resolved");
+    if (result.status !== "resolved") return;
+    expect(result.paper).toMatchObject({ status: "resolved", filedNames: ["Holloway, Margaret"], explainedByEfile: 0, lastMinute: 0, skipped: 2, unmapped: [] });
+    if (result.paper?.status !== "resolved") return;
+    // 202410 was due before the window and is not taken; the other three are.
+    expect(result.paper.headers.map((header) => [header.periodStart, header.amendmentOrdinal])).toEqual([
+      ["2025-01-01", 1],
+      ["2025-01-01", null],
+      ["2026-01-01", null],
+      ["2024-10-25", null],
+    ]);
+    expect(result.ledger.entries.map((entry) => [entry.period.key, entry.status])).toEqual([
+      ["2025-annual", "amended"],
+      ["2026-pre_primary", "report_filed"],
+      ["2026-pre_general", "not_yet_due"],
+      ["2026-post_general", "not_yet_due"],
+    ]);
+    expect(result.ledger.outOfCycleFilings).toHaveLength(1);
+    expect(result.complete).toBe(true);
+  });
+
+  it("stays incomplete when the viewer shows more paper rows than the trees explain", async () => {
+    const pool = [paperRow(0, "07/27/2026"), paperRow(1, "01/13/2026"), paperRow(2, "01/10/2026"), paperRow(3, "01/10/2025"), paperRow(4, "07/30/2026")];
+    const result = await buildKansasCandidateLedger({ target: houseTarget, now: NOW, loadFilingPool: poolOf(pool), loadKpdcRows });
+    expect(result.status).toBe("resolved");
+    if (result.status !== "resolved") return;
+    expect(result.paper?.status).toBe("resolved");
+    expect(result.ledger.complete).toBe(true);
+    expect(result.complete).toBe(false);
+  });
+
+  it("subtracts the versions already opened as e-file covers before counting paper", async () => {
+    // The 2025 annual and its amendment were e-filed; only the pre-primary is paper.
+    const efileAnnual = filing({ row: { index: 0, fileDate: "01/10/2026" }, cover: { start: "1/1/2025", end: "12/31/2025" } });
+    const efileAmendment = filing({ row: { index: 1, fileDate: "01/10/2026", amendmentDate: "01/12/2026" }, cover: { start: "1/1/2025", end: "12/31/2025", amended: true } });
+    const pool = [efileAnnual, efileAmendment, paperRow(2, "07/27/2026"), paperRow(3, "01/10/2025")];
+    const result = await buildKansasCandidateLedger({ target: houseTarget, now: NOW, loadFilingPool: poolOf(pool), loadKpdcRows });
+    expect(result.status).toBe("resolved");
+    if (result.status !== "resolved") return;
+    expect(result.paper).toMatchObject({ status: "resolved", explainedByEfile: 2 });
+    if (result.paper?.status !== "resolved") return;
+    expect(result.paper.headers.map((header) => header.periodStart)).toEqual(["2026-01-01", "2024-10-25"]);
+    expect(result.ledger.entries.map((entry) => entry.status).slice(0, 2)).toEqual(["amended", "report_filed"]);
+    expect(result.complete).toBe(true);
+  });
+
+  it("reports a filer the trees do not carry and keeps the candidate incomplete", async () => {
+    const result = await buildKansasCandidateLedger({
+      target: { ...houseTarget, committeeId: "7:85:HOLLOWAY:DANIEL", committeeName: "HOLLOWAY DANIEL" },
+      now: NOW,
+      loadFilingPool: poolOf([filing({ row: { name: "HOLLOWAY DANIEL", channel: "paper" } })]),
+      loadKpdcRows,
+    });
+    expect(result.status).toBe("resolved");
+    if (result.status !== "resolved") return;
+    expect(result.paper).toEqual({ status: "unresolved", reason: "no_matching_filer" });
     expect(result.complete).toBe(false);
   });
 

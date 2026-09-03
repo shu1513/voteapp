@@ -148,8 +148,12 @@ export type KansasFilingHeader = {
   /** Cover period as rendered ("1/1/2026") or ISO. */
   periodStart: string;
   periodEnd: string;
-  /** Grid file date ("07/27/2026") or ISO. An amendment keeps the ORIGINAL file date. */
-  fileDate: string;
+  /**
+   * Grid file date ("07/27/2026") or ISO; an amendment keeps the ORIGINAL
+   * file date. Null for a version known only from the KPDC index, which
+   * carries no dates (kansasPaperInventory.ts).
+   */
+  fileDate: string | null;
   /**
    * Grid amendment date ("07/27/2026") or ISO; null on an original. Live
    * (Governor 2026): every version is its own grid row, an amended version
@@ -157,8 +161,10 @@ export type KansasFilingHeader = {
    * cover has chkAmended checked. Two amendments can share one day.
    */
   amendmentDate: string | null;
-  /** Cover chkAmended (e-file) or a grid amendment date (paper). */
+  /** Cover chkAmended (e-file) or the KPDC amend prefix (paper). */
   amended: boolean;
+  /** KPDC amend prefix (amend = 1, 2amend = 2, ...): orders date-less versions. Omitted or null when unknown. */
+  amendmentOrdinal?: number | null;
   /** Cover chkTermination: the committee closed with this report. */
   termination: boolean;
   channel: "efile" | "paper";
@@ -223,19 +229,40 @@ function normalizeHeader(filing: KansasFilingHeader): KansasFilingHeader {
     ...filing,
     periodStart: kansasDateToIso(filing.periodStart),
     periodEnd: kansasDateToIso(filing.periodEnd),
-    fileDate: kansasDateToIso(filing.fileDate),
+    fileDate: filing.fileDate === null ? null : kansasDateToIso(filing.fileDate),
     amendmentDate: filing.amendmentDate === null ? null : kansasDateToIso(filing.amendmentDate),
   };
 }
 
-/** When a version took effect: its amendment date, else its file date. */
-function effectiveDate(filing: KansasFilingHeader): string {
+/** When a version took effect: its amendment date, else its file date; null for a KPDC index version. */
+function effectiveDate(filing: KansasFilingHeader): string | null {
   return filing.amendmentDate ?? filing.fileDate;
 }
 
-/** Latest version first; on one day an amendment outranks an original. */
+/** Replacement sequence: an original is 0, an amendment its KPDC ordinal (1 when unknown). */
+function versionOrdinal(filing: KansasFilingHeader): number {
+  return filing.amended ? (filing.amendmentOrdinal ?? 1) : 0;
+}
+
+/**
+ * Latest version first. Two dated versions order by effective date, an
+ * amendment outranking an original on one day. When either side is undated
+ * (a KPDC index version) only the amend prefix orders them, so an undated
+ * amendment against any other amendment is a tie — and a tie at the top
+ * leaves the chain untrusted (groupVersions).
+ */
 function compareVersionsDesc(left: KansasFilingHeader, right: KansasFilingHeader): number {
-  return effectiveDate(right).localeCompare(effectiveDate(left)) || Number(right.amended) - Number(left.amended);
+  const leftDate = effectiveDate(left);
+  const rightDate = effectiveDate(right);
+  if (leftDate !== null && rightDate !== null) {
+    return rightDate.localeCompare(leftDate) || Number(right.amended) - Number(left.amended);
+  }
+  return versionOrdinal(right) - versionOrdinal(left);
+}
+
+/** The filename token KPDC files a period's report under: its due month, "202601" for a report due 2026-01-10. */
+export function kansasPeriodDueKey(period: Pick<KansasReportingPeriod, "due">): string {
+  return period.due.slice(0, 4) + period.due.slice(5, 7);
 }
 
 type VersionGroup = {
