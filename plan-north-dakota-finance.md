@@ -24,7 +24,7 @@ CSV columns (pinned at probe): `RegistrantID, CommitteeName, CandidateName, Tran
 **Occupation (verified live; two corrections baked in):**
 
 - Statute (NDCC 16.1-08.1-02.3), SOS FAQ, and the legacy upload spec agree: occupation, employer, and employer's principal place of business are required when an **individual's aggregate reaches $5,000 in a reporting period** — an aggregate test, satisfiable by multiple smaller checks, not a per-transaction test.
-- **Exemption (statute verbatim):** the $5,000 disclosure duty applies to filers "other than a candidate for judicial office, county office, city office, or school district office". **Judicial candidates therefore get no occupation chart — statutory-unavailable note**, same for any local office if ever supported. Statewide + legislative candidates, parties (02.4), and political committees are covered.
+- **Exemption (statute verbatim):** the $5,000 disclosure duty applies to filers "other than a candidate for judicial office, county office, city office, or school district office". Judicial filers nonetheless supply occupation in practice (Phase 0A gate 6: 2 of 2 donors ≥ $5k), so publication is decided by the display gate in hard fact 3, not by office class; the coverage note states the exemption. Statewide + legislative candidates, parties (02.4), and political committees are covered by the duty.
 - Live proof: transaction API rows populate `employerOccupation`/`employerName`/`employerAddress` on $5k+ individual contributions (observed: $15,000 donor → "Healthcare/Medical" / Essentia Health / employer address). The bulk CSV cannot supply occupation; ingestion needs the transaction API or filed reports.
 
 ### Expenditures (spent) — statutory shape limits the promise
