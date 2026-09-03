@@ -679,6 +679,39 @@ describe("Alabama's measured desc vocabulary", () => {
   });
 });
 
+describe("Delaware's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS.DE!;
+  const de = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType, config });
+
+  it("keeps both third-reading spellings, which are the only two the feed prints", () => {
+    expect(de("House Third Reading", 41)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(de("Senate Third Reading", 21, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+  });
+
+  it("keeps a roll taken while a seat is vacant", () => {
+    // Delaware's real minimums in this session: 40 of 41 in the House, 19 of
+    // 21 in the Senate. Both are whole-chamber votes with a seat empty.
+    expect(de("House Third Reading", 40)).toMatchObject({ isFloorVote: true });
+    expect(de("Senate Third Reading", 19, "senate")).toMatchObject({ isFloorVote: true });
+  });
+
+  it("does not pretend the description names the question", () => {
+    // Delaware wears the same words on an amendment vote as on passage, so
+    // the class this returns is the feed's claim and a batch must check the
+    // bill history before trusting it. The test pins the shared wording so a
+    // later edit cannot quietly invent a second spelling that does not exist.
+    expect(config.keptQuestions.map((q) => q.pattern.source)).toEqual([
+      "^house third reading$",
+      "^senate third reading$",
+    ]);
+    expect(config.excludedQuestions).toEqual([]);
+  });
+});
+
 describe("getLegiscanStateConfig", () => {
   it("serves only surveyed states; an unsurveyed state is refused by name", () => {
     expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual([
@@ -703,6 +736,7 @@ describe("getLegiscanStateConfig", () => {
       "AL",
       "AL-2218",
       "AL-2262",
+      "DE",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
@@ -724,6 +758,7 @@ describe("getLegiscanStateConfig", () => {
       "MT",
       "NC",
       "AL",
+      "DE",
     ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
@@ -745,6 +780,7 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("AL").sessionId).toBe(2148);
     expect(getLegiscanStateConfig("AL-2218")).toMatchObject({ jurisdiction: "AL", sessionId: 2218 });
     expect(getLegiscanStateConfig("AL-2262")).toMatchObject({ jurisdiction: "AL", sessionId: 2262 });
+    expect(getLegiscanStateConfig("DE").sessionId).toBe(2163);
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("NY")).toThrow("no LegiScan state config for NY");
   });

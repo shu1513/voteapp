@@ -1601,6 +1601,60 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     keptQuestions: ALABAMA_KEPT_QUESTIONS,
     excludedQuestions: ALABAMA_EXCLUDED_QUESTIONS,
   },
+
+  // Delaware General Assembly, 153rd (2025-2026). Both years sit in one
+  // LegiScan session. Surveyed 2026-09-02 over the full dataset: 1,296
+  // bills, 2,044 roll calls, 65 people (41 House seats + 21 Senate seats,
+  // plus mid-term replacements).
+  //
+  // Feed health is the cleanest tier this campaign has seen: no committee
+  // votes at all, no repeated roll call ids, no roll whose parts fail to add
+  // up to its own total, and no parse errors. Every recorded roll reports a
+  // whole chamber (House 41 or 40 with one seat vacant, Senate 21 or 19), so
+  // the floor-versus-committee tally check never has to decide anything.
+  // 350 House rolls carry no member list at all: Delaware records a voice
+  // vote as a roll with every count zero, almost always on a concurrent
+  // resolution. The fetcher already skips those as unrecorded votes.
+  //
+  // ⚠⚠ THE WHOLE DELAWARE VOCABULARY IS TWO STRINGS, AND NEITHER NAMES THE
+  // QUESTION. Every one of the 2,044 rolls reads exactly `House Third
+  // Reading` or `Senate Third Reading`. Final passage, a vote on an
+  // amendment, the originating chamber's later vote on the other chamber's
+  // version, and a procedural motion all wear the same words. Florida and
+  // Connecticut had the same defect in one chamber; Delaware has it in both,
+  // for every roll, with no second spelling anywhere to fall back on.
+  //
+  // So `questionClass: "passage"` on a Delaware row is this feed's claim,
+  // not Delaware's, exactly as it is in Florida. Never show it to a reader
+  // and never let it pick a roll. The question comes from the bill history,
+  // which spells it out:
+  //   `Passed By House. Votes: 31 YES 5 NO 5 ABSENT`      -> passage
+  //   `Amendment SA 3 to HB 445 - Passed By Senate. ...`   -> an amendment
+  //   `Defeated By House. Votes: 15 YES 26 NO. Reason Taken: motion to
+  //    recess to read amendment ...`                       -> procedural
+  // Matching a roll to its history line on (date, chamber, yeas, nays)
+  // resolves 1,574 of the 1,694 recorded rolls outright and all but 8 of the
+  // 158 divided ones. That match is a selection-time step in the batch
+  // recipe, not something a description pattern can do.
+  //
+  // Nothing is excluded here because nothing else exists to exclude: a
+  // config exclusion can only read the description, and the description is
+  // the same on a passage vote and on an amendment vote. Excluding either
+  // spelling would throw away every real passage vote in that chamber.
+  //
+  // Constitutional amendments ride ordinary bills in Delaware (they pass in
+  // two consecutive General Assemblies and never go to voters), so the
+  // Georgia resolution gap does not recur and no extra bill type is needed.
+  DE: {
+    jurisdiction: "DE",
+    sessionId: 2163,
+    chamberSizes: { house: 41, senate: 21 },
+    keptQuestions: [
+      { pattern: /^house third reading$/, questionClass: "passage" },
+      { pattern: /^senate third reading$/, questionClass: "passage" },
+    ],
+    excludedQuestions: [],
+  },
 };
 
 export const LEGISCAN_CONFIG_KEYS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);
