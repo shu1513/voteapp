@@ -796,7 +796,7 @@ function historicalCompetitivenessDisplayLabel(label: HistoricalContestCompetiti
     case "somewhat_competitive":
       return "Historically somewhat competitive";
     case "safe":
-      return "Historically one-sided";
+      return "Historically not competitive";
   }
 }
 
@@ -889,7 +889,7 @@ function currentCompetitivenessDisplayLabel(label: HistoricalContestCompetitiven
     case "somewhat_competitive":
       return "Currently somewhat competitive";
     case "safe":
-      return "Currently one-sided";
+      return "Currently not competitive";
   }
 }
 
