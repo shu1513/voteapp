@@ -1601,6 +1601,128 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     keptQuestions: ALABAMA_KEPT_QUESTIONS,
     excludedQuestions: ALABAMA_EXCLUDED_QUESTIONS,
   },
+
+  // Kansas Legislature, 2025-2026 Regular Session. Kansas files both years
+  // of the biennium in ONE LegiScan dataset (session 2178, dated
+  // 2026-06-28), so this single entry covers the whole current term; there
+  // is no separate 2025 or 2026 session to register. Vocabulary measured
+  // from the full dataset survey 2026-09-02: 1,483 bills, 1,435 roll calls,
+  // 218 people (125 House + 40 Senate seats plus mid-term turnover).
+  //
+  // What the survey established:
+  // - ⚠ EVERY KANSAS DESCRIPTION ENDS WITH ITS OWN TALLY, spelled
+  //   ` - Yea: <n> Nay: <n>` (1,433 of 1,435 rolls; the two exceptions are
+  //   line-item veto rolls whose description is truncated at 250
+  //   characters). That suffix makes almost every description unique, so
+  //   the RAW histogram is useless: 729 distinct descriptions fold to just
+  //   130 families once it is removed. No pattern here may be anchored at
+  //   the end of the string.
+  // - ⭐ THE EMBEDDED TALLY IS A FREE PER-ROLL CHECKSUM, and no other state
+  //   in this campaign offers one. Comparing it to the roll's own `yea` and
+  //   `nay` fields across all 1,433 rolls that carry it found exactly ONE
+  //   disagreement: roll 1661569 (House Substitute for SB 229, 2026-03-12)
+  //   is captioned `Yea: 85` while the structured fields and the member
+  //   list both say 83 yeas (83 + 36 nay + 5 absent = 124 of 125 seats).
+  //   That bill did not become law, so it is outside the campaign gate, but
+  //   run the comparison over any batch before judging it.
+  // - Kansas takes TWO recorded floor votes on a bill. `Committee of the
+  //   Whole` is the amend-and-debate stage (floor amendments, rulings of
+  //   the chair, motions to rerefer), the analog of a second reading in
+  //   Texas, California and Missouri; `Final Action` is passage. Only Final
+  //   Action and the later stages are kept.
+  // - `Emergency Final Action` is Final Action taken on the same day the
+  //   bill is reported, not a distinct question, so it is kept under the
+  //   same rule. `Senate Consent Calendar Passed` is likewise real passage.
+  // - ⭐ VETO OVERRIDES ARE A FIRST-CLASS POOL HERE, not an oddity.
+  //   Kansas has a Republican supermajority legislature and a Democratic
+  //   governor, and the legislature overrode her 69 times in this
+  //   biennium (`Motion to override veto prevailed`, House 34 / Senate 35).
+  //   An override needs two thirds of each chamber, so these votes are
+  //   divided by definition and the bill becomes law by definition. They
+  //   are kept as `veto_override`; a description written from one must say
+  //   the measure became law over the governor's veto.
+  // - ⚠ LINE-ITEM VETO OVERRIDES ARE EXCLUDED BY RULE. They are worded
+  //   `Motion to override line item veto prevailed; Line item veto 88(k),
+  //   88(m) overridden` and every one sits on an appropriations bill. A
+  //   line-item override is a vote on the vetoed ITEMS, not on the act, so
+  //   describing it as a vote on the bill would be a false claim — the same
+  //   trap that removed Kentucky's HB 2 from its 2026 pool.
+  // - The dataset carries NO committee votes at all: every roll's `total`
+  //   is the whole chamber (125 House, 40 Senate), so nothing lands in the
+  //   small-tally or committee buckets. Feed health is the cleanest tier —
+  //   0 repeated roll_call_ids, 0 summary-only rolls, 0 internal tally
+  //   mismatches, 1 identity-duplicate extra.
+  // - ⚠ Kansas proposes CONSTITUTIONAL AMENDMENTS as CONCURRENT
+  //   RESOLUTIONS (`HCR 5004`, `SCR 1611`), which LegiScan types `CR` — a
+  //   type the shared kept-types list drops before this config is read. Two
+  //   adopted amendments are therefore unreachable today. Keeping `CR`
+  //   wholesale is NOT the fix: the same type carries ceremonial
+  //   resolutions and Article V convention applications, several of them
+  //   divided. Recorded in
+  //   evidence/rollcall/legiscan-ks-2178/CODE-FINDINGS.md, same shape as
+  //   the Georgia finding.
+  //
+  // Every description in the session classifies: 1,271 kept floor votes
+  // (836 passage / 297 conference report / 69 concurrence / 69 veto
+  // override), 110 excluded, and NOTHING surfaced.
+  KS: {
+    jurisdiction: "KS",
+    sessionId: 2178,
+    chamberSizes: { house: 125, senate: 40 },
+    keptQuestions: [
+      // `House Conference Committee Report was adopted - Yea: 121 Nay: 0`.
+      // Listed first so the concurrence rule cannot claim it.
+      { pattern: /^(?:house|senate) conference committee report was adopted\b/, questionClass: "conference_report" },
+      // The second chamber accepting the other's changes, either directly
+      // or as worked out in conference.
+      {
+        pattern: /^(?:house|senate) concurred with amendments(?: in conference)?\b/,
+        questionClass: "concurrence",
+      },
+      // The override of a whole-bill veto. Never matches the line-item
+      // spellings, which carry `line item veto` and are excluded below.
+      { pattern: /^(?:house|senate) motion to override veto prevailed\b/, questionClass: "veto_override" },
+      // Passage, in all of its spellings: plain and `Emergency` Final
+      // Action, on a bill or a `Substitute`, `passed` or (for resolutions)
+      // `adopted`, with optional ` as amended` and an optional
+      // ` by required 2/3 majority` tail.
+      {
+        pattern:
+          /^(?:house|senate) (?:emergency )?final action - (?:substitute )?(?:passed|adopted)(?: as amended)?(?: by required 2\/3 majority)?\b/,
+        questionClass: "passage",
+      },
+      // The Senate's consent calendar, which is real passage.
+      { pattern: /^senate consent calendar passed\b/, questionClass: "passage" },
+    ],
+    excludedQuestions: [
+      // Committee of the Whole: the amend-and-debate stage. Covers floor
+      // amendments (`Amendment by Senator Holscher was rejected`), rulings
+      // of the chair, motions to rerefer, and the stage's own
+      // `Be passed as amended` recommendation.
+      /^(?:house|senate) committee of the whole\b/,
+      // A floor amendment taken during Emergency Final Action debate.
+      /^house efa subject to amendment and debate\b/,
+      // Line-item veto overrides, prevailed and failed alike: a vote on the
+      // vetoed items, not on the act. See the note above.
+      /\bmotion to override (?:selected )?line item veto\b/,
+      // Failed questions. None of these is the measure's decisive vote, and
+      // each would otherwise read like the kept spelling beside it.
+      /\bmotion to override veto failed\b/,
+      /\bconference committee report not adopted\b/,
+      /\bmotion to not adopt conference committee report\b/,
+      /final action - not (?:passed|adopted)\b/,
+      /\bmotion to concur with amendments failed\b/,
+      // Procedural motions: pulling a bill out of committee (spelled
+      // `Citing Rule 11(b), motion to withdraw from committee failed` in
+      // the Senate and `Motion to withdraw from Committee on Veterans and
+      // Military not adopted` in the House), killing a bill by striking its
+      // enacting clause, the debate cutoff, and a germaneness ruling.
+      /\bmotion to withdraw from committee\b/,
+      /\bmotion to strike the enacting clause\b/,
+      /\bmotion for previous question\b/,
+      /\bquestion of germaneness\b/,
+    ],
+  },
 };
 
 export const LEGISCAN_CONFIG_KEYS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);
