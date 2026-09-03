@@ -1,0 +1,148 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1537640,
+   "measure_id": "HB 168",
+   "vote_date": "2025-04-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 168, which lets state school money follow preschool children with disabilities. Montana schools must already teach children with disabilities from age 3. But the state's student count, which sets school funding, left out children under 5, so districts got no state money for them. The act adds 3-year-olds and 4-year-olds with disabilities to that count, scaled by how many hours of teaching they get. It also lets a school board formally admit such a child as a pupil. Preschool programs a district runs by choice stay outside the count. The Montana House passed it 64-34, and it became law.",
+   "nay_description": "Voted against House Bill 168, which lets state school money follow preschool children with disabilities. Montana schools must already teach children with disabilities from age 3. But the state's student count, which sets school funding, left out children under 5, so districts got no state money for them. The act adds 3-year-olds and 4-year-olds with disabilities to that count, scaled by how many hours of teaching they get. It also lets a school board formally admit such a child as a pupil. Preschool programs a district runs by choice stay outside the count. The Montana House passed it 64-34, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1554305,
+   "measure_id": "HB 168",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 168, which lets state school money follow preschool children with disabilities. Montana schools must already teach children with disabilities from age 3. But the state's student count, which sets school funding, left out children under 5, so districts got no state money for them. The act adds 3-year-olds and 4-year-olds with disabilities to that count, scaled by how many hours of teaching they get. It also lets a school board formally admit such a child as a pupil. Preschool programs a district runs by choice stay outside the count. The Montana Senate passed it 29-21, and it became law.",
+   "nay_description": "Voted against House Bill 168, which lets state school money follow preschool children with disabilities. Montana schools must already teach children with disabilities from age 3. But the state's student count, which sets school funding, left out children under 5, so districts got no state money for them. The act adds 3-year-olds and 4-year-olds with disabilities to that count, scaled by how many hours of teaching they get. It also lets a school board formally admit such a child as a pupil. Preschool programs a district runs by choice stay outside the count. The Montana Senate passed it 29-21, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1504413,
+   "measure_id": "HB 396",
+   "vote_date": "2025-03-04",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 396, which changes Montana's bail rules in three ways. A person brought back to Montana from another state on a warrant may not be released on bail right away. They must first come before the judge who issued the warrant, or another judge nearby if that judge is away. When an agreement between states applies, that agreement and federal law control. Judges must also weigh whether a person has fled or skipped court before, and what it cost the state to bring them back. That applies both to release and to the amount of bail. The Montana House passed it 60-39, and it became law.",
+   "nay_description": "Voted against House Bill 396, which changes Montana's bail rules in three ways. A person brought back to Montana from another state on a warrant may not be released on bail right away. They must first come before the judge who issued the warrant, or another judge nearby if that judge is away. When an agreement between states applies, that agreement and federal law control. Judges must also weigh whether a person has fled or skipped court before, and what it cost the state to bring them back. That applies both to release and to the amount of bail. The Montana House passed it 60-39, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1557490,
+   "measure_id": "HB 396",
+   "vote_date": "2025-04-24",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 396, which changes Montana's bail rules in three ways. A person brought back to Montana from another state on a warrant may not be released on bail right away. They must first come before the judge who issued the warrant, or another judge nearby if that judge is away. When an agreement between states applies, that agreement and federal law control. Judges must also weigh whether a person has fled or skipped court before, and what it cost the state to bring them back. That applies both to release and to the amount of bail. The Montana Senate passed it 32-18, and it became law.",
+   "nay_description": "Voted against House Bill 396, which changes Montana's bail rules in three ways. A person brought back to Montana from another state on a warrant may not be released on bail right away. They must first come before the judge who issued the warrant, or another judge nearby if that judge is away. When an agreement between states applies, that agreement and federal law control. Judges must also weigh whether a person has fled or skipped court before, and what it cost the state to bring them back. That applies both to release and to the amount of bail. The Montana Senate passed it 32-18, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1551775,
+   "measure_id": "HB 492",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 492, which limits how much parking a Montana city may force a builder to include. A city may no longer ask for more than one space per home. For homes under 1,200 square feet the limit is half a space, and in the larger cities under the state land use planning law, none at all. A city may ask for no parking at all for child care centres, assisted living homes, deed-restricted affordable housing, or an old building being put to a new use. Spaces required by federal disability law still apply, and a builder may still add as much parking as they wish. The change starts October 1, 2026. The Montana House passed it 73-26, and it became law.",
+   "nay_description": "Voted against House Bill 492, which limits how much parking a Montana city may force a builder to include. A city may no longer ask for more than one space per home. For homes under 1,200 square feet the limit is half a space, and in the larger cities under the state land use planning law, none at all. A city may ask for no parking at all for child care centres, assisted living homes, deed-restricted affordable housing, or an old building being put to a new use. Spaces required by federal disability law still apply, and a builder may still add as much parking as they wish. The change starts October 1, 2026. The Montana House passed it 73-26, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1508728,
+   "measure_id": "HB 690",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 690, which changes what counts as child abuse or neglect in Montana. The act adds the same wording in five places. It says that raising a child in a way that matches the child's biological sex is not abuse or neglect. That covers related mental health and medical choices. So that conduct alone can no longer support a finding against a parent. The act also limits what lawmakers may pass on when they read child protection files. The department must mark and list privileged papers, and a lawmaker may not hand that material to a parent. The Montana House passed it 57-42, and it became law.",
+   "nay_description": "Voted against House Bill 690, which changes what counts as child abuse or neglect in Montana. The act adds the same wording in five places. It says that raising a child in a way that matches the child's biological sex is not abuse or neglect. That covers related mental health and medical choices. So that conduct alone can no longer support a finding against a parent. The act also limits what lawmakers may pass on when they read child protection files. The department must mark and list privileged papers, and a lawmaker may not hand that material to a parent. The Montana House passed it 57-42, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1552295,
+   "measure_id": "HB 690",
+   "vote_date": "2025-04-18",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 690, which changes what counts as child abuse or neglect in Montana. The act adds the same wording in five places. It says that raising a child in a way that matches the child's biological sex is not abuse or neglect. That covers related mental health and medical choices. So that conduct alone can no longer support a finding against a parent. The act also limits what lawmakers may pass on when they read child protection files. The department must mark and list privileged papers, and a lawmaker may not hand that material to a parent. The Montana Senate passed it 34-16, and it became law.",
+   "nay_description": "Voted against House Bill 690, which changes what counts as child abuse or neglect in Montana. The act adds the same wording in five places. It says that raising a child in a way that matches the child's biological sex is not abuse or neglect. That covers related mental health and medical choices. So that conduct alone can no longer support a finding against a parent. The act also limits what lawmakers may pass on when they read child protection files. The department must mark and list privileged papers, and a lawmaker may not hand that material to a parent. The Montana Senate passed it 34-16, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1546585,
+   "measure_id": "HB 810",
+   "vote_date": "2025-04-12",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 810, which bars a landlord from charging a tenant an extra fee just because of how the rent is paid. The one exception is passing on a bank fee the landlord actually pays for an electronic payment. The rule covers both regular rentals and mobile home lot rentals. The act also adds a definition listing the payment types this covers: cash, check, electronic, and other forms written into the lease. The Montana Senate passed it 38-12, and it became law.",
+   "nay_description": "Voted against House Bill 810, which bars a landlord from charging a tenant an extra fee just because of how the rent is paid. The one exception is passing on a bank fee the landlord actually pays for an electronic payment. The rule covers both regular rentals and mobile home lot rentals. The act also adds a definition listing the payment types this covers: cash, check, electronic, and other forms written into the lease. The Montana Senate passed it 38-12, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

@@ -96,7 +96,7 @@ repository at `/Users/shu/legiscan-data/mt_doc.py` and `mt_diff.py`.
   `divided-enacted-worklist.tsv` (one row per divided-and-enacted roll with its
   disposition), and `filter-5-drops.md` (why each dropped measure was dropped
   after a full read)
-- `batch-01/` through `batch-08/` — each holds `PLAN.md`, `JUDGING.md`,
+- `batch-01/` through `batch-09/` — each holds `PLAN.md`, `JUDGING.md`,
   `judgments.json`, the roll evidence files, and the import ledgers
 
 ## Status
@@ -114,11 +114,12 @@ records.**
 | batch-06 | 4 | 8 | 342 | property tax, civil rights, reproductive rights |
 | batch-07 | 5 | 7 | 333 | property tax, guns, elections |
 | batch-08 | 6 | 8 | 407 | energy, mining, water, wildlife, ambulances |
-| **total** | **48** | **89** | **3,895** | 14 areas, 87 candidates, 2,262 tags |
+| batch-09 | 5 | 8 | 343 | schools, renters, bail, child protection |
+| **total** | **53** | **97** | **4,238** | 15 areas, 87 candidates, 2,479 tags |
 
-**359 divided-and-enacted rolls remain unworked, across 257 bills**, plus 58
+**346 divided-and-enacted rolls remain unworked, across 249 bills**, plus 58
 joint-resolution rolls excluded by rule. 90 rolls are marked
-`superseded:later-roll-used`, 29 are dropped under filter 5, one is dropped
+`superseded:later-roll-used`, 34 are dropped under filter 5, one is dropped
 because its chamber's final vote was not divided, and seven are held on the
 LegiScan vote defect described in `CODE-FINDINGS.md` §7 and
 `survey/legiscan-vote-audit.md`.

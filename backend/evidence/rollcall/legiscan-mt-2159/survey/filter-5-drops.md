@@ -171,3 +171,37 @@ board any per-student money in its first year and makes both kinds subject to
 clawback under 20-9-344. The 70/20/40 enrolment thresholds and the
 80/80/100/140 funding percentages are unchanged, and nothing changes how money
 reaches the districts that charter schools draw students from.
+
+## Batch-09
+
+**HB 480** (jury trial in constitutional challenges, chapter 680) is dropped
+even though the House split 50-49 over it. It gives any party — including the
+State — a jury on disputed facts when a case challenges a legislative act or a
+ballot issue, where 27-8-302 was previously permissive and such cases are
+decided by a judge in practice. Nothing is struck but the word "such". It
+reaches pending cases, because the trigger is the date of the jury demand.
+
+Contested is not the same as directionally defensible. No area maps to court
+procedure: `anti_corruption` is about abuse of public office,
+`government_efficiency` about service delivery, and `impartiality` and
+`legal_competence` are judicial-candidate areas that may never appear on a
+legislative record.
+
+**HB 591** (Celebrate Freedom Week, chapter 320) is dropped because it requires
+almost nothing. Districts "shall conduct appropriate exercises" for a new
+commemorative week, and trustees must adopt a policy covering all the
+commemorative days. But it names no document to teach or read aloud — the
+Declaration of Independence and the two constitutions appear only in the WHEREAS
+preamble, which is not part of the code — and it sets no hours, grades, opt-out,
+penalty or money. The one substantive change runs the other way: the page image
+shows **"during the school day" struck** from 20-1-306(1), so the exercises for
+every day on that list need no longer happen during the school day. The
+extracted text prints those words as if they were still law.
+
+**HB 636** (marijuana edibles, chapter 500) is dropped as too narrow. One line
+changes: the THC in a single edible serving falls from 10 mg to 5 mg, and the
+100 mg cap is now explicitly per package, so a package holds up to 20 servings
+instead of 10. Nothing else moves — not the 35% flower potency cap, not licence
+fees, not taxes, not local opt-outs, not the higher-potency allowance for
+registered cardholders. A serving-size cap on one product type does not evidence
+a stance on any area in the catalogue.
