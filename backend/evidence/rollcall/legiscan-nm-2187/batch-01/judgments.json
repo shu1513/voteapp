@@ -1,0 +1,266 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1499308,
+      "measure_id": "HB 12",
+      "vote_date": "2025-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 12, which changes New Mexico's law on extreme risk firearm protection orders. These are court orders that take guns away from a person a judge finds is a danger to themselves or others. Under the act a police officer may ask for one based on information the officer gathered on the job, instead of only when another person asks and swears out a statement. A person served with an order must hand over their guns right away, unless the court says otherwise. Whoever takes the guns must write a receipt and file it with the court within seventy-two hours. The New Mexico House passed it 41-27, and it became law.",
+      "nay_description": "Voted against House Bill 12, which changes New Mexico's law on extreme risk firearm protection orders. These are court orders that take guns away from a person a judge finds is a danger to themselves or others. Under the act a police officer may ask for one based on information the officer gathered on the job, instead of only when another person asks and swears out a statement. A person served with an order must hand over their guns right away, unless the court says otherwise. Whoever takes the guns must write a receipt and file it with the court within seventy-two hours. The New Mexico House passed it 41-27, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1492677,
+      "measure_id": "HB 6",
+      "vote_date": "2025-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 6, which extends New Mexico's prevailing wage law to a new set of building projects. The prevailing wage is a minimum pay and benefit rate the state sets for each construction trade. An industrial revenue bond is a bond a local government sells to help pay for a private project. The act says that on a project a city or county backs with one of those bonds, the contractor must pay the prevailing wage and follow the rest of the public works wage law. The New Mexico House passed it 41-26, and it became law.",
+      "nay_description": "Voted against House Bill 6, which extends New Mexico's prevailing wage law to a new set of building projects. The prevailing wage is a minimum pay and benefit rate the state sets for each construction trade. An industrial revenue bond is a bond a local government sells to help pay for a private project. The act says that on a project a city or county backs with one of those bonds, the contractor must pay the prevailing wage and follow the rest of the public works wage law. The New Mexico House passed it 41-26, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1503003,
+      "measure_id": "HB 89",
+      "vote_date": "2025-03-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 89, which rewrites who can get a state graduate scholarship. It drops the rule that a student be a United States citizen or hold a permanent resident visa, and instead requires the student to live in New Mexico. It gives priority to students from groups that are underrepresented in graduate school. A student now needs a bachelor's degree and a grade point average of at least 3.0, or a paid job helping faculty teach or do research, and must take at least six credit hours. The award may cover the full cost of tuition and fees, and may run until a final degree or eight semesters. The New Mexico House passed it 40-25, and it became law.",
+      "nay_description": "Voted against House Bill 89, which rewrites who can get a state graduate scholarship. It drops the rule that a student be a United States citizen or hold a permanent resident visa, and instead requires the student to live in New Mexico. It gives priority to students from groups that are underrepresented in graduate school. A student now needs a bachelor's degree and a grade point average of at least 3.0, or a paid job helping faculty teach or do research, and must take at least six credit hours. The award may cover the full cost of tuition and fees, and may run until a final degree or eight semesters. The New Mexico House passed it 40-25, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1503058,
+      "measure_id": "HB 128",
+      "vote_date": "2025-03-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 128, which creates the local solar access fund inside the New Mexico Finance Authority. The fund makes grants to counties, cities, school districts, land grants-merced and tribes so they can plan, build and install solar power systems, including batteries, for buildings they own. It also pays for help applying for federal money. The authority had to write rules by December 31, 2025, and most of the money must go to rural applicants. The version the House passed set up the fund but put no money from the state's main account into it. The New Mexico House passed it 43-22, and it became law.",
+      "nay_description": "Voted against House Bill 128, which creates the local solar access fund inside the New Mexico Finance Authority. The fund makes grants to counties, cities, school districts, land grants-merced and tribes so they can plan, build and install solar power systems, including batteries, for buildings they own. It also pays for help applying for federal money. The authority had to write rules by December 31, 2025, and most of the money must go to rural applicants. The version the House passed set up the fund but put no money from the state's main account into it. The New Mexico House passed it 43-22, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1519227,
+      "measure_id": "HB 586",
+      "vote_date": "2025-03-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 586, which keeps and widens the state's review of health care mergers. The review law was set to end on July 1, 2025, and the act repeals that end date. It broadens what counts as a deal the state must review, including sales of a hospital or of the land under it, and purchases of independent medical practices by insurer-owned groups. It requires the Health Care Authority to post information about a proposed deal, take public comment and hold at least one public forum when it reviews one. It adds fines, protects staff who report wrongdoing, and requires yearly posting of who owns each hospital. Most of the material the state collects in a review stays confidential. The New Mexico House passed it 41-26, and it became law.",
+      "nay_description": "Voted against House Bill 586, which keeps and widens the state's review of health care mergers. The review law was set to end on July 1, 2025, and the act repeals that end date. It broadens what counts as a deal the state must review, including sales of a hospital or of the land under it, and purchases of independent medical practices by insurer-owned groups. It requires the Health Care Authority to post information about a proposed deal, take public comment and hold at least one public forum when it reviews one. It adds fines, protects staff who report wrongdoing, and requires yearly posting of who owns each hospital. Most of the material the state collects in a review stays confidential. The New Mexico House passed it 41-26, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1524388,
+      "measure_id": "SB 9",
+      "vote_date": "2025-03-21",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 9, which raises the fines New Mexico can charge a company that breaks the state's rules for oil and gas pipelines. The act ties the state's top fine to the federal one, so the most the state may charge is now the most the federal pipeline safety law allows. When it picks an amount, the state still weighs how bad the breach was and whether the firm can pay. The New Mexico House passed it 45-15, and it became law.",
+      "nay_description": "Voted against Senate Bill 9, which raises the fines New Mexico can charge a company that breaks the state's rules for oil and gas pipelines. The act ties the state's top fine to the federal one, so the most the state may charge is now the most the federal pipeline safety law allows. When it picks an amount, the state still weighs how bad the breach was and whether the firm can pay. The New Mexico House passed it 45-15, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1524320,
+      "measure_id": "SB 16",
+      "vote_date": "2025-03-21",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 16, which lets voters who did not pick a party vote in a primary election. A voter whose registration says no party may ask for the ballot of one of the major parties in that primary and vote it. Their registration is not changed unless they ask for that. Mailed ballot forms must offer the choice, and in precincts that vote by mail the county clerk sends a card the voter returns to say which party's ballot they want. The New Mexico House passed it 36-33, and it became law.",
+      "nay_description": "Voted against Senate Bill 16, which lets voters who did not pick a party vote in a primary election. A voter whose registration says no party may ask for the ballot of one of the major parties in that primary and vote it. Their registration is not changed unless they ask for that. Mailed ballot forms must offer the choice, and in precincts that vote by mail the county clerk sends a card the voter returns to say which party's ballot they want. The New Mexico House passed it 36-33, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1521928,
+      "measure_id": "SB 21",
+      "vote_date": "2025-03-19",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 21, which rewrites the state's water pollution law. It makes it against the law to let waste out of a pipe, ditch or other single spot into a federally covered waterway without a state permit. That lets New Mexico run the federal clean water permit program itself, instead of leaving it to Washington. The act also orders new state rules for waste let into rivers, streams and lakes, and for dumping dirt or fill into them. It adds reasons the state must turn a permit down. It makes the party at fault for a spill pay to clean it up, and sets up a fund for polluted sites nobody is looking after. The New Mexico House passed it 43-25, and it became law.",
+      "nay_description": "Voted against Senate Bill 21, which rewrites the state's water pollution law. It makes it against the law to let waste out of a pipe, ditch or other single spot into a federally covered waterway without a state permit. That lets New Mexico run the federal clean water permit program itself, instead of leaving it to Washington. The act also orders new state rules for waste let into rivers, streams and lakes, and for dumping dirt or fill into them. It adds reasons the state must turn a permit down. It makes the party at fault for a spill pay to clean it up, and sets up a fund for polluted sites nobody is looking after. The New Mexico House passed it 43-25, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1520184,
+      "measure_id": "SB 36",
+      "vote_date": "2025-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 36, which limits what state workers may do with people's private details. Those details include a person's immigration status, health, disability, religion, race or home country, who they are attracted to, how they see their own gender, and their Social Security number. A state worker may not pass them outside their own agency, apart from a short list of allowed reasons. The act also covers driver's license and vehicle records. Staff and contractors at the state tax office and at the state's Traffic Safety Bureau may not hand those records to anyone to help enforce the main federal immigration law, apart from its felony crime parts. Outside firms given access must promise in writing not to use them that way. The New Mexico House passed it 42-23, and it became law.",
+      "nay_description": "Voted against Senate Bill 36, which limits what state workers may do with people's private details. Those details include a person's immigration status, health, disability, religion, race or home country, who they are attracted to, how they see their own gender, and their Social Security number. A state worker may not pass them outside their own agency, apart from a short list of allowed reasons. The act also covers driver's license and vehicle records. Staff and contractors at the state tax office and at the state's Traffic Safety Bureau may not hand those records to anyone to help enforce the main federal immigration law, apart from its felony crime parts. Outside firms given access must promise in writing not to use them that way. The New Mexico House passed it 42-23, and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1520145,
+      "measure_id": "SB 57",
+      "vote_date": "2025-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 57, which adds an exception to the state's open records law. That law lets anyone ask to see a government record. Under the act the public may no longer get records that name, or hold private details about, a health care worker who is employed by a public body and who gives care tied to abortion. The New Mexico House passed it 42-25, and it became law.",
+      "nay_description": "Voted against Senate Bill 57, which adds an exception to the state's open records law. That law lets anyone ask to see a government record. Under the act the public may no longer get records that name, or hold private details about, a health care worker who is employed by a public body and who gives care tied to abortion. The New Mexico House passed it 42-25, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1524430,
+      "measure_id": "SB 120",
+      "vote_date": "2025-03-21",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 120, which makes permanent a rule that health plans may not charge patients out of pocket for behavioral health care. Behavioral health care covers treatment for mental illness, substance use and trauma, including hospital stays, therapy and medicines. The rule had been set to end on January 1, 2027, and the act removes that end date. It applies only to care from providers in the plan's network. It does not apply to limited benefit plans, catastrophic plans, or high deductible plans paired with a health savings account until the patient has met the deductible. The New Mexico House passed it 46-17, and it became law.",
+      "nay_description": "Voted against Senate Bill 120, which makes permanent a rule that health plans may not charge patients out of pocket for behavioral health care. Behavioral health care covers treatment for mental illness, substance use and trauma, including hospital stays, therapy and medicines. The rule had been set to end on January 1, 2027, and the act removes that end date. It applies only to care from providers in the plan's network. It does not apply to limited benefit plans, catastrophic plans, or high deductible plans paired with a health savings account until the patient has met the deductible. The New Mexico House passed it 46-17, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1522178,
+      "measure_id": "SB 124",
+      "vote_date": "2025-03-19",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 124, which gives the state's top insurance regulator a new way to dig into a case. That officer, the superintendent of insurance, watches over insurance firms in New Mexico. The act lets the superintendent send a subpoena, an order to turn over papers or answer questions, while still looking into a matter and before bringing any formal case. If a person ignores one without a good legal reason, the state may ask a court to make them obey. The New Mexico House passed it 40-23, and it became law.",
+      "nay_description": "Voted against Senate Bill 124, which gives the state's top insurance regulator a new way to dig into a case. That officer, the superintendent of insurance, watches over insurance firms in New Mexico. The act lets the superintendent send a subpoena, an order to turn over papers or answer questions, while still looking into a matter and before bringing any formal case. If a person ignores one without a good legal reason, the state may ask a court to make them obey. The New Mexico House passed it 40-23, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1523871,
+      "measure_id": "SB 267",
+      "vote_date": "2025-03-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 267, which limits what landlords may charge people who apply to rent a home. A listing must state the base rent and every fee in plain language. A screening fee, which covers the cost of a credit or reference check, may not be more than fifty dollars, and the applicant must agree to it in writing first. The landlord must give a receipt, must refund the fee within thirty days in stated cases, and may not charge a second screening fee within ninety days for other homes the same owner rents. The act lowers the cap on a late fee to five percent of the rent and says that fee is figured on rent alone. It also requires sixty days notice before a fee goes up. The New Mexico House passed it 42-21, and it became law.",
+      "nay_description": "Voted against Senate Bill 267, which limits what landlords may charge people who apply to rent a home. A listing must state the base rent and every fee in plain language. A screening fee, which covers the cost of a credit or reference check, may not be more than fifty dollars, and the applicant must agree to it in writing first. The landlord must give a receipt, must refund the fee within thirty days in stated cases, and may not charge a second screening fee within ninety days for other homes the same owner rents. The act lowers the cap on a late fee to five percent of the rent and says that fee is figured on rent alone. It also requires sixty days notice before a fee goes up. The New Mexico House passed it 42-21, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1524440,
+      "measure_id": "SB 364",
+      "vote_date": "2025-03-21",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 364, which changes who may be hired as a police officer in New Mexico. State law had said a peace officer must be a United States citizen. Under the act a person may also be hired if the federal government has given them the right to work here. The same change covers special deputy sheriffs, marshals and other peace officers. The New Mexico House passed it 38-20, and it became law.",
+      "nay_description": "Voted against Senate Bill 364, which changes who may be hired as a police officer in New Mexico. State law had said a peace officer must be a United States citizen. Under the act a person may also be hired if the federal government has given them the right to work here. The same change covers special deputy sheriffs, marshals and other peace officers. The New Mexico House passed it 38-20, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
