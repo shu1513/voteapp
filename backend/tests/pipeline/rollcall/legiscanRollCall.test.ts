@@ -480,6 +480,88 @@ describe("Indiana 2025's measured desc vocabulary", () => {
   });
 });
 
+describe("Indiana 2026's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS["IN-2234"]!;
+  const inRoll = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+
+  it("serves the second Indiana session under its own key, writing the same jurisdiction", () => {
+    expect(config.jurisdiction).toBe("IN");
+    expect(config.sessionId).toBe(2234);
+    // The 2025 entry must be untouched, or its batches stop being re-runnable.
+    expect(LEGISCAN_STATE_CONFIGS.IN!.sessionId).toBe(2143);
+    expect(getLegiscanStateConfig("in-2234")).toBe(config);
+    // Indiana is named once in the jurisdiction list despite the two entries.
+    expect(LEGISCAN_RECORD_JURISDICTIONS.filter((j) => j === "IN")).toHaveLength(1);
+  });
+
+  it("keeps the final-action spellings, which do carry across from 2025", () => {
+    expect(inRoll("House - Third reading", 100)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(inRoll("Senate - Third reading", 49, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(inRoll("House - House concurred with Senate amendments", 100).questionClass).toBe("concurrence");
+    expect(inRoll("Senate - Rules Suspended. Senate concurred with House amendments", 50, "senate").questionClass).toBe(
+      "concurrence"
+    );
+    expect(inRoll("House - Conference Committee Report 1", 100).questionClass).toBe("conference_report");
+    expect(inRoll("Senate - Rules Suspended. Conference Committee Report 1", 50, "senate").questionClass).toBe(
+      "conference_report"
+    );
+  });
+
+  // HB 1368 roll 399: the House defeated the motion 48-42, short of the
+  // constitutional majority of 51, but LegiScan reports `passed: 1` because
+  // its flag is a bare-majority check, and the fetcher writes `result`
+  // straight from that flag. Keeping the desc would store a defeated vote as
+  // "Passed". 2025's longer spelling stays kept because its flag is correct.
+  it("excludes the defeated concurrence whose passed flag is wrong, but keeps 2025's", () => {
+    expect(inRoll("House - Concurrence defeated", 100)).toMatchObject({
+      isFloorVote: false,
+      reason: "excluded_question",
+    });
+    expect(
+      classifyLegiscanRollCall({
+        desc: "Senate - Concurrence failed for lack of constitutional majority",
+        total: 50,
+        chamber: "senate",
+        billType: "B",
+        config: LEGISCAN_STATE_CONFIGS.IN!,
+      }).questionClass
+    ).toBe("concurrence");
+  });
+
+  it("excludes each surveyed procedural family, including the four new spellings", () => {
+    for (const desc of [
+      "House - Amendment #24 (DeLaney) failed",
+      "House - Amendment #5 (Bauer) prevailed",
+      "House - Appeal the ruling of the chair (Bartlett)",
+      "House - Second reading",
+      "House - Committee report",
+      "House - Rules Suspended. Committee report, adopted",
+      "House - Motion to postpone indefinitely, failed",
+      "House - Recommitted to Committee on Veterans Affairs and Public Safety pursuant to House Rule 126.4",
+      "Senate - First reading",
+    ]) {
+      expect(inRoll(desc, 100)).toMatchObject({ isFloorVote: false, reason: "excluded_question" });
+    }
+    // 2025's verb for the same motion still has to be excluded here too.
+    expect(inRoll("House - Referred to Committee on Education pursuant to House Rule 126.4", 100).isFloorVote).toBe(
+      false
+    );
+  });
+
+  // The blank-question defect recurs in 2026 on HB 1002 and SB 0076.
+  it("surfaces the blank-question rolls instead of guessing them", () => {
+    expect(inRoll("House -", 100)).toMatchObject({
+      isFloorVote: null,
+      questionClass: null,
+      reason: "unknown_question",
+    });
+  });
+});
+
 describe("Montana 2025's measured desc vocabulary", () => {
   const config = LEGISCAN_STATE_CONFIGS.MT!;
   const mt = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
@@ -679,6 +761,147 @@ describe("Alabama's measured desc vocabulary", () => {
   });
 });
 
+describe("Alabama's 2023 desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS["AL-2014"]!;
+  const al23 = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType, config });
+
+  it("keeps passage, which in 2023 carries no `Motion to` prefix", () => {
+    // The whole reason this session needs its own definition: applying the
+    // modern patterns here matches almost none of the 891 passage rolls and
+    // reports a false empty divided pool.
+    for (const desc of [
+      "Read a Third Time and Pass",
+      "Read A Third Time And Passed As Amended",
+      "Read a Third Time and Pass as Amended",
+      "Read Again a Third Time and Pass as Amended",
+      "READ A THIRD TIME AND PASSED",
+    ]) {
+      expect(al23(desc, 105)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    }
+  });
+
+  it("keeps the three concurrence spellings", () => {
+    expect(al23("Concur In and Adopt", 105)).toMatchObject({ isFloorVote: true, questionClass: "concurrence" });
+    expect(al23("House Concur and Adopt", 105)).toMatchObject({ isFloorVote: true, questionClass: "concurrence" });
+    expect(al23("Concur", 34, "senate")).toMatchObject({ isFloorVote: true, questionClass: "concurrence" });
+  });
+
+  it("excludes a SPECIAL ORDER CALENDAR adoption, which is the only `Passed by` roll in 2023", () => {
+    // 26 rolls, every one on a chamber resolution setting its own order of
+    // business. Nothing in 2023 is a Budget Isolation Resolution roll call.
+    expect(al23("Passed by House of Origin", 34, "senate")).toMatchObject({
+      isFloorVote: false,
+      questionClass: null,
+    });
+    expect(al23("Passed by Second House", 105)).toMatchObject({ isFloorVote: false, questionClass: null });
+  });
+
+  it("excludes each surveyed procedural family", () => {
+    for (const desc of [
+      "Adopt",
+      "Adopt 4XDG33-1",
+      "Table 8T91F2-1",
+      "Non Concur and Appoint Conference Committee",
+      "Accede",
+      "Add Cosponsor",
+      "LOCAL CERTIFICATION RESOLUTION",
+      "Previous Question",
+      "Petition to Cease Debate",
+      "Carry Over to the Call of the Chair",
+      "Reconsider",
+    ]) {
+      expect(al23(desc, 105)).toMatchObject({ isFloorVote: false, questionClass: null });
+    }
+  });
+
+  it("shares its definition with the 2023 second special session", () => {
+    expect(LEGISCAN_STATE_CONFIGS["AL-2060"]!.keptQuestions).toBe(config.keptQuestions);
+    expect(LEGISCAN_STATE_CONFIGS["AL-2060"]!.excludedQuestions).toBe(config.excludedQuestions);
+  });
+});
+
+describe("Alabama's 2024 desc vocabulary, which prints two caption systems at once", () => {
+  const config = LEGISCAN_STATE_CONFIGS["AL-2103"]!;
+  const al24 = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType, config });
+
+  it("keeps passage under BOTH captions", () => {
+    // System B, the modern spelling.
+    expect(al24("Motion to Read a Third Time and Pass - Roll Call 246", 35, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(al24("Motion to Read Again a Third Time and Pass as Amended - Roll Call 7", 105)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // System A. SB 47 stores its Roll Call 108 passage vote under this
+    // caption and no other; reading it as a Budget Isolation Resolution
+    // loses 176 real passage votes.
+    expect(al24("Passed House Of Origin", 35, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(al24("Passed Second House", 105)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+  });
+
+  it("excludes the Budget Isolation Resolution under both captions, which differ by one word", () => {
+    for (const desc of [
+      "Third Reading in House of Origin",
+      "Third Reading in Second House",
+      "Third Reading House of Origin",
+      "Third Reading Second House",
+    ]) {
+      expect(al24(desc, 105)).toMatchObject({ isFloorVote: false, questionClass: null });
+    }
+  });
+
+  it("keeps concurrence and conference-report votes, and ranks conference first", () => {
+    expect(al24("Reed Concur In and Adopt House Amendment", 35, "senate")).toMatchObject({
+      questionClass: "concurrence",
+    });
+    expect(al24("Chesnutt Motion to Concur in Executive Amendment - Roll Call 1157", 105)).toMatchObject({
+      questionClass: "concurrence",
+    });
+    for (const desc of [
+      "Blackshear Concur In and Adopt Conference Committee Report - Roll Call 941",
+      "Albritton to Concur In and Adopt Conf Rpt",
+      "Garrett - Concur in and Adopt Conference Committee Report",
+      "Stadthagen Concur In and Adopt Concurrence Request for Conference Committee",
+    ]) {
+      expect(al24(desc, 105)).toMatchObject({ questionClass: "conference_report" });
+    }
+  });
+
+  it("excludes amendment work under both spellings", () => {
+    for (const desc of [
+      "Motion to Adopt - Roll Call 259 KI7T55U-1",
+      "Givhan motion to Adopt - Roll Call 1133 NQKCJTJ-1",
+      "Baker motion to Table - Roll Call 1008 DRRQHTT-1",
+      "Smitherman amendment C4NRQWW-1",
+      "Coleman-Madison amendment",
+      "Boyd substitution KI7T55U-1",
+      "Instrument Change CURHQJQ-1",
+      "Instrument Change Tabled RZPDMNM-1",
+      "LocalCertificationResolutionAdopted",
+      "LOCAL_CERTIFICATION_RESOLUTION_ADOPTED",
+      "In Conference Committee",
+      "Reed Non Concur and Appoint Conference Committee",
+      "Orr - Suspend Rule 21",
+    ]) {
+      expect(al24(desc, 105)).toMatchObject({ isFloorVote: false, questionClass: null });
+    }
+  });
+
+  it("does not let the amendment rule swallow a concurrence naming an amendment", () => {
+    // `<sponsor> amendment <code>` is start-anchored on purpose: two kept
+    // questions also carry the word `amendment`.
+    expect(al24("Reed Concur In and Adopt House Amendment", 35, "senate").isFloorVote).toBe(true);
+    expect(al24("Reed Motion to Concur in Executive Amendment", 35, "senate").isFloorVote).toBe(true);
+  });
+});
+
 describe("getLegiscanStateConfig", () => {
   it("serves only surveyed states; an unsurveyed state is refused by name", () => {
     expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual([
@@ -698,11 +921,15 @@ describe("getLegiscanStateConfig", () => {
       "KY",
       "KY-2247",
       "IN",
+      "IN-2234",
       "MT",
       "NC",
       "AL",
       "AL-2218",
       "AL-2262",
+      "AL-2014",
+      "AL-2060",
+      "AL-2103",
       "NY",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
@@ -747,6 +974,9 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("AL").sessionId).toBe(2148);
     expect(getLegiscanStateConfig("AL-2218")).toMatchObject({ jurisdiction: "AL", sessionId: 2218 });
     expect(getLegiscanStateConfig("AL-2262")).toMatchObject({ jurisdiction: "AL", sessionId: 2262 });
+    expect(getLegiscanStateConfig("AL-2014")).toMatchObject({ jurisdiction: "AL", sessionId: 2014 });
+    expect(getLegiscanStateConfig("AL-2060")).toMatchObject({ jurisdiction: "AL", sessionId: 2060 });
+    expect(getLegiscanStateConfig("AL-2103")).toMatchObject({ jurisdiction: "AL", sessionId: 2103 });
     expect(getLegiscanStateConfig("NY").sessionId).toBe(2188);
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("WY")).toThrow("no LegiScan state config for WY");

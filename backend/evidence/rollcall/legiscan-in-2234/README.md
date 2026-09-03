@@ -1,8 +1,12 @@
-# Indiana 2026 session survey — LegiScan session 2234
+# Indiana roll-call import — LegiScan session 2234
 
-This is a survey only. **Nothing was fetched, judged or imported, and the database is
-untouched.** The purpose is to measure Indiana's 2026 Regular Session and say what a campaign
-on it would need.
+Indiana's second session in the phase-4 LegiScan rollout, and the second entry in the
+registry for one state. The source is LegiScan session **2234**, the 2026 Regular Session of
+the 124th General Assembly. It is the short session: it convened 2025-11-18 and adjourned
+sine die 2026-03-12, so the session is closed and the dataset is final.
+
+This directory began as a survey and is now the campaign's working directory. The survey
+findings below are kept as written, because they are what the config was built from.
 
 The dataset is LegiScan session **2234**, dated 2026-06-28, unpacked at
 `/Users/shu/legiscan-data/in-2234/`. It holds **935 bills, 689 roll calls and 152 people**.
@@ -15,15 +19,16 @@ closed and final.
 | --- | --- | --- |
 | Bills | 1,489 | 935 |
 | Roll calls | 1,010 | 689 |
-| Kept floor votes | 813 | 537 |
+| Kept floor votes | 813 | 536 |
 | Divided floor votes | 160 | 120 |
-| **Divided and became law** | **142, over 68 measures** | **96, over 47 measures** |
+| **Divided and became law** | **142, over 68 measures** | **95, over 47 measures** |
 | Measures with a House roll | 49 of 61 then open | **42 of 47** |
 | Committee votes in the feed | 0 | 0 |
 | Parse errors | 0 | 0 |
 
-Taking one roll per measure per chamber, preferring the final action, gives **70 rolls to
-judge**. At the fan-out this campaign measures in Indiana — a median of 83 candidates per
+The 2026 count is 95 rather than the 96 the first draft of this survey reported, because the
+defeated concurrence on HB 1368 is now excluded. Taking one roll per measure per chamber,
+preferring the final action, gives **about 70 rolls to judge**. At the fan-out this campaign measures in Indiana — a median of 83 candidates per
 House roll and 12 per Senate roll — the pool is worth roughly 3,800 records if every measure
 survived selection. It will not; but even at the keep rate of the harder 2025 batches this is
 several times what the 2025 tail still has to offer.
@@ -49,77 +54,141 @@ still has to be read in full — but the odds are plainly better than the 2025 r
 
 ## The crosswalk carries over almost whole
 
-Of the 152 people in the 2026 dataset, **149 are already in the reviewed 2143 crosswalk**.
-Only three are not:
+Of the 152 entries in the 2026 people snapshot, **149 are already in the reviewed 2143
+crosswalk**, one is not a person, and two are new members. Two members present in 2025 do not
+appear in 2026. What was decided about the three is under "The crosswalk, as committed"
+below.
 
-- **Randy Novak**, Representative, HD-009 — a real member who needs a crosswalk decision.
-- **Nick McKinley**, Senator, SD-017 — likewise.
-- **"Rules"** — not a person. It carries no district and is a placeholder the feed emits; it
-  should be reviewed and left unmapped, the way the 2143 crosswalk records its 48 unmapped
-  entries.
+## What the survey found the config needed
 
-Two members present in 2025 do not appear in 2026. Of the 151 committed crosswalk entries,
-103 map to a candidate on the November 2026 ballot, and that is what sets the fan-out.
+The 2025 patterns nearly carry over. Applied to the 677 rolls that sit on a measure type the
+pipeline keeps, they leave **8 rolls in 7 descriptions unmatched**. The first draft of this
+survey said nine in eight, counting across all measure types; the ninth was a `Senate - First
+reading` roll on SCR 1, a concurrent resolution the shared kept-types list drops before the
+config is ever consulted. The 677 figure is the one that matters, because it is the set the
+config actually sees.
 
-## What the config needs
+Of the 8: two are the blank-question defect and must stay unmatched, one is a defeated
+concurrence that has to be excluded rather than kept, and five are procedural. What was done
+about each is in the next section.
 
-The 2143 question patterns already classify **680 of the 689 rolls**. Nine rolls in eight
-descriptions are not matched, and they fall into four groups.
+## The registry entry, and what it decided
 
-**One is a real vote that must still stay out of the kept patterns.** 2025 printed a
-failed concurrence as `Senate - Concurrence failed for lack of constitutional majority`.
-2026 prints `House - Concurrence defeated`, once, on HB 1368 (roll 399, 2026-02-26). The
-natural move is to widen the kept pattern to cover both spellings. Do not. LegiScan marks
-this roll `passed: 1` even though the House defeated it 48 to 42: a concurrence in Indiana
-needs a constitutional majority of 51, and LegiScan set its flag by simple majority. The
-fetcher takes `result` straight from that flag, so matching the roll would store it as
-"Passed". It is the only roll in the session whose flag disagrees with the constitutional
-majority rule; the 2025 counterpart carries `passed: 0` and was stored correctly. Add the
-spelling to the exclusions with a comment saying why. Nothing is lost: a defeated
-concurrence can never be the final action on a bill that became law, and this one was
-superseded the next day by roll 420, which concurred 57 to 40.
+`LEGISCAN_STATE_CONFIGS` is keyed by state, and Indiana's first entry pins
+`sessionId: 2143`. Flipping that number would leave the 2025 batches unable to re-run, so
+2026 gets its own entry, `IN-2234`, following the `ST-session` key form the later Missouri,
+Maryland and Kentucky sessions already use. Each entry carries a `jurisdiction` separate
+from its key and `LEGISCAN_RECORD_JURISDICTIONS` de-duplicates through a `Set`, so records
+still land under Indiana and Indiana is still named once. Nothing collides with 2025:
+evidence filenames carry the session, and a `legislative_votes` row is keyed by
+jurisdiction, chamber, session and roll.
 
-**Four are procedural and belong in the exclusions.** `First reading`,
-`Motion to postpone indefinitely, failed`, `Committee report`, and
-`Rules Suspended. Committee report, adopted`. All are full-chamber votes — every total is
-100 or 50 — but none is a vote on the measure.
+Unlike Kentucky, Indiana's **kept** vocabulary does carry across sessions unchanged. What
+changed is the procedural vocabulary, and one change is a trap.
 
-**One is the existing referral exclusion under a new spelling.** 2025 printed
-`referred to committee on ...`; 2026 prints
-`House - Recommitted to Committee on Veterans Affairs and Public Safety pursuant to House Rule 126.4`.
-The exclusion should cover both verbs and the trailing rule citation.
+**`House - Concurrence defeated` is excluded, not kept.** 2025 spelt a failed concurrence
+`Concurrence failed for lack of constitutional majority`, and that spelling is kept, because
+it is a recorded vote on the measure. 2026's one occurrence looks like the same question
+under a shorter name and is not safe to treat that way. On HB 1368 roll 399 the House
+defeated the motion 48 to 42. An Indiana concurrence needs a constitutional majority of 51,
+but LegiScan reports `passed: 1`, because its flag is a bare-majority check, and the fetcher
+writes `result` straight from that flag. Keeping the desc would store a defeated vote as
+"Passed". It is the only roll in the session whose flag disagrees with the
+constitutional-majority rule. Nothing is lost by excluding it: a defeated concurrence can
+never be the final action on a bill that became law, and this one was superseded the next day
+by roll 420, which concurred 57 to 40 and is kept. Same defect class as Montana's eight
+two-thirds rolls.
 
-**Two are the blank-question defect and must stay unmatched.** Two House rolls carry the
-description `House -` with nothing after it, on HB 1002 and SB 0076. This is the same defect
-as `../legiscan-in-2143/CODE-FINDINGS.md` section 1. Leaving them unmatched is correct: they
-surface as `unknown_question` rather than being guessed at.
+The four other new families are procedural and excluded: the full chamber adopting a
+committee report, a motion to postpone indefinitely, `Recommitted to Committee on ...` (2026's
+verb for the 2025 `Referred to committee on ` exclusion), and first reading.
 
-## The registry needs a second entry for the same state
+**The classification reconciles exactly.** 689 dataset rolls = 536 floor + 139 excluded
+question + 12 on excluded measure types (11 concurrent resolutions, 1 simple resolution) + 2
+surfaced. The two surfaced rolls are the blank-question defect, on HB 1002 and SB 0076, and
+they stay unmatched on purpose. The `First reading` exclusion is written down but never
+fires today, because its one roll is on a concurrent resolution; it is kept as a guard,
+since for a bill Indiana's first reading is a referral with no vote.
 
-`LEGISCAN_STATE_CONFIGS` is keyed by state, and Indiana's single entry pins
-`sessionId: 2143`. Flipping that number to 2234 would leave the 2025 batches unable to
-re-run.
+## The crosswalk, as committed
 
-The registry already anticipates this. Each entry carries its own `jurisdiction` field
-separate from its key, `LEGISCAN_RECORD_JURISDICTIONS` de-duplicates those through a `Set`,
-and `--state` is trimmed and upper-cased with no format check. Later sessions already use
-the key form `ST-session` (`MO-2226`, `MD-2240`, `KY-2247`). So a second entry keyed
-`IN-2234` with `jurisdiction: "IN"` and `sessionId: 2234` works without touching any shared
-logic. Records still land under Indiana, and nothing collides with 2025: the stored evidence
-filenames carry the session, and a `legislative_votes` row is keyed by jurisdiction, chamber,
-session and roll.
+`crosswalk.json` holds **151 entries, 104 mapped and 47 reviewed and left unmapped**. 149
+carry over unchanged from the 2143 crosswalk. The two new members were decided by hand:
 
-That entry, its tests, and the crosswalk decisions for the two new members are the next step.
-This survey does not make them.
+- **Randy Novak**, Democrat, HD-009 — **mapped**. He is on the November 3 2026 ballot for
+  State House District 9 as a Democrat, so name, party and seat all agree.
+- **Nick McKinley**, Republican, SD-017 — **left unmapped**. SD-017 is on the 2026 ballot,
+  but McKinley is not among the candidates our roster holds for that seat, which are Cynthia
+  Wehr and Chris Parker. There is no candidate to attach his votes to. Same call as the 2143
+  entries for Edward Clere and Bruce Borders.
 
-## The member-list check still applies
+The snapshot's 152nd entry, `Rules`, gets no crosswalk entry at all. It is not a person:
+LegiScan flags it `committee_sponsor: 1`, it holds no district or party, and it casts no vote
+in any of the 689 rolls. `parseLegiscanPerson` drops committee sponsors by design.
 
-Five of the 96 divided-and-enacted rolls have a LegiScan tally with no exact match in the
-bill history, which is the signal for the defect in
-`../legiscan-in-2143/CODE-FINDINGS.md` section 2. That is 5.2%, against about 8% in 2025.
-Every roll selected for a batch must still be checked name by name against the official
-roll-call PDF, and batch-04 established that a flagged roll is unusable whichever direction
-the error runs.
+Resolution over all 677 stored evidence files reports **35,414 matched member votes and
+13,422 reviewed-unmapped**, with no member missing from the crosswalk and no file errors.
+
+## The member-list check still applies, and it bites
+
+Five of the worklist's 95 divided-and-enacted rolls report a LegiScan tally with no exact
+match in the bill history, which is the signal for the defect in
+`../legiscan-in-2143/CODE-FINDINGS.md` section 2. That is 5.3%, against about 8% in 2025.
+
+**All five have since been checked name by name against Indiana's own roll-call PDF, and all
+five disagree.** In each case a member sits on the wrong side, not merely a wrong count.
+
+| Roll | LegiScan | Official | The disagreement |
+| --- | --- | --- | --- |
+| HB 1368 House, journal 114 | 58-36 | 57-37 | Patterson recorded yea, journal says nay |
+| SB 0001 House, journal 302 | 62-31 | 64-30 | Smaltz recorded nay, journal says yea; Lopez missing |
+| SB 0176 House, journal 252 | 66-24 | 65-25 | Patterson recorded yea, journal says nay |
+| SB 0270 House, journal 353 | 61-35 | 62-35 | Greene missing from the LegiScan yeas |
+| SB 0271 House, journal 354 | 75-22 | 76-21 | Patterson recorded nay, journal says yea |
+
+The 2025 batch-04 established that a flagged roll is unusable whichever direction the error
+runs, so none of these five can be judged. SB 0001 and SB 0271 have no other divided roll, so
+the measures are lost. HB 1368, SB 0176 and SB 0270 each keep another usable roll.
+
+The flag is therefore not a warning to look harder. In this session it has been a perfect
+predictor: every flagged roll failed, and no unflagged roll has.
+
+One more instance turned up while the config was written and is worth recording: HB 1032's
+`House - Committee report` is reported by LegiScan as 63-23 where the journal says 63-24.
+That roll is excluded as procedural, so it costs nothing, but it is the same defect.
+
+## Layout
+
+- `crosswalk.json` — the reviewed person to candidate map, 151 entries.
+- `legiscan-people-in-2234.json` — the people snapshot the crosswalk is checked against.
+- `survey/` — the measured desc histogram the config was written from, and
+  `divided-enacted-worklist.tsv`, one row per divided-and-enacted roll with its disposition.
+- `tools/worklist.py` — rebuilds that worklist from the dataset.
+- The reading and verification tools are shared with 2025 and live in
+  `../legiscan-in-2143/tools/`. Their Indiana URL recipe needs its year segment changed from
+  `124/2025/` to `124/2026/`.
+
+## Layout addition
+
+- `batch-01/` and later — the judgments, the roll evidence files, the import ledgers and the
+  selection notes for each batch.
+
+## State of the work — the 2026 session is complete
+
+**Every one of the 47 divided-and-enacted measures in this session has been read in full and
+dispositioned.** No roll is left unbatched.
+
+Batches 01 to 03 are imported on the local `voteapp` database: **1,327 records across 104
+candidates with 1,078 area tags, over seventeen measures and twenty-four rolls.** Batch-04 read
+eleven more measures and kept none of them. Across both Indiana sessions the total is **2,432
+live roll-call records**. **Production still holds no Indiana records.**
+
+The worklist's 95 rolls end as 8 in batch-01, 11 in batch-02, 5 in batch-03, 68 dropped and 3
+superseded.
+
+The keep rate fell as the omnibus work came up: six measures of ten in batch-01, eight of
+fourteen in batch-02, three of ten in batch-03, none of eleven in batch-04. Batch-04's own
+notes explain each drop.
 
 ## Files
 
