@@ -140,14 +140,26 @@ describe("resolveWestVirginiaCandidateCommittee", () => {
         committees: [undeclared],
       })
     ).toMatchObject({ status: "matched", entityId: "1010003518", committeeName: "Thorne, Darren James" });
-    // Still the exact seat and the exact name: a different seat or the other
-    // chamber's roster row does not reach it.
+    // Still the exact seat and the exact name.
     expect(
       resolveWestVirginiaCandidateCommittee({ ...base, districtNumber: 16, candidateName: "Darren J Thorne", committees: [undeclared] })
     ).toEqual({ status: "unmatched", reason: "no_matching_committee" });
     expect(
       resolveWestVirginiaCandidateCommittee({ ...base, districtNumber: 15, candidateName: "Darren Thorne-Smith", committees: [undeclared] })
     ).toEqual({ status: "unmatched", reason: "no_matching_committee" });
+    // An Undeclared row carries no chamber, so the same seat number in the
+    // other chamber reaches it too. Accepted on purpose (see the resolver
+    // comment): only a same-named second person on that seat could go wrong,
+    // and the exact-office path does not guard against that either.
+    expect(
+      resolveWestVirginiaCandidateCommittee({
+        ...base,
+        registryOffice: "House of Delegates",
+        districtNumber: 15,
+        candidateName: "Darren J Thorne",
+        committees: [undeclared],
+      })
+    ).toMatchObject({ status: "matched", entityId: "1010003518" });
   });
 
   it("treats a declared + undeclared pair for one person as ambiguous", () => {

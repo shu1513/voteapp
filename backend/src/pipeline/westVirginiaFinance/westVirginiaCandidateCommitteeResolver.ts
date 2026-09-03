@@ -31,6 +31,14 @@ const STATE_CANDIDATE_ORG_TYPE = "State Candidate";
 // stays "Undeclared" after the candidate is certified, so it is the only
 // 2026 committee those candidates have. Accepted as office evidence only
 // together with the exact seat + full-name match every other row needs.
+//
+// Known limit: House and Senate seat numbers overlap (Senate 1-17), so an
+// "Undeclared 15" row satisfies both a House-15 and a Senate-15 roster query.
+// The resolver runs per roster row, so a wrong link needs a SECOND person
+// with the identical full name certified for the other chamber's same seat
+// in the same cycle — and the exact-office path gives no more protection
+// against a same-named second person than this does. Accepted rather than
+// sent to manual review.
 const UNDECLARED_REGISTRY_OFFICE = "Undeclared";
 
 export type WestVirginiaCommitteeMatch = {

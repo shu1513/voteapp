@@ -368,7 +368,9 @@ committees with in-window rows; top raised Takubo $266k, Barrett $229k, Oliverio
   committees were registered before the candidate declared and keep office `Undeclared`
   (seat number filled) after certification — it is their only 2026 committee. Same seat
   + full-name rules still apply; a declared + undeclared pair for one person stays
-  ambiguous. Unlocked 6 auto-links (Beach-Burge, Horst, Thorne, Young — 200 rows —,
+  ambiguous. Known limit: an Undeclared row has no chamber, so the same seat number in
+  the other chamber reaches it too; only a same-named second person on that seat could
+  mislink, which the exact-office path cannot catch either. Unlocked 6 auto-links (Beach-Burge, Horst, Thorne, Young — 200 rows —,
   Pushkin, Holden) plus Hillenbrand by hand.
 - **Double-quoted call names become parentheticals** on both sides before matching, so
   the shared matcher reads them as first-name aliases: `Jeffries, Warren "Dean"` ↔
@@ -378,8 +380,8 @@ committees with in-window rows; top raised Takubo $266k, Barrett $229k, Oliverio
   NATHAN/NATE, NATHANIEL/NATE, PHILIP/PHIL, PHILLIP/PHIL (+ spelling pair), WESLEY/WES.
   Unlocked Wagoner, Stansberry, Mallow, Holden.
 - **Zero in-window rows ⇒ NULL totals, not $0.** 25 linked committees have no CON/EXP
-  row in 2025–2026 at all; 19 registered in 2026 after the last filing deadline, so
-  nothing is due yet. The sync writes the summary row (so the due list sees it synced)
+  row in 2025–2026 at all; 21 registered in 2026 (registry gives the year only), so few
+  or no filings were due yet. The sync writes the summary row (so the due list sees it synced)
   with NULL totals and no breakdowns; the loader shows "unavailable". Re-sync after each
   filing wave (General report due 2026-10-23) turns them into numbers.
 

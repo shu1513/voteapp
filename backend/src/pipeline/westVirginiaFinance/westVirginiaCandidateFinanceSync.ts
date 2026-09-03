@@ -269,9 +269,10 @@ export async function syncWestVirginiaCandidateFinance(input: {
   }
 
   // A committee with no in-window contribution or expenditure rows has not
-  // reported anything the cache can see — live 2026-09-03, 19 of the 23 such
-  // committees registered after the last filing deadline. That is missing
-  // information, not a $0 campaign, so the totals publish as NULL (the
+  // reported anything the cache can see — live 2026-09-03, 21 of the 25 such
+  // committees registered in 2026 (the registry gives the year only), so few
+  // or no filings were due yet. That is missing information, not a $0
+  // campaign, so the totals publish as NULL (the
   // loader shows "unavailable") and the breakdowns stay empty. The summary
   // row is still written so the due list treats the candidate as synced.
   const reportedActivity = aggregation.contributionRowCount + aggregation.expenditureRowCount > 0;
