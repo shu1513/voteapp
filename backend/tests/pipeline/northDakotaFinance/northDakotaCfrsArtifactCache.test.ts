@@ -8,10 +8,14 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   getNorthDakotaArtifactCachePaths,
   readNorthDakotaApiContributionsArtifact,
+  readNorthDakotaApiIndependentExpendituresArtifact,
   readNorthDakotaArtifactCacheMetadata,
   readNorthDakotaBulkArtifact,
+  readNorthDakotaRegistryArtifact,
   refreshNorthDakotaApiContributionsArtifact,
+  refreshNorthDakotaApiIndependentExpendituresArtifact,
   refreshNorthDakotaBulkArtifact,
+  refreshNorthDakotaRegistryArtifact,
 } from "../../../src/pipeline/northDakotaFinance/northDakotaCfrsArtifactCache.js";
 import type { NorthDakotaDataDownloadCatalogRow } from "../../../src/pipeline/northDakotaFinance/northDakotaCfrsClient.js";
 
@@ -44,8 +48,42 @@ function apiRow(transactionID: number, amount: number) {
   };
 }
 
+function ieRow(transactionID: number, amount: number, transactionTypeDesc = "Independent Expenditures") {
+  return {
+    transactionID,
+    entityID: "1040001626",
+    orgID: 1626,
+    committeeName: "StrongND Fund",
+    transactionAmount: amount,
+    transactionDate: "2026-06-04T00:00:00",
+    entityTypeDesc: "Business or Organization",
+    transactionCategoryDesc: "Monetary",
+    transactionTypeDesc,
+    stanceDescription: "Support",
+    candidateNameAssocation: "Kringstad, Jill",
+    electionYear: 2026,
+  };
+}
+
+function registryRow(entityId: string, candidateName: string) {
+  return {
+    orgID: Number(entityId.slice(-4)),
+    entityId,
+    orgName: `Committee ${candidateName}`,
+    candidateName,
+    orgType: "Candidate/Candidate Committee",
+    orgTypeCode: "101",
+    election: "2026 Election - Statewide",
+    office: "State Senator",
+    district: "District 11",
+    orgStatus: "Active",
+  };
+}
+
 /** Routes the client's calls: download-URL mint, presigned body, API pages. */
-function fetchImplServing(input: { csv?: string | Uint8Array; apiRows?: unknown[] }): typeof fetch {
+function fetchImplServing(input: { csv?: string | Uint8Array; apiRows?: unknown[]; ieRows?: unknown[]; registryRows?: unknown[] }): typeof fetch {
+  const page = (rows: unknown[], pageNumber: number) =>
+    jsonResponse({ isSuccess: true, responseData: { totalRecords: rows.length, data: pageNumber === 1 ? rows : [] } });
   return vi.fn().mockImplementation(async (url: string, init?: RequestInit) => {
     if (url.includes("/AccessReport/getDataDownloadfile/")) {
       return jsonResponse({ isSuccess: true, responseData: { fileUrl: PRESIGNED } });
@@ -56,13 +94,17 @@ function fetchImplServing(input: { csv?: string | Uint8Array; apiRows?: unknown[
     }
     if (url.includes("/CommitteeTransactions/getAllPublicTransactionDataList")) {
       const request = JSON.parse(String(init?.body)) as { pageNumber: number; orgTypeCode?: string; transactionCategory: string };
+      if (request.transactionCategory === "IE") {
+        expect(request.orgTypeCode).toBe("104");
+        return page(input.ieRows ?? [], request.pageNumber);
+      }
       expect(request.transactionCategory).toBe("CON");
       expect(request.orgTypeCode).toBeUndefined();
-      const rows = input.apiRows ?? [];
-      return jsonResponse({
-        isSuccess: true,
-        responseData: { totalRecords: rows.length, data: request.pageNumber === 1 ? rows : [] },
-      });
+      return page(input.apiRows ?? [], request.pageNumber);
+    }
+    if (url.includes("/Committee/getPublicCandidatesCommitteeDataList")) {
+      const request = JSON.parse(String(init?.body)) as { pageNumber: number };
+      return page(input.registryRows ?? [], request.pageNumber);
     }
     throw new Error(`unexpected fetch: ${url}`);
   }) as unknown as typeof fetch;
@@ -193,6 +235,55 @@ describe("refreshNorthDakotaApiContributionsArtifact", () => {
       clientOptions: { fetchImpl: fetchImplServing({ apiRows: [apiRow(10, 50), apiRow(20, 100)] }) },
     });
     expect(again.status).toBe("unchanged");
+  });
+});
+
+describe("refreshNorthDakotaApiIndependentExpendituresArtifact", () => {
+  it("stores the IE harvest under the pinned selector and reads it back", async () => {
+    const cacheDir = await tempDir();
+    const result = await refreshNorthDakotaApiIndependentExpendituresArtifact({
+      year: 2026,
+      cacheDir,
+      clientOptions: { fetchImpl: fetchImplServing({ ieRows: [ieRow(20, 2000), ieRow(10, 16857.14)] }) },
+      now: new Date("2026-09-03T12:00:00.000Z"),
+    });
+    expect(result.status).toBe("downloaded");
+    expect(result.filePath).toMatch(/APIIE_2026\.[a-f0-9]{12}\.json$/);
+    expect(result.current).toMatchObject({ artifact: { kind: "api_independent_expenditures", year: 2026 }, recordCount: 2 });
+    const read = await readNorthDakotaApiIndependentExpendituresArtifact({ year: 2026, cacheDir });
+    expect(read.rows.map((row) => row.transactionID)).toEqual([10, 20]);
+    expect(read.rows[0]).toMatchObject({ entityID: "1040001626", stanceDescription: "Support", candidateNameAssocation: "Kringstad, Jill" });
+    // The CON reader refuses the IE artifact's request pin and vice versa.
+    await expect(readNorthDakotaApiContributionsArtifact({ year: 2026, cacheDir })).rejects.toThrow(/no cached metadata/);
+  });
+
+  it("refuses to cache a harvest the server silently widened to other transaction types", async () => {
+    const cacheDir = await tempDir();
+    await expect(
+      refreshNorthDakotaApiIndependentExpendituresArtifact({
+        year: 2026,
+        cacheDir,
+        clientOptions: { fetchImpl: fetchImplServing({ ieRows: [ieRow(1, 100), ieRow(2, 50, "Contributions")] }) },
+      })
+    ).rejects.toThrow(/IE harvest 2026 returned 1 of 2 rows not typed "Independent Expenditures" \(first: "Contributions"\); not cached/);
+    await expect(readNorthDakotaApiIndependentExpendituresArtifact({ year: 2026, cacheDir })).rejects.toThrow(/no cached metadata/);
+  });
+});
+
+describe("refreshNorthDakotaRegistryArtifact", () => {
+  it("stores the full registry under the election year it serves and reads it back", async () => {
+    const cacheDir = await tempDir();
+    const result = await refreshNorthDakotaRegistryArtifact({
+      electionYear: 2026,
+      cacheDir,
+      clientOptions: { fetchImpl: fetchImplServing({ registryRows: [registryRow("1010001479", "Roe, Rick"), registryRow("1010001478", "Doe, Jane")] }) },
+      now: new Date("2026-09-03T12:00:00.000Z"),
+    });
+    expect(result.filePath).toMatch(/REGISTRY_2026\.[a-f0-9]{12}\.json$/);
+    expect(result.current).toMatchObject({ artifact: { kind: "api_registry", year: 2026 }, recordCount: 2 });
+    const read = await readNorthDakotaRegistryArtifact({ electionYear: 2026, cacheDir });
+    expect(read.rows.map((row) => `${row.entityId} ${row.candidateName}`)).toEqual(["1010001478 Doe, Jane", "1010001479 Roe, Rick"]);
+    await expect(readNorthDakotaRegistryArtifact({ electionYear: 2028, cacheDir })).rejects.toThrow(/no cached metadata/);
   });
 });
 

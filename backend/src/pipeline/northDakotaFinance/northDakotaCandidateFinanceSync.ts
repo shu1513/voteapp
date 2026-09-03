@@ -11,12 +11,21 @@
 //      evidence Phase 0A pinned (gate 5), re-proved on every run so a CSV
 //      that ever starts carrying superseded versions stops publication;
 //   5. no category / contributor-type value outside the pinned vocabulary.
-// Only totalReceipts and directContributionTotal are written; the writer's
-// preserve-when-NULL policy leaves totalDisbursements, cashOnHand and the
-// outside totals untouched (year-end spending and IE are later phases).
+// Only totalReceipts and directContributionTotal are written on the direct
+// side; the writer's preserve-when-NULL policy leaves totalDisbursements and
+// cashOnHand untouched (year-end spending is a later phase).
 // Direct breakdowns: contribution-size buckets from the CSV rows and, when
 // the display gate passes (Phase 3, hard fact 3), filed occupations from
 // the reconciled API rows — the API is the only surface that carries them.
+//
+// Outside spending (Phase 4, component isolation): support/oppose groups
+// from the cached IE harvest, the target resolved through the cached
+// registry. Any failure on that path — a missing IE or registry artifact,
+// an ambiguous target name, a YTD control mismatch — skips ONLY the outside
+// component (totals stay NULL = preserved, stored groups untouched) and is
+// reported on the result; the direct component still publishes. A clean
+// pass with no IE rows for the candidate writes $0 and clears stale groups:
+// the harvest is authoritative for what has been filed.
 //
 // Zero filed rows in the window is NOT $0 raised: the bulk file cannot tell
 // a committee that reported no contributions from one whose first
@@ -28,11 +37,13 @@ import { resolve } from "node:path";
 
 import type { Pool, PoolClient } from "pg";
 
-import type { NorthDakotaTransactionRow } from "./northDakotaCfrsClient.js";
+import type { NorthDakotaCommitteeRow, NorthDakotaTransactionRow } from "./northDakotaCfrsClient.js";
 import {
   DEFAULT_NORTH_DAKOTA_CFRS_CACHE_DIR,
   readNorthDakotaApiContributionsArtifact,
+  readNorthDakotaApiIndependentExpendituresArtifact,
   readNorthDakotaBulkArtifact,
+  readNorthDakotaRegistryArtifact,
 } from "./northDakotaCfrsArtifactCache.js";
 import {
   parseNorthDakotaContributionCsv,
@@ -46,6 +57,11 @@ import {
   type NorthDakotaDirectFinanceAggregationResult,
 } from "./northDakotaDirectContributionAggregator.js";
 import { isNorthDakotaFinanceEligibleOffice } from "./northDakotaFinanceEligibleOffices.js";
+import {
+  aggregateNorthDakotaOutsideSpending,
+  resolveNorthDakotaIeTargetName,
+  type NorthDakotaOutsideSpendingAggregationResult,
+} from "./northDakotaOutsideSpendingAggregator.js";
 import {
   NORTH_DAKOTA_CFRS_SOURCE_URL,
   normalizeNorthDakotaEntityId,
@@ -74,6 +90,8 @@ export type NorthDakotaFinanceArtifactLoader = {
   scheduleRows: (year: number) => Promise<NorthDakotaReportingScheduleCsvRow[]>;
   contributionRows: (year: number) => Promise<NorthDakotaContributionCsvRow[]>;
   apiContributionRows: (year: number) => Promise<NorthDakotaTransactionRow[]>;
+  apiIndependentExpenditureRows: (year: number) => Promise<NorthDakotaTransactionRow[]>;
+  registryRows: (electionYear: number) => Promise<NorthDakotaCommitteeRow[]>;
 };
 
 function requireClean<T>(label: string, result: { rows: T[]; errors: { line: number; reason: string }[] }): T[] {
@@ -114,8 +132,17 @@ export function createNorthDakotaFinanceArtifactLoader(cacheDir?: string): North
       ),
     apiContributionRows: (year) =>
       once(`api:${year}`, async () => (await readNorthDakotaApiContributionsArtifact({ year, cacheDir: resolvedCacheDir })).rows),
+    apiIndependentExpenditureRows: (year) =>
+      once(`ie:${year}`, async () => (await readNorthDakotaApiIndependentExpendituresArtifact({ year, cacheDir: resolvedCacheDir })).rows),
+    registryRows: (electionYear) =>
+      once(`registry:${electionYear}`, async () => (await readNorthDakotaRegistryArtifact({ electionYear, cacheDir: resolvedCacheDir })).rows),
   };
 }
+
+/** "synced": totals + groups written ($0 and no groups is a real, clean result). "skipped": nothing on the outside side was touched. */
+export type NorthDakotaOutsideSyncOutcome =
+  | ({ status: "synced"; registryCandidateName: string } & Omit<NorthDakotaOutsideSpendingAggregationResult, "groups">)
+  | { status: "skipped"; reason: string };
 
 export type NorthDakotaYearReconciliation = {
   year: number;
@@ -138,9 +165,41 @@ export type NorthDakotaCandidateFinanceSyncResult = {
   reconciliation: NorthDakotaYearReconciliation[];
   aggregation: Omit<NorthDakotaDirectFinanceAggregationResult, "breakdowns">;
   breakdownCounts: { occupation: number; contribution_size: number };
+  outside: NorthDakotaOutsideSyncOutcome;
   summaryWritten: boolean;
   directBreakdownsWritten: number;
+  outsideGroupsWritten: number;
 };
+
+async function computeOutsideSpending(input: {
+  entityId: string;
+  electionYear: number;
+  windowYears: readonly number[];
+  loader: NorthDakotaFinanceArtifactLoader;
+}): Promise<{ outcome: NorthDakotaOutsideSyncOutcome; groups: NorthDakotaOutsideSpendingAggregationResult["groups"] | undefined }> {
+  try {
+    const target = resolveNorthDakotaIeTargetName({
+      entityId: input.entityId,
+      electionYear: input.electionYear,
+      committees: await input.loader.registryRows(input.electionYear),
+    });
+    if (target.status === "unresolved") {
+      return { outcome: { status: "skipped", reason: `${target.reason}: ${target.detail}` }, groups: undefined };
+    }
+    const rows: NorthDakotaTransactionRow[] = [];
+    for (const year of input.windowYears) {
+      rows.push(...(await input.loader.apiIndependentExpenditureRows(year)));
+    }
+    const { groups, ...aggregation } = aggregateNorthDakotaOutsideSpending({
+      targetName: target.targetName,
+      electionYear: input.electionYear,
+      rows,
+    });
+    return { outcome: { status: "synced", registryCandidateName: target.registryCandidateName, ...aggregation }, groups };
+  } catch (error) {
+    return { outcome: { status: "skipped", reason: error instanceof Error ? error.message : String(error) }, groups: undefined };
+  }
+}
 
 export async function syncNorthDakotaCandidateFinance(input: {
   db: ConnectableQueryable;
@@ -250,8 +309,14 @@ export async function syncNorthDakotaCandidateFinance(input: {
   const sourceUrl = input.link.sourceUrl ?? NORTH_DAKOTA_CFRS_SOURCE_URL;
   const { breakdowns, ...aggregationSummary } = aggregation;
 
+  // --- Outside spending (Phase 4): isolated — never fails the candidate.
+  const outside = await computeOutsideSpending({ entityId, electionYear: input.electionYear, windowYears, loader });
+  const outsideSupportTotal = outside.outcome.status === "synced" ? outside.outcome.supportTotal : null;
+  const outsideOpposeTotal = outside.outcome.status === "synced" ? outside.outcome.opposeTotal : null;
+
   let summaryWritten = false;
   let directBreakdownsWritten = 0;
+  let outsideGroupsWritten = 0;
   if (!dryRun) {
     const writeResult = await replaceNorthDakotaCandidateFinanceSnapshot({
       db: input.db,
@@ -270,7 +335,7 @@ export async function syncNorthDakotaCandidateFinance(input: {
         lastVerifiedAt: now,
       },
       syncedAt: now,
-      summary: { totalReceipts, directContributionTotal, sourceUrl },
+      summary: { totalReceipts, directContributionTotal, outsideSupportTotal, outsideOpposeTotal, sourceUrl },
       directBreakdowns: breakdowns.map((breakdown) => ({
         categoryType: breakdown.categoryType,
         categoryName: breakdown.categoryName,
@@ -278,9 +343,18 @@ export async function syncNorthDakotaCandidateFinance(input: {
         contributorCount: breakdown.contributorCount,
         sourceUrl,
       })),
+      // undefined leaves stored groups alone (component skipped); [] clears them.
+      outsideGroups: outside.groups?.map((group) => ({
+        committeeId: group.entityId,
+        committeeName: group.committeeName,
+        supportOppose: group.supportOppose,
+        amount: group.amount,
+        sourceUrl,
+      })),
     });
     summaryWritten = writeResult.summaryWritten;
     directBreakdownsWritten = writeResult.directBreakdownsWritten;
+    outsideGroupsWritten = writeResult.outsideGroupsWritten;
   }
 
   return {
@@ -297,7 +371,9 @@ export async function syncNorthDakotaCandidateFinance(input: {
       occupation: breakdowns.filter((breakdown) => breakdown.categoryType === "occupation").length,
       contribution_size: breakdowns.filter((breakdown) => breakdown.categoryType === "contribution_size").length,
     },
+    outside: outside.outcome,
     summaryWritten,
     directBreakdownsWritten,
+    outsideGroupsWritten,
   };
 }

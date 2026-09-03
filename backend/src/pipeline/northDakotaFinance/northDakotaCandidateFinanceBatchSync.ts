@@ -104,6 +104,9 @@ export async function syncDueNorthDakotaCandidateFinance(
         loadArtifacts,
       });
       succeeded += 1;
+      if (result.outside.status === "skipped") {
+        log(`North Dakota outside spending skipped for ${row.candidateName} (entityId ${row.entityId}): ${result.outside.reason}`);
+      }
       candidates.push({ row, ok: true, result });
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
