@@ -17,8 +17,11 @@
 // Fail closed, per candidate: a cover that fails its own arithmetic, a
 // canonical version with no opened cover (a paper scan — its totals come
 // from OCR in a later step), or a ledger that is not complete leaves the
-// candidate unpublishable. Last-minute reports duplicate into the next
-// regular report and never count; prior-cycle filings are ignored.
+// candidate unpublishable. A cycle with no filed report at all (an
+// affidavit of exemption — under $1,000 in and out, not $0 — or a first
+// report not yet due) has no figures, never a synthetic zero. Last-minute
+// reports duplicate into the next regular report and never count;
+// prior-cycle filings are ignored.
 //
 // Pure. All arithmetic in integer cents.
 
@@ -46,6 +49,11 @@ export type KansasCoverTotals =
       periods: KansasCoverTotalsPeriod[];
     }
   | {
+      /** Every period accounted for, none by a report: nothing to publish (not $0). */
+      status: "no_filed_report";
+      periods: KansasCoverTotalsPeriod[];
+    }
+  | {
       status: "ok";
       /** Sum of line 2 over canonical covers. */
       totalReceiptsCents: number;
@@ -54,12 +62,16 @@ export type KansasCoverTotals =
       /** Sum of line 6. */
       inKindCents: number;
       /**
-       * Line 5 of the latest canonical report (by period end); null when no
-       * period was filed (affidavit / not-required cycle) or the figure is
-       * negative (the summaries table rejects it — "not reported" is honest).
+       * Line 5 of the latest canonical report (by period end); null when the
+       * figure is negative (the summaries table rejects it — "not reported"
+       * is honest).
        */
       cashOnHandCents: number | null;
-      /** Non-blocking observations (a period's line 1 not equal to the prior filed period's line 5). */
+      /**
+       * Non-blocking observations: a period's line 1 not equal to the prior
+       * filed period's line 5; affidavit-exempt periods (under $1,000 of
+       * unreported activity each) beside the filed ones.
+       */
       diagnostics: string[];
       periods: KansasCoverTotalsPeriod[];
     };
@@ -129,15 +141,18 @@ export function aggregateKansasCoverTotals(input: { ledger: KansasLedger; covers
   }
 
   if (reasons.length > 0) return { status: "unpublishable", reasons, periods };
+  if (latest === null) return { status: "no_filed_report", periods };
 
-  const close = latest === null ? null : latest.cover.cashCloseCents!;
-  if (close !== null && close < 0) diagnostics.push(`cash on hand ${close} is negative; reported as null`);
+  const exempt = periods.filter((period) => period.status === "affidavit_exempt").map((period) => period.key);
+  if (exempt.length > 0) diagnostics.push(`affidavit-exempt periods not in totals: ${exempt.join(", ")}`);
+  const close = latest.cover.cashCloseCents!;
+  if (close < 0) diagnostics.push(`cash on hand ${close} is negative; reported as null`);
   return {
     status: "ok",
     totalReceiptsCents,
     totalDisbursementsCents,
     inKindCents,
-    cashOnHandCents: close === null || close < 0 ? null : close,
+    cashOnHandCents: close < 0 ? null : close,
     diagnostics,
     periods,
   };

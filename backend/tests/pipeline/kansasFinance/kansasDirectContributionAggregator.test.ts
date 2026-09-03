@@ -181,19 +181,31 @@ describe("aggregateKansasCoverTotals", () => {
     });
   });
 
-  it("publishes zeros with null cash for a cycle with no filed period (affidavit of exemption)", () => {
-    const result = aggregateKansasCoverTotals({
-      ledger: ledgerOf([], { affidavitDates: ["01/05/2026"] }),
-      covers: [],
-    });
-    expect(result).toEqual({
-      status: "ok",
-      totalReceiptsCents: 0,
-      totalDisbursementsCents: 0,
-      inKindCents: 0,
-      cashOnHandCents: null,
-      diagnostics: [],
+  it("publishes nothing, never $0, for a cycle with no filed report (affidavit of exemption, or first report not yet due)", () => {
+    // Exempt = under $1,000 in and out, not zero.
+    expect(aggregateKansasCoverTotals({ ledger: ledgerOf([], { affidavitDates: ["01/05/2026"] }), covers: [] })).toEqual({
+      status: "no_filed_report",
       periods: periods.map((period) => ({ key: period.key, status: "affidavit_exempt", cover: null })),
+    });
+    // A committee appointed after every due period so far: nothing owed yet.
+    expect(
+      aggregateKansasCoverTotals({
+        ledger: ledgerOf([], { appointmentsOfTreasurer: [{ fileDate: "08/01/2026", amendmentNo: "" }] }),
+        covers: [],
+      })
+    ).toMatchObject({ status: "no_filed_report" });
+  });
+
+  it("notes affidavit-exempt periods beside filed ones as a diagnostic (their activity is under $1,000, not zero)", () => {
+    const annual = header({ ...ANNUAL });
+    const result = aggregateKansasCoverTotals({
+      ledger: ledgerOf([annual], { affidavitDates: ["03/01/2026"] }),
+      covers: [{ header: annual, cover: cover({ begin: 0, receipts: 100, spent: 0 }) }],
+    });
+    expect(result).toMatchObject({
+      status: "ok",
+      totalReceiptsCents: 100,
+      diagnostics: ["affidavit-exempt periods not in totals: 2026-pre_primary, 2026-pre_general, 2026-post_general"],
     });
   });
 });

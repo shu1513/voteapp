@@ -238,7 +238,9 @@ function normalizeHeader(filing: KansasFilingHeader): KansasFilingHeader {
  * Value identity of a filing version (dates normalized). The ledger returns
  * normalized COPIES of its input headers, so a caller that must find the
  * cover it opened for a ledger's canonical version matches on this key.
- * Two versions with one key are a tie and never canonical (groupVersions).
+ * Every field compareVersionsDesc orders by is in it — the KPDC ordinal
+ * included, since it alone separates undated paper amendments — so two
+ * versions with one key are a tie and never canonical (groupVersions).
  */
 export function kansasFilingHeaderKey(filing: KansasFilingHeader): string {
   const normalized = normalizeHeader(filing);
@@ -248,6 +250,7 @@ export function kansasFilingHeaderKey(filing: KansasFilingHeader): string {
     normalized.fileDate ?? "",
     normalized.amendmentDate ?? "",
     normalized.amended ? "amended" : "original",
+    normalized.amendmentOrdinal ?? "",
     normalized.channel,
   ].join("|");
 }
