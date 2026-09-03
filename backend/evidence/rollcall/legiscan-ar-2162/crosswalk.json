@@ -1,0 +1,683 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "AR",
+  "session_id": 2162,
+  "note": "people_id -> VoteApp candidate id for the Arkansas 2025 Regular Session (LegiScan 2162). Seats come from LegiScan's `district` field, which agrees with Arkansas's own roster here \u2014 the district, never the `role` field, decides which chamber a member sits in. Mapped entries are the proposer's 91 matches, five of which are sitting House members running for a Senate seat (each checked for a party match and for other candidates now holding the House seat), plus five hand-added members the proposer cannot reach. Every unmapped entry carries the reason it is null. Three committee sponsor pseudo-people (Joint Budget Committee, House Management, Senate Efficiency \u2014 blank district, committee_sponsor 1) are excluded; Maryland's people file carried the same rows.",
+  "entries": [
+    {
+      "people_id": 8622,
+      "candidate_id": null,
+      "note": "Tracy Steele, HD-072 in the 2025 session; no November 2026 candidacy (another candidate holds the seat on this ballot)"
+    },
+    {
+      "people_id": 10657,
+      "candidate_id": null,
+      "note": "Jane English, SD-013 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 10661,
+      "candidate_id": null,
+      "note": "Fred Allen, HD-077 in the 2025 session; no November 2026 candidacy (another candidate holds the seat on this ballot)"
+    },
+    {
+      "people_id": 10662,
+      "candidate_id": null,
+      "note": "Lane Jean, HD-099 in the 2025 session; no November 2026 candidacy (another candidate holds the seat on this ballot)"
+    },
+    {
+      "people_id": 10667,
+      "candidate_id": null,
+      "note": "Stephen Meeks, HD-042 in the 2025 session; no November 2026 candidacy (another candidate holds the seat on this ballot)"
+    },
+    {
+      "people_id": 11360,
+      "candidate_id": "2236d4e0-16bb-43fc-aa73-e3fdfed57afa",
+      "note": "Mark Perry, HD-066 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 11831,
+      "candidate_id": null,
+      "note": "Jonathan Dismang, SD-018 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 11991,
+      "candidate_id": null,
+      "note": "Greg Leding, SD-030 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 12101,
+      "candidate_id": "8edefe9d-a82e-4e4e-84fb-5f777aecf072",
+      "note": "Missy Irvin, SD-024 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 12108,
+      "candidate_id": null,
+      "note": "Jon Eubanks, HD-046 in the 2025 session; no November 2026 candidacy (another candidate holds the seat on this ballot)"
+    },
+    {
+      "people_id": 12110,
+      "candidate_id": null,
+      "note": "Matthew Shepherd, HD-097 in the 2025 session; no November 2026 candidacy (another candidate holds the seat on this ballot)"
+    },
+    {
+      "people_id": 12159,
+      "candidate_id": "7972517d-b7e8-4031-a96a-dd4d39908517",
+      "note": "Bryan King, SD-028 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 12186,
+      "candidate_id": null,
+      "note": "Kim Hammer, SD-016 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 12236,
+      "candidate_id": null,
+      "note": "Stephanie Flowers, SD-008 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 12464,
+      "candidate_id": "f6432348-490f-47e1-beb7-6b5f1bfb4f8b",
+      "note": "Frederick Love, SD-015; hand-added, and the class the proposer can never reach: a sitting senator running STATEWIDE in November 2026, so no state-legislative pool row exists for him. Spelling also differs (LegiScan `Frederick Love`, our candidate `Fredrick Love`); confirmed by party and by `current_office` reading `Arkansas State Senator`"
+    },
+    {
+      "people_id": 12468,
+      "candidate_id": null,
+      "note": "Terry Rice, SD-005 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 12470,
+      "candidate_id": null,
+      "note": "Reginald Murdock, SD-009 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 12483,
+      "candidate_id": null,
+      "note": "Gary Stubblefield, SD-026 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 12578,
+      "candidate_id": null,
+      "note": "Jeff Wardlaw, HD-094 in the 2025 session; no November 2026 candidacy (another candidate holds the seat on this ballot)"
+    },
+    {
+      "people_id": 12719,
+      "candidate_id": "97b1e882-d097-44f4-ad12-2ecdb9941cdb",
+      "note": "Bruce Cozart, HD-091 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 14938,
+      "candidate_id": "0e77c732-576a-4f52-977d-29326d3bd6df",
+      "note": "David Whitaker, HD-022 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 14940,
+      "candidate_id": null,
+      "note": "Jim Dotson, SD-034 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 14948,
+      "candidate_id": "a60a31fa-0d52-441b-9224-f2ca296dd6bf",
+      "note": "Mike Holcomb, HD-093 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 14954,
+      "candidate_id": "e852e57f-8d95-40ac-bba7-b23466e06645",
+      "note": "Stephen Magie, HD-056; hand-added. LegiScan `Stephen Magie`, our candidate `Steve Magie` \u2014 `steve` is not a string prefix of `stephen`, the same shape as Alabama's rick/richard and Connecticut's nick/nicholas"
+    },
+    {
+      "people_id": 14955,
+      "candidate_id": "00ffb7aa-a623-4565-8938-5b40476807b9",
+      "note": "Mark McElroy, HD-062 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 14959,
+      "candidate_id": null,
+      "note": "John Payton, SD-022 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 14965,
+      "candidate_id": "b801c478-62e5-42c5-9120-ae421bbfa81b",
+      "note": "Richard Womack, HD-090 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 14966,
+      "candidate_id": "54155825-c27a-4b9a-8d44-590bddb03cba",
+      "note": "Alan Clark, SD-007 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 14968,
+      "candidate_id": "f435dbe4-58aa-49e9-9afc-f9b40f728f37",
+      "note": "Ronald Caldwell, SD-010 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 14972,
+      "candidate_id": null,
+      "note": "Bart Hester, SD-033 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 14973,
+      "candidate_id": null,
+      "note": "Jimmy Hickey, SD-004 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 16335,
+      "candidate_id": "941e7615-1179-4b50-8a8f-0f276e02f5a7",
+      "note": "Jack Ladyman, HD-032 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 16336,
+      "candidate_id": "bfae41d0-c891-4292-9872-03647a242bcf",
+      "note": "Robin Lundstrum, HD-018 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 16337,
+      "candidate_id": null,
+      "note": "Dan Sullivan, SD-020 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 16338,
+      "candidate_id": "7c741a6a-3c3e-4d53-9852-f37682d70a6a",
+      "note": "Dwight Tosh, HD-038 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 16339,
+      "candidate_id": null,
+      "note": "David Wallace, SD-019 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 16381,
+      "candidate_id": null,
+      "note": "Blake Johnson, SD-021 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 16898,
+      "candidate_id": "facc6725-e5b8-4e01-b029-d5ac96bd5664",
+      "note": "Rick Beck, HD-043 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 16900,
+      "candidate_id": "4ccdcc4f-e9a9-4319-83a3-7975f768642d",
+      "note": "Mary Bentley, HD-054 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 16902,
+      "candidate_id": "7d06a303-0673-48ff-b867-0789df506e7e",
+      "note": "Justin Boyd, SD-027 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 16907,
+      "candidate_id": "dbd89055-6eea-430f-9326-1219a27d93d8",
+      "note": "Les Eaves, HD-058 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 16909,
+      "candidate_id": "2f17e969-adee-4bb9-ba0d-119d75dfd91d",
+      "note": "Justin Gonzales, HD-089 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 16911,
+      "candidate_id": null,
+      "note": "Julie Mayberry, HD-092 in the 2025 session; no November 2026 candidacy (another candidate holds the seat on this ballot)"
+    },
+    {
+      "people_id": 16912,
+      "candidate_id": "519d7e73-da03-4bb8-b997-e25ebcf7b658",
+      "note": "Ken Ferguson, HD-064 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 16916,
+      "candidate_id": null,
+      "note": "Ron Mcnair, HD-005 in the 2025 session; no November 2026 candidacy (another candidate holds the seat on this ballot)"
+    },
+    {
+      "people_id": 16919,
+      "candidate_id": null,
+      "note": "Marcus Richmond, HD-052 in the 2025 session; no November 2026 candidacy (another candidate holds the seat on this ballot)"
+    },
+    {
+      "people_id": 16924,
+      "candidate_id": "06ec88dd-1a5a-4ac8-8f68-53a1d9ca09d7",
+      "note": "Clarke Tucker, SD-014 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 16926,
+      "candidate_id": "8efd8099-4685-48d9-acef-7d2c86f00667",
+      "note": "Deann Vaught, HD-087 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 16963,
+      "candidate_id": null,
+      "note": "Scott Flippo, SD-023 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 17040,
+      "candidate_id": "44208755-3bd3-4685-b1e9-87fff33ef3ab",
+      "note": "Karilyn Brown, HD-067 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 18006,
+      "candidate_id": "74819494-6a9c-4f7f-a460-f8c8e1eb58a4",
+      "note": "Sonia Eubanks Barker, HD-096 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 18008,
+      "candidate_id": null,
+      "note": "Frances Cavenaugh, HD-030 in the 2025 session; no November 2026 candidacy (another candidate holds the seat on this ballot)"
+    },
+    {
+      "people_id": 18012,
+      "candidate_id": "fca88fd3-1386-4539-a073-898790dd47c0",
+      "note": "Jimmie Gazaway, HD-031; hand-added. Spelling variant: LegiScan `Jimmie Gazaway`, our candidate `Jimmy Gazaway`, same seat and same party"
+    },
+    {
+      "people_id": 18014,
+      "candidate_id": "289490be-22c7-4726-b6fb-443b8278d593",
+      "note": "Roger Lynch, HD-060 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 18015,
+      "candidate_id": "a1fa4754-a334-4cc6-a904-0fcc77a559ac",
+      "note": "John Maddox, HD-086 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 18016,
+      "candidate_id": "843b61c7-e6b0-43be-be4c-9276fc2eef43",
+      "note": "Aaron Pilkington, HD-045 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 18017,
+      "candidate_id": "da232294-8abd-4419-bb5b-e4768e4f5ba4",
+      "note": "Johnny Rye, HD-036 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 18018,
+      "candidate_id": "6f75d78a-d7d5-488e-8c08-56d5f6af12c7",
+      "note": "Les Warren, HD-084 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 18020,
+      "candidate_id": null,
+      "note": "Carlton Wing, HD-070 in the 2025 session; no November 2026 candidacy (another candidate holds the seat on this ballot)"
+    },
+    {
+      "people_id": 18025,
+      "candidate_id": null,
+      "note": "Austin Mccollum, HD-008 in the 2025 session; no November 2026 candidacy (another candidate holds the seat on this ballot)"
+    },
+    {
+      "people_id": 18683,
+      "candidate_id": "db303475-9edc-43bd-818b-0cc7c39073bf",
+      "note": "Carol Dalby, HD-100 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 18684,
+      "candidate_id": "75580f89-eae6-4129-bb0c-18fc325a4199",
+      "note": "Steve Hollowell, HD-037 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 18685,
+      "candidate_id": "7d2f9fd9-045e-4769-96b9-df67e00f3da9",
+      "note": "Clint Penzo, SD-031 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 19943,
+      "candidate_id": "54931df8-4ce7-4bfe-96e3-21e124d9ef11",
+      "note": "Brian Evans, HD-068 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 20017,
+      "candidate_id": null,
+      "note": "Mark Johnson, SD-017 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 20405,
+      "candidate_id": "fdcbfe45-a953-4fcb-a505-f6e2f3200068",
+      "note": "Ricky Hill, SD-011 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 20742,
+      "candidate_id": "f1a23925-3fe4-4444-a74e-1a12fac9bb49",
+      "note": "Lee Johnson, HD-047 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 20762,
+      "candidate_id": "a26d6751-9a16-4ceb-a982-60217ad1cda1",
+      "note": "Andrew Collins, HD-073 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 20763,
+      "candidate_id": null,
+      "note": "Stan Berry, HD-044 in the 2025 session; no November 2026 candidacy (another candidate holds the seat on this ballot)"
+    },
+    {
+      "people_id": 20764,
+      "candidate_id": null,
+      "note": "Harlan Breaux, HD-006 in the 2025 session; no November 2026 candidacy (another candidate holds the seat on this ballot)"
+    },
+    {
+      "people_id": 20765,
+      "candidate_id": "354e2767-892a-4ded-8672-c747dca12d54",
+      "note": "Cameron Cooper, HD-057 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 20768,
+      "candidate_id": "08e9dcbb-a303-446c-8043-f8d15e362b34",
+      "note": "Nicole Clowney, HD-021 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 20769,
+      "candidate_id": "6b635af9-28e5-4fda-953a-6c5abc48697d",
+      "note": "Cindy Crawford, HD-051 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 20770,
+      "candidate_id": "ee3c68b2-0246-4b30-a970-5ede24313236",
+      "note": "Denise Garner, HD-020 in the 2025 session; running for the other chamber in November 2026 (SD-030). Accepted after checking that the party matches and that other candidates now hold HD-020, so the seat is genuinely being vacated"
+    },
+    {
+      "people_id": 20776,
+      "candidate_id": "7235630a-a617-470b-8133-2e21016d2fb6",
+      "note": "Tippi McCullough, HD-074 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 20779,
+      "candidate_id": "507730d8-7c2c-4e3f-aee0-2eb2e6c7c4d7",
+      "note": "Jay Richardson, HD-049 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 20781,
+      "candidate_id": null,
+      "note": "Jamie Scott, SD-012 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 20783,
+      "candidate_id": "a15c28a2-f341-4a13-93f9-c56f9ca0096f",
+      "note": "Jim Wooten, HD-059 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 20838,
+      "candidate_id": null,
+      "note": "Breanne Davis, SD-025 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 21594,
+      "candidate_id": "0d054f6f-30d9-4c4e-935f-3822ce5844b6",
+      "note": "Denise Ennett, HD-080 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 21628,
+      "candidate_id": "f74d9eae-a43f-449e-9e27-7935d2ad0a81",
+      "note": "Richard McGrew, HD-085 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 21629,
+      "candidate_id": "de2e6b6b-0f3d-46ff-b98a-273d61ee2076",
+      "note": "Joy Springer, HD-076 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 21699,
+      "candidate_id": null,
+      "note": "Ben Gilmore, SD-001 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 21766,
+      "candidate_id": "94def1c3-8362-4c14-8510-940f523ffeb1",
+      "note": "Howard Beaty, HD-095 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 21767,
+      "candidate_id": "d43b6eca-7914-4284-b728-f09acdce794a",
+      "note": "Tony Furman, HD-082 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 21768,
+      "candidate_id": "58d0d9bb-3938-4be3-8f78-2fa7bed338a2",
+      "note": "Kendon Underwood, HD-016 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 21894,
+      "candidate_id": "d5d5685b-ff99-4782-8055-2a51d6437c6f",
+      "note": "David Ray, HD-069 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 22170,
+      "candidate_id": "c68490b2-0be2-44ef-9aa5-bd0acd5cf99b",
+      "note": "John Carr, HD-015 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 22171,
+      "candidate_id": "8a4cdab1-bcff-4603-b917-b42912cb9c35",
+      "note": "Rick McClure, HD-029 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 22172,
+      "candidate_id": "ad2bc126-a87f-48b2-a620-f9c774d80fba",
+      "note": "Joshua Bryant, SD-032 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 22202,
+      "candidate_id": "3eb3ac5e-1565-43f3-9465-961222197714",
+      "note": "Keith Brooks, HD-078 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 22204,
+      "candidate_id": "e1d547ca-866e-4ec4-b297-630f06e51f06",
+      "note": "Ashley Hudson, HD-075 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 22205,
+      "candidate_id": "62c33522-d4dd-4124-b7f5-b0ecccdd8564",
+      "note": "Jon Milligan, HD-033 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 23201,
+      "candidate_id": null,
+      "note": "Matt McKee, SD-006 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 23293,
+      "candidate_id": null,
+      "note": "Jim Petty, SD-029 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 23377,
+      "candidate_id": "155ca8dd-d43c-4d18-84b9-57d7a8a0920d",
+      "note": "RJ Hawk, HD-081 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 23640,
+      "candidate_id": "2be169e2-2ff1-4923-b720-22c97eeccbbb",
+      "note": "Wade Andrews, HD-098 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 23884,
+      "candidate_id": "e0847cd6-06a2-44c6-8df3-778c8ba76b14",
+      "note": "Rebecca Burkes, HD-011 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 23886,
+      "candidate_id": "22ec75c3-1cf1-4df7-be7e-f85b1e5a8c9f",
+      "note": "Hope Duke, HD-012 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 23887,
+      "candidate_id": "15707b3f-a3af-48fa-86ef-a9cbebe471c2",
+      "note": "Zack Gramlich, HD-050 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 23888,
+      "candidate_id": "5843ac62-f68b-4fc7-92d5-9111c4702042",
+      "note": "Mindy McAlindon, HD-010 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 23946,
+      "candidate_id": null,
+      "note": "Steve Crowell, SD-003 in the 2025 session; no November 2026 candidacy. Arkansas staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 23947,
+      "candidate_id": "4f2bb8f3-5783-4ac3-b068-24b0857b77a1",
+      "note": "Matt Duffield, HD-053 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 23981,
+      "candidate_id": "90c7b3b6-d107-4682-91fe-b19e55f7d4d0",
+      "note": "Stetson Painter, HD-003 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 23985,
+      "candidate_id": "e3876bf0-528f-46ac-b9c3-d8abcbb3ab4b",
+      "note": "Steve Unger, HD-019 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 23990,
+      "candidate_id": "ba02c031-1773-4189-85e3-4ea8d5129be1",
+      "note": "Wayne Long, HD-039; hand-added. LegiScan stores first name `Justice`, middle `Wayne`, nickname `Wayne`; our candidate is `Wayne Long`. The LegiScan `name` field is again byte-identical and again unread by the proposer"
+    },
+    {
+      "people_id": 23991,
+      "candidate_id": "557dc495-7bf7-42c9-8d4e-e0bedc6e3dbf",
+      "note": "Scott Richardson, HD-013; hand-added. LegiScan stores the legal first name `R. Scott` and the working name `Scott` only in its `nickname` field, which the proposer never reads, so a person whose LegiScan `name` is byte-identical to our candidate `Scott Richardson` was missed. Same finding as Pennsylvania, Connecticut and North Carolina"
+    },
+    {
+      "people_id": 24170,
+      "candidate_id": "a4ae215b-f28e-4928-8056-d0868dc3affb",
+      "note": "Brandon Achor, HD-071 in the 2025 session; running for the other chamber in November 2026 (SD-013). Accepted after checking that the party matches and that other candidates now hold HD-071, so the seat is genuinely being vacated"
+    },
+    {
+      "people_id": 24171,
+      "candidate_id": "0faaceae-8163-477a-80a8-360e2bd9b551",
+      "note": "Jeremiah Moore, HD-061 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 24172,
+      "candidate_id": "f1e88e8f-c796-4dee-8e85-0a591a78b021",
+      "note": "Joey Carr, HD-034 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 24173,
+      "candidate_id": "fa5a1b18-3137-4a83-802a-60bd2d6d902f",
+      "note": "Matt Brown, HD-055 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 24174,
+      "candidate_id": "1298cd56-fc8b-4cd4-9142-296d6fd9a7b3",
+      "note": "Shad Pearce, HD-040 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 24175,
+      "candidate_id": "679dcdaf-a2fa-4460-8a22-4f9af8bbcce2",
+      "note": "Chad Puryear, HD-025 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 24176,
+      "candidate_id": "1275a371-33ed-47cc-9698-f7b2b1cca3f9",
+      "note": "Ryan Rose, HD-048 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 24177,
+      "candidate_id": "07e649dd-86fc-4611-85a1-ddac037a9d2b",
+      "note": "Bart Schulz, HD-028 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 24178,
+      "candidate_id": "58a7c364-0835-489c-a0a3-4da3a924f860",
+      "note": "Trey Steimel, HD-002 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 24179,
+      "candidate_id": "5ce9f867-805e-4a63-b952-ff1a0d73b214",
+      "note": "Tara Shephard, HD-079 in the 2025 session; running for the other chamber in November 2026 (SD-015). Accepted after checking that the party matches and that other candidates now hold HD-079, so the seat is genuinely being vacated"
+    },
+    {
+      "people_id": 24180,
+      "candidate_id": "578310c9-0f1b-4354-92f8-7be0f9561436",
+      "note": "Jeremy Wooldridge, HD-001 in the 2025 session; running for the other chamber in November 2026 (SD-021). Accepted after checking that the party matches and that other candidates now hold HD-001, so the seat is genuinely being vacated"
+    },
+    {
+      "people_id": 24181,
+      "candidate_id": "793997fd-c52b-43de-9c18-54374ebd2f88",
+      "note": "Kendra Moore, HD-023 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 24308,
+      "candidate_id": "07f5616a-a3a2-4413-965d-e9a0d949630e",
+      "note": "Tyler Dees, SD-035 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 24309,
+      "candidate_id": "48fd1ba0-223e-4d83-aa4a-7f3bb0fcce18",
+      "note": "Matt Stone, SD-002 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 24372,
+      "candidate_id": "03a4c781-af52-4dc4-ad20-61533ee263ed",
+      "note": "Brit McKenzie, HD-007 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 24615,
+      "candidate_id": "bb0d53c9-5fa2-46bf-a56d-33b0387847ec",
+      "note": "Steven Walker, HD-027 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 25482,
+      "candidate_id": "17a4865b-c754-4b29-8f13-c2f5dd4a2c20",
+      "note": "Glenn Barnes, HD-065 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 25483,
+      "candidate_id": "58da696c-0edd-40e6-8ce4-ccac25f5c22c",
+      "note": "Lincoln Barnett, HD-063 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 25484,
+      "candidate_id": "19392081-c5ff-4449-97cf-4f5a60c7d7a4",
+      "note": "Alyssa Brown, HD-041 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 25485,
+      "candidate_id": "6af4bba3-1c2e-4906-a343-ec0a5208b5ae",
+      "note": "Nick Burkes, HD-014 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 25486,
+      "candidate_id": "f3d1cba1-919d-4bf8-a79a-b412619b054d",
+      "note": "Paul Childress, HD-083 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 25487,
+      "candidate_id": "00b38d4b-1ea1-45ef-a0d6-c17b511d1d65",
+      "note": "James Eaton, HD-026 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 25488,
+      "candidate_id": null,
+      "note": "Brad Hall, HD-024 in the 2025 session; no November 2026 candidacy (another candidate holds the seat on this ballot)"
+    },
+    {
+      "people_id": 25489,
+      "candidate_id": "78a3f287-1776-4811-9caf-c7e127c56cc7",
+      "note": "Dolly Henley, HD-088 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 25490,
+      "candidate_id": "812178cf-99e3-4a19-bf78-c9b4c1eb5423",
+      "note": "Jessie McGruder, HD-035 in the 2025 session; running for the other chamber in November 2026 (SD-009). Accepted after checking that the party matches and that other candidates now hold HD-035, so the seat is genuinely being vacated"
+    },
+    {
+      "people_id": 25491,
+      "candidate_id": "e878ef2f-a753-4421-8bf0-b727aab54c9a",
+      "note": "Jason Nazarenko, HD-004 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 25492,
+      "candidate_id": "b6559fa4-ae5d-4522-8441-1a61e851ceb7",
+      "note": "Randy Torres, HD-017 in the 2025 session; proposer match on first and last name, seat agrees"
+    },
+    {
+      "people_id": 25493,
+      "candidate_id": "c44f910b-ae44-4d65-afd0-06adcb7bb24c",
+      "note": "Diana Gonzales Worthen, HD-009 in the 2025 session; proposer match on first and last name, seat agrees"
+    }
+  ]
+}

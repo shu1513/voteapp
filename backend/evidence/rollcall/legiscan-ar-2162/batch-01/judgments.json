@@ -1,0 +1,279 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1483323,
+      "measure_id": "SB 3",
+      "vote_date": "2025-02-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 3. It bars state and local government in Arkansas from treating anyone better or worse because of race, sex, color, ethnicity or national origin. That rule covers public jobs, public schools and colleges, and what the government buys. Most of the act repeals programs that were already in place. Schools no longer write plans to hire and keep minority teachers. State colleges no longer run programs to keep minority students and staff. State agencies no longer try to hire minority workers in step with the state's population. The Critical Needs Minority Teacher Scholarship is renamed and opened to any student who meets the grade and test rules. The act protects preferences given to veterans. The Arkansas House passed it 65-27 and it became Act 116 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 3. It bars state and local government in Arkansas from treating anyone better or worse because of race, sex, color, ethnicity or national origin. That rule covers public jobs, public schools and colleges, and what the government buys. Most of the act repeals programs that were already in place. Schools no longer write plans to hire and keep minority teachers. State colleges no longer run programs to keep minority students and staff. State agencies no longer try to hire minority workers in step with the state's population. The Critical Needs Minority Teacher Scholarship is renamed and opened to any student who meets the grade and test rules. The act protects preferences given to veterans. The Arkansas House passed it 65-27 and it became Act 116 of 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1487790,
+      "measure_id": "SB 3",
+      "vote_date": "2025-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 3. It bars state and local government in Arkansas from treating anyone better or worse because of race, sex, color, ethnicity or national origin. That rule covers public jobs, public schools and colleges, and what the government buys. Most of the act repeals programs that were already in place. Schools no longer write plans to hire and keep minority teachers. State colleges no longer run programs to keep minority students and staff. State agencies no longer try to hire minority workers in step with the state's population. The Critical Needs Minority Teacher Scholarship is renamed and opened to any student who meets the grade and test rules. The act protects preferences given to veterans. The Arkansas Senate passed it 24-6 and it became Act 116 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 3. It bars state and local government in Arkansas from treating anyone better or worse because of race, sex, color, ethnicity or national origin. That rule covers public jobs, public schools and colleges, and what the government buys. Most of the act repeals programs that were already in place. Schools no longer write plans to hire and keep minority teachers. State colleges no longer run programs to keep minority students and staff. State agencies no longer try to hire minority workers in step with the state's population. The Critical Needs Minority Teacher Scholarship is renamed and opened to any student who meets the grade and test rules. The act protects preferences given to veterans. The Arkansas Senate passed it 24-6 and it became Act 116 of 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1540504,
+      "measure_id": "SB 520",
+      "vote_date": "2025-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 520. It bars Arkansas counties, cities and towns from running a diversity, equity and inclusion program or office. They also may not ask a job seeker or worker to write down their views on race, ethnicity, sex, color or national origin. Any Arkansas resident may report a breach of the rule. If the local government does not fix it in 30 days, that resident may sue and have their legal fees paid. The act still allows different treatment by sex where it serves an important public purpose. It also still lets staff teach and talk about these ideas. The Arkansas Senate passed it 22-7 and it became Act 747 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 520. It bars Arkansas counties, cities and towns from running a diversity, equity and inclusion program or office. They also may not ask a job seeker or worker to write down their views on race, ethnicity, sex, color or national origin. Any Arkansas resident may report a breach of the rule. If the local government does not fix it in 30 days, that resident may sue and have their legal fees paid. The act still allows different treatment by sex where it serves an important public purpose. It also still lets staff teach and talk about these ideas. The Arkansas Senate passed it 22-7 and it became Act 747 of 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1547415,
+      "measure_id": "SB 520",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 520. It bars Arkansas counties, cities and towns from running a diversity, equity and inclusion program or office. They also may not ask a job seeker or worker to write down their views on race, ethnicity, sex, color or national origin. Any Arkansas resident may report a breach of the rule. If the local government does not fix it in 30 days, that resident may sue and have their legal fees paid. The act still allows different treatment by sex where it serves an important public purpose. It also still lets staff teach and talk about these ideas. The Arkansas House passed it 68-22 and it became Act 747 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 520. It bars Arkansas counties, cities and towns from running a diversity, equity and inclusion program or office. They also may not ask a job seeker or worker to write down their views on race, ethnicity, sex, color or national origin. Any Arkansas resident may report a breach of the rule. If the local government does not fix it in 30 days, that resident may sue and have their legal fees paid. The act still allows different treatment by sex where it serves an important public purpose. It also still lets staff teach and talk about these ideas. The Arkansas House passed it 68-22 and it became Act 747 of 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1549625,
+      "measure_id": "SB 486",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 486. It writes a definition of sex based on biology into Arkansas law. It then requires shared restrooms, changing rooms and sleeping rooms to be set aside for one sex. The rule covers government buildings, shelters, state prisons, county and city jails, and places that hold young people. A person who finds someone of the other sex in such a room may sue, and has two years to file. Staff may still go in to clean, to give medical help, or to do their jobs. Rooms for one person and for families are still allowed. Prisons may still house a transgender or intersex inmate case by case to keep them safe. The Arkansas House passed it 60-22 and it became Act 955 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 486. It writes a definition of sex based on biology into Arkansas law. It then requires shared restrooms, changing rooms and sleeping rooms to be set aside for one sex. The rule covers government buildings, shelters, state prisons, county and city jails, and places that hold young people. A person who finds someone of the other sex in such a room may sue, and has two years to file. Staff may still go in to clean, to give medical help, or to do their jobs. Rooms for one person and for families are still allowed. Prisons may still house a transgender or intersex inmate case by case to keep them safe. The Arkansas House passed it 60-22 and it became Act 955 of 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1543044,
+      "measure_id": "SB 426",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 426, the Defense Against Criminal Illegals Act. A judge may add extra prison time, on top of the normal sentence, when a person who was in the country illegally commits one of 14 listed violent crimes. The extra time is capped at 4, 10 or 20 years, based on how serious the crime is. There is no parole during that added time. The act also tells the state prison agency, and every sheriff who runs a jail, to join a federal program that lets their officers serve immigration warrants. A sheriff turned down again and again may ask the state for a waiver. The act also widens Arkansas's ban on sanctuary policies so that it covers counties, not just cities. The Arkansas House passed it 73-20 and it became Act 654 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 426, the Defense Against Criminal Illegals Act. A judge may add extra prison time, on top of the normal sentence, when a person who was in the country illegally commits one of 14 listed violent crimes. The extra time is capped at 4, 10 or 20 years, based on how serious the crime is. There is no parole during that added time. The act also tells the state prison agency, and every sheriff who runs a jail, to join a federal program that lets their officers serve immigration warrants. A sheriff turned down again and again may ask the state for a waiver. The act also widens Arkansas's ban on sanctuary policies so that it covers counties, not just cities. The Arkansas House passed it 73-20 and it became Act 654 of 2025.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1543971,
+      "measure_id": "HB 1974",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1974. It tells Arkansas government employers to check new hires through E-Verify. E-Verify is the federal website that says whether a person may legally work in the United States. The rule covers state agencies, boards and offices, and also counties and cities. Workers hired before January 1, 2026 are left out, and no employer has to check a worker it already has. A government employer may not keep someone the system does not clear. The act sets no fine and no crime for breaking the rule. From July 2026 the state labor department must send a notice and give 30 days to fix it. The Arkansas House passed it 76-20 and it became Act 948 of 2025.",
+      "nay_description": "Voted against passing House Bill 1974. It tells Arkansas government employers to check new hires through E-Verify. E-Verify is the federal website that says whether a person may legally work in the United States. The rule covers state agencies, boards and offices, and also counties and cities. Workers hired before January 1, 2026 are left out, and no employer has to check a worker it already has. A government employer may not keep someone the system does not clear. The act sets no fine and no crime for breaking the rule. From July 2026 the state labor department must send a notice and give 30 days to fix it. The Arkansas House passed it 76-20 and it became Act 948 of 2025.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1549663,
+      "measure_id": "SB 591",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 591. It is a standby law, and it does not apply yet. If it ever applies, it would be a Class A misdemeanor to perform an abortion while knowing the woman wants it only because of the race of the fetus. Before any abortion, the provider would have to ask the woman if she knows the race of the fetus. The provider would also have to try to get her pregnancy medical records first. The woman herself could never be charged or sued. The act starts only if a court blocks Arkansas's near-total abortion ban, or the state repeals it. The Arkansas House passed it 63-17 and it became Act 973 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 591. It is a standby law, and it does not apply yet. If it ever applies, it would be a Class A misdemeanor to perform an abortion while knowing the woman wants it only because of the race of the fetus. Before any abortion, the provider would have to ask the woman if she knows the race of the fetus. The provider would also have to try to get her pregnancy medical records first. The woman herself could never be charged or sued. The act starts only if a court blocks Arkansas's near-total abortion ban, or the state repeals it. The Arkansas House passed it 63-17 and it became Act 973 of 2025.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1497495,
+      "measure_id": "SB 207",
+      "vote_date": "2025-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 207. A canvasser must now warn each person that petition fraud is a crime before that person signs. A canvasser is a person who carries a petition around and collects names to put a measure on the ballot. The warning has to be spoken out loud. It may be written only when speaking is not possible, and then it goes on its own sheet, not on the petition. Skipping the warning is added to the list of things a canvasser may be punished for. The Arkansas House passed it 67-26 and it became Act 218 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 207. A canvasser must now warn each person that petition fraud is a crime before that person signs. A canvasser is a person who carries a petition around and collects names to put a measure on the ballot. The warning has to be spoken out loud. It may be written only when speaking is not possible, and then it goes on its own sheet, not on the petition. Skipping the warning is added to the list of things a canvasser may be punished for. The Arkansas House passed it 67-26 and it became Act 218 of 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1500009,
+      "measure_id": "SB 207",
+      "vote_date": "2025-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 207. A canvasser must now warn each person that petition fraud is a crime before that person signs. A canvasser is a person who carries a petition around and collects names to put a measure on the ballot. The warning has to be spoken out loud. It may be written only when speaking is not possible, and then it goes on its own sheet, not on the petition. Skipping the warning is added to the list of things a canvasser may be punished for. The Arkansas Senate passed it 25-9 and it became Act 218 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 207. A canvasser must now warn each person that petition fraud is a crime before that person signs. A canvasser is a person who carries a petition around and collects names to put a measure on the ballot. The warning has to be spoken out loud. It may be written only when speaking is not possible, and then it goes on its own sheet, not on the petition. Skipping the warning is added to the list of things a canvasser may be punished for. The Arkansas Senate passed it 25-9 and it became Act 218 of 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1498719,
+      "measure_id": "SB 211",
+      "vote_date": "2025-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 211. Every canvasser must file a sworn statement with the Secretary of State. A canvasser is a person who collects names to put a measure on the ballot. The statement says the canvasser followed Arkansas's rules on collecting names, lying under oath, forgery and fraud. Until it is filed, none of that canvasser's names may be counted. Once it is filed, that canvasser may not collect any more names. Names are not thrown out if the canvasser died or was too ill to file. The statement is not proof either way that the names are real. The Arkansas House passed it 65-27 and it became Act 241 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 211. Every canvasser must file a sworn statement with the Secretary of State. A canvasser is a person who collects names to put a measure on the ballot. The statement says the canvasser followed Arkansas's rules on collecting names, lying under oath, forgery and fraud. Until it is filed, none of that canvasser's names may be counted. Once it is filed, that canvasser may not collect any more names. Names are not thrown out if the canvasser died or was too ill to file. The statement is not proof either way that the names are real. The Arkansas House passed it 65-27 and it became Act 241 of 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1503369,
+      "measure_id": "SB 211",
+      "vote_date": "2025-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 211. Every canvasser must file a sworn statement with the Secretary of State. A canvasser is a person who collects names to put a measure on the ballot. The statement says the canvasser followed Arkansas's rules on collecting names, lying under oath, forgery and fraud. Until it is filed, none of that canvasser's names may be counted. Once it is filed, that canvasser may not collect any more names. Names are not thrown out if the canvasser died or was too ill to file. The statement is not proof either way that the names are real. The Arkansas Senate passed it 24-9 and it became Act 241 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 211. Every canvasser must file a sworn statement with the Secretary of State. A canvasser is a person who collects names to put a measure on the ballot. The statement says the canvasser followed Arkansas's rules on collecting names, lying under oath, forgery and fraud. Until it is filed, none of that canvasser's names may be counted. Once it is filed, that canvasser may not collect any more names. Names are not thrown out if the canvasser died or was too ill to file. The statement is not proof either way that the names are real. The Arkansas Senate passed it 24-9 and it became Act 241 of 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1519700,
+      "measure_id": "HB 1713",
+      "vote_date": "2025-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1713. The Attorney General may no longer approve a ballot title written above an eighth-grade reading level. A ballot title is the short summary of a proposed measure that voters read on the ballot. The reading level is scored by a set formula, frozen as it stood on January 1, 2025. If a title is turned down, the Attorney General must say why. They must also tell the sponsors to rewrite the title or the measure. Titles already approved before the act started are not touched. The Arkansas House passed it 60-23 and it became Act 602 of 2025.",
+      "nay_description": "Voted against passing House Bill 1713. The Attorney General may no longer approve a ballot title written above an eighth-grade reading level. A ballot title is the short summary of a proposed measure that voters read on the ballot. The reading level is scored by a set formula, frozen as it stood on January 1, 2025. If a title is turned down, the Attorney General must say why. They must also tell the sponsors to rewrite the title or the measure. Titles already approved before the act started are not touched. The Arkansas House passed it 60-23 and it became Act 602 of 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1542117,
+      "measure_id": "HB 1150",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1150. It bars a pharmacy benefits manager from owning a retail pharmacy in Arkansas. A pharmacy benefits manager is a company that health plans hire to run their drug coverage, including setting what pharmacies get paid. The ban covers a stake held directly, or through a parent company or a branch. The State Board of Pharmacy must cancel or refuse to renew any permit held against the ban. The board may still grant a limited permit when a rare drug would otherwise be hard to get. Pharmacies losing a permit had to write to their patients before the ban began on January 1, 2026. The Arkansas Senate passed it 26-9 and it became Act 624 of 2025.",
+      "nay_description": "Voted against passing House Bill 1150. It bars a pharmacy benefits manager from owning a retail pharmacy in Arkansas. A pharmacy benefits manager is a company that health plans hire to run their drug coverage, including setting what pharmacies get paid. The ban covers a stake held directly, or through a parent company or a branch. The State Board of Pharmacy must cancel or refuse to renew any permit held against the ban. The board may still grant a limited permit when a rare drug would otherwise be hard to get. Pharmacies losing a permit had to write to their patients before the ban began on January 1, 2026. The Arkansas Senate passed it 26-9 and it became Act 624 of 2025.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1542128,
+      "measure_id": "HB 1017",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1017. It changes paid maternity leave for Arkansas public school staff. The state now pays the whole cost of the 12 weeks of leave. Before, the state and the school each paid half, and a school could choose not to take part. The leave now also covers taking in a foster baby under one year old. The act also narrows who can get the leave. The worker must be female. They must have worked for a school for at least a year. They must not have been disciplined for misusing leave in the past year. The old law had none of those three limits. The Arkansas House passed it 68-19 and it became Act 904 of 2025.",
+      "nay_description": "Voted against passing House Bill 1017. It changes paid maternity leave for Arkansas public school staff. The state now pays the whole cost of the 12 weeks of leave. Before, the state and the school each paid half, and a school could choose not to take part. The leave now also covers taking in a foster baby under one year old. The act also narrows who can get the leave. The worker must be female. They must have worked for a school for at least a year. They must not have been disciplined for misusing leave in the past year. The old law had none of those three limits. The Arkansas House passed it 68-19 and it became Act 904 of 2025.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
