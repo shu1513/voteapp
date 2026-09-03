@@ -133,9 +133,11 @@ export type WestVirginiaCandidateFinanceSyncResult = {
   entityId: string;
   window: Pick<WestVirginiaCycleWindow, "reportingCycle" | "windowStart" | "windowEnd">;
   windowYears: number[];
-  totalReceipts: number;
-  directContributionTotal: number;
-  totalDisbursements: number;
+  /** False when the window holds no rows for the committee; totals are then null. */
+  reportedActivity: boolean;
+  totalReceipts: number | null;
+  directContributionTotal: number | null;
+  totalDisbursements: number | null;
   reconciliation: WestVirginiaYearReconciliation[];
   aggregation: Omit<WestVirginiaDirectFinanceAggregationResult, "breakdowns">;
   breakdownCounts: { occupation: number; industry: number; contribution_size: number };
@@ -266,11 +268,19 @@ export async function syncWestVirginiaCandidateFinance(input: {
     );
   }
 
-  const totalReceipts = aggregation.totalReceiptsCents / 100;
-  const directContributionTotal = aggregation.directContributionCents / 100;
-  const totalDisbursements = aggregation.totalDisbursementsCents / 100;
+  // A committee with no in-window contribution or expenditure rows has not
+  // reported anything the cache can see — live 2026-09-03, 19 of the 23 such
+  // committees registered after the last filing deadline. That is missing
+  // information, not a $0 campaign, so the totals publish as NULL (the
+  // loader shows "unavailable") and the breakdowns stay empty. The summary
+  // row is still written so the due list treats the candidate as synced.
+  const reportedActivity = aggregation.contributionRowCount + aggregation.expenditureRowCount > 0;
+  const totalReceipts = reportedActivity ? aggregation.totalReceiptsCents / 100 : null;
+  const directContributionTotal = reportedActivity ? aggregation.directContributionCents / 100 : null;
+  const totalDisbursements = reportedActivity ? aggregation.totalDisbursementsCents / 100 : null;
   const sourceUrl = input.link.sourceUrl ?? WEST_VIRGINIA_CFRS_SOURCE_URL;
-  const { breakdowns, ...aggregationSummary } = aggregation;
+  const { breakdowns: aggregatedBreakdowns, ...aggregationSummary } = aggregation;
+  const breakdowns = reportedActivity ? aggregatedBreakdowns : [];
 
   let summaryWritten = false;
   let directBreakdownsWritten = 0;
@@ -311,6 +321,7 @@ export async function syncWestVirginiaCandidateFinance(input: {
     entityId,
     window: { reportingCycle: window.reportingCycle, windowStart: window.windowStart, windowEnd: window.windowEnd },
     windowYears,
+    reportedActivity,
     totalReceipts,
     directContributionTotal,
     totalDisbursements,

@@ -14,7 +14,9 @@
 // Fail-closed rules: never link on a surname alone, never link an ambiguous
 // name, and never pick between two committees registered for the same seat
 // (candidates re-register — 3 such pairs live in the 2026 population — and
-// no summation policy exists, so the pair goes to manual review).
+// no summation policy exists, so the pair goes to manual review). A committee
+// still registered under office "Undeclared" counts as the same seat, so a
+// declared + undeclared pair for one person is ambiguous like any other.
 
 import { firstNameVariants } from "../finance/personFirstNameNicknames.js";
 import { personNamesMatchWithMiddleEvidence } from "../finance/personNameMiddleEvidence.js";
@@ -22,6 +24,14 @@ import type { WestVirginiaCommitteeRow } from "./westVirginiaCfrsClient.js";
 import type { WestVirginiaRegistryOffice } from "./westVirginiaFinanceEligibleOffices.js";
 
 const STATE_CANDIDATE_ORG_TYPE = "State Candidate";
+
+// Registry office for a committee registered before the candidate declared
+// a race (21 of the 429 "2026 Election" State Candidate rows, live 2026-09-01
+// and again 2026-09-03). The seat number is still filled in, and the row
+// stays "Undeclared" after the candidate is certified, so it is the only
+// 2026 committee those candidates have. Accepted as office evidence only
+// together with the exact seat + full-name match every other row needs.
+const UNDECLARED_REGISTRY_OFFICE = "Undeclared";
 
 export type WestVirginiaCommitteeMatch = {
   entityId: string;
@@ -68,11 +78,20 @@ function stripSuffixComma(value: string): string {
   return value.replace(/,\s*((?:JR|SR|II|III|IV)\.?)\s*$/i, " $1");
 }
 
+// Both the registry (`Jeffries, Warren "Dean"`) and rosters (`Carl "Robbie"
+// Martin`) write call names in double quotes; the shared matcher only reads
+// the parenthesized convention, where a call name is an alias for the first
+// name rather than a middle name. Rewriting keeps "Robbie" from contradicting
+// "Robert" and lets a roster "Dean" align with the registry's "Warren".
+function quotedCallNamesToParenthetical(value: string): string {
+  return value.replace(/"([^"]+)"/g, "($1)");
+}
+
 // One-sided nickname expansion on the roster side only: the registry holds
 // legal first names ("Michael") while rosters carry campaign names ("Mike").
 // A comma-form roster name is left alone (its first token is a surname).
 function candidateNameVariants(candidateName: string): string[] {
-  const cleaned = stripSuffixComma(candidateName).trim();
+  const cleaned = quotedCallNamesToParenthetical(stripSuffixComma(candidateName)).trim();
   const variants = [cleaned];
   const tokens = cleaned.split(/\s+/);
   if (tokens.length >= 2 && !cleaned.includes(",")) {
@@ -121,7 +140,7 @@ export function resolveWestVirginiaCandidateCommittee(input: {
     if (
       row.orgType !== STATE_CANDIDATE_ORG_TYPE ||
       row.election !== election ||
-      row.office !== input.registryOffice ||
+      (row.office !== input.registryOffice && row.office !== UNDECLARED_REGISTRY_OFFICE) ||
       row.district !== district ||
       row.candidateName === null ||
       seenEntityIds.has(row.entityId)
@@ -133,7 +152,7 @@ export function resolveWestVirginiaCandidateCommittee(input: {
       !variants.some((variant) =>
         personNamesMatchWithMiddleEvidence({
           candidateName: variant,
-          rowNames: [registryCandidateName],
+          rowNames: [quotedCallNamesToParenthetical(registryCandidateName)],
           normalizePersonName,
         })
       )

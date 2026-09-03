@@ -451,6 +451,19 @@ acquisition, auto-link against the rosters, reconciliation-gated sync for the No
 cohort, `.env` flags on locally, operator checklist. Prod promotion stays a separate
 explicit operator action per house rule.
 
+**Done 2026-09-03 (local only).** Rosters landed 2026-09-02 (119 legislative contests,
+242 candidate rows). Live run: refresh (9 artifacts, window 2025-07-01 → 2026-12-31) →
+auto-link **228** → 12 evidence-backed manual links → sync **240/240** reconciled
+cent- and multiset-exact (36 amended API rows absorbed), **$5.36M raised / $3.21M
+spent** across 215 committees; 25 committees with no rows in the window publish NULL.
+Two rows stay unlinked on purpose (Marta Beck: both same-seat committees hold
+in-window money; Christopher Ratliff: roster HD 45 vs registry HD 50). Three small
+code changes came out of the live evidence — see
+`backend/docs/west-virginia-campaign-finance.md` "Phase 2" for the resolver widening
+(office `Undeclared`, quoted call names), the nickname-table additions, the NULL-totals
+rule, the manual-link evidence list and the operator recipe. `render.yaml` read flag
+now `"true"` (sync flag stays off in prod).
+
 ### Phase 3 — outside documents (support / oppose)
 
 Inventory module + evidence ledger + agent extraction runs (batched, ~292 docs; each
