@@ -35,6 +35,12 @@ version" rather than "passed it".
   judge's superseded-stage gate then fired on nothing, and no judgment needed
   `acknowledge_later_rolls`.
 - **`candidateRecordPlainLanguageLint` run over all 50 descriptions: 0 warnings.**
+- **Roll dates audited against Delaware's own history, with the session-end days
+  checked on purpose: 0 skews in 25.** Nine of the batch rolls fall on 2025-06-30,
+  the busiest day in the whole feed, and two fall on 2026-07-01, an overnight sitting
+  past the constitutional adjournment date. Delaware's history stamps those the same
+  way LegiScan does, so no judgment needed an `official_vote_date` override. Illinois
+  is the state where this check found real skew; Delaware has none.
 - **Comma splice**: the builder joins the body and the tally sentence with a period and
   asserts that `", The "` appears in no description.
 - **British spellings**: an explicit word list, not a suffix pattern, because `-ise`
