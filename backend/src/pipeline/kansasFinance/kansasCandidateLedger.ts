@@ -218,10 +218,12 @@ export async function buildKansasCandidateLedger(input: {
       efileFilings,
     });
   }
+  // The viewer lists last-minute paper reports as report rows too, so the
+  // tree's in-window PLF/GLF scans explain rows alongside its period versions.
   const paperHeaders = paper?.status === "resolved" ? paper.headers : [];
   const paperExplained =
     paperReports.length === 0 ||
-    (paper?.status === "resolved" && paper.unmapped.length === 0 && paperReports.length <= paper.headers.length);
+    (paper?.status === "resolved" && paper.unmapped.length === 0 && paperReports.length <= paper.headers.length + paper.lastMinute);
 
   const ledger = buildKansasReportLedger({
     periods,

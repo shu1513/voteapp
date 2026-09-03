@@ -78,7 +78,11 @@ export type KansasPaperInventoryResult =
       headers: KansasFilingHeader[];
       /** Tree versions matched to an e-filed cover and left out. */
       explainedByEfile: number;
-      /** Last-minute (PLF/GLF) scans: informational, never a period. */
+      /**
+       * Last-minute (PLF/GLF) scans of election years inside the window:
+       * informational, never a period, but each is a viewer paper row the
+       * tree explains (kansasCandidateLedger).
+       */
       lastMinute: number;
       /** Appointment and affidavit scans: the viewer's grids are their source. */
       skipped: number;
@@ -148,7 +152,9 @@ export function buildKansasPaperInventory(input: {
       if (info.kind === "appointment_of_treasurer" || info.kind === "affidavit") {
         skipped += 1;
       } else if (info.kind === "last_minute") {
-        lastMinute += 1;
+        // "2026PLF": the election year is the token; the prior tree's
+        // last-minute scans predate the window like its early reports do.
+        if (`${/(\d{4})[PG]LF$/.exec(info.suffix)![1]!}-01-01` >= input.windowStart) lastMinute += 1;
       } else if (info.kind === "unknown" || info.periodKey === null) {
         unmapped.push(link.fileName);
       } else {

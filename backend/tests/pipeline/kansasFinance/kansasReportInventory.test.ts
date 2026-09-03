@@ -353,4 +353,31 @@ describe("date-less KPDC versions", () => {
     const efileOriginal = { ...efileAmendment, amendmentDate: null, amended: false };
     expect(build([efileOriginal, paper(1)]).status).toBe("amended");
   });
+
+  it("never lets a KPDC ordinal outrank a dated e-file amendment, whatever the input order", () => {
+    // The e-file amendment carries no ordinal: "2amend" may be older or
+    // newer than it, so the mix is ambiguous in every order — including
+    // orders where the sort would leave the two paper versions adjacent.
+    const efileAmendment: KansasFilingHeader = {
+      periodStart: "1/1/2026",
+      periodEnd: "7/23/2026",
+      fileDate: "07/27/2026",
+      amendmentDate: "08/06/2026",
+      amended: true,
+      termination: false,
+      channel: "efile",
+    };
+    const efileOriginal = { ...efileAmendment, amendmentDate: null, amended: false };
+    for (const order of [
+      [paper(null), efileAmendment, paper(2)],
+      [paper(2), efileAmendment, paper(null)],
+      [efileOriginal, paper(2), paper(1), efileAmendment],
+      [efileAmendment, paper(1), paper(2), efileOriginal],
+      [paper(2), paper(1), efileAmendment, efileOriginal],
+    ]) {
+      expect(build(order)).toMatchObject({ status: "ambiguous", canonical: null });
+    }
+    // Only paper versions: the ordinals alone order them.
+    expect(build([paper(1), paper(null), paper(3), paper(2)]).canonical?.amendmentOrdinal).toBe(3);
+  });
 });

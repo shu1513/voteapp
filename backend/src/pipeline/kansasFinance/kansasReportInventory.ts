@@ -239,17 +239,14 @@ function effectiveDate(filing: KansasFilingHeader): string | null {
   return filing.amendmentDate ?? filing.fileDate;
 }
 
-/** Replacement sequence: an original is 0, an amendment its KPDC ordinal (1 when unknown). */
-function versionOrdinal(filing: KansasFilingHeader): number {
-  return filing.amended ? (filing.amendmentOrdinal ?? 1) : 0;
-}
-
 /**
  * Latest version first. Two dated versions order by effective date, an
  * amendment outranking an original on one day. When either side is undated
- * (a KPDC index version) only the amend prefix orders them, so an undated
- * amendment against any other amendment is a tie — and a tie at the top
- * leaves the chain untrusted (groupVersions).
+ * (a KPDC index version) an amendment still outranks an original, but two
+ * amendments order only by KPDC ordinals BOTH carry: an e-file amendment
+ * has none, so against an undated amendment it is a tie whichever way the
+ * dates would have gone — and a tie against the top leaves the chain
+ * untrusted (groupVersions).
  */
 function compareVersionsDesc(left: KansasFilingHeader, right: KansasFilingHeader): number {
   const leftDate = effectiveDate(left);
@@ -257,7 +254,10 @@ function compareVersionsDesc(left: KansasFilingHeader, right: KansasFilingHeader
   if (leftDate !== null && rightDate !== null) {
     return rightDate.localeCompare(leftDate) || Number(right.amended) - Number(left.amended);
   }
-  return versionOrdinal(right) - versionOrdinal(left);
+  if (left.amended !== right.amended) return Number(right.amended) - Number(left.amended);
+  const leftOrdinal = left.amended ? (left.amendmentOrdinal ?? null) : null;
+  const rightOrdinal = right.amended ? (right.amendmentOrdinal ?? null) : null;
+  return leftOrdinal === null || rightOrdinal === null ? 0 : rightOrdinal - leftOrdinal;
 }
 
 /** The filename token KPDC files a period's report under: its due month, "202601" for a report due 2026-01-10. */
@@ -278,8 +278,11 @@ type VersionGroup = {
  * Every version filed for one cover period, resolved to a canonical one.
  * A chain is trusted only when at most one version is an unflagged
  * original, that original is the earliest, and the latest version is
- * strictly later than the next (two amendments on one day — live: Ward,
- * 2/9/2023 — cannot be ordered, so nothing is trusted).
+ * strictly later than EVERY other (two amendments on one day — live: Ward,
+ * 2/9/2023 — cannot be ordered, so nothing is trusted). Every other, not
+ * just the next: a dated e-file amendment ties every undated paper
+ * amendment while those order among themselves, so the sort alone cannot
+ * prove the top.
  */
 function groupVersions(filings: readonly KansasFilingHeader[]): Map<string, VersionGroup> {
   const groups = new Map<string, VersionGroup>();
@@ -291,12 +294,12 @@ function groupVersions(filings: readonly KansasFilingHeader[]): Map<string, Vers
   }
   for (const group of groups.values()) {
     group.versions.sort(compareVersionsDesc);
-    const [latest, next] = group.versions;
+    const [latest, ...rest] = group.versions;
     const originals = group.versions.filter((filing) => !filing.amended);
     const chainOk =
       originals.length <= 1 && (originals.length === 0 || originals[0] === group.versions[group.versions.length - 1]);
-    const tie = next !== undefined && compareVersionsDesc(latest!, next) === 0;
-    group.canonical = chainOk && !tie ? latest! : null;
+    const provenLatest = rest.every((other) => compareVersionsDesc(latest!, other) < 0);
+    group.canonical = chainOk && provenLatest ? latest! : null;
   }
   return groups;
 }

@@ -162,24 +162,25 @@ describe("buildKansasCandidateLedger", () => {
   });
   const kpdcTrees: Record<number, KansasKpdcCandidateRow[]> = {
     2026: [
-      { district: 85, filedName: "Holloway, Margaret", links: ["H085MH_AT.pdf", "H085MH_amend2601.pdf", "H085MH_202601.pdf", "H085MH_202607.pdf"].map(kpdcLink(2026)) },
+      { district: 85, filedName: "Holloway, Margaret", links: ["H085MH_AT.pdf", "H085MH_amend2601.pdf", "H085MH_202601.pdf", "H085MH_202607.pdf", "H085MH_2026PLF.pdf"].map(kpdcLink(2026)) },
       { district: 86, filedName: "Holloway, Margaret", links: ["H086MH_202607.pdf"].map(kpdcLink(2026)) },
     ],
-    2024: [{ district: 85, filedName: "Holloway, Margaret", links: ["H085MH_AT.pdf", "H085MH_202410.pdf", "H085MH_202501.pdf"].map(kpdcLink(2024)) }],
+    2024: [{ district: 85, filedName: "Holloway, Margaret", links: ["H085MH_AT.pdf", "H085MH_202410.pdf", "H085MH_2024PLF.pdf", "H085MH_202501.pdf"].map(kpdcLink(2024)) }],
   };
   const loadKpdcRows = vi.fn(async (_office: unknown, electionYear: number) => kpdcTrees[electionYear] ?? []);
   const paperRow = (index: number, fileDate: string) =>
     filing({ row: { index, fileDate, channel: "paper", postbackTarget: "grdviewCfrResults$ctl02$lnkbtnName" } });
 
   it("takes a paper filer's periods from the KPDC trees when they explain every viewer row", async () => {
-    // Viewer: 1/10/2025 (2024 post-general), 1/10/2026 x2 (2025 annual + amendment), 7/27/2026 (pre-primary).
-    const pool = [paperRow(0, "07/27/2026"), paperRow(1, "01/10/2026"), paperRow(2, "01/10/2026"), paperRow(3, "01/10/2025")];
+    // Viewer: 1/10/2025 (2024 post-general), 1/10/2026 x2 (2025 annual + amendment), 7/27/2026 (pre-primary), 7/30/2026 (primary last-minute).
+    const pool = [paperRow(0, "07/27/2026"), paperRow(1, "01/10/2026"), paperRow(2, "01/10/2026"), paperRow(3, "01/10/2025"), paperRow(4, "07/30/2026")];
     const result = await buildKansasCandidateLedger({ target: houseTarget, now: NOW, loadFilingPool: poolOf(pool), loadKpdcRows });
     expect(loadKpdcRows).toHaveBeenCalledWith(house, 2026);
     expect(loadKpdcRows).toHaveBeenCalledWith(house, 2024);
     expect(result.status).toBe("resolved");
     if (result.status !== "resolved") return;
-    expect(result.paper).toMatchObject({ status: "resolved", filedNames: ["Holloway, Margaret"], explainedByEfile: 0, lastMinute: 0, skipped: 2, unmapped: [] });
+    // The 2026 last-minute scan explains the 7/30 row; the 2024 one predates the window and counts for nothing.
+    expect(result.paper).toMatchObject({ status: "resolved", filedNames: ["Holloway, Margaret"], explainedByEfile: 0, lastMinute: 1, skipped: 2, unmapped: [] });
     if (result.paper?.status !== "resolved") return;
     // 202410 was due before the window and is not taken; the other three are.
     expect(result.paper.headers.map((header) => [header.periodStart, header.amendmentOrdinal])).toEqual([
@@ -199,7 +200,15 @@ describe("buildKansasCandidateLedger", () => {
   });
 
   it("stays incomplete when the viewer shows more paper rows than the trees explain", async () => {
-    const pool = [paperRow(0, "07/27/2026"), paperRow(1, "01/13/2026"), paperRow(2, "01/10/2026"), paperRow(3, "01/10/2025"), paperRow(4, "07/30/2026")];
+    // Six viewer rows against four period versions plus one last-minute scan: the 1/13 row has no scan.
+    const pool = [
+      paperRow(0, "07/27/2026"),
+      paperRow(1, "01/13/2026"),
+      paperRow(2, "01/10/2026"),
+      paperRow(3, "01/10/2025"),
+      paperRow(4, "07/30/2026"),
+      paperRow(5, "01/10/2026"),
+    ];
     const result = await buildKansasCandidateLedger({ target: houseTarget, now: NOW, loadFilingPool: poolOf(pool), loadKpdcRows });
     expect(result.status).toBe("resolved");
     if (result.status !== "resolved") return;

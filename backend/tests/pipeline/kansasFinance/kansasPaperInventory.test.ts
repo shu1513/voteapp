@@ -33,7 +33,8 @@ describe("buildKansasPaperInventory", () => {
       ...base,
       rows: [
         row(85, "Holloway, Margaret", ["H085MH_AT.pdf", "H085MH_202601.pdf", "H085MH_amend2607.pdf", "H085MH_202607.pdf", "H085MH_2026PLF.pdf", "H085MH_Aff2607.pdf"]),
-        row(85, "Holloway, Margaret", ["H085MH_202407.pdf", "H085MH_2amend2501.pdf", "H085MH_amend2501.pdf", "H085MH_202501.pdf"]),
+        // The prior cycle's tree: its 2024 last-minute scan predates the window like its 202407 report.
+        row(85, "Holloway, Margaret", ["H085MH_202407.pdf", "H085MH_2024PLF.pdf", "H085MH_2amend2501.pdf", "H085MH_amend2501.pdf", "H085MH_202501.pdf"]),
         row(85, "Holloway, Daniel", ["H085DH_202607.pdf"]),
         row(86, "Holloway, Margaret", ["H086MH_202607.pdf"]),
       ],
