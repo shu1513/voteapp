@@ -15,7 +15,10 @@
 //
 // Paper (scanned) reports carry no period in the viewer (see
 // kansasFilingSearch.ts), so they are returned unopened as `paperReports`
-// and keep the candidate incomplete until the KPDC index is wired.
+// and their periods come from the KPDC candidate trees instead
+// (kansasPaperInventory.ts). The candidate is complete only when the tree
+// explains at least every viewer paper row; a tree that knows less than the
+// viewer leaves a period possibly filed but unassignable.
 
 import {
   kansasDistrictNumberFromGrid,
@@ -26,9 +29,10 @@ import {
 } from "./kansasCandidateFilerResolver.js";
 import { KANSAS_CFR_VIEWER_PAGES } from "./kansasCfrViewerClient.js";
 import { parseKansasReportCover, type KansasCfrGridRow, type KansasReportCover } from "./kansasCfrViewerParsers.js";
-import type { KansasCfrOffice } from "./kansasFinanceEligibleOffices.js";
+import { kansasCfrCycleStartYear, type KansasCfrOffice } from "./kansasFinanceEligibleOffices.js";
 import { normalizeKansasNameForStorage, parseKansasFilerKey } from "./kansasFinanceWriter.js";
 import type { KansasFilingPoolLoader } from "./kansasFilingSearch.js";
+import { buildKansasPaperInventory, type KansasKpdcRowLoader, type KansasPaperInventoryResult } from "./kansasPaperInventory.js";
 import {
   buildKansasReportLedger,
   kansasLastMinuteWindows,
@@ -98,10 +102,12 @@ export type KansasCandidateLedgerResult =
       reports: KansasCandidateReport[];
       /** Paper report rows: period unknown from the viewer, never opened. */
       paperReports: KansasCfrGridRow[];
+      /** KPDC tree inventory for the paper rows; null when there are none or no tree loader was given. */
+      paper: KansasPaperInventoryResult | null;
       appointments: KansasAppointmentOfTreasurer[];
       affidavitDates: string[];
       ledger: KansasLedger;
-      /** Every period accounted for, nothing unexpected, and no paper report awaiting the KPDC index. */
+      /** Every period accounted for, nothing unexpected, and every paper row explained by the KPDC tree. */
       complete: boolean;
     };
 
@@ -109,6 +115,8 @@ export async function buildKansasCandidateLedger(input: {
   target: KansasCandidateLedgerTarget;
   now: Date;
   loadFilingPool: KansasFilingPoolLoader;
+  /** KPDC candidate-tree rows per office + election year; consulted only when the viewer shows paper rows. */
+  loadKpdcRows?: KansasKpdcRowLoader;
 }): Promise<KansasCandidateLedgerResult> {
   const { office, electionYear, cycleStartYear } = input.target;
   const recipe = parseKansasFilerKey(input.target.committeeId);
@@ -127,11 +135,8 @@ export async function buildKansasCandidateLedger(input: {
     filingKind: filing.filingKind,
     fileDate: filing.row.fileDate,
   }));
-  const resolution = resolveKansasCandidateFiler({
-    candidateName: kansasLedgerCandidateName(recipe, input.target.committeeName),
-    districtNumber: recipe.districtNumber,
-    rows,
-  });
+  const candidateName = kansasLedgerCandidateName(recipe, input.target.committeeName);
+  const resolution = resolveKansasCandidateFiler({ candidateName, districtNumber: recipe.districtNumber, rows });
   if (resolution.status !== "matched") {
     return {
       status: "unresolved",
@@ -189,9 +194,40 @@ export async function buildKansasCandidateLedger(input: {
     }
   }
 
+  const periods = kansasReportingPeriods(office, electionYear, cycleStartYear === undefined ? {} : { cycleStartYear });
+  const efileFilings = reports.map((report) => report.header);
+
+  // Paper rows: periods from the KPDC trees of this cycle and the prior one
+  // (the prior post-general is filed inside the window), checked against
+  // the viewer's row count.
+  let paper: KansasPaperInventoryResult | null = null;
+  if (paperReports.length > 0 && input.loadKpdcRows !== undefined) {
+    const cycleStart = cycleStartYear ?? kansasCfrCycleStartYear(office, electionYear);
+    const priorElectionYear = cycleStart - 1;
+    const kpdcRows = [
+      ...(await input.loadKpdcRows(office, electionYear)),
+      ...(await input.loadKpdcRows(office, priorElectionYear)),
+    ];
+    paper = buildKansasPaperInventory({
+      candidateName,
+      districtNumber: recipe.districtNumber,
+      office,
+      periods: [...periods, ...kansasReportingPeriods(office, priorElectionYear)],
+      windowStart: `${cycleStart}-01-01`,
+      rows: kpdcRows,
+      efileFilings,
+    });
+  }
+  // The viewer lists last-minute paper reports as report rows too, so the
+  // tree's in-window PLF/GLF scans explain rows alongside its period versions.
+  const paperHeaders = paper?.status === "resolved" ? paper.headers : [];
+  const paperExplained =
+    paperReports.length === 0 ||
+    (paper?.status === "resolved" && paper.unmapped.length === 0 && paperReports.length <= paper.headers.length + paper.lastMinute);
+
   const ledger = buildKansasReportLedger({
-    periods: kansasReportingPeriods(office, electionYear, cycleStartYear === undefined ? {} : { cycleStartYear }),
-    filings: reports.map((report) => report.header),
+    periods,
+    filings: [...efileFilings, ...paperHeaders],
     appointmentsOfTreasurer: appointments,
     affidavitDates,
     lastMinuteWindows: kansasLastMinuteWindows(electionYear),
@@ -202,9 +238,10 @@ export async function buildKansasCandidateLedger(input: {
     match: resolution.match,
     reports,
     paperReports,
+    paper,
     appointments,
     affidavitDates,
     ledger,
-    complete: ledger.complete && paperReports.length === 0,
+    complete: ledger.complete && paperExplained,
   };
 }
