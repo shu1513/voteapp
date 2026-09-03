@@ -150,10 +150,11 @@ describe("buildKansasCandidateLedger", () => {
     ]);
   });
 
-  it("with openSchedules, fails closed when reopening a cover lands on another period", async () => {
+  it("with openSchedules, fails closed when reopening a cover lands on any other cover (its own amendment included)", async () => {
     const annual = filing({ row: { fileDate: "01/09/2026" }, cover: { start: "1/1/2025", end: "12/31/2025" } });
     annual.openReport.mockResolvedValueOnce({ url: COVER_URL, html: coverHtml({ start: "1/1/2025", end: "12/31/2025" }), hiddenFields: {} });
-    annual.openReport.mockResolvedValueOnce({ url: COVER_URL, html: coverHtml({ start: "1/1/2026", end: "7/23/2026" }), hiddenFields: {} });
+    // Same period and lines, only the amended box differs: the neighbouring grid row after a mid-run shift.
+    annual.openReport.mockResolvedValueOnce({ url: COVER_URL, html: coverHtml({ start: "1/1/2025", end: "12/31/2025", amended: true }), hiddenFields: {} });
     await expect(
       buildKansasCandidateLedger({ target: houseTarget, now: NOW, loadFilingPool: poolOf([annual]), openSchedules: true })
     ).rejects.toThrow("reopening for its schedules did not land on the same cover");

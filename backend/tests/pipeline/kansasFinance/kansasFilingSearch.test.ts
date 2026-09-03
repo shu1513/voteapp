@@ -135,6 +135,7 @@ describe("createKansasFilingPoolLoader", () => {
       postbackTarget: null,
     },
     openReport: () => Promise.reject(new Error("not opened")),
+    openSchedule: () => Promise.reject(new Error("not opened")),
   });
 
   it("runs the three searches once per office + cycle, tags kinds, and drops other-office rows", async () => {

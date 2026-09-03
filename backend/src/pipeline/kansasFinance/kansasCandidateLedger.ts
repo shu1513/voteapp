@@ -273,8 +273,13 @@ export async function buildKansasCandidateLedger(input: {
       if (!canonicalKeys.has(kansasFilingHeaderKey(report.header))) continue;
       const filing = reportFilings.get(report)!;
       const page = await filing.openReport();
+      // The whole cover, not just its period: the grid is re-queried on
+      // postback, so a filing landing mid-run shifts rows by one, and an
+      // amendment's neighbour is its own original — same period, possibly
+      // the same totals. Name, office, flags, filing timestamp and every
+      // line must all match.
       const reopened = page.url.endsWith(KANSAS_CFR_VIEWER_PAGES.reportCover) ? parseKansasReportCover(page.html) : null;
-      if (reopened === null || reopened.periodStart !== report.cover.periodStart || reopened.periodEnd !== report.cover.periodEnd) {
+      if (reopened === null || JSON.stringify(reopened) !== JSON.stringify(report.cover)) {
         throw new KansasCandidateLedgerError(
           `report "${report.row.name}" filed ${report.row.fileDate}: reopening for its schedules did not land on the same cover`
         );
