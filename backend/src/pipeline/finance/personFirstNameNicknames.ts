@@ -52,6 +52,7 @@ const FIRST_NAME_NICKNAME_GROUPS: readonly (readonly string[])[] = [
   ["DENNIS", "DENNY"],
   ["DONALD", "DON"],
   ["DOUGLAS", "DOUG"],
+  ["EDMUND", "ED", "EDDIE"],
   ["EDWARD", "ED", "EDDIE", "TED"],
   ["ELIZABETH", "BETH", "BETTY", "LIZ"],
   ["EUGENE", "GENE"],
@@ -94,12 +95,16 @@ const FIRST_NAME_NICKNAME_GROUPS: readonly (readonly string[])[] = [
   ["MATTHEW", "MATT"],
   ["MELVIN", "MEL"],
   ["MICHAEL", "MIKE"],
+  ["NATHAN", "NATE"],
+  ["NATHANIEL", "NATE"],
   ["NICHOLAS", "NICK"],
   ["NORMAN", "NORM"],
   ["PAMELA", "PAM"],
   ["PATRICIA", "PAT", "PATTY", "TRICIA"],
   ["PATRICK", "PAT"],
   ["PETER", "PETE"],
+  ["PHILIP", "PHIL"],
+  ["PHILLIP", "PHIL"],
   ["RANDALL", "RANDY"],
   ["RANDOLPH", "RANDY"],
   ["RAYMOND", "RAY"],
@@ -123,6 +128,7 @@ const FIRST_NAME_NICKNAME_GROUPS: readonly (readonly string[])[] = [
   ["VICTORIA", "VICKI", "VICKY"],
   ["VINCENT", "VINCE"],
   ["WALTER", "WALT"],
+  ["WESLEY", "WES"],
   ["WILLIAM", "BILL", "BILLY", "WILL"],
   ["ZACHARY", "ZACH", "ZACK"],
 ];
@@ -133,6 +139,7 @@ const FIRST_NAME_NICKNAME_GROUPS: readonly (readonly string[])[] = [
 const SPELLING_EQUIVALENT_PAIRS: readonly (readonly [string, string])[] = [
   ["STEPHEN", "STEVEN"],
   ["JEFFREY", "JEFFERY"],
+  ["PHILIP", "PHILLIP"],
 ];
 
 const VARIANTS_BY_NAME = new Map<string, Set<string>>();
