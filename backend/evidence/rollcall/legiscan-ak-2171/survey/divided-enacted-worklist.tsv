@@ -1,0 +1,51 @@
+bill	chamber	roll	date	tally	question	title	disposition	reason
+HB110	senate	1701651	2026-05-20	9-11	passage	Health Care/licensure Compacts/social Wrk	dropped	LegiScan files the Senate roll that STANDS under a Rescind Previous Action desc; the roll wearing the passage desc is the 9-11 vote that FAILED minutes earlier
+HB13	house	1570028	2025-05-12	25-15	passage	Municipal Property Tax Exemptions; Refund	not-selected	the House concurred twice the same day and its final 32-7 vote is not divided, so the divided roll is superseded
+HB13	house	1701664	2026-05-20	30-9	concurrence	Municipal Property Tax Exemptions; Refund	not-selected	the House concurred twice the same day and its final 32-7 vote is not divided, so the divided roll is superseded
+HB173	senate	1701642	2026-05-20	14-6	passage	Lic.: Occup/phys Therapy;speech;audiology	dropped	a scope-of-practice expansion whose objection is patient safety, which sits inside healthcare_affordability's own definition of quality care (Montana HB 218 precedent)
+HB184	house	1647941	2026-02-27	23-15	passage	Aidea: Workforce Housing Dev.; Muni Tax	not-selected	the chamber voted again on the enacted text later; batch-01 uses that later concurrence roll
+HB184	house	1699348	2026-05-16	22-18	concurrence	Aidea: Workforce Housing Dev.; Muni Tax	batch-01	imported
+HB195	senate	1701789	2026-05-20	15-5	passage	Pharmacists; Physician Associates	dropped	three bundled subjects: a profession rename, a pharmacist scope expansion, and new opioid safeguards that run the other way
+HB263	house	1681329	2026-04-13	21-19	passage	Approp: Operating Budget;funds;supp	excluded	appropriations
+HB263	house	1682719	2026-04-14	22-18	passage	Approp: Operating Budget;funds;supp	excluded	appropriations
+HB263	house	1682720	2026-04-14	21-19	passage	Approp: Operating Budget;funds;supp	excluded	appropriations
+HB263	house	1700379	2026-05-19	21-19	conference_report	Approp: Operating Budget;funds;supp	excluded	appropriations
+HB265	house	1695981	2026-05-08	10-26	concurrence	Approp: Mental Health Budget	excluded	appropriations
+HB27	house	1573012	2025-05-18	29-10	passage	Medical Major Emergencies; Cpr Curriculum	not-selected	the chamber voted again on the enacted text later; batch-01 uses that later concurrence roll
+HB27	house	1700388	2026-05-19	27-13	concurrence	Medical Major Emergencies; Cpr Curriculum	batch-01	imported
+HB28	house	1573375	2025-05-19	23-17	passage	Edu: Schools/teachers/school Bd/loan Prgm	not-selected	the House concurrence 34-6 is the chamber's final action and is not divided, so the divided 2025 passage roll is superseded
+HB289	house	1641669	2026-02-23	24-16	passage	Approp: Supplemental	excluded	appropriations
+HB289	house	1645690	2026-02-25	24-16	passage	Approp: Supplemental	excluded	appropriations
+HB289	house	1665638	2026-03-18	19-20	concurrence	Approp: Supplemental	excluded	appropriations
+HB302	senate	1701696	2026-05-20	14-6	passage	Travel Insurance; Unemployment Benefits	dropped	two unrelated halves - travel insurance rules that both loosen and tighten, and an unemployment benefit rise that is conditional on federal approval
+HB314	house	1699353	2026-05-16	29-11	concurrence	Arch, Eng, Surveyors; Reg Int Design	dropped	occupational licensing for interior designers that protects the title but not the practice, plus unrelated pipeline and wastewater exemptions; no research area fits
+HB33	house	1570725	2025-05-13	28-12	passage	Conflict Of Interest: Bds Fisheries/game	batch-01	imported
+HB33	senate	1689719	2026-04-24	15-4	passage	Conflict Of Interest: Bds Fisheries/game	batch-01	imported
+HB35	house	1564694	2025-05-02	31-8	passage	Prisoners: Electronic Devices, Id Cards	not-selected	the chamber voted again on the enacted text later; batch-01 uses that later concurrence roll
+HB35	house	1574429	2025-05-20	28-12	concurrence	Prisoners: Electronic Devices, Id Cards	batch-01	imported
+HB48	house	1645404	2026-02-25	27-13	passage	Civil Legal Services Fund	batch-01	imported
+HB53	house	1592107	2025-04-16	21-19	passage	Approp: Operating Budget; Cap; Supp	excluded	appropriations
+HB53	senate	1603976	2025-05-07	16-4	passage	Approp: Operating Budget; Cap; Supp	excluded	appropriations
+HB53	house	1592114	2025-05-09	11-27	concurrence	Approp: Operating Budget; Cap; Supp	excluded	appropriations
+HB53	house	1592117	2025-05-20	23-17	conference_report	Approp: Operating Budget; Cap; Supp	excluded	appropriations
+HB55	house	1569092	2025-05-09	13-25	concurrence	Approp: Mental Health Budget	excluded	appropriations
+HB57	house	1562693	2025-04-30	31-8	concurrence	Schools: Comm. Devices/class Size/funding	batch-01	imported
+HB75	house	1572913	2025-05-16	30-9	concurrence	Perm Fund; Employment; Eligibility	dropped	permanent fund dividend eligibility; no research area describes the dividend
+HJR11	senate	1565411	2025-05-05	13-6	passage	Recognizing Alaska/canada Relationship	excluded	joint resolution - an Alaska joint resolution never goes to the governor and is not law
+HJR4	house	1476940	2025-01-29	31-8	passage	Res. To Maintain Denali As Official Name	excluded	joint resolution - an Alaska joint resolution never goes to the governor and is not law
+HJR9	house	1558576	2025-04-25	27-10	passage	Extend Affordable Care Act Tax Credits	excluded	joint resolution - an Alaska joint resolution never goes to the governor and is not law
+HJR9	house	1559620	2025-04-28	26-14	passage	Extend Affordable Care Act Tax Credits	excluded	joint resolution - an Alaska joint resolution never goes to the governor and is not law
+HJR9	senate	1570485	2025-05-13	15-5	passage	Extend Affordable Care Act Tax Credits	excluded	joint resolution - an Alaska joint resolution never goes to the governor and is not law
+SB15	house	1534765	2025-04-02	32-8	passage	Alcohol: Sale, Warning Signs	dropped	loosens several alcohol rules while adding a new cancer warning on the required signs - opposite directions inside the same area
+SB164	senate	1674118	2026-03-31	16-4	passage	Eliminate Tax Discounts	dropped	removes the collection allowances businesses keep when remitting fuel and tobacco taxes; no research area fits
+SB164	house	1701751	2026-05-20	25-14	passage	Eliminate Tax Discounts	dropped	removes the collection allowances businesses keep when remitting fuel and tobacco taxes; no research area fits
+SB183	house	1572959	2025-05-12	30-10	passage	Powers: Lb&a Committee; Legislative Audit	batch-01	imported
+SB200	senate	1701784	2026-05-20	15-5	concurrence	Muni: Svc Areas; Farm & Agricultural Land	dropped	tightens the paperwork for a farm property tax break while extending it to S corporations, plus an unrelated service-area rule
+SB214	house	1699263	2026-05-15	24-16	passage	Approp: Capital/funds/supp/reapprop/amend	excluded	appropriations
+SB214	house	1699333	2026-05-16	24-16	passage	Approp: Capital/funds/supp/reapprop/amend	excluded	appropriations
+SB50	house	1572917	2025-05-16	22-17	passage	Municipal Comprehensive Plans: Housing	dropped	adds one item to a list a borough plan MAY include; no duty is created (California SB 57 precedent)
+SB57	house	1570743	2025-05-13	21-19	passage	Approp: Capital/funds/supp/amend/reapprop	excluded	appropriations
+SB95	house	1572953	2025-05-17	27-12	passage	Child Care: Assistance/grants	dropped	built of paired sections that undo one another, and its largest question is handed to a federal agency
+SJR15	senate	1569146	2025-05-09	14-6	passage	Oppose Medicaid Cuts	excluded	joint resolution - an Alaska joint resolution never goes to the governor and is not law
+SJR15	house	1573000	2025-05-18	27-13	passage	Oppose Medicaid Cuts	excluded	joint resolution - an Alaska joint resolution never goes to the governor and is not law
+SJR15	senate	1573824	2025-05-19	14-6	concurrence	Oppose Medicaid Cuts	excluded	joint resolution - an Alaska joint resolution never goes to the governor and is not law

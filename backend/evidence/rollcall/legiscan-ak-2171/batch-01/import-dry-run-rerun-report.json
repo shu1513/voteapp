@@ -1,0 +1,707 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": true,
+  "skipExisting": false,
+  "startedAt": "2026-09-03T02:05:17.557Z",
+  "finishedAt": "2026-09-03T02:05:20.741Z",
+  "jurisdiction": "AK",
+  "sessionId": 2171,
+  "evidenceDir": "evidence/rollcall/legiscan-ak-2171/batch-01",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "evidence/rollcall/legiscan-ak-2171/crosswalk.json",
+  "crosswalkEntries": 62,
+  "peopleFile": "evidence/rollcall/legiscan-ak-2171/legiscan-people-ak-2171.json",
+  "peopleMembers": 62,
+  "files": 8,
+  "outcomes": {
+    "dry_run": 8
+  },
+  "actions": {
+    "unchanged": 36
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-ak-house-2171-roll1562693.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1562693,
+      "outcome": "dry_run",
+      "legislativeVoteId": "d0ea59d2-1fae-4a7e-bdcc-444e9f013582",
+      "reviewStatus": "approved",
+      "bill": "HB57",
+      "voteDate": "2025-04-30",
+      "officialVoteDate": null,
+      "measureId": "HB 57",
+      "question": "House: Concur",
+      "originRunId": "rollcall:AK:house:2171:1562693:2026-09-03T02:05:17.557Z",
+      "members": 39,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 34,
+        "matched": 5
+      },
+      "actions": {
+        "unchanged": 5
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "3e207f3a-d0a3-4462-857a-c1b1c387e230",
+          "candidateName": "Neal Foster",
+          "peopleId": 6072,
+          "memberName": "Neal Foster",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "705276fe-ce60-4852-8279-c5a4e48e8b87",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "95e1fb8d-5dd4-42b6-b29a-c7074bc15627",
+          "candidateName": "Ashley Carrick",
+          "peopleId": 23890,
+          "memberName": "Ashley Carrick",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "7b045798-5747-428a-be03-96a7282a56bd",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d7f6bba7-0e51-4c3e-8fe7-292b96a07df5",
+          "candidateName": "Maxine Dibert",
+          "peopleId": 24586,
+          "memberName": "Maxine Dibert",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "1b080832-863e-4e4b-96d9-91d5a7e3cef8",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "66829f08-ebbe-47c5-b4b0-3038bdec6d15",
+          "candidateName": "Will Stapp",
+          "peopleId": 24591,
+          "memberName": "Will Stapp",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "64c80fea-d393-4d62-8e1f-8651ce3fb280",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "95967f6c-4190-44b9-bdd9-57f51cf024ed",
+          "candidateName": "Becky Schwanke",
+          "peopleId": 26353,
+          "memberName": "Rebecca Schwanke",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "acb36795-d8dc-4e9a-bc8a-2c50f90a1bc1",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        }
+      ],
+      "error": null
+    },
+    {
+      "file": "ls-ak-house-2171-roll1570725.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1570725,
+      "outcome": "dry_run",
+      "legislativeVoteId": "15afa18d-54fd-4862-97cd-8e9c5dd839ed",
+      "reviewStatus": "approved",
+      "bill": "HB33",
+      "voteDate": "2025-05-13",
+      "officialVoteDate": null,
+      "measureId": "HB 33",
+      "question": "House: Third Reading Final Passage",
+      "originRunId": "rollcall:AK:house:2171:1570725:2026-09-03T02:05:17.557Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 35,
+        "matched": 5
+      },
+      "actions": {
+        "unchanged": 5
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "3e207f3a-d0a3-4462-857a-c1b1c387e230",
+          "candidateName": "Neal Foster",
+          "peopleId": 6072,
+          "memberName": "Neal Foster",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "dc5f8fcc-36f6-400a-b802-eac5a074c68d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "95e1fb8d-5dd4-42b6-b29a-c7074bc15627",
+          "candidateName": "Ashley Carrick",
+          "peopleId": 23890,
+          "memberName": "Ashley Carrick",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "63892bfd-30a9-41f2-96a0-1a83e714bbdd",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d7f6bba7-0e51-4c3e-8fe7-292b96a07df5",
+          "candidateName": "Maxine Dibert",
+          "peopleId": 24586,
+          "memberName": "Maxine Dibert",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "83b52d00-29de-4330-aa53-a498a604ddda",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "66829f08-ebbe-47c5-b4b0-3038bdec6d15",
+          "candidateName": "Will Stapp",
+          "peopleId": 24591,
+          "memberName": "Will Stapp",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "1f3d8f61-73c2-4a6d-ab63-17a7100d590c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "95967f6c-4190-44b9-bdd9-57f51cf024ed",
+          "candidateName": "Becky Schwanke",
+          "peopleId": 26353,
+          "memberName": "Rebecca Schwanke",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "f49c14fd-4c24-462f-b1e9-b368b085e594",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        }
+      ],
+      "error": null
+    },
+    {
+      "file": "ls-ak-house-2171-roll1572959.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1572959,
+      "outcome": "dry_run",
+      "legislativeVoteId": "ab7a4f12-cc61-4883-9f35-e7b14a19d9eb",
+      "reviewStatus": "approved",
+      "bill": "SB183",
+      "voteDate": "2025-05-12",
+      "officialVoteDate": null,
+      "measureId": "SB 183",
+      "question": "House: Third Reading Final Passage Reconsideration",
+      "originRunId": "rollcall:AK:house:2171:1572959:2026-09-03T02:05:17.557Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 35,
+        "matched": 5
+      },
+      "actions": {
+        "unchanged": 5
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "3e207f3a-d0a3-4462-857a-c1b1c387e230",
+          "candidateName": "Neal Foster",
+          "peopleId": 6072,
+          "memberName": "Neal Foster",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "e6435b08-1087-4996-9dcb-c924d4253c8c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "95e1fb8d-5dd4-42b6-b29a-c7074bc15627",
+          "candidateName": "Ashley Carrick",
+          "peopleId": 23890,
+          "memberName": "Ashley Carrick",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "ef510e05-ff75-413f-8d7d-b9a913b1b95b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d7f6bba7-0e51-4c3e-8fe7-292b96a07df5",
+          "candidateName": "Maxine Dibert",
+          "peopleId": 24586,
+          "memberName": "Maxine Dibert",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "5b563410-8e90-4efa-8561-66ba92d6f50b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "66829f08-ebbe-47c5-b4b0-3038bdec6d15",
+          "candidateName": "Will Stapp",
+          "peopleId": 24591,
+          "memberName": "Will Stapp",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "0ee4763d-c64d-41eb-9191-1d5bce587cd5",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "95967f6c-4190-44b9-bdd9-57f51cf024ed",
+          "candidateName": "Becky Schwanke",
+          "peopleId": 26353,
+          "memberName": "Rebecca Schwanke",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "e1363502-a803-40f7-91c1-0ffda9ff777b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        }
+      ],
+      "error": null
+    },
+    {
+      "file": "ls-ak-house-2171-roll1574429.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1574429,
+      "outcome": "dry_run",
+      "legislativeVoteId": "4a7c1c59-cab0-4fff-8fd6-56508dd1d003",
+      "reviewStatus": "approved",
+      "bill": "HB35",
+      "voteDate": "2025-05-20",
+      "officialVoteDate": null,
+      "measureId": "HB 35",
+      "question": "House: Concur",
+      "originRunId": "rollcall:AK:house:2171:1574429:2026-09-03T02:05:17.557Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 35,
+        "matched": 5
+      },
+      "actions": {
+        "unchanged": 5
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "3e207f3a-d0a3-4462-857a-c1b1c387e230",
+          "candidateName": "Neal Foster",
+          "peopleId": 6072,
+          "memberName": "Neal Foster",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "fc57a5d5-c39b-493c-8aa0-55ccdb0c9358",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "e708222a-cad8-4190-8e38-a69c7951f637"
+          ]
+        },
+        {
+          "candidateId": "95e1fb8d-5dd4-42b6-b29a-c7074bc15627",
+          "candidateName": "Ashley Carrick",
+          "peopleId": 23890,
+          "memberName": "Ashley Carrick",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "88d5380a-f408-4878-b508-5f3e3ceedfd9",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d7f6bba7-0e51-4c3e-8fe7-292b96a07df5",
+          "candidateName": "Maxine Dibert",
+          "peopleId": 24586,
+          "memberName": "Maxine Dibert",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "48f8d826-d851-44d8-9bb6-4d1874d7e4f7",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "ed198112-c7e5-4d94-9d70-ca7dfb2f5334"
+          ]
+        },
+        {
+          "candidateId": "95967f6c-4190-44b9-bdd9-57f51cf024ed",
+          "candidateName": "Becky Schwanke",
+          "peopleId": 26353,
+          "memberName": "Rebecca Schwanke",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "faf6e2c5-0502-4693-85dc-a9c031fcf92f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "7970058e-3216-44d9-b178-31a1ecaa0b55"
+          ]
+        },
+        {
+          "candidateId": "66829f08-ebbe-47c5-b4b0-3038bdec6d15",
+          "candidateName": "Will Stapp",
+          "peopleId": 24591,
+          "memberName": "Will Stapp",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "2d8673da-8657-4c39-b3aa-cf3fd8ddf226",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "b6ea0a8f-b3de-4136-87b5-824be2469d48"
+          ]
+        }
+      ],
+      "error": null
+    },
+    {
+      "file": "ls-ak-house-2171-roll1645404.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1645404,
+      "outcome": "dry_run",
+      "legislativeVoteId": "7749b28c-8108-4bd3-94e1-f1fd88832c51",
+      "reviewStatus": "approved",
+      "bill": "HB48",
+      "voteDate": "2026-02-25",
+      "officialVoteDate": null,
+      "measureId": "HB 48",
+      "question": "House: Third Reading Final Passage",
+      "originRunId": "rollcall:AK:house:2171:1645404:2026-09-03T02:05:17.557Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 35,
+        "matched": 5
+      },
+      "actions": {
+        "unchanged": 5
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "3e207f3a-d0a3-4462-857a-c1b1c387e230",
+          "candidateName": "Neal Foster",
+          "peopleId": 6072,
+          "memberName": "Neal Foster",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "545849be-1887-433d-a795-49d287248125",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "95e1fb8d-5dd4-42b6-b29a-c7074bc15627",
+          "candidateName": "Ashley Carrick",
+          "peopleId": 23890,
+          "memberName": "Ashley Carrick",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "84aca9f6-eda6-42cc-b5c4-679491e948c8",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d7f6bba7-0e51-4c3e-8fe7-292b96a07df5",
+          "candidateName": "Maxine Dibert",
+          "peopleId": 24586,
+          "memberName": "Maxine Dibert",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "0c344e7b-4ed3-4761-85a0-362f1c1128fa",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "66829f08-ebbe-47c5-b4b0-3038bdec6d15",
+          "candidateName": "Will Stapp",
+          "peopleId": 24591,
+          "memberName": "Will Stapp",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "3e5b8195-557a-4818-99a4-3f7482180c50",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "95967f6c-4190-44b9-bdd9-57f51cf024ed",
+          "candidateName": "Becky Schwanke",
+          "peopleId": 26353,
+          "memberName": "Rebecca Schwanke",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "9ab6c0b3-eb81-4c7f-8a52-3cea1ff820a8",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        }
+      ],
+      "error": null
+    },
+    {
+      "file": "ls-ak-house-2171-roll1699348.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1699348,
+      "outcome": "dry_run",
+      "legislativeVoteId": "8b97fa5e-c16f-4f2f-bb02-2cc06c46ffac",
+      "reviewStatus": "approved",
+      "bill": "HB184",
+      "voteDate": "2026-05-16",
+      "officialVoteDate": null,
+      "measureId": "HB 184",
+      "question": "House: Concur",
+      "originRunId": "rollcall:AK:house:2171:1699348:2026-09-03T02:05:17.557Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 35,
+        "matched": 5
+      },
+      "actions": {
+        "unchanged": 5
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "3e207f3a-d0a3-4462-857a-c1b1c387e230",
+          "candidateName": "Neal Foster",
+          "peopleId": 6072,
+          "memberName": "Neal Foster",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "72c866d8-d2c7-4d89-95ef-4cdb9b557fe6",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "95e1fb8d-5dd4-42b6-b29a-c7074bc15627",
+          "candidateName": "Ashley Carrick",
+          "peopleId": 23890,
+          "memberName": "Ashley Carrick",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "25a5318f-c782-47a7-9967-c647c580bd2e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d7f6bba7-0e51-4c3e-8fe7-292b96a07df5",
+          "candidateName": "Maxine Dibert",
+          "peopleId": 24586,
+          "memberName": "Maxine Dibert",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "95e3f76d-7a59-4451-ae05-d96862bdead5",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "66829f08-ebbe-47c5-b4b0-3038bdec6d15",
+          "candidateName": "Will Stapp",
+          "peopleId": 24591,
+          "memberName": "Will Stapp",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "263f78ce-0991-426b-ad84-530c97219971",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "95967f6c-4190-44b9-bdd9-57f51cf024ed",
+          "candidateName": "Becky Schwanke",
+          "peopleId": 26353,
+          "memberName": "Rebecca Schwanke",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "df3a858f-f311-4a46-b575-646ce6cb7a44",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        }
+      ],
+      "error": null
+    },
+    {
+      "file": "ls-ak-house-2171-roll1700388.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1700388,
+      "outcome": "dry_run",
+      "legislativeVoteId": "830ac18d-b6de-441b-a33b-1717a7446199",
+      "reviewStatus": "approved",
+      "bill": "HB27",
+      "voteDate": "2026-05-19",
+      "officialVoteDate": null,
+      "measureId": "HB 27",
+      "question": "House: Concur",
+      "originRunId": "rollcall:AK:house:2171:1700388:2026-09-03T02:05:17.557Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 35,
+        "matched": 5
+      },
+      "actions": {
+        "unchanged": 5
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "3e207f3a-d0a3-4462-857a-c1b1c387e230",
+          "candidateName": "Neal Foster",
+          "peopleId": 6072,
+          "memberName": "Neal Foster",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "0350d1aa-3519-4d39-843c-a7da4dd3a48f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "50e4a626-d2f6-4fcc-bd6b-c22f3321c1a8"
+          ]
+        },
+        {
+          "candidateId": "95e1fb8d-5dd4-42b6-b29a-c7074bc15627",
+          "candidateName": "Ashley Carrick",
+          "peopleId": 23890,
+          "memberName": "Ashley Carrick",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "85260de0-fde6-4f48-844e-26603a201b4e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d7f6bba7-0e51-4c3e-8fe7-292b96a07df5",
+          "candidateName": "Maxine Dibert",
+          "peopleId": 24586,
+          "memberName": "Maxine Dibert",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "ebe71e26-f53e-4089-bbba-f9db317bc32d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "66829f08-ebbe-47c5-b4b0-3038bdec6d15",
+          "candidateName": "Will Stapp",
+          "peopleId": 24591,
+          "memberName": "Will Stapp",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "e8dcf40a-d7e0-4d2b-bd6e-8937eeb506c6",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "95967f6c-4190-44b9-bdd9-57f51cf024ed",
+          "candidateName": "Becky Schwanke",
+          "peopleId": 26353,
+          "memberName": "Rebecca Schwanke",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "51d81dfe-b9db-4640-aa61-16fd703dca5b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        }
+      ],
+      "error": null
+    },
+    {
+      "file": "ls-ak-senate-2171-roll1689719.json",
+      "state": "AK",
+      "chamber": "senate",
+      "sessionId": 2171,
+      "roll": 1689719,
+      "outcome": "dry_run",
+      "legislativeVoteId": "3d8b4881-392b-4f6a-b3be-0f24d2cab035",
+      "reviewStatus": "approved",
+      "bill": "HB33",
+      "voteDate": "2026-04-24",
+      "officialVoteDate": null,
+      "measureId": "HB 33",
+      "question": "Senate: Third Reading - Final Passage Effective Date(s)",
+      "originRunId": "rollcall:AK:senate:2171:1689719:2026-09-03T02:05:17.557Z",
+      "members": 19,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 18,
+        "matched": 1
+      },
+      "actions": {
+        "unchanged": 1
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "38cfb607-351a-42dd-aad8-dc902c1d6ef6",
+          "candidateName": "Löki Gale Tobin",
+          "peopleId": 24545,
+          "memberName": "Loki Tobin",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "f6cc5004-d3cc-429a-805b-d151136ba9da",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        }
+      ],
+      "error": null
+    }
+  ]
+}

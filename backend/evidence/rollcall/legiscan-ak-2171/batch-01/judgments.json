@@ -1,0 +1,148 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "AK",
+   "chamber": "house",
+   "session": "2171",
+   "roll": 1700388,
+   "measure_id": "HB 27",
+   "vote_date": "2026-05-19",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for House Bill 27, which tells the state education department to write lessons on hands-only CPR. That is the chest pushing a bystander can do for someone whose heart has stopped. The department picks which grades take the lessons. Schools in those grades must offer them if they can. A certified CPR instructor, a licensed emergency medical worker, or a certified teacher may teach them. The bill also adds care for major emergencies to the state's emergency medical services duties, and says a major emergency includes a heart attack or stroke. The state may set care levels for hospitals that treat them. The school lessons start July 1, 2027. The Alaska House accepted the Senate's changes 27-13, and the bill became law without the governor's signature.",
+   "nay_description": "Voted against House Bill 27, which tells the state education department to write lessons on hands-only CPR. That is the chest pushing a bystander can do for someone whose heart has stopped. The department picks which grades take the lessons. Schools in those grades must offer them if they can. A certified CPR instructor, a licensed emergency medical worker, or a certified teacher may teach them. The bill also adds care for major emergencies to the state's emergency medical services duties, and says a major emergency includes a heart attack or stroke. The state may set care levels for hospitals that treat them. The school lessons start July 1, 2027. The Alaska House accepted the Senate's changes 27-13, and the bill became law without the governor's signature."
+  },
+  {
+   "jurisdiction": "AK",
+   "chamber": "house",
+   "session": "2171",
+   "roll": 1570725,
+   "measure_id": "HB 33",
+   "vote_date": "2025-05-13",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": "for"
+    }
+   ],
+   "yea_description": "Voted for House Bill 33, which changes the state ethics law for the Board of Fisheries and the Board of Game. Those two boards set Alaska's fishing and hunting rules. Under the old rule, a member who reported a personal or money interest in a matter had to stop voting, debating, and taking part in it if a violation was found. Under the new rule, a member who reports such an interest in a fish or game business is not shut out of debating or taking part. The member may still be barred from voting if a supervisor or most of the board finds that going further would break the ethics law. The Alaska House passed it 28-12, and it was signed into law.",
+   "nay_description": "Voted against House Bill 33, which changes the state ethics law for the Board of Fisheries and the Board of Game. Those two boards set Alaska's fishing and hunting rules. Under the old rule, a member who reported a personal or money interest in a matter had to stop voting, debating, and taking part in it if a violation was found. Under the new rule, a member who reports such an interest in a fish or game business is not shut out of debating or taking part. The member may still be barred from voting if a supervisor or most of the board finds that going further would break the ethics law. The Alaska House passed it 28-12, and it was signed into law."
+  },
+  {
+   "jurisdiction": "AK",
+   "chamber": "senate",
+   "session": "2171",
+   "roll": 1689719,
+   "measure_id": "HB 33",
+   "vote_date": "2026-04-24",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": "for"
+    }
+   ],
+   "yea_description": "Voted for House Bill 33, which changes the state ethics law for the Board of Fisheries and the Board of Game. Those two boards set Alaska's fishing and hunting rules. Under the old rule, a member who reported a personal or money interest in a matter had to stop voting, debating, and taking part in it if a violation was found. Under the new rule, a member who reports such an interest in a fish or game business is not shut out of debating or taking part. The member may still be barred from voting if a supervisor or most of the board finds that going further would break the ethics law. The Alaska Senate passed it 15-4, and it was signed into law.",
+   "nay_description": "Voted against House Bill 33, which changes the state ethics law for the Board of Fisheries and the Board of Game. Those two boards set Alaska's fishing and hunting rules. Under the old rule, a member who reported a personal or money interest in a matter had to stop voting, debating, and taking part in it if a violation was found. Under the new rule, a member who reports such an interest in a fish or game business is not shut out of debating or taking part. The member may still be barred from voting if a supervisor or most of the board finds that going further would break the ethics law. The Alaska Senate passed it 15-4, and it was signed into law."
+  },
+  {
+   "jurisdiction": "AK",
+   "chamber": "house",
+   "session": "2171",
+   "roll": 1574429,
+   "measure_id": "HB 35",
+   "vote_date": "2025-05-20",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for House Bill 35, which changes what people held in state prisons may use. The old law banned any computer or modem. The new law lets a prison approve a computer or tablet for reentry planning, rehabilitation, work, school, legal research, visits, or health care. The commissioner may name other uses in rules. Prisons may not charge a fee for email or electronic visits. They may not use a tablet in place of an in-person visit, and as far as they can they may not use one to replace a program a prisoner already gets. The state must also give a prisoner an identification card, and may give it only before the prisoner is released. The Alaska House accepted the Senate's changes 28-12, and the bill became law without the governor's signature.",
+   "nay_description": "Voted against House Bill 35, which changes what people held in state prisons may use. The old law banned any computer or modem. The new law lets a prison approve a computer or tablet for reentry planning, rehabilitation, work, school, legal research, visits, or health care. The commissioner may name other uses in rules. Prisons may not charge a fee for email or electronic visits. They may not use a tablet in place of an in-person visit, and as far as they can they may not use one to replace a program a prisoner already gets. The state must also give a prisoner an identification card, and may give it only before the prisoner is released. The Alaska House accepted the Senate's changes 28-12, and the bill became law without the governor's signature."
+  },
+  {
+   "jurisdiction": "AK",
+   "chamber": "house",
+   "session": "2171",
+   "roll": 1645404,
+   "measure_id": "HB 48",
+   "vote_date": "2026-02-25",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for House Bill 48, which raises the ceiling on how much money the legislature may put into the state's civil legal services fund. That fund pays groups that give free legal help in non-criminal cases to people with low incomes. The law counts an income at or below 125 percent of the federal poverty line for Alaska as low. The old ceiling was up to 10 percent of the filing fees the state court system took in during the last closed budget year. The new ceiling is up to 25 percent. The bill raises the ceiling only, and does not require any spending. The Alaska House passed it 27-13, and the bill became law without the governor's signature.",
+   "nay_description": "Voted against House Bill 48, which raises the ceiling on how much money the legislature may put into the state's civil legal services fund. That fund pays groups that give free legal help in non-criminal cases to people with low incomes. The law counts an income at or below 125 percent of the federal poverty line for Alaska as low. The old ceiling was up to 10 percent of the filing fees the state court system took in during the last closed budget year. The new ceiling is up to 25 percent. The bill raises the ceiling only, and does not require any spending. The Alaska House passed it 27-13, and the bill became law without the governor's signature."
+  },
+  {
+   "jurisdiction": "AK",
+   "chamber": "house",
+   "session": "2171",
+   "roll": 1562693,
+   "measure_id": "HB 57",
+   "vote_date": "2025-04-30",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for House Bill 57, which raises the base student allocation from $5,960 to $6,660. That is the per-student figure Alaska uses to work out what each school district gets. It also sets a per-student amount for school bus costs in each of 53 named districts. Every district must publish a target for average class size, aiming at no more than 23 students through sixth grade and 30 above that. Every district must also adopt a policy on students' own phones during school hours, and must report class rosters for all grades instead of only the earliest ones. The state must track where each graduating class ends up for 20 years. Charter schools may apply at any point in the school year, an appeal of a denial must be decided in 45 days instead of 90, and a school board may end a charter contract only for two listed reasons. The Alaska House accepted the Senate's changes 31-8. The governor vetoed the bill, the legislature overrode the veto 46-14 in a joint session of both chambers, and it became law.",
+   "nay_description": "Voted against House Bill 57, which raises the base student allocation from $5,960 to $6,660. That is the per-student figure Alaska uses to work out what each school district gets. It also sets a per-student amount for school bus costs in each of 53 named districts. Every district must publish a target for average class size, aiming at no more than 23 students through sixth grade and 30 above that. Every district must also adopt a policy on students' own phones during school hours, and must report class rosters for all grades instead of only the earliest ones. The state must track where each graduating class ends up for 20 years. Charter schools may apply at any point in the school year, an appeal of a denial must be decided in 45 days instead of 90, and a school board may end a charter contract only for two listed reasons. The Alaska House accepted the Senate's changes 31-8. The governor vetoed the bill, the legislature overrode the veto 46-14 in a joint session of both chambers, and it became law."
+  },
+  {
+   "jurisdiction": "AK",
+   "chamber": "house",
+   "session": "2171",
+   "roll": 1699348,
+   "measure_id": "HB 184",
+   "vote_date": "2026-05-16",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for House Bill 184, which lets the state's development bank help pay for building new workforce housing with three or more homes in it. The bank is the Alaska Industrial Development and Export Authority. Its stated purpose and its listed powers now cover that lending, and such a building counts as a project it may back. The bill also repeals a 2018 law that was due to start on November 30, 2027. Today a city or borough may tax a private user's interest in a bank-owned shipyard or port that was in service before 1999 only for the value of the parts used for lodging. The 2018 law would have ended that limit. Repealing it keeps the limit in place. The Alaska House accepted the Senate's changes 22-18, and the bill became law without the governor's signature.",
+   "nay_description": "Voted against House Bill 184, which lets the state's development bank help pay for building new workforce housing with three or more homes in it. The bank is the Alaska Industrial Development and Export Authority. Its stated purpose and its listed powers now cover that lending, and such a building counts as a project it may back. The bill also repeals a 2018 law that was due to start on November 30, 2027. Today a city or borough may tax a private user's interest in a bank-owned shipyard or port that was in service before 1999 only for the value of the parts used for lodging. The 2018 law would have ended that limit. Repealing it keeps the limit in place. The Alaska House accepted the Senate's changes 22-18, and the bill became law without the governor's signature."
+  },
+  {
+   "jurisdiction": "AK",
+   "chamber": "house",
+   "session": "2171",
+   "roll": 1572959,
+   "measure_id": "SB 183",
+   "vote_date": "2025-05-12",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 183, which gives the Legislative Budget and Audit Committee more power to get records. That committee reviews state spending and orders audits of state agencies. State officials and agencies must now hand over information in the form the committee asks for, not just hand it over. The legislature's audit staff may make a state official or worker put information into the format the staff asks for. Blocking that help on purpose was already a crime, and the crime now covers refusing the form asked for. A person who reasonably believed the refusal was legal has not committed it. A state worker who refuses may be fired. The Alaska House passed it 30-10 on reconsideration. The governor vetoed the bill, the legislature overrode the veto 43-16, and it became law.",
+   "nay_description": "Voted against Senate Bill 183, which gives the Legislative Budget and Audit Committee more power to get records. That committee reviews state spending and orders audits of state agencies. State officials and agencies must now hand over information in the form the committee asks for, not just hand it over. The legislature's audit staff may make a state official or worker put information into the format the staff asks for. Blocking that help on purpose was already a crime, and the crime now covers refusing the form asked for. A person who reasonably believed the refusal was legal has not committed it. A state worker who refuses may be fired. The Alaska House passed it 30-10 on reconsideration. The governor vetoed the bill, the legislature overrode the veto 43-16, and it became law."
+  }
+ ]
+}
