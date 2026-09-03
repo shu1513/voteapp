@@ -1,10 +1,12 @@
 // Idaho finance batch sync (docs/plans/idaho-finance.md, Phase 3): optional
 // auto-link pass, then the due list, then per-link sync. The candidate grid
-// (one 5,000-row page) and the all-time IE list (one 10,000-row page) are
-// pulled ONCE per batch and shared: the auto-link resolves against the grid,
-// and every link's outside money is selected from the same IE list. A failed
-// IE pull never blocks the direct leg — links sync with expenditureRows:
-// null, which preserves any prior outside snapshot. Per-link failures are
+// (one 5,000-row page) and the all-time IE list (one page) are pulled ONCE
+// per batch and shared: the auto-link resolves against the grid, and every
+// link's outside money is selected from the same IE list. Both pulls are
+// stored together as the run artifact — with the per-link registration
+// artifact, that is what reproduces a published snapshot. A failed pull
+// fails the batch before any write (there is no partial-leg write: a
+// summary's last_synced_at must date both legs). Per-link failures are
 // recorded and the batch continues (fail-visible, never fail-silent).
 //
 // Live API only: Idaho's raw-refresh flag gates nothing here (there is no
@@ -23,17 +25,14 @@ import {
   type IdahoCandidateFinanceDueRow,
 } from "./idahoCandidateFinanceDueList.js";
 import {
-  IDAHO_CFS_INDEPENDENT_EXPENDITURE_PAGE_SIZE,
+  fetchIdahoIndependentExpenditureRows,
   mergeIdahoCfsDataClient,
   syncIdahoCandidateFinance,
   type IdahoCandidateFinanceSyncResult,
   type IdahoCfsDataClient,
 } from "./idahoCandidateFinanceSync.js";
-import type {
-  IdahoCandidateRegistrationRow,
-  IdahoCfsClientOptions,
-  IdahoIndependentExpenditureRow,
-} from "./idahoCfsClient.js";
+import type { IdahoCandidateRegistrationRow, IdahoCfsClientOptions } from "./idahoCfsClient.js";
+import { storeIdahoRunArtifact, type IdahoRunArtifactManifest } from "./idahoRegistrationArtifactCache.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & { connect: () => Promise<PoolClient> };
@@ -58,13 +57,17 @@ export type IdahoCandidateFinanceBatchSyncInput = {
   electionLookbackDays?: number;
   electionLookaheadDays?: number;
   autoLinkMissingLinks?: boolean;
+  /** Per-registration artifact directory (idahoRegistrationArtifactCache default). */
   cacheDir?: string;
+  /** Run artifact directory (DEFAULT_IDAHO_FINANCE_RUN_CACHE_DIR). */
+  runCacheDir?: string;
   cfsClient?: Partial<IdahoCfsDataClient>;
   cfsClientOptions?: IdahoCfsClientOptions;
   log?: (message: string) => void;
   autoLinkFn?: typeof autoLinkMissingIdahoCandidateFinanceLinks;
   listDueRowsFn?: typeof listDueIdahoCandidateFinanceSyncRows;
   syncCandidateFn?: typeof syncIdahoCandidateFinance;
+  storeRunArtifactFn?: typeof storeIdahoRunArtifact;
 };
 
 export type IdahoCandidateFinanceBatchSyncResult = {
@@ -76,9 +79,10 @@ export type IdahoCandidateFinanceBatchSyncResult = {
   failed: number;
   /** Grid rows pulled this batch; null when nothing needed the grid. */
   registrationCount: number | null;
-  /** IE rows pulled this batch; null when the pull failed or was not needed. */
+  /** IE rows pulled this batch; null when nothing was due. */
   independentExpenditureRowCount: number | null;
-  independentExpenditureError: string | null;
+  /** Grid + IE list of this run; null in dry-run or when nothing was due. */
+  runArtifact: IdahoRunArtifactManifest | null;
   candidates: {
     row: IdahoCandidateFinanceDueRow;
     ok: boolean;
@@ -122,13 +126,18 @@ export async function syncDueIdahoCandidateFinance(
   const dryRun = input.dryRun === true;
   const cfsClient = mergeIdahoCfsDataClient(input.cfsClient);
 
-  // The grid is one request either way; pulled at most once per batch.
-  let registrations: IdahoCandidateRegistrationRow[] | null = null;
+  // The grid is requested at most once per batch — the promise is memoized,
+  // rejection included, so an outage costs one timeout, not one per link.
+  let registrationsPromise: Promise<IdahoCandidateRegistrationRow[]> | null = null;
   let registrationCount: number | null = null;
-  const loadRegistrations = async (): Promise<IdahoCandidateRegistrationRow[]> => {
-    registrations ??= await cfsClient.getRegistrations({ pageSize: IDAHO_CFS_GRID_PAGE_SIZE }, input.cfsClientOptions);
-    registrationCount = registrations.length;
-    return registrations;
+  const loadRegistrations = (): Promise<IdahoCandidateRegistrationRow[]> => {
+    registrationsPromise ??= cfsClient
+      .getRegistrations({ pageSize: IDAHO_CFS_GRID_PAGE_SIZE }, input.cfsClientOptions)
+      .then((rows) => {
+        registrationCount = rows.length;
+        return rows;
+      });
+    return registrationsPromise;
   };
 
   let autoLinkResults: IdahoFinanceAutoLinkResult[] = [];
@@ -157,23 +166,37 @@ export async function syncDueIdahoCandidateFinance(
     electionLookbackDays,
     electionLookaheadDays,
   });
+  if (due.rows.length === 0) {
+    return {
+      dryRun,
+      autoLinkResults,
+      totalDueRows: due.totalDueRows,
+      attempted: 0,
+      succeeded: 0,
+      failed: 0,
+      registrationCount,
+      independentExpenditureRowCount: null,
+      runArtifact: null,
+      candidates: [],
+    };
+  }
 
-  // One IE pull per batch. A failure skips the outside leg for every link
-  // (expenditureRows: null) rather than failing the batch.
-  let expenditureRowCount: number | null = null;
-  let expenditureError: string | null = null;
-  let expenditureRows: readonly IdahoIndependentExpenditureRow[] | null = null;
-  if (due.rows.length > 0) {
-    try {
-      expenditureRows = await cfsClient.getIndependentExpenditures(
-        { pageSize: IDAHO_CFS_INDEPENDENT_EXPENDITURE_PAGE_SIZE },
-        input.cfsClientOptions
-      );
-      expenditureRowCount = expenditureRows.length;
-    } catch (error) {
-      expenditureError = errorMessage(error);
-      log(`Idaho IE list pull failed (direct sync continues, outside leg skipped): ${expenditureError}`);
-    }
+  // Both whole-dataset pulls, once; a failure here fails the batch before any
+  // link is written.
+  const registrations = await loadRegistrations();
+  const expenditureRows = await fetchIdahoIndependentExpenditureRows({
+    cfsClient,
+    cfsClientOptions: input.cfsClientOptions,
+  });
+  let runArtifact: IdahoRunArtifactManifest | null = null;
+  if (!dryRun) {
+    const storeRun = input.storeRunArtifactFn ?? storeIdahoRunArtifact;
+    runArtifact = await storeRun({
+      cacheDir: input.runCacheDir,
+      retrievedAt: now,
+      registrations,
+      independentExpenditures: expenditureRows,
+    });
   }
 
   const syncCandidate = input.syncCandidateFn ?? syncIdahoCandidateFinance;
@@ -196,7 +219,7 @@ export async function syncDueIdahoCandidateFinance(
           linkSource: row.linkSource,
           sourceUrl: row.sourceUrl,
         },
-        registrations: await loadRegistrations(),
+        registrations,
         expenditureRows,
         cfsClient,
         cfsClientOptions: input.cfsClientOptions,
@@ -223,9 +246,9 @@ export async function syncDueIdahoCandidateFinance(
     attempted: due.rows.length,
     succeeded,
     failed: due.rows.length - succeeded,
-    registrationCount,
-    independentExpenditureRowCount: expenditureRowCount,
-    independentExpenditureError: expenditureError,
+    registrationCount: registrations.length,
+    independentExpenditureRowCount: expenditureRows.length,
+    runArtifact,
     candidates,
   };
 }

@@ -84,6 +84,11 @@ async function main(): Promise<void> {
       electionLookaheadDays: options.electionLookaheadDays,
     });
     console.log(JSON.stringify(toSyncDueIdahoCandidateFinanceScriptOutput({ startedAt, options, result }), null, 2));
+    // A link that failed is reported inside the JSON; the exit code must say
+    // so too, or a scheduled run reads as green (North Dakota convention).
+    if (result.failed > 0) {
+      process.exitCode = 1;
+    }
   } finally {
     await pool.end();
   }

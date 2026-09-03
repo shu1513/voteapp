@@ -53,7 +53,7 @@ function createClient(overrides: Partial<IdahoCfsDataClient> = {}): IdahoCfsData
   return {
     getRegistrations: vi.fn().mockResolvedValue(GRID),
     getContributionPage: vi.fn().mockResolvedValue({ items: ROWS, totalItems: ROWS.length }),
-    getIndependentExpenditures: vi.fn().mockResolvedValue(IE_ROWS),
+    getIndependentExpenditurePage: vi.fn().mockResolvedValue({ items: IE_ROWS, totalItems: IE_ROWS.length }),
     ...overrides,
   };
 }
@@ -99,7 +99,6 @@ describe("syncIdahoCandidateFinance", () => {
       outsideOpposeTotal: 100,
       rowCoverage: "exact",
       directCoverageNote: null,
-      outsideSkippedReason: null,
       artifact: { sha256: "abc" },
     });
     expect(result.outside?.priorRegistrationRowCount).toBe(1);
@@ -111,7 +110,7 @@ describe("syncIdahoCandidateFinance", () => {
     );
     // Grid and IE list were supplied by the batch: never re-fetched.
     expect(client.getRegistrations).not.toHaveBeenCalled();
-    expect(client.getIndependentExpenditures).not.toHaveBeenCalled();
+    expect(client.getIndependentExpenditurePage).not.toHaveBeenCalled();
 
     const write = vi.mocked(input.writeSnapshotFn!).mock.calls[0]![0];
     expect(write.link).toEqual({
@@ -188,26 +187,32 @@ describe("syncIdahoCandidateFinance", () => {
     ).rejects.toThrow("is not Idaho-finance eligible");
   });
 
-  it("skips the outside leg with null totals when the IE list is unavailable, preserving prior outside data", async () => {
-    const input = baseInput({ expenditureRows: null });
-    const result = await syncIdahoCandidateFinance(input);
-    expect(result.outside).toBeNull();
-    expect(result.outsideSupportTotal).toBeNull();
-    expect(result.outsideSkippedReason).toBe("independent expenditure list unavailable this run");
-    const write = vi.mocked(input.writeSnapshotFn!).mock.calls[0]![0];
-    expect(write.summary).toMatchObject({ totalReceipts: 1500, outsideSupportTotal: null, outsideOpposeTotal: null });
-    expect(write.outsideGroups).toBeUndefined();
-    expect(vi.mocked(input.storeArtifactFn!).mock.calls[0]![0].artifact.independentExpenditures).toEqual([]);
-  });
-
-  it("fetches the grid and the IE list itself when the batch did not supply them, and tolerates an IE failure", async () => {
-    const client = createClient({ getIndependentExpenditures: vi.fn().mockRejectedValue(new Error("ie down")) });
+  it("fetches the grid and the IE list itself when the batch did not supply them", async () => {
+    const client = createClient();
     const input = baseInput({ registrations: undefined, expenditureRows: undefined, cfsClient: client });
     const result = await syncIdahoCandidateFinance(input);
     expect(client.getRegistrations).toHaveBeenCalledTimes(1);
-    expect(result.outside).toBeNull();
-    expect(result.outsideSkippedReason).toBe("ie down");
-    expect(result.summaryWritten).toBe(true);
+    expect(client.getIndependentExpenditurePage).toHaveBeenCalledWith({ pageSize: 50_000 }, undefined);
+    expect(result).toMatchObject({ summaryWritten: true, outsideSupportTotal: 250, outsideOpposeTotal: 100 });
+  });
+
+  it("fails the whole sync — no partial direct-only write — when the IE list is unavailable or partial", async () => {
+    const down = baseInput({
+      expenditureRows: undefined,
+      cfsClient: createClient({ getIndependentExpenditurePage: vi.fn().mockRejectedValue(new Error("ie down")) }),
+    });
+    await expect(syncIdahoCandidateFinance(down)).rejects.toThrow("ie down");
+    expect(down.writeSnapshotFn).not.toHaveBeenCalled();
+    expect(down.storeArtifactFn).not.toHaveBeenCalled();
+
+    const partial = baseInput({
+      expenditureRows: undefined,
+      cfsClient: createClient({
+        getIndependentExpenditurePage: vi.fn().mockResolvedValue({ items: IE_ROWS, totalItems: IE_ROWS.length + 5 }),
+      }),
+    });
+    await expect(syncIdahoCandidateFinance(partial)).rejects.toThrow("served 2 of 7 rows");
+    expect(partial.writeSnapshotFn).not.toHaveBeenCalled();
   });
 
   it("reports a coverage note when the search rows do not reconcile to the grid, and still writes breakdowns", async () => {

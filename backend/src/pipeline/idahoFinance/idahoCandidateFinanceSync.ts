@@ -15,13 +15,13 @@
 //   not an absent one (the link exists because the grid row exists);
 // - contribution rows feed only the breakdowns; coverage vs the grid total
 //   is reported (rowCoverage), never enforced (Phase 2a decision);
-// - the contribution search is fetched as ONE page and fails closed when
-//   the service reports more rows than it served (date-sorted paging is
-//   unstable — Phase 2a acquisition rule);
+// - the contribution search and the IE list are each fetched as ONE page
+//   and fail closed when the service reports more rows than it served
+//   (neither search has a stable sort, so paging can duplicate or drop rows
+//   — Phase 2a acquisition rule);
 // - outside totals are the aggregator's (0 after a successful run with no
-//   rows); they are null — and the prior outside snapshot is preserved by
-//   the writer's preserveWhenNull policy — only when the IE list could not
-//   be fetched this run;
+//   rows). There is no partial write: an IE list that cannot be fetched
+//   fails the sync, so a summary's last_synced_at always dates BOTH legs;
 // - any thrown error writes nothing and preserves the prior snapshot.
 
 import type { Pool, PoolClient } from "pg";
@@ -29,8 +29,8 @@ import type { Pool, PoolClient } from "pg";
 import { IDAHO_CFS_GRID_PAGE_SIZE } from "./idahoCandidateFinanceAutoLink.js";
 import {
   getAllIdahoCandidateRegistrations,
-  getAllIdahoIndependentExpenditures,
   getIdahoContributionPage,
+  getIdahoIndependentExpenditurePage,
   idahoRegistrationProfileUrl,
   idahoRegistrationSearchName,
   normalizeIdahoRegistrationGuid,
@@ -69,9 +69,10 @@ type ConnectableQueryable = Queryable & { connect: () => Promise<PoolClient> };
 // 2026-09-02); one page of 10,000 covers every filer. Paging the search is
 // never attempted: date-sorted pages at 500 duplicate and drop rows.
 export const IDAHO_CFS_CONTRIBUTION_PAGE_SIZE = 10_000;
-// All-time IE list = 9,897 rows (2026-09-01): one page today; the client
-// paginates (with a consistent-total check) if it ever grows past this.
-export const IDAHO_CFS_INDEPENDENT_EXPENDITURE_PAGE_SIZE = 10_000;
+// All-time IE list = 9,899 rows (2026-09-03), growing ~5,000 a year; the
+// service returns unsorted rows, so it is never paged either: one page of
+// 50,000 (accepted live) with the same fail-closed guard.
+export const IDAHO_CFS_INDEPENDENT_EXPENDITURE_PAGE_SIZE = 50_000;
 
 export class IdahoCandidateFinanceSyncError extends Error {
   constructor(message: string) {
@@ -89,16 +90,16 @@ export type IdahoCfsDataClient = {
     input: { filerName: string; pageSize: number },
     options?: IdahoCfsClientOptions
   ) => Promise<IdahoCfsPage<IdahoContributionRow>>;
-  getIndependentExpenditures: (
+  getIndependentExpenditurePage: (
     input: { pageSize: number },
     options?: IdahoCfsClientOptions
-  ) => Promise<IdahoIndependentExpenditureRow[]>;
+  ) => Promise<IdahoCfsPage<IdahoIndependentExpenditureRow>>;
 };
 
 const DEFAULT_CFS_CLIENT: IdahoCfsDataClient = {
   getRegistrations: getAllIdahoCandidateRegistrations,
   getContributionPage: getIdahoContributionPage,
-  getIndependentExpenditures: getAllIdahoIndependentExpenditures,
+  getIndependentExpenditurePage: getIdahoIndependentExpenditurePage,
 };
 
 export function mergeIdahoCfsDataClient(client: Partial<IdahoCfsDataClient> | undefined): IdahoCfsDataClient {
@@ -122,12 +123,8 @@ export type IdahoCandidateFinanceSyncInput = {
   };
   /** The whole candidate grid; undefined = fetch it (the batch passes its one pull). */
   registrations?: readonly IdahoCandidateRegistrationRow[];
-  /**
-   * The all-time IE list; undefined = fetch it; null = the batch already
-   * knows the fetch failed this run (skip the outside leg and preserve the
-   * prior outside snapshot).
-   */
-  expenditureRows?: readonly IdahoIndependentExpenditureRow[] | null;
+  /** The all-time IE list; undefined = fetch it (the batch passes its one pull). */
+  expenditureRows?: readonly IdahoIndependentExpenditureRow[];
   cfsClient?: Partial<IdahoCfsDataClient>;
   cfsClientOptions?: IdahoCfsClientOptions;
   cacheDir?: string;
@@ -149,14 +146,13 @@ export type IdahoCandidateFinanceSyncResult = {
   totalReceipts: number;
   totalDisbursements: number;
   cashOnHand: number;
-  outsideSupportTotal: number | null;
-  outsideOpposeTotal: number | null;
+  outsideSupportTotal: number;
+  outsideOpposeTotal: number;
   rowCoverage: IdahoRowCoverage;
   /** Set when the search rows do not reconcile to the grid total (rowCoverage != exact). */
   directCoverageNote: string | null;
   direct: IdahoContributionAggregationResult;
-  outside: IdahoOutsideSpendingAggregationResult | null;
-  outsideSkippedReason: string | null;
+  outside: IdahoOutsideSpendingAggregationResult;
   artifact: IdahoRegistrationArtifactManifest | null;
 };
 
@@ -164,10 +160,6 @@ function requireNonEmpty(value: string, fieldName: string): string {
   const trimmed = value.trim();
   if (!trimmed) throw new IdahoCandidateFinanceSyncError(`${fieldName} is required`);
   return trimmed;
-}
-
-function errorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
 }
 
 function formatDollars(value: number): string {
@@ -201,6 +193,24 @@ export async function fetchIdahoRegistrationContributionRows(input: {
   if (page.totalItems > page.items.length) {
     throw new IdahoCandidateFinanceSyncError(
       `Idaho contribution search for ${JSON.stringify(filerName)} served ${page.items.length} of ${page.totalItems} rows; ` +
+        "paging is unstable, refusing a partial result"
+    );
+  }
+  return page.items;
+}
+
+/** The all-time IE list as ONE page; fails closed on a partial page (unsorted service, never paged). */
+export async function fetchIdahoIndependentExpenditureRows(input: {
+  cfsClient: IdahoCfsDataClient;
+  cfsClientOptions?: IdahoCfsClientOptions;
+}): Promise<IdahoIndependentExpenditureRow[]> {
+  const page = await input.cfsClient.getIndependentExpenditurePage(
+    { pageSize: IDAHO_CFS_INDEPENDENT_EXPENDITURE_PAGE_SIZE },
+    input.cfsClientOptions
+  );
+  if (page.totalItems > page.items.length) {
+    throw new IdahoCandidateFinanceSyncError(
+      `Idaho independent expenditure list served ${page.items.length} of ${page.totalItems} rows; ` +
         "paging is unstable, refusing a partial result"
     );
   }
@@ -256,30 +266,15 @@ export async function syncIdahoCandidateFinance(
   const direct = aggregateIdahoContributions({ registration, contributionRows });
 
   // Outside leg: the all-time IE list, selected by entity + office + window.
-  let expenditureRows = input.expenditureRows;
-  let outsideSkippedReason: string | null = null;
-  if (expenditureRows === null) {
-    outsideSkippedReason = "independent expenditure list unavailable this run";
-  } else if (expenditureRows === undefined) {
-    try {
-      expenditureRows = await cfsClient.getIndependentExpenditures(
-        { pageSize: IDAHO_CFS_INDEPENDENT_EXPENDITURE_PAGE_SIZE },
-        input.cfsClientOptions
-      );
-    } catch (error) {
-      expenditureRows = null;
-      outsideSkippedReason = errorMessage(error);
-    }
-  }
-  const outside =
-    expenditureRows === null
-      ? null
-      : aggregateIdahoOutsideSpending({
-          registration,
-          registrations,
-          expenditureRows,
-          maxGroups: input.maxOutsideGroups,
-        });
+  const expenditureRows =
+    input.expenditureRows ??
+    (await fetchIdahoIndependentExpenditureRows({ cfsClient, cfsClientOptions: input.cfsClientOptions }));
+  const outside = aggregateIdahoOutsideSpending({
+    registration,
+    registrations,
+    expenditureRows,
+    maxGroups: input.maxOutsideGroups,
+  });
 
   const profileUrl = idahoRegistrationProfileUrl(registrationGuid);
   let artifact: IdahoRegistrationArtifactManifest | null = null;
@@ -288,8 +283,9 @@ export async function syncIdahoCandidateFinance(
   let outsideGroupsWritten = 0;
   if (!dryRun) {
     // Evidence first: the registration's own rows (the cache contract admits
-    // only rows keyed to this guid, so IE rows on the entity's prior
-    // registrations — counted by the aggregator — are not in this file).
+    // only rows keyed to this guid; the IE rows on the entity's prior
+    // registrations that the aggregator also counts are in the batch's run
+    // artifact — storeIdahoRunArtifact).
     const store = input.storeArtifactFn ?? storeIdahoRegistrationArtifact;
     artifact = await store({
       cacheDir: input.cacheDir,
@@ -298,7 +294,7 @@ export async function syncIdahoCandidateFinance(
         version: IDAHO_REGISTRATION_ARTIFACT_SCHEMA_VERSION,
         registration,
         contributions: selectIdahoRegistrationContributions(contributionRows, registrationGuid),
-        independentExpenditures: (expenditureRows ?? []).filter(
+        independentExpenditures: expenditureRows.filter(
           (row) =>
             row.candidateMeasureFilerRegistrationGuid !== null &&
             normalizeIdahoRegistrationGuid(row.candidateMeasureFilerRegistrationGuid) === registrationGuid
@@ -331,12 +327,12 @@ export async function syncIdahoCandidateFinance(
         directContributionTotal: direct.summary.directContributionTotal,
         totalDisbursements: direct.summary.totalDisbursements,
         cashOnHand: direct.summary.cashOnHand,
-        outsideSupportTotal: outside?.summary.supportTotal ?? null,
-        outsideOpposeTotal: outside?.summary.opposeTotal ?? null,
+        outsideSupportTotal: outside.summary.supportTotal,
+        outsideOpposeTotal: outside.summary.opposeTotal,
         sourceUrl: direct.summary.sourceUrl,
       },
       directBreakdowns: direct.directBreakdowns,
-      outsideGroups: outside?.summary.groups.map((group) => ({
+      outsideGroups: outside.summary.groups.map((group) => ({
         filerKey: group.filerKey,
         filerName: group.filerName,
         supportOppose: group.supportOppose,
@@ -360,13 +356,12 @@ export async function syncIdahoCandidateFinance(
     totalReceipts: direct.summary.totalReceipts,
     totalDisbursements: direct.summary.totalDisbursements,
     cashOnHand: direct.summary.cashOnHand,
-    outsideSupportTotal: outside?.summary.supportTotal ?? null,
-    outsideOpposeTotal: outside?.summary.opposeTotal ?? null,
+    outsideSupportTotal: outside.summary.supportTotal,
+    outsideOpposeTotal: outside.summary.opposeTotal,
     rowCoverage: direct.rowCoverage,
     directCoverageNote: directCoverageNote(direct),
     direct,
     outside,
-    outsideSkippedReason,
     artifact,
   };
 }
