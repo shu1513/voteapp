@@ -92,6 +92,16 @@ export class KansasCfrClientError extends Error {
   }
 }
 
+/**
+ * The grid's record count no longer matches the rows walked: a filing
+ * landed between the search and the last page and shifted every later row
+ * by one (live 2026-09-02, a 57-page House walk). The immediate rerun was
+ * clean, so callers may retry that one enumeration once.
+ */
+export function isKansasGridCountMismatch(error: unknown): boolean {
+  return error instanceof KansasCfrClientError && error.code === "bad_response" && error.message.includes("but page reported");
+}
+
 export type KansasCfrResponse = {
   status: number;
   contentType: string | null;

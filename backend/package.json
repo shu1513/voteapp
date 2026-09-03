@@ -429,6 +429,7 @@
     "kansas-candidates:finance:phase-zero": "tsx src/scripts/probeKansasCandidateFinance.ts",
     "kansas-candidates:finance:auto-link": "tsx src/scripts/autoLinkKansasCandidateFinance.ts",
     "kansas-candidates:finance:ledger": "tsx src/scripts/reportKansasCandidateFinanceLedgers.ts",
+    "kansas-candidates:finance:sync-due": "tsx src/scripts/syncDueKansasCandidateFinance.ts",
     "north-dakota-candidates:finance:phase-zero": "tsx src/scripts/probeNorthDakotaCandidateFinance.ts",
     "north-dakota-candidates:finance:auto-link": "tsx src/scripts/autoLinkNorthDakotaCandidateFinance.ts",
     "north-dakota-candidates:finance:raw:refresh": "tsx src/scripts/refreshNorthDakotaCampaignFinanceRawData.ts",
