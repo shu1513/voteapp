@@ -1,0 +1,18 @@
+[
+ {
+  "recordId": "6d1e729b-1d7d-47a8-a6f8-81bb9bbf9ff6",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2026 First Special Session batch-01 run: this hand-written record describes the same vote as HB 1 roll 1694623 on 2026-05-06 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2262/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "0927a0de-b016-4e85-936b-167410d2623f",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2026 First Special Session batch-01 run: this hand-written record describes the same vote as HB 1 roll 1694623 on 2026-05-06 for Heath Allbright, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2262/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "249d404c-542c-43a5-9b56-a9131383d6e0",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2026 First Special Session batch-01 run: this hand-written record describes the same vote as HB 1 roll 1694623 on 2026-05-06 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2262/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "80493d8d-009f-43e6-9d3f-4a00e066608e",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2026 First Special Session batch-01 run: this hand-written record describes the same vote as HB 1 roll 1694623 on 2026-05-06 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2262/batch-01/JUDGING.md."
+ }
+]

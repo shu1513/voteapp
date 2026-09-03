@@ -218,6 +218,39 @@ Two equivalent sources, both current:
 Targets resolve by registration guid first (99%); name-only rows go through
 the existing name matcher, same as NH/Montana.
 
+## IE targets and filers (survey 2026-09-02, Phase 2b)
+
+Full IE list (9,897 rows, one page of 10,000) against the full grid:
+
+- Filer identity: every `TIECOM` row carries `filerRegistrationGuid` (7,538;
+  one display name per guid), every `TEXP` row has none (2,359;
+  `isNonRegisteredEntity: true`; 66 distinct names: federal PACs, businesses,
+  individuals). One registered filer name maps to two guids only when it
+  re-registered per cycle (Convention of States Action: 2024 and 2026). FEC
+  ids appear inside `TEXP` names in three spellings ("Make Liberty Win (FEC
+  ID: C00731133)", "(C00731133)", and an unclosed parenthesis).
+- Target identity: `candidateMeasureFilerRegistrationGuid` on 8,738 rows
+  (all with `isCandidateNonRegisteredEntity: false` and a non-null
+  `officeSought`; 103 guids are not in the candidate grid); `officeSought`
+  equals the target registration's grid `office` on every one of them.
+  Name-only rows: 1,159 (`isCandidateNonRegisteredEntity: true`, no guid),
+  172 distinct targets, mostly 2024–2025 local races (school trustee, mayor,
+  levies); 375 of them are measures (`officeSought` null — there are no other
+  measure rows). Formats seen: "Last, First", "Last, First 'Nick'" with
+  mismatched quotes, "Last , First", trailing commas, "Last, JO".
+- **Cycle attribution**: transaction year minus the target registration's
+  `electionYear` is 0 on 6,777 rows, +2 on 1,640, +4 on 128, +1 on 42
+  (2026 rows on 2025 city registrations), +3 on 32, −1 on 16 (2026 rows on
+  2027 registrations). Filers routinely pick the candidate's older
+  registration, which incumbents keep Active. For the 101 linked candidates:
+  357 rows / $263,682 name the 2026 registration (all dated 2026) and 389
+  rows / $710k name a 2022/2024 same-office registration of the same entity
+  in the 2026 window; 30 rows name a 2025 other-office registration
+  (Hensley, city council).
+- Duplicates: 225 exact-duplicate allocation rows all-time (none on linked
+  targets); one parent+target pair carries both stances; 1 non-positive
+  amount all-time. `transactionDate` is always `YYYY-MM-DDTHH:MM:SS`.
+
 ## Other useful endpoints (probed OK)
 
 - Lookups: `PublicLookup/GetElectionYearLookup`, `GetOfficeSoughtLookup`,

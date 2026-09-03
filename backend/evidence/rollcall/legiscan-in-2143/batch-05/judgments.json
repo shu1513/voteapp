@@ -1,0 +1,99 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IN",
+      "chamber": "senate",
+      "session": "2143",
+      "roll": 1558096,
+      "measure_id": "SB 140",
+      "vote_date": "2025-04-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 140, which sets rules for the firms that run drug benefits for health plans. These firms are called pharmacy benefit managers. A plan's pharmacy network must be big enough, and must put a walk-in pharmacy within 30 miles of each member. A firm may not pay a pharmacy less than it pays itself, or a pharmacy it owns, for the same drug. It may not claw back money after it has approved a claim, unless the claim was fraudulent or the pharmacy was truly overpaid. It may not force a member to use a pharmacy the firm owns. It may not charge a member less for using one. It may not punish a pharmacist for telling a patient about a cheaper option. Members, pharmacies and pharmacists may complain to the state insurance commissioner. The commissioner must look into every complaint and may order money paid back. The Indiana Senate adopted the final version 39-10, and it became law.",
+      "nay_description": "Voted against Senate Bill 140, which sets rules for the firms that run drug benefits for health plans. These firms are called pharmacy benefit managers. A plan's pharmacy network must be big enough, and must put a walk-in pharmacy within 30 miles of each member. A firm may not pay a pharmacy less than it pays itself, or a pharmacy it owns, for the same drug. It may not claw back money after it has approved a claim, unless the claim was fraudulent or the pharmacy was truly overpaid. It may not force a member to use a pharmacy the firm owns. It may not charge a member less for using one. It may not punish a pharmacist for telling a patient about a cheaper option. Members, pharmacies and pharmacists may complain to the state insurance commissioner. The commissioner must look into every complaint and may order money paid back. The Indiana Senate adopted the final version 39-10, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "note": "Adoption of the conference committee report, which is the enacted text and the only divided roll on this act. Member list verified name by name against official roll-call PDF SB0140.523_S.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "senate",
+      "session": "2143",
+      "roll": 1540370,
+      "measure_id": "HB 1634",
+      "vote_date": "2025-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1634, which adds maths testing and help in Indiana schools. From the 2026-2027 school year every school must screen all children in kindergarten, first and second grade. The screening finds children at risk of falling behind in maths. A school must then give extra help to any child from kindergarten to grade 8 who is at risk. The help must be layered, from lighter to more intense, and must track each child's progress. Middle schools must place a student in an advanced maths class if the student scored above proficient on the state test and earned a C or better. A parent may opt out. The state must report each year how many high-scoring students did and did not get an advanced class. Teacher training courses must teach methods backed by evidence. A course that does not may lose the right to call itself accredited. The Indiana Senate passed the bill 38-11, and it became law.",
+      "nay_description": "Voted against House Bill 1634, which adds maths testing and help in Indiana schools. From the 2026-2027 school year every school must screen all children in kindergarten, first and second grade. The screening finds children at risk of falling behind in maths. A school must then give extra help to any child from kindergarten to grade 8 who is at risk. The help must be layered, from lighter to more intense, and must track each child's progress. Middle schools must place a student in an advanced maths class if the student scored above proficient on the state test and earned a C or better. A parent may opt out. The state must report each year how many high-scoring students did and did not get an advanced class. Teacher training courses must teach methods backed by evidence. A course that does not may lose the right to call itself accredited. The Indiana Senate passed the bill 38-11, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "note": "Third reading, and the only divided roll on this act. Word-level comparison of the Senate committee text against the enrolled act found no operative difference. Member list verified name by name against official roll-call PDF HB1634.367_S.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "senate",
+      "session": "2143",
+      "roll": 1495551,
+      "measure_id": "SB 409",
+      "vote_date": "2025-02-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 409, which protects a parent's job when they go to a school meeting about their child. An employer may not punish an employee for missing work to attend a school attendance meeting. The same protection covers a special education case conference. The protection is limited. It covers one of each meeting per year. The employee must give five days' notice. The employee must not be away longer than needed, and must show proof of going. The employer need not pay for the time. The employee must try to attend online where possible. The chapter ends on July 1 2029. The Indiana Senate passed the bill 30-19, and it became law.",
+      "nay_description": "Voted against Senate Bill 409, which protects a parent's job when they go to a school meeting about their child. An employer may not punish an employee for missing work to attend a school attendance meeting. The same protection covers a special education case conference. The protection is limited. It covers one of each meeting per year. The employee must give five days' notice. The employee must not be away longer than needed, and must show proof of going. The employer need not pay for the time. The employee must try to attend online where possible. The chapter ends on July 1 2029. The Indiana Senate passed the bill 30-19, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "note": "Third reading, and the only divided roll on this act. The House produced later prints, so the version check mattered here; word-level comparison of the Senate-passed text against the enrolled act found no operative difference. Member list verified name by name against official roll-call PDF SB0409.191_S.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "senate",
+      "session": "2143",
+      "roll": 1548822,
+      "measure_id": "HB 1037",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1037, which stops local governments setting stricter rules on building site run-off than the state does. A county, city or town may no longer adopt any rule that goes beyond the state's construction stormwater permit. That includes money guarantees and drainage reports after building. Any local rule that does go beyond it is void. The local unit must still carry out its duties under the state permit. One power stays for small sites. Where work disturbs less than one acre, and is not part of a bigger plan, the local unit or the state may warn a person whose site is letting soil or dust escape. If nothing is done within 48 hours, they may order the work stopped. The Indiana Senate passed the bill 31-18, and it became law.",
+      "nay_description": "Voted against House Bill 1037, which stops local governments setting stricter rules on building site run-off than the state does. A county, city or town may no longer adopt any rule that goes beyond the state's construction stormwater permit. That includes money guarantees and drainage reports after building. Any local rule that does go beyond it is void. The local unit must still carry out its duties under the state permit. One power stays for small sites. Where work disturbs less than one acre, and is not part of a bigger plan, the local unit or the state may warn a person whose site is letting soil or dust escape. If nothing is done within 48 hours, they may order the work stopped. The Indiana Senate passed the bill 31-18, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "Third reading. Word-level comparison of the Senate committee text against the enrolled act found no operative difference. Member list verified name by name against official roll-call PDF HB1037.425_S.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2143",
+      "roll": 1550985,
+      "measure_id": "HB 1037",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1037, which stops local governments setting stricter rules on building site run-off than the state does. A county, city or town may no longer adopt any rule that goes beyond the state's construction stormwater permit. That includes money guarantees and drainage reports after building. Any local rule that does go beyond it is void. The local unit must still carry out its duties under the state permit. One power stays for small sites. Where work disturbs less than one acre, and is not part of a bigger plan, the local unit or the state may warn a person whose site is letting soil or dust escape. If nothing is done within 48 hours, they may order the work stopped. The Indiana House agreed to the final version 68-20, and it became law.",
+      "nay_description": "Voted against House Bill 1037, which stops local governments setting stricter rules on building site run-off than the state does. A county, city or town may no longer adopt any rule that goes beyond the state's construction stormwater permit. That includes money guarantees and drainage reports after building. Any local rule that does go beyond it is void. The local unit must still carry out its duties under the state permit. One power stays for small sites. Where work disturbs less than one acre, and is not part of a bigger plan, the local unit or the state may warn a person whose site is letting soil or dust escape. If nothing is done within 48 hours, they may order the work stopped. The Indiana House agreed to the final version 68-20, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "The House's agreement to the Senate amendments, which is the enacted text. The House's own third reading of 2025-02-04 is NOT used: its member list disagrees with the official journal. Member list on THIS roll verified name by name against official roll-call PDF HB1037.479_H.pdf."
+    }
+  ]
+}

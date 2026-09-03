@@ -88,3 +88,46 @@ Deferred rather than dropped, for a later batch:
   Act, limits negligent marketing claims, and creates a private right of action.
   Who may sue whom under that right decides the direction, and it needs its own
   careful read.
+
+## Batch-07
+
+**House Bill 801 is no longer a deferral.** It was read in full and judged in
+batch-07 as `gun_control`, yes vote against. The deferral note above is settled.
+
+**House Bill 329** (tax exemptions for ammunition component manufacturers,
+chapter 675) is dropped after a full read of all twelve content pages.
+
+The act gives a business whose primary trade is making ammunition components,
+and anyone who lends to one, an exemption from state property tax for schools,
+the business equipment tax, state individual and corporate income tax, and any
+other state tax on business activity. The local share of property tax and the
+employer's share of payroll taxes still apply. It is retroactive to tax years
+beginning 1 January 2025 and terminates 31 December 2035.
+
+Two facts had to be settled first. The short title in the vote data, "Make the
+Montana ammunition act permanent", is stale — the enrolled act carries a
+termination date. And the exemptions are new, not an extension: the Montana
+Ammunition Availability Act dates from 2015, its own tax exemption terminated on
+31 December 2024, and on the page images every mention of ammunition in the
+three amended tax sections is underlined.
+
+It is dropped because no research area maps to it with a direction that can be
+defended. `gun_control` is defined as regulating firearm access through
+background checks, licensing and safe storage, and the act touches none of that.
+`corporate_accountability` is about holding companies to account for legal
+compliance, consumer protection and public impact, which a tax exemption is not.
+Stretching an area to fit a bill is the mistake that produced the `impartiality`
+error in batch-05.
+
+**House Bill 423** (voter registration list maintenance) is dropped as genuinely
+two-sided. It takes provisionally registered electors out of the annual targeted
+mailing and directs the secretary of state to write rules "to maintain
+applicants, including removing provisionally registered electors". Tidying
+incomplete registrations serves the accuracy half of `election_integrity`;
+removing the notice that precedes removal cuts against the trusted half.
+
+**Senate Bill 25** (deepfakes in election advertising) is **not** a filter-5
+drop. It fails filter 1: both chambers' final votes are lopsided, the House
+concurring 80-17 and the Senate 45-3, so neither roll separates one candidate
+from another. Its earlier Senate third reading of 38-11 is divided but
+superseded.

@@ -119,21 +119,29 @@ export function idahoRegistrationRowName(registration: IdahoCandidateRegistratio
   return `${registration.lastName}, ${given}`;
 }
 
-// One-sided nickname expansion (roster side only, the shared module's rule):
-// the grid carries legal first names while the roster carries campaign names.
+// One-sided nickname expansion (free-text side only, the shared module's
+// rule): the grid carries legal first names while rosters and IE filings
+// carry campaign names.
 function rosterFirstNameMatchesGrid(candidateFirst: string, rowFirst: string): boolean {
   return candidateFirst === rowFirst || firstNameVariants(candidateFirst).includes(rowFirst);
 }
 
-function nameConfidence(
+/**
+ * Full-name evidence for free-text candidate names against grid row names
+ * (the comma form idahoRegistrationRowName builds). "name_exact" needed no
+ * nickname expansion, "name_nickname" needed the one-sided expansion of the
+ * free-text side, null is no match. Shared by the auto-link (roster name vs
+ * grid) and the outside-spending aggregator (IE target text vs grid).
+ */
+export function idahoCandidateNameMatchConfidence(
   candidateNames: readonly string[],
-  rowName: string
+  rowNames: readonly string[]
 ): IdahoCandidateFilerMatch["confidence"] | null {
   for (const candidateName of candidateNames) {
     if (
       personNamesMatchWithMiddleEvidence({
         candidateName,
-        rowNames: [rowName],
+        rowNames,
         normalizePersonName: normalizeIdahoPersonNameForMatching,
       })
     ) {
@@ -144,7 +152,7 @@ function nameConfidence(
     if (
       personNamesMatchWithMiddleEvidence({
         candidateName,
-        rowNames: [rowName],
+        rowNames,
         normalizePersonName: normalizeIdahoPersonNameForMatching,
         firstNamesEquivalent: rosterFirstNameMatchesGrid,
       })
@@ -225,7 +233,7 @@ export function resolveIdahoCandidateFiler(input: IdahoCandidateFilerResolverInp
     if (row.electionYear !== input.electionYear || row.office !== office.gridOffice) continue;
     const district = rowDistrictLabel(row, evidence);
     if (district === undefined) continue;
-    const confidence = nameConfidence(candidateNames, idahoRegistrationRowName(row));
+    const confidence = idahoCandidateNameMatchConfidence(candidateNames, [idahoRegistrationRowName(row)]);
     if (confidence === null) continue;
     matches.set(row.registrationGuid, {
       registrationGuid: row.registrationGuid,
