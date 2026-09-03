@@ -480,6 +480,88 @@ describe("Indiana 2025's measured desc vocabulary", () => {
   });
 });
 
+describe("Indiana 2026's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS["IN-2234"]!;
+  const inRoll = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+
+  it("serves the second Indiana session under its own key, writing the same jurisdiction", () => {
+    expect(config.jurisdiction).toBe("IN");
+    expect(config.sessionId).toBe(2234);
+    // The 2025 entry must be untouched, or its batches stop being re-runnable.
+    expect(LEGISCAN_STATE_CONFIGS.IN!.sessionId).toBe(2143);
+    expect(getLegiscanStateConfig("in-2234")).toBe(config);
+    // Indiana is named once in the jurisdiction list despite the two entries.
+    expect(LEGISCAN_RECORD_JURISDICTIONS.filter((j) => j === "IN")).toHaveLength(1);
+  });
+
+  it("keeps the final-action spellings, which do carry across from 2025", () => {
+    expect(inRoll("House - Third reading", 100)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(inRoll("Senate - Third reading", 49, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(inRoll("House - House concurred with Senate amendments", 100).questionClass).toBe("concurrence");
+    expect(inRoll("Senate - Rules Suspended. Senate concurred with House amendments", 50, "senate").questionClass).toBe(
+      "concurrence"
+    );
+    expect(inRoll("House - Conference Committee Report 1", 100).questionClass).toBe("conference_report");
+    expect(inRoll("Senate - Rules Suspended. Conference Committee Report 1", 50, "senate").questionClass).toBe(
+      "conference_report"
+    );
+  });
+
+  // HB 1368 roll 399: the House defeated the motion 48-42, short of the
+  // constitutional majority of 51, but LegiScan reports `passed: 1` because
+  // its flag is a bare-majority check, and the fetcher writes `result`
+  // straight from that flag. Keeping the desc would store a defeated vote as
+  // "Passed". 2025's longer spelling stays kept because its flag is correct.
+  it("excludes the defeated concurrence whose passed flag is wrong, but keeps 2025's", () => {
+    expect(inRoll("House - Concurrence defeated", 100)).toMatchObject({
+      isFloorVote: false,
+      reason: "excluded_question",
+    });
+    expect(
+      classifyLegiscanRollCall({
+        desc: "Senate - Concurrence failed for lack of constitutional majority",
+        total: 50,
+        chamber: "senate",
+        billType: "B",
+        config: LEGISCAN_STATE_CONFIGS.IN!,
+      }).questionClass
+    ).toBe("concurrence");
+  });
+
+  it("excludes each surveyed procedural family, including the four new spellings", () => {
+    for (const desc of [
+      "House - Amendment #24 (DeLaney) failed",
+      "House - Amendment #5 (Bauer) prevailed",
+      "House - Appeal the ruling of the chair (Bartlett)",
+      "House - Second reading",
+      "House - Committee report",
+      "House - Rules Suspended. Committee report, adopted",
+      "House - Motion to postpone indefinitely, failed",
+      "House - Recommitted to Committee on Veterans Affairs and Public Safety pursuant to House Rule 126.4",
+      "Senate - First reading",
+    ]) {
+      expect(inRoll(desc, 100)).toMatchObject({ isFloorVote: false, reason: "excluded_question" });
+    }
+    // 2025's verb for the same motion still has to be excluded here too.
+    expect(inRoll("House - Referred to Committee on Education pursuant to House Rule 126.4", 100).isFloorVote).toBe(
+      false
+    );
+  });
+
+  // The blank-question defect recurs in 2026 on HB 1002 and SB 0076.
+  it("surfaces the blank-question rolls instead of guessing them", () => {
+    expect(inRoll("House -", 100)).toMatchObject({
+      isFloorVote: null,
+      questionClass: null,
+      reason: "unknown_question",
+    });
+  });
+});
+
 describe("Montana 2025's measured desc vocabulary", () => {
   const config = LEGISCAN_STATE_CONFIGS.MT!;
   const mt = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
@@ -839,6 +921,7 @@ describe("getLegiscanStateConfig", () => {
       "KY",
       "KY-2247",
       "IN",
+      "IN-2234",
       "MT",
       "NC",
       "AL",

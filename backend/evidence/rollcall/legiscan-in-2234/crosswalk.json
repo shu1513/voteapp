@@ -1,0 +1,763 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "IN",
+  "sessionId": 2234,
+  "note": "The reviewed LegiScan person to VoteApp candidate map for Indiana's 2026 Regular Session. 149 of the 151 members carry over unchanged from the session 2143 crosswalk; the two new members are decided in their own notes. The snapshot also lists a 152nd entry named `Rules`, which is not a person: LegiScan flags it `committee_sponsor: 1`, it holds no district or party, and it casts no vote in any of the 689 roll calls. parseLegiscanPerson drops committee sponsors by design, so it gets no crosswalk entry.",
+  "entries": [
+    {
+      "people_id": 10574,
+      "candidate_id": "4901676a-3467-4550-a1ea-046634b163fc",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Added by hand. Bob Heaton, HD-046. LegiScan first_name 'Robert' with nickname 'Bob'; our candidate is rostered under the nickname."
+    },
+    {
+      "people_id": 10576,
+      "candidate_id": "7bdb1263-b5a8-4983-8c39-ba8d34f2b03e",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Added by hand. Bob Morris, HD-084. LegiScan first_name 'Robert' with nickname 'Bob'; our candidate is rostered under the nickname."
+    },
+    {
+      "people_id": 10577,
+      "candidate_id": "d4df8aff-a575-4261-8003-4386108724b1",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Heath VanNatter house HD-038 -> Heath VanNatter, state_lower: State House District 38 (2024); Indiana."
+    },
+    {
+      "people_id": 10578,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: HD-030 is on the November 2026 ballot, but Michael Karickhoff is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 10581,
+      "candidate_id": "791af7f5-1a4e-4a6f-8502-6fc7f32d3a77",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Added by hand. Jim Tomes, SD-049. LegiScan first_name 'James' with nickname 'Jim'; our candidate is rostered under the nickname."
+    },
+    {
+      "people_id": 10585,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Susan Glick holds SD-013, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 11298,
+      "candidate_id": "40fd32b4-4614-4684-a342-1f25140496fc",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Wendy McNamara house HD-076 -> Wendy McNamara, state_lower: State House District 76 (2024); Indiana."
+    },
+    {
+      "people_id": 11394,
+      "candidate_id": "6e3f521d-65c9-4b93-95db-b0c555d9d0d4",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Timothy Wesco house HD-021 -> Timothy Wesco, state_lower: State House District 21 (2024); Indiana."
+    },
+    {
+      "people_id": 11402,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Rodric Bray holds SD-037, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 11445,
+      "candidate_id": "42224982-b56e-4e23-8c4e-8326b6274400",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Doug Miller house HD-048 -> Doug Miller, state_lower: State House District 48 (2024); Indiana."
+    },
+    {
+      "people_id": 14189,
+      "candidate_id": "9c956902-4b88-440f-bf38-b03cd8494df4",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Dale DeVon house HD-005 -> Dale DeVon, state_lower: State House District 5 (2024); Indiana."
+    },
+    {
+      "people_id": 14193,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Michael Crider holds SD-028, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 14439,
+      "candidate_id": "93c1fdd2-96e0-4d57-99ba-18c48c6b9f86",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Todd Huston house HD-037 -> Todd Huston, state_lower: State House District 37 (2024); Indiana."
+    },
+    {
+      "people_id": 14441,
+      "candidate_id": "dc08c7cc-a1e8-4c84-b2e0-7fec6e3d4661",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Peggy Mayfield house HD-060 -> Peggy Mayfield, state_lower: State House District 60 (2024); Indiana."
+    },
+    {
+      "people_id": 14442,
+      "candidate_id": "d42fac10-3b16-47ca-a38a-5cc18efa26a6",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Justin Moed house HD-097 -> Justin Moed, state_lower: State House District 97 (2024); Indiana."
+    },
+    {
+      "people_id": 14446,
+      "candidate_id": "9f6d775a-1e76-4c52-82f0-9f58d526f8b8",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Robin Shackleford house HD-098 -> Robin Shackleford, state_lower: State House District 98 (2024); Indiana."
+    },
+    {
+      "people_id": 14447,
+      "candidate_id": "4c4fcf5a-4ad3-4a72-aa31-baa9c871fabb",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Ben Smaltz house HD-052 -> Ben Smaltz, state_lower: State House District 52 (2024); Indiana."
+    },
+    {
+      "people_id": 14762,
+      "candidate_id": "913c10d9-707c-4e6f-a0f4-32469d60dd3f",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Martin Carbaugh house HD-081 -> Martin Carbaugh, state_lower: State House District 81 (2024); Indiana."
+    },
+    {
+      "people_id": 14764,
+      "candidate_id": "79593512-1ede-4c9f-b4f6-2acf226c9a1a",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Jim Lucas house HD-069 -> Jim Lucas, state_lower: State House District 69 (2024); Indiana."
+    },
+    {
+      "people_id": 14765,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: SD-006 is on the November 2026 ballot, but Rick Niemeyer is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 14766,
+      "candidate_id": "bc56dfc7-43a9-4dab-aa69-76c6a78b5922",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Harold Slager house HD-015 -> Harold Slager, state_lower: State House District 15 (2024); Indiana."
+    },
+    {
+      "people_id": 16530,
+      "candidate_id": "6803f8ea-d302-487d-88ed-c7a3e10f2bbc",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Added by hand. Michael J. Aylesworth, HD-011. LegiScan misspells the first name as 'Micheal', so 'Michael' is not a prefix of it."
+    },
+    {
+      "people_id": 16531,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: SD-039 is on the November 2026 ballot, but Eric Bassler is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 16534,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: SD-015 is on the November 2026 ballot, but Elizabeth Brown is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 16536,
+      "candidate_id": "9be5ecd3-38fc-417d-93a2-cfd05709901a",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Jeff Raatz senate SD-027 -> Jeff Raatz, state_upper: State Senate District 27 (2024); Indiana."
+    },
+    {
+      "people_id": 16538,
+      "candidate_id": "b290284d-f0ae-4294-8f3c-4f324ce6b228",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Christopher Judy house HD-083 -> Christopher Judy, state_lower: State House District 83 (2024); Indiana."
+    },
+    {
+      "people_id": 16702,
+      "candidate_id": "8cf5fefb-5fef-4689-883f-887f1adff12e",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Julie Olthoff house HD-019 -> Julie Olthoff, state_lower: State House District 19 (2024); Indiana."
+    },
+    {
+      "people_id": 17993,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Blake Doriot holds SD-012, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 17995,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Mike Bohacek holds SD-008, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 17997,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Aaron Freeman holds SD-032, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 18543,
+      "candidate_id": "83bb302e-0030-46de-9e76-74e89f492d0e",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Carey Hamilton house HD-087 -> Carey Hamilton, state_lower: State House District 87 (2024); Indiana."
+    },
+    {
+      "people_id": 18544,
+      "candidate_id": "ea048850-1f61-469e-9635-253ed12d3ea0",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Added by hand. David Heine, HD-085. The reverse of the usual case: LegiScan holds the short name 'Dave' and our candidate is rostered under the legal name 'David'."
+    },
+    {
+      "people_id": 18546,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: HD-070 is on the November 2026 ballot, but Karen Engleman is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 18559,
+      "candidate_id": "26fb7820-be13-4605-bdb3-b71fceec9a1a",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Jack Jordan house HD-017 -> Jack Jordan, state_lower: State House District 17 (2024); Indiana."
+    },
+    {
+      "people_id": 18573,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: SD-017 is on the November 2026 ballot, but Andy Zay is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 18790,
+      "candidate_id": "73be956e-3613-4ae5-9292-451e7231c861",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_prefix) and accepted: Chris May house HD-065 -> Christopher May, state_lower: State House District 65 (2024); Indiana."
+    },
+    {
+      "people_id": 18947,
+      "candidate_id": "45456cef-65a8-42b2-b57b-94dc8e08a4e0",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Jim Pressel house HD-020 -> Jim Pressel, state_lower: State House District 20 (2024); Indiana."
+    },
+    {
+      "people_id": 19483,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: HD-063 is on the November 2026 ballot, but Shane Lindauer is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 19501,
+      "candidate_id": "660586ab-2aa2-4b2c-b301-b1c89dcd8c62",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Steve Bartels house HD-074 -> Steve Bartels, state_lower: State House District 74 (2024); Indiana."
+    },
+    {
+      "people_id": 19570,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Brian Buchanan holds SD-007, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 19647,
+      "candidate_id": "f7e8c40d-efb8-4a8a-8e19-588344985693",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: David Abbott house HD-018 -> David Abbott, state_lower: State House District 18 (2024); Indiana."
+    },
+    {
+      "people_id": 19708,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Justin Busch holds SD-016, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 19709,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: SD-029 is on the November 2026 ballot, but J.D. Ford is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 19710,
+      "candidate_id": "92b72b61-5e9d-4ea7-a7c9-f18a4c3388b8",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Chris Garten senate SD-045 -> Chris Garten, state_upper: State Senate District 45 (2024); Indiana."
+    },
+    {
+      "people_id": 19711,
+      "candidate_id": "f2327148-4132-49d7-8acf-01c6b5a5aaa4",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Mike Gaskill senate SD-025 -> Mike Gaskill, state_upper: State Senate District 25 (2024); Indiana."
+    },
+    {
+      "people_id": 19712,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: SD-011 is on the November 2026 ballot, but Linda Rogers is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 20010,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: HD-056 is on the November 2026 ballot, but Bradford Barrett is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 20011,
+      "candidate_id": "6dff802d-da36-4ade-bbc3-49f4f21768c9",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Carolyn Jackson house HD-001 -> Carolyn Jackson, state_lower: State House District 1 (2024); Indiana."
+    },
+    {
+      "people_id": 20012,
+      "candidate_id": "682e3f13-70f0-461d-a33c-aaee6513e5a4",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Ethan Manning house HD-023 -> Ethan Manning, state_lower: State House District 23 (2024); Indiana."
+    },
+    {
+      "people_id": 20013,
+      "candidate_id": "57dc90d9-53a3-4c1e-82b8-3a675466bd5f",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: John Prescott house HD-033 -> John Prescott, state_lower: State House District 33 (2024); Indiana."
+    },
+    {
+      "people_id": 20014,
+      "candidate_id": "3d90ecc2-6335-404a-8d37-302c91e0e381",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Matt Hostettler house HD-064 -> Matt Hostettler, state_lower: State House District 64 (2024); Indiana."
+    },
+    {
+      "people_id": 20205,
+      "candidate_id": "fc45cb2f-29cd-48c8-a691-d0a2c2c62047",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Chris Campbell house HD-026 -> Chris Campbell, state_lower: State House District 26 (2024); Indiana."
+    },
+    {
+      "people_id": 20209,
+      "candidate_id": "071bc36e-abb6-4d8d-9f17-5a919a21aba6",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Ragen Hatcher house HD-003 -> Ragen Hatcher, state_lower: State House District 3 (2024); Indiana."
+    },
+    {
+      "people_id": 20210,
+      "candidate_id": "03f92203-9ec1-4854-b71b-281c416ee95f",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Ryan Lauer house HD-059 -> Ryan Lauer, state_lower: State House District 59 (2024); Indiana."
+    },
+    {
+      "people_id": 20385,
+      "candidate_id": "0376d408-8fa2-4805-8e9c-bad3f9862332",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Tonya Pfaff house HD-043 -> Tonya Pfaff, state_lower: State House District 43 (2024); Indiana."
+    },
+    {
+      "people_id": 20593,
+      "candidate_id": "a40ba078-e59e-4bf6-a8b9-b21c357f33c2",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Beau Baird house HD-044 -> Beau Baird, state_lower: State House District 44 (2024); Indiana."
+    },
+    {
+      "people_id": 21397,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Stacey Donato holds SD-018, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 21667,
+      "candidate_id": "5df7e78f-e933-459b-8438-511952574880",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Earl Harris house HD-002 -> Earl Harris, Jr., state_lower: State House District 2 (2024); Indiana."
+    },
+    {
+      "people_id": 21915,
+      "candidate_id": "62894dc1-e677-40ad-87ac-ab04f33cd16e",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_prefix) and accepted: Chris Jeter house HD-088 -> Chris Jeter, state_lower: State House District 88 (2024); Indiana."
+    },
+    {
+      "people_id": 21916,
+      "candidate_id": "50f09926-2dd9-42dc-9c3e-071ce7b0099e",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Elizabeth Rowray house HD-035 -> Elizabeth Rowray, state_lower: State House District 35 (2024); Indiana."
+    },
+    {
+      "people_id": 21917,
+      "candidate_id": "727194df-d347-4ada-999d-d158671e4f82",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Jake Teshka house HD-007 -> Jake Teshka, state_lower: State House District 7 (2024); Indiana."
+    },
+    {
+      "people_id": 21918,
+      "candidate_id": "2a7b33d6-6590-4316-b341-c94e64200237",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Michelle Davis, sitting Representative for HD-058, mapped to the State Senate District 41 candidacy. The seat disagreement is real: SD-041's sitting senator Greg Walker is not on the 2026 ballot, HD-058's 2026 candidates are Michelle Hennessee Sears and John Reed rather than Davis, and both seats sit in Johnson County."
+    },
+    {
+      "people_id": 21979,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: SD-031 is on the November 2026 ballot, but Kyle Walker is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 21980,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Scott Baldwin holds SD-020, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 22016,
+      "candidate_id": "d0f90a93-b317-484e-866b-298fb5708217",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_prefix) and accepted: Mitch Gore house HD-089 -> Mitch Gore, state_lower: State House District 89 (2024); Indiana."
+    },
+    {
+      "people_id": 22017,
+      "candidate_id": "954ef0f4-c04c-48ca-bdb6-0a45d1345da7",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Renee Pack house HD-092 -> Renee Pack, state_lower: State House District 92 (2024); Indiana."
+    },
+    {
+      "people_id": 22048,
+      "candidate_id": "a7045c0c-39ef-444d-a997-ad68f49f1174",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Zach Payne house HD-066 -> Zach Payne, state_lower: State House District 66 (2024); Indiana."
+    },
+    {
+      "people_id": 22087,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Shelli Yoder holds SD-040, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 22128,
+      "candidate_id": "2bc33d48-a308-467f-97ac-41304b04217e",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Maureen Bauer house HD-006 -> Maureen Bauer, state_lower: State House District 6 (2024); Indiana."
+    },
+    {
+      "people_id": 22236,
+      "candidate_id": "a8aec420-0050-4e43-9e22-34556dbf6bbe",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Cindy Ledbetter house HD-075 -> Cindy Ledbetter, state_lower: State House District 75 (2024); Indiana."
+    },
+    {
+      "people_id": 22274,
+      "candidate_id": "d4a27396-bc7d-4f19-b970-d3d096dad2ab",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Mike Andrade house HD-012 -> Mike Andrade, state_lower: State House District 12 (2024); Indiana."
+    },
+    {
+      "people_id": 22275,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Fady Qaddoura holds SD-030, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 22288,
+      "candidate_id": "ae854b32-3d59-4e46-ad87-c4de00612f94",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Blake Johnson house HD-100 -> Blake Johnson, state_lower: State House District 100 (2024); Indiana."
+    },
+    {
+      "people_id": 22375,
+      "candidate_id": "f4355a42-cd42-4e5f-8bbd-baadfeca39e2",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Joanna King house HD-049 -> Joanna King, state_lower: State House District 49 (2024); Indiana."
+    },
+    {
+      "people_id": 22453,
+      "candidate_id": "08faa42b-4ae9-4898-8d81-d8b99115f0c4",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Craig Snow house HD-022 -> Craig Snow, state_lower: State House District 22 (2024); Indiana."
+    },
+    {
+      "people_id": 22908,
+      "candidate_id": "435e03dc-eb36-4d85-861d-26c0d528e804",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_prefix) and accepted: Timothy O'Brien house HD-078 -> Tim O'Brien, state_lower: State House District 78 (2024); Indiana."
+    },
+    {
+      "people_id": 23013,
+      "candidate_id": "c1fdaddd-cb85-4cf0-bd9b-0a3e27c828cf",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Rodney Pol senate SD-004 -> Rodney Pol Jr., state_upper: State Senate District 4 (2024); Indiana."
+    },
+    {
+      "people_id": 23088,
+      "candidate_id": "6a6b90fd-0a68-4653-aebd-2b520acbc0f3",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Gary Byrne senate SD-047 -> Gary Byrne, state_upper: State Senate District 47 (2024); Indiana."
+    },
+    {
+      "people_id": 23825,
+      "candidate_id": "9c2c6c72-7c30-4ed1-9930-cdac590305c8",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Jennifer Meltzer house HD-073 -> Jennifer Meltzer, state_lower: State House District 73 (2024); Indiana."
+    },
+    {
+      "people_id": 23826,
+      "candidate_id": "c43d752c-83fe-46a8-a2ef-f388fc6cd4da",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Scott Alexander senate SD-026 -> Scott Alexander, state_upper: State Senate District 26 (2024); Indiana."
+    },
+    {
+      "people_id": 23827,
+      "candidate_id": "b7b5b23c-4d5b-429c-a9b1-5ce22efdcaee",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Becky Cash house HD-025 -> Becky Cash, state_lower: State House District 25 (2024); Indiana."
+    },
+    {
+      "people_id": 23828,
+      "candidate_id": "8fb67e78-f9c1-4a50-8cda-a6410f25e76a",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Kendell Culp house HD-016 -> Kendell Culp, state_lower: State House District 16 (2024); Indiana."
+    },
+    {
+      "people_id": 23868,
+      "candidate_id": "de08fe93-08bd-4a2e-93a7-45139438503d",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Cory Criswell house HD-054 -> Cory Criswell, state_lower: State House District 54 (2024); Indiana."
+    },
+    {
+      "people_id": 23869,
+      "candidate_id": "881bb4a9-0a9b-45de-a983-77df27889551",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Kyle Miller house HD-082 -> Kyle Miller, state_lower: State House District 82 (2024); Indiana."
+    },
+    {
+      "people_id": 23870,
+      "candidate_id": "1e0791bc-43ad-4be9-bc61-7d66bbf781a0",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Kyle Pierce house HD-036 -> Kyle Pierce, state_lower: State House District 36 (2024); Indiana."
+    },
+    {
+      "people_id": 23871,
+      "candidate_id": "c84103da-f86a-4501-bb81-2973caaa29b9",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Lorissa Sweet house HD-050 -> Lorissa Sweet, state_lower: State House District 50 (2024); Indiana."
+    },
+    {
+      "people_id": 23872,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: SD-046 is on the November 2026 ballot, but Andrea Hunley is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 23873,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: SD-001 is on the November 2026 ballot, but Dan Dernulc is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 23874,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: SD-023 is on the November 2026 ballot, but Spencer Deery is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 23875,
+      "candidate_id": "862a689a-97fc-484f-963c-66b7a7fceae1",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Tyler Johnson senate SD-014 -> Tyler Johnson, state_upper: State Senate District 14 (2024); Indiana."
+    },
+    {
+      "people_id": 23976,
+      "candidate_id": "4a7d5967-4ac0-421a-9368-e2c83c97b2be",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Lindsay Patterson house HD-055 -> Lindsay Patterson, state_lower: State House District 55 (2024); Indiana."
+    },
+    {
+      "people_id": 23977,
+      "candidate_id": "74cde3de-e02f-4861-a5c4-ff519f791586",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Added by hand. Dave Hall, HD-062. LegiScan's name field is 'Dave Hall' and matches our candidate byte for byte, but first_name is 'David' and the proposer reads only first_name, where 'Dave' is not a prefix of 'David'."
+    },
+    {
+      "people_id": 24158,
+      "candidate_id": "06e02ade-3d0a-42a9-b8f6-0225e28194b6",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Robb Greene house HD-047 -> Robb Greene, state_lower: State House District 47 (2024); Indiana."
+    },
+    {
+      "people_id": 24159,
+      "candidate_id": "01f3ca5d-bc89-45cd-a5b9-58c5f3df1937",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Julie McGuire house HD-093 -> Julie McGuire, state_lower: State House District 93 (2024); Indiana."
+    },
+    {
+      "people_id": 24298,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: HD-057 is on the November 2026 ballot, but Craig Haggard is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 24299,
+      "candidate_id": "8159ff37-f000-4c1c-9a80-b6811b65f874",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Victoria Garcia Wilburn house HD-032 -> Victoria Garcia Wilburn, state_lower: State House District 32 (2024); Indiana."
+    },
+    {
+      "people_id": 24486,
+      "candidate_id": "7fd82e7f-3bec-46bc-be81-040f4145f679",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Mark Genda house HD-041 -> Mark Genda, state_lower: State House District 41 (2024); Indiana."
+    },
+    {
+      "people_id": 25014,
+      "candidate_id": "07bc34a9-7264-4fcc-abe4-ada86463cd7b",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Lori Goss-Reaves house HD-031 -> Lori Goss-Reaves, state_lower: State House District 31 (2024); Indiana."
+    },
+    {
+      "people_id": 25015,
+      "candidate_id": "5bd9aeef-d6cb-46d4-a04b-bef3422878f1",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Alex Zimmerman house HD-067 -> Alex Zimmerman, state_lower: State House District 67 (2024); Indiana."
+    },
+    {
+      "people_id": 25021,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Cyndi Carrasco holds SD-036, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 25030,
+      "candidate_id": "0f55138c-a71f-41df-9ebc-7eded77b1a90",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Greg Goode senate SD-038 -> Greg Goode, state_upper: State Senate District 38 (2024); Indiana."
+    },
+    {
+      "people_id": 25031,
+      "candidate_id": "557189cb-1f7b-4dbc-80c5-b84609a10a24",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Randy Maxwell senate SD-043 -> Randy Maxwell, state_upper: State Senate District 43 (2024); Indiana."
+    },
+    {
+      "people_id": 25494,
+      "candidate_id": "c31ebd6d-6d0f-44b9-a6ef-7ee40fffe511",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Garrett Bascom house HD-068 -> Garrett Bascom, state_lower: State House District 68 (2024); Indiana."
+    },
+    {
+      "people_id": 25495,
+      "candidate_id": "e1de7921-7444-4858-87be-cdd0bd759722",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Alex Burton house HD-077 -> Alex Burton, state_lower: State House District 77 (2024); Indiana."
+    },
+    {
+      "people_id": 25496,
+      "candidate_id": "a82ee4d8-51c7-4bc3-8906-71bdadb65fa1",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Wendy Dant Chesser house HD-071 -> Wendy Dant Chesser, state_lower: State House District 71 (2024); Indiana."
+    },
+    {
+      "people_id": 25497,
+      "candidate_id": "4b231488-d614-4c25-84db-c975acbfa405",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_prefix) and accepted: Matt Commons house HD-013 -> Matt Commons, state_lower: State House District 13 (2024); Indiana."
+    },
+    {
+      "people_id": 25498,
+      "candidate_id": "a36c1e0d-6485-4580-92de-d04dffe3a20f",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Andrew Ireland house HD-090 -> Andrew Ireland, state_lower: State House District 90 (2024); Indiana."
+    },
+    {
+      "people_id": 25499,
+      "candidate_id": "47bf740f-fe89-44a7-9205-3ed45a9adfde",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Tony Isa house HD-051 -> Tony Isa, state_lower: State House District 51 (2024); Indiana."
+    },
+    {
+      "people_id": 25500,
+      "candidate_id": "b6a61833-1229-424d-9773-0e2e26409d55",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Ethan Lawson house HD-053 -> Ethan Lawson, state_lower: State House District 53 (2024); Indiana."
+    },
+    {
+      "people_id": 25501,
+      "candidate_id": "30c66135-1c4d-41ad-ab9b-f09ff04a3018",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Danny Lopez house HD-039 -> Daniel Lopez, state_lower: State House District 39 (2024); Indiana."
+    },
+    {
+      "people_id": 25502,
+      "candidate_id": "03f3c271-fb39-48a9-94ce-21a2e3eb4ba7",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Alaina Shonkwiler house HD-029 -> Alaina Shonkwiler, state_lower: State House District 29 (2024); Indiana."
+    },
+    {
+      "people_id": 25503,
+      "candidate_id": "6f600cf1-82e2-4384-8969-8aebe6efb290",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Hunter Smith house HD-024 -> Hunter Smith, state_lower: State House District 24 (2024); Indiana."
+    },
+    {
+      "people_id": 25504,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Brett Clark holds SD-024, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 25505,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: La Keisha Jackson holds SD-034, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 25506,
+      "candidate_id": "7478a3fc-5925-4417-8954-d6ca843a746b",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Daryl Schmitt senate SD-048 -> Daryl Schmitt, state_upper: State Senate District 48 (2024); Indiana."
+    },
+    {
+      "people_id": 25507,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Mark Spencer holds SD-003, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 26383,
+      "candidate_id": "62c6a55a-2183-479c-a3d4-cdbdd5c6c8ef",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Tim Yocum house HD-042 -> Tim Yocum, state_lower: State House District 42 (2024); Indiana."
+    },
+    {
+      "people_id": 26535,
+      "candidate_id": "1ae7ea57-b642-4fd3-aa40-7faca8ec0e03",
+      "note": "New in session 2234 and mapped by hand: Randy Novak, Democrat, holds HD-009 -> Randy Novak, Democratic, state_lower: State House District 9 (2024); Indiana, on the November 3 2026 ballot. Name, party and seat all agree."
+    },
+    {
+      "people_id": 26629,
+      "candidate_id": null,
+      "note": "New in session 2234 and reviewed, left unmapped: SD-017 is on the November 2026 ballot, but Nick McKinley is not among the candidates our roster holds for that seat (Cynthia Wehr, Democratic, and Chris Parker, Republican), so there is no candidate to attach votes to. Same call as the 2143 entries for Edward Clere and Bruce Borders."
+    },
+    {
+      "people_id": 5483,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Eric Koch holds SD-044, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 5489,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: David Niezgodski holds SD-010, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 5492,
+      "candidate_id": "d314bb77-6ede-49ec-9d7f-78a8cb48dc0f",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Vernon Smith house HD-014 -> Vernon Smith, state_lower: State House District 14 (2024); Indiana."
+    },
+    {
+      "people_id": 5493,
+      "candidate_id": "40209a32-4c19-4e47-aea3-ddc6789a2d28",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Edmond Soliday house HD-004 -> Edmond Soliday, state_lower: State House District 4 (2024); Indiana."
+    },
+    {
+      "people_id": 5502,
+      "candidate_id": "fc5dcff7-7e76-40d9-8799-f7a460bcf6e4",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Gregory Steuerwald house HD-040 -> Gregory Steuerwald, state_lower: State House District 40 (2024); Indiana."
+    },
+    {
+      "people_id": 5508,
+      "candidate_id": "69dbf515-f2c3-4285-973d-c91fd7732b16",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Sheila Klinker house HD-027 -> Sheila Klinker, state_lower: State House District 27 (2024); Indiana."
+    },
+    {
+      "people_id": 5514,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: HD-072 is on the November 2026 ballot, but Edward Clere is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 5518,
+      "candidate_id": "6b8938a1-14fa-4169-8e6b-adf6d8e029e5",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Vanessa Summers house HD-099 -> Vanessa Summers, state_lower: State House District 99 (2024); Indiana."
+    },
+    {
+      "people_id": 5532,
+      "candidate_id": "035e25ed-2d39-4d1c-93c4-3ce612f59916",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Charles Moseley house HD-010 -> Charles Moseley, state_lower: State House District 10 (2024); Indiana."
+    },
+    {
+      "people_id": 5533,
+      "candidate_id": "46c392f0-36ae-4c40-9760-8a543df3bef4",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Edward DeLaney house HD-086 -> Edward DeLaney, state_lower: State House District 86 (2024); Indiana."
+    },
+    {
+      "people_id": 5543,
+      "candidate_id": "0ed958b8-7f75-49d9-856e-14a7b8a3be50",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Cherrish Pryor house HD-094 -> Cherrish Pryor, state_lower: State House District 94 (2024); Indiana."
+    },
+    {
+      "people_id": 5549,
+      "candidate_id": "e9988c48-ba3b-4cd9-adca-c88a3c6e26cf",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Matt Pierce house HD-061 -> Matt Pierce, state_lower: State House District 61 (2024); Indiana."
+    },
+    {
+      "people_id": 5553,
+      "candidate_id": "041f1d57-3c8f-4f54-9f4e-124bd34be10c",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Ryan Dvorak house HD-008 -> Ryan Dvorak, state_lower: State House District 8 (2024); Indiana."
+    },
+    {
+      "people_id": 5556,
+      "candidate_id": "3261b09a-9516-49a3-a8fe-39858bfc51ce",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Added by hand. John L. Bartlett, HD-095. Indiana has two John Bartletts on the 2026 ballot, John E. Bartlett in House District 33 and John L. Bartlett in House District 95, so the name alone is ambiguous and the proposer correctly declined it. LegiScan's middle name 'L.' and its district HD-095 settle the identity."
+    },
+    {
+      "people_id": 5557,
+      "candidate_id": "162523af-0580-4320-a074-0841f5eb37c4",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Matthew Lehman house HD-079 -> Matthew Lehman, state_lower: State House District 79 (2024); Indiana."
+    },
+    {
+      "people_id": 5560,
+      "candidate_id": "a6f5f50a-56ed-44f1-b5ab-20905610d82f",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Jeffrey Thompson house HD-028 -> Jeffrey Thompson, state_lower: State House District 28 (2024); Indiana."
+    },
+    {
+      "people_id": 5566,
+      "candidate_id": "1994d570-d820-444d-b598-ee75e74cac1c",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Gregory Porter house HD-096 -> Gregory Porter, state_lower: State House District 96 (2024); Indiana."
+    },
+    {
+      "people_id": 5567,
+      "candidate_id": "84d5c1ac-10e5-472a-9c16-6503fbbd910c",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Robert Behning house HD-091 -> Robert Behning, state_lower: State House District 91 (2024); Indiana."
+    },
+    {
+      "people_id": 5569,
+      "candidate_id": "86bed9bd-2435-4843-8d0f-57074278cc8a",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_prefix) and accepted: Philip GiaQuinta house HD-080 -> Phil GiaQuinta, state_lower: State House District 80 (2024); Indiana."
+    },
+    {
+      "people_id": 5576,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: HD-045 is on the November 2026 ballot, but Bruce Borders is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 5580,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Ed Charbonneau holds SD-005, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 5581,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: SD-019 is on the November 2026 ballot, but Travis Holdman is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 5584,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Greg Taylor holds SD-033, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 5597,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Michael Young holds SD-035, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 5601,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Lonnie Randolph holds SD-002, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 5605,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: SD-021 is on the November 2026 ballot, but James Buck is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 5608,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: SD-041 is on the November 2026 ballot, but Greg Walker is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 5612,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Jean Leising holds SD-042, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 5619,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Vaneta Becker holds SD-050, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    },
+    {
+      "people_id": 5621,
+      "candidate_id": "4a26d550-d0f9-4105-8921-0731e0468694",
+      "note": "Carried over from the reviewed session 2143 crosswalk. Proposed by rollcall:legiscan:resolve (first_and_last) and accepted: Ronnie Alting senate SD-022 -> Ronnie Alting, state_upper: State Senate District 22 (2024); Indiana."
+    },
+    {
+      "people_id": 5624,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: HD-034 is on the November 2026 ballot, but Sue Errington is not among the candidates our roster holds for that seat, so there is no candidate to attach votes to. A later roster pass plus an idempotent re-import would pick this member up."
+    },
+    {
+      "people_id": 5627,
+      "candidate_id": null,
+      "note": "Carried over from the reviewed session 2143 crosswalk. Reviewed and left unmapped: Ryan Mishler holds SD-009, which is not on the November 2026 ballot. Indiana senators serve staggered four-year terms, so only about half the Senate is up each cycle."
+    }
+  ]
+}

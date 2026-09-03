@@ -1392,6 +1392,125 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     ],
   },
 
+  // Indiana General Assembly, 2026 Regular Session (LegiScan session 2234).
+  // The 124th General Assembly's short session: it convened 2025-11-18 and
+  // adjourned sine die 2026-03-12, so the session is closed and the dataset
+  // is final. Vocabulary measured from the full dataset survey on 2026-09-02:
+  // 935 bills, 689 roll calls, 152 people, 131 distinct descriptions. The
+  // survey is written up in
+  // backend/evidence/rollcall/legiscan-in-2234/README.md.
+  //
+  // Indiana needs a SECOND entry rather than a new sessionId on `IN` because
+  // the 2025 batches must stay re-runnable. Records still land under
+  // `jurisdiction: "IN"`, and nothing collides: evidence filenames carry the
+  // session, and a legislative_votes row is keyed by jurisdiction, chamber,
+  // session and roll.
+  //
+  // The feed is shaped exactly like 2025 and, unlike Kentucky, the kept
+  // vocabulary does carry across: `Third reading` is still final passage in
+  // both chambers, `<chamber> concurred with <chamber> amendments` is still
+  // the second chamber's agreement, `Conference Committee Report <n>` is
+  // still numbered, and `Rules Suspended. ` is still a scheduling prefix that
+  // does not change the question. There are again no committee votes at all —
+  // every total is 100 in the House and 49 or 50 in the Senate.
+  //
+  // What DID change is the procedural vocabulary, and one change is a trap.
+  //
+  // *** `House - Concurrence defeated` IS EXCLUDED, NOT KEPT. *** 2025 spelt
+  // a failed concurrence `Concurrence failed for lack of constitutional
+  // majority` and that spelling is kept above, because it is a recorded vote
+  // on the measure. 2026's one occurrence looks like the same question under
+  // a shorter name and is not safe to treat that way: on HB 1368 roll 399
+  // (2026-02-26) the House DEFEATED the motion 48-42 — an Indiana concurrence
+  // needs a constitutional majority of 51 — but LegiScan sets `passed: 1`,
+  // because its flag is a bare-majority check. fetchLegiscanRollCallVotes
+  // writes `result` straight from that flag, so keeping this desc would store
+  // a defeated vote as "Passed". It is the ONLY roll in the session whose
+  // flag disagrees with the constitutional-majority rule; the 2025
+  // counterpart carries `passed: 0` and stored correctly. Nothing is lost by
+  // excluding it: a defeated concurrence can never be the final action on a
+  // bill that became law, and this one was superseded the next day by roll
+  // 420, which concurred 57-40 and is kept. Same defect class as Montana's
+  // eight two-thirds rolls — never trust LegiScan's `passed` flag against a
+  // chamber's own majority rule.
+  //
+  // The other four new families are all procedural and all excluded. Written
+  // against the classification measured on 2026-09-02, which reconciles
+  // exactly: 689 dataset rolls = 536 floor + 139 excluded question + 12 on
+  // excluded measure types (11 CR, 1 R) + 2 surfaced.
+  // - `Committee report`, `Rules Suspended. Committee report, adopted` — the
+  //   full chamber voting to accept a committee's recommendation. It is a
+  //   pre-passage stage like second reading, and each of the three rolls sits
+  //   on a bill whose own passage vote is kept separately.
+  // - `Motion to postpone indefinitely, failed` — a motion to kill the bill.
+  // - `Recommitted to Committee on ... pursuant to House Rule 126.4` — 2026's
+  //   spelling of the 2025 `Referred to committee on ` exclusion, a motion to
+  //   send the bill back to committee. Both verbs are covered below.
+  // - `First reading` — DEFENSIVE ONLY. The session's one occurrence sits on
+  //   SCR 1, a concurrent resolution, so the shared kept-types list drops it
+  //   before this config is consulted and the pattern never fires today. It
+  //   is written down because for a bill Indiana's first reading is a
+  //   referral with no vote, so a bill-typed roll under this desc would be
+  //   procedural, not passage.
+  //
+  // TWO HAZARDS carry over from 2025, both in
+  // evidence/rollcall/legiscan-in-2143/CODE-FINDINGS.md:
+  // (1) The blank-question defect recurs. Two House rolls carry the literal
+  //     desc `House -` with nothing after the dash (HB 1002 and SB 0076).
+  //     They stay unmatched and surface for a human, exactly as in 2025.
+  // (2) LegiScan's Indiana member lists still disagree with the official
+  //     journal. Five of the worklist's 95 divided-and-enacted rolls report a
+  //     tally with no exact match in the bill history, and HB 1032's `House -
+  //     Committee report` is a sixth (LegiScan 63-23, journal 63-24). All five
+  //     were then checked against the official PDF and ALL FIVE disagree, each
+  //     with a member on the wrong side. Every roll selected for a batch must
+  //     be checked name by name against
+  //     iga.in.gov/pdf-documents/124/2026/<chamber>/bills/<BILL>/rollcalls/<BILL>.<n>_<H|S>.pdf
+  //     before it is judged. Note the `2026` path segment.
+  "IN-2234": {
+    jurisdiction: "IN",
+    sessionId: 2234,
+    chamberSizes: { house: 100, senate: 50 },
+    keptQuestions: [
+      // Final passage in both chambers: 196 House rolls and 200 Senate.
+      { pattern: /^(?:house|senate) - third reading$/, questionClass: "passage" },
+      // The second chamber's agreement, with and without the scheduling
+      // prefix: 45 + 39 + 1 + 1 rolls.
+      {
+        pattern: /^(?:house|senate) - (?:rules suspended\. )?(?:house|senate) concurred with (?:house|senate) amendments$/,
+        questionClass: "concurrence",
+      },
+      // 26 + 16 + 11 + 1 rolls. Every conference report in this session is
+      // numbered 1.
+      {
+        pattern: /^(?:house|senate) - (?:rules suspended\. )?conference committee report \d+$/,
+        questionClass: "conference_report",
+      },
+    ],
+    excludedQuestions: [
+      // Floor amendments, both outcomes (`failed`, `prevailed`).
+      /^(?:house|senate) - amendment #\d+ /,
+      // A vote on whether the presiding officer's ruling stands.
+      /^(?:house|senate) - appeal the ruling of the chair/,
+      // Indiana's amend-and-engross stage.
+      /^(?:house|senate) - second reading$/,
+      // 2025 said `referred`, 2026 says `recommitted`; both are a motion to
+      // send the measure back to committee, and both carry the rule citation.
+      /^(?:house|senate) - (?:referred|recommitted) to committee on /,
+      // The full chamber accepting a committee's recommendation, a
+      // pre-passage stage. Covers the bare and scheduling-prefixed spellings.
+      /^(?:house|senate) - (?:rules suspended\. )?committee report(?:, adopted)?$/,
+      // A motion to kill the measure.
+      /^(?:house|senate) - motion to postpone indefinitely/,
+      // Referral for a bill, adoption for a resolution; never passage of a
+      // measure that can become law.
+      /^(?:house|senate) - first reading$/,
+      // See the block comment: LegiScan's `passed` flag is wrong on this
+      // roll, so the vote must not be stored from this feed.
+      /^(?:house|senate) - concurrence defeated$/,
+    ],
+  },
+
   // Montana Legislature, 2025 Regular Session (convened January 6, adjourned
   // sine die April 30 2025). Montana's legislature meets only in odd years,
   // so this one closed session is the entire dataset available to the
