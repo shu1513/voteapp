@@ -1601,6 +1601,72 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     keptQuestions: ALABAMA_KEPT_QUESTIONS,
     excludedQuestions: ALABAMA_EXCLUDED_QUESTIONS,
   },
+
+  // Nevada Legislature, 83rd Session (2025). Nevada meets in odd years only,
+  // so this one regular session is the whole campaign apart from the 36th
+  // Special Session (LegiScan 2233), which is surveyed separately.
+  //
+  // NEVADA HAS THE SMALLEST FLOOR VOCABULARY OF ANY STATE IN THIS REGISTRY.
+  // The survey of 2026-09-02 read all 1,333 roll calls and found exactly TWO
+  // descriptions: `Senate Final Passage` (670) and `Assembly Final Passage`
+  // (663). There is no third spelling to exclude, which is why
+  // `excludedQuestions` is empty — not an oversight. LegiScan carries no
+  // concurrence, conference-report or veto-override roll for Nevada at all,
+  // and no committee vote: every Assembly roll lists all 42 members and
+  // every Senate roll lists all 21 but one (see the SB 26 note below).
+  //
+  // ⚠ WHAT THE EMPTY VOCABULARY COSTS: because the feed holds only final
+  // passage, a bill the second chamber amended has NO roll on the first
+  // chamber accepting that amendment. The first chamber's only recorded vote
+  // can therefore predate the text that became law. Nevada gives no version
+  // check in the description, so every selected roll needs its version
+  // confirmed against the bill history on the Legislature's own site
+  // (leg.state.nv.us) before it is judged.
+  //
+  // ⚠ NINE bill-and-chamber pairs carry TWO `Final Passage` rolls. They are
+  // reconsider-and-revote pairs, mostly the same day with consecutive roll
+  // call ids (AB 123 Senate 14-7 then 13-8; AB 44 Senate 13-8 then 14-7),
+  // and one where the second vote FAILED (AB 500 Assembly 25-17 then 20-22).
+  // The superseded-stage gate in `rollcall:judge` catches these; the bill
+  // history says which vote stands.
+  //
+  // Feed health is the cleanest tier: 0 repeated roll call ids, 0 identity
+  // duplicates, 0 summary-only rolls, 0 tally mismatches, 0 parse errors and
+  // 0 committee-chamber rolls. Two data notes, both recorded in the
+  // campaign's CODE-FINDINGS.md and neither fixed here:
+  //   1. 46 Nevada bills carry an `A` letter after the number (`SB88A`,
+  //      `AJR6A`). The dataset parser rejects those file names, so the
+  //      survey reports 46 file errors and a non-zero exit. All 46 are dead
+  //      bills with ZERO roll calls, so nothing reachable is lost, but the
+  //      non-zero exit on a Nevada run is expected, not a failure.
+  //   2. One Senate roll lists only 2 of 21 senators (SB 26, roll 1550268,
+  //      recorded 2-0). The small-tally guard classifies it null and
+  //      surfaces it rather than queueing it, which is the wanted outcome.
+  //
+  // Pool measured before any batch was promised: 292 divided floor votes,
+  // of which 104 rolls on 73 measures are on bills that became law. Nevada's
+  // government is divided — a Democratic legislature and a Republican
+  // governor — so a further 145 divided rolls on 79 measures sit on bills he
+  // vetoed. Those are outside the standard divided-and-enacted gate.
+  NV: {
+    jurisdiction: "NV",
+    sessionId: 2144,
+    chamberSizes: { house: 42, senate: 21 },
+    keptQuestions: [
+      // The Assembly's only floor question. LegiScan files Assembly rolls
+      // under chamber code `A`, which `parseLegiscanRollCall` maps to
+      // `house` (the mapping added for California; verified on all 663
+      // Nevada Assembly rolls).
+      { pattern: /^assembly final passage$/, questionClass: "passage" },
+      // The Senate's only floor question.
+      { pattern: /^senate final passage$/, questionClass: "passage" },
+    ],
+    // Nothing to exclude: the survey left NOTHING unmatched, and a Nevada
+    // description that is neither of the two above has never been seen. A
+    // future one would fall through to `unknown_question` and surface, which
+    // is the behaviour we want over a guessed rule.
+    excludedQuestions: [],
+  },
 };
 
 export const LEGISCAN_CONFIG_KEYS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);
