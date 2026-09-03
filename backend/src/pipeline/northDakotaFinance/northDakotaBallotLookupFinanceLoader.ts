@@ -2,10 +2,11 @@
 // standard loader. Phase 2 publishes total receipts, the donor-only "Raised"
 // figure and contribution-size buckets; Phase 3 adds filed occupations for
 // committees that pass the display gate (the sync stores none otherwise, so
-// the card simply has no occupation rows). Spending (year-end statement
-// only), cash (statewide filers only, unparsed) and outside totals (Phase 4)
-// are never stored yet, so they surface as null with the coverage notes —
-// never $0.
+// the card simply has no occupation rows); Phase 4a adds support/oppose
+// groups and totals from the IE harvest (NULL when that component was
+// skipped, $0 when a clean harvest names nobody). Spending (year-end
+// statement only) and cash (statewide filers only, unparsed) are never
+// stored yet, so they surface as null with the coverage notes — never $0.
 
 import type { Pool, PoolClient } from "pg";
 
@@ -23,8 +24,11 @@ import { NORTH_DAKOTA_CFRS_SOURCE_URL } from "./northDakotaFinanceWriter.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
+// Phase 4: IE statements are filed within 48 hours with no minimum amount
+// (statute + FAQ); stance and target candidate come from the filing itself.
+// The spenders' own funders are not loaded yet.
 const NORTH_DAKOTA_OUTSIDE_COVERAGE_NOTE =
-  "North Dakota independent expenditure filings have not been loaded yet, so outside spending totals are unavailable rather than zero.";
+  "Outside spending counts independent expenditures that registered North Dakota committees reported for or against this candidate, using the stance each filing states; a total of zero means no such filing names the candidate yet. The groups' own funders are not shown yet.";
 
 export async function loadNorthDakotaCandidateFinanceSummariesByCandidateElection(
   db: Queryable,

@@ -332,3 +332,63 @@ independently from the raw API JSON with a separate script: 0 mismatches.
 Wrigley's stored rows (Government/Civil $20,000 / 1; Construction/Engineering
 $11,500 / 2; Business Owner $2,000 / 1) match that recomputation exactly. No
 judicial committee passes today.
+
+## Phase 4a — outside spending groups (built 2026-09-03, local)
+
+New cached artifacts (same refresh CLI, same content-addressed cache):
+`APIIE_<year>` = the IE transaction search for one year under the pinned
+selector (`IE` + `orgTypeCode 104`), refused before caching if any row is
+not typed "Independent Expenditures" (the server's silent fallback returns
+every transaction with a 200); `REGISTRY_<electionYear>` = the full
+committee registry, keyed by the election year it serves.
+
+Target identity, verified live 2026-09-03 (52 rows, 26 targets): IE rows
+name the candidate in `candidateNameAssocation` with the registry's own
+`candidateName` label ("Wrigley, Drew H", "Howe, Michael", "Lee, Judy"),
+never a committee id. The sync therefore takes the linked committee's
+registry label (honorific dropped, storage-normalized) and matches rows on
+exact equality — no roster-name matching. Ambiguity: another candidate
+committee on the same election label carrying the same label for a
+different office or seat suppresses the component for that candidate
+(same office + seat = a re-registration of one person). Rows of the link's
+`electionYear` only; a candidate-naming row with no election year fails
+closed. IE rows carry no `contributorPayeeID` (all 52 live), so the YTD
+control keys the payee by name.
+
+Money (hard fact 4): per spender × filed stance, sum of unique
+`transactionID`s — equal same-day allocations are kept. The
+per-(spender, payee, calendar year) control (max `transactionTotalYTD` ==
+sum of unique rows) runs over ALL of an included spender's rows, since the
+field aggregates across every target; a mismatch, or a payee group with no
+parseable control, quarantines the outside component. A repeated
+`transactionID`, a row without a Support/Oppose stance, a non-positive
+amount, a blank committee name or a spender id that is not ten digits also
+fail closed — none has been observed, so none gets an interpretation (the
+id check runs in the aggregator so a bad spender can never abort the
+writer's snapshot transaction and take the direct component with it).
+
+Component isolation: any outside failure leaves both outside totals NULL
+(the writer preserves the stored value) and the stored groups untouched,
+and the reason lands on the sync result and the batch log; the direct
+component still publishes. A clean harvest that names nobody writes $0/$0
+and clears stale groups — the harvest is authoritative for what has been
+filed. Writer identity: `committee_id` = the spender's 10-digit entityId
+(`1040001626` StrongND Fund). The loader already selected both outside
+tables; only its coverage note changed. Funders (donor + industry rows for
+the spenders) are Phase 4b.
+
+Live run 2026-09-03 (`raw:refresh --election-year=2026 --force`, then
+`sync-due --stale-after-days=0`): harvest 52 rows / 52 distinct ids /
+$208,647.42 / 26 targets (2025 IE harvest: 0 rows); registry 601 rows.
+49/49 candidates synced; 48 outside components synced, 1 suppressed — Jay
+Fisher, whose label sits on two 2026 committees ("Fisher, Jay" State
+Representative District 5, "Mr. Fisher, Jay" State Senator District 5),
+so an IE naming him could not be placed (none does today). 10 linked
+candidates carry IE money: 15 groups, $112,351.52 support / $0 oppose (six
+statewide committees at $16,857.14 each from StrongND, Judy Lee $2,932.89
+across three committees, Schaible $4,092.46, Axtman $2,183.33, Roers
+$2,000). The other 16 targets ($96,295.90, Kringstad $61,138.50 the
+largest) have no VoteApp link — mostly House seats with no roster rows
+yet. Every payee YTD control was present. An independent Python
+recompute from the raw APIIE + REGISTRY JSON matched all 15 stored groups
+and all 48 summary totals exactly.
