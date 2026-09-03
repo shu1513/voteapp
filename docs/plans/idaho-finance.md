@@ -1,6 +1,6 @@
 # Idaho campaign finance — build plan
 
-Status: rev 3 — Phase 0 MERGED (#1025); Phase 1 MERGED (#1041, 2026-09-02) and run locally (migration 268 applied, 101 of 108 candidates auto-linked); Phase 2a BUILT 2026-09-02 (`idahoContributionAggregator.ts`, verified on live rows). Next = Phase 2b (outside money) then Phase 3 (acquisition + sync, rules pinned below).
+Status: rev 4 — Phase 0 MERGED (#1025); Phase 1 MERGED (#1041, 2026-09-02) and run locally (migration 268 applied, 101 of 108 candidates auto-linked); Phase 2a MERGED (#1048); Phase 2b BUILT 2026-09-02 (`idahoOutsideSpendingAggregator.ts`, verified on the live IE list for all 101 links). Next = Phase 3 (acquisition + sync, rules pinned below).
 Source facts: `backend/docs/idaho-campaign-finance.md` (endpoints, quirks, and the two findings that shaped this plan; committed with Phase 0).
 Template module: `backend/src/pipeline/newHampshireFinance/` (same Civix CFIS vendor; same JSON envelope, pagination, bulk-export endpoint, client error model).
 Writer: `createStandardStateFinanceSnapshotWriter` (`pipeline/finance/standardStateFinanceSnapshotWriter.ts`), as NH/Montana.
@@ -13,17 +13,19 @@ Writer: `createStandardStateFinanceSnapshotWriter` (`pipeline/finance/standardSt
 | Contribution rows (size, donor type, in-state) | YES, complete and current | `PublicTransactionDetails/GetContributionsDetails` by filer name, rows filtered by `filerRegistrationGuid` |
 | Primary / General split | partial — per-row `electionTypeCode`; no official split totals | search rows |
 | Donor occupation / employer | **NO** — Idaho does not collect either (Idaho Code 67-6607) | none; occupation chart stays null, no industry fallback |
-| Outside spending target | YES — target resolves to the candidate's registration guid on 99% of rows | IE search `PublicIndependentExpenditureDetails/GetIndependentExpenditureDetails` |
+| Outside spending target | YES — target resolves to a registration guid of the candidate on 99% of rows, often an OLDER registration of the same person (finding 3) | IE search `PublicIndependentExpenditureDetails/GetIndependentExpenditureDetails` |
 | Outside spending stance | YES, filer-declared Support / Oppose on every IE row | IE search |
 | Electioneering communications | excluded by construction (IE search never returns them; stance is N/A) | — |
 | Bulk CSV export | contract-checked only; **not a row source** (see finding 2) | `ExportData/GetExportPublicDownloadData` |
 
 2026 registration reality (full 2,048-row grid pull): 729 registrations for election year 2026 (600 Active / 127 Terminated / 2 Inactive); State Representative 207, County Commissioner 156, State Senator 107, Clerk 59, Governor 22, District Judge 23. The grid lists registrations, not a ballot: we link FROM our Nov-2026 roster, never from the grid. US Senate / US House = FEC path, untouched. County / city / district candidates are exempt until $500 raised or spent (67-6608): an absent registration is "no filing", never $0.
 
-## The two findings the design rests on
+## The three findings the design rests on
 
 1. **Grid `totalRaised` = Σ current contribution transactions of that registration, cent-exact.** Proven on every probed registration once rows are attributed by `filerRegistrationGuid` (Achilles 2024: 286 rows = $89,667.61; Achilles 2026, Blad, Blanksma, Bruno, Boyle ×2, Ackerman all exact). Returned contributions are subtracted by the state and are not served by the contribution search, so registrations with returns show grid < search; totals come from the grid, never recomputed from rows. **Revised 2026-09-02** (survey of the 60 top-raised eligible 2026 registrations, single-page fetch): 42 cent-exact; 8 rows > grid, each a "Return Contribution" the state subtracts; 10 rows < grid — rows of a *filed* monthly report the search does not serve (Stegner: 168 of the July monthly's 177 rows, $30,552.85; Hickman: the whole June monthly, $8,622.46; the rest $117–$1,810). `GetFinancialSummaryDetails.totalContributions` equals the grid; loans are separate. The grid stays the headline; rows are a breakdown basis whose coverage is reported.
 2. **The bulk CSV export contains exactly the version-1 transactions.** Every contribution edited or added through an amended report (transactionVersionId > 1) is missing from the export while it is present in the search API and in the grid total. Verified row-for-row on four filers (bulk rows == search rows with version 1, same Transaction Ids, same sums). Effect on the whole grid: only 89% of registrations reconcile from bulk sums; the rest are short by the amended-in money. The export also cannot be filtered per registration. Therefore: **bulk CSV is not used for totals or breakdowns.** Phase 0 keeps the contract check (headers, encoding, row shape) and the probe fails if the export ever stops being version-1-only, so the decision gets revisited on evidence.
+
+3. **IE filers often target the candidate's older registration** (survey 2026-09-02, all 9,897 rows). The filer picks the target from a registration list, and incumbents keep their previous registration Active beside the new one, so 1,640 of 8,738 guid-resolved rows are dated two years after their target registration's election year. For the 101 linked candidates, 357 rows / $264k of 2026-cycle money name the 2026 registration and 389 rows / $710k name the same person's 2022/2024 same-office registration (Guthrie: all 83 rows; Herndon: 63; Foreman: 27). Selecting by the linked guid alone would publish about a quarter of the money. Therefore outside money is selected by filer entity + same office + cycle window (Phase 2b rules), and every row's `officeSought` equals its target registration's grid office (0 exceptions), so the office guard is exact.
 
 Consequences: no 20 MB artifact cache; the raw artifact per link is the registration's own JSON (grid row + contribution rows + IE rows), sha256-manifested like Missouri/Montana. Cycle attribution is free: the search row carries the registration guid, and the grid row carries `electionYear` and `filingCycleId`.
 
@@ -38,7 +40,7 @@ Consequences: no 20 MB artifact cache; the raw artifact per link is the registra
 - `idahoRegistrationArtifactCache.ts` (Phase 1) — one JSON per registration guid (grid row + its contribution rows + the IE rows targeting it) under `scratch/idaho-campaign-finance/registrations/` (gitignored), sha256 manifest, 0700/0600, identity checked on store and read (every row must carry the key's guid).
 - `idahoFinanceWriter.ts` (Phase 1) — `createStandardStateFinanceSnapshotWriter` over the `id_*` tables; link identity `registration_guid`, outside identity `filer_key`, signed cash on hand, manual-link protection, `sunshine_grid` supersession.
 - `idahoContributionAggregator.ts` (Phase 2a) — pure direct-money aggregator: grid totals in, size and source-type breakdowns plus `rowCoverage` out (rules under Phase 2a).
-- `idahoOutsideSpendingAggregator.ts` (Phase 2b) — outside money.
+- `idahoOutsideSpendingAggregator.ts` (Phase 2b) — pure outside-money aggregator: linked registration + whole grid + all-time IE list in, support/oppose totals and per-filer groups out (rules under Phase 2b).
 - writer + sync + due-list + scheduler (Phase 2/3) — clone NH/Montana shapes.
 
 ## DB (Phase 1)
@@ -106,12 +108,20 @@ Original spec (kept for the record):
 - coverage note: itemized share = Σ rows / grid total (returns make grid < rows; show "state total" as the headline and never let a breakdown exceed it);
 - occupation chart null with the Idaho footnote (not collected by the state).
 
-### Phase 2b — outside spending
+### Phase 2b — outside spending (BUILT 2026-09-02)
 
-- source = IE search; select rows by `candidateMeasureFilerRegistrationGuid == link.registration_guid`, plus name-only rows (`isCandidateNonRegisteredEntity`) matched against the linked candidate's roster name + office with the standard name matcher, quarantined when ambiguous;
-- window = transaction dates within the registration's cycle (grid `electionYear`, previous registration's year exclusive), support/oppose totals over `amountApplied`; keep duplicate allocation rows; ECs never enter;
-- outside-group rows keyed by `filerName` (+ `filerRegistrationGuid` when present; `TEXP`-code rows are non-registered filers and get a "not registered in Idaho" note);
-- UI: standard supporting/opposing cards, no Idaho-specific footnote needed (stance is filer-declared).
+Built: `idahoOutsideSpendingAggregator.ts` (pure, no I/O) + tests; `idahoCandidateNameMatchConfidence` exported from the resolver (shared name gate); verified on the cached live IE list for all 101 links: 71 with money, $728,598.12 support / $245,617.69 oppose, 747 rows (746 by guid, of which 389 via a prior same-office registration; 1 by name), 833 rows out of window (the 2024 races), 36 on other-office registrations, 0 ambiguous, 0 errors, 188 groups (79 name keys, 1 FEC key).
+
+Rules (finding 3):
+- race registrations = every grid registration of the linked registration's `filerEntityId` with the same grid `office` and `electionYear` ≤ the linked year; a row counts when its `candidateMeasureFilerRegistrationGuid` is one of them and its transaction year is in the window `(start, electionYear]`, start = the previous same-office registration year, or `electionYear - 2` (shortest Idaho cycle) when there is none. Rows on the entity's other-office registrations (Hensley: 29 rows on her 2025 city-council registration) and rows outside the window are counted in diagnostics only, never published;
+- name-only rows (`candidateMeasureFilerRegistrationGuid` null, `officeSought` non-null) count when `officeSought` equals the linked office, the "Last, First" text passes `idahoCandidateNameMatchConfidence` against the entity's registration names (quoted call names become the parenthetical alias; IE-side nickname expansion), the year is in the window, and no other entity holds a same-office registration matching the name (ambiguous → excluded, counted). Measure rows (`officeSought` null) never count. Live yield: 1 row / $150 (Foreman);
+- stance = the row's filer-declared `Support`/`Oppose`; amount = `amountApplied`; identical allocation rows are kept (the state counts them; the row guid is the parent transaction's, so there is no per-row identity to de-duplicate on); non-positive rows are counted and skipped;
+- groups keyed by `filerKey` = the filer registration guid (TIECOM rows always carry one; a TIECOM row without it throws), else `fec:C########` when the filer wrote its FEC id into the name (three spellings of "Make Liberty Win" merge), else `name:<normalized name>` (TEXP rows: federal PACs, businesses, individuals — never registered in Idaho; the prefix is the "not registered" signal). Display name = the newest row's spelling; 50 groups per direction by default; `sourceUrl` = the public IE page `https://sunshine.voteidaho.gov/public/cf/independent`;
+- fail closed on a row about to be counted that has an unknown transaction type or stance, a non-ISO date, or a bad amount; on a linked registration missing from the grid or without an office. Rows that fail a selection gate (another race, the entity's other-office registration, a past cycle, another declared office) are never validated, so a malformed row elsewhere cannot block this candidate's money; a race row with an unreadable date still throws because it cannot be placed in or out of the window.
+
+Binding on Phase 3: the sync pulls the whole grid (one 5,000-row page) and the whole IE list (one 10,000-row page, 9,897 rows today; fail closed when `totalItems > items.length`) once per run and passes both to the aggregator per link; the summary's `outsideSupportTotal`/`outsideOpposeTotal` are the aggregator totals (0 after a successful run with no rows, null only when the IE fetch failed); UI = standard supporting/opposing cards, no Idaho-specific footnote (stance is filer-declared).
+
+Original spec (kept for the record): select rows by `candidateMeasureFilerRegistrationGuid == link.registration_guid` plus name-only rows matched against the roster name + office; window = the registration's cycle, previous registration's year exclusive; groups keyed by `filerName` + `filerRegistrationGuid`. Revised because the linked guid alone misses most of the money (finding 3).
 
 ### Phase 3 — local live run
 
@@ -125,7 +135,7 @@ Migrations, `IDAHO_CAMPAIGN_FINANCE_ENABLED` in render.yaml, `id_*` pg_dump prom
 
 - grid row present and `electionYear` matches the link's cycle; the auto-link only creates links to Active registrations (a lone Terminated/Inactive one is reported for manual review), but an existing link keeps syncing after its registration terminates — the money stays public;
 - row coverage is reported, not enforced: rows > grid = returned contributions the state subtracts; rows < grid = rows of a filed report the search omits (survey 2026-09-02: 10 of 60). The summary still comes from the grid and breakdowns carry a coverage note;
-- every IE row selected carries stance Support or Oppose and a date inside the window;
+- every IE row selected carries stance Support or Oppose, a known transaction type, and a date inside the window; rows on the entity's other-office registrations are never published;
 - artifact sha256 matches the manifest before any snapshot write.
 
 ## Explicitly rejected (with reasons)
