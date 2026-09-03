@@ -1601,6 +1601,101 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     keptQuestions: ALABAMA_KEPT_QUESTIONS,
     excludedQuestions: ALABAMA_EXCLUDED_QUESTIONS,
   },
+
+  // South Carolina General Assembly, 126th (2025-2026 Regular Session; both
+  // years sit in one dataset). Vocabulary measured from the full survey on
+  // 2026-09-02: 4,032 bills, 2,054 roll calls, 185 people (124 House + 46
+  // Senate seats plus mid-term turnover).
+  //
+  // What the survey established:
+  // - The two chambers name their final vote differently. The HOUSE prints
+  //   `House: Passage Of Bill` (377 rolls) and `House: Passage Of Joint
+  //   Resolution` (18). The SENATE's substantive vote is SECOND reading
+  //   (`Senate: 2nd Reading`, 294 rolls); it takes a recorded third reading
+  //   too (`Senate: 3rd Reading`, 59), so both are kept as passage and the
+  //   judge's superseded-stage gate picks the chamber's last one.
+  // - Concurrence is `House: Concur In Senate Amendments` / `Senate: To
+  //   Concur`; conference reports come as `Adopt Conference Report` and
+  //   `Adopt Free Conference Report` (`To Adopt The …` in the Senate);
+  //   vetoes are overridden by `House: Override Veto By The Governor` /
+  //   `Senate: To Override The Veto`.
+  // - THE BUDGET IS VOTED SECTION BY SECTION AND ALL OF IT IS EXCLUDED. The
+  //   House votes each part of the appropriations act on its own
+  //   (`House: Adopt Section 5, Part 1B` 211 rolls, `House: Passage Of
+  //   Section 33, Part 1A` 198) and the Senate votes each agency's section
+  //   (`Senate: To Adopt Section 22 - Corrections, Department Of`, one per
+  //   agency). None of those is a vote on the measure. The appropriations
+  //   act's own conference-report vote still classifies as a kept
+  //   conference report; the campaign's own gate drops appropriations.
+  // - Every desc names its chamber and question in full, so the whole
+  //   session classifies with NOTHING unmatched and nothing surfaced.
+  // - Feed health is the cleanest tier: 0 repeated roll_call_ids, 0
+  //   identity duplicates, 0 summary-only rolls, 0 tally mismatches, 0
+  //   committee votes (every tally is whole-chamber; the one exception is a
+  //   single 0-8 Senate second reading, which the tally cut rejects).
+  // - South Carolina proposes CONSTITUTIONAL AMENDMENTS as joint
+  //   resolutions, a type the shared kept-types list already keeps, so
+  //   Georgia's resolution gap does not recur here.
+  SC: {
+    jurisdiction: "SC",
+    sessionId: 2194,
+    chamberSizes: { house: 124, senate: 46 },
+    keptQuestions: [
+      // Final passage. The House names the instrument; the Senate names the
+      // reading.
+      { pattern: /^house: passage of (?:bill|joint resolution)$/, questionClass: "passage" },
+      { pattern: /^senate: (?:2nd|3rd) reading$/, questionClass: "passage" },
+      // Accepting the other chamber's amendments.
+      { pattern: /^house: concur in senate amendments$/, questionClass: "concurrence" },
+      { pattern: /^senate: to concur$/, questionClass: "concurrence" },
+      // Conference and free-conference reports.
+      { pattern: /^house: adopt (?:free )?conference report$/, questionClass: "conference_report" },
+      { pattern: /^senate: to adopt the (?:free )?conference report$/, questionClass: "conference_report" },
+      // Veto overrides.
+      { pattern: /^house: override veto by the governor$/, questionClass: "veto_override" },
+      { pattern: /^senate: to override the veto$/, questionClass: "veto_override" },
+    ],
+    excludedQuestions: [
+      // Floor amendment votes, adopted and tabled alike. South Carolina
+      // repeats the amendment number in the desc
+      // (`House: Table Amendment 6 Amendment Number 6`), and the Senate
+      // spells its own several ways
+      // (`Senate: To Lay On The Table Amendment No. 3`,
+      // `Senate: To Adopt Amendment Number Rfh-1`).
+      /^house: (?:adopt|table) amendment/,
+      /^senate: to (?:adopt|lay on the table) amendment/,
+      /^senate: to adopt [a-z&' ]+ committee amendment$/,
+      /^senate: to (?:allow|consider|take up|carry over) amendment/,
+      // The appropriations act, voted one section or part at a time, plus
+      // single-proviso votes.
+      /^house: adopt section/,
+      /^house: passage of section/,
+      /^house: proviso /,
+      /^senate: to adopt section/,
+      // Scheduling, debate and other procedural motions.
+      /^house: table\b/,
+      /^house: (?:motion to )?(?:recommit|commit|continue|recede|reconsider)/,
+      /^house: recommit bill$/,
+      /^house: reconsider the vote$/,
+      /^house: adjourn/,
+      /^house: (?:table )?cloture$/,
+      /^house: invoke the previous question/,
+      /^house: waive rule/,
+      /^house: grant free conference powers$/,
+      /^senate: to lay on the table$/,
+      /^senate: (?:motion to )?suspend rule/,
+      /^senate: rule /,
+      /^senate: cloture motion$/,
+      /^senate: to grant free conference powers$/,
+      /^senate: to (?:continue the bill|recede)/,
+      /^senate: to set for special order$/,
+      /^senate: to take up the order of the day$/,
+      // Simple and concurrent resolutions, whose types the shared kept-types
+      // list already drops; listed so a stray one cannot reach a kept rule.
+      /^house: adopt (?:house resolution|concurrent resolution)$/,
+      /^senate: to adopt the resolution$/,
+    ],
+  },
 };
 
 export const LEGISCAN_CONFIG_KEYS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);
