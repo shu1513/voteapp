@@ -4,6 +4,7 @@ import { kansasCfrOfficeForRace } from "../../../src/pipeline/kansasFinance/kans
 import {
   buildKansasReportLedger,
   kansasDateToIso,
+  kansasFilingHeaderKey,
   kansasGeneralDate,
   kansasLastMinuteWindows,
   kansasPrimaryDate,
@@ -379,5 +380,15 @@ describe("date-less KPDC versions", () => {
     }
     // Only paper versions: the ordinals alone order them.
     expect(build([paper(1), paper(null), paper(3), paper(2)]).canonical?.amendmentOrdinal).toBe(3);
+  });
+
+  it("keys a version by every field the ordering uses, ordinal included", () => {
+    expect(kansasFilingHeaderKey(paper(1))).not.toBe(kansasFilingHeaderKey(paper(2)));
+    expect(kansasFilingHeaderKey(paper(null))).not.toBe(kansasFilingHeaderKey(paper(1)));
+    // Viewer and ISO dates, and an absent vs null ordinal, are one identity.
+    const efile: KansasFilingHeader = { periodStart: "1/1/2026", periodEnd: "7/23/2026", fileDate: "07/27/2026", amendmentDate: null, amended: false, termination: false, channel: "efile" };
+    expect(kansasFilingHeaderKey(efile)).toBe(kansasFilingHeaderKey({ ...efile, periodStart: "2026-01-01", fileDate: "2026-07-27", amendmentOrdinal: null }));
+    expect(kansasFilingHeaderKey(efile)).toBe("2026-01-01|2026-07-23|2026-07-27||original||efile");
+    expect(kansasFilingHeaderKey({ ...efile, channel: "paper" })).not.toBe(kansasFilingHeaderKey(efile));
   });
 });
