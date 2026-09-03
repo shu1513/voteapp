@@ -1,0 +1,5762 @@
+{
+  "runId": "rollcall-legiscan-fetch-al-2014-20260902T155202Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "AL-2014",
+  "startedAt": "2026-09-02T15:52:02.044Z",
+  "finishedAt": "2026-09-02T15:52:02.470Z",
+  "datasetDir": "~/legiscan-data/al-2014",
+  "bills": 1255,
+  "votes": 1485,
+  "people": 140,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "Read a Third Time and Pass",
+      "count": 334,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB66",
+        "HB108",
+        "SB63"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Read a Third Time and Pass",
+      "count": 304,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB10",
+        "SB9",
+        "SB11"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Read A Third Time And Passed As Amended",
+      "count": 135,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB40",
+        "SB52",
+        "SB55"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Read a Third Time and Pass as Amended",
+      "count": 109,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB30",
+        "HB152",
+        "HB23"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Concur In and Adopt",
+      "count": 59,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 105,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB101",
+        "HB193",
+        "HB194"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Concur In and Adopt",
+      "count": 49,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB113",
+        "SB131",
+        "SB151"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Passed by House of Origin",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR25",
+        "SR27",
+        "SR33"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Add Cosponsor",
+      "count": 21,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB101",
+        "HB1",
+        "HB116"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB40",
+        "SB52",
+        "SB55"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Accede",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB87",
+        "SB86",
+        "SB101"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Non Concur and Appoint Conference Committee",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB88",
+        "SB175",
+        "SB87"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Non Concur and Appoint Conference Committee",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB192",
+        "HB13",
+        "HB82"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "LOCAL CERTIFICATION RESOLUTION",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB119",
+        "HB93",
+        "SB188"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Read Again a Third Time and Pass as Amended",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB154",
+        "SB60",
+        "SB120"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB8",
+        "HB101",
+        "HB339"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Accede",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB192",
+        "HB82",
+        "HB125"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Concur",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB66",
+        "SB117",
+        "SB278"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Read Again a Third Time and Pass as Amended",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB302",
+        "HB289",
+        "SB67"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Passed by House of Origin",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR86",
+        "HJR143"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Previous Question",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB62",
+        "HB209"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 0311CG-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB153"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 0EEUC6-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB486"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 0HMF6C-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB5"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 0IDZCG-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB62"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 0LS1CC-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB473"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 0NJ2GG-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB285"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 144N3Z-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB297"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 1A54ZL-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB154"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 1FEDZL-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB342"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 1FSELL-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB67"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 1FYDZ3-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB364"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 1GCCZL-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB115"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 1GMTLZ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB103"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 1XDRL3-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB55"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 23A9KS-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 2NTRSI-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB430"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 2TTUKK-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB59"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 2UN7II-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB299"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 37N2EV-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB158"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 39D9VE-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB352"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 3BX5ZZ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB428"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 3OCSZZ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB43"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 3T80EV-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB166"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 3TAAVZ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB107"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 3X5FEZ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB151"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 4AEXR3-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB302"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 4AYB33-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB222"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 59A53M-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB492"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 59OV63-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB286"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 5E2736-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB352"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 5EL0MM-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB287"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 5EWPM6-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB334"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 5EWT33-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB293"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 5GLO3M-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB304"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 5RDA63-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB179"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 5U0EMM-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB29"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 6LB81Z-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB66"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 6LEBZ3-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB230"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 6LXFZ3-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB338"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 6N5D13-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB34"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 6N963Z-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB27"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 6NBI31-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB22"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 6O2E3Z-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB399"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 6O4MZZ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB6"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 6OBM33-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB293"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 753YEV-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB280"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 756CVE-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB286"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 75IO22-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB217"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 75QZE2-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB126"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 7NR8EE-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB363"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 7NRTV2-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB103"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 7YIF2E-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB143"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 83BMFH-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB314"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 85Q5H2-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB319"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 8QE5FF-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB313"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 8YNCHH-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB230"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 8ZDLF2-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB175"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 93FZPB-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB131"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 93H8BP-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB30"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt 97VUMB-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB87"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt A15GS7-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB261"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt A8YI77-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB88"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt AAAH77-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB117"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt AABNSS-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB254"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt AH3AQ7-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB334"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt ALMB7Q-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB100"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt B3Y54Q-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB302"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt BAEAJ4-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB45"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt BD88JJ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB168"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt BTCNJ4-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB267"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt CE75QQ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB422"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt CE8EJJ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB101"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt CEENWQ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB64"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt CETMJW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB224"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt CL0BWJ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB229"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt CPHRWW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB76"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt CVYIWW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB254"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt CVYOJW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB276"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt CYRVQW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB241"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt CZGBJQ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB337"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt D1YITH-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB133"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt D9X7NH-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB88"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt DSMMNN-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB378"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt DXPQNT-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB206"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt E0ZX99-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB56"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt EPB5C9-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB23"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt F1GSCD-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB24"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt F1MMC5-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB66"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt F6M755-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB439"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt F6SID5-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB287"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt F8ROD5-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB278"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt F8WG5D-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB515"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt FGJ85C-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB192"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt FOJV5C-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB152"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt FOQWDC-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB113"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt G09062-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB222"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt G81ZC2-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB13"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt G8M0CC-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB72"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt GNQXCC-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB213"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt GP77CC-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB358"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt H9PA38-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB248"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt HBLX88-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB289"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt HK5V36-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB124"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt I8FQ6W-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB273"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt IJSX66-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB301"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt IP8DZW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB153"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt IR4EW6-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB429"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt IY0F6W-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB278"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt IY5D6W-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB289"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt IYK56W-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB213"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt J0BEFF-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB24"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt JI70YF-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB75"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt JIS8FF-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB91"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt JRMBYN-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB356"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt JV0OYF-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB286"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt JV14NN-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB269"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt JVV2FF-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB222"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt KE6O55-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB511"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt KEM45U-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB175"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt KJ8WAA-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB65"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt KO9S5U-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB155"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt KQLR5A-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB455"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt L9TGYA-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB348"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt LHGKWY-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB241"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt LPNRAW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB379"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt LPSHWY-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB206"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt LQKFAY-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB269"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt M87FHH-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB52"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt MPG711-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB253"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt MPOAH1-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB328"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt MY5E1W-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB278"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt MZ8OH1-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB125"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt MZDM1W-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB208"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt ND27J8-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB323"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt NDVAJJ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB257"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt NGCSTJ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB289"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt NGECJT-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB363"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt NX5N88-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB302"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt NXWC8J-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB309"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt O23AMW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB114"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt OAIOJM-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB461"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt P5SJGR-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB267"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt PIXKER-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB29"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt PZ0BRE-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB260"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt PZOIGE-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB256"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt Q3IX15-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB111"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt Q80R11-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB87"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt Q8NP45-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB479"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt QHF854-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB55"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt QIRF11-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB356"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt QRQO54-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB260"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt QXX844-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB465"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt RS1CMM-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB71"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt RUR7MN-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB66"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt RXJ0YM-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB455"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt SHD488-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB34"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt SK2988-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB88"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt SKEB57-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB342"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt SKSG55-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB298"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt SM3C87-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB151"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt SO1O75-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB429"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt SO6C88-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB175"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt SYS378-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB103"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt SZIO87-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB322"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt T7AR91-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB189"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt T7ZZ15-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB184"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt TH8J95-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB82"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt TSOR95-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB304"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt TSTT91-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB87"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt U4C0DD-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB153"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt U4C4GX-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB40"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt U7LCGX-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB122"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt UQ68XG-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB306"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt VFXYPV-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB116"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt VIU9LV-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB87"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt VQU8PP-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB310"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt VT1MPP-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB417"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt VT4NPP-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB189"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt VUMBVL-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB150"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt WFCMEE-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB100"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt WFYL99-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB154"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt WFZC9E-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB292"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt WGTJ99-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB87"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt WP3Y95-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB209"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt XIK477-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB285"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt XIMNZ7-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB86"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt XS2MEZ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB113"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt XSHKZ7-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB86"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt YDQE22-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB43"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt YHWY6N-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB322"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt ZEJ2RK-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB120"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt ZPGNKK-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB258"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt ZSZ9RK-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB319"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt ZZO5WW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB246"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Carry Over to the Call of the Chair",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB8"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Passed by Second House",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB90"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Reconsider",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB289"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB309"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Table 5ETGMM-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR157"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Table 8T91F2-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Table BAXKJQ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB6"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Table C6IVWQ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB205"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Table F6R4C5-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR166"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Table IY7HZW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB291"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Table JR8JYY-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB166"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Table KY9S5U-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB261"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Table MID7H1-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB298"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Table S1LF57-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 104,
+      "maxTotal": 104,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB153"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Table UBQKGX-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB99"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Table X3QBZZ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 105,
+      "maxTotal": 105,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB479"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 0E22GG-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB335"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 0EIOCC-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB213"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 0I5K66-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB99"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 0I8FGC-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB66"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 0NZR6C-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB311"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 0XEXGC-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB36"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 0Z29GG-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB197"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 1452Z3-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR89"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 1GCW3L-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB59"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 1RK4LZ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB379"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 1VCVL3-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 2G1QSI-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB290"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 2G6PSS-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB233"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 2G8OKS-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB87"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 2N0GSI-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB291"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 2NFXII-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB301"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 2YUGSS-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB59"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 3OWDVE-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB205"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 3T2WZZ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB68"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 3TJ0ZV-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB58"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 3WAFEZ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB363"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 4AJJRI-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB272"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 4GJ7I3-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB329"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 4GQNII-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB379"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 4QAOI3-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB193"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 4QGDRI-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB261"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 59NTM6-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB330"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 5EOKM3-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB238"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 5EZT33-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB267"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 5GOW36-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB320"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 5UELMM-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB196"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 6FYU1Z-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB122"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 6PAV3Z-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB199"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 75UXE2-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB103"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 76PNE2-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB71"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 79XBEE-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB299"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 7NGUEE-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB246"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 8IY622-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB286"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 8MXAHH-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB59"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 8T1Q2F-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 8YKBHF-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB83"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 924LPP-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB214"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 97U4PB-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB133"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 9KCAMB-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB196"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 9V6NPP-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 9V6VPP-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB66"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 9WIIPM-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 9WLZMP-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB28"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt AIMXS7-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB162"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt BCNBJJ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB222"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt BD6O4J-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB82"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt BTPAQQ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB294"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt C3ZXQW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB272"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt C6FGQJ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB57"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt CLR1QQ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB181"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt CPTAQW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB109"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt CYEBQJ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB199"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt D7W8NH-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB27"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt DY3ATT-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB86"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt DZ5ANN-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB254"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt E0BGCC-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB206"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt E0I122-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB76"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt E7JV9C-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB171"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt EOXB22-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB196"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt F4MW5C-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB64"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt F60P55-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB309"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt FBRGDD-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB272"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt FGP655-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB163"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt FIY45D-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB59"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt FROV5C-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB445"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt FRPPDD-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB479"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt G0NW22-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB124"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt G8OV22-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB12"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt GBLPCC-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB58"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt GBSE62-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB28"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt GN7066-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB103"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt H1KC38-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB131"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt H9V563-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB59"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt H9WE63-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB135"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt HAJW86-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB266"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt HASH63-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB159"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt HHXF63-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB213"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt HY5W66-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt INREWW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB71"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt INS0ZZ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB109"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt IYPU6Z-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB125"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt JA86FY-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB161"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt JAITFF-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB37"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt JC61NN-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB327"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt JR3UYN-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB261"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt JZ7PYN-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB88"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt JZX3FF-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB221"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt KOVSAU-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB269"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt KYZV55-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB154"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt L9QXAY-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB262"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt LCBNAW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB304"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt LOGDAY-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB176"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt LP8FWA-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB259"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt LPUPWW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB40"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt LPXNYA-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB224"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt M5TKWH-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB224"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt MI9S1H-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB159"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt MID9HW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB320"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt MIQOHW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB285"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt MPGXWW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB143"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt MZN9HW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB199"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt N3Y0T8-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB66"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt NB0YJ8-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB316"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt NFACTT-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB198"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt NFR3TJ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB145"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt OAK2JJ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB245"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt OAVAMJ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB312"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt OGLEMW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB298"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt P40NRG-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB275"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt P433EG-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB64"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt P48QRE-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB322"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt P4N6GE-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB253"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt P5NHRR-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB157"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt PIPYEG-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB28"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt PJJLRR-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB315"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt PTVXGG-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB76"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt PZFARE-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB165"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt QCG211-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB22"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt QH2M41-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB113"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt QRJT14-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB166"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt R1UDNM-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB60"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt RU3UNM-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB193"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt RXBWNN-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB87"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt RXCQYY-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB309"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt RXF4NN-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB261"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt RXXINM-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB159"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt SMNY75-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB228"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt SOAU77-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB254"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt SYA277-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB32"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt SYST57-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB113"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt T3EI91-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB151"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt TD0Q55-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB33"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt THN219-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB266"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt THXZ55-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB256"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt TSLL19-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB171"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt TSS819-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB287"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt TUUC59-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB131"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt U3A9GD-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB131"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt U4MMDG-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB183"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt U71YGG-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB105"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt UBL3DG-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB120"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt VF3DLV-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB58"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt VTRGPL-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB39"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt VUATVV-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB193"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt WF7855-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB205"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt WF7G59-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB215"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt WFJS55-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB101"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt WJI159-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB263"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt WLIV95-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB13"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt WLPPE5-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB41"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt X3TM77-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB473"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt X9QNE7-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB87"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt XSTSZZ-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB101"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt Y1AWN2-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB192"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt Y1AYNN-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB165"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt Y1CHN6-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB101"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt Y1YL6N-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB194"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt YA4K26-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB244"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt YABF2N-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB157"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt YAXH66-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB245"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt YEKY62-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB422"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt YEMR66-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB217"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt YH7366-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB193"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt YV79N6-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB175"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt YVQCN2-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB253"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt Z9JCRR-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB445"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt ZS33WK-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB290"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt ZSUAKK-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB300"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt ZZHDKW-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB167"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Petition to Cease Debate",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB263"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "READ A THIRD TIME AND PASSED",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB14"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 871,
+    "JR": 174,
+    "R": 210
+  },
+  "sessionIds": {
+    "2014": 1255
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}
