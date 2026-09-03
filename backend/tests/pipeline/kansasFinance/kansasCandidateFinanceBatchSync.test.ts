@@ -78,7 +78,7 @@ describe("syncDueKansasCandidateFinance", () => {
       syncCandidateFn,
       log: vi.fn(),
     });
-    expect(listDueRowsFn).toHaveBeenCalledWith(db, { now: NOW, staleAfterDays: 1, maxCandidates: 25, electionLookbackDays: 40, electionLookaheadDays: 800 });
+    expect(listDueRowsFn).toHaveBeenCalledWith(db, { now: NOW, staleAfterDays: 1, maxCandidates: 200, electionLookbackDays: 40, electionLookaheadDays: 800 });
     expect(syncCandidateFn.mock.calls[0]![0]).toMatchObject({ dryRun: true });
     expect(result).toMatchObject({ dryRun: true, attempted: 1, succeeded: 1, failed: 0 });
   });

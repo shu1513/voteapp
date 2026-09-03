@@ -79,7 +79,9 @@ export type KansasCfrClientErrorCode =
   | "invalid_request"
   | "network_error"
   | "http_error"
-  | "bad_response";
+  | "bad_response"
+  /** A grid's lblRecordCount changed, or disagreed with the rows walked, mid-enumeration. */
+  | "grid_count_changed";
 
 export class KansasCfrClientError extends Error {
   constructor(
@@ -93,13 +95,13 @@ export class KansasCfrClientError extends Error {
 }
 
 /**
- * The grid's record count no longer matches the rows walked: a filing
- * landed between the search and the last page and shifted every later row
- * by one (live 2026-09-02, a 57-page House walk). The immediate rerun was
- * clean, so callers may retry that one enumeration once.
+ * The grid's record count changed under the walk: a filing landed between
+ * the search and the last page and shifted every later row by one (live
+ * 2026-09-02, a 57-page House walk). The immediate rerun was clean, so
+ * callers may retry that one enumeration once.
  */
 export function isKansasGridCountMismatch(error: unknown): boolean {
-  return error instanceof KansasCfrClientError && error.code === "bad_response" && error.message.includes("but page reported");
+  return error instanceof KansasCfrClientError && error.code === "grid_count_changed";
 }
 
 export type KansasCfrResponse = {
@@ -424,9 +426,12 @@ export type KansasCfrGridPage = {
  *   whole, not flattened.
  * The walk fails closed: every landed page's PAGER must show the expected
  * page number (a stale postback re-renders a wrong page with a 200, so
- * repeated rows would otherwise count as progress), the total row count
- * must equal the page's own `lblRecordCount`, and a page that adds no rows
- * aborts rather than loops.
+ * repeated rows would otherwise count as progress), EVERY page's own
+ * `lblRecordCount` must equal page 1's (a filing landing mid-walk shifts
+ * the later rows by one; when the last page happens to be full, the walked
+ * total alone would still add up — with one row duplicated and one
+ * dropped), the total row count must equal that count, and a page that adds
+ * no rows aborts rather than loops.
  */
 export async function collectKansasCfrGridPages(
   session: KansasCfrSession,
@@ -458,12 +463,19 @@ export async function collectKansasCfrGridPages(
     const pageNumber = previous.pageNumber + 1;
     if (pageNumber > maxPages) {
       throw new KansasCfrClientError(
-        "bad_response",
+        "grid_count_changed",
         `grid ${gridId}: ${total} rows after ${previous.pageNumber} pages but page reported ${recordCount}`
       );
     }
     const page = await postbackAndFollow(session, previous.page, gridId, `Page$${pageNumber}`);
     requireCurrentPage(page.html, pageNumber);
+    const pageRecordCount = parseKansasRecordCount(page.html);
+    if (pageRecordCount !== recordCount) {
+      throw new KansasCfrClientError(
+        "grid_count_changed",
+        `grid ${gridId}: page ${pageNumber} reports ${pageRecordCount ?? "no"} records but page 1 reported ${recordCount}`
+      );
+    }
     const rows = parseKansasCfrGridRows(page.html, gridId);
     if (rows.length === 0) {
       throw new KansasCfrClientError(
@@ -476,7 +488,7 @@ export async function collectKansasCfrGridPages(
   }
   if (total !== recordCount) {
     throw new KansasCfrClientError(
-      "bad_response",
+      "grid_count_changed",
       `grid ${gridId}: collected ${total} rows but page reported ${recordCount}`
     );
   }

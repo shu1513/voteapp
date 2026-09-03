@@ -18,7 +18,13 @@ import { createKansasKpdcRowLoader } from "./kansasPaperInventory.js";
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & { connect: () => Promise<PoolClient> };
 
-const DEFAULT_MAX_CANDIDATES = 25;
+// A full pass by default: the expensive step (one viewer enumeration per
+// office) is shared by every candidate, and the due list sorts never-synced
+// rows first — a link that fails every run (a paper filer until the OCR
+// step) never gets a last_synced_at, so a small batch would re-spend its
+// slots on the same failures each run. Above the scope's link count
+// (128 House + statewide + Senate specials); --max-candidates narrows it.
+const DEFAULT_MAX_CANDIDATES = 200;
 const DEFAULT_STALE_AFTER_DAYS = 7;
 // The post-general report (period through 12/31) is due January 10 of the
 // following year (K.S.A. 25-4148(a)); a November general is at most 69 days

@@ -179,7 +179,7 @@ describe("createKansasFilingPoolLoader enumeration retry", () => {
     openReport: () => Promise.reject(new Error("not opened")),
     openSchedule: () => Promise.reject(new Error("not opened")),
   });
-  const mismatch = () => new KansasCfrClientError("bad_response", "grid grdviewCfrResults: collected 1127 rows but page reported 1128");
+  const mismatch = () => new KansasCfrClientError("grid_count_changed", "grid grdviewCfrResults: collected 1127 rows but page reported 1128");
 
   it("reruns an enumeration once after a mid-walk record-count mismatch", async () => {
     let calls = 0;
