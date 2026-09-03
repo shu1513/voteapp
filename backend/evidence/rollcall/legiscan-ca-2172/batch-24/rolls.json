@@ -1,0 +1,44 @@
+{
+ "rolls": [
+  {
+   "measure": "SB 827",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601525,
+   "date": "2025-09-09",
+   "yea": 30,
+   "nay": 10,
+   "title": "Local agency officials: training."
+  },
+  {
+   "measure": "SB 909",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726217,
+   "date": "2026-08-26",
+   "yea": 30,
+   "nay": 9,
+   "title": "Public works."
+  },
+  {
+   "measure": "SB 98",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1600845,
+   "date": "2025-09-02",
+   "yea": 31,
+   "nay": 8,
+   "title": "Elementary, secondary, and postsecondary education: immigration enforcement: notification."
+  },
+  {
+   "measure": "SB 998",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726427,
+   "date": "2026-08-26",
+   "yea": 30,
+   "nay": 9,
+   "title": "Educational equity: discrimination prevention coordinators."
+  }
+ ]
+}

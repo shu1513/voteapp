@@ -1,0 +1,124 @@
+{
+ "rolls": [
+  {
+   "measure": "SB 418",
+   "status": "vetoed",
+   "chamber": "house",
+   "roll": 1602423,
+   "date": "2025-09-10",
+   "yea": 60,
+   "nay": 18,
+   "title": "Health care coverage: prescription hormone therapy and nondiscrimination."
+  },
+  {
+   "measure": "SB 418",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1601973,
+   "date": "2025-09-11",
+   "yea": 29,
+   "nay": 10,
+   "title": "Health care coverage: prescription hormone therapy and nondiscrimination."
+  },
+  {
+   "measure": "SB 437",
+   "status": "chaptered",
+   "chamber": "house",
+   "roll": 1601371,
+   "date": "2025-09-08",
+   "yea": 61,
+   "nay": 17,
+   "title": "California State University: claim eligibility: genealogy and descendancy."
+  },
+  {
+   "measure": "SB 437",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601494,
+   "date": "2025-09-09",
+   "yea": 30,
+   "nay": 10,
+   "title": "California State University: claim eligibility: genealogy and descendancy."
+  },
+  {
+   "measure": "SB 541",
+   "status": "vetoed",
+   "chamber": "house",
+   "roll": 1602134,
+   "date": "2025-09-12",
+   "yea": 57,
+   "nay": 15,
+   "title": "Electricity: load shifting."
+  },
+  {
+   "measure": "SB 541",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1602912,
+   "date": "2025-09-13",
+   "yea": 29,
+   "nay": 8,
+   "title": "Electricity: load shifting."
+  },
+  {
+   "measure": "SB 551",
+   "status": "chaptered",
+   "chamber": "house",
+   "roll": 1600941,
+   "date": "2025-09-03",
+   "yea": 57,
+   "nay": 20,
+   "title": "Corrections and rehabilitation: state policy."
+  },
+  {
+   "measure": "SB 551",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601527,
+   "date": "2025-09-09",
+   "yea": 30,
+   "nay": 9,
+   "title": "Corrections and rehabilitation: state policy."
+  },
+  {
+   "measure": "SB 608",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726075,
+   "date": "2026-08-25",
+   "yea": 58,
+   "nay": 17,
+   "title": "Sexual health."
+  },
+  {
+   "measure": "SB 608",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726292,
+   "date": "2026-08-26",
+   "yea": 29,
+   "nay": 9,
+   "title": "Sexual health."
+  },
+  {
+   "measure": "SB 630",
+   "status": "chaptered",
+   "chamber": "house",
+   "roll": 1602392,
+   "date": "2025-09-10",
+   "yea": 60,
+   "nay": 19,
+   "title": "State parks: real property: acquisitions and leases."
+  },
+  {
+   "measure": "SB 630",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1602351,
+   "date": "2025-09-12",
+   "yea": 28,
+   "nay": 7,
+   "title": "State parks: real property: acquisitions and leases."
+  }
+ ]
+}

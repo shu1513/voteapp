@@ -1,0 +1,224 @@
+{
+ "rolls": [
+  {
+   "measure": "AB 40",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726864,
+   "date": "2026-08-28",
+   "yea": 50,
+   "nay": 17,
+   "title": "California Environmental Quality Act: environmental impact reports: coal handling, storage, and export."
+  },
+  {
+   "measure": "AB 40",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726087,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 10,
+   "title": "California Environmental Quality Act: environmental impact reports: coal handling, storage, and export."
+  },
+  {
+   "measure": "AB 695",
+   "status": "vetoed",
+   "chamber": "house",
+   "roll": 1602322,
+   "date": "2025-09-13",
+   "yea": 60,
+   "nay": 16,
+   "title": "California Community Colleges Access and Continuity for Deported Students Act."
+  },
+  {
+   "measure": "AB 695",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1602321,
+   "date": "2025-09-12",
+   "yea": 30,
+   "nay": 8,
+   "title": "California Community Colleges Access and Continuity for Deported Students Act."
+  },
+  {
+   "measure": "SB 1349",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1725640,
+   "date": "2026-08-20",
+   "yea": 57,
+   "nay": 18,
+   "title": "Taxation: tax expenditures: Legislative Analyst\u2019s Office: assessment, report, and recommendation."
+  },
+  {
+   "measure": "SB 1349",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725769,
+   "date": "2026-08-24",
+   "yea": 30,
+   "nay": 10,
+   "title": "Taxation: tax expenditures: Legislative Analyst\u2019s Office: assessment, report, and recommendation."
+  },
+  {
+   "measure": "SB 1371",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1725400,
+   "date": "2026-08-19",
+   "yea": 58,
+   "nay": 17,
+   "title": "Solid waste handling services: labor dispute."
+  },
+  {
+   "measure": "SB 1371",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726400,
+   "date": "2026-08-26",
+   "yea": 28,
+   "nay": 10,
+   "title": "Solid waste handling services: labor dispute."
+  },
+  {
+   "measure": "SB 1379",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1725892,
+   "date": "2026-08-25",
+   "yea": 59,
+   "nay": 19,
+   "title": "County of Riverside: separation of county offices: in-custody reports."
+  },
+  {
+   "measure": "SB 1379",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726355,
+   "date": "2026-08-26",
+   "yea": 30,
+   "nay": 10,
+   "title": "County of Riverside: separation of county offices: in-custody reports."
+  },
+  {
+   "measure": "SB 1406",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726212,
+   "date": "2026-08-26",
+   "yea": 59,
+   "nay": 19,
+   "title": "Sales and Use Tax Law: vehicles: shell companies."
+  },
+  {
+   "measure": "SB 1406",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1700189,
+   "date": "2026-05-19",
+   "yea": 31,
+   "nay": 8,
+   "title": "Sales and Use Tax Law: vehicles: shell companies."
+  },
+  {
+   "measure": "AB 2531",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726338,
+   "date": "2026-08-26",
+   "yea": 60,
+   "nay": 18,
+   "title": "Public health: abortion services."
+  },
+  {
+   "measure": "AB 2531",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725955,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 10,
+   "title": "Public health: abortion services."
+  },
+  {
+   "measure": "AB 2646",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1702184,
+   "date": "2026-05-26",
+   "yea": 58,
+   "nay": 16,
+   "title": "Employment: minimum wages: agricultural workers."
+  },
+  {
+   "measure": "AB 2646",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726113,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 9,
+   "title": "Employment: minimum wages: agricultural workers."
+  },
+  {
+   "measure": "AB 399",
+   "status": "vetoed",
+   "chamber": "house",
+   "roll": 1601318,
+   "date": "2025-09-08",
+   "yea": 58,
+   "nay": 18,
+   "title": "Coastal resources: coastal development permits: blue carbon demonstration projects."
+  },
+  {
+   "measure": "AB 399",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1601158,
+   "date": "2025-09-04",
+   "yea": 29,
+   "nay": 10,
+   "title": "Coastal resources: coastal development permits: blue carbon demonstration projects."
+  },
+  {
+   "measure": "SB 1414",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726006,
+   "date": "2026-08-25",
+   "yea": 53,
+   "nay": 21,
+   "title": "County of San Bernardino Citizens Redistricting Commission."
+  },
+  {
+   "measure": "SB 1414",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726127,
+   "date": "2026-08-26",
+   "yea": 30,
+   "nay": 10,
+   "title": "County of San Bernardino Citizens Redistricting Commission."
+  },
+  {
+   "measure": "SB 1425",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726045,
+   "date": "2026-08-25",
+   "yea": 53,
+   "nay": 16,
+   "title": "High-Speed Rail Authority: property: operating right-of-way."
+  },
+  {
+   "measure": "SB 1425",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726159,
+   "date": "2026-08-26",
+   "yea": 29,
+   "nay": 9,
+   "title": "High-Speed Rail Authority: property: operating right-of-way."
+  }
+ ]
+}
