@@ -1,6 +1,10 @@
 # Checking LegiScan's Montana roll calls against Montana's own record
 
 Run in batch-07, after one member's vote on SB 542 turned out to be wrong.
+**Corrected after review**: the first version of this audit paired votes by
+date and nearest tally, which matched the wrong motion on two HB 231 days and
+reported disagreements that did not exist. The pairing now uses member
+agreement. The numbers below are from the corrected run.
 
 ## What was compared
 
@@ -18,72 +22,97 @@ numbers, from
 a `legislatorVotes` array of legislator ids and vote types, which resolve
 against the official roster at
 `/Users/shu/legiscan-data/mt-legmt-legislators.json`. Vote types seen are `YES`,
-`NO`, `ABSENT`, `EXCUSED`, `YES_EXCUSED` and `NO_EXCUSED`; the last three fold
-into the first three.
+`NO`, `ABSENT`, `EXCUSED`, `YES_EXCUSED` and `NO_EXCUSED`; `YES_EXCUSED` and
+`NO_EXCUSED` are votes and count as such, `EXCUSED` and `ABSENT` are not.
 
-Official votes are matched to LegiScan rolls on the same date and the same
-member count, then compared name by name. Three members needed an alias because
-the two sources name them differently: Julie Dooling / Darling, Robert / Bob
-Carter, and Sidney / Chip Fitzpatrick. Every other name resolved on its own, and
-**no name failed to resolve**.
+## How a LegiScan roll is paired with a Montana vote
+
+This is the part that went wrong first time, so it is spelled out.
+
+LegiScan does not name the motion, only the stage ("2nd Reading Motion to
+Amend Failed"). Montana names it ("AMD-HB0231.004.008 Dunwell D/PASS"). So the
+two cannot be joined on the motion. Nor can they be joined on the tally: on
+2025-04-22 the Senate took two votes on HB 231 amendments that both went 24-26.
+Nor on the order taken: LegiScan's roll numbers are not always chronological
+within a day, and on 2025-04-17 they run the opposite way to Montana's.
+
+The one signal that identifies a vote is the members. A correct pairing agrees
+on nearly every member; a wrong one agrees on about half. So for each
+(date, chamber) on a bill, every way of pairing LegiScan's rolls with Montana's
+votes is tried and the pairing with the fewest member disagreements is kept.
+When Montana has more votes on a day than LegiScan (it records a cloture vote on
+SB 542 that LegiScan omits), the best-agreeing subset is tried. When the two
+sides cannot be paired at all, the rolls are reported as **unpaired**, not
+guessed at.
+
+A defective roll still shows its disagreements against its best match. What the
+method removes is disagreements that were only ever an artefact of comparing two
+different votes.
+
+Three members needed an alias because the two sources name them differently:
+Julie Dooling / Darling, Robert / Bob Carter, and Sidney / Chip Fitzpatrick.
+Every other name resolved on its own, and **no name failed to resolve**.
 
 The scripts live outside the repository with the other Montana helpers:
-`/Users/shu/legiscan-data/mt_verify.py` does the comparison,
-`mt_prefetch.py` warms the cache of official records with eight threads, and
-`mt_audit_report.py` summarises the result.
+`/Users/shu/legiscan-data/mt_verify.py` does the comparison and
+`mt_prefetch.py` warms the cache of official records.
 
 ## The result that matters
 
 **None of the 81 roll calls this campaign has imported disagrees with Montana's
-own record.** Every one was in scope, and every one matches member for member.
-No Montana candidate record is wrong.
+own record.** Every one was in scope, every one paired, and every one matches
+member for member. No Montana candidate record is wrong.
 
-## The defect rate
+## What disagrees
 
-| | Count | Share |
-| --- | --- | --- |
-| Roll calls compared | 1,826 | |
-| Tallies that disagree | 63 | 3.5% |
-| Rolls where at least one member's vote disagrees | 76 | 4.2% |
-| Rolls where the tally matches but members still differ | 13 | 0.7% |
+| | Rolls |
+| --- | --- |
+| Compared | 1,826 |
+| Paired with a Montana vote | 1,780 |
+| Unpaired (Montana and LegiScan record different numbers of votes that day) | 46 |
+| **A member's vote is flipped** — LegiScan says yes, Montana says no, or the reverse | **20** |
+| **An excused or absent member is shown as voting** — nearly always as a no | **23** |
+| Tally differs | 42 |
 
-That last row is the reason a totals-only check is not enough. Thirteen rolls
-would pass a tally comparison while still recording members on the wrong side.
+The 46 unpaired rolls are all second-reading amendment votes on HB 2 (the
+general appropriations bill, on two days) and HB 291 (one day). None is a roll
+this campaign would use.
 
-By stage, the defect is far more common on second readings:
+**Flipped votes.** Twenty rolls. In nineteen of them exactly one member is on
+the wrong side; HB 2's House third reading of 2025-04-07 has three. Nine of the
+twenty are third readings, and eight of those nine are a chamber's last kept
+floor vote — the roll this campaign selects:
 
-| Stage | Rolls | With a disagreement |
-| --- | --- | --- |
-| Second reading | 1,007 | 66 |
-| Third reading | 812 | 10 |
-| Other | 7 | 0 |
-
-The largest disagreements are all second readings. SB 218's House second reading
-differs on 86 of 100 members. HB 2's has 55. HB 231's Senate motion to
-indefinitely postpone has 47 of 50. This campaign takes third readings, so most
-of the damage falls outside what it uses.
-
-## The eight rolls that would have been used
-
-Ten third readings disagree, and eight of them are a chamber's last kept floor
-vote — that is, exactly the roll this campaign would select.
-
-| Measure | Roll | Date | LegiScan | Montana | Members differing |
+| Measure | Roll | Date | LegiScan | Montana | Member |
 | --- | --- | --- | --- | --- | --- |
-| SB 542 | 1556679 | 2025-04-24 | 73-26 | 72-27 | 1 |
-| HB 15 | 1481075 | 2025-01-27 | 78-20 | 77-21 | 1 |
-| HB 76 | 1558903 | 2025-04-28 | 69-31 | 68-32 | 1 |
-| HB 284 | 1551835 | 2025-04-17 | 58-41 | 59-40 | 1 |
-| HB 636 | 1508554 | 2025-03-07 | 84-15 | 85-14 | 1 |
-| HB 888 | 1558107 | 2025-04-25 | 59-41 | 58-42 | 1 |
-| SB 243 | 1546282 | 2025-04-11 | 77-22 | 76-23 | 1 |
-| SB 342 | 1546349 | 2025-04-11 | 58-41 | 57-42 | 1 |
+| SB 542 | 1556679 | 2025-04-24 | 73-26 | 72-27 | Amy Regier, shown yes, voted no |
+| HB 15 | 1481075 | 2025-01-27 | 78-20 | 77-21 | Randyn Gregg, shown yes, voted no |
+| HB 76 | 1558903 | 2025-04-28 | 69-31 | 68-32 | Jodee Etchart, shown yes, voted no |
+| HB 284 | 1551835 | 2025-04-17 | 58-41 | 59-40 | Melody Cunningham, shown no, voted yes |
+| HB 636 | 1508554 | 2025-03-07 | 84-15 | 85-14 | Melody Cunningham, shown no, voted yes |
+| HB 888 | 1558107 | 2025-04-25 | 59-41 | 58-42 | Brian Close, shown yes, voted no |
+| SB 243 | 1546282 | 2025-04-11 | 77-22 | 76-23 | Scott Rosenzweig, shown yes, voted no |
+| SB 342 | 1546349 | 2025-04-11 | 58-41 | 57-42 | SJ Howell, shown yes, voted no |
 
 Seven of these are marked `held:legiscan-vote-defect` in the worklist. HB 636's
 roll never entered the worklist, because 84-15 is not divided.
 
-The other two third-reading disagreements, HB 2 roll 1538411 and HB 492 roll
-1503251, are superseded by later votes and so were never selectable.
+**Excused members shown as voting.** Twenty-three rolls, all second readings.
+In twenty-two of them Montana records a member as `EXCUSED` or `ABSENT` and
+LegiScan shows them voting no; in the others LegiScan shows a member absent who
+Montana records as voting yes. The first pattern is consistent enough to look
+like how LegiScan's Montana feed handles an excused member. It matters for this
+campaign because an excused member shown as a no would receive a "voted
+against" record for a vote they did not cast. None of the twenty-three is a roll
+this campaign uses.
+
+**What was retracted.** The first version of this audit claimed 47
+disagreements on HB 231's Senate motion of 2025-04-17 and eight on its motion of
+2025-04-22, and said thirteen rolls had matching tallies with members still
+differing. All of that was the wrong-motion artefact. Correctly paired, the
+2025-04-17 motion differs only in three excused members shown as no votes, and
+the 2025-04-22 motion does not differ at all. **No paired roll has a matching
+tally with a member on the wrong side.** Every flipped vote moves the tally.
 
 ## What happens next
 
@@ -98,8 +127,8 @@ change and belongs in its own review. Until then the eight rolls above stay
 held, and each affected measure is carried on its other chamber alone, or not at
 all.
 
-`legiscan-vote-audit.tsv` in this directory lists every one of the 76
-disagreeing rolls, with the members and the direction of each disagreement.
+`legiscan-vote-audit.tsv` in this directory lists every disagreeing and every
+unpaired roll, with the member and the direction of each disagreement.
 
 ## Whether this reaches other states
 

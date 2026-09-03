@@ -36,21 +36,6 @@ Every other member on that roll agrees. Amy Regier is in the crosswalk, so
 importing the roll as LegiScan has it would have published a record saying a
 named person voted for a bill she voted against.
 
-Two further examples turned up on HB 231 and are worse:
-
-- Roll 1551940 (Senate, 2025-04-17, a motion to indefinitely postpone):
-  **47 of 50 members disagree** between the two sources, and the tally differs,
-  26-24 against 25-25.
-- Roll 1554283 (Senate, 2025-04-22, a motion to amend): **8 members disagree
-  while the tally matches exactly**, 24-26 in both sources.
-
-That second case is the dangerous one. A check that compares only the totals
-would pass it. Only a member-by-member comparison catches it.
-
-Neither of those two rolls is used by this campaign — both are second-reading
-motions, and the campaign takes each chamber's last kept floor vote — but they
-show the defect is not a single typo.
-
 **What was done about it.** A comparison script now exists outside the
 repository at `/Users/shu/legiscan-data/mt_verify.py`, with a companion
 `mt_prefetch.py` that warms a local cache of Montana's own vote records. Every
@@ -58,17 +43,25 @@ stored floor roll on all 335 worklist bills — 1,826 roll calls — was then
 compared member by member. The result is in `../survey/legiscan-vote-audit.md`,
 with every disagreeing roll in `../survey/legiscan-vote-audit.tsv`.
 
+**A correction.** The first version of that audit paired LegiScan rolls with
+Montana votes by date and nearest tally. Review showed that on two HB 231 days
+this matched the wrong motion, and the two "worse" examples this file used to
+cite — 47 disagreements on 2025-04-17 and eight swapped votes with a matching
+tally on 2025-04-22 — were artefacts of that. Correctly paired, the first
+differs only in three excused members shown as no votes and the second does not
+differ at all. The pairing now uses member agreement, and every number here is
+from the corrected run. The Amy Regier case stands.
+
 **None of the 81 rolls this campaign has imported disagrees with Montana's own
 record.** That covers all 74 rolls from batches 1 through 6 and all 7 from this
 one. No Montana record is wrong.
 
-Across the whole session, 76 of 1,826 rolls (4.2%) put at least one member on
-the wrong side, and 13 of those have a tally that matches exactly. The defect
-concentrates on second readings, 66 of 1,007, against 10 of 812 third readings.
-Eight of those ten third readings are a chamber's last kept floor vote and so
-would otherwise have been selected; seven are now marked
-`held:legiscan-vote-defect` in the worklist, and the eighth was never in it
-because its tally was not divided.
+Across the whole session, 20 of 1,826 rolls have a member's vote flipped, and
+every flip moves the tally. A further 23 rolls, all second readings, show an
+excused or absent member as voting. Eight of the flipped rolls are a chamber's
+last kept floor vote and so would otherwise have been selected; seven are now
+marked `held:legiscan-vote-defect` in the worklist, and the eighth was never in
+it because its tally was not divided.
 
 **Why an affected roll is held rather than corrected.** The importer verifies
 the SHA-256 of each roll call payload against the value approved at fetch time,
@@ -170,6 +163,35 @@ so a reader can weigh them.
 The descriptions do not claim HB 231's own text became law, because it did not.
 HB 231's record says plainly that most of its text fell away and names what was
 left.
+
+### Two corrections to SB 542's description, after review
+
+The first import said local governments with a fixed levy "must now raise only
+the same dollars they raised in 2025", and that from 2026 "a homeowner or a
+long-term landlord must apply to get the lowest rate". Both overstated the law.
+
+On the levy: the enacted findings (HB 231 section 29, replacing SB 542
+section 4) tell a charter government to levy, in fiscal year 2026, the number of
+mills that raises the 2025 dollar amount, and in later years to levy no more
+than that 2026 mill count — "shall" is struck and "may levy an amount not to
+exceed" inserted on the page image. A mill is a rate, so a capped mill count on
+rising values is a cap on the rate, not a freeze on the dollars. A voter-approved
+levy has a second option: convert to a dollar levy equal to the 2025 amount,
+subject to the ordinary growth rule in 15-10-420(1)(a). The description now
+says the rate is reset for 2026 to raise the 2025 dollars and may not go above
+that reset rate later.
+
+On applying: SB 542 section 6(2)(a) says an owner "who applied for and received
+the rebate provided for in [sections 1 through 3] for tax year 2024
+automatically qualifies for the homestead reduced tax rate", unless the home
+changes hands, stops being the principal residence, or is otherwise
+disqualified. Only owners who did not receive the rebate must apply. Landlords
+must apply under section 7. The description now says so. This file already
+recorded the automatic qualification; the description had not carried it.
+
+The corrected description was linted, re-judged, and re-imported, rewriting
+SB 542's 11 Senate records in place; the run is preserved as
+`import-rewrite-report.json`.
 
 ## HB 801 — limits on suing gun makers over their advertising
 
@@ -359,9 +381,11 @@ divided-and-enacted set.
   record and agrees exactly.
 - The import reconciles: the dry run planned 333 rows across 7 rolls and wrote
   0; the first run inserted 322 and failed one roll on a citation URL timeout;
-  a second run inserted the remaining 11; a third verification pass reports all
-  333 unchanged and is preserved as `import-rerun-report.json`. The database
-  holds 333 rows across the two run stamps `2026-09-02T16:05:06.048Z` (322) and
-  `2026-09-02T16:05:29.566Z` (11).
+  a second run inserted the remaining 11. The database holds 333 rows across the
+  two run stamps `2026-09-02T16:05:06.048Z` (322) and
+  `2026-09-02T16:05:29.566Z` (11). After the SB 542 wording correction a
+  further run rewrote those 11 and left 322 unchanged, preserved as
+  `import-rewrite-report.json`; the original insert ledger is untouched in
+  `import-report.json`.
 - Montana's jurisdiction total is now 3,488 records across 87 candidates and
   2,021 area tags in 14 research areas, on 81 approved rolls.
