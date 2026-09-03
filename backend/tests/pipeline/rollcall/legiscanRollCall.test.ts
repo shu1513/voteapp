@@ -761,6 +761,94 @@ describe("Alabama's measured desc vocabulary", () => {
   });
 });
 
+describe("South Carolina's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS.SC!;
+  const sc = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType, config });
+
+  it("keeps each chamber's own final-passage wording", () => {
+    // The House names the instrument it is passing.
+    expect(sc("House: Passage Of Bill", 124)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(sc("House: Passage Of Joint Resolution", 124, "house", "JR")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // The Senate's substantive vote is SECOND reading; it records a third
+    // reading as well, so both are kept and the judge's superseded-stage
+    // gate picks the chamber's last one.
+    expect(sc("Senate: 2nd Reading", 45, "senate")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(sc("Senate: 3rd Reading", 45, "senate")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+  });
+
+  it("classes concurrence, conference reports and veto overrides", () => {
+    expect(sc("House: Concur In Senate Amendments", 124).questionClass).toBe("concurrence");
+    expect(sc("Senate: To Concur", 45, "senate").questionClass).toBe("concurrence");
+    expect(sc("House: Adopt Conference Report", 124).questionClass).toBe("conference_report");
+    expect(sc("House: Adopt Free Conference Report", 123).questionClass).toBe("conference_report");
+    expect(sc("Senate: To Adopt The Conference Report", 45, "senate").questionClass).toBe("conference_report");
+    expect(sc("Senate: To Adopt The Free Conference Report", 45, "senate").questionClass).toBe("conference_report");
+    expect(sc("House: Override Veto By The Governor", 124).questionClass).toBe("veto_override");
+    expect(sc("Senate: To Override The Veto", 45, "senate").questionClass).toBe("veto_override");
+  });
+
+  it("excludes the appropriations act's section-by-section votes in both chambers", () => {
+    // South Carolina votes its budget one part or agency at a time. None of
+    // these is a vote on the measure, and `House: Passage Of Section 33,
+    // Part 1A` would otherwise read as passage.
+    for (const [desc, chamber] of [
+      ["House: Adopt Section 5, Part 1B", "house"],
+      ["House: Adopt Section", "house"],
+      ["House: Passage Of Section 33, Part 1A", "house"],
+      ["House: Proviso To 117.9", "house"],
+      ["Senate: To Adopt Section 22 - Corrections, Department Of", "senate"],
+    ] as const) {
+      expect(sc(desc, chamber === "house" ? 124 : 46, chamber)).toMatchObject({
+        isFloorVote: false,
+        questionClass: null,
+      });
+    }
+  });
+
+  it("excludes each surveyed amendment and procedural family", () => {
+    for (const [desc, chamber] of [
+      ["House: Adopt Amendment 1 Amendment Number 1", "house"],
+      ["House: Table Amendment 6 Amendment Number 6", "house"],
+      ["House: Table Motion To Reconsider", "house"],
+      ["House: Table Motion To Adjourn Debate", "house"],
+      ["House: Commit", "house"],
+      ["House: Recommit Bill", "house"],
+      ["House: Adjourn For The Day", "house"],
+      ["House: Invoke The Previous Question (cloture)", "house"],
+      ["House: Waive Rule 5.15 Printing", "house"],
+      ["House: Grant Free Conference Powers", "house"],
+      ["House: Adopt House Resolution", "house"],
+      ["House: Adopt Concurrent Resolution", "house"],
+      ["Senate: To Lay On The Table Amendment Number 3", "senate"],
+      ["Senate: To Lay On The Table Amendment No. 3", "senate"],
+      ["Senate: To Adopt Amendment Number Rfh-1", "senate"],
+      ["Senate: To Adopt Agriculture & Natural Resources Committee Amendment", "senate"],
+      ["Senate: To Take Up Amendment 2 On Third Reading", "senate"],
+      ["Senate: To Grant Free Conference Powers", "senate"],
+      ["Senate: Motion To Suspend Rule 32a", "senate"],
+      ["Senate: To Set For Special Order", "senate"],
+      ["Senate: To Continue The Bill", "senate"],
+      ["Senate: To Adopt The Resolution", "senate"],
+    ] as const) {
+      expect(sc(desc, chamber === "house" ? 124 : 46, chamber)).toMatchObject({
+        isFloorVote: false,
+        questionClass: null,
+      });
+    }
+  });
+
+  it("rejects the session's one under-sized Senate roll on the tally cut", () => {
+    // Roll 1528748: a second reading that failed 0-8 with only eight
+    // senators recorded. It wears a kept desc, so only the chamber-size cut
+    // keeps it out of the queue.
+    expect(sc("Senate: 2nd Reading", 8, "senate").isFloorVote).not.toBe(true);
+  });
+});
+
 describe("Alabama's 2023 desc vocabulary", () => {
   const config = LEGISCAN_STATE_CONFIGS["AL-2014"]!;
   const al23 = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
@@ -927,6 +1015,7 @@ describe("getLegiscanStateConfig", () => {
       "AL",
       "AL-2218",
       "AL-2262",
+      "SC",
       "NV",
       "AL-2014",
       "AL-2060",
@@ -953,6 +1042,7 @@ describe("getLegiscanStateConfig", () => {
       "MT",
       "NC",
       "AL",
+      "SC",
       "NV",
       "NY",
     ]);
@@ -976,6 +1066,7 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("AL").sessionId).toBe(2148);
     expect(getLegiscanStateConfig("AL-2218")).toMatchObject({ jurisdiction: "AL", sessionId: 2218 });
     expect(getLegiscanStateConfig("AL-2262")).toMatchObject({ jurisdiction: "AL", sessionId: 2262 });
+    expect(getLegiscanStateConfig("SC").sessionId).toBe(2194);
     expect(getLegiscanStateConfig("NV").sessionId).toBe(2144);
     expect(getLegiscanStateConfig("AL-2014")).toMatchObject({ jurisdiction: "AL", sessionId: 2014 });
     expect(getLegiscanStateConfig("AL-2060")).toMatchObject({ jurisdiction: "AL", sessionId: 2060 });
