@@ -163,10 +163,12 @@ is always null). Verified 2026-08-26 against statute + FAQ + live API:
   of business. SOS FAQ and the legacy-archive upload spec (fields "Required if
   amount is equal to or greater than $5000") confirm. **Exemption (statute
   verbatim)**: the duty applies to filers "other than a candidate for judicial
-  office, county office, city office, or school district office" — judicial
-  candidates get NO occupation data by law (statutory-unavailable note, never
-  an empty chart). 48-hour supplemental statements (>$500, last 39 days)
-  legally omit occupation — it arrives in the next cumulative report.
+  office, county office, city office, or school district office". Judicial
+  filers nonetheless supply occupation in practice (gate 6 below: 2 of 2
+  donors ≥ $5k), so publication is decided by the display gate, not office
+  class; the coverage note states the exemption. 48-hour supplemental
+  statements (>$500, last 39 days) legally omit occupation — it arrives in
+  the next cumulative report.
 - **Live proof**: CON rows from `getAllPublicTransactionDataList` populate
   `employerOccupation` / `employerName` / `employerAddress` on $5k+ individual
   contributions (observed: $15,000 donor → "Healthcare/Medical" / Essentia
@@ -299,3 +301,34 @@ Not in Phase 0A (deliberately): filed-report PDF download (verified once via
 `Common-Service/AmazonCloudFront/getDownloadLinkWithoutCookies` with
 `{ s3FilePath }` → presigned URL), the 48-hour overlap (Phase 0B, after
 Sep 25–Oct 2), any schema or publication.
+
+## Phase 3 — occupation (built 2026-09-02, local)
+
+No schema change: migration 269 already admits `occupation` in the direct
+breakdowns. The aggregator takes the window years' API rows — the sync has
+already proved them row-for-row equal to the CSV (gate 5) — and sums the
+filed `employerOccupation` on positive Monetary / In-Kind rows from
+individuals. Label verbatim after whitespace normalization; blank and
+"Unknown" (a filed placeholder, 3 rows) dropped; nothing inferred. Donor
+identity is the portal's `contributorPayeeID`, else the name.
+
+Publication per committee is the plan's hard-fact-3 display gate: labeled
+individual dollars × 5 ≥ positive itemized individual dollars AND ≥ 3 labeled
+donors. Below the gate the totals and size buckets still publish and no
+occupation rows are written (component isolation) — the card has no
+occupation list rather than a misleading one. Top 50 labels. The loader now
+selects `occupation` + `contribution_size`; the direct coverage note states
+the $5,000 duty, the judicial exemption and the 20% gate. The compliance
+diagnostic (labeled dollars among $5k+ donors) stays in the Phase 0A probe
+output.
+
+Live run 2026-09-02 (`sync-due --stale-after-days=0` on the Phase 2 cache):
+49/49 synced, 14 occupation rows across the 4 committees that pass the gate —
+Wrigley (Attorney General) $33,500 labeled of $93,500 individual, 4 labeled of
+23 donors; Howe (Secretary of State) $45,000 of $114,241.07, 6 of 100; Judy
+Lee (State Senate) $8,320.50 of $9,070.50, 13 of 15; Sorvaag (State Senate)
+$4,250 of $6,700, 5 of 12. Every committee's gate metrics were recomputed
+independently from the raw API JSON with a separate script: 0 mismatches.
+Wrigley's stored rows (Government/Civil $20,000 / 1; Construction/Engineering
+$11,500 / 2; Business Owner $2,000 / 1) match that recomputation exactly. No
+judicial committee passes today.
