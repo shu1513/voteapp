@@ -131,3 +131,43 @@ drop. It fails filter 1: both chambers' final votes are lopsided, the House
 concurring 80-17 and the Senate 45-3, so neither roll separates one candidate
 from another. Its earlier Senate third reading of 38-11 is divided but
 superseded.
+
+## Batch-08
+
+**HB 554** (gray wolf reclassification, chapter 459) is dropped because the
+clause it deleted had never been used. A Montana wolf is legally neither a game
+animal nor a furbearer — 87-2-101 lists both classes and the wolf is in neither,
+nor in "predatory animals" — so it falls into residual "nongame wildlife" under
+87-5-102, and Fish, Wildlife and Parks describe it as "a species in need of
+management" in identical words in the 2022 and 2026 season regulations, before
+and after this act. The deleted text was the dormant option for the commission
+to reclassify wolves as a game animal or furbearer. Every operative rule keys to
+the wolf by name instead: the Class E-1 and E-2 hunting licences at 87-2-523 and
+87-2-524, the Class C trapping licence at 87-2-601, the seasons at 87-1-901 and
+the $1,000 restitution at 87-6-906(1)(b). Nothing about what may lawfully be
+done to a wolf changed, and which way the removed option would have cut cannot
+be determined. Full working in `../batch-08/JUDGING.md`.
+
+**HB 623** (spent nuclear fuel storage, chapter 700) and **HB 696** (uranium
+conversion and enrichment, chapter 503) are dropped because subject and
+mechanism point opposite ways. Both authorize a class of nuclear facility, and
+both *add* state review: they amend 75-20-204 so the Department of Environmental
+Quality's recommendation, notice and fee process reaches Nuclear Regulatory
+Commission applications, which it did not before. Neither deletes anything —
+HB 623 has no strike-throughs at all and HB 696's only deletion is a comma.
+
+The natural assumption, that these bypass Montana's public vote requirement for
+nuclear facilities, is wrong: **75-20-1201 was repealed in 2021** (sec. 6, Ch.
+409, L. 2021) and the Montana Code Annotated shows all of Title 75, chapter 20,
+part 12 as "Nuclear Energy Conversion (Repealed)". There was no vote left to
+bypass. Tagging these on subject alone would repeat the `impartiality` error
+from batch-05.
+
+**HB 28** (public charter schools) is dropped as two-sided. It exempts
+board-approved charter schools from the general school-opening requirements in
+Title 20, chapter 6, part 5, and lets a charter district draw first-year money
+on planned enrolment — but it also denies a charter school run by a local school
+board any per-student money in its first year and makes both kinds subject to
+clawback under 20-9-344. The 70/20/40 enrolment thresholds and the
+80/80/100/140 funding percentages are unchanged, and nothing changes how money
+reaches the districts that charter schools draw students from.
