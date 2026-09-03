@@ -1,0 +1,156 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2234",
+      "roll": 1642646,
+      "measure_id": "SB 284",
+      "vote_date": "2026-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 284, which limits what a civilian board that watches over a police department may do. Cities, towns, counties and townships may still set up such a board. But the board may only give advice. It may not make any decision the police agency has to follow. This applies to boards that already existed and to any set up later. Police merit boards, which handle hiring and discipline, are not affected. The Indiana House passed the bill 70-25, and it became law.",
+      "nay_description": "Voted against Senate Bill 284, which limits what a civilian board that watches over a police department may do. Cities, towns, counties and townships may still set up such a board. But the board may only give advice. It may not make any decision the police agency has to follow. This applies to boards that already existed and to any set up later. Police merit boards, which handle hiring and discipline, are not affected. The Indiana House passed the bill 70-25, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "Third reading, and the only divided roll on this act. The House voted on the Senate bill as reported by the House committee on 2026-02-19; word-level comparison against the enrolled act found no operative difference, so this roll is the enacted text. Member list verified name by name against official roll-call PDF SB0284.358_H.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2234",
+      "roll": 1628208,
+      "measure_id": "SB 112",
+      "vote_date": "2026-02-10",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 112, which deals with a candidate who drops out of a race. The withdrawal papers include a home address. Sometimes it does not match the address on the person's voter registration. Under this law, signing those papers now counts as asking the county to update that record. The Indiana House passed the bill 72-24, and it became law.",
+      "nay_description": "Voted against Senate Bill 112, which deals with a candidate who drops out of a race. The withdrawal papers include a home address. Sometimes it does not match the address on the person's voter registration. Under this law, signing those papers now counts as asking the county to update that record. The Indiana House passed the bill 72-24, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "note": "Third reading, and the only divided roll on this act; the Senate passed it 45-0. Word-level comparison of the House committee text against the enrolled act found no operative difference. Member list verified name by name against official roll-call PDF SB0112.234_H.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2234",
+      "roll": 1618337,
+      "measure_id": "HB 1274",
+      "vote_date": "2026-01-28",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1274, which stops insurance companies from making customers post no-gun signs. It covers property and casualty policies, the kind that cover buildings, cars and accidents. An insurer may not make a customer put up a sign saying guns or bullets are banned or limited. The same goes for a person asking for cover. The rule applies to policies issued or renewed after June 30, 2026. The Indiana House passed the bill 69-25, and it became law.",
+      "nay_description": "Voted against House Bill 1274, which stops insurance companies from making customers post no-gun signs. It covers property and casualty policies, the kind that cover buildings, cars and accidents. An insurer may not make a customer put up a sign saying guns or bullets are banned or limited. The same goes for a person asking for cover. The rule applies to policies issued or renewed after June 30, 2026. The Indiana House passed the bill 69-25, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "Third reading, and the only divided roll on this act. The Senate printed a later version, so the version check mattered here; word-level comparison of the House-passed text against the enrolled act found no operative difference. Member list verified name by name against official roll-call PDF HB1274.129_H.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2234",
+      "roll": 1626087,
+      "measure_id": "SB 258",
+      "vote_date": "2026-02-09",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 258, which removes Indiana's own permit system for nuclear power plants and plants that reuse nuclear fuel. It repeals the rule that a company needed a state permit to build or run one. It repeals the state's power to write rules on air and water pollution from these plants. It repeals the public hearing where people nearby could speak about the harm to air, water and land. It also repeals three permit rules. A permit had to cap how much radiation may be let out. Releases had to be watched, and each one reported. A company must still file a study of the harm to nature. It goes to the state when the company files its federal papers. The Indiana House passed the bill 64-28, and it became law.",
+      "nay_description": "Voted against Senate Bill 258, which removes Indiana's own permit system for nuclear power plants and plants that reuse nuclear fuel. It repeals the rule that a company needed a state permit to build or run one. It repeals the state's power to write rules on air and water pollution from these plants. It repeals the public hearing where people nearby could speak about the harm to air, water and land. It also repeals three permit rules. A permit had to cap how much radiation may be let out. Releases had to be watched, and each one reported. A company must still file a study of the harm to nature. It goes to the state when the company files its federal papers. The Indiana House passed the bill 64-28, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "Third reading. Word-level comparison of the House committee text against the enrolled act found no operative difference. Member list verified name by name against official roll-call PDF SB0258.211_H.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "senate",
+      "session": "2234",
+      "roll": 1616240,
+      "measure_id": "SB 258",
+      "vote_date": "2026-01-22",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 258, which removes Indiana's own permit system for nuclear power plants and plants that reuse nuclear fuel. It repeals the rule that a company needed a state permit to build or run one. It repeals the state's power to write rules on air and water pollution from these plants. It repeals the public hearing where people nearby could speak about the harm to air, water and land. It also repeals three permit rules. A permit had to cap how much radiation may be let out. Releases had to be watched, and each one reported. A company must still file a study of the harm to nature. It goes to the state when the company files its federal papers. The Indiana Senate passed the bill 36-9, and it became law.",
+      "nay_description": "Voted against Senate Bill 258, which removes Indiana's own permit system for nuclear power plants and plants that reuse nuclear fuel. It repeals the rule that a company needed a state permit to build or run one. It repeals the state's power to write rules on air and water pollution from these plants. It repeals the public hearing where people nearby could speak about the harm to air, water and land. It also repeals three permit rules. A permit had to cap how much radiation may be let out. Releases had to be watched, and each one reported. A company must still file a study of the harm to nature. It goes to the state when the company files its federal papers. The Indiana Senate passed the bill 36-9, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "Third reading. The House did not amend the bill, so word-level comparison of the Senate-passed text against the enrolled act found no operative difference and this roll is the enacted text. Member list verified name by name against official roll-call PDF SB0258.61_S.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2234",
+      "roll": 1642738,
+      "measure_id": "SB 285",
+      "vote_date": "2026-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 285, which makes camping or sleeping on state or local government land a crime. An officer must first check whether the person needs urgent mental health care. If not, the officer must give a warning and say where shelter and services can be found. Doing it again in the same area after 48 hours is a Class C misdemeanor. It is a defense that no shelter bed was open within five miles. Cities and counties may not adopt or enforce a policy that blocks or discourages the enforcing of camping bans. The law also widens who may be held for mental health care against their will. It now covers a person with no fixed shelter who was offered a shelter and turned it down. That person must be staying outdoors in weather likely to kill or badly hurt them. The Indiana House passed the bill 53-44, and it became law.",
+      "nay_description": "Voted against Senate Bill 285, which makes camping or sleeping on state or local government land a crime. An officer must first check whether the person needs urgent mental health care. If not, the officer must give a warning and say where shelter and services can be found. Doing it again in the same area after 48 hours is a Class C misdemeanor. It is a defense that no shelter bed was open within five miles. Cities and counties may not adopt or enforce a policy that blocks or discourages the enforcing of camping bans. The law also widens who may be held for mental health care against their will. It now covers a person with no fixed shelter who was offered a shelter and turned it down. That person must be staying outdoors in weather likely to kill or badly hurt them. The Indiana House passed the bill 53-44, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "Third reading, the House's final action. Word-level comparison of the House-engrossed text against the enrolled act found no operative difference. Member list verified name by name against official roll-call PDF SB0285.359_H.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "senate",
+      "session": "2234",
+      "roll": 1646484,
+      "measure_id": "SB 285",
+      "vote_date": "2026-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 285, which makes camping or sleeping on state or local government land a crime. An officer must first check whether the person needs urgent mental health care. If not, the officer must give a warning and say where shelter and services can be found. Doing it again in the same area after 48 hours is a Class C misdemeanor. It is a defense that no shelter bed was open within five miles. Cities and counties may not adopt or enforce a policy that blocks or discourages the enforcing of camping bans. The law also widens who may be held for mental health care against their will. It now covers a person with no fixed shelter who was offered a shelter and turned it down. That person must be staying outdoors in weather likely to kill or badly hurt them. The Indiana Senate agreed to the final version 28-22, and it became law.",
+      "nay_description": "Voted against Senate Bill 285, which makes camping or sleeping on state or local government land a crime. An officer must first check whether the person needs urgent mental health care. If not, the officer must give a warning and say where shelter and services can be found. Doing it again in the same area after 48 hours is a Class C misdemeanor. It is a defense that no shelter bed was open within five miles. Cities and counties may not adopt or enforce a policy that blocks or discourages the enforcing of camping bans. The law also widens who may be held for mental health care against their will. It now covers a person with no fixed shelter who was offered a shelter and turned it down. That person must be staying outdoors in weather likely to kill or badly hurt them. The Indiana Senate agreed to the final version 28-22, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "The Senate's agreement to the House amendments, which is its final action and the enacted text. The Senate's own earlier third reading on 2026-01-28 is superseded: the House rewrote the bill after it, and word-level comparison puts that text at 0.55 similarity to the enrolled act. Member list verified name by name against official roll-call PDF SB0285.303_S.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2234",
+      "roll": 1646022,
+      "measure_id": "HB 1193",
+      "vote_date": "2026-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1193, which changes how Indiana handles claims of unfair treatment based on race, sex, religion, disability and other protected traits. The state Civil Rights Commission may no longer act as a person's lawyer in court in these cases. In fair housing cases the person must now file their own lawsuit within 30 days. The commission used to file it for them. The commission can also sue over a broad pattern of unfair treatment. Money damages are dropped from what a court may award there. If another state or federal agency can handle a claim, the commission must hand it over. It keeps power over that claim only if the other agency agrees in writing. The law also adds two new kinds of claim. One is punishing a person for speaking up. The other is breaking three federal civil rights laws that cover federal money, jobs and schools. The Indiana House agreed to the final version 66-29, and it became law.",
+      "nay_description": "Voted against House Bill 1193, which changes how Indiana handles claims of unfair treatment based on race, sex, religion, disability and other protected traits. The state Civil Rights Commission may no longer act as a person's lawyer in court in these cases. In fair housing cases the person must now file their own lawsuit within 30 days. The commission used to file it for them. The commission can also sue over a broad pattern of unfair treatment. Money damages are dropped from what a court may award there. If another state or federal agency can handle a claim, the commission must hand it over. It keeps power over that claim only if the other agency agrees in writing. The law also adds two new kinds of claim. One is punishing a person for speaking up. The other is breaking three federal civil rights laws that cover federal money, jobs and schools. The Indiana House agreed to the final version 66-29, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "The House's agreement to the Senate amendments, which is the enacted text. The House's own third reading on 2026-01-28 is a version trap and is NOT used: that text also made any violation of the United States or Indiana Constitution a discriminatory practice the commission could act on, which the enrolled act drops, and it carried no mandatory referral duty. Member list verified name by name against official roll-call PDF HB1193.395_H.pdf."
+    }
+  ]
+}

@@ -14,6 +14,9 @@
 // Only totalReceipts and directContributionTotal are written; the writer's
 // preserve-when-NULL policy leaves totalDisbursements, cashOnHand and the
 // outside totals untouched (year-end spending and IE are later phases).
+// Direct breakdowns: contribution-size buckets from the CSV rows and, when
+// the display gate passes (Phase 3, hard fact 3), filed occupations from
+// the reconciled API rows — the API is the only surface that carries them.
 //
 // Zero filed rows in the window is NOT $0 raised: the bulk file cannot tell
 // a committee that reported no contributions from one whose first
@@ -134,7 +137,7 @@ export type NorthDakotaCandidateFinanceSyncResult = {
   directContributionTotal: number | null;
   reconciliation: NorthDakotaYearReconciliation[];
   aggregation: Omit<NorthDakotaDirectFinanceAggregationResult, "breakdowns">;
-  breakdownCounts: { contribution_size: number };
+  breakdownCounts: { occupation: number; contribution_size: number };
   summaryWritten: boolean;
   directBreakdownsWritten: number;
 };
@@ -200,6 +203,7 @@ export async function syncNorthDakotaCandidateFinance(input: {
 
   // --- Artifacts + per-year CSV<->API reconciliation (gate 5).
   const contributionRows: NorthDakotaContributionCsvRow[] = [];
+  const apiRows: NorthDakotaTransactionRow[] = [];
   const reconciliation: NorthDakotaYearReconciliation[] = [];
   for (const year of windowYears) {
     const yearContributions = await loader.contributionRows(year);
@@ -220,10 +224,11 @@ export async function syncNorthDakotaCandidateFinance(input: {
       amendedApiRowCount: check.amendedApiRowCount,
     });
     contributionRows.push(...yearContributions);
+    apiRows.push(...yearApiRows);
   }
 
-  // --- Aggregation (hard fact 1); unknown vocabulary fails closed.
-  const aggregation = aggregateNorthDakotaDirectFinance({ entityId, window, contributionRows });
+  // --- Aggregation (hard facts 1 and 3); unknown vocabulary fails closed.
+  const aggregation = aggregateNorthDakotaDirectFinance({ entityId, window, contributionRows, apiRows });
   const unrecognized = [
     ...aggregation.unrecognizedContributionCategories.map((value) => `contribution category "${value}"`),
     ...aggregation.unrecognizedContributorTypes.map((value) => `contributor type "${value}"`),
@@ -288,7 +293,10 @@ export async function syncNorthDakotaCandidateFinance(input: {
     directContributionTotal,
     reconciliation,
     aggregation: aggregationSummary,
-    breakdownCounts: { contribution_size: breakdowns.length },
+    breakdownCounts: {
+      occupation: breakdowns.filter((breakdown) => breakdown.categoryType === "occupation").length,
+      contribution_size: breakdowns.filter((breakdown) => breakdown.categoryType === "contribution_size").length,
+    },
     summaryWritten,
     directBreakdownsWritten,
   };

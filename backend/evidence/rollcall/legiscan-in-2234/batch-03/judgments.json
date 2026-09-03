@@ -1,0 +1,109 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2234",
+      "roll": 1644741,
+      "measure_id": "HB 1001",
+      "vote_date": "2026-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1001, which changes how Indiana tracks housing and what builders must fit. From 2027 every county, city and town must send the state a yearly housing report. It must give the number of homes proposed, approved and refused. It must give the net new homes built. It must also say how many days the local office took to handle applications. A second yearly report must give average and median home sale prices and median rents. It must give homes built by type, and how many are priced for lower, middle and higher earners. The state must publish a summary comparing regions. The law also drops several building and land rules. No state or local body may now require arc-fault breakers in flats and like buildings put up after June 2026. These breakers cut the power when wiring sparks. None may require radio gear that helps rescue crews talk inside large new buildings. The state must check its storm water manual for cost. It may no longer demand both a repair ledge and a safety ledge on a storm water pond. Land filled in a flood plain now needs no more than three times its area in new flood storage. The Indiana House agreed to the final version 72-21, and it became law.",
+      "nay_description": "Voted against House Bill 1001, which changes how Indiana tracks housing and what builders must fit. From 2027 every county, city and town must send the state a yearly housing report. It must give the number of homes proposed, approved and refused. It must give the net new homes built. It must also say how many days the local office took to handle applications. A second yearly report must give average and median home sale prices and median rents. It must give homes built by type, and how many are priced for lower, middle and higher earners. The state must publish a summary comparing regions. The law also drops several building and land rules. No state or local body may now require arc-fault breakers in flats and like buildings put up after June 2026. These breakers cut the power when wiring sparks. None may require radio gear that helps rescue crews talk inside large new buildings. The state must check its storm water manual for cost. It may no longer demand both a repair ledge and a safety ledge on a storm water pond. Land filled in a flood plain now needs no more than three times its area in new flood storage. The Indiana House agreed to the final version 72-21, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "The House's agreement to the Senate amendments, which is the enacted text. Member list verified name by name against official roll-call PDF HB1001.372_H.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "senate",
+      "session": "2234",
+      "roll": 1642852,
+      "measure_id": "HB 1001",
+      "vote_date": "2026-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1001, which changes how Indiana tracks housing and what builders must fit. From 2027 every county, city and town must send the state a yearly housing report. It must give the number of homes proposed, approved and refused. It must give the net new homes built. It must also say how many days the local office took to handle applications. A second yearly report must give average and median home sale prices and median rents. It must give homes built by type, and how many are priced for lower, middle and higher earners. The state must publish a summary comparing regions. The law also drops several building and land rules. No state or local body may now require arc-fault breakers in flats and like buildings put up after June 2026. These breakers cut the power when wiring sparks. None may require radio gear that helps rescue crews talk inside large new buildings. The state must check its storm water manual for cost. It may no longer demand both a repair ledge and a safety ledge on a storm water pond. Land filled in a flood plain now needs no more than three times its area in new flood storage. The Indiana Senate passed the bill 35-13, and it became law.",
+      "nay_description": "Voted against House Bill 1001, which changes how Indiana tracks housing and what builders must fit. From 2027 every county, city and town must send the state a yearly housing report. It must give the number of homes proposed, approved and refused. It must give the net new homes built. It must also say how many days the local office took to handle applications. A second yearly report must give average and median home sale prices and median rents. It must give homes built by type, and how many are priced for lower, middle and higher earners. The state must publish a summary comparing regions. The law also drops several building and land rules. No state or local body may now require arc-fault breakers in flats and like buildings put up after June 2026. These breakers cut the power when wiring sparks. None may require radio gear that helps rescue crews talk inside large new buildings. The state must check its storm water manual for cost. It may no longer demand both a repair ledge and a safety ledge on a storm water pond. Land filled in a flood plain now needs no more than three times its area in new flood storage. The Indiana Senate passed the bill 35-13, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "Third reading. Word-level comparison of the Senate-engrossed text against the enrolled act found no operative difference. Member list verified name by name against official roll-call PDF HB1001.223_S.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2234",
+      "roll": 1648339,
+      "measure_id": "HB 1003",
+      "vote_date": "2026-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1003, which closes or merges dozens of state boards and panels. About 39 bodies end. Some simply stop, such as the forensic science board and the driver education panel. Others hand their work to a department that already exists. The public safety radio board goes to homeland security. So does the fire and building safety board. The war memorials board goes to veterans affairs. Four bodies covering women, Hispanic and Latino people, Black men and Native Americans merge into one cultural board with four subgroups. Some boards lose their daily pay. An agency renewing a rule must now compare it with Illinois, Kentucky, Michigan and Ohio. It must publish why a stricter rule is needed. Two changes cut the other way. The natural resources board loses its rule that members be split between parties. It also loses the rule that two members know about the environment. The college savings board loses its party split too. The moved building rules are frozen: homeland security cannot change them without a new law. The Indiana House adopted the final version 69-28, and it became law.",
+      "nay_description": "Voted against House Bill 1003, which closes or merges dozens of state boards and panels. About 39 bodies end. Some simply stop, such as the forensic science board and the driver education panel. Others hand their work to a department that already exists. The public safety radio board goes to homeland security. So does the fire and building safety board. The war memorials board goes to veterans affairs. Four bodies covering women, Hispanic and Latino people, Black men and Native Americans merge into one cultural board with four subgroups. Some boards lose their daily pay. An agency renewing a rule must now compare it with Illinois, Kentucky, Michigan and Ohio. It must publish why a stricter rule is needed. Two changes cut the other way. The natural resources board loses its rule that members be split between parties. It also loses the rule that two members know about the environment. The college savings board loses its party split too. The moved building rules are frozen: homeland security cannot change them without a new law. The Indiana House adopted the final version 69-28, and it became law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "note": "Adoption of the conference committee report, which is the enacted text. The House's own third reading of 2026-02-02 is NOT used: the Senate and the conference committee reworked the bill after it. Member list verified name by name against official roll-call PDF HB1003.422_H.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2234",
+      "roll": 1642560,
+      "measure_id": "SB 277",
+      "vote_date": "2026-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 277, which cuts back Indiana's environment rules and the agency that writes them. It repeals 84 sections of environment law. In more than two dozen places a duty on the agency or its rules board becomes a choice. The state's own review of major state actions ends. Agencies no longer have to set out the harm a project would cause, or the other options. The state air operating permit chapter is repealed. The agency may not rest a decision only on federal health risk numbers that never went through federal rulemaking. It must avoid ones at or below natural background levels. A citizen asking for a new rule now needs Indiana signers and draft wording. A majority of the board must find the request has merit. The rules board loses its cap on members from one party. The governor may now remove a member without cause. Several yearly public reports end. One change runs the other way. The law gathers scattered appeal rights into one list. For the first time a person may appeal the agency's failure to act. The Indiana House passed the bill 53-45, and it became law.",
+      "nay_description": "Voted against Senate Bill 277, which cuts back Indiana's environment rules and the agency that writes them. It repeals 84 sections of environment law. In more than two dozen places a duty on the agency or its rules board becomes a choice. The state's own review of major state actions ends. Agencies no longer have to set out the harm a project would cause, or the other options. The state air operating permit chapter is repealed. The agency may not rest a decision only on federal health risk numbers that never went through federal rulemaking. It must avoid ones at or below natural background levels. A citizen asking for a new rule now needs Indiana signers and draft wording. A majority of the board must find the request has merit. The rules board loses its cap on members from one party. The governor may now remove a member without cause. Several yearly public reports end. One change runs the other way. The law gathers scattered appeal rights into one list. For the first time a person may appeal the agency's failure to act. The Indiana House passed the bill 53-45, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "Third reading. Word-level comparison of the House-engrossed text against the enrolled act found no operative difference; all 136 flagged runs were the running footer. Member list verified name by name against official roll-call PDF SB0277.356_H.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "senate",
+      "session": "2234",
+      "roll": 1645191,
+      "measure_id": "SB 277",
+      "vote_date": "2026-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 277, which cuts back Indiana's environment rules and the agency that writes them. It repeals 84 sections of environment law. In more than two dozen places a duty on the agency or its rules board becomes a choice. The state's own review of major state actions ends. Agencies no longer have to set out the harm a project would cause, or the other options. The state air operating permit chapter is repealed. The agency may not rest a decision only on federal health risk numbers that never went through federal rulemaking. It must avoid ones at or below natural background levels. A citizen asking for a new rule now needs Indiana signers and draft wording. A majority of the board must find the request has merit. The rules board loses its cap on members from one party. The governor may now remove a member without cause. Several yearly public reports end. One change runs the other way. The law gathers scattered appeal rights into one list. For the first time a person may appeal the agency's failure to act. The Indiana Senate agreed to the final version 26-21, and it became law.",
+      "nay_description": "Voted against Senate Bill 277, which cuts back Indiana's environment rules and the agency that writes them. It repeals 84 sections of environment law. In more than two dozen places a duty on the agency or its rules board becomes a choice. The state's own review of major state actions ends. Agencies no longer have to set out the harm a project would cause, or the other options. The state air operating permit chapter is repealed. The agency may not rest a decision only on federal health risk numbers that never went through federal rulemaking. It must avoid ones at or below natural background levels. A citizen asking for a new rule now needs Indiana signers and draft wording. A majority of the board must find the request has merit. The rules board loses its cap on members from one party. The governor may now remove a member without cause. Several yearly public reports end. One change runs the other way. The law gathers scattered appeal rights into one list. For the first time a person may appeal the agency's failure to act. The Indiana Senate agreed to the final version 26-21, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "The Senate's agreement to the House amendments, which is its final action and the enacted text. The Senate's own third reading of 2026-01-29 is a version trap and is NOT used: that text also repealed Indiana's nuclear facility permit chapter and turned four more agency duties into choices, and it did not contain the federal risk values restriction. Member list verified name by name against official roll-call PDF SB0277.296_S.pdf."
+    }
+  ]
+}

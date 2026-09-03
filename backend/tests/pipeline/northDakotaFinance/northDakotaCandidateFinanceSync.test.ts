@@ -72,7 +72,7 @@ function apiRow(overrides: Partial<NorthDakotaTransactionRow>): NorthDakotaTrans
 }
 
 const API_ROWS: Record<number, NorthDakotaTransactionRow[]> = {
-  2025: [apiRow({ transactionID: 10, transactionAmount: 250, transactionDate: "2025-08-15T00:00:00", contributorPayeeName: "Early Ann" })],
+  2025: [apiRow({ transactionID: 10, transactionAmount: 250, transactionDate: "2025-08-15T00:00:00", contributorPayeeName: "Early Ann", contributorPayeeID: 76 })],
   2026: [
     apiRow({ transactionID: 11 }),
     apiRow({ transactionID: 12, transactionAmount: 1000, transactionDate: "2026-03-02T00:00:00", entityTypeDesc: "Committee/PAC", employerOccupation: null }),
@@ -146,8 +146,14 @@ describe("syncNorthDakotaCandidateFinance", () => {
       totalReceipts: 5390,
       // minus the candidate's own 3000
       directContributionTotal: 2390,
-      aggregation: { unitemizedCents: 64_000, selfFundingCents: 300_000, lumpRowCount: 1 },
-      breakdownCounts: { contribution_size: 2 },
+      aggregation: {
+        unitemizedCents: 64_000,
+        selfFundingCents: 300_000,
+        lumpRowCount: 1,
+        // Two labeled individuals (250 + 500): under the three-donor gate, so no occupation rows.
+        occupation: { individualCents: 75_000, occupationCents: 75_000, donorCount: 2, occupationDonorCount: 2, displayGatePassed: false },
+      },
+      breakdownCounts: { occupation: 0, contribution_size: 2 },
       summaryWritten: true,
       directBreakdownsWritten: 2,
     });
@@ -172,6 +178,47 @@ describe("syncNorthDakotaCandidateFinance", () => {
     ]);
   });
 
+  it("writes filed occupations from the reconciled API rows when the display gate passes", async () => {
+    const { db, client } = writingDb();
+    const extraCsv = [
+      `${ENTITY},Friends of Jane Doe,Doe Jane,Contributions,Monetary,2026-03-05,5000.0000,Individual,Poe Paula,6 Elm St,Poe Farms,2026-05-01`,
+      `${ENTITY},Friends of Jane Doe,Doe Jane,Contributions,In-Kind,2026-03-06,250.0000,Individual,Quinn Quincy,7 Elm St,,2026-05-01`,
+    ];
+    const extraApi = [
+      apiRow({ transactionID: 16, transactionAmount: 5000, transactionDate: "2026-03-05T00:00:00", contributorPayeeName: "Poe Paula", contributorPayeeID: 78, employerName: "Poe Farms", employerOccupation: "Agriculture" }),
+      apiRow({ transactionID: 17, transactionAmount: 250, transactionDate: "2026-03-06T00:00:00", transactionCategoryDesc: "In-Kind", contributorPayeeName: "Quinn Quincy", contributorPayeeID: 79, employerName: null, employerOccupation: " Attorney/Legal " }),
+    ];
+    const result = await syncNorthDakotaCandidateFinance({
+      ...baseInput(db),
+      loadArtifacts: loader({
+        contributionRows: vi.fn(async (year: number) =>
+          parseNorthDakotaContributionCsv(`${CON_HEADER}\r\n${[...CONTRIBUTIONS[year]!, ...(year === 2026 ? extraCsv : [])].join("\r\n")}\r\n`).rows
+        ),
+        apiContributionRows: vi.fn(async (year: number) => (year === 2026 ? [...API_ROWS[2026]!, ...extraApi] : API_ROWS[year]!)),
+      }),
+    });
+    expect(result).toMatchObject({
+      status: "synced",
+      totalReceipts: 10_640,
+      directContributionTotal: 7640,
+      // Four labeled individuals: 250 + 500 + 5000 + 250, all with an occupation.
+      aggregation: { occupation: { individualCents: 600_000, occupationCents: 600_000, donorCount: 4, occupationDonorCount: 4, displayGatePassed: true } },
+      breakdownCounts: { occupation: 3, contribution_size: 3 },
+      directBreakdownsWritten: 6,
+    });
+    const breakdownInserts = client.query.mock.calls.filter((call) =>
+      String(call[0]).includes("INSERT INTO public.nd_candidate_finance_direct_breakdowns")
+    );
+    expect(breakdownInserts.map((call) => [call[1]![2], call[1]![3], call[1]![4], call[1]![5]])).toEqual([
+      ["occupation", "Agriculture", 5000, 1],
+      ["occupation", "Healthcare/Medical", 750, 2],
+      ["occupation", "Attorney/Legal", 250, 1],
+      ["contribution_size", "$5,000+", 5000, 1],
+      ["contribution_size", "$500-$999", 500, 1],
+      ["contribution_size", "$250-$499", 250, 1],
+    ]);
+  });
+
   it("writes NULL money, not $0, for a committee with no filed rows in the window", async () => {
     const { db, client } = writingDb();
     const base = baseInput(db);
@@ -186,8 +233,8 @@ describe("syncNorthDakotaCandidateFinance", () => {
       status: "no_filed_rows",
       totalReceipts: null,
       directContributionTotal: null,
-      aggregation: { contributionRowCount: 0 },
-      breakdownCounts: { contribution_size: 0 },
+      aggregation: { contributionRowCount: 0, occupation: { donorCount: 0, displayGatePassed: false } },
+      breakdownCounts: { occupation: 0, contribution_size: 0 },
       summaryWritten: true,
       directBreakdownsWritten: 0,
     });

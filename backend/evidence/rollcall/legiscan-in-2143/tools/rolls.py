@@ -6,9 +6,9 @@ and the same action still identifies the roll.  It means LegiScan and the journa
 about the count, which is the defect recorded in CODE-FINDINGS.md section 2, and the reason
 every selected roll's member list is checked against the official PDF.
 """
-import json, re, sys
-BILLDIR="/Users/shu/legiscan-data/in-2143/IN/2025-2025_Regular_Session/bill"
-VOTEDIR="/Users/shu/legiscan-data/in-2143/IN/2025-2025_Regular_Session/vote"
+import json, os, re, sys
+sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
+from session import BILLDIR, VOTEDIR
 SEL=json.load(open(sys.argv[1]))
 for bill, rolls in SEL.items():
     hist=json.load(open(f"{BILLDIR}/{bill}.json"))["bill"]["history"]

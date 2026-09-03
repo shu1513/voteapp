@@ -1,0 +1,224 @@
+{
+ "rolls": [
+  {
+   "measure": "AB 1049",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726539,
+   "date": "2026-08-27",
+   "yea": 59,
+   "nay": 15,
+   "title": "California Food Assistance Program: sponsor deeming rules."
+  },
+  {
+   "measure": "AB 1049",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726261,
+   "date": "2026-08-26",
+   "yea": 30,
+   "nay": 10,
+   "title": "California Food Assistance Program: sponsor deeming rules."
+  },
+  {
+   "measure": "AB 1201",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1725634,
+   "date": "2026-08-20",
+   "yea": 56,
+   "nay": 14,
+   "title": "Family reunification services."
+  },
+  {
+   "measure": "AB 1201",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725404,
+   "date": "2026-08-19",
+   "yea": 27,
+   "nay": 10,
+   "title": "Family reunification services."
+  },
+  {
+   "measure": "AB 1336",
+   "status": "vetoed",
+   "chamber": "house",
+   "roll": 1602466,
+   "date": "2025-09-11",
+   "yea": 61,
+   "nay": 17,
+   "title": "Farmworkers: benefits."
+  },
+  {
+   "measure": "AB 1336",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1601455,
+   "date": "2025-09-09",
+   "yea": 30,
+   "nay": 10,
+   "title": "Farmworkers: benefits."
+  },
+  {
+   "measure": "AB 1448",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726619,
+   "date": "2026-08-27",
+   "yea": 46,
+   "nay": 18,
+   "title": "Coastal resources: California Coastal Sanctuary: tidelands and submerged lands: oil and gas development."
+  },
+  {
+   "measure": "AB 1448",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726328,
+   "date": "2026-08-26",
+   "yea": 29,
+   "nay": 10,
+   "title": "Coastal resources: California Coastal Sanctuary: tidelands and submerged lands: oil and gas development."
+  },
+  {
+   "measure": "AB 1457",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726587,
+   "date": "2026-08-27",
+   "yea": 58,
+   "nay": 18,
+   "title": "General plan: environmental justice element: disadvantaged communities."
+  },
+  {
+   "measure": "AB 1457",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726341,
+   "date": "2026-08-26",
+   "yea": 29,
+   "nay": 10,
+   "title": "General plan: environmental justice element: disadvantaged communities."
+  },
+  {
+   "measure": "AB 1633",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726774,
+   "date": "2026-08-28",
+   "yea": 57,
+   "nay": 17,
+   "title": "Taxation: private detention facilities."
+  },
+  {
+   "measure": "AB 1633",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726500,
+   "date": "2026-08-27",
+   "yea": 30,
+   "nay": 10,
+   "title": "Taxation: private detention facilities."
+  },
+  {
+   "measure": "AB 1650",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726621,
+   "date": "2026-08-27",
+   "yea": 55,
+   "nay": 19,
+   "title": "Rental vehicles: law enforcement."
+  },
+  {
+   "measure": "AB 1650",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726620,
+   "date": "2026-08-27",
+   "yea": 29,
+   "nay": 11,
+   "title": "Rental vehicles: law enforcement."
+  },
+  {
+   "measure": "AB 1661",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726277,
+   "date": "2026-08-26",
+   "yea": 60,
+   "nay": 16,
+   "title": "Oil and gas: low-production wells: Baldwin Hills Conservancy: Equitable Community Repair and Reinvestment Account: health impacts."
+  },
+  {
+   "measure": "AB 1661",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726104,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 9,
+   "title": "Oil and gas: low-production wells: Baldwin Hills Conservancy: Equitable Community Repair and Reinvestment Account: health impacts."
+  },
+  {
+   "measure": "AB 1664",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726340,
+   "date": "2026-08-26",
+   "yea": 59,
+   "nay": 17,
+   "title": "Elections: law enforcement investigations of election records or voting technology."
+  },
+  {
+   "measure": "AB 1664",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725947,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 8,
+   "title": "Elections: law enforcement investigations of election records or voting technology."
+  },
+  {
+   "measure": "AB 1743",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1725696,
+   "date": "2026-08-24",
+   "yea": 60,
+   "nay": 18,
+   "title": "Firearms."
+  },
+  {
+   "measure": "AB 1743",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725611,
+   "date": "2026-08-20",
+   "yea": 28,
+   "nay": 10,
+   "title": "Firearms."
+  },
+  {
+   "measure": "AB 1758",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1703043,
+   "date": "2026-05-28",
+   "yea": 57,
+   "nay": 15,
+   "title": "Sellers of travel."
+  },
+  {
+   "measure": "AB 1758",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725598,
+   "date": "2026-08-20",
+   "yea": 28,
+   "nay": 10,
+   "title": "Sellers of travel."
+  }
+ ]
+}

@@ -15,6 +15,7 @@ import {
 } from "../pipeline/kansasFinance/kansasCandidateLedger.js";
 import { kansasCfrOfficeForRace } from "../pipeline/kansasFinance/kansasFinanceEligibleOffices.js";
 import { createKansasFilingPoolLoader } from "../pipeline/kansasFinance/kansasFilingSearch.js";
+import { createKansasKpdcRowLoader } from "../pipeline/kansasFinance/kansasPaperInventory.js";
 import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export type ReportKansasCandidateFinanceLedgersScriptOptions = {
@@ -72,6 +73,8 @@ type LedgerReportRow = {
   periods?: Record<string, string>;
   reports?: number;
   paperReports?: number;
+  /** KPDC tree inventory for the paper rows (absent when there are none). */
+  paper?: { status: string; reason?: string; headers?: number; explainedByEfile?: number; lastMinute?: number; unmapped?: string[] };
   appointments?: number;
   affidavits?: number;
   lastMinuteFilings?: number;
@@ -113,6 +116,9 @@ async function main(): Promise<void> {
       onSkippedRows: (office, skipped) =>
         console.warn(`Kansas ledger report: ${skipped} ${office.label} rows carried another office and were skipped`),
     });
+    const loadKpdcRows = createKansasKpdcRowLoader({
+      onOrphanLinks: (treePath, count) => console.warn(`Kansas ledger report: ${count} links in ${treePath} precede any candidate row`),
+    });
     const results: LedgerReportRow[] = [];
     for (const row of due.rows) {
       const base = {
@@ -131,6 +137,7 @@ async function main(): Promise<void> {
           target: { committeeId: row.committeeId, committeeName: row.committeeName, office, electionYear: row.electionYear },
           now: startedAt,
           loadFilingPool,
+          loadKpdcRows,
         });
         if (result.status === "resolved") {
           results.push({
@@ -140,6 +147,20 @@ async function main(): Promise<void> {
             periods: Object.fromEntries(result.ledger.entries.map((entry) => [entry.period.key, entry.status])),
             reports: result.reports.length,
             paperReports: result.paperReports.length,
+            ...(result.paper === null
+              ? {}
+              : {
+                  paper:
+                    result.paper.status === "resolved"
+                      ? {
+                          status: "resolved",
+                          headers: result.paper.headers.length,
+                          explainedByEfile: result.paper.explainedByEfile,
+                          lastMinute: result.paper.lastMinute,
+                          unmapped: result.paper.unmapped,
+                        }
+                      : { status: "unresolved", reason: result.paper.reason },
+                }),
             appointments: result.appointments.length,
             affidavits: result.affidavitDates.length,
             lastMinuteFilings: result.ledger.lastMinuteFilings.length,
