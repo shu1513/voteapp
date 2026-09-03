@@ -1,6 +1,6 @@
 # Idaho campaign finance — build plan
 
-Status: rev 4 — Phase 0 MERGED (#1025); Phase 1 MERGED (#1041, 2026-09-02) and run locally (migration 268 applied, 101 of 108 candidates auto-linked); Phase 2a MERGED (#1048); Phase 2b BUILT 2026-09-02 (`idahoOutsideSpendingAggregator.ts`, verified on the live IE list for all 101 links). Next = Phase 3 (acquisition + sync, rules pinned below).
+Status: rev 5 — Phase 0 MERGED (#1025); Phase 1 MERGED (#1041, 2026-09-02) and run locally (migration 268 applied, 101 of 108 candidates auto-linked); Phase 2a MERGED (#1048); Phase 2b MERGED (#1056); Phase 3 BUILT 2026-09-03 (due list, per-link sync, batch, CLI, ballot-lookup loader) and RUN locally: 101/101 links synced, $6,660,273.70 raised, $728,598.12 support / $245,617.69 oppose, 0 failures. Next = Phase 4 (prod).
 Source facts: `backend/docs/idaho-campaign-finance.md` (endpoints, quirks, and the two findings that shaped this plan; committed with Phase 0).
 Template module: `backend/src/pipeline/newHampshireFinance/` (same Civix CFIS vendor; same JSON envelope, pagination, bulk-export endpoint, client error model).
 Writer: `createStandardStateFinanceSnapshotWriter` (`pipeline/finance/standardStateFinanceSnapshotWriter.ts`), as NH/Montana.
@@ -41,7 +41,11 @@ Consequences: no 20 MB artifact cache; the raw artifact per link is the registra
 - `idahoFinanceWriter.ts` (Phase 1) — `createStandardStateFinanceSnapshotWriter` over the `id_*` tables; link identity `registration_guid`, outside identity `filer_key`, signed cash on hand, manual-link protection, `sunshine_grid` supersession.
 - `idahoContributionAggregator.ts` (Phase 2a) — pure direct-money aggregator: grid totals in, size and source-type breakdowns plus `rowCoverage` out (rules under Phase 2a).
 - `idahoOutsideSpendingAggregator.ts` (Phase 2b) — pure outside-money aggregator: linked registration + whole grid + all-time IE list in, support/oppose totals and per-filer groups out (rules under Phase 2b).
-- writer + sync + due-list + scheduler (Phase 2/3) — clone NH/Montana shapes.
+- `idahoCandidateFinanceDueList.ts` (Phase 3) — Montana-shape link-gated staleness query over `id_*` (active links, general stage, eligible offices, window; never-synced first).
+- `idahoCandidateFinanceSync.ts` (Phase 3) — per-link live sync: grid row gate → one-page contribution fetch (fail closed on a partial page) → both aggregators → artifact store → one snapshot write.
+- `idahoCandidateFinanceBatchSync.ts` (Phase 3) — auto-link pass (shares the grid pull), due list, one IE pull, per-link sync with recorded failures; `backend/src/scripts/syncDueIdahoCandidateFinance.ts` (`npm run idaho-candidates:finance:sync-due`, `--dry-run --force --no-auto-link --max-candidates --stale-after-days --lookback-days --lookahead-days`).
+- `idahoBallotLookupFinanceLoader.ts` (Phase 3) — standard loader over `id_*` (`registration_guid` / `filer_key`, `contribution_size` only, Idaho coverage note), registered for `ID` in `ballotLookup.ts`.
+- No scheduler yet (NH precedent); the CLI is the run path.
 
 ## DB (Phase 1)
 
@@ -123,9 +127,19 @@ Binding on Phase 3: the sync pulls the whole grid (one 5,000-row page) and the w
 
 Original spec (kept for the record): select rows by `candidateMeasureFilerRegistrationGuid == link.registration_guid` plus name-only rows matched against the roster name + office; window = the registration's cycle, previous registration's year exclusive; groups keyed by `filerName` + `filerRegistrationGuid`. Revised because the linked guid alone misses most of the money (finding 3).
 
-### Phase 3 — local live run
+### Phase 3 — sync + local live run (BUILT and RUN 2026-09-03)
 
-Nov-2026 rosters → `idaho-candidates:finance:auto-link` (dry-run first, then write; ambiguous/unmatched → manual links) → sync all links → validation report. Roster reality 2026-09-02: 212 Idaho Nov-2026 general elections locally, 57 with candidates (120 links) — State Senator 72, federal 12, statewide 26, county ~20, State Representative none — so the roster gap, not the pipeline, caps this phase. (grid/search match rate must be 100% for linked registrations; anything else quarantines the link). Record results in this doc and the findings doc.
+Built: `idahoCandidateFinanceDueList.ts`, `idahoCandidateFinanceSync.ts`, `idahoCandidateFinanceBatchSync.ts`, `idahoBallotLookupFinanceLoader.ts` (+ `ID` entry in `ballotLookup.ts`), `backend/src/scripts/syncDueIdahoCandidateFinance.ts` + shared `idahoCandidateFinanceCliArgs.ts` (the auto-link CLI now uses it), tests for each; no schema change, no new flags.
+
+Rules (the Phase 2a/2b decisions, now code):
+- **Live-only, gated by the sync flag.** The batch pulls the grid (one 5,000-row page) and the all-time IE list (one 10,000-row page) once per run and passes both to every link; the auto-link pass reuses the same grid pull. Idaho's raw-refresh flag gates nothing: the grid and the IE list are whole-dataset pulls, so no per-registration cache can feed a sync (the NH vendor twin is live-only too).
+- **Per link:** the grid row must exist and carry the link's `electionYear` (else the link fails and nothing is written); the contribution search is fetched as ONE page of 10,000 by the grid's "First Middle Last" name and fails closed when `totalItems > items.length`; `aggregateIdahoContributions` (grid totals + row breakdowns) and `aggregateIdahoOutsideSpending` (entity + office + window) run; then the registration artifact is stored (evidence of this run: the grid row, the registration's own rows, and the IE rows targeting the linked guid — the cache contract admits only rows keyed to that guid, so the prior-registration IE rows the aggregator counts are not in the file); then one `replaceIdahoCandidateFinanceSnapshot`.
+- **Presence:** the summary is always written from the grid; breakdowns are always written from the rows (coverage reported in the batch log and result as `rowCoverage` + `directCoverageNote`, never enforced; the loader carries the static coverage note); outside totals are the aggregator's (0 with no rows) and null only when the IE pull failed this run, in which case the writer's `preserveWhenNull` keeps the prior outside snapshot and the groups are left untouched.
+- **Batch:** a failed IE pull skips the outside leg for every link and logs; a failed link is recorded and the batch continues; defaults `maxCandidates` 25, `staleAfterDays` 7, lookback 90 + stale + 1 = 98 days (annual report due January 31, 67-6607), lookahead 730. `--dry-run` skips the auto-link pass (fleet convention).
+
+Live run (local, 2026-09-03; `IDAHO_CAMPAIGN_FINANCE_ENABLED=true npm run idaho-candidates:finance:sync-due -- --force --max-candidates=120`, dry-run first, both exit 0): grid 2,048 rows, IE list 9,899 rows (two more than 2026-09-01, totals unchanged); auto-link 7 attempted / 7 unmatched (the known manual cases); **101/101 links synced, 0 failures**; 101 summaries, 637 direct breakdowns (375 `contribution_size` + 262 `contributor_source_type`, each summing to $6,601,882.51), 188 outside groups (118 support / 70 oppose), 101 artifacts. Totals: **$6,660,273.70 raised / $3,988,600.45 spent; $728,598.12 support / $245,617.69 oppose** (cent-identical to the Phase 2b verification); 87 links with money, 71 with outside money; Little $2,242,685.75, Labrador $630,742.78, Stegner $505,545.16. Row coverage: 84 exact, 13 `rows_below_grid` (Stegner −$30,552.85, Hickman −$8,622.46, the rest ≤ $1,810 — the omitted-report cases from the survey), 4 `rows_exceed_grid` (returned contributions). Roster reality unchanged: zero State Representative rosters, so the roster gap, not the pipeline, caps coverage.
+
+Deferred (deliberately): a scheduler (NH has none either — run the CLI near filing deadlines); surfacing `contributor_source_type` rows in the UI; a manual-link CLI for the 7 unmatched candidates.
 
 ### Phase 4 — prod
 
@@ -136,7 +150,7 @@ Migrations, `IDAHO_CAMPAIGN_FINANCE_ENABLED` in render.yaml, `id_*` pg_dump prom
 - grid row present and `electionYear` matches the link's cycle; the auto-link only creates links to Active registrations (a lone Terminated/Inactive one is reported for manual review), but an existing link keeps syncing after its registration terminates — the money stays public;
 - row coverage is reported, not enforced: rows > grid = returned contributions the state subtracts; rows < grid = rows of a filed report the search omits (survey 2026-09-02: 10 of 60). The summary still comes from the grid and breakdowns carry a coverage note;
 - every IE row selected carries stance Support or Oppose, a known transaction type, and a date inside the window; rows on the entity's other-office registrations are never published;
-- artifact sha256 matches the manifest before any snapshot write.
+- the registration artifact is stored (validated and sha256-manifested) before the snapshot write; a failed store writes nothing.
 
 ## Explicitly rejected (with reasons)
 
