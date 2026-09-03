@@ -703,6 +703,7 @@ describe("getLegiscanStateConfig", () => {
       "AL",
       "AL-2218",
       "AL-2262",
+      "NY",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
@@ -724,6 +725,7 @@ describe("getLegiscanStateConfig", () => {
       "MT",
       "NC",
       "AL",
+      "NY",
     ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
@@ -745,8 +747,37 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("AL").sessionId).toBe(2148);
     expect(getLegiscanStateConfig("AL-2218")).toMatchObject({ jurisdiction: "AL", sessionId: 2218 });
     expect(getLegiscanStateConfig("AL-2262")).toMatchObject({ jurisdiction: "AL", sessionId: 2262 });
+    expect(getLegiscanStateConfig("NY").sessionId).toBe(2188);
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
-    expect(() => getLegiscanStateConfig("NY")).toThrow("no LegiScan state config for NY");
+    expect(() => getLegiscanStateConfig("WY")).toThrow("no LegiScan state config for WY");
+  });
+
+  it("classifies New York's real desc vocabulary as surveyed", () => {
+    const config = LEGISCAN_STATE_CONFIGS.NY!;
+    const ny = (desc: string, total: number, chamber: "house" | "senate", billType = "B") =>
+      classifyLegiscanRollCall({ desc, total, chamber, billType, config });
+    // The only two floor questions New York prints, both saying so in words.
+    expect(ny("Assembly Floor Vote - Final Passage", 149, "house")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(ny("Senate Floor Vote - Final Passage", 62, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // Every other family names a committee and is far below the floor size,
+    // so no exclusion rule is needed to keep them out of the queue.
+    expect(ny("Assembly Rules Committee: Favorable", 31, "house")).toMatchObject({ isFloorVote: false });
+    expect(ny("Senate Rules Committee Vote", 21, "senate")).toMatchObject({ isFloorVote: false });
+    expect(ny("Assembly Codes Committee: Held for Consideration", 22, "house")).toMatchObject({
+      isFloorVote: false,
+    });
+    // Electing Regents rides a concurrent resolution, which is not a kept
+    // bill type, so it never reaches the desc rules.
+    expect(ny("Assembly Floor Vote - Final Passage", 150, "house", "CR")).toMatchObject({
+      isFloorVote: false,
+      reason: "excluded_measure:CR",
+    });
   });
 
   it("classifies Missouri's real desc vocabulary as surveyed", () => {

@@ -1601,6 +1601,49 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     keptQuestions: ALABAMA_KEPT_QUESTIONS,
     excludedQuestions: ALABAMA_EXCLUDED_QUESTIONS,
   },
+
+  // New York, 2025-2026 General Assembly (both years in one dataset;
+  // surveyed 2026-09-02 over 25,313 bills / 14,737 roll calls / 221 people).
+  //
+  // New York has the smallest floor vocabulary of any state surveyed so far:
+  // EXACTLY TWO descriptions are floor votes, and both say so in words --
+  // `Senate Floor Vote - Final Passage` (3,614 rolls, total 61-63 of 63
+  // seats) and `Assembly Floor Vote - Final Passage` (1,856 rolls, total
+  // 148-150 of 150). Every one of the other 212 description families names a
+  // committee (`Senate Health Committee Vote`, `Assembly Codes Committee:
+  // Favorable refer to committee Rules`), and NOT ONE of them reaches even
+  // 40 votes, so the tally check rejects them all before the queue and this
+  // entry needs no exclusion rules at all. The largest committee is Assembly
+  // Rules at 31 of 150 seats.
+  //
+  // New York prints no concurrence, conference-report or veto-override
+  // question: a bill must pass both houses in identical form, and the second
+  // house substitutes its own companion bill and votes the SAME bill number,
+  // so 234 of the 236 divided-and-enacted measures carry one floor vote per
+  // chamber under a single bill id.
+  //
+  // Constitutional amendments are ordinary bills here (type B), so the
+  // Georgia resolution gap does not recur. The four floor votes on type CR
+  // are the joint sessions that ELECT REGENTS of the University of the State
+  // of New York plus the sine-die resolution -- not measures, and dropped
+  // before this config is read because CR is not a kept bill type.
+  //
+  // Feed health is the cleanest tier: 0 repeated roll call ids, 0
+  // summary-only rolls, 0 tally mismatches against a roll's own member list,
+  // 68 identity-duplicate extras that the fetcher collapses. ONE roll is a
+  // permanent parse error -- roll 1473007 (S 824, Senate, 2025-01-22) says
+  // yea 35 while its member list holds 36 yes votes, so it can never be
+  // stored; a non-zero fetch exit for that single row is expected here.
+  NY: {
+    jurisdiction: "NY",
+    sessionId: 2188,
+    chamberSizes: { house: 150, senate: 63 },
+    keptQuestions: [
+      { pattern: /^assembly floor vote - final passage$/, questionClass: "passage" },
+      { pattern: /^senate floor vote - final passage$/, questionClass: "passage" },
+    ],
+    excludedQuestions: [],
+  },
 };
 
 export const LEGISCAN_CONFIG_KEYS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);
