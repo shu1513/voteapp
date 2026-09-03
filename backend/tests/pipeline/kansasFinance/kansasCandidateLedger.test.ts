@@ -43,16 +43,23 @@ type Fixture = {
   filingKind?: KansasFilerFilingKind;
   cover?: Parameters<typeof coverHtml>[0];
   landedUrl?: string;
+  /** Schedule pages by letter; a missing letter answers an empty page. */
+  schedules?: Partial<Record<"A" | "B", string>>;
 };
 
-function filing(fixture: Fixture): KansasPooledFiling & { openReport: ReturnType<typeof vi.fn> } {
+function filing(fixture: Fixture): KansasPooledFiling & { openReport: ReturnType<typeof vi.fn>; openSchedule: ReturnType<typeof vi.fn> } {
   const row = gridRow(fixture.row);
   const openReport = vi.fn(async () => ({
     url: fixture.landedUrl ?? COVER_URL,
     html: fixture.cover ? coverHtml(fixture.cover) : "",
     hiddenFields: {},
   }));
-  return { row, filingKind: fixture.filingKind ?? "report", openReport };
+  const openSchedule = vi.fn(async (schedule: "A" | "B" | "C" | "D") => ({
+    url: `https://sos.ks.gov/elections/cfr_viewer/reports/schedule_${schedule.toLowerCase()}_report.aspx`,
+    html: (schedule === "A" || schedule === "B") && fixture.schedules?.[schedule] ? fixture.schedules[schedule]! : "",
+    hiddenFields: {},
+  }));
+  return { row, filingKind: fixture.filingKind ?? "report", openReport, openSchedule };
 }
 
 function poolOf(filings: KansasPooledFiling[]) {
@@ -105,6 +112,53 @@ describe("buildKansasCandidateLedger", () => {
     ]);
     expect(result.paperReports).toEqual([]);
     expect(result.complete).toBe(true);
+    expect(result.reports.every((report) => report.scheduleA === null && report.scheduleB === null)).toBe(true);
+    expect(annual.openSchedule).not.toHaveBeenCalled();
+  });
+
+  it("with openSchedules, reopens each counted period's canonical cover and reads its Schedules A and B", async () => {
+    const schedules = { A: `<span id="lblTotalReceipts">$12.34</span>`, B: `<span id="lblTotalInKind">$5.00</span>` };
+    const original = filing({ row: { fileDate: "01/09/2026" }, cover: { start: "1/1/2025", end: "12/31/2025" }, schedules });
+    const amendment = filing({
+      row: { index: 1, fileDate: "01/09/2026", amendmentDate: "01/15/2026" },
+      cover: { start: "1/1/2025", end: "12/31/2025", amended: true },
+      schedules,
+    });
+    const prePrimary = filing({ row: { index: 2 }, cover: { start: "1/1/2026", end: "7/23/2026" }, schedules });
+    const lastMinute = filing({ row: { index: 3, fileDate: "07/30/2026" }, cover: { start: "7/24/2026", end: "7/29/2026" }, schedules });
+    const result = await buildKansasCandidateLedger({
+      target: houseTarget,
+      now: NOW,
+      loadFilingPool: poolOf([original, amendment, prePrimary, lastMinute]),
+      openSchedules: true,
+    });
+    expect(result.status).toBe("resolved");
+    if (result.status !== "resolved") return;
+    // Canonical versions: cover once for the ledger, once more before the schedules. Superseded and last-minute: cover only.
+    expect([original, amendment, prePrimary, lastMinute].map((row) => row.openReport.mock.calls.length)).toEqual([1, 2, 2, 1]);
+    expect([original, amendment, prePrimary, lastMinute].map((row) => row.openSchedule.mock.calls.map((call) => call[0]))).toEqual([
+      [],
+      ["A", "B"],
+      ["A", "B"],
+      [],
+    ]);
+    expect(result.reports.map((report) => [report.scheduleA?.totals.totalReceiptsCents ?? null, report.scheduleB?.totals.totalInKindCents ?? null])).toEqual([
+      [null, null],
+      [1234, 500],
+      [1234, 500],
+      [null, null],
+    ]);
+  });
+
+  it("with openSchedules, fails closed when reopening a cover lands on any other cover (its own amendment included)", async () => {
+    const annual = filing({ row: { fileDate: "01/09/2026" }, cover: { start: "1/1/2025", end: "12/31/2025" } });
+    annual.openReport.mockResolvedValueOnce({ url: COVER_URL, html: coverHtml({ start: "1/1/2025", end: "12/31/2025" }), hiddenFields: {} });
+    // Same period and lines, only the amended box differs: the neighbouring grid row after a mid-run shift.
+    annual.openReport.mockResolvedValueOnce({ url: COVER_URL, html: coverHtml({ start: "1/1/2025", end: "12/31/2025", amended: true }), hiddenFields: {} });
+    await expect(
+      buildKansasCandidateLedger({ target: houseTarget, now: NOW, loadFilingPool: poolOf([annual]), openSchedules: true })
+    ).rejects.toThrow("reopening for its schedules did not land on the same cover");
+    expect(annual.openSchedule).not.toHaveBeenCalled();
   });
 
   it("feeds appointment and affidavit rows to the ledger and passes grid amendment dates through", async () => {

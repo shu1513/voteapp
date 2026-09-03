@@ -16,6 +16,7 @@ const ENTRY = "https://sos.ks.gov/elections/cfr_viewer/cfr_examiner_entry.aspx";
 const FORM = "https://sos.ks.gov/elections/cfr_viewer/cfr_examiner.aspx";
 const RESULTS = "https://sos.ks.gov/elections/cfr_viewer/cfr_examiner_search_results.aspx";
 const COVER = "https://sos.ks.gov/elections/cfr_viewer/reports/exp_report_main.aspx";
+const SCHEDULE_A = "https://sos.ks.gov/elections/cfr_viewer/reports/schedule_a_report.aspx";
 const hidden = (state: string) =>
   `<input type="hidden" name="__VIEWSTATE" value="${state}" /><input type="hidden" name="__EVENTVALIDATION" value="ev" />`;
 
@@ -46,6 +47,7 @@ function fakeViewer() {
     if (url === FORM) return new Response(`<form>${hidden("form")}</form>`, { status: 200 });
     if (url === RESULTS) return new Response(RESULTS_HTML, { status: 200 });
     if (url === COVER) return new Response(`<span id="lblFileStartDate">1/1/2026</span>`, { status: 200 });
+    if (url === SCHEDULE_A) return new Response(`<span id="lblTotalReceipts">$1.00</span>`, { status: 200 });
     return new Response("nope", { status: 404 });
   });
   return { posts, fetchImpl };
@@ -94,6 +96,12 @@ describe("searchKansasFilings", () => {
       __EVENTTARGET: "grdviewCfrResults$ctl02$lnkbtnName",
       __EVENTARGUMENT: "",
     });
+
+    // Schedules are plain GETs of the report the session opened last.
+    const scheduleA = await filings[0]!.openSchedule("A");
+    expect(scheduleA.url).toBe(SCHEDULE_A);
+    expect(scheduleA.html).toContain("lblTotalReceipts");
+    expect(viewer.fetchImpl.mock.calls.filter((call) => call[0] === SCHEDULE_A).map((call) => call[1].method)).toEqual(["GET"]);
   });
 
   it("refuses to open a paper row (its name link answers 500 live)", async () => {
@@ -108,6 +116,7 @@ describe("searchKansasFilings", () => {
     });
     const postsBefore = viewer.posts.length;
     await expect(filings[1]!.openReport()).rejects.toThrow('no HTML report for paper filing "MUIR DANIEL"');
+    await expect(filings[1]!.openSchedule("A")).rejects.toThrow('no HTML report for paper filing "MUIR DANIEL"');
     expect(viewer.posts).toHaveLength(postsBefore);
   });
 });
@@ -126,6 +135,7 @@ describe("createKansasFilingPoolLoader", () => {
       postbackTarget: null,
     },
     openReport: () => Promise.reject(new Error("not opened")),
+    openSchedule: () => Promise.reject(new Error("not opened")),
   });
 
   it("runs the three searches once per office + cycle, tags kinds, and drops other-office rows", async () => {

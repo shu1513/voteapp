@@ -13,6 +13,10 @@ import {
   buildKansasCandidateLedger,
   type KansasCandidateLedgerResult,
 } from "../pipeline/kansasFinance/kansasCandidateLedger.js";
+import {
+  aggregateKansasDirectFinance,
+  type KansasDirectFinance,
+} from "../pipeline/kansasFinance/kansasDirectContributionAggregator.js";
 import { kansasCfrOfficeForRace } from "../pipeline/kansasFinance/kansasFinanceEligibleOffices.js";
 import { createKansasFilingPoolLoader } from "../pipeline/kansasFinance/kansasFilingSearch.js";
 import { createKansasKpdcRowLoader } from "../pipeline/kansasFinance/kansasPaperInventory.js";
@@ -20,12 +24,14 @@ import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export type ReportKansasCandidateFinanceLedgersScriptOptions = {
   force: boolean;
+  /** Also open the canonical reports' schedules and print the direct-finance aggregate (Phase 4). */
+  aggregate: boolean;
   maxCandidates: number;
   electionLookbackDays: number;
   electionLookaheadDays: number;
 };
 
-const BOOLEAN_FLAGS = new Set(["--force"]);
+const BOOLEAN_FLAGS = new Set(["--force", "--aggregate"]);
 const VALUE_FLAGS = new Set(["--max-candidates", "--lookback-days", "--lookahead-days"]);
 
 function parsePositiveInteger(args: readonly string[], name: string, fallback: number): number {
@@ -55,6 +61,7 @@ export function parseReportKansasCandidateFinanceLedgersScriptArgs(
   assertKnownCliFlags(args, "Kansas candidate finance ledger report", BOOLEAN_FLAGS, VALUE_FLAGS);
   return {
     force: args.includes("--force"),
+    aggregate: args.includes("--aggregate"),
     maxCandidates: parsePositiveInteger(args, "--max-candidates", 25),
     electionLookbackDays: parsePositiveInteger(args, "--lookback-days", 98),
     electionLookaheadDays: parsePositiveInteger(args, "--lookahead-days", 730),
@@ -80,6 +87,8 @@ type LedgerReportRow = {
   lastMinuteFilings?: number;
   outOfCycleFilings?: number;
   unexpectedFilings?: number;
+  /** --aggregate: the Phase 4 direct-finance aggregate (buckets carry occupations and size labels only, never names). */
+  aggregate?: KansasDirectFinance;
   error?: string;
 };
 
@@ -138,12 +147,17 @@ async function main(): Promise<void> {
           now: startedAt,
           loadFilingPool,
           loadKpdcRows,
+          openSchedules: options.aggregate,
         });
         if (result.status === "resolved") {
           results.push({
             ...base,
             status: "resolved",
             complete: result.complete,
+            // The gate is the candidate's completeness (ledger AND every paper row explained), not the ledger's alone.
+            ...(options.aggregate
+              ? { aggregate: aggregateKansasDirectFinance({ ledger: { ...result.ledger, complete: result.complete }, covers: result.reports }) }
+              : {}),
             periods: Object.fromEntries(result.ledger.entries.map((entry) => [entry.period.key, entry.status])),
             reports: result.reports.length,
             paperReports: result.paperReports.length,
