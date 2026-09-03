@@ -28,7 +28,7 @@ const GRID = [LINKED, PRIOR, OTHER_DISTRICT];
 
 function baseInput(overrides: Partial<Parameters<typeof linkIdahoCandidateFinanceManually>[0]> = {}) {
   return {
-    db: { query: vi.fn() } as never,
+    db: { query: vi.fn().mockResolvedValue({ rows: [] }) } as never,
     candidateId: CANDIDATE_ID.toUpperCase(),
     electionId: ELECTION_ID,
     registrationGuid: GUID_A.toUpperCase(),
@@ -116,6 +116,20 @@ describe("linkIdahoCandidateFinanceManually", () => {
     await expect(linkIdahoCandidateFinanceManually(baseInput({ registrationGuid: "not-a-guid" }))).rejects.toThrow(
       "Invalid Idaho registration guid"
     );
+  });
+
+  it("refuses a registration already linked to another candidate, in dry-run too", async () => {
+    const db = {
+      query: vi.fn().mockResolvedValue({
+        rows: [{ candidate_id: "99999999-9999-4999-8999-999999999999", candidate_name_normalized: "TODD ACHILLES" }],
+      }),
+    } as never;
+    const input = baseInput({ db, dryRun: true });
+    await expect(linkIdahoCandidateFinanceManually(input)).rejects.toThrow(
+      `Idaho registration ${GUID_A} (Rotz-Kilhefner, Martha Louise) is already linked to another candidate: TODD ACHILLES (99999999-9999-4999-8999-999999999999)`
+    );
+    expect(vi.mocked((db as { query: ReturnType<typeof vi.fn> }).query).mock.calls[0]![1]).toEqual([GUID_A, CANDIDATE_ID]);
+    expect(input.upsertLinkFn).not.toHaveBeenCalled();
   });
 
   it("pulls the grid itself when the caller did not supply it", async () => {

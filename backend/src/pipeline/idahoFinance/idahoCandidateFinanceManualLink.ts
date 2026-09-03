@@ -121,6 +121,27 @@ export async function linkIdahoCandidateFinanceManually(
     );
   }
 
+  // The name gate is the one this path bypasses, and every opponent in the
+  // same race passes the gates above — so a registration already linked to
+  // another candidate is refused (Rhode Island's claim check).
+  const claim = await input.db.query<{ candidate_id: string; candidate_name_normalized: string }>(
+    `
+      SELECT candidate_id::text, candidate_name_normalized
+      FROM public.id_candidate_finance_links
+      WHERE registration_guid = $1
+        AND link_status = 'active'
+        AND candidate_id <> $2::uuid
+      LIMIT 1
+    `,
+    [registrationGuid, candidate.candidateId]
+  );
+  const owner = claim.rows[0];
+  if (owner !== undefined) {
+    throw new Error(
+      `Idaho registration ${registrationGuid} (${registration.filerName}) is already linked to another candidate: ${owner.candidate_name_normalized} (${owner.candidate_id})`
+    );
+  }
+
   const sourceUrl = idahoRegistrationProfileUrl(registrationGuid);
   let linkId: string | null = null;
   if (input.dryRun !== true) {
