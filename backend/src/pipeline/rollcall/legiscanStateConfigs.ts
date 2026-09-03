@@ -1601,6 +1601,140 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     keptQuestions: ALABAMA_KEPT_QUESTIONS,
     excludedQuestions: ALABAMA_EXCLUDED_QUESTIONS,
   },
+
+  // Alaska Legislature, 34th Legislature 2025-2026 Regular Session (both
+  // years in one dataset; still sitting when the dataset was cut on
+  // 2026-08-30). Vocabulary measured from the full dataset survey on
+  // 2026-09-03: 848 bills, 1,068 roll calls, 85 people (40 House seats and
+  // 20 Senate seats, plus turnover across the two years).
+  //
+  // What the survey established:
+  // - EVERY roll call in the dataset is a whole-chamber vote. `total` is 40
+  //   on every House roll and 20 on every Senate roll, with three
+  //   exceptions, all veto overrides (below). There are no committee votes
+  //   in the feed at all, so the tally cut never has to separate them.
+  // - Every desc is `House: ` or `Senate: ` followed by the question, so
+  //   the chamber word is in the desc as well as the `chamber` field.
+  // - Alaska annotates a passage desc with the OTHER questions the journal
+  //   settled at the same time, so `Senate: Third Reading - Final Passage
+  //   Effective Date(s)` (91 rolls) is the PASSAGE vote, not a vote on the
+  //   effective date. The bill history proves it: the roll's tally matches
+  //   the journal's `PASSED Y18 N2` line and the effective-date line right
+  //   below it reads `EFFECTIVE DATE(S) SAME AS PASSAGE` with no separate
+  //   roll. A genuine effective-date vote wears the question at the FRONT
+  //   (`House: Third Reading Effective Date`, `Senate: Effective Date
+  //   Clause(s)`), which is why every exclusion here is anchored at the
+  //   start of the desc and the annotations are allowed to trail.
+  // - Alaska's bill history carries the tally on its own action lines
+  //   (`PASSED Y18 N2`, `AM NO 1 ADOPTED Y15 N5`, `CONCUR AM OF (H) Y15
+  //   N5`), so the dataset itself holds the oracle for what question a roll
+  //   asked. That is what mapped each desc family below to a journal
+  //   action.
+  //
+  // VETO OVERRIDES ARE EXCLUDED BY RULE, and this is the Alaska-specific
+  // decision (written up in
+  // backend/evidence/rollcall/legiscan-ak-2171/CODE-FINDINGS.md). Alaska
+  // overrides a veto in a JOINT SESSION of both chambers, not chamber by
+  // chamber. The feed holds five override rolls and none of them can be
+  // stored honestly:
+  // - Two are the joint session itself, with 60 members (44 House + 16
+  //   Senate) filed under `chamber: "H"`. Storing one would record a vote
+  //   of the whole legislature as a House floor vote, and it is the only
+  //   place in the feed where `total` exceeds the chamber size.
+  // - The other three report tallies that do not match the joint-session
+  //   result the bill history prints. HB 314's `House: Veto Override` says
+  //   29-11 where the history says `GOVERNOR VETO OVERRIDDEN Y45 N15`.
+  // The passage and concurrence rolls on those same bills are unaffected
+  // and stay in the pool.
+  AK: {
+    jurisdiction: "AK",
+    sessionId: 2171,
+    chamberSizes: { house: 40, senate: 20 },
+    keptQuestions: [
+      // Final passage, however the chamber reached it: `House: Third
+      // Reading Final Passage` (158), `Senate: Third Reading - Final
+      // Passage Effective Date(s)` (91), `Senate: Third Reading - Final
+      // Passage` (72), `Senate: Final Passage` (50), `House: Second Reading
+      // Final Passage Special Order of Business` (30), `House: Third
+      // Reading Final Passage Reconsideration` (18, the same question taken
+      // again the next day), and the court-rule and budget-reserve
+      // annotations. Alaska can pass a bill in second reading after the
+      // chamber advances it by special order, so the reading number is
+      // optional here.
+      {
+        pattern: /^(?:house|senate): (?:(?:second|third) reading\s*-?\s*)?final passage\b/,
+        questionClass: "passage",
+      },
+      // Passage taken up again on reconsideration, worded without the
+      // `Final Passage` phrase: `Senate: Third Reading - On
+      // Reconsideration` and its effective-date and budget-reserve
+      // annotations (7 rolls). The journal calls these `PASSED ON
+      // RECONSIDERATION`.
+      { pattern: /^(?:house|senate): third reading\s*-\s*on reconsideration\b/, questionClass: "concurrence" },
+      // The House votes on the Senate's amendments under the bare word
+      // `Concur` (52 rolls; the journal line is `CONCUR AM OF (S)`, or
+      // `FAILED CONCUR (S) AM` when it loses).
+      { pattern: /^house: concur$/, questionClass: "concurrence" },
+      // The Senate spells the same question out and names the bill inside
+      // the desc, so this pattern is not anchored at the end: `Senate:
+      // Shall the Senate Concur in the House Amendment(s) to CSSB 200(RES)
+      // am Effective Date(s)` (29 rolls across as many spellings).
+      {
+        pattern: /^(?:house|senate): shall the (?:senate|house) concur in the (?:house|senate) amendment/,
+        questionClass: "concurrence",
+      },
+      // Conference reports: `Senate: Shall the Senate Adopt the Conference
+      // Committee Report` and its annotated spellings (6), and the House's
+      // bare `Adopt` (7), which the journal records as `CC REPORT ADOPTED`.
+      {
+        pattern: /^(?:house|senate): shall the (?:senate|house) adopt the conference committee report/,
+        questionClass: "conference_report",
+      },
+      { pattern: /^house: adopt$/, questionClass: "conference_report" },
+    ],
+    excludedQuestions: [
+      // Floor amendments and the motions around them, all taken in second
+      // reading: `Second Reading Amendment No. 1` (38) down to `Amendment
+      // No. 67`, `Second Reading Amendment No. 1 to Amendment No. 2`,
+      // `Second Reading Adopt Finance HCS`, `Second Reading Move to bottom
+      // of the calendar`, `Second Reading Withdraw Amendment No. 1`, and
+      // the third-reading amendment votes.
+      /^(?:house|senate): (?:second|third) reading (?:amendment|amend amendment|rescind|withdraw amendment|adopt|move|advance|table)\b/,
+      /^(?:house|senate): second reading(?: -)? final passage reconsideration$/,
+      /^(?:house|senate): second reading$/,
+      /^(?:house|senate): second reading\\/,
+      /^(?:house|senate): third reading (?:return to|take up reconsideration|amendment)\b/,
+      /^(?:house|senate): take up reconsideration\b/,
+      /^(?:house|senate): rescind previous action\b/,
+      // The effective-date clause is its own question in Alaska: a bill
+      // whose effective date falls sooner than the default needs a separate
+      // two-thirds vote. `House: Third Reading Effective Date` (17),
+      // `Senate: Effective Date Clause(s)` (9), `House: Effective Date
+      // Concur` (8), `House: Adopt Effective Date` (3). These are votes on
+      // when the law starts, not on the law, so they are not the member's
+      // position on the measure.
+      /^(?:house|senate): (?:third reading )?effective date\b/,
+      /^(?:house|senate): adopt effective date$/,
+      // Appropriations from the Constitutional Budget Reserve need a
+      // three-quarters vote and are taken separately from passage:
+      // `Senate: Adopt Budget Reserve Fund Section(s)` (4) and its
+      // constitutional spellings, `House: Constitutional Budget Reserve
+      // Appropriations Concur`.
+      /^(?:house|senate): (?:adopt |shall the (?:senate|house) adopt the )(?:constitutional )?budget reserve\b/,
+      /^house: constitutional budget reserve appropriations concur$/,
+      // Veto overrides — see the note above this entry. `House: Veto
+      // Override` (2), `House: Veto Override SENATE` (1), `Senate: Veto
+      // Override` (1), and one Senate roll that opens with a list of member
+      // names before the words `SENATE SB 183 Veto Override`.
+      /^(?:house|senate): veto override\b/,
+      /\bveto override$/,
+      // Points of order and appeals of the chair's ruling.
+      /^(?:house|senate): point of order/,
+      /sustain ruling of the chair/,
+      // Scheduling and referral motions.
+      /^(?:house|senate): (?:bill to calendar|return to rules|adjourn|refer to|withdraw bill|suspend uniform|discharge|advance from|amendment deadline|set amendment deadline)/,
+    ],
+  },
 };
 
 export const LEGISCAN_CONFIG_KEYS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);
