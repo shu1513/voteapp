@@ -13,6 +13,8 @@ survey, the crosswalk that maps legislators to our candidates, and each judged b
 - `survey/` — the survey report, the tally audit against New Mexico's own roll call sheets, and a
   worklist giving every gated roll a disposition.
 - `batch-01/` — the first judged batch: judgments, one evidence file per roll, and the import ledgers.
+- `batch-02/` — the second judged batch, same layout. It clears the rest of the pool: every
+  divided-and-enacted House roll in the session is now imported, held, or dropped with a reason.
 
 ## What the survey found
 
@@ -85,3 +87,16 @@ They live at `/Users/shu/legiscan-data/` so they survive a session: `nm_docs.py`
 bill versions and the enrolled act), `nm_votes.py` (fetch and parse the official roll call sheets),
 `nm_new.py` (print only a bill's new language), `nm_audit2.py` (audit every roll against its
 official sheet), `nm_score.py` (reading level).
+
+## Status
+
+**Batch-01: 14 measures, 818 records, 63 candidates, 602 tags.**
+**Batch-02: 15 measures, 872 records, 63 candidates, 671 tags.**
+Together 29 rolls and 1,690 records, all on the local database. **Production holds none.**
+
+The pool is now fully dispositioned: 14 in batch-01, 15 in batch-02, 8 dropped for want of an
+honest direction, 2 excluded as appropriations, 1 held, and 38 Senate rolls out of scope.
+
+Still open: Senate Bill 3, which needs an official-tally override before it can be imported; the 37
+divided rolls on measures that passed one chamber and died; the 2026 regular session, LegiScan
+2251, which is complete and unsurveyed; and promotion to production.

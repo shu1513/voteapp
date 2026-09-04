@@ -1,0 +1,284 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1490733,
+      "measure_id": "HB 8",
+      "vote_date": "2025-02-15",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 8, a public safety package. A court may now send a defendant who is not a danger to a community program, to get well enough to stand trial, rather than to jail. The act adds murder, criminal sexual penetration and aggravated arson to the crimes that let a court hold a defendant. It also makes it a felony to own a device that turns a gun into a machine gun. Penalties go up for car theft, shooting threats and fentanyl dealing. The New Mexico House passed it 48-20, and it became law.",
+      "nay_description": "Voted against House Bill 8, a public safety package. A court may now send a defendant who is not a danger to a community program, to get well enough to stand trial, rather than to jail. The act adds murder, criminal sexual penetration and aggravated arson to the crimes that let a court hold a defendant. It also makes it a felony to own a device that turns a gun into a machine gun. Penalties go up for car theft, shooting threats and fentanyl dealing. The New Mexico House passed it 48-20, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1518278,
+      "measure_id": "HB 78",
+      "vote_date": "2025-03-15",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 78, which protects clinics that buy discounted medicine under a federal program called 340B. Federally qualified health centers use that discount to stretch their budgets and serve low-income patients. The act bars drug manufacturers from blocking those clinics, or the pharmacies they contract with, from getting and handing out the discounted drugs. The New Mexico House passed it 36-28, and it became law.",
+      "nay_description": "Voted against House Bill 78, which protects clinics that buy discounted medicine under a federal program called 340B. Federally qualified health centers use that discount to stretch their budgets and serve low-income patients. The act bars drug manufacturers from blocking those clinics, or the pharmacies they contract with, from getting and handing out the discounted drugs. The New Mexico House passed it 36-28, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1499171,
+      "measure_id": "HB 91",
+      "vote_date": "2025-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 91, which changes the rates New Mexico's utility board may approve. That board, the Public Regulation Commission, sets what gas and power companies may charge. State law bars a utility from giving one set of customers an unfair edge. The act adds an exception, so the board may approve rates and plans that cut energy bills for people with low incomes. The New Mexico House passed it 42-25, and it became law.",
+      "nay_description": "Voted against House Bill 91, which changes the rates New Mexico's utility board may approve. That board, the Public Regulation Commission, sets what gas and power companies may charge. State law bars a utility from giving one set of customers an unfair edge. The act adds an exception, so the board may approve rates and plans that cut energy bills for people with low incomes. The New Mexico House passed it 42-25, and it became law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1523893,
+      "measure_id": "HB 493",
+      "vote_date": "2025-03-20",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 493, which sets conditions on state grants for buildings and other special projects. A group that wants a grant must have finished a yearly audit for one of the past two years, and that audit must be a public record. If an audit keeps turning up the same serious problems for more than two years running, the state agency must find another organization willing to handle the money. The New Mexico House passed it 51-13, and it became law.",
+      "nay_description": "Voted against House Bill 493, which sets conditions on state grants for buildings and other special projects. A group that wants a grant must have finished a yearly audit for one of the past two years, and that audit must be a public record. If an audit keeps turning up the same serious problems for more than two years running, the state agency must find another organization willing to handle the money. The New Mexico House passed it 51-13, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1496721,
+      "measure_id": "SB 1",
+      "vote_date": "2025-02-21",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1, which sets up two new state funds for mental health and addiction care. The first is a trust fund that the state invests. From July 2026 it pays out five percent of its average value over the past three years into the second fund. The Health Care Authority spends that money, when lawmakers approve it, on treatment, staff, buildings and regional plans. The New Mexico House passed it 46-19, and it became law.",
+      "nay_description": "Voted against Senate Bill 1, which sets up two new state funds for mental health and addiction care. The first is a trust fund that the state invests. From July 2026 it pays out five percent of its average value over the past three years into the second fund. The Health Care Authority spends that money, when lawmakers approve it, on treatment, staff, buildings and regional plans. The New Mexico House passed it 46-19, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1516594,
+      "measure_id": "SB 5",
+      "vote_date": "2025-03-12",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 5, which renames the State Game Commission the State Wildlife Commission. It also changes how the seven members are picked. The governor must now choose from a list drawn up by a nominating committee, members are held to two terms, and a member may be removed only for poor work or wrongdoing. The board may now protect any wild species by rule, not just animals that are hunted or fished, and some license fees go up. The New Mexico House passed it 42-26, and it became law.",
+      "nay_description": "Voted against Senate Bill 5, which renames the State Game Commission the State Wildlife Commission. It also changes how the seven members are picked. The governor must now choose from a list drawn up by a nominating committee, members are held to two terms, and a member may be removed only for poor work or wrongdoing. The board may now protect any wild species by rule, not just animals that are hunted or fished, and some license fees go up. The New Mexico House passed it 42-26, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1520401,
+      "measure_id": "SB 7",
+      "vote_date": "2025-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 7, which lets a city run a storm water system as a municipal utility. By ordinance a city may buy, build, operate and maintain a system that collects, treats, stores or disposes of rain runoff. It may then charge property owners a just and reasonable fee for that service, the way it already charges for water, sewer or gas. The New Mexico House passed it 46-18, and it became law.",
+      "nay_description": "Voted against Senate Bill 7, which lets a city run a storm water system as a municipal utility. By ordinance a city may buy, build, operate and maintain a system that collects, treats, stores or disposes of rain runoff. It may then charge property owners a just and reasonable fee for that service, the way it already charges for water, sewer or gas. The New Mexico House passed it 46-18, and it became law.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1523849,
+      "measure_id": "SB 23",
+      "vote_date": "2025-03-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 23, which raises the royalty New Mexico can charge on new oil and gas leases on its most productive trust land in the Permian Basin. A royalty is the share of the value of the oil or gas that the producer pays the landowner. On those tracts the rate must now be at least one-fifth and may go as high as one-fourth, where the old ceiling was one-fifth. It applies to leases issued on or after July 1, 2025, and the money goes to the schools and other beneficiaries that state trust land supports. The New Mexico House passed it 37-31, and it became law.",
+      "nay_description": "Voted against Senate Bill 23, which raises the royalty New Mexico can charge on new oil and gas leases on its most productive trust land in the Permian Basin. A royalty is the share of the value of the oil or gas that the producer pays the landowner. On those tracts the rate must now be at least one-fifth and may go as high as one-fourth, where the old ceiling was one-fifth. It applies to leases issued on or after July 1, 2025, and the money goes to the schools and other beneficiaries that state trust land supports. The New Mexico House passed it 37-31, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1523940,
+      "measure_id": "SB 37",
+      "vote_date": "2025-03-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 37, which creates a strategic water reserve fund. The Interstate Stream Commission runs it and may hold up to fifteen million dollars. Anything above that goes back to the state's main account. The money buys or leases water and water rights from willing sellers, and the act tells the commission to weigh whether a deal also helps wildlife habitat, recreation, or traditional and cultural uses. The New Mexico House passed it 42-20, and it became law.",
+      "nay_description": "Voted against Senate Bill 37, which creates a strategic water reserve fund. The Interstate Stream Commission runs it and may hold up to fifteen million dollars. Anything above that goes back to the state's main account. The money buys or leases water and water rights from willing sellers, and the act tells the commission to weigh whether a deal also helps wildlife habitat, recreation, or traditional and cultural uses. The New Mexico House passed it 42-20, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1524422,
+      "measure_id": "SB 45",
+      "vote_date": "2025-03-21",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 45, which widens what a county may pay for out of its health care assistance fund. That fund already covered ambulance rides, hospital care and burial costs for residents too poor to pay. A county may now also pay all or part of a poor resident's monthly insurance premium, and their copayments and deductibles. The New Mexico House passed it 55-14, and it became law.",
+      "nay_description": "Voted against Senate Bill 45, which widens what a county may pay for out of its health care assistance fund. That fund already covered ambulance rides, hospital care and burial costs for residents too poor to pay. A county may now also pay all or part of a poor resident's monthly insurance premium, and their copayments and deductibles. The New Mexico House passed it 55-14, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1522144,
+      "measure_id": "SB 48",
+      "vote_date": "2025-03-19",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 48, which creates a community benefit fund in the state treasury. Lawmakers may spend it on projects that cut greenhouse gases, stop methane leaks at oil and gas sites, make the power grid stronger, add clean power, or build charging stations, bike paths and sidewalks. Most of those projects must first show that two public meetings were held in the community affected. The New Mexico House passed it 39-26, and it became law.",
+      "nay_description": "Voted against Senate Bill 48, which creates a community benefit fund in the state treasury. Lawmakers may spend it on projects that cut greenhouse gases, stop methane leaks at oil and gas sites, make the power grid stronger, add clean power, or build charging stations, bike paths and sidewalks. Most of those projects must first show that two public meetings were held in the community affected. The New Mexico House passed it 39-26, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1524366,
+      "measure_id": "SB 59",
+      "vote_date": "2025-03-21",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 59, which widens who is covered by New Mexico's minimum wage law for public works. That law sets a floor on pay for workers on a state or local construction job. The act counts an off-site shop that fabricates heating, cooling, ventilation or exhaust ducts for the job as part of the project site, so those workers are covered too. It applies to bids and proposals issued on or after July 1, 2025. The New Mexico House passed it 34-27, and it became law.",
+      "nay_description": "Voted against Senate Bill 59, which widens who is covered by New Mexico's minimum wage law for public works. That law sets a floor on pay for workers on a state or local construction job. The act counts an off-site shop that fabricates heating, cooling, ventilation or exhaust ducts for the job as part of the project site, so those workers are covered too. It applies to bids and proposals issued on or after July 1, 2025. The New Mexico House passed it 34-27, and it became law.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1523816,
+      "measure_id": "SB 83",
+      "vote_date": "2025-03-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 83, which creates an innovation in state government fund. The Department of Finance and Administration holds it. Lawmakers may give agencies money from the fund to write master plans and hire staff, so the state can cut its emissions to net zero and carry out climate policy. An agency that takes the money must report each year on how it will be spent. The New Mexico House passed it 31-25, and it became law.",
+      "nay_description": "Voted against Senate Bill 83, which creates an innovation in state government fund. The Department of Finance and Administration holds it. Lawmakers may give agencies money from the fund to write master plans and hire staff, so the state can cut its emissions to net zero and carry out climate policy. An agency that takes the money must report each year on how it will be spent. The New Mexico House passed it 31-25, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1524409,
+      "measure_id": "SB 88",
+      "vote_date": "2025-03-21",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 88, which creates a Medicaid trust fund and a state-supported Medicaid fund. The state invests the trust fund. Once it holds at least five hundred million dollars, it starts paying out each July from 2029 five percent of its average value over the past three years. Lawmakers may draw on it sooner if federal Medicaid money drops sharply, or through 2029 if a federal cut would leave people with less coverage than they have now. The New Mexico House passed it 52-13, and it became law.",
+      "nay_description": "Voted against Senate Bill 88, which creates a Medicaid trust fund and a state-supported Medicaid fund. The state invests the trust fund. Once it holds at least five hundred million dollars, it starts paying out each July from 2029 five percent of its average value over the past three years. Lawmakers may draw on it sooner if federal Medicaid money drops sharply, or through 2029 if a federal cut would leave people with less coverage than they have now. The New Mexico House passed it 52-13, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2187",
+      "roll": 1524394,
+      "measure_id": "SB 376",
+      "vote_date": "2025-03-21",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 376, which changes how the state pays for its workers' health insurance. From July 2025 the state pays eighty percent of the cost for every worker. Before, it paid a smaller share as pay went up. The act also lets the Health Care Authority cap what it pays a hospital, and the hospital may not bill the worker for the rest. The authority may also use the health care affordability fund to cut premiums for lower-paid workers and National Guard members. The New Mexico House passed it 52-13, and it became law.",
+      "nay_description": "Voted against Senate Bill 376, which changes how the state pays for its workers' health insurance. From July 2025 the state pays eighty percent of the cost for every worker. Before, it paid a smaller share as pay went up. The act also lets the Health Care Authority cap what it pays a hospital, and the hospital may not bill the worker for the rest. The authority may also use the health care affordability fund to cut premiums for lower-paid workers and National Guard members. The New Mexico House passed it 52-13, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

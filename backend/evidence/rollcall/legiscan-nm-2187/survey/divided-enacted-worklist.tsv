@@ -2,42 +2,42 @@ bill	chamber	roll	date	yea	nay	title	disposition	reason
 HB 12	house	1499308	2025-02-25	41	27	Extreme Risk Firearm Protection Order Changes	batch-01	imported
 HB 128	house	1503058	2025-03-01	43	22	Nmfa Local Solar Access Fund	batch-01	imported
 HB 2	house	1497872	2025-02-24	50	18	General Appropriation Act Of 2025	excluded	the general appropriation act; no research area carries an honest direction on a vote to fund the government
-HB 295	house	1515651	2025-03-11	38	27	Tax On Property Owned By Nm Reta	candidate:batch-02	passed the divided and enacted gate; not yet read in full
+HB 295	house	1515651	2025-03-11	38	27	Tax On Property Owned By Nm Reta	dropped	confirms a property tax exemption for a private lessee's interest in transmission line property owned by the Renewable Energy Transmission Authority; reads equally well as clearing the path for renewable transmission or as a tax break for a private company, so no direction is defensible
 HB 450	house	1522265	2025-03-19	41	25	Capital Outlay Projects	excluded	the capital outlay bill; appropriations, same reason as House Bill 2
-HB 493	house	1523893	2025-03-20	51	13	Public Finance Accountability Act	candidate:batch-02	passed the divided and enacted gate; not yet read in full
+HB 493	house	1523893	2025-03-20	51	13	Public Finance Accountability Act	batch-02	imported
 HB 586	house	1519227	2025-03-17	41	26	Public Peace, Health, Safety & Welfare	batch-01	imported
 HB 6	house	1492677	2025-02-17	41	26	Irb Project Minimum Wage	batch-01	imported
-HB 66	house	1493841	2025-02-19	36	22	Workers' Compensation Changes	candidate:batch-02	passed the divided and enacted gate; not yet read in full
-HB 78	house	1518278	2025-03-15	36	28	Prohibit Discrimination Against 340b Entities	candidate:batch-02	passed the divided and enacted gate; not yet read in full
-HB 8	house	1490733	2025-02-15	48	20	Criminal Competency & Treatment	candidate:batch-02	passed the divided and enacted gate; not yet read in full
+HB 66	house	1493841	2025-02-19	36	22	Workers' Compensation Changes	dropped	raises the cap on claimant attorney fees and the employer's discovery cost advance in workers' compensation cases; fee mechanics, no direction
+HB 78	house	1518278	2025-03-15	36	28	Prohibit Discrimination Against 340b Entities	batch-02	imported
+HB 8	house	1490733	2025-02-15	48	20	Criminal Competency & Treatment	batch-02	imported
 HB 89	house	1503003	2025-03-01	40	25	Graduate Scholarship Act Changes	batch-01	imported
-HB 91	house	1499171	2025-02-25	42	25	Public Utility Rate Structures	candidate:batch-02	passed the divided and enacted gate; not yet read in full
-SB 1	house	1496721	2025-02-21	46	19	Behavioral Health Trust Fund	candidate:batch-02	passed the divided and enacted gate; not yet read in full
+HB 91	house	1499171	2025-02-25	42	25	Public Utility Rate Structures	batch-02	imported
+SB 1	house	1496721	2025-02-21	46	19	Behavioral Health Trust Fund	batch-02	imported
 SB 113	house	1523983	2025-03-20	50	14	Board & Commission Sunset Dates	dropped	extends the sunset date of five boards and commissions; housekeeping, no direction
 SB 120	house	1524430	2025-03-21	46	17	No Behavioral Health Cost Sharing	batch-01	imported
 SB 124	house	1522178	2025-03-19	40	23	Superintendent Of Insurance Subpoenas	batch-01	imported
 SB 127	house	1523936	2025-03-20	46	19	Movie Exemption From Barber & Cosmetic Act	dropped	exempts film and television make-up artists and hairstylists from barber and cosmetology licensing; no research area fits
 SB 16	house	1524320	2025-03-21	36	33	Non-major Party Voters In Primary Elections	batch-01	imported
 SB 21	house	1521928	2025-03-19	43	25	Pollutant Discharge Elimination System Act	batch-01	imported
-SB 23	house	1523849	2025-03-20	37	31	Oil & Gas Royalty Rate Changes	candidate:batch-02	passed the divided and enacted gate; not yet read in full
+SB 23	house	1523849	2025-03-20	37	31	Oil & Gas Royalty Rate Changes	batch-02	imported
 SB 267	house	1523871	2025-03-20	42	21	Housing Application Fees	batch-01	imported
 SB 290	house	1524382	2025-03-21	42	21	Raise Marriage License Fees	dropped	raises the marriage license fee and splits it between county funds; fee mechanics, no direction
 SB 3	house	1496261	2025-02-20	42	23	Behavioral Health Reform & Investment Act	held	LEGISCAN TALLY IS WRONG. New Mexico's official roll call sheet RCS# 78 reads 44-23 with 2 absent; LegiScan stores 42-23 with 4 absent and lists 69 of 70 members. The approval gate writes the stored tally into the record text, so this roll cannot be imported
 SB 36	house	1520184	2025-03-18	42	23	Sensitive Personal Information Nondisclosure	batch-01	imported
 SB 364	house	1524440	2025-03-21	38	20	Law Enforcement Qualifications	batch-01	imported
-SB 37	house	1523940	2025-03-20	42	20	Strategic Water Reserve Fund	candidate:batch-02	passed the divided and enacted gate; not yet read in full
-SB 376	house	1524394	2025-03-21	52	13	State Employee Health Benefit Contributions	candidate:batch-02	passed the divided and enacted gate; not yet read in full
-SB 45	house	1524422	2025-03-21	55	14	County Health Care Assistance Fund Use	candidate:batch-02	passed the divided and enacted gate; not yet read in full
-SB 48	house	1522144	2025-03-19	39	26	Community Benefit Fund	candidate:batch-02	passed the divided and enacted gate; not yet read in full
+SB 37	house	1523940	2025-03-20	42	20	Strategic Water Reserve Fund	batch-02	imported
+SB 376	house	1524394	2025-03-21	52	13	State Employee Health Benefit Contributions	batch-02	imported
+SB 45	house	1524422	2025-03-21	55	14	County Health Care Assistance Fund Use	batch-02	imported
+SB 48	house	1522144	2025-03-19	39	26	Community Benefit Fund	batch-02	imported
 SB 481	house	1524436	2025-03-21	39	26	State Fairgrounds District Act	dropped	creates a governing district for the Albuquerque state fairgrounds; single jurisdiction
-SB 5	house	1516594	2025-03-12	42	26	Game Commission Reform	candidate:batch-02	passed the divided and enacted gate; not yet read in full
+SB 5	house	1516594	2025-03-12	42	26	Game Commission Reform	batch-02	imported
 SB 535	house	1524365	2025-03-21	40	23	Public Peace, Health, Safety & Welfare	dropped	carries three unrelated subjects at once, a supported decision-making act, higher utility regulator fees and a doubled 911 surcharge; no single direction
 SB 57	house	1520145	2025-03-18	42	25	Medical Provider Patient Ipra Info	batch-01	imported
-SB 59	house	1524366	2025-03-21	34	27	Public Works Minimum Wage Definitions	candidate:batch-02	passed the divided and enacted gate; not yet read in full
-SB 7	house	1520401	2025-03-18	46	18	Storm Water Service As Municipal Utility	candidate:batch-02	passed the divided and enacted gate; not yet read in full
-SB 73	house	1519064	2025-03-17	39	27	Require Bicycle Stops For Safety	candidate:batch-02	passed the divided and enacted gate; not yet read in full
-SB 83	house	1523816	2025-03-20	31	25	Innovation In State Government Fund	candidate:batch-02	passed the divided and enacted gate; not yet read in full
-SB 88	house	1524409	2025-03-21	52	13	Medicaid Trust Fund & State Supported Fund	candidate:batch-02	passed the divided and enacted gate; not yet read in full
+SB 59	house	1524366	2025-03-21	34	27	Public Works Minimum Wage Definitions	batch-02	imported
+SB 7	house	1520401	2025-03-18	46	18	Storm Water Service As Municipal Utility	batch-02	imported
+SB 73	house	1519064	2025-03-17	39	27	Require Bicycle Stops For Safety	dropped	lets a cyclist treat a stop sign as a yield and a red light as a stop-then-proceed; which way this points on public safety is what the floor debate was about, and no research area settles it
+SB 83	house	1523816	2025-03-20	31	25	Innovation In State Government Fund	batch-02	imported
+SB 88	house	1524409	2025-03-21	52	13	Medicaid Trust Fund & State Supported Fund	batch-02	imported
 SB 9	house	1524388	2025-03-21	45	15	Pipeline Safety Act Violations Civil Penalty	batch-01	imported
 HB 12	senate	1519228	2025-03-17	23	15	Extreme Risk Firearm Protection Order Changes	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
 HB 128	senate	1523918	2025-03-20	24	16	Nmfa Local Solar Access Fund	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
