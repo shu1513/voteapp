@@ -1,0 +1,202 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1836",
+      "roll": 1150547,
+      "measure_id": "HB 2",
+      "vote_date": "2022-02-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2, the Anti-Aggravated Riot Act, which would have created new crimes around protests. Injuring a first responder would have been a felony with a mandatory minimum, riot was widened to cover conduct creating danger while also requiring a dispersal order first, and blocking a road on foot would have become a crime. A city cutting its police budget by half could have been sued by the Attorney General. The House passed it 75-27, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 2, the Anti-Aggravated Riot Act, which would have created new crimes around protests. Injuring a first responder would have been a felony with a mandatory minimum, riot was widened to cover conduct creating danger while also requiring a dispersal order first, and blocking a road on foot would have become a crime. A city cutting its police budget by half could have been sued by the Attorney General. The House passed it 75-27, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1836",
+      "roll": 1171971,
+      "measure_id": "HB 239",
+      "vote_date": "2022-03-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 239, which would have barred candidates and poll watchers from helping a voter cast a ballot. They joined employers, employer agents and union officers on the list of people a voter may not get help from, and a helper had to sign the poll list certifying they were none of those. In city elections it would also have removed the rule that a voter swear to a specific disability before getting any help. The House passed it 79-21, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 239, which would have barred candidates and poll watchers from helping a voter cast a ballot. They joined employers, employer agents and union officers on the list of people a voter may not get help from, and a helper had to sign the poll list certifying they were none of those. In city elections it would also have removed the rule that a voter swear to a specific disability before getting any help. The House passed it 79-21, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1836",
+      "roll": 1171782,
+      "measure_id": "HB 312",
+      "vote_date": "2022-03-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 312, which would have barred teaching a listed set of ideas about race, sex and religion. State agencies and public schools could not have taught anyone to adopt or believe a divisive concept, while colleges could teach about them as part of a course so long as nobody was made to agree. Nobody could be penalized for refusing to assent, and the state could not take federal or private money conditioned on such training. The House passed it 65-32, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 312, which would have barred teaching a listed set of ideas about race, sex and religion. State agencies and public schools could not have taught anyone to adopt or believe a divisive concept, while colleges could teach about them as part of a course so long as nobody was made to agree. Nobody could be penalized for refusing to assent, and the state could not take federal or private money conditioned on such training. The House passed it 65-32, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1836",
+      "roll": 1181465,
+      "measure_id": "HB 337",
+      "vote_date": "2022-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 337, which would have rewritten the penalties for fleeing police. Causing serious injury or death while fleeing would have become a Class B felony. Causing plain injury, or crossing a state line while also committing a felony, would have been a Class C felony, and the license suspension of six months to two years was unchanged. The House passed it 72-25, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 337, which would have rewritten the penalties for fleeing police. Causing serious injury or death while fleeing would have become a Class B felony. Causing plain injury, or crossing a state line while also committing a felony, would have been a Class C felony, and the license suspension of six months to two years was unchanged. The House passed it 72-25, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1836",
+      "roll": 1172297,
+      "measure_id": "HB 63",
+      "vote_date": "2022-03-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 63, which would have banned handing someone a part-filled voter form. Giving a person a voter registration or absentee application with any field already completed, without their consent, would have been a Class A misdemeanor, and registrars would have had to refuse a prefilled application. Election officials were excepted, and so was prefilling the return address. The House passed it 73-28, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 63, which would have banned handing someone a part-filled voter form. Giving a person a voter registration or absentee application with any field already completed, without their consent, would have been a Class A misdemeanor, and registrars would have had to refuse a prefilled application. Election officials were excepted, and so was prefilling the return address. The House passed it 73-28, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1836",
+      "roll": 1185525,
+      "measure_id": "SB 255",
+      "vote_date": "2022-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 255, which would have required the Governor's approval before a state health order could take effect. Any emergency rule or directive from the State Health Officer that burdens private citizens or businesses would have needed the Governor's sign-off and filing with the Secretary of State. It also exempted events held for Defense Department staff from conflicting state and local rules. The House vote was 40-53 and the bill failed.",
+      "nay_description": "Voted against passing Senate Bill 255, which would have required the Governor's approval before a state health order could take effect. Any emergency rule or directive from the State Health Officer that burdens private citizens or businesses would have needed the Governor's sign-off and filing with the Secretary of State. It also exempted events held for Defense Department staff from conflicting state and local rules. The House vote was 40-53 and the bill failed.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1836",
+      "roll": 1140220,
+      "measure_id": "SB 26",
+      "vote_date": "2022-02-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 26, the Agent Billy Clardy III Act, which would have given Alabama its own wiretap power for felony drug cases. The Attorney General could have asked a judge to authorize interception for up to 30 days, with the state police holding the only lawful equipment. It also let the state police demand phone toll records and subscriber details by administrative subpoena, with no judge involved. The Senate vote was 13-13 and the bill failed.",
+      "nay_description": "Voted against passing Senate Bill 26, the Agent Billy Clardy III Act, which would have given Alabama its own wiretap power for felony drug cases. The Attorney General could have asked a judge to authorize interception for up to 30 days, with the state police holding the only lawful equipment. It also let the state police demand phone toll records and subscriber details by administrative subpoena, with no judge involved. The Senate vote was 13-13 and the bill failed.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1836",
+      "roll": 1180925,
+      "measure_id": "SB 301",
+      "vote_date": "2022-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 301, which would have added mandatory extra prison time for carrying a gun during a violent crime. The extra term ran from five years for possession up to 20 years for a repeat offence, served on top of the sentence for the crime itself. None of that added time could be reduced by probation, early release, work release or good behavior credit. The Senate passed it 16-6, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing Senate Bill 301, which would have added mandatory extra prison time for carrying a gun during a violent crime. The extra term ran from five years for possession up to 20 years for a repeat offence, served on top of the sentence for the crime itself. None of that added time could be reduced by probation, early release, work release or good behavior credit. The Senate passed it 16-6, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1836",
+      "roll": 1185519,
+      "measure_id": "SB 38",
+      "vote_date": "2022-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 38, which would have asked voters to fold the State Auditor's office into the State Treasurer's. Nobody could be elected auditor for a term starting after January 2031, and the separate office would then be abolished with its duties passing to the Treasurer. Because it changes the constitution it needed three fifths of each chamber and then a vote of the people. The House vote was 46-36, short of the three fifths a constitutional amendment needs, and the bill failed.",
+      "nay_description": "Voted against passing Senate Bill 38, which would have asked voters to fold the State Auditor's office into the State Treasurer's. Nobody could be elected auditor for a term starting after January 2031, and the separate office would then be abolished with its duties passing to the Treasurer. Because it changes the constitution it needed three fifths of each chamber and then a vote of the people. The House vote was 46-36, short of the three fifths a constitutional amendment needs, and the bill failed.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1836",
+      "roll": 1158840,
+      "measure_id": "SB 51",
+      "vote_date": "2022-03-01",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 51, which would have required every Alabama school system to employ a mental health service coordinator. The coordinator would have arranged mental health services across the system, and could qualify through social work, school counselling, nursing or professional mental health experience. Each one would have had a year to earn a state certificate, and the duty was conditional on the Legislature funding it. The Senate vote was 10-16 and the bill failed.",
+      "nay_description": "Voted against passing Senate Bill 51, which would have required every Alabama school system to employ a mental health service coordinator. The coordinator would have arranged mental health services across the system, and could qualify through social work, school counselling, nursing or professional mental health experience. Each one would have had a year to earn a state certificate, and the duty was conditional on the Legislature funding it. The Senate vote was 10-16 and the bill failed.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1836",
+      "roll": 1146018,
+      "measure_id": "SB 79",
+      "vote_date": "2022-02-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 79, which would have set one statewide set of fair-hearing rules for school discipline. Pupils through fifth grade could not have been suspended or expelled unless they endangered someone, and no pupil could have been suspended for truancy or lateness. A long suspension or expulsion would have required a hearing within 10 school days, advance sight of the evidence, and a written decision. The Senate passed it 24-8, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing Senate Bill 79, which would have set one statewide set of fair-hearing rules for school discipline. Pupils through fifth grade could not have been suspended or expelled unless they endangered someone, and no pupil could have been suspended for truancy or lateness. A long suspension or expulsion would have required a hearing within 10 school days, advance sight of the evidence, and a written decision. The Senate passed it 24-8, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
