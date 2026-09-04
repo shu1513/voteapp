@@ -105,7 +105,9 @@ export function DraftCompleteNotice() {
 
   // Arriving on a page that shows the draft (via the header link, or the
   // notice's own link) retires the notice: the destination speaks for
-  // itself, and it should not reappear on the way back out.
+  // itself, and it should not reappear on the way back out. The render
+  // below also checks `suppressed` directly — effects run after paint, so
+  // state alone would let the notice flash for one frame on arrival.
   useEffect(() => {
     if (suppressed) {
       setShown(null);
@@ -116,7 +118,7 @@ export function DraftCompleteNotice() {
 
   return (
     <div role="status">
-      {shown ? (
+      {shown && !suppressed ? (
         <div className="border-t border-line bg-green-50">
           <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2 text-sm text-green-900">
             <p className="min-w-0 flex-1">
