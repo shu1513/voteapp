@@ -205,3 +205,124 @@ instead of 10. Nothing else moves — not the 35% flower potency cap, not licenc
 fees, not taxes, not local opt-outs, not the higher-potency allowance for
 registered cardholders. A serving-size cap on one product type does not evidence
 a stance on any area in the catalogue.
+
+## Batch-10 — twenty-five drops
+
+Thirty-three measures were read; twenty-five dropped. The remaining Montana
+bills are mostly agency housekeeping, and most of these were cleared in grouped
+triages rather than one full read each.
+
+### Appropriations, six bills
+
+**HB 2, HB 3, HB 4** are omnibus budget bills. Their enacted titles say
+"APPROPRIATING MONEY TO VARIOUS STATE AGENCIES", which is the whole of it. They
+fund every subject at once, so no research area maps with a direction. Dropped on
+the enacted title; reading HB 2's 260,000 characters of line items would not
+change the answer.
+
+**HB 9** (cultural and aesthetic grants), **HB 10** (information technology
+capital projects) and **HB 12** (historic preservation grants) are purely money.
+HB 9 and HB 10 carry **zero underline or strike line objects anywhere in the
+PDF**, which establishes mechanically that no existing law was touched. Worth
+recording: **HB 10's title claims to be "REVISING LAWS RELATED TO INFORMATION
+TECHNOLOGY CAPITAL PROJECTS" but no law is revised.** Titles overstate; the marks
+do not. HB 12 amends only a prior session law, deleting one 2023 grant and
+swapping one grantee name.
+
+### Pensions, agencies and pay, nine bills
+
+**HB 46** (public defender reassignment), **HB 61** (inter-entity loans), **HB 62**
+(public employee retirement administration) and **HB 67** (teachers' retirement
+administration) are housekeeping. HB 62 and HB 67 are long, but almost entirely
+renumbering, federal tax-code conformity and definition cleanup. The only edges
+are HB 62's disability filing window moving to a firm 12 months and HB 67 adding
+school paraprofessionals to the retirement election, neither a live dispute.
+
+**HB 81** moves hiring of the veterans' affairs administrator from the Board of
+Veterans' Affairs to the adjutant general. The entire bill is two marks: "board"
+struck, "adjutant general" inserted.
+
+**HB 68** lets county commissioners sue other local government bodies within the
+county, hire outside counsel and recover fees, and makes an official who defies
+the resulting writ subject to recall. Real, but it shifts power between layers of
+local government and no catalogue area maps to that.
+
+**HB 72** deletes the 15-day limit on double pay for enlisted militia on state
+active duty, so the double rate now runs for a whole call-up. `national_defense`
+is defined around military readiness and deterrence; this is state disaster
+response pay.
+
+**HB 85** scraps the 2023 actuarially-determined employer contribution system for
+four public pension systems and puts fixed statutory rates back, including **0%**
+for the judges' system, with about $4.7 million appropriated and retroactivity to
+July 2023. It reads as fiscal loosening until you see that the judges' 0% comes
+with a trigger restoring 25.81% if the fund drops below 120% funded, and that the
+sheriffs' all-in employer rate is unchanged at 13.115%. Two-sided.
+
+**HB 13**, the state employee pay plan, points three ways: the raise is **cut**
+from $1.50 an hour or 4% to $1.00 or 2.5% against the prior biennium, $138.2
+million is appropriated, and legislator session pay is reindexed from $10.33 an
+hour to 80% and then 100% of Montana's average hourly wage.
+
+### Education, five bills
+
+**HB 24** is dropped because the direction cannot be established, not because it
+is two-sided. Behind a "clarify" title it deletes the half-time/full-time
+kindergarten designation and two rules giving districts extra funded student
+count for opening or expanding a kindergarten programme. Whether that cuts
+kindergarten funding or removes provisions another 2025 act made redundant is not
+determinable from the enrolled text.
+
+**HB 266** adds an annual report comparing school funding rises to inflation and
+states the formula is a floor rather than a ceiling. It moves no money, changes
+no formula and leaves the 3% cap untouched. It carries a coordination
+instruction voiding SB 258 if both passed; **SB 258 was vetoed**, so it did not
+fire.
+
+**HB 595** requires the corrections department to run a correctional education
+programme and lets people without a Montana teaching certificate instruct in it.
+Requiring the programme and lowering the credential bar point opposite ways.
+
+**HB 602** puts a proposed budget non-renewal of a non-tenured teacher on a
+public board agenda with public comment, and writes into statute that "financial
+reasons" counts as "without cause". For a teacher those two limbs cut opposite
+ways.
+
+**HB 866** is a permissive vocabulary change — "emotional disability" may be used
+instead of "emotional disturbance" — with a $100 appropriation. Zero line
+objects; no child's eligibility or services change.
+
+### Building, land and tax, five bills
+
+**HB 144** adds a 13th seat to the building codes council for the state fire
+chiefs' association.
+
+**HB 614** lets county commissioners end a zoning district by resolution, without
+the landowner petition and election the old route required, but only where the
+county is moving to the Montana Land Use Planning Act or has already created a
+larger district covering the same ground. Administrative consolidation, and it
+also adds a 3-year bar on re-petitioning after a failed referendum.
+
+**HB 714** makes county review of claimed subdivision exemptions mandatory rather
+than optional, adds a sworn affidavit, applies the 5-acre test to the remainder
+parcel, and doubles the evasion penalty from $5,000 to $10,000 or 10% of the sale
+price. But it also makes that penalty the county's **exclusive remedy** and bars
+counties from requiring an applicant to appear. Tighter in some directions,
+looser in others.
+
+**HB 846** creates a new payment from property-rich school districts to the
+district actually teaching an "isolated pupil" — more than 60 minutes' travel
+from the home district's school — with a $100 petition fee and an advisory
+council where such pupils are 5% or more of budgeted ANB. The same act **repeals
+the requirement that a K-12 district agree in writing before territory is
+transferred** and cuts the re-petition wait from 4 years to 1 fiscal year. A
+funding-equity mechanism bundled with a loosening of boundary protections.
+
+Its section 8 is a coordination instruction voiding SB 260 sections 10 to 14 if
+both passed. **SB 260 was signed on 12 May 2025, so it fired** — recorded in the
+campaign checkpoint so SB 260 is never judged as though those sections were law.
+
+**SB 33** moves plan review, permitting and inspection of state-agency buildings
+from cities, towns and counties to the state Department of Labor and Industry,
+leaving local governments a right to receive plans and comment. Who holds the
+authority is the whole of it.
