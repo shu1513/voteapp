@@ -1,6 +1,8 @@
 # Delaware batch-01 — what was selected and why
 
-**14 measures / 25 rolls / 177 records across 14 candidates.** Every roll is its
+**14 measures / 25 rolls.** First imported at 177 records across 14 candidates; after
+the House roster campaign grew the crosswalk, re-imported at **346 records across 29
+candidates** with no re-judging. Every roll is its
 chamber's last kept floor vote on the measure, so every one is on the text that became
 law. Local `voteapp` only; production holds no Delaware roll-call records.
 
@@ -51,16 +53,17 @@ anti-discrimination, which is `civil_rights` under the rule California settled.
 
 ## Reach
 
-Delaware's roster in this database is partial. All 11 Senate districts on the 2026
-ballot are covered, but only 8 of 41 House districts, and only 5 of those 8 have the
-sitting member on the ballot. **A House roll reaches 5 candidates and a Senate roll
-reaches 9** — the smallest fan-out of any state in this campaign. That is why Senate
-rolls carry more value than House rolls here, the reverse of every other state, and why
-three of the fourteen measures are one-chamber.
+When this batch was selected, only 8 of 41 House districts were rostered and a House
+roll reached 5 candidates against a Senate roll's 9 — the smallest fan-out of any state
+in this campaign, and the reason three of the fourteen measures are one-chamber and why
+Senate rolls were worth more than House rolls here.
 
-A House roster campaign is running in parallel. Re-running this import after it lands
-adds the new members without duplicating anything, because the fan-out keys on the
-roll-call URL.
+**That has since changed.** The House roster campaign reached 26 of 41 districts, 15
+more sitting members became reachable, and a re-import on 2026-09-04 took this batch
+from 177 records to **346 across 29 candidates** — House fan-out median 5 to 19 — with
+no re-judging and nothing duplicated, because the fan-out keys on the roll-call URL.
+Ledger `import-crosswalk-extension-report.json`. Expect to repeat this as the remaining
+15 House districts are rostered.
 
 ## What was left for later
 
