@@ -1,0 +1,426 @@
+{
+  "importerVersion": "rollcall-legiscan-resolve-v1",
+  "startedAt": "2026-09-03T01:41:19.548Z",
+  "finishedAt": "2026-09-03T01:41:19.703Z",
+  "jurisdiction": "AK",
+  "sessionId": 2171,
+  "evidenceDir": "~/legiscan-data/ak-2171-evidence",
+  "scopeFrom": "2026-11-01",
+  "peopleSource": "~/legiscan-data/ak-2171",
+  "peopleMembers": 62,
+  "candidatePool": 16,
+  "crosswalkFile": null,
+  "crosswalkEntries": null,
+  "crosswalkPeopleNotInSnapshot": [],
+  "proposals": [
+    {
+      "peopleId": 6072,
+      "rosterName": "Neal Foster",
+      "rosterSeat": "house HD-039",
+      "candidateId": "3e207f3a-d0a3-4462-857a-c1b1c387e230",
+      "candidateName": "Neal Foster",
+      "candidacy": "state_lower: State House District 39 (2024); Alaska",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23890,
+      "rosterName": "Ashley Carrick",
+      "rosterSeat": "house HD-035",
+      "candidateId": "95e1fb8d-5dd4-42b6-b29a-c7074bc15627",
+      "candidateName": "Ashley Carrick",
+      "candidacy": "state_lower: State House District 35 (2024); Alaska",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24545,
+      "rosterName": "Loki Tobin",
+      "rosterSeat": "senate SD-I",
+      "candidateId": "38cfb607-351a-42dd-aad8-dc902c1d6ef6",
+      "candidateName": "Löki Gale Tobin",
+      "candidacy": "state_upper: State Senate District I (2024); Alaska",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 24586,
+      "rosterName": "Maxine Dibert",
+      "rosterSeat": "house HD-031",
+      "candidateId": "d7f6bba7-0e51-4c3e-8fe7-292b96a07df5",
+      "candidateName": "Maxine Dibert",
+      "candidacy": "state_lower: State House District 31 (2024); Alaska",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24591,
+      "rosterName": "Will Stapp",
+      "rosterSeat": "house HD-032",
+      "candidateId": "66829f08-ebbe-47c5-b4b0-3038bdec6d15",
+      "candidateName": "Will Stapp",
+      "candidacy": "state_lower: State House District 32 (2024); Alaska",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    }
+  ],
+  "unmatchedPeople": [
+    {
+      "peopleId": 11277,
+      "name": "Dan Saddler",
+      "seat": "house HD-024"
+    },
+    {
+      "peopleId": 11301,
+      "name": "Mia Costello",
+      "seat": "house HD-015"
+    },
+    {
+      "peopleId": 11358,
+      "name": "Catherine Giessel",
+      "seat": "senate SD-E"
+    },
+    {
+      "peopleId": 14388,
+      "name": "Shelley Hughes",
+      "seat": "house SD-M"
+    },
+    {
+      "peopleId": 14389,
+      "name": "Andrew Josephson",
+      "seat": "house HD-013"
+    },
+    {
+      "peopleId": 16680,
+      "name": "Cathy Tilton",
+      "seat": "senate SD-M"
+    },
+    {
+      "peopleId": 17251,
+      "name": "Louise Stutes",
+      "seat": "house HD-005"
+    },
+    {
+      "peopleId": 17255,
+      "name": "Matt Claman",
+      "seat": "house SD-H"
+    },
+    {
+      "peopleId": 18610,
+      "name": "George Rauscher",
+      "seat": "senate SD-O"
+    },
+    {
+      "peopleId": 18974,
+      "name": "Charles Kopp",
+      "seat": "house HD-010"
+    },
+    {
+      "peopleId": 19096,
+      "name": "DeLena Johnson",
+      "seat": "house HD-025"
+    },
+    {
+      "peopleId": 19596,
+      "name": "Mike Shower",
+      "seat": "senate SD-O"
+    },
+    {
+      "peopleId": 20423,
+      "name": "William Fields",
+      "seat": "house HD-017"
+    },
+    {
+      "peopleId": 20962,
+      "name": "Elvi Gray-Jackson",
+      "seat": "senate SD-G"
+    },
+    {
+      "peopleId": 20963,
+      "name": "Jesse Kiehl",
+      "seat": "senate SD-B"
+    },
+    {
+      "peopleId": 21261,
+      "name": "Sara Hannan",
+      "seat": "house HD-004"
+    },
+    {
+      "peopleId": 21268,
+      "name": "Kelly Merrick",
+      "seat": "house SD-L"
+    },
+    {
+      "peopleId": 21271,
+      "name": "Andrea Story",
+      "seat": "house HD-003"
+    },
+    {
+      "peopleId": 21272,
+      "name": "Sarah Vance",
+      "seat": "house HD-006"
+    },
+    {
+      "peopleId": 21614,
+      "name": "Mike Prax",
+      "seat": "house HD-033"
+    },
+    {
+      "peopleId": 22728,
+      "name": "Robert Myers",
+      "seat": "senate SD-Q"
+    },
+    {
+      "peopleId": 22857,
+      "name": "Mike Cronk",
+      "seat": "house SD-R"
+    },
+    {
+      "peopleId": 22859,
+      "name": "James Kaufman",
+      "seat": "house SD-F"
+    },
+    {
+      "peopleId": 22861,
+      "name": "Kevin McCabe",
+      "seat": "house HD-030"
+    },
+    {
+      "peopleId": 22863,
+      "name": "David Nelson",
+      "seat": "house HD-018"
+    },
+    {
+      "peopleId": 22865,
+      "name": "Calvin Schrage",
+      "seat": "house HD-012"
+    },
+    {
+      "peopleId": 24187,
+      "name": "Genevieve Mina",
+      "seat": "house HD-019"
+    },
+    {
+      "peopleId": 24409,
+      "name": "Forrest Dunbar",
+      "seat": "senate SD-J"
+    },
+    {
+      "peopleId": 24544,
+      "name": "Jesse Bjorkman",
+      "seat": "senate SD-D"
+    },
+    {
+      "peopleId": 24587,
+      "name": "Andrew Gray",
+      "seat": "house HD-020"
+    },
+    {
+      "peopleId": 24590,
+      "name": "Justin Ruffridge",
+      "seat": "house HD-007"
+    },
+    {
+      "peopleId": 24593,
+      "name": "Frank Tomaszewski",
+      "seat": "house HD-034"
+    },
+    {
+      "peopleId": 24789,
+      "name": "Jamie Allard",
+      "seat": "house HD-023"
+    },
+    {
+      "peopleId": 24790,
+      "name": "Julie Coulombe",
+      "seat": "house HD-011"
+    },
+    {
+      "peopleId": 24791,
+      "name": "Alyse Galvin",
+      "seat": "house HD-014"
+    },
+    {
+      "peopleId": 24792,
+      "name": "Rebecca Himschoot",
+      "seat": "house HD-002"
+    },
+    {
+      "peopleId": 24793,
+      "name": "Donna Mears",
+      "seat": "house HD-021"
+    },
+    {
+      "peopleId": 26273,
+      "name": "Ky Holland",
+      "seat": "house HD-009"
+    },
+    {
+      "peopleId": 26346,
+      "name": "Robyn Frier",
+      "seat": "house HD-040"
+    },
+    {
+      "peopleId": 26347,
+      "name": "Jeremy Bynum",
+      "seat": "house HD-001"
+    },
+    {
+      "peopleId": 26348,
+      "name": "Ted Eischeid",
+      "seat": "house HD-022"
+    },
+    {
+      "peopleId": 26349,
+      "name": "Bill Elam",
+      "seat": "house HD-008"
+    },
+    {
+      "peopleId": 26350,
+      "name": "Carolyn Hall",
+      "seat": "house HD-016"
+    },
+    {
+      "peopleId": 26351,
+      "name": "Nellie Jimmie",
+      "seat": "house HD-038"
+    },
+    {
+      "peopleId": 26352,
+      "name": "Elexie Moore",
+      "seat": "house HD-028"
+    },
+    {
+      "peopleId": 26353,
+      "name": "Rebecca Schwanke",
+      "seat": "house HD-036"
+    },
+    {
+      "peopleId": 26354,
+      "name": "Jubilee Underwood",
+      "seat": "house HD-027"
+    },
+    {
+      "peopleId": 26355,
+      "name": "Robert Yundt",
+      "seat": "senate SD-N"
+    },
+    {
+      "peopleId": 26560,
+      "name": "Garret Nelson",
+      "seat": "house HD-029"
+    },
+    {
+      "peopleId": 26561,
+      "name": "Steve St. Clair",
+      "seat": "house HD-026"
+    },
+    {
+      "peopleId": 6052,
+      "name": "Scott Kawasaki",
+      "seat": "house SD-P"
+    },
+    {
+      "peopleId": 6065,
+      "name": "Bryce Edgmon",
+      "seat": "house HD-037"
+    },
+    {
+      "peopleId": 6075,
+      "name": "William Wielechowski",
+      "seat": "senate SD-K"
+    },
+    {
+      "peopleId": 6083,
+      "name": "Donald Olson",
+      "seat": "senate SD-T"
+    },
+    {
+      "peopleId": 6085,
+      "name": "Lyman Hoffman",
+      "seat": "senate SD-S"
+    },
+    {
+      "peopleId": 6089,
+      "name": "Bert Stedman",
+      "seat": "senate SD-A"
+    },
+    {
+      "peopleId": 6093,
+      "name": "Gary Stevens",
+      "seat": "senate SD-C"
+    }
+  ],
+  "unmatchedCandidates": [
+    {
+      "candidateId": "b94a6c68-0c19-494e-925e-fa1144a97136",
+      "name": "Aimeé Moore",
+      "scope": "state_lower",
+      "districtName": "State House District 31 (2024); Alaska"
+    },
+    {
+      "candidateId": "95967f6c-4190-44b9-bdd9-57f51cf024ed",
+      "name": "Becky Schwanke",
+      "scope": "state_lower",
+      "districtName": "State House District 36 (2024); Alaska"
+    },
+    {
+      "candidateId": "f3ab62d5-8d7f-46db-be79-09f880142a52",
+      "name": "Bridger Terra",
+      "scope": "state_lower",
+      "districtName": "State House District 35 (2024); Alaska"
+    },
+    {
+      "candidateId": "8054eb71-961a-4778-8769-704ed33d7e7b",
+      "name": "Crystal Jones",
+      "scope": "state_lower",
+      "districtName": "State House District 36 (2024); Alaska"
+    },
+    {
+      "candidateId": "d43cb0ab-5efc-42b0-bf6f-b2d3eed6e47c",
+      "name": "Harmony Tomaszewski",
+      "scope": "state_lower",
+      "districtName": "State House District 34 (2024); Alaska"
+    },
+    {
+      "candidateId": "cffd103f-d5c9-49cb-b066-ead81e336759",
+      "name": "Heather Herndon",
+      "scope": "state_upper",
+      "districtName": "State Senate District I (2024); Alaska"
+    },
+    {
+      "candidateId": "6e94fd9d-5e8b-45fc-a30f-a81beaf1f36f",
+      "name": "Jeffrey Rentzel",
+      "scope": "state_lower",
+      "districtName": "State House District 35 (2024); Alaska"
+    },
+    {
+      "candidateId": "2f8cf9cb-5d5b-4c29-8459-b7beb69a841b",
+      "name": "Jonathan Powell-Mark",
+      "scope": "state_lower",
+      "districtName": "State House District 31 (2024); Alaska"
+    },
+    {
+      "candidateId": "68cb703e-68ea-4c3b-b83f-8afd218e5fc0",
+      "name": "Joy Cottle",
+      "scope": "state_lower",
+      "districtName": "State House District 34 (2024); Alaska"
+    },
+    {
+      "candidateId": "fdf5104d-06a4-4201-a55a-7ef39bab4a41",
+      "name": "Reynold Okitkun",
+      "scope": "state_lower",
+      "districtName": "State House District 39 (2024); Alaska"
+    },
+    {
+      "candidateId": "7b9db164-3726-4429-b179-7c01c7739228",
+      "name": "Tyler Ivanoff",
+      "scope": "state_lower",
+      "districtName": "State House District 39 (2024); Alaska"
+    }
+  ],
+  "files": 863,
+  "fileErrors": 0,
+  "counts": {},
+  "rolls": []
+}
