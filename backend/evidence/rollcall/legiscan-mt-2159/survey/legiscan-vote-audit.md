@@ -59,9 +59,14 @@ The scripts live outside the repository with the other Montana helpers:
 
 ## The result that matters
 
-**None of the 81 roll calls this campaign has imported disagrees with Montana's
-own record.** Every one was in scope, every one paired, and every one matches
-member for member. No Montana candidate record is wrong.
+**None of the 81 roll calls this campaign had imported when this audit ran
+disagrees with Montana's own record.** Every one was in scope, every one paired,
+and every one matches member for member. No Montana candidate record is wrong.
+
+Batches 08 and 09 imported 16 more rolls afterwards. Each was compared the same
+way, member by member, before it was imported, and each agrees exactly — so all
+**97** imported rolls now stand checked. The 1,826-roll sweep below is the
+batch-07 run and was not repeated.
 
 ## What disagrees
 
