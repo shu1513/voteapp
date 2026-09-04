@@ -42,26 +42,37 @@ export function DraftCompleteNotice() {
   // for the account. Both hooks are cheap and already mounted by the header.
   const identity = me === undefined ? null : me === null ? "guest" : me.email;
   const progress = me === undefined ? null : me === null ? guestProgress : accountProgress;
-  // One tracked ballot = one identity + one election day. Null progress is
-  // "unknown", never "incomplete": the signed-in hook starts at null and
-  // resolves later, and treating that as false would congratulate every
-  // returning user whose first resolved value is already complete.
+  // One tracked ballot = one identity + one election day + that day's race
+  // list (ids sorted: /ballot and /draft can deliver the same races in
+  // different orders). Null progress is "unknown", never "incomplete": the
+  // signed-in hook starts at null and resolves later, and treating that as
+  // false would congratulate every returning user whose first resolved
+  // value is already complete.
   const trackedDate = identity !== null && progress !== null ? progress.election_date : null;
-  const trackedKey = trackedDate !== null ? `${identity}|${trackedDate}` : null;
+  const trackedKey =
+    progress !== null && trackedDate !== null
+      ? `${identity}|${trackedDate}|${[...progress.election_ids].sort().join(",")}`
+      : null;
   const complete = progress?.complete ?? null;
   const total = progress?.total ?? 0;
   const suppressed = SUPPRESSED_PATHS.has(pathname);
 
-  // Baseline: the first KNOWN value per tracked ballot. Only a later known
-  // incomplete → known complete for the same ballot fires; a new identity
-  // or a new nearest day starts a fresh baseline instead (switching
-  // ballots, or a denominator shrinking to what is already picked, must
-  // not manufacture a completion).
+  // Baseline: the last KNOWN value for the tracked ballot. Only a later
+  // known incomplete → known complete for the SAME ballot fires; a new
+  // identity, a new nearest day, or a changed race list starts a fresh
+  // baseline instead (an address change or a retired race can turn 1/2
+  // into 1/1 with no new pick — that is not a completion). Unknown breaks
+  // the chain too: a pick made while progress was unknown is not observed.
   const baseline = useRef<{ key: string; complete: boolean } | null>(null);
   const [shown, setShown] = useState<{ date: string; total: number } | null>(null);
 
   useEffect(() => {
     if (trackedKey === null || trackedDate === null || complete === null) {
+      // Nothing confirms the message any more (draft cleared, ballot with no
+      // upcoming races, identity unresolved): drop it rather than let a
+      // stale "every race has a pick" sit in the header.
+      baseline.current = null;
+      setShown(null);
       return;
     }
     const previous = baseline.current;

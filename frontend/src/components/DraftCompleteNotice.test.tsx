@@ -6,7 +6,7 @@ import { App } from "../App";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
 import { ballotSummary, electionSummary, ME_VERIFIED } from "../test/fixtures";
-import { clearBallotDraft, setDraftCandidateChoice } from "../lib/ballotDraft";
+import { clearBallotDraft, setDraftBallotContext, setDraftCandidateChoice } from "../lib/ballotDraft";
 
 // The notice rides the app shell's header, so every test renders <App />
 // with stand-in pages: the transition happens while the user is on some
@@ -195,6 +195,69 @@ describe("DraftCompleteNotice", () => {
     await userEvent.click(screen.getByRole("link", { name: "Review my picks" }));
     expect(await screen.findByText("draft content")).toBeInTheDocument();
     expect(screen.getByRole("status")).toBeEmptyDOMElement();
+  });
+
+  it("does not treat a shrinking race list as a completion", async () => {
+    // 1 of 2 picked; the ballot is reloaded (address change, retired race)
+    // and now holds only the already-picked race: 1/1, no new pick.
+    seedDraft({ target: TWO_RACE_TARGET, choices: { "e-1": choice("e-1", "Governor") } });
+    stubApiRoutes(GUEST);
+    renderShell();
+    expect(await screen.findByRole("link", { name: "My Draft 1/2" })).toBeInTheDocument();
+
+    act(() => {
+      setDraftBallotContext(["dddddddd-1111-4111-8111-111111111111"], {
+        election_date: "2026-11-03",
+        election_ids: ["e-1"],
+      });
+    });
+    expect(await screen.findByRole("link", { name: "My Picks ✓" })).toBeInTheDocument();
+    expect(screen.getByRole("status")).toBeEmptyDOMElement();
+    // And the day's once-only notice was not consumed by it.
+    expect(window.localStorage.getItem("voteapp_draft_complete_seen")).toBeNull();
+  });
+
+  it("drops an open notice when progress can no longer confirm it", async () => {
+    seedDraft({ target: TWO_RACE_TARGET, choices: { "e-1": choice("e-1", "Governor") } });
+    stubApiRoutes(GUEST);
+    renderShell();
+    expect(await screen.findByRole("link", { name: "My Draft 1/2" })).toBeInTheDocument();
+    pickMayor(true);
+    expect(await screen.findByText(NOTICE_TEXT)).toBeInTheDocument();
+
+    // The draft is cleared (what registering does once the flush succeeds).
+    act(() => {
+      clearBallotDraft();
+    });
+    await waitFor(() => expect(screen.queryByText(NOTICE_TEXT)).not.toBeInTheDocument());
+  });
+
+  it("remembers a date whose marker write failed even though reads work", async () => {
+    const realSetItem = Storage.prototype.setItem;
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(function (this: Storage, key, value) {
+      if (key === "voteapp_draft_complete_seen") {
+        throw new Error("QuotaExceededError");
+      }
+      return realSetItem.call(this, key, value);
+    });
+    // A date no other test uses, so the module-level memory fallback cannot
+    // leak between tests.
+    const target = { election_date: "2026-11-05", election_ids: ["e-1", "e-2"] };
+    const nov5 = (id: string, title: string) => ({ ...choice(id, title), election_date: "2026-11-05" });
+    seedDraft({ target, choices: { "e-1": nov5("e-1", "Governor") } });
+    stubApiRoutes(GUEST);
+    renderShell();
+    expect(await screen.findByRole("link", { name: "My Draft 1/2" })).toBeInTheDocument();
+
+    const notice = /Picks added for every race in your November 5, 2026 draft/;
+    pickMayor(true);
+    expect(await screen.findByText(notice)).toBeInTheDocument();
+    expect(window.localStorage.getItem("voteapp_draft_complete_seen")).toBeNull();
+    pickMayor(false);
+    await waitFor(() => expect(screen.queryByText(notice)).not.toBeInTheDocument());
+    pickMayor(true);
+    expect(await screen.findByRole("link", { name: "My Picks ✓" })).toBeInTheDocument();
+    expect(screen.queryByText(notice)).not.toBeInTheDocument();
   });
 
   it("still fires once per tab when the seen marker cannot be stored", async () => {

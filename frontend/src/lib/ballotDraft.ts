@@ -230,7 +230,13 @@ export function draftProgress(draft: BallotDraft, today: string): PickProgress |
   }
   const picked = draft.target.election_ids.filter((id) => isDecidedChoice(draft.choices[id])).length;
   const total = draft.target.election_ids.length;
-  return { election_date: draft.target.election_date, picked, total, complete: picked === total };
+  return {
+    election_date: draft.target.election_date,
+    election_ids: draft.target.election_ids,
+    picked,
+    total,
+    complete: picked === total,
+  };
 }
 
 /** The draft's progress denominator from a ballot payload: the nearest

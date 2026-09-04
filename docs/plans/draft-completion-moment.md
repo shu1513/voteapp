@@ -107,19 +107,27 @@ Progress source:
 
 Trigger:
 
-- Baseline: the first non-null progress seen for the current identity
-  (`me?.id` or "guest") and `election_date` pair. Fire only when a later
-  progress for the same pair goes from `complete: false` to
-  `complete: true`. Null never counts as false; a returning user whose
-  first resolved value is complete gets nothing.
-- Reset the baseline when identity or `election_date` changes. Switching
-  ballots or a shrinking denominator must not manufacture a completion.
+- Baseline: the last non-null progress seen for the tracked ballot, which
+  is identity (`me.email` or "guest") + `election_date` + that day's sorted
+  race ids. Fire only when a later progress for the same ballot goes from
+  `complete: false` to `complete: true`. Null never counts as false; a
+  returning user whose first resolved value is complete gets nothing.
+- Reset the baseline when identity, `election_date`, or the race list
+  changes. Switching ballots or a denominator shrinking from 1/2 to 1/1
+  (address change, retired race) must not manufacture a completion, and
+  must not consume the day's once-only marker.
+- Null progress (draft cleared, ballot with no upcoming races, identity
+  unresolved) drops an open notice and resets the baseline: nothing
+  confirms the message any more, and a pick made during an unknown gap is
+  simply not observed.
 - Once per election day per browser: on fire, add the date to
   `voteapp_draft_complete_seen` (a JSON array of dates) in localStorage
   (`frontend/src/lib/draftCompleteSeen.ts`). Skip firing when the date is
   already present. Reads and writes are wrapped in try/catch with an
-  in-memory set as fallback. This is browser-local suppression shared by
-  every account on the browser, not per-user across devices. Good enough.
+  in-memory set as fallback; the check consults memory first, so a browser
+  whose reads work but whose writes fail still suppresses repeats for the
+  tab's life. This is browser-local suppression shared by every account on
+  the browser, not per-user across devices. Good enough.
 - Suppressed routes (`/draft`, `/me/picks`, `/`): keep observing progress
   so the baseline stays current, render nothing, and do not queue the
   notice for later. The draft-page milestone (section 2) marks the date as
@@ -185,10 +193,10 @@ the day is complete. Leave `PostPickActions.tsx` alone.
 
 ## Plumbing
 
-- `nearestDayPickProgress` returns `election_date` alongside
-  `picked/total/complete`. This widens the shared `PickProgress` type used
-  by mobile; `myDraftLabel` ignores the new field. Run the api-client tests
-  and the mobile typecheck.
+- `nearestDayPickProgress` returns `election_date` and `election_ids`
+  alongside `picked/total/complete`. This widens the shared `PickProgress`
+  type used by mobile; `myDraftLabel` ignores the new fields. Run the
+  api-client tests and the mobile typecheck.
 - `useMyPicksProgress` is unchanged in shape (it returns the widened
   object).
 - New `useGuestPickProgress()` in `usePickProgress.ts` exposes the guest

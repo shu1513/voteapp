@@ -165,6 +165,7 @@ describe("ballotDraft store", () => {
     setDraftBallotContext(["d1"], { election_date: "2026-11-03", election_ids: ["e1", "m1", "e9"] });
     expect(draftProgress(readBallotDraft(), TODAY)).toEqual({
       election_date: "2026-11-03",
+      election_ids: ["e1", "m1", "e9"],
       picked: 0,
       total: 3,
       complete: false,

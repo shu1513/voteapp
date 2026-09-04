@@ -20,9 +20,11 @@ function readSeenDates(): string[] | null {
   }
 }
 
+// Memory is consulted first: a browser whose reads work but whose writes
+// fail (quota) lands dates only in memory, and checking storage alone
+// would let the notice repeat.
 export function hasDraftCompleteBeenSeen(date: string): boolean {
-  const dates = readSeenDates();
-  return dates === null ? seenInMemory.has(date) : dates.includes(date);
+  return seenInMemory.has(date) || (readSeenDates()?.includes(date) ?? false);
 }
 
 export function markDraftCompleteSeen(date: string): void {
