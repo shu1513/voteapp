@@ -1,0 +1,38 @@
+bill	chamber	roll	date	yea	nay	question	title	disposition	reason
+H3021	senate	1698249	2026-05-14	22	22	concurrence	Small Business Regulatory Freedom Act	no-fan-out	the South Carolina Senate is not on the November 2026 ballot, so this roll matches no candidate and would write no record
+H3276	house	1541752	2025-04-09	85	25	passage	SC Hands-Free Act	not-selected:filter-4	not the chamber's decisive roll on the measure; a later House vote was taken
+H3276	house	1567547	2025-05-07	77	37	concurrence	SC Hands-Free Act	batch-01	imported
+H3309	senate	1567664	2025-05-07	35	11	concurrence	Electrical Utilities	no-fan-out	the South Carolina Senate is not on the November 2026 ballot, so this roll matches no candidate and would write no record
+H3557	house	1683382	2026-04-15	85	22	concurrence	Candidate filing	dropped:filter-5	shortens candidate filing and adds a party certification fee, but also adds a reopening procedure and a rule construing errors in favor of ballot access; the strands run both ways
+H3558	house	1505836	2025-03-05	76	29	passage	Commissioners to Article V Convention	dropped:filter-5	rules for South Carolina commissioners at a federal Article V convention; the gift ban and removal power point toward anti-corruption while the media-silence rules point away
+H3558	house	1711985	2026-06-25	74	27	veto_override	Commissioners to Article V Convention	dropped:filter-5	rules for South Carolina commissioners at a federal Article V convention; the gift ban and removal power point toward anti-corruption while the media-silence rules point away
+H3558	senate	1711986	2026-06-25	20	5	veto_override	Commissioners to Article V Convention	no-fan-out	the South Carolina Senate is not on the November 2026 ballot, so this roll matches no candidate and would write no record
+H4025	house	1580132	2025-05-28	88	25	conference_report	Appropriations Bill, 2025-2026	dropped:appropriations	the annual appropriations act; the campaign does not score a budget vote
+H4163	senate	1694946	2026-05-06	28	12	passage	South Carolina High School Athletic Association	no-fan-out	the South Carolina Senate is not on the November 2026 ballot, so this roll matches no candidate and would write no record
+H4163	senate	1695472	2026-05-07	24	17	passage	South Carolina High School Athletic Association	no-fan-out	the South Carolina Senate is not on the November 2026 ballot, so this roll matches no candidate and would write no record
+H4216	house	1566525	2025-05-06	68	46	passage	Income tax	not-selected:filter-4	not the chamber's decisive roll on the measure; a later House vote was taken
+H4216	house	1567329	2025-05-07	64	47	passage	Income tax	not-selected:filter-4	not the chamber's decisive roll on the measure; a later House vote was taken
+H4216	house	1659394	2026-03-10	71	49	concurrence	Income tax	batch-01	imported
+H4270	house	1688868	2026-04-23	77	23	passage	Evictions	dropped:filter-5	removes eviction filings from the public index after seven years; eviction procedure has no supply or cost effect, so housing affordability does not fit (Maryland HB 767 retraction)
+H4270	house	1697659	2026-05-13	81	28	concurrence	Evictions	dropped:filter-5	removes eviction filings from the public index after seven years; eviction procedure has no supply or cost effect, so housing affordability does not fit (Maryland HB 767 retraction)
+H4756	house	1683203	2026-04-15	77	31	concurrence	South Carolina Student Physical Privacy Act	batch-01	imported
+H4902	senate	1636098	2026-02-17	30	13	passage	Intercollegiate Athletes' Compensation for Name, Image, or Likeness	no-fan-out	the South Carolina Senate is not on the November 2026 ballot, so this roll matches no candidate and would write no record
+H4902	house	1669838	2026-03-25	88	22	veto_override	Intercollegiate Athletes' Compensation for Name, Image, or Likeness	dropped:filter-5	shields athlete name-image-likeness records from disclosure while making aggregate revenue-sharing totals public; transparency runs both ways inside one act
+H4902	senate	1676603	2026-04-01	30	12	veto_override	Intercollegiate Athletes' Compensation for Name, Image, or Likeness	no-fan-out	the South Carolina Senate is not on the November 2026 ballot, so this roll matches no candidate and would write no record
+S0062	senate	1477533	2025-01-30	32	12	passage	Education Scholarship Trust Fund	no-fan-out	the South Carolina Senate is not on the November 2026 ballot, so this roll matches no candidate and would write no record
+S0062	senate	1479654	2025-02-04	31	9	passage	Education Scholarship Trust Fund	no-fan-out	the South Carolina Senate is not on the November 2026 ballot, so this roll matches no candidate and would write no record
+S0062	house	1500218	2025-02-26	79	38	passage	Education Scholarship Trust Fund	dropped:filter-5	expands the Education Scholarship Trust Fund voucher program; school-choice financing carries no honest direction (Texas SB 2, Georgia SB 82, Pennsylvania SB 315, North Carolina H87)
+S0062	house	1501065	2025-02-27	80	32	passage	Education Scholarship Trust Fund	dropped:filter-5	expands the Education Scholarship Trust Fund voucher program; school-choice financing carries no honest direction (Texas SB 2, Georgia SB 82, Pennsylvania SB 315, North Carolina H87)
+S0062	house	1563825	2025-05-01	73	32	concurrence	Education Scholarship Trust Fund	dropped:filter-5	expands the Education Scholarship Trust Fund voucher program; school-choice financing carries no honest direction (Texas SB 2, Georgia SB 82, Pennsylvania SB 315, North Carolina H87)
+S0171	house	1563446	2025-05-01	79	23	passage	Regrooved and Regroovable Tires	batch-01	imported
+S0214	house	1567973	2025-05-07	76	31	passage	State Commission for Community Advancement and Engagement	batch-01	imported
+S0222	senate	1694095	2026-05-05	30	14	passage	Utility terrain vehicle	no-fan-out	the South Carolina Senate is not on the November 2026 ballot, so this roll matches no candidate and would write no record
+S0222	senate	1697741	2026-05-13	26	18	concurrence	Utility terrain vehicle	no-fan-out	the South Carolina Senate is not on the November 2026 ballot, so this roll matches no candidate and would write no record
+S0287	house	1615312	2026-01-21	66	33	passage	Electronic Nicotine Delivery System Regulation	batch-01	imported
+S0508	house	1695375	2026-05-07	74	28	passage	Monuments	dropped:filter-5	widens the monument protection law and gives heritage groups standing to sue; the direction is contested and no research area fits
+S0508	house	1698173	2026-05-14	79	28	conference_report	Monuments	dropped:filter-5	widens the monument protection law and gives heritage groups standing to sue; the direction is contested and no research area fits
+S0832	house	1697781	2026-05-13	69	39	passage	University Campus Events Zoning	dropped:filter-5	bars local zoning review of university campus events and adds a neighborhood notice duty; no research area fits
+S0853	senate	1644998	2026-02-25	33	10	passage	Abandoned Buildings Tax Credit	no-fan-out	the South Carolina Senate is not on the November 2026 ballot, so this roll matches no candidate and would write no record
+S0866	senate	1675227	2026-04-01	32	9	passage	Municipal Tax Relief Act	no-fan-out	the South Carolina Senate is not on the November 2026 ballot, so this roll matches no candidate and would write no record
+S0933	senate	1691177	2026-04-28	24	18	passage	Legislative compensation	no-fan-out	the South Carolina Senate is not on the November 2026 ballot, so this roll matches no candidate and would write no record
+S0933	house	1697896	2026-05-13	59	48	passage	Legislative compensation	dropped:filter-5	raises legislator pay to a combined $47,500 with an inflation adjustment; the direction is contested and government spending reduction is not its mechanism

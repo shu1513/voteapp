@@ -1,0 +1,112 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "SC",
+   "chamber": "house",
+   "session": "2194",
+   "roll": 1567547,
+   "measure_id": "H 3276",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Senate's changes to House Bill 3276, the South Carolina Hands-Free and Distracted Driving Act. The act bars a driver from holding a phone or other mobile device. It also bars texting and watching video at the wheel. Hands-free calls, maps that need no typing, and drivers who are parked are not covered. A first ticket costs $100. A later one costs $200 and puts two points on the driving record. An officer may not search the phone or the car just for this. The South Carolina House voted 77-37 to accept the Senate's version, and the act became law.",
+   "nay_description": "Voted against agreeing to the Senate's changes to House Bill 3276, the South Carolina Hands-Free and Distracted Driving Act. The act bars a driver from holding a phone or other mobile device. It also bars texting and watching video at the wheel. Hands-free calls, maps that need no typing, and drivers who are parked are not covered. A first ticket costs $100. A later one costs $200 and puts two points on the driving record. An officer may not search the phone or the car just for this. The South Carolina House voted 77-37 to accept the Senate's version over these votes, and the act became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "SC",
+   "chamber": "house",
+   "session": "2194",
+   "roll": 1659394,
+   "measure_id": "H 4216",
+   "vote_date": "2026-03-10",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Senate's changes to House Bill 4216, a state income tax cut. The act taxes the first $30,000 of taxable income at 1.99 percent. Income above that is taxed at 5.21 percent. The rate drops further on its own in any year when income tax money is expected to grow by at least 5 percent. The act also ends the state standard and itemized deductions. One deduction takes their place, worth $15,000 for a single filer and $30,000 for a married couple filing together, and it shrinks as income rises. The act caps the state earned income tax credit for low-paid workers at $200. That credit had no cap before. The South Carolina House voted 71-49 to accept the Senate's version, and the act became law.",
+   "nay_description": "Voted against agreeing to the Senate's changes to House Bill 4216, a state income tax cut. The act taxes the first $30,000 of taxable income at 1.99 percent. Income above that is taxed at 5.21 percent. The rate drops further on its own in any year when income tax money is expected to grow by at least 5 percent. The act also ends the state standard and itemized deductions. One deduction takes their place, worth $15,000 for a single filer and $30,000 for a married couple filing together, and it shrinks as income rises. The act caps the state earned income tax credit for low-paid workers at $200. That credit had no cap before. The South Carolina House voted 71-49 to accept the Senate's version over these votes, and the act became law.",
+   "labels": [
+    {
+     "slug": "personal_income_tax_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "SC",
+   "chamber": "house",
+   "session": "2194",
+   "roll": 1683203,
+   "measure_id": "H 4756",
+   "vote_date": "2026-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Senate's changes to House Bill 4756, the South Carolina Student Physical Privacy Act. Every shared restroom, locker room and shower room at a public school or public college must be set aside for one sex at a time. The act defines sex as the sex seen or medically confirmed at birth. Narrow exceptions cover cleaning an empty room, medical help and emergencies. On an overnight school trip, no student may be made to share sleeping quarters with a student of the other sex. Each school must also offer a single-user restroom or another private option. A district or college that breaks these rules loses a quarter of its state operating money until it complies. A person may sue the school if it let someone use the wrong-sex facility or failed to take reasonable steps, such as clear signage, to prevent it. The South Carolina House voted 77-31 to accept the Senate's version, and the act became law.",
+   "nay_description": "Voted against agreeing to the Senate's changes to House Bill 4756, the South Carolina Student Physical Privacy Act. Every shared restroom, locker room and shower room at a public school or public college must be set aside for one sex at a time. The act defines sex as the sex seen or medically confirmed at birth. Narrow exceptions cover cleaning an empty room, medical help and emergencies. On an overnight school trip, no student may be made to share sleeping quarters with a student of the other sex. Each school must also offer a single-user restroom or another private option. A district or college that breaks these rules loses a quarter of its state operating money until it complies. A person may sue the school if it let someone use the wrong-sex facility or failed to take reasonable steps, such as clear signage, to prevent it. The South Carolina House voted 77-31 to accept the Senate's version over these votes, and the act became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "SC",
+   "chamber": "house",
+   "session": "2194",
+   "roll": 1563446,
+   "measure_id": "S 171",
+   "vote_date": "2025-05-01",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 171, a law about waste tires and unsafe used tires. The act makes it illegal to put an unsafe used tire on a car or light truck in South Carolina. A tire counts as unsafe if the tread is worn to two thirty-seconds of an inch or less. It is also unsafe if cords show through damage, if it was repaired the wrong way, or if its federal number has worn off. Anyone hauling 15 or more waste tires must record where the tires came from and where they went. That record goes to the state, and the truck must show a decal. The act charges the $2 tire fee on used tires as well as new ones. A county may charge up to $400 a ton to take tires that came from another state. The South Carolina House passed it 79-23, and the act became law.",
+   "nay_description": "Voted against passing Senate Bill 171, a law about waste tires and unsafe used tires. The act makes it illegal to put an unsafe used tire on a car or light truck in South Carolina. A tire counts as unsafe if the tread is worn to two thirty-seconds of an inch or less. It is also unsafe if cords show through damage, if it was repaired the wrong way, or if its federal number has worn off. Anyone hauling 15 or more waste tires must record where the tires came from and where they went. That record goes to the state, and the truck must show a decal. The act charges the $2 tire fee on used tires as well as new ones. A county may charge up to $400 a ton to take tires that came from another state. The South Carolina House passed it 79-23 over these votes, and the act became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "SC",
+   "chamber": "house",
+   "session": "2194",
+   "roll": 1567973,
+   "measure_id": "S 214",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 214, which rewrote the state Commission for Minority Affairs. The act renames it the State Commission for Community Advancement and Engagement. It removes the rule that most of the commission's members be African American. Instead, the Governor and the Senate must take all reasonable steps so that members reflect the state's ethnic and racial diversity. The commission's job is rewritten to study and serve communities, and rural and under-resourced areas. The old law had named African American, Native American, Hispanic and Latino, Asian and other minority groups. The act also ends the commission's duty to help the minority community with filings under the federal Voting Rights Act. The South Carolina House passed it 76-31, and the act became law.",
+   "nay_description": "Voted against passing Senate Bill 214, which rewrote the state Commission for Minority Affairs. The act renames it the State Commission for Community Advancement and Engagement. It removes the rule that most of the commission's members be African American. Instead, the Governor and the Senate must take all reasonable steps so that members reflect the state's ethnic and racial diversity. The commission's job is rewritten to study and serve communities, and rural and under-resourced areas. The old law had named African American, Native American, Hispanic and Latino, Asian and other minority groups. The act also ends the commission's duty to help the minority community with filings under the federal Voting Rights Act. The South Carolina House passed it 76-31 over these votes, and the act became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "SC",
+   "chamber": "house",
+   "session": "2194",
+   "roll": 1615312,
+   "measure_id": "S 287",
+   "vote_date": "2026-01-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 287, which sets rules for selling vapes. Only vapes cleared by the federal Food and Drug Administration may be sold in South Carolina. Products still waiting on an application filed on time, or whose FDA denial is on hold by the agency itself or a federal court, may also be sold. The Attorney General must publish a public list of the products that qualify. Once that list is out, and no sooner than February 2027, stores get 60 days to sell off any vape that is missing from it; after that, an unlisted product can be seized and destroyed at the seller's cost. A maker that offers one faces a $1,000 fine for each day it is on sale. The act also bars packaging and ads that borrow candy, dessert, cartoon or school-supply themes. A store must check identification before every sale. The South Carolina House passed it 66-33, and the act became law.",
+   "nay_description": "Voted against passing Senate Bill 287, which sets rules for selling vapes. Only vapes cleared by the federal Food and Drug Administration may be sold in South Carolina. Products still waiting on an application filed on time, or whose FDA denial is on hold by the agency itself or a federal court, may also be sold. The Attorney General must publish a public list of the products that qualify. Once that list is out, and no sooner than February 2027, stores get 60 days to sell off any vape that is missing from it; after that, an unlisted product can be seized and destroyed at the seller's cost. A maker that offers one faces a $1,000 fine for each day it is on sale. The act also bars packaging and ads that borrow candy, dessert, cartoon or school-supply themes. A store must check identification before every sale. The South Carolina House passed it 66-33 over these votes, and the act became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
