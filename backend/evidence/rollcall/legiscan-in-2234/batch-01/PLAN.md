@@ -109,7 +109,7 @@ three votes into one. A rule that discards votes a voter plainly intended cuts a
 area, and the two cannot be summed into one direction.
 
 **SB 91, syringe exchange program** (House 70-22, Senate 33-13 and 38-10). The act narrows the
-programme hard: a 1,000-foot siting ban near schools, child care centres and places of
+program hard: a 1,000-foot siting ban near schools, child care centers and places of
 worship, strict one-for-one exchange replacing the old bar on recording identifying
 information, a residency requirement, and photo identification to take part. It also moves the
 chapter's expiry from 1 July 2026 to 1 July 2031. Without this act there would have been no
