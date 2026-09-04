@@ -208,19 +208,24 @@ mechanism wins.
 
 ### AB 235 (Chapter 117) — data_privacy, yes = for
 
-Adds three groups to the list of people who may ask that their personal
-information be kept confidential in county recorder, county assessor, Secretary
-of State and county and city clerk records, and who may ask the DMV to show an
+Adds three groups to the lists of people who may seek a court order requiring a
+county recorder, county assessor, Secretary of State or county or city clerk to
+keep their personal information confidential, and who may ask the DMV to show an
 alternate address on a licence or identification card: health care providers who
 practise in reproductive health, employees and volunteers of health facilities
 providing reproductive-health services, and providers of gender-affirming care.
 Their spouse, domestic partner or minor child may ask too. Effective July 1 2025.
 
-*Two cautions.* The act's own title and Digest describe a "court order", but the
-operative sections say only that these people "may request" — the court-order
-step lives in statutes this act does not touch, so do not write it as a
-requirement of these sections. And most of the printed text is existing law
-reprinted; judges, police officers and prosecutors were already covered.
+*Two cautions.* The records confidentiality is court-ordered, not on request.
+Sections 1-3 only add names to eligibility lists (NRS 247.540, 250.140,
+293.908); the process statutes those lists feed (NRS 247.530, 250.130, 293.906)
+still require a sworn affidavit and a court order, and the act's title and
+Digest say so ("authorize such court orders to be requested by"). Write it as
+expanded eligibility for court-ordered confidentiality. The DMV alternate
+address (section 4, NRS 481.091) is different: proof of eligibility and
+address to the Department, no court order — keep the two separate. And most of
+the printed text is existing law reprinted; judges, police officers and
+prosecutors were already covered.
 
 *Version.* Clean. Never amended; both chambers voted the enrolled text.
 
