@@ -43,6 +43,8 @@ describe("syncDueKansasCandidateFinance", () => {
     expect(typeof first.loadFilingPool).toBe("function");
     expect(second.loadFilingPool).toBe(first.loadFilingPool);
     expect(second.loadKpdcRows).toBe(first.loadKpdcRows);
+    expect(typeof first.loadOutsideRows).toBe("function");
+    expect(second.loadOutsideRows).toBe(first.loadOutsideRows);
     expect(first).toMatchObject({
       db,
       candidateId: rows[0]!.candidateId,
