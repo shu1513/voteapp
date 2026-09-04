@@ -58,6 +58,23 @@ February 2024**, so that duty pointed at a statute that no longer exists and rem
 housekeeping. The first draft described it as a service the act ended. It was cut. Check the
 cross-reference before describing a deleted duty as a loss.
 
+## Two corrections after review
+
+**H 4756, §§59-23-520 and 550.** The first draft said "a school" loses a quarter of its state
+operating money; the act withholds funds from the school **district** (or, for higher ed, the
+institution), not the individual school. It also said finding someone of the other sex in a
+restroom is enough to sue; §59-23-550(A) actually requires the school to have granted permission
+for the violation or failed to take reasonable preventive steps (e.g., signage). Both sentences
+were rewritten and the 100 fanned-out records were rewritten in place via `rollcall:judge` +
+`rollcall:legiscan:import`.
+
+**S 287, §44-95-65(B) and (N).** The first draft said only FDA-cleared or timely-pending products
+qualify; §44-95-65(B) also qualifies a product whose FDA marketing denial is stayed by the agency
+or a federal court. It also said sales of an unlisted product stop the moment the directory
+publishes; §44-95-65(N) actually gives retailers 60 days after publication to sell off existing
+unlisted inventory before it becomes seizable. Both sentences were rewritten and the 94 fanned-out
+records were rewritten in place the same way.
+
 ## Writing checks, all run before the import
 
 - The repo's `listPlainLanguageWarnings` over all 12 descriptions: **0 warnings**.
