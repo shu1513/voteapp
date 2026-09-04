@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { apiRequest, formatElectionDate, useMe } from "@voteapp/api-client";
 import type { BallotSummary, ElectionChoice, ElectionSummary } from "@voteapp/api-client";
 import { BallotPreviewSheets, BallotViewToggle } from "../components/BallotPreview";
+import { DraftMilestone } from "../components/DraftMilestone";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import type { CandidateNavState, ElectionNavState } from "../lib/detailNavContext";
 import {
@@ -194,6 +195,14 @@ export function DraftPage() {
               <EmptyNotice text="No upcoming elections found for your districts yet. Check back — new elections are added as they are announced." />
             ) : (
               <>
+                {/* Above the toggle so both views carry it; dates holds
+                    upcoming days only, so the first is the nearest. */}
+                <DraftMilestone
+                  date={dates[0]}
+                  elections={byDate.get(dates[0]) ?? []}
+                  choiceByElectionId={choices}
+                  signup
+                />
                 <div className="mt-4">
                   <BallotViewToggle view={view} onChange={setView} />
                 </div>
