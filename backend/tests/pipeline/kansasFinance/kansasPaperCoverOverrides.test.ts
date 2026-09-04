@@ -56,7 +56,9 @@ describe("kansasPaperCoverOverridesToCovers", () => {
     expect(inventory.status).toBe("resolved");
     const inventoryKeys = inventory.status === "resolved" ? inventory.headers.map(kansasFilingHeaderKey) : [];
 
-    const covers = kansasPaperCoverOverridesToCovers({ overrides: fileNames.map((fileName) => transcribed(fileName)), periods });
+    const candidateFileNames = inventory.status === "resolved" ? inventory.fileNames : [];
+    expect(candidateFileNames).toEqual(fileNames);
+    const covers = kansasPaperCoverOverridesToCovers({ overrides: fileNames.map((fileName) => transcribed(fileName)), periods, candidateFileNames });
     expect(covers.map((cover) => kansasFilingHeaderKey(cover.header))).toEqual(inventoryKeys);
     expect(new Set(inventoryKeys).size).toBe(fileNames.length);
 
@@ -87,20 +89,34 @@ describe("kansasPaperCoverOverridesToCovers", () => {
     }
   });
 
+  it("rejects a scan the KPDC tree does not list for this candidate, even for a valid period", () => {
+    // Another district's pre-primary scan would build the same header key; the tree's ownership is the gate.
+    const convert = (fileName: string, candidateFileNames: string[]) => () =>
+      kansasPaperCoverOverridesToCovers({ overrides: [transcribed(fileName)], periods, candidateFileNames });
+    expect(convert("H058AS_202607.pdf", ["H085MH_202607.pdf", "H085MH_AT.pdf"])).toThrow(
+      "transcribed cover H058AS_202607.pdf: not among the 2 scans the KPDC tree lists for this candidate"
+    );
+    expect(convert("H058AS_202607.pdf", [])).toThrow("not among the 0 scans");
+    // Case and surrounding whitespace do not defeat the match.
+    expect(convert(" h058as_202607.PDF ", ["H058AS_202607.pdf"])).not.toThrow();
+  });
+
   it("throws on a filename that is not a report of a required period", () => {
-    const convert = (fileName: string) => () => kansasPaperCoverOverridesToCovers({ overrides: [transcribed(fileName)], periods });
+    const convert = (fileName: string) => () =>
+      kansasPaperCoverOverridesToCovers({ overrides: [transcribed(fileName)], periods, candidateFileNames: [fileName] });
     expect(convert("H058AS_AT.pdf")).toThrow("transcribed cover H058AS_AT.pdf: not a report of a required period (appointment_of_treasurer)");
     expect(convert("H058AS_2026PLF.pdf")).toThrow("not a report of a required period (last_minute)");
     expect(convert("H058AS_Aff2607.pdf")).toThrow("not a report of a required period (affidavit due 202607)");
     expect(convert("H058AS_202401.pdf")).toThrow("not a report of a required period (report due 202401)");
     expect(convert("scan.pdf")).toThrow("not a report of a required period (unknown)");
-    expect(kansasPaperCoverOverridesToCovers({ overrides: [], periods })).toEqual([]);
+    expect(kansasPaperCoverOverridesToCovers({ overrides: [], periods, candidateFileNames: [] })).toEqual([]);
   });
 
   it("passes transcribed figures through untouched, arithmetic included (the aggregator checks it)", () => {
     const [cover] = kansasPaperCoverOverridesToCovers({
       overrides: [transcribed("H058AS_202607.pdf", { cashCloseCents: 55_001, otherTransactionsCents: -100 })],
       periods,
+      candidateFileNames: ["H058AS_202607.pdf"],
     });
     expect(cover!.cover).toMatchObject({ cashCloseCents: 55_001, otherTransactionsCents: -100 });
     expect(reconcileKansasCoverArithmetic(cover!.cover)).toBe(false);

@@ -99,6 +99,8 @@ export type KansasPaperInventoryResult =
       filedNames: string[];
       /** Date-less paper versions due inside the window, after the e-file subtraction. */
       headers: KansasFilingHeader[];
+      /** Every scan the tree lists for the candidate (all kinds, tree order): a transcribed cover must name one of these. */
+      fileNames: string[];
       /** Tree versions matched to an e-filed cover and left out. */
       explainedByEfile: number;
       /**
@@ -163,6 +165,7 @@ export function buildKansasPaperInventory(input: {
   const periodsByDueKey = new Map(input.periods.map((period) => [kansasPeriodDueKey(period), period]));
   const periodsByStart = new Map(input.periods.map((period) => [`${period.start}|${period.end}`, period]));
   const headers: KansasFilingHeader[] = [];
+  const fileNames: string[] = [];
   let lastMinute = 0;
   let skipped = 0;
   const unmapped: string[] = [];
@@ -171,6 +174,7 @@ export function buildKansasPaperInventory(input: {
     for (const link of row.links) {
       if (seen.has(link.url)) continue; // a filer duplicated across merged rows lists the same scans twice
       seen.add(link.url);
+      fileNames.push(link.fileName);
       const info = parseKansasKpdcFileName(link.fileName);
       if (info.kind === "appointment_of_treasurer" || info.kind === "affidavit") {
         skipped += 1;
@@ -215,6 +219,7 @@ export function buildKansasPaperInventory(input: {
     status: "resolved",
     filedNames: resolution.match.filedNames,
     headers: paperHeaders,
+    fileNames,
     explainedByEfile,
     lastMinute,
     skipped,

@@ -203,15 +203,18 @@ export async function syncKansasCandidateFinance(input: KansasCandidateFinanceSy
   }
 
   // A paper version has no viewer cover; a transcribed one stands in
-  // (totals only). Loaded only when the viewer shows paper rows, since only
-  // then does the ledger hold a paper version for one to match.
+  // (totals only). Loaded only when the ledger counts a paper version
+  // (KPDC versions exist only for a candidate the viewer shows paper rows
+  // for), and each transcribed filename must be a scan the tree lists for
+  // this candidate — the header alone cannot tell whose scan it is.
   const loadPaperCovers =
     input.loadPaperCovers ?? ((committeeId, electionYear) => loadKansasPaperCoverOverrides(input.db, committeeId, electionYear));
-  const paperOverrides =
-    ledger.paperReports.length === 0 ? [] : await loadPaperCovers(normalizeKansasFilerKey(input.link.committeeId), input.electionYear);
+  const countsPaperVersion = ledger.ledger.entries.some((entry) => entry.canonical?.channel === "paper");
+  const paperOverrides = countsPaperVersion ? await loadPaperCovers(normalizeKansasFilerKey(input.link.committeeId), input.electionYear) : [];
   const paperCovers = kansasPaperCoverOverridesToCovers({
     overrides: paperOverrides,
     periods: kansasReportingPeriods(office, input.electionYear),
+    candidateFileNames: ledger.paper?.status === "resolved" ? ledger.paper.fileNames : [],
   });
 
   // The gate is the candidate's completeness (ledger AND every paper row explained), not the ledger's alone.

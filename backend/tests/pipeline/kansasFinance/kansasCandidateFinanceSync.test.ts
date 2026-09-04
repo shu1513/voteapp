@@ -122,7 +122,7 @@ function report(
 
 function resolved(
   reports: KansasCandidateReport[],
-  extra: { affidavitDates?: string[]; complete?: boolean; paperHeaders?: KansasFilingHeader[] } = {}
+  extra: { affidavitDates?: string[]; complete?: boolean; paperHeaders?: KansasFilingHeader[]; paperFileNames?: string[] } = {}
 ): KansasCandidateLedgerResult {
   const paperHeaders = extra.paperHeaders ?? [];
   const ledger = buildKansasReportLedger({
@@ -137,9 +137,21 @@ function resolved(
     status: "resolved",
     match: { surname: "HOLLOWAY", firstName: "MARGARET", committeeName: "HOLLOWAY MARGARET", filedNames: ["HOLLOWAY MARGARET"], rowCount: reports.length, confidence: "name_exact" },
     reports,
-    // One unopened viewer paper row per KPDC version (the sync only counts them).
+    // The KPDC inventory exists only for a candidate the viewer shows paper rows for (one per version here).
     paperReports: paperHeaders.map(() => ({ channel: "paper" }) as never),
-    paper: null,
+    paper:
+      paperHeaders.length === 0
+        ? null
+        : {
+            status: "resolved",
+            filedNames: ["Holloway, Margaret"],
+            headers: paperHeaders,
+            fileNames: extra.paperFileNames ?? ["H085MH_AT.pdf", "H085MH_202607.pdf"],
+            explainedByEfile: 0,
+            lastMinute: 0,
+            skipped: 1,
+            unmapped: [],
+          },
     appointments: [],
     affidavitDates: extra.affidavitDates ?? [],
     ledger,
@@ -382,6 +394,11 @@ describe("syncKansasCandidateFinance", () => {
     await expect(
       syncKansasCandidateFinance({ ...baseInput(db, paperFiler).input, loadPaperCovers: vi.fn(async () => [transcribed("H085MH_AT.pdf")]) })
     ).rejects.toThrow("transcribed cover H085MH_AT.pdf: not a report of a required period");
+
+    // Another candidate's scan of the same period builds the same header key; the tree's ownership rejects it.
+    await expect(
+      syncKansasCandidateFinance({ ...baseInput(db, paperFiler).input, loadPaperCovers: vi.fn(async () => [transcribed("H058AS_202607.pdf")]) })
+    ).rejects.toThrow("transcribed cover H058AS_202607.pdf: not among the 2 scans the KPDC tree lists for this candidate");
     expect(client.query).not.toHaveBeenCalled();
 
     // No viewer paper rows: the table is never read.

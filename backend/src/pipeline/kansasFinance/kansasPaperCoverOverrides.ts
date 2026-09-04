@@ -10,9 +10,14 @@
 // (kansasPaperFilingHeader) turns "H058AS_202607.pdf" into the date-less
 // paper version of the period due 2026-07, so the transcribed cover carries
 // the ledger's own header and matches its canonical version by
-// kansasFilingHeaderKey — an original never stands in for an amendment. A
-// filename that is not a report of one of the cycle's periods is an operator
-// error and throws (fail closed for the candidate, not silently ignored).
+// kansasFilingHeaderKey — an original never stands in for an amendment.
+// Ownership is the tree's, not the filename's: the header keeps only the
+// period and version tokens, so another candidate's scan of the same period
+// would build the same key. Every transcribed filename must therefore be one
+// the KPDC tree lists for THIS candidate (the paper inventory's `fileNames`,
+// aligned by name and district). That, or a filename that is not a report
+// of one of the cycle's periods, is an operator error and throws (fail
+// closed for the candidate, not silently ignored).
 //
 // Totals only: the cover comes without schedules, so the aggregator publishes
 // no breakdowns and no direct total for the candidate. No contributor names
@@ -117,10 +122,19 @@ export function kansasPaperCoverOverridesToCovers(input: {
   overrides: readonly KansasPaperCoverOverride[];
   /** The cycle's required periods (kansasReportingPeriods); their due months key the filename tokens. */
   periods: readonly KansasReportingPeriod[];
+  /** The scans the KPDC tree lists for this candidate (KansasPaperInventoryResult.fileNames). */
+  candidateFileNames: readonly string[];
 }): KansasOpenedCover[] {
   const periodsByDueKey = new Map(input.periods.map((period) => [kansasPeriodDueKey(period), period]));
+  const owned = new Set(input.candidateFileNames.map((fileName) => fileName.trim().toUpperCase()));
   return input.overrides.map((override) => {
-    const info = parseKansasKpdcFileName(override.sourceFileName.trim());
+    const fileName = override.sourceFileName.trim();
+    if (!owned.has(fileName.toUpperCase())) {
+      throw new KansasPaperCoverOverrideError(
+        `transcribed cover ${override.sourceFileName}: not among the ${owned.size} scans the KPDC tree lists for this candidate`
+      );
+    }
+    const info = parseKansasKpdcFileName(fileName);
     const period =
       (info.kind === "report" || info.kind === "termination") && info.periodKey !== null
         ? periodsByDueKey.get(info.periodKey)
