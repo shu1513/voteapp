@@ -8,5 +8,8 @@ export * from "./newHampshireOutsideSpendingAggregator.js";
 export * from "./newHampshireCandidateFilerResolver.js";
 export * from "./newHampshireFinanceWriter.js";
 export * from "./newHampshireCandidateFinanceSync.js";
+export * from "./newHampshireCandidateFinanceAutoLink.js";
+export * from "./newHampshireCandidateFinanceDueList.js";
+export * from "./newHampshireCandidateFinanceBatchSync.js";
 export * from "./newHampshireFinanceEligibleOffices.js";
 export * from "./newHampshireBallotLookupFinanceLoader.js";
