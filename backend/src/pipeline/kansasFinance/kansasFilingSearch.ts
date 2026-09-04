@@ -21,6 +21,7 @@ import {
   collectKansasCfrGridPages,
   createKansasCfrSession,
   getKansasReportSchedule,
+  isKansasGridCountMismatch,
   KANSAS_CFR_VIEWER_PAGES,
   KansasCfrClientError,
   openKansasCfrCategory,
@@ -149,6 +150,8 @@ export function createKansasFilingPoolLoader(input: {
   sessionOptions?: KansasCfrSessionOptions;
   search?: KansasFilingSearch;
   onSkippedRows?: (office: KansasCfrOffice, skipped: number) => void;
+  /** An enumeration is being rerun after a mid-walk record-count mismatch (isKansasGridCountMismatch). */
+  onEnumerationRetry?: (office: KansasCfrOffice, filingType: string) => void;
 }): KansasFilingPoolLoader {
   const search = input.search ?? searchKansasFilings;
   const pools = new Map<string, Promise<KansasPooledFiling[]>>();
@@ -162,14 +165,25 @@ export function createKansasFilingPoolLoader(input: {
         let skipped = 0;
         // Sequential on purpose: one request in flight per viewer session.
         for (const filerSearch of KANSAS_CFR_FILER_SEARCHES) {
-          const found = await search({
+          const request: KansasFilingSearchInput = {
             office,
             filingType: filerSearch.filingType,
             gridId: filerSearch.gridId,
             startDate: window.startDate,
             endDate: window.endDate,
             sessionOptions: input.sessionOptions,
-          });
+          };
+          let found: KansasSearchedFiling[];
+          try {
+            found = await search(request);
+          } catch (error) {
+            // A filing landing mid-walk fails the count once; the rerun is
+            // clean. Anything else stays a failure, and it stays cached so a
+            // viewer outage fails every candidate fast instead of re-walking.
+            if (!isKansasGridCountMismatch(error)) throw error;
+            input.onEnumerationRetry?.(office, filerSearch.filingType);
+            found = await search(request);
+          }
           for (const filing of found) {
             if (!kansasGridOfficeMatches(office, filing.row.officeSought)) {
               skipped += 1;

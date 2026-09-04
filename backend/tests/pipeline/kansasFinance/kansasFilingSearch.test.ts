@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
+import { KansasCfrClientError } from "../../../src/pipeline/kansasFinance/kansasCfrViewerClient.js";
 import { kansasCfrOfficeForRace } from "../../../src/pipeline/kansasFinance/kansasFinanceEligibleOffices.js";
 import {
   createKansasFilingPoolLoader,
@@ -169,5 +170,46 @@ describe("createKansasFilingPoolLoader", () => {
     expect(search).toHaveBeenCalledTimes(9);
     expect(search.mock.calls[3]![0]).toMatchObject({ startDate: "01/01/2025" });
     expect(search.mock.calls[6]![0]).toMatchObject({ startDate: "01/01/2026" });
+  });
+});
+
+describe("createKansasFilingPoolLoader enumeration retry", () => {
+  const searched = (name: string): KansasSearchedFiling => ({
+    row: { index: 0, fileDate: "07/27/2026", amendmentDate: "", amendmentNo: "", name, officeSought: "State Representative", district: "85", channel: "efile", postbackTarget: null },
+    openReport: () => Promise.reject(new Error("not opened")),
+    openSchedule: () => Promise.reject(new Error("not opened")),
+  });
+  const mismatch = () => new KansasCfrClientError("grid_count_changed", "grid grdviewCfrResults: collected 1127 rows but page reported 1128");
+
+  it("reruns an enumeration once after a mid-walk record-count mismatch", async () => {
+    let calls = 0;
+    const search = vi.fn(async () => {
+      calls += 1;
+      if (calls === 1) throw mismatch();
+      return [searched("HOLLOWAY MARGARET")];
+    });
+    const onEnumerationRetry = vi.fn();
+    const load = createKansasFilingPoolLoader({ now: NOW, search, onEnumerationRetry });
+    expect(await load(house, 2026)).toHaveLength(3);
+    expect(search).toHaveBeenCalledTimes(4);
+    expect(onEnumerationRetry).toHaveBeenCalledTimes(1);
+    expect(onEnumerationRetry).toHaveBeenCalledWith(house, "Receipts and Expenditures Report");
+  });
+
+  it("fails after a second mismatch, keeps the failure cached, and never retries other errors", async () => {
+    const failing = vi.fn(async () => {
+      throw mismatch();
+    });
+    const load = createKansasFilingPoolLoader({ now: NOW, search: failing });
+    await expect(load(house, 2026)).rejects.toThrow("but page reported");
+    await expect(load(house, 2026)).rejects.toThrow("but page reported");
+    expect(failing).toHaveBeenCalledTimes(2);
+
+    const other = vi.fn(async () => {
+      throw new KansasCfrClientError("http_error", "viewer answered 500", 500);
+    });
+    const loadOther = createKansasFilingPoolLoader({ now: NOW, search: other });
+    await expect(loadOther(house, 2026)).rejects.toThrow("viewer answered 500");
+    expect(other).toHaveBeenCalledTimes(1);
   });
 });
